@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.7
+    jupytext_version: 1.16.6
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -33,13 +33,13 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install quantecon
-!pip install --upgrade yfinance
+!pip install --upgrade quantecon yfinance
+!pip install jax
 ```
 
 ## Overview
 
-{doc}`Previously <intro:ar1_processes>` we learned about linear scalar-valued stochastic processes (AR(1) models).
+Previously in {doc}`intro:ar1_processes`, we learned about linear scalar-valued stochastic processes (AR(1) models).
 
 Now we generalize these linear models slightly by allowing the multiplicative coefficient to be stochastic.
 
@@ -58,20 +58,13 @@ Let's start with some imports:
 import matplotlib.pyplot as plt
 import numpy as np
 import quantecon as qe
-```
-
-The following two lines are only added to avoid a `FutureWarning` caused by
-compatibility issues between pandas and matplotlib.
-
-```{code-cell} ipython3
-from pandas.plotting import register_matplotlib_converters
-register_matplotlib_converters()
+import yfinance as yf
 ```
 
 Additional technical background related to this lecture can be found in the
-monograph of {cite}`buraczewski2016stochastic`.
+monograph by {cite}`buraczewski2016stochastic`.
 
-## Kesten Processes
+## Kesten processes
 
 ```{index} single: Kesten processes; heavy tails
 ```
@@ -97,7 +90,7 @@ In particular, we will assume that
 * $\{a_t\}_{t \geq 1}$ is a nonnegative IID stochastic process and
 * $\{\eta_t\}_{t \geq 1}$ is another nonnegative IID stochastic process, independent of the first.
 
-### Example: GARCH Volatility
+### Example: GARCH volatility
 
 The GARCH model is common in financial applications, where time series such as asset returns exhibit time varying volatility.
 
@@ -107,18 +100,16 @@ Composite Index for the period 1st January 2006 to 1st November 2019.
 (ndcode)=
 
 ```{code-cell} ipython3
-import yfinance as yf
-
-s = yf.download('^IXIC', '2006-1-1', '2019-11-1', auto_adjust=False)['Adj Close']
+s = yf.download("^IXIC", "2006-1-1", "2019-11-1", auto_adjust=False)[
+    "Adj Close"
+]
 
 r = s.pct_change()
 
 fig, ax = plt.subplots()
-
 ax.plot(r, alpha=0.7)
-
-ax.set_ylabel('returns', fontsize=12)
-ax.set_xlabel('date', fontsize=12)
+ax.set_ylabel("returns", fontsize=12)
+ax.set_xlabel("date", fontsize=12)
 
 plt.show()
 ```
@@ -150,7 +141,7 @@ where $\{\zeta_t\}$ is again IID and independent of $\{\xi_t\}$.
 
 The volatility sequence $\{\sigma_t^2 \}$, which drives the dynamics of returns, is a Kesten process.
 
-### Example: Wealth Dynamics
+### Example: wealth dynamics
 
 Suppose that a given household saves a fixed fraction $s$ of its current wealth in every period.
 
@@ -171,7 +162,7 @@ is a Kesten process.
 
 ### Stationarity
 
-In earlier lectures, such as the one on {doc}`AR(1) processes <intro:ar1_processes>`, we introduced the notion of a stationary distribution.
+In earlier lectures, such as the one on {doc}`intro:ar1_processes`, we introduced the notion of a stationary distribution.
 
 In the present context, we can define a stationary distribution as follows:
 
@@ -203,7 +194,7 @@ current state is drawn from $F^*$.
 
 The equality in {eq}`kp_stationary` states that this distribution is unchanged.
 
-### Cross-Sectional Interpretation
+### Cross-sectional interpretation
 
 There is an important cross-sectional interpretation of stationary distributions, discussed previously but worth repeating here.
 
@@ -241,7 +232,7 @@ next period as it is this period.
 
 Since $y$ was chosen arbitrarily, the distribution is unchanged.
 
-### Conditions for Stationarity
+### Conditions for stationarity
 
 The Kesten process $X_{t+1} = a_{t+1} X_t + \eta_{t+1}$ does not always
 have a stationary distribution.
@@ -270,16 +261,16 @@ As one application of this result, we see that the wealth process
 {eq}`wealth_dynam` will have a unique stationary distribution whenever
 labor income has finite mean and $\mathbb E \ln R_t  + \ln s < 0$.
 
-## Heavy Tails
+## Heavy tails
 
 Under certain conditions, the stationary distribution of a Kesten process has
 a Pareto tail.
 
-(See our {doc}`earlier lecture <intro:heavy_tails>`  on heavy-tailed distributions for background.)
+(See our {doc}`intro:heavy_tails`  on heavy-tailed distributions for background.)
 
 This fact is significant for economics because of the prevalence of Pareto-tailed distributions.
 
-### The Kesten--Goldie Theorem
+### The Kesten--Goldie theorem
 
 To state the conditions under which the stationary distribution of a Kesten process has a Pareto tail, we first recall that a random variable is called **nonarithmetic** if its distribution is not concentrated on $\{\dots, -2t, -t, 0, t, 2t, \ldots \}$ for any $t \geq 0$.
 
@@ -339,13 +330,15 @@ The spikes in the time series are visible in the following simulation, which gen
 μ = -0.5
 σ = 1.0
 
+
 def kesten_ts(ts_length=100):
     x = np.zeros(ts_length)
-    for t in range(ts_length-1):
+    for t in range(ts_length - 1):
         a = np.exp(μ + σ * np.random.randn())
         b = np.exp(np.random.randn())
         x[t+1] = a * x[t] + b
     return x
+
 
 fig, ax = plt.subplots()
 
@@ -355,17 +348,17 @@ np.random.seed(12)
 for i in range(num_paths):
     ax.plot(kesten_ts())
 
-ax.set(xlabel='time', ylabel='$X_t$')
+ax.set(xlabel="time", ylabel="$X_t$")
 plt.show()
 ```
 
-## Application: Firm Dynamics
+## Application: firm dynamics
 
-As noted in our {doc}`lecture on heavy tails <intro:heavy_tails>`, for common measures of firm size such as revenue or employment, the US firm size distribution exhibits a Pareto tail (see, e.g., {cite}`axtell2001zipf`, {cite}`gabaix2016power`).
+As noted in our {doc}`intro:heavy_tails`, for common measures of firm size such as revenue or employment, the US firm size distribution exhibits a Pareto tail (see, e.g., {cite}`axtell2001zipf`, {cite}`gabaix2016power`).
 
 Let us try to explain this rather striking fact using the Kesten--Goldie Theorem.
 
-### Gibrat's Law
+### Gibrat's law
 
 It was postulated many years ago by Robert Gibrat {cite}`gibrat1931inegalites` that firm size evolves according to a simple rule whereby size next period is proportional to current size.
 
@@ -412,7 +405,7 @@ In the exercises you are asked to show that {eq}`firm_dynam` is more
 consistent with the empirical findings presented above than Gibrat's law in
 {eq}`firm_dynam_gb`.
 
-### Heavy Tails
+### Heavy tails
 
 So what has this to do with Pareto tails?
 
@@ -460,14 +453,16 @@ Here is one solution:
 years = 15
 days = years * 250
 
+
 def garch_ts(ts_length=days):
     σ2 = 0
     r = np.zeros(ts_length)
-    for t in range(ts_length-1):
+    for t in range(ts_length - 1):
         ξ = np.random.randn()
         σ2 = α_0 + σ2 * (α_1 * ξ**2 + β)
         r[t] = np.sqrt(σ2) * np.random.randn()
     return r
+
 
 fig, ax = plt.subplots()
 
@@ -475,7 +470,7 @@ np.random.seed(12)
 
 ax.plot(garch_ts(), alpha=0.7)
 
-ax.set(xlabel='time', ylabel='$\\sigma_t^2$')
+ax.set(xlabel="time", ylabel="$\\sigma_t^2$")
 plt.show()
 ```
 
@@ -499,7 +494,7 @@ In what sense is this true (or false)?
 The empirical findings are that
 
 1. small firms grow faster than large firms  and
-1. the growth rate of small firms is more volatile than that of large firms.
+2. the growth rate of small firms is more volatile than that of large firms.
 
 Also, Gibrat's law is generally found to be a reasonable approximation for
 large firms than for small firms
@@ -653,16 +648,16 @@ In the simulation, assume that
 * the parameters are
 
 ```{code-cell} ipython3
-μ_a = -0.5        # location parameter for a
-σ_a = 0.1         # scale parameter for a
-μ_b = 0.0         # location parameter for b
-σ_b = 0.5         # scale parameter for b
-μ_e = 0.0         # location parameter for e
-σ_e = 0.5         # scale parameter for e
-s_bar = 1.0       # threshold
-T = 500           # sampling date
-M = 1_000_000     # number of firms
-s_init = 1.0      # initial condition for each firm
+μ_a = -0.5    # location parameter for a
+σ_a = 0.1     # scale parameter for a
+μ_b = 0.0     # location parameter for b
+σ_b = 0.5     # scale parameter for b
+μ_e = 0.0     # location parameter for e
+σ_e = 0.5     # scale parameter for e
+s_bar = 1.0   # threshold
+T = 500       # sampling date
+M = 1_000_000 # number of firms
+s_init = 1.0  # initial condition for each firm
 ```
 
 ```{exercise-end}
@@ -676,37 +671,100 @@ Here's one solution.
 First we generate the observations:
 
 ```{code-cell} ipython3
-from numba import jit, prange
-from numpy.random import randn
+import jax
+import jax.numpy as jnp
+from jax import random, vmap, jit
 
 
-@jit(parallel=True)
-def generate_draws(μ_a=-0.5,
-                   σ_a=0.1,
-                   μ_b=0.0,
-                   σ_b=0.5,
-                   μ_e=0.0,
-                   σ_e=0.5,
-                   s_bar=1.0,
-                   T=500,
-                   M=1_000_000,
-                   s_init=1.0):
+def generate_single_draw(key, μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar, T, s_init):
+    """Generate a single draw using JAX's scan for the time loop."""
 
-    draws = np.empty(M)
-    for m in prange(M):
-        s = s_init
-        for t in range(T):
-            if s < s_bar:
-                new_s = np.exp(μ_e + σ_e *  randn())
-            else:
-                a = np.exp(μ_a + σ_a * randn())
-                b = np.exp(μ_b + σ_b * randn())
-                new_s = a * s + b
-            s = new_s
-        draws[m] = s
+    def step_fn(carry, t):
+        s, subkey = carry
+        subkey, new_subkey = random.split(subkey)
+
+        # Generate random normal samples
+        rand_normal = random.normal(new_subkey)
+
+        # Conditional logic using jnp.where
+        # If s < s_bar: new_s = exp(μ_e + σ_e * randn())
+        # Else: new_s = a * s + b
+        # where a = exp(μ_a + σ_a * randn()), b = exp(μ_b + σ_b * randn())
+
+        # For the else branch, we need two random numbers
+        subkey, key1, key2 = random.split(subkey, 3)
+        rand_a = random.normal(key1)
+        rand_b = random.normal(key2)
+
+        # Calculate both possible new values
+        new_s_under_bar = jnp.exp(μ_e + σ_e * rand_normal)
+
+        a = jnp.exp(μ_a + σ_a * rand_a)
+        b = jnp.exp(μ_b + σ_b * rand_b)
+        new_s_over_bar = a * s + b
+
+        # Choose based on condition
+        new_s = jnp.where(s < s_bar, new_s_under_bar, new_s_over_bar)
+
+        return (new_s, subkey), new_s
+
+    # Initial state: (s_init, key)
+    init_carry = (s_init, key)
+
+    # Run the scan
+    final_carry, _ = jax.lax.scan(step_fn, init_carry, jnp.arange(T))
+
+    # Return final s value
+    return final_carry[0]
+
+
+generate_single_draw = jax.jit(generate_single_draw, static_argnums=(8,))
+```
+
+```{code-cell} ipython3
+# Use vmap to vectorize over the first argument (key)
+in_axes = [None] * 10
+in_axes[0] = 0
+
+vectorized_single_draw = vmap(
+    generate_single_draw,
+    in_axes=in_axes,
+)
+```
+
+```{code-cell} ipython3
+@jit
+def generate_draws(
+    seed=0,
+    μ_a=-0.5,
+    σ_a=0.1,
+    μ_b=0.0,
+    σ_b=0.5,
+    μ_e=0.0,
+    σ_e=0.5,
+    s_bar=1.0,
+    T=500,
+    M=1_000_000,
+    s_init=1.0,
+):
+    """
+    JAX-jit version of the generate_draws function.
+    Returns:
+        Array of M draws
+    """
+    # Create M different random keys for parallel execution
+    key = random.PRNGKey(seed)
+    keys = random.split(key, M)
+
+    draws = vectorized_single_draw(
+        keys, μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar, T, s_init
+    )
 
     return draws
+```
 
+```{code-cell} ipython3
+# Generate the observations
 data = generate_draws()
 ```
 
@@ -716,7 +774,7 @@ Now we produce the rank-size plot:
 fig, ax = plt.subplots()
 
 rank_data, size_data = qe.rank_size(data, c=0.01)
-ax.loglog(rank_data, size_data, 'o', markersize=3.0, alpha=0.5)
+ax.loglog(rank_data, size_data, "o", markersize=3.0, alpha=0.5)
 ax.set_xlabel("log rank")
 ax.set_ylabel("log size")
 
