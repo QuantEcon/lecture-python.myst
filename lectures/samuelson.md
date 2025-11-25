@@ -1159,7 +1159,7 @@ plt.show()
 
 ## Using the LinearStateSpace class
 
-It turns out that we can use the [QuantEcon.py](https://quantecon.org/quantecon-py)
+It turns out that we can use the [QuantEcon.py](https://quantecon.org/quantecon-py/)
 [LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) class to do
 much of the work that we have done from scratch above.
 
@@ -1410,5 +1410,5 @@ in {cite}`Samuelson1939`.
 We saw that different parameter values led to different output paths, which
 could either be stationary, explosive, or oscillating.
 
-We also were able to represent the model using the [QuantEcon.py](https://quantecon.org/quantecon-py)
+We also were able to represent the model using the [QuantEcon.py](https://quantecon.org/quantecon-py/)
 [LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) class.
