@@ -35,18 +35,18 @@ In this lecture we continue examining a version of the IFP from
 
 We will make three changes.
 
-1. We will add a transient shock component to labor income (as well as a persistent one).
-2. We will change the timing to one that is more efficient for our set up.
-3. To solve the model, we will use the endogenous grid method (EGM). 
+1. Add a transient shock component to labor income (as well as a persistent one).
+2. Change the timing to one that is more efficient for our set up.
+3. Use the endogenous grid method (EGM) to solve the model.
 
-We use the EGM because we know it to be fast and accurate from {doc}`os_egm_jax`.
+We use EGM because we know it to be fast and accurate from {doc}`os_egm_jax`.
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install quantecon
+!pip install quantecon jax
 ```
 
 We'll also need the following imports:
@@ -62,7 +62,7 @@ from typing import NamedTuple
 ```
 
 We will use 64-bit precision in JAX because we want to compare NumPy outputs
-with JAX outputs --- and NumPy arrays default to 64 bits.
+with JAX outputs and NumPy arrays default to 64 bits.
 
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
@@ -217,7 +217,7 @@ When $c_t$ hits the upper bound $a_t$, the
 strict inequality $u' (c_t) > \beta R \,  \mathbb{E}_t  u'(c_{t+1})$
 can occur because $c_t$ cannot increase sufficiently to attain equality.
 
-The lower boundary case $c_t = 0$ never arises along the optimal path because $u'(0) = \infty$.
+The case $c_t = 0$ never arises along the optimal path because $u'(0) = \infty$.
 
 
 ### Optimality Results
@@ -470,6 +470,7 @@ def K_numpy(
 
     for i in range(1, n_a):  # Start from 1 for positive savings levels
         for j in range(n_z):
+
             # Compute Σ_z' ∫ u'(σ(R s_i + y(z', η'), z')) φ(η') dη' Π[z_j, z']
             expectation = 0.0
             for k in range(n_z):
@@ -488,6 +489,7 @@ def K_numpy(
                 inner_mean_k = (inner_sum / len(η_draws))
                 # Weight by transition probability and add to the expectation
                 expectation += inner_mean_k * Π[j, k]
+
             # Calculate updated c_{ij} values
             new_c_vals[i, j] = u_prime_inv(β * R * expectation)
 
@@ -776,12 +778,15 @@ def y(z, η):
     return jnp.exp(a_y * η + z * b_y)
 
 def y_bar(k):
-    """Expected labor income conditional on current state z_grid[k]"""
-    # Compute mean of y(z', η) for each future state z'
+    """ 
+    Taking z = z_grid[k], compute an approximation to 
+
+            E_z Y' = Σ_{z'} ∫ y(z', η') φ(η') dη' Π[z, z']
+    """
+    # Approximate ∫ y(z', η') φ(η') dη' at given z'
     def mean_y_at_z(z_prime):
         return jnp.mean(y(z_prime, η_draws))
-
-    # Vectorize over all future states z'
+    # Evaluate this integral across all z'
     y_means = jax.vmap(mean_y_at_z)(z_grid)
     # Weight by transition probabilities and sum
     return jnp.sum(y_means * Π[k, :])
