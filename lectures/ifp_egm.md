@@ -406,11 +406,6 @@ def create_ifp(r=0.01,
     η_draws = np.random.randn(shock_draw_size)
     assert R * β < 1, "Stability condition violated."
     return IFPNumPy(R, β, γ, Π, z_grid, s, a_y, b_y, η_draws)
-
-# Set y(z, η) = exp(a_y * η + z * b_y)
-@numba.jit
-def y(z, η, a_y, b_y):
-    return np.exp(a_y * η + z * b_y)
 ```
 
 ### Solver
@@ -488,8 +483,11 @@ def K_numpy(
                     next_c = np.interp(next_a, ae_vals[:, k], c_vals[:, k])
                     # Add to the inner sum
                     inner_sum += u_prime(next_c)
-                # Average over η draws and weight by transition probability
-                expectation += (inner_sum / len(η_draws)) * Π[j, k]
+                # Average over η draws to approximate the integral
+                # ∫ u'(σ(R s_i + y(z', η'), z')) φ(η') dη' when z' = z_grid[k] 
+                inner_mean_k = (inner_sum / len(η_draws))
+                # Weight by transition probability and add to the expectation
+                expectation += inner_mean_k * Π[j, k]
             # Calculate updated c_{ij} values
             new_c_vals[i, j] = u_prime_inv(β * R * expectation)
 
@@ -597,17 +595,6 @@ def create_ifp(r=0.01,
     η_draws = jax.random.normal(key, (shock_draw_size,))
     assert R * β < 1, "Stability condition violated."
     return IFP(R, β, γ, Π, z_grid, s, a_y, b_y, η_draws)
-
-# Set y(z, η) = exp(a_y * η + z * b_y)
-def y_jax(z, η, a_y, b_y):
-    return jnp.exp(a_y * η + z * b_y)
-
-# Utility functions for JAX (can't use numba-jitted versions)
-def u_prime_jax(c, γ):
-    return c**(-γ)
-
-def u_prime_inv_jax(c, γ):
-    return c**(-1/γ)
 ```
 
 
@@ -651,6 +638,7 @@ def K(
         # For each k (future z state), compute the integral over η
         def compute_expectation_k(k):
             z_prime = z_grid[k]
+
             # For each η draw, compute u'(σ(R * s_i + y(z', η), z'))
             def compute_for_eta(η):
                 next_a = R * s[i] + y(z_prime, η)
@@ -659,18 +647,13 @@ def K(
                 # Return u'(σ(R * s_i + y(z', η), z'))
                 return u_prime(next_c)
 
-            # Compute average over all η draws using vmap
-            compute_all_eta = jax.vmap(compute_for_eta)
-            marginal_utils = compute_all_eta(η_draws)
-            # Return the average (Monte Carlo approximation of the integral)
-            return jnp.mean(marginal_utils)
-
-        # Compute ∫ u'(σ(...)) φ(η) dη for all k via vmap
-        exp_over_eta = jax.vmap(compute_expectation_k)
-        expectations_k = exp_over_eta(jnp.arange(n_z))
+            # Average over η draws to approximate the integral
+            # ∫ u'(σ(R s_i + y(z', η'), z')) φ(η') dη' when z' = z_grid[k] 
+            return jnp.mean(jax.vmap(compute_for_eta)(η_draws))
 
         # Compute expectation: Σ_k [∫ u'(σ(...)) φ(η) dη] * Π[j, k]
-        expectation = jnp.sum(expectations_k * Π[j, :])
+        expectations = jax.vmap(compute_expectation_k)(jnp.arange(n_z))
+        expectation = jnp.sum(expectations * Π[j, :])
 
         # Invert to get consumption c_{ij} at (s_i, z_j)
         return u_prime_inv(β * R * expectation)
@@ -918,6 +901,9 @@ def simulate_household(
     R, β, γ, Π, z_grid, s, a_y, b_y, η_draws = ifp
     n_z = len(z_grid)
 
+    def y(z, η):
+        return jnp.exp(a_y * η + z * b_y)
+
     # Create interpolation function for consumption policy
     σ = lambda a, z_idx: jnp.interp(a, ae_vals[:, z_idx], c_vals[:, z_idx])
 
@@ -932,7 +918,7 @@ def simulate_household(
         η_key = jax.random.fold_in(key, 2*t + 1)
         η = jax.random.normal(η_key)
         # Update assets: a' = R * (a - c) + Y'
-        a_next = R * (a - σ(a, z_idx)) + y_jax(z_next, η, a_y, b_y)
+        a_next = R * (a - σ(a, z_idx)) + y(z_next, η)
         # Return updated state
         return a_next, z_next_idx
 
@@ -1109,14 +1095,14 @@ for r in r_vals:
     ae_vals_init = s[:, None] * jnp.ones(len(z_grid))
     c_vals_init = ae_vals_init
     c_vals, ae_vals = solve_model(ifp, c_vals_init, ae_vals_init)
-    assets = compute_asset_stationary(c_vals, ae_vals, ifp,
-                                       num_households=50_000, T=500)
+    assets = compute_asset_stationary(
+        c_vals, ae_vals, ifp, num_households=50_000, T=500
+    )
     gini = gini_coefficient(assets)
     top1 = top_share(assets, p=0.01)
     gini_vals.append(gini)
     top1_vals.append(top1)
-    print(f'  Gini: {gini:.4f}, Top 1%: {top1:.4f}')
-    # Start next round with last solution
+    # Use last solution as initial conditions for the policy solver
     c_vals_init = c_vals
     ae_vals_init = ae_vals
 ```
