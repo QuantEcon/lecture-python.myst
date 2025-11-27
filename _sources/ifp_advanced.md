@@ -376,7 +376,7 @@ class IFP:
                  b_r=0.0,
                  a_y=0.2,
                  b_y=0.5,
-                 shock_draw_size=50,
+                 shock_draw_size=100,
                  grid_max=10,
                  grid_size=100,
                  seed=1234):
@@ -665,7 +665,7 @@ def create_ifp_jax(γ=1.5,
                    b_r=0.0,
                    a_y=0.2,
                    b_y=0.5,
-                   shock_draw_size=50,
+                   shock_draw_size=100,
                    grid_max=10,
                    grid_size=100,
                    seed=1234):

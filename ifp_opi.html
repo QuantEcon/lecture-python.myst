@@ -191,7 +191,7 @@
                                 
                             </p>
 
-                            <p class="powered">Powered by <a href="https://jupyterbook.org/en/stable/">Jupyter Book</a></p>
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
 
                         </nav>
 
@@ -239,10 +239,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/9571a3394" class="changelog-hash">9571a3394</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">1 day ago</span>
+                                <span class="changelog-message">Update IFP lectures: add dynamics plots and adjust parameters (#741)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b27f1eb0a" class="changelog-hash">b27f1eb0a</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">3 hours ago</span>
+                                <span class="changelog-time">1 day ago</span>
                                 <span class="changelog-message">Reorganize and rename optimal savings lectures (#735)</span>
                             </li>
                             
@@ -351,7 +360,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
         <span class="n">β</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span>                    <span class="c1"># Discount factor</span>
         <span class="n">γ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>                       <span class="c1"># CRRA parameter</span>
         <span class="n">a_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>                <span class="c1"># Min assets</span>
-        <span class="n">a_max</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>                 <span class="c1"># Max assets</span>
+        <span class="n">a_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>                <span class="c1"># Max assets</span>
         <span class="n">a_size</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>                <span class="c1"># Grid size</span>
         <span class="n">ρ</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">ν</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">y_size</span><span class="o">=</span><span class="mi">100</span>   <span class="c1"># Income parameters</span>
     <span class="p">):</span>
@@ -374,34 +383,30 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>Here is the right hand side of the Bellman equation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A vectorized version of the right-hand side of the Bellman equation</span>
-<span class="sd">    (before maximization), which is a 3D array representing</span>
+<span class="sd">    The right-hand side of the Bellman equation before maximization, which takes</span>
+<span class="sd">    the form</span>
 
 <span class="sd">        B(a, y, a′) = u(Ra + y - a′) + β Σ_y′ v(a′, y′) Q(y, y′)</span>
 
-<span class="sd">    for all (a, y, a′).</span>
+<span class="sd">    The indices are (i, j, ip) -&gt; (a, y, a′).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">model</span>
-    <span class="n">a_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_grid</span><span class="p">)</span>
-
-    <span class="c1"># Compute current rewards r(a, y, ap) as array r[i, j, ip]</span>
-    <span class="n">a</span>  <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="p">(</span><span class="n">a_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>    <span class="c1"># a[i]   -&gt;  a[i, j, ip]</span>
-    <span class="n">y</span>  <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>    <span class="c1"># z[j]   -&gt;  z[i, j, ip]</span>
-    <span class="n">ap</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">a_size</span><span class="p">))</span>    <span class="c1"># ap[ip] -&gt; ap[i, j, ip]</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">ap</span>  <span class="o">=</span> <span class="n">a_grid</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_grid</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">a_grid</span><span class="p">[</span><span class="n">ip</span><span class="p">]</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">y</span> <span class="o">-</span> <span class="n">ap</span>
-
-    <span class="c1"># Calculate continuation rewards at all combinations of (a, y, ap)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">a_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>  <span class="c1"># v[ip, jp] -&gt; v[i, j, ip, jp]</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>  <span class="c1"># Q[j, jp]  -&gt; Q[i, j, ip, jp]</span>
-    <span class="n">EV</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="n">Q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>                 <span class="c1"># sum over last index jp</span>
-
-    <span class="c1"># Compute the right-hand side of the Bellman equation</span>
+    <span class="n">EV</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">ip</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">Q</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:])</span>
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">EV</span><span class="p">,</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we successively apply <code class="docutils literal notranslate"><span class="pre">vmap</span></code> to vectorize over all indices:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B_1</span>    <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">B</span><span class="p">,</span>   <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">B_2</span>    <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">B_1</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>    <span class="kc">None</span><span class="p">))</span>
+<span class="n">B_vmap</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">B_2</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>    <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -409,10 +414,12 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>Here’s the Bellman operator:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
     <span class="s2">&quot;The Bellman operator.&quot;</span>
-    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">a_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">))</span>
+    <span class="n">y_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y_grid</span><span class="p">))</span>
+    <span class="n">B_values</span> <span class="o">=</span> <span class="n">B_vmap</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">a_indices</span><span class="p">,</span> <span class="n">y_indices</span><span class="p">,</span> <span class="n">a_indices</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">B_values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -420,10 +427,12 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>Here’s the function that computes a <span class="math notranslate nohighlight">\(v\)</span>-greedy policy:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
     <span class="s2">&quot;Computes a v-greedy policy, returned as a set of indices.&quot;</span>
-    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">a_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">))</span>
+    <span class="n">y_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y_grid</span><span class="p">))</span>
+    <span class="n">B_values</span> <span class="o">=</span> <span class="n">B_vmap</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">a_indices</span><span class="p">,</span> <span class="n">y_indices</span><span class="p">,</span> <span class="n">a_indices</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">B_values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -466,7 +475,6 @@ policy <span class="math notranslate nohighlight">\(\sigma\)</span> fixed.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T_σ_1</span>    <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">T_σ</span><span class="p">,</span>   <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 <span class="n">T_σ_vmap</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">T_σ_1</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>    <span class="kc">None</span><span class="p">))</span>
 
-<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">T_σ_vec</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Vectorized version of T_σ.&quot;&quot;&quot;</span>
     <span class="n">a_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">y_grid</span><span class="p">)</span>
@@ -480,8 +488,7 @@ policy <span class="math notranslate nohighlight">\(\sigma\)</span> fixed.</p>
 <p>Now we need a function to apply the policy operator m times:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">iterate_policy_operator</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">iterate_policy_operator</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Apply the policy operator T_σ exactly m times to v.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -585,8 +592,8 @@ policy <span class="math notranslate nohighlight">\(\sigma\)</span> fixed.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1125 05:15:55.823928    2413 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1125 05:15:55.827396    2350 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1127 00:54:19.288776    2931 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1127 00:54:19.292201    2868 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -605,7 +612,7 @@ W1125 05:15:55.827396    2350 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
-VFI completed in 0.75 seconds.
+VFI completed in 0.78 seconds.
 </pre></div>
 </div>
 </div>
@@ -622,7 +629,7 @@ VFI completed in 0.75 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.14 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.09 seconds.
 </pre></div>
 </div>
 </div>
@@ -630,9 +637,9 @@ VFI completed in 0.75 seconds.
 <p>Now let’s time OPI with different values of m:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting OPI with m=10.&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting OPI with m=50.&quot;</span><span class="p">)</span>
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="n">v_star_opi</span><span class="p">,</span> <span class="n">σ_star_opi</span> <span class="o">=</span> <span class="n">optimistic_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">v_star_opi</span><span class="p">,</span> <span class="n">σ_star_opi</span> <span class="o">=</span> <span class="n">optimistic_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">v_star_opi</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
 <span class="n">opi_time_with_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OPI completed in </span><span class="si">{</span><span class="n">opi_time_with_compile</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
@@ -640,8 +647,8 @@ VFI completed in 0.75 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI with m=10.
-OPI completed in 0.47 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI with m=50.
+OPI completed in 0.50 seconds.
 </pre></div>
 </div>
 </div>
@@ -650,7 +657,7 @@ OPI completed in 0.47 seconds.
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="n">v_star_opi</span><span class="p">,</span> <span class="n">σ_star_opi</span> <span class="o">=</span> <span class="n">optimistic_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">v_star_opi</span><span class="p">,</span> <span class="n">σ_star_opi</span> <span class="o">=</span> <span class="n">optimistic_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">v_star_opi</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
 <span class="n">opi_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OPI completed in </span><span class="si">{</span><span class="n">opi_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
@@ -658,7 +665,7 @@ OPI completed in 0.47 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI completed in 0.04 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI completed in 0.03 seconds.
 </pre></div>
 </div>
 </div>
@@ -666,16 +673,48 @@ OPI completed in 0.47 seconds.
 <p>Check that we get the same result:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Policies match: </span><span class="si">{</span><span class="n">jnp</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">σ_star_vfi</span><span class="p">,</span><span class="w"> </span><span class="n">σ_star_opi</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Values match: </span><span class="si">{</span><span class="n">jnp</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">v_star_vfi</span><span class="p">,</span><span class="w"> </span><span class="n">v_star_opi</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Policies match: False
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Values match: True
 </pre></div>
 </div>
 </div>
 </div>
+<p>The value functions match, confirming both algorithms converge to the same solution.</p>
+<p>Let’s visually compare the asset dynamics under both policies:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># VFI policy</span>
+<span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;low income&#39;</span><span class="p">,</span> <span class="s1">&#39;high income&#39;</span><span class="p">]):</span>
+    <span class="n">a_next_vfi</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">[</span><span class="n">σ_star_vfi</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]]</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">a_next_vfi</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;current assets&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;next period assets&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;VFI&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="c1"># OPI policy</span>
+<span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;low income&#39;</span><span class="p">,</span> <span class="s1">&#39;high income&#39;</span><span class="p">]):</span>
+    <span class="n">a_next_opi</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">[</span><span class="n">σ_star_opi</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]]</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">a_next_opi</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;current assets&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;next period assets&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;OPI&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/9454cf52bde2153bf66d0fbff69b61672c49c8eb7f1725a1001379f1eaef2a40.png" src="_images/9454cf52bde2153bf66d0fbff69b61672c49c8eb7f1725a1001379f1eaef2a40.png" />
+</div>
+</div>
+<p>The policies are visually indistinguishable, confirming both methods produce the same solution.</p>
 <p>Here’s the speedup:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -684,7 +723,7 @@ OPI completed in 0.47 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Speedup factor: 3.57
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Speedup factor: 2.62
 </pre></div>
 </div>
 </div>
@@ -707,13 +746,13 @@ OPI completed in 0.47 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=  1 completed in 0.10 seconds.
-OPI with m=  5 completed in 0.05 seconds.
+OPI with m=  5 completed in 0.04 seconds.
 OPI with m= 10 completed in 0.04 seconds.
-OPI with m= 25 completed in 0.04 seconds.
-OPI with m= 50 completed in 0.04 seconds.
-OPI with m=100 completed in 0.04 seconds.
+OPI with m= 25 completed in 0.03 seconds.
+OPI with m= 50 completed in 0.03 seconds.
+OPI with m=100 completed in 0.03 seconds.
 OPI with m=200 completed in 0.06 seconds.
-OPI with m=400 completed in 0.11 seconds.
+OPI with m=400 completed in 0.12 seconds.
 </pre></div>
 </div>
 </div>
@@ -733,13 +772,12 @@ OPI with m=400 completed in 0.11 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5c875145e94048534fa10dc6037d3390594b7fbfdcc4e4f0af42b22bc1106196.png" src="_images/5c875145e94048534fa10dc6037d3390594b7fbfdcc4e4f0af42b22bc1106196.png" />
+<img alt="_images/2ac1129b593368fc43bd366892c55a02e745090acc01c22e439d0da845fa0456.png" src="_images/2ac1129b593368fc43bd366892c55a02e745090acc01c22e439d0da845fa0456.png" />
 </div>
 </div>
 <p>Here’s a summary of the results</p>
 <ul class="simple">
-<li><p>When <span class="math notranslate nohighlight">\(m=1\)</span>, OPI is slight slower than VFI, even though they should be mathematically equivalent, due to small inefficiencies associated with extra function calls.</p></li>
-<li><p>OPI outperforms VFI for a very large range of <span class="math notranslate nohighlight">\(m\)</span> values.</p></li>
+<li><p>OPI outperforms VFI for a large range of <span class="math notranslate nohighlight">\(m\)</span> values.</p></li>
 <li><p>For very large <span class="math notranslate nohighlight">\(m\)</span>, OPI performance begins to degrade as we spend too much
 time iterating the policy operator.</p></li>
 </ul>
@@ -805,42 +843,42 @@ time iterating the policy operator.</p></li>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing ρ=0.8, ν=0.05
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.57x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.49x
 
 Testing ρ=0.8, ν=0.1
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.59x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.70x
 
 Testing ρ=0.8, ν=0.2
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.64x
-
-Testing ρ=0.9, ν=0.05
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.68x
-
-Testing ρ=0.9, ν=0.1
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.63x
-
-Testing ρ=0.9, ν=0.2
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.74x
-
-Testing ρ=0.95, ν=0.05
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.72x
-
-Testing ρ=0.95, ν=0.1
   VFI: 0.06s, OPI: 0.04s, Speedup: 1.67x
 
+Testing ρ=0.9, ν=0.05
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.71x
+
+Testing ρ=0.9, ν=0.1
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.64x
+
+Testing ρ=0.9, ν=0.2
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.72x
+
+Testing ρ=0.95, ν=0.05
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.62x
+
+Testing ρ=0.95, ν=0.1
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.64x
+
 Testing ρ=0.95, ν=0.2
-  VFI: 0.07s, OPI: 0.04s, Speedup: 1.79x
+  VFI: 0.07s, OPI: 0.04s, Speedup: 1.81x
 
 Summary of speedup factors:
-ρ=0.8, ν=0.05: 1.57x
-ρ=0.8, ν=0.1: 1.59x
-ρ=0.8, ν=0.2: 1.64x
-ρ=0.9, ν=0.05: 1.68x
-ρ=0.9, ν=0.1: 1.63x
-ρ=0.9, ν=0.2: 1.74x
-ρ=0.95, ν=0.05: 1.72x
-ρ=0.95, ν=0.1: 1.67x
-ρ=0.95, ν=0.2: 1.79x
+ρ=0.8, ν=0.05: 1.49x
+ρ=0.8, ν=0.1: 1.70x
+ρ=0.8, ν=0.2: 1.67x
+ρ=0.9, ν=0.05: 1.71x
+ρ=0.9, ν=0.1: 1.64x
+ρ=0.9, ν=0.2: 1.72x
+ρ=0.95, ν=0.05: 1.62x
+ρ=0.95, ν=0.1: 1.64x
+ρ=0.95, ν=0.2: 1.81x
 </pre></div>
 </div>
 </div>

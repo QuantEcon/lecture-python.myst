@@ -207,7 +207,7 @@
                                 
                             </p>
 
-                            <p class="powered">Powered by <a href="https://jupyterbook.org/en/stable/">Jupyter Book</a></p>
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
 
                         </nav>
 
@@ -244,7 +244,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 21, 2025
+                            Last changed: Nov 25, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -255,10 +255,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/089e35ca2" class="changelog-hash">089e35ca2</a>
+                                
+                                <span class="changelog-author">Matt McKay</span>
+                                <span class="changelog-time">1 day ago</span>
+                                <span class="changelog-message">Fix: Add trailing slash to quantecon-py URLs and upgrade quantecon-book-theme==0.13.2 (jupyterbook link fix) (#743)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a1cd90c5e" class="changelog-hash">a1cd90c5e</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">4 days ago</span>
+                                <span class="changelog-time">5 days ago</span>
                                 <span class="changelog-message">STYLE: Fix emphasis vs definitions style guide compliance (Issue #721) (#723)</span>
                             </li>
                             
@@ -267,7 +276,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/1908695ce" class="changelog-hash">1908695ce</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">2 months ago</span>
+                                <span class="changelog-time">3 months ago</span>
                                 <span class="changelog-message">MAINT: upgrade anaconda=2025.06 and python=3.13 (#503)</span>
                             </li>
                             
@@ -332,15 +341,6 @@
                                 <span class="changelog-author">mmcky</span>
                                 <span class="changelog-time">3 years ago</span>
                                 <span class="changelog-message">ENH: Migrate to sphinx-exercise (#231)</span>
-                            </li>
-                            
-                            <li class="changelog-entry">
-                                
-                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/221dbfdef" class="changelog-hash">221dbfdef</a>
-                                
-                                <span class="changelog-author">mmcky</span>
-                                <span class="changelog-time">4 years ago</span>
-                                <span class="changelog-message">adopt standard figsize for quantecon-book-theme (#108)</span>
                             </li>
                             
                         </ul>
@@ -596,7 +596,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </section>
 <section id="implementation">
 <h3><span class="section-number">76.3.3. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h3>
-<p>We use the function <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lqnash.py">nnash</a> from <a class="reference external" href="https://quantecon.org/quantecon-py">QuantEcon.py</a> that computes a Markov perfect equilibrium of the infinite horizon linear-quadratic dynamic game in the manner described above.</p>
+<p>We use the function <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lqnash.py">nnash</a> from <a class="reference external" href="https://quantecon.org/quantecon-py/">QuantEcon.py</a> that computes a Markov perfect equilibrium of the infinite horizon linear-quadratic dynamic game in the manner described above.</p>
 </section>
 </section>
 <section id="application">
@@ -730,7 +730,7 @@ F2 = [[-0.66846615  0.07584666  0.29512482]]
 </div>
 </div>
 <p>Running the code produces the following output.</p>
-<p>One way to see that <span class="math notranslate nohighlight">\(F_i\)</span> is indeed optimal for firm <span class="math notranslate nohighlight">\(i\)</span> taking <span class="math notranslate nohighlight">\(F_2\)</span> as given is to use <a class="reference external" href="https://quantecon.org/quantecon-py">QuantEcon.py</a>’s LQ class.</p>
+<p>One way to see that <span class="math notranslate nohighlight">\(F_i\)</span> is indeed optimal for firm <span class="math notranslate nohighlight">\(i\)</span> taking <span class="math notranslate nohighlight">\(F_2\)</span> as given is to use <a class="reference external" href="https://quantecon.org/quantecon-py/">QuantEcon.py</a>’s LQ class.</p>
 <p>In particular, let’s take F2 as computed above, plug it into <a class="reference internal" href="#equation-eq-mpe-p1p">(76.8)</a> and <a class="reference internal" href="#equation-eq-mpe-p1d">(76.9)</a> to get firm 1’s problem and solve it using LQ.</p>
 <p>We hope that the resulting policy will agree with F1 as computed above</p>
 <div class="cell docutils container">
@@ -819,7 +819,7 @@ F2 = [[-0.66846615  0.07584666  0.29512482]]
 <section id="exercise-content">
 <p>Replicate the <a class="reference internal" href="#mpe-vs-monopolist"><span class="std std-ref">pair of figures</span></a> showing the comparison of output and prices for the monopolist and duopoly under MPE.</p>
 <p>Parameters are as in duopoly_mpe.py and you can use that code to compute MPE policies under duopoly.</p>
-<p>The optimal policy in the monopolist case can be computed using <a class="reference external" href="https://quantecon.org/quantecon-py">QuantEcon.py</a>’s LQ class.</p>
+<p>The optimal policy in the monopolist case can be computed using <a class="reference external" href="https://quantecon.org/quantecon-py/">QuantEcon.py</a>’s LQ class.</p>
 </section>
 </div>
 <div class="solution dropdown admonition" id="markov_perf-solution-1">

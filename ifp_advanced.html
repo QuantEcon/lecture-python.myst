@@ -213,7 +213,7 @@
                                 
                             </p>
 
-                            <p class="powered">Powered by <a href="https://jupyterbook.org/en/stable/">Jupyter Book</a></p>
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
 
                         </nav>
 
@@ -250,7 +250,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 25, 2025
+                            Last changed: Nov 26, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -261,10 +261,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/30c2e5ce9" class="changelog-hash">30c2e5ce9</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">4 hours ago</span>
+                                <span class="changelog-message">Add transient income innovation to IFP model and wealth inequality analysis (#745)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b27f1eb0a" class="changelog-hash">b27f1eb0a</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">3 hours ago</span>
+                                <span class="changelog-time">1 day ago</span>
                                 <span class="changelog-message">Reorganize and rename optimal savings lectures (#735)</span>
                             </li>
                             
@@ -340,15 +349,6 @@
                                 <span class="changelog-message">Reformat the Exercise and Solution (#271)</span>
                             </li>
                             
-                            <li class="changelog-entry">
-                                
-                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/6f29c3306" class="changelog-hash">6f29c3306</a>
-                                
-                                <span class="changelog-author">Smit-create</span>
-                                <span class="changelog-time">3 years ago</span>
-                                <span class="changelog-message">Print only when convergence is successful</span>
-                            </li>
-                            
                         </ul>
                     </div>
 
@@ -391,7 +391,8 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+  Downloading quantecon-0.10.1-py3-none-any.whl.metadata (5.3 kB)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
@@ -403,6 +404,9 @@ Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/env
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Downloading quantecon-0.10.1-py3-none-any.whl (325 kB)
+Installing collected packages: quantecon
+Successfully installed quantecon-0.10.1
 </pre></div>
 </div>
 </div>
@@ -430,6 +434,11 @@ endogenous grid method to solve the model quickly and accurately.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">float64</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numba.experimental</span><span class="w"> </span><span class="kn">import</span> <span class="n">jitclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarkovChain</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
 </pre></div>
 </div>
 </div>
@@ -677,7 +686,7 @@ and <span class="math notranslate nohighlight">\(\{ Z_t\}\)</span> is a Markov c
                  <span class="n">b_r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                  <span class="n">a_y</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
                  <span class="n">b_y</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                 <span class="n">shock_draw_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                 <span class="n">shock_draw_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                  <span class="n">grid_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                  <span class="n">grid_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                  <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
@@ -850,17 +859,16 @@ assets.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.5081944529506552.
-Error at iteration 10 is 0.1057246950930697.
-Error at iteration 15 is 0.03658262202883744.
-Error at iteration 20 is 0.013936729965906114.
-Error at iteration 25 is 0.00529216526971199.
-Error at iteration 30 is 0.0019748126990770665.
-Error at iteration 35 is 0.0007219210463285108.
-Error at iteration 40 is 0.0002590544496094971.
-Error at iteration 45 is 9.163966595471251e-05.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.5057831393388796.
+Error at iteration 10 is 0.10305925968575558.
+Error at iteration 15 is 0.034012472023149165.
+Error at iteration 20 is 0.011910972299563838.
+Error at iteration 25 is 0.004056813619730093.
+Error at iteration 30 is 0.001339216636504048.
+Error at iteration 35 is 0.00043048650189003723.
+Error at iteration 40 is 0.0001356296487782238.
 
-Converged in 45 iterations.
+Converged in 42 iterations.
 </pre></div>
 </div>
 </div>
@@ -878,7 +886,7 @@ Converged in 45 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e3ddbdfc56648e7e11d1c6aacef0b2a55c91b07d248de5d4ceba032ddc0c818c.png" src="_images/e3ddbdfc56648e7e11d1c6aacef0b2a55c91b07d248de5d4ceba032ddc0c818c.png" />
+<img alt="_images/1e022c9a074ce7af1b0d5e19041979a2363be043eccf62594eabf463a45f5ba0.png" src="_images/1e022c9a074ce7af1b0d5e19041979a2363be043eccf62594eabf463a45f5ba0.png" />
 </div>
 </div>
 <p>Notice that we consume all assets in the lower range of the asset space.</p>
@@ -914,7 +922,7 @@ begin by producing a 45 degree diagram showing the law of motion for assets</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6459ab71b2d50f7ebd23bd0b866b4f02d8a88c040d78fc053e8564dac759978e.png" src="_images/6459ab71b2d50f7ebd23bd0b866b4f02d8a88c040d78fc053e8564dac759978e.png" />
+<img alt="_images/0d5869879d77a02d55f9376300e29bcef7e66b09e2ded6aa12ca26012fe28608.png" src="_images/0d5869879d77a02d55f9376300e29bcef7e66b09e2ded6aa12ca26012fe28608.png" />
 </div>
 </div>
 <p>The unbroken lines represent, for each <span class="math notranslate nohighlight">\(z\)</span>, an average update function
@@ -987,7 +995,7 @@ diverge even in the highest state.</p>
                    <span class="n">b_r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                    <span class="n">a_y</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
                    <span class="n">b_y</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                   <span class="n">shock_draw_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                   <span class="n">shock_draw_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                    <span class="n">grid_max</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                    <span class="n">grid_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                    <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
@@ -1138,8 +1146,8 @@ diverge even in the highest state.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1124 04:19:31.451168   27461 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1124 04:19:31.454809   27395 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1127 00:53:36.671717    2385 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1127 00:53:36.675101    2303 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -1166,16 +1174,17 @@ W1124 04:19:31.454809   27395 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.5056668931888328.
-Error at iteration 10 is 0.1034861379984835.
-Error at iteration 15 is 0.03412817463153939.
-Error at iteration 20 is 0.01201705155740429.
-Error at iteration 25 is 0.004145424467285608.
-Error at iteration 30 is 0.001391633566658168.
-Error at iteration 35 is 0.0004556358742306976.
-Error at iteration 40 is 0.00014622723914969882.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.5089823133474529.
+Error at iteration 10 is 0.10673726086021018.
+Error at iteration 15 is 0.037488895194461413.
+Error at iteration 20 is 0.01457557996950376.
+Error at iteration 25 is 0.005689543913554029.
+Error at iteration 30 is 0.002191565901079162.
+Error at iteration 35 is 0.0008292700514074269.
+Error at iteration 40 is 0.00030827194848903616.
+Error at iteration 45 is 0.00011293778494758655.
 
-Converged in 42 iterations.
+Converged in 46 iterations.
 </pre></div>
 </div>
 </div>
@@ -1196,7 +1205,7 @@ Converged in 42 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7602b429e80f30b8598b5373dde932c1aefb1e2353334fc29d9663b545bb4eb8.png" src="_images/7602b429e80f30b8598b5373dde932c1aefb1e2353334fc29d9663b545bb4eb8.png" />
+<img alt="_images/b7e3047c810dc219f0320bca93c3f1ac01b6dfb73deb8e6ec1367d7be352346e.png" src="_images/b7e3047c810dc219f0320bca93c3f1ac01b6dfb73deb8e6ec1367d7be352346e.png" />
 </div>
 </div>
 <section id="comparison-of-numba-and-jax-solutions">
@@ -1226,10 +1235,10 @@ Converged in 42 iterations.
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Comparison of Numba and JAX solutions:
 ==================================================
-Max absolute difference in asset grid: 5.377e-02
-Mean absolute difference in asset grid: 3.559e-02
-Max absolute difference in consumption: 5.377e-02
-Mean absolute difference in consumption: 3.559e-02
+Max absolute difference in asset grid: 8.800e-02
+Mean absolute difference in asset grid: 5.309e-02
+Max absolute difference in consumption: 8.800e-02
+Mean absolute difference in consumption: 5.309e-02
 </pre></div>
 </div>
 </div>
@@ -1259,7 +1268,7 @@ Mean absolute difference in consumption: 3.559e-02
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ec2966a6dbac28a323846d2f132683c927c19ea9b9fc8a222cc5e12540a54431.png" src="_images/ec2966a6dbac28a323846d2f132683c927c19ea9b9fc8a222cc5e12540a54431.png" />
+<img alt="_images/86e1c87988d0ba89e19f0dbe1c2abe71db60b3be6ccf7c0d3a52db582b3c5154.png" src="_images/86e1c87988d0ba89e19f0dbe1c2abe71db60b3be6ccf7c0d3a52db582b3c5154.png" />
 </div>
 </div>
 <p>As we can see, the differences between the two implementations are extremely small (on the order of machine precision), confirming that both methods produce essentially identical results.</p>
@@ -1354,7 +1363,7 @@ solutions computed above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5824291d250ae8ff036caf284212de2f3aaf5942d7e4efc3e7d3eb25ddcc9162.png" src="_images/5824291d250ae8ff036caf284212de2f3aaf5942d7e4efc3e7d3eb25ddcc9162.png" />
+<img alt="_images/eeb5e61eddd7f38daf50dda827fb7896c17988c7da97f66a1c80d1c2e07202a2.png" src="_images/eeb5e61eddd7f38daf50dda827fb7896c17988c7da97f66a1c80d1c2e07202a2.png" />
 </div>
 </div>
 <p>Now we have managed to successfully replicate the long right tail of the
@@ -1370,7 +1379,7 @@ wealth distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/77985512000d2b2dcbb17a567d9ddf8e5c52cc6af61df40aecda69eb4642b083.png" src="_images/77985512000d2b2dcbb17a567d9ddf8e5c52cc6af61df40aecda69eb4642b083.png" />
+<img alt="_images/67992176d417d9e47bd55829381a7827501d5ac7ca305db86b4d3efccfe668fb.png" src="_images/67992176d417d9e47bd55829381a7827501d5ac7ca305db86b4d3efccfe668fb.png" />
 </div>
 </div>
 </section>

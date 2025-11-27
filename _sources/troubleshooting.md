@@ -42,7 +42,7 @@ on how to update Anaconda.
 
 Another option is to simply remove Anaconda and reinstall.
 
-You also need to keep the external code libraries, such as [QuantEcon.py](https://quantecon.org/quantecon-py) up to date.
+You also need to keep the external code libraries, such as [QuantEcon.py](https://quantecon.org/quantecon-py/) up to date.
 
 For this task you can either
 

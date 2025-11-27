@@ -194,7 +194,7 @@
                                 
                             </p>
 
-                            <p class="powered">Powered by <a href="https://jupyterbook.org/en/stable/">Jupyter Book</a></p>
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
 
                         </nav>
 
@@ -231,7 +231,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 21, 2025
+                            Last changed: Nov 25, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -242,10 +242,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/089e35ca2" class="changelog-hash">089e35ca2</a>
+                                
+                                <span class="changelog-author">Matt McKay</span>
+                                <span class="changelog-time">1 day ago</span>
+                                <span class="changelog-message">Fix: Add trailing slash to quantecon-py URLs and upgrade quantecon-book-theme==0.13.2 (jupyterbook link fix) (#743)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a1cd90c5e" class="changelog-hash">a1cd90c5e</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">4 days ago</span>
+                                <span class="changelog-time">5 days ago</span>
                                 <span class="changelog-message">STYLE: Fix emphasis vs definitions style guide compliance (Issue #721) (#723)</span>
                             </li>
                             
@@ -254,7 +263,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/1908695ce" class="changelog-hash">1908695ce</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">2 months ago</span>
+                                <span class="changelog-time">3 months ago</span>
                                 <span class="changelog-message">MAINT: upgrade anaconda=2025.06 and python=3.13 (#503)</span>
                             </li>
                             
@@ -319,15 +328,6 @@
                                 <span class="changelog-author">Humphrey Yang</span>
                                 <span class="changelog-time">3 years ago</span>
                                 <span class="changelog-message">Reformat the Exercise and Solution (#271)</span>
-                            </li>
-                            
-                            <li class="changelog-entry">
-                                
-                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/80ef919b9" class="changelog-hash">80ef919b9</a>
-                                
-                                <span class="changelog-author">mmcky</span>
-                                <span class="changelog-time">3 years ago</span>
-                                <span class="changelog-message">ENH: Improve compatibility with Google Colab (#236)</span>
                             </li>
                             
                         </ul>
@@ -784,12 +784,12 @@ as the current prior.</p>
 </section>
 <section id="implementation">
 <h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">40.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
-<p id="index-2">The class <code class="docutils literal notranslate"><span class="pre">Kalman</span></code> from the <a class="reference external" href="https://quantecon.org/quantecon-py">QuantEcon.py</a> package implements the Kalman filter</p>
+<p id="index-2">The class <code class="docutils literal notranslate"><span class="pre">Kalman</span></code> from the <a class="reference external" href="https://quantecon.org/quantecon-py/">QuantEcon.py</a> package implements the Kalman filter</p>
 <ul class="simple">
 <li><p>Instance data consists of:</p>
 <ul>
 <li><p>the moments <span class="math notranslate nohighlight">\((\hat x_t, \Sigma_t)\)</span> of the current prior.</p></li>
-<li><p>An instance of the <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class from <a class="reference external" href="https://quantecon.org/quantecon-py">QuantEcon.py</a>.</p></li>
+<li><p>An instance of the <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py">LinearStateSpace</a> class from <a class="reference external" href="https://quantecon.org/quantecon-py/">QuantEcon.py</a>.</p></li>
 </ul>
 </li>
 </ul>
@@ -809,7 +809,7 @@ as the current prior.</p>
 Q := CC' \quad \text{and} \quad R := HH'
 \]</div>
 <ul class="simple">
-<li><p>The class <code class="docutils literal notranslate"><span class="pre">Kalman</span></code> from the <a class="reference external" href="https://quantecon.org/quantecon-py">QuantEcon.py</a> package has a number of methods, some that we will wait to use until we study more advanced applications in subsequent lectures.</p></li>
+<li><p>The class <code class="docutils literal notranslate"><span class="pre">Kalman</span></code> from the <a class="reference external" href="https://quantecon.org/quantecon-py/">QuantEcon.py</a> package has a number of methods, some that we will wait to use until we study more advanced applications in subsequent lectures.</p></li>
 <li><p>Methods pertinent for this lecture  are:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">prior_to_filtered</span></code>, which updates <span class="math notranslate nohighlight">\((\hat x_t, \Sigma_t)\)</span> to <span class="math notranslate nohighlight">\((\hat x_t^F, \Sigma_t^F)\)</span></p></li>

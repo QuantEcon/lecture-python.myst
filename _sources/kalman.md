@@ -506,11 +506,11 @@ In this case, for any initial choice of $\Sigma_0$ that is both non-negative and
 ```{index} single: Kalman Filter; Programming Implementation
 ```
 
-The class `Kalman` from the [QuantEcon.py](https://quantecon.org/quantecon-py) package implements the Kalman filter
+The class `Kalman` from the [QuantEcon.py](https://quantecon.org/quantecon-py/) package implements the Kalman filter
 
 * Instance data consists of:
     * the moments $(\hat x_t, \Sigma_t)$ of the current prior.
-    * An instance of the [LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) class from [QuantEcon.py](https://quantecon.org/quantecon-py).
+    * An instance of the [LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) class from [QuantEcon.py](https://quantecon.org/quantecon-py/).
 
 The latter represents a linear state space model of the form
 
@@ -530,7 +530,7 @@ $$
 Q := CC' \quad \text{and} \quad R := HH'
 $$
 
-* The class `Kalman` from the [QuantEcon.py](https://quantecon.org/quantecon-py) package has a number of methods, some that we will wait to use until we study more advanced applications in subsequent lectures.
+* The class `Kalman` from the [QuantEcon.py](https://quantecon.org/quantecon-py/) package has a number of methods, some that we will wait to use until we study more advanced applications in subsequent lectures.
 * Methods pertinent for this lecture  are:
     * `prior_to_filtered`, which updates $(\hat x_t, \Sigma_t)$ to $(\hat x_t^F, \Sigma_t^F)$
     * `filtered_to_forecast`, which updates the filtering distribution to the predictive distribution -- which becomes the new prior $(\hat x_{t+1}, \Sigma_{t+1})$

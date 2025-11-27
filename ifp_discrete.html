@@ -179,6 +179,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">57.3. Code</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">57.3.1. Value function iteration</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">57.3.2. Timing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asset-dynamics">57.3.3. Asset Dynamics</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">57.4. Exercises</a></li>
@@ -192,7 +193,7 @@
                                 
                             </p>
 
-                            <p class="powered">Powered by <a href="https://jupyterbook.org/en/stable/">Jupyter Book</a></p>
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
 
                         </nav>
 
@@ -240,10 +241,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/9571a3394" class="changelog-hash">9571a3394</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">1 day ago</span>
+                                <span class="changelog-message">Update IFP lectures: add dynamics plots and adjust parameters (#741)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b27f1eb0a" class="changelog-hash">b27f1eb0a</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">3 hours ago</span>
+                                <span class="changelog-time">1 day ago</span>
                                 <span class="changelog-message">Reorganize and rename optimal savings lectures (#735)</span>
                             </li>
                             
@@ -307,8 +317,7 @@ implies that they are, inevitably, more vulnerable to change.</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
-  Downloading quantecon-0.10.1-py3-none-any.whl.metadata (5.3 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
 Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.8.1)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
@@ -324,9 +333,6 @@ Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/env
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
-Downloading quantecon-0.10.1-py3-none-any.whl (325 kB)
-Installing collected packages: quantecon
-Successfully installed quantecon-0.10.1
 </pre></div>
 </div>
 </div>
@@ -341,11 +347,6 @@ Successfully installed quantecon-0.10.1
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
 </pre></div>
 </div>
 </div>
@@ -428,7 +429,7 @@ y_0) = (a, y)\)</span>.</p>
         <span class="n">β</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span>                    <span class="c1"># Discount factor</span>
         <span class="n">γ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>                       <span class="c1"># CRRA parameter</span>
         <span class="n">a_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>                <span class="c1"># Min assets</span>
-        <span class="n">a_max</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>                 <span class="c1"># Max assets</span>
+        <span class="n">a_max</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>                <span class="c1"># Max assets</span>
         <span class="n">a_size</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>                <span class="c1"># Grid size</span>
         <span class="n">ρ</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">ν</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">y_size</span><span class="o">=</span><span class="mi">100</span>   <span class="c1"># Income parameters</span>
     <span class="p">):</span>
@@ -571,8 +572,8 @@ maximizes the right-hand side of the Bellman equation.)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1125 05:15:31.482491    2108 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1125 05:15:31.486009    2040 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1127 00:53:47.091513    2523 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1127 00:53:47.094884    2458 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -590,7 +591,7 @@ W1125 05:15:31.486009    2040 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI using Python loop.
-VFI completed in 2.6871509552001953 seconds.
+VFI completed in 2.612592935562134 seconds.
 </pre></div>
 </div>
 </div>
@@ -609,7 +610,7 @@ VFI completed in 2.6871509552001953 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI using jax.lax.while_loop.
-VFI completed in 1.7547013759613037 seconds.
+VFI completed in 1.739452600479126 seconds.
 </pre></div>
 </div>
 </div>
@@ -626,7 +627,7 @@ VFI completed in 1.7547013759613037 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 1.3669328689575195 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 1.367109775543213 seconds.
 </pre></div>
 </div>
 </div>
@@ -654,11 +655,46 @@ Policies match: True
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 1.97
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 1.91
 </pre></div>
 </div>
 </div>
 </div>
+</section>
+<section id="asset-dynamics">
+<h3><span class="section-number">57.3.3. </span>Asset Dynamics<a class="headerlink" href="#asset-dynamics" title="Link to this heading">#</a></h3>
+<p>To understand long-run behavior, let’s examine the asset accumulation dynamics under the optimal policy.</p>
+<p>The following 45-degree diagram shows how assets evolve over time:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="c1"># Plot asset accumulation for first and last income states</span>
+<span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;low income&#39;</span><span class="p">,</span> <span class="s1">&#39;high income&#39;</span><span class="p">]):</span>
+    <span class="c1"># Get next-period assets for each current asset level</span>
+    <span class="n">a_next</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">[</span><span class="n">σ_star_jax</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">a_next</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+<span class="c1"># Add 45-degree line</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">a_grid</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;current assets&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;next period assets&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/162d054b27cfdc9e29df6fc9ca8bf7c4ed46c05dfd3f2f2c5ef3bfb33da83caf.png" src="_images/162d054b27cfdc9e29df6fc9ca8bf7c4ed46c05dfd3f2f2c5ef3bfb33da83caf.png" />
+</div>
+</div>
+<p>The plot shows the asset accumulation rule for each income state.</p>
+<p>The dotted line is the 45-degree line, representing points where <span class="math notranslate nohighlight">\(a_{t+1} = a_t\)</span>.</p>
+<p>We see that:</p>
+<ul class="simple">
+<li><p>For low income levels, assets tend to decrease (points below the 45-degree line)</p></li>
+<li><p>For high income levels, assets tend to increase at low asset levels</p></li>
+<li><p>The dynamics suggest convergence to a stationary distribution</p></li>
+</ul>
 </section>
 </section>
 <section id="exercises">
@@ -788,7 +824,7 @@ up our sleeves.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI using vmap.
-VFI completed in 0.9717330932617188 seconds.
+VFI completed in 0.9495749473571777 seconds.
 </pre></div>
 </div>
 </div>
@@ -805,7 +841,7 @@ VFI completed in 0.9717330932617188 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.45596861839294434 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.45188260078430176 seconds.
 </pre></div>
 </div>
 </div>
@@ -833,7 +869,7 @@ True
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 2.9978661114338467
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 3.025364935871427
 </pre></div>
 </div>
 </div>

@@ -555,7 +555,7 @@ for $t = 0, \ldots, T-1$ attains the minimum of {eq}`lq_object` subject to our c
 ## Implementation
 
 We will use code from [lqcontrol.py](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lqcontrol.py)
-in [QuantEcon.py](https://quantecon.org/quantecon-py)
+in [QuantEcon.py](https://quantecon.org/quantecon-py/)
 to solve finite and infinite horizon linear quadratic control problems.
 
 In the module, the various updating, simulation and fixed point methods
