@@ -17,7 +17,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`The Income Fluctuation Problem IV: Stochastic Returns on Assets <single: The Income Fluctuation Problem IV: Stochastic Returns on Assets>`
+# {index}`The Income Fluctuation Problem V: Stochastic Returns on Assets <single: The Income Fluctuation Problem V: Stochastic Returns on Assets>`
 
 ```{contents} Contents
 :depth: 2
