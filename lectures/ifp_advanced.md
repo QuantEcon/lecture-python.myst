@@ -671,31 +671,24 @@ c_init = a_init
 a_vec, c_vec = solve_model_time_iter(ifp, a_init, c_init)
 assets = compute_asset_stationary(c_vec, a_vec, ifp, num_households=200_000)
 
-# Diagnostic: Check extrapolation issues
-print(f"\n=== Grid and Asset Diagnostics ===")
-print(f"Grid max (s_grid[-1]): {ifp.s_grid[-1]:.2f}")
-print(f"Endogenous grid max (a_vec.max()): {a_vec.max():.2f}")
-print(f"Simulated assets max: {assets.max():.2f}")
-print(f"Simulated assets mean: {assets.mean():.2f}")
-print(f"Simulated assets median: {np.median(assets):.2f}")
-print(f"Fraction of households beyond grid: {(assets > a_vec.max()).mean():.4f}")
-print(f"Fraction beyond 0.9 * grid_max: {(assets > 0.9 * a_vec.max()).mean():.4f}")
-print()
-
 # Compute Gini coefficient for the plot
 gini_plot = gini_coefficient(assets)
 
-# Plot: Histogram with log-scale y-axis
+# Plot histogram of log wealth
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.hist(assets, bins=40, alpha=0.5, density=True)
-ax.set_yscale('log')
-ax.set(xlabel='assets', ylabel='density (log scale)',
-       title="Wealth Distribution")
+ax.hist(jnp.log(assets), bins=40, alpha=0.5, density=True)
+ax.set(xlabel='log assets', ylabel='density', title="Wealth Distribution")
 plt.tight_layout()
 plt.show()
 ```
 
-The histogram shows the wealth distribution with the y-axis on a log scale, allowing us to see both the mass of households at low wealth levels and the long right tail of the distribution.
+The histogram shows the distribution of log wealth. 
+
+Bearing in mind that we are looking at log values, the histogram suggests 
+a long right tail of the distribution.
+
+Below we examine this in more detail.
+
 
 
 ## Wealth Inequality
@@ -751,7 +744,7 @@ We loop over different values of `a_r`, solve the model for each, simulate the w
 
 ```{code-cell} ipython3
 # Range of a_r values to explore
-a_r_vals = np.linspace(0.10, 0.16, 7)
+a_r_vals = np.linspace(0.10, 0.16, 5)
 gini_vals = []
 
 print("Computing Gini coefficients for different return volatilities...\n")
@@ -787,7 +780,7 @@ ax.plot(a_r_vals, gini_vals, 'o-', linewidth=2, markersize=8)
 ax.set(xlabel='Return volatility (a_r)',
        ylabel='Gini coefficient',
        title='Wealth Inequality vs Return Volatility')
-ax.axhline(y=0.8, color='r', linestyle='--', linewidth=1,
+ax.axhline(y=0.8, color='k', linestyle='--', linewidth=1,
            label='Empirical US Gini (~0.8)')
 ax.legend()
 plt.tight_layout()
@@ -801,6 +794,91 @@ This demonstrates that capital income risk is a key driver of wealth inequality.
 When returns are more volatile, lucky households who experience sequences of
 high returns accumulate substantially more wealth than unlucky households,
 leading to greater inequality in the wealth distribution.
+
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ifp_advanced_ex2
+
+Plot how the Gini coefficient varies with the volatility of labor income.
+
+Specifically, compute the Gini coefficient for values of `a_y` ranging from
+0.125 to 0.20 and plot the results. Set `a_r=0.10` for this exercise.
+
+What does this tell you about the relationship between labor income risk and
+wealth inequality? Can we achieve the same rise in inequality by varying labor
+income volatility as we can by varying return volatility?
+
+```
+
+```{solution-start} ifp_advanced_ex2
+:class: dropdown
+```
+
+We loop over different values of `a_y`, solve the model for each, simulate the wealth distribution, and compute the Gini coefficient.
+
+```{code-cell} ipython3
+# Range of a_y values to explore
+a_y_vals = np.linspace(0.125, 0.20, 5)
+gini_vals_y = []
+
+print("Computing Gini coefficients for different labor income volatilities...\n")
+
+for a_y in a_y_vals:
+    print(f"a_y = {a_y:.3f}...", end=" ")
+
+    # Create model with this a_y value and a_r=0.10
+    ifp_temp = create_ifp(a_y=a_y, a_r=0.10, grid_max=100)
+
+    # Solve the model
+    s_grid_temp = ifp_temp.s_grid
+    n_z_temp = len(ifp_temp.P)
+    a_init_temp = s_grid_temp[:, None] * jnp.ones(n_z_temp)
+    c_init_temp = a_init_temp
+    a_vec_temp, c_vec_temp = solve_model_time_iter(
+        ifp_temp, a_init_temp, c_init_temp, verbose=False
+    )
+
+    # Simulate households
+    assets_temp = compute_asset_stationary(
+        c_vec_temp, a_vec_temp, ifp_temp, num_households=200_000
+    )
+
+    # Compute Gini coefficient
+    gini_temp = gini_coefficient(assets_temp)
+    gini_vals_y.append(gini_temp)
+    print(f"Gini = {gini_temp:.4f}")
+
+# Plot the results
+fig, ax = plt.subplots(figsize=(10, 6))
+ax.plot(a_y_vals, gini_vals_y, 'o-', linewidth=2, markersize=8, color='green')
+ax.set(xlabel='Labor income volatility (a_y)',
+       ylabel='Gini coefficient',
+       title='Wealth Inequality vs Labor Income Volatility')
+ax.axhline(y=0.8, color='k', linestyle='--', linewidth=1,
+           label='Empirical US Gini (~0.8)')
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+The plot shows that wealth inequality increases with labor income volatility, but the effect is much weaker than the effect of return volatility.
+
+Comparing the two exercises:
+
+- When return volatility (`a_r`) varies from 0.10 to 0.16, the Gini coefficient rises dramatically from around 0.20 to 0.79
+- When labor income volatility (`a_y`) varies from 0.125 to 0.20, a similar amount in percentage terms, the Gini coefficient increases but by a much smaller amount
+
+This suggests that capital income risk is a more important driver of wealth inequality than labor income risk.
+
+The intuition is that wealth accumulation compounds over time: households who
+experience favorable returns on their assets can reinvest those returns, leading
+to exponential growth.
+
+In contrast, labor income shocks, while they affect current consumption and
+savings, do not have the same compounding effect on wealth accumulation.
 
 
 ```{solution-end}
