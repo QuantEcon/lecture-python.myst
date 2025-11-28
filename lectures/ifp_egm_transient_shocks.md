@@ -74,7 +74,7 @@ $$
 subject to
 
 ```{math}
-:label: eqst
+:label: eqst_ts
 
 a_{t+1} = R (a_t - c_t) + Y_{t+1}
 \quad c_t \geq 0,
@@ -107,7 +107,7 @@ The functional Euler equation has the form
 
 
 ```{math}
-:label: eqeul1
+:label: eqeul1_ts
 
     (u' \circ \sigma)  (a, z)
     = \beta R \, \sum_{z'} \int (u' \circ \sigma)
@@ -121,9 +121,9 @@ Here
 * $\phi$ is the density of the shock $\eta_t$ (standard normal), and
 * $\sigma$ is the unknown function.
 
-The equality {eq}`eqeul1` holds at all interior choices, meaning $\sigma(a, z) < a$.
+The equality {eq}`eqeul1_ts` holds at all interior choices, meaning $\sigma(a, z) < a$.
 
-We aim to find a fixed point $\sigma$ of {eq}`eqeul1`.
+We aim to find a fixed point $\sigma$ of {eq}`eqeul1_ts`.
 
 To do so we use the EGM.
 
@@ -137,7 +137,7 @@ For each exogenous savings level $s_i$ with $i \geq 1$ and current state $z_j$, 
 
 
 ```{math}
-:label: cfequ
+:label: cfequ_ts
 
     c_{ij} := (u')^{-1}
         \left[
@@ -239,7 +239,7 @@ In practice, it takes in
 These are converted into a consumption policy $a \mapsto \sigma(a, z_j)$ by 
 linear interpolation of $(a^e_{ij}, c_{ij})$ over $i$ for each $j$.
 
-When we compute consumption in {eq}`cfequ`, we will use Monte Carlo over
+When we compute consumption in {eq}`cfequ_ts`, we will use Monte Carlo over
 $\eta'$, so that the expression becomes
 
 ```{math}
