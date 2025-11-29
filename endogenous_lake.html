@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>73. Lake Model with an Endogenous Job Finding Rate &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>74. Lake Model with an Endogenous Job Finding Rate &#8212; Intermediate Quantitative Economics with Python</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -124,8 +124,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="74. Rational Expectations Equilibrium" href="rational_expectations.html" />
-    <link rel="prev" title="72. A Lake Model of Employment and Unemployment" href="lake_model.html" />
+    <link rel="next" title="75. Rational Expectations Equilibrium" href="rational_expectations.html" />
+    <link rel="prev" title="73. A Lake Model of Employment and Unemployment" href="lake_model.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -174,18 +174,18 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">73.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">73.2. Set Up</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservation-wage">73.2.1. Reservation wage</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lake-model-code">73.2.2. Lake model code</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linking-the-mccall-search-model-to-the-lake-model">73.2.3. Linking the McCall search model to the lake model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">74.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">74.2. Set Up</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservation-wage">74.2.1. Reservation wage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lake-model-code">74.2.2. Lake model code</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linking-the-mccall-search-model-to-the-lake-model">74.2.3. Linking the McCall search model to the lake model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fiscal-policy">73.3. Fiscal policy</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-optimal-unemployment-insurance">73.3.1. Computing optimal unemployment insurance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fiscal-policy">74.3. Fiscal policy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-optimal-unemployment-insurance">74.3.1. Computing optimal unemployment insurance</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">73.4. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">74.4. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -273,7 +273,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="lake-model-with-an-endogenous-job-finding-rate">
-<h1><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">73. </span>Lake Model with an Endogenous Job Finding Rate</a><a class="headerlink" href="#lake-model-with-an-endogenous-job-finding-rate" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">74. </span>Lake Model with an Endogenous Job Finding Rate</a><a class="headerlink" href="#lake-model-with-an-endogenous-job-finding-rate" title="Link to this heading">#</a></h1>
 <nav class="contents" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -322,7 +322,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">73.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">74.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture is a continuation of the <a class="reference internal" href="lake_model.html"><span class="doc">lake model lecture</span></a>.</p>
 <p>We recommend you read that lecture first before proceeding with this one.</p>
 <p>In the previous lecture, we studied a lake model of unemployment and employment
@@ -345,13 +345,13 @@ where the transition rates between states were exogenous parameters.</p>
 </div>
 </section>
 <section id="set-up">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">73.2. </span>Set Up</a><a class="headerlink" href="#set-up" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">74.2. </span>Set Up</a><a class="headerlink" href="#set-up" title="Link to this heading">#</a></h2>
 <p>The basic structure of the model will be as discussed in the <a class="reference internal" href="lake_model.html"><span class="doc">lake model lecture</span></a>.</p>
 <p>The only difference is that the hiring rate is endogenous, determined by the
 decisions of optimizing agents inhabiting a McCall search model <span id="id2">[<a class="reference internal" href="zreferences.html#id208" title="J J McCall. Economics of Information and Job Search. The Quarterly Journal of Economics, 84(1):113–126, 1970.">McCall, 1970</a>]</span> with
 IID wage offers and job separation at rate <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 <section id="reservation-wage">
-<h3><span class="section-number">73.2.1. </span>Reservation wage<a class="headerlink" href="#reservation-wage" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">74.2.1. </span>Reservation wage<a class="headerlink" href="#reservation-wage" title="Link to this heading">#</a></h3>
 <p>In the model, the optimal policy is characterized by a reservation wage <span class="math notranslate nohighlight">\(\bar w\)</span></p>
 <ul class="simple">
 <li><p>If the wage offer <span class="math notranslate nohighlight">\(w\)</span> in hand is greater than or equal to <span class="math notranslate nohighlight">\(\bar w\)</span>, then the worker accepts.</p></li>
@@ -510,7 +510,7 @@ W1124 04:09:22.010315   26628 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </section>
 <section id="lake-model-code">
-<h3><span class="section-number">73.2.2. </span>Lake model code<a class="headerlink" href="#lake-model-code" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">74.2.2. </span>Lake model code<a class="headerlink" href="#lake-model-code" title="Link to this heading">#</a></h3>
 <p>We also need the lake model functions from the previous lecture to compute steady state unemployment rates:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -586,13 +586,13 @@ W1124 04:09:22.010315   26628 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </section>
 <section id="linking-the-mccall-search-model-to-the-lake-model">
-<h3><span class="section-number">73.2.3. </span>Linking the McCall search model to the lake model<a class="headerlink" href="#linking-the-mccall-search-model-to-the-lake-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">74.2.3. </span>Linking the McCall search model to the lake model<a class="headerlink" href="#linking-the-mccall-search-model-to-the-lake-model" title="Link to this heading">#</a></h3>
 <p>Suppose that all workers inside a lake model behave according to the McCall search model.</p>
 <p>The exogenous probability of leaving employment remains <span class="math notranslate nohighlight">\(\alpha\)</span>.</p>
 <p>But their optimal decision rules determine the probability <span class="math notranslate nohighlight">\(\lambda\)</span> of leaving unemployment.</p>
 <p>This is now</p>
 <div class="math notranslate nohighlight" id="equation-endogenous-lake-lambda">
-<span class="eqno">(73.1)<a class="headerlink" href="#equation-endogenous-lake-lambda" title="Link to this equation">#</a></span>\[\lambda
+<span class="eqno">(74.1)<a class="headerlink" href="#equation-endogenous-lake-lambda" title="Link to this equation">#</a></span>\[\lambda
 = \gamma \mathbb P \{ w_t \geq \bar w\}
 = \gamma \sum_{w' \geq \bar w} p(w')\]</div>
 <p>Here</p>
@@ -622,7 +622,7 @@ W1124 04:09:22.010315   26628 cuda_executor.cc:1802] GPU interconnect informatio
 </section>
 </section>
 <section id="fiscal-policy">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">73.3. </span>Fiscal policy</a><a class="headerlink" href="#fiscal-policy" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">74.3. </span>Fiscal policy</a><a class="headerlink" href="#fiscal-policy" title="Link to this heading">#</a></h2>
 <p>In this section, we will put the lake model to work, examining outcomes
 associated with different levels of unemployment compensation.</p>
 <p>Our aim is to find an optimal level of unemployment insurance.</p>
@@ -642,7 +642,7 @@ unemployment rate <span class="math notranslate nohighlight">\(u\)</span>, and t
 </ul>
 <p>For each specification <span class="math notranslate nohighlight">\((c, \tau)\)</span> of government policy, we can solve for the
 worker’s optimal reservation wage.</p>
-<p>This determines <span class="math notranslate nohighlight">\(\lambda\)</span> via <a class="reference internal" href="#equation-endogenous-lake-lambda">(73.1)</a> evaluated at post tax wages,
+<p>This determines <span class="math notranslate nohighlight">\(\lambda\)</span> via <a class="reference internal" href="#equation-endogenous-lake-lambda">(74.1)</a> evaluated at post tax wages,
 which in turn determines a steady state unemployment rate <span class="math notranslate nohighlight">\(u(c, \tau)\)</span>.</p>
 <p>For a given level of unemployment benefit <span class="math notranslate nohighlight">\(c\)</span>, we can solve for a tax that balances the budget in the steady state</p>
 <div class="math notranslate nohighlight">
@@ -658,7 +658,7 @@ which in turn determines a steady state unemployment rate <span class="math notr
 <p>where the notation <span class="math notranslate nohighlight">\(V\)</span> and <span class="math notranslate nohighlight">\(U\)</span> is as defined above and the expectation is at the
 steady state.</p>
 <section id="computing-optimal-unemployment-insurance">
-<h3><span class="section-number">73.3.1. </span>Computing optimal unemployment insurance<a class="headerlink" href="#computing-optimal-unemployment-insurance" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">74.3.1. </span>Computing optimal unemployment insurance<a class="headerlink" href="#computing-optimal-unemployment-insurance" title="Link to this heading">#</a></h3>
 <p>Now we set up the infrastructure to compute optimal unemployment insurance levels.</p>
 <p>First, we define a container for the economy’s parameters:</p>
 <div class="cell docutils container">
@@ -866,10 +866,10 @@ steady state.</p>
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">73.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">74.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="endogenous_lake_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 73.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 74.1 </span></p>
 <section id="exercise-content">
 <p>How does the welfare-maximizing level of unemployment compensation <span class="math notranslate nohighlight">\(c\)</span> change
 with the job separation rate <span class="math notranslate nohighlight">\(\alpha\)</span>?</p>
@@ -1364,8 +1364,13 @@ optimal policy balances insurance against distortionary taxation.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm_transient_shocks.html">
+   60. The Income Fluctuation Problem IV: Transient Income Shocks
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   60. The Income Fluctuation Problem IV: Stochastic Returns on Assets
+   61. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1377,32 +1382,32 @@ optimal policy balances insurance against distortionary taxation.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   61. LQ Control: Foundations
+   62. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   62. Lagrangian for LQ Control
+   63. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   63. Eliminating Cross Products
+   64. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   64. The Permanent Income Model
+   65. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   65. Permanent Income II: LQ Techniques
+   66. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   66. Production Smoothing via Inventories
+   67. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1414,27 +1419,27 @@ optimal policy balances insurance against distortionary taxation.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   67. Cass-Koopmans Model
+   68. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   68. Cass-Koopmans Competitive Equilibrium
+   69. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   69. Cass-Koopmans Model with Distorting Taxes
+   70. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   70. Two-Country Model with Distorting Taxes
+   71. Two-Country Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   71. Transitions in an Overlapping Generations Model
+   72. Transitions in an Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -1446,42 +1451,42 @@ optimal policy balances insurance against distortionary taxation.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   72. A Lake Model of Employment and Unemployment
+   73. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   73. Lake Model with an Endogenous Job Finding Rate
+   74. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   74. Rational Expectations Equilibrium
+   75. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   75. Stability in Linear Rational Expectations Models
+   76. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   76. Markov Perfect Equilibrium
+   77. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   77. Uncertainty Traps
+   78. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   78. The Aiyagari Model
+   79. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   79. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+   80. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -1493,22 +1498,22 @@ optimal policy balances insurance against distortionary taxation.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   80. Asset Pricing: Finite State Models
+   81. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   81. Competitive Equilibria with Arrow Securities
+   82. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   82. Heterogeneous Beliefs and Bubbles
+   83. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   83. Speculative Behavior with Bayesian Learning
+   84. Speculative Behavior with Bayesian Learning
   </a>
  </li>
 </ul>
@@ -1520,17 +1525,17 @@ optimal policy balances insurance against distortionary taxation.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   84. Pandas for Panel Data
+   85. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   85. Linear Regression in Python
+   86. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   86. Maximum Likelihood Estimation
+   87. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1542,12 +1547,12 @@ optimal policy balances insurance against distortionary taxation.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   87. First-Price and Second-Price Auctions
+   88. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   88. Multiple Good Allocation Mechanisms
+   89. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1559,17 +1564,17 @@ optimal policy balances insurance against distortionary taxation.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   89. Troubleshooting
+   90. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   90. References
+   91. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   91. Execution Statistics
+   92. Execution Statistics
   </a>
  </li>
 </ul>
