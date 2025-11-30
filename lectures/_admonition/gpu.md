@@ -1,7 +1,12 @@
 ```{admonition} GPU
 :class: warning
 
-This lecture is designed to run on a GPU. To use Google Colab's free GPUs, click the play icon top right, select Colab, and set the runtime to include a GPU.
+This lecture was built using a machine with access to a GPU.
 
-For local GPU setup, see the [JAX installation guide](https://github.com/google/jax).
+[Google Colab](https://colab.research.google.com/) has a free tier with GPUs
+that you can access as follows:
+
+1. Click on the "play" icon top right
+2. Select Colab
+3. Set the runtime environment to include a GPU
 ```
