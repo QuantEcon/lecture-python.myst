@@ -22,6 +22,9 @@ kernelspec:
 
 # The Aiyagari Model
 
+```{include} _admonition/gpu.md
+```
+
 ```{contents} Contents
 :depth: 2
 ```

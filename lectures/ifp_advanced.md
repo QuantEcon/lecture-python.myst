@@ -19,6 +19,9 @@ kernelspec:
 
 # {index}`The Income Fluctuation Problem V: Stochastic Returns on Assets <single: The Income Fluctuation Problem V: Stochastic Returns on Assets>`
 
+```{include} _admonition/gpu.md
+```
+
 ```{contents} Contents
 :depth: 2
 ```

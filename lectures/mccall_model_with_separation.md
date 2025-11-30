@@ -22,6 +22,9 @@ kernelspec:
 
 # Job Search II: Search and Separation
 
+```{include} _admonition/gpu.md
+```
+
 ```{index} single: An Introduction to Job Search
 ```
 

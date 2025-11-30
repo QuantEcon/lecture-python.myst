@@ -24,6 +24,9 @@ kernelspec:
 
 # Using Newton's Method to Solve Economic Models
 
+```{include} _admonition/gpu.md
+```
+
 ```{contents} Contents
 :depth: 2
 ```

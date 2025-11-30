@@ -22,6 +22,9 @@ kernelspec:
 
 # A Lake Model of Employment and Unemployment
 
+```{include} _admonition/gpu.md
+```
+
 ```{index} single: Lake Model
 ```
 
