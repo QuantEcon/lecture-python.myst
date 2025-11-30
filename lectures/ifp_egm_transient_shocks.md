@@ -21,6 +21,9 @@ kernelspec:
 
 # {index}`The Income Fluctuation Problem IV: Transient Income Shocks <single: The Income Fluctuation Problem IV: Transient Income Shocks>`
 
+```{include} _admonition/gpu.md
+```
+
 ```{contents} Contents
 :depth: 2
 ```

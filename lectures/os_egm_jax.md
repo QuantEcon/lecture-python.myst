@@ -19,6 +19,9 @@ kernelspec:
 
 # {index}`Optimal Savings VI: EGM with JAX <single: Optimal Savings VI: EGM with JAX>`
 
+```{include} _admonition/gpu.md
+```
+
 ```{contents} Contents
 :depth: 2
 ```

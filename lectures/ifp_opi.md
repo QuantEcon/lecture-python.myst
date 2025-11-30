@@ -13,6 +13,8 @@ kernelspec:
 
 # The Income Fluctuation Problem II: Optimistic Policy Iteration
 
+```{include} _admonition/gpu.md
+```
 
 ## Overview
 

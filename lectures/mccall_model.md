@@ -22,6 +22,9 @@ kernelspec:
 
 # Job Search I: The McCall Search Model
 
+```{include} _admonition/gpu.md
+```
+
 ```{contents} Contents
 :depth: 2
 ```

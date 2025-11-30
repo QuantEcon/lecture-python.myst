@@ -21,6 +21,9 @@ kernelspec:
 
 # Job Search V: Persistent and Transitory Wage Shocks
 
+```{include} _admonition/gpu.md
+```
+
 ```{contents} Contents
 :depth: 2
 ```

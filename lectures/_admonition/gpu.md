@@ -1,9 +1,7 @@
 ```{admonition} GPU
 :class: warning
 
-This lecture was built using a machine with the latest CUDA and CUDANN frameworks installed with access to a GPU.
+This lecture is designed to run on a GPU. To use Google Colab's free GPUs, click the play icon top right, select Colab, and set the runtime to include a GPU.
 
-To run this lecture on [Google Colab](https://colab.research.google.com/), click on the "play" icon top right, select Colab, and set the runtime environment to include a GPU.
-
-To run this lecture on your own machine, you need to install the software listed following this notice.
+For local GPU setup, see the [JAX installation guide](https://github.com/google/jax).
 ```

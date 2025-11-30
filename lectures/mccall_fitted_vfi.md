@@ -21,6 +21,9 @@ kernelspec:
 
 # Job Search IV: Fitted Value Function Iteration
 
+```{include} _admonition/gpu.md
+```
+
 ```{contents} Contents
 :depth: 2
 ```
