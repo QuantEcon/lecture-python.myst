@@ -1,9 +1,12 @@
 ```{admonition} GPU
 :class: warning
 
-This lecture was built using a machine with the latest CUDA and CUDANN frameworks installed with access to a GPU.
+This lecture was built using a machine with access to a GPU.
 
-To run this lecture on [Google Colab](https://colab.research.google.com/), click on the "play" icon top right, select Colab, and set the runtime environment to include a GPU.
+[Google Colab](https://colab.research.google.com/) has a free tier with GPUs
+that you can access as follows:
 
-To run this lecture on your own machine, you need to install the software listed following this notice.
+1. Click on the "play" icon top right
+2. Select Colab
+3. Set the runtime environment to include a GPU
 ```

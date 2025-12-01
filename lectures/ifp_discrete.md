@@ -13,6 +13,8 @@ kernelspec:
 
 # The Income Fluctuation Problem I: Discretization and VFI
 
+```{include} _admonition/gpu.md
+```
 
 ## Overview
 

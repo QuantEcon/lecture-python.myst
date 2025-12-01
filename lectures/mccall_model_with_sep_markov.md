@@ -24,6 +24,9 @@ kernelspec:
 
 # Job Search III: Search with Separation and Markov Wages
 
+```{include} _admonition/gpu.md
+```
+
 ```{index} single: An Introduction to Job Search
 ```
 
