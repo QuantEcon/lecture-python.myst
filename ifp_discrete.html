@@ -230,7 +230,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 25, 2025
+                            Last changed: Nov 30, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -241,10 +241,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/0bfcac810" class="changelog-hash">0bfcac810</a>
+                                
+                                <span class="changelog-author">Matt McKay</span>
+                                <span class="changelog-time">16 minutes ago</span>
+                                <span class="changelog-message">Simplify GPU admonition and add to all JAX lectures (#751)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/9571a3394" class="changelog-hash">9571a3394</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">3 days ago</span>
+                                <span class="changelog-time">5 days ago</span>
                                 <span class="changelog-message">Update IFP lectures: add dynamics plots and adjust parameters (#741)</span>
                             </li>
                             
@@ -253,7 +262,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b27f1eb0a" class="changelog-hash">b27f1eb0a</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">3 days ago</span>
+                                <span class="changelog-time">5 days ago</span>
                                 <span class="changelog-message">Reorganize and rename optimal savings lectures (#735)</span>
                             </li>
                             
@@ -271,6 +280,17 @@
                         
   <section class="tex2jax_ignore mathjax_ignore" id="the-income-fluctuation-problem-i-discretization-and-vfi">
 <h1><span class="section-number">57. </span>The Income Fluctuation Problem I: Discretization and VFI<a class="headerlink" href="#the-income-fluctuation-problem-i-discretization-and-vfi" title="Link to this heading">#</a></h1>
+<div class="warning admonition">
+<p class="admonition-title">GPU</p>
+<p>This lecture was built using a machine with access to a GPU.</p>
+<p><a class="reference external" href="https://colab.research.google.com/">Google Colab</a> has a free tier with GPUs
+that you can access as follows:</p>
+<ol class="arabic simple">
+<li><p>Click on the “play” icon top right</p></li>
+<li><p>Select Colab</p></li>
+<li><p>Set the runtime environment to include a GPU</p></li>
+</ol>
+</div>
 <section id="overview">
 <h2><span class="section-number">57.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In this lecture, we study an optimal savings problem for an infinitely lived consumer—the “common ancestor” described in <span id="id1">[<a class="reference internal" href="zreferences.html#id200" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 1.3.</p>
@@ -572,8 +592,8 @@ maximizes the right-hand side of the Bellman equation.)</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1129 00:52:12.909793    2708 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1129 00:52:12.913355    2644 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1130 23:53:18.461470    2541 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1130 23:53:18.465034    2478 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -591,7 +611,7 @@ W1129 00:52:12.913355    2644 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI using Python loop.
-VFI completed in 2.631427764892578 seconds.
+VFI completed in 2.6260569095611572 seconds.
 </pre></div>
 </div>
 </div>
@@ -610,7 +630,7 @@ VFI completed in 2.631427764892578 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI using jax.lax.while_loop.
-VFI completed in 1.7492985725402832 seconds.
+VFI completed in 1.7468199729919434 seconds.
 </pre></div>
 </div>
 </div>
@@ -627,7 +647,7 @@ VFI completed in 1.7492985725402832 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 1.3640244007110596 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 1.3610353469848633 seconds.
 </pre></div>
 </div>
 </div>
@@ -824,7 +844,7 @@ up our sleeves.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI using vmap.
-VFI completed in 0.9779837131500244 seconds.
+VFI completed in 0.971646785736084 seconds.
 </pre></div>
 </div>
 </div>
@@ -841,7 +861,7 @@ VFI completed in 0.9779837131500244 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.45926523208618164 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.45603156089782715 seconds.
 </pre></div>
 </div>
 </div>
@@ -869,7 +889,7 @@ True
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 2.9700145045055333
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 2.984520072043435
 </pre></div>
 </div>
 </div>

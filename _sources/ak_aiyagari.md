@@ -14,6 +14,9 @@ kernelspec:
 
 # A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
 
+```{include} _admonition/gpu.md
+```
+
 In addition to what's in Anaconda, this lecture will need the following library
 
 ```{code-cell} ipython3

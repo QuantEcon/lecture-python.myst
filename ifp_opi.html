@@ -228,7 +228,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 25, 2025
+                            Last changed: Nov 30, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -239,10 +239,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/0bfcac810" class="changelog-hash">0bfcac810</a>
+                                
+                                <span class="changelog-author">Matt McKay</span>
+                                <span class="changelog-time">16 minutes ago</span>
+                                <span class="changelog-message">Simplify GPU admonition and add to all JAX lectures (#751)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/9571a3394" class="changelog-hash">9571a3394</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">3 days ago</span>
+                                <span class="changelog-time">5 days ago</span>
                                 <span class="changelog-message">Update IFP lectures: add dynamics plots and adjust parameters (#741)</span>
                             </li>
                             
@@ -251,7 +260,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b27f1eb0a" class="changelog-hash">b27f1eb0a</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">3 days ago</span>
+                                <span class="changelog-time">5 days ago</span>
                                 <span class="changelog-message">Reorganize and rename optimal savings lectures (#735)</span>
                             </li>
                             
@@ -269,6 +278,17 @@
                         
   <section class="tex2jax_ignore mathjax_ignore" id="the-income-fluctuation-problem-ii-optimistic-policy-iteration">
 <h1><span class="section-number">58. </span>The Income Fluctuation Problem II: Optimistic Policy Iteration<a class="headerlink" href="#the-income-fluctuation-problem-ii-optimistic-policy-iteration" title="Link to this heading">#</a></h1>
+<div class="warning admonition">
+<p class="admonition-title">GPU</p>
+<p>This lecture was built using a machine with access to a GPU.</p>
+<p><a class="reference external" href="https://colab.research.google.com/">Google Colab</a> has a free tier with GPUs
+that you can access as follows:</p>
+<ol class="arabic simple">
+<li><p>Click on the “play” icon top right</p></li>
+<li><p>Select Colab</p></li>
+<li><p>Set the runtime environment to include a GPU</p></li>
+</ol>
+</div>
 <section id="overview">
 <h2><span class="section-number">58.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In <a class="reference internal" href="ifp_discrete.html"><span class="doc">The Income Fluctuation Problem I: Discretization and VFI</span></a> we studied the income fluctuation problem and solved it
@@ -592,8 +612,8 @@ policy <span class="math notranslate nohighlight">\(\sigma\)</span> fixed.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1129 00:52:55.015570    3225 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1129 00:52:55.019175    3162 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1130 23:53:59.917779    3059 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1130 23:53:59.921340    2995 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -612,7 +632,7 @@ W1129 00:52:55.019175    3162 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
-VFI completed in 0.84 seconds.
+VFI completed in 0.82 seconds.
 </pre></div>
 </div>
 </div>
@@ -629,7 +649,7 @@ VFI completed in 0.84 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.09 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.12 seconds.
 </pre></div>
 </div>
 </div>
@@ -723,7 +743,7 @@ OPI completed in 0.53 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Speedup factor: 2.75
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Speedup factor: 4.10
 </pre></div>
 </div>
 </div>
@@ -745,14 +765,14 @@ OPI completed in 0.53 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=  1 completed in 0.11 seconds.
-OPI with m=  5 completed in 0.05 seconds.
-OPI with m= 10 completed in 0.04 seconds.
-OPI with m= 25 completed in 0.04 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=  1 completed in 0.09 seconds.
+OPI with m=  5 completed in 0.04 seconds.
+OPI with m= 10 completed in 0.03 seconds.
+OPI with m= 25 completed in 0.03 seconds.
 OPI with m= 50 completed in 0.03 seconds.
 OPI with m=100 completed in 0.04 seconds.
 OPI with m=200 completed in 0.06 seconds.
-OPI with m=400 completed in 0.13 seconds.
+OPI with m=400 completed in 0.12 seconds.
 </pre></div>
 </div>
 </div>
@@ -772,7 +792,7 @@ OPI with m=400 completed in 0.13 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/24d2f540163ff80585d767b8e3b0952e14d5f5387243c28132fd82cb3f1ed02b.png" src="_images/24d2f540163ff80585d767b8e3b0952e14d5f5387243c28132fd82cb3f1ed02b.png" />
+<img alt="_images/6da6b48e7bd9fcc1341bfeba8bf51cafdf2edf6f2a0ff4d1aa26e949ff2e5fd3.png" src="_images/6da6b48e7bd9fcc1341bfeba8bf51cafdf2edf6f2a0ff4d1aa26e949ff2e5fd3.png" />
 </div>
 </div>
 <p>Here’s a summary of the results</p>
@@ -843,42 +863,42 @@ time iterating the policy operator.</p></li>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing ρ=0.8, ν=0.05
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.74x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.60x
 
 Testing ρ=0.8, ν=0.1
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.85x
+  VFI: 0.06s, OPI: 0.03s, Speedup: 1.73x
 
 Testing ρ=0.8, ν=0.2
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.83x
+  VFI: 0.06s, OPI: 0.03s, Speedup: 1.78x
 
 Testing ρ=0.9, ν=0.05
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.84x
+  VFI: 0.06s, OPI: 0.03s, Speedup: 1.72x
 
 Testing ρ=0.9, ν=0.1
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.79x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.64x
 
 Testing ρ=0.9, ν=0.2
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.81x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.72x
 
 Testing ρ=0.95, ν=0.05
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.70x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.63x
 
 Testing ρ=0.95, ν=0.1
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.80x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.69x
 
 Testing ρ=0.95, ν=0.2
-  VFI: 0.07s, OPI: 0.04s, Speedup: 1.97x
+  VFI: 0.07s, OPI: 0.04s, Speedup: 1.80x
 
 Summary of speedup factors:
-ρ=0.8, ν=0.05: 1.74x
-ρ=0.8, ν=0.1: 1.85x
-ρ=0.8, ν=0.2: 1.83x
-ρ=0.9, ν=0.05: 1.84x
-ρ=0.9, ν=0.1: 1.79x
-ρ=0.9, ν=0.2: 1.81x
-ρ=0.95, ν=0.05: 1.70x
-ρ=0.95, ν=0.1: 1.80x
-ρ=0.95, ν=0.2: 1.97x
+ρ=0.8, ν=0.05: 1.60x
+ρ=0.8, ν=0.1: 1.73x
+ρ=0.8, ν=0.2: 1.78x
+ρ=0.9, ν=0.05: 1.72x
+ρ=0.9, ν=0.1: 1.64x
+ρ=0.9, ν=0.2: 1.72x
+ρ=0.95, ν=0.05: 1.63x
+ρ=0.95, ν=0.1: 1.69x
+ρ=0.95, ν=0.2: 1.80x
 </pre></div>
 </div>
 </div>

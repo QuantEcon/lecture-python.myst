@@ -22,6 +22,9 @@ kernelspec:
 
 # Lake Model with an Endogenous Job Finding Rate
 
+```{include} _admonition/gpu.md
+```
+
 ```{index} single: Lake Model, Endogenous
 ```
 
