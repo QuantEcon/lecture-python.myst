@@ -484,7 +484,7 @@ class Model(NamedTuple):
     β: float           # discount factor
     μ: float           # shock location parameter
     ν: float           # shock scale parameter
-    grid: np.ndarray   # state grid
+    x_grid: np.ndarray # state grid
     shocks: np.ndarray # shock draws
 
 
@@ -503,13 +503,13 @@ def create_model(
     Creates an instance of the optimal savings model.
     """
     # Set up grid
-    grid = np.linspace(1e-4, grid_max, grid_size)
+    x_grid = np.linspace(1e-4, grid_max, grid_size)
 
     # Store shocks (with a seed, so results are reproducible)
     np.random.seed(seed)
     shocks = np.exp(μ + ν * np.random.randn(shock_size))
 
-    return Model(u, f, β, μ, ν, grid, shocks)
+    return Model(u, f, β, μ, ν, x_grid, shocks)
 ```
 
 We set up the right-hand side of the Bellman equation
@@ -524,14 +524,13 @@ def B(
         x: float,
         c: float,
         v_array: np.ndarray,
-        model: Model,
+        model: Model
     ) -> float:
     """
     Right hand side of the Bellman equation.
     """
-    u, f, β, shocks = model
-    grid = model.grid
-    v = interp1d(grid, v_array)
+    u, f, β, μ, ν, x_grid, shocks = model
+    v = interp1d(x_grid, v_array)
 
     return u(c) + β * np.mean(v(f(x - c) * shocks))
 ```
@@ -565,11 +564,11 @@ def T(v: np.ndarray, model: Model) -> tuple[np.ndarray, np.ndarray]:
       * v is an array representing a guess of the value function
 
     """
-    grid = model.grid
+    x_grid = model.x_grid
     v_new = np.empty_like(v)
 
-    for i in range(len(grid)):
-        x = grid[i]
+    for i in range(len(x_grid)):
+        x = x_grid[i]
         c_star, v_max = maximize(lambda c: B(x, c, v, model), x)
         v_new[i] = v_max
 
@@ -581,7 +580,7 @@ Here's the function:
 ```{code-cell} python3
 def get_greedy(
         v: np.ndarray,          # current guess of the value function
-        model: Model            # instance of cake eating model
+        model: Model            # instance of optimal savings model
     ):
     " Compute the v-greedy policy on x_grid."
 
@@ -669,15 +668,15 @@ In theory, since $v^*$ is a fixed point, the resulting function should again be 
 In practice, we expect some small numerical error.
 
 ```{code-cell} python3
-grid = model.grid
+x_grid = model.x_grid
 
-v_init = v_star(grid, α, model.β, model.μ)    # Start at the solution
+v_init = v_star(x_grid, α, model.β, model.μ)    # Start at the solution
 v = T(v_init, model)             # Apply T once
 
 fig, ax = plt.subplots()
 ax.set_ylim(-35, -24)
-ax.plot(grid, v, lw=2, alpha=0.6, label='$Tv^*$')
-ax.plot(grid, v_init, lw=2, alpha=0.6, label='$v^*$')
+ax.plot(x_grid, v, lw=2, alpha=0.6, label='$Tv^*$')
+ax.plot(x_grid, v_init, lw=2, alpha=0.6, label='$v^*$')
 ax.legend()
 plt.show()
 ```
@@ -690,23 +689,23 @@ from an arbitrary initial condition.
 The initial condition we'll start with is, somewhat arbitrarily, $v(x) = 5 \ln (x)$.
 
 ```{code-cell} python3
-v = 5 * np.log(grid)  # An initial condition
+v = 5 * np.log(x_grid)  # An initial condition
 n = 35
 
 fig, ax = plt.subplots()
 
-ax.plot(grid, v, color=plt.cm.jet(0),
+ax.plot(x_grid, v, color=plt.cm.jet(0),
         lw=2, alpha=0.6, label='Initial condition')
 
 for i in range(n):
     v = T(v, model)  # Apply the Bellman operator
-    ax.plot(grid, v, color=plt.cm.jet(i / n), lw=2, alpha=0.6)
+    ax.plot(x_grid, v, color=plt.cm.jet(i / n), lw=2, alpha=0.6)
 
-ax.plot(grid, v_star(grid, α, model.β, model.μ), 'k-', lw=2,
+ax.plot(x_grid, v_star(x_grid, α, model.β, model.μ), 'k-', lw=2,
         alpha=0.8, label='True value function')
 
 ax.legend()
-ax.set(ylim=(-40, 10), xlim=(np.min(grid), np.max(grid)))
+ax.set(ylim=(-40, 10), xlim=(np.min(x_grid), np.max(x_grid)))
 plt.show()
 ```
 
@@ -725,23 +724,25 @@ We can write a function that iterates until the difference is below a particular
 tolerance level.
 
 ```{code-cell} python3
-def solve_model(og,
-                tol=1e-4,
-                max_iter=1000,
-                verbose=True,
-                print_skip=25):
+def solve_model(
+        model: Model,           # instance of optimal savings model
+        tol: float = 1e-4,      # convergence tolerance
+        max_iter: int = 1000,   # maximum iterations
+        verbose: bool = True,   # print iteration info
+        print_skip: int = 25    # iterations between prints
+    ):
     """
     Solve model by iterating with the Bellman operator.
 
     """
 
     # Set up loop
-    v = og.u(og.grid)  # Initial condition
+    v = model.u(model.x_grid)  # Initial condition
     i = 0
     error = tol + 1
 
     while i < max_iter and error > tol:
-        v_new = T(v, og)
+        v_new = T(v, model)
         error = np.max(np.abs(v - v_new))
         i += 1
         if verbose and i % print_skip == 0:
@@ -768,10 +769,10 @@ Now we check our result by plotting it against the true value:
 ```{code-cell} python3
 fig, ax = plt.subplots()
 
-ax.plot(grid, v_solution, lw=2, alpha=0.6,
+ax.plot(x_grid, v_solution, lw=2, alpha=0.6,
         label='Approximate value function')
 
-ax.plot(grid, v_star(grid, α, model.β, model.μ), lw=2,
+ax.plot(x_grid, v_star(x_grid, α, model.β, model.μ), lw=2,
         alpha=0.6, label='True value function')
 
 ax.legend()
@@ -794,10 +795,10 @@ above, is $\sigma(x) = (1 - \alpha \beta) x$
 ```{code-cell} python3
 fig, ax = plt.subplots()
 
-ax.plot(grid, v_greedy, lw=2,
+ax.plot(x_grid, v_greedy, lw=2,
         alpha=0.6, label='approximate policy function')
 
-ax.plot(grid, σ_star(grid, α, model.β), '--',
+ax.plot(x_grid, σ_star(x_grid, α, model.β), '--',
         lw=2, alpha=0.6, label='true policy function')
 
 ax.legend()
@@ -854,7 +855,7 @@ Let's plot the policy function just to see what it looks like:
 
 ```{code-cell} python3
 fig, ax = plt.subplots()
-ax.plot(grid, v_greedy, lw=2,
+ax.plot(x_grid, v_greedy, lw=2,
         alpha=0.6, label='Approximate optimal policy')
 ax.legend()
 plt.show()
