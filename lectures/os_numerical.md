@@ -92,14 +92,14 @@ This is a form of **successive approximation**, and was discussed in our {doc}`l
 The basic idea is:
 
 1. Take an arbitrary initial guess of $v$.
-1. Obtain an update $w$ defined by
+1. Obtain an update $\hat v$ defined by
 
    $$
-       w(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
+       \hat v(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
    $$
 
-1. Stop if $w$ is approximately equal to $v$, otherwise set
-   $v=w$ and go back to step 2.
+1. Stop if $\hat v$ is approximately equal to $v$, otherwise set
+   $v=\hat v$ and go back to step 2.
 
 Let's write this a bit more mathematically.
 
@@ -109,7 +109,7 @@ We introduce the **Bellman operator** $T$ that takes a function v as an
 argument and returns a new function $Tv$ defined by
 
 $$
-Tv(x) = \max_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
+    Tv(x) = \max_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
 $$
 
 From $v$ we get $Tv$, and applying $T$ to this yields
@@ -206,13 +206,7 @@ Here's the CRRA utility function.
 
 ```{code-cell} python3
 def u(c, γ):
-    """
-    Utility function.
-    """
-    if γ == 1:
-        return np.log(c)
-    else:
-        return (c ** (1 - γ)) / (1 - γ)
+    return (c ** (1 - γ)) / (1 - γ)
 ```
 
 To work with the Bellman equation, let's write it as
@@ -240,8 +234,8 @@ def B(
     Right hand side of the Bellman equation given x and c.
 
     """
-    # Unpack
-    β, γ, x_grid = model.β, model.γ, model.x_grid
+    # Unpack (simplify names)
+    β, γ, x_grid = model
 
     # Convert array v into a function by linear interpolation
     vf = lambda x: np.interp(x, x_grid, v)
@@ -250,7 +244,12 @@ def B(
     return u(c, γ) + β * vf(x - c)
 ```
 
-We now define the Bellman operation:
+We now define the Bellman operator acting on grid points:
+
+$$
+    Tv(x_i) = \max_{0 \leq c \leq x_i} B(x_i, c, v)
+    \qquad \text{for all } i
+$$
 
 ```{code-cell} python3
 def T(
@@ -280,7 +279,7 @@ model = create_cake_eating_model()
 β, γ, x_grid = model
 ```
 
-Now let's see the iteration of the value function in action.
+Now let's see iteration of the value function in action.
 
 We start from guess $v$ given by $v(x) = u(x)$ for every
 $x$ grid point.

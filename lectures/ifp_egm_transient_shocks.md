@@ -456,17 +456,13 @@ def K(
         return jnp.exp(a_y * η + z * b_y)
 
     def compute_c(i, j):
-        " Function to compute consumption for one (i, j) pair where i >= 1. "
+        " Compute c_ij when i >= 1 (interior choice). "
 
-        def compute_expectation_k(k):
-            """
-            For each k, approximate the integral 
-        
-               ∫ u'(σ(R s_i + y(z_k, η'), z_k)) φ(η') dη' 
-            """
+        def expected_mu(k):
+            " Approximate ∫ u'(σ(R s_i + y(z_k, η'), z_k)) φ(η') dη' "
 
             def compute_mu_at_eta(η):
-                " For each η draw, compute u'(σ(R * s_i + y(z_k, η), z_k)) "
+                " Compute u'(σ(R * s_i + y(z_k, η), z_k)) "
                 next_a = R * s[i] + y(z_grid[k], η)
                 # Interpolate to get σ(R * s_i + y(z_k, η), z_k)
                 next_c = jnp.interp(next_a, a_in[:, k], c_in[:, k])
@@ -479,10 +475,9 @@ def K(
             return jnp.mean(all_draws)
 
         # Compute expectation: Σ_k [∫ u'(σ(...)) φ(η) dη] * Π[j, k]
-        expectations = jax.vmap(compute_expectation_k)(jnp.arange(n_z))
+        expectations = jax.vmap(expected_mu)(jnp.arange(n_z))
         expectation = jnp.sum(expectations * Π[j, :])
-
-        # Invert to get consumption c_{ij} at (s_i, z_j)
+        # Invert to get consumption c_ij at (s_i, z_j)
         return u_prime_inv(β * R * expectation)
 
     # Set up index grids for vmap computation of all c_{ij}

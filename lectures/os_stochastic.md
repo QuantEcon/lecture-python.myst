@@ -84,7 +84,8 @@ Consider an agent who owns an amount $x_t \in \mathbb R_+ := [0, \infty)$ of a c
 
 This output can either be consumed or saved and used for production.
 
-Production is stochastic, in that it also depends on a shock $\xi_{t+1}$ realized at the end of the current period.
+Production is stochastic, in that it also depends on a shock $\xi_{t+1}$
+realized at the end of the current period.
 
 Next period output is
 
@@ -118,7 +119,7 @@ Taking $x_0$ as given, the agent wishes to maximize
 ```{math}
 :label: texs0_og2
 
-\mathbb E \left[ \sum_{t = 0}^{\infty} \beta^t u(c_t) \right]
+\mathbb E  \sum_{t = 0}^{\infty} \beta^t u(c_t) 
 ```
 
 subject to
@@ -151,28 +152,23 @@ In the present context
 
 
 
-### The Policy Function Approach
+### Optimal Policies
 
 ```{index} single: Optimal Savings; Policy Function Approach
 ```
 
-One way to think about solving this problem is to look for the best **policy function**.
+Let us look at **policy functions**, each one of which is a map $\sigma$ from the
+current state $x_t$ into a current action $c_t$.
 
-A policy function is a map from past and present observables into current action.
+```{note}
+These kinds of policies are called Markov policies (or stationary Markov policies).
 
-We'll be particularly interested in **Markov policies**, which are maps from the current state $x_t$ into a current action $c_t$.
+For this dynamic program, the optimal policy is always a Markov policy (see,
+e.g., [DP1](https://dp.quantecon.org/)).
 
-For dynamic programming problems such as this one, the optimal policy is always a Markov policy (see, e.g., [DP1](https://dp.quantecon.org/)).
-
-In other words, the current state $x_t$ provides a sufficient statistic for the history
+In essence, the current state $x_t$ provides a sufficient statistic for the history
 in terms of making an optimal decision today.
-
-In our context, a Markov policy is a function $\sigma \colon
-\mathbb R_+ \to \mathbb R_+$, with the understanding that states are mapped to actions via
-
-$$
-c_t = \sigma(x_t) \quad \text{for all } t
-$$
+```
 
 In what follows, we will call $\sigma$ a **feasible consumption policy** if it satisfies
 
@@ -184,11 +180,11 @@ In what follows, we will call $\sigma$ a **feasible consumption policy** if it s
 x \in \mathbb R_+
 ```
 
-In other words, a feasible consumption policy is a Markov policy that respects the resource constraint.
+In other words, a feasible policy is a policy function that respects the resource constraint.
 
 The set of all feasible consumption policies will be denoted by $\Sigma$.
 
-Each $\sigma \in \Sigma$ determines a [continuous state Markov process](https://python-advanced.quantecon.org/stationary_densities.html) $\{x_t\}$ for output via
+Each $\sigma \in \Sigma$ determines a [Markov dynamics](https://python-advanced.quantecon.org/stationary_densities.html) for output $\{x_t\}$ via
 
 ```{math}
 :label: firstp0_og2
@@ -204,14 +200,11 @@ We insert this process into the objective function to get
 ```{math}
 :label: texss
 
-\mathbb E
-\left[ \,
-\sum_{t = 0}^{\infty} \beta^t u(c_t) \,
-\right] =
-\mathbb E
-\left[ \,
-\sum_{t = 0}^{\infty} \beta^t u(\sigma(x_t)) \,
-\right]
+    \mathbb E
+    \sum_{t = 0}^{\infty} \beta^t u(c_t) 
+         =
+    \mathbb E
+        \sum_{t = 0}^{\infty} \beta^t u(\sigma(x_t)) 
 ```
 
 This is the total expected present value of following policy $\sigma$ forever,
@@ -230,13 +223,14 @@ The lifetime value $v_{\sigma}$ associated with a given policy $\sigma$ is the m
 ```{math}
 :label: vfcsdp00
 
-v_{\sigma}(x) =
-\mathbb E \left[ \sum_{t = 0}^{\infty} \beta^t u(\sigma(x_t)) \right]
+    v_{\sigma}(x) =
+    \mathbb E  \sum_{t = 0}^{\infty} \beta^t u(\sigma(x_t)) 
 ```
 
 when $\{x_t\}$ is given by {eq}`firstp0_og2` with $x_0 = x$.
 
-In other words, it is the lifetime value of following policy $\sigma$ forever, starting at initial condition $x$.
+In other words, it is the lifetime value of following policy $\sigma$ forever,
+starting at initial condition $x$.
 
 The **value function** is then defined as
 
@@ -249,8 +243,7 @@ v^*(x) := \sup_{\sigma \in \Sigma} \; v_{\sigma}(x)
 The value function gives the maximal value that can be obtained from state $x$,
 after considering all feasible policies.
 
-A policy $\sigma \in \Sigma$ is called **optimal** if it attains the supremum in
-{eq}`vfcsdp0` for all $x \in \mathbb R_+$.
+A policy $\sigma \in \Sigma$ is called **optimal** if $v_\sigma(x) = v^*(x)$ for all $x \in \mathbb R_+$.
 
 
 ### The Bellman Equation
@@ -277,7 +270,7 @@ The term $\int v(f(x - c) z) \phi(dz)$ can be understood as the expected next pe
 * the state is $x$
 * consumption is set to $c$
 
-As shown in [EDTC](https://johnstachurski.net/edtc.html), Theorem 10.1.11 and a range of other texts,
+As shown in [DP1](https://dp.quantecon.org/), Theorem 10.1.11 and a range of other texts,
 the value function $v^*$ satisfies the Bellman equation.
 
 In other words, {eq}`fpb30` holds when $v=v^*$.
@@ -300,12 +293,13 @@ The Bellman equation is important because it
 The value function can be used to compute optimal policies.
 
 Given a continuous function $v$ on $\mathbb R_+$, we say that
-$\sigma \in \Sigma$ is $v$-**greedy** if $\sigma(x)$ is a solution to
+$\sigma \in \Sigma$ is $v$-**greedy** if 
 
 ```{math}
 :label: defgp20
 
-\max_{0 \leq c \leq x}
+\sigma(x) \in 
+\arg \max_{0 \leq c \leq x}
     \left\{
     u(c) + \beta \int v(f(x - c) z) \phi(dz)
     \right\}
@@ -388,7 +382,7 @@ $$
 \rho(g, h) = \sup_{x \geq 0} |g(x) - h(x)|
 $$
 
-See  [EDTC](https://johnstachurski.net/edtc.html), lemma 10.1.18.
+See [EDTC](https://johnstachurski.net/edtc.html), Lemma 10.1.18.
 
 Hence, it has exactly one fixed point in this set, which we know is equal to the value function.
 
@@ -402,8 +396,7 @@ This iterative method is called **value function iteration**.
 
 We also know that a feasible policy is optimal if and only if it is $v^*$-greedy.
 
-It's not too hard to show that a $v^*$-greedy policy exists
-(see  [EDTC](https://johnstachurski.net/edtc.html), theorem 10.1.11 if you get stuck).
+It's not too hard to show that a $v^*$-greedy policy exists.
 
 Hence, at least one optimal policy exists.
 
@@ -456,19 +449,18 @@ the `minimize_scalar` routine from SciPy.
 To keep the interface tidy, we will wrap `minimize_scalar` in an outer function as follows:
 
 ```{code-cell} python3
-def maximize(g, a, b, args):
+def maximize(g, upper_bound):
     """
-    Maximize the function g over the interval [a, b].
+    Maximize the function g over the interval [0, upper_bound].
 
     We use the fact that the maximizer of g on any interval is
-    also the minimizer of -g.  The tuple args collects any extra
-    arguments to g.
+    also the minimizer of -g.
 
-    Returns the maximal value and the maximizer.
     """
 
-    objective = lambda x: -g(x, *args)
-    result = minimize_scalar(objective, bounds=(a, b), method='bounded')
+    objective = lambda x: -g(x)
+    bounds = (0, upper_bound)
+    result = minimize_scalar(objective, bounds=bounds, method='bounded')
     maximizer, maximum = result.x, -result.fun
     return maximizer, maximum
 ```
@@ -492,43 +484,53 @@ class Model(NamedTuple):
     β: float           # discount factor
     μ: float           # shock location parameter
     ν: float           # shock scale parameter
-    grid: np.ndarray   # state grid
+    x_grid: np.ndarray # state grid
     shocks: np.ndarray # shock draws
 
 
-def create_model(u: Callable,
-                 f: Callable,
-                 β: float = 0.96,
-                 μ: float = 0.0,
-                 ν: float = 0.1,
-                 grid_max: float = 4.0,
-                 grid_size: int = 120,
-                 shock_size: int = 250,
-                 seed: int = 1234) -> Model:
+def create_model(
+        u: Callable,
+        f: Callable,
+        β: float = 0.96,
+        μ: float = 0.0,
+        ν: float = 0.1,
+        grid_max: float = 4.0,
+        grid_size: int = 120,
+        shock_size: int = 250,
+        seed: int = 1234
+    ) -> Model:
     """
     Creates an instance of the optimal savings model.
     """
     # Set up grid
-    grid = np.linspace(1e-4, grid_max, grid_size)
+    x_grid = np.linspace(1e-4, grid_max, grid_size)
 
     # Store shocks (with a seed, so results are reproducible)
     np.random.seed(seed)
     shocks = np.exp(μ + ν * np.random.randn(shock_size))
 
-    return Model(u, f, β, μ, ν, grid, shocks)
+    return Model(u, f, β, μ, ν, x_grid, shocks)
+```
+
+We set up the right-hand side of the Bellman equation
+
+$$
+    B(x, c, v) := u(c) + \beta \int v^*(f(x - c) z) \phi(dz)
+$$
 
 
-def state_action_value(c: float,
-                       model: Model,
-                       x: float,
-                       v_array: np.ndarray) -> float:
+```{code-cell} python3
+def B(
+        x: float,
+        c: float,
+        v_array: np.ndarray,
+        model: Model
+    ) -> float:
     """
     Right hand side of the Bellman equation.
     """
-    u, f, β, shocks = model.u, model.f, model.β, model.shocks
-    grid = model.grid
-
-    v = interp1d(grid, v_array)
+    u, f, β, μ, ν, x_grid, shocks = model
+    v = interp1d(x_grid, v_array)
 
     return u(c) + β * np.mean(v(f(x - c) * shocks))
 ```
@@ -556,27 +558,42 @@ The next function implements the Bellman operator.
 ```{code-cell} python3
 def T(v: np.ndarray, model: Model) -> tuple[np.ndarray, np.ndarray]:
     """
-    The Bellman operator.  Updates the guess of the value function
-    and also computes a v-greedy policy.
+    The Bellman operator.  Updates the guess of the value function.
 
       * model is an instance of Model
       * v is an array representing a guess of the value function
 
     """
-    grid = model.grid
+    x_grid = model.x_grid
     v_new = np.empty_like(v)
-    v_greedy = np.empty_like(v)
 
-    for i in range(len(grid)):
-        x = grid[i]
-
-        # Maximize RHS of Bellman equation at state x
-        c_star, v_max = maximize(state_action_value, 1e-10, x, (model, x, v))
+    for i in range(len(x_grid)):
+        x = x_grid[i]
+        c_star, v_max = maximize(lambda c: B(x, c, v, model), x)
         v_new[i] = v_max
-        v_greedy[i] = c_star
 
-    return v_greedy, v_new
+    return v_new
 ```
+
+Here's the function:
+
+```{code-cell} python3
+def get_greedy(
+        v: np.ndarray,          # current guess of the value function
+        model: Model            # instance of optimal savings model
+    ):
+    " Compute the v-greedy policy on x_grid."
+
+    σ = np.empty_like(v)
+
+    for i, x in enumerate(model.x_grid):
+        # Maximize RHS of Bellman equation at state x
+        σ[i], _ = maximize(lambda c: B(x, c, v, model), x)
+
+    return σ
+```
+
+
 
 (benchmark_cake_mod)=
 ### An Example
@@ -651,15 +668,15 @@ In theory, since $v^*$ is a fixed point, the resulting function should again be 
 In practice, we expect some small numerical error.
 
 ```{code-cell} python3
-grid = model.grid
+x_grid = model.x_grid
 
-v_init = v_star(grid, α, model.β, model.μ)    # Start at the solution
-v_greedy, v = T(v_init, model)             # Apply T once
+v_init = v_star(x_grid, α, model.β, model.μ)    # Start at the solution
+v = T(v_init, model)             # Apply T once
 
 fig, ax = plt.subplots()
 ax.set_ylim(-35, -24)
-ax.plot(grid, v, lw=2, alpha=0.6, label='$Tv^*$')
-ax.plot(grid, v_init, lw=2, alpha=0.6, label='$v^*$')
+ax.plot(x_grid, v, lw=2, alpha=0.6, label='$Tv^*$')
+ax.plot(x_grid, v_init, lw=2, alpha=0.6, label='$v^*$')
 ax.legend()
 plt.show()
 ```
@@ -672,23 +689,23 @@ from an arbitrary initial condition.
 The initial condition we'll start with is, somewhat arbitrarily, $v(x) = 5 \ln (x)$.
 
 ```{code-cell} python3
-v = 5 * np.log(grid)  # An initial condition
+v = 5 * np.log(x_grid)  # An initial condition
 n = 35
 
 fig, ax = plt.subplots()
 
-ax.plot(grid, v, color=plt.cm.jet(0),
+ax.plot(x_grid, v, color=plt.cm.jet(0),
         lw=2, alpha=0.6, label='Initial condition')
 
 for i in range(n):
-    v_greedy, v = T(v, model)  # Apply the Bellman operator
-    ax.plot(grid, v, color=plt.cm.jet(i / n), lw=2, alpha=0.6)
+    v = T(v, model)  # Apply the Bellman operator
+    ax.plot(x_grid, v, color=plt.cm.jet(i / n), lw=2, alpha=0.6)
 
-ax.plot(grid, v_star(grid, α, model.β, model.μ), 'k-', lw=2,
+ax.plot(x_grid, v_star(x_grid, α, model.β, model.μ), 'k-', lw=2,
         alpha=0.8, label='True value function')
 
 ax.legend()
-ax.set(ylim=(-40, 10), xlim=(np.min(grid), np.max(grid)))
+ax.set(ylim=(-40, 10), xlim=(np.min(x_grid), np.max(x_grid)))
 plt.show()
 ```
 
@@ -707,23 +724,25 @@ We can write a function that iterates until the difference is below a particular
 tolerance level.
 
 ```{code-cell} python3
-def solve_model(og,
-                tol=1e-4,
-                max_iter=1000,
-                verbose=True,
-                print_skip=25):
+def solve_model(
+        model: Model,           # instance of optimal savings model
+        tol: float = 1e-4,      # convergence tolerance
+        max_iter: int = 1000,   # maximum iterations
+        verbose: bool = True,   # print iteration info
+        print_skip: int = 25    # iterations between prints
+    ):
     """
     Solve model by iterating with the Bellman operator.
 
     """
 
     # Set up loop
-    v = og.u(og.grid)  # Initial condition
+    v = model.u(model.x_grid)  # Initial condition
     i = 0
     error = tol + 1
 
     while i < max_iter and error > tol:
-        v_greedy, v_new = T(v, og)
+        v_new = T(v, model)
         error = np.max(np.abs(v - v_new))
         i += 1
         if verbose and i % print_skip == 0:
@@ -735,6 +754,7 @@ def solve_model(og,
     elif verbose:
         print(f"\nConverged in {i} iterations.")
 
+    v_greedy = get_greedy(v_new, model)
     return v_greedy, v_new
 ```
 
@@ -749,10 +769,10 @@ Now we check our result by plotting it against the true value:
 ```{code-cell} python3
 fig, ax = plt.subplots()
 
-ax.plot(grid, v_solution, lw=2, alpha=0.6,
+ax.plot(x_grid, v_solution, lw=2, alpha=0.6,
         label='Approximate value function')
 
-ax.plot(grid, v_star(grid, α, model.β, model.μ), lw=2,
+ax.plot(x_grid, v_star(x_grid, α, model.β, model.μ), lw=2,
         alpha=0.6, label='True value function')
 
 ax.legend()
@@ -775,10 +795,10 @@ above, is $\sigma(x) = (1 - \alpha \beta) x$
 ```{code-cell} python3
 fig, ax = plt.subplots()
 
-ax.plot(grid, v_greedy, lw=2,
+ax.plot(x_grid, v_greedy, lw=2,
         alpha=0.6, label='approximate policy function')
 
-ax.plot(grid, σ_star(grid, α, model.β), '--',
+ax.plot(x_grid, σ_star(x_grid, α, model.β), '--',
         lw=2, alpha=0.6, label='true policy function')
 
 ax.legend()
@@ -798,7 +818,7 @@ A common choice for utility function in this kind of work is the CRRA
 specification
 
 $$
-u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
+    u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 $$
 
 Maintaining the other defaults, including the Cobb-Douglas production
@@ -835,10 +855,8 @@ Let's plot the policy function just to see what it looks like:
 
 ```{code-cell} python3
 fig, ax = plt.subplots()
-
-ax.plot(grid, v_greedy, lw=2,
+ax.plot(x_grid, v_greedy, lw=2,
         alpha=0.6, label='Approximate optimal policy')
-
 ax.legend()
 plt.show()
 ```
