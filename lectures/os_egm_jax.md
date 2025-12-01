@@ -90,14 +90,16 @@ class Model(NamedTuple):
     α: float              # production function parameter
 
 
-def create_model(β: float = 0.96,
-                 μ: float = 0.0,
-                 s: float = 0.1,
-                 grid_max: float = 4.0,
-                 grid_size: int = 120,
-                 shock_size: int = 250,
-                 seed: int = 1234,
-                 α: float = 0.4) -> Model:
+def create_model(
+        β: float = 0.96,
+        μ: float = 0.0,
+        s: float = 0.1,
+        grid_max: float = 4.0,
+        grid_size: int = 120,
+        shock_size: int = 250,
+        seed: int = 1234,
+        α: float = 0.4
+    ) -> Model:
     """
     Creates an instance of the optimal savings model.
     """
@@ -111,6 +113,17 @@ def create_model(β: float = 0.96,
     return Model(β=β, μ=μ, s=s, s_grid=s_grid, shocks=shocks, α=α)
 ```
 
+
+We define utility and production functions globally.
+
+```{code-cell} python3
+# Define utility and production functions with derivatives
+u = lambda c: jnp.log(c)
+u_prime = lambda c: 1 / c
+u_prime_inv = lambda x: 1 / x
+f = lambda k, α: k**α
+f_prime = lambda k, α: α * k**(α - 1)
+```
 Here's the Coleman-Reffett operator using EGM.
 
 The key JAX feature here is `vmap`, which vectorizes the computation over the grid points.
@@ -135,10 +148,13 @@ def K(
 
     # Define function to compute consumption at a single grid point
     def compute_c(s):
+        # Approximate marginal utility ∫ u'(σ(f(s, α)z)) f'(s, α) z ϕ(z)dz
         vals = u_prime(σ(f(s, α) * shocks)) * f_prime(s, α) * shocks
-        return u_prime_inv(β * jnp.mean(vals))
+        mu = jnp.mean(vals)
+        # Calculate consumption
+        return u_prime_inv(β * mu)
 
-    # Vectorize over grid using vmap
+    # Vectorize and calculate on all exogenous grid points
     compute_c_vectorized = jax.vmap(compute_c)
     c_out = compute_c_vectorized(s_grid)
 
@@ -148,18 +164,6 @@ def K(
     return c_out, x_out
 ```
 
-We define utility and production functions globally.
-
-Note that `f` and `f_prime` take `α` as an explicit argument, allowing them to work with JAX's functional programming model.
-
-```{code-cell} python3
-# Define utility and production functions with derivatives
-u = lambda c: jnp.log(c)
-u_prime = lambda c: 1 / c
-u_prime_inv = lambda x: 1 / x
-f = lambda k, α: k**α
-f_prime = lambda k, α: α * k**(α - 1)
-```
 
 Now we create a model instance.
 
@@ -172,11 +176,13 @@ The solver uses JAX's `jax.lax.while_loop` for the iteration and is JIT-compiled
 
 ```{code-cell} python3
 @jax.jit
-def solve_model_time_iter(model: Model,
-                          c_init: jnp.ndarray,
-                          x_init: jnp.ndarray,
-                          tol: float = 1e-5,
-                          max_iter: int = 1000):
+def solve_model_time_iter(
+        model: Model,
+        c_init: jnp.ndarray,
+        x_init: jnp.ndarray,
+        tol: float = 1e-5,
+        max_iter: int = 1000
+    ):
     """
     Solve the model using time iteration with EGM.
     """
