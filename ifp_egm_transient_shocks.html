@@ -246,7 +246,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 30, 2025
+                            Last changed: Dec 01, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -257,10 +257,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b6245397e" class="changelog-hash">b6245397e</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">56 minutes ago</span>
+                                <span class="changelog-message">Refine optimal savings lectures with improved clarity and code organization (#754)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/0bfcac810" class="changelog-hash">0bfcac810</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">7 hours ago</span>
+                                <span class="changelog-time">18 hours ago</span>
                                 <span class="changelog-message">Simplify GPU admonition and add to all JAX lectures (#751)</span>
                             </li>
                             
@@ -269,7 +278,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/40c9d91d9" class="changelog-hash">40c9d91d9</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">2 days ago</span>
+                                <span class="changelog-time">3 days ago</span>
                                 <span class="changelog-message">Restructure IFP lectures: separate transient shocks into new lecture (#747)</span>
                             </li>
                             
@@ -336,15 +345,6 @@
                                 <span class="changelog-message">FIX: pass quantecon logo through to download notebooks (#432)</span>
                             </li>
                             
-                            <li class="changelog-entry">
-                                
-                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/9ec9e13ed" class="changelog-hash">9ec9e13ed</a>
-                                
-                                <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">1 year ago</span>
-                                <span class="changelog-message">MAINT: update @jit(nopython=True) to @jit with numba>=0.59 (#395)</span>
-                            </li>
-                            
                         </ul>
                     </div>
 
@@ -403,7 +403,8 @@ transient shocks to the income process.</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+  Downloading quantecon-0.10.1-py3-none-any.whl.metadata (5.3 kB)
 Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.8.1)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
@@ -419,6 +420,9 @@ Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/env
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Downloading quantecon-0.10.1-py3-none-any.whl (325 kB)
+Installing collected packages: quantecon
+Successfully installed quantecon-0.10.1
 </pre></div>
 </div>
 </div>
@@ -762,8 +766,8 @@ linear interpolation of <span class="math notranslate nohighlight">\((a^e_{ij}, 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 06:11:05.449890    8363 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1201 06:11:05.453377    8300 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 18:05:57.830837    4485 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1201 18:05:57.834334    2444 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -803,17 +807,13 @@ guess <span class="math notranslate nohighlight">\(K\sigma\)</span>.</p>
         <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a_y</span> <span class="o">*</span> <span class="n">η</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">b_y</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_c</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
-        <span class="s2">&quot; Function to compute consumption for one (i, j) pair where i &gt;= 1. &quot;</span>
+        <span class="s2">&quot; Compute c_ij when i &gt;= 1 (interior choice). &quot;</span>
 
-        <span class="k">def</span><span class="w"> </span><span class="nf">compute_expectation_k</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            For each k, approximate the integral </span>
-<span class="sd">        </span>
-<span class="sd">               ∫ u&#39;(σ(R s_i + y(z_k, η&#39;), z_k)) φ(η&#39;) dη&#39; </span>
-<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">expected_mu</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+            <span class="s2">&quot; Approximate ∫ u&#39;(σ(R s_i + y(z_k, η&#39;), z_k)) φ(η&#39;) dη&#39; &quot;</span>
 
             <span class="k">def</span><span class="w"> </span><span class="nf">compute_mu_at_eta</span><span class="p">(</span><span class="n">η</span><span class="p">):</span>
-                <span class="s2">&quot; For each η draw, compute u&#39;(σ(R * s_i + y(z_k, η), z_k)) &quot;</span>
+                <span class="s2">&quot; Compute u&#39;(σ(R * s_i + y(z_k, η), z_k)) &quot;</span>
                 <span class="n">next_a</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">y</span><span class="p">(</span><span class="n">z_grid</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">η</span><span class="p">)</span>
                 <span class="c1"># Interpolate to get σ(R * s_i + y(z_k, η), z_k)</span>
                 <span class="n">next_c</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">next_a</span><span class="p">,</span> <span class="n">a_in</span><span class="p">[:,</span> <span class="n">k</span><span class="p">],</span> <span class="n">c_in</span><span class="p">[:,</span> <span class="n">k</span><span class="p">])</span>
@@ -826,10 +826,9 @@ guess <span class="math notranslate nohighlight">\(K\sigma\)</span>.</p>
             <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">all_draws</span><span class="p">)</span>
 
         <span class="c1"># Compute expectation: Σ_k [∫ u&#39;(σ(...)) φ(η) dη] * Π[j, k]</span>
-        <span class="n">expectations</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_expectation_k</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_z</span><span class="p">))</span>
+        <span class="n">expectations</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">expected_mu</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_z</span><span class="p">))</span>
         <span class="n">expectation</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">expectations</span> <span class="o">*</span> <span class="n">Π</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:])</span>
-
-        <span class="c1"># Invert to get consumption c_{ij} at (s_i, z_j)</span>
+        <span class="c1"># Invert to get consumption c_ij at (s_i, z_j)</span>
         <span class="k">return</span> <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">R</span> <span class="o">*</span> <span class="n">expectation</span><span class="p">)</span>
 
     <span class="c1"># Set up index grids for vmap computation of all c_{ij}</span>
@@ -975,10 +974,10 @@ the two approaches.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NumPy time:                 0.3614 seconds
-JAX time (with compile):    0.0093 seconds
-JAX time (without compile): 0.0092 seconds
-Speedup (NumPy/JAX):        39.12x
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>NumPy time:                 0.3825 seconds
+JAX time (with compile):    0.0095 seconds
+JAX time (without compile): 0.0091 seconds
+Speedup (NumPy/JAX):        41.93x
 </pre></div>
 </div>
 </div>

@@ -224,7 +224,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 30, 2025
+                            Last changed: Dec 01, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -235,10 +235,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b6245397e" class="changelog-hash">b6245397e</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">57 minutes ago</span>
+                                <span class="changelog-message">Refine optimal savings lectures with improved clarity and code organization (#754)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/0bfcac810" class="changelog-hash">0bfcac810</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">7 hours ago</span>
+                                <span class="changelog-time">18 hours ago</span>
                                 <span class="changelog-message">Simplify GPU admonition and add to all JAX lectures (#751)</span>
                             </li>
                             
@@ -370,14 +379,16 @@ that you can access as follows:</p>
     <span class="n">α</span><span class="p">:</span> <span class="nb">float</span>              <span class="c1"># production function parameter</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">(</span><span class="n">β</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.96</span><span class="p">,</span>
-                 <span class="n">μ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-                 <span class="n">s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
-                 <span class="n">grid_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
-                 <span class="n">grid_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">120</span><span class="p">,</span>
-                 <span class="n">shock_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
-                 <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1234</span><span class="p">,</span>
-                 <span class="n">α</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">(</span>
+        <span class="n">β</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.96</span><span class="p">,</span>
+        <span class="n">μ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">grid_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
+        <span class="n">grid_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">120</span><span class="p">,</span>
+        <span class="n">shock_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1234</span><span class="p">,</span>
+        <span class="n">α</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates an instance of the optimal savings model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -389,6 +400,19 @@ that you can access as follows:</p>
     <span class="n">shocks</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">shock_size</span><span class="p">,)))</span>
 
     <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="o">=</span><span class="n">μ</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">s_grid</span><span class="o">=</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">shocks</span><span class="o">=</span><span class="n">shocks</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We define utility and production functions globally.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define utility and production functions with derivatives</span>
+<span class="n">u</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="n">u_prime</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">c</span>
+<span class="n">u_prime_inv</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">x</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">α</span><span class="p">:</span> <span class="n">k</span><span class="o">**</span><span class="n">α</span>
+<span class="n">f_prime</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">α</span><span class="p">:</span> <span class="n">α</span> <span class="o">*</span> <span class="n">k</span><span class="o">**</span><span class="p">(</span><span class="n">α</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -416,10 +440,13 @@ that you can access as follows:</p>
 
     <span class="c1"># Define function to compute consumption at a single grid point</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_c</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="c1"># Approximate marginal utility ∫ u&#39;(σ(f(s, α)z)) f&#39;(s, α) z ϕ(z)dz</span>
         <span class="n">vals</span> <span class="o">=</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">σ</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span><span class="p">))</span> <span class="o">*</span> <span class="n">f_prime</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span>
-        <span class="k">return</span> <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">))</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+        <span class="c1"># Calculate consumption</span>
+        <span class="k">return</span> <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">mu</span><span class="p">)</span>
 
-    <span class="c1"># Vectorize over grid using vmap</span>
+    <span class="c1"># Vectorize and calculate on all exogenous grid points</span>
     <span class="n">compute_c_vectorized</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_c</span><span class="p">)</span>
     <span class="n">c_out</span> <span class="o">=</span> <span class="n">compute_c_vectorized</span><span class="p">(</span><span class="n">s_grid</span><span class="p">)</span>
 
@@ -427,20 +454,6 @@ that you can access as follows:</p>
     <span class="n">x_out</span> <span class="o">=</span> <span class="n">s_grid</span> <span class="o">+</span> <span class="n">c_out</span>  <span class="c1"># x_i = s_i + c_i</span>
 
     <span class="k">return</span> <span class="n">c_out</span><span class="p">,</span> <span class="n">x_out</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We define utility and production functions globally.</p>
-<p>Note that <code class="docutils literal notranslate"><span class="pre">f</span></code> and <code class="docutils literal notranslate"><span class="pre">f_prime</span></code> take <code class="docutils literal notranslate"><span class="pre">α</span></code> as an explicit argument, allowing them to work with JAX’s functional programming model.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define utility and production functions with derivatives</span>
-<span class="n">u</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-<span class="n">u_prime</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">c</span>
-<span class="n">u_prime_inv</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">x</span>
-<span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">α</span><span class="p">:</span> <span class="n">k</span><span class="o">**</span><span class="n">α</span>
-<span class="n">f_prime</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">k</span><span class="p">,</span> <span class="n">α</span><span class="p">:</span> <span class="n">α</span> <span class="o">*</span> <span class="n">k</span><span class="o">**</span><span class="p">(</span><span class="n">α</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -454,8 +467,8 @@ that you can access as follows:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 06:27:09.190013   12269 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1201 06:27:09.193436   12223 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 18:06:19.743661    4706 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1201 18:06:19.747161    4661 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -464,11 +477,13 @@ W1201 06:27:09.193436   12223 cuda_executor.cc:1802] GPU interconnect informatio
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">solve_model_time_iter</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
-                          <span class="n">c_init</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-                          <span class="n">x_init</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-                          <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
-                          <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_model_time_iter</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
+        <span class="n">c_init</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">x_init</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
+        <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Solve the model using time iteration with EGM.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -548,7 +563,7 @@ W1201 06:27:09.193436   12223 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00248790 seconds elapsed
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00294495 seconds elapsed
 </pre></div>
 </div>
 </div>

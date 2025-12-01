@@ -231,7 +231,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 25, 2025
+                            Last changed: Dec 01, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -239,6 +239,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/os_numerical.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b6245397e" class="changelog-hash">b6245397e</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">57 minutes ago</span>
+                                <span class="changelog-message">Refine optimal savings lectures with improved clarity and code organization (#754)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -319,15 +328,6 @@
                                 <span class="changelog-author">mmcky</span>
                                 <span class="changelog-time">3 years ago</span>
                                 <span class="changelog-message">ENH: Migrate to sphinx-exercise (#231)</span>
-                            </li>
-                            
-                            <li class="changelog-entry">
-                                
-                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/221dbfdef" class="changelog-hash">221dbfdef</a>
-                                
-                                <span class="changelog-author">mmcky</span>
-                                <span class="changelog-time">4 years ago</span>
-                                <span class="changelog-message">adopt standard figsize for quantecon-book-theme (#108)</span>
                             </li>
                             
                         </ul>
@@ -421,14 +421,14 @@ to be as follows.</p>
 <p>The basic idea is:</p>
 <ol class="arabic">
 <li><p>Take an arbitrary initial guess of <span class="math notranslate nohighlight">\(v\)</span>.</p></li>
-<li><p>Obtain an update <span class="math notranslate nohighlight">\(w\)</span> defined by</p>
+<li><p>Obtain an update <span class="math notranslate nohighlight">\(\hat v\)</span> defined by</p>
 <div class="math notranslate nohighlight">
 \[
-       w(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
+       \hat v(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
    \]</div>
 </li>
-<li><p>Stop if <span class="math notranslate nohighlight">\(w\)</span> is approximately equal to <span class="math notranslate nohighlight">\(v\)</span>, otherwise set
-<span class="math notranslate nohighlight">\(v=w\)</span> and go back to step 2.</p></li>
+<li><p>Stop if <span class="math notranslate nohighlight">\(\hat v\)</span> is approximately equal to <span class="math notranslate nohighlight">\(v\)</span>, otherwise set
+<span class="math notranslate nohighlight">\(v=\hat v\)</span> and go back to step 2.</p></li>
 </ol>
 <p>Let’s write this a bit more mathematically.</p>
 <section id="the-bellman-operator">
@@ -437,7 +437,7 @@ to be as follows.</p>
 argument and returns a new function <span class="math notranslate nohighlight">\(Tv\)</span> defined by</p>
 <div class="math notranslate nohighlight">
 \[
-Tv(x) = \max_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
+    Tv(x) = \max_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
 \]</div>
 <p>From <span class="math notranslate nohighlight">\(v\)</span> we get <span class="math notranslate nohighlight">\(Tv\)</span>, and applying <span class="math notranslate nohighlight">\(T\)</span> to this yields
 <span class="math notranslate nohighlight">\(T^2 v := T (Tv)\)</span> and so on.</p>
@@ -527,13 +527,7 @@ default parameters and build an instance of <code class="docutils literal notran
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Utility function.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">γ</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">c</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">c</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -561,8 +555,8 @@ default parameters and build an instance of <code class="docutils literal notran
 <span class="sd">    Right hand side of the Bellman equation given x and c.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Unpack</span>
-    <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">x_grid</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">x_grid</span>
+    <span class="c1"># Unpack (simplify names)</span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">x_grid</span> <span class="o">=</span> <span class="n">model</span>
 
     <span class="c1"># Convert array v into a function by linear interpolation</span>
     <span class="n">vf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -573,7 +567,12 @@ default parameters and build an instance of <code class="docutils literal notran
 </div>
 </div>
 </div>
-<p>We now define the Bellman operation:</p>
+<p>We now define the Bellman operator acting on grid points:</p>
+<div class="math notranslate nohighlight">
+\[
+    Tv(x_i) = \max_{0 \leq c \leq x_i} B(x_i, c, v)
+    \qquad \text{for all } i
+\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span>
@@ -605,7 +604,7 @@ default parameters and build an instance of <code class="docutils literal notran
 </div>
 </div>
 </div>
-<p>Now let’s see the iteration of the value function in action.</p>
+<p>Now let’s see iteration of the value function in action.</p>
 <p>We start from guess <span class="math notranslate nohighlight">\(v\)</span> given by <span class="math notranslate nohighlight">\(v(x) = u(x)\)</span> for every
 <span class="math notranslate nohighlight">\(x\)</span> grid point.</p>
 <div class="cell docutils container">

@@ -178,7 +178,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">53.2. The Model</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">53.2.1. Setup</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization">53.2.2. Optimization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-policy-function-approach">53.2.3. The Policy Function Approach</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-policies">53.2.3. Optimal Policies</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimality">53.2.4. Optimality</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-bellman-equation">53.2.5. The Bellman Equation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#greedy-policies">53.2.6. Greedy Policies</a></li>
@@ -244,7 +244,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 25, 2025
+                            Last changed: Dec 01, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -252,6 +252,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/os_stochastic.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b6245397e" class="changelog-hash">b6245397e</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">57 minutes ago</span>
+                                <span class="changelog-message">Refine optimal savings lectures with improved clarity and code organization (#754)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -334,15 +343,6 @@
                                 <span class="changelog-message">Reformat the Exercise and Solution (#271)</span>
                             </li>
                             
-                            <li class="changelog-entry">
-                                
-                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/0d1df5576" class="changelog-hash">0d1df5576</a>
-                                
-                                <span class="changelog-author">mmcky</span>
-                                <span class="changelog-time">3 years ago</span>
-                                <span class="changelog-message">ENH: Migrate to sphinx-exercise (#231)</span>
-                            </li>
-                            
                         </ul>
                     </div>
 
@@ -418,7 +418,8 @@ period’s harvest <span class="math notranslate nohighlight">\(x_{t+1}\)</span>
 <h3><span class="section-number">53.2.1. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h3>
 <p>Consider an agent who owns an amount <span class="math notranslate nohighlight">\(x_t \in \mathbb R_+ := [0, \infty)\)</span> of a consumption good at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>This output can either be consumed or saved and used for production.</p>
-<p>Production is stochastic, in that it also depends on a shock <span class="math notranslate nohighlight">\(\xi_{t+1}\)</span> realized at the end of the current period.</p>
+<p>Production is stochastic, in that it also depends on a shock <span class="math notranslate nohighlight">\(\xi_{t+1}\)</span>
+realized at the end of the current period.</p>
 <p>Next period output is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -440,7 +441,7 @@ x_{t+1} := f(s_t) \xi_{t+1}
 <h3><span class="section-number">53.2.2. </span>Optimization<a class="headerlink" href="#optimization" title="Link to this heading">#</a></h3>
 <p>Taking <span class="math notranslate nohighlight">\(x_0\)</span> as given, the agent wishes to maximize</p>
 <div class="math notranslate nohighlight" id="equation-texs0-og2">
-<span class="eqno">(53.2)<a class="headerlink" href="#equation-texs0-og2" title="Link to this equation">#</a></span>\[\mathbb E \left[ \sum_{t = 0}^{\infty} \beta^t u(c_t) \right]\]</div>
+<span class="eqno">(53.2)<a class="headerlink" href="#equation-texs0-og2" title="Link to this equation">#</a></span>\[\mathbb E  \sum_{t = 0}^{\infty} \beta^t u(c_t) \]</div>
 <p>subject to</p>
 <div class="math notranslate nohighlight" id="equation-og-conse">
 <span class="eqno">(53.3)<a class="headerlink" href="#equation-og-conse" title="Link to this equation">#</a></span>\[x_{t+1} = f(x_t - c_t) \xi_{t+1}
@@ -465,42 +466,37 @@ x_{t+1} := f(s_t) \xi_{t+1}
 <li><p><span class="math notranslate nohighlight">\(c_t\)</span> is called the <strong>control</strong> variable — a value chosen by the agent each period after observing the state.</p></li>
 </ul>
 </section>
-<section id="the-policy-function-approach">
-<h3><span class="section-number">53.2.3. </span>The Policy Function Approach<a class="headerlink" href="#the-policy-function-approach" title="Link to this heading">#</a></h3>
-<p id="index-2">One way to think about solving this problem is to look for the best <strong>policy function</strong>.</p>
-<p>A policy function is a map from past and present observables into current action.</p>
-<p>We’ll be particularly interested in <strong>Markov policies</strong>, which are maps from the current state <span class="math notranslate nohighlight">\(x_t\)</span> into a current action <span class="math notranslate nohighlight">\(c_t\)</span>.</p>
-<p>For dynamic programming problems such as this one, the optimal policy is always a Markov policy (see, e.g., <a class="reference external" href="https://dp.quantecon.org/">DP1</a>).</p>
-<p>In other words, the current state <span class="math notranslate nohighlight">\(x_t\)</span> provides a sufficient statistic for the history
+<section id="optimal-policies">
+<h3><span class="section-number">53.2.3. </span>Optimal Policies<a class="headerlink" href="#optimal-policies" title="Link to this heading">#</a></h3>
+<p id="index-2">Let us look at <strong>policy functions</strong>, each one of which is a map <span class="math notranslate nohighlight">\(\sigma\)</span> from the
+current state <span class="math notranslate nohighlight">\(x_t\)</span> into a current action <span class="math notranslate nohighlight">\(c_t\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>These kinds of policies are called Markov policies (or stationary Markov policies).</p>
+<p>For this dynamic program, the optimal policy is always a Markov policy (see,
+e.g., <a class="reference external" href="https://dp.quantecon.org/">DP1</a>).</p>
+<p>In essence, the current state <span class="math notranslate nohighlight">\(x_t\)</span> provides a sufficient statistic for the history
 in terms of making an optimal decision today.</p>
-<p>In our context, a Markov policy is a function <span class="math notranslate nohighlight">\(\sigma \colon
-\mathbb R_+ \to \mathbb R_+\)</span>, with the understanding that states are mapped to actions via</p>
-<div class="math notranslate nohighlight">
-\[
-c_t = \sigma(x_t) \quad \text{for all } t
-\]</div>
+</div>
 <p>In what follows, we will call <span class="math notranslate nohighlight">\(\sigma\)</span> a <strong>feasible consumption policy</strong> if it satisfies</p>
 <div class="math notranslate nohighlight" id="equation-idp-fp-og2">
 <span class="eqno">(53.4)<a class="headerlink" href="#equation-idp-fp-og2" title="Link to this equation">#</a></span>\[0 \leq \sigma(x) \leq x
 \quad \text{for all} \quad
 x \in \mathbb R_+\]</div>
-<p>In other words, a feasible consumption policy is a Markov policy that respects the resource constraint.</p>
+<p>In other words, a feasible policy is a policy function that respects the resource constraint.</p>
 <p>The set of all feasible consumption policies will be denoted by <span class="math notranslate nohighlight">\(\Sigma\)</span>.</p>
-<p>Each <span class="math notranslate nohighlight">\(\sigma \in \Sigma\)</span> determines a <a class="reference external" href="https://python-advanced.quantecon.org/stationary_densities.html">continuous state Markov process</a> <span class="math notranslate nohighlight">\(\{x_t\}\)</span> for output via</p>
+<p>Each <span class="math notranslate nohighlight">\(\sigma \in \Sigma\)</span> determines a <a class="reference external" href="https://python-advanced.quantecon.org/stationary_densities.html">Markov dynamics</a> for output <span class="math notranslate nohighlight">\(\{x_t\}\)</span> via</p>
 <div class="math notranslate nohighlight" id="equation-firstp0-og2">
 <span class="eqno">(53.5)<a class="headerlink" href="#equation-firstp0-og2" title="Link to this equation">#</a></span>\[x_{t+1} = f(x_t - \sigma(x_t)) \xi_{t+1},
 \quad x_0 \text{ given}\]</div>
 <p>This is the time path for output when we choose and stick with the policy <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
 <p>We insert this process into the objective function to get</p>
 <div class="math notranslate nohighlight" id="equation-texss">
-<span class="eqno">(53.6)<a class="headerlink" href="#equation-texss" title="Link to this equation">#</a></span>\[\mathbb E
-\left[ \,
-\sum_{t = 0}^{\infty} \beta^t u(c_t) \,
-\right] =
-\mathbb E
-\left[ \,
-\sum_{t = 0}^{\infty} \beta^t u(\sigma(x_t)) \,
-\right]\]</div>
+<span class="eqno">(53.6)<a class="headerlink" href="#equation-texss" title="Link to this equation">#</a></span>\[    \mathbb E
+    \sum_{t = 0}^{\infty} \beta^t u(c_t) 
+         =
+    \mathbb E
+        \sum_{t = 0}^{\infty} \beta^t u(\sigma(x_t)) \]</div>
 <p>This is the total expected present value of following policy <span class="math notranslate nohighlight">\(\sigma\)</span> forever,
 given initial income <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
 <p>The aim is to select a policy that makes this number as large as possible.</p>
@@ -510,17 +506,17 @@ given initial income <span class="math notranslate nohighlight">\(x_0\)</span>.<
 <h3><span class="section-number">53.2.4. </span>Optimality<a class="headerlink" href="#optimality" title="Link to this heading">#</a></h3>
 <p>The lifetime value <span class="math notranslate nohighlight">\(v_{\sigma}\)</span> associated with a given policy <span class="math notranslate nohighlight">\(\sigma\)</span> is the mapping defined by</p>
 <div class="math notranslate nohighlight" id="equation-vfcsdp00">
-<span class="eqno">(53.7)<a class="headerlink" href="#equation-vfcsdp00" title="Link to this equation">#</a></span>\[v_{\sigma}(x) =
-\mathbb E \left[ \sum_{t = 0}^{\infty} \beta^t u(\sigma(x_t)) \right]\]</div>
+<span class="eqno">(53.7)<a class="headerlink" href="#equation-vfcsdp00" title="Link to this equation">#</a></span>\[    v_{\sigma}(x) =
+    \mathbb E  \sum_{t = 0}^{\infty} \beta^t u(\sigma(x_t)) \]</div>
 <p>when <span class="math notranslate nohighlight">\(\{x_t\}\)</span> is given by <a class="reference internal" href="#equation-firstp0-og2">(53.5)</a> with <span class="math notranslate nohighlight">\(x_0 = x\)</span>.</p>
-<p>In other words, it is the lifetime value of following policy <span class="math notranslate nohighlight">\(\sigma\)</span> forever, starting at initial condition <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<p>In other words, it is the lifetime value of following policy <span class="math notranslate nohighlight">\(\sigma\)</span> forever,
+starting at initial condition <span class="math notranslate nohighlight">\(x\)</span>.</p>
 <p>The <strong>value function</strong> is then defined as</p>
 <div class="math notranslate nohighlight" id="equation-vfcsdp0">
 <span class="eqno">(53.8)<a class="headerlink" href="#equation-vfcsdp0" title="Link to this equation">#</a></span>\[v^*(x) := \sup_{\sigma \in \Sigma} \; v_{\sigma}(x)\]</div>
 <p>The value function gives the maximal value that can be obtained from state <span class="math notranslate nohighlight">\(x\)</span>,
 after considering all feasible policies.</p>
-<p>A policy <span class="math notranslate nohighlight">\(\sigma \in \Sigma\)</span> is called <strong>optimal</strong> if it attains the supremum in
-<a class="reference internal" href="#equation-vfcsdp0">(53.8)</a> for all <span class="math notranslate nohighlight">\(x \in \mathbb R_+\)</span>.</p>
+<p>A policy <span class="math notranslate nohighlight">\(\sigma \in \Sigma\)</span> is called <strong>optimal</strong> if <span class="math notranslate nohighlight">\(v_\sigma(x) = v^*(x)\)</span> for all <span class="math notranslate nohighlight">\(x \in \mathbb R_+\)</span>.</p>
 </section>
 <section id="the-bellman-equation">
 <h3><span class="section-number">53.2.5. </span>The Bellman Equation<a class="headerlink" href="#the-bellman-equation" title="Link to this heading">#</a></h3>
@@ -540,7 +536,7 @@ satisfy it or not satisfy it.</p>
 <li><p>the state is <span class="math notranslate nohighlight">\(x\)</span></p></li>
 <li><p>consumption is set to <span class="math notranslate nohighlight">\(c\)</span></p></li>
 </ul>
-<p>As shown in <a class="reference external" href="https://johnstachurski.net/edtc.html">EDTC</a>, Theorem 10.1.11 and a range of other texts,
+<p>As shown in <a class="reference external" href="https://dp.quantecon.org/">DP1</a>, Theorem 10.1.11 and a range of other texts,
 the value function <span class="math notranslate nohighlight">\(v^*\)</span> satisfies the Bellman equation.</p>
 <p>In other words, <a class="reference internal" href="#equation-fpb30">(53.9)</a> holds when <span class="math notranslate nohighlight">\(v=v^*\)</span>.</p>
 <p>The intuition is that maximal value from a given state can be obtained by optimally trading off</p>
@@ -558,9 +554,10 @@ the value function <span class="math notranslate nohighlight">\(v^*\)</span> sat
 <h3><span class="section-number">53.2.6. </span>Greedy Policies<a class="headerlink" href="#greedy-policies" title="Link to this heading">#</a></h3>
 <p>The value function can be used to compute optimal policies.</p>
 <p>Given a continuous function <span class="math notranslate nohighlight">\(v\)</span> on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span>, we say that
-<span class="math notranslate nohighlight">\(\sigma \in \Sigma\)</span> is <span class="math notranslate nohighlight">\(v\)</span>-<strong>greedy</strong> if <span class="math notranslate nohighlight">\(\sigma(x)\)</span> is a solution to</p>
+<span class="math notranslate nohighlight">\(\sigma \in \Sigma\)</span> is <span class="math notranslate nohighlight">\(v\)</span>-<strong>greedy</strong> if</p>
 <div class="math notranslate nohighlight" id="equation-defgp20">
-<span class="eqno">(53.10)<a class="headerlink" href="#equation-defgp20" title="Link to this equation">#</a></span>\[\max_{0 \leq c \leq x}
+<span class="eqno">(53.10)<a class="headerlink" href="#equation-defgp20" title="Link to this equation">#</a></span>\[\sigma(x) \in 
+\arg \max_{0 \leq c \leq x}
     \left\{
     u(c) + \beta \int v(f(x - c) z) \phi(dz)
     \right\}\]</div>
@@ -616,7 +613,7 @@ continuous bounded functions on <span class="math notranslate nohighlight">\(\ma
 \[
 \rho(g, h) = \sup_{x \geq 0} |g(x) - h(x)|
 \]</div>
-<p>See  <a class="reference external" href="https://johnstachurski.net/edtc.html">EDTC</a>, lemma 10.1.18.</p>
+<p>See <a class="reference external" href="https://johnstachurski.net/edtc.html">EDTC</a>, Lemma 10.1.18.</p>
 <p>Hence, it has exactly one fixed point in this set, which we know is equal to the value function.</p>
 <p>It follows that</p>
 <ul class="simple">
@@ -626,8 +623,7 @@ generated by iteratively applying <span class="math notranslate nohighlight">\(T
 </ul>
 <p>This iterative method is called <strong>value function iteration</strong>.</p>
 <p>We also know that a feasible policy is optimal if and only if it is <span class="math notranslate nohighlight">\(v^*\)</span>-greedy.</p>
-<p>It’s not too hard to show that a <span class="math notranslate nohighlight">\(v^*\)</span>-greedy policy exists
-(see  <a class="reference external" href="https://johnstachurski.net/edtc.html">EDTC</a>, theorem 10.1.11 if you get stuck).</p>
+<p>It’s not too hard to show that a <span class="math notranslate nohighlight">\(v^*\)</span>-greedy policy exists.</p>
 <p>Hence, at least one optimal policy exists.</p>
 <p>Our problem now is how to compute it.</p>
 </section>
@@ -663,19 +659,18 @@ the <code class="docutils literal notranslate"><span class="pre">minimize_scalar
 <p>To keep the interface tidy, we will wrap <code class="docutils literal notranslate"><span class="pre">minimize_scalar</span></code> in an outer function as follows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">maximize</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">maximize</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Maximize the function g over the interval [a, b].</span>
+<span class="sd">    Maximize the function g over the interval [0, upper_bound].</span>
 
 <span class="sd">    We use the fact that the maximizer of g on any interval is</span>
-<span class="sd">    also the minimizer of -g.  The tuple args collects any extra</span>
-<span class="sd">    arguments to g.</span>
+<span class="sd">    also the minimizer of -g.</span>
 
-<span class="sd">    Returns the maximal value and the maximizer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">objective</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;bounded&#39;</span><span class="p">)</span>
+    <span class="n">objective</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">minimize_scalar</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;bounded&#39;</span><span class="p">)</span>
     <span class="n">maximizer</span><span class="p">,</span> <span class="n">maximum</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">result</span><span class="o">.</span><span class="n">fun</span>
     <span class="k">return</span> <span class="n">maximizer</span><span class="p">,</span> <span class="n">maximum</span>
 </pre></div>
@@ -700,43 +695,54 @@ the <code class="docutils literal notranslate"><span class="pre">minimize_scalar
     <span class="n">β</span><span class="p">:</span> <span class="nb">float</span>           <span class="c1"># discount factor</span>
     <span class="n">μ</span><span class="p">:</span> <span class="nb">float</span>           <span class="c1"># shock location parameter</span>
     <span class="n">ν</span><span class="p">:</span> <span class="nb">float</span>           <span class="c1"># shock scale parameter</span>
-    <span class="n">grid</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>   <span class="c1"># state grid</span>
+    <span class="n">x_grid</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="c1"># state grid</span>
     <span class="n">shocks</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="c1"># shock draws</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">(</span><span class="n">u</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
-                 <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
-                 <span class="n">β</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.96</span><span class="p">,</span>
-                 <span class="n">μ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-                 <span class="n">ν</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
-                 <span class="n">grid_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
-                 <span class="n">grid_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">120</span><span class="p">,</span>
-                 <span class="n">shock_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
-                 <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1234</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">(</span>
+        <span class="n">u</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+        <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+        <span class="n">β</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.96</span><span class="p">,</span>
+        <span class="n">μ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">ν</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">grid_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
+        <span class="n">grid_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">120</span><span class="p">,</span>
+        <span class="n">shock_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1234</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates an instance of the optimal savings model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Set up grid</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">grid_max</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
+    <span class="n">x_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">grid_max</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
 
     <span class="c1"># Store shocks (with a seed, so results are reproducible)</span>
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">shocks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ</span> <span class="o">+</span> <span class="n">ν</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">shock_size</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">ν</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">shocks</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">state_action_value</span><span class="p">(</span><span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                       <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
-                       <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                       <span class="n">v_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">ν</span><span class="p">,</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">shocks</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We set up the right-hand side of the Bellman equation</p>
+<div class="math notranslate nohighlight">
+\[
+    B(x, c, v) := u(c) + \beta \int v^*(f(x - c) z) \phi(dz)
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">B</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">c</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">v_array</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Right hand side of the Bellman equation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">u</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">shocks</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">shocks</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">grid</span>
-
-    <span class="n">v</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_array</span><span class="p">)</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">ν</span><span class="p">,</span> <span class="n">x_grid</span><span class="p">,</span> <span class="n">shocks</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v_array</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">v</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span><span class="p">))</span>
 </pre></div>
@@ -762,26 +768,41 @@ but it does have some theoretical advantages in the present setting.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The Bellman operator.  Updates the guess of the value function</span>
-<span class="sd">    and also computes a v-greedy policy.</span>
+<span class="sd">    The Bellman operator.  Updates the guess of the value function.</span>
 
 <span class="sd">      * model is an instance of Model</span>
 <span class="sd">      * v is an array representing a guess of the value function</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">grid</span>
+    <span class="n">x_grid</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">x_grid</span>
     <span class="n">v_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-    <span class="n">v_greedy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)):</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-
-        <span class="c1"># Maximize RHS of Bellman equation at state x</span>
-        <span class="n">c_star</span><span class="p">,</span> <span class="n">v_max</span> <span class="o">=</span> <span class="n">maximize</span><span class="p">(</span><span class="n">state_action_value</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_grid</span><span class="p">)):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x_grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">c_star</span><span class="p">,</span> <span class="n">v_max</span> <span class="o">=</span> <span class="n">maximize</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">B</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
         <span class="n">v_new</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">v_max</span>
-        <span class="n">v_greedy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">c_star</span>
 
-    <span class="k">return</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_new</span>
+    <span class="k">return</span> <span class="n">v_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s the function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_greedy</span><span class="p">(</span>
+        <span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>          <span class="c1"># current guess of the value function</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span>            <span class="c1"># instance of optimal savings model</span>
+    <span class="p">):</span>
+    <span class="s2">&quot; Compute the v-greedy policy on x_grid.&quot;</span>
+
+    <span class="n">σ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x_grid</span><span class="p">):</span>
+        <span class="c1"># Maximize RHS of Bellman equation at state x</span>
+        <span class="n">σ</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">maximize</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">B</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">σ</span>
 </pre></div>
 </div>
 </div>
@@ -853,15 +874,15 @@ solution <span class="math notranslate nohighlight">\(v^*\)</span> in this case.
 <p>In practice, we expect some small numerical error.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">grid</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_grid</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">x_grid</span>
 
-<span class="n">v_init</span> <span class="o">=</span> <span class="n">v_star</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">μ</span><span class="p">)</span>    <span class="c1"># Start at the solution</span>
-<span class="n">v_greedy</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>             <span class="c1"># Apply T once</span>
+<span class="n">v_init</span> <span class="o">=</span> <span class="n">v_star</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">μ</span><span class="p">)</span>    <span class="c1"># Start at the solution</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>             <span class="c1"># Apply T once</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">35</span><span class="p">,</span> <span class="o">-</span><span class="mi">24</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$Tv^*$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_init</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$v^*$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$Tv^*$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v_init</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$v^*$&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
@@ -877,23 +898,23 @@ from an arbitrary initial condition.</p>
 <p>The initial condition we’ll start with is, somewhat arbitrarily, <span class="math notranslate nohighlight">\(v(x) = 5 \ln (x)\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>  <span class="c1"># An initial condition</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x_grid</span><span class="p">)</span>  <span class="c1"># An initial condition</span>
 <span class="n">n</span> <span class="o">=</span> <span class="mi">35</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
         <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Initial condition&#39;</span><span class="p">)</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-    <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>  <span class="c1"># Apply the Bellman operator</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">n</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>  <span class="c1"># Apply the Bellman operator</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">n</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_star</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">μ</span><span class="p">),</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v_star</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">μ</span><span class="p">),</span> <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True value function&#39;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">grid</span><span class="p">)))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x_grid</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_grid</span><span class="p">)))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -916,23 +937,25 @@ from an arbitrary initial condition.</p>
 tolerance level.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_model</span><span class="p">(</span><span class="n">og</span><span class="p">,</span>
-                <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-                <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-                <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">print_skip</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_model</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>           <span class="c1"># instance of optimal savings model</span>
+        <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>      <span class="c1"># convergence tolerance</span>
+        <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>   <span class="c1"># maximum iterations</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>   <span class="c1"># print iteration info</span>
+        <span class="n">print_skip</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25</span>    <span class="c1"># iterations between prints</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Solve model by iterating with the Bellman operator.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Set up loop</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">og</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="n">og</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>  <span class="c1"># Initial condition</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">u</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">x_grid</span><span class="p">)</span>  <span class="c1"># Initial condition</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
 
     <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
-        <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">og</span><span class="p">)</span>
+        <span class="n">v_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
         <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">v_new</span><span class="p">))</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="n">print_skip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -944,6 +967,7 @@ tolerance level.</p>
     <span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Converged in </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
 
+    <span class="n">v_greedy</span> <span class="o">=</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v_new</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">v_new</span>
 </pre></div>
 </div>
@@ -957,15 +981,15 @@ tolerance level.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.40975776844489786.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.40975776844490497.
 Error at iteration 50 is 0.1476753540823772.
 Error at iteration 75 is 0.05322171277213883.
-Error at iteration 100 is 0.01918093054865011.
-Error at iteration 125 is 0.006912744396018411.
+Error at iteration 100 is 0.019180930548646558.
+Error at iteration 125 is 0.006912744396021964.
 Error at iteration 150 is 0.0024913303848137502.
-Error at iteration 175 is 0.000897867291303811.
+Error at iteration 175 is 0.0008978672913073638.
 Error at iteration 200 is 0.00032358842396718046.
-Error at iteration 225 is 0.0001166202056204213.
+Error at iteration 225 is 0.00011662020561686859.
 
 Converged in 229 iterations.
 </pre></div>
@@ -977,10 +1001,10 @@ Converged in 229 iterations.
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_solution</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v_solution</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Approximate value function&#39;</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_star</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">μ</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v_star</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">μ</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;True value function&#39;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -1004,10 +1028,10 @@ above, is <span class="math notranslate nohighlight">\(\sigma(x) = (1 - \alpha \
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;approximate policy function&#39;</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span>
         <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;true policy function&#39;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -1016,7 +1040,7 @@ above, is <span class="math notranslate nohighlight">\(\sigma(x) = (1 - \alpha \
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/35a1da927016a3403975811924ff680aecb2a6d29de3f7de4b968b795bf2cf30.png" src="_images/35a1da927016a3403975811924ff680aecb2a6d29de3f7de4b968b795bf2cf30.png" />
+<img alt="_images/53294a0e7ddfad1d2db69aa0eed5691c5991b7c000289572209e11061cead53f.png" src="_images/53294a0e7ddfad1d2db69aa0eed5691c5991b7c000289572209e11061cead53f.png" />
 </div>
 </div>
 <p>The figure shows that we’ve done a good job in this instance of approximating
@@ -1033,7 +1057,7 @@ the true policy.</p>
 specification</p>
 <div class="math notranslate nohighlight">
 \[
-u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
+    u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 \]</div>
 <p>Maintaining the other defaults, including the Cobb-Douglas production
 function,  solve the optimal savings model with this
@@ -1067,19 +1091,19 @@ utility specification.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.5528151810417512.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.5528151810315194.
 Error at iteration 50 is 0.19923228425591333.
-Error at iteration 75 is 0.07180266113800826.
-Error at iteration 100 is 0.02587744333580133.
-Error at iteration 125 is 0.0093261456189353.
-Error at iteration 150 is 0.003361112262005861.
-Error at iteration 175 is 0.0012113338242301097.
-Error at iteration 200 is 0.000436560733326985.
+Error at iteration 75 is 0.07180266113797629.
+Error at iteration 100 is 0.025877443335843964.
+Error at iteration 125 is 0.009326145618956616.
+Error at iteration 150 is 0.003361112262041388.
+Error at iteration 175 is 0.0012113338242443206.
+Error at iteration 200 is 0.0004365607333056687.
 Error at iteration 225 is 0.00015733505506432266.
 
 Converged in 237 iterations.
-CPU times: user 26.2 s, sys: 4.99 ms, total: 26.2 s
-Wall time: 26.2 s
+CPU times: user 29.2 s, sys: 2 ms, total: 29.2 s
+Wall time: 29.2 s
 </pre></div>
 </div>
 </div>
@@ -1088,10 +1112,8 @@ Wall time: 26.2 s
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_grid</span><span class="p">,</span> <span class="n">v_greedy</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Approximate optimal policy&#39;</span><span class="p">)</span>
-
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>

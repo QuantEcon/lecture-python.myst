@@ -241,10 +241,12 @@ def K(
     # Allocate memory for new consumption array
     c_out = np.empty_like(s_grid)
 
-    # Solve for updated consumption value
     for i, s in enumerate(s_grid):
+        # Approximate marginal utility ∫ u'(σ(f(s, α)z)) f'(s, α) z ϕ(z)dz
         vals = u_prime(σ(f(s, α) * shocks)) * f_prime(s, α) * shocks
-        c_out[i] = u_prime_inv(β * np.mean(vals))
+        mu = np.mean(vals)
+        # Compute consumption
+        c_out[i] = u_prime_inv(β * mu)
 
     # Determine corresponding endogenous grid
     x_out = s_grid + c_out        # x_i = s_i + c_i

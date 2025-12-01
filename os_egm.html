@@ -233,7 +233,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 25, 2025
+                            Last changed: Dec 01, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -241,6 +241,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/os_egm.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b6245397e" class="changelog-hash">b6245397e</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">57 minutes ago</span>
+                                <span class="changelog-message">Refine optimal savings lectures with improved clarity and code organization (#754)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -493,10 +502,12 @@ function evaluations.</p>
     <span class="c1"># Allocate memory for new consumption array</span>
     <span class="n">c_out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">s_grid</span><span class="p">)</span>
 
-    <span class="c1"># Solve for updated consumption value</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s_grid</span><span class="p">):</span>
+        <span class="c1"># Approximate marginal utility ∫ u&#39;(σ(f(s, α)z)) f&#39;(s, α) z ϕ(z)dz</span>
         <span class="n">vals</span> <span class="o">=</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">σ</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span><span class="p">))</span> <span class="o">*</span> <span class="n">f_prime</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="n">shocks</span>
-        <span class="n">c_out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">))</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+        <span class="c1"># Compute consumption</span>
+        <span class="n">c_out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">mu</span><span class="p">)</span>
 
     <span class="c1"># Determine corresponding endogenous grid</span>
     <span class="n">x_out</span> <span class="o">=</span> <span class="n">s_grid</span> <span class="o">+</span> <span class="n">c_out</span>        <span class="c1"># x_i = s_i + c_i</span>
