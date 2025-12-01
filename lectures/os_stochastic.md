@@ -523,7 +523,7 @@ $$
 def B(
         x: float,
         c: float,
-        v_array: np.ndarray
+        v_array: np.ndarray,
         model: Model,
     ) -> float:
     """
