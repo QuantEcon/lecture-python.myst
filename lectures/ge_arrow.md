@@ -1311,6 +1311,13 @@ def body(i, carry):
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Wealth distribution under different transition
+    name: fig_wealth
+---
 fig, axs = plt.subplots(1, 2, figsize=(12, 4))
 
 for i, αs_seq in enumerate([αs0_seq, αs1_seq]):
