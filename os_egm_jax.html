@@ -224,7 +224,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Dec 01, 2025
+                            Last changed: Dec 02, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -235,10 +235,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/5efda5424" class="changelog-hash">5efda5424</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">15 minutes ago</span>
+                                <span class="changelog-message">Fix inconsistent code-cell language specifications (#756)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b6245397e" class="changelog-hash">b6245397e</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">57 minutes ago</span>
+                                <span class="changelog-time">10 hours ago</span>
                                 <span class="changelog-message">Refine optimal savings lectures with improved clarity and code organization (#754)</span>
                             </li>
                             
@@ -247,7 +256,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/0bfcac810" class="changelog-hash">0bfcac810</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">18 hours ago</span>
+                                <span class="changelog-time">1 day ago</span>
                                 <span class="changelog-message">Simplify GPU admonition and add to all JAX lectures (#751)</span>
                             </li>
                             
@@ -256,7 +265,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b27f1eb0a" class="changelog-hash">b27f1eb0a</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">6 days ago</span>
+                                <span class="changelog-time">1 week ago</span>
                                 <span class="changelog-message">Reorganize and rename optimal savings lectures (#735)</span>
                             </li>
                             
@@ -399,7 +408,7 @@ that you can access as follows:</p>
     <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">shocks</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ</span> <span class="o">+</span> <span class="n">s</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">shock_size</span><span class="p">,)))</span>
 
-    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="o">=</span><span class="n">μ</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">s_grid</span><span class="o">=</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">shocks</span><span class="o">=</span><span class="n">shocks</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">s_grid</span><span class="p">,</span> <span class="n">shocks</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -430,12 +439,7 @@ that you can access as follows:</p>
 <span class="sd">    The Coleman-Reffett operator using EGM</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Simplify names</span>
-    <span class="n">β</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">α</span>
-    <span class="n">s_grid</span><span class="p">,</span> <span class="n">shocks</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">shocks</span>
-
-    <span class="c1"># Linear interpolation of policy using endogenous grid</span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">s_grid</span><span class="p">,</span> <span class="n">shocks</span><span class="p">,</span> <span class="n">α</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x_val</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x_val</span><span class="p">,</span> <span class="n">x_in</span><span class="p">,</span> <span class="n">c_in</span><span class="p">)</span>
 
     <span class="c1"># Define function to compute consumption at a single grid point</span>
@@ -467,8 +471,8 @@ that you can access as follows:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 18:06:19.743661    4706 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1201 18:06:19.747161    4661 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1202 03:43:41.019232    2528 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1202 03:43:41.022655    2482 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -563,7 +567,7 @@ W1201 18:06:19.747161    4661 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00294495 seconds elapsed
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.00290966 seconds elapsed
 </pre></div>
 </div>
 </div>

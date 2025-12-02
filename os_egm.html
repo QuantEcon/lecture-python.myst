@@ -233,7 +233,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Dec 01, 2025
+                            Last changed: Dec 02, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -244,10 +244,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/5efda5424" class="changelog-hash">5efda5424</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">15 minutes ago</span>
+                                <span class="changelog-message">Fix inconsistent code-cell language specifications (#756)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b6245397e" class="changelog-hash">b6245397e</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">57 minutes ago</span>
+                                <span class="changelog-time">10 hours ago</span>
                                 <span class="changelog-message">Refine optimal savings lectures with improved clarity and code organization (#754)</span>
                             </li>
                             
@@ -256,7 +265,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b27f1eb0a" class="changelog-hash">b27f1eb0a</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">6 days ago</span>
+                                <span class="changelog-time">1 week ago</span>
                                 <span class="changelog-message">Reorganize and rename optimal savings lectures (#735)</span>
                             </li>
                             
@@ -344,29 +353,25 @@ close to the underlying mathematics.</p>
 <section id="theory">
 <h3><span class="section-number">55.2.1. </span>Theory<a class="headerlink" href="#theory" title="Link to this heading">#</a></h3>
 <p>We work with the model set out in <a class="reference internal" href="os_time_iter.html"><span class="doc">Optimal Savings IV: Time Iteration</span></a>, following the same terminology and notation.</p>
-<p>The Euler equation is</p>
-<div class="math notranslate nohighlight" id="equation-egm-euler">
-<span class="eqno">(55.1)<a class="headerlink" href="#equation-egm-euler" title="Link to this equation">#</a></span>\[(u'\circ \sigma^*)(x)
-= \beta \int (u'\circ \sigma^*)(f(x - \sigma^*(x)) z) f'(x - \sigma^*(x)) z \phi(dz)\]</div>
-<p>As we saw, the Coleman-Reffett operator is a nonlinear operator <span class="math notranslate nohighlight">\(K\)</span> engineered so that <span class="math notranslate nohighlight">\(\sigma^*\)</span> is a fixed point of <span class="math notranslate nohighlight">\(K\)</span>.</p>
+<p>As we saw, the Coleman-Reffett operator is a nonlinear operator <span class="math notranslate nohighlight">\(K\)</span> engineered so that the optimal policy
+<span class="math notranslate nohighlight">\(\sigma^*\)</span> is a fixed point of <span class="math notranslate nohighlight">\(K\)</span>.</p>
 <p>It takes as its argument a continuous strictly increasing consumption policy <span class="math notranslate nohighlight">\(\sigma \in \Sigma\)</span>.</p>
 <p>It returns a new function <span class="math notranslate nohighlight">\(K \sigma\)</span>,  where <span class="math notranslate nohighlight">\((K \sigma)(x)\)</span> is the <span class="math notranslate nohighlight">\(c \in (0, \infty)\)</span> that solves</p>
 <div class="math notranslate nohighlight" id="equation-egm-coledef">
-<span class="eqno">(55.2)<a class="headerlink" href="#equation-egm-coledef" title="Link to this equation">#</a></span>\[u'(c)
+<span class="eqno">(55.1)<a class="headerlink" href="#equation-egm-coledef" title="Link to this equation">#</a></span>\[u'(c)
 = \beta \int (u' \circ \sigma) (f(x - c) z ) f'(x - c) z \phi(dz)\]</div>
 </section>
 <section id="exogenous-grid">
 <h3><span class="section-number">55.2.2. </span>Exogenous Grid<a class="headerlink" href="#exogenous-grid" title="Link to this heading">#</a></h3>
 <p>As discussed in <a class="reference internal" href="os_time_iter.html"><span class="doc">Optimal Savings IV: Time Iteration</span></a>, to implement the method on a
-computer, we need numerical approximation.</p>
-<p>In particular, we represent a policy function by a set of values on a finite grid.</p>
+computer, we represent a policy function by a set of values on a finite grid.</p>
 <p>The function itself is reconstructed from this representation when necessary,
 using interpolation or some other method.</p>
 <p>Our previous strategy in <a class="reference internal" href="os_time_iter.html"><span class="doc">Optimal Savings IV: Time Iteration</span></a> for obtaining a finite representation of an updated consumption policy was to</p>
 <ul class="simple">
 <li><p>fix a grid of income points <span class="math notranslate nohighlight">\(\{x_i\}\)</span></p></li>
 <li><p>calculate the consumption value <span class="math notranslate nohighlight">\(c_i\)</span> corresponding to each <span class="math notranslate nohighlight">\(x_i\)</span> using
-<a class="reference internal" href="#equation-egm-coledef">(55.2)</a> and a root-finding routine</p></li>
+<a class="reference internal" href="#equation-egm-coledef">(55.1)</a> and a root-finding routine</p></li>
 </ul>
 <p>Each <span class="math notranslate nohighlight">\(c_i\)</span> is then interpreted as the value of the function <span class="math notranslate nohighlight">\(K \sigma\)</span> at <span class="math notranslate nohighlight">\(x_i\)</span>.</p>
 <p>Thus, with the pairs <span class="math notranslate nohighlight">\(\{(x_i, c_i)\}\)</span> in hand, we can reconstruct <span class="math notranslate nohighlight">\(K \sigma\)</span> via approximation.</p>
@@ -388,7 +393,7 @@ function evaluations.</p>
 <li><p>Then we obtain  <span class="math notranslate nohighlight">\(c_i\)</span> via</p></li>
 </ul>
 <div class="math notranslate nohighlight" id="equation-egm-getc">
-<span class="eqno">(55.3)<a class="headerlink" href="#equation-egm-getc" title="Link to this equation">#</a></span>\[c_i =
+<span class="eqno">(55.2)<a class="headerlink" href="#equation-egm-getc" title="Link to this equation">#</a></span>\[c_i =
 (u')^{-1}
 \left\{
     \beta \int (u' \circ \sigma) (f(s_i) z ) \, f'(s_i) \, z \, \phi(dz)
@@ -396,7 +401,7 @@ function evaluations.</p>
 <ul class="simple">
 <li><p>Finally, for each <span class="math notranslate nohighlight">\(c_i\)</span> we set <span class="math notranslate nohighlight">\(x_i = c_i + s_i\)</span>.</p></li>
 </ul>
-<p>Importantly, each <span class="math notranslate nohighlight">\((x_i, c_i)\)</span> pair constructed in this manner satisfies <a class="reference internal" href="#equation-egm-coledef">(55.2)</a>.</p>
+<p>Importantly, each <span class="math notranslate nohighlight">\((x_i, c_i)\)</span> pair constructed in this manner satisfies <a class="reference internal" href="#equation-egm-coledef">(55.1)</a>.</p>
 <p>With the points <span class="math notranslate nohighlight">\(\{x_i, c_i\}\)</span> in hand, we can reconstruct <span class="math notranslate nohighlight">\(K \sigma\)</span> via approximation as before.</p>
 <p>The name EGM comes from the fact that the grid <span class="math notranslate nohighlight">\(\{x_i\}\)</span> is determined <strong>endogenously</strong>.</p>
 </section>
@@ -450,19 +455,21 @@ function evaluations.</p>
     <span class="n">u_prime_inv</span><span class="p">:</span> <span class="n">Callable</span> <span class="c1"># inverse of u_prime</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">(</span><span class="n">u</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
-                 <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
-                 <span class="n">β</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.96</span><span class="p">,</span>
-                 <span class="n">μ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-                 <span class="n">ν</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
-                 <span class="n">grid_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
-                 <span class="n">grid_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">120</span><span class="p">,</span>
-                 <span class="n">shock_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
-                 <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1234</span><span class="p">,</span>
-                 <span class="n">α</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
-                 <span class="n">u_prime</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">f_prime</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">u_prime_inv</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">(</span>
+        <span class="n">u</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+        <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+        <span class="n">β</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.96</span><span class="p">,</span>
+        <span class="n">μ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">ν</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">grid_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span>
+        <span class="n">grid_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">120</span><span class="p">,</span>
+        <span class="n">shock_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>
+        <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1234</span><span class="p">,</span>
+        <span class="n">α</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
+        <span class="n">u_prime</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">f_prime</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">u_prime_inv</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates an instance of the optimal savings model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -473,7 +480,9 @@ function evaluations.</p>
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">shocks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ</span> <span class="o">+</span> <span class="n">ν</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">shock_size</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">ν</span><span class="p">,</span> <span class="n">s_grid</span><span class="p">,</span> <span class="n">shocks</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">u_prime</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">u_prime_inv</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">ν</span><span class="p">,</span> <span class="n">s_grid</span><span class="p">,</span> <span class="n">shocks</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">u_prime</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">u_prime_inv</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -546,12 +555,14 @@ function evaluations.</p>
 <p>Here’s our solver routine:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_model_time_iter</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
-                          <span class="n">c_init</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-                          <span class="n">x_init</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-                          <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
-                          <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
-                          <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_model_time_iter</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>             <span class="c1"># Model details</span>
+        <span class="n">c_init</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>       <span class="c1"># initial guess of consumption on EG</span>
+        <span class="n">x_init</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>       <span class="c1"># initial guess of endogenous grid</span>
+        <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>        <span class="c1"># Error tolerance</span>
+        <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>     <span class="c1"># Max number of iterations of K</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>      <span class="c1"># If true print output</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Solve the model using time iteration with EGM.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
