@@ -52,9 +52,8 @@ The model features
 Let's start with some standard imports:
 
 ```{code-cell} ipython
-import numpy as np
 import quantecon as qe
-import scipy.linalg as la
+import jax.numpy as jnp
 ```
 
 ### References
@@ -72,7 +71,7 @@ The Harrison-Kreps model illustrates the following notion of a bubble that attra
 
 > *A component of an asset price can be interpreted as a bubble when all investors agree that the current price of the asset exceeds what they believe the asset's underlying dividend stream justifies*.
 
-## Structure of the Model
+## Structure of the model
 
 The model simplifies things  by ignoring alterations in the distribution of wealth
 among investors who have hard-wired different beliefs about the fundamentals that determine
@@ -131,15 +130,15 @@ But in state $1$,  a type $a$ investor is more pessimistic  about next period's 
 
 The stationary (i.e., invariant) distributions of these two matrices can be calculated as follows:
 
-```{code-cell} python3
-qa = np.array([[1/2, 1/2], [2/3, 1/3]])
-qb = np.array([[2/3, 1/3], [1/4, 3/4]])
+```{code-cell} ipython3
+qa = jnp.array([[1/2, 1/2], [2/3, 1/3]])
+qb = jnp.array([[2/3, 1/3], [1/4, 3/4]])
 mca = qe.MarkovChain(qa)
 mcb = qe.MarkovChain(qb)
 mca.stationary_distributions
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 mcb.stationary_distributions
 ```
 
@@ -149,7 +148,7 @@ The stationary distribution of $P_b$ is approximately $\pi_b = \begin{bmatrix} .
 
 Thus, a type $a$ investor is more pessimistic on average.
 
-### Ownership Rights
+### Ownership rights
 
 An owner of the asset at the end of time $t$ is entitled to the dividend at time $t+1$ and also has the right to sell the asset at time $t+1$.
 
@@ -166,23 +165,23 @@ Case 1 is the case studied in Harrison and Kreps.
 
 In case 2, both types of investors always hold at least some of the asset.
 
-### Short Sales Prohibited
+### Short sales prohibited
 
 No short sales are allowed.
 
 This matters because it limits how  pessimists can express their opinions.
 
-* They **can** express themselves by selling their shares.
-* They **cannot** express themsevles  more loudly by artificially "manufacturing shares" -- that is, they cannot borrow shares from more optimistic investors and then immediately sell them.
+* They *can* express themselves by selling their shares.
+* They *cannot* express themsevles  more loudly by artificially "manufacturing shares" -- that is, they cannot borrow shares from more optimistic investors and then immediately sell them.
 
-### Optimism and Pessimism
+### Optimism and pessimism
 
 The above specifications of the perceived transition matrices $P_a$ and $P_b$, taken directly from Harrison and Kreps, build in stochastically alternating temporary optimism and pessimism.
 
 Remember that state $1$ is the high dividend state.
 
 * In state $0$, a type $a$ agent is more optimistic about next period's dividend than a type $b$ agent.
-* In state $1$, a type $b$ agent is more optimistic about next period's dividend than a type $a$ agaub is.
+* In state $1$, a type $b$ agent is more optimistic about next period's dividend than a type $a$ agnet is.
 
 However, the stationary distributions $\pi_a = \begin{bmatrix} .57 & .43 \end{bmatrix}$ and $\pi_b = \begin{bmatrix} .43 & .57 \end{bmatrix}$ tell us that a type $b$ person is more optimistic about the dividend process in the long run than is a type $a$ person.
 
@@ -194,7 +193,7 @@ This price function is endogenous and to be determined below.
 
 When investors choose whether to purchase or sell the asset at $t$, they also know $s_t$.
 
-## Solving the Model
+## Solving the model
 
 Now let's turn to solving the model.
 
@@ -207,7 +206,7 @@ assumptions about beliefs:
 1. There are two types of agents differentiated only by their beliefs. Each type of agent has sufficient resources to purchase all of the asset (Harrison and Kreps's setting).
 1. There are two types of agents with different beliefs, but because of limited wealth and/or limited leverage, both types of investors hold the asset each period.
 
-### Summary Table
+### Summary table
 
 The following table gives a summary of the findings obtained in the remainder of the lecture
 (in an exercise you will be asked to recreate  the  table and also reinterpret parts of it).
@@ -241,7 +240,7 @@ The row corresponding to $p_p$ would apply if neither type of investor has enoug
 
 The row corresponding to $p_p$ would also  apply if both types have enough resources to buy the entire stock of the asset but  short sales are also  possible so that   temporarily pessimistic   investors price the asset.
 
-### Single Belief Prices
+### Single belief prices
 
 We’ll start by pricing the asset under homogeneous beliefs.
 
@@ -270,13 +269,15 @@ The first two rows of the table report $p_a(s)$ and $p_b(s)$.
 
 Here's a function that can be used to compute these values
 
-```{code-cell} python3
+```{code-cell} ipython3
 def price_single_beliefs(transition, dividend_payoff, β=.75):
     """
     Function to Solve Single Beliefs
     """
     # First compute inverse piece
-    imbq_inv = la.inv(np.eye(transition.shape[0]) - β * transition)
+    imbq_inv = jnp.linalg.inv(
+        jnp.eye(transition.shape[0]) - β * transition
+        )
 
     # Next compute prices
     prices = β * imbq_inv @ transition @ dividend_payoff
@@ -284,7 +285,7 @@ def price_single_beliefs(transition, dividend_payoff, β=.75):
     return prices
 ```
 
-#### Single Belief Prices as Benchmarks
+#### Single belief prices as benchmarks
 
 These equilibrium prices under homogeneous beliefs are important benchmarks for the subsequent analysis.
 
@@ -293,7 +294,7 @@ These equilibrium prices under homogeneous beliefs are important benchmarks for 
 
 We will compare these fundamental values of the asset with equilibrium values when traders have different beliefs.
 
-### Pricing under Heterogeneous Beliefs
+### Pricing under heterogeneous beliefs
 
 There are several cases to consider.
 
@@ -333,7 +334,7 @@ P_a(s,1)  \bar p(0) + P_a(s,1) ( 1 +  \bar  p(1)) <
 P_b(s,1)  \bar p(0) + P_b(s,1) ( 1 +  \bar  p(1))
 $$
 
-**Thus the marginal investor is the (temporarily) optimistic type**.
+*Thus the marginal investor is the (temporarily) optimistic type*.
 
 Equation {eq}`hakr2` is a functional equation that, like a Bellman equation, can be solved by
 
@@ -399,38 +400,38 @@ Investors of type $a$ want to sell the asset in state $1$ while investors of typ
 
 Here's code to solve for $\bar p$, $\hat p_a$ and $\hat p_b$ using the iterative method described above
 
-```{code-cell} python3
+```{code-cell} ipython3
 def price_optimistic_beliefs(transitions, dividend_payoff, β=.75,
                             max_iter=50000, tol=1e-16):
     """
     Function to Solve Optimistic Beliefs
     """
     # We will guess an initial price vector of [0, 0]
-    p_new = np.array([[0], [0]])
-    p_old = np.array([[10.], [10.]])
+    p_new = jnp.array([[0], [0]])
+    p_old = jnp.array([[10.], [10.]])
 
     # We know this is a contraction mapping, so we can iterate to conv
     for i in range(max_iter):
         p_old = p_new
-        p_new = β * np.max([q @ p_old
-                            + q @ dividend_payoff for q in transitions],
+        p_new = β * jnp.max(jnp.stack([q @ p_old
+                            + q @ dividend_payoff for q in transitions]),
                             1)
 
         # If we succeed in converging, break out of for loop
-        if np.max(np.sqrt((p_new - p_old)**2)) < tol:
+        if jnp.max(jnp.sqrt((p_new - p_old)**2)) < tol:
             break
 
-    ptwiddle = β * np.min([q @ p_old
-                          + q @ dividend_payoff for q in transitions],
-                          1)
+    ptwiddle = β * jnp.min(jnp.stack([q @ p_old
+                          + q @ dividend_payoff for q in transitions]),
+                          axis=0)
 
-    phat_a = np.array([p_new[0], ptwiddle[1]])
-    phat_b = np.array([ptwiddle[0], p_new[1]])
+    phat_a = jnp.array([p_new[0], ptwiddle[1]])
+    phat_b = jnp.array([ptwiddle[0], p_new[1]])
 
     return p_new, phat_a, phat_b
 ```
 
-### Insufficient Funds
+### Insufficient funds
 
 Outcomes differ when the more optimistic type of investor has insufficient wealth --- or insufficient ability to borrow enough --- to hold the entire stock of the asset.
 
@@ -467,31 +468,31 @@ Constraints on short sales prevent that.
 
 Here's code to solve for $\check p$ using iteration
 
-```{code-cell} python3
+```{code-cell} ipython3
 def price_pessimistic_beliefs(transitions, dividend_payoff, β=.75,
                             max_iter=50000, tol=1e-16):
     """
     Function to Solve Pessimistic Beliefs
     """
     # We will guess an initial price vector of [0, 0]
-    p_new = np.array([[0], [0]])
-    p_old = np.array([[10.], [10.]])
+    p_new = jnp.array([[0], [0]])
+    p_old = jnp.array([[10.], [10.]])
 
     # We know this is a contraction mapping, so we can iterate to conv
     for i in range(max_iter):
         p_old = p_new
-        p_new = β * np.min([q @ p_old
-                            + q @ dividend_payoff for q in transitions],
-                           1)
+        p_new = β * jnp.min(jnp.stack([q @ p_old
+                            + q @ dividend_payoff for q in transitions]),
+                            axis=0)
 
         # If we succeed in converging, break out of for loop
-        if np.max(np.sqrt((p_new - p_old)**2)) < tol:
+        if jnp.max(jnp.sqrt((p_new - p_old)**2)) < tol:
             break
 
     return p_new
 ```
 
-### Further Interpretation
+### Further interpretation
 
 Jose Scheinkman {cite}`Scheinkman2014` interprets the Harrison-Kreps model as a model of a bubble --- a situation in which an asset price exceeds what every investor thinks is merited by his or her beliefs about the value of the asset's underlying dividend stream.
 
@@ -570,15 +571,15 @@ We'll use these transition matrices when we present our solution of exercise 1 b
 First, we will obtain equilibrium price vectors with homogeneous beliefs, including when all
 investors are optimistic or pessimistic.
 
-```{code-cell} python3
-qa = np.array([[1/2, 1/2], [2/3, 1/3]])    # Type a transition matrix
-qb = np.array([[2/3, 1/3], [1/4, 3/4]])    # Type b transition matrix
+```{code-cell} ipython3
+qa = jnp.array([[1/2, 1/2], [2/3, 1/3]])    # Type a transition matrix
+qb = jnp.array([[2/3, 1/3], [1/4, 3/4]])    # Type b transition matrix
 # Optimistic investor transition matrix
-qopt = np.array([[1/2, 1/2], [1/4, 3/4]])
+qopt = jnp.array([[1/2, 1/2], [1/4, 3/4]])
 # Pessimistic investor transition matrix
-qpess = np.array([[2/3, 1/3], [2/3, 1/3]])
+qpess = jnp.array([[2/3, 1/3], [2/3, 1/3]])
 
-dividendreturn = np.array([[0], [1]])
+dividendreturn = jnp.array([[0], [1]])
 
 transitions = [qa, qb, qopt, qpess]
 labels = ['p_a', 'p_b', 'p_optimistic', 'p_pessimistic']
@@ -586,7 +587,9 @@ labels = ['p_a', 'p_b', 'p_optimistic', 'p_pessimistic']
 for transition, label in zip(transitions, labels):
     print(label)
     print("=" * 20)
-    s0, s1 = np.round(price_single_beliefs(transition, dividendreturn), 2)
+    s0, s1 = jnp.round(
+        price_single_beliefs(transition, dividendreturn), 2
+        )
     print(f"State 0: {s0}")
     print(f"State 1: {s1}")
     print("-" * 20)
@@ -595,14 +598,14 @@ for transition, label in zip(transitions, labels):
 We will use the price_optimistic_beliefs function to find the price under
 heterogeneous beliefs.
 
-```{code-cell} python3
+```{code-cell} ipython3
 opt_beliefs = price_optimistic_beliefs([qa, qb], dividendreturn)
 labels = ['p_optimistic', 'p_hat_a', 'p_hat_b']
 
 for p, label in zip(opt_beliefs, labels):
     print(label)
     print("=" * 20)
-    s0, s1 = np.round(p, 2)
+    s0, s1 = jnp.round(p, 2)
     print(f"State 0: {s0}")
     print(f"State 1: {s1}")
     print("-" * 20)
