@@ -998,12 +998,11 @@ def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
         diff = jnp.empty((n, K))
 
         # Loop scatters each agent's state-dependent surplus into the column k.
-        def body(k, carry):
-            diff = carry
+        def body(k, diff):
             return diff.at[:, k].set(α[k] * y - ys[:, k])
 
         # Applies body sequentially while threading diff.
-        diff = jax.lax.scan(0, K, body, diff)
+        diff = jax.lax.fori_loop(0, K, body, diff)
 
         ψ = V @ diff
 
