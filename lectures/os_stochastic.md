@@ -62,7 +62,7 @@ More information on this savings problem can be found in
 
 Let's start with some imports:
 
-```{code-cell} ipython
+```{code-cell} python3
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import interp1d

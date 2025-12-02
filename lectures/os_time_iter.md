@@ -280,7 +280,7 @@ As in {doc}`os_stochastic`, we assume that
 This allows us to compare our results to the analytical solutions we obtained in
 that lecture:
 
-```{code-cell} python3
+```{code-cell} ipython
 def v_star(x, α, β, μ):
     """
     True value function
@@ -305,7 +305,7 @@ For this we need access to the functions $u'$ and $f, f'$.
 
 We use the same `Model` structure from {doc}`os_stochastic`.
 
-```{code-cell} python3
+```{code-cell} ipython
 class Model(NamedTuple):
     u: Callable        # utility function
     f: Callable        # production function
@@ -381,7 +381,7 @@ state $x$ and $σ$, the current guess of the policy.
 
 Here's the operator $K$, that implements the root-finding step.
 
-```{code-cell} ipython3
+```{code-cell} ipython
 def K(σ: np.ndarray, model: Model) -> np.ndarray:
     """
     The Coleman-Reffett operator
@@ -404,7 +404,7 @@ def K(σ: np.ndarray, model: Model) -> np.ndarray:
 
 Let's generate an instance and plot some iterates of $K$, starting from $σ(x) = x$.
 
-```{code-cell} python3
+```{code-cell} ipython
 # Define utility and production functions with derivatives
 α = 0.4
 u = lambda c: np.log(c)
@@ -443,7 +443,7 @@ Here is a function called `solve_model_time_iter` that takes an instance of
 using time iteration.
 
 
-```{code-cell} python3
+```{code-cell} ipython
 def solve_model_time_iter(
         model: Model,
         σ_init: np.ndarray,
@@ -475,7 +475,7 @@ def solve_model_time_iter(
 
 Let's call it:
 
-```{code-cell} python3
+```{code-cell} ipython
 # Unpack
 grid = model.grid
 
@@ -485,7 +485,7 @@ grid = model.grid
 
 Here is a plot of the resulting policy, compared with the true policy:
 
-```{code-cell} python3
+```{code-cell} ipython
 # Unpack
 grid, α, β = model.grid, model.α, model.β
 
@@ -505,7 +505,7 @@ Again, the fit is excellent.
 
 The maximal absolute deviation between the two policies is
 
-```{code-cell} python3
+```{code-cell} ipython
 # Unpack
 grid, α, β = model.grid, model.α, model.β
 
@@ -542,7 +542,7 @@ Compute and plot the optimal policy.
 
 We define the CRRA utility function and its derivative.
 
-```{code-cell} python3
+```{code-cell} ipython
 γ = 1.5
 
 def u_crra(c):
@@ -558,7 +558,7 @@ model_crra = create_model(u=u_crra, f=f, α=α,
 
 Now we solve and plot the policy:
 
-```{code-cell} python3
+```{code-cell} ipython
 %%time
 # Unpack
 grid = model_crra.grid

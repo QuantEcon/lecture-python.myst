@@ -39,7 +39,7 @@ We'll also use JAX's `vmap` function to fully vectorize the Coleman-Reffett oper
 
 Let's start with some standard imports:
 
-```{code-cell} ipython
+```{code-cell} python3
 import matplotlib.pyplot as plt
 import jax
 import jax.numpy as jnp
