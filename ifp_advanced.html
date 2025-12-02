@@ -189,7 +189,6 @@
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#iterating">61.3.3.2. Iterating</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-the-assumptions">61.3.4. Testing the Assumptions</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">61.4. Implementation</a></li>
@@ -246,7 +245,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 30, 2025
+                            Last changed: Dec 02, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -254,6 +253,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/ifp_advanced.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/60235ebbd" class="changelog-hash">60235ebbd</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">15 minutes ago</span>
+                                <span class="changelog-message">Fix bugs in ifp_advanced lecture (#757)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -278,7 +286,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/57b1b3493" class="changelog-hash">57b1b3493</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">3 days ago</span>
+                                <span class="changelog-time">4 days ago</span>
                                 <span class="changelog-message">Fix stochastic returns simulation and improve wealth inequality analysis (#748)</span>
                             </li>
                             
@@ -287,7 +295,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/40c9d91d9" class="changelog-hash">40c9d91d9</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">3 days ago</span>
+                                <span class="changelog-time">4 days ago</span>
                                 <span class="changelog-message">Restructure IFP lectures: separate transient shocks into new lecture (#747)</span>
                             </li>
                             
@@ -336,15 +344,6 @@
                                 <span class="changelog-message">FIX: pass quantecon logo through to download notebooks (#432)</span>
                             </li>
                             
-                            <li class="changelog-entry">
-                                
-                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/9ec9e13ed" class="changelog-hash">9ec9e13ed</a>
-                                
-                                <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">1 year ago</span>
-                                <span class="changelog-message">MAINT: update @jit(nopython=True) to @jit with numba>=0.59 (#395)</span>
-                            </li>
-                            
                         </ul>
                     </div>
 
@@ -358,7 +357,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="the-income-fluctuation-problem-v-stochastic-returns-on-assets">
-<h1><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">61. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem V: Stochastic Returns on Assets</a><a class="headerlink" href="#the-income-fluctuation-problem-v-stochastic-returns-on-assets" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">61. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem V: Stochastic Returns on Assets</a><a class="headerlink" href="#the-income-fluctuation-problem-v-stochastic-returns-on-assets" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with access to a GPU.</p>
@@ -373,15 +372,15 @@ that you can access as follows:</p>
 <nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#the-income-fluctuation-problem-v-stochastic-returns-on-assets" id="id9">The Income Fluctuation Problem V: Stochastic Returns on Assets</a></p>
+<li><p><a class="reference internal" href="#the-income-fluctuation-problem-v-stochastic-returns-on-assets" id="id8">The Income Fluctuation Problem V: Stochastic Returns on Assets</a></p>
 <ul>
-<li><p><a class="reference internal" href="#overview" id="id10">Overview</a></p></li>
-<li><p><a class="reference internal" href="#the-model" id="id11">The Model</a></p></li>
-<li><p><a class="reference internal" href="#solution-algorithm" id="id12">Solution Algorithm</a></p></li>
-<li><p><a class="reference internal" href="#implementation" id="id13">Implementation</a></p></li>
-<li><p><a class="reference internal" href="#simulation" id="id14">Simulation</a></p></li>
-<li><p><a class="reference internal" href="#wealth-inequality" id="id15">Wealth Inequality</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id16">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#overview" id="id9">Overview</a></p></li>
+<li><p><a class="reference internal" href="#the-model" id="id10">The Model</a></p></li>
+<li><p><a class="reference internal" href="#solution-algorithm" id="id11">Solution Algorithm</a></p></li>
+<li><p><a class="reference internal" href="#implementation" id="id12">Implementation</a></p></li>
+<li><p><a class="reference internal" href="#simulation" id="id13">Simulation</a></p></li>
+<li><p><a class="reference internal" href="#wealth-inequality" id="id14">Wealth Inequality</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id15">Exercises</a></p></li>
 </ul>
 </li>
 </ul>
@@ -399,7 +398,8 @@ that you can access as follows:</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+  Downloading quantecon-0.10.1-py3-none-any.whl.metadata (5.3 kB)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
@@ -411,13 +411,16 @@ Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/env
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Downloading quantecon-0.10.1-py3-none-any.whl (325 kB)
+Installing collected packages: quantecon
+Successfully installed quantecon-0.10.1
 </pre></div>
 </div>
 </div>
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">61.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">61.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In this lecture, we continue our study of the income fluctuation problem described in <a class="reference internal" href="ifp_egm.html"><span class="doc">The Income Fluctuation Problem III: The Endogenous Grid Method</span></a>.</p>
 <p>While the interest rate was previously taken to be fixed, we now allow
 returns on assets to be state-dependent.</p>
@@ -435,18 +438,24 @@ endogenous grid method to solve the model quickly and accurately.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="kn">import</span> <span class="n">MarkovChain</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qe</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">vmap</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="the-model">
-<h2><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">61.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">61.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
 <p>In this section we review the household problem and optimality results.</p>
 <section id="set-up">
 <h3><span class="section-number">61.2.1. </span>Set Up<a class="headerlink" href="#set-up" title="Link to this heading">#</a></h3>
@@ -483,18 +492,18 @@ the solution methods described below converge.</p>
 <p>We also need to ensure that the present discounted value of wealth
 does not grow too quickly.</p>
 <p>When <span class="math notranslate nohighlight">\(\{R_t\}\)</span> was constant we required that <span class="math notranslate nohighlight">\(\beta R &lt; 1\)</span>.</p>
-<p>Since it is now stochastic, we require that</p>
+<p>Since it is now stochastic, we require (see <span id="id4">[<a class="reference internal" href="zreferences.html#id270" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">Ma <em>et al.</em>, 2020</a>]</span>) that</p>
 <div class="math notranslate nohighlight" id="equation-fpbc2">
 <span class="eqno">(61.4)<a class="headerlink" href="#equation-fpbc2" title="Link to this equation">#</a></span>\[\beta G_R &lt; 1,
 \quad \text{where} \quad
 G_R := \lim_{n \to \infty}
 \left(\mathbb E \prod_{t=1}^n R_t \right)^{1/n}\]</div>
-<p>Notice that, when <span class="math notranslate nohighlight">\(\{R_t\}\)</span> takes some constant value <span class="math notranslate nohighlight">\(R\)</span>, this
-reduces to the previous restriction <span class="math notranslate nohighlight">\(\beta R &lt; 1\)</span>.</p>
 <p>The value <span class="math notranslate nohighlight">\(G_R\)</span> can be thought of as the long run (geometric) average
 gross rate of return.</p>
-<p>More intuition behind <a class="reference internal" href="#equation-fpbc2">(61.4)</a> is provided in <span id="id4">[<a class="reference internal" href="zreferences.html#id270" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">Ma <em>et al.</em>, 2020</a>]</span>.</p>
-<p>Discussion on how to check it is given below.</p>
+<p>To simplify this lecture, we will <em>assume that the interest rate process is
+IID</em>.</p>
+<p>In that case, it is clear from the definition of <span class="math notranslate nohighlight">\(G_R\)</span> that <span class="math notranslate nohighlight">\(G_R\)</span> is just <span class="math notranslate nohighlight">\(\mathbb E R_t\)</span>.</p>
+<p>We test the condition <span class="math notranslate nohighlight">\(\beta \mathbb E R_t &lt; 1\)</span> in the code below.</p>
 <p>Finally, we impose some routine technical restrictions on non-financial income.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -528,7 +537,7 @@ Coleman–Reffett operator <span class="math notranslate nohighlight">\(K\)</spa
 </section>
 </section>
 <section id="solution-algorithm">
-<h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">61.3. </span>Solution Algorithm</a><a class="headerlink" href="#solution-algorithm" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">61.3. </span>Solution Algorithm</a><a class="headerlink" href="#solution-algorithm" title="Link to this heading">#</a></h2>
 <section id="a-time-iteration-operator">
 <span id="index-1"></span><h3><span class="section-number">61.3.1. </span>A Time Iteration Operator<a class="headerlink" href="#a-time-iteration-operator" title="Link to this heading">#</a></h3>
 <p>Our definition of the candidate class <span class="math notranslate nohighlight">\(\sigma \in \mathscr C\)</span> of consumption
@@ -619,26 +628,9 @@ obtained by interpolating <span class="math notranslate nohighlight">\(\{a_i, c_
 <p>In what follows, we use linear interpolation.</p>
 </section>
 </section>
-<section id="testing-the-assumptions">
-<h3><span class="section-number">61.3.4. </span>Testing the Assumptions<a class="headerlink" href="#testing-the-assumptions" title="Link to this heading">#</a></h3>
-<p>Convergence of time iteration is dependent on the condition <span class="math notranslate nohighlight">\(\beta G_R &lt; 1\)</span> being satisfied.</p>
-<p>One can check this using the fact that <span class="math notranslate nohighlight">\(G_R\)</span> is equal to the spectral
-radius of the matrix <span class="math notranslate nohighlight">\(L\)</span> defined by</p>
-<div class="math notranslate nohighlight">
-\[
-L(z, \hat z) := P(z, \hat z) \int R(\hat z, x) \phi(x) dx
-\]</div>
-<p>This identity is proved in <span id="id8">[<a class="reference internal" href="zreferences.html#id270" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">Ma <em>et al.</em>, 2020</a>]</span>, where <span class="math notranslate nohighlight">\(\phi\)</span> is the
-density of the innovation <span class="math notranslate nohighlight">\(\zeta_t\)</span> to returns on assets.</p>
-<p>(Remember that <span class="math notranslate nohighlight">\(\mathsf Z\)</span> is a finite set, so this expression defines a matrix.)</p>
-<p>Checking the condition is even easier when <span class="math notranslate nohighlight">\(\{R_t\}\)</span> is IID.</p>
-<p>In that case, it is clear from the definition of <span class="math notranslate nohighlight">\(G_R\)</span> that <span class="math notranslate nohighlight">\(G_R\)</span>
-is just <span class="math notranslate nohighlight">\(\mathbb E R_t\)</span>.</p>
-<p>We test the condition <span class="math notranslate nohighlight">\(\beta \mathbb E R_t &lt; 1\)</span> in the code below.</p>
-</section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">61.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">61.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>Here’s the model as a <code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -659,32 +651,31 @@ is just <span class="math notranslate nohighlight">\(\mathbb E R_t\)</span>.</p>
     <span class="n">ζ_draws</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">create_ifp</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
-                   <span class="n">β</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>
-                   <span class="n">P</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
-                               <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)]),</span>
-                   <span class="n">a_r</span><span class="o">=</span><span class="mf">0.16</span><span class="p">,</span>
-                   <span class="n">b_r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                   <span class="n">a_y</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-                   <span class="n">b_y</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                   <span class="n">shock_draw_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                   <span class="n">grid_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                   <span class="n">grid_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                   <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_ifp</span><span class="p">(</span>
+        <span class="n">γ</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>                      <span class="c1"># Utility parameter</span>
+        <span class="n">β</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>                     <span class="c1"># Discount factor</span>
+        <span class="n">P</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>    <span class="c1"># Default Markov chain for Z</span>
+                    <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)]),</span>
+        <span class="n">a_r</span><span class="o">=</span><span class="mf">0.16</span><span class="p">,</span>                   <span class="c1"># Volatility term in R shock</span>
+        <span class="n">b_r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>                    <span class="c1"># Mean shift R shock</span>
+        <span class="n">a_y</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>                    <span class="c1"># Volatility term in Y shock</span>
+        <span class="n">b_y</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>                    <span class="c1"># Mean shift Y shock</span>
+        <span class="n">shock_draw_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>        <span class="c1"># For Monte Carlo</span>
+        <span class="n">grid_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>               <span class="c1"># Exogenous grid max</span>
+        <span class="n">grid_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>              <span class="c1"># Exogenous grid size</span>
+        <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span>                   <span class="c1"># Random seed</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create an instance of IFP with the given parameters.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Test stability assuming {R_t} is IID and adopts the lognormal</span>
-    <span class="c1"># specification given below.  The test is then β E R_t &lt; 1.</span>
+    <span class="c1"># Test stability assuming {R_t} is IID and ln R ~ N(b_r, a_r)</span>
     <span class="n">ER</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b_r</span> <span class="o">+</span> <span class="n">a_r</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">β</span> <span class="o">*</span> <span class="n">ER</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Stability condition failed.&quot;</span>
 
-    <span class="c1"># Convert to JAX arrays</span>
-    <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
-
     <span class="c1"># Generate random draws using JAX</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">key</span><span class="p">,</span> <span class="n">subkey1</span><span class="p">,</span> <span class="n">subkey2</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">subkey1</span><span class="p">,</span> <span class="n">subkey2</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
     <span class="n">η_draws</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey1</span><span class="p">,</span> <span class="p">(</span><span class="n">shock_draw_size</span><span class="p">,))</span>
     <span class="n">ζ_draws</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey2</span><span class="p">,</span> <span class="p">(</span><span class="n">shock_draw_size</span><span class="p">,))</span>
     <span class="n">s_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">grid_max</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
@@ -712,66 +703,60 @@ is just <span class="math notranslate nohighlight">\(\mathbb E R_t\)</span>.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1202 11:35:00.205414    2259 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1202 11:35:00.208905    2186 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+</pre></div>
+</div>
+</div>
 </div>
 <p>Here’s the Coleman-Reffett operator using JAX:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">K</span><span class="p">(</span><span class="n">ae_vals</span><span class="p">,</span> <span class="n">c_vals</span><span class="p">,</span> <span class="n">ifp</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">K</span><span class="p">(</span>
+        <span class="n">a_in</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>   <span class="c1"># a_in[i, z] is an asset grid</span>
+        <span class="n">c_in</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>   <span class="c1"># c_in[i, z] = consumption at a_in[i, z]</span>
+        <span class="n">ifp</span><span class="p">:</span> <span class="n">IFP</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Coleman--Reffett operator for the income fluctuation problem,</span>
 <span class="sd">    using the endogenous grid method with JAX.</span>
 
-<span class="sd">        * ifp is an instance of IFP</span>
-<span class="sd">        * ae_vals[i, z] is an asset grid</span>
-<span class="sd">        * c_vals[i, z] is consumption at ae_vals[i, z]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Extract parameters from ifp</span>
-    <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">P</span>
-    <span class="n">a_r</span><span class="p">,</span> <span class="n">b_r</span><span class="p">,</span> <span class="n">a_y</span><span class="p">,</span> <span class="n">b_y</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">a_r</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">b_r</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">a_y</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">b_y</span>
-    <span class="n">s_grid</span><span class="p">,</span> <span class="n">η_draws</span><span class="p">,</span> <span class="n">ζ_draws</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">η_draws</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">ζ_draws</span>
+    <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">a_r</span><span class="p">,</span> <span class="n">b_r</span><span class="p">,</span> <span class="n">a_y</span><span class="p">,</span> <span class="n">b_y</span><span class="p">,</span> <span class="n">s_grid</span><span class="p">,</span> <span class="n">η_draws</span><span class="p">,</span> <span class="n">ζ_draws</span> <span class="o">=</span> <span class="n">ifp</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
 
-    <span class="c1"># Allocate memory</span>
-    <span class="n">c_out</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">c_vals</span><span class="p">)</span>
-
-    <span class="c1"># Obtain c_i at each s_i, z, store in c_out[i, z], computing</span>
-    <span class="c1"># the expectation term by Monte Carlo</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_expectation</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute expectation for given s and z&quot;&quot;&quot;</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">inner_expectation</span><span class="p">(</span><span class="n">z_hat</span><span class="p">):</span>
-            <span class="c1"># Vectorize over shocks</span>
             <span class="k">def</span><span class="w"> </span><span class="nf">compute_term</span><span class="p">(</span><span class="n">η</span><span class="p">,</span> <span class="n">ζ</span><span class="p">):</span>
                 <span class="n">R_hat</span> <span class="o">=</span> <span class="n">R</span><span class="p">(</span><span class="n">z_hat</span><span class="p">,</span> <span class="n">ζ</span><span class="p">,</span> <span class="n">a_r</span><span class="p">,</span> <span class="n">b_r</span><span class="p">)</span>
                 <span class="n">Y_hat</span> <span class="o">=</span> <span class="n">Y</span><span class="p">(</span><span class="n">z_hat</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">a_y</span><span class="p">,</span> <span class="n">b_y</span><span class="p">)</span>
                 <span class="n">a_val</span> <span class="o">=</span> <span class="n">R_hat</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">Y_hat</span>
                 <span class="c1"># Interpolate consumption</span>
-                <span class="n">c_interp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">a_val</span><span class="p">,</span> <span class="n">ae_vals</span><span class="p">[:,</span> <span class="n">z_hat</span><span class="p">],</span> <span class="n">c_vals</span><span class="p">[:,</span> <span class="n">z_hat</span><span class="p">])</span>
-                <span class="n">U</span> <span class="o">=</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">c_interp</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">R_hat</span> <span class="o">*</span> <span class="n">U</span>
-
+                <span class="n">c_interp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">a_val</span><span class="p">,</span> <span class="n">a_in</span><span class="p">[:,</span> <span class="n">z_hat</span><span class="p">],</span> <span class="n">c_in</span><span class="p">[:,</span> <span class="n">z_hat</span><span class="p">])</span>
+                <span class="n">mu</span> <span class="o">=</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">c_interp</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">R_hat</span> <span class="o">*</span> <span class="n">mu</span>
             <span class="c1"># Vectorize over all shock combinations</span>
             <span class="n">η_grid</span><span class="p">,</span> <span class="n">ζ_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">η_draws</span><span class="p">,</span> <span class="n">ζ_draws</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
             <span class="n">terms</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_term</span><span class="p">))(</span><span class="n">η_grid</span><span class="p">,</span> <span class="n">ζ_grid</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">P</span><span class="p">[</span><span class="n">z</span><span class="p">,</span> <span class="n">z_hat</span><span class="p">]</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
-
         <span class="c1"># Sum over z_hat states</span>
         <span class="n">Ez</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">inner_expectation</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">Ez</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span>
 
     <span class="c1"># Vectorize over s_grid and z</span>
-    <span class="n">c_out</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_expectation</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span>
-                  <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))(</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
-
+    <span class="n">compute_exp_v1</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">compute_expectation</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">compute_exp_v2</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">compute_exp_v1</span><span class="p">,</span>      <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="n">c_out</span> <span class="o">=</span> <span class="n">compute_exp_v2</span><span class="p">(</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
     <span class="c1"># Calculate endogenous asset grid</span>
-    <span class="n">ae_out</span> <span class="o">=</span> <span class="n">s_grid</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">c_out</span>
-
-    <span class="c1"># Fixing a consumption-asset pair at (0, 0) improves interpolation</span>
+    <span class="n">a_out</span> <span class="o">=</span> <span class="n">s_grid</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">c_out</span>
+    <span class="c1"># Fix consumption-asset pair at (0, 0) </span>
     <span class="n">c_out</span> <span class="o">=</span> <span class="n">c_out</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">ae_out</span> <span class="o">=</span> <span class="n">ae_out</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">a_out</span> <span class="o">=</span> <span class="n">a_out</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">ae_out</span><span class="p">,</span> <span class="n">c_out</span>
+    <span class="k">return</span> <span class="n">a_out</span><span class="p">,</span> <span class="n">c_out</span>
 </pre></div>
 </div>
 </div>
@@ -780,34 +765,33 @@ is just <span class="math notranslate nohighlight">\(\mathbb E R_t\)</span>.</p>
 via time iteration using JAX:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_model_time_iter</span><span class="p">(</span>
-        <span class="n">model</span><span class="p">,</span>        <span class="c1"># Class with model information</span>
-        <span class="n">a_vec</span><span class="p">,</span>        <span class="c1"># Initial condition for assets</span>
-        <span class="n">σ_vec</span><span class="p">,</span>        <span class="c1"># Initial condition for consumption</span>
-        <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-        <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
-        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">print_skip</span><span class="o">=</span><span class="mi">25</span>
-    <span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_model</span><span class="p">(</span>
+        <span class="n">ifp</span><span class="p">:</span> <span class="n">IFP</span><span class="p">,</span>
+        <span class="n">c_init</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>  <span class="c1"># Initial guess of σ on grid endogenous grid</span>
+        <span class="n">a_init</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>  <span class="c1"># Initial endogenous grid</span>
+        <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
+        <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="s2">&quot; Solve the model using time iteration with EGM. &quot;</span>
 
-    <span class="c1"># Set up loop</span>
-    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">condition</span><span class="p">(</span><span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">c_in</span><span class="p">,</span> <span class="n">a_in</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
 
-    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
-        <span class="n">a_new</span><span class="p">,</span> <span class="n">σ_new</span> <span class="o">=</span> <span class="n">K</span><span class="p">(</span><span class="n">a_vec</span><span class="p">,</span> <span class="n">σ_vec</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">σ_vec</span> <span class="o">-</span> <span class="n">σ_new</span><span class="p">))</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">body</span><span class="p">(</span><span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">c_in</span><span class="p">,</span> <span class="n">a_in</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="n">c_out</span><span class="p">,</span> <span class="n">a_out</span> <span class="o">=</span> <span class="n">K</span><span class="p">(</span><span class="n">c_in</span><span class="p">,</span> <span class="n">a_in</span><span class="p">,</span> <span class="n">ifp</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">c_out</span> <span class="o">-</span> <span class="n">c_in</span><span class="p">))</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="n">print_skip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error at iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> is </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-        <span class="n">a_vec</span><span class="p">,</span> <span class="n">σ_vec</span> <span class="o">=</span> <span class="n">a_new</span><span class="p">,</span> <span class="n">σ_new</span>
+        <span class="k">return</span> <span class="n">c_out</span><span class="p">,</span> <span class="n">a_out</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span>
 
-    <span class="k">if</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed to converge!&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Converged in </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">initial_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_init</span><span class="p">,</span> <span class="n">a_init</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+    <span class="n">final_loop_state</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
+    <span class="n">c_out</span><span class="p">,</span> <span class="n">a_out</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">final_loop_state</span>
 
-    <span class="k">return</span> <span class="n">a_new</span><span class="p">,</span> <span class="n">σ_new</span>
+    <span class="k">return</span> <span class="n">c_out</span><span class="p">,</span> <span class="n">a_out</span>
 </pre></div>
 </div>
 </div>
@@ -816,12 +800,6 @@ via time iteration using JAX:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp</span> <span class="o">=</span> <span class="n">create_ifp</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 06:10:15.640687    7861 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1201 06:10:15.644082    7798 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -843,44 +821,29 @@ W1201 06:10:15.644082    7798 cuda_executor.cc:1802] GPU interconnect informatio
 <p>Let’s generate an approximation solution with JAX:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_star</span><span class="p">,</span> <span class="n">σ_star</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">a_init</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">,</span> <span class="n">print_skip</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_star</span><span class="p">,</span> <span class="n">σ_star</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">a_init</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s try it again with a timer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">qe</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">8</span><span class="p">):</span>
+    <span class="n">a_star</span><span class="p">,</span> <span class="n">σ_star</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">a_init</span><span class="p">,</span> <span class="n">σ_init</span><span class="p">)</span>
+    <span class="n">a_star</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 5.108221054077148.
-Error at iteration 10 is 1.1375703811645508.
-Error at iteration 15 is 0.4760274887084961.
-Error at iteration 20 is 0.25199270248413086.
-Error at iteration 25 is 0.15015077590942383.
-Error at iteration 30 is 0.09590339660644531.
-Error at iteration 35 is 0.06389141082763672.
-Error at iteration 40 is 0.04367399215698242.
-Error at iteration 45 is 0.030310630798339844.
-Error at iteration 50 is 0.02120828628540039.
-Error at iteration 55 is 0.014889717102050781.
-Error at iteration 60 is 0.010457038879394531.
-Error at iteration 65 is 0.007330417633056641.
-Error at iteration 70 is 0.005123615264892578.
-Error at iteration 75 is 0.0035686492919921875.
-Error at iteration 80 is 0.002475738525390625.
-Error at iteration 85 is 0.0017118453979492188.
-Error at iteration 90 is 0.0011792182922363281.
-Error at iteration 95 is 0.0008096694946289062.
-Error at iteration 100 is 0.0005540847778320312.
-Error at iteration 105 is 0.00037860870361328125.
-Error at iteration 110 is 0.0002579689025878906.
-Error at iteration 115 is 0.00017547607421875.
-Error at iteration 120 is 0.00011873245239257812.
-
-Converged in 123 iterations.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.43288493 seconds elapsed
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="simulation">
-<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">61.5. </span>Simulation</a><a class="headerlink" href="#simulation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">61.5. </span>Simulation</a><a class="headerlink" href="#simulation" title="Link to this heading">#</a></h2>
 <p>Let’s return to the default model and study the stationary distribution of assets.</p>
 <p>Our plan is to run a large number of households forward for <span class="math notranslate nohighlight">\(T\)</span> periods and then
 histogram the cross-sectional distribution of assets.</p>
@@ -891,8 +854,7 @@ the final value of assets.</p>
 as representing an optimal policy associated with a given model <code class="docutils literal notranslate"><span class="pre">ifp</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">simulate_household</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulate_household</span><span class="p">(</span>
         <span class="n">key</span><span class="p">,</span> <span class="n">a_0</span><span class="p">,</span> <span class="n">z_idx_0</span><span class="p">,</span> <span class="n">c_vec</span><span class="p">,</span> <span class="n">a_vec</span><span class="p">,</span> <span class="n">ifp</span><span class="p">,</span> <span class="n">T</span>
     <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -943,7 +905,8 @@ as representing an optimal policy associated with a given model <code class="doc
 <p>Now we write a function to simulate many households in parallel.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_asset_stationary</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_asset_stationary</span><span class="p">(</span>
         <span class="n">c_vec</span><span class="p">,</span> <span class="n">a_vec</span><span class="p">,</span> <span class="n">ifp</span><span class="p">,</span> <span class="n">num_households</span><span class="o">=</span><span class="mi">50_000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span>
     <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -973,7 +936,7 @@ as representing an optimal policy associated with a given model <code class="doc
     <span class="p">)</span>
     <span class="n">assets</span> <span class="o">=</span> <span class="n">sim_all_households</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">a_0_vector</span><span class="p">,</span> <span class="n">z_idx_0_vector</span><span class="p">,</span> <span class="n">c_vec</span><span class="p">,</span> <span class="n">a_vec</span><span class="p">,</span> <span class="n">ifp</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">assets</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">assets</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1025,7 +988,7 @@ as representing an optimal policy associated with a given model <code class="doc
 <span class="n">n_z</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ifp</span><span class="o">.</span><span class="n">P</span><span class="p">)</span>
 <span class="n">a_init</span> <span class="o">=</span> <span class="n">s_grid</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_z</span><span class="p">)</span>
 <span class="n">c_init</span> <span class="o">=</span> <span class="n">a_init</span>
-<span class="n">a_vec</span><span class="p">,</span> <span class="n">c_vec</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">a_init</span><span class="p">,</span> <span class="n">c_init</span><span class="p">)</span>
+<span class="n">a_vec</span><span class="p">,</span> <span class="n">c_vec</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">a_init</span><span class="p">,</span> <span class="n">c_init</span><span class="p">)</span>
 <span class="n">assets</span> <span class="o">=</span> <span class="n">compute_asset_stationary</span><span class="p">(</span><span class="n">c_vec</span><span class="p">,</span> <span class="n">a_vec</span><span class="p">,</span> <span class="n">ifp</span><span class="p">,</span> <span class="n">num_households</span><span class="o">=</span><span class="mi">200_000</span><span class="p">)</span>
 
 <span class="c1"># Compute Gini coefficient for the plot</span>
@@ -1041,15 +1004,7 @@ as representing an optimal policy associated with a given model <code class="doc
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.15015077590942383.
-Error at iteration 50 is 0.02120828628540039.
-Error at iteration 75 is 0.0035686492919921875.
-Error at iteration 100 is 0.0005540847778320312.
-
-Converged in 123 iterations.
-</pre></div>
-</div>
-<img alt="_images/fa8dc13db3302b3e1adc1dd11faeec6c0ea9062b3fc067e230c4e11f7b8309ea.png" src="_images/fa8dc13db3302b3e1adc1dd11faeec6c0ea9062b3fc067e230c4e11f7b8309ea.png" />
+<img alt="_images/bbdf8ab9ee2320a55050a749b9277b0c7ee4d80532966ed51670e1f0342bf6ee.png" src="_images/bbdf8ab9ee2320a55050a749b9277b0c7ee4d80532966ed51670e1f0342bf6ee.png" />
 </div>
 </div>
 <p>The histogram shows the distribution of log wealth.</p>
@@ -1058,7 +1013,7 @@ a long right tail of the distribution.</p>
 <p>Below we examine this in more detail.</p>
 </section>
 <section id="wealth-inequality">
-<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">61.6. </span>Wealth Inequality</a><a class="headerlink" href="#wealth-inequality" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">61.6. </span>Wealth Inequality</a><a class="headerlink" href="#wealth-inequality" title="Link to this heading">#</a></h2>
 <p>Lets’ look at wealth inequality by computing some standard measures of this phenomenon.</p>
 <p>We will also examine how inequality varies with the interest rate.</p>
 <section id="measuring-inequality">
@@ -1075,8 +1030,8 @@ a long right tail of the distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Gini coefficient: 0.7870
-Top 1% wealth share: 0.7333
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Gini coefficient: 0.7847
+Top 1% wealth share: 0.7306
 </pre></div>
 </div>
 </div>
@@ -1094,7 +1049,7 @@ in wealth inequality.</p>
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">61.7. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">61.7. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="ifp_advanced_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 61.1 </span></p>
@@ -1128,8 +1083,8 @@ in wealth inequality.</p>
     <span class="n">n_z_temp</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ifp_temp</span><span class="o">.</span><span class="n">P</span><span class="p">)</span>
     <span class="n">a_init_temp</span> <span class="o">=</span> <span class="n">s_grid_temp</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_z_temp</span><span class="p">)</span>
     <span class="n">c_init_temp</span> <span class="o">=</span> <span class="n">a_init_temp</span>
-    <span class="n">a_vec_temp</span><span class="p">,</span> <span class="n">c_vec_temp</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span>
-        <span class="n">ifp_temp</span><span class="p">,</span> <span class="n">a_init_temp</span><span class="p">,</span> <span class="n">c_init_temp</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">a_vec_temp</span><span class="p">,</span> <span class="n">c_vec_temp</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span>
+        <span class="n">ifp_temp</span><span class="p">,</span> <span class="n">a_init_temp</span><span class="p">,</span> <span class="n">c_init_temp</span>
     <span class="p">)</span>
 
     <span class="c1"># Simulate households</span>
@@ -1160,18 +1115,18 @@ in wealth inequality.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing Gini coefficients for different return volatilities...
 
 a_r = 0.100...
-Gini = 0.1936
+Gini = 0.1925
 a_r = 0.115...
-Gini = 0.2004
+Gini = 0.1992
 a_r = 0.130...
-Gini = 0.2238
+Gini = 0.2225
 a_r = 0.145...
-Gini = 0.3407
+Gini = 0.3362
 a_r = 0.160...
-Gini = 0.7870
+Gini = 0.7847
 </pre></div>
 </div>
-<img alt="_images/eeb594e1f49fb2c9b2c34909d2b7f0df6effb722a49eabd1765267701b2bed8c.png" src="_images/eeb594e1f49fb2c9b2c34909d2b7f0df6effb722a49eabd1765267701b2bed8c.png" />
+<img alt="_images/ac7e6199d168cf99d86d5348bb72d72d45ed477b5c85313953023135c9053bf0.png" src="_images/ac7e6199d168cf99d86d5348bb72d72d45ed477b5c85313953023135c9053bf0.png" />
 </div>
 </div>
 <p>The plot shows that wealth inequality (measured by the Gini coefficient) increases with return volatility.</p>
@@ -1217,8 +1172,8 @@ income volatility as we can by varying return volatility?</p>
     <span class="n">n_z_temp</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ifp_temp</span><span class="o">.</span><span class="n">P</span><span class="p">)</span>
     <span class="n">a_init_temp</span> <span class="o">=</span> <span class="n">s_grid_temp</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_z_temp</span><span class="p">)</span>
     <span class="n">c_init_temp</span> <span class="o">=</span> <span class="n">a_init_temp</span>
-    <span class="n">a_vec_temp</span><span class="p">,</span> <span class="n">c_vec_temp</span> <span class="o">=</span> <span class="n">solve_model_time_iter</span><span class="p">(</span>
-        <span class="n">ifp_temp</span><span class="p">,</span> <span class="n">a_init_temp</span><span class="p">,</span> <span class="n">c_init_temp</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span>
+    <span class="n">a_vec_temp</span><span class="p">,</span> <span class="n">c_vec_temp</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span>
+        <span class="n">ifp_temp</span><span class="p">,</span> <span class="n">a_init_temp</span><span class="p">,</span> <span class="n">c_init_temp</span>
     <span class="p">)</span>
 
     <span class="c1"># Simulate households</span>
@@ -1249,18 +1204,18 @@ income volatility as we can by varying return volatility?</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing Gini coefficients for different labor income volatilities...
 
 a_y = 0.125...
-Gini = 0.1802
+Gini = 0.1787
 a_y = 0.144...
-Gini = 0.1833
+Gini = 0.1818
 a_y = 0.163...
-Gini = 0.1866
+Gini = 0.1852
 a_y = 0.181...
-Gini = 0.1900
+Gini = 0.1887
 a_y = 0.200...
-Gini = 0.1936
+Gini = 0.1925
 </pre></div>
 </div>
-<img alt="_images/749542ff4d8dd3a9cbcea5ab165cfa50a93d463b798ee9dab5368b7bd5e9ce98.png" src="_images/749542ff4d8dd3a9cbcea5ab165cfa50a93d463b798ee9dab5368b7bd5e9ce98.png" />
+<img alt="_images/ac9635a7271751e6dc2d0228ed511cd2f79c3e76ff04f0a9aef1927820048da2.png" src="_images/ac9635a7271751e6dc2d0228ed511cd2f79c3e76ff04f0a9aef1927820048da2.png" />
 </div>
 </div>
 <p>The plot shows that wealth inequality increases with labor income volatility, but the effect is much weaker than the effect of return volatility.</p>
