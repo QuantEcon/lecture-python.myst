@@ -206,7 +206,7 @@ where it is understood that $c_t^k = c^k(s_t)$
 and $c_{t+1}^k = c^k(s_{t+1})$.
 
 
-
+```{prf:definition}
 A **recursive competitive equilibrium** is
 an initial distribution of wealth $\vec a_0$, a set of borrowing limits $\{\bar A^k(s)\}_{k=1}^K$,
 a pricing kernel $Q(s' | s)$, sets of value functions $\{v^k(a,s)\}_{k=1}^K$, and
@@ -230,7 +230,7 @@ $\sum_k \hat a_{t+1}^k(s') = 0$
 for all $t$ and $s'$.
 
 * The initial financial wealth vector $\vec a_0$ satisfies $\sum_{k=1}^K a_0^k = 0 $.
-
+```
 
 The third condition asserts that there are  zero net aggregate claims in all Markov states.
 
