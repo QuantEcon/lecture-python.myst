@@ -62,7 +62,7 @@ More information on this savings problem can be found in
 
 Let's start with some imports:
 
-```{code-cell} ipython
+```{code-cell} python3
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import interp1d
@@ -270,7 +270,7 @@ The term $\int v(f(x - c) z) \phi(dz)$ can be understood as the expected next pe
 * the state is $x$
 * consumption is set to $c$
 
-As shown in [DP1](https://dp.quantecon.org/), Theorem 10.1.11 and a range of other texts,
+As shown in [DP1](https://dp.quantecon.org/) and a range of other texts,
 the value function $v^*$ satisfies the Bellman equation.
 
 In other words, {eq}`fpb30` holds when $v=v^*$.
@@ -313,10 +313,9 @@ function.
 
 In our setting, we have the following key result
 
-* A feasible consumption policy is optimal if and only if it is $v^*$-greedy.
-
-The intuition is similar to the intuition for the Bellman equation, which was
-provided after {eq}`fpb30`.
+```{prf:theorem}
+A feasible consumption policy is optimal if and only if it is $v^*$-greedy.
+```
 
 See, for example, Theorem 10.1.11 of [EDTC](https://johnstachurski.net/edtc.html).
 
@@ -359,7 +358,7 @@ v(x)
 = Tv(x)
 = \max_{0 \leq c \leq x}
 \left\{
-    u(c) + \beta \int v^*(f(x - c) z) \phi(dz)
+    u(c) + \beta \int v(f(x - c) z) \phi(dz)
 \right\}
 $$
 
@@ -515,20 +514,18 @@ def create_model(
 We set up the right-hand side of the Bellman equation
 
 $$
-    B(x, c, v) := u(c) + \beta \int v^*(f(x - c) z) \phi(dz)
+    B(x, c, v) := u(c) + \beta \int v(f(x - c) z) \phi(dz)
 $$
 
 
 ```{code-cell} python3
 def B(
-        x: float,
-        c: float,
-        v_array: np.ndarray,
-        model: Model
-    ) -> float:
-    """
-    Right hand side of the Bellman equation.
-    """
+        x: float,              # State
+        c: float,              # Action
+        v_array: np.ndarray,   # Array representing a guess of the value fn
+        model: Model           # An instance of Model containing parameters
+    ):
+
     u, f, β, μ, ν, x_grid, shocks = model
     v = interp1d(x_grid, v_array)
 
@@ -569,7 +566,7 @@ def T(v: np.ndarray, model: Model) -> tuple[np.ndarray, np.ndarray]:
 
     for i in range(len(x_grid)):
         x = x_grid[i]
-        c_star, v_max = maximize(lambda c: B(x, c, v, model), x)
+        _, v_max = maximize(lambda c: B(x, c, v, model), x)
         v_new[i] = v_max
 
     return v_new
@@ -731,12 +728,8 @@ def solve_model(
         verbose: bool = True,   # print iteration info
         print_skip: int = 25    # iterations between prints
     ):
-    """
-    Solve model by iterating with the Bellman operator.
+    " Solve by value function iteration. "
 
-    """
-
-    # Set up loop
     v = model.u(model.x_grid)  # Initial condition
     i = 0
     error = tol + 1

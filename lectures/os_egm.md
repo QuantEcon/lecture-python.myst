@@ -60,16 +60,8 @@ First we remind ourselves of the theory and then we turn to numerical methods.
 
 We work with the model set out in {doc}`os_time_iter`, following the same terminology and notation.
 
-The Euler equation is
-
-```{math}
-:label: egm_euler
-
-(u'\circ \sigma^*)(x)
-= \beta \int (u'\circ \sigma^*)(f(x - \sigma^*(x)) z) f'(x - \sigma^*(x)) z \phi(dz)
-```
-
-As we saw, the Coleman-Reffett operator is a nonlinear operator $K$ engineered so that $\sigma^*$ is a fixed point of $K$.
+As we saw, the Coleman-Reffett operator is a nonlinear operator $K$ engineered so that the optimal policy 
+$\sigma^*$ is a fixed point of $K$.
 
 It takes as its argument a continuous strictly increasing consumption policy $\sigma \in \Sigma$.
 
@@ -85,9 +77,7 @@ u'(c)
 ### Exogenous Grid
 
 As discussed in {doc}`os_time_iter`, to implement the method on a
-computer, we need numerical approximation.
-
-In particular, we represent a policy function by a set of values on a finite grid.
+computer, we represent a policy function by a set of values on a finite grid.
 
 The function itself is reconstructed from this representation when necessary,
 using interpolation or some other method.
@@ -191,19 +181,21 @@ class Model(NamedTuple):
     u_prime_inv: Callable # inverse of u_prime
 
 
-def create_model(u: Callable,
-                 f: Callable,
-                 β: float = 0.96,
-                 μ: float = 0.0,
-                 ν: float = 0.1,
-                 grid_max: float = 4.0,
-                 grid_size: int = 120,
-                 shock_size: int = 250,
-                 seed: int = 1234,
-                 α: float = 0.4,
-                 u_prime: Callable = None,
-                 f_prime: Callable = None,
-                 u_prime_inv: Callable = None) -> Model:
+def create_model(
+        u: Callable,
+        f: Callable,
+        β: float = 0.96,
+        μ: float = 0.0,
+        ν: float = 0.1,
+        grid_max: float = 4.0,
+        grid_size: int = 120,
+        shock_size: int = 250,
+        seed: int = 1234,
+        α: float = 0.4,
+        u_prime: Callable = None,
+        f_prime: Callable = None,
+        u_prime_inv: Callable = None
+    ) -> Model:
     """
     Creates an instance of the optimal savings model.
     """
@@ -214,7 +206,9 @@ def create_model(u: Callable,
     np.random.seed(seed)
     shocks = np.exp(μ + ν * np.random.randn(shock_size))
 
-    return Model(u, f, β, μ, ν, s_grid, shocks, α, u_prime, f_prime, u_prime_inv)
+    return Model(
+        u, f, β, μ, ν, s_grid, shocks, α, u_prime, f_prime, u_prime_inv
+    )
 ```
 
 ### The Operator
@@ -282,12 +276,14 @@ s_grid = model.s_grid
 Here's our solver routine:
 
 ```{code-cell} python3
-def solve_model_time_iter(model: Model,
-                          c_init: np.ndarray,
-                          x_init: np.ndarray,
-                          tol: float = 1e-5,
-                          max_iter: int = 1000,
-                          verbose: bool = True):
+def solve_model_time_iter(
+        model: Model,             # Model details
+        c_init: np.ndarray,       # initial guess of consumption on EG
+        x_init: np.ndarray,       # initial guess of endogenous grid
+        tol: float = 1e-5,        # Error tolerance
+        max_iter: int = 1000,     # Max number of iterations of K
+        verbose: bool = True      # If true print output
+    ):
     """
     Solve the model using time iteration with EGM.
     """
