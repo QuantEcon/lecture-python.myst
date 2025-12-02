@@ -541,21 +541,21 @@ to pose or represent the solution of an individual household's optimum problem.
 We denote  an $K \times 1$ vector of  state-dependent values of agents' endowments in Markov state $s$ as
 
 $$
-A\left(s\right)=\left[\begin{array}{c}
+A\left(s\right)=\begin{bmatrix}
 A^{1}\left(s\right)\\
  \vdots\\
 A^{K}\left(s\right)
-\end{array}\right], \quad s \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]
+\end{bmatrix}, \quad s \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]
 $$
 
 and an  $n \times 1$ vector-form function of continuation endowment values for each individual $k$ as
 
 $$
-A^{k}=\left[\begin{array}{c}
+A^{k}=\begin{bmatrix}
 A^{k}\left(\bar{s}_{1}\right)\\
 \vdots\\
 A^{k}\left(\bar{s}_{n}\right)
-\end{array}\right], \quad k \in \left[1, \ldots, K\right]
+\end{bmatrix}, \quad k \in \left[1, \ldots, K\right]
 $$
 
 $A^k$ of consumer $k$ satisfies
@@ -567,11 +567,11 @@ $$
 where
 
 $$
-y^{k}=\left[\begin{array}{c}
+y^{k}=\begin{bmatrix}
 y^{k}\left(\bar{s}_{1}\right)\\
 \vdots\\
 y^{k}\left(\bar{s}_{n}\right)
-\end{array}\right] \equiv \begin{bmatrix} y^k_1 \cr \vdots \cr y^k_n \end{bmatrix}
+\end{bmatrix} \equiv \begin{bmatrix} y^k_1 \cr \vdots \cr y^k_n \end{bmatrix}
 $$
 
 
@@ -602,21 +602,21 @@ trading of a complete set of one-period Arrow securities.
 We denote  an $K \times 1$ vector of  state-dependent continuation wealths in Markov state $s$ as
 
 $$
-\psi\left(s\right)=\left[\begin{array}{c}
+\psi\left(s\right)=\begin{bmatrix}
 \psi^{1}\left(s\right)\\
 \vdots\\
 \psi^{K}\left(s\right)
-\end{array}\right], \quad s \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]
+\end{bmatrix}, \quad s \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]
 $$
 
 and an  $n \times 1$ vector-form function of continuation wealths for each individual $k\in \left[1, \ldots, K\right]$ as
 
 $$
-\psi^{k}=\left[\begin{array}{c}
+\psi^{k}=\begin{bmatrix}
 \psi^{k}\left(\bar{s}_{1}\right)\\
 \vdots\\
 \psi^{k}\left(\bar{s}_{n}\right)
-\end{array}\right]
+\end{bmatrix}
 $$
 
 Continuation wealth  $\psi^k$ of consumer $k$ satisfies
@@ -628,15 +628,15 @@ $$ (eq:continwealth)
 where
 
 $$
-y^{k}=\left[\begin{array}{c}
+y^{k}=\begin{bmatrix}
 y^{k}\left(\bar{s}_{1}\right)\\
 \vdots\\
 y^{k}\left(\bar{s}_{n}\right)
-\end{array}\right],\quad y=\left[\begin{array}{c}
+\end{bmatrix},\quad y=\begin{bmatrix}
 y\left(\bar{s}_{1}\right)\\
 \vdots\\
 y\left(\bar{s}_{n}\right)
-\end{array}\right]
+\end{bmatrix}
 $$
 
 Note that $\sum_{k=1}^K \psi^k = {0}_{n \times 1}$.
@@ -731,21 +731,21 @@ limits borrowing.
 We denote  a $K \times 1$ vector of  state-dependent continuation wealths in Markov state $s$ at time $t$ as
 
 $$
-\psi_t\left(s\right)=\left[\begin{array}{c}
+\psi_t\left(s\right)=\begin{bmatrix}
 \psi^{1}\left(s\right)\\
 \vdots\\
 \psi^{K}\left(s\right)
-\end{array}\right], \quad s \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]
+\end{bmatrix}, \quad s \in \left[\bar{s}_1, \ldots, \bar{s}_n\right]
 $$
 
 and an  $n \times 1$ vector of continuation wealths for each individual $k$ as
 
 $$
-\psi_t^{k}=\left[\begin{array}{c}
+\psi_t^{k}=\begin{bmatrix}
 \psi_t^{k}\left(\bar{s}_{1}\right)\\
 \vdots\\
 \psi_t^{k}\left(\bar{s}_{n}\right)
-\end{array}\right], \quad k \in \left[1, \ldots, K\right]
+\end{bmatrix}, \quad k \in \left[1, \ldots, K\right]
 $$
 
 
@@ -764,15 +764,15 @@ $$ (eq:vv)
 where
 
 $$
-y^{k}=\left[\begin{array}{c}
+y^{k}=\begin{bmatrix}
 y^{k}\left(\bar{s}_{1}\right)\\
 \vdots\\
 y^{k}\left(\bar{s}_{n}\right)
-\end{array}\right],\quad y=\left[\begin{array}{c}
+\end{bmatrix},\quad y=\begin{bmatrix}
 y\left(\bar{s}_{1}\right)\\
 \vdots\\
 y\left(\bar{s}_{n}\right)
-\end{array}\right]
+\end{bmatrix}
 $$
 
 Note that $\sum_{k=1}^K \psi_t^k = {0}_{n \times 1}$ for all $t \in {\bf T}$.
