@@ -505,7 +505,7 @@ This follows from agent $k$'s first-order necessary conditions.
 But with the CRRA preferences that we have assumed, individual consumptions vary proportionately
 with aggregate consumption and therefore with the aggregate endowment.
 
-    * This is a consequence of our preference specification implying that *Engel curves* are affine in wealth and therefore  satisfy conditions for *Gorman aggregation*
+- This is a consequence of our preference specification implying that *Engel curves* are affine in wealth and therefore satisfy conditions for *Gorman aggregation*.
 
 Thus,
 
@@ -588,7 +588,7 @@ even if he consumes zero goods forevermore.
 If  we have an Inada condition at zero consumption or just impose that consumption
 be nonnegative, then in a *finite horizon* economy with sequential trading of one-period Arrow securities there is no need to impose natural debt limits. 
 
-See the section on a [finite horizon economy](#finite-horizon)  below.
+See the section on a [finite horizon economy](finite_horizon)  below.
 ```
 
 
@@ -710,7 +710,7 @@ $$ J^k = (I - \beta P)^{-1} u(\alpha_k y)  , \quad u(c) = \frac{c^{1-\gamma}}{1-
 
 where it is understood that $ u(\alpha_k y)$ is a vector.
 
-
+(finite_horizon)=
 ## Finite horizon
 
 We now describe a finite-horizon version of the economy that operates  for $T+1$ periods
