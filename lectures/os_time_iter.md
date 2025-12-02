@@ -84,22 +84,23 @@ Recall the Bellman equation
 ```{math}
 :label: cpi_fpb30
 
-v^*(x) = \max_{0 \leq c \leq x}
+v(x) = \max_{0 \leq c \leq x}
     \left\{
-        u(c) + \beta \int v^*(f(x - c) z) \phi(dz)
+        u(c) + \beta \int v(f(x - c) z) \phi(dz)
     \right\}
 \quad \text{for all} \quad
 x \in \mathbb R_+
 ```
 
-Let the optimal consumption policy be denoted by $\sigma^*$.
+Let $v^*$ be the value function and let $\sigma^*$ be the optimal consumption policy.
 
-We know that $\sigma^*$ is a $v^*$-greedy policy so that $\sigma^*(x)$ is the maximizer in {eq}`cpi_fpb30`.
+We know that $\sigma^*$ is a $v^*$-greedy policy.
 
 The conditions above imply that
 
 * $\sigma^*$ is the unique optimal policy for the optimal savings problem
-* the optimal policy is continuous, strictly increasing and also **interior**, in the sense that $0 < \sigma^*(x) < x$ for all strictly positive $x$, and
+* the optimal policy is continuous, strictly increasing and also **interior**,
+  in the sense that $0 < \sigma^*(x) < x$ for all strictly positive $x$, and
 * the value function is strictly concave and continuously differentiable, with
 
 ```{math}
@@ -108,7 +109,8 @@ The conditions above imply that
 (v^*)'(x) = u' (\sigma^*(x) ) := (u' \circ \sigma^*)(x)
 ```
 
-The last result is called the **envelope condition** due to its relationship with the [envelope theorem](https://en.wikipedia.org/wiki/Envelope_theorem).
+The last result is called the **envelope condition** due to its relationship
+with the [envelope theorem](https://en.wikipedia.org/wiki/Envelope_theorem).
 
 To see why {eq}`cpi_env` holds, write the Bellman equation in the equivalent
 form

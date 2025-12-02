@@ -113,7 +113,7 @@ def create_model(
     key = jax.random.PRNGKey(seed)
     shocks = jnp.exp(μ + s * jax.random.normal(key, shape=(shock_size,)))
 
-    return Model(β=β, μ=μ, s=s, s_grid=s_grid, shocks=shocks, α=α)
+    return Model(β, μ, s, s_grid, shocks, α)
 ```
 
 
@@ -141,12 +141,7 @@ def K(
     The Coleman-Reffett operator using EGM
 
     """
-
-    # Simplify names
-    β, α = model.β, model.α
-    s_grid, shocks = model.s_grid, model.shocks
-
-    # Linear interpolation of policy using endogenous grid
+    β, μ, s, s_grid, shocks, α = model
     σ = lambda x_val: jnp.interp(x_val, x_in, c_in)
 
     # Define function to compute consumption at a single grid point
