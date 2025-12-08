@@ -261,7 +261,9 @@ than its expected value.
 The next exercise asks you to study the impact of a mean-preserving spread on
 the risk-adjusted expectation.
 
-```exercise
+```{exercise}
+:label: mcr_ex0
+
 Keep $Y \sim \text{Beta}(2, 2)$ and fix $\theta = -2$.
 
 Using Monte Carlo again, calculate
@@ -280,7 +282,8 @@ risk averse)?
 Use a plot to illustrate your results.
 ```
 
-```{solution-start}
+```{solution-start} mcr_ex0
+:class: dropdown
 ```
 
 Here's our solution.
@@ -637,7 +640,7 @@ Therefore, they are willing to accept lower wages to escape unemployment.
 +++
 
 ```{exercise}
-:label: jsr_ex1
+:label: mcr_ex1
 
 Use simulation to investigate how the long-run unemployment rate varies with $\theta$.
 
@@ -649,7 +652,7 @@ You can use code for simulation from {doc}`mccall_fitted_vfi`, suitably modified
 
 +++
 
-```{solution-start} jsr_ex1
+```{solution-start} mcr_ex1
 :class: dropdown
 ```
 
