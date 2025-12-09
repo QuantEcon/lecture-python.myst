@@ -69,6 +69,8 @@ Here we show how this can be done and study what effects it has on agent choices
 We'll use JAX and the QuantEcon library:
 
 ```{code-cell} python
+:tags: [hide-output]
+
 !pip install quantecon jax
 ```
 
@@ -233,11 +235,6 @@ ax.axhline(y=0.5, color='black', linestyle='--',
 ax.legend(fontsize=12)
 plt.tight_layout()
 plt.show()
-
-# Print some key values
-print(f"Mean of Beta(2,2): {Y_samples.mean():.4f} (theoretical: 0.5)")
-print(f"e_theta at theta = -2.0: {e_theta_values[0]:.4f}")
-print(f"e_theta at theta = -0.1: {e_theta_values[-1]:.4f}")
 ```
 
 The plot shows how the risk-adjusted evaluation $e_\theta$ changes with the risk
@@ -607,10 +604,6 @@ def compute_res_wage_for_theta(θ):
 compute_res_wages_vec = jax.vmap(compute_res_wage_for_theta)
 reservation_wages = compute_res_wages_vec(theta_grid)
 
-# Print results
-for θ, w_bar in zip(theta_grid, reservation_wages):
-    print(f"θ = {θ:.2f}, reservation wage = {w_bar:.4f}")
-
 # Plot the results
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.plot(theta_grid, reservation_wages,
@@ -750,11 +743,6 @@ def compute_u_rate_for_theta(θ):
 # Vectorize over theta_grid using vmap
 compute_u_rates_vec = jax.vmap(compute_u_rate_for_theta)
 unemployment_rates = compute_u_rates_vec(theta_grid)
-
-# Print results
-for θ, u_rate in zip(theta_grid, unemployment_rates):
-    print(f"θ = {θ:.2f}, unemployment rate = {u_rate:.4f}")
-
 
 # Plot the results
 fig, ax = plt.subplots(figsize=(10, 6))
