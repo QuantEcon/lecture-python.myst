@@ -358,8 +358,6 @@ This is why the valuation of the random payoff goes down.
 ```{solution-end}
 ```
 
-+++
-
 ## Back to Job Search
 
 In the lecture {doc}`mccall_fitted_vfi` we studied a job search model with
@@ -637,8 +635,6 @@ The reason is that a more risk-averse agent values the certain income from emplo
 
 Therefore, they are willing to accept lower wages to escape unemployment.
 
-+++
-
 ```{exercise}
 :label: mcr_ex1
 
@@ -649,8 +645,6 @@ the reservation wage varies with $\theta$.
 
 You can use code for simulation from {doc}`mccall_fitted_vfi`, suitably modified.
 ```
-
-+++
 
 ```{solution-start} mcr_ex1
 :class: dropdown
@@ -782,8 +776,6 @@ This is because more risk-averse workers have lower reservation wages,
 so they accept a wider range of job offers.
 
 As a result, they spend less time unemployed searching for better opportunities
-
-+++
 
 ```{solution-end}
 ```
