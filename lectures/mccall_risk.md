@@ -39,8 +39,6 @@ job search.
 
 Some motivation is given below.
 
-+++
-
 ## Outline
 
 In real-world job-related decisions, individuals and households care about risk.
@@ -98,15 +96,13 @@ Sometimes we want to model agents as risk averse.
 One way to do this is to change their evaluation of the payoff $Y$ to
 
 $$
-    e_{\theta} = \frac{1}{\theta} \ln\left( \mathbb{E} [ \exp(\theta Y) ] \right)
+e_{\theta} = \frac{1}{\theta} \ln\left( \mathbb{E} [ \exp(\theta Y) ] \right)
 $$
 
 where $\theta$ is a number satisfying $\theta < 0$.
 
 The value $e_{\theta}$ is sometimes called the **entropic risk-adjusted
 expectation** of $Y$.
-
-+++
 
 ### A Gaussian example
 
@@ -117,7 +113,7 @@ For this $Y$ we aim to compute the risk-adjusted expectation.
 
 This becomes straightforward if we recognize that $\mathbb{E}[\exp(\theta Y)]$
 is the [moment generating
-function](https://en.wikipedia.org/wiki/Moment-generating_function) MGF of the
+function](https://en.wikipedia.org/wiki/Moment-generating_function) (MGF) of the
 normal distribution.
 
 Using the well-known expression for the MGF of the normal distribution, we get
@@ -129,15 +125,15 @@ $$
 Therefore,
 
 $$
-    e_\theta 
-    = \frac{1}{\theta} \ln\left( \exp\left(\theta\mu + \frac{\theta^2\sigma^2}{2}\right) \right) 
-    = \frac{1}{\theta} \left(\theta\mu + \frac{\theta^2\sigma^2}{2}\right)
+e_\theta 
+= \frac{1}{\theta} \ln\left( \exp\left(\theta\mu + \frac{\theta^2\sigma^2}{2}\right) \right) 
+= \frac{1}{\theta} \left(\theta\mu + \frac{\theta^2\sigma^2}{2}\right)
 $$
 
 Simplifying yields
 
 $$
-    e_\theta = \mu + \frac{\theta\sigma^2}{2}
+e_\theta = \mu + \frac{\theta\sigma^2}{2}
 $$
 
 We see immediately that the agent prefers a higher average payoff $\mu$.
@@ -177,8 +173,6 @@ plt.show()
 ```
 
 Again, we see that the agent prefers a higher average payoff but dislikes risk.
-
-+++
 
 ### A more general case
 
@@ -251,8 +245,6 @@ As $\theta$ becomes more negative, $e_\theta$ decreases.
 This reflects that a more risk-averse agent values the uncertain payoff $Y$ less
 than its expected value.
 
-+++
-
 ### A mean preserving spread
 
 The next exercise asks you to study the impact of a mean-preserving spread on
@@ -266,7 +258,7 @@ Keep $Y \sim \text{Beta}(2, 2)$ and fix $\theta = -2$.
 Using Monte Carlo again, calculate
 
 $$
-    e_{\theta} = \frac{1}{\theta} \ln\left( \mathbb{E} [ \exp(\theta X) ] \right)
+e_{\theta} = \frac{1}{\theta} \ln\left( \mathbb{E} [ \exp(\theta X) ] \right)
 $$
 
 where $X = Y + \sigma Z$ and $Z$ is standard normal.
@@ -337,13 +329,13 @@ Since the agent is risk averse ($\theta = -2 < 0$), she dislikes uncertainty.
 As we increase $\sigma$, we get more volatility, since
 
 $$
-    \text{Var}(X) = \text{Var}(Y) + \sigma^2 \text{Var}(Z) = \text{Var}(Y) + \sigma^2
+\text{Var}(X) = \text{Var}(Y) + \sigma^2 \text{Var}(Z) = \text{Var}(Y) + \sigma^2
 $$
 
 At the same time, the expected value is unchanged, since 
 
 $$
-    \mathbb{E}[X] = \mathbb{E}[Y + \sigma Z] = \mathbb{E}[Y] + \sigma \mathbb{E}[Z] = \mathbb{E}[Y] = 0.5
+\mathbb{E}[X] = \mathbb{E}[Y + \sigma Z] = \mathbb{E}[Y] + \sigma \mathbb{E}[Z] = \mathbb{E}[Y] = 0.5
 $$
 
 Hence the mean payoff doesn't change with $\sigma$.
@@ -381,14 +373,12 @@ $$
 
 from that lecture is replaced with
 
-+++
-
 $$
-    (P_\theta v_u)(w)
-    = \frac{1}{\theta} \ln
-        \left[
-            \mathbb{E} \exp(\theta v_u( w^\rho  \exp(\nu Z) ))
-        \right]
+(P_\theta v_u)(w)
+= \frac{1}{\theta} \ln
+    \left[
+        \mathbb{E} \exp(\theta v_u( w^\rho  \exp(\nu Z) ))
+    \right]
 $$
 
 Otherwise the model is the same.
@@ -443,19 +433,19 @@ First we use the employed worker's Bellman equation to express
 $v_e(w)$ in terms of $(P_\theta v_u)(w)$:
 
 $$
-    v_e(w) = 
-    \frac{1}{1-\beta(1-\alpha)} \cdot (u(w) + \alpha\beta(P_\theta v_u)(w))
+v_e(w) = 
+\frac{1}{1-\beta(1-\alpha)} \cdot (u(w) + \alpha\beta(P_\theta v_u)(w))
 $$
 
 We substitute into the unemployed agent's Bellman equation to get:
 
 $$
-    v_u(w) = 
-    \max
-    \left\{
-        \frac{1}{1-\beta(1-\alpha)} \cdot (u(w) + \alpha\beta(P_\theta v_u)(w)),
-        u(c) + \beta(P_\theta v_u)(w)
-    \right\}
+v_u(w) = 
+\max
+\left\{
+    \frac{1}{1-\beta(1-\alpha)} \cdot (u(w) + \alpha\beta(P_\theta v_u)(w)),
+    u(c) + \beta(P_\theta v_u)(w)
+\right\}
 $$
 
 We use value function iteration to solve for $v_u$.
@@ -757,7 +747,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-We see that the unemployment rate decrease as the agent becomes more risk averse
+We see that the unemployment rate decreases as the agent becomes more risk averse
 (more negative $\theta$).
 
 This is because more risk-averse workers have lower reservation wages, 
