@@ -311,6 +311,8 @@ where $Y_0$ is a known initial condition.
 
 The **belief function** $H$ is an equilibrium object, and hence remains to be determined.
 
+Because of this, at this stage $Y_{t+1}$ only means the perceived output in the next period, $Y^e_{t+1}$.
+
 #### Optimal Behavior Given Beliefs
 
 For now, let's fix a particular belief $H$ in {eq}`ree_hlom` and investigate the firm's response to it.
@@ -364,12 +366,14 @@ $$
 v_y(y,Y) = a_0 - a_1 Y + \gamma (y' - y)
 $$
 
+and equivalently, $v_y(y', H(Y)) = a_0 - a_1 H(Y) +\gamma (y'' - y')$
+
 Substituting this equation into {eq}`comp5` gives the **Euler equation**
 
 ```{math}
 :label: ree_comp7
 
--\gamma (y_{t+1} - y_t) + \beta [a_0 - a_1 Y_{t+1} + \gamma (y_{t+2} - y_{t+1} )] =0
+-\gamma (y_{t+1} - y_t) + \beta [a_0 - a_1 H(Y_t) + \gamma (y_{t+2} - y_{t+1} )] =0
 ```
 
 The firm optimally sets  an output path that satisfies {eq}`ree_comp7`, taking {eq}`ree_hlom` as given, and  subject to
@@ -433,6 +437,10 @@ Unfortunately, the mapping $\Phi$ is not a contraction.
 Indeed, there is no guarantee that direct iterations on $\Phi$ converge [^fn_im].
 
 There are examples in which these iterations diverge.
+
+To see this intuively from Blackwell's sufficient condition, let us assume there are two beliefs $H_a(Y) > H_b(Y)$ for any $Y$.
+
+Then by Euler equation {eq}`ree_comp7`, the optimal $y_{t+1} = h(Y_t, Y_t)$ decreases as $H$ increases, which indicates the monotoncity required in the Blackwell's condition is not satisfied.
 
 Fortunately,  another method  works here.
 
@@ -700,6 +708,14 @@ Y_{t+1}
 = n 96.949 + (1 - n 0.046) Y_t
 $$
 
+For the case of a unit measure of firms,
+$$
+\begin{aligned}
+\int_0^1 y_{t+1}(\omega)\, d\omega &= h_0 + h_1 \int_0^1 y_{t}(\omega)\, dω + h_2 Y_t \\
+Y_{t+1} &= h_0 + h_1 Y_t + h_2 Y_t \\
+Y_{t+1} &= 96.949 + (1 - 0.046) Y_t
+\end{aligned}
+$$
 ```{solution-end}
 ```
 
