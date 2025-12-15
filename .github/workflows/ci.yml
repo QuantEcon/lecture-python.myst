@@ -58,7 +58,7 @@ jobs:
           mkdir -p _build/html/_notebooks
           cp -u _build/jupyter/*.ipynb _build/html/_notebooks
       - name: Upload Execution Reports (Download Notebooks)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: execution-reports-notebooks
@@ -70,7 +70,7 @@ jobs:
           mkdir -p _build/html/_pdf
           cp -u _build/latex/*.pdf _build/html/_pdf
       - name: Upload Execution Reports (LaTeX)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: execution-reports-latex
@@ -81,7 +81,7 @@ jobs:
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
       - name: Upload Execution Reports (HTML)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: execution-reports-html
