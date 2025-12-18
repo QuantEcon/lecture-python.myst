@@ -35,13 +35,13 @@ jobs:
         run: |
           jb build lectures --path-output ./ -W --keep-going
       - name: Upload Execution Reports
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: execution-reports
           path: _build/html/reports
       - name: Upload "_build" folder (cache)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: build-cache
           path: _build
