@@ -552,7 +552,6 @@ $$
 The function below calculates the excess demand for given parameters
 
 ```{code-cell} ipython3
-@jax.jit
 def e(p, A, b, c):
     return jnp.exp(-A @ p) + c - b * jnp.sqrt(p)
 ```
