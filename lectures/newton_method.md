@@ -1077,7 +1077,7 @@ Let's run through each initial guess and check the output
 attempt = 1
 for init in initLs:
     print(f"Attempt {attempt}: Starting value is {init} \n")
-    %time p = newton(lambda p: e(p, A, b, c), init, tol=1e-15, max_iter=15)
+    %time p_solution = newton(lambda p: e(p, A, b, c), init, tol=1e-15, max_iter=15)
     print("-" * 64)
     attempt += 1
 ```
@@ -1089,7 +1089,7 @@ Sometimes it may take a few initial guesses to achieve convergence.
 Substitute the result back to the formula to check our result
 
 ```{code-cell} ipython3
-e(p, A, b, c)
+e(p_solution, A, b, c)
 ```
 
 We can see the result is very accurate.
