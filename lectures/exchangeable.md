@@ -506,7 +506,7 @@ learning_example()
 Please look at the three graphs above created for an instance in which $f$ is a uniform distribution on $[0,1]$
 (i.e., a Beta distribution with parameters $F_a=1, F_b=1$), while  $g$ is a Beta distribution with the default parameter values $G_a=3, G_b=1.2$.
 
-The graph on the left  plots the likelihood ratio $l(w)$ as the absciassa  axis against $w$ as the ordinate.
+The graph on the left  plots the likelihood ratio $l(w)$ as the abscissa  axis against $w$ as the ordinate.
 
 The middle graph plots both $f(w)$ and $g(w)$  against $w$, with the horizontal dotted lines showing values
 of $w$ at which the likelihood ratio equals $1$.
@@ -720,7 +720,7 @@ expected_ratio()
 The above graphs shows that when $F$ generates the data, $\pi_t$ on average always heads north, while
 when $G$ generates the data, $\pi_t$ heads south.
 
-Next, we'll look at a degenerate case in whcih  $f$ and $g$ are identical beta
+Next, we'll look at a degenerate case in which  $f$ and $g$ are identical beta
 distributions, and $F_a=G_a=3, F_b=G_b=1.2$.
 
 In a sense, here  there
