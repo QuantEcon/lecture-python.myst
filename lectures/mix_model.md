@@ -145,7 +145,7 @@ jax.config.update("jax_enable_x64", True)
 colors = sns.color_palette()
 ```
 
-Let's use Python to generate two beta distributions
+Let's use Python to generate two Beta distributions.
 
 ```{code-cell} ipython3
 :hide-output: false
@@ -182,7 +182,7 @@ def simulate(a, b, T=50, N=500):
     return l_arr
 ```
 
-We’ll also use the following Python code to prepare some informative simulations
+We'll also use the following Python code to prepare some informative simulations.
 
 ```{code-cell} ipython3
 :hide-output: false
@@ -296,7 +296,7 @@ plt.show()
 
 ## Type 1 Agent
 
-We'll now study what our type 1 agent learns
+We'll now study what our type 1 agent learns.
 
 Remember that our type 1 agent uses the wrong statistical model, thinking that nature mixed between $f$ and $g$ once and for all at time $-1$.
 
@@ -471,13 +471,13 @@ The above graph shows a sample path of the log likelihood ratio process as the b
 sample paths of $\pi_t$ that start from two distinct initial conditions.
 
 
-Let's see what happens when we change $\alpha$
+Let's see what happens when we change $\alpha$.
 
 ```{code-cell} ipython3
 plot_π_seq(α=0.2)
 ```
 
-Evidently, $\alpha$ is having a big effect on the destination of $\pi_t$ as $t \rightarrow + \infty$
+Evidently, $\alpha$ is having a big effect on the destination of $\pi_t$ as $t \rightarrow +\infty$.
 
 ## Kullback-Leibler Divergence Governs Limit of $\pi_t$
 
@@ -506,7 +506,7 @@ $$ \min_{f,g} \{KL_g, KL_f\} $$
 
 The only possible limits are $0$ and $1$.
 
-As $t \rightarrow +\infty$, $\pi_t$ goes to one if and only if  $KL_f < KL_g$
+As $t \rightarrow +\infty$, $\pi_t$ goes to one if and only if $KL_f < KL_g$.
 
 ```{code-cell} ipython3
 @jax.jit
