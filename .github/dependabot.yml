@@ -11,3 +11,16 @@ updates:
       prefix: ⬆️
     schedule:
       interval: weekly
+
+  - package-ecosystem: "conda"
+    directory: "/"
+    commit-message:
+      prefix: ⬆️
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: "jupyter-book"
+        versions: [">=2.0"]
+      - dependency-name: "python"
+        # Python version should be constrained by the anaconda distribution version
+        versions: [">0"]
