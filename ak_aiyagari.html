@@ -9,9 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>80. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model &#8212; Intermediate Quantitative Economics with Python</title>
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
     
         <script>
             MathJax = {
@@ -70,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=dbac30014ddb092b35ab80b3076a22a196655849" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -95,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -260,7 +267,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/0bfcac810" class="changelog-hash">0bfcac810</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">1 day ago</span>
+                                <span class="changelog-time">3 weeks ago</span>
                                 <span class="changelog-message">Simplify GPU admonition and add to all JAX lectures (#751)</span>
                             </li>
                             
@@ -269,7 +276,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/6f7881221" class="changelog-hash">6f7881221</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">2 months ago</span>
+                                <span class="changelog-time">3 months ago</span>
                                 <span class="changelog-message">[ak_aiyagari] New lecture on heterogeneous agent OLG model with transition dynamics (#595)</span>
                             </li>
                             
@@ -732,12 +739,6 @@ c \geq 0
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 05:34:17.151741    2215 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1201 05:34:17.155134    2177 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-</pre></div>
-</div>
-</div>
 </div>
 <p>We apply discrete state dynamic programming tools.</p>
 <p>Initial steps involve preparing rewards and transition matrices <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> for our  discretized Bellman equations.</p>
@@ -846,7 +847,7 @@ W1201 05:34:17.155134    2177 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.42 ms, sys: 86 μs, total: 1.51 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.45 ms, sys: 88 μs, total: 1.54 ms
 Wall time: 49.8 ms
 </pre></div>
 </div>
@@ -897,8 +898,8 @@ Wall time: 49.8 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 36.8 ms, sys: 1.3 ms, total: 38.1 ms
-Wall time: 49.5 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 39.4 ms, sys: 1.24 ms, total: 40.6 ms
+Wall time: 53.5 ms
 </pre></div>
 </div>
 </div>
@@ -921,7 +922,7 @@ Wall time: 49.5 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0b343ebd3835fd640435550cc218e081adebae7d48c562a71ffd962b619c2452.png" src="_images/0b343ebd3835fd640435550cc218e081adebae7d48c562a71ffd962b619c2452.png" />
+<img alt="_images/683c0de372662e0501fec493c27de626dadb1c79625bcaa9f7571e8a758200df.png" src="_images/683c0de372662e0501fec493c27de626dadb1c79625bcaa9f7571e8a758200df.png" />
 </div>
 </div>
 <p>These marginal distributions confirm that new agents enter the economy with no asset holdings.</p>
@@ -968,7 +969,7 @@ distributions of assets at different ages.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5429a873644105d1bd61283f04187d77941f321b2adab4093c4a9f5e330db382.png" src="_images/5429a873644105d1bd61283f04187d77941f321b2adab4093c4a9f5e330db382.png" />
+<img alt="_images/74604e022f62384319c02661afbc23e9e5f25f7c76e7c1db788b725e8750ae67.png" src="_images/74604e022f62384319c02661afbc23e9e5f25f7c76e7c1db788b725e8750ae67.png" />
 </div>
 </div>
 <p>From an  implied stationary population distribution, we can compute the aggregate labor supply <span class="math notranslate nohighlight">\(L\)</span> and private savings <span class="math notranslate nohighlight">\(A\)</span>.</p>
@@ -1119,8 +1120,8 @@ distributions of assets at different ages.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 638 ms, sys: 14.1 ms, total: 652 ms
-Wall time: 712 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 661 ms, sys: 22.5 ms, total: 683 ms
+Wall time: 745 ms
 </pre></div>
 </div>
 </div>
@@ -1540,7 +1541,7 @@ Iteration   6: error = 1.216737e-04
 Iteration   7: error = 2.955517e-05
 </pre></div>
 </div>
-<img alt="_images/b0fe57466126c1caef31e5019e1e750e31dceb6a07783cdb5612c3c5da5e1310.png" src="_images/b0fe57466126c1caef31e5019e1e750e31dceb6a07783cdb5612c3c5da5e1310.png" />
+<img alt="_images/769c51e5f187e4f50d61c7f0fc2e1398a7c1d528ec56da2490893d9a413a41f2.png" src="_images/769c51e5f187e4f50d61c7f0fc2e1398a7c1d528ec56da2490893d9a413a41f2.png" />
 </div>
 </div>
 <p>Having successfully computed transition dynamics, let’s study them.</p>
@@ -1615,7 +1616,7 @@ Iteration   7: error = 2.955517e-05
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c51987fd7a04dd54606e7a579af12f747afca12ea501baf3ff48bee3c9419796.png" src="_images/c51987fd7a04dd54606e7a579af12f747afca12ea501baf3ff48bee3c9419796.png" />
+<img alt="_images/b8d518ee31374bd19e5a61da03decdec38114da09e39c6a8f7c47b63d041a615.png" src="_images/b8d518ee31374bd19e5a61da03decdec38114da09e39c6a8f7c47b63d041a615.png" />
 </div>
 </div>
 <p>To summarize the transition, we can plot paths as we did in <a class="reference internal" href="ak2.html"><span class="doc">Transitions in an Overlapping Generations Model</span></a>.</p>
@@ -1702,7 +1703,7 @@ Iteration   7: error = 2.955517e-05
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/45b901c33e47bbe29d8b8647fb61d4daa56cdb0d346a07546b305c367b4df6ca.png" src="_images/45b901c33e47bbe29d8b8647fb61d4daa56cdb0d346a07546b305c367b4df6ca.png" />
+<img alt="_images/e419d4153b6e4156c3e7e4573dd34e80e554fddb0e878be4f9d0158fcabb2543.png" src="_images/e419d4153b6e4156c3e7e4573dd34e80e554fddb0e878be4f9d0158fcabb2543.png" />
 </div>
 </div>
 <p>Now let’s compute the mean and variance of consumption conditional on age at each time <span class="math notranslate nohighlight">\(t\)</span>.</p>
@@ -1753,7 +1754,7 @@ Iteration   7: error = 2.955517e-05
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8baa157eeb850f855a66ca281cd96bb2648e2bdf5e867f605edd1470a19fad21.png" src="_images/8baa157eeb850f855a66ca281cd96bb2648e2bdf5e867f605edd1470a19fad21.png" />
+<img alt="_images/dacfd86aa86d1907934c6abcdc0df85459f676360b952fda5054b7f56a23c676.png" src="_images/dacfd86aa86d1907934c6abcdc0df85459f676360b952fda5054b7f56a23c676.png" />
 </div>
 </div>
 </section>
@@ -1801,7 +1802,7 @@ Iteration   5: error = 3.122933e-04
 Iteration   6: error = 7.865898e-05
 </pre></div>
 </div>
-<img alt="_images/7e7963878187a39c8e8633530556b867d4354c8c8c0e495a116c8ce1e043c68b.png" src="_images/7e7963878187a39c8e8633530556b867d4354c8c8c0e495a116c8ce1e043c68b.png" />
+<img alt="_images/ec1f71ccfc61cedd74116afac129b28b74b9c233b737bdb259c6a128d7094902.png" src="_images/ec1f71ccfc61cedd74116afac129b28b74b9c233b737bdb259c6a128d7094902.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1873,7 +1874,7 @@ Iteration   6: error = 7.865898e-05
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3fa06f3ac5c2560d8903bbc3d6ec287b66369426cd2bfffa77b25628b0e52604.png" src="_images/3fa06f3ac5c2560d8903bbc3d6ec287b66369426cd2bfffa77b25628b0e52604.png" />
+<img alt="_images/6cb47d243140c2506a39ce8d954148c446618d2e9d9fd23f9e443a9e01368f01.png" src="_images/6cb47d243140c2506a39ce8d954148c446618d2e9d9fd23f9e443a9e01368f01.png" />
 </div>
 </div>
 <p>Notice how prices and quantities  respond immediately to the anticipated tax rate increase.</p>
@@ -1895,7 +1896,7 @@ Iteration   6: error = 7.865898e-05
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/840ebf15dce5a70a59cfb0c621cbfb4455a0fde964acad1f5e0aa8c21ab842e3.png" src="_images/840ebf15dce5a70a59cfb0c621cbfb4455a0fde964acad1f5e0aa8c21ab842e3.png" />
+<img alt="_images/e3dc93e6fb66b3f23450abfe41f45b8c33c7d16c141993da37d260743dabe0c8.png" src="_images/e3dc93e6fb66b3f23450abfe41f45b8c33c7d16c141993da37d260743dabe0c8.png" />
 </div>
 </div>
 <p>After the tax cut policy is implemented at <span class="math notranslate nohighlight">\(t=20\)</span>, the aggregate capital will decrease because of the crowding out effect.</p>
@@ -1951,7 +1952,7 @@ Iteration   6: error = 7.865898e-05
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ed4ddd0fc1b0248b58a108252a912d640f16b0365d93e9feca52b1d53cb5d8da.png" src="_images/ed4ddd0fc1b0248b58a108252a912d640f16b0365d93e9feca52b1d53cb5d8da.png" />
+<img alt="_images/836ebf11291952dea76fc5bf570aae1b382519763191ea3a78d541e6479f3e37.png" src="_images/836ebf11291952dea76fc5bf570aae1b382519763191ea3a78d541e6479f3e37.png" />
 </div>
 </div>
 </section>

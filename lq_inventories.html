@@ -9,9 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>67. Production Smoothing via Inventories &#8212; Intermediate Quantitative Economics with Python</title>
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
     
         <script>
             MathJax = {
@@ -70,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=dbac30014ddb092b35ab80b3076a22a196655849" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -95,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -245,7 +252,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a73ba0f7d" class="changelog-hash">a73ba0f7d</a>
                                 
                                 <span class="changelog-author">Copilot</span>
-                                <span class="changelog-time">3 months ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">[style] Remove local figsize adjustments from all lecture files (#574)</span>
                             </li>
                             
@@ -254,7 +261,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/f4d7a8d77" class="changelog-hash">f4d7a8d77</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">12 months ago</span>
+                                <span class="changelog-time">1 year ago</span>
                                 <span class="changelog-message">FIX: pass quantecon logo through to download notebooks (#432)</span>
                             </li>
                             
@@ -377,16 +384,16 @@
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
-Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
-Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
-Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.15.3)
-Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.13.3)
-Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
+Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
+Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
+Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.16.3)
+Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.14.0)
+Requirement already satisfied: llvmlite&lt;0.46,&gt;=0.45.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.45.1)
+Requirement already satisfied: charset_normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.4.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.11)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.5.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.11.12)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
@@ -736,7 +743,7 @@ pertinent figures.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/86eb59d7be1ffc39deac670c1292982907fbbb056dab189ad0906f68ce9b5f3d.png" src="_images/86eb59d7be1ffc39deac670c1292982907fbbb056dab189ad0906f68ce9b5f3d.png" />
+<img alt="_images/1e318fcd353cfa7adb4f9ab6f2a246aee51957e0a4554ca61188f21635bbc84d.png" src="_images/1e318fcd353cfa7adb4f9ab6f2a246aee51957e0a4554ca61188f21635bbc84d.png" />
 </div>
 </div>
 <p>The figures above illustrate various features of an optimal production
@@ -844,7 +851,7 @@ confine the graphs to the first 10 periods:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2a659ef1a421eab99f79e720bd30376cc413a5b999933d3540690817d8cb89cb.png" src="_images/2a659ef1a421eab99f79e720bd30376cc413a5b999933d3540690817d8cb89cb.png" />
+<img alt="_images/bb92f6f039b8ad1228920546046c43f36d7eb8fa5f9b40796716e318d3d9b5eb.png" src="_images/bb92f6f039b8ad1228920546046c43f36d7eb8fa5f9b40796716e318d3d9b5eb.png" />
 </div>
 </div>
 </section>
@@ -867,7 +874,7 @@ confine the graphs to the first 10 periods:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/67fada59792f7fa9afacd5d584cd12c38017090cbd82723309c3d1b24238aec0.png" src="_images/67fada59792f7fa9afacd5d584cd12c38017090cbd82723309c3d1b24238aec0.png" />
+<img alt="_images/5139e3dd42217e21901fa3ae68103e9639f7682a53999aaf644170cabeab2678.png" src="_images/5139e3dd42217e21901fa3ae68103e9639f7682a53999aaf644170cabeab2678.png" />
 </div>
 </div>
 </section>
@@ -890,7 +897,7 @@ the following figures confirm</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eaeeccda4c0e0d9bf1ab4fd991d2514a3facfc267a426b3c584f9ba01b1a17ca.png" src="_images/eaeeccda4c0e0d9bf1ab4fd991d2514a3facfc267a426b3c584f9ba01b1a17ca.png" />
+<img alt="_images/702226e128e17e6d89e80dd71b92370f0b0a02a35913d0acb053198f4d7b22df.png" src="_images/702226e128e17e6d89e80dd71b92370f0b0a02a35913d0acb053198f4d7b22df.png" />
 </div>
 </div>
 </section>
@@ -937,7 +944,7 @@ and to <strong>run a Ponzi scheme</strong> by running inventories down forever.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6ebc2c83cfd64d227e2b68a58a1983e058947390692369799569ec62c7bc42d1.png" src="_images/6ebc2c83cfd64d227e2b68a58a1983e058947390692369799569ec62c7bc42d1.png" />
+<img alt="_images/6a691171fa6eba4a2380d7d63bf77278c2ef82f27322d001b7a514fd06ad47bf.png" src="_images/6a691171fa6eba4a2380d7d63bf77278c2ef82f27322d001b7a514fd06ad47bf.png" />
 </div>
 </div>
 <p>Let’s shorten the time span displayed in order to highlight what is
@@ -951,7 +958,7 @@ going on.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e46cca3284080616fb40b111d9ca16ebe66b3f1f0f24891ba01676ea7843ffa1.png" src="_images/e46cca3284080616fb40b111d9ca16ebe66b3f1f0f24891ba01676ea7843ffa1.png" />
+<img alt="_images/91deef9133a76e5a3039af2387935e51d856f8aee32c95f704aa9dd90eb2f053.png" src="_images/91deef9133a76e5a3039af2387935e51d856f8aee32c95f704aa9dd90eb2f053.png" />
 </div>
 </div>
 </section>
@@ -995,7 +1002,7 @@ b &amp; a\end{array}\right]
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9c4f2804df7ec291d0a322ddcf545ee72616e5459939117d73a887c0c31337f4.png" src="_images/9c4f2804df7ec291d0a322ddcf545ee72616e5459939117d73a887c0c31337f4.png" />
+<img alt="_images/3e454a73d701dcf3bad2f4ef254474896530264b4b260278374e5e668e895a24.png" src="_images/3e454a73d701dcf3bad2f4ef254474896530264b4b260278374e5e668e895a24.png" />
 </div>
 </div>
 </section>
@@ -1033,7 +1040,7 @@ x_0 = \begin{bmatrix} 1 \cr 0 \cr 1 \cr 0 \cr 0 \end{bmatrix}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bbc408cb13d7c0be11ccc595f6057db5c36654b5ca1498d9f1f9dd032ed46581.png" src="_images/bbc408cb13d7c0be11ccc595f6057db5c36654b5ca1498d9f1f9dd032ed46581.png" />
+<img alt="_images/68b3ad6adf0358603134e0e993612adc6f0395155adff31da7bc376c217442e7.png" src="_images/68b3ad6adf0358603134e0e993612adc6f0395155adff31da7bc376c217442e7.png" />
 </div>
 </div>
 <p>Now we’ll generate some more examples that differ simply from the
@@ -1046,7 +1053,7 @@ initial <strong>season</strong> of the year in which we begin the demand shock</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8c6605fbe2d3cdc84594894c62c93cdb4beaf604e5fc88098af6b7bce32472e2.png" src="_images/8c6605fbe2d3cdc84594894c62c93cdb4beaf604e5fc88098af6b7bce32472e2.png" />
+<img alt="_images/561c9a40bb427f7130ee487a97578277400237c46d02b2922a3f25f1ef5188fe.png" src="_images/561c9a40bb427f7130ee487a97578277400237c46d02b2922a3f25f1ef5188fe.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1057,7 +1064,7 @@ initial <strong>season</strong> of the year in which we begin the demand shock</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2f76c01aab71e8a592da67272c657d235a2f2e22853610b5967eadcb3c7ae996.png" src="_images/2f76c01aab71e8a592da67272c657d235a2f2e22853610b5967eadcb3c7ae996.png" />
+<img alt="_images/3625cdfc7c29b54d7ece1ca7eeccd8ec3251f6638cd25423b95d592e9a457e50.png" src="_images/3625cdfc7c29b54d7ece1ca7eeccd8ec3251f6638cd25423b95d592e9a457e50.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1068,7 +1075,7 @@ initial <strong>season</strong> of the year in which we begin the demand shock</
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7fb577789a6b76d69116355d3ac525e32fb90da26b103e9804d3e4cafc7163ae.png" src="_images/7fb577789a6b76d69116355d3ac525e32fb90da26b103e9804d3e4cafc7163ae.png" />
+<img alt="_images/bc10405e0bc5c7ef1c31c603655700c1714e78a1f16b07e0a6e631eed26b1cfe.png" src="_images/bc10405e0bc5c7ef1c31c603655700c1714e78a1f16b07e0a6e631eed26b1cfe.png" />
 </div>
 </div>
 </section>
@@ -1134,7 +1141,7 @@ firms respond differently by staring at the production plans.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f7a8484804438cfa3f602acd8baa6e5505aae2324a6d8e21a12622977e0bea4c.png" src="_images/f7a8484804438cfa3f602acd8baa6e5505aae2324a6d8e21a12622977e0bea4c.png" />
+<img alt="_images/24ebaf5bfd8be373c61d4f25240419717be0353ca21321a17faf8fb9ee4d21e7.png" src="_images/24ebaf5bfd8be373c61d4f25240419717be0353ca21321a17faf8fb9ee4d21e7.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1178,7 +1185,7 @@ a short period response.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2bcf7f3d34374c882713bd8e3b039d9bc0388d68092a0a4e66ea31b145812be8.png" src="_images/2bcf7f3d34374c882713bd8e3b039d9bc0388d68092a0a4e66ea31b145812be8.png" />
+<img alt="_images/8771892e8f6815d5a4ebfa4403afc25b2e5e54c7b7b166b1821805c08f59d34c.png" src="_images/8771892e8f6815d5a4ebfa4403afc25b2e5e54c7b7b166b1821805c08f59d34c.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1191,7 +1198,7 @@ a short period response.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c6af352bf4acda3242d858ee292e6726131d9fa02de10ab9b6d0e01b0e6d7ca4.png" src="_images/c6af352bf4acda3242d858ee292e6726131d9fa02de10ab9b6d0e01b0e6d7ca4.png" />
+<img alt="_images/efeea7346ddb31ab77bbc174b465e61939f9ec49d52556b52f08bbac76da4b63.png" src="_images/efeea7346ddb31ab77bbc174b465e61939f9ec49d52556b52f08bbac76da4b63.png" />
 </div>
 </div>
 </section>
@@ -1226,7 +1233,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9a60764bd6f507409022c2ede4e71d95f8270dc7228f075dad98dbf6c61f42a7.png" src="_images/9a60764bd6f507409022c2ede4e71d95f8270dc7228f075dad98dbf6c61f42a7.png" />
+<img alt="_images/92ac646cb1fe607c3fbfe684d90607292793c3bb794944e99620bdaeaa7a33bf.png" src="_images/92ac646cb1fe607c3fbfe684d90607292793c3bb794944e99620bdaeaa7a33bf.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1236,7 +1243,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f56062a097a83062e054ab2845a99c54f8302799efaf700dff1e526af32a5f82.png" src="_images/f56062a097a83062e054ab2845a99c54f8302799efaf700dff1e526af32a5f82.png" />
+<img alt="_images/43f072439dfa8dc69d6c60e64cbd6dc996aba5fd28b49547c2589ca840c01548.png" src="_images/43f072439dfa8dc69d6c60e64cbd6dc996aba5fd28b49547c2589ca840c01548.png" />
 </div>
 </div>
 </section>

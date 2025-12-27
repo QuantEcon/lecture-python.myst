@@ -9,9 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>7. Using Newton’s Method to Solve Economic Models &#8212; Intermediate Quantitative Economics with Python</title>
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
     
         <script>
             MathJax = {
@@ -70,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=dbac30014ddb092b35ab80b3076a22a196655849" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -95,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -248,7 +255,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 30, 2025
+                            Last changed: Dec 27, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -259,10 +266,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/6c93e967f" class="changelog-hash">6c93e967f</a>
+                                
+                                <span class="changelog-author">Matt McKay</span>
+                                <span class="changelog-time">3 hours ago</span>
+                                <span class="changelog-message">⬆️ Upgrade build software and dependencies (#768)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/0bfcac810" class="changelog-hash">0bfcac810</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">1 day ago</span>
+                                <span class="changelog-time">3 weeks ago</span>
                                 <span class="changelog-message">Simplify GPU admonition and add to all JAX lectures (#751)</span>
                             </li>
                             
@@ -271,7 +287,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/0184d5e57" class="changelog-hash">0184d5e57</a>
                                 
                                 <span class="changelog-author">kp992</span>
-                                <span class="changelog-time">2 months ago</span>
+                                <span class="changelog-time">3 months ago</span>
                                 <span class="changelog-message">[newton_method] Update lecture code and fix typos (#564)</span>
                             </li>
                             
@@ -280,7 +296,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/39b39c9bc" class="changelog-hash">39b39c9bc</a>
                                 
                                 <span class="changelog-author">Copilot</span>
-                                <span class="changelog-time">3 months ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">Standardize seealso admonitions with JAX template and intersphinx references (#581)</span>
                             </li>
                             
@@ -289,7 +305,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a73ba0f7d" class="changelog-hash">a73ba0f7d</a>
                                 
                                 <span class="changelog-author">Copilot</span>
-                                <span class="changelog-time">3 months ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">[style] Remove local figsize adjustments from all lecture files (#574)</span>
                             </li>
                             
@@ -298,7 +314,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/f621a936e" class="changelog-hash">f621a936e</a>
                                 
                                 <span class="changelog-author">Copilot</span>
-                                <span class="changelog-time">3 months ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">Standardize LaTeX math notation: replace pmatrix with bmatrix across all lecture files (#526)</span>
                             </li>
                             
@@ -307,7 +323,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/f4d7a8d77" class="changelog-hash">f4d7a8d77</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">12 months ago</span>
+                                <span class="changelog-time">1 year ago</span>
                                 <span class="changelog-message">FIX: pass quantecon logo through to download notebooks (#432)</span>
                             </li>
                             
@@ -336,15 +352,6 @@
                                 <span class="changelog-author">HengCheng</span>
                                 <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Fix broken links</span>
-                            </li>
-                            
-                            <li class="changelog-entry">
-                                
-                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/423f542f7" class="changelog-hash">423f542f7</a>
-                                
-                                <span class="changelog-author">zhc</span>
-                                <span class="changelog-time">2 years ago</span>
-                                <span class="changelog-message">Update lectures/newton_method.md</span>
                             </li>
                             
                         </ul>
@@ -555,11 +562,7 @@ k^* = \left(\frac{s A}{\delta}\right)^{1/(1 - \alpha)}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 06:25:01.120552   11763 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1201 06:25:01.123925   11725 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-</pre></div>
-</div>
-<img alt="_images/10471d4ffe2c8f37e91a09de840fc9c08231ac3ee57b96418d82c313f0a23870.png" src="_images/10471d4ffe2c8f37e91a09de840fc9c08231ac3ee57b96418d82c313f0a23870.png" />
+<img alt="_images/30bfdc36a0fc90c66805f1174eb5b43f60913a686fbac61eb96df57f8fa7530c.png" src="_images/30bfdc36a0fc90c66805f1174eb5b43f60913a686fbac61eb96df57f8fa7530c.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -572,7 +575,7 @@ W1201 06:25:01.123925   11725 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/527d96170b775de3306ce35b6581c3d5a9fbdf58f64c26c40b996a05ccbd002c.png" src="_images/527d96170b775de3306ce35b6581c3d5a9fbdf58f64c26c40b996a05ccbd002c.png" />
+<img alt="_images/1e06124e32a3e39f602ca4ab5c8c1c33bf4e0b93fde99a588f2be67ca7c3e1f5.png" src="_images/1e06124e32a3e39f602ca4ab5c8c1c33bf4e0b93fde99a588f2be67ca7c3e1f5.png" />
 </div>
 </div>
 <p>We see that <span class="math notranslate nohighlight">\(k^*\)</span> is indeed the unique positive fixed point.</p>
@@ -612,7 +615,7 @@ from some initial state <span class="math notranslate nohighlight">\(k_0\)</span
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/75c7bc5326d7cc9534bf92cd157fcd9eed0c24232fe98d35185b42f15129e304.png" src="_images/75c7bc5326d7cc9534bf92cd157fcd9eed0c24232fe98d35185b42f15129e304.png" />
+<img alt="_images/8b0456f5df15fb9c468b6913294a1e130b08e73c4f42193ce2b4c0379dd976fb.png" src="_images/8b0456f5df15fb9c468b6913294a1e130b08e73c4f42193ce2b4c0379dd976fb.png" />
 </div>
 </div>
 <p>Let’s see the output for a long time series.</p>
@@ -733,7 +736,7 @@ x_1 = \frac{g(x_0) - g'(x_0) x_0}{1 - g'(x_0)}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b7a47ed5953fa6a866d398b6201f9a916dca851aeed336d1403ee68725952743.png" src="_images/b7a47ed5953fa6a866d398b6201f9a916dca851aeed336d1403ee68725952743.png" />
+<img alt="_images/826804800158447f6c2bdce4c943c4b17dfceab6672ca3b6ef1a800f25341487.png" src="_images/826804800158447f6c2bdce4c943c4b17dfceab6672ca3b6ef1a800f25341487.png" />
 </div>
 </div>
 <p>We can see that Newton’s method converges faster than successive approximation.</p>
@@ -1011,7 +1014,7 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fb24328c8376687a0f2cacceace89ba1e6870a70e6ff7cdc850b025f8f70222e.png" src="_images/fb24328c8376687a0f2cacceace89ba1e6870a70e6ff7cdc850b025f8f70222e.png" />
+<img alt="_images/0d077280d7d3f49a1e79ca251e66328e34d1e3a3a4c04156194efb31b84519af.png" src="_images/0d077280d7d3f49a1e79ca251e66328e34d1e3a3a4c04156194efb31b84519af.png" />
 </div>
 </div>
 <p>Here’s our plot of <span class="math notranslate nohighlight">\(e_1\)</span>:</p>
@@ -1024,7 +1027,7 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cb8b040085ee6ba031c20fc4b428b725fd7786993d3b26d49143c87acbf8be96.png" src="_images/cb8b040085ee6ba031c20fc4b428b725fd7786993d3b26d49143c87acbf8be96.png" />
+<img alt="_images/7d49aa6e4bb292fa17473197a193ba5a4ef341516a90da0f7da6b5e1cf8da5cc.png" src="_images/7d49aa6e4bb292fa17473197a193ba5a4ef341516a90da0f7da6b5e1cf8da5cc.png" />
 </div>
 </div>
 <p>We see the black contour line of zero, which tells us when <span class="math notranslate nohighlight">\(e_i(p) = 0\)</span>.</p>
@@ -1040,7 +1043,7 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/63a3aaa20f3235d399a81591edb2f848201acf345a7d4bcdd1c6599196847b85.png" src="_images/63a3aaa20f3235d399a81591edb2f848201acf345a7d4bcdd1c6599196847b85.png" />
+<img alt="_images/01cc19a92db4771edfedd4f1a7e3ee9c9336bef1986cc180cb692146859b2c9b.png" src="_images/01cc19a92db4771edfedd4f1a7e3ee9c9336bef1986cc180cb692146859b2c9b.png" />
 </div>
 </div>
 <p>It seems there is an equilibrium close to <span class="math notranslate nohighlight">\(p = (1.6, 1.5)\)</span>.</p>
@@ -1065,8 +1068,8 @@ The excess demand for good 1 is 0.699
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.14 ms, sys: 1.58 ms, total: 8.72 ms
-Wall time: 4.42 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.35 ms, sys: 2.11 ms, total: 9.46 ms
+Wall time: 4.59 ms
 </pre></div>
 </div>
 </div>
@@ -1142,8 +1145,8 @@ J(p) =
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 259 ms, sys: 19.9 ms, total: 279 ms
-Wall time: 382 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 261 ms, sys: 22.7 ms, total: 284 ms
+Wall time: 401 ms
 </pre></div>
 </div>
 </div>
@@ -1218,8 +1221,8 @@ iteration 4, error = 0.00000
 
 Result = [1.57080182 1.46928838] 
 
-CPU times: user 324 ms, sys: 28 ms, total: 352 ms
-Wall time: 436 ms
+CPU times: user 350 ms, sys: 21.5 ms, total: 371 ms
+Wall time: 468 ms
 </pre></div>
 </div>
 </div>
@@ -1288,8 +1291,8 @@ iteration 5, error = 0.00000
 
 Result = [1.50723773 1.51041603 1.50134795 ... 1.49941629 1.49033692 1.49666807] 
 
-CPU times: user 7.99 s, sys: 1.88 s, total: 9.87 s
-Wall time: 9.01 s
+CPU times: user 8.18 s, sys: 1.89 s, total: 10.1 s
+Wall time: 9.35 s
 </pre></div>
 </div>
 </div>
@@ -1322,8 +1325,8 @@ Wall time: 9.01 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 35.2 s, sys: 106 ms, total: 35.4 s
-Wall time: 35.8 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 37 s, sys: 104 ms, total: 37.2 s
+Wall time: 37.6 s
 </pre></div>
 </div>
 </div>
@@ -1446,8 +1449,8 @@ iteration 6, error = 0.00000
 
 Result = [3.84058108 3.87071771 3.41091933] 
 
-CPU times: user 295 ms, sys: 18.6 ms, total: 314 ms
-Wall time: 378 ms
+CPU times: user 321 ms, sys: 20.8 ms, total: 342 ms
+Wall time: 419 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 
@@ -1458,8 +1461,8 @@ iteration 4, error = 0.00000
 
 Result = [3.84058108 3.87071771 3.41091933] 
 
-CPU times: user 116 ms, sys: 5.14 ms, total: 122 ms
-Wall time: 132 ms
+CPU times: user 117 ms, sys: 10.1 ms, total: 128 ms
+Wall time: 139 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.]
 iteration 1, error = 73.00943
@@ -1471,8 +1474,8 @@ iteration 6, error = 0.00000
 
 Result = [3.84058108 3.87071771 3.41091933] 
 
-CPU times: user 271 ms, sys: 13.2 ms, total: 284 ms
-Wall time: 316 ms
+CPU times: user 278 ms, sys: 15.1 ms, total: 293 ms
+Wall time: 332 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1524,8 +1527,8 @@ iteration 4, error = 0.00000
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 256 ms, sys: 16.3 ms, total: 272 ms
-Wall time: 308 ms
+CPU times: user 272 ms, sys: 16.5 ms, total: 288 ms
+Wall time: 329 ms
 </pre></div>
 </div>
 </div>
@@ -1550,8 +1553,8 @@ iteration 5, error = 0.00000
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 233 ms, sys: 12.1 ms, total: 245 ms
-Wall time: 267 ms
+CPU times: user 238 ms, sys: 19.4 ms, total: 257 ms
+Wall time: 284 ms
 </pre></div>
 </div>
 </div>
@@ -1616,52 +1619,51 @@ c = \begin{bmatrix}
 <p>Let’s run through each initial guess and check the output</p>
 <div class="cell tag_raises-exception docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">attempt</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="k">for</span> <span class="n">init</span> <span class="ow">in</span> <span class="n">initLs</span><span class="p">:</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">attempt</span><span class="p">,</span> <span class="n">init</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">initLs</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">: Starting value is </span><span class="si">{</span><span class="n">init</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="o">%</span><span class="k">time</span> p = newton(lambda p: e(p, A, b, c), init, tol=1e-15, max_iter=15)
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">64</span><span class="p">)</span>
-    <span class="n">attempt</span> <span class="o">+=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Attempt 1: Starting value is [5. 5. 5.]
 iteration 1, error = 9.24381
-----------------------------------------------------------------
-Attempt 2: Starting value is [1. 1. 1.] 
-
-iteration 1, error = 0.73419
-iteration 2, error = 0.12472
-iteration 3, error = 0.00269
-iteration 4, error = 0.00000
-iteration 5, error = 0.00000
-iteration 6, error = 0.00000
-
-Result = [1.49744442 1.49744442 1.49744442] 
-
-CPU times: user 102 ms, sys: 13 ms, total: 115 ms
-Wall time: 124 ms
-----------------------------------------------------------------
-Attempt 3: Starting value is [4.5 0.1 4. ]
-iteration 1, error = 4.89202
-iteration 2, error = 1.21206
-iteration 3, error = 0.69421
-iteration 4, error = 0.16895
-iteration 5, error = 0.00521
-iteration 6, error = 0.00000
-iteration 7, error = 0.00000
-iteration 8, error = 0.00000
-
-Result = [1.49744442 1.49744442 1.49744442] 
-
-CPU times: user 108 ms, sys: 10.7 ms, total: 119 ms
-Wall time: 125 ms
-----------------------------------------------------------------
+CPU times: user 309 ms, sys: 11.7 ms, total: 321 ms
+Wall time: 370 ms
 </pre></div>
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">Exception</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">51</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="k">for</span> <span class="n">attempt</span><span class="p">,</span> <span class="n">init</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">initLs</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">: Starting value is </span><span class="si">{</span><span class="n">init</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">3</span>     <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">run_line_magic</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;p = newton(lambda p: e(p, A, b, c), init, tol=1e-15, max_iter=15)&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">64</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/quantecon/lib/python3.13/site-packages/IPython/core/interactiveshell.py:2504,</span> in <span class="ni">InteractiveShell.run_line_magic</span><span class="nt">(self, magic_name, line, _stack_depth)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2502</span>     <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;local_ns&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_local_scope</span><span class="p">(</span><span class="n">stack_depth</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2503</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">builtin_trap</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">2504</span>     <span class="n">result</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2506</span> <span class="c1"># The code below prevents the output from being displayed</span>
+<span class="g g-Whitespace">   </span><span class="mi">2507</span> <span class="c1"># when using magics with decorator @output_can_be_silenced</span>
+<span class="g g-Whitespace">   </span><span class="mi">2508</span> <span class="c1"># when the last Python token in the expression is a &#39;;&#39;.</span>
+<span class="g g-Whitespace">   </span><span class="mi">2509</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">magic</span><span class="o">.</span><span class="n">MAGIC_OUTPUT_CAN_BE_SILENCED</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+
+<span class="nn">File ~/miniconda3/envs/quantecon/lib/python3.13/site-packages/IPython/core/magics/execution.py:1452,</span> in <span class="ni">ExecutionMagics.time</span><span class="nt">(self, line, cell, local_ns)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1450</span> <span class="k">if</span> <span class="n">interrupt_occured</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1451</span>     <span class="k">if</span> <span class="n">exit_on_interrupt</span> <span class="ow">and</span> <span class="n">captured_exception</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1452</span>         <span class="k">raise</span> <span class="n">captured_exception</span>
+<span class="g g-Whitespace">   </span><span class="mi">1453</span>     <span class="k">return</span>
+<span class="g g-Whitespace">   </span><span class="mi">1454</span> <span class="k">return</span> <span class="n">out</span>
+
+<span class="nn">File ~/miniconda3/envs/quantecon/lib/python3.13/site-packages/IPython/core/magics/execution.py:1416,</span> in <span class="ni">ExecutionMagics.time</span><span class="nt">(self, line, cell, local_ns)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1414</span> <span class="n">st</span> <span class="o">=</span> <span class="n">clock2</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1415</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1416</span>     <span class="n">exec</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">glob</span><span class="p">,</span> <span class="n">local_ns</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1417</span>     <span class="n">out</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">1418</span>     <span class="c1"># multi-line %%time case</span>
+
 <span class="n">File</span> <span class="o">&lt;</span><span class="n">timed</span> <span class="n">exec</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span>
 
 <span class="nn">Cell In[34], line 17,</span> in <span class="ni">newton</span><span class="nt">(f, x_0, tol, max_iter)</span>
@@ -1678,15 +1680,26 @@ Wall time: 125 ms
 </div>
 <p>We can see that Newton’s method may fail for some starting values.</p>
 <p>Sometimes it may take a few initial guesses to achieve convergence.</p>
-<p>Substitute the result back to the formula to check our result</p>
+<p>Substitute the result back to the formula to check our result using the second initial guess which converges</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p_solution</span> <span class="o">=</span> <span class="n">newton</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">initLs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">e</span><span class="p">(</span><span class="n">p_solution</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([0., 0., 0.], dtype=float64)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 0.73419
+iteration 2, error = 0.12472
+iteration 3, error = 0.00269
+iteration 4, error = 0.00000
+iteration 5, error = 0.00000
+iteration 6, error = 0.00000
+
+Result = [1.49744442 1.49744442 1.49744442]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([0.00000000e+00, 0.00000000e+00, 2.22044605e-16], dtype=float64)
 </pre></div>
 </div>
 </div>

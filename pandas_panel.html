@@ -9,9 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>85. Pandas for Panel Data &#8212; Intermediate Quantitative Economics with Python</title>
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
     
         <script>
             MathJax = {
@@ -70,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=dbac30014ddb092b35ab80b3076a22a196655849" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -95,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -239,7 +246,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/1908695ce" class="changelog-hash">1908695ce</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">3 months ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">MAINT: upgrade anaconda=2025.06 and python=3.13 (#503)</span>
                             </li>
                             
@@ -248,7 +255,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b7349e484" class="changelog-hash">b7349e484</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">6 months ago</span>
+                                <span class="changelog-time">7 months ago</span>
                                 <span class="changelog-message">FIX: Deprecation and Future Warnings (#444)</span>
                             </li>
                             
@@ -257,7 +264,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/f4d7a8d77" class="changelog-hash">f4d7a8d77</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">12 months ago</span>
+                                <span class="changelog-time">1 year ago</span>
                                 <span class="changelog-message">FIX: pass quantecon logo through to download notebooks (#432)</span>
                             </li>
                             
@@ -2073,7 +2080,7 @@ past decade for each country in our data set</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bf257382e1e332454354ffabcf7eef3b657d80e1c082910a2b73b0346b48d07b.png" src="_images/bf257382e1e332454354ffabcf7eef3b657d80e1c082910a2b73b0346b48d07b.png" />
+<img alt="_images/90082b4facf9d1385589c2b03b4a8d303f02ef65685c1d398a5e49a104ccdf42.png" src="_images/90082b4facf9d1385589c2b03b4a8d303f02ef65685c1d398a5e49a104ccdf42.png" />
 </div>
 </div>
 <p>Passing in <code class="docutils literal notranslate"><span class="pre">axis=1</span></code> to <code class="docutils literal notranslate"><span class="pre">.mean()</span></code> will aggregate over columns (giving
@@ -2108,7 +2115,7 @@ dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c1ebe1a0fe9cde95ac9524ce0b3389cffa5f56f1fbfebe8ecdfdd6402c686b74.png" src="_images/c1ebe1a0fe9cde95ac9524ce0b3389cffa5f56f1fbfebe8ecdfdd6402c686b74.png" />
+<img alt="_images/22bb86f9d9ca350fe6c5299234c4a470facead85c4d5b0ac89bff885e04f92eb.png" src="_images/22bb86f9d9ca350fe6c5299234c4a470facead85c4d5b0ac89bff885e04f92eb.png" />
 </div>
 </div>
 <p>We can also specify a level of the <code class="docutils literal notranslate"><span class="pre">MultiIndex</span></code> (in the column axis)
@@ -2203,7 +2210,7 @@ to aggregate over</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eda2ae5a4c3771454330be3ea553c33f2ae7e26627fdd3b29f3fba9cdfb52508.png" src="_images/eda2ae5a4c3771454330be3ea553c33f2ae7e26627fdd3b29f3fba9cdfb52508.png" />
+<img alt="_images/b81644bbfbecf2782449f20e32a17c7071dde50e7cb7ba44d69f39fd40959cf8.png" src="_images/b81644bbfbecf2782449f20e32a17c7071dde50e7cb7ba44d69f39fd40959cf8.png" />
 </div>
 </div>
 <p>We will drop Australia as a continent for plotting purposes</p>
@@ -2219,7 +2226,7 @@ to aggregate over</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/07669afb47729f004d61ce7fbfe4281ba5d75b35f3f8c48c4cdd4a25cacd3607.png" src="_images/07669afb47729f004d61ce7fbfe4281ba5d75b35f3f8c48c4cdd4a25cacd3607.png" />
+<img alt="_images/3174468e82ac053307230e20121f1764e7d27a7f2cc9ff3064a567426fb6f2f2.png" src="_images/3174468e82ac053307230e20121f1764e7d27a7f2cc9ff3064a567426fb6f2f2.png" />
 </div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">.describe()</span></code> is useful for quickly retrieving a number of common
@@ -2326,7 +2333,7 @@ a new <code class="docutils literal notranslate"><span class="pre">DataFrameGrou
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7a909a7fe2c0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7971a1d828b0&gt;
 </pre></div>
 </div>
 </div>
@@ -2372,7 +2379,7 @@ object</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/41b8b99e25f9544f44358fc2a65e7f77578e716332158e6d494e8878632d1471.png" src="_images/41b8b99e25f9544f44358fc2a65e7f77578e716332158e6d494e8878632d1471.png" />
+<img alt="_images/2e5afd025bf1f787ec93f9421cd2cc0c949bee2be3a7112a07506bfc785b1326.png" src="_images/2e5afd025bf1f787ec93f9421cd2cc0c949bee2be3a7112a07506bfc785b1326.png" />
 </div>
 </div>
 </section>
@@ -2788,7 +2795,7 @@ dataframe</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cb3ed9e6639542d1c137fd9441c12f0792eb7ee6f080f045babe7849c523262d.png" src="_images/cb3ed9e6639542d1c137fd9441c12f0792eb7ee6f080f045babe7849c523262d.png" />
+<img alt="_images/639c26646360474ddc0c06e9fd95d1c866d4a89e59937996b94b92bf64031d37.png" src="_images/639c26646360474ddc0c06e9fd95d1c866d4a89e59937996b94b92bf64031d37.png" />
 </div>
 </div>
 </section>

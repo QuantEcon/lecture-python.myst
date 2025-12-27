@@ -9,9 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>4. Circulant Matrices &#8212; Intermediate Quantitative Economics with Python</title>
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
     
         <script>
             MathJax = {
@@ -70,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=dbac30014ddb092b35ab80b3076a22a196655849" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -95,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -511,16 +518,16 @@ P P' = I
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>𝜆0 = -1.0+0.0j 
-vec0 = [-0.5+0.j   0. +0.5j  0. -0.5j -0.5+0.j ]
+vec0 = [-0.5+0.j  -0. -0.5j -0. +0.5j -0.5+0.j ]
 
 𝜆1 = 0.0+1.0j 
-vec1 = [ 0.5+0.j -0.5+0.j -0.5-0.j -0.5+0.j]
+vec1 = [ 0.5+0.j  0.5+0.j  0.5-0.j -0.5+0.j]
 
 𝜆2 = 0.0-1.0j 
-vec2 = [-0.5+0.j   0. -0.5j  0. +0.5j -0.5+0.j ]
+vec2 = [-0.5+0.j   0. +0.5j  0. -0.5j -0.5+0.j ]
 
 𝜆3 = 1.0+0.0j 
-vec3 = [ 0.5+0.j  0.5-0.j  0.5+0.j -0.5+0.j]
+vec3 = [ 0.5+0.j -0.5-0.j -0.5+0.j -0.5+0.j]
 </pre></div>
 </div>
 </div>
@@ -561,7 +568,7 @@ z = \exp\left(\frac{2 \pi j k }{N} \right) , \quad k = 0, \ldots, N-1
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5f00cefd7a025811b6c7b961bd52e722f48c5f5bad0e86ce2dcbf3873aeade8a.png" src="_images/5f00cefd7a025811b6c7b961bd52e722f48c5f5bad0e86ce2dcbf3873aeade8a.png" />
+<img alt="_images/9d1a5fd79f36557436534bd3422bc6299317609565a0cac3bfe29922412f79bf.png" src="_images/9d1a5fd79f36557436534bd3422bc6299317609565a0cac3bfe29922412f79bf.png" />
 </div>
 </div>
 <p>For a vector of  coefficients <span class="math notranslate nohighlight">\(\{c_i\}_{i=0}^{n-1}\)</span>, eigenvectors of <span class="math notranslate nohighlight">\(P\)</span> are also  eigenvectors of</p>
@@ -742,7 +749,7 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.676, 0.88 , 0.329, 0.865, 0.075, 0.559, 0.984, 0.055])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.602, 0.381, 0.241, 0.044, 0.102, 0.276, 0.783, 0.49 ])
 </pre></div>
 </div>
 </div>
@@ -776,14 +783,14 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.676, 0.88 , 0.329, 0.865, 0.075, 0.559, 0.984, 0.055],
-       [0.055, 0.676, 0.88 , 0.329, 0.865, 0.075, 0.559, 0.984],
-       [0.984, 0.055, 0.676, 0.88 , 0.329, 0.865, 0.075, 0.559],
-       [0.559, 0.984, 0.055, 0.676, 0.88 , 0.329, 0.865, 0.075],
-       [0.075, 0.559, 0.984, 0.055, 0.676, 0.88 , 0.329, 0.865],
-       [0.865, 0.075, 0.559, 0.984, 0.055, 0.676, 0.88 , 0.329],
-       [0.329, 0.865, 0.075, 0.559, 0.984, 0.055, 0.676, 0.88 ],
-       [0.88 , 0.329, 0.865, 0.075, 0.559, 0.984, 0.055, 0.676]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.602, 0.381, 0.241, 0.044, 0.102, 0.276, 0.783, 0.49 ],
+       [0.49 , 0.602, 0.381, 0.241, 0.044, 0.102, 0.276, 0.783],
+       [0.783, 0.49 , 0.602, 0.381, 0.241, 0.044, 0.102, 0.276],
+       [0.276, 0.783, 0.49 , 0.602, 0.381, 0.241, 0.044, 0.102],
+       [0.102, 0.276, 0.783, 0.49 , 0.602, 0.381, 0.241, 0.044],
+       [0.044, 0.102, 0.276, 0.783, 0.49 , 0.602, 0.381, 0.241],
+       [0.241, 0.044, 0.102, 0.276, 0.783, 0.49 , 0.602, 0.381],
+       [0.381, 0.241, 0.044, 0.102, 0.276, 0.783, 0.49 , 0.602]])
 </pre></div>
 </div>
 </div>
@@ -795,14 +802,14 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.676, 0.88 , 0.329, 0.865, 0.075, 0.559, 0.984, 0.055],
-       [0.055, 0.676, 0.88 , 0.329, 0.865, 0.075, 0.559, 0.984],
-       [0.984, 0.055, 0.676, 0.88 , 0.329, 0.865, 0.075, 0.559],
-       [0.559, 0.984, 0.055, 0.676, 0.88 , 0.329, 0.865, 0.075],
-       [0.075, 0.559, 0.984, 0.055, 0.676, 0.88 , 0.329, 0.865],
-       [0.865, 0.075, 0.559, 0.984, 0.055, 0.676, 0.88 , 0.329],
-       [0.329, 0.865, 0.075, 0.559, 0.984, 0.055, 0.676, 0.88 ],
-       [0.88 , 0.329, 0.865, 0.075, 0.559, 0.984, 0.055, 0.676]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.602, 0.381, 0.241, 0.044, 0.102, 0.276, 0.783, 0.49 ],
+       [0.49 , 0.602, 0.381, 0.241, 0.044, 0.102, 0.276, 0.783],
+       [0.783, 0.49 , 0.602, 0.381, 0.241, 0.044, 0.102, 0.276],
+       [0.276, 0.783, 0.49 , 0.602, 0.381, 0.241, 0.044, 0.102],
+       [0.102, 0.276, 0.783, 0.49 , 0.602, 0.381, 0.241, 0.044],
+       [0.044, 0.102, 0.276, 0.783, 0.49 , 0.602, 0.381, 0.241],
+       [0.241, 0.044, 0.102, 0.276, 0.783, 0.49 , 0.602, 0.381],
+       [0.381, 0.241, 0.044, 0.102, 0.276, 0.783, 0.49 , 0.602]])
 </pre></div>
 </div>
 </div>
@@ -839,8 +846,8 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 4.422+0.j   ,  0.256-0.145j, -0.562-0.519j,  0.947-1.454j,
-       -0.295+0.j   ,  0.947+1.454j, -0.562+0.519j,  0.256+0.145j])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([ 2.918+0.j   ,  0.89 +0.783j, -0.321-0.124j,  0.11 -0.302j,
+        0.536+0.j   ,  0.11 +0.302j, -0.321+0.124j,  0.89 -0.783j])
 </pre></div>
 </div>
 </div>
@@ -857,13 +864,13 @@ C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j 0.+0.j]
-[ 0.+0.j  0.-0.j  0.-0.j -0.-0.j -0.-0.j -0.+0.j -0.+0.j -0.+0.j]
-[ 0.-0.j -0.-0.j -0.-0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j -0.-0.j]
-[-0.+0.j -0.+0.j  0.-0.j -0.+0.j  0.+0.j -0.-0.j -0.+0.j  0.-0.j]
-[ 0.-0.j -0.-0.j  0.-0.j -0.+0.j  0.-0.j -0.-0.j  0.+0.j -0.-0.j]
-[ 0.+0.j -0.-0.j  0.-0.j  0.+0.j -0.+0.j  0.-0.j  0.+0.j -0.-0.j]
-[ 0.+0.j -0.-0.j  0.-0.j  0.-0.j  0.+0.j -0.-0.j  0.-0.j  0.-0.j]
-[-0.+0.j -0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.-0.j  0.+0.j  0.+0.j]
+[ 0.+0.j  0.-0.j -0.-0.j -0.-0.j -0.+0.j -0.+0.j  0.+0.j  0.+0.j]
+[ 0.-0.j -0.-0.j -0.-0.j -0.+0.j  0.+0.j  0.-0.j -0.-0.j -0.-0.j]
+[-0.+0.j -0.-0.j -0.-0.j -0.+0.j  0.-0.j -0.-0.j  0.+0.j -0.-0.j]
+[-0.+0.j  0.-0.j -0.-0.j  0.+0.j -0.-0.j  0.+0.j -0.-0.j  0.-0.j]
+[ 0.-0.j  0.-0.j  0.-0.j  0.+0.j -0.-0.j  0.-0.j -0.+0.j  0.-0.j]
+[ 0.-0.j  0.-0.j  0.-0.j  0.+0.j -0.+0.j -0.-0.j  0.-0.j  0.-0.j]
+[ 0.+0.j -0.-0.j  0.-0.j  0.-0.j  0.+0.j  0.+0.j -0.+0.j -0.+0.j]
 </pre></div>
 </div>
 </div>
@@ -986,8 +993,8 @@ x_{n}=\begin{cases}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9b70f190e553367ea56ad42176ee7db9f29d864c2772ebeee314a6efbefd0a62.png" src="_images/9b70f190e553367ea56ad42176ee7db9f29d864c2772ebeee314a6efbefd0a62.png" />
-<img alt="_images/c473c405a06551129aa37a8114b494694452f9a1b6853eeccbf54770dc008fdf.png" src="_images/c473c405a06551129aa37a8114b494694452f9a1b6853eeccbf54770dc008fdf.png" />
+<img alt="_images/3a63b11057bf5b688cd81db1243e061809b877b7b06e3b08626180391f9b1ca1.png" src="_images/3a63b11057bf5b688cd81db1243e061809b877b7b06e3b08626180391f9b1ca1.png" />
+<img alt="_images/9d00b0d3dcddc3794084e8993ff86927bdb3a3fd0a264ba99a95f90c93706260.png" src="_images/9d00b0d3dcddc3794084e8993ff86927bdb3a3fd0a264ba99a95f90c93706260.png" />
 </div>
 </div>
 <p>The <strong>inverse Fourier transform</strong>  transforms a Fourier transform  <span class="math notranslate nohighlight">\(X\)</span> of <span class="math notranslate nohighlight">\(x\)</span>  back to <span class="math notranslate nohighlight">\(x\)</span>.</p>
@@ -1059,8 +1066,8 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/618202060d8133270dc6a2141e36d204b63423e778e9475b393b3ff8d5aeb441.png" src="_images/618202060d8133270dc6a2141e36d204b63423e778e9475b393b3ff8d5aeb441.png" />
-<img alt="_images/a1a3f2ba0347c96793e32981ee5a1d1e15855026f9fcf654f10b2b18d803d080.png" src="_images/a1a3f2ba0347c96793e32981ee5a1d1e15855026f9fcf654f10b2b18d803d080.png" />
+<img alt="_images/9fc2b10431f4b30475c7c342cedfdd67b71dcc1e2f2d0a75fa041ee0195f12d4.png" src="_images/9fc2b10431f4b30475c7c342cedfdd67b71dcc1e2f2d0a75fa041ee0195f12d4.png" />
+<img alt="_images/d5e1f827da1985b2d93007974c1d849c17c65a83f27d6f8a592892a62de0c272.png" src="_images/d5e1f827da1985b2d93007974c1d849c17c65a83f27d6f8a592892a62de0c272.png" />
 </div>
 </div>
 <p>What happens if we change the last example to <span class="math notranslate nohighlight">\(x_{n}=2\cos\left(2\pi\frac{10}{40}n\right)\)</span>?</p>
@@ -1090,8 +1097,8 @@ x_{n}=2\cos\left(2\pi\frac{11}{40}n\right),\ n=0,1,2,\cdots19
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c977566f9b17e834c6e489bce48f7969ee2354c28eddc2471efc870d4a94dcb2.png" src="_images/c977566f9b17e834c6e489bce48f7969ee2354c28eddc2471efc870d4a94dcb2.png" />
-<img alt="_images/b5cb1a42989ea154e9f75d4686c3689886ccd106ce9fa37a0775f03b7943a7d3.png" src="_images/b5cb1a42989ea154e9f75d4686c3689886ccd106ce9fa37a0775f03b7943a7d3.png" />
+<img alt="_images/b6ccb3752951a083b5e376379085f5f271eea2c0af39d0de76e1c4f2ae6780a6.png" src="_images/b6ccb3752951a083b5e376379085f5f271eea2c0af39d0de76e1c4f2ae6780a6.png" />
+<img alt="_images/763f1b8e5a16c393f9cda9b30f0a04627ad898d280e7ffff4b679b4b521824f0.png" src="_images/763f1b8e5a16c393f9cda9b30f0a04627ad898d280e7ffff4b679b4b521824f0.png" />
 </div>
 </div>
 <p>If we represent the discrete Fourier transform as a matrix, we discover that it equals the  matrix <span class="math notranslate nohighlight">\(F_{N}\)</span> of eigenvectors  of the permutation matrix <span class="math notranslate nohighlight">\(P_{N}\)</span>.</p>

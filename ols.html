@@ -9,9 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>86. Linear Regression in Python &#8212; Intermediate Quantitative Economics with Python</title>
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
     
         <script>
             MathJax = {
@@ -70,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=dbac30014ddb092b35ab80b3076a22a196655849" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -95,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -244,7 +251,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a1cd90c5e" class="changelog-hash">a1cd90c5e</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">1 week ago</span>
+                                <span class="changelog-time">1 month ago</span>
                                 <span class="changelog-message">STYLE: Fix emphasis vs definitions style guide compliance (Issue #721) (#723)</span>
                             </li>
                             
@@ -253,7 +260,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a73ba0f7d" class="changelog-hash">a73ba0f7d</a>
                                 
                                 <span class="changelog-author">Copilot</span>
-                                <span class="changelog-time">3 months ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">[style] Remove local figsize adjustments from all lecture files (#574)</span>
                             </li>
                             
@@ -262,7 +269,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/1908695ce" class="changelog-hash">1908695ce</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">3 months ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">MAINT: upgrade anaconda=2025.06 and python=3.13 (#503)</span>
                             </li>
                             
@@ -271,7 +278,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/f4d7a8d77" class="changelog-hash">f4d7a8d77</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">12 months ago</span>
+                                <span class="changelog-time">1 year ago</span>
                                 <span class="changelog-message">FIX: pass quantecon logo through to download notebooks (#432)</span>
                             </li>
                             
@@ -373,10 +380,10 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting linearmodels
   Downloading linearmodels-7.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (10 kB)
-Requirement already satisfied: numpy&lt;3,&gt;=1.22.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (2.1.3)
-Requirement already satisfied: pandas&gt;=1.4.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (2.2.3)
-Requirement already satisfied: scipy&gt;=1.8.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (1.15.3)
-Requirement already satisfied: statsmodels&gt;=0.13.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (0.14.4)
+Requirement already satisfied: numpy&lt;3,&gt;=1.22.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (2.3.5)
+Requirement already satisfied: pandas&gt;=1.4.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (2.3.3)
+Requirement already satisfied: scipy&gt;=1.8.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (1.16.3)
+Requirement already satisfied: statsmodels&gt;=0.13.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (0.14.5)
 Requirement already satisfied: mypy_extensions&gt;=0.4 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from linearmodels) (1.0.0)
 Collecting pyhdfe&gt;=0.1 (from linearmodels)
   Downloading pyhdfe-0.2.0-py3-none-any.whl.metadata (4.0 kB)
@@ -384,19 +391,20 @@ Collecting formulaic&gt;=1.2.1 (from linearmodels)
   Downloading formulaic-1.2.1-py3-none-any.whl.metadata (7.0 kB)
 Collecting interface-meta&gt;=1.2.0 (from formulaic&gt;=1.2.1-&gt;linearmodels)
   Downloading interface_meta-1.3.0-py3-none-any.whl.metadata (6.7 kB)
-Requirement already satisfied: narwhals&gt;=1.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from formulaic&gt;=1.2.1-&gt;linearmodels) (1.31.0)
-Requirement already satisfied: typing-extensions&gt;=4.2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from formulaic&gt;=1.2.1-&gt;linearmodels) (4.12.2)
+Requirement already satisfied: narwhals&gt;=1.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from formulaic&gt;=1.2.1-&gt;linearmodels) (2.7.0)
+Requirement already satisfied: typing-extensions&gt;=4.2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from formulaic&gt;=1.2.1-&gt;linearmodels) (4.15.0)
 Requirement already satisfied: wrapt&gt;=1.17.0rc1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from formulaic&gt;=1.2.1-&gt;linearmodels) (1.17.0)
 Requirement already satisfied: python-dateutil&gt;=2.8.2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pandas&gt;=1.4.0-&gt;linearmodels) (2.9.0.post0)
-Requirement already satisfied: pytz&gt;=2020.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pandas&gt;=1.4.0-&gt;linearmodels) (2024.1)
+Requirement already satisfied: pytz&gt;=2020.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pandas&gt;=1.4.0-&gt;linearmodels) (2025.2)
 Requirement already satisfied: tzdata&gt;=2022.7 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from pandas&gt;=1.4.0-&gt;linearmodels) (2025.2)
 Requirement already satisfied: six&gt;=1.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&gt;=1.4.0-&gt;linearmodels) (1.17.0)
 Requirement already satisfied: patsy&gt;=0.5.6 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from statsmodels&gt;=0.13.0-&gt;linearmodels) (1.0.1)
-Requirement already satisfied: packaging&gt;=21.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from statsmodels&gt;=0.13.0-&gt;linearmodels) (24.2)
+Requirement already satisfied: packaging&gt;=21.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from statsmodels&gt;=0.13.0-&gt;linearmodels) (25.0)
 Downloading linearmodels-7.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.5 MB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">42.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading formulaic-1.2.1-py3-none-any.whl (117 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">13.2 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
+?25h
+Downloading formulaic-1.2.1-py3-none-any.whl (117 kB)
 Downloading interface_meta-1.3.0-py3-none-any.whl (14 kB)
 Downloading pyhdfe-0.2.0-py3-none-any.whl (19 kB)
 Installing collected packages: interface-meta, pyhdfe, formulaic, linearmodels
@@ -404,6 +412,7 @@ Installing collected packages: interface-meta, pyhdfe, formulaic, linearmodels
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [linearmodels]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [linearmodels]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4/4</span> [linearmodels]
+
 Successfully installed formulaic-1.2.1 interface-meta-1.3.0 linearmodels-7.0 pyhdfe-0.2.0
 </pre></div>
 </div>
@@ -598,7 +607,7 @@ expropriation index</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cf1546e9104493b972573365c7aa5e8fe92ac847cf4a334d9c55f490f34fa14d.png" src="_images/cf1546e9104493b972573365c7aa5e8fe92ac847cf4a334d9c55f490f34fa14d.png" />
+<img alt="_images/efd6fa2a696bd1168ddc1ccfffc75873b0d709351a511f78f82102221fe328ba.png" src="_images/efd6fa2a696bd1168ddc1ccfffc75873b0d709351a511f78f82102221fe328ba.png" />
 </div>
 </div>
 <p>The plot shows a fairly strong positive relationship between
@@ -660,7 +669,7 @@ fits the data, as in the following plot (Figure 2 in <span id="id4">[<a class="r
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ebdab590687f25c25622222a1202d5fb946cfd9abcd46df1d08c8ae46fcd6e2d.png" src="_images/ebdab590687f25c25622222a1202d5fb946cfd9abcd46df1d08c8ae46fcd6e2d.png" />
+<img alt="_images/98883c7367074e8c9850c2d55dbe6411d3f0382c528859b49cf9c43cdc1f7196.png" src="_images/98883c7367074e8c9850c2d55dbe6411d3f0382c528859b49cf9c43cdc1f7196.png" />
 </div>
 </div>
 <p>The most common technique to estimate the parameters (<span class="math notranslate nohighlight">\(\beta\)</span>’s)
@@ -733,8 +742,8 @@ coefficients differ slightly.</p>
 Dep. Variable:               logpgp95   R-squared:                       0.611
 Model:                            OLS   Adj. R-squared:                  0.608
 Method:                 Least Squares   F-statistic:                     171.4
-Date:                Mon, 01 Dec 2025   Prob (F-statistic):           4.16e-24
-Time:                        06:26:47   Log-Likelihood:                -119.71
+Date:                Sat, 27 Dec 2025   Prob (F-statistic):           4.16e-24
+Time:                        02:41:15   Log-Likelihood:                -119.71
 No. Observations:                 111   AIC:                             243.4
 Df Residuals:                     109   BIC:                             248.8
 Df Model:                           1                                         
@@ -858,7 +867,7 @@ comparison purposes</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/11b6f1b63abb674e1e765b08df080610ccffca1c79574c5b1aee7636d73466b2.png" src="_images/11b6f1b63abb674e1e765b08df080610ccffca1c79574c5b1aee7636d73466b2.png" />
+<img alt="_images/3d8a45b6cf6912ed0f4999e0887656dbd8946f85b78d019ff3701ff4753db79a.png" src="_images/3d8a45b6cf6912ed0f4999e0887656dbd8946f85b78d019ff3701ff4753db79a.png" />
 </div>
 </div>
 </section>
@@ -1024,7 +1033,7 @@ condition of a valid instrument.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/40e9ea59b3ffe984dcc5a339468df5e0d4080f283d324bd4e6397ce515ac9b08.png" src="_images/40e9ea59b3ffe984dcc5a339468df5e0d4080f283d324bd4e6397ce515ac9b08.png" />
+<img alt="_images/926c4ff6e475136d6e198cbffb6c0f7e23766bd7eef119d974fc5881c30ee9a3.png" src="_images/926c4ff6e475136d6e198cbffb6c0f7e23766bd7eef119d974fc5881c30ee9a3.png" />
 </div>
 </div>
 <p>The second condition may not be satisfied if settler mortality rates in the 17th to 19th centuries have a direct effect on current GDP (in addition to their indirect effect through institutions).</p>
@@ -1077,8 +1086,8 @@ used for estimation)</p>
 Dep. Variable:                 avexpr   R-squared:                       0.270
 Model:                            OLS   Adj. R-squared:                  0.258
 Method:                 Least Squares   F-statistic:                     22.95
-Date:                Mon, 01 Dec 2025   Prob (F-statistic):           1.08e-05
-Time:                        06:26:48   Log-Likelihood:                -104.83
+Date:                Sat, 27 Dec 2025   Prob (F-statistic):           1.08e-05
+Time:                        02:41:17   Log-Likelihood:                -104.83
 No. Observations:                  64   AIC:                             213.7
 Df Residuals:                      62   BIC:                             218.0
 Df Model:                           1                                         
@@ -1127,8 +1136,8 @@ predicted values <span class="math notranslate nohighlight">\(\widehat{avexpr}_i
 Dep. Variable:               logpgp95   R-squared:                       0.477
 Model:                            OLS   Adj. R-squared:                  0.469
 Method:                 Least Squares   F-statistic:                     56.60
-Date:                Mon, 01 Dec 2025   Prob (F-statistic):           2.66e-10
-Time:                        06:26:48   Log-Likelihood:                -72.268
+Date:                Sat, 27 Dec 2025   Prob (F-statistic):           2.66e-10
+Time:                        02:41:17   Log-Likelihood:                -72.268
 No. Observations:                  64   AIC:                             148.5
 Df Residuals:                      62   BIC:                             152.9
 Df Model:                           1                                         
@@ -1180,8 +1189,8 @@ included exogenous variables)</p>
 Dep. Variable:               logpgp95   R-squared:                      0.1870
 Estimator:                    IV-2SLS   Adj. R-squared:                 0.1739
 No. Observations:                  64   F-statistic:                    37.568
-Date:                Mon, Dec 01 2025   P-value (F-stat)                0.0000
-Time:                        06:26:48   Distribution:                  chi2(1)
+Date:                Sat, Dec 27 2025   P-value (F-stat)                0.0000
+Time:                        02:41:17   Distribution:                  chi2(1)
 Cov. Estimator:            unadjusted                                         
                                                                               
                              Parameter Estimates                              
@@ -1288,8 +1297,8 @@ results.</p>
 Dep. Variable:               logpgp95   R-squared:                       0.689
 Model:                            OLS   Adj. R-squared:                  0.679
 Method:                 Least Squares   F-statistic:                     74.05
-Date:                Mon, 01 Dec 2025   Prob (F-statistic):           1.07e-17
-Time:                        06:26:48   Log-Likelihood:                -62.031
+Date:                Sat, 27 Dec 2025   Prob (F-statistic):           1.07e-17
+Time:                        02:41:17   Log-Likelihood:                -62.031
 No. Observations:                  70   AIC:                             130.1
 Df Residuals:                      67   BIC:                             136.8
 Df Model:                           2                                         

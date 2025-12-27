@@ -9,9 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>11. Two Meanings of Probability &#8212; Intermediate Quantitative Economics with Python</title>
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
     
         <script>
             MathJax = {
@@ -70,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=dbac30014ddb092b35ab80b3076a22a196655849" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -95,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -257,7 +264,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/dbec34949" class="changelog-hash">dbec34949</a>
                                 
                                 <span class="changelog-author">Thomas Sargent</span>
-                                <span class="changelog-time">2 years ago</span>
+                                <span class="changelog-time">3 years ago</span>
                                 <span class="changelog-message">Tom's Dec 20 edits of two lectures</span>
                             </li>
                             
@@ -375,7 +382,7 @@ proceeding to read the rest of the lecture.</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: prettytable in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (3.17.0)
-Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from prettytable) (0.2.5)
+Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from prettytable) (0.2.13)
 Note: you may need to restart the kernel to use updated packages.
 </pre></div>
 </div>
@@ -530,24 +537,24 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 +----+------------------------+-------------+
 | 1  | 1.6271660538000033e-09 |     0.0     |
 | 2  | 3.606884752589999e-08  |     0.0     |
-| 3  |  5.04963865362601e-07  |    1e-06    |
-| 4  | 5.007558331512455e-06  |    2e-06    |
+| 3  |  5.04963865362601e-07  |     0.0     |
+| 4  | 5.007558331512455e-06  |    9e-06    |
 | 5  | 3.7389768875293014e-05 |   4.4e-05   |
-| 6  | 0.00021810698510587546 |   0.000213  |
-| 7  |  0.001017832597160754  |   0.001002  |
-| 8  |  0.003859281930901185  |   0.003871  |
-| 9  |  0.012006654896137007  |   0.011853  |
-| 10 |  0.030817080900085007  |   0.030924  |
-| 11 |  0.06536956554563476   |   0.06544   |
-| 12 |  0.11439673970486108   |   0.114336  |
-| 13 |   0.1642619852172365   |   0.16431   |
-| 14 |  0.19163898275344252   |   0.191982  |
-| 15 |  0.17886305056987967   |   0.178915  |
-| 16 |   0.1304209743738704   |   0.129833  |
-| 17 |  0.07160367220526209   |   0.071406  |
-| 18 |  0.027845872524268643  |   0.028282  |
-| 19 |  0.006839337111223895  |   0.006784  |
-| 20 | 0.0007979226629761189  |   0.000802  |
+| 6  | 0.00021810698510587546 |   0.000222  |
+| 7  |  0.001017832597160754  |   0.000969  |
+| 8  |  0.003859281930901185  |   0.003868  |
+| 9  |  0.012006654896137007  |   0.012096  |
+| 10 |  0.030817080900085007  |   0.030821  |
+| 11 |  0.06536956554563476   |   0.065255  |
+| 12 |  0.11439673970486108   |   0.114104  |
+| 13 |   0.1642619852172365   |   0.164153  |
+| 14 |  0.19163898275344252   |   0.191532  |
+| 15 |  0.17886305056987967   |   0.179268  |
+| 16 |   0.1304209743738704   |   0.130611  |
+| 17 |  0.07160367220526209   |   0.071538  |
+| 18 |  0.027845872524268643  |    0.0281   |
+| 19 |  0.006839337111223895  |   0.006654  |
+| 20 | 0.0007979226629761189  |   0.000756  |
 +----+------------------------+-------------+
 </pre></div>
 </div>
@@ -597,7 +604,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ffb4fdab2326b41a19855b7218a1398a3308dff30644e5c77717b96e56bbd08c.png" src="_images/ffb4fdab2326b41a19855b7218a1398a3308dff30644e5c77717b96e56bbd08c.png" />
+<img alt="_images/b1c4c1b1c8bcbf3a8a51f2d81f2b45a2fa19fc871b5fc7c97714281c6f318638.png" src="_images/b1c4c1b1c8bcbf3a8a51f2d81f2b45a2fa19fc871b5fc7c97714281c6f318638.png" />
 </div>
 </div>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(n\)</span></strong></p>
@@ -636,7 +643,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/799cf46f7425033e033986a6cad7ab58b6e7b73d3739aa57a5e7ee63c21aa933.png" src="_images/799cf46f7425033e033986a6cad7ab58b6e7b73d3739aa57a5e7ee63c21aa933.png" />
+<img alt="_images/031f723efe1b258baea83f7c313046c16d2607aa62941c71bb62a9b62737682e.png" src="_images/031f723efe1b258baea83f7c313046c16d2607aa62941c71bb62a9b62737682e.png" />
 </div>
 </div>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(I\)</span></strong></p>
@@ -675,7 +682,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9732aa84ab6153365c7be6695e7beb3397c7ed8b3fdf7fdb6c22cd49555b2b49.png" src="_images/9732aa84ab6153365c7be6695e7beb3397c7ed8b3fdf7fdb6c22cd49555b2b49.png" />
+<img alt="_images/9ef28af2348e31f53da1ad07776469b7627d2471fac4a9adfe0a7b8826516543.png" src="_images/9ef28af2348e31f53da1ad07776469b7627d2471fac4a9adfe0a7b8826516543.png" />
 </div>
 </div>
 <p>From the above graphs, we can see that <strong><span class="math notranslate nohighlight">\(I\)</span>, the number of independent sequences,</strong> plays an important role.</p>
@@ -855,7 +862,7 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4026951e96e183d1e5f1d2ca06f5564d06486eeef9319000c2902b963b6b495f.png" src="_images/4026951e96e183d1e5f1d2ca06f5564d06486eeef9319000c2902b963b6b495f.png" />
+<img alt="_images/20361a2f88548f9683cd15f5439bea0590438abfe4eb2bbad31f90220ab8b537.png" src="_images/20361a2f88548f9683cd15f5439bea0590438abfe4eb2bbad31f90220ab8b537.png" />
 </div>
 </div>
 <p><strong>e)</strong> For various <span class="math notranslate nohighlight">\(n\)</span>’s, please describe and compute  <span class="math notranslate nohighlight">\(.05\)</span> and <span class="math notranslate nohighlight">\(.95\)</span> quantiles for  posterior probabilities.</p>
@@ -912,36 +919,36 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
     <tr>
       <th>upper</th>
       <td>0.001543</td>
-      <td>0.097308</td>
-      <td>0.235534</td>
-      <td>0.16528</td>
-      <td>0.260634</td>
+      <td>0.000868</td>
+      <td>0.000603</td>
+      <td>0.046007</td>
+      <td>0.036447</td>
       <td>0.117329</td>
-      <td>0.196953</td>
-      <td>0.207092</td>
-      <td>0.310582</td>
-      <td>0.348182</td>
-      <td>0.360361</td>
-      <td>0.390159</td>
-      <td>0.391977</td>
-      <td>0.371793</td>
+      <td>0.280091</td>
+      <td>0.32360</td>
+      <td>0.347833</td>
+      <td>0.375427</td>
+      <td>0.331729</td>
+      <td>0.386891</td>
+      <td>0.403809</td>
+      <td>0.389576</td>
     </tr>
     <tr>
       <th>lower</th>
       <td>0.771480</td>
-      <td>0.902692</td>
-      <td>0.937587</td>
-      <td>0.83472</td>
-      <td>0.872224</td>
+      <td>0.569259</td>
+      <td>0.444067</td>
+      <td>0.650707</td>
+      <td>0.562845</td>
       <td>0.558127</td>
-      <td>0.533165</td>
-      <td>0.482348</td>
-      <td>0.536089</td>
-      <td>0.540960</td>
-      <td>0.522172</td>
-      <td>0.484073</td>
-      <td>0.464637</td>
-      <td>0.422646</td>
+      <td>0.629953</td>
+      <td>0.61429</td>
+      <td>0.575503</td>
+      <td>0.569144</td>
+      <td>0.492070</td>
+      <td>0.480722</td>
+      <td>0.476703</td>
+      <td>0.440787</td>
     </tr>
   </tbody>
 </table>
@@ -976,7 +983,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f5b9556ba405e1ceed99659ced7e17bcc180d99edd5c5e8418eca793586ab45a.png" src="_images/f5b9556ba405e1ceed99659ced7e17bcc180d99edd5c5e8418eca793586ab45a.png" />
+<img alt="_images/45d3fb16b3e0c72a297e28d732e2977707136a87e3a2d635e48302c33d4341a3.png" src="_images/45d3fb16b3e0c72a297e28d732e2977707136a87e3a2d635e48302c33d4341a3.png" />
 </div>
 </div>
 <p>Notice that in the graph above the posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> typically exhibits a hump shape as <span class="math notranslate nohighlight">\(n\)</span> increases.</p>
@@ -1008,7 +1015,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4ea785b712ca82e3db8a774ecf26bddd79ae1b0eaefc90243010fe148cff6ce6.png" src="_images/4ea785b712ca82e3db8a774ecf26bddd79ae1b0eaefc90243010fe148cff6ce6.png" />
+<img alt="_images/2c916f7c3bce9368ba3cc6a6dd1b2158d13bdeeebdafaf078dc9b1de0fd7e566.png" src="_images/2c916f7c3bce9368ba3cc6a6dd1b2158d13bdeeebdafaf078dc9b1de0fd7e566.png" />
 </div>
 </div>
 <p>As <span class="math notranslate nohighlight">\(n\)</span> increases, we can see that the probability density functions <em>concentrate</em> on <span class="math notranslate nohighlight">\(0.4\)</span>, the true value of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
@@ -1038,7 +1045,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b0bd1c887f11fe5ccdae003a02ebc4d0f6e45df567e4decc3fb4ce1a96750674.png" src="_images/b0bd1c887f11fe5ccdae003a02ebc4d0f6e45df567e4decc3fb4ce1a96750674.png" />
+<img alt="_images/7ee31df24028db1128828881c5ea7fe4d4b5b19622b40c4729eb5836cc10f198.png" src="_images/7ee31df24028db1128828881c5ea7fe4d4b5b19622b40c4729eb5836cc10f198.png" />
 </div>
 </div>
 </section>
@@ -1093,7 +1100,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/790a5004326bcd3d9919471e0ab06f3a6886cd89c9e459493d4b5298d7391744.png" src="_images/790a5004326bcd3d9919471e0ab06f3a6886cd89c9e459493d4b5298d7391744.png" />
+<img alt="_images/fc748e7dd79614befaa16e3fefa38d9a86c709549c4e3d70bde790dabb724991.png" src="_images/fc748e7dd79614befaa16e3fefa38d9a86c709549c4e3d70bde790dabb724991.png" />
 </div>
 </div>
 <p>After observing a large number of outcomes, the  posterior distribution collapses around <span class="math notranslate nohighlight">\(0.4\)</span>.</p>
