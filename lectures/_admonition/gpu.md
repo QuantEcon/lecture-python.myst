@@ -1,7 +1,7 @@
 ```{admonition} GPU
 :class: warning
 
-This lecture was built using a machine with access to a GPU.
+This lecture was built using a machine with access to a GPU --- although it will also run without one.
 
 [Google Colab](https://colab.research.google.com/) has a free tier with GPUs
 that you can access as follows:
