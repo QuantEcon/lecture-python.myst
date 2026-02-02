@@ -239,7 +239,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Sep 29, 2025
+                            Last changed: Feb 02, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -250,10 +250,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/007817b9c" class="changelog-hash">007817b9c</a>
+                                
+                                <span class="changelog-author">thomassargent30</span>
+                                <span class="changelog-time">2 hours ago</span>
+                                <span class="changelog-message">Tom's Feb 2 edits of Blume and Easley lecture</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a137f5d12" class="changelog-hash">a137f5d12</a>
                                 
                                 <span class="changelog-author">Copilot</span>
-                                <span class="changelog-time">3 months ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">Fix inconsistent quotation mark usage across lecture files (#641)</span>
                             </li>
                             
@@ -271,7 +280,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/6be28fb9b" class="changelog-hash">6be28fb9b</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">[likelihood_ratio_processes_2] Update new exercises with learning agents (#566)</span>
                             </li>
                             
@@ -280,7 +289,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/709deec8b" class="changelog-hash">709deec8b</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">[likelihood_ratio_processes] Break up likelihood ratio processes lecture and add new examples (#547)</span>
                             </li>
                             
@@ -517,7 +526,7 @@ c_t^i = c_t^i(s^t)
 c_t^1(s^t) + c_t^2(s^t) = 1  
 \]</div>
 <p>for all <span class="math notranslate nohighlight">\(s^t\)</span> for all <span class="math notranslate nohighlight">\(t \geq 0\)</span>.</p>
-<p>To design a socially optimal allocation, the social planner wants to know what agent <span class="math notranslate nohighlight">\(1\)</span> believes about the endowment sequence and how they feel about bearing risks.</p>
+<p>To design a socially optimal allocation, the social planner wants to know what each agent <span class="math notranslate nohighlight">\(i\)</span> believes about the endowment sequence and how they feel about bearing risks.</p>
 <p>As for the endowment sequences, agent <span class="math notranslate nohighlight">\(i\)</span> believes that nature draws i.i.d. sequences from joint densities</p>
 <div class="math notranslate nohighlight">
 \[
@@ -555,7 +564,7 @@ W = \lambda V^1 + (1-\lambda) V^2
 <li><p>each agent’s one period utility function <span class="math notranslate nohighlight">\(u(\cdot) = \ln(\cdot)\)</span></p></li>
 <li><p>each agent <span class="math notranslate nohighlight">\(i\)</span>’s probability model <span class="math notranslate nohighlight">\(\{\pi_t^i(s^t)\}_{t=0}^\infty\)</span></p></li>
 </ul>
-<p>Consequently, we anticipate that these objects will appear in the social planner’s rule for allocating the aggregate endowment each period.</p>
+<p>Consequently, it is natural to anticipate that these objects will appear in the social planner’s rule for allocating the aggregate endowment each period.</p>
 <p>First-order necessary conditions for maximizing welfare criterion <a class="reference internal" href="#equation-eq-welfarew">(23.3)</a> subject to the feasibility constraint <a class="reference internal" href="#equation-eq-feasibility">(23.1)</a> are</p>
 <div class="math notranslate nohighlight">
 \[\frac{\pi_t^2(s^t)}{\pi_t^1(s^t)} \frac{(1/c_t^2(s^t))}{(1/c_t^1(s^t))} = \frac{\lambda}{1-\lambda}\]</div>
@@ -590,27 +599,35 @@ c_t^1(s^t) = \frac{\lambda l_t(s^t)}{1-\lambda + \lambda l_t(s^t)}
 <p>then we can represent the social planner’s allocation rule as</p>
 <div class="math notranslate nohighlight">
 \[
-c_t^1(s^t) = \lambda_t(s^t) .
+c_t^1(s^t) = \lambda_t(s^t) 
+\]</div>
+<p>and of course</p>
+<div class="math notranslate nohighlight">
+\[
+c_t^2(s^t) = 1- \lambda_t(s^t) .
 \]</div>
 </section>
 <section id="if-youre-so-smart-ldots">
 <h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">23.7. </span>If you’re so smart, <span class="math notranslate nohighlight">\(\ldots\)</span></a><a class="headerlink" href="#if-youre-so-smart-ldots" title="Link to this heading">#</a></h2>
 <p>Let’s compute some values of limiting allocations <a class="reference internal" href="#equation-eq-allocationrule1">(23.5)</a> for some interesting possible limiting
-values of the likelihood ratio process <span class="math notranslate nohighlight">\(l_t(s^t)\)</span>:</p>
+values of the likelihood ratio process <span class="math notranslate nohighlight">\(l_t(s^t)\)</span>.</p>
+<p>As our first case, let’s suppose that</p>
 <div class="math notranslate nohighlight">
 \[l_\infty (s^\infty)= 1; \quad c_\infty^1 = \lambda\]</div>
 <ul class="simple">
-<li><p>In the above case, both agents are equally smart (or equally not smart) and the consumption allocation stays put at a <span class="math notranslate nohighlight">\(\lambda, 1 - \lambda\)</span> split between the two agents.</p></li>
+<li><p>In this case, both agents are equally smart (or equally not smart) and the consumption allocation stays put at a <span class="math notranslate nohighlight">\(\lambda, 1 - \lambda\)</span> split between the two agents.</p></li>
 </ul>
+<p>As our second case, let suppose that</p>
 <div class="math notranslate nohighlight">
 \[l_\infty (s^\infty) = 0; \quad c_\infty^1 = 0\]</div>
 <ul class="simple">
-<li><p>In the above case, agent 2 is “smarter” than agent 1, and agent 1’s share of the aggregate endowment converges to zero.</p></li>
+<li><p>In this case, agent 2 is “smarter” than agent 1, and agent 1’s share of the aggregate endowment converges to zero.</p></li>
 </ul>
+<p>As our third case, let’s suppose that</p>
 <div class="math notranslate nohighlight">
 \[l_\infty (s^\infty)= \infty; \quad c_\infty^1 = 1\]</div>
 <ul class="simple">
-<li><p>In the above case, agent 1 is smarter than agent 2, and agent 1’s share of the aggregate endowment converges to 1.</p></li>
+<li><p>In this case, agent 1 is smarter than agent 2, and agent 1’s share of the aggregate endowment converges to 1.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -618,18 +635,18 @@ values of the likelihood ratio process <span class="math notranslate nohighlight
 <ul class="simple">
 <li><p>when the two agents are equally smart and <span class="math notranslate nohighlight">\(\lambda \in (0,1)\)</span>, agent 1’s wealth share stays at <span class="math notranslate nohighlight">\(\lambda\)</span> perpetually.</p></li>
 <li><p>when agent 1 is smarter and <span class="math notranslate nohighlight">\(\lambda \in (0,1)\)</span>, agent 1 eventually “owns” the entire continuation endowment and agent 2 eventually “owns” nothing.</p></li>
-<li><p>when agent 2 is smarter and <span class="math notranslate nohighlight">\(\lambda \in (0,1)\)</span>, agent 2 eventually “owns” the entire continuation endowment and agent 1 eventually “owns” nothing.
-Continuation wealths can be defined precisely after we introduce a competitive equilibrium <strong>price</strong> system below.</p></li>
+<li><p>when agent 2 is smarter and <span class="math notranslate nohighlight">\(\lambda \in (0,1)\)</span>, agent 2 eventually “owns” the entire continuation endowment and agent 1 eventually “owns” nothing.</p></li>
 </ul>
+<p>We can define continuation wealths precisely after we construct  a competitive equilibrium <strong>price</strong> system below.</p>
 </div>
 <p>Soon we’ll do some simulations that will shed further light on possible outcomes.</p>
-<p>But before we do that, let’s take a detour and study some  “shadow prices” for the social planning problem that can readily be
-converted to “equilibrium prices” for a competitive equilibrium.</p>
-<p>Doing this will allow us to connect our analysis with an argument of <span id="id5">[<a class="reference internal" href="zreferences.html#id13" title="Armen A Alchian. Uncertainty, evolution, and economic theory. Journal of political economy, 58(3):211–221, 1950.">Alchian, 1950</a>]</span> and <span id="id6">[<a class="reference internal" href="zreferences.html#id12" title="Milton Friedman. Essays in positive economics. University of Chicago press, 1953.">Friedman, 1953</a>]</span> that competitive market processes can make prices of risky assets better reflect realistic probability assessments.</p>
+<p>But before we do that, let’s take a detour and study some  “shadow prices” for the social planning problem.</p>
+<p>We shall soon see  that these shadow prices can readily be converted to “equilibrium prices” for a competitive equilibrium.</p>
+<p>Doing this will allow us to connect our analysis with claims by  <span id="id5">[<a class="reference internal" href="zreferences.html#id13" title="Armen A Alchian. Uncertainty, evolution, and economic theory. Journal of political economy, 58(3):211–221, 1950.">Alchian, 1950</a>]</span> and <span id="id6">[<a class="reference internal" href="zreferences.html#id12" title="Milton Friedman. Essays in positive economics. University of Chicago press, 1953.">Friedman, 1953</a>]</span> that transfers of wealth coming from trades in  competitive asset markets eventually make prices of risky assets reflect realistic probability assessments.</p>
 </section>
 <section id="competitive-equilibrium-prices">
 <h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">23.8. </span>Competitive equilibrium prices</a><a class="headerlink" href="#competitive-equilibrium-prices" title="Link to this heading">#</a></h2>
-<p>Two fundamental welfare theorems for general equilibrium models lead us to anticipate that there is  a connection between the allocation that solves the social planning problem we have been studying and the allocation in a  <strong>competitive equilibrium</strong>  with complete markets in history-contingent commodities.</p>
+<p>Two fundamental welfare theorems for general equilibrium models lead us to anticipate that there is  a connection between the allocation that solves the social planning problem we have been studying and the allocation in a  <strong>competitive equilibrium</strong>  with complete markets in contingent claims to time- and history-dependent consumption goods.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>For the two welfare theorems and their history, see   <a class="reference external" href="https://en.wikipedia.org/wiki/Fundamental_theorems_of_welfare_economics">https://en.wikipedia.org/wiki/Fundamental_theorems_of_welfare_economics</a>.
@@ -637,16 +654,13 @@ Again, for applications to a classic  macroeconomic growth  model, see <a class=
 </div>
 <p>Such a connection prevails for our model.</p>
 <p>We’ll sketch it now.</p>
-<p>In a competitive equilibrium, there is no social planner that dictatorially collects everybody’s endowments and then reallocates them.</p>
+<p>In a competitive equilibrium, no social planner  dictatorially collects everybody’s endowments and then reallocates them.</p>
 <p>Instead, there is a comprehensive centralized   market that meets at one point in time.</p>
 <p>There are <strong>prices</strong> at which price-taking agents can buy or sell whatever goods that they want.</p>
-<p>Trade is multilateral in the sense that that there is a “Walrasian auctioneer” who lives outside the model and whose job is to verify that
-each agent’s budget constraint is satisfied.</p>
-<p>That budget constraint involves the total value of the agent’s endowment stream and the total value of its consumption stream.</p>
-<p>These values are computed at price vectors that the agents take as given – they are “price-takers” who assume that they can buy or sell
-whatever quantities that they want at those prices.</p>
-<p>Suppose that at time <span class="math notranslate nohighlight">\(-1\)</span>, before time <span class="math notranslate nohighlight">\(0\)</span> starts, agent <span class="math notranslate nohighlight">\(i\)</span> can purchase one unit <span class="math notranslate nohighlight">\(c_t(s^t)\)</span> of consumption at time <span class="math notranslate nohighlight">\(t\)</span> after history
-<span class="math notranslate nohighlight">\(s^t\)</span> at price <span class="math notranslate nohighlight">\(p_t(s^t)\)</span>.</p>
+<p>Trade is multilateral in the sense that that there is a “Walrasian auctioneer” who lives outside the model and whose job it is to verify that each agent’s budget constraint is satisfied.</p>
+<p>That budget constraint requires that  the total value of the agent’s endowment stream be at least as  the total value of its consumption stream.</p>
+<p>These values are computed at price vectors that the agents take as given – the agents  are “price-takers” who assume that they can buy or sell whatever quantities that they want at those prices.</p>
+<p>Suppose that at time <span class="math notranslate nohighlight">\(-1\)</span>, before time <span class="math notranslate nohighlight">\(0\)</span> starts, agent <span class="math notranslate nohighlight">\(i\)</span> can purchase one unit <span class="math notranslate nohighlight">\(c_t(s^t)\)</span> of consumption at time <span class="math notranslate nohighlight">\(t\)</span> after history <span class="math notranslate nohighlight">\(s^t\)</span> at price <span class="math notranslate nohighlight">\(p_t(s^t)\)</span>.</p>
 <p>Notice that there is (very long) <strong>vector</strong> of prices.</p>
 <ul class="simple">
 <li><p>there is one price <span class="math notranslate nohighlight">\(p_t(s^t)\)</span> for each history <span class="math notranslate nohighlight">\(s^t\)</span> at every date <span class="math notranslate nohighlight">\(t = 0, 1, \ldots, \)</span>.</p></li>
@@ -654,11 +668,11 @@ whatever quantities that they want at those prices.</p>
 </ul>
 <p>These prices determined at time <span class="math notranslate nohighlight">\(-1\)</span> before the economy starts.</p>
 <p>The market meets once at time <span class="math notranslate nohighlight">\(-1\)</span>.</p>
-<p>At times <span class="math notranslate nohighlight">\(t =0, 1, 2, \ldots\)</span> trades made at time <span class="math notranslate nohighlight">\(-1\)</span> are executed.</p>
+<p>At times <span class="math notranslate nohighlight">\(t =0, 1, 2, \ldots\)</span> trades made at time <span class="math notranslate nohighlight">\(-1\)</span> are simply  executed, i.e., the promised deliveries are made.</p>
 <ul class="simple">
 <li><p>in the background, there is an “enforcement” procedure that forces agents to carry out the exchanges or “deliveries”  that they agreed to at time <span class="math notranslate nohighlight">\(-1\)</span>.</p></li>
 </ul>
-<p>We want to study how agents’  beliefs influence equilibrium prices.</p>
+<p>We want to study how agents’  probability models  influence equilibrium prices.</p>
 <p>Agent <span class="math notranslate nohighlight">\(i\)</span> faces a <strong>single</strong> intertemporal budget constraint</p>
 <div class="math notranslate nohighlight" id="equation-eq-budgeti">
 <span class="eqno">(23.6)<a class="headerlink" href="#equation-eq-budgeti" title="Link to this equation">#</a></span>\[
@@ -666,10 +680,10 @@ whatever quantities that they want at those prices.</p>
 \]</div>
 <p>According to budget constraint <a class="reference internal" href="#equation-eq-budgeti">(23.6)</a>,  trade is <strong>multilateral</strong> in the following  sense</p>
 <ul class="simple">
-<li><p>we can imagine  that  agent <span class="math notranslate nohighlight">\(i\)</span> first sells his random endowment stream <span class="math notranslate nohighlight">\(\{y_t^i (s^t)\}\)</span> and then uses the proceeds (i.e., his “wealth”) to purchase a random consumption stream <span class="math notranslate nohighlight">\(\{c_t^i (s^t)\}\)</span>.</p></li>
+<li><p>imagine  that  agent <span class="math notranslate nohighlight">\(i\)</span> first sells his random endowment stream <span class="math notranslate nohighlight">\(\{y_t^i (s^t)\}\)</span> and then uses the proceeds (i.e., his “wealth”) to purchase a random consumption stream <span class="math notranslate nohighlight">\(\{c_t^i (s^t)\}\)</span>.</p></li>
 </ul>
-<p>Agent <span class="math notranslate nohighlight">\(i\)</span> puts a Lagrange multiplier <span class="math notranslate nohighlight">\(\mu_i\)</span> on <a class="reference internal" href="#equation-eq-budgeti">(23.6)</a> and once-and-for-all chooses a consumption plan <span class="math notranslate nohighlight">\(\{c^i_t(s^t)\}_{t=0}^\infty\)</span>
-to maximize criterion <a class="reference internal" href="#equation-eq-objectiveagenti">(23.2)</a> subject to budget constraint <a class="reference internal" href="#equation-eq-budgeti">(23.6)</a>.</p>
+<p>Agent <span class="math notranslate nohighlight">\(i\)</span> attaches  a Lagrange multiplier <span class="math notranslate nohighlight">\(\mu_i\)</span> to budget constraint  <a class="reference internal" href="#equation-eq-budgeti">(23.6)</a> and once-and-for-all chooses a consumption plan <span class="math notranslate nohighlight">\(\{c^i_t(s^t)\}_{t=0}^\infty\)</span>
+that maximizes criterion <a class="reference internal" href="#equation-eq-objectiveagenti">(23.2)</a> subject to budget constraint <a class="reference internal" href="#equation-eq-budgeti">(23.6)</a>.</p>
 <p>This means that the agent <span class="math notranslate nohighlight">\(i\)</span>  chooses many objects, namely, <span class="math notranslate nohighlight">\(c_t^i(s^t)\)</span> for all <span class="math notranslate nohighlight">\(s^t\)</span> for <span class="math notranslate nohighlight">\(t = 0, 1, 2, \ldots\)</span>.</p>
 <p>For convenience, let’s remind ourselves of criterion <span class="math notranslate nohighlight">\(V^i\)</span> defined in <a class="reference internal" href="#equation-eq-objectiveagenti">(23.2)</a>:</p>
 <div class="math notranslate nohighlight">
@@ -687,27 +701,24 @@ V^i = \sum_{t=0}^{\infty} \sum_{s^t} \delta^t u(c_t^i(s^t)) \pi_t^i(s^t)
 p_t(s^t) = \frac{ \delta^t \pi_t^i(s^t)}{\mu_i c^i_t(s^t)}   
 \]</div>
 <p>for <span class="math notranslate nohighlight">\(i=1,2\)</span>.</p>
-<p>If we divide equation <a class="reference internal" href="#equation-eq-priceequation1">(23.7)</a> for agent <span class="math notranslate nohighlight">\(1\)</span> by the appropriate  version of equation <a class="reference internal" href="#equation-eq-priceequation1">(23.7)</a> for agent 2, use
+<p>If we divide equation <a class="reference internal" href="#equation-eq-priceequation1">(23.7)</a> for agent <span class="math notranslate nohighlight">\(1\)</span> by the appropriate  version of equation <a class="reference internal" href="#equation-eq-priceequation1">(23.7)</a> for agent 2, impose the feasibility condition
 <span class="math notranslate nohighlight">\(c^2_t(s^t) = 1 - c^1_t(s^t)\)</span>, and do some algebra, we’ll obtain</p>
 <div class="math notranslate nohighlight" id="equation-eq-allocationce">
 <span class="eqno">(23.8)<a class="headerlink" href="#equation-eq-allocationce" title="Link to this equation">#</a></span>\[
 c_t^1(s^t) = \frac{\mu_1 l_t(s^t)}{\mu_2 + \mu_1 l_t(s^t)} .
 \]</div>
-<p>We now engage in an extended “guess-and-verify” exercise that involves matching objects in our competitive equilibrium with objects in
-our social planning problem.</p>
+<p>We now embark on  an extended “guess-and-verify” exercise that involves matching objects in our competitive equilibrium with objects in our social planning problem.</p>
 <ul class="simple">
 <li><p>we’ll match consumption allocations in the planning problem with equilibrium consumption allocations in the competitive equilibrium</p></li>
 <li><p>we’ll match “shadow” prices in the planning problem with competitive equilibrium prices.</p></li>
 </ul>
-<p>Notice that if we set <span class="math notranslate nohighlight">\(\mu_1 = 1-\lambda\)</span> and <span class="math notranslate nohighlight">\(\mu_2 = \lambda\)</span>, then  formula <a class="reference internal" href="#equation-eq-allocationce">(23.8)</a> agrees with formula
-<a class="reference internal" href="#equation-eq-allocationrule1">(23.5)</a>.</p>
+<p>Notice that if we set <span class="math notranslate nohighlight">\(\mu_1 = 1-\lambda\)</span> and <span class="math notranslate nohighlight">\(\mu_2 = \lambda\)</span>, then  formula <a class="reference internal" href="#equation-eq-allocationce">(23.8)</a> agrees with formula <a class="reference internal" href="#equation-eq-allocationrule1">(23.5)</a>.</p>
 <ul class="simple">
 <li><p>doing this amounts to choosing a <strong>numeraire</strong> or normalization for the price system <span class="math notranslate nohighlight">\(\{p_t(s^t)\}_{t=0}^\infty\)</span></p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For information about how a numeraire  must be chosen to pin down the absolute price level in a model like ours that determines only
-relative prices,   see <a class="reference external" href="https://en.wikipedia.org/wiki/Num%C3%A9raire">https://en.wikipedia.org/wiki/Numéraire</a>.</p>
+<p>For information about how a numeraire  must be chosen to pin down the absolute price level in a model like ours that determines only relative prices,   see <a class="reference external" href="https://en.wikipedia.org/wiki/Num%C3%A9raire">https://en.wikipedia.org/wiki/Numéraire</a>.</p>
 </div>
 <p>If we substitute formula  <a class="reference internal" href="#equation-eq-allocationce">(23.8)</a> for <span class="math notranslate nohighlight">\(c_t^1(s^t)\)</span> into formula <a class="reference internal" href="#equation-eq-priceequation1">(23.7)</a> and rearrange, we obtain</p>
 <div class="math notranslate nohighlight">
@@ -862,7 +873,7 @@ integration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f00991f9855a8c7204f40c3e258a4725dbed8344533ac26ad864270fc66894a1.png" src="_images/f00991f9855a8c7204f40c3e258a4725dbed8344533ac26ad864270fc66894a1.png" />
+<img alt="_images/6fa5b940970462f3b477b0066b1a1ef2d757bf2247e469874612b26f54045b88.png" src="_images/6fa5b940970462f3b477b0066b1a1ef2d757bf2247e469874612b26f54045b88.png" />
 </div>
 </div>
 <p>In the left panel, nature chooses <span class="math notranslate nohighlight">\(f\)</span>. Agent 1’s consumption reaches <span class="math notranslate nohighlight">\(1\)</span> very quickly.</p>
@@ -1005,7 +1016,7 @@ KL(h,f)=0.073, KL(h,g)=0.281
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bc91e4fa295ad2d1cc02291384aae76e90354248746fd89e52e6f0fd1888c0ba.png" src="_images/bc91e4fa295ad2d1cc02291384aae76e90354248746fd89e52e6f0fd1888c0ba.png" />
+<img alt="_images/78d565601b9d03d51c9af563732a56170b9e6229098e430989c945eb06f47dcc.png" src="_images/78d565601b9d03d51c9af563732a56170b9e6229098e430989c945eb06f47dcc.png" />
 </div>
 </div>
 <p>Holding to our guesses, let’s calculate the four values</p>
@@ -1046,7 +1057,7 @@ KL(h,f)=0.073, KL(h,g)=0.281
 <section id="related-lectures">
 <h2><a class="toc-backref" href="#id18" role="doc-backlink"><span class="section-number">23.10. </span>Related lectures</a><a class="headerlink" href="#related-lectures" title="Link to this heading">#</a></h2>
 <p>Complete markets models with homogeneous beliefs, a kind often used in macroeconomics and finance,  are studied in this quantecon lecture <a class="reference internal" href="ge_arrow.html"><span class="doc">Competitive Equilibria with Arrow Securities</span></a>.</p>
-<p><span id="id7">[<a class="reference internal" href="zreferences.html#id8" title="Lawrence E Blume, Timothy Cogley, David A Easley, Thomas J Sargent, and Viktor Tsyrennikov. A case for incomplete markets. Journal of Economic Theory, 178:191–221, 2018.">Blume <em>et al.</em>, 2018</a>]</span> discuss a paternalistic  case against complete markets.  Their analysis assumes that a social planner should disregard  individuals preferences in the sense that it should disregard the subjective belief components of their preferences.</p>
+<p><span id="id7">[<a class="reference internal" href="zreferences.html#id8" title="Lawrence E Blume, Timothy Cogley, David A Easley, Thomas J Sargent, and Viktor Tsyrennikov. A case for incomplete markets. Journal of Economic Theory, 178:191–221, 2018.">Blume <em>et al.</em>, 2018</a>]</span> discuss a paternalistic  case against complete markets.  They study the consequences of assuming that a social planner  disregards  individuals preferences in the sense that it ignores  the subjective belief components of their preferences and replaces it with the social planner’s beliefs about probabilities.</p>
 <p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a> and as applied in <a class="reference internal" href="odu.html"><span class="doc">Job Search VIII: Search with Learning</span></a>.</p>
 <p>Likelihood ratio processes appear again in <a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html" title="(in Project name not set)"><span>Additive and Multiplicative Functionals</span></a>.</p>
 </section>
@@ -1396,7 +1407,7 @@ m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/196f1e7570b7bbb9764c5959aa86e3038a24c1a315beb438475122cad7703496.png" src="_images/196f1e7570b7bbb9764c5959aa86e3038a24c1a315beb438475122cad7703496.png" />
+<img alt="_images/e0a852c8852d3cac9b3b262222dcc326b0bef35cea1d2353a44ac35d45bb4b8f.png" src="_images/e0a852c8852d3cac9b3b262222dcc326b0bef35cea1d2353a44ac35d45bb4b8f.png" />
 </div>
 </div>
 <p>We can see that the agent with the  more accurate belief gets higher consumption share.</p>
@@ -1411,7 +1422,7 @@ m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f1d236ab470c7953b7e2524e558a67bdaae53e442f2be91191f165fa9d6381de.png" src="_images/f1d236ab470c7953b7e2524e558a67bdaae53e442f2be91191f165fa9d6381de.png" />
+<img alt="_images/ec9a017b1c57e3266bbfa32925234661379a5661056141285d6c3a6eb8812023.png" src="_images/ec9a017b1c57e3266bbfa32925234661379a5661056141285d6c3a6eb8812023.png" />
 </div>
 </div>
 <p>We observe  symmetrical outcomes.</p>
@@ -1477,7 +1488,7 @@ m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/14a1e43726ba579ef2b510e47c1cfa243192b7d3a42a8c2e822232919fc7d9ee.png" src="_images/14a1e43726ba579ef2b510e47c1cfa243192b7d3a42a8c2e822232919fc7d9ee.png" />
+<img alt="_images/c00e8c5a99a6c471b02308dfb0deff6bc8d4592cf527acca1f9b58831e3f8fc4.png" src="_images/c00e8c5a99a6c471b02308dfb0deff6bc8d4592cf527acca1f9b58831e3f8fc4.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1488,7 +1499,7 @@ m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8fe7678f630298a38b360644f31a7f7c81d6afcb4bf487d9727752c6d9c1878a.png" src="_images/8fe7678f630298a38b360644f31a7f7c81d6afcb4bf487d9727752c6d9c1878a.png" />
+<img alt="_images/460d469d8facdcc09ad5818f11b218a0ce33c8dc17c4a31e8a99e8296c419f63.png" src="_images/460d469d8facdcc09ad5818f11b218a0ce33c8dc17c4a31e8a99e8296c419f63.png" />
 </div>
 </div>
 <p>Evidently, because the two distributions are further apart, it is easier to distinguish them.</p>
@@ -1826,7 +1837,7 @@ set <span class="math notranslate nohighlight">\(h = \pi^f_0 f + (1-\pi^f_0) g\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/65c92848e9ee66858c0f7b021efba600cdda7c60e72cb0992347b605d7edcc75.png" src="_images/65c92848e9ee66858c0f7b021efba600cdda7c60e72cb0992347b605d7edcc75.png" />
+<img alt="_images/42d5844888e32138d0ce7729aff97621f234c0ad3f7bd2c59f36adda30c0c150.png" src="_images/42d5844888e32138d0ce7729aff97621f234c0ad3f7bd2c59f36adda30c0c150.png" />
 </div>
 </div>
 <p>Agent 1’s posterior beliefs are depicted in blue and agent 2’s posterior beliefs are depicted in orange.</p>
@@ -1844,7 +1855,7 @@ set <span class="math notranslate nohighlight">\(h = \pi^f_0 f + (1-\pi^f_0) g\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7c1cf735dd999a00cac84df4d6df77f99f63cb75e8b75a7b3ff460de1ad0acf0.png" src="_images/7c1cf735dd999a00cac84df4d6df77f99f63cb75e8b75a7b3ff460de1ad0acf0.png" />
+<img alt="_images/dc930e5b67c0baa6f43d8ae52a031a5ca3c7a8b12c510f89ee6b9bae06d10d1b.png" src="_images/dc930e5b67c0baa6f43d8ae52a031a5ca3c7a8b12c510f89ee6b9bae06d10d1b.png" />
 </div>
 </div>
 <p>Again, agent 1 learns faster than agent 2.</p>
@@ -1858,7 +1869,7 @@ set <span class="math notranslate nohighlight">\(h = \pi^f_0 f + (1-\pi^f_0) g\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/75022f0dbc452bf43d8cc80160f244f413e8729b6b20d23ff936282421453085.png" src="_images/75022f0dbc452bf43d8cc80160f244f413e8729b6b20d23ff936282421453085.png" />
+<img alt="_images/0a623620296bce3d4b2bce5587c4859e541ccb275b2b72beb7ddd13d17ec7dd1.png" src="_images/0a623620296bce3d4b2bce5587c4859e541ccb275b2b72beb7ddd13d17ec7dd1.png" />
 </div>
 </div>
 <p>As we expected, agent 1 has a higher consumption share compared to agent 2.</p>
@@ -1972,7 +1983,7 @@ KL(f,h) = 0.0105, KL(g,h) = 0.2919
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f5c7f560a837fbc72225d903168a3c42b955307e93c4decadc399c73a332d68d.png" src="_images/f5c7f560a837fbc72225d903168a3c42b955307e93c4decadc399c73a332d68d.png" />
+<img alt="_images/81c83308d6baca7c7dc81b6d4a8b9726e91a9963a7d750084c5a4c96dd17b2b0.png" src="_images/81c83308d6baca7c7dc81b6d4a8b9726e91a9963a7d750084c5a4c96dd17b2b0.png" />
 </div>
 </div>
 <p>Observe how slowly agent 1 learns the truth in the leftmost panel showing <span class="math notranslate nohighlight">\(\pi(f)\)</span>.</p>
@@ -1989,7 +2000,7 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/31d44e2fe611758771cf349155408a6867fb849e6445c782258ea866046ef799.png" src="_images/31d44e2fe611758771cf349155408a6867fb849e6445c782258ea866046ef799.png" />
+<img alt="_images/7ffc5e7bf941dc7de30cb0bae80953c2020d26808b8247c9ab437a56381c0957.png" src="_images/7ffc5e7bf941dc7de30cb0bae80953c2020d26808b8247c9ab437a56381c0957.png" />
 </div>
 </div>
 <p>When nature draws from <span class="math notranslate nohighlight">\(g\)</span>, it is further away from <span class="math notranslate nohighlight">\(h\)</span> as measured by the KL divergence.</p>
@@ -2003,7 +2014,7 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/361395043e51ea68ccbd8382d5eb6448062df83516f0b04a648a006b7937fa01.png" src="_images/361395043e51ea68ccbd8382d5eb6448062df83516f0b04a648a006b7937fa01.png" />
+<img alt="_images/94e1f59074a4204c2f17a401e773b6caae1327a0a11d69ce024afd005c9fa591.png" src="_images/94e1f59074a4204c2f17a401e773b6caae1327a0a11d69ce024afd005c9fa591.png" />
 </div>
 </div>
 <p>In the consumption dynamics plot, notice that agent 1’s consumption share converges to 1 both when nature permanently draws from <span class="math notranslate nohighlight">\(f\)</span> and when nature permanently draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
