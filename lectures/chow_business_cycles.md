@@ -75,7 +75,8 @@ def spectral_density_var1(A, V, ω_grid):
 def spectrum_of_linear_combination(F, b):
     """Spectrum of x_t = b'y_t given the spectral matrix F(ω)."""
     b = np.asarray(b).reshape(-1, 1)
-    return np.array([np.real((b.T @ F[k] @ b).item()) for k in range(F.shape[0])])
+    return np.array([np.real((b.T @ F[k] @ b).item()) 
+                                for k in range(F.shape[0])])
 
 def simulate_var1(A, V, T, burn=200, seed=1234):
     r"""Simulate y_t = A y_{t-1} + u_t with u_t \sim N(0, V)."""
@@ -84,8 +85,10 @@ def simulate_var1(A, V, T, burn=200, seed=1234):
     n = A.shape[0]
     chol = np.linalg.cholesky(V)
     y = np.zeros((T + burn, n))
+
     for t in range(1, T + burn):
         y[t] = A @ y[t - 1] + chol @ rng.standard_normal(n)
+
     return y[burn:]
 
 def sample_autocorrelation(x, max_lag):
@@ -172,9 +175,11 @@ Having established the empirical evidence for acceleration, we now examine why i
 
 He shows that, under natural sign restrictions, the answer is no.
 
-Stock-adjustment demand for durable goods leads to investment equations where the coefficient on $Y_{t-1}$ is negative—the **acceleration effect**.
+Stock-adjustment demand for durable goods leads to investment equations where the coefficient on $Y_{t-1}$ is negative. 
 
-This negative coefficient is what makes complex roots possible in the characteristic equation.
+This negative coefficient captures the **acceleration effect**: investment responds not just to the level of income, but to its rate of change.
+
+This negative coefficient is also what makes complex roots possible in the characteristic equation.
 
 Without it, Chow proves that demand systems with only positive coefficients have real positive roots, and hence no oscillatory dynamics.
 
@@ -469,15 +474,23 @@ V
 \left(I - A^\top e^{i\omega}\right)^{-1}.
 ```
 
-Intuitively, $F(\omega)$ tells us how much variation in $y_t$ is associated with cycles of (angular) frequency $\omega$.
+$F(\omega)$ tells us how much variation in $y_t$ is associated with cycles of (angular) frequency $\omega$.
 
-The corresponding cycle length is
+Higher frequencies correspond to rapid oscillations, meaning short cycles where the series completes many up-and-down movements per unit of time.
+
+Lower frequencies correspond to slower oscillations, meaning long cycles that unfold over extended periods.
+
+The corresponding cycle length (or period) is
 
 ```{math}
 :label: chow_period
 
 T(\omega) = \frac{2\pi}{\omega}.
 ```
+
+Thus, a frequency of $\omega = \pi$ corresponds to the shortest possible cycle of $T = 2$ periods, while frequencies near zero correspond to very long cycles.
+
+When the spectral density $F(\omega)$ is concentrated at particular frequencies, it indicates that the time series exhibits pronounced cyclical behavior at those frequencies.
 
 The advanced lecture {doc}`advanced:estspec` explains how to estimate $F(\omega)$ from data.
 
@@ -638,7 +651,6 @@ factor = peak_condition_factor(r_example)
 cos_ω = factor * np.cos(θ)
 ω_example = np.arccos(cos_ω)
 print(f"Chow's example: r = {r_example}, θ = {θ_deg}°")
-print(f"  Factor (1+r²)/2r = {factor:.3f}")
 print(f"  cos(ω) = {cos_ω:.3f}")
 print(f"  ω = {np.rad2deg(ω_example):.1f}°")
 print(f"  Peak period = {360/np.rad2deg(ω_example):.1f} (vs deterministic period = {360/θ_deg:.1f})")
@@ -1128,9 +1140,9 @@ The **gain** is the frequency-response coefficient when regressing $y_i$ on $y_j
 G_{ij}(\omega) = \frac{|f_{ij}(\omega)|}{f_{jj}(\omega)}.
 ```
 
-Think of gain as the frequency-domain analogue of a regression coefficient: it measures how much $y_i$ responds to a unit change in $y_j$ at frequency $\omega$. 
+It measures how much $y_i$ responds to a unit change in $y_j$ at frequency $\omega$. 
 
-A gain of 0.9 at low frequencies means long-cycle movements in $y_j$ translate almost one-for-one to $y_i$; a gain of 0.3 at high frequencies means short-cycle movements are dampened.
+For instance, a gain of 0.9 at low frequencies means long-cycle movements in $y_j$ translate almost one-for-one to $y_i$, and a gain of 0.3 at high frequencies means short-cycle movements are dampened.
 
 The **phase** captures lead-lag relationships (in radians):
 
@@ -1273,13 +1285,16 @@ def scalar_kernel(λ_i, ω_grid):
     """scalar spectral kernel g_i(ω)."""
     λ_i = complex(λ_i)
     mod_sq = np.abs(λ_i)**2
-    return np.array([(1 - mod_sq) / np.abs(1 - λ_i * np.exp(-1j * ω))**2 for ω in ω_grid])
+    return np.array(
+        [(1 - mod_sq) / np.abs(1 - λ_i * np.exp(-1j * ω))**2 
+        for ω in ω_grid])
 
 fig, ax = plt.subplots(figsize=(10, 5))
 for i, λ_i in enumerate(λ):
     if np.abs(λ_i) > 0.01:
         g_i = scalar_kernel(λ_i, ω_grid)
-        label = f'$\\lambda_{i+1}$ = {λ_i:.4f}' if np.isreal(λ_i) else f'$\\lambda_{i+1}$ = {λ_i:.3f}'
+        label = f'$\\lambda_{i+1}$ = {λ_i:.4f}' \
+        if np.isreal(λ_i) else f'$\\lambda_{i+1}$ = {λ_i:.3f}'
         ax.semilogy(freq, g_i, label=label, lw=2)
 ax.set_xlabel(r'frequency $\omega/2\pi$')
 ax.set_ylabel('$g_i(\\omega)$')
