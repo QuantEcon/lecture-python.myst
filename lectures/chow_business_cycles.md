@@ -49,7 +49,7 @@ We will keep coming back to three ideas:
 
 - In deterministic models, oscillations correspond to complex eigenvalues of a transition matrix.
 - In stochastic models, a "cycle" shows up as a local peak in a (univariate) spectral density.
-- Spectral peaks depend on eigenvalues, but also on how shocks enter (the covariance matrix $V$) and on how observables load on eigenmodes.
+- Spectral peaks depend on eigenvalues, but also on how shocks enter and on how observables load on eigenmodes.
 
 Let's start with some standard imports:
 
@@ -214,7 +214,7 @@ for (label, c, v), A in zip(cases, A_list):
 
 With weak acceleration ($v=0.1$), the discriminant is positive and the roots are real.
 
-With strong acceleration ($v=0.8$), the discriminant is negative and the roots are complex conjugates, enabling oscillatory dynamics.
+With strong acceleration ($v=0.8$), the discriminant is negative and the roots are complex conjugates that enable oscillatory dynamics.
 
 ```{code-cell} ipython3
 # impulse responses from a one-time unit shock in Y
@@ -305,7 +305,7 @@ To study this formally, we need to introduce the stochastic framework.
 
 ## A linear system with shocks
 
-We analyze (or reduce to) a first-order linear stochastic system
+We analyze a first-order linear stochastic system
 
 ```{math}
 :label: chow_var1
@@ -316,7 +316,7 @@ y_t = A y_{t-1} + u_t,
 \qquad
 \mathbb E[u_t u_t^\top] = V,
 \qquad
-\mathbb E[u_t u_{t-k}^\top] = 0 \ (k \neq 0).
+\mathbb E[u_t u_{t-k}^\top] = 0, \quad k \neq 0.
 ```
 
 When the eigenvalues of $A$ are strictly inside the unit circle, the process is covariance stationary and its autocovariances exist.
@@ -346,13 +346,9 @@ The second equation is the discrete Lyapunov equation for $\Gamma_0$.
 {cite:t}`Chow1968` motivates the stochastic analysis with a quote from Ragnar Frisch:
 
 > The examples we have discussed ... show that when a [deterministic] economic system gives rise to oscillations, these will most frequently be damped.
->
 > But in reality the cycles ... are generally not damped.
->
 > How can the maintenance of the swings be explained?
->
 > ... One way which I believe is particularly fruitful and promising is to study what would become of the solution of a determinate dynamic system if it were exposed to a stream of erratic shocks ...
->
 > Thus, by connecting the two ideas: (1) the continuous solution of a determinate dynamic system and (2) the discontinuous shocks intervening and supplying the energy that may maintain the swings—we get a theoretical setup which seems to furnish a rational interpretation of those movements which we have been accustomed to see in our statistical time data.
 >
 > — Ragnar Frisch (1933)
@@ -365,7 +361,7 @@ We will show that even when eigenvalues are real (no deterministic oscillations)
 
 ### Autocovariances in terms of eigenvalues
 
-Let $\lambda_1, \ldots, \lambda_p$ be the (possibly complex) eigenvalues of $A$, assumed distinct, and let $B$ be the matrix whose columns are the corresponding right eigenvectors:
+Let $\lambda_1, \ldots, \lambda_p$ be the distinct, possibly complex, eigenvalues of $A$, and let $B$ be the matrix whose columns are the corresponding right eigenvectors:
 
 ```{math}
 :label: chow_eigen_decomp
@@ -616,7 +612,7 @@ def peak_condition_factor(r):
 θ = np.deg2rad(θ_deg)
 r_grid = np.linspace(0.3, 0.99, 100)
 
-# For each r, compute the implied peak frequency (if it exists)
+# For each r, compute the implied peak frequency
 ω_peak = []
 for r in r_grid:
     factor = peak_condition_factor(r)
@@ -632,13 +628,15 @@ period_peak = 2 * np.pi / ω_peak
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
 axes[0].plot(r_grid, np.rad2deg(ω_peak), lw=2)
-axes[0].axhline(θ_deg, ls='--', lw=1.0, color='gray', label=rf'$\theta = {θ_deg}°$')
+axes[0].axhline(θ_deg, ls='--', lw=1.0, color='gray', 
+        label=rf'$\theta = {θ_deg}°$')
 axes[0].set_xlabel('eigenvalue modulus $r$')
 axes[0].set_ylabel(r'peak frequency $\omega$ (degrees)')
 axes[0].legend(frameon=False)
 
 axes[1].plot(r_grid, period_peak, lw=2)
-axes[1].axhline(360/θ_deg, ls='--', lw=1.0, color='gray', label=rf'deterministic period = {360/θ_deg:.1f}')
+axes[1].axhline(360/θ_deg, ls='--', lw=1.0, color='gray', 
+        label=rf'deterministic period = {360/θ_deg:.1f}')
 axes[1].set_xlabel('eigenvalue modulus $r$')
 axes[1].set_ylabel('peak period')
 axes[1].legend(frameon=False)
@@ -664,29 +662,41 @@ For smaller $r$, the peak frequency can differ substantially from the determinis
 
 For *real and positive roots* $\lambda_1, \lambda_2 > 0$, the first-order condition {eq}`chow_hs_foc` cannot be satisfied.
 
-To see why, note that we would need:
+To see why, recall that a spectral peak at an interior frequency $\omega \in (0, \pi)$ requires
 
 ```{math}
-:label: chow_hs_real_impossible
-
-\cos\omega = \frac{(1 + \lambda_1^2)\lambda_2 + (1 + \lambda_2^2)\lambda_1}{4\lambda_1 \lambda_2} > 1
+\cos\omega = \frac{(1 + \lambda_1^2)\lambda_2 + (1 + \lambda_2^2)\lambda_1}{4\lambda_1 \lambda_2}.
 ```
 
-The inequality follows because:
+For this to have a solution, we need the right-hand side to lie in $[-1, 1]$.
+
+But for positive $\lambda_1, \lambda_2$, the numerator exceeds $4\lambda_1\lambda_2$:
 
 ```{math}
 :label: chow_hs_real_proof
 
-(1 + \lambda_1^2)\lambda_2 + (1 + \lambda_2^2)\lambda_1 - 4\lambda_1\lambda_2 = \lambda_1(1-\lambda_2)^2 + \lambda_2(1-\lambda_1)^2 > 0
+(1 + \lambda_1^2)\lambda_2 + (1 + \lambda_2^2)\lambda_1 - 4\lambda_1\lambda_2 = \lambda_1(1-\lambda_2)^2 + \lambda_2(1-\lambda_1)^2.
 ```
 
-which is strictly positive for any $\lambda_1, \lambda_2 > 0$.
+The right-hand side is a sum of two non-negative terms (each is a positive number times a square).
 
-This is a key result: In the Hansen-Samuelson model, *complex roots are necessary* for a spectral peak at interior frequencies.
+It equals zero only if both $\lambda_1 = 1$ and $\lambda_2 = 1$, which violates the stability condition $|\lambda_i| < 1$.
+
+For any stable system with real positive roots, this expression is strictly positive, so
+
+```{math}
+:label: chow_hs_real_impossible
+
+\cos\omega = \frac{(1 + \lambda_1^2)\lambda_2 + (1 + \lambda_2^2)\lambda_1}{4\lambda_1 \lambda_2} > 1,
+```
+
+which is impossible.
+
+This is a key result: in the Hansen-Samuelson model, *complex roots are necessary* for a spectral peak at interior frequencies.
+
+The following figure illustrates the difference in spectra between a case with complex roots and a case with real roots
 
 ```{code-cell} ipython3
-# Demonstrate: compare spectra with complex vs real roots
-# Both cases use valid Hansen-Samuelson parameterizations
 ω_grid = np.linspace(1e-3, np.pi - 1e-3, 800)
 V_hs = np.array([[1.0, 0.0], [0.0, 0.0]])  # shock only in first equation
 
@@ -768,22 +778,22 @@ Chow tabulates the values:
 
 The peak at $\omega$ slightly below $\pi/8$ (corresponding to periods around 11) is "quite pronounced."
 
-In the following figure, we reproduce this table, but with Python, we can plot a finer grid to find the peak more accurately.
+In the following figure, we reproduce this table, but with Python, we can plot a finer grid to find the peak more accurately
 
 ```{code-cell} ipython3
-# Reproduce Chow's exact example
 λ1, λ2 = 0.1, 0.9
 w11, w22, w12 = 1.0, 1.0, 0.8
 bm1, bm2 = 1.0, -0.01
 
 # Construct the system
 A_chow_ex = np.diag([λ1, λ2])
+
 # W is the canonical shock covariance; we need V = B W B^T
 # For diagonal A with distinct eigenvalues, B = I, so V = W
 V_chow_ex = np.array([[w11, w12], [w12, w22]])
 b_chow_ex = np.array([bm1, bm2])
 
-# Chow's formula (equation 67)
+# Chow's formula
 def chow_spectrum_formula(ω):
     term1 = 0.9913 / (1.01 - 0.2 * np.cos(ω))
     term2 = 0.001570 / (1.81 - 1.8 * np.cos(ω))
@@ -911,9 +921,7 @@ where $\Sigma$ is the covariance of structural residuals and $M$ is the matrix o
 
 Here we take $A$ and $V$ as given and ask what they imply for spectra and cross-spectra.
 
-### Reported shock covariance
-
-The $6 \times 6$ reduced-form shock covariance matrix $V$ (scaled by $10^{-7}$) is:
+The $6 \times 6$ reduced-form shock covariance matrix $V$ (scaled by $10^{-7}$) reported by Chow and Levitan is:
 
 ```{math}
 :label: chow_V_matrix
@@ -929,8 +937,6 @@ V = \begin{bmatrix}
 ```
 
 The sixth row and column are zeros because $y_6$ is an identity (lagged $y_1$).
-
-### Reported eigenvalues
 
 The transition matrix $A$ has six characteristic roots:
 
@@ -948,8 +954,6 @@ Two roots are near unity because two structural equations are in first differenc
 One root ($\lambda_6$) is theoretically zero because of the identity $y_5 = y_1 + y_2 + y_3$.
 
 The complex conjugate pair $\lambda_{4,5}$ has modulus $|\lambda_4| = \sqrt{0.0761^2 + 0.1125^2} \approx 0.136$.
-
-### Reported eigenvectors
 
 The right eigenvector matrix $B$ (columns are eigenvectors corresponding to $\lambda_1, \ldots, \lambda_6$):
 
@@ -999,14 +1003,14 @@ V = np.array([
 
 D_λ = np.diag(λ)
 A_chow = B @ D_λ @ np.linalg.inv(B)
-A_chow = np.real(A_chow)  # drop tiny imaginary parts from reported rounding
+A_chow = np.real(A_chow) 
 print("eigenvalues of reconstructed A:")
 print(np.linalg.eigvals(A_chow).round(6))
 ```
 
 ### Canonical coordinates
 
-Chow's canonical transformation uses $z_t = B^{-1} y_t$, giving dynamics $z_t = D_\lambda z_{t-1} + e_t$.
+Chow and Levitan's canonical transformation uses $z_t = B^{-1} y_t$, giving dynamics $z_t = D_\lambda z_{t-1} + e_t$.
 
 Accordingly, the canonical shock covariance is
 
@@ -1021,7 +1025,7 @@ print("diagonal of W:")
 print(np.diag(W).round(10))
 ```
 
-Chow derives the following closed-form formula for the spectral density matrix:
+Chow and Levitan derive the following closed-form formula for the spectral density matrix:
 
 ```{math}
 :label: chow_spectral_eigen
@@ -1051,7 +1055,7 @@ freq = np.linspace(1e-4, 0.5, 5000)     # cycles/year in [0, 1/2]
 F_chow = spectral_density_chow(λ, B, W, ω_grid)
 ```
 
-Let's plot the univariate spectra of consumption ($y_1$) and equipment plus inventories ($y_2$):
+Let's plot the univariate spectra of consumption ($y_1$) and equipment plus inventories ($y_2$)
 
 ```{code-cell} ipython3
 variable_names = ['$C$', '$I_1$', '$I_2$', '$R_a$', '$Y_1$']
@@ -1092,23 +1096,19 @@ i_peak = np.argmax(S_norm[mask, 1])
 f_peak = freq[mask][i_peak]
 ```
 
-We reproduce only Figures I.1 and I.2 here.
+The left panel corresponds to consumption and declines monotonically with frequency.
 
-Figure I.1 corresponds to consumption and declines monotonically with frequency.
+It illustrates Granger's "typical spectral shape" for macroeconomic time series.
 
-Figure I.1 illustrates Granger's "typical spectral shape" for macroeconomic time series.
-
-Figure I.2 corresponds to equipment plus inventories and shows the clearest (but still very flat) interior-frequency bump.
+The right panel corresponds to equipment plus inventories and shows the clearest (but still very flat) interior-frequency bump.
 
 Chow and Levitan associate the dominance of very low frequencies in both plots with strong persistence and long-run movements.
 
-They note that very large low-frequency power can arise from eigenvalues extremely close to one, which can occur mechanically when some equations are written in first differences.
+Very large low-frequency power can arise from eigenvalues extremely close to one, which occurs mechanically when some equations are written in first differences.
 
-They stress that local peaks are not automatic, because complex roots may have small modulus and multivariate interactions can generate peaks even when all roots are real.
+Local peaks are not automatic: complex roots may have small modulus, and multivariate interactions can generate peaks even when all roots are real.
 
-They note that the interior bump in Figure I.2 corresponds to cycles of roughly three years and that the spectrum is nearly flat over cycles between about two and four years.
-
-Their other spectra in Figures I.3–I.5 (construction, the long rate, and private-domestic GNP) decline monotonically with frequency in the same calibration.
+The interior bump in the right panel corresponds to cycles of roughly three years, with the spectrum nearly flat over cycles between about two and four years.
 
 (This discussion follows Section II of {cite}`ChowLevitan1969`.)
 
@@ -1128,7 +1128,7 @@ The **squared coherence** measures linear association at frequency $\omega$:
 R^2_{ij}(\omega) = \frac{|f_{ij}(\omega)|^2}{f_{ii}(\omega) f_{jj}(\omega)} \in [0, 1].
 ```
 
-Think of coherence as the frequency-domain analogue of $R^2$: it measures how much of the variance of $y_i$ at frequency $\omega$ can be "explained" by $y_j$ at the same frequency. 
+Coherence measures how much of the variance of $y_i$ at frequency $\omega$ can be "explained" by $y_j$ at the same frequency. 
 
 High coherence means the two series move together tightly at that frequency.
 
@@ -1194,7 +1194,7 @@ The gain and coherence patterns differ across components (Figures II.1–II.2 of
     - Gain is about 0.9 at very low frequencies but falls below 0.4 for cycles shorter than four years. 
     - This is evidence that short-cycle income movements translate less into consumption than long-cycle movements, consistent with permanent-income interpretations. 
     - Coherence remains high throughout.
-- For Equipment plus inventories vs private-domestic GNP  (right panel):
+- Equipment plus inventories vs private-domestic GNP  (right panel):
     - Gain *rises* with frequency, exceeding 0.5 for short cycles. 
     - This is the frequency-domain signature of acceleration and volatile short-run inventory movements.
 
@@ -1247,7 +1247,7 @@ ax.axhline(0, lw=0.8)
 paper_frequency_axis(ax)
 ax.set_ylabel('phase difference in cycles')
 ax.set_ylim([-0.25, 0.25])
-ax.set_yticks([-0.25, -0.20, -0.15, -0.10, -0.05, 0, 0.05, 0.10, 0.15, 0.20, 0.25])
+ax.set_yticks(np.arange(-0.25, 0.3, 0.05), minor=True)
 ax.legend(frameon=False)
 plt.tight_layout()
 plt.show()
@@ -1280,6 +1280,8 @@ g_i(\omega) = \frac{1 - \lambda_i^2}{1 + \lambda_i^2 - 2\lambda_i \cos\omega}.
 
 Each observable spectral density is a linear combination of these kernels (plus cross-terms).
 
+Below, we plot the scalar kernels for each eigenvalue to see how they shape the overall spectra
+
 ```{code-cell} ipython3
 def scalar_kernel(λ_i, ω_grid):
     """scalar spectral kernel g_i(ω)."""
@@ -1307,7 +1309,7 @@ plt.show()
 
 The figure reveals how eigenvalue magnitude shapes spectral contributions:
 
-- *Near-unit eigenvalues* ($\lambda_1, \lambda_2 \approx 1$) produce kernels sharply peaked at low frequencies—these drive the strong low-frequency power seen in the spectra above.
+- *Near-unit eigenvalues* ($\lambda_1, \lambda_2 \approx 1$) produce kernels sharply peaked at low frequencies as these drive the strong low-frequency power seen in the spectra above.
 - *The moderate eigenvalue* ($\lambda_3 \approx 0.48$) contributes a flatter component that spreads power more evenly across frequencies.
 - *The complex pair* ($\lambda_{4,5}$) has such small modulus ($|\lambda_{4,5}| \approx 0.136$) that its kernel is nearly flat, which is too weak to generate a pronounced interior peak.
 
@@ -1321,10 +1323,6 @@ The complex pair, despite enabling oscillatory dynamics in principle, has insuff
 
 The acceleration principle receives strong empirical support: the negative coefficient on lagged output in investment equations is a robust finding across datasets.
 
-- This matters because, in a model consisting only of demand equations with simple distributed lags, the transition matrix has real positive roots under natural sign restrictions—ruling out prolonged oscillations.
-
-- Acceleration introduces the possibility of complex roots, which are necessary for oscillatory dynamics in deterministic systems.
-
 The relationship between eigenvalues and spectral peaks is more subtle than it first appears:
 
 - Complex roots guarantee oscillatory autocovariances, but they are neither necessary nor sufficient for a pronounced spectral peak.
@@ -1332,8 +1330,6 @@ The relationship between eigenvalues and spectral peaks is more subtle than it f
 - In the Hansen–Samuelson model specifically, complex roots *are* necessary for a peak.
 
 - But in general multivariate systems, even real roots can produce peaks through the interaction of shocks and eigenvector loadings.
-
-Chow argues that understanding business cycles requires an integrated view of deterministic dynamics and random shocks.
 
 {cite:t}`ChowLevitan1969` demonstrate what these objects look like in a calibrated system: strong low-frequency power from near-unit eigenvalues, frequency-dependent gains and coherences, and lead–lag relations that vary with cycle length.
 
@@ -1356,6 +1352,9 @@ Use the same $v$ values as in the main text: $v \in \{0.2, 0.4, 0.6, 0.8, 0.95\}
 ```{solution-start} chow_cycles_ex1
 :class: dropdown
 ```
+
+Here is one solution:
+
 
 ```{code-cell} ipython3
 v_grid_ex1 = [0.2, 0.4, 0.6, 0.8, 0.95]
@@ -1422,6 +1421,8 @@ Verify spectral peak condition {eq}`chow_hs_peak_condition` numerically for the 
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
 θ_ex = np.pi / 3  # 60 degrees
 r_grid = np.linspace(0.3, 0.99, 50)
@@ -1449,6 +1450,7 @@ for r in r_grid:
     F_ex = spectral_density_var1(A_ex, V_hs_ex, ω_grid_ex)
     f11 = np.real(F_ex[:, 0, 0])
     i_max = np.argmax(f11)
+
     # Only count as a peak if it's not at the boundary
     if 5 < i_max < len(ω_grid_ex) - 5:
         ω_numerical.append(ω_grid_ex[i_max])
@@ -1468,7 +1470,7 @@ axes[0].set_xlabel('eigenvalue modulus $r$')
 axes[0].set_ylabel(r'peak frequency $\omega^*/\pi$')
 axes[0].legend(frameon=False)
 
-# Plot the factor (1+r²)/2r to show when peaks are valid
+# Plot the factor (1+r^2)/2r to show when peaks are valid
 axes[1].plot(r_grid, (1 + r_grid**2) / (2 * r_grid), lw=2)
 axes[1].axhline(1 / np.cos(θ_ex), ls='--', lw=1.0, color='red',
                 label=f'threshold = 1/cos({np.rad2deg(θ_ex):.0f}°) = {1/np.cos(θ_ex):.2f}')
@@ -1483,7 +1485,7 @@ plt.show()
 valid_mask = ~np.isnan(ω_theory)
 if valid_mask.any():
     r_threshold = r_grid[valid_mask][0]
-    print(f"Peak exists for r ≥ {r_threshold:.2f}")
+    print(f"Peak exists for r >= {r_threshold:.2f}")
 ```
 
 The theoretical and numerical peak frequencies match closely.
@@ -1506,6 +1508,8 @@ When does the interior-frequency peak appear, and how does its location change?
 ```{solution-start} chow_cycles_ex3
 :class: dropdown
 ```
+
+Here is one solution:
 
 ```{code-cell} ipython3
 A_ex3 = np.diag([0.1, 0.9])
@@ -1530,7 +1534,7 @@ plt.show()
 
 threshold_idx = np.where(~np.isnan(peak_periods))[0]
 if len(threshold_idx) > 0:
-    print(f"interior peak appears when correlation ≥ {corr_grid[threshold_idx[0]]:.2f}")
+    print(f"interior peak appears when correlation >= {corr_grid[threshold_idx[0]]:.2f}")
 ```
 
 The interior peak appears only when the shock correlation exceeds a threshold.
@@ -1554,6 +1558,9 @@ Verify that both methods give the same result.
 ```{solution-start} chow_cycles_ex4
 :class: dropdown
 ```
+
+Here is one solution:
+
 
 ```{code-cell} ipython3
 from scipy.linalg import solve_discrete_lyapunov
@@ -1600,6 +1607,9 @@ Modify the Chow-Levitan model by changing $\lambda_3$ from $0.4838$ to $0.95$.
 ```{solution-start} chow_cycles_ex5
 :class: dropdown
 ```
+
+Here is one solution:
+
 
 ```{code-cell} ipython3
 # Modify λ_3 and reconstruct the transition matrix
