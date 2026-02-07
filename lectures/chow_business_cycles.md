@@ -31,8 +31,8 @@ kernelspec:
 
 This lecture studies two classic papers by Gregory Chow on business cycles in linear dynamic models:
 
-- {cite}`Chow1968`: empirical evidence for the acceleration principle, why acceleration enables oscillations, and when spectral peaks arise in stochastic systems
-- {cite}`ChowLevitan1969`: spectral analysis of a calibrated US macroeconometric model, showing gains, coherences, and lead–lag patterns
+- {cite:t}`Chow1968`: empirical evidence for the acceleration principle, why acceleration enables oscillations, and when spectral peaks arise in stochastic systems
+- {cite:t}`ChowLevitan1969`: spectral analysis of a calibrated US macroeconometric model, showing gains, coherences, and lead–lag patterns
 
 These papers connect ideas in the following lectures:
 
