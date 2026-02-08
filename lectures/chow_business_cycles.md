@@ -1070,8 +1070,9 @@ def paper_frequency_axis(ax):
     ax.set_xlabel(r'frequency $\omega/2\pi$')
 
 # Normalized spectra (areas set to 1)
-S = np.real(np.diagonal(F_chow, axis1=1, axis2=2))[:, :5]  # y1..y5
-areas = np.trapezoid(S, freq, axis=0)
+S = np.real(np.diagonal(F_chow, axis1=1, axis2=2))[:, :5]
+df = np.diff(freq)
+areas = np.sum(0.5 * (S[1:] + S[:-1]) * df[:, None], axis=0)
 S_norm = S / areas
 mask = freq >= 0.0
 
@@ -1355,7 +1356,6 @@ Use the same $v$ values as in the main text: $v \in \{0.2, 0.4, 0.6, 0.8, 0.95\}
 
 Here is one solution:
 
-
 ```{code-cell} ipython3
 v_grid_ex1 = [0.2, 0.4, 0.6, 0.8, 0.95]
 c_ex1 = 0.6
@@ -1380,7 +1380,9 @@ for v in v_grid_ex1:
     # spectrum (right panel)
     F = spectral_density_var1(A, V_ex1, ω_grid_ex1)
     f11 = np.real(F[:, 0, 0])
-    f11_norm = f11 / np.trapezoid(f11, freq_ex1)
+    df = np.diff(freq_ex1)
+    area = np.sum(0.5 * (f11[1:] + f11[:-1]) * df)
+    f11_norm = f11 / area
     axes[1].plot(freq_ex1, f11_norm, lw=2, label=f'$v={v}$')
 
 axes[0].axhline(0, lw=0.8, color='gray')
@@ -1561,7 +1563,6 @@ Verify that both methods give the same result.
 
 Here is one solution:
 
-
 ```{code-cell} ipython3
 from scipy.linalg import solve_discrete_lyapunov
 
@@ -1609,7 +1610,6 @@ Modify the Chow-Levitan model by changing $\lambda_3$ from $0.4838$ to $0.95$.
 ```
 
 Here is one solution:
-
 
 ```{code-cell} ipython3
 # Modify λ_3 and reconstruct the transition matrix
