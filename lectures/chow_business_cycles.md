@@ -29,12 +29,12 @@ kernelspec:
 
 ## Overview
 
-This lecture studies two classic papers by Gregory Chow on business cycles in linear dynamic models:
+This lecture studies two classic papers by Gregory Chow:
 
-- {cite:t}`Chow1968`: empirical evidence for the acceleration principle, why acceleration enables oscillations, and when spectral peaks arise in stochastic systems
-- {cite:t}`ChowLevitan1969`: spectral analysis of a calibrated US macroeconometric model, showing gains, coherences, and lead–lag patterns
+- {cite:t}`Chow1968` presents  empirical evidence for the acceleration principle, describes how  acceleration promotes  oscillations, and analyzes conditions for the emergence of spectral peaks in linear difference equation subjected to random shocks
+- {cite:t}`ChowLevitan1969` presents a spectral analysis of a calibrated US macroeconometric model and teaches about spectral  gains, coherences, and lead–lag patterns
 
-These papers connect ideas in the following lectures:
+These papers are related to ideas in the following lectures:
 
 - The multiplier–accelerator mechanism in {doc}`samuelson`
 - Linear stochastic difference equations and autocovariances in {doc}`linear_models`
@@ -43,11 +43,11 @@ These papers connect ideas in the following lectures:
 
 {cite:t}`Chow1968` builds on earlier empirical work testing the acceleration principle on US investment data.
 
-We begin with that empirical foundation before developing the theoretical framework.
+We start  with that empirical evidence before developing the theoretical framework.
 
-We will keep coming back to three ideas:
+We will keep returning to three ideas:
 
-- In deterministic models, oscillations correspond to complex eigenvalues of a transition matrix.
+- In deterministic models, oscillations indicate  complex eigenvalues of a transition matrix.
 - In stochastic models, a "cycle" shows up as a local peak in a (univariate) spectral density.
 - Spectral peaks depend on eigenvalues, but also on how shocks enter and on how observables load on eigenmodes.
 
@@ -299,7 +299,7 @@ This illustrates that acceleration creates complex eigenvalues, which are necess
 
 But what happens when we add random shocks?
 
-Frisch's insight was that even damped oscillations can be "maintained" when the system is continuously perturbed by random disturbances.
+An  insight of Ragnar Frisch {cite}`frisch33` was that  damped oscillations can be "maintained" when the system is continuously perturbed by random disturbances.
 
 To study this formally, we need to introduce the stochastic framework.
 
@@ -351,7 +351,7 @@ The second equation is the discrete Lyapunov equation for $\Gamma_0$.
 > ... One way which I believe is particularly fruitful and promising is to study what would become of the solution of a determinate dynamic system if it were exposed to a stream of erratic shocks ...
 > Thus, by connecting the two ideas: (1) the continuous solution of a determinate dynamic system and (2) the discontinuous shocks intervening and supplying the energy that may maintain the swings—we get a theoretical setup which seems to furnish a rational interpretation of those movements which we have been accustomed to see in our statistical time data.
 >
-> — Ragnar Frisch (1933)
+> — Ragnar Frisch (1933) {cite}`frisch33`
 
 Chow's main insight is that oscillations in the deterministic system are *neither necessary nor sufficient* for producing "cycles" in the stochastic system.
 
@@ -840,7 +840,7 @@ The peak appears at $\omega/\pi \approx 0.10$, which corresponds to a cycle leng
 
 ### The Slutsky connection
 
-Chow connects this result to Slutsky's well-known finding that taking moving averages of a random series can generate cycles.
+Chow connects this result to Slutsky's {cite}`slutsky:1927`  finding that  moving averages of a random series have recurrent cycles.
 
 The VAR(1) model can be written as an infinite moving average:
 
