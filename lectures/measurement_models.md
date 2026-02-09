@@ -49,8 +49,8 @@ The two models produce different Wold representations and
 forecast-error-variance decompositions, even though they describe
 the same underlying economy.
 
-In this lecture we reproduce all numbered tables and figures from
-{cite}`Sargent1989` while studying the underlying mechanisms in the paper.
+In this lecture we reproduce the analysis from {cite}`Sargent1989`
+while studying the underlying mechanisms in the paper.
 
 We use the following imports and precision settings for tables:
 
@@ -59,8 +59,48 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy import linalg
+from IPython.display import Latex
 
 np.set_printoptions(precision=4, suppress=True)
+
+def df_to_latex_matrix(df, label=''):
+    """Convert DataFrame to LaTeX matrix (for math matrices)."""
+    lines = [r'\begin{bmatrix}']
+
+    for idx, row in df.iterrows():
+        row_str = ' & '.join([f'{v:.4f}' if isinstance(v, (int, float)) else str(v) for v in row]) + r' \\'
+        lines.append(row_str)
+
+    lines.append(r'\end{bmatrix}')
+
+    if label:
+        return '$' + label + ' = ' + '\n'.join(lines) + '$'
+    else:
+        return '$' + '\n'.join(lines) + '$'
+
+def df_to_latex_array(df):
+    """Convert DataFrame to LaTeX array (for tables with headers)."""
+    n_rows, n_cols = df.shape
+
+    # Build column format (centered columns)
+    col_format = 'c' * (n_cols + 1)  # +1 for index
+
+    # Start array
+    lines = [r'\begin{array}{' + col_format + '}']
+
+    # Header row
+    header = ' & '.join([''] + [str(c) for c in df.columns]) + r' \\'
+    lines.append(header)
+    lines.append(r'\hline')
+
+    # Data rows
+    for idx, row in df.iterrows():
+        row_str = str(idx) + ' & ' + ' & '.join([f'{v:.4f}' if isinstance(v, (int, float)) else str(v) for v in row]) + r' \\'
+        lines.append(row_str)
+
+    lines.append(r'\end{array}')
+
+    return '$' + '\n'.join(lines) + '$'
 ```
 
 ## Model Setup
@@ -106,7 +146,15 @@ x_t = \begin{bmatrix} k_t \\ \theta_t \end{bmatrix},
 z_t = \begin{bmatrix} y_{n,t} \\ c_t \\ \Delta k_t \end{bmatrix},
 ```
 
-and matrices
+so that the true economy follows the state-space system
+
+```{math}
+:label: true_ss
+x_{t+1} = A x_t + \varepsilon_t, \qquad z_t = C x_t,
+```
+
+where $\varepsilon_t = \begin{bmatrix} 0 \\ \theta_t \end{bmatrix}$ has
+covariance $E \varepsilon_t \varepsilon_t^\top = Q$ and the matrices are
 
 ```{math}
 A = \begin{bmatrix}
@@ -118,26 +166,53 @@ C = \begin{bmatrix}
 f-1 & 1 \\
 f-1 & 1-f^{-1} \\
 0   & f^{-1}
+\end{bmatrix},
+\qquad
+Q = \begin{bmatrix}
+0 & 0 \\
+0 & 1
 \end{bmatrix}.
 ```
+
+Note that $Q$ is singular because only the second component of $x_t$
+(the productivity shock $\theta_t$) receives an innovation; the
+capital stock $k_t$ evolves deterministically given $\theta_t$.
 
 The econometrician does not observe $z_t$ directly but instead
 sees $\bar z_t = z_t + v_t$, where $v_t$ is a vector of measurement
 errors.
 
-Measurement errors are AR(1):
+Measurement errors follow an AR(1) process:
 
 ```{math}
+:label: meas_error_ar1
 v_t = D v_{t-1} + \eta_t,
 ```
 
-with diagonal
+where $\eta_t$ is a vector white noise with
+$E \eta_t \eta_t^\top = \Sigma_\eta$ and
+$E \varepsilon_t v_s^\top = 0$ for all $t, s$
+(measurement errors are orthogonal to the true state innovations).
+
+The autoregressive matrix and innovation standard deviations are
 
 ```{math}
 D = \operatorname{diag}(0.6, 0.7, 0.3),
+\qquad
+\sigma_\eta = (0.05, 0.035, 0.65),
 ```
 
-and innovation standard deviations $(0.05, 0.035, 0.65)$.
+so the unconditional covariance of $v_t$ is
+
+```{math}
+R = \operatorname{diag}\!\left(\frac{\sigma_{\eta,i}^2}{1 - \rho_i^2}\right).
+```
+
+The measurement errors are ordered from smallest to largest innovation
+variance: income is measured most accurately ($\sigma_\eta = 0.05$),
+consumption next ($\sigma_\eta = 0.035$), and investment least
+accurately ($\sigma_\eta = 0.65$).
+This ordering is central to the results below.
 
 ```{code-cell} ipython3
 f = 1.05
@@ -162,7 +237,7 @@ Q = np.array([
 ρ = np.array([0.6, 0.7, 0.3])
 D = np.diag(ρ)
 
-# Innovation std. devs shown in Table 1
+# Innovation std. devs
 σ_η = np.array([0.05, 0.035, 0.65])
 Σ_η = np.diag(σ_η**2)
 
@@ -170,9 +245,10 @@ D = np.diag(ρ)
 R = np.diag((σ_η / np.sqrt(1.0 - ρ**2))**2)
 
 print(f"f = {f},  β = 1/f = {β:.6f}")
-print("\nA ="); display(pd.DataFrame(A))
-print("C ="); display(pd.DataFrame(C))
-print("D ="); display(pd.DataFrame(D))
+print()
+display(Latex(df_to_latex_matrix(pd.DataFrame(A), 'A')))
+display(Latex(df_to_latex_matrix(pd.DataFrame(C), 'C')))
+display(Latex(df_to_latex_matrix(pd.DataFrame(D), 'D')))
 ```
 
 ## Kalman Filter
@@ -212,7 +288,8 @@ def steady_state_kalman(A, C_obs, Q, R, W=None, tol=1e-13, max_iter=200_000):
     return K, S, V
 ```
 
-## Table 2: True Impulse Responses
+(true-impulse-responses)=
+## True Impulse Responses
 
 Before introducing measurement error, we verify the impulse response of
 the true system to a unit shock $\theta_0 = 1$.
@@ -235,53 +312,101 @@ def table2_irf(A, C, n_lags=6):
 
 rep_table2 = table2_irf(A, C, n_lags=6)
 
-pd.DataFrame(
-    np.round(rep_table2[:, 1:], 4),
-    columns=[r'$y_n$', r'$c$', r'$\Delta k$'],
-    index=pd.Index(range(6), name='Lag')
-)
+fig, ax = plt.subplots(figsize=(8, 4.5))
+ax.plot(rep_table2[:, 0], rep_table2[:, 1], 'o-', label=r'$y_n$', lw=2.5, markersize=7)
+ax.plot(rep_table2[:, 0], rep_table2[:, 2], 's-', label=r'$c$', lw=2.5, markersize=7)
+ax.plot(rep_table2[:, 0], rep_table2[:, 3], '^-', label=r'$\Delta k$', lw=2.5, markersize=7)
+ax.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
+ax.set_xlabel('Lag', fontsize=12)
+ax.set_ylabel('Response', fontsize=12)
+ax.set_title(r'True impulse response to unit shock $\theta_0 = 1$', fontsize=13)
+ax.legend(loc='best', fontsize=11, frameon=True, shadow=True)
+ax.grid(alpha=0.3)
+plt.tight_layout()
+plt.show()
 ```
 
-## Model 1 (Raw Measurements): Tables 3 and 4
+## Model 1 (Raw Measurements)
 
-Model 1 treats the raw measured series $\bar z_t$ as the observables and
-applies a Kalman filter to extract the state.
+Model 1 is a classical errors-in-variables model: the data collecting
+agency simply reports the error-corrupted data $\bar z_t = z_t + v_t$
+that it collects, making no attempt to adjust for measurement errors.
 
-Because the measurement errors $v_t$ are serially correlated, Sargent
-quasi-differences the observation equation to obtain an innovation form
-with serially uncorrelated errors.
+Because the measurement errors $v_t$ are serially correlated (AR(1)),
+we cannot directly apply the Kalman filter to
+$\bar z_t = C x_t + v_t$.
+Following {cite:t}`Sargent1989` (Section III.B), we quasi-difference the
+observation equation.
 
-The transformed observation equation is
+Substituting $\bar z_t = C x_t + v_t$, $x_{t+1} = A x_t + \varepsilon_t$,
+and $v_{t+1} = D v_t + \eta_t$ into $\bar z_{t+1} - D \bar z_t$ gives
 
 ```{math}
-\bar z_t - D \bar z_{t-1} = (CA - DC)x_{t-1} + C w_t + \eta_t.
+:label: model1_obs
+\bar z_{t+1} - D \bar z_t = \bar C\, x_t + C \varepsilon_t + \eta_t,
 ```
 
-Hence
+where $\bar C = CA - DC$.
+
+The composite observation noise in {eq}`model1_obs` is
+$\bar\nu_t = C\varepsilon_t + \eta_t$, which is serially uncorrelated.
+Its covariance, and the cross-covariance between the state noise
+$\varepsilon_t$ and $\bar\nu_t$, are
 
 ```{math}
-\bar C = CA - DC, \quad R_1 = CQC^\top + R, \quad W_1 = QC^\top.
+:label: model1_covs
+R_1 = C Q C^\top + \Sigma_\eta, \qquad W_1 = Q C^\top.
 ```
+
+The system $\{x_{t+1} = A x_t + \varepsilon_t,\;
+\bar z_{t+1} - D\bar z_t = \bar C x_t + \bar\nu_t\}$
+with $\text{cov}(\varepsilon_t)=Q$, $\text{cov}(\bar\nu_t)=R_1$, and
+$\text{cov}(\varepsilon_t, \bar\nu_t)=W_1$ now has serially uncorrelated
+errors, so the standard {doc}`Kalman filter <kalman>` applies.
+
+The steady-state Kalman filter yields the **innovations representation**
+
+```{math}
+:label: model1_innov
+\hat x_{t+1} = A \hat x_t + K_1 u_t, \qquad
+\bar z_{t+1} - D\bar z_t = \bar C \hat x_t + u_t,
+```
+
+where $u_t = (\bar z_{t+1} - D\bar z_t) -
+E[\bar z_{t+1} - D\bar z_t \mid \bar z_t, \bar z_{t-1}, \ldots]$
+is the innovation process, $K_1$ is the Kalman gain, and
+$V_1 = \bar C S_1 \bar C^\top + R_1$ is the innovation covariance matrix
+(with $S_1 = E[(x_t - \hat x_t)(x_t - \hat x_t)^\top]$ the steady-state
+state estimation error covariance).
 
 ```{code-cell} ipython3
 C_bar = C @ A - D @ C
-R1 = C @ Q @ C.T + R
+R1 = C @ Q @ C.T + Σ_η
 W1 = Q @ C.T
 
 K1, S1, V1 = steady_state_kalman(A, C_bar, Q, R1, W1)
 ```
 
-With the Kalman gain in hand, we can derive the Wold moving-average
-representation for the measured data.
+### Wold representation for measured data
 
-This representation tells us how measured $y_n$, $c$, and $\Delta k$
-respond over time to the orthogonalized innovations in the
-innovation covariance matrix $V_1$.
+With the innovations representation {eq}`model1_innov` in hand, we can
+derive a Wold moving-average representation for the measured data
+$\bar z_t$.
 
-To recover the Wold representation, define the augmented state
+From {eq}`model1_innov` and the quasi-differencing definition, the
+measured data satisfy (see eq. 19 of {cite:t}`Sargent1989`)
 
 ```{math}
-r_t = \begin{bmatrix} \hat x_{t-1} \\ z_{t-1} \end{bmatrix},
+:label: model1_wold
+\bar z_{t+1} = (I - DL)^{-1}\bigl[\bar C(I - AL)^{-1}K_1 L + I\bigr] u_t,
+```
+
+where $L$ is the lag operator.
+
+To compute the Wold coefficients numerically, define the augmented state
+
+```{math}
+r_t = \begin{bmatrix} \hat x_{t-1} \\ \bar z_{t-1} \end{bmatrix},
 ```
 
 with dynamics
@@ -289,7 +414,7 @@ with dynamics
 ```{math}
 r_{t+1} = F_1 r_t + G_1 u_t,
 \qquad
-z_t = H_1 r_t + u_t,
+\bar z_t = H_1 r_t + u_t,
 ```
 
 where
@@ -309,6 +434,9 @@ I
 \quad
 H_1 = [\bar C \;\; D].
 ```
+
+The Wold coefficients are then $\psi_0 = I$ and
+$\psi_j = H_1 F_1^{j-1} G_1$ for $j \geq 1$.
 
 ```{code-cell} ipython3
 F1 = np.block([
@@ -348,15 +476,25 @@ resp1 = np.array([psi1[j] @ linalg.cholesky(V1, lower=True) for j in range(14)])
 decomp1 = fev_contributions(psi1, V1, n_horizons=20)
 ```
 
-Table 3 reports the forecast-error-variance decomposition for Model 1.
+### Forecast-error-variance decomposition
 
-Each panel shows the cumulative contribution of one orthogonalized
+To measure the relative importance of each innovation, we decompose
+the $j$-step-ahead forecast-error variance of each measured variable.
+
+Write $\bar z_{t+j} - E_t \bar z_{t+j} = \sum_{i=0}^{j-1} \psi_i u_{t+j-i}$.
+Let $P$ be the lower-triangular Cholesky factor of $V_1$ so that the
+orthogonalized innovations are $e_t = P^{-1} u_t$.
+Then the contribution of orthogonalized innovation $k$ to the
+$j$-step-ahead variance of variable $m$ is
+$\sum_{i=0}^{j-1} (\psi_i P)_{mk}^2$.
+
+Each panel below shows the cumulative contribution of one orthogonalized
 innovation to the forecast-error variance of $y_n$, $c$, and $\Delta k$
 at horizons 1 through 20.
 
 ```{code-cell} ipython3
 horizons = np.arange(1, 21)
-cols = [r'$y_n$', r'$c$', r'$\Delta k$']
+cols = [r'y_n', r'c', r'\Delta k']
 
 def fev_table(decomp, shock_idx, horizons):
     return pd.DataFrame(
@@ -364,26 +502,49 @@ def fev_table(decomp, shock_idx, horizons):
         columns=cols,
         index=pd.Index(horizons, name='Horizon')
     )
-
-print("Table 3A: Contribution of innovation 1")
-display(fev_table(decomp1, 0, horizons))
-
-print("Table 3B: Contribution of innovation 2")
-display(fev_table(decomp1, 1, horizons))
-
-print("Table 3C: Contribution of innovation 3")
-display(fev_table(decomp1, 2, horizons))
 ```
+
+```{code-cell} ipython3
+fig, axes = plt.subplots(1, 3, figsize=(15, 4.5))
+
+for i, (shock_name, ax) in enumerate(zip([r'Innovation 1 ($y_n$)', r'Innovation 2 ($c$)', r'Innovation 3 ($\Delta k$)'], axes)):
+    fev_data = decomp1[:, i, :]
+    ax.plot(horizons, fev_data[0, :], label=r'$y_n$', lw=2.5)
+    ax.plot(horizons, fev_data[1, :], label=r'$c$', lw=2.5)
+    ax.plot(horizons, fev_data[2, :], label=r'$\Delta k$', lw=2.5)
+    ax.set_xlabel('Horizon', fontsize=12)
+    ax.set_ylabel('Contribution to FEV', fontsize=12)
+    ax.set_title(shock_name, fontsize=13)
+    ax.legend(loc='best', fontsize=10, frameon=True, shadow=True)
+    ax.grid(alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+These plots replicate Table 3 of {cite:t}`Sargent1989`.
+The income innovation accounts for substantial proportions of
+forecast-error variance in all three variables, while the consumption and
+investment innovations contribute mainly to their own variances.
+This is a **Granger causality** pattern: income appears to
+Granger-cause consumption and investment, but not vice versa.
+The pattern arises because income is the best-measured variable
+($\sigma_\eta = 0.05$), so its innovation carries the most
+information about the underlying structural shock $\theta_t$.
 
 The innovation covariance matrix $V_1$ is:
 
 ```{code-cell} ipython3
-labels = [r'$y_n$', r'$c$', r'$\Delta k$']
-pd.DataFrame(np.round(V1, 4), index=labels, columns=labels)
+labels = [r'y_n', r'c', r'\Delta k']
+df_v1 = pd.DataFrame(np.round(V1, 4), index=labels, columns=labels)
+display(Latex(df_to_latex_matrix(df_v1)))
 ```
 
-Table 4 reports the orthogonalized Wold impulse responses for Model 1
-at lags 0 through 13.
+### Wold impulse responses
+
+The orthogonalized Wold impulse responses $\psi_j P$ show how the
+measured variables respond at lag $j$ to a one-standard-deviation
+orthogonalized innovation.  We plot lags 0 through 13.
 
 ```{code-cell} ipython3
 lags = np.arange(14)
@@ -394,34 +555,122 @@ def wold_response_table(resp, shock_idx, lags):
         columns=cols,
         index=pd.Index(lags, name='Lag')
     )
-
-print("Table 4A: Response to innovation in y_n")
-display(wold_response_table(resp1, 0, lags))
-
-print("Table 4B: Response to innovation in c")
-display(wold_response_table(resp1, 1, lags))
-
-print("Table 4C: Response to innovation in Δk")
-display(wold_response_table(resp1, 2, lags))
 ```
 
-## Model 2 (Filtered Measurements): Tables 5 and 6
+```{code-cell} ipython3
+fig, axes = plt.subplots(1, 3, figsize=(15, 4.5))
 
-Model 2 takes a different approach: instead of working with the raw data,
-the econometrician first applies the Kalman filter from Model 1 to
-strip out measurement error and then treats the filtered estimates
-$\hat z_t = C \hat x_t$ as if they were the true observations.
+for i, (shock_name, ax) in enumerate(zip([r'Innovation in $y_n$', r'Innovation in $c$', r'Innovation in $\Delta k$'], axes)):
+    ax.plot(lags, resp1[:, 0, i], label=r'$y_n$', lw=2.5)
+    ax.plot(lags, resp1[:, 1, i], label=r'$c$', lw=2.5)
+    ax.plot(lags, resp1[:, 2, i], label=r'$\Delta k$', lw=2.5)
+    ax.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
+    ax.set_xlabel('Lag', fontsize=12)
+    ax.set_ylabel('Response', fontsize=12)
+    ax.set_title(shock_name, fontsize=13)
+    ax.legend(loc='best', fontsize=10, frameon=True, shadow=True)
+    ax.grid(alpha=0.3)
 
-A second Kalman filter is then applied to the filtered series.
+plt.tight_layout()
+plt.show()
+```
 
-The state noise covariance for this second filter is
+These plots replicate Table 4 of {cite:t}`Sargent1989`.
+An income innovation generates persistent responses in all variables
+because, being the best-measured series, its innovation is dominated
+by the true permanent shock $\theta_t$, which permanently raises the
+capital stock and hence steady-state consumption and income.
+A consumption innovation produces smaller, decaying responses
+that reflect the AR(1) structure of its measurement error ($\rho = 0.7$).
+An investment innovation has a large initial impact on investment itself,
+consistent with the high measurement error variance ($\sigma_\eta = 0.65$),
+but the effect dies out quickly.
+
+## Model 2 (Filtered Measurements)
+
+Model 2 corresponds to a data collecting agency that, instead of
+reporting raw error-corrupted data, applies an optimal filter
+to construct least-squares estimates of the true variables.
+
+Specifically, the agency uses the Kalman filter from Model 1 to form
+$\hat x_t = E[x_t \mid \bar z_{t-1}, \bar z_{t-2}, \ldots]$ and reports
+filtered estimates
 
 ```{math}
-Q_2 = K_1 V_1 K_1^\top,
+\tilde z_t = G \hat x_t,
 ```
 
-We solve a second Kalman system with tiny measurement noise to regularize the
-near-singular covariance matrix.
+where $G = C$ is a selection matrix
+(see eq. 23 of {cite:t}`Sargent1989`).
+
+### State-space for filtered data
+
+From the innovations representation {eq}`model1_innov`, the state
+$\hat x_t$ evolves as
+
+```{math}
+:label: model2_state
+\hat x_{t+1} = A \hat x_t + K_1 u_t.
+```
+
+The reported filtered data are then
+
+```{math}
+:label: model2_obs
+\tilde z_t = C \hat x_t + \eta_t,
+```
+
+where $\eta_t$ is a type 2 white-noise measurement error process
+("typos") with presumably very small covariance matrix $R_2$.
+
+The state noise in {eq}`model2_state` is $K_1 u_t$, which has covariance
+
+```{math}
+:label: model2_Q
+Q_2 = K_1 V_1 K_1^\top.
+```
+
+The covariance matrix of the joint noise is
+(see eq. 25 of {cite:t}`Sargent1989`)
+
+```{math}
+E \begin{bmatrix} K_1 u_t \\ \eta_t \end{bmatrix}
+  \begin{bmatrix} K_1 u_t \\ \eta_t \end{bmatrix}^\top
+= \begin{bmatrix} Q_2 & 0 \\ 0 & R_2 \end{bmatrix}.
+```
+
+Since $R_2$ is close to or equal to zero (the filtered data have
+negligible additional noise), we approximate it with a small
+regularization term $R_2 = \epsilon I$ to keep the Kalman filter
+numerically well-conditioned.
+
+A second Kalman filter applied to {eq}`model2_state`--{eq}`model2_obs`
+yields a second innovations representation
+
+```{math}
+:label: model2_innov
+\hat{\hat x}_{t+1} = A \hat{\hat x}_t + K_2 a_t,
+\qquad
+\tilde z_t = C \hat{\hat x}_t + a_t,
+```
+
+where $a_t$ is the innovation process for the filtered data with
+covariance $V_2 = C S_2 C^\top + R_2$.
+
+### Wold representation for filtered data
+
+The Wold moving-average representation for $\tilde z_t$ is
+(see eq. 29 of {cite:t}`Sargent1989`)
+
+```{math}
+:label: model2_wold
+\tilde z_t = \bigl[C(I - AL)^{-1} K_2 L + I\bigr] a_t,
+```
+
+with coefficients $\psi_0 = I$ and $\psi_j = C A^{j-1} K_2$ for
+$j \geq 1$.  Note that this is simpler than the Model 1 Wold
+representation {eq}`model1_wold` because there is no quasi-differencing
+to undo.
 
 ```{code-cell} ipython3
 Q2 = K1 @ V1 @ K1.T
@@ -444,61 +693,95 @@ resp2 = np.array([psi2[j] @ linalg.cholesky(V2, lower=True) for j in range(14)])
 decomp2 = fev_contributions(psi2, V2, n_horizons=20)
 ```
 
-Table 5 is the analogue of Table 3 for Model 2.
+### Forecast-error-variance decomposition
 
-Because the filtered data are nearly noiseless, the second and third
-innovations contribute very little to forecast-error variance.
+Because the filtered data are nearly noiseless, the innovation
+covariance $V_2$ is close to singular with one dominant eigenvalue.
+This means the filtered economy is driven by essentially one shock,
+just like the true economy.
 
 ```{code-cell} ipython3
-print("Table 5A: Contribution of innovation 1")
-display(fev_table(decomp2, 0, horizons))
+fig, axes = plt.subplots(1, 3, figsize=(15, 4.5))
 
-print("Table 5B: Contribution of innovation 2 (×10³)")
-display(pd.DataFrame(
-    np.round(decomp2[:, 1, :].T * 1e3, 4),
-    columns=cols,
-    index=pd.Index(horizons, name='Horizon')
-))
+for i, (shock_name, ax) in enumerate(zip([r'Innovation 1 ($y_n$)', r'Innovation 2 ($c$) $\times 10^3$', r'Innovation 3 ($\Delta k$) $\times 10^6$'], axes)):
+    scale = 1 if i == 0 else (1e3 if i == 1 else 1e6)
+    fev_data = decomp2[:, i, :] * scale
+    ax.plot(horizons, fev_data[0, :], label=r'$y_n$', lw=2.5)
+    ax.plot(horizons, fev_data[1, :], label=r'$c$', lw=2.5)
+    ax.plot(horizons, fev_data[2, :], label=r'$\Delta k$', lw=2.5)
+    ax.set_xlabel('Horizon', fontsize=12)
+    ax.set_ylabel('Contribution to FEV', fontsize=12)
+    ax.set_title(shock_name, fontsize=13)
+    ax.legend(loc='best', fontsize=10, frameon=True, shadow=True)
+    ax.grid(alpha=0.3)
 
-print("Table 5C: Contribution of innovation 3 (×10⁶)")
-display(pd.DataFrame(
-    np.round(decomp2[:, 2, :].T * 1e6, 4),
-    columns=cols,
-    index=pd.Index(horizons, name='Horizon')
-))
+plt.tight_layout()
+plt.show()
 ```
+
+These plots replicate Table 5 of {cite:t}`Sargent1989`.
+In Model 2, the first innovation accounts for virtually all forecast-error
+variance, just as in the true economy where the single structural shock
+$\theta_t$ drives everything.
+The second and third innovations contribute negligibly (note the scaling
+factors of $10^3$ and $10^6$ required to make them visible).
+This confirms that filtering strips away the measurement noise that created
+the appearance of multiple independent sources of variation in Model 1.
 
 The innovation covariance matrix $V_2$ for Model 2 is:
 
 ```{code-cell} ipython3
-pd.DataFrame(np.round(V2, 4), index=labels, columns=labels)
+df_v2 = pd.DataFrame(np.round(V2, 4), index=labels, columns=labels)
+display(Latex(df_to_latex_matrix(df_v2)))
 ```
 
-Table 6 reports the orthogonalized Wold impulse responses for Model 2.
+### Wold impulse responses
+
+The following plots show the orthogonalized Wold impulse responses for Model 2.
 
 ```{code-cell} ipython3
-print("Table 6A: Response to innovation in y_n")
-display(wold_response_table(resp2, 0, lags))
+fig, axes = plt.subplots(1, 3, figsize=(15, 4.5))
 
-print("Table 6B: Response to innovation in c")
-display(wold_response_table(resp2, 1, lags))
+for i, (shock_name, scale) in enumerate(zip([r'Innovation in $y_n$', r'Innovation in $c$ $\times 10^3$', r'Innovation in $\Delta k$ $\times 10^3$'],
+                                             [1, 1e3, 1e3])):
+    ax = axes[i]
+    ax.plot(lags, resp2[:, 0, i] * scale, label=r'$y_n$', lw=2.5)
+    ax.plot(lags, resp2[:, 1, i] * scale, label=r'$c$', lw=2.5)
+    ax.plot(lags, resp2[:, 2, i] * scale, label=r'$\Delta k$', lw=2.5)
+    ax.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
+    ax.set_xlabel('Lag', fontsize=12)
+    ax.set_ylabel('Response', fontsize=12)
+    ax.set_title(shock_name, fontsize=13)
+    ax.legend(loc='best', fontsize=10, frameon=True, shadow=True)
+    ax.grid(alpha=0.3)
 
-print("Table 6C: Response to innovation in Δk (×10³)")
-display(pd.DataFrame(
-    np.round(resp2[:, :, 2] * 1e3, 4),
-    columns=cols,
-    index=pd.Index(lags, name='Lag')
-))
+plt.tight_layout()
+plt.show()
 ```
 
-## Simulation: Figures 1 through 9 and Table 7
+These plots replicate Table 6 of {cite:t}`Sargent1989`.
+The income innovation in Model 2 produces responses that closely
+approximate the true impulse response function from the structural
+shock $\theta_t$ (compare with the figure in the
+{ref}`true-impulse-responses` section above).
+The consumption and investment innovations produce responses
+that are orders of magnitude smaller (note the $10^3$ scaling),
+confirming that the filtered data are driven by essentially one shock.
+
+A key implication: unlike Model 1, the filtered data from Model 2
+**cannot** reproduce the apparent Granger causality pattern that the
+accelerator literature has documented empirically.
+As {cite:t}`Sargent1989` emphasizes, the two models of measurement
+produce quite different inferences about the economy's dynamics despite
+sharing identical deep parameters.
+
+## Simulation
 
 The tables above characterize population moments of the two models.
 
 To see how the models perform on a finite sample, Sargent simulates
 80 periods of true, measured, and filtered data and reports
-covariance and correlation matrices (Table 7) together with
-time-series plots (Figures 1 through 9).
+covariance and correlation matrices together with time-series plots.
 
 We replicate these objects below.
 
@@ -563,12 +846,12 @@ sim = simulate_series(seed=7909, T=80, k0=10.0)
 
 ```{code-cell} ipython3
 def plot_true_vs_other(t, true_series, other_series, other_label, ylabel=""):
-    fig, ax = plt.subplots(figsize=(8, 3.6))
-    ax.plot(t, true_series, lw=2, color="black", label="true")
-    ax.plot(t, other_series, lw=2, ls="--", color="#1f77b4", label=other_label)
-    ax.set_xlabel("time", fontsize=11)
-    ax.set_ylabel(ylabel, fontsize=11)
-    ax.legend(loc="best")
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.plot(t, true_series, lw=2.5, color="black", label="true")
+    ax.plot(t, other_series, lw=2.5, ls="--", color="#1f77b4", label=other_label)
+    ax.set_xlabel("Time", fontsize=12)
+    ax.set_ylabel(ylabel.capitalize(), fontsize=12)
+    ax.legend(loc="best", fontsize=11, frameon=True, shadow=True)
     ax.grid(alpha=0.3)
     plt.tight_layout()
     plt.show()
@@ -613,16 +896,15 @@ mystnb:
 plot_true_vs_other(t, sim["y_true"], sim["y_meas"], "measured", ylabel="income")
 ```
 
-Figures 1 through 3 show how measurement error distorts each series.
+The first three figures replicate Figures 1--3 of {cite:t}`Sargent1989`.
+Investment is distorted the most because its measurement error
+has the largest innovation variance ($\sigma_\eta = 0.65$),
+while income is distorted the least ($\sigma_\eta = 0.05$).
 
-Investment (Figure 2) is hit hardest because its measurement error
-has the largest innovation variance ($\sigma_\eta = 0.65$).
-
-Figures 4 through 7 compare the true series with the Kalman-filtered
-estimates from Model 1.
-
-The filter removes much of the measurement
-noise, recovering series that track the truth closely.
+The next four figures (Figures 4--7 in the paper) compare
+true series with the Kalman-filtered estimates from Model 1.
+The filter removes much of the measurement noise, recovering
+series that track the truth closely.
 
 ```{code-cell} ipython3
 ---
@@ -672,59 +954,51 @@ mystnb:
 plot_true_vs_other(t, sim["k_true"], sim["k_filt"], "filtered", ylabel="capital stock")
 ```
 
-Figures 8 and 9 plot the national income identity residual
-$c_t + \Delta k_t - y_{n,t}$.
+The following figure plots the national income identity residual
+$c_t + \Delta k_t - y_{n,t}$ for both measured and filtered data
+(Figures 8--9 of {cite:t}`Sargent1989`).
 
 In the true model this identity holds exactly.
-
-For measured data (Figure 8) the residual is non-zero because
+For measured data the residual is non-zero because
 independent measurement errors break the accounting identity.
-
-For filtered data (Figure 9) the Kalman filter approximately
-restores the identity.
+For filtered data the Kalman filter approximately restores the identity.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Measured consumption plus investment minus income
-    name: fig-measured-identity-residual
+    caption: "National income identity residual: measured (left) vs. filtered (right)"
+    name: fig-identity-residual
   image:
-    alt: National income identity residual for measured data over 80 time periods
+    alt: National income identity residual for measured and filtered data side by side
 ---
-fig, ax = plt.subplots(figsize=(8, 3.6))
-ax.plot(t, sim["c_meas"] + sim["dk_meas"] - sim["y_meas"], color="#d62728", lw=2)
-ax.set_xlabel("time", fontsize=11)
-ax.set_ylabel("residual", fontsize=11)
-ax.grid(alpha=0.3)
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4))
+
+ax1.plot(t, sim["c_meas"] + sim["dk_meas"] - sim["y_meas"], color="#d62728", lw=2.5)
+ax1.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
+ax1.set_xlabel("Time", fontsize=12)
+ax1.set_ylabel("Residual", fontsize=12)
+ax1.set_title(r'Measured: $c_t + \Delta k_t - y_{n,t}$', fontsize=13)
+ax1.grid(alpha=0.3)
+
+ax2.plot(t, sim["c_filt"] + sim["dk_filt"] - sim["y_filt"], color="#2ca02c", lw=2.5)
+ax2.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
+ax2.set_xlabel("Time", fontsize=12)
+ax2.set_ylabel("Residual", fontsize=12)
+ax2.set_title(r'Filtered: $c_t + \Delta k_t - y_{n,t}$', fontsize=13)
+ax2.grid(alpha=0.3)
+
 plt.tight_layout()
 plt.show()
 ```
 
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Filtered consumption plus investment minus income
-    name: fig-filtered-identity-residual
-  image:
-    alt: National income identity residual for filtered data over 80 time periods
----
-fig, ax = plt.subplots(figsize=(8, 3.6))
-ax.plot(t, sim["c_filt"] + sim["dk_filt"] - sim["y_filt"], color="#2ca02c", lw=2)
-ax.set_xlabel("time", fontsize=11)
-ax.set_ylabel("residual", fontsize=11)
-ax.grid(alpha=0.3)
-plt.tight_layout()
-plt.show()
-```
-
-Table 7 reports covariance and correlation matrices among the true,
-measured, and filtered versions of each variable.
+The following covariance and correlation matrices replicate Table 7
+of {cite:t}`Sargent1989`.
+For each variable we report the $3 \times 3$ covariance and correlation
+matrices among the true, measured, and filtered versions.
 
 High correlations between true and filtered series confirm that the
-Kalman filter does a good job of removing measurement noise.
-
+Kalman filter removes most measurement noise.
 Lower correlations between true and measured series quantify how much
 information is lost by using raw data.
 
@@ -744,35 +1018,46 @@ corr_k = np.corrcoef(np.vstack([sim["k_true"], sim["k_filt"]]))
 
 tmf_labels = ['true', 'measured', 'filtered']
 tf_labels = ['true', 'filtered']
+```
 
-print("Table 7A: Covariance matrix of consumption")
-display(matrix_df(cov_c, tmf_labels))
+**Consumption** -- Measurement error inflates variance, but the filtered
+series recovers a variance close to the truth.
+The true-filtered correlation exceeds 0.99.
 
-print("Table 7B: Correlation matrix of consumption")
-display(matrix_df(corr_c, tmf_labels))
+```{code-cell} ipython3
+display(Latex(df_to_latex_matrix(matrix_df(cov_c, tmf_labels))))
+display(Latex(df_to_latex_matrix(matrix_df(corr_c, tmf_labels))))
+```
 
-print("Table 7C: Covariance matrix of investment")
-display(matrix_df(cov_i, tmf_labels))
+**Investment** -- Because $\sigma_\eta = 0.65$ is large, measurement error
+creates the most variance inflation here.
+Despite this, the true-filtered correlation remains high,
+demonstrating the filter's effectiveness even with severe noise.
 
-print("Table 7D: Correlation matrix of investment")
-display(matrix_df(corr_i, tmf_labels))
+```{code-cell} ipython3
+display(Latex(df_to_latex_matrix(matrix_df(cov_i, tmf_labels))))
+display(Latex(df_to_latex_matrix(matrix_df(corr_i, tmf_labels))))
+```
 
-print("Table 7E: Covariance matrix of income")
-display(matrix_df(cov_y, tmf_labels))
+**Income** -- Income has the smallest measurement error, so measured
+and true variances are close.  True-filtered correlations are very high.
 
-print("Table 7F: Correlation matrix of income")
-display(matrix_df(corr_y, tmf_labels))
+```{code-cell} ipython3
+display(Latex(df_to_latex_matrix(matrix_df(cov_y, tmf_labels))))
+display(Latex(df_to_latex_matrix(matrix_df(corr_y, tmf_labels))))
+```
 
-print("Table 7G: Covariance matrix of capital")
-display(matrix_df(cov_k, tf_labels))
+**Capital stock** -- The capital stock is never directly observed, yet
+the filter recovers it with very high accuracy.
 
-print("Table 7H: Correlation matrix of capital")
-display(matrix_df(corr_k, tf_labels))
+```{code-cell} ipython3
+display(Latex(df_to_latex_matrix(matrix_df(cov_k, tf_labels))))
+display(Latex(df_to_latex_matrix(matrix_df(corr_k, tf_labels))))
 ```
 
 ## Summary
 
-This lecture reproduced the tables and figures in {cite}`Sargent1989`,
+This lecture reproduced the analysis in {cite}`Sargent1989`,
 which studies how measurement error alters an econometrician's view
 of a permanent income economy driven by the investment accelerator.
 
@@ -785,18 +1070,19 @@ Several lessons emerge:
 * Measurement error is not a second-order issue: it can
   reshape inferences about which shocks drive which variables.
 
+* Model 1 reproduces the **Granger causality** pattern documented in the
+  empirical accelerator literature -- income appears to Granger-cause
+  consumption and investment -- but this pattern is an artifact of
+  measurement error ordering, not of the structural model.
+
+* Model 2, working with filtered data, attributes nearly all variance to
+  the single structural shock $\theta_t$ and **cannot** reproduce the
+  Granger causality pattern.
+
 * The {doc}`Kalman filter <kalman>` effectively strips measurement noise
-  from the data.
-
-* The filtered series track the truth closely
-  (Figures 4 through 7), and the near-zero residual in Figure 9 shows that
-  the filter approximately restores the national income accounting
-  identity that raw measurement error breaks (Figure 8).
-
-* The forecast-error-variance decompositions (Tables 3 and 5) reveal
-  that Model 1 attributes substantial variance to measurement noise
-  innovations, while Model 2, working with cleaned data, attributes
-  nearly all variance to the single structural shock $\theta_t$.
+  from the data: the filtered series track the truth closely, and the
+  near-zero residual shows that the filter approximately restores the
+  national income accounting identity that raw measurement error breaks.
 
 These results connect to broader themes in this lecture series:
 the role of {doc}`linear state space models <linear_models>` in
