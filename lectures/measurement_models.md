@@ -50,10 +50,10 @@ The two models produce different Wold representations and
 forecast-error-variance decompositions, even though they describe
 the same underlying economy.
 
-In this lecture we reproduce the analysis from {cite:t}`Sargent1989`
-while studying the underlying mechanisms in the paper.
+In this lecture we follow {cite:t}`Sargent1989` and study how
+alternative measurement schemes change empirical implications.
 
-We use the following imports and functions for matrices and tables
+We start with imports and helper functions used throughout.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -107,6 +107,89 @@ def df_to_latex_array(df):
 
     return '$' + '\n'.join(lines) + '$'
 ```
+
+## Classical formulation
+
+Before moving to state-space methods, {cite:t}`Sargent1989` formulates
+both measurement models in classical Wold form.
+
+This setup separates:
+
+- The law of motion for true economic variables.
+- The law of motion for measurement errors.
+- The map from these two objects to observables used by an econometrician.
+
+Let the true data be
+
+```{math}
+:label: classical_true_wold
+Z_t = c_Z(L)\,\varepsilon_t^Z, \qquad
+E\varepsilon_t^Z {\varepsilon_t^Z}' = I.
+```
+
+In Model 1 (raw reports), the agency observes and reports
+
+```{math}
+:label: classical_model1_meas
+z_t = Z_t + v_t, \qquad
+v_t = c_v(L)\,\varepsilon_t^v, \qquad
+E(Z_t v_s') = 0\ \forall t,s.
+```
+
+Then measured data have Wold representation
+
+```{math}
+:label: classical_model1_wold
+z_t = c_z(L)\,\varepsilon_t,
+```
+
+with spectral factorization
+
+```{math}
+:label: classical_model1_factor
+c_z(s)c_z(s^{-1})' = c_Z(s)c_Z(s^{-1})' + c_v(s)c_v(s^{-1})'.
+```
+
+In Model 2 (filtered reports), the agency reports
+
+```{math}
+:label: classical_model2_report
+\tilde z_t = E[Z_t \mid z_t, z_{t-1}, \ldots] = h(L) z_t,
+```
+
+where
+
+```{math}
+:label: classical_model2_filter
+h(L)
+= \Big[
+    c_Z(L)c_Z(L^{-1})'
+    \big(c_z(L^{-1})'\big)^{-1}
+  \Big]_+ c_z(L)^{-1},
+```
+
+and $[\cdot]_+$ keeps only nonnegative powers of $L$.
+
+Filtered reports satisfy
+
+```{math}
+:label: classical_model2_wold
+\tilde z_t = c_{\tilde z}(L)\,a_t,
+```
+
+with
+
+```{math}
+:label: classical_model2_factor
+c_{\tilde z}(s)c_{\tilde z}(s^{-1})'
+= h(s)c_z(s)c_z(s^{-1})'h(s^{-1})'.
+```
+
+These two data-generation schemes imply different Gaussian likelihood
+functions.
+
+In the rest of the lecture, we switch to a recursive state-space
+representation because it makes these objects easy to compute.
 
 ## The economic model
 
@@ -294,6 +377,8 @@ In a one-common-index model like this one ($\theta_t$ is the
 common index), the best-measured variable extends the most
 Granger causality to the others.
 
+This mechanism drives the numerical results below.
+
 ## State-space formulation
 
 We now map the economic model and the measurement process into
@@ -372,19 +457,14 @@ so the unconditional covariance of $v_t$ is
 R = \operatorname{diag}\!\left(\frac{\sigma_{\eta,i}^2}{1 - \rho_i^2}\right).
 ```
 
-Consumption has the smallest measurement error innovation variance
-($\sigma_\eta = 0.035$), income is next ($\sigma_\eta = 0.05$),
-and investment has the largest ($\sigma_\eta = 0.65$).
+The innovation variances are smallest for consumption
+($\sigma_\eta = 0.035$), next for income ($\sigma_\eta = 0.05$),
+and largest for investment ($\sigma_\eta = 0.65$).
 
-However, the ordering that matters for the results below is the
-signal-to-noise ratio.
-
-Income carries a coefficient of $1$ on $\theta_t$,
-whereas consumption carries only $1 - f^{-1} \approx 0.048$.
-
-The income innovation is therefore by far the most informative
-about $\theta_t$, even though its measurement error innovation
-is slightly larger than consumption's.
+As in {cite:t}`Sargent1989`, what matters for Granger-causality
+asymmetries is the overall measurement quality in the full system:
+output is relatively well measured while investment is relatively
+poorly measured.
 
 ```{code-cell} ipython3
 f = 1.05
@@ -463,7 +543,7 @@ def steady_state_kalman(A, C_obs, Q, R, W=None, tol=1e-13, max_iter=200_000):
 (true-impulse-responses)=
 ## True impulse responses
 
-Before introducing measurement error, we verify the impulse response of
+Before introducing measurement error, we compute the impulse response of
 the true system to a unit shock $\theta_0 = 1$.
 
 The response shows the investment accelerator clearly: the full impact on
@@ -662,9 +742,7 @@ def fev_contributions(psi, V, n_horizons=20):
 
 
 psi1 = measured_wold_coeffs(F1, G1, H1, n_terms=40)
-# Non-orthogonalized: scale each column by its own innovation std dev
-std_u1 = np.sqrt(np.diag(V1))
-resp1 = np.array([psi1[j] * std_u1 for j in range(14)])
+resp1 = np.array([psi1[j] @ linalg.cholesky(V1, lower=True) for j in range(14)])
 decomp1 = fev_contributions(psi1, V1, n_horizons=20)
 ```
 
@@ -685,6 +763,11 @@ $\sum_{i=0}^{j-1} (\psi_i P)_{mk}^2$.
 The table below shows the cumulative contribution of each orthogonalized
 innovation to the forecast-error variance of $y_n$, $c$, and $\Delta k$
 at horizons 1 through 20.
+
+Each panel fixes one orthogonalized innovation and reports its
+cumulative contribution to each variable's forecast-error variance.
+
+Rows are forecast horizons and columns are forecasted variables.
 
 ```{code-cell} ipython3
 horizons = np.arange(1, 21)
@@ -718,12 +801,14 @@ investment innovations contribute mainly to their own variances.
 This is a **Granger causality** pattern: income appears to
 Granger-cause consumption and investment, but not vice versa.
 
-The pattern arises because income has the highest signal-to-noise
-ratio: its coefficient on $\theta_t$ is $1$, so its innovation carries
-the most information about the underlying structural shock
+This matches the paper's message that, in a one-common-index model,
+the relatively best measured series has the strongest predictive content.
 
-The covariance matrix of the innovations is not diagonal, but the eigenvalues are well-separated, with the first eigenvalue much larger
-than the others, consistent with the presence of a dominant common shock $\theta_t$
+The covariance matrix of the innovations is not diagonal, but the
+eigenvalues are well separated.
+
+The first eigenvalue is much larger than the others, consistent with
+the presence of a dominant common shock $\theta_t$.
 
 ```{code-cell} ipython3
 print('Covariance matrix of innovations:')
@@ -738,15 +823,12 @@ print(np.sort(np.linalg.eigvalsh(V1))[::-1].round(4))
 
 ### Wold impulse responses
 
-The Wold impulse responses $\psi_j$ scaled by the standard
-deviation of each innovation show how the measured variables
-respond at lag $j$ to a one-standard-deviation shock.
+The Wold impulse responses are reported using orthogonalized
+innovations (Cholesky factorization of $V_1$ with ordering
+$y_n$, $c$, $\Delta k$).
 
-Because $\psi_0 = I$, each innovation moves only its own
-variable at impact (lag 0), with cross-variable effects
-appearing from lag 1 onward.
-
-We report lags 0 through 13
+Under this identification, lag-0 responses reflect both
+contemporaneous covariance and the Cholesky ordering.
 
 ```{code-cell} ipython3
 lags = np.arange(14)
@@ -772,7 +854,8 @@ for i, title in enumerate(wold_titles):
 display(Latex('$' + r' \quad '.join(parts) + '$'))
 ```
 
-At impact each innovation moves only its own variable.
+At impact, the first orthogonalized innovation (ordered as output)
+loads on all three measured variables, matching the paper's Table 4.
 
 At subsequent lags the income innovation generates persistent
 responses in all three variables because, being the best-measured
@@ -948,13 +1031,29 @@ The second and third innovations contribute negligibly.
 This confirms that filtering strips away the measurement noise that created
 the appearance of multiple independent sources of variation in Model 1.
 
+The covariance matrix and eigenvalues of the Model 2 innovations are
+
+```{code-cell} ipython3
+print('Covariance matrix of innovations:')
+df_v2 = pd.DataFrame(np.round(V2, 4), index=labels, columns=labels)
+display(Latex(df_to_latex_matrix(df_v2)))
+```
+
+```{code-cell} ipython3
+print('Eigenvalues of covariance matrix:')
+print(np.sort(np.linalg.eigvalsh(V2))[::-1].round(4))
+```
+
+As {cite:t}`Sargent1989` emphasizes, the two models of measurement
+produce quite different inferences about the economy's dynamics despite
+sharing identical underlying parameters.
+
+
 
 ### Wold impulse responses
 
-Unlike Model 1, whose impulse responses use non-orthogonalized
-innovations, the Model 2 Wold representation is orthogonalized
-via a Cholesky decomposition of $V_2$ with the ordering
-$y_n$, $c$, $\Delta k$.
+We again use orthogonalized Wold responses with a Cholesky
+decomposition of $V_2$ ordered as $y_n$, $c$, $\Delta k$.
 
 ```{code-cell} ipython3
 parts = []
@@ -978,36 +1077,16 @@ Unlike Model 1, the filtered data from Model 2
 *cannot* reproduce the apparent Granger causality pattern that the
 accelerator literature has documented empirically.
 
-We also report the covariance matrix and eigenvalues of the innovations for Model 2
-
-```{code-cell} ipython3
-print('Covariance matrix of innovations:')
-df_v2 = pd.DataFrame(np.round(V2, 4), index=labels, columns=labels)
-display(Latex(df_to_latex_matrix(df_v2)))
-```
-
-```{code-cell} ipython3
-print('Eigenvalues of covariance matrix:')
-print(np.sort(np.linalg.eigvalsh(V2))[::-1].round(4))
-```
-
-
-As {cite:t}`Sargent1989` emphasizes, the two models of measurement
-produce quite different inferences about the economy's dynamics despite
-sharing identical underlying parameters.
 
 ## Simulation
 
 The tables above characterize population moments of the two models.
 
-To see how the models perform on a finite sample, we simulate
-80 periods of true, measured, and filtered data and report
-covariance and correlation matrices together with time-series plots.
-
-We replicate these objects below
+We now simulate 80 periods of true, measured, and filtered data
+to compare population implications with finite-sample behavior.
 
 ```{code-cell} ipython3
-def simulate_series(seed=0, T=80, k0=10.0):
+def simulate_series(seed=7909, T=80, k0=10.0):
     """
     Simulate true, measured, and filtered series.
     """
@@ -1064,7 +1143,7 @@ def simulate_series(seed=0, T=80, k0=10.0):
     return out
 
 
-sim = simulate_series(seed=0, T=80, k0=10.0)
+sim = simulate_series(seed=7909, T=80, k0=10.0)
 ```
 
 ```{code-cell} ipython3
@@ -1122,11 +1201,8 @@ Investment is distorted the most because its measurement error
 has the largest innovation variance ($\sigma_\eta = 0.65$),
 while income is distorted the least ($\sigma_\eta = 0.05$).
 
-The next four figures compare true series with the
-Kalman-filtered estimates from Model 1.
-
-The filter removes much of the measurement noise, recovering
-series that track the truth closely.
+The Kalman-filtered estimates from Model 1 remove much of the
+measurement noise and track the truth closely.
 
 ```{code-cell} ipython3
 ---
@@ -1176,15 +1252,13 @@ mystnb:
 plot_true_vs_other(t, sim["k_true"], sim["k_filt"], "filtered", ylabel="capital stock")
 ```
 
-The following figure plots the national income identity residual
-$c_t + \Delta k_t - y_{n,t}$ for both measured and filtered data.
+In the true model the national income identity
+$c_t + \Delta k_t = y_{n,t}$ holds exactly.
 
-In the true model this identity holds exactly.
+Independent measurement errors break this accounting identity
+in the measured data.
 
-For measured data the residual is non-zero because
-independent measurement errors break the accounting identity.
-
-For filtered data the Kalman filter approximately restores the identity.
+The Kalman filter approximately restores it.
 
 ```{code-cell} ipython3
 ---
@@ -1213,17 +1287,13 @@ plt.tight_layout()
 plt.show()
 ```
 
-The following covariance and correlation matrices compare the true,
-measured, and filtered versions of each variable.
-
-For each variable we report the $3 \times 3$ covariance and correlation
-matrices among the true, measured, and filtered versions.
+We can also compare the true, measured, and filtered versions of
+each variable through their covariance and correlation matrices.
 
 High correlations between true and filtered series confirm that the
-Kalman filter removes most measurement noise.
-
-Lower correlations between true and measured series quantify how much
-information is lost by using raw data.
+Kalman filter removes most measurement noise, while lower correlations
+between true and measured series quantify how much information raw
+data lose.
 
 ```{code-cell} ipython3
 def cov_corr_three(a, b, c):
@@ -1243,7 +1313,7 @@ tmf_labels = ['true', 'measured', 'filtered']
 tf_labels = ['true', 'filtered']
 ```
 
-**Consumption** -- Measurement error inflates the variance of measured
+For consumption, measurement error inflates the variance of measured
 consumption relative to the truth, as the diagonal of the covariance
 matrix shows.
 
@@ -1258,8 +1328,7 @@ true series almost perfectly (true-filtered correlation exceeds 0.99).
 display(Latex(df_to_latex_matrix(matrix_df(corr_c, tmf_labels))))
 ```
 
-**Investment** -- Because $\sigma_\eta = 0.65$ is large, measurement error
-creates the most variance inflation here.
+For investment, measurement error creates the most variance inflation here.
 
 ```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(cov_i, tmf_labels))))
@@ -1272,7 +1341,7 @@ demonstrating the filter's effectiveness even with severe noise.
 display(Latex(df_to_latex_matrix(matrix_df(corr_i, tmf_labels))))
 ```
 
-**Income** -- Income has the smallest measurement error ($\sigma_\eta = 0.05$),
+Income has the smallest measurement error ($\sigma_\eta = 0.05$),
 so measured and true covariances are nearly identical.
 
 ```{code-cell} ipython3
@@ -1286,7 +1355,7 @@ track the truth very closely.
 display(Latex(df_to_latex_matrix(matrix_df(corr_y, tmf_labels))))
 ```
 
-**Capital stock** -- The capital stock is never directly observed, yet
+The capital stock is never directly observed, yet
 the covariance matrix shows that the filter recovers it with very
 high accuracy.
 
@@ -1302,29 +1371,28 @@ display(Latex(df_to_latex_matrix(matrix_df(corr_k, tf_labels))))
 
 ## Summary
 
-{cite}`Sargent1989` studies how measurement error alters an econometrician's view
-of a permanent income economy driven by the investment accelerator.
+{cite}`Sargent1989` shows how measurement error alters an
+econometrician's view of a permanent income economy driven by
+the investment accelerator.
 
-We had the following findings:
+The Wold representations and variance decompositions of Model 1
+(raw measurements) and Model 2 (filtered measurements) differ
+substantially, even though the underlying economy is the same.
 
-* The Wold representations and variance decompositions of Model 1 (raw
-  measurements) and Model 2 (filtered measurements) are quite different,
-  even though the underlying economy is the same.
+Measurement error can reshape inferences about which shocks
+drive which variables.
 
-* Measurement error can
-  reshape inferences about which shocks drive which variables.
+Model 1 reproduces the **Granger causality** pattern documented in
+the empirical accelerator literature: income appears to Granger-cause
+consumption and investment, a result {cite:t}`Sargent1989` attributes
+to measurement error and signal extraction in raw reported data.
 
-* Model 1 reproduces the **Granger causality** pattern documented in the
-  empirical accelerator literature: income appears to Granger-cause
-  consumption and investment, but this pattern is an artifact of
-  measurement error ordering, not of the structural model.
+Model 2, working with filtered data, attributes nearly all variance
+to the single structural shock $\theta_t$ and *cannot* reproduce
+the Granger causality pattern.
 
-* Model 2, working with filtered data, attributes nearly all variance to
-  the single structural shock $\theta_t$ and *cannot* reproduce the
-  Granger causality pattern.
-
-* The {doc}`Kalman filter <kalman>` effectively strips measurement noise
-  from the data: the filtered series track the truth closely, and the
-  near-zero residual shows that the filter approximately restores the
-  national income accounting identity that raw measurement error breaks.
-
+The {doc}`Kalman filter <kalman>` effectively strips measurement
+noise from the data: the filtered series track the truth closely,
+and the near-zero residual shows that the filter approximately
+restores the national income accounting identity that raw
+measurement error breaks.
