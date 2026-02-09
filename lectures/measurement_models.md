@@ -36,23 +36,24 @@ The setting is a {doc}`permanent income <perm_income>` economy in which the
 investment accelerator, the mechanism studied in {doc}`samuelson` and
 {doc}`chow_business_cycles`, drives business cycle fluctuations.
 
-Sargent specifies a {doc}`linear state space model <linear_models>` for the
-true economy and then considers two ways of extracting information from
+We specify a {doc}`linear state space model <linear_models>` for the
+true economy and then consider two ways of extracting information from
 noisy measurements:
 
-- Model 1 applies a {doc}`Kalman filter <kalman>` directly to
+- In Model 1, the data collecting agency simply reports
   raw (noisy) observations.
-- Model 2 first filters the data to remove measurement error,
-  then computes dynamics from the filtered series.
+- In Model 2, the agency applies an optimal
+  {doc}`Kalman filter <kalman>` to the noisy data and
+  reports least-squares estimates of the true variables.
 
 The two models produce different Wold representations and
 forecast-error-variance decompositions, even though they describe
 the same underlying economy.
 
-In this lecture we reproduce the analysis from {cite}`Sargent1989`
+In this lecture we reproduce the analysis from {cite:t}`Sargent1989`
 while studying the underlying mechanisms in the paper.
 
-We use the following imports and precision settings for tables:
+We use the following imports and functions for matrices and tables
 
 ```{code-cell} ipython3
 import numpy as np
@@ -61,14 +62,16 @@ import matplotlib.pyplot as plt
 from scipy import linalg
 from IPython.display import Latex
 
-np.set_printoptions(precision=4, suppress=True)
+np.set_printoptions(precision=3, suppress=True)
 
 def df_to_latex_matrix(df, label=''):
-    """Convert DataFrame to LaTeX matrix (for math matrices)."""
+    """Convert DataFrame to LaTeX matrix."""
     lines = [r'\begin{bmatrix}']
 
     for idx, row in df.iterrows():
-        row_str = ' & '.join([f'{v:.4f}' if isinstance(v, (int, float)) else str(v) for v in row]) + r' \\'
+        row_str = ' & '.join(
+          [f'{v:.4f}' if isinstance(v, (int, float)) 
+            else str(v) for v in row]) + r' \\'
         lines.append(row_str)
 
     lines.append(r'\end{bmatrix}')
@@ -79,7 +82,7 @@ def df_to_latex_matrix(df, label=''):
         return '$' + '\n'.join(lines) + '$'
 
 def df_to_latex_array(df):
-    """Convert DataFrame to LaTeX array (for tables with headers)."""
+    """Convert DataFrame to LaTeX array."""
     n_rows, n_cols = df.shape
 
     # Build column format (centered columns)
@@ -95,7 +98,9 @@ def df_to_latex_array(df):
 
     # Data rows
     for idx, row in df.iterrows():
-        row_str = str(idx) + ' & ' + ' & '.join([f'{v:.4f}' if isinstance(v, (int, float)) else str(v) for v in row]) + r' \\'
+        row_str = str(idx) + ' & ' + ' & '.join(
+          [f'{v:.3f}' if isinstance(v, (int, float)) else str(v) 
+          for v in row]) + r' \\'
         lines.append(row_str)
 
     lines.append(r'\end{array}')
@@ -103,47 +108,205 @@ def df_to_latex_array(df):
     return '$' + '\n'.join(lines) + '$'
 ```
 
-## Model Setup
+## The economic model
 
-The true economy is a version of the permanent income model
-(see {doc}`perm_income`) in which a representative consumer
-chooses consumption $c_t$ and capital accumulation $\Delta k_t$
-to maximize expected discounted utility subject to a budget
-constraint.
+The true economy is a linear-quadratic version of a stochastic
+optimal growth model (see also {doc}`perm_income`).
 
-Assume that the discount factor satisfies $\beta f = 1$ and that the
-productivity shock $\theta_t$ is white noise.
-
-The optimal decision rules reduce the true system to
+A social planner maximizes
 
 ```{math}
-\begin{aligned}
-k_{t+1} &= k_t + f^{-1}\theta_t, \\
-y_{n,t} &= (f-1)k_t + \theta_t, \\
-c_t &= (f-1)k_t + (1-f^{-1})\theta_t, \\
-\Delta k_t &= f^{-1}\theta_t.
-\end{aligned}
+:label: planner_obj
+E \sum_{t=0}^{\infty} \beta^t \left( u_0 + u_1 c_t - \frac{u_2}{2} c_t^2 \right)
 ```
 
-with $f = 1.05$ and $\theta_t \sim \mathcal{N}(0, 1)$.
+subject to the technology
 
-Here $k_t$ is capital, $y_{n,t}$ is national income, $c_t$ is consumption,
-and $\Delta k_t$ is net investment.
+```{math}
+:label: tech_constraint
+c_t + k_{t+1} = f k_t + \theta_t, \qquad \beta f^2 > 1,
+```
 
-Notice the investment accelerator at work: because $\Delta k_t = f^{-1}\theta_t$,
-investment responds only to the innovation $\theta_t$, not to the level of
-capital. 
+where $c_t$ is consumption, $k_t$ is the capital stock,
+$f$ is the gross rate of return on capital,
+and $\theta_t$ is an endowment or technology shock following
+
+```{math}
+:label: shock_process
+a(L)\,\theta_t = \varepsilon_t,
+```
+
+with $a(L) = 1 - a_1 L - a_2 L^2 - \cdots - a_r L^r$ having all roots
+outside the unit circle.
+
+### Optimal decision rule
+
+The solution can be represented by the optimal decision rule
+for $c_t$:
+
+```{math}
+:label: opt_decision
+c_t = \frac{-\alpha}{f-1}
+      + \left(1 - \frac{1}{\beta f^2}\right)
+        \frac{L - f^{-1} a(f^{-1})^{-1} a(L)}{L - f^{-1}}\,\theta_t
+      + f k_t,
+\qquad
+k_{t+1} = f k_t + \theta_t - c_t,
+```
+
+where $\alpha = u_1[1-(\beta f)^{-1}]/u_2$.
+
+Equations {eq}`shock_process` and {eq}`opt_decision` exhibit the
+cross-equation restrictions characteristic of rational expectations
+models.
+
+### Net income and the accelerator
+
+Define net output or national income as
+
+```{math}
+:label: net_income
+y_{nt} = (f-1)k_t + \theta_t.
+```
+
+Note that {eq}`tech_constraint` and {eq}`net_income` imply
+$(k_{t+1} - k_t) + c_t = y_{nt}$.
+
+To obtain both a version of {cite:t}`Friedman1956`'s geometric
+distributed lag consumption function and a distributed lag
+accelerator, we impose two assumptions:
+
+1. $a(L) = 1$, so that $\theta_t$ is white noise.
+2. $\beta f = 1$, so the rate of return on capital equals the rate
+   of time preference.
+
+Assumption 1 is crucial for the strict form of the accelerator.
+
+Relaxing it to allow serially correlated $\theta_t$ preserves an
+accelerator in a broad sense but loses the sharp geometric-lag
+form of {eq}`accelerator`.
+
+Adding a second shock breaks the one-index structure entirely
+and can generate nontrivial Granger causality even without
+measurement error.
+
+The accelerator projection is also not invariant under
+interventions that alter predictable components of income.
+
+Assumption 2 is less important, affecting only various constants.
+
+Under both assumptions, {eq}`opt_decision` simplifies to
+
+```{math}
+:label: simple_crule
+c_t = (1-f^{-1})\,\theta_t + (f-1)\,k_t.
+```
+
+When {eq}`simple_crule`, {eq}`net_income`, and
+{eq}`tech_constraint` are combined, the optimal plan satisfies
+
+```{math}
+:label: friedman_consumption
+c_t = \left(\frac{1-\beta}{1-\beta L}\right) y_{nt},
+```
+
+```{math}
+:label: accelerator
+k_{t+1} - k_t = f^{-1} \left(\frac{1-L}{1-\beta L}\right) y_{nt},
+```
+
+```{math}
+:label: income_process
+y_{nt} = \theta_t + (1-\beta)(\theta_{t-1} + \theta_{t-2} + \cdots).
+```
+
+Equation {eq}`friedman_consumption` is Friedman's consumption
+model: consumption is a geometric distributed lag of income,
+with the decay coefficient $\beta$ equal to the discount factor.
+
+Equation {eq}`accelerator` is the distributed lag accelerator:
+investment is a geometric distributed lag of the first difference
+of income.
 
 This is the same mechanism that {cite:t}`Chow1968` documented
 empirically (see {doc}`chow_business_cycles`).
 
-We can cast this as a {doc}`linear state space model <linear_models>` by
-defining state and observable vectors
+Equation {eq}`income_process` says that $y_{nt}$ is an IMA(1,1)
+process with innovation $\theta_t$.
+
+As {cite:t}`Muth1960` showed, such a process is optimally forecast
+via a geometric distributed lag or "adaptive expectations" scheme.
+
+### The accelerator puzzle
+
+When all variables are measured accurately and are driven by
+the single shock $\theta_t$, the spectral density of
+$(c_t,\, k_{t+1}-k_t,\, y_{nt})$ has rank one at all frequencies.
+
+Each variable is an invertible one-sided distributed lag of the
+same white noise, so no variable Granger-causes any other.
+
+Empirically, however, measures of output Granger-cause investment
+but not vice versa.
+
+{cite:t}`Sargent1989` shows that measurement error can resolve
+this puzzle.
+
+To illustrate, suppose first that output $y_{nt}$ is measured
+perfectly while consumption and capital are each polluted by
+serially correlated measurement errors $v_{ct}$ and $v_{kt}$
+orthogonal to $\theta_t$.
+
+Let $\bar c_t$ and $\bar k_{t+1} - \bar k_t$ denote the measured
+series.  Then
+
+```{math}
+:label: meas_consumption
+\bar c_t = \left(\frac{1-\beta}{1-\beta L}\right) y_{nt} + v_{ct},
+```
+
+```{math}
+:label: meas_investment
+\bar k_{t+1} - \bar k_t
+  = \beta\left(\frac{1-L}{1-\beta L}\right) y_{nt}
+  + (v_{k,t+1} - v_{kt}),
+```
+
+```{math}
+:label: income_process_ma
+y_{nt} = \theta_t + (1-\beta)(\theta_{t-1} + \theta_{t-2} + \cdots).
+```
+
+In this case income Granger-causes consumption and investment
+but is not Granger-caused by them.
+
+In the numerical example below, $y_{nt}$ is also measured
+with error: the agency reports $\bar y_{nt} = y_{nt} + v_{yt}$,
+where $v_{yt}$ follows an AR(1) process orthogonal to $\theta_t$.
+
+When every series is corrupted by measurement error, every measured
+variable Granger-causes every other.
+
+The strength of Granger causality depends on the relative
+signal-to-noise ratios.
+
+In a one-common-index model like this one ($\theta_t$ is the
+common index), the best-measured variable extends the most
+Granger causality to the others.
+
+## State-space formulation
+
+We now map the economic model and the measurement process into
+a recursive state-space framework.
+
+Set $f = 1.05$ and $\theta_t \sim \mathcal{N}(0, 1)$.
+
+Define the state and observable vectors
 
 ```{math}
 x_t = \begin{bmatrix} k_t \\ \theta_t \end{bmatrix},
 \qquad
-z_t = \begin{bmatrix} y_{n,t} \\ c_t \\ \Delta k_t \end{bmatrix},
+z_t = \begin{bmatrix} y_{nt} \\ c_t \\ \Delta k_t \end{bmatrix},
 ```
 
 so that the true economy follows the state-space system
@@ -174,27 +337,28 @@ Q = \begin{bmatrix}
 \end{bmatrix}.
 ```
 
-Note that $Q$ is singular because only the second component of $x_t$
-(the productivity shock $\theta_t$) receives an innovation; the
-capital stock $k_t$ evolves deterministically given $\theta_t$.
+$Q$ is singular because there is only one source of randomness
+$\theta_t$; the capital stock $k_t$ evolves deterministically
+given $\theta_t$.
+
+### Measurement errors
 
 The econometrician does not observe $z_t$ directly but instead
 sees $\bar z_t = z_t + v_t$, where $v_t$ is a vector of measurement
 errors.
 
-Measurement errors follow an AR(1) process:
+Measurement errors follow an AR(1) process
 
 ```{math}
 :label: meas_error_ar1
-v_t = D v_{t-1} + \eta_t,
+v_{t+1} = D v_t + \eta_t,
 ```
 
 where $\eta_t$ is a vector white noise with
 $E \eta_t \eta_t^\top = \Sigma_\eta$ and
-$E \varepsilon_t v_s^\top = 0$ for all $t, s$
-(measurement errors are orthogonal to the true state innovations).
+$E \varepsilon_t v_s^\top = 0$ for all $t, s$.
 
-The autoregressive matrix and innovation standard deviations are
+The parameters are
 
 ```{math}
 D = \operatorname{diag}(0.6, 0.7, 0.3),
@@ -208,11 +372,19 @@ so the unconditional covariance of $v_t$ is
 R = \operatorname{diag}\!\left(\frac{\sigma_{\eta,i}^2}{1 - \rho_i^2}\right).
 ```
 
-The measurement errors are ordered from smallest to largest innovation
-variance: income is measured most accurately ($\sigma_\eta = 0.05$),
-consumption next ($\sigma_\eta = 0.035$), and investment least
-accurately ($\sigma_\eta = 0.65$).
-This ordering is central to the results below.
+Consumption has the smallest measurement error innovation variance
+($\sigma_\eta = 0.035$), income is next ($\sigma_\eta = 0.05$),
+and investment has the largest ($\sigma_\eta = 0.65$).
+
+However, the ordering that matters for the results below is the
+signal-to-noise ratio.
+
+Income carries a coefficient of $1$ on $\theta_t$,
+whereas consumption carries only $1 - f^{-1} \approx 0.048$.
+
+The income innovation is therefore by far the most informative
+about $\theta_t$, even though its measurement error innovation
+is slightly larger than consumption's.
 
 ```{code-cell} ipython3
 f = 1.05
@@ -237,7 +409,7 @@ Q = np.array([
 ρ = np.array([0.6, 0.7, 0.3])
 D = np.diag(ρ)
 
-# Innovation std. devs
+# Innovation std. devs of η_t
 σ_η = np.array([0.05, 0.035, 0.65])
 Σ_η = np.diag(σ_η**2)
 
@@ -251,13 +423,13 @@ display(Latex(df_to_latex_matrix(pd.DataFrame(C), 'C')))
 display(Latex(df_to_latex_matrix(pd.DataFrame(D), 'D')))
 ```
 
-## Kalman Filter
+## Kalman filter
 
 Both models require a steady-state {doc}`Kalman filter <kalman>`.
 
 The function below iterates on the Riccati equation until convergence,
 returning the Kalman gain $K$, the state covariance $S$, and the
-innovation covariance $V$.
+innovation covariance $V$
 
 ```{code-cell} ipython3
 def steady_state_kalman(A, C_obs, Q, R, W=None, tol=1e-13, max_iter=200_000):
@@ -289,7 +461,7 @@ def steady_state_kalman(A, C_obs, Q, R, W=None, tol=1e-13, max_iter=200_000):
 ```
 
 (true-impulse-responses)=
-## True Impulse Responses
+## True impulse responses
 
 Before introducing measurement error, we verify the impulse response of
 the true system to a unit shock $\theta_0 = 1$.
@@ -298,7 +470,7 @@ The response shows the investment accelerator clearly: the full impact on
 net income $y_n$ occurs at lag 0, while consumption adjusts by only
 $1 - f^{-1} \approx 0.048$ and investment absorbs the remainder.
 
-From lag 1 onward the economy is in its new steady state.
+From lag 1 onward the economy is in its new steady state
 
 ```{code-cell} ipython3
 def table2_irf(A, C, n_lags=6):
@@ -306,37 +478,31 @@ def table2_irf(A, C, n_lags=6):
     rows = []
     for j in range(n_lags):
         y_n, c, d_k = C @ x
-        rows.append([j, y_n, c, d_k])
+        rows.append([y_n, c, d_k])
         x = A @ x
-    return np.array(rows)
+    return pd.DataFrame(rows, columns=[r'y_n', r'c', r'\Delta k'],
+                         index=pd.Index(range(n_lags), name='lag'))
 
-rep_table2 = table2_irf(A, C, n_lags=6)
-
-fig, ax = plt.subplots(figsize=(8, 4.5))
-ax.plot(rep_table2[:, 0], rep_table2[:, 1], 'o-', label=r'$y_n$', lw=2.5, markersize=7)
-ax.plot(rep_table2[:, 0], rep_table2[:, 2], 's-', label=r'$c$', lw=2.5, markersize=7)
-ax.plot(rep_table2[:, 0], rep_table2[:, 3], '^-', label=r'$\Delta k$', lw=2.5, markersize=7)
-ax.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
-ax.set_xlabel('Lag', fontsize=12)
-ax.set_ylabel('Response', fontsize=12)
-ax.set_title(r'True impulse response to unit shock $\theta_0 = 1$', fontsize=13)
-ax.legend(loc='best', fontsize=11, frameon=True, shadow=True)
-ax.grid(alpha=0.3)
-plt.tight_layout()
-plt.show()
+table2 = table2_irf(A, C, n_lags=6)
+display(Latex(df_to_latex_array(table2)))
 ```
 
-## Model 1 (Raw Measurements)
+## Model 1 (raw measurements)
 
 Model 1 is a classical errors-in-variables model: the data collecting
 agency simply reports the error-corrupted data $\bar z_t = z_t + v_t$
 that it collects, making no attempt to adjust for measurement errors.
 
-Because the measurement errors $v_t$ are serially correlated (AR(1)),
-we cannot directly apply the Kalman filter to
-$\bar z_t = C x_t + v_t$.
-Following {cite:t}`Sargent1989` (Section III.B), we quasi-difference the
-observation equation.
+Because the measurement errors $v_t$ are serially correlated,
+the standard Kalman filter with white-noise measurement error
+cannot be applied directly to $\bar z_t = C x_t + v_t$.
+
+An alternative is to augment the state vector with the
+measurement-error AR components (see Appendix B of
+{cite:t}`Sargent1989`).
+
+Here we take the quasi-differencing route, which reduces the
+system to one with serially uncorrelated observation noise.
 
 Substituting $\bar z_t = C x_t + v_t$, $x_{t+1} = A x_t + \varepsilon_t$,
 and $v_{t+1} = D v_t + \eta_t$ into $\bar z_{t+1} - D \bar z_t$ gives
@@ -350,12 +516,13 @@ where $\bar C = CA - DC$.
 
 The composite observation noise in {eq}`model1_obs` is
 $\bar\nu_t = C\varepsilon_t + \eta_t$, which is serially uncorrelated.
+
 Its covariance, and the cross-covariance between the state noise
 $\varepsilon_t$ and $\bar\nu_t$, are
 
 ```{math}
 :label: model1_covs
-R_1 = C Q C^\top + \Sigma_\eta, \qquad W_1 = Q C^\top.
+R_1 = C Q C^\top + R, \qquad W_1 = Q C^\top.
 ```
 
 The system $\{x_{t+1} = A x_t + \varepsilon_t,\;
@@ -379,9 +546,32 @@ $V_1 = \bar C S_1 \bar C^\top + R_1$ is the innovation covariance matrix
 (with $S_1 = E[(x_t - \hat x_t)(x_t - \hat x_t)^\top]$ the steady-state
 state estimation error covariance).
 
+To compute the innovations $\{u_t\}$ recursively from the data
+$\{\bar z_t\}$, it is useful to represent {eq}`model1_innov` as
+
+```{math}
+:label: model1_recursion
+\hat x_{t+1} = (A - K_1 \bar C)\,\hat x_t + K_1 \bar z_t,
+\qquad
+u_t = -\bar C\,\hat x_t + \bar z_t,
+```
+
+where $\bar z_t := \bar z_{t+1} - D\bar z_t$ is the quasi-differenced
+observation.
+
+Given an initial $\hat x_0$, equation {eq}`model1_recursion` generates
+the innovation sequence, from which the Gaussian log-likelihood
+of a sample $\{\bar z_t,\, t=0,\ldots,T\}$ is
+
+```{math}
+:label: model1_loglik
+\mathcal{L}^* = -T\ln 2\pi - \tfrac{1}{2}T\ln|V_1|
+  - \tfrac{1}{2}\sum_{t=0}^{T-1} u_t' V_1^{-1} u_t.
+```
+
 ```{code-cell} ipython3
 C_bar = C @ A - D @ C
-R1 = C @ Q @ C.T + Σ_η
+R1 = C @ Q @ C.T + R
 W1 = Q @ C.T
 
 K1, S1, V1 = steady_state_kalman(A, C_bar, Q, R1, W1)
@@ -394,7 +584,7 @@ derive a Wold moving-average representation for the measured data
 $\bar z_t$.
 
 From {eq}`model1_innov` and the quasi-differencing definition, the
-measured data satisfy (see eq. 19 of {cite:t}`Sargent1989`)
+measured data satisfy
 
 ```{math}
 :label: model1_wold
@@ -472,7 +662,9 @@ def fev_contributions(psi, V, n_horizons=20):
 
 
 psi1 = measured_wold_coeffs(F1, G1, H1, n_terms=40)
-resp1 = np.array([psi1[j] @ linalg.cholesky(V1, lower=True) for j in range(14)])
+# Non-orthogonalized: scale each column by its own innovation std dev
+std_u1 = np.sqrt(np.diag(V1))
+resp1 = np.array([psi1[j] * std_u1 for j in range(14)])
 decomp1 = fev_contributions(psi1, V1, n_horizons=20)
 ```
 
@@ -482,69 +674,79 @@ To measure the relative importance of each innovation, we decompose
 the $j$-step-ahead forecast-error variance of each measured variable.
 
 Write $\bar z_{t+j} - E_t \bar z_{t+j} = \sum_{i=0}^{j-1} \psi_i u_{t+j-i}$.
+
 Let $P$ be the lower-triangular Cholesky factor of $V_1$ so that the
 orthogonalized innovations are $e_t = P^{-1} u_t$.
+
 Then the contribution of orthogonalized innovation $k$ to the
 $j$-step-ahead variance of variable $m$ is
 $\sum_{i=0}^{j-1} (\psi_i P)_{mk}^2$.
 
-Each panel below shows the cumulative contribution of one orthogonalized
+The table below shows the cumulative contribution of each orthogonalized
 innovation to the forecast-error variance of $y_n$, $c$, and $\Delta k$
 at horizons 1 through 20.
 
 ```{code-cell} ipython3
 horizons = np.arange(1, 21)
-cols = [r'y_n', r'c', r'\Delta k']
+labels = [r'y_n', r'c', r'\Delta k']
 
 def fev_table(decomp, shock_idx, horizons):
     return pd.DataFrame(
         np.round(decomp[:, shock_idx, :].T, 4),
-        columns=cols,
-        index=pd.Index(horizons, name='Horizon')
+        columns=labels,
+        index=pd.Index(horizons, name='j')
     )
 ```
 
 ```{code-cell} ipython3
-fig, axes = plt.subplots(1, 3, figsize=(15, 4.5))
+shock_titles = [r'\text{A. Innovation in } y_n',
+                r'\text{B. Innovation in } c',
+                r'\text{C. Innovation in } \Delta k']
 
-for i, (shock_name, ax) in enumerate(zip([r'Innovation 1 ($y_n$)', r'Innovation 2 ($c$)', r'Innovation 3 ($\Delta k$)'], axes)):
-    fev_data = decomp1[:, i, :]
-    ax.plot(horizons, fev_data[0, :], label=r'$y_n$', lw=2.5)
-    ax.plot(horizons, fev_data[1, :], label=r'$c$', lw=2.5)
-    ax.plot(horizons, fev_data[2, :], label=r'$\Delta k$', lw=2.5)
-    ax.set_xlabel('Horizon', fontsize=12)
-    ax.set_ylabel('Contribution to FEV', fontsize=12)
-    ax.set_title(shock_name, fontsize=13)
-    ax.legend(loc='best', fontsize=10, frameon=True, shadow=True)
-    ax.grid(alpha=0.3)
+parts = []
+for i, title in enumerate(shock_titles):
+    arr = df_to_latex_array(fev_table(decomp1, i, horizons)).strip('$')
+    parts.append(r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
 
-plt.tight_layout()
-plt.show()
+display(Latex('$' + r' \quad '.join(parts) + '$'))
 ```
 
-These plots replicate Table 3 of {cite:t}`Sargent1989`.
 The income innovation accounts for substantial proportions of
 forecast-error variance in all three variables, while the consumption and
 investment innovations contribute mainly to their own variances.
+
 This is a **Granger causality** pattern: income appears to
 Granger-cause consumption and investment, but not vice versa.
-The pattern arises because income is the best-measured variable
-($\sigma_\eta = 0.05$), so its innovation carries the most
-information about the underlying structural shock $\theta_t$.
 
-The innovation covariance matrix $V_1$ is:
+The pattern arises because income has the highest signal-to-noise
+ratio: its coefficient on $\theta_t$ is $1$, so its innovation carries
+the most information about the underlying structural shock
+
+The covariance matrix of the innovations is not diagonal, but the eigenvalues are well-separated, with the first eigenvalue much larger
+than the others, consistent with the presence of a dominant common shock $\theta_t$
 
 ```{code-cell} ipython3
-labels = [r'y_n', r'c', r'\Delta k']
+print('Covariance matrix of innovations:')
 df_v1 = pd.DataFrame(np.round(V1, 4), index=labels, columns=labels)
 display(Latex(df_to_latex_matrix(df_v1)))
 ```
 
+```{code-cell} ipython3
+print('Eigenvalues of covariance matrix:')
+print(np.sort(np.linalg.eigvalsh(V1))[::-1].round(4))
+```
+
 ### Wold impulse responses
 
-The orthogonalized Wold impulse responses $\psi_j P$ show how the
-measured variables respond at lag $j$ to a one-standard-deviation
-orthogonalized innovation.  We plot lags 0 through 13.
+The Wold impulse responses $\psi_j$ scaled by the standard
+deviation of each innovation show how the measured variables
+respond at lag $j$ to a one-standard-deviation shock.
+
+Because $\psi_0 = I$, each innovation moves only its own
+variable at impact (lag 0), with cross-variable effects
+appearing from lag 1 onward.
+
+We report lags 0 through 13
 
 ```{code-cell} ipython3
 lags = np.arange(14)
@@ -552,56 +754,57 @@ lags = np.arange(14)
 def wold_response_table(resp, shock_idx, lags):
     return pd.DataFrame(
         np.round(resp[:, :, shock_idx], 4),
-        columns=cols,
-        index=pd.Index(lags, name='Lag')
+        columns=labels,
+        index=pd.Index(lags, name='j')
     )
 ```
 
 ```{code-cell} ipython3
-fig, axes = plt.subplots(1, 3, figsize=(15, 4.5))
+wold_titles = [r'\text{A. Response to } y_n \text{ innovation}',
+               r'\text{B. Response to } c \text{ innovation}',
+               r'\text{C. Response to } \Delta k \text{ innovation}']
 
-for i, (shock_name, ax) in enumerate(zip([r'Innovation in $y_n$', r'Innovation in $c$', r'Innovation in $\Delta k$'], axes)):
-    ax.plot(lags, resp1[:, 0, i], label=r'$y_n$', lw=2.5)
-    ax.plot(lags, resp1[:, 1, i], label=r'$c$', lw=2.5)
-    ax.plot(lags, resp1[:, 2, i], label=r'$\Delta k$', lw=2.5)
-    ax.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
-    ax.set_xlabel('Lag', fontsize=12)
-    ax.set_ylabel('Response', fontsize=12)
-    ax.set_title(shock_name, fontsize=13)
-    ax.legend(loc='best', fontsize=10, frameon=True, shadow=True)
-    ax.grid(alpha=0.3)
+parts = []
+for i, title in enumerate(wold_titles):
+    arr = df_to_latex_array(wold_response_table(resp1, i, lags)).strip('$')
+    parts.append(r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
 
-plt.tight_layout()
-plt.show()
+display(Latex('$' + r' \quad '.join(parts) + '$'))
 ```
 
-These plots replicate Table 4 of {cite:t}`Sargent1989`.
-An income innovation generates persistent responses in all variables
-because, being the best-measured series, its innovation is dominated
-by the true permanent shock $\theta_t$, which permanently raises the
-capital stock and hence steady-state consumption and income.
-A consumption innovation produces smaller, decaying responses
-that reflect the AR(1) structure of its measurement error ($\rho = 0.7$).
-An investment innovation has a large initial impact on investment itself,
-consistent with the high measurement error variance ($\sigma_\eta = 0.65$),
-but the effect dies out quickly.
+At impact each innovation moves only its own variable.
 
-## Model 2 (Filtered Measurements)
+At subsequent lags the income innovation generates persistent
+responses in all three variables because, being the best-measured
+series, its innovation is dominated by the true permanent shock
+$\theta_t$.
+
+The consumption and investment innovations produce responses that
+decay according to the AR(1) structure of their respective
+measurement errors ($\rho_c = 0.7$, $\rho_{\Delta k} = 0.3$),
+with little spillover to other variables.
+
+## Model 2 (filtered measurements)
 
 Model 2 corresponds to a data collecting agency that, instead of
 reporting raw error-corrupted data, applies an optimal filter
 to construct least-squares estimates of the true variables.
 
+This is a natural model for agencies that seasonally adjust
+data (one-sided filtering of current and past observations) or
+publish preliminary, revised, and final estimates of the same
+variable (successive conditional expectations as more data
+accumulate).
+
 Specifically, the agency uses the Kalman filter from Model 1 to form
-$\hat x_t = E[x_t \mid \bar z_{t-1}, \bar z_{t-2}, \ldots]$ and reports
+$\hat x_t = E[x_t \mid \bar z_t, \bar z_{t-1}, \ldots]$ and reports
 filtered estimates
 
 ```{math}
 \tilde z_t = G \hat x_t,
 ```
 
-where $G = C$ is a selection matrix
-(see eq. 23 of {cite:t}`Sargent1989`).
+where $G = C$ is a selection matrix.
 
 ### State-space for filtered data
 
@@ -631,7 +834,6 @@ Q_2 = K_1 V_1 K_1^\top.
 ```
 
 The covariance matrix of the joint noise is
-(see eq. 25 of {cite:t}`Sargent1989`)
 
 ```{math}
 E \begin{bmatrix} K_1 u_t \\ \eta_t \end{bmatrix}
@@ -649,18 +851,43 @@ yields a second innovations representation
 
 ```{math}
 :label: model2_innov
-\hat{\hat x}_{t+1} = A \hat{\hat x}_t + K_2 a_t,
+\check{x}_{t+1} = A \check{x}_t + K_2 a_t,
 \qquad
-\tilde z_t = C \hat{\hat x}_t + a_t,
+\tilde z_t = C \check{x}_t + a_t,
 ```
 
 where $a_t$ is the innovation process for the filtered data with
 covariance $V_2 = C S_2 C^\top + R_2$.
 
+To compute the innovations $\{a_t\}$ from observations on
+$\tilde z_t$, use
+
+```{math}
+:label: model2_recursion
+\check{x}_{t+1} = (A - K_2 C)\,\check{x}_t + K_2 \tilde z_t,
+\qquad
+a_t = -C\,\check{x}_t + \tilde z_t.
+```
+
+The Gaussian log-likelihood for a sample of $T$ observations
+$\{\tilde z_t\}$ is then
+
+```{math}
+:label: model2_loglik
+\mathcal{L}^{**} = -T\ln 2\pi - \tfrac{1}{2}T\ln|V_2|
+  - \tfrac{1}{2}\sum_{t=0}^{T-1} a_t' V_2^{-1} a_t.
+```
+
+Computing {eq}`model2_loglik` requires both the first Kalman filter
+(to form $\hat x_t$ and $u_t$) and the second Kalman filter
+(to form $\check{x}_t$ and $a_t$).
+
+In effect, the econometrician must retrace the steps that the agency
+used to synthesize the filtered data.
+
 ### Wold representation for filtered data
 
 The Wold moving-average representation for $\tilde z_t$ is
-(see eq. 29 of {cite:t}`Sargent1989`)
 
 ```{math}
 :label: model2_wold
@@ -668,13 +895,15 @@ The Wold moving-average representation for $\tilde z_t$ is
 ```
 
 with coefficients $\psi_0 = I$ and $\psi_j = C A^{j-1} K_2$ for
-$j \geq 1$.  Note that this is simpler than the Model 1 Wold
+$j \geq 1$.
+
+Note that this is simpler than the Model 1 Wold
 representation {eq}`model1_wold` because there is no quasi-differencing
 to undo.
 
 ```{code-cell} ipython3
 Q2 = K1 @ V1 @ K1.T
-ε = 1e-7
+ε = 1e-6
 
 K2, S2, V2 = steady_state_kalman(A, C, Q2, ε * np.eye(3))
 
@@ -697,98 +926,90 @@ decomp2 = fev_contributions(psi2, V2, n_horizons=20)
 
 Because the filtered data are nearly noiseless, the innovation
 covariance $V_2$ is close to singular with one dominant eigenvalue.
+
 This means the filtered economy is driven by essentially one shock,
 just like the true economy.
 
 ```{code-cell} ipython3
-fig, axes = plt.subplots(1, 3, figsize=(15, 4.5))
+parts = []
+for i, title in enumerate(shock_titles):
+    arr = df_to_latex_array(fev_table(decomp2, i, horizons)).strip('$')
+    parts.append(r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
 
-for i, (shock_name, ax) in enumerate(zip([r'Innovation 1 ($y_n$)', r'Innovation 2 ($c$) $\times 10^3$', r'Innovation 3 ($\Delta k$) $\times 10^6$'], axes)):
-    scale = 1 if i == 0 else (1e3 if i == 1 else 1e6)
-    fev_data = decomp2[:, i, :] * scale
-    ax.plot(horizons, fev_data[0, :], label=r'$y_n$', lw=2.5)
-    ax.plot(horizons, fev_data[1, :], label=r'$c$', lw=2.5)
-    ax.plot(horizons, fev_data[2, :], label=r'$\Delta k$', lw=2.5)
-    ax.set_xlabel('Horizon', fontsize=12)
-    ax.set_ylabel('Contribution to FEV', fontsize=12)
-    ax.set_title(shock_name, fontsize=13)
-    ax.legend(loc='best', fontsize=10, frameon=True, shadow=True)
-    ax.grid(alpha=0.3)
-
-plt.tight_layout()
-plt.show()
+display(Latex('$' + r' \quad '.join(parts) + '$'))
 ```
 
-These plots replicate Table 5 of {cite:t}`Sargent1989`.
 In Model 2, the first innovation accounts for virtually all forecast-error
 variance, just as in the true economy where the single structural shock
 $\theta_t$ drives everything.
-The second and third innovations contribute negligibly (note the scaling
-factors of $10^3$ and $10^6$ required to make them visible).
+
+The second and third innovations contribute negligibly.
+
 This confirms that filtering strips away the measurement noise that created
 the appearance of multiple independent sources of variation in Model 1.
 
-The innovation covariance matrix $V_2$ for Model 2 is:
+
+### Wold impulse responses
+
+Unlike Model 1, whose impulse responses use non-orthogonalized
+innovations, the Model 2 Wold representation is orthogonalized
+via a Cholesky decomposition of $V_2$ with the ordering
+$y_n$, $c$, $\Delta k$.
 
 ```{code-cell} ipython3
+parts = []
+for i, title in enumerate(wold_titles):
+    arr = df_to_latex_array(wold_response_table(resp2, i, lags)).strip('$')
+    parts.append(r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
+
+display(Latex('$' + r' \quad '.join(parts) + '$'))
+```
+
+The income innovation in Model 2 produces responses that closely
+approximate the true impulse response function from the structural
+shock $\theta_t$ (compare with the table in the
+{ref}`true-impulse-responses` section above).
+
+The consumption and investment innovations produce responses
+that are orders of magnitude smaller, confirming that the filtered
+data are driven by essentially one shock.
+
+Unlike Model 1, the filtered data from Model 2
+*cannot* reproduce the apparent Granger causality pattern that the
+accelerator literature has documented empirically.
+
+We also report the covariance matrix and eigenvalues of the innovations for Model 2
+
+```{code-cell} ipython3
+print('Covariance matrix of innovations:')
 df_v2 = pd.DataFrame(np.round(V2, 4), index=labels, columns=labels)
 display(Latex(df_to_latex_matrix(df_v2)))
 ```
 
-### Wold impulse responses
-
-The following plots show the orthogonalized Wold impulse responses for Model 2.
-
 ```{code-cell} ipython3
-fig, axes = plt.subplots(1, 3, figsize=(15, 4.5))
-
-for i, (shock_name, scale) in enumerate(zip([r'Innovation in $y_n$', r'Innovation in $c$ $\times 10^3$', r'Innovation in $\Delta k$ $\times 10^3$'],
-                                             [1, 1e3, 1e3])):
-    ax = axes[i]
-    ax.plot(lags, resp2[:, 0, i] * scale, label=r'$y_n$', lw=2.5)
-    ax.plot(lags, resp2[:, 1, i] * scale, label=r'$c$', lw=2.5)
-    ax.plot(lags, resp2[:, 2, i] * scale, label=r'$\Delta k$', lw=2.5)
-    ax.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
-    ax.set_xlabel('Lag', fontsize=12)
-    ax.set_ylabel('Response', fontsize=12)
-    ax.set_title(shock_name, fontsize=13)
-    ax.legend(loc='best', fontsize=10, frameon=True, shadow=True)
-    ax.grid(alpha=0.3)
-
-plt.tight_layout()
-plt.show()
+print('Eigenvalues of covariance matrix:')
+print(np.sort(np.linalg.eigvalsh(V2))[::-1].round(4))
 ```
 
-These plots replicate Table 6 of {cite:t}`Sargent1989`.
-The income innovation in Model 2 produces responses that closely
-approximate the true impulse response function from the structural
-shock $\theta_t$ (compare with the figure in the
-{ref}`true-impulse-responses` section above).
-The consumption and investment innovations produce responses
-that are orders of magnitude smaller (note the $10^3$ scaling),
-confirming that the filtered data are driven by essentially one shock.
 
-A key implication: unlike Model 1, the filtered data from Model 2
-**cannot** reproduce the apparent Granger causality pattern that the
-accelerator literature has documented empirically.
 As {cite:t}`Sargent1989` emphasizes, the two models of measurement
 produce quite different inferences about the economy's dynamics despite
-sharing identical deep parameters.
+sharing identical underlying parameters.
 
 ## Simulation
 
 The tables above characterize population moments of the two models.
 
-To see how the models perform on a finite sample, Sargent simulates
-80 periods of true, measured, and filtered data and reports
+To see how the models perform on a finite sample, we simulate
+80 periods of true, measured, and filtered data and report
 covariance and correlation matrices together with time-series plots.
 
-We replicate these objects below.
+We replicate these objects below
 
 ```{code-cell} ipython3
-def simulate_series(seed=7909, T=80, k0=10.0):
+def simulate_series(seed=0, T=80, k0=10.0):
     """
-    Simulate true, measured, and filtered series for Figures 1--9.
+    Simulate true, measured, and filtered series.
     """
     rng = np.random.default_rng(seed)
 
@@ -835,24 +1056,25 @@ def simulate_series(seed=7909, T=80, k0=10.0):
 
     out = {
         "y_true": y, "c_true": c, "dk_true": dk, "k_true": k[:-1],
-        "y_meas": z_meas[:, 0], "c_meas": z_meas[:, 1], "dk_meas": z_meas[:, 2],
-        "y_filt": z_filt[:, 0], "c_filt": z_filt[:, 1], "dk_filt": z_filt[:, 2], "k_filt": k_filt
+        "y_meas": z_meas[:, 0], "c_meas": z_meas[:, 1], 
+        "dk_meas": z_meas[:, 2],
+        "y_filt": z_filt[:, 0], "c_filt": z_filt[:, 1], 
+        "dk_filt": z_filt[:, 2], "k_filt": k_filt
     }
     return out
 
 
-sim = simulate_series(seed=7909, T=80, k0=10.0)
+sim = simulate_series(seed=0, T=80, k0=10.0)
 ```
 
 ```{code-cell} ipython3
 def plot_true_vs_other(t, true_series, other_series, other_label, ylabel=""):
     fig, ax = plt.subplots(figsize=(8, 4))
-    ax.plot(t, true_series, lw=2.5, color="black", label="true")
-    ax.plot(t, other_series, lw=2.5, ls="--", color="#1f77b4", label=other_label)
-    ax.set_xlabel("Time", fontsize=12)
-    ax.set_ylabel(ylabel.capitalize(), fontsize=12)
+    ax.plot(t, true_series, lw=2, color="black", label="true")
+    ax.plot(t, other_series, lw=2, ls="--", color="#1f77b4", label=other_label)
+    ax.set_xlabel("time", fontsize=12)
+    ax.set_ylabel(ylabel, fontsize=12)
     ax.legend(loc="best", fontsize=11, frameon=True, shadow=True)
-    ax.grid(alpha=0.3)
     plt.tight_layout()
     plt.show()
 
@@ -896,13 +1118,13 @@ mystnb:
 plot_true_vs_other(t, sim["y_true"], sim["y_meas"], "measured", ylabel="income")
 ```
 
-The first three figures replicate Figures 1--3 of {cite:t}`Sargent1989`.
 Investment is distorted the most because its measurement error
 has the largest innovation variance ($\sigma_\eta = 0.65$),
 while income is distorted the least ($\sigma_\eta = 0.05$).
 
-The next four figures (Figures 4--7 in the paper) compare
-true series with the Kalman-filtered estimates from Model 1.
+The next four figures compare true series with the
+Kalman-filtered estimates from Model 1.
+
 The filter removes much of the measurement noise, recovering
 series that track the truth closely.
 
@@ -955,12 +1177,13 @@ plot_true_vs_other(t, sim["k_true"], sim["k_filt"], "filtered", ylabel="capital 
 ```
 
 The following figure plots the national income identity residual
-$c_t + \Delta k_t - y_{n,t}$ for both measured and filtered data
-(Figures 8--9 of {cite:t}`Sargent1989`).
+$c_t + \Delta k_t - y_{n,t}$ for both measured and filtered data.
 
 In the true model this identity holds exactly.
+
 For measured data the residual is non-zero because
 independent measurement errors break the accounting identity.
+
 For filtered data the Kalman filter approximately restores the identity.
 
 ```{code-cell} ipython3
@@ -974,31 +1197,31 @@ mystnb:
 ---
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4))
 
-ax1.plot(t, sim["c_meas"] + sim["dk_meas"] - sim["y_meas"], color="#d62728", lw=2.5)
+ax1.plot(t, sim["c_meas"] + sim["dk_meas"] - sim["y_meas"], color="#d62728", lw=2)
 ax1.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
-ax1.set_xlabel("Time", fontsize=12)
-ax1.set_ylabel("Residual", fontsize=12)
+ax1.set_xlabel("time", fontsize=12)
+ax1.set_ylabel("residual", fontsize=12)
 ax1.set_title(r'Measured: $c_t + \Delta k_t - y_{n,t}$', fontsize=13)
-ax1.grid(alpha=0.3)
 
-ax2.plot(t, sim["c_filt"] + sim["dk_filt"] - sim["y_filt"], color="#2ca02c", lw=2.5)
+ax2.plot(t, sim["c_filt"] + sim["dk_filt"] - sim["y_filt"], color="#2ca02c", lw=2)
 ax2.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
-ax2.set_xlabel("Time", fontsize=12)
-ax2.set_ylabel("Residual", fontsize=12)
+ax2.set_xlabel("time", fontsize=12)
+ax2.set_ylabel("residual", fontsize=12)
 ax2.set_title(r'Filtered: $c_t + \Delta k_t - y_{n,t}$', fontsize=13)
-ax2.grid(alpha=0.3)
 
 plt.tight_layout()
 plt.show()
 ```
 
-The following covariance and correlation matrices replicate Table 7
-of {cite:t}`Sargent1989`.
+The following covariance and correlation matrices compare the true,
+measured, and filtered versions of each variable.
+
 For each variable we report the $3 \times 3$ covariance and correlation
 matrices among the true, measured, and filtered versions.
 
 High correlations between true and filtered series confirm that the
 Kalman filter removes most measurement noise.
+
 Lower correlations between true and measured series quantify how much
 information is lost by using raw data.
 
@@ -1020,63 +1243,84 @@ tmf_labels = ['true', 'measured', 'filtered']
 tf_labels = ['true', 'filtered']
 ```
 
-**Consumption** -- Measurement error inflates variance, but the filtered
-series recovers a variance close to the truth.
-The true-filtered correlation exceeds 0.99.
+**Consumption** -- Measurement error inflates the variance of measured
+consumption relative to the truth, as the diagonal of the covariance
+matrix shows.
 
 ```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(cov_c, tmf_labels))))
+```
+
+The correlation matrix confirms that the filtered series recovers the
+true series almost perfectly (true-filtered correlation exceeds 0.99).
+
+```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(corr_c, tmf_labels))))
 ```
 
 **Investment** -- Because $\sigma_\eta = 0.65$ is large, measurement error
 creates the most variance inflation here.
+
+```{code-cell} ipython3
+display(Latex(df_to_latex_matrix(matrix_df(cov_i, tmf_labels))))
+```
+
 Despite this, the true-filtered correlation remains high,
 demonstrating the filter's effectiveness even with severe noise.
 
 ```{code-cell} ipython3
-display(Latex(df_to_latex_matrix(matrix_df(cov_i, tmf_labels))))
 display(Latex(df_to_latex_matrix(matrix_df(corr_i, tmf_labels))))
 ```
 
-**Income** -- Income has the smallest measurement error, so measured
-and true variances are close.  True-filtered correlations are very high.
+**Income** -- Income has the smallest measurement error ($\sigma_\eta = 0.05$),
+so measured and true covariances are nearly identical.
 
 ```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(cov_y, tmf_labels))))
+```
+
+The correlation matrix shows that both measured and filtered series
+track the truth very closely.
+
+```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(corr_y, tmf_labels))))
 ```
 
 **Capital stock** -- The capital stock is never directly observed, yet
-the filter recovers it with very high accuracy.
+the covariance matrix shows that the filter recovers it with very
+high accuracy.
 
 ```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(cov_k, tf_labels))))
+```
+
+The near-unity correlation confirms this.
+
+```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(corr_k, tf_labels))))
 ```
 
 ## Summary
 
-This lecture reproduced the analysis in {cite}`Sargent1989`,
-which studies how measurement error alters an econometrician's view
+{cite}`Sargent1989` studies how measurement error alters an econometrician's view
 of a permanent income economy driven by the investment accelerator.
 
-Several lessons emerge:
+We had the following findings:
 
 * The Wold representations and variance decompositions of Model 1 (raw
   measurements) and Model 2 (filtered measurements) are quite different,
   even though the underlying economy is the same.
 
-* Measurement error is not a second-order issue: it can
+* Measurement error can
   reshape inferences about which shocks drive which variables.
 
 * Model 1 reproduces the **Granger causality** pattern documented in the
-  empirical accelerator literature -- income appears to Granger-cause
-  consumption and investment -- but this pattern is an artifact of
+  empirical accelerator literature: income appears to Granger-cause
+  consumption and investment, but this pattern is an artifact of
   measurement error ordering, not of the structural model.
 
 * Model 2, working with filtered data, attributes nearly all variance to
-  the single structural shock $\theta_t$ and **cannot** reproduce the
+  the single structural shock $\theta_t$ and *cannot* reproduce the
   Granger causality pattern.
 
 * The {doc}`Kalman filter <kalman>` effectively strips measurement noise
@@ -1084,13 +1328,3 @@ Several lessons emerge:
   near-zero residual shows that the filter approximately restores the
   national income accounting identity that raw measurement error breaks.
 
-These results connect to broader themes in this lecture series:
-the role of {doc}`linear state space models <linear_models>` in
-representing economic dynamics, the power of {doc}`Kalman filtering <kalman>`
-for signal extraction, and the importance of the investment accelerator
-for understanding business cycles ({doc}`samuelson`,
-{doc}`chow_business_cycles`).
-
-## References
-
-* {cite}`Sargent1989`
