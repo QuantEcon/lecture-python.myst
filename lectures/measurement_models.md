@@ -398,7 +398,10 @@ so that the true economy follows the state-space system
 
 ```{math}
 :label: true_ss
-x_{t+1} = A x_t + \varepsilon_t, \qquad z_t = C x_t,
+\begin{aligned}
+x_{t+1} &= A x_t + \varepsilon_t, \\
+z_t &= C x_t.
+\end{aligned}
 ```
 
 where $\varepsilon_t = \begin{bmatrix} 0 \\ \theta_t \end{bmatrix}$ has
@@ -615,8 +618,10 @@ The steady-state Kalman filter yields the **innovations representation**
 
 ```{math}
 :label: model1_innov
-\hat x_{t+1} = A \hat x_t + K_1 u_t, \qquad
-\bar z_{t+1} - D\bar z_t = \bar C \hat x_t + u_t,
+\begin{aligned}
+\hat x_{t+1} &= A \hat x_t + K_1 u_t, \\
+\bar z_{t+1} - D\bar z_t &= \bar C \hat x_t + u_t.
+\end{aligned}
 ```
 
 where $u_t = (\bar z_{t+1} - D\bar z_t) -
@@ -631,9 +636,10 @@ $\{\bar z_t\}$, it is useful to represent {eq}`model1_innov` as
 
 ```{math}
 :label: model1_recursion
-\hat x_{t+1} = (A - K_1 \bar C)\,\hat x_t + K_1 \bar z_t,
-\qquad
-u_t = -\bar C\,\hat x_t + \bar z_t,
+\begin{aligned}
+\hat x_{t+1} &= (A - K_1 \bar C)\,\hat x_t + K_1 \bar z_t, \\
+u_t &= -\bar C\,\hat x_t + \bar z_t.
+\end{aligned}
 ```
 
 where $\bar z_t := \bar z_{t+1} - D\bar z_t$ is the quasi-differenced
@@ -805,16 +811,17 @@ This matches the paper's message that, in a one-common-index model,
 the relatively best measured series has the strongest predictive content.
 
 The covariance matrix of the innovations is not diagonal, but the
-eigenvalues are well separated.
+eigenvalues are well separated
 
-The first eigenvalue is much larger than the others, consistent with
-the presence of a dominant common shock $\theta_t$.
 
 ```{code-cell} ipython3
 print('Covariance matrix of innovations:')
 df_v1 = pd.DataFrame(np.round(V1, 4), index=labels, columns=labels)
 display(Latex(df_to_latex_matrix(df_v1)))
 ```
+
+The first eigenvalue is much larger than the others, consistent with
+the presence of a dominant common shock $\theta_t$
 
 ```{code-cell} ipython3
 print('Eigenvalues of covariance matrix:')
@@ -854,8 +861,8 @@ for i, title in enumerate(wold_titles):
 display(Latex('$' + r' \quad '.join(parts) + '$'))
 ```
 
-At impact, the first orthogonalized innovation (ordered as output)
-loads on all three measured variables, matching the paper's Table 4.
+At impact, the first orthogonalized innovation
+loads on all three measured variables.
 
 At subsequent lags the income innovation generates persistent
 responses in all three variables because, being the best-measured
@@ -934,9 +941,10 @@ yields a second innovations representation
 
 ```{math}
 :label: model2_innov
-\check{x}_{t+1} = A \check{x}_t + K_2 a_t,
-\qquad
-\tilde z_t = C \check{x}_t + a_t,
+\begin{aligned}
+\check{x}_{t+1} &= A \check{x}_t + K_2 a_t, \\
+\tilde z_t &= C \check{x}_t + a_t.
+\end{aligned}
 ```
 
 where $a_t$ is the innovation process for the filtered data with
@@ -947,9 +955,10 @@ $\tilde z_t$, use
 
 ```{math}
 :label: model2_recursion
-\check{x}_{t+1} = (A - K_2 C)\,\check{x}_t + K_2 \tilde z_t,
-\qquad
-a_t = -C\,\check{x}_t + \tilde z_t.
+\begin{aligned}
+\check{x}_{t+1} &= (A - K_2 C)\,\check{x}_t + K_2 \tilde z_t, \\
+a_t &= -C\,\check{x}_t + \tilde z_t.
+\end{aligned}
 ```
 
 The Gaussian log-likelihood for a sample of $T$ observations
@@ -982,7 +991,7 @@ $j \geq 1$.
 
 Note that this is simpler than the Model 1 Wold
 representation {eq}`model1_wold` because there is no quasi-differencing
-to undo.
+to undo
 
 ```{code-cell} ipython3
 Q2 = K1 @ V1 @ K1.T
@@ -1011,7 +1020,7 @@ Because the filtered data are nearly noiseless, the innovation
 covariance $V_2$ is close to singular with one dominant eigenvalue.
 
 This means the filtered economy is driven by essentially one shock,
-just like the true economy.
+just like the true economy
 
 ```{code-cell} ipython3
 parts = []
@@ -1030,6 +1039,10 @@ The second and third innovations contribute negligibly.
 
 This confirms that filtering strips away the measurement noise that created
 the appearance of multiple independent sources of variation in Model 1.
+
+We invite readers to compare this table to the one for the true impulse responses in the {ref}`true-impulse-responses` section above.
+
+The numbers are essentially the same.
 
 The covariance matrix and eigenvalues of the Model 2 innovations are
 
@@ -1058,8 +1071,10 @@ decomposition of $V_2$ ordered as $y_n$, $c$, $\Delta k$.
 ```{code-cell} ipython3
 parts = []
 for i, title in enumerate(wold_titles):
-    arr = df_to_latex_array(wold_response_table(resp2, i, lags)).strip('$')
-    parts.append(r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
+    arr = df_to_latex_array(
+      wold_response_table(resp2, i, lags)).strip('$')
+    parts.append(
+      r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
 
 display(Latex('$' + r' \quad '.join(parts) + '$'))
 ```
@@ -1147,10 +1162,12 @@ sim = simulate_series(seed=7909, T=80, k0=10.0)
 ```
 
 ```{code-cell} ipython3
-def plot_true_vs_other(t, true_series, other_series, other_label, ylabel=""):
+def plot_true_vs_other(t, true_series, other_series, 
+                                  other_label, ylabel=""):
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.plot(t, true_series, lw=2, color="black", label="true")
-    ax.plot(t, other_series, lw=2, ls="--", color="#1f77b4", label=other_label)
+    ax.plot(t, other_series, lw=2, ls="--", 
+                          color="#1f77b4", label=other_label)
     ax.set_xlabel("time", fontsize=12)
     ax.set_ylabel(ylabel, fontsize=12)
     ax.legend(loc="best", fontsize=11, frameon=True, shadow=True)
@@ -1170,7 +1187,8 @@ mystnb:
   image:
     alt: True and measured consumption plotted over 80 time periods
 ---
-plot_true_vs_other(t, sim["c_true"], sim["c_meas"], "measured", ylabel="consumption")
+plot_true_vs_other(t, sim["c_true"], sim["c_meas"], 
+                                    "measured", ylabel="consumption")
 ```
 
 ```{code-cell} ipython3
@@ -1182,7 +1200,8 @@ mystnb:
   image:
     alt: True and measured investment plotted over 80 time periods
 ---
-plot_true_vs_other(t, sim["dk_true"], sim["dk_meas"], "measured", ylabel="investment")
+plot_true_vs_other(t, sim["dk_true"], sim["dk_meas"], 
+                                    "measured", ylabel="investment")
 ```
 
 ```{code-cell} ipython3
@@ -1194,7 +1213,8 @@ mystnb:
   image:
     alt: True and measured income plotted over 80 time periods
 ---
-plot_true_vs_other(t, sim["y_true"], sim["y_meas"], "measured", ylabel="income")
+plot_true_vs_other(t, sim["y_true"], sim["y_meas"], 
+                                    "measured", ylabel="income")
 ```
 
 Investment is distorted the most because its measurement error
@@ -1213,7 +1233,8 @@ mystnb:
   image:
     alt: True and filtered consumption plotted over 80 time periods
 ---
-plot_true_vs_other(t, sim["c_true"], sim["c_filt"], "filtered", ylabel="consumption")
+plot_true_vs_other(t, sim["c_true"], sim["c_filt"], 
+                                    "filtered", ylabel="consumption")
 ```
 
 ```{code-cell} ipython3
@@ -1225,7 +1246,8 @@ mystnb:
   image:
     alt: True and filtered investment plotted over 80 time periods
 ---
-plot_true_vs_other(t, sim["dk_true"], sim["dk_filt"], "filtered", ylabel="investment")
+plot_true_vs_other(t, sim["dk_true"], sim["dk_filt"], 
+                                    "filtered", ylabel="investment")
 ```
 
 ```{code-cell} ipython3
@@ -1237,7 +1259,8 @@ mystnb:
   image:
     alt: True and filtered income plotted over 80 time periods
 ---
-plot_true_vs_other(t, sim["y_true"], sim["y_filt"], "filtered", ylabel="income")
+plot_true_vs_other(t, sim["y_true"], sim["y_filt"], 
+                                    "filtered", ylabel="income")
 ```
 
 ```{code-cell} ipython3
@@ -1249,7 +1272,8 @@ mystnb:
   image:
     alt: True and filtered capital stock plotted over 80 time periods
 ---
-plot_true_vs_other(t, sim["k_true"], sim["k_filt"], "filtered", ylabel="capital stock")
+plot_true_vs_other(t, sim["k_true"], sim["k_filt"], 
+                                    "filtered", ylabel="capital stock")
 ```
 
 In the true model the national income identity
@@ -1271,13 +1295,13 @@ mystnb:
 ---
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4))
 
-ax1.plot(t, sim["c_meas"] + sim["dk_meas"] - sim["y_meas"], color="#d62728", lw=2)
+ax1.plot(t, sim["c_meas"] + sim["dk_meas"] - sim["y_meas"], lw=2)
 ax1.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
 ax1.set_xlabel("time", fontsize=12)
 ax1.set_ylabel("residual", fontsize=12)
 ax1.set_title(r'Measured: $c_t + \Delta k_t - y_{n,t}$', fontsize=13)
 
-ax2.plot(t, sim["c_filt"] + sim["dk_filt"] - sim["y_filt"], color="#2ca02c", lw=2)
+ax2.plot(t, sim["c_filt"] + sim["dk_filt"] - sim["y_filt"], lw=2)
 ax2.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
 ax2.set_xlabel("time", fontsize=12)
 ax2.set_ylabel("residual", fontsize=12)
@@ -1287,13 +1311,23 @@ plt.tight_layout()
 plt.show()
 ```
 
-We can also compare the true, measured, and filtered versions of
-each variable through their covariance and correlation matrices.
+For each variable $w \in \{c, \Delta k, y_n\}$ we compute the
+covariance and correlation matrices among its true, measured, and
+filtered versions.
 
-High correlations between true and filtered series confirm that the
-Kalman filter removes most measurement noise, while lower correlations
-between true and measured series quantify how much information raw
-data lose.
+Each matrix has the structure
+
+```{math}
+\begin{bmatrix}
+\text{var}(w^{\text{true}}) & \text{cov}(w^{\text{true}}, w^{\text{meas}}) & \text{cov}(w^{\text{true}}, w^{\text{filt}}) \\
+\cdot & \text{var}(w^{\text{meas}}) & \text{cov}(w^{\text{meas}}, w^{\text{filt}}) \\
+\cdot & \cdot & \text{var}(w^{\text{filt}})
+\end{bmatrix}.
+```
+
+The key entries are the off-diagonal terms linking true to measured
+(distortion from noise) and true to filtered (recovery by the Kalman
+filter).
 
 ```{code-cell} ipython3
 def cov_corr_three(a, b, c):
@@ -1303,9 +1337,12 @@ def cov_corr_three(a, b, c):
 def matrix_df(mat, labels):
     return pd.DataFrame(np.round(mat, 4), index=labels, columns=labels)
 
-cov_c, corr_c = cov_corr_three(sim["c_true"], sim["c_meas"], sim["c_filt"])
-cov_i, corr_i = cov_corr_three(sim["dk_true"], sim["dk_meas"], sim["dk_filt"])
-cov_y, corr_y = cov_corr_three(sim["y_true"], sim["y_meas"], sim["y_filt"])
+cov_c, corr_c = cov_corr_three(
+                sim["c_true"], sim["c_meas"], sim["c_filt"])
+cov_i, corr_i = cov_corr_three(
+                sim["dk_true"], sim["dk_meas"], sim["dk_filt"])
+cov_y, corr_y = cov_corr_three(
+                sim["y_true"], sim["y_meas"], sim["y_filt"])
 cov_k = np.cov(np.vstack([sim["k_true"], sim["k_filt"]]))
 corr_k = np.corrcoef(np.vstack([sim["k_true"], sim["k_filt"]]))
 
@@ -1315,41 +1352,41 @@ tf_labels = ['true', 'filtered']
 
 For consumption, measurement error inflates the variance of measured
 consumption relative to the truth, as the diagonal of the covariance
-matrix shows.
+matrix shows
 
 ```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(cov_c, tmf_labels))))
 ```
 
 The correlation matrix confirms that the filtered series recovers the
-true series almost perfectly (true-filtered correlation exceeds 0.99).
+true series almost perfectly 
 
 ```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(corr_c, tmf_labels))))
 ```
 
-For investment, measurement error creates the most variance inflation here.
+For investment, measurement error creates the most variance inflation here
 
 ```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(cov_i, tmf_labels))))
 ```
 
 Despite this, the true-filtered correlation remains high,
-demonstrating the filter's effectiveness even with severe noise.
+demonstrating the filter's effectiveness even with severe noise
 
 ```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(corr_i, tmf_labels))))
 ```
 
 Income has the smallest measurement error ($\sigma_\eta = 0.05$),
-so measured and true covariances are nearly identical.
+so measured and true covariances are nearly identical
 
 ```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(cov_y, tmf_labels))))
 ```
 
 The correlation matrix shows that both measured and filtered series
-track the truth very closely.
+track the truth very closely
 
 ```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(corr_y, tmf_labels))))
@@ -1357,13 +1394,13 @@ display(Latex(df_to_latex_matrix(matrix_df(corr_y, tmf_labels))))
 
 The capital stock is never directly observed, yet
 the covariance matrix shows that the filter recovers it with very
-high accuracy.
+high accuracy
 
 ```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(cov_k, tf_labels))))
 ```
 
-The near-unity correlation confirms this.
+The near-unity correlation confirms this
 
 ```{code-cell} ipython3
 display(Latex(df_to_latex_matrix(matrix_df(corr_k, tf_labels))))
@@ -1392,7 +1429,8 @@ to the single structural shock $\theta_t$ and *cannot* reproduce
 the Granger causality pattern.
 
 The {doc}`Kalman filter <kalman>` effectively strips measurement
-noise from the data: the filtered series track the truth closely,
-and the near-zero residual shows that the filter approximately
-restores the national income accounting identity that raw
-measurement error breaks.
+noise from the data, so the filtered series track the truth closely.
+
+Raw measurement error breaks the national income accounting identity,
+but the near-zero residual shows that the filter approximately
+restores it.
