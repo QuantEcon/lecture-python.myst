@@ -898,7 +898,7 @@ class RecurCompetitive(NamedTuple):
     J: jax.Array    # optimal value
 
 
-@partial(jax.jit, static_argnums=(6,))
+@jax.jit
 def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
     """Complete equilibrium objects under the endogenous pricing kernel.
 
@@ -960,11 +960,14 @@ def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
     
     def resolvent_operator(Q):
         "Compute the resolvent or finite partial sums of Q depending on T."
-        if T==0:
+
+        def infinite_period():
             V = jnp.empty((1, n, n))
             V = V.at[0].set(jnp.linalg.inv(jnp.eye(n) - Q))
+            return V
+        
         # V = [I + Q + Q^2 + ... + Q^T] (finite case)
-        else:
+        def finite_period():
             V = jnp.empty((T+1, n, n))
             V = V.at[0].set(jnp.eye(n))
 
@@ -978,8 +981,12 @@ def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
                 return Qt, V
             
             _, V = jax.lax.fori_loop(1, T+1, body, (Qt, V))
-        return V
+            return V
+        
+        V = jax.lax.cond(T==0, infinite_period, finite_period)
 
+        return V
+    
     def natural_debt_limit(ys, V):
         "Compute natural debt limits from the terminal resolvent block."
         return V[-1] @ ys
@@ -1021,13 +1028,15 @@ def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
         "Assemble lifetime value functions for each agent."
 
         # compute (I - βP)^(-1) in infinite case
-        if T==0:
+        def inifinite_period():
             P_seq = jnp.empty((1, n, n))
             P_seq = P_seq.at[0].set(
                 jnp.linalg.inv(jnp.eye(n) - β * P)
                 )
+            return P_seq
         # and (I + βP + ... + β^T P^T) in finite case
-        else:
+        
+        def finite_period():
             P_seq = jnp.empty((T+1, n, n))
             P_seq = P_seq.at[0].set(np.eye(n))
 
@@ -1042,7 +1051,10 @@ def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
             _, P_seq = jax.lax.fori_loop(
                 1, T+1, body, (Pt, P_seq)
                 )
-
+            return P_seq
+        
+        P_seq = jax.lax.cond(T==0, inifinite_period, finite_period)
+    
         # compute the matrix [u(α_1 y), ..., u(α_K, y)]
         flow = jnp.empty((n, K))
         def body(k, carry):
@@ -1289,25 +1301,30 @@ For the specification of the Markov chain in example 3, let's take a look at how
 λ_seq = jnp.linspace(0, 0.99, 100)
 
 # prepare containers
-αs0_seq = jnp.empty((len(λ_seq), 2))
-αs1_seq = jnp.empty((len(λ_seq), 2))
+αs0_seq_init = jnp.empty((len(λ_seq), 2))
+αs1_seq_init = jnp.empty((len(λ_seq), 2))
 
-def body(i, carry):
-    αs0_seq, αs1_seq = carry
-    λ = λ_seq[i]
-    P = jnp.array([[1-λ, λ], [0, 1]])
-    # initial state s0 = 1
-    ex3_s0 = compute_rc_model(s, P, ys)
+@jax.jit
+def compute_example_3(αs0_seq_init, αs1_seq_init):
+    def body(i, carry):
+        αs0_seq, αs1_seq = carry
+        λ = λ_seq[i]
+        P = jnp.array([[1-λ, λ], [0, 1]])
+        # initial state s0 = 1
+        ex3_s0 = compute_rc_model(s, P, ys)
 
-    # initial state s0 = 2
-    ex3_s1 = compute_rc_model(s, P, ys, s0_idx=1)
+        # initial state s0 = 2
+        ex3_s1 = compute_rc_model(s, P, ys, s0_idx=1)
 
-    return  (αs0_seq.at[i, :].set(ex3_s0.α), 
-             αs1_seq.at[i, :].set(ex3_s1.α))
+        return  (αs0_seq.at[i, :].set(ex3_s0.α), 
+                αs1_seq.at[i, :].set(ex3_s1.α))
 
-αs0_seq, αs1_seq = jax.lax.fori_loop(
-    0, 100, body, (αs0_seq, αs1_seq)
-    )
+    αs0_seq, αs1_seq = jax.lax.fori_loop(
+        0, 100, body, (αs0_seq_init, αs1_seq_init)
+        )
+    return αs0_seq, αs1_seq
+
+αs0_seq, αs1_seq = compute_example_3(αs0_seq_init, αs1_seq_init)
 ```
 
 ```{code-cell} ipython3
