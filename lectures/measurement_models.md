@@ -302,7 +302,7 @@ of $j$-step-ahead prediction error variances, depends on the relative
 variances of the measurement errors.
 
 In this case, each observed series mixes the common signal $\theta_t$
-with idiosyncratic measurement noise. 
+with idiosyncratic measurement noise.
 
 A series with lower measurement
 error variance tracks $\theta_t$ more closely, so its innovations
@@ -518,7 +518,7 @@ def steady_state_kalman(A, C_obs, Q, R, W=None, tol=1e-13, max_iter=200_000):
 With structural matrices and tools we need in place, we now follow
 {cite:t}`Sargent1989`'s two reporting schemes in sequence.
 
-## A Classical Model of Measurements Initially Collected by an Agency
+## A classical model of measurements initially collected by an agency
 
 A data collecting agency observes a noise-corrupted version of $z_t$, namely
 
@@ -595,8 +595,8 @@ where $(\varepsilon_t, \bar\nu_t)$ is a white noise process with
 ```{math}
 :label: model1_covs
 E \begin{bmatrix} \varepsilon_t \end{bmatrix}
-\begin{bmatrix} \varepsilon_t' & \bar\nu_t' \end{bmatrix}
-= \begin{bmatrix} Q & W_1 \\ W_1' & R_1 \end{bmatrix},
+\begin{bmatrix} \varepsilon_t^\top & \bar\nu_t^\top \end{bmatrix}
+= \begin{bmatrix} Q & W_1 \\ W_1^\top & R_1 \end{bmatrix},
 \qquad
 R_1 = C Q C^\top + R, \quad W_1 = Q C^\top.
 ```
@@ -757,7 +757,7 @@ $\hat x_0$, can be represented as
 ```{math}
 :label: model1_loglik
 \mathcal{L}^* = -T\ln 2\pi - \tfrac{1}{2}T\ln|V_1|
-  - \tfrac{1}{2}\sum_{t=0}^{T-1} u_t' V_1^{-1} u_t,
+  - \tfrac{1}{2}\sum_{t=0}^{T-1} u_t^\top V_1^{-1} u_t,
 ```
 
 where $u_t$ is a function of $\{\bar z_t\}$ defined by
@@ -912,7 +912,7 @@ decay according to the AR(1) structure of their respective
 measurement errors ($\rho_c = 0.7$, $\rho_{\Delta k} = 0.3$),
 with little spillover to other variables.
 
-## A Model of Optimal Estimates Reported by an Agency
+## A model of optimal estimates reported by an agency
 
 Suppose that instead of reporting the error-corrupted data $\bar z_t$,
 the data collecting agency reports linear least-squares projections of
@@ -1069,7 +1069,7 @@ $\{\tilde z_t\}$ is then
 ```{math}
 :label: model2_loglik
 \mathcal{L}^{**} = -T\ln 2\pi - \tfrac{1}{2}T\ln|V_2|
-  - \tfrac{1}{2}\sum_{t=0}^{T-1} a_t' V_2^{-1} a_t.
+  - \tfrac{1}{2}\sum_{t=0}^{T-1} a_t^\top V_2^{-1} a_t.
 ```
 
 Note that relative to computing the likelihood function
@@ -1159,8 +1159,6 @@ As {cite:t}`Sargent1989` emphasizes, the two models of measurement
 produce quite different inferences about the economy's dynamics despite
 sharing identical underlying parameters.
 
-
-
 ### Wold impulse responses
 
 We again use orthogonalized Wold responses with a Cholesky
@@ -1193,7 +1191,6 @@ data are driven by essentially one shock.
 Unlike Model 1, the filtered data from Model 2
 *cannot* reproduce the apparent Granger causality pattern that the
 accelerator literature has documented empirically.
-
 
 Hence, at the population level, the two measurement models imply different
 empirical stories even though they share the same structural economy.
@@ -1339,9 +1336,7 @@ Investment is distorted the most because its measurement error
 has the largest innovation variance ($\sigma_\eta = 0.65$),
 while income is distorted the least ($\sigma_\eta = 0.05$).
 
-
 For the filtered series, we expect the Kalman filter to recover the true series more closely by stripping away measurement noise
-
 
 ```{code-cell} ipython3
 ---
@@ -1413,24 +1408,20 @@ both measured and filtered data
 ---
 mystnb:
   figure:
-    caption: "National income identity residual: measured (left) vs. filtered (right)"
+    caption: National income identity residual
     name: fig-identity-residual
-  image:
-    alt: National income identity residual for measured and filtered data side by side
 ---
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4))
 
 ax1.plot(t, sim["c_meas"] + sim["dk_meas"] - sim["y_meas"], lw=2)
 ax1.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
 ax1.set_xlabel("time", fontsize=12)
-ax1.set_ylabel("residual", fontsize=12)
-ax1.set_title(r'Measured: $c_t + \Delta k_t - y_{n,t}$', fontsize=13)
+ax1.set_ylabel("measured residual", fontsize=12)
 
 ax2.plot(t, sim["c_filt"] + sim["dk_filt"] - sim["y_filt"], lw=2)
 ax2.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
 ax2.set_xlabel("time", fontsize=12)
-ax2.set_ylabel("residual", fontsize=12)
-ax2.set_title(r'Filtered: $c_t + \Delta k_t - y_{n,t}$', fontsize=13)
+ax2.set_ylabel("filtered residual", fontsize=12)
 
 plt.tight_layout()
 plt.show()
@@ -1440,7 +1431,7 @@ As we have predicted, the residual for the measured data is large and volatile, 
 
 ## Summary
 
-{cite}`Sargent1989` shows how measurement error alters an
+{cite:t}`Sargent1989` shows how measurement error alters an
 econometrician's view of a permanent income economy driven by
 the investment accelerator.
 
