@@ -12,9 +12,10 @@
   --corollary-border-color: #c500c1;
   --example-border-color: #f9377b;
   --property-border-color: #fdf914;
-  --obseration-border-color: #7707ff;
+  --observation-border-color: #7707ff;
   --proposition-border-color: #4f7aa8;
   --assumption-border-color: #07fffb;
+  --notation-border-color: rgb(0, 255, 200);
 
   /* --note-title-color: rgba(68,138,255,.1);
   --note-border-color: #007bff;
@@ -36,6 +37,15 @@
 /* Remove content box */
 div.proof > .admonition-title::before {
 	content: none;
+}
+
+/* Set font weights */
+div.proof > p.admonition-title {
+    font-weight: var(--pst-admonition-font-weight-heading) !important;
+}
+
+div.proof > p.admonition-title > span.caption-number {
+    font-weight: var(--pst-admonition-font-weight-heading) !important;
 }
 
 /*********************************************
@@ -209,6 +219,7 @@ div.proposition {
 div.proposition > .admonition-title {
 	background-color: transparent;
 }
+
 /*********************************************
 * Assumption *
 *********************************************/
@@ -218,5 +229,17 @@ div.assumption {
 }
 
 div.assumption > .admonition-title {
+	background-color: transparent;
+}
+
+/*********************************************
+* Notation *
+*********************************************/
+div.notation {
+	border-color: var(--notation-border-color);
+	background-color: none;
+}
+
+div.notation > .admonition-title {
 	background-color: transparent;
 }

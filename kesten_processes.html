@@ -77,8 +77,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
@@ -101,7 +101,7 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/togglebutton.js?v=1ae7504c"></script>
     <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
@@ -160,6 +160,8 @@
 <body>
 
 <!-- Override QuantEcon theme colors -->
+
+<!-- Custom emphasis, strong/bold, and definition colors -->
 
     <span id="top"></span>
 
@@ -442,14 +444,15 @@ Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/minicond
 Downloading yfinance-1.1.0-py2.py3-none-any.whl (129 kB)
 Downloading curl_cffi-0.13.0-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (8.3 MB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/8.3 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">8.3/8.3 MB</span> <span class=" -Color -Color-Red">101.1 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
+   ━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3.4/8.3 MB</span> <span class=" -Color -Color-Red">18.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">8.3/8.3 MB</span> <span class=" -Color -Color-Red">28.0 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
 ?25hDownloading frozendict-2.4.7-py3-none-any.whl (16 kB)
 Downloading peewee-3.19.0-py3-none-any.whl (411 kB)
 Downloading websockets-16.0-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (184 kB)
 Building wheels for collected packages: multitasking
   Building wheel for multitasking (pyproject.toml) ... ?25l-
  done
-?25h  Created wheel for multitasking: filename=multitasking-0.0.12-py3-none-any.whl size=15637 sha256=e7c217137ff3d0e7e5bbb52f051ec9553e776157050a33a8ee8f7c6ff939e97a
+?25h  Created wheel for multitasking: filename=multitasking-0.0.12-py3-none-any.whl size=15635 sha256=acfece335bcc4d0012300fd5287407a62acc764f0b26c0c3249cba8ce76c1594
   Stored in directory: /home/runner/.cache/pip/wheels/1e/df/0f/e2bbb22d689b30c681feb5410ab64a2523437b34c8ecfc6476
 Successfully built multitasking
 Installing collected packages: peewee, multitasking, websockets, frozendict, curl_cffi, yfinance
@@ -458,6 +461,7 @@ Installing collected packages: peewee, multitasking, websockets, frozendict, cur
    ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4/6</span> [curl_cffi]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━ <span class=" -Color -Color-Green">5/6</span> [yfinance]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">6/6</span> [yfinance]
+
 Successfully installed curl_cffi-0.13.0 frozendict-2.4.7 multitasking-0.0.12 peewee-3.19.0 websockets-16.0 yfinance-1.1.0
 </pre></div>
 </div>
@@ -1027,7 +1031,7 @@ First we generate the observations:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/27e116f6d123def863786d9292a7d7569d8c6d771670c5157e7a36bc0ebf646c.png" src="_images/27e116f6d123def863786d9292a7d7569d8c6d771670c5157e7a36bc0ebf646c.png" />
+<img alt="_images/271ca080ab464dc669a5ee2880d0f7dd2841f7ac514e2543d36638c6474fed7e.png" src="_images/271ca080ab464dc669a5ee2880d0f7dd2841f7ac514e2543d36638c6474fed7e.png" />
 </div>
 </div>
 <p>The plot produces a straight line, consistent with a Pareto tail.</p>

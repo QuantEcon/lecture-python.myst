@@ -77,8 +77,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
@@ -101,7 +101,7 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/togglebutton.js?v=1ae7504c"></script>
     <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
@@ -160,6 +160,8 @@
 <body>
 
 <!-- Override QuantEcon theme colors -->
+
+<!-- Custom emphasis, strong/bold, and definition colors -->
 
     <span id="top"></span>
 
@@ -266,7 +268,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a7648c019" class="changelog-hash">a7648c019</a>
                                 
                                 <span class="changelog-author">kp992</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">[bayes_nonconj] Update lecture (#545)</span>
                             </li>
                             
@@ -275,7 +277,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/ec279702b" class="changelog-hash">ec279702b</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">8 months ago</span>
+                                <span class="changelog-time">9 months ago</span>
                                 <span class="changelog-message">MAINT: remove jax, pyro, torch, and gpu related software installs + GPU admonition (#453)</span>
                             </li>
                             
@@ -380,8 +382,8 @@ that you can access as follows:</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpyro in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.20.0)
-Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.9.0)
-Requirement already satisfied: jaxlib&gt;=0.7.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numpyro) (0.9.0)
+Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.9.0.1)
+Requirement already satisfied: jaxlib&gt;=0.7.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numpyro) (0.9.0.1)
 Requirement already satisfied: multipledispatch in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numpyro) (1.0.0)
 Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numpyro) (2.3.5)
 Requirement already satisfied: tqdm in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numpyro) (4.67.1)
@@ -1243,7 +1245,7 @@ ELBO\equiv\int q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)} d\theta=
 </div>
 <div class="cell_output docutils container">
 <figure class="align-default" id="fig-analytical">
-<img alt="_images/63601fb04332ace2fd1565b5af0662525d0cf3bf8764c2f6a84d1d8ca44f88a3.png" src="_images/63601fb04332ace2fd1565b5af0662525d0cf3bf8764c2f6a84d1d8ca44f88a3.png" />
+<img alt="_images/d203ba11c2d8f86b73e614137e4bbb029ebb282900b51011560aa0f707a01b43.png" src="_images/d203ba11c2d8f86b73e614137e4bbb029ebb282900b51011560aa0f707a01b43.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.5 </span><span class="caption-text">Analytical density (Beta prior)</span><a class="headerlink" href="#fig-analytical" title="Link to this image">#</a></p>
 </figcaption>
@@ -1262,7 +1264,7 @@ ELBO\equiv\int q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)} d\theta=
 </div>
 <div class="cell_output docutils container">
 <figure class="align-default" id="fig-mcmc-beta">
-<img alt="_images/61427215133ec6f2a04605fd3840e33aed71caeaa0fb81193ede0aa189a6c83c.png" src="_images/61427215133ec6f2a04605fd3840e33aed71caeaa0fb81193ede0aa189a6c83c.png" />
+<img alt="_images/e53b0b7c5d2c2bb624d3cbf88ef528cb63910ef0512ea6c85318758a78a771c5.png" src="_images/e53b0b7c5d2c2bb624d3cbf88ef528cb63910ef0512ea6c85318758a78a771c5.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.6 </span><span class="caption-text">MCMC density (Beta prior)</span><a class="headerlink" href="#fig-mcmc-beta" title="Link to this image">#</a></p>
 </figcaption>
@@ -1279,7 +1281,7 @@ ELBO\equiv\int q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)} d\theta=
 </div>
 <div class="cell_output docutils container">
 <figure class="align-default" id="fig-svi-beta-beta">
-<img alt="_images/98ac9d24261a23166b910c56a1f2d42479ec7a870f2c9356431715d58779c635.png" src="_images/98ac9d24261a23166b910c56a1f2d42479ec7a870f2c9356431715d58779c635.png" />
+<img alt="_images/8f36802bdef4eef4403e08028c2d8c31e42babc9366266419ca40b0f81772c68.png" src="_images/8f36802bdef4eef4403e08028c2d8c31e42babc9366266419ca40b0f81772c68.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.7 </span><span class="caption-text">SVI density (Beta prior, Beta guide)</span><a class="headerlink" href="#fig-svi-beta-beta" title="Link to this image">#</a></p>
 </figcaption>
@@ -1304,7 +1306,7 @@ that will be more accurate, as we shall see next.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c758adc8185fa1de015f7bab36bcf30b76bd1858a2aec5ec3e20808ebc3a42c3.png" src="_images/c758adc8185fa1de015f7bab36bcf30b76bd1858a2aec5ec3e20808ebc3a42c3.png" />
+<img alt="_images/5a5ea6bd404a06e239459cd4dba8075df30f8f449d63ffac1064098003601119.png" src="_images/5a5ea6bd404a06e239459cd4dba8075df30f8f449d63ffac1064098003601119.png" />
 </div>
 </div>
 </section>
@@ -1411,7 +1413,7 @@ Prior Dist: uniform
 </pre></div>
 </div>
 <figure class="align-default" id="fig-mcmc-stduniform">
-<img alt="_images/c06bf14c4d5549c3fb87418bfc7e8954b7bfb82cdbd18b3b63ff302ab5683220.png" src="_images/c06bf14c4d5549c3fb87418bfc7e8954b7bfb82cdbd18b3b63ff302ab5683220.png" />
+<img alt="_images/34466abf9cc734c20339d3297eab92e2b03aa0ca54fe9e11892525626d9b0860.png" src="_images/34466abf9cc734c20339d3297eab92e2b03aa0ca54fe9e11892525626d9b0860.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.8 </span><span class="caption-text">MCMC density (uniform prior)</span><a class="headerlink" href="#fig-mcmc-stduniform" title="Link to this image">#</a></p>
 </figcaption>
@@ -1436,7 +1438,7 @@ Prior Dist: uniform
 </pre></div>
 </div>
 <figure class="align-default" id="fig-mcmc-uniform">
-<img alt="_images/661d179500ee6c2995dd31fe164d3f9a577cbd1309998970023a3866bdd5f823.png" src="_images/661d179500ee6c2995dd31fe164d3f9a577cbd1309998970023a3866bdd5f823.png" />
+<img alt="_images/a956cb3a1eebeae434e67651561653861d8c3309f222f86a5c223c2a76f7e647.png" src="_images/a956cb3a1eebeae434e67651561653861d8c3309f222f86a5c223c2a76f7e647.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.9 </span><span class="caption-text">MCMC density (uniform prior)</span><a class="headerlink" href="#fig-mcmc-uniform" title="Link to this image">#</a></p>
 </figcaption>
@@ -1465,7 +1467,7 @@ Prior Dist: lognormal
 </pre></div>
 </div>
 <figure class="align-default" id="fig-mcmc-lognormal">
-<img alt="_images/8498869a0e2f8de2e8e21a348a2441d299e5fc28c40ccf3afc179a1fa7dda4fa.png" src="_images/8498869a0e2f8de2e8e21a348a2441d299e5fc28c40ccf3afc179a1fa7dda4fa.png" />
+<img alt="_images/7df301fd6f2c87cca64d1fd89bf8c31705df5fd9789cd7c31578ecb7fa511643.png" src="_images/7df301fd6f2c87cca64d1fd89bf8c31705df5fd9789cd7c31578ecb7fa511643.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.10 </span><span class="caption-text">MCMC density (log normal prior)</span><a class="headerlink" href="#fig-mcmc-lognormal" title="Link to this image">#</a></p>
 </figcaption>
@@ -1494,7 +1496,7 @@ NOTE: Shifted von Mises
 </pre></div>
 </div>
 <figure class="align-default" id="fig-mcmc-vonmises">
-<img alt="_images/9172b681908342e177caa8d6bb3619b7ae00a6ee107fe2482f562c72c464d21b.png" src="_images/9172b681908342e177caa8d6bb3619b7ae00a6ee107fe2482f562c72c464d21b.png" />
+<img alt="_images/74b9ff650786a97be316a27cc7bbdb7e7c288fc38f64f2d0197308d9102b179d.png" src="_images/74b9ff650786a97be316a27cc7bbdb7e7c288fc38f64f2d0197308d9102b179d.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.11 </span><span class="caption-text">MCMC density (von Mises prior)</span><a class="headerlink" href="#fig-mcmc-vonmises" title="Link to this image">#</a></p>
 </figcaption>
@@ -1520,7 +1522,7 @@ Prior Dist: laplace
 </pre></div>
 </div>
 <figure class="align-default" id="fig-mcmc-laplace">
-<img alt="_images/86bd6131e2d0f14d45cbcfc38095ee9778a300eab00ee3ca6b6538dfaeeda60b.png" src="_images/86bd6131e2d0f14d45cbcfc38095ee9778a300eab00ee3ca6b6538dfaeeda60b.png" />
+<img alt="_images/af2757ef2d284fc397ad1311cda93010d5ed9456fe2b86c884c31efe88d604cf.png" src="_images/af2757ef2d284fc397ad1311cda93010d5ed9456fe2b86c884c31efe88d604cf.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.12 </span><span class="caption-text">MCMC density (Laplace prior)</span><a class="headerlink" href="#fig-mcmc-laplace" title="Link to this image">#</a></p>
 </figcaption>
@@ -1560,7 +1562,7 @@ Prior Dist: uniform
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-uniform-normal">
-<img alt="_images/a48d347d4a39c8dc11800cb17ebf4419fa09858f896a033138b43fbada701aba.png" src="_images/a48d347d4a39c8dc11800cb17ebf4419fa09858f896a033138b43fbada701aba.png" />
+<img alt="_images/38eddb11952b0ad2c6c49a5a31ffdd8fe93f33a3f6742da512ab1e6c5ff5afc7.png" src="_images/38eddb11952b0ad2c6c49a5a31ffdd8fe93f33a3f6742da512ab1e6c5ff5afc7.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.13 </span><span class="caption-text">SVI density (uniform prior, normal guide)</span><a class="headerlink" href="#fig-svi-uniform-normal" title="Link to this image">#</a></p>
 </figcaption>
@@ -1587,7 +1589,7 @@ Prior Dist: lognormal
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-lognormal-normal">
-<img alt="_images/fa2668260c47d75623bb6b801ed040c70b5e8a449761a0fa0c38f9bedb35a537.png" src="_images/fa2668260c47d75623bb6b801ed040c70b5e8a449761a0fa0c38f9bedb35a537.png" />
+<img alt="_images/4f2aa48cd01da047b94b373fc8bb7c01868e9c7e7ffc5fb1cc99e3dcb11fea97.png" src="_images/4f2aa48cd01da047b94b373fc8bb7c01868e9c7e7ffc5fb1cc99e3dcb11fea97.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.14 </span><span class="caption-text">SVI density (log normal prior, normal guide)</span><a class="headerlink" href="#fig-svi-lognormal-normal" title="Link to this image">#</a></p>
 </figcaption>
@@ -1614,7 +1616,7 @@ Prior Dist: laplace
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-laplace-normal">
-<img alt="_images/47a6bd0d5ae89c32a237fd6047fba2e0d1d7b318687d3a31ec895ffa0fc37fbc.png" src="_images/47a6bd0d5ae89c32a237fd6047fba2e0d1d7b318687d3a31ec895ffa0fc37fbc.png" />
+<img alt="_images/c063a7bdcd3906b3b00974fc1b76d007fd20a143e051645d467d275eddeefba0.png" src="_images/c063a7bdcd3906b3b00974fc1b76d007fd20a143e051645d467d275eddeefba0.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.15 </span><span class="caption-text">SVI density (Laplace prior, normal guide)</span><a class="headerlink" href="#fig-svi-laplace-normal" title="Link to this image">#</a></p>
 </figcaption>
@@ -1644,7 +1646,7 @@ Prior Dist: uniform
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-uniform-beta">
-<img alt="_images/dc8d97895d01d85b105651d440d868e913f1a7170ed680f3eaa550922cc96a54.png" src="_images/dc8d97895d01d85b105651d440d868e913f1a7170ed680f3eaa550922cc96a54.png" />
+<img alt="_images/02999dae888a9c23c7bbf45742849922c38567a1221e29f29613adcd9ac683b5.png" src="_images/02999dae888a9c23c7bbf45742849922c38567a1221e29f29613adcd9ac683b5.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.16 </span><span class="caption-text">SVI density (uniform prior, Beta guide)</span><a class="headerlink" href="#fig-svi-uniform-beta" title="Link to this image">#</a></p>
 </figcaption>
@@ -1671,7 +1673,7 @@ Prior Dist: lognormal
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-lognormal-beta">
-<img alt="_images/215742231d845ffae0c4de6deb49f8de26a4831fd1d5c94dea7976e51f6180d4.png" src="_images/215742231d845ffae0c4de6deb49f8de26a4831fd1d5c94dea7976e51f6180d4.png" />
+<img alt="_images/5cd7f4395d438ac280275fcfb66b34d9952cbfbf1c9a115eccb7ee6e024ca5b7.png" src="_images/5cd7f4395d438ac280275fcfb66b34d9952cbfbf1c9a115eccb7ee6e024ca5b7.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.17 </span><span class="caption-text">SVI density (log normal prior, Beta guide)</span><a class="headerlink" href="#fig-svi-lognormal-beta" title="Link to this image">#</a></p>
 </figcaption>
@@ -1700,7 +1702,7 @@ Shifted von Mises
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-vonmises-beta">
-<img alt="_images/972e039e50246e96c5dade9abf9a84c6f6f4b55f08cac616ff2ad29ef34e5f8e.png" src="_images/972e039e50246e96c5dade9abf9a84c6f6f4b55f08cac616ff2ad29ef34e5f8e.png" />
+<img alt="_images/6688c981a438c3934108766471c3060b51bdf03e888876d662ea42b2eb85ad00.png" src="_images/6688c981a438c3934108766471c3060b51bdf03e888876d662ea42b2eb85ad00.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.18 </span><span class="caption-text">SVI density (von Mises prior, Beta guide)</span><a class="headerlink" href="#fig-svi-vonmises-beta" title="Link to this image">#</a></p>
 </figcaption>
@@ -1727,7 +1729,7 @@ Prior Dist: laplace
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-laplace-beta">
-<img alt="_images/8eef2f58d3700da237297e62291df7cc659f3036c228c8ccb0eb80c50c118fb8.png" src="_images/8eef2f58d3700da237297e62291df7cc659f3036c228c8ccb0eb80c50c118fb8.png" />
+<img alt="_images/6ba8a75c2a8c4f0803736c04186cb033084f02a9ecb63e45e399aeda7b24f8d7.png" src="_images/6ba8a75c2a8c4f0803736c04186cb033084f02a9ecb63e45e399aeda7b24f8d7.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.19 </span><span class="caption-text">SVI density (Laplace prior, Beta guide)</span><a class="headerlink" href="#fig-svi-laplace-beta" title="Link to this image">#</a></p>
 </figcaption>

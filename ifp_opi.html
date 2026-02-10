@@ -77,8 +77,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
@@ -101,7 +101,7 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/togglebutton.js?v=1ae7504c"></script>
     <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
@@ -160,6 +160,8 @@
 <body>
 
 <!-- Override QuantEcon theme colors -->
+
+<!-- Custom emphasis, strong/bold, and definition colors -->
 
     <span id="top"></span>
 
@@ -321,13 +323,13 @@ speed improvements over standard VFI for the income fluctuation problem.</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
-Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.9.0)
+Requirement already satisfied: jax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.9.0.1)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
 Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.16.3)
 Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.14.0)
-Requirement already satisfied: jaxlib&lt;=0.9.0,&gt;=0.9.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.9.0)
+Requirement already satisfied: jaxlib&lt;=0.9.0.1,&gt;=0.9.0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.9.0.1)
 Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (0.5.4)
 Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax) (3.4.0)
 Requirement already satisfied: llvmlite&lt;0.46,&gt;=0.45.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.45.1)
@@ -633,7 +635,7 @@ policy <span class="math notranslate nohighlight">\(\sigma\)</span> fixed.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
-VFI completed in 0.80 seconds.
+VFI completed in 0.85 seconds.
 </pre></div>
 </div>
 </div>
@@ -650,7 +652,7 @@ VFI completed in 0.80 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.08 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.09 seconds.
 </pre></div>
 </div>
 </div>
@@ -669,7 +671,7 @@ VFI completed in 0.80 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI with m=50.
-OPI completed in 0.51 seconds.
+OPI completed in 0.53 seconds.
 </pre></div>
 </div>
 </div>
@@ -744,7 +746,7 @@ OPI completed in 0.51 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Speedup factor: 3.10
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Speedup factor: 2.63
 </pre></div>
 </div>
 </div>
@@ -766,10 +768,10 @@ OPI completed in 0.51 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=  1 completed in 0.09 seconds.
-OPI with m=  5 completed in 0.04 seconds.
-OPI with m= 10 completed in 0.03 seconds.
-OPI with m= 25 completed in 0.03 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=  1 completed in 0.11 seconds.
+OPI with m=  5 completed in 0.05 seconds.
+OPI with m= 10 completed in 0.04 seconds.
+OPI with m= 25 completed in 0.04 seconds.
 OPI with m= 50 completed in 0.03 seconds.
 OPI with m=100 completed in 0.04 seconds.
 OPI with m=200 completed in 0.06 seconds.
@@ -793,7 +795,7 @@ OPI with m=400 completed in 0.12 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/55976f4a2af3e68ac88e9a3719f33d2eee32a1a8e835746fe15351a1a246e74f.png" src="_images/55976f4a2af3e68ac88e9a3719f33d2eee32a1a8e835746fe15351a1a246e74f.png" />
+<img alt="_images/9233c448890161419226f4aba6c2dc4bb672ce47ab353acf7c9cbe9c03fb7916.png" src="_images/9233c448890161419226f4aba6c2dc4bb672ce47ab353acf7c9cbe9c03fb7916.png" />
 </div>
 </div>
 <p>Here’s a summary of the results</p>
@@ -864,42 +866,42 @@ time iterating the policy operator.</p></li>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing ρ=0.8, ν=0.05
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.67x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.59x
 
 Testing ρ=0.8, ν=0.1
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.84x
-
-Testing ρ=0.8, ν=0.2
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.74x
-
-Testing ρ=0.9, ν=0.05
   VFI: 0.06s, OPI: 0.03s, Speedup: 1.82x
 
+Testing ρ=0.8, ν=0.2
+  VFI: 0.06s, OPI: 0.03s, Speedup: 1.70x
+
+Testing ρ=0.9, ν=0.05
+  VFI: 0.06s, OPI: 0.03s, Speedup: 1.78x
+
 Testing ρ=0.9, ν=0.1
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.70x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.69x
 
 Testing ρ=0.9, ν=0.2
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.77x
+  VFI: 0.06s, OPI: 0.03s, Speedup: 1.80x
 
 Testing ρ=0.95, ν=0.05
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.68x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.65x
 
 Testing ρ=0.95, ν=0.1
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.70x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.72x
 
 Testing ρ=0.95, ν=0.2
-  VFI: 0.07s, OPI: 0.04s, Speedup: 1.85x
+  VFI: 0.07s, OPI: 0.04s, Speedup: 1.86x
 
 Summary of speedup factors:
-ρ=0.8, ν=0.05: 1.67x
-ρ=0.8, ν=0.1: 1.84x
-ρ=0.8, ν=0.2: 1.74x
-ρ=0.9, ν=0.05: 1.82x
-ρ=0.9, ν=0.1: 1.70x
-ρ=0.9, ν=0.2: 1.77x
-ρ=0.95, ν=0.05: 1.68x
-ρ=0.95, ν=0.1: 1.70x
-ρ=0.95, ν=0.2: 1.85x
+ρ=0.8, ν=0.05: 1.59x
+ρ=0.8, ν=0.1: 1.82x
+ρ=0.8, ν=0.2: 1.70x
+ρ=0.9, ν=0.05: 1.78x
+ρ=0.9, ν=0.1: 1.69x
+ρ=0.9, ν=0.2: 1.80x
+ρ=0.95, ν=0.05: 1.65x
+ρ=0.95, ν=0.1: 1.72x
+ρ=0.95, ν=0.2: 1.86x
 </pre></div>
 </div>
 </div>
