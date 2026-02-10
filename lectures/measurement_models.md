@@ -842,7 +842,7 @@ Granger-cause consumption and investment, but not vice versa.
 This matches the paper's message that, in a one-common-index model,
 the relatively best measured series has the strongest predictive content.
 
-Let's look at the the covariance matrix of the innovations
+Let's look at the covariance matrix of the innovations
 
 ```{code-cell} ipython3
 print('Covariance matrix of innovations:')
@@ -1020,7 +1020,7 @@ where
 a_t &= \tilde z_t - E[\tilde z_t \mid \tilde z_{t-1}, \tilde z_{t-2}, \ldots], \\
 \check{x}_t &= E[\hat x_t \mid \tilde z_{t-1}, \tilde z_{t-2}, \ldots, \check{x}_0], \\
 S_2 &= E[(\hat x_t - \check{x}_t)(\hat x_t - \check{x}_t)^\top], \\
-[K_2, S_2] &= \text{kelmanfilter}(A, G, Q_2, R_2, 0).
+[K_2, S_2] &= \text{kalmanfilter}(A, G, Q_2, R_2, 0).
 \end{aligned}
 ```
 
