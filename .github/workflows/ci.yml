@@ -170,7 +170,6 @@ jobs:
       - name: Preview Deploy to Netlify
         id: netlify-deploy
         if: >
-          github.actor != 'dependabot[bot]' &&
           (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
           env.NETLIFY_AUTH_TOKEN != '' &&
           env.NETLIFY_SITE_ID != ''
@@ -246,12 +245,11 @@ jobs:
           fi
       - name: Skip Netlify Deploy (no secrets or untrusted actor)
         if: >
-          !(github.actor != 'dependabot[bot]' &&
-          (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
+          !((github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
           env.NETLIFY_AUTH_TOKEN != '' &&
           env.NETLIFY_SITE_ID != '')
         run: |
-          echo "Skipping Netlify preview deploy: secrets unavailable or actor not trusted (actor=${{ github.actor }})"
+          echo "Skipping Netlify preview deploy: secrets unavailable or untrusted PR (from fork)"
       - name: Post PR Comment with Preview Links
         if: github.event_name == 'pull_request' && steps.netlify-deploy.outputs.deploy_url != ''
         uses: actions/github-script@v7
