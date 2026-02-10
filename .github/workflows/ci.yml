@@ -11,9 +11,9 @@ on:
 jobs:
   preview:
     runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/disk=large"
-    env:
-      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v6
         with:
@@ -44,7 +44,7 @@ jobs:
         shell: bash -l {0}
         run: pip list
       - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v12
+        uses: dawidd6/action-download-artifact@v14
         with:
           workflow: cache.yml
           branch: main
@@ -86,265 +86,13 @@ jobs:
         with:
           name: execution-reports-html
           path: _build/html/reports
-      - name: Install Node.js and Netlify CLI
-        shell: bash -l {0}
-        run: |
-          # Install Node.js via system package manager since conda-forge doesn't have npm
-          sudo apt-get update
-          sudo apt-get install -y nodejs npm
-          sudo npm install -g netlify-cli
-      - name: Detect Changed Lecture Files
-        id: detect-changes
-        shell: bash -l {0}
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "Detecting changed lecture files..."
-            echo "Base SHA: ${{ github.event.pull_request.base.sha }}"
-            echo "Head SHA: ${{ github.event.pull_request.head.sha }}"
-            
-            # Ensure we have both base and head commits available
-            git fetch origin ${{ github.event.pull_request.base.sha }}:refs/remotes/origin/pr-base || true
-            git fetch origin ${{ github.event.pull_request.head.sha }}:refs/remotes/origin/pr-head || true
-            
-            # Get changed files using git diff with status to see the type of change
-            echo "Getting diff between commits..."
-            all_changed=$(git diff --name-status ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} 2>/dev/null || echo "")
-            
-            if [ -z "$all_changed" ]; then
-              echo "No changes detected or error in git diff"
-              echo "changed_files=" >> $GITHUB_OUTPUT
-              exit 0
-            fi
-            
-            echo "All changed files with status:"
-            echo "$all_changed"
-            
-            # Filter for lecture files that are Added or Modified (not Deleted)
-            # Format: M lectures/file.md or A lectures/file.md
-            changed_lecture_files=""
-            while IFS=$'\t' read -r status file; do
-              # Skip if empty line
-              [ -z "$status" ] && continue
-              
-              echo "Processing: status='$status' file='$file'"
-              
-              # Only include Added (A) or Modified (M) files, skip Deleted (D)
-              if [[ "$status" =~ ^[AM] ]] && [[ "$file" =~ ^lectures/.*\.md$ ]] && [[ ! "$file" =~ ^lectures/_ ]] && [[ "$file" != "lectures/intro.md" ]]; then
-                # Double-check that the file exists and has real content changes
-                if [ -f "$file" ]; then
-                  # Use git show to check if there are actual content changes (not just metadata)
-                  content_diff=$(git diff ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }} -- "$file" | grep -E '^[+-]' | grep -v '^[+-]{3}' | wc -l)
-                  if [ "$content_diff" -gt 0 ]; then
-                    echo "✓ Confirmed content changes in: $file"
-                    if [ -z "$changed_lecture_files" ]; then
-                      changed_lecture_files="$file"
-                    else
-                      changed_lecture_files="$changed_lecture_files"$'\n'"$file"
-                    fi
-                  else
-                    echo "⚠ No content changes found in: $file (possibly metadata only)"
-                  fi
-                else
-                  echo "⚠ File not found in working directory: $file"
-                fi
-              else
-                echo "⚠ Skipping: $file (status: $status, doesn't match lecture file pattern or is excluded)"
-              fi
-            done <<< "$all_changed"
-            
-            if [ ! -z "$changed_lecture_files" ]; then
-              echo ""
-              echo "Final validated changed lecture files:"
-              echo "$changed_lecture_files"
-              echo "changed_files<<EOF" >> $GITHUB_OUTPUT
-              echo "$changed_lecture_files" >> $GITHUB_OUTPUT
-              echo "EOF" >> $GITHUB_OUTPUT
-            else
-              echo "No lecture files with actual content changes found"
-              echo "changed_files=" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "Not a PR, skipping change detection"
-            echo "changed_files=" >> $GITHUB_OUTPUT
-          fi
-      - name: Preview Deploy to Netlify
-        id: netlify-deploy
-        if: >
-          github.actor != 'dependabot[bot]' &&
-          (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
-          env.NETLIFY_AUTH_TOKEN != '' &&
-          env.NETLIFY_SITE_ID != ''
-        shell: bash -l {0}
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            # Deploy to Netlify and capture the response
-            deploy_message="Preview Deploy from GitHub Actions PR #${{ github.event.pull_request.number }} (commit: ${{ github.event.pull_request.head.sha }})"
-            
-            netlify_output=$(netlify deploy \
-              --dir _build/html/ \
-              --site ${{ secrets.NETLIFY_SITE_ID }} \
-              --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
-              --context pr-preview \
-              --alias pr-${{ github.event.pull_request.number }} \
-              --message "${deploy_message}" \
-              --json)
-              
-            echo "Netlify deployment output:"
-            echo "$netlify_output"
-            
-            # Extract the actual deploy URL from the JSON response
-            deploy_url=$(echo "$netlify_output" | jq -r '.deploy_url')
-            
-            echo "deploy_url=$deploy_url" >> $GITHUB_OUTPUT
-            echo "✅ Deployment completed!"
-            echo "🌐 Actual Deploy URL: $deploy_url"
-            
-            # Generate preview URLs for changed files using the actual deploy URL
-            if [ ! -z "${{ steps.detect-changes.outputs.changed_files }}" ]; then
-              echo ""
-              echo "📚 Direct links to changed lecture pages:"
-              while read -r file; do
-                if [ ! -z "$file" ]; then
-                  basename=$(basename "$file" .md)
-                  html_file="${basename}.html"
-                  echo "- ${basename}: ${deploy_url}/${html_file}"
-                fi
-              done <<< "${{ steps.detect-changes.outputs.changed_files }}"
-            fi
-            
-            # Display manual preview page if specified
-            if [ ! -z "${{ github.event.inputs.preview_page }}" ]; then
-              echo ""
-              echo "🎯 Manual preview page: ${deploy_url}/${{ github.event.inputs.preview_page }}"
-            fi
-          else
-            # Handle manual deployment
-            deploy_message="Manual Deploy from GitHub Actions (commit: ${{ github.sha }})"
-            
-            netlify_output=$(netlify deploy \
-              --dir _build/html/ \
-              --site ${{ secrets.NETLIFY_SITE_ID }} \
-              --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
-              --alias manual-${{ github.run_id }} \
-              --context dev \
-              --message "${deploy_message}" \
-              --json)
-              
-            echo "Netlify deployment output:"
-            echo "$netlify_output"
-            
-            # Extract the actual deploy URL from the JSON response
-            deploy_url=$(echo "$netlify_output" | jq -r '.deploy_url')
-            
-            echo "deploy_url=$deploy_url" >> $GITHUB_OUTPUT
-            echo "✅ Manual deployment completed!"
-            echo "🌐 Actual Deploy URL: $deploy_url"
-            
-            if [ ! -z "${{ github.event.inputs.preview_page }}" ]; then
-              echo "🎯 Preview page: ${deploy_url}/${{ github.event.inputs.preview_page }}"
-            fi
-          fi
-      - name: Skip Netlify Deploy (no secrets or untrusted actor)
-        if: >
-          !(github.actor != 'dependabot[bot]' &&
-          (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) &&
-          env.NETLIFY_AUTH_TOKEN != '' &&
-          env.NETLIFY_SITE_ID != '')
-        run: |
-          echo "Skipping Netlify preview deploy: secrets unavailable or actor not trusted (actor=${{ github.actor }})"
-      - name: Post PR Comment with Preview Links
-        if: github.event_name == 'pull_request' && steps.netlify-deploy.outputs.deploy_url != ''
-        uses: actions/github-script@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          script: |
-            const changedFiles = `${{ steps.detect-changes.outputs.changed_files }}`;
-            const manualPage = `${{ github.event.inputs.preview_page }}`;
-            const deployUrl = `${{ steps.netlify-deploy.outputs.deploy_url }}`;
-            const prNumber = ${{ github.event.pull_request.number }};
-            const commitSha = `${{ github.event.pull_request.head.sha }}`;
-            const shortSha = commitSha.substring(0, 7);
-            
-            console.log(`Checking for existing comments for commit: ${commitSha}`);
-            console.log(`Deploy URL: ${deployUrl}`);
-            console.log(`Changed files: ${changedFiles}`);
-            
-            // Get all comments on this PR to check for duplicates
-            const comments = await github.rest.issues.listComments({
-              issue_number: prNumber,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
-            
-            console.log(`Found ${comments.data.length} comments on PR`);
-            
-            // Look for existing comment with this exact commit SHA and deploy URL
-            const duplicateComment = comments.data.find(comment => {
-              const hasMarker = comment.body.includes('**📖 Netlify Preview Ready!**');
-              const hasCommitSha = comment.body.includes(`([${shortSha}]`);
-              const hasDeployUrl = comment.body.includes(deployUrl);
-              
-              console.log(`Comment ${comment.id}: hasMarker=${hasMarker}, hasCommitSha=${hasCommitSha}, hasDeployUrl=${hasDeployUrl}`);
-              
-              return hasMarker && hasCommitSha && hasDeployUrl;
-            });
-            
-            if (duplicateComment) {
-              console.log(`Duplicate comment found (${duplicateComment.id}) for commit ${shortSha} and deploy URL ${deployUrl}, skipping...`);
-              return;
-            }
-            
-            console.log(`No duplicate found, creating new comment for commit ${shortSha}`);
-            
-            const commitUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${commitSha}`;
-            
-            let comment = `**📖 Netlify Preview Ready!**\n\n`;
-            comment += `**Preview URL:** ${deployUrl} ([${shortSha}](${commitUrl}))\n\n`;
-            
-            // Add manual preview page if specified
-            if (manualPage) {
-              comment += `🎯 **Manual Preview:** [${manualPage}](${deployUrl}/${manualPage})\n\n`;
-            }
-            
-            // Add direct links to changed lecture pages
-            if (changedFiles && changedFiles.trim()) {
-              console.log('Processing changed files for preview links...');
-              const files = changedFiles.split('\n').filter(f => f.trim() && f.includes('lectures/') && f.endsWith('.md'));
-              console.log('Filtered lecture files:', files);
-              
-              if (files.length > 0) {
-                comment += `📚 **Changed Lecture Pages:** `;
-                
-                const pageLinks = [];
-                for (const file of files) {
-                  const cleanFile = file.trim();
-                  if (cleanFile && cleanFile.startsWith('lectures/') && cleanFile.endsWith('.md')) {
-                    const fileName = cleanFile.replace('lectures/', '').replace('.md', '');
-                    console.log(`Creating preview link: ${cleanFile} -> ${fileName}.html`);
-                    const pageUrl = `${deployUrl}/${fileName}.html`;
-                    pageLinks.push(`[${fileName}](${pageUrl})`);
-                  }
-                }
-                
-                if (pageLinks.length > 0) {
-                  comment += pageLinks.join(', ') + '\n\n';
-                } else {
-                  console.log('No valid page links created');
-                }
-              } else {
-                console.log('No lecture files in changed files list');
-              }
-            } else {
-              console.log('No changed files detected');
-            }
-            
-            console.log('Final comment:', comment);
-            
-            // Post the comment
-            await github.rest.issues.createComment({
-              issue_number: prNumber,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: comment
-            });
-            
-            console.log('Comment posted successfully');
+          node-version: '20'
+      - name: Preview Deploy to Netlify
+        uses: quantecon/actions/preview-netlify@v0.6.0
+        with:
+          netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          netlify-site-id: ${{ secrets.NETLIFY_SITE_ID }}
+          build-dir: _build/html
