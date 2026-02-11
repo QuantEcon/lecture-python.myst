@@ -898,7 +898,7 @@ class RecurCompetitive(NamedTuple):
     J: jax.Array    # optimal value
 
 
-@jax.jit
+@partial(jax.jit, static_argnames=("T", "s0_idx"))
 def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
     """Complete equilibrium objects under the endogenous pricing kernel.
 
@@ -941,20 +941,20 @@ def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
         Q = jnp.empty((n, n))
         # fori_loop iterates over each state i while carrying the partially
         # filled matrix Q as the loop carry.
-        def body_i(i, Q):
+        def body_fun_i(i, Q):
             # fills row i entry-by-entry.
-            def body_j(j, q):
+            def body_fun_j(j, q):
                 ratio = u_prime(c[j]) / u_prime(c[i])
                 # Return a (n,) array
                 return q.at[j].set(β * ratio * P[i, j])
             
             q = jax.lax.fori_loop(
-                0, n, body_j, jnp.zeros((n,))
+                0, n, body_fun_j, jnp.zeros((n,))
                 )
             return Q.at[i, :].set(q)
 
         Q = jax.lax.fori_loop(
-            0, n, body_i, jnp.zeros((n, n))
+            0, n, body_fun_i, jnp.zeros((n, n))
             )
         return Q
     
@@ -962,25 +962,26 @@ def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
         "Compute the resolvent or finite partial sums of Q depending on T."
 
         def infinite_period():
-            V = jnp.empty((1, n, n))
+            # If T=0, V.shape = (1, n, n)
+            V = jnp.zeros((T+1, n, n))
             V = V.at[0].set(jnp.linalg.inv(jnp.eye(n) - Q))
             return V
         
         # V = [I + Q + Q^2 + ... + Q^T] (finite case)
         def finite_period():
-            V = jnp.empty((T+1, n, n))
+            V = jnp.zeros((T+1, n, n))
             V = V.at[0].set(jnp.eye(n))
 
             Qt = jnp.eye(n)
 
-            # Loop body advances the Q power and accumulates the geometric sum.
-            def body(t, carry):
+            # Loop body_fun advances the Q power and accumulates the geometric sum.
+            def body_fun(t, carry):
                 Qt, V = carry
                 Qt = Qt @ Q
                 V = V.at[t].set(V[t-1] + Qt)
                 return Qt, V
             
-            _, V = jax.lax.fori_loop(1, T+1, body, (Qt, V))
+            _, V = jax.lax.fori_loop(1, T+1, body_fun, (Qt, V))
             return V
         
         V = jax.lax.cond(T==0, infinite_period, finite_period)
@@ -1005,11 +1006,11 @@ def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
         diff = jnp.empty((n, K))
 
         # Loop scatters each agent's state-dependent surplus into the column k.
-        def body(k, diff):
+        def body_fun(k, diff):
             return diff.at[:, k].set(α[k] * y - ys[:, k])
 
-        # Applies body sequentially while threading diff.
-        diff = jax.lax.fori_loop(0, K, body, diff)
+        # Applies body_fun sequentially while threading diff.
+        diff = jax.lax.fori_loop(0, K, body_fun, diff)
 
         ψ = V @ diff
 
@@ -1028,8 +1029,9 @@ def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
         "Assemble lifetime value functions for each agent."
 
         # compute (I - βP)^(-1) in infinite case
-        def inifinite_period():
-            P_seq = jnp.empty((1, n, n))
+        def infinite_period():
+            # If T=0, V.shape = (1, n, n)
+            P_seq = jnp.empty((T+1, n, n))
             P_seq = P_seq.at[0].set(
                 jnp.linalg.inv(jnp.eye(n) - β * P)
                 )
@@ -1038,30 +1040,28 @@ def compute_rc_model(s, P, ys, s0_idx=0, γ=0.5, β=0.98, T=0):
         
         def finite_period():
             P_seq = jnp.empty((T+1, n, n))
-            P_seq = P_seq.at[0].set(np.eye(n))
+            P_seq = P_seq.at[0].set(jnp.eye(n))
 
             Pt = jnp.eye(n)
 
-            def body(t, carry):
+            def body_fun(t, carry):
                 Pt, P_seq = carry
                 Pt = Pt @ P
                 P_seq = P_seq.at[t].set(P_seq[t-1] + Pt * β ** t)
                 return Pt, P_seq
             
             _, P_seq = jax.lax.fori_loop(
-                1, T+1, body, (Pt, P_seq)
+                1, T+1, body_fun, (Pt, P_seq)
                 )
             return P_seq
         
-        P_seq = jax.lax.cond(T==0, inifinite_period, finite_period)
+        P_seq = jax.lax.cond(T==0, infinite_period, finite_period)
     
         # compute the matrix [u(α_1 y), ..., u(α_K, y)]
-        flow = jnp.empty((n, K))
-        def body(k, carry):
-            flow = carry
+        def body_fun(k, flow):
             return flow.at[:, k].set(u(α[k] * y))
         
-        flow = jax.lax.fori_loop(0, K, body, flow)
+        flow = jax.lax.fori_loop(0, K, body_fun, jnp.empty((n, K)))
         
         J = P_seq @ flow
 
@@ -1306,7 +1306,7 @@ For the specification of the Markov chain in example 3, let's take a look at how
 
 @jax.jit
 def compute_example_3(αs0_seq_init, αs1_seq_init):
-    def body(i, carry):
+    def body_fun(i, carry):
         αs0_seq, αs1_seq = carry
         λ = λ_seq[i]
         P = jnp.array([[1-λ, λ], [0, 1]])
@@ -1320,7 +1320,7 @@ def compute_example_3(αs0_seq_init, αs1_seq_init):
                 αs1_seq.at[i, :].set(ex3_s1.α))
 
     αs0_seq, αs1_seq = jax.lax.fori_loop(
-        0, 100, body, (αs0_seq_init, αs1_seq_init)
+        0, 100, body_fun, (αs0_seq_init, αs1_seq_init)
         )
     return αs0_seq, αs1_seq
 
