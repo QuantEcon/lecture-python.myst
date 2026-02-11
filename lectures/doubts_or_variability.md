@@ -26,187 +26,363 @@ kernelspec:
 :depth: 2
 ```
 
-## Overview
-
-Robert Lucas Jr. opened a 2003 essay with a challenge:
-
 > *No one has found risk aversion parameters of 50 or 100 in the diversification of
 > individual portfolios, in the level of insurance deductibles, in the wage premiums
 > associated with occupations with high earnings risk, or in the revenues raised by
-> state-operated lotteries.*
+> state-operated lotteries.* -- Robert Lucas Jr., January 10, 2003
 
-Tallarini {cite}`Tallarini_2000` had shown that a recursive preference specification could match the equity premium and the risk-free rate puzzle simultaneously.
+## Overview
+
+{cite:t}`Tall2000` showed that a recursive preference specification could match the equity premium and the risk-free rate puzzle simultaneously.
+
 But matching required setting the risk-aversion coefficient $\gamma$ to around 50 for a random-walk consumption model and around 75 for a trend-stationary model --- exactly the range that provoked Lucas's skepticism.
 
-{cite}`BHS_2009` ask whether those large $\gamma$ values really measure aversion to atemporal risk.
-Their answer is no.
-The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to a
-second recursion in which the agent has unit risk aversion but fears that the probability model governing consumption growth may be wrong.
-Under this reading, the parameter that looked like extreme risk aversion instead measures
-the agent's concern about **model misspecification**.
+{cite:t}`BHS_2009` ask whether those large $\gamma$ values really measure aversion to atemporal risk, or whether they instead measure the agent's doubts about the underlying probability model.
 
-The question then becomes: how much misspecification is plausible?
-Rather than calibrating $\gamma$ through Pratt-style thought experiments about known gambles,
-{cite}`BHS_2009` calibrate through a **detection-error probability** --- the chance of confusing the agent's baseline (approximating) model with the pessimistic (worst-case) model after seeing a finite sample.
+Their answer --- and the theme of this lecture --- is that much of what looks like "risk aversion" can be reinterpreted as **model uncertainty**.
+
+The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to a max–min recursion in which the agent has unit risk aversion but fears that the probability model governing consumption growth may be wrong.
+
+Under this reading, the parameter that looked like extreme risk aversion instead measures concern about **misspecification**.
+
+Rather than calibrating $\gamma$ through Pratt-style thought experiments about known gambles, we calibrate through a **detection-error probability**: the probability of confusing the agent's baseline (approximating) model with the pessimistic (worst-case) model after seeing a finite sample.
+
 When detection-error probabilities are moderate, the implied $\gamma$ values are large enough to reach the Hansen--Jagannathan volatility bound.
 
-This reinterpretation changes the welfare question that asset prices answer.
-Large measured risk premia no longer imply large gains from smoothing known aggregate risk.
-Instead, they imply large gains from resolving model uncertainty --- a very different policy object.
+This reinterpretation changes the welfare question that asset prices answer: do large risk premia measure the benefits from reducing well-understood aggregate fluctuations, or the benefits from reducing doubts about the consumption-growth model?
+
+We start with the Hansen--Jagannathan bound, then specify the statistical environment, lay out four related preference specifications and their equivalences, and finally revisit Tallarini's calibration using detection-error probabilities.
+
+This lecture draws on the ideas and techniques appeared in
+
+- {ref}`Asset Pricing: Finite State Models <mass>` where we introduce stochastic discount factors.
+- {ref}`Likelihood Ratio Processes <likelihood_ratio_process>` where we develop the likelihood-ratio machinery that reappears here as the worst-case distortion $\hat g$.
+
+
+Before we start, we install a package that is not included in Anaconda by default
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+!pip install pandas-datareader
+```
+
+We use the following imports for the rest of this lecture
+
+```{code-cell} ipython3
+import datetime as dt
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from pandas_datareader import data as web
 from scipy.stats import norm
-
-np.set_printoptions(precision=4, suppress=True)
-
-
-def set_seed(seed=1234):
-    np.random.seed(seed)
-
-
-set_seed()
 ```
 
-## The economic idea
-
-A representative consumer has a baseline probabilistic description of consumption growth.
-Call it the **approximating model**.
-The consumer does not fully trust this model.
-To formalize that distrust, she surrounds the approximating model with a set of nearby alternatives that are difficult to distinguish statistically in finite samples.
-
-Among those alternatives, a minimizing player inside the consumer's head selects a **worst-case model**.
-The resulting max-min problem generates a likelihood-ratio distortion $\hat g_{t+1}$ that tilts one-step-ahead probabilities toward adverse states.
-That distortion enters the stochastic discount factor alongside the usual intertemporal marginal rate of substitution, and its standard deviation is the **market price of model uncertainty** (MPU).
-
-The discipline on how much distortion is allowed comes not from introspection about
-willingness to pay for small known gambles, but from a statistical detection problem:
-given $T$ observations, how likely is a Bayesian to confuse the approximating model with the worst-case model?
-The answer is a **detection-error probability** $p(\theta^{-1})$.
-High $p$ means the two models are nearly indistinguishable and the consumer's fear of misspecification is hard to dismiss.
-
-## Four agent types and one key equivalence
-
-The analysis compares four preference specifications that are useful for different purposes.
-
-* **Type I** (Kreps--Porteus--Epstein--Zin--Tallarini): risk-sensitive recursive utility with risk-aversion parameter $\gamma$ and IES fixed at 1.
-* **Type II** (multiplier preferences): unit risk aversion but a penalty parameter $\theta$ on the relative entropy of probability distortions.
-* **Type III** (constraint preferences): unit risk aversion with a hard bound $\eta$ on discounted relative entropy.
-* **Type IV** (pessimistic ex post Bayesian): log utility under a single pessimistic probability model $\hat\Pi_\infty$.
-
-The pivotal result is that **types I and II are observationally equivalent** over consumption plans in this environment.
-The mapping is $\theta = [(1-\beta)(\gamma - 1)]^{-1}$.
-So when Tallarini sets $\gamma = 50$ to reach the Hansen--Jagannathan bound, one can equally say
-the consumer has unit risk aversion and a model-uncertainty penalty $\theta$ that corresponds to a
-moderate detection-error probability.
-The quantitative fit is unchanged; only the economic interpretation shifts.
-
-## Setup
-
-The calibration uses quarterly U.S. data from 1948:2--2006:4 for consumption **growth rates** (a sample length of $T = 235$ quarters).
-When we plot **levels** of log consumption (as in Fig. 6), we align the time index to 1948:1--2006:4, which yields $T+1 = 236$ quarterly observations.
-Parameter estimates for two consumption-growth specifications (random walk and trend stationary)
-come from Table 2 of {cite}`BHS_2009`, and asset-return moments come from their Table 1.
-Following footnote 8 in {cite}`BHS_2009`, consumption is measured as real personal consumption expenditures on nondurable goods and services, deflated by its implicit chain price deflator, and expressed in per-capita terms using the civilian noninstitutional population aged 16+.
-
-### Data
-
-Most numerical inputs in this lecture are taken directly from {cite}`BHS_2009`.
-Table 2 provides the maximum-likelihood estimates of $(\mu, \sigma_\varepsilon, \rho, \zeta)$ for the two consumption-growth specifications, and Table 1 provides the asset-return moments used in the Hansen--Jagannathan bound calculation.
-
-Following footnote 8 of {cite}`BHS_2009`, consumption is measured as real personal consumption expenditures on nondurable goods and services, deflated by its implicit chain price deflator, and expressed in per-capita terms using the civilian noninstitutional population aged 16+.
-We construct this measure from three [FRED](https://fred.stlouisfed.org) series:
-
-| FRED series | Description |
-| --- | --- |
-| `PCNDGC96` | Real PCE: nondurable goods (billions of chained 2017 \$, SAAR) |
-| `PCESVC96` | Real PCE: services (billions of chained 2017 \$, SAAR) |
-| `CNP16OV` | Civilian noninstitutional population, 16+ (thousands, monthly) |
-
-The BEA deflates each PCE component by its own chain-type price index internally.
-Summing the chained-dollar components introduces a small Fisher-index non-additivity error, but this is negligible for our purposes and avoids the larger error of deflating the ND+SV nominal aggregate by the *overall* PCE deflator (which includes durables with secularly declining prices).
-
-The processing pipeline is:
-
-1. Add real nondurables and services: $C_t^{real} = C_t^{nd} + C_t^{sv}$.
-2. Convert to per-capita (millions of dollars per person): divide by the quarterly average of the monthly population series and by $10^6$.
-   This normalization matches the units in {cite}`BHS_2009`, where the trend-stationary intercept is $\zeta = -4.48$.
-3. Compute log consumption: $c_t = \log C_t^{real,pc}$.
+We also set up calibration inputs and compute the covariance matrix of equity and risk-free returns from reported moments
 
 ```{code-cell} ipython3
-start_date = "1947-01-01"
-end_date = "2007-01-01"
+β = 0.995
+T = 235  
 
+# Table 2 parameters
+rw = dict(μ=0.00495, σ_ε=0.0050)
+ts = dict(μ=0.00418, σ_ε=0.0050, ρ=0.980, ζ=-4.48)
 
-def _fetch_fred_series(series_id, start_date, end_date):
-    # Keyless pull from FRED CSV endpoint.
-    url = f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}"
-    df = pd.read_csv(url)
-    if df.empty:
-        raise ValueError(f"FRED returned an empty table for '{series_id}'")
+# Table 1 moments, converted from percent to decimals
+r_e_mean, r_e_std = 0.0227, 0.0768
+r_f_mean, r_f_std = 0.0032, 0.0061
+r_excess_std = 0.0767
 
-    # Be robust to header variations (e.g., DATE vs date, BOM, whitespace).
-    df.columns = [str(c).strip().lstrip("\ufeff") for c in df.columns]
-    date_col = df.columns[0]
-    value_col = series_id if series_id in df.columns else (df.columns[1] if len(df.columns) > 1 else None)
-    if value_col is None:
-        raise ValueError(
-            f"Unexpected FRED CSV format for '{series_id}'. Columns: {list(df.columns)}"
-        )
-
-    dates = pd.to_datetime(df[date_col], errors="coerce")
-    values = pd.to_numeric(df[value_col], errors="coerce")
-    out = pd.Series(values.to_numpy(), index=dates, name=series_id).dropna().sort_index()
-    out = out.loc[start_date:end_date].dropna()
-    if out.empty:
-        raise ValueError(f"FRED series '{series_id}' returned no data in sample window")
-    return out
-
-
-# Fetch real PCE components and population from FRED (no API key required)
-real_nd = _fetch_fred_series("PCNDGC96", start_date, end_date)
-real_sv = _fetch_fred_series("PCESVC96", start_date, end_date)
-pop_m = _fetch_fred_series("CNP16OV", start_date, end_date)
-
-# Step 1: aggregate real nondurables + services
-real_total = real_nd + real_sv
-
-# Step 2: align to quarterly frequency first, then convert to per-capita
-# real_total is in billions ($1e9), pop is in thousands ($1e3)
-# per-capita in millions: real_total * 1e9 / (pop * 1e3) / 1e6 = real_total / pop
-real_total_q = real_total.resample("QS").mean()
-pop_q = pop_m.resample("QS").mean()
-real_pc = (real_total_q / pop_q).dropna()
-
-# Restrict to sample period 1948Q1–2006Q4
-real_pc = real_pc.loc["1948-01-01":"2006-12-31"].dropna()
-
-# FRED-only fallback: use BEA per-capita quarterly components directly.
-# This avoids index-alignment failures in some pandas/FRED combinations.
-if real_pc.empty:
-    nd_pc = _fetch_fred_series("A796RX0Q048SBEA", start_date, end_date)
-    sv_pc = _fetch_fred_series("A797RX0Q048SBEA", start_date, end_date)
-    real_pc = ((nd_pc + sv_pc) / 1e6).loc["1948-01-01":"2006-12-31"].dropna()
-
-if real_pc.empty:
-    raise RuntimeError("FRED returned no usable observations after alignment/filtering")
-
-# Step 3: log consumption
-log_c_data = np.log(real_pc.to_numpy(dtype=float).reshape(-1))
-years_data = (real_pc.index.year + (real_pc.index.month - 1) / 12.0).to_numpy(dtype=float)
-
-print(f"Fetched {len(log_c_data)} quarterly observations from FRED")
-print(f"Sample: {years_data[0]:.1f} – {years_data[-1] + 0.25:.1f}")
-print(f"Observations: {len(log_c_data)}")
-print(f"c_0 = {log_c_data[0]:.3f} (paper Fig 6: ≈ −4.6)")
+R_mean = np.array([1.0 + r_e_mean, 1.0 + r_f_mean])  
+cov_erf = (r_e_std**2 + r_f_std**2 - r_excess_std**2) / 2.0
+Σ_R = np.array(
+    [
+        [r_e_std**2, cov_erf],
+        [cov_erf, r_f_std**2],
+    ]
+)
+Σ_R_inv = np.linalg.inv(Σ_R)
 ```
 
-### Consumption plans and the state-space representation
+## The equity premium and risk-free rate puzzles
 
-{cite}`BHS_2009` cast the analysis in terms of a general class of consumption plans.
+### Pricing kernel and the risk-free rate
+
+In this section, we review a few key concepts appeared in {ref}`Asset Pricing: Finite State Models <mass>`.
+
+A random variable $m_{t+1}$ is said to be a **stochastic discount factor** if it confirms the following equation for the time-$t$ price $p_t$ of a one-period payoff $y_{t+1}$:
+
+```{math}
+:label: bhs_pricing_eq
+p_t = E_t(m_{t+1}\, y_{t+1}),
+```
+
+where $E_t$ denotes the mathematical expectation conditioned on date-$t$ information.
+
+For time-separable CRRA preferences with discount factor $\beta$ and coefficient of relative risk aversion $\gamma$, the marginal rate of substitution gives
+
+```{math}
+:label: bhs_crra_sdf
+m_{t+1} = \beta \left(\frac{C_{t+1}}{C_t}\right)^{-\gamma},
+```
+
+where $C_t$ is consumption.
+
+Setting $y_{t+1} = 1$ (a risk-free bond) in {eq}`bhs_pricing_eq` yields the reciprocal of the gross one-period risk-free rate:
+
+```{math}
+:label: bhs_riskfree
+\frac{1}{R_t^f} = E_t[m_{t+1}] = E_t\!\left[\beta\left(\frac{C_{t+1}}{C_t}\right)^{-\gamma}\right].
+```
+
+### The Hansen--Jagannathan bound
+
+Let $R_{t+1}^e$ denote the gross return on a risky asset (e.g., the market portfolio) and $R_{t+1}^f$ the gross return on a one-period risk-free bond.
+
+The **excess return** is
+
+$$
+\xi_{t+1} = R_{t+1}^e - R_{t+1}^f.
+$$
+
+An excess return is the payoff on a zero-cost portfolio that is long one dollar of the risky asset and short one dollar of the risk-free bond.
+
+Because the portfolio costs nothing to enter, its price is $p_t = 0$, so {eq}`bhs_pricing_eq` implies
+
+$$
+0 = E_t[m_{t+1}\,\xi_{t+1}].
+$$
+
+We can decompose the expectation of a product into a covariance plus a product of expectations:
+
+$$
+E_t[m_{t+1}\,\xi_{t+1}]
+=
+\operatorname{cov}_t(m_{t+1},\,\xi_{t+1}) + E_t[m_{t+1}]\,E_t[\xi_{t+1}],
+$$
+
+where $\operatorname{cov}_t$ denotes the conditional covariance and $\sigma_t$ will denote the conditional standard deviation.
+Setting the left-hand side to zero and solving for the expected excess return gives
+
+$$
+E_t[\xi_{t+1}] = -\frac{\operatorname{cov}_t(m_{t+1},\,\xi_{t+1})}{E_t[m_{t+1}]}.
+$$
+
+Taking absolute values and applying the **Cauchy--Schwarz inequality** $|\operatorname{cov}(X,Y)| \leq \sigma(X)\,\sigma(Y)$ yields
+
+```{math}
+:label: bhs_hj_bound
+\frac{|E_t[\xi_{t+1}]|}{\sigma_t(\xi_{t+1})}
+\;\leq\;
+\frac{\sigma_t(m_{t+1})}{E_t[m_{t+1}]}.
+```
+
+The left-hand side of {eq}`bhs_hj_bound` is the **Sharpe ratio**: the expected excess return per unit of return volatility.
+
+The right-hand side, $\sigma_t(m)/E_t(m)$, is the **market price of risk**: the maximum Sharpe ratio attainable in the market. 
+
+The bound says that the Sharpe ratio of any asset cannot exceed the market price of risk.
+
+#### Unconditional version
+
+The bound {eq}`bhs_hj_bound` is stated in conditional terms.
+An unconditional counterpart considers a vector of $n$ gross returns $R_{t+1}$ (e.g., equity and risk-free) with unconditional mean $E(R)$ and covariance matrix $\Sigma_R$.
+{ref}`Exercise 1 <dov_ex1>` asks you to derive
+
+```{math}
+:label: bhs_hj_unconditional
+\frac{\sigma(m)}{E(m)}
+\;\ge\;
+\sqrt{b^\top \Sigma_R^{-1} b},
+\qquad
+b = \mathbb{1} - E(m)\, E(R).
+```
+
+```{code-cell} ipython3
+def hj_std_bound(E_m):
+    b = np.ones(2) - E_m * R_mean
+    var_lb = b @ Σ_R_inv @ b
+    return np.sqrt(np.maximum(var_lb, 0.0))
+```
+
+### The puzzle
+
+To reconcile formula {eq}`bhs_crra_sdf` with measures of the market price of risk extracted from data on asset returns and prices (like those in Table 1 below) requires a value of $\gamma$ so high that it provokes skepticism --- this is the **equity premium puzzle**.
+
+But the puzzle has a second dimension.
+
+High values of $\gamma$ that deliver enough volatility $\sigma(m)$ also push the reciprocal of the risk-free rate $E(m)$ down, and therefore away from the Hansen--Jagannathan bounds.
+
+This is the **risk-free rate puzzle** of {cite:t}`Weil_1989`.
+
+{cite:t}`Tall2000` showed that recursive preferences with IES $= 1$ can clear the HJ bar while avoiding the risk-free rate puzzle.
+
+### Deriving SDF moments under recursive preferences
+
+The figure below reproduces Tallarini's key diagnostic.
+
+For each value of $\gamma \in \{1, 5, 10, \ldots, 50\}$, we plot the implied $(E(m),\;\sigma(m)/E(m))$ pair for three specifications: time-separable CRRA (crosses), recursive preferences with random-walk consumption (circles), and recursive preferences with trend-stationary consumption (pluses).
+
+For the two consumption specifications, we can derive closed-form expressions for the unconditional SDF moments under recursive preferences.
+
+Under recursive preferences with IES $= 1$, the SDF has the form (derived later in {eq}`bhs_sdf`)
+
+$$
+m_{t+1} = \beta \frac{C_t}{C_{t+1}} \cdot \hat{g}_{t+1},
+$$
+
+where $\hat{g}_{t+1}$ is a likelihood-ratio distortion from the continuation value.
+
+For the random-walk model with $c_{t+1} - c_t = \mu + \sigma_\varepsilon \varepsilon_{t+1}$ and $\varepsilon_{t+1} \sim \mathcal{N}(0,1)$, the distortion is a Gaussian mean shift $w = -\sigma_\varepsilon(\gamma - 1)$, and $\log m_{t+1}$ turns out to be normally distributed:
+
+$$
+\log m_{t+1} = \log\beta - \mu - \tfrac{1}{2}w^2 + (w - \sigma_\varepsilon)\varepsilon_{t+1}.
+$$
+
+Its mean and variance are
+
+$$
+E[\log m] = \log\beta - \mu - \tfrac{1}{2}w^2,
+\qquad
+\operatorname{Var}(\log m) = (w - \sigma_\varepsilon)^2 = \sigma_\varepsilon^2 \gamma^2.
+$$
+
+For a lognormal random variable, $E[m] = \exp(E[\log m] + \tfrac{1}{2}\operatorname{Var}(\log m))$ and $\sigma(m)/E[m] = \sqrt{e^{\operatorname{Var}(\log m)} - 1}$.
+
+Substituting gives the following closed-form expressions ({ref}`Exercise 2 <dov_ex2>` asks you to work through the full derivation):
+
+- *Random walk*:
+
+```{math}
+:label: bhs_Em_rw
+E[m] = \beta \exp\!\left[-\mu + \frac{\sigma_\varepsilon^2}{2}(2\gamma - 1)\right],
+```
+
+```{math}
+:label: bhs_sigma_rw
+\frac{\sigma(m)}{E[m]} = \sqrt{\exp\!\left(\sigma_\varepsilon^2 \gamma^2\right) - 1}.
+```
+
+Notice that in {eq}`bhs_Em_rw`, because $\sigma_\varepsilon$ is small ($\approx 0.005$), the term $\frac{\sigma_\varepsilon^2}{2}(2\gamma-1)$ grows slowly with $\gamma$, keeping $E[m]$ roughly constant near $1/(1+r^f)$.
+
+Meanwhile {eq}`bhs_sigma_rw` shows that $\sigma(m)/E[m] \approx \sigma_\varepsilon \gamma$ grows linearly with $\gamma$.
+
+This is how recursive preferences push volatility toward the HJ bound without distorting the risk-free rate.
+
+An analogous calculation for the trend-stationary model yields:
+
+- *Trend stationary*:
+
+```{math}
+:label: bhs_Em_ts
+E[m] = \beta \exp\!\left[-\mu + \frac{\sigma_\varepsilon^2}{2}\!\left(1 - \frac{2(1-\beta)(1-\gamma)}{1-\beta\rho} + \frac{1-\rho}{1+\rho}\right)\right],
+```
+
+```{math}
+:label: bhs_sigma_ts
+\frac{\sigma(m)}{E[m]} = \sqrt{\exp\!\left[\sigma_\varepsilon^2\!\left(\!\left(\frac{(1-\beta)(1-\gamma)}{1-\beta\rho} - 1\right)^{\!2} + \frac{1-\rho}{1+\rho}\right)\right] - 1}.
+```
+
+The code below implements these expressions (and the corresponding CRRA moments) to draw Tallarini's figure.
+
+```{code-cell} ipython3
+def moments_type1_rw(γ):
+    μ, σ = rw["μ"], rw["σ_ε"]
+    E_m = β * np.exp(-μ + 0.5 * σ**2 * (2.0 * γ - 1.0))
+    var_log_m = (σ * γ) ** 2
+    mpr = np.sqrt(np.exp(var_log_m) - 1.0)
+    return E_m, mpr
+
+
+def moments_type1_ts(γ):
+    μ, σ, ρ = ts["μ"], ts["σ_ε"], ts["ρ"]
+    mean_term = 1.0 - (2.0 * (1.0 - β) * (1.0 - γ)) / (1.0 - β * ρ) \
+                + (1.0 - ρ) / (1.0 + ρ)
+    E_m = β * np.exp(-μ + 0.5 * σ**2 * mean_term)
+    var_term = (((1.0 - β) * (1.0 - γ)) / (1.0 - β * ρ) - 1.0) ** 2 \
+                + (1.0 - ρ) / (1.0 + ρ)
+    var_log_m = σ**2 * var_term
+    mpr = np.sqrt(np.exp(var_log_m) - 1.0)
+    return E_m, mpr
+
+
+def moments_crra_rw(γ):
+    μ, σ = rw["μ"], rw["σ_ε"]
+    var_log_m = (γ * σ) ** 2
+    mean_log_m = np.log(β) - γ * μ
+    E_m = np.exp(mean_log_m + 0.5 * var_log_m)
+    mpr = np.sqrt(np.exp(var_log_m) - 1.0)
+    return E_m, mpr
+```
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: SDF moments and Hansen-Jagannathan bound
+    name: fig-bhs-1
+---
+γ_grid = np.array([1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50], dtype=float)
+
+Em_rw = np.array([moments_type1_rw(γ)[0] for γ in γ_grid])
+MPR_rw = np.array([moments_type1_rw(γ)[1] for γ in γ_grid])
+
+Em_ts = np.array([moments_type1_ts(γ)[0] for γ in γ_grid])
+MPR_ts = np.array([moments_type1_ts(γ)[1] for γ in γ_grid])
+
+Em_crra = np.array([moments_crra_rw(γ)[0] for γ in γ_grid])
+MPR_crra = np.array([moments_crra_rw(γ)[1] for γ in γ_grid])
+
+Em_grid = np.linspace(0.8, 1.01, 1000)
+HJ_std = np.array([hj_std_bound(x) for x in Em_grid])
+
+fig, ax = plt.subplots(figsize=(7, 5))
+ax.plot(Em_grid, HJ_std, lw=2, color="black", 
+                            label="Hansen-Jagannathan bound")
+ax.plot(Em_rw, MPR_rw, "o", lw=2, 
+                            label="recursive, random walk")
+ax.plot(Em_ts, MPR_ts, "+", lw=2, 
+                            label="recursive, trend stationary")
+ax.plot(Em_crra, MPR_crra, "x", lw=2, 
+                            label="time-separable CRRA")
+
+ax.set_xlabel(r"$E(m)$")
+ax.set_ylabel(r"$\sigma(m)/E(m)$")
+ax.legend(frameon=False)
+ax.set_xlim(0.8, 1.01)
+ax.set_ylim(0.0, 0.42)
+
+plt.tight_layout()
+plt.show()
+```
+
+The crosses trace the familiar CRRA failure: as $\gamma$ rises, $\sigma(m)/E(m)$ grows but $E(m)$ falls well below the range consistent with the observed risk-free rate.
+
+This is the risk-free-rate puzzle of {cite:t}`Weil_1989`.
+
+The circles and pluses show Tallarini's solution.
+
+Recursive utility with IES $= 1$ pushes volatility upward while keeping $E(m)$ roughly constant near $1/(1+r^f)$.
+
+For the random-walk model, the bound is reached around $\gamma = 50$; for the trend-stationary model, around $\gamma = 75$.
+
+The quantitative achievement is real.
+
+But Lucas's challenge still stands: what microeconomic evidence supports $\gamma = 50$?
+
+To make the reinterpretation precise, we now lay out the statistical environment and the preference specifications.
+
+## The choice setting
+
+The calibration uses quarterly U.S. data from 1948Q2--2006Q4 for consumption growth rates (a sample length of $T = 235$ quarters).
+
+We consider two consumption-growth specifications (random walk and trend stationary) with parameter estimates and asset-return moments from {cite}`BHS_2009`.
+
+### Shocks and consumption plans
+
+We cast the analysis in terms of a general class of consumption plans.
+
 Let $x_t$ be an $n \times 1$ state vector and $\varepsilon_{t+1}$ an $m \times 1$ shock.
+
 A consumption plan belongs to the set $\mathcal{C}(A, B, H; x_0)$ if it admits the recursive representation
 
 ```{math}
@@ -217,13 +393,15 @@ c_t = H x_t,
 ```
 
 where the eigenvalues of $A$ are bounded in modulus by $1/\sqrt{\beta}$.
+
 The time-$t$ element of a consumption plan can therefore be written as
 
 ```{math}
 c_t = H\!\left(B\varepsilon_t + AB\varepsilon_{t-1} + \cdots + A^{t-1}B\varepsilon_1\right) + HA^t x_0.
 ```
 
-The equivalence theorems and Bellman equations in the paper are stated for arbitrary plans in $\mathcal{C}(A,B,H;x_0)$.
+The equivalence theorems and Bellman equations below hold for arbitrary plans in $\mathcal{C}(A,B,H;x_0)$.
+
 The random-walk and trend-stationary models below are two special cases.
 
 ### Consumption dynamics
@@ -236,7 +414,15 @@ The random-walk specification is
 c_{t+1} = c_t + \mu + \sigma_\varepsilon \varepsilon_{t+1}, \qquad \varepsilon_{t+1} \sim \mathcal{N}(0, 1).
 ```
 
-The trend-stationary specification can be written as a deterministic trend plus a stationary AR(1) component {cite}`BHS_2009`:
+Iterating forward yields
+
+```{math}
+c_t = c_0 + t\mu + \sigma_\varepsilon(\varepsilon_t + \varepsilon_{t-1} + \cdots + \varepsilon_1),
+\qquad
+t \ge 1.
+```
+
+The trend-stationary specification can be written as a deterministic trend plus a stationary AR(1) component:
 
 ```{math}
 c_t = \zeta + \mu t + z_t,
@@ -246,38 +432,27 @@ z_{t+1} = \rho z_t + \sigma_\varepsilon \varepsilon_{t+1},
 \varepsilon_{t+1} \sim \mathcal{N}(0, 1).
 ```
 
+With $z_0 = c_0 - \zeta$, this implies the explicit representation
+
+```{math}
+c_t
+=
+\rho^t c_0 + \mu t + (1-\rho^t)\zeta
++
+\sigma_\varepsilon(\varepsilon_t + \rho \varepsilon_{t-1} + \cdots + \rho^{t-1}\varepsilon_1),
+\qquad
+t \ge 1.
+```
+
 Equivalently, defining the detrended series $\tilde c_t := c_t - \mu t$,
 
 ```{math}
 \tilde c_{t+1} - \zeta = \rho(\tilde c_t - \zeta) + \sigma_\varepsilon \varepsilon_{t+1}.
 ```
 
-Table 2 in {cite}`BHS_2009` reports $(\mu, \sigma_\varepsilon)$ for the random walk and $(\mu, \sigma_\varepsilon, \rho, \zeta)$ for the trend-stationary case.
+The estimated parameters are $(\mu, \sigma_\varepsilon)$ for the random walk and $(\mu, \sigma_\varepsilon, \rho, \zeta)$ for the trend-stationary case.
 
 ```{code-cell} ipython3
-# Preferences and sample length
-β = 0.995
-T = 235  # quarterly sample length used in the paper
-
-# Table 2 parameters
-rw = dict(μ=0.00495, σ_ε=0.0050)
-ts = dict(μ=0.00418, σ_ε=0.0050, ρ=0.980, ζ=-4.48)
-
-# Table 1 moments, converted from percent to decimals
-r_e_mean, r_e_std = 0.0227, 0.0768
-r_f_mean, r_f_std = 0.0032, 0.0061
-r_excess_std = 0.0767
-
-R_mean = np.array([1.0 + r_e_mean, 1.0 + r_f_mean])  # gross returns
-cov_erf = (r_e_std**2 + r_f_std**2 - r_excess_std**2) / 2.0
-Σ_R = np.array(
-    [
-        [r_e_std**2, cov_erf],
-        [cov_erf, r_f_std**2],
-    ]
-)
-Σ_R_inv = np.linalg.inv(Σ_R)
-
 print("Table 2 parameters")
 print(f"random walk: μ={rw['μ']:.5f}, σ_ε={rw['σ_ε']:.5f}")
 print(
@@ -291,24 +466,53 @@ print(f"E[r_f]={r_f_mean:.4f}, std[r_f]={r_f_std:.4f}")
 print(f"std[r_e-r_f]={r_excess_std:.4f}")
 ```
 
-We can verify Table 2 by computing sample moments of log consumption growth from our FRED data:
+### Overview of agents I, II, III, and IV
 
-```{code-cell} ipython3
-# Growth rates: 1948Q2 to 2006Q4 (T = 235 quarters)
-Δc = np.diff(log_c_data)
+We compare four preference specifications over consumption plans $C^\infty \in \mathcal{C}$.
 
-μ_hat = Δc.mean()
-σ_hat = Δc.std(ddof=1)
+**Type I agent (Kreps--Porteus--Epstein--Zin--Tallarini)** with
+- a discount factor $\beta \in (0,1)$;
+- an intertemporal elasticity of substitution fixed at $1$;
+- a risk-aversion parameter $\gamma \ge 1$; and
+- an approximating conditional density $\pi(\cdot)$ for shocks and its implied joint distribution $\Pi_\infty(\cdot \mid x_0)$.
 
-print("Sample estimates from FRED data vs Table 2:")
-print(f"  μ̂   = {μ_hat:.5f}   (Table 2 RW: {rw['μ']:.5f})")
-print(f"  σ̂_ε = {σ_hat:.4f}    (Table 2: {rw['σ_ε']:.4f})")
-print(f"  T   = {len(Δc)} quarters")
-```
+**Type II agent (multiplier preferences)** with
+- $\beta \in (0,1)$;
+- IES $=1$;
+- unit risk aversion;
+- an approximating model $\Pi_\infty(\cdot \mid x_0)$; and
+- a penalty parameter $\theta > 0$ that discourages probability distortions using relative entropy.
+
+**Type III agent (constraint preferences)** with
+- $\beta \in (0,1)$;
+- IES $=1$;
+- unit risk aversion;
+- an approximating model $\Pi_\infty(\cdot \mid x_0)$; and
+- a bound $\eta$ on discounted relative entropy.
+
+**Type IV agent (pessimistic ex post Bayesian)** with
+- $\beta \in (0,1)$;
+- IES $=1$;
+- unit risk aversion; and
+- a single pessimistic joint distribution $\hat\Pi_\infty(\cdot \mid x_0, \theta)$ induced by the type II worst-case distortion.
+
+Two equivalence results organize the analysis.
+
+Types I and II are observationally equivalent in the strong sense that they have identical preferences over $\mathcal{C}$ (once parameters are mapped appropriately).
+
+Types III and IV are observationally equivalent in a weaker but still useful sense: for the particular endowment process taken as given, they deliver the same worst-case pricing implications as a type II agent (for the $\theta$ that implements the entropy constraint).
 
 ## Preferences, distortions, and detection
 
-The type I recursion is
+We now formalize each of the four agent types and develop the equivalence results that connect them.
+
+We begin with the type I (Kreps--Porteus--Epstein--Zin--Tallarini) agent, whose preferences are defined by a recursion over certainty equivalents, then show how a change of variables converts it into a risk-sensitive recursion that is observationally equivalent to the type II agent's max--min problem.
+
+Along the way we introduce the likelihood-ratio distortion that appears in the stochastic discount factor and develop the detection-error probability that will serve as our new calibration language.
+
+### The transformed continuation value
+
+The type I (Kreps--Porteus--Epstein--Zin--Tallarini) recursion with IES $= 1$ and risk-aversion parameter $\gamma$ is
 
 ```{math}
 :label: bhs_type1_recursion
@@ -320,9 +524,7 @@ The type I recursion is
 \log E_t\left[(V_{t+1})^{1-\gamma}\right].
 ```
 
-### The transformed continuation value
-
-A key intermediate step in {cite}`BHS_2009` is to define the transformed continuation value
+A key intermediate step is to define the transformed continuation value
 
 ```{math}
 :label: bhs_Ut_def
@@ -336,15 +538,14 @@ and the robustness parameter
 \theta = \frac{-1}{(1-\beta)(1-\gamma)}.
 ```
 
-Substituting into {eq}`bhs_type1_recursion` yields the **risk-sensitive recursion**
+Substituting into {eq}`bhs_type1_recursion` yields the **risk-sensitive recursion** ({ref}`Exercise 3 <dov_ex3>` asks you to verify this step)
 
 ```{math}
 :label: bhs_risk_sensitive
 U_t = c_t - \beta\theta \log E_t\!\left[\exp\!\left(\frac{-U_{t+1}}{\theta}\right)\right].
 ```
 
-When $\gamma = 1$ (equivalently $\theta = +\infty$), the $\log E \exp$ term reduces to $E_t U_{t+1}$
-and the recursion becomes standard discounted expected log utility: $U_t = c_t + \beta E_t U_{t+1}$.
+When $\gamma = 1$ (equivalently $\theta = +\infty$), the $\log E \exp$ term reduces to $E_t U_{t+1}$ and the recursion becomes standard discounted expected log utility: $U_t = c_t + \beta E_t U_{t+1}$.
 
 For consumption plans in $\mathcal{C}(A, B, H; x_0)$, the recursion {eq}`bhs_risk_sensitive` implies the Bellman equation
 
@@ -357,7 +558,7 @@ The stochastic discount factor can then be written as
 
 ```{math}
 :label: bhs_sdf_Ut
-m_{t+1,t}
+m_{t+1}
 =
 \beta \frac{C_t}{C_{t+1}}
 \cdot
@@ -368,7 +569,8 @@ The second factor is the likelihood-ratio distortion $\hat g_{t+1}$: an exponent
 
 ### Martingale likelihood ratios
 
-To formalize model distortions, {cite}`BHS_2009` use a nonnegative martingale $G_t$ with $E(G_t \mid x_0) = 1$ as a Radon--Nikodym derivative.
+To formalize model distortions, we use a nonnegative martingale $G_t$ with $E(G_t \mid x_0) = 1$ as a Radon--Nikodym derivative.
+
 Its one-step increments
 
 ```{math}
@@ -382,6 +584,7 @@ G_0 = 1,
 ```
 
 define distorted conditional expectations: $\tilde E_t[b_{t+1}] = E_t[g_{t+1}\,b_{t+1}]$.
+
 The conditional relative entropy of the distortion is $E_t[g_{t+1}\log g_{t+1}]$, and the discounted entropy over the entire path is $\beta E\bigl[\sum_{t=0}^{\infty} \beta^t G_t\,E_t(g_{t+1}\log g_{t+1})\,\big|\,x_0\bigr]$.
 
 ### Type II: multiplier preferences
@@ -397,6 +600,7 @@ A type II agent's **multiplier** preference ordering over consumption plans $C^\
 ```
 
 where $G_{t+1} = g_{t+1}G_t$, $E_t[g_{t+1}] = 1$, $g_{t+1} \ge 0$, and $G_0 = 1$.
+
 The parameter $\theta > 0$ penalizes the relative entropy of probability distortions.
 
 The value function satisfies the Bellman equation
@@ -411,9 +615,10 @@ c + \min_{g(\varepsilon) \ge 0}\;
 ```
 
 subject to $\int g(\varepsilon)\,\pi(\varepsilon)\,d\varepsilon = 1$.
+
 Note that $g(\varepsilon)$ multiplies both the continuation value $W$ and the entropy penalty --- this is the key structural feature that makes $\hat g$ a likelihood ratio.
 
-The minimizer is
+The minimizer is ({ref}`Exercise 4 <dov_ex4>` derives this and verifies the equivalence $W \equiv U$)
 
 ```{math}
 :label: bhs_ghat
@@ -427,7 +632,9 @@ Substituting {eq}`bhs_ghat` back into {eq}`bhs_bellman_type2` gives
 $$W(x) = c - \beta\theta \log \int \exp\!\left[\frac{-W(Ax + B\varepsilon)}{\theta}\right]\pi(\varepsilon)\,d\varepsilon,$$
 
 which is identical to {eq}`bhs_bellman_type1`.
+
 Therefore $W(x) \equiv U(x)$, establishing that **types I and II are observationally equivalent** over elements of $\mathcal{C}(A,B,H;x_0)$.
+
 The mapping between parameters is
 
 ```{math}
@@ -450,8 +657,8 @@ def γ_from_θ(θ, β=β):
 ### Type III: constraint preferences
 
 Type III (constraint) preferences replace the entropy penalty with a hard bound.
-The agent minimizes expected discounted log consumption under the worst-case model,
-subject to a cap $\eta$ on discounted relative entropy:
+
+The agent minimizes expected discounted log consumption under the worst-case model, subject to a cap $\eta$ on discounted relative entropy:
 
 ```{math}
 J(x_0)
@@ -466,9 +673,7 @@ subject to $G_{t+1} = g_{t+1}G_t$, $E_t[g_{t+1}] = 1$, $g_{t+1} \ge 0$, $G_0 = 1
 \beta E\!\left[\sum_{t=0}^{\infty} \beta^t G_t\,E_t\!\left(g_{t+1}\log g_{t+1}\right)\,\Big|\,x_0\right] \le \eta.
 ```
 
-The Lagrange multiplier on the entropy constraint is $\theta$, which connects type III to type II:
-for the particular $A, B, H$ and $\theta$ used to derive the worst-case joint distribution $\hat\Pi_\infty$,
-the shadow prices of uncertain claims for a type III agent match those of a type II agent.
+The Lagrange multiplier on the entropy constraint is $\theta$, which connects type III to type II: for the particular $A, B, H$ and $\theta$ used to derive the worst-case joint distribution $\hat\Pi_\infty$, the shadow prices of uncertain claims for a type III agent match those of a type II agent.
 
 ### Type IV: ex post Bayesian
 
@@ -479,6 +684,7 @@ Type IV is an ordinary expected-utility agent with log preferences evaluated und
 ```
 
 The joint distribution $\hat\Pi_\infty(\cdot \mid x_0, \theta)$ is the one associated with the type II agent's worst-case distortion.
+
 For the particular $A, B, H$ and $\theta$ used to construct $\hat\Pi_\infty$, the type IV value function equals $J(x)$ from type III.
 
 ### Stochastic discount factor
@@ -487,7 +693,7 @@ Across all four types, the stochastic discount factor can be written compactly a
 
 ```{math}
 :label: bhs_sdf
-m_{t+1,t}
+m_{t+1}
 =
 \beta \frac{C_t}{C_{t+1}} \hat g_{t+1}.
 ```
@@ -495,17 +701,19 @@ m_{t+1,t}
 The distortion $\hat g_{t+1}$ is a likelihood ratio between the approximating and worst-case one-step models.
 
 With log utility, $C_t/C_{t+1} = \exp(-(c_{t+1}-c_t))$ is the usual intertemporal marginal rate of substitution.
+
 Robustness multiplies that term by $\hat g_{t+1}$, so uncertainty aversion enters pricing only through the distortion.
 
 ### Gaussian mean-shift distortions
 
 Under the random-walk model, the shock is $\varepsilon_{t+1} \sim \mathcal{N}(0, 1)$.
-The worst-case model shifts its mean to $-w$, which implies the likelihood ratio
+
+The worst-case model shifts its mean to $w$ (which will be negative under our calibrations), which implies the likelihood ratio ({ref}`Exercise 5 <dov_ex5>` verifies the properties of this distortion)
 
 ```{math}
 \hat g_{t+1}
 =
-\exp\left(-w \varepsilon_{t+1} - \frac{1}{2}w^2\right),
+\exp\left(w \varepsilon_{t+1} - \frac{1}{2}w^2\right),
 \qquad
 E_t[\hat g_{t+1}] = 1.
 ```
@@ -557,7 +765,7 @@ p(\theta^{-1})
 \frac{1}{2}\left(p_A + p_B\right),
 ```
 
-and in our Gaussian mean-shift case reduces to
+and in our Gaussian mean-shift case reduces to ({ref}`Exercise 6 <dov_ex6>` derives this closed form)
 
 ```{math}
 :label: bhs_detection_closed
@@ -583,7 +791,10 @@ def θ_from_detection_probability(p, model):
 
 ### Likelihood-ratio testing and detection errors
 
+The likelihood-ratio machinery used here connects to several other lectures: {ref}`Likelihood Ratio Processes <likelihood_ratio_process>` develops the properties of likelihood ratios in detail, {ref}`Heterogeneous Beliefs and Financial Markets <likelihood_ratio_process_2>` applies them to asset pricing with disagreement, and {ref}`A Problem that Stumped Milton Friedman <wald_friedman>` uses sequential likelihood-ratio tests in a closely related decision problem.
+
 Let $L_T$ be the log likelihood ratio between the worst-case and approximating models based on a sample of length $T$.
+
 Define
 
 ```{math}
@@ -593,6 +804,7 @@ p_B = \Pr_B(L_T > 0),
 ```
 
 where $\Pr_A$ and $\Pr_B$ denote probabilities under the approximating and worst-case models.
+
 Then $p(\theta^{-1}) = \frac{1}{2}(p_A + p_B)$ is the average probability of choosing the wrong model.
 
 In the Gaussian mean-shift setting, $L_T$ is normal with mean $\pm \tfrac{1}{2}w^2T$ and variance $w^2T$, which yields the closed-form expression above.
@@ -637,170 +849,35 @@ def η_from_θ(θ, model):
 
 This is the mapping behind the right panel of the detection-probability figure below.
 
-## Tallarini's success and its cost
-
-Hansen and Jagannathan {cite}`Hansen_Jagannathan_1991` showed that any valid stochastic discount factor $m_{t+1,t}$ must satisfy a volatility bound: $\sigma(m)/E(m)$ must be at least as large as the maximum Sharpe ratio attainable in the market.
-Using postwar U.S. returns on the value-weighted NYSE and Treasury bills, this bound sets a
-high bar that time-separable CRRA preferences struggle to clear without also distorting the
-risk-free rate.
-
-In terms of the vector of gross returns $R_{t+1}$ with mean $E(R)$ and covariance matrix $\Sigma_R$,
-the bound can be written as
-
-```{math}
-\frac{\sigma(m)}{E(m)}
-\;\ge\;
-\sqrt{b^\top \Sigma_R^{-1} b},
-\qquad
-b = \mathbf{1} - E(m) E(R).
-```
-
-```{code-cell} ipython3
-def hj_std_bound(E_m):
-    b = np.ones(2) - E_m * R_mean
-    var_lb = b @ Σ_R_inv @ b
-    return np.sqrt(np.maximum(var_lb, 0.0))
-```
-
-Tallarini {cite}`Tallarini_2000` showed that recursive preferences with IES $= 1$ can clear this bar.
-By separating risk aversion $\gamma$ from the IES, the recursion pushes $\sigma(m)/E(m)$ upward
-while leaving $E(m)$ roughly consistent with the observed risk-free rate.
-
-For the two consumption specifications, {cite}`BHS_2009` derive closed-form expressions for the unconditional SDF moments.
-
-**Random walk** (eqs 15--16 of the paper):
-
-```{math}
-:label: bhs_Em_rw
-E[m] = \beta \exp\!\left[-\mu + \frac{\sigma_\varepsilon^2}{2}(2\gamma - 1)\right],
-```
-
-```{math}
-:label: bhs_sigma_rw
-\frac{\sigma(m)}{E[m]} = \sqrt{\exp\!\left(\sigma_\varepsilon^2 \gamma^2\right) - 1}.
-```
-
-**Trend stationary** (eqs 17--18):
-
-```{math}
-:label: bhs_Em_ts
-E[m] = \beta \exp\!\left[-\mu + \frac{\sigma_\varepsilon^2}{2}\!\left(1 - \frac{2(1-\beta)(1-\gamma)}{1-\beta\rho} + \frac{1-\rho}{1+\rho}\right)\right],
-```
-
-```{math}
-:label: bhs_sigma_ts
-\frac{\sigma(m)}{E[m]} = \sqrt{\exp\!\left[\sigma_\varepsilon^2\!\left(\!\left(\frac{(1-\beta)(1-\gamma)}{1-\beta\rho} - 1\right)^{\!2} + \frac{1-\rho}{1+\rho}\right)\right] - 1}.
-```
-
-These are what the code below implements.
-
-The figure below makes this visible.
-For each value of $\gamma \in \{1, 5, 10, \ldots, 50\}$, we plot the implied $(E(m),\;\sigma(m)/E(m))$ pair
-for three specifications: time-separable CRRA (crosses), type I recursive preferences with random-walk consumption (circles), and type I recursive preferences with trend-stationary consumption (pluses).
-
-```{code-cell} ipython3
-def moments_type1_rw(γ):
-    θ = θ_from_γ(γ)
-    w = w_from_θ(θ, "rw")
-    var_log_m = (w - rw["σ_ε"]) ** 2
-    mean_log_m = np.log(β) - rw["μ"] - 0.5 * w**2
-    E_m = np.exp(mean_log_m + 0.5 * var_log_m)
-    mpr = np.sqrt(np.exp(var_log_m) - 1.0)
-    return E_m, mpr
-
-
-def moments_type1_ts(γ):
-    θ = θ_from_γ(γ)
-    w = w_from_θ(θ, "ts")
-    var_z = ts["σ_ε"] ** 2 / (1.0 - ts["ρ"] ** 2)
-    var_log_m = (1.0 - ts["ρ"]) ** 2 * var_z + (w - ts["σ_ε"]) ** 2
-    mean_log_m = np.log(β) - ts["μ"] - 0.5 * w**2
-    E_m = np.exp(mean_log_m + 0.5 * var_log_m)
-    mpr = np.sqrt(np.exp(var_log_m) - 1.0)
-    return E_m, mpr
-
-
-def moments_crra_rw(γ):
-    var_log_m = (γ * rw["σ_ε"]) ** 2
-    mean_log_m = np.log(β) - γ * rw["μ"]
-    E_m = np.exp(mean_log_m + 0.5 * var_log_m)
-    mpr = np.sqrt(np.exp(var_log_m) - 1.0)
-    return E_m, mpr
-```
-
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: stochastic discount factor moments and the Hansen-Jagannathan volatility
-      bound
-    name: fig-bhs-1
----
-γ_grid = np.array([1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50], dtype=float)
-
-Em_rw = np.array([moments_type1_rw(γ)[0] for γ in γ_grid])
-MPR_rw = np.array([moments_type1_rw(γ)[1] for γ in γ_grid])
-
-Em_ts = np.array([moments_type1_ts(γ)[0] for γ in γ_grid])
-MPR_ts = np.array([moments_type1_ts(γ)[1] for γ in γ_grid])
-
-Em_crra = np.array([moments_crra_rw(γ)[0] for γ in γ_grid])
-MPR_crra = np.array([moments_crra_rw(γ)[1] for γ in γ_grid])
-
-Em_grid = np.linspace(0.8, 1.01, 1000)
-HJ_std = np.array([hj_std_bound(x) for x in Em_grid])
-
-fig, ax = plt.subplots(figsize=(7, 5))
-ax.plot(Em_grid, HJ_std, lw=2, color="black", label="Hansen-Jagannathan bound")
-ax.plot(Em_rw, MPR_rw, "o", lw=2, label="type I, random walk")
-ax.plot(Em_ts, MPR_ts, "+", lw=2, label="type I, trend stationary")
-ax.plot(Em_crra, MPR_crra, "x", lw=2, label="time-separable CRRA")
-
-ax.set_xlabel(r"$E(m)$")
-ax.set_ylabel(r"$\sigma(m)/E(m)$")
-ax.legend(frameon=False)
-ax.set_xlim(0.8, 1.01)
-ax.set_ylim(0.0, 0.42)
-
-plt.tight_layout()
-plt.show()
-```
-
-The crosses trace the familiar CRRA failure: as $\gamma$ rises, $\sigma(m)/E(m)$ grows but $E(m)$ falls well below the range consistent with the observed risk-free rate.
-This is the risk-free-rate puzzle of Weil {cite}`Weil_1989`.
-
-The circles and pluses show Tallarini's solution.
-Recursive utility with IES $= 1$ pushes volatility upward while keeping $E(m)$ roughly constant near $1/(1+r^f)$.
-For the random-walk model, the bound is reached around $\gamma = 50$; for the trend-stationary model, around $\gamma = 75$.
-
-The quantitative achievement is real.
-But Lucas's challenge still stands: what microeconomic evidence supports $\gamma = 50$?
-That tension is the starting point for the reinterpretation that follows.
-
 ## A new calibration language: detection-error probabilities
 
 If $\gamma$ should not be calibrated by introspection about atemporal gambles, what replaces it?
 
 The answer is a statistical test.
+
 Fix a sample size $T$ (here 235 quarters, matching the postwar U.S. data).
-For a given $\theta$, compute the worst-case model and ask:
-if a Bayesian ran a likelihood-ratio test to distinguish the approximating model from the worst-case model, what fraction of the time would she make an error?
+
+For a given $\theta$, compute the worst-case model and ask: if a Bayesian ran a likelihood-ratio test to distinguish the approximating model from the worst-case model, what fraction of the time would she make an error?
+
 That fraction is the detection-error probability $p(\theta^{-1})$.
 
 A high $p$ (near 0.5) means the two models are nearly indistinguishable --- the consumer's fear is hard to rule out.
+
 A low $p$ means the worst case is easy to reject and the robustness concern is less compelling.
 
 The left panel below plots $p(\theta^{-1})$ against $\theta^{-1}$ for the two consumption specifications.
+
 Notice that the same numerical $\theta$ corresponds to very different detection probabilities across models, because baseline dynamics differ.
+
 The right panel resolves this by plotting detection probabilities against discounted relative entropy $\eta$, which normalizes the statistical distance.
+
 Indexed by $\eta$, the two curves coincide.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: detection probabilities under random-walk and trend-stationary approximating
-      models
+    caption: Detection probabilities across two models
     name: fig-bhs-2
 ---
 θ_inv_grid = np.linspace(0.0, 1.8, 400)
@@ -834,11 +911,12 @@ plt.show()
 ```
 
 This is why detection-error probabilities (or equivalently, discounted entropy) are the right cross-model yardstick.
-Holding $\theta$ fixed when switching from a random walk to a trend-stationary specification
-implicitly changes how much misspecification the consumer fears.
+
+Holding $\theta$ fixed when switching from a random walk to a trend-stationary specification implicitly changes how much misspecification the consumer fears.
+
 Holding $\eta$ or $p$ fixed keeps the statistical difficulty of detecting misspecification constant.
 
-The explicit mapping that equates discounted entropy across models is (eq 41 of the paper):
+The explicit mapping that equates discounted entropy across models is ({ref}`Exercise 7 <dov_ex7>` derives it):
 
 ```{math}
 :label: bhs_theta_cross_model
@@ -848,16 +926,15 @@ The explicit mapping that equates discounted entropy across models is (eq 41 of 
 \frac{1-\beta}{1-\rho\beta}\;\theta_{\text{RW}}.
 ```
 
-At our calibration $\sigma_\varepsilon^{\text{TS}} = \sigma_\varepsilon^{\text{RW}}$, this simplifies to
-$\theta_{\text{TS}} = \frac{1-\beta}{1-\rho\beta}\,\theta_{\text{RW}}$.
-Because $\rho = 0.98$ and $\beta = 0.995$, the ratio $(1-\beta)/(1-\rho\beta)$ is much less than one,
-so holding entropy fixed requires a substantially smaller $\theta$ (stronger robustness) for the trend-stationary model than for the random walk.
+At our calibration $\sigma_\varepsilon^{\text{TS}} = \sigma_\varepsilon^{\text{RW}}$, this simplifies to $\theta_{\text{TS}} = \frac{1-\beta}{1-\rho\beta}\,\theta_{\text{RW}}$.
+
+Because $\rho = 0.98$ and $\beta = 0.995$, the ratio $(1-\beta)/(1-\rho\beta)$ is much less than one, so holding entropy fixed requires a substantially smaller $\theta$ (stronger robustness) for the trend-stationary model than for the random walk.
 
 ## The punchline: detection probabilities unify the two models
 
 We can now redraw Tallarini's figure using the new language.
-For each detection-error probability $p(\theta^{-1}) = 0.50, 0.45, \ldots, 0.01$,
-invert to find the model-specific $\theta$, convert to $\gamma$, and plot the implied $(E(m),\;\sigma(m)/E(m))$ pair.
+
+For each detection-error probability $p(\theta^{-1}) = 0.50, 0.45, \ldots, 0.01$, invert to find the model-specific $\theta$, convert to $\gamma$, and plot the implied $(E(m),\;\sigma(m)/E(m))$ pair.
 
 ```{code-cell} ipython3
 p_points = np.array([0.50, 0.45, 0.40, 0.35, 0.30, 0.25, 0.20, 0.15, 0.10, 0.05, 0.01])
@@ -882,7 +959,7 @@ for p, g1, g2 in zip(p_points, γ_rw_points, γ_ts_points):
 ---
 mystnb:
   figure:
-    caption: pricing loci obtained from common detection probabilities
+    caption: Pricing loci from common detectability
     name: fig-bhs-3
 ---
 fig, ax = plt.subplots(figsize=(7, 5))
@@ -903,27 +980,28 @@ plt.show()
 The striking result: the random-walk and trend-stationary loci nearly coincide.
 
 Recall that under Tallarini's $\gamma$-calibration, reaching the Hansen--Jagannathan bound required $\gamma \approx 50$ for the random walk but $\gamma \approx 75$ for the trend-stationary model --- very different numbers for the "same" preference parameter.
+
 Under detection-error calibration, both models reach the bound at the same detectability level (around $p = 0.05$).
 
 The model dependence was an artifact of using $\gamma$ as a cross-model yardstick.
-Once we measure robustness concerns in units of statistical detectability, the two consumption specifications tell the same story:
-a representative consumer with moderate, difficult-to-dismiss fears about model misspecification
-behaves as if she had very high risk aversion.
+
+Once we measure robustness concerns in units of statistical detectability, the two consumption specifications tell the same story: a representative consumer with moderate, difficult-to-dismiss fears about model misspecification behaves as if she had very high risk aversion.
 
 ## What do risk premia measure? Two mental experiments
 
-Lucas {cite}`Lucas_2003` asked how much consumption a representative consumer would sacrifice to eliminate
-aggregate fluctuations.
+Lucas {cite}`Lucas_2003` asked how much consumption a representative consumer would sacrifice to eliminate aggregate fluctuations.
+
 His answer --- very little --- rested on the assumption that the consumer knows the data-generating process.
 
 The robust reinterpretation introduces a second, distinct mental experiment.
-Instead of eliminating all randomness, suppose we keep randomness but remove the consumer's
-fear of model misspecification (set $\theta = \infty$).
+
+Instead of eliminating all randomness, suppose we keep randomness but remove the consumer's fear of model misspecification (set $\theta = \infty$).
+
 How much would she pay for that relief alone?
 
-Formally, define $\Delta c_0$ as a permanent proportional reduction in initial consumption that leaves the agent indifferent between
-the original environment and a counterfactual in which either (i) risk alone is removed or (ii) model uncertainty is removed.
-Because utility is log and the consumption process is Gaussian, these compensations are available in closed form.
+Formally, define $\Delta c_0$ as a permanent proportional reduction in initial consumption that leaves the agent indifferent between the original environment and a counterfactual in which either (i) risk alone is removed or (ii) model uncertainty is removed.
+
+Because utility is log and the consumption process is Gaussian, these compensations are available in closed form ({ref}`Exercise 8 <dov_ex8>` derives them).
 
 For type II preferences in the random-walk model, the decomposition is
 
@@ -947,9 +1025,10 @@ For type III preferences in the random-walk model, the uncertainty term is twice
 \frac{\beta \sigma_\varepsilon^2}{(1-\beta)^2\theta}.
 ```
 
-For the trend-stationary model, denominators replace $(1-\beta)$ with $(1-\beta \rho)$ or $(1-\beta \rho^2)$ as detailed in Table 3 of {cite}`BHS_2009`, but the qualitative message is the same.
+For the trend-stationary model, denominators replace $(1-\beta)$ with $(1-\beta \rho)$ or $(1-\beta \rho^2)$, but the qualitative message is the same.
 
 The risk-only term $\Delta c_0^{risk}$ is tiny at postwar consumption volatility --- this is Lucas's well-known result.
+
 The model-uncertainty term $\Delta c_0^{uncertainty}$ can be first order whenever the detection-error probability is moderate, because $\theta$ appears in the denominator.
 
 ## Visualizing the welfare decomposition
@@ -963,8 +1042,8 @@ p_star = 0.10
 w_star = w_from_θ(θ_star, "rw")
 
 # Type II compensations, random walk model
-comp_risk_only = β * rw["σ_ε"] ** 2 / (2.0 * (1.0 - β))
-comp_risk_unc = comp_risk_only + β * rw["σ_ε"] ** 2 / (2.0 * (1.0 - β) ** 2 * θ_star)
+comp_risk_only = β * rw["σ_ε"]**2 / (2.0 * (1.0 - β))
+comp_risk_unc = comp_risk_only + β * rw["σ_ε"]**2 / (2.0 * (1.0 - β)**2 * θ_star)
 
 # Two useful decompositions in levels
 risk_only_pct = 100.0 * (np.exp(comp_risk_only) - 1.0)
@@ -986,7 +1065,7 @@ mean_base = rw["μ"] * t
 std_base = rw["σ_ε"] * np.sqrt(t)
 
 # Certainty equivalent line from Eq. (47), shifted by compensating variations
-certainty_slope = rw["μ"] + 0.5 * rw["σ_ε"] ** 2
+certainty_slope = rw["μ"] + 0.5 * rw["σ_ε"]**2
 ce_risk = -comp_risk_only + certainty_slope * t
 ce_risk_unc = -comp_risk_unc + certainty_slope * t
 
@@ -999,7 +1078,7 @@ mean_high = (rw["μ"] - rw["σ_ε"] * w_star) * t
 ---
 mystnb:
   figure:
-    caption: certainty-equivalent paths and the set of nearby models under robustness
+    caption: Certainty equivalents under robustness
     name: fig-bhs-4
 ---
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
@@ -1031,27 +1110,29 @@ plt.tight_layout()
 plt.show()
 ```
 
-**Left panel.**
-The small gap between the baseline mean path and the "risk only" certainty equivalent is Lucas's result:
-at postwar consumption volatility, the welfare gain from eliminating well-understood aggregate risk is tiny.
+**Left panel.** The small gap between the baseline mean path and the "risk only" certainty equivalent is Lucas's result: at postwar consumption volatility, the welfare gain from eliminating well-understood aggregate risk is tiny.
 
-The much larger gap between the baseline and the "risk + uncertainty" certainty equivalent
-is the new object.
+The much larger gap between the baseline and the "risk + uncertainty" certainty equivalent is the new object.
+
 Most of that gap is compensation for model uncertainty, not risk.
 
-**Right panel.**
-The cloud of nearby models shows what the robust consumer guards against.
-The red-shaded and green-shaded fans correspond to pessimistic and optimistic mean-shift distortions
-whose detection-error probability is $p = 0.10$.
+**Right panel.** The cloud of nearby models shows what the robust consumer guards against.
+
+The red-shaded and green-shaded fans correspond to pessimistic and optimistic mean-shift distortions whose detection-error probability is $p = 0.10$.
+
 These models are statistically close to the baseline (blue) but imply very different long-run consumption levels.
+
 The consumer's caution against such alternatives is what drives the large certainty-equivalent gap in the left panel.
 
 ## How large are the welfare gains from resolving model uncertainty?
 
 A type III (constraint-preference) agent evaluates the worst model inside an entropy ball of radius $\eta$.
+
 As $\eta$ grows, the set of plausible misspecifications expands and the welfare cost of confronting model uncertainty rises.
-Because $\eta$ is abstract, {cite}`BHS_2009` instead index these costs by the associated detection error probability $p(\eta)$.
-The figure below reproduces their display: compensation for removing model uncertainty, measured as a proportion of consumption, plotted against $p(\eta)$.
+
+Because $\eta$ is abstract, we instead index these costs by the associated detection error probability $p(\eta)$.
+
+The figure below plots compensation for removing model uncertainty, measured as a proportion of consumption, against $p(\eta)$.
 
 ```{code-cell} ipython3
 η_grid = np.linspace(0.0, 5.0, 300)
@@ -1069,12 +1150,12 @@ mask_w = w_abs_grid > 0.0
 gain_rw = np.where(
     np.isinf(θ_rw_from_η),
     0.0,
-    β * rw["σ_ε"] ** 2 / ((1.0 - β) ** 2 * θ_rw_from_η),
+    β * rw["σ_ε"]**2 / ((1.0 - β)**2 * θ_rw_from_η),
 )
 gain_ts = np.where(
     np.isinf(θ_ts_from_η),
     0.0,
-    β * ts["σ_ε"] ** 2 / ((1.0 - β * ts["ρ"]) ** 2 * θ_ts_from_η),
+    β * ts["σ_ε"]**2 / ((1.0 - β * ts["ρ"])**2 * θ_ts_from_η),
 )
 
 # Convert log compensation to percent of initial consumption in levels
@@ -1093,7 +1174,7 @@ gain_ts_plot = gain_ts_pct[order]
 ---
 mystnb:
   figure:
-    caption: type III compensation for model uncertainty across detection-error probabilities
+    caption: Type III uncertainty compensation curve
     name: fig-bhs-5
 ---
 fig, ax = plt.subplots(figsize=(7, 4))
@@ -1111,24 +1192,105 @@ plt.show()
 
 The random-walk model delivers somewhat larger costs than the trend-stationary model at the same detection-error probability, but both curves dwarf the classic Lucas cost of business cycles.
 
-To put the magnitudes in perspective: Lucas estimated that eliminating all aggregate consumption risk
-is worth roughly 0.05% of consumption.
-At detection-error probabilities of 10--20%, the model-uncertainty
-compensation alone runs to several percent of consumption.
+To put the magnitudes in perspective: Lucas estimated that eliminating all aggregate consumption risk is worth roughly 0.05% of consumption.
+
+At detection-error probabilities of 10--20%, the model-uncertainty compensation alone runs to several percent of consumption.
 
 This is the welfare counterpart to the pricing result.
-The large risk premia that Tallarini matched with high $\gamma$ are, under the robust reading,
-compensations for bearing model uncertainty --- and the implied welfare gains from resolving that uncertainty are correspondingly large.
+
+The large risk premia that Tallarini matched with high $\gamma$ are, under the robust reading, compensations for bearing model uncertainty --- and the implied welfare gains from resolving that uncertainty are correspondingly large.
 
 ## Why doesn't learning eliminate these fears?
 
-A natural objection: if the consumer has 235 quarters of data, why can't she learn the true drift
-well enough to dismiss the worst-case model?
+A natural objection: if the consumer has 235 quarters of data, why can't she learn the true drift well enough to dismiss the worst-case model?
 
 The answer is that drift is a low-frequency feature.
-Estimating the mean of a random walk to the precision needed to reject small but economically meaningful
-shifts requires far more data than estimating volatility.
+
+Estimating the mean of a random walk to the precision needed to reject small but economically meaningful shifts requires far more data than estimating volatility.
+
 The figure below makes this concrete.
+
+Consumption is measured as real personal consumption expenditures on nondurable goods and services, deflated by its implicit chain price deflator, and expressed in per-capita terms using the civilian noninstitutional population aged 16+.
+
+We construct real per-capita nondurables-plus-services consumption from three FRED series:
+
+| FRED series | Description |
+| --- | --- |
+| `PCNDGC96` | Real PCE: nondurable goods (billions of chained 2017 \$, SAAR) |
+| `PCESVC96` | Real PCE: services (billions of chained 2017 \$, SAAR) |
+| `CNP16OV` | Civilian noninstitutional population, 16+ (thousands, monthly) |
+
+The processing pipeline is:
+
+1. Add real nondurables and services: $C_t^{real} = C_t^{nd} + C_t^{sv}$.
+2. Convert to per-capita: divide by the quarterly average of the monthly population series.
+3. Compute log consumption: $c_t = \log C_t^{real,pc}$.
+
+When we plot *levels* of log consumption, we align the time index to 1948Q1--2006Q4, which yields $T+1 = 236$ quarterly observations.
+
+```{code-cell} ipython3
+start_date = dt.datetime(1947, 1, 1)
+end_date = dt.datetime(2007, 1, 1)
+
+
+def _read_fred_series(series_id, start_date, end_date):
+    series = web.DataReader(series_id, "fred", start_date, end_date)[series_id]
+    series = pd.to_numeric(series, errors="coerce").dropna().sort_index()
+    if series.empty:
+        raise ValueError(f"FRED series '{series_id}' returned no data in sample window")
+    return series
+
+
+# Fetch real PCE components and population from FRED
+real_nd = _read_fred_series("PCNDGC96", start_date, end_date)
+real_sv = _read_fred_series("PCESVC96", start_date, end_date)
+pop_m = _read_fred_series("CNP16OV", start_date, end_date)
+
+# Step 1: aggregate real nondurables + services
+real_total = real_nd + real_sv
+
+# Step 2: align to quarterly frequency first, then convert to per-capita
+# real_total is in billions ($1e9), pop is in thousands ($1e3)
+# per-capita in millions: real_total * 1e9 / (pop * 1e3) / 1e6 = real_total / pop
+real_total_q = real_total.resample("QS").mean()
+pop_q = pop_m.resample("QS").mean()
+real_pc = (real_total_q / pop_q).dropna()
+
+# Restrict to sample period 1948Q1–2006Q4
+real_pc = real_pc.loc["1948-01-01":"2006-12-31"].dropna()
+
+# FRED fallback: use BEA per-capita quarterly components directly.
+if real_pc.empty:
+    nd_pc = _read_fred_series("A796RX0Q048SBEA", start_date, end_date)
+    sv_pc = _read_fred_series("A797RX0Q048SBEA", start_date, end_date)
+    real_pc = ((nd_pc + sv_pc) / 1e6).loc["1948-01-01":"2006-12-31"].dropna()
+
+if real_pc.empty:
+    raise RuntimeError("FRED returned no usable observations after alignment/filtering")
+
+# Step 3: log consumption
+log_c_data = np.log(real_pc.to_numpy(dtype=float).reshape(-1))
+years_data = (real_pc.index.year + (real_pc.index.month - 1) / 12.0).to_numpy(dtype=float)
+
+print(f"Fetched {len(log_c_data)} quarterly observations from FRED")
+print(f"Sample: {years_data[0]:.1f} – {years_data[-1] + 0.25:.1f}")
+print(f"Observations: {len(log_c_data)}")
+```
+
+We can verify Table 2 by computing sample moments of log consumption growth from our FRED data:
+
+```{code-cell} ipython3
+# Growth rates: 1948Q2 to 2006Q4 (T = 235 quarters)
+diff_c = np.diff(log_c_data)
+
+μ_hat = diff_c.mean()
+σ_hat = diff_c.std(ddof=1)
+
+print("Sample estimates from FRED data vs Table 2:")
+print(f"  μ   = {μ_hat:.5f}   (Table 2 RW: {rw['μ']:.5f})")
+print(f"  σ_ε = {σ_hat:.4f}    (Table 2: {rw['σ_ε']:.4f})")
+print(f"  T   = {len(diff_c)} quarters")
+```
 
 ```{code-cell} ipython3
 p_fig6 = 0.20
@@ -1138,14 +1300,19 @@ p_fig6 = 0.20
 rw_fig6 = dict(μ=μ_hat, σ_ε=σ_hat)
 w_fig6 = 2.0 * norm.ppf(p_fig6) / np.sqrt(T)
 
-# Use FRED data loaded earlier in the lecture
 c = log_c_data
 years = years_data
 
 t6 = np.arange(T + 1)
-c0 = c[0]
-line_approx = c0 + rw_fig6["μ"] * t6
-line_worst = c0 + (rw_fig6["μ"] + rw_fig6["σ_ε"] * w_fig6) * t6
+μ_approx = rw_fig6["μ"]
+μ_worst = rw_fig6["μ"] + rw_fig6["σ_ε"] * w_fig6
+
+# Match BHS Figure 6 visual construction by fitting intercepts separately
+# while holding the two drifts fixed.
+a_approx = (c - μ_approx * t6).mean()
+a_worst = (c - μ_worst * t6).mean()
+line_approx = a_approx + μ_approx * t6
+line_worst = a_worst + μ_worst * t6
 
 p_right = np.linspace(0.01, 0.50, 500)
 w_right = 2.0 * norm.ppf(p_right) / np.sqrt(T)
@@ -1160,7 +1327,7 @@ lower_band = rw_fig6["μ"] - 2.0 * μ_se
 ---
 mystnb:
   figure:
-    caption: robustly distorted growth rates and finite-sample uncertainty about drift
+    caption: Drift distortion and sampling uncertainty
     name: fig-bhs-6
 ---
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
@@ -1194,43 +1361,43 @@ ax.axhline(1_000.0 * lower_band, lw=2, ls="--", color="gray")
 ax.set_xlabel("detection error probability (percent)")
 ax.set_ylabel(r"mean consumption growth ($\times 10^{-3}$)")
 ax.legend(frameon=False, fontsize=8, loc="upper right")
-ax.set_title("2 standard deviation band", fontsize=10)
 ax.set_xlim(0.0, 50.0)
-ax.set_ylim(3.0, 6.0)
 
 plt.tight_layout()
 plt.show()
 ```
 
-**Left panel.**
-Postwar U.S. log consumption is shown alongside two deterministic trend lines:
-the approximating-model drift $\mu$ and the worst-case drift $\mu + \sigma_\varepsilon w(\theta)$ for $p(\theta^{-1}) = 0.20$.
-The plotted consumption series is constructed from FRED data following the processing pipeline described in the Data section above.
+**Left panel.** Postwar U.S. log consumption is shown alongside two deterministic trend lines: the approximating-model drift $\mu$ and the worst-case drift $\mu + \sigma_\varepsilon w(\theta)$ for $p(\theta^{-1}) = 0.20$.
+
+For comparability with BHS Fig. 6, we estimate intercepts separately for these two fixed slopes.
+
+The plotted consumption series is constructed from FRED data following the processing pipeline described above.
+
 The two trends are close enough that, even with decades of data, it is hard to distinguish them by eye.
 
-**Right panel.**
-As the detection-error probability rises (models become harder to tell apart), the worst-case mean growth rate moves back toward $\hat\mu$.
+**Right panel.** As the detection-error probability rises (models become harder to tell apart), the worst-case mean growth rate moves back toward $\hat\mu$.
+
 The dashed gray lines mark a two-standard-error band around the maximum-likelihood estimate of $\mu$.
+
 Even at detection probabilities in the 5--20% range, the worst-case drift remains inside (or very near) this confidence band.
 
 The upshot: drift distortions that are economically large --- large enough to generate substantial model-uncertainty premia --- are statistically small relative to sampling uncertainty in $\hat\mu$.
-A dogmatic Bayesian who conditions on a single approximating model and updates using Bayes' law
-will not learn her way out of this problem in samples of the length available.
+
+A dogmatic Bayesian who conditions on a single approximating model and updates using Bayes' law will not learn her way out of this problem in samples of the length available.
+
 Robustness concerns survive long histories precisely because the low-frequency features that matter most for pricing are the hardest to pin down.
 
 ## Concluding remarks
 
-The title asks a question: are large risk premia prices of **variability** (atemporal risk aversion)
-or prices of **doubts** (model uncertainty)?
+The title asks a question: are large risk premia prices of **variability** (atemporal risk aversion) or prices of **doubts** (model uncertainty)?
 
-The analysis above shows that the answer cannot be settled by asset-pricing data alone,
-because the two interpretations are observationally equivalent.
+The analysis above shows that the answer cannot be settled by asset-pricing data alone, because the two interpretations are observationally equivalent.
+
 But the choice matters enormously for what we conclude.
 
-Under the risk-aversion reading, high Sharpe ratios imply that consumers would pay a great deal to smooth
-known aggregate consumption fluctuations.
-Under the robustness reading, those same Sharpe ratios tell us consumers would pay a great deal
-to resolve uncertainty about which probability model governs consumption growth --- a fundamentally different policy object.
+Under the risk-aversion reading, high Sharpe ratios imply that consumers would pay a great deal to smooth known aggregate consumption fluctuations.
+
+Under the robustness reading, those same Sharpe ratios tell us consumers would pay a great deal to resolve uncertainty about which probability model governs consumption growth.
 
 Three features of the analysis support the robustness reading:
 
@@ -1238,5 +1405,759 @@ Three features of the analysis support the robustness reading:
 2. The welfare gains implied by asset prices decompose overwhelmingly into a model-uncertainty component, with the pure risk component remaining small --- consistent with Lucas's original finding.
 3. The drift distortions that drive pricing are small enough to hide inside standard-error bands, so finite-sample learning cannot eliminate the consumer's fears.
 
-Whether one ultimately prefers the risk or the uncertainty interpretation, the framework
-clarifies that the question is not about the size of risk premia but about the economic object those premia identify.
+Whether one ultimately prefers the risk or the uncertainty interpretation, the framework clarifies that the question is not about the size of risk premia but about the economic object those premia measure.
+
+## Exercises
+
+The exercises below ask you to fill in several derivation steps.
+
+```{exercise}
+:label: dov_ex1
+
+Let $R_{t+1}$ be an $n \times 1$ vector of gross returns with unconditional mean $E(R)$ and covariance matrix $\Sigma_R$.
+
+Let $m_{t+1}$ be a valid stochastic discount factor satisfying $\mathbb{1} = E[m_{t+1}\,R_{t+1}]$.
+
+1. Use the covariance decomposition $E[mR] = E[m]\,E[R] + \operatorname{cov}(m,R)$ to show that $\operatorname{cov}(m,R) = \mathbb{1} - E[m]\,E[R] =: b$.
+2. For a portfolio with weight vector $\alpha$ and return $R^p = \alpha^\top R$, show that $\operatorname{cov}(m, R^p) = \alpha^\top b$.
+3. Apply the Cauchy--Schwarz inequality to the pair $(m, R^p)$ to obtain $|\alpha^\top b| \leq \sigma(m)\,\sqrt{\alpha^\top \Sigma_R\,\alpha}$.
+4. Maximize the ratio $|\alpha^\top b|/\sqrt{\alpha^\top \Sigma_R\,\alpha}$ over $\alpha$ and show that the maximum is $\sqrt{b^\top \Sigma_R^{-1} b}$, attained at $\alpha^\star = \Sigma_R^{-1}b$.
+5. Conclude that $\sigma(m)/E(m) \ge \sqrt{b^\top \Sigma_R^{-1} b}$, which is {eq}`bhs_hj_unconditional`.
+```
+
+```{solution-start} dov_ex1
+:class: dropdown
+```
+
+**Part 1.** From $\mathbb{1} = E[m\,R] = E[m]\,E[R] + \operatorname{cov}(m,R)$, rearranging gives $\operatorname{cov}(m,R) = \mathbb{1} - E[m]\,E[R] \equiv b$.
+
+**Part 2.** The portfolio return is $R^p = \alpha^\top R$, so
+
+$$
+\operatorname{cov}(m, R^p) = \operatorname{cov}(m, \alpha^\top R) = \alpha^\top \operatorname{cov}(m, R) = \alpha^\top b.
+$$
+
+**Part 3.** The Cauchy--Schwarz inequality for any two random variables $X, Y$ states $|\operatorname{cov}(X,Y)| \leq \sigma(X)\,\sigma(Y)$.
+Applying it to $(m, R^p)$:
+
+$$
+|\alpha^\top b| = |\operatorname{cov}(m, R^p)| \leq \sigma(m)\,\sigma(R^p) = \sigma(m)\,\sqrt{\alpha^\top \Sigma_R\,\alpha}.
+$$
+
+**Part 4.** Rearranging Part 3 gives
+
+$$
+\frac{|\alpha^\top b|}{\sqrt{\alpha^\top \Sigma_R\,\alpha}} \leq \sigma(m).
+$$
+
+To maximize the left-hand side over $\alpha$, define the $\Sigma_R$-inner product $\langle u, v \rangle_{\Sigma} = u^\top \Sigma_R\, v$.
+Insert $I = \Sigma_R \Sigma_R^{-1}$:
+
+$$
+\alpha^\top b
+= \alpha^\top (\Sigma_R \Sigma_R^{-1}) b
+= (\alpha^\top \Sigma_R)(\Sigma_R^{-1} b)
+= \langle \alpha,\, \Sigma_R^{-1}b \rangle_{\Sigma}.
+$$
+
+Cauchy--Schwarz in this inner product gives
+
+$$
+|\langle \alpha,\, \Sigma_R^{-1}b \rangle_{\Sigma}|
+\leq
+\sqrt{\langle \alpha, \alpha \rangle_{\Sigma}}\;\sqrt{\langle \Sigma_R^{-1}b,\, \Sigma_R^{-1}b \rangle_{\Sigma}}
+=
+\sqrt{\alpha^\top \Sigma_R\,\alpha}\;\sqrt{b^\top \Sigma_R^{-1} b},
+$$
+
+with equality when $\alpha \propto \Sigma_R^{-1} b$.
+Substituting $\alpha^\star = \Sigma_R^{-1} b$ confirms
+
+$$
+\max_\alpha \frac{|\alpha^\top b|}{\sqrt{\alpha^\top \Sigma_R\,\alpha}} = \sqrt{b^\top \Sigma_R^{-1} b}.
+$$
+
+**Part 5.** Combining Parts 3 and 4, $\sqrt{b^\top \Sigma_R^{-1} b} \leq \sigma(m)$.
+Dividing both sides by $E[m] > 0$ yields {eq}`bhs_hj_unconditional`.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: dov_ex2
+
+Combine the SDF representation {eq}`bhs_sdf` with the random-walk consumption dynamics and the Gaussian mean-shift distortion to show that $\log m_{t+1}$ is normally distributed under the approximating model.
+
+1. Compute its mean and variance in terms of $(\beta,\mu,\sigma_\varepsilon,w)$.
+2. Use lognormal moments to derive expressions for $E[m]$ and $\sigma(m)/E[m]$.
+3. Use the parameter mapping $\theta = [(1-\beta)(\gamma-1)]^{-1}$ and the associated $w$ to obtain {eq}`bhs_Em_rw` and {eq}`bhs_sigma_rw`.
+```
+
+```{solution-start} dov_ex2
+:class: dropdown
+```
+
+Under the random walk,
+
+$$
+c_{t+1}-c_t=\mu+\sigma_\varepsilon \varepsilon_{t+1}
+
+$$
+with $\varepsilon_{t+1}\sim\mathcal{N}(0,1)$ under the approximating model.
+
+Using {eq}`bhs_sdf` and the Gaussian distortion
+
+$$
+\hat g_{t+1}=\exp\!\left(w\varepsilon_{t+1}-\tfrac{1}{2}w^2\right),
+
+$$
+we get
+
+$$
+m_{t+1}
+=
+\beta \exp\!\left(-(c_{t+1}-c_t)\right)\hat g_{t+1}
+=
+\beta \exp\!\left(-\mu-\sigma_\varepsilon\varepsilon_{t+1}\right)\exp\!\left(w\varepsilon_{t+1}-\frac{1}{2}w^2\right).
+$$
+
+Therefore
+
+$$
+\log m_{t+1}
+=
+\log\beta-\mu-\frac{1}{2}w^2 + (w-\sigma_\varepsilon)\varepsilon_{t+1},
+
+$$
+which is normal with mean
+
+$$
+E[\log m]=\log\beta-\mu-\tfrac{1}{2}w^2
+
+$$
+and variance
+
+$$
+\operatorname{Var}(\log m)=(w-\sigma_\varepsilon)^2.
+$$
+
+For a lognormal random variable,
+
+$$
+E[m]=\exp(E[\log m]+\tfrac{1}{2}\operatorname{Var}(\log m))
+
+$$
+and
+
+$$
+\sigma(m)/E[m]=\sqrt{e^{\operatorname{Var}(\log m)}-1}.
+
+$$
+Hence
+
+$$
+E[m]
+=
+\beta\exp\!\left(
+-\mu-\frac{1}{2}w^2+\frac{1}{2}(w-\sigma_\varepsilon)^2
+\right)
+=
+\beta\exp\!\left(-\mu+\frac{\sigma_\varepsilon^2}{2}-\sigma_\varepsilon w\right),
+
+$$
+and
+
+$$
+\frac{\sigma(m)}{E[m]}
+=
+\sqrt{\exp\!\left((w-\sigma_\varepsilon)^2\right)-1}.
+$$
+
+Now use $w_{\text{RW}}(\theta)=-\sigma_\varepsilon/[(1-\beta)\theta]$ from {eq}`bhs_w_formulas` and
+$\theta=[(1-\beta)(\gamma-1)]^{-1}$ to get $w=-\sigma_\varepsilon(\gamma-1)$.
+Then
+
+$$
+-\sigma_\varepsilon w=\sigma_\varepsilon^2(\gamma-1)
+
+$$
+and
+
+$$
+(w-\sigma_\varepsilon)^2 = (-\sigma_\varepsilon\gamma)^2=\sigma_\varepsilon^2\gamma^2.
+
+$$
+Substituting yields {eq}`bhs_Em_rw` and {eq}`bhs_sigma_rw`.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: dov_ex3
+
+Starting from the type I recursion {eq}`bhs_type1_recursion` and the definitions of $U_t$ and $\theta$ in {eq}`bhs_Ut_def`--{eq}`bhs_theta_def`, derive the risk-sensitive recursion {eq}`bhs_risk_sensitive`.
+
+Verify that as $\gamma \to 1$ (equivalently $\theta \to \infty$), the recursion converges to standard discounted expected log utility $U_t = c_t + \beta E_t U_{t+1}$.
+```
+
+```{solution-start} dov_ex3
+:class: dropdown
+```
+
+Start from the type I recursion {eq}`bhs_type1_recursion` and write
+
+$$
+(V_{t+1})^{1-\gamma} = \exp\!\bigl((1-\gamma)\log V_{t+1}\bigr).
+$$
+
+Using $\log V_t = (1-\beta)U_t$ from {eq}`bhs_Ut_def`, we obtain
+
+$$
+(1-\beta)U_t
+=
+(1-\beta)c_t
+\;+\;
+\frac{\beta}{1-\gamma}\log E_t\!\left[\exp\!\bigl((1-\gamma)(1-\beta)U_{t+1}\bigr)\right].
+$$
+
+Divide by $(1-\beta)$ and use {eq}`bhs_theta_def`,
+
+$$
+\theta = -\bigl[(1-\beta)(1-\gamma)\bigr]^{-1}.
+
+$$
+Then $(1-\gamma)(1-\beta)=-1/\theta$ and $\beta/[(1-\beta)(1-\gamma)]=-\beta\theta$, so
+
+$$
+U_t
+=
+c_t - \beta\theta \log E_t\!\left[\exp\!\left(-\frac{U_{t+1}}{\theta}\right)\right],
+
+$$
+which is {eq}`bhs_risk_sensitive`.
+
+For $\theta\to\infty$ (equivalently $\gamma\to 1$), use the expansion
+
+$$
+\exp(-U_{t+1}/\theta)=1-U_{t+1}/\theta+o(1/\theta).
+
+$$
+Then
+
+$$
+\log E_t[\exp(-U_{t+1}/\theta)]
+=
+-E_t[U_{t+1}]/\theta+o(1/\theta),
+
+$$
+so $-\theta\log E_t[\exp(-U_{t+1}/\theta)]\to E_t[U_{t+1}]$ and the recursion converges to
+
+$$
+U_t = c_t + \beta E_t U_{t+1}.
+$$
+
+```{solution-end}
+```
+
+```{exercise}
+:label: dov_ex4
+
+Consider the type II Bellman equation {eq}`bhs_bellman_type2`.
+
+1. Use a Lagrange multiplier to impose the normalization constraint $\int g(\varepsilon)\,\pi(\varepsilon)\,d\varepsilon = 1$.
+2. Derive the first-order condition for $g(\varepsilon)$ and show that the minimizer is the exponential tilt in {eq}`bhs_ghat`.
+3. Substitute your minimizing $g$ back into {eq}`bhs_bellman_type2` to recover the risk-sensitive Bellman equation {eq}`bhs_bellman_type1`.
+
+Conclude that $W(x) \equiv U(x)$ for consumption plans in $\mathcal{C}(A,B,H;x_0)$.
+```
+
+```{solution-start} dov_ex4
+:class: dropdown
+```
+
+Fix $x$ and write $W'(\varepsilon) := W(Ax + B\varepsilon)$ for short.
+
+Form the Lagrangian
+
+$$
+\mathcal{L}[g,\lambda]
+=
+\beta \int \Bigl[g(\varepsilon)W'(\varepsilon) + \theta g(\varepsilon)\log g(\varepsilon)\Bigr]\pi(\varepsilon)\,d\varepsilon
+\;+\;
+\lambda\left(\int g(\varepsilon)\pi(\varepsilon)\,d\varepsilon - 1\right).
+$$
+
+The pointwise first-order condition for $g(\varepsilon)$ is
+
+$$
+0
+=
+\frac{\partial \mathcal{L}}{\partial g(\varepsilon)}
+=
+\beta\Bigl[W'(\varepsilon) + \theta(1+\log g(\varepsilon))\Bigr]\pi(\varepsilon)
+\;+\;
+\lambda\,\pi(\varepsilon),
+
+$$
+so (dividing by $\beta\pi(\varepsilon)$)
+
+$$
+\log g(\varepsilon)
+=
+-\frac{W'(\varepsilon)}{\theta} - 1 - \frac{\lambda}{\beta\theta}.
+$$
+
+Exponentiating yields $g(\varepsilon)=K\exp(-W'(\varepsilon)/\theta)$ for a constant $K$.
+Imposing $\int g(\varepsilon)\pi(\varepsilon)d\varepsilon=1$ implies
+
+$$
+K^{-1}
+=
+\int \exp\!\left(-\frac{W(Ax+B\varepsilon)}{\theta}\right)\pi(\varepsilon)\,d\varepsilon,
+
+$$
+and therefore
+
+$$
+\hat g(\varepsilon)
+=
+\frac{\exp\!\left(-W(Ax+B\varepsilon)/\theta\right)}
+\int \exp\!\left(-W(Ax+B\tilde\varepsilon)/\theta\right)\pi(\tilde\varepsilon)\,d\tilde\varepsilon,
+
+$$
+which is {eq}`bhs_ghat`.
+
+To substitute back, define
+
+$$
+Z(x):=\int \exp(-W(Ax+B\varepsilon)/\theta)\pi(\varepsilon)\,d\varepsilon.
+
+$$
+Then $\hat g(\varepsilon)=\exp(-W(Ax+B\varepsilon)/\theta)/Z(x)$ and
+
+$$
+\log\hat g(\varepsilon)=-W(Ax+B\varepsilon)/\theta-\log Z(x).
+
+$$
+Hence
+
+$$
+\int \Bigl[\hat g(\varepsilon)W(Ax+B\varepsilon) + \theta \hat g(\varepsilon)\log \hat g(\varepsilon)\Bigr]\pi(\varepsilon)\,d\varepsilon
+=
+-\theta\log Z(x),
+
+$$
+because the $W$ terms cancel and $\int \hat g\,\pi = 1$.
+
+Plugging this into {eq}`bhs_bellman_type2` gives
+
+$$
+W(x)
+=
+c-\beta\theta\log Z(x)
+=
+c-\beta\theta \log \int \exp\!\left(-\frac{W(Ax+B\varepsilon)}{\theta}\right)\pi(\varepsilon)\,d\varepsilon,
+
+$$
+which is {eq}`bhs_bellman_type1`. Therefore $W(x)\equiv U(x)$.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: dov_ex5
+
+Let $\varepsilon \sim \mathcal{N}(0,1)$ under the approximating model and define
+
+$$
+\hat g(\varepsilon) = \exp\!\left(w\varepsilon - \frac{1}{2}w^2\right)
+
+$$
+as in the Gaussian mean-shift section.
+
+1. Show that $E[\hat g(\varepsilon)] = 1$.
+2. Show that for any bounded measurable function $f$,
+
+$$
+E[\hat g(\varepsilon) f(\varepsilon)]
+
+$$
+equals the expectation of $f$ under $\mathcal{N}(w,1)$.
+3. Compute the mean and variance of $\log \hat g(\varepsilon)$ and use these to derive
+
+$$
+\operatorname{std}(\hat g) = \sqrt{e^{w^2}-1}.
+
+$$
+4. Compute the conditional relative entropy $E[\hat g\log \hat g]$ and verify that it equals $\tfrac{1}{2}w^2$.
+```
+
+```{solution-start} dov_ex5
+:class: dropdown
+```
+
+1. Using the moment generating function of a standard normal,
+
+$$
+E[\hat g(\varepsilon)]
+=
+e^{-w^2/2}\,E[e^{w\varepsilon}]
+=
+e^{-w^2/2}\,e^{w^2/2}
+=
+1.
+$$
+
+2. Let $\varphi(\varepsilon) = (2\pi)^{-1/2}e^{-\varepsilon^2/2}$ be the $\mathcal{N}(0,1)$ density.
+Then
+
+$$
+\hat g(\varepsilon)\varphi(\varepsilon)
+=
+\frac{1}{\sqrt{2\pi}}
+\exp\!\left(w\varepsilon-\frac{1}{2}w^2-\frac{1}{2}\varepsilon^2\right)
+=
+\frac{1}{\sqrt{2\pi}}
+\exp\!\left(-\frac{1}{2}(\varepsilon-w)^2\right),
+
+$$
+which is the $\mathcal{N}(w,1)$ density.
+Therefore, for bounded measurable $f$,
+
+$$
+E[\hat g(\varepsilon)f(\varepsilon)]
+=
+\int f(\varepsilon)\,\hat g(\varepsilon)\varphi(\varepsilon)\,d\varepsilon
+=
+E_{\mathcal{N}(w,1)}[f(\varepsilon)].
+$$
+
+3. Since $\log \hat g(\varepsilon) = w\varepsilon - \tfrac{1}{2}w^2$ and $\varepsilon\sim\mathcal{N}(0,1)$,
+
+$$
+E[\log \hat g] = -\frac{1}{2}w^2,
+\qquad
+\operatorname{Var}(\log \hat g)=w^2.
+
+$$
+Moreover, $\operatorname{Var}(\hat g)=E[\hat g^2]-1$ because $E[\hat g]=1$.
+Now
+
+$$
+E[\hat g^2]
+=
+E\!\left[\exp\!\left(2w\varepsilon - w^2\right)\right]
+=
+e^{-w^2}\,E[e^{2w\varepsilon}]
+=
+e^{-w^2}\,e^{(2w)^2/2}
+=
+e^{w^2},
+
+$$
+so $\operatorname{std}(\hat g)=\sqrt{e^{w^2}-1}$.
+
+4. Using part 2 with $f(\varepsilon)=\log \hat g(\varepsilon)=w\varepsilon-\tfrac{1}{2}w^2$,
+
+$$
+E[\hat g\log \hat g]
+=
+E_{\mathcal{N}(w,1)}\!\left[w\varepsilon-\frac{1}{2}w^2\right]
+=
+w\cdot E_{\mathcal{N}(w,1)}[\varepsilon]-\frac{1}{2}w^2
+=
+w^2-\frac{1}{2}w^2
+=
+\frac{1}{2}w^2.
+$$
+
+```{solution-end}
+```
+
+```{exercise}
+:label: dov_ex6
+
+In the Gaussian mean-shift setting of {ref}`Exercise 5 <dov_ex5>`, let $L_T$ be the log likelihood ratio between the worst-case and approximating models based on $T$ observations.
+
+1. Show that $L_T$ is normal under each model.
+2. Compute its mean and variance under the approximating and worst-case models.
+3. Using the definition of detection-error probability in {eq}`bhs_detection_formula`, derive the closed-form expression {eq}`bhs_detection_closed`.
+```
+
+```{solution-start} dov_ex6
+:class: dropdown
+```
+
+Let the approximating model be $\varepsilon_i \sim \mathcal{N}(0,1)$ and the worst-case model be $\varepsilon_i \sim \mathcal{N}(w,1)$, i.i.d. for $i=1,\ldots,T$.
+
+Take the log likelihood ratio in the direction that matches the definitions in the text:
+
+$$
+L_T
+=
+\log \frac{\prod_{i=1}^T \varphi(\varepsilon_i)}{\prod_{i=1}^T \varphi(\varepsilon_i-w)}
+=
+\sum_{i=1}^T \ell(\varepsilon_i),
+
+$$
+where $\varphi$ is the $\mathcal{N}(0,1)$ density and
+
+$$
+\ell(\varepsilon)
+=
+\log \varphi(\varepsilon) - \log \varphi(\varepsilon-w)
+=
+-\frac{1}{2}\Bigl[\varepsilon^2-(\varepsilon-w)^2\Bigr]
+=
+-w\varepsilon + \frac{1}{2}w^2.
+$$
+
+Therefore
+
+$$
+L_T = -w\sum_{i=1}^T \varepsilon_i + \tfrac{1}{2}w^2T.
+$$
+
+Under the approximating model, $\sum_{i=1}^T \varepsilon_i \sim \mathcal{N}(0,T)$, so
+
+$$
+L_T \sim \mathcal{N}\!\left(\frac{1}{2}w^2T,\; w^2T\right).
+$$
+
+Under the worst-case model, $\sum_{i=1}^T \varepsilon_i \sim \mathcal{N}(wT,T)$, so
+
+$$
+L_T \sim \mathcal{N}\!\left(-\frac{1}{2}w^2T,\; w^2T\right).
+$$
+
+Now
+
+$$
+p_A = \Pr_A(L_T<0)
+=
+\Phi\!\left(\frac{0-\frac{1}{2}w^2T}{|w|\sqrt{T}}\right)
+=
+\Phi\!\left(-\frac{|w|\sqrt{T}}{2}\right),
+
+$$
+and
+
+$$
+p_B = \Pr_B(L_T>0)
+=
+1-\Phi\!\left(\frac{0-(-\frac{1}{2}w^2T)}{|w|\sqrt{T}}\right)
+=
+1-\Phi\!\left(\frac{|w|\sqrt{T}}{2}\right)
+=
+\Phi\!\left(-\frac{|w|\sqrt{T}}{2}\right).
+$$
+
+Therefore
+
+$$
+p(\theta^{-1})=\tfrac{1}{2}(p_A+p_B)=\Phi\!\left(-\tfrac{|w|\sqrt{T}}{2}\right),
+
+$$
+which is {eq}`bhs_detection_closed`.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: dov_ex7
+
+Using the formulas for $w(\theta)$ in {eq}`bhs_w_formulas` and the definition of discounted entropy
+
+$$
+\eta = \frac{\beta}{1-\beta}\cdot \frac{w(\theta)^2}{2},
+
+$$
+show that holding $\eta$ fixed across the random-walk and trend-stationary consumption specifications implies the mapping {eq}`bhs_theta_cross_model`.
+
+Specialize your result to the case $\sigma_\varepsilon^{\text{TS}} = \sigma_\varepsilon^{\text{RW}}$ and interpret the role of $\rho$.
+```
+
+```{solution-start} dov_ex7
+:class: dropdown
+```
+
+Because $\eta$ depends on $\theta$ only through $w(\theta)^2$, holding $\eta$ fixed across models is equivalent to holding $|w(\theta)|$ fixed.
+
+Using {eq}`bhs_w_formulas`,
+
+$$
+|w_{\text{RW}}(\theta_{\text{RW}})|
+=
+\frac{\sigma_\varepsilon^{\text{RW}}}{(1-\beta)\theta_{\text{RW}}},
+\qquad
+|w_{\text{TS}}(\theta_{\text{TS}})|
+=
+\frac{\sigma_\varepsilon^{\text{TS}}}{(1-\beta\rho)\theta_{\text{TS}}}.
+$$
+
+Equating these magnitudes and solving for $\theta_{\text{TS}}$ gives
+
+$$
+\theta_{\text{TS}}
+=
+\left(\frac{\sigma_\varepsilon^{\text{TS}}}{\sigma_\varepsilon^{\text{RW}}}\right)
+\frac{1-\beta}{1-\beta\rho}\,\theta_{\text{RW}},
+
+$$
+which is {eq}`bhs_theta_cross_model`.
+
+If $\sigma_\varepsilon^{\text{TS}}=\sigma_\varepsilon^{\text{RW}}$, then
+
+$$
+\theta_{\text{TS}}=\frac{1-\beta}{1-\beta\rho}\theta_{\text{RW}}.
+
+$$
+Since $\rho\in(0,1)$ implies $1-\beta\rho < 1-\beta$, the ratio $(1-\beta)/(1-\beta\rho)$ is less than one.
+So to hold entropy fixed, the trend-stationary model requires a smaller $\theta$ (i.e., a cheaper distortion / stronger robustness) than the random-walk model.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: dov_ex8
+
+For type II (multiplier) preferences under random-walk consumption growth, derive the compensating-variation formulas in {eq}`bhs_type2_rw_decomp`.
+
+In particular, derive
+
+1. the **risk** term by comparing the stochastic economy to a deterministic consumption path with the same mean level of consumption (Lucas's thought experiment), and
+2. the **uncertainty** term by comparing a type II agent with parameter $\theta$ to the expected-utility case $\theta=\infty$, holding the stochastic environment fixed.
+```
+
+```{solution-start} dov_ex8
+:class: dropdown
+```
+
+Write the random walk as
+
+$$
+c_t = c_0 + t\mu + \sigma_\varepsilon\sum_{j=1}^t \varepsilon_j
+
+$$
+with $\varepsilon_j\stackrel{iid}{\sim}\mathcal{N}(0,1)$.
+
+**Risk term.**
+The mean level of consumption is
+
+$$
+E[C_t]=E[e^{c_t}]=\exp(c_0+t\mu+\tfrac{1}{2}t\sigma_\varepsilon^2),
+
+$$
+so the deterministic path with the same mean levels is
+
+$$
+\bar c_t = c_0 + t(\mu+\tfrac{1}{2}\sigma_\varepsilon^2).
+$$
+
+Under expected log utility ($\theta=\infty$), discounted expected utility is
+
+$$
+\sum_{t\ge 0}\beta^t E[c_t]
+=
+\frac{c_0}{1-\beta} + \frac{\beta\mu}{(1-\beta)^2},
+
+$$
+while for the deterministic mean-level path it is
+
+$$
+\sum_{t\ge 0}\beta^t \bar c_t
+=
+\frac{c_0}{1-\beta} + \frac{\beta(\mu+\tfrac{1}{2}\sigma_\varepsilon^2)}{(1-\beta)^2}.
+$$
+
+If we reduce initial consumption by $\Delta c_0^{risk}$ (so $\bar c_t$ shifts down by $\Delta c_0^{risk}$ for all $t$), utility falls by $\Delta c_0^{risk}/(1-\beta)$.
+Equating the two utilities gives
+
+$$
+\frac{\Delta c_0^{risk}}{1-\beta}
+=
+\frac{\beta(\tfrac{1}{2}\sigma_\varepsilon^2)}{(1-\beta)^2}
+\quad\Rightarrow\quad
+\Delta c_0^{risk}=\frac{\beta\sigma_\varepsilon^2}{2(1-\beta)}.
+$$
+
+**Uncertainty term.**
+For type II multiplier preferences, the minimizing distortion is a Gaussian mean shift with parameter $w$ and per-period relative entropy $\tfrac{1}{2}w^2$.
+Under the distorted model, $E[\varepsilon]=w$, so
+
+$$
+E[c_t]=c_0+t(\mu+\sigma_\varepsilon w).
+$$
+
+Plugging this into the type II objective (and using $E_t[g\log g]=\tfrac{1}{2}w^2$) gives the discounted objective as a function of $w$:
+
+$$
+J(w)
+=
+\sum_{t\ge 0}\beta^t\Bigl(c_0+t(\mu+\sigma_\varepsilon w)\Bigr)
+\;+\;
+\sum_{t\ge 0}\beta^{t+1}\theta\cdot\frac{w^2}{2}.
+
+$$
+Using $\sum_{t\ge0}\beta^t=1/(1-\beta)$ and $\sum_{t\ge0}t\beta^t=\beta/(1-\beta)^2$,
+
+$$
+J(w)
+=
+\frac{c_0}{1-\beta}
+\;+\;
+\frac{\beta(\mu+\sigma_\varepsilon w)}{(1-\beta)^2}
+\;+\;
+\frac{\beta\theta}{1-\beta}\cdot\frac{w^2}{2}.
+$$
+
+Minimizing over $w$ yields
+
+$$
+0=\frac{\partial J}{\partial w}
+=
+\frac{\beta\sigma_\varepsilon}{(1-\beta)^2}
+\;+\;
+\frac{\beta\theta}{1-\beta}\,w
+\quad\Rightarrow\quad
+w^*=-\frac{\sigma_\varepsilon}{(1-\beta)\theta},
+
+$$
+which matches {eq}`bhs_w_formulas`.
+
+Substituting $w^*$ back in gives
+
+$$
+J(w^*)
+=
+\frac{c_0}{1-\beta}
+\;+\;
+\frac{\beta\mu}{(1-\beta)^2}
+-\frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^3\theta}.
+$$
+
+When $\theta=\infty$ (no model uncertainty), the last term disappears.
+Thus the utility gain from removing model uncertainty at fixed $(\mu,\sigma_\varepsilon)$ is
+
+$$
+\beta\sigma_\varepsilon^2/[2(1-\beta)^3\theta].
+
+$$
+To offset this by a permanent upward shift in initial log consumption, we need
+
+$$
+\Delta c_0^{uncertainty}/(1-\beta)=\beta\sigma_\varepsilon^2/[2(1-\beta)^3\theta],
+
+$$
+so
+
+$$
+\Delta c_0^{uncertainty}
+=
+\frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^2\theta}.
+$$
+
+Together these reproduce {eq}`bhs_type2_rw_decomp`.
+
+```{solution-end}
+```
