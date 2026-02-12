@@ -37,27 +37,28 @@ kernelspec:
 
 {cite:t}`Tall2000` showed that a recursive preference specification could match the equity premium and the risk-free rate puzzle simultaneously.
 
-But matching required setting the risk-aversion coefficient $\gamma$ to around 50 for a random-walk consumption model and around 75 for a trend-stationary model --- exactly the range that provoked Lucas's skepticism.
+But matching required setting the risk-aversion coefficient $\gamma$ to around 50 for a random-walk consumption model and around 75 for a trend-stationary model, exactly the range that provoked Lucas's skepticism.
 
 {cite:t}`BHS_2009` ask whether those large $\gamma$ values really measure aversion to atemporal risk, or whether they instead measure the agent's doubts about the underlying probability model.
 
-Their answer --- and the theme of this lecture --- is that much of what looks like "risk aversion" can be reinterpreted as **model uncertainty**.
+Their answer, and the theme of this lecture, is that much of what looks like "risk aversion" can be reinterpreted as **model uncertainty**.
 
 The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to a max--min recursion in which the agent fears that the probability model governing consumption growth may be wrong.
 
 Under this reading, the parameter that looked like extreme risk aversion instead measures concern about **misspecification**.
 
-They show that modest amounts of model uncertainty can substitute for large amounts of risk aversion
-in terms of choices and effects on asset prices.
+They show that modest amounts of model uncertainty can substitute for large amounts of risk aversion in terms of choices and effects on asset prices.
 
-This reinterpretation changes the welfare question that asset prices answer: do large risk premia measure the benefits from reducing well-understood aggregate fluctuations, or the benefits from reducing doubts about the underlying model?
+This reinterpretation changes the welfare question that asset prices answer.
 
-We start with the Hansen--Jagannathan bound, then specify the statistical environment, lay out four related preference specifications and their relationships, and finally revisit Tallarini's calibration using detection-error probabilities.
+Do large risk premia measure the benefits from reducing well-understood aggregate fluctuations, or the benefits from reducing doubts about the underlying model?
 
-This lecture draws on ideas and techniques that appear in
+We begin with the Hansen--Jagannathan bound, then specify the statistical environment, lay out four related preference specifications and the connections among them, and finally revisit Tallarini's calibration through the lens of detection-error probabilities.
 
-- {ref}`Asset Pricing: Finite State Models <mass>` where we introduce stochastic discount factors.
-- {ref}`Likelihood Ratio Processes <likelihood_ratio_process>` where we develop the likelihood-ratio machinery that reappears here as the worst-case distortion $\hat g$.
+Along the way, we draw on ideas and techniques from
+
+- {ref}`Asset Pricing: Finite State Models <mass>`, where we introduce stochastic discount factors, and
+- {ref}`Likelihood Ratio Processes <likelihood_ratio_process>`, where we develop the likelihood-ratio machinery that reappears here as the worst-case distortion $\hat g$.
 
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
@@ -109,9 +110,9 @@ cov_erf = (r_e_std**2 + r_f_std**2 - r_excess_std**2) / 2.0
 
 ### Pricing kernel and the risk-free rate
 
-In this section, we review a few key concepts from {ref}`Asset Pricing: Finite State Models <mass>`.
+Let's briefly review a few key concepts from {ref}`Asset Pricing: Finite State Models <mass>`.
 
-A random variable $m_{t+1}$ is said to be a **stochastic discount factor** if it satisfies the following equation for the time-$t$ price $p_t$ of a one-period payoff $y_{t+1}$:
+A random variable $m_{t+1}$ is called a **stochastic discount factor** if, for a one-period payoff $y_{t+1}$ with time-$t$ price $p_t$, it satisfies
 
 ```{math}
 :label: bhs_pricing_eq
@@ -183,13 +184,13 @@ The left-hand side of {eq}`bhs_hj_bound` is the **Sharpe ratio**: the expected e
 
 The right-hand side, $\sigma_t(m)/E_t(m)$, is the **market price of risk**: the maximum Sharpe ratio attainable in the market.
 
-The bound says that the Sharpe ratio of any asset cannot exceed the market price of risk.
+In words, no asset's Sharpe ratio can exceed the market price of risk.
 
 #### Unconditional version
 
 The bound {eq}`bhs_hj_bound` is stated in conditional terms.
 
-An unconditional counterpart considers a vector of $n$ gross returns $R_{t+1}$ (e.g., equity and risk-free) with unconditional mean $E(R)$ and covariance matrix $\Sigma_R$:
+There is also an unconditional counterpart that works with a vector of $n$ gross returns $R_{t+1}$ (e.g., equity and risk-free) with unconditional mean $E(R)$ and covariance matrix $\Sigma_R$:
 
 ```{math}
 :label: bhs_hj_unconditional
@@ -200,9 +201,9 @@ An unconditional counterpart considers a vector of $n$ gross returns $R_{t+1}$ (
 b = \mathbf{1} - E(m) E(R).
 ```
 
-In {ref}`Exercise 1 <dov_ex1>`, we will revisit and verify this unconditional version of the HJ bound.
+{ref}`Exercise 1 <dov_ex1>` walks through a derivation of this unconditional bound.
 
-Below we implement a function that computes the right-hand side of {eq}`bhs_hj_unconditional` for any given value of $E(m)$.
+The function below computes the right-hand side of {eq}`bhs_hj_unconditional` for any given value of $E(m)$.
 
 ```{code-cell} ipython3
 def hj_std_bound(E_m):
@@ -214,11 +215,13 @@ def hj_std_bound(E_m):
 
 ### The puzzle
 
-To reconcile formula {eq}`bhs_crra_sdf` with measures of the market price of risk extracted from data on asset returns and prices (like those in Table 1 below) requires a value of $\gamma$ so high that it provokes skepticism --- this is the **equity premium puzzle**.
+Reconciling formula {eq}`bhs_crra_sdf` with the market price of risk extracted from data on asset returns (like those in Table 1 below) requires a value of $\gamma$ so high that it provokes skepticism.
+
+This is the **equity premium puzzle**.
 
 But the puzzle has a second dimension.
 
-High values of $\gamma$ that deliver enough volatility $\sigma(m)$ also push the reciprocal of the risk-free rate $E(m)$ down, and therefore away from the Hansen--Jagannathan bounds.
+High values of $\gamma$ that deliver enough volatility $\sigma(m)$ also push $E(m)$, the reciprocal of the gross risk-free rate, too far down, away from the Hansen--Jagannathan bound.
 
 This is the **risk-free rate puzzle** of {cite:t}`Weil_1989`.
 
@@ -226,11 +229,11 @@ This is the **risk-free rate puzzle** of {cite:t}`Weil_1989`.
 
 The figure below reproduces Tallarini's key diagnostic.
 
-We present this figure before developing the underlying theory because it motivates much of the subsequent analysis.
+We show it before developing the underlying theory because it motivates much of what follows.
 
 The closed-form expressions for the Epstein--Zin SDF moments used in the plot are derived in {ref}`Exercise 2 <dov_ex2>`.
 
-The code below implements those expressions and the corresponding CRRA moments.
+The code below implements them alongside the corresponding CRRA moments.
 
 ```{code-cell} ipython3
 def moments_type1_rw(γ):
@@ -262,7 +265,9 @@ def moments_crra_rw(γ):
     return E_m, mpr
 ```
 
-For each value of $\gamma \in \{1, 5, 10, \ldots, 51\}$, we plot the implied $(E(m),\sigma(m))$ pair for three specifications: time-separable CRRA (crosses), Epstein--Zin preferences with random-walk consumption (circles), and Epstein--Zin preferences with trend-stationary consumption (pluses).
+For each value of $\gamma \in \{1, 5, 10, \ldots, 51\}$, we plot the implied $(E(m),\sigma(m))$ pair for three specifications.
+
+These are time-separable CRRA (crosses), Epstein--Zin preferences with random-walk consumption (circles), and Epstein--Zin preferences with trend-stationary consumption (pluses).
 
 
 ```{code-cell} ipython3
@@ -306,27 +311,33 @@ plt.tight_layout()
 plt.show()
 ```
 
-The crosses show that as $\gamma$ rises, $\sigma(m)/E(m)$ grows but $E(m)$ falls well below the range consistent with the observed risk-free rate.
+The crosses tell the story of the risk-free-rate puzzle ({cite:t}`Weil_1989`).
 
-This is the risk-free-rate puzzle of {cite:t}`Weil_1989`.
+As $\gamma$ rises, $\sigma(m)/E(m)$ grows but $E(m)$ drifts well below the range consistent with the observed risk-free rate.
 
-The circles and pluses show Tallarini's solution.
+The circles and pluses show Tallarini's way out.
 
-Recursive utility with IES $= 1$ pushes volatility upward while keeping $E(m)$ roughly constant near $1/(1+r^f)$.
+Recursive utility with IES $= 1$ pushes volatility upward while keeping $E(m)$ roughly pinned near $1/(1+r^f)$.
 
-For the random-walk model, the bound is reached around $\gamma = 50$; for the trend-stationary model, around $\gamma = 75$.
+For the random-walk model, the bound is reached at around $\gamma = 50$.
 
-The quantitative achievement is significant, but Lucas's challenge remains: what microeconomic evidence supports $\gamma = 50$?
+For the trend-stationary model, it is reached at around $\gamma = 75$.
 
-{cite:t}`BHS_2009` argue that the large $\gamma$ values are not really about risk aversion, but instead reflect the agent's doubts about the underlying probability model.
+The quantitative achievement is impressive, but Lucas's challenge still stands.
+
+Where is the microeconomic evidence for $\gamma = 50$?
+
+{cite:t}`BHS_2009` argue that these large $\gamma$ values are not really about risk aversion. 
+
+Instead, they reflect the agent's doubts about the probability model itself.
 
 ## The choice setting
 
-To develop this reinterpretation, we first need to formalize the setting we are working in.
+To make this reinterpretation precise, we first need to formalize the environment.
 
 ### Shocks and consumption plans
 
-We formulate the analysis in terms of a general class of consumption plans.
+We work with a general class of consumption plans.
 
 Let $x_t$ be an $n \times 1$ state vector and $\varepsilon_{t+1}$ an $m \times 1$ shock.
 
@@ -347,9 +358,9 @@ The time-$t$ consumption can therefore be written as
 c_t = H \left(B\varepsilon_t + AB\varepsilon_{t-1} + \cdots + A^{t-1}B\varepsilon_1\right) + HA^t x_0.
 ```
 
-The equivalence theorems and Bellman equations below hold for arbitrary plans in $\mathcal{C}(A,B,H;x_0)$.
+The equivalence theorems and Bellman equations that follow hold for arbitrary plans in $\mathcal{C}(A,B,H;x_0)$.
 
-The random-walk and trend-stationary models below are two special cases we focus on.
+We focus on the random-walk and trend-stationary models as two special cases.
 
 ### Consumption dynamics
 
@@ -399,7 +410,7 @@ Equivalently, defining the detrended series $\tilde c_t := c_t - \mu t$,
 
 The estimated parameters are $(\mu, \sigma_\varepsilon)$ for the random walk and $(\mu, \sigma_\varepsilon, \rho, \zeta)$ for the trend-stationary case.
 
-Below we record these parameters and moments in the paper's tables for later reference.
+We record these parameters and moments from the paper's tables for later reference.
 
 ```{code-cell} ipython3
 print("Table 2 parameters")
@@ -450,15 +461,15 @@ We compare four preference specifications over consumption plans $C^\infty \in \
 - a single pessimistic joint distribution $\hat\Pi_\infty(\cdot \mid x_0, \theta)$ induced by the type II worst-case distortion.
 
 
-We will introduce two sets of equivalence results.
+Two sets of equivalence results tie these agents together.
 
-Types I and II are observationally equivalent in the strong sense that they have identical preferences over $\mathcal{C}$.
+Types I and II turn out to be observationally equivalent in a strong sense, having identical preferences over $\mathcal{C}$.
 
-Types III and IV are observationally equivalent in a weaker but still useful sense: for the particular endowment process taken as given, they deliver the same worst-case pricing implications as a type II agent.
+Types III and IV are equivalent in a weaker but still useful sense, delivering the same worst-case pricing implications as a type II agent for a given endowment process.
 
-We now formalize each of the four agent types and develop the equivalence results that connect them.
+We now formalize each agent type and develop the equivalences among them.
 
-For each of the four types, we will derive a Bellman equation that characterizes the agent's value function and stochastic discount factor.
+For each type, we derive a Bellman equation that pins down the agent's value function and stochastic discount factor.
 
 The stochastic discount factor for all four types takes the form
 
@@ -469,11 +480,11 @@ $$
 where $\hat g_{t+1}$ is a likelihood-ratio distortion that we will define in each case.
 
 
-Along the way, we introduce the likelihood-ratio distortion that appears in the stochastic discount factor and develop the detection-error probability that serves as our new calibration device.
+Along the way, we introduce the likelihood-ratio distortion that enters the stochastic discount factor and develop the detection-error probability that will serve as our new calibration device.
 
 ### Type I: Kreps--Porteus--Epstein--Zin--Tallarini preferences
 
-The general Epstein--Zin--Weil specification aggregates current consumption and a certainty equivalent of future utility using a CES function:
+The general Epstein--Zin--Weil specification combines current consumption with a certainty equivalent of future utility through a CES aggregator:
 
 ```{math}
 :label: bhs_ez_general
@@ -516,7 +527,7 @@ Taking logs and expanding the certainty equivalent {eq}`bhs_certainty_equiv` giv
 \log E_t\left[(V_{t+1})^{1-\gamma}\right].
 ```
 
-A key intermediate step is to define the transformed continuation value
+A useful change of variables is to define the transformed continuation value
 
 ```{math}
 :label: bhs_Ut_def
@@ -537,7 +548,7 @@ Substituting into {eq}`bhs_type1_recursion` yields the **risk-sensitive recursio
 U_t = c_t - \beta\theta \log E_t\left[\exp\left(\frac{-U_{t+1}}{\theta}\right)\right].
 ```
 
-When $\gamma = 1$ (equivalently $\theta = +\infty$), the $\log E \exp$ term reduces to $E_t U_{t+1}$ and the recursion becomes standard discounted expected log utility: $U_t = c_t + \beta E_t U_{t+1}$.
+When $\gamma = 1$ (equivalently $\theta = +\infty$), the $\log E \exp$ term reduces to $E_t U_{t+1}$ and the recursion becomes standard discounted expected log utility, $U_t = c_t + \beta E_t U_{t+1}$.
 
 For consumption plans in $\mathcal{C}(A, B, H; x_0)$, the recursion {eq}`bhs_risk_sensitive` implies the Bellman equation
 
@@ -548,13 +559,13 @@ U(x) = c - \beta\theta \log \int \exp\left[\frac{-U(Ax + B\varepsilon)}{\theta}\
 
 #### Deriving the stochastic discount factor
 
-The stochastic discount factor is the intertemporal marginal rate of substitution: the ratio of marginal utilities of the consumption good at dates $t+1$ and $t$.
+The stochastic discount factor is the intertemporal marginal rate of substitution, the ratio of marginal utilities at dates $t+1$ and $t$.
 
-Since $c_t$ enters {eq}`bhs_risk_sensitive` linearly, $\partial U_t / \partial c_t = 1$.
+Because $c_t$ enters {eq}`bhs_risk_sensitive` linearly, $\partial U_t / \partial c_t = 1$.
 
 Converting from log consumption to the consumption good gives $\partial U_t / \partial C_t = 1/C_t$.
 
-A perturbation to $c_{t+1}$ in a particular state affects $U_t$ through the $\log E_t \exp$ term.
+A perturbation to $c_{t+1}$ in a particular state feeds into $U_t$ through the $\log E_t \exp$ term.
 
 Differentiating {eq}`bhs_risk_sensitive`:
 
@@ -591,9 +602,9 @@ The second factor is the likelihood-ratio distortion $\hat g_{t+1}$: an exponent
 
 We now turn to the type II (multiplier) agent.
 
-Before writing down the preferences, we introduce the machinery of martingale likelihood ratios used to formalize model distortions.
+Before writing down the preferences, we need the machinery of martingale likelihood ratios that formalizes what it means to distort a probability model.
 
-The tools in this section build on {ref}`Likelihood Ratio Processes <likelihood_ratio_process>`, which develops properties of likelihood ratios in detail, and {ref}`Divergence Measures <divergence_measures>`, which covers relative entropy.
+These tools build on {ref}`Likelihood Ratio Processes <likelihood_ratio_process>`, which develops properties of likelihood ratios in detail, and {ref}`Divergence Measures <divergence_measures>`, which covers relative entropy.
 
 
 #### Martingale likelihood ratios
@@ -629,7 +640,7 @@ A type II agent's *multiplier* preference ordering over consumption plans $C^\in
 
 where $G_{t+1} = g_{t+1}G_t$, $E_t[g_{t+1}] = 1$, $g_{t+1} \geq 0$, and $G_0 = 1$.
 
-The parameter $\theta > 0$ penalizes the relative entropy of probability distortions.
+A larger $\theta$ makes probability distortions more expensive, discouraging departures from the approximating model.
 
 The value function satisfies the Bellman equation
 
@@ -655,7 +666,9 @@ The minimizer is ({ref}`Exercise 4 <dov_ex4>` derives this and verifies the equi
 \frac{\exp \bigl(-W(Ax_t + B\varepsilon_{t+1})/\theta\bigr)}{E_t \left[\exp \bigl(-W(Ax_t + B\varepsilon_{t+1})/\theta\bigr)\right]}.
 ```
 
-The fact that $g(\varepsilon)$ multiplies both the continuation value $W$ and the entropy penalty is the key structural feature that makes $\hat g$ a likelihood ratio.
+Notice that $g(\varepsilon)$ multiplies both the continuation value $W$ and the entropy penalty.
+
+This is the key structural feature that makes $\hat g$ a likelihood ratio.
 
 
 Substituting {eq}`bhs_ghat` back into {eq}`bhs_bellman_type2` gives
@@ -687,9 +700,9 @@ def γ_from_θ(θ, β=β):
 
 ### Type III: constraint preferences
 
-Type III (constraint) preferences replace the entropy penalty with a hard bound.
+Type III (constraint) preferences swap the entropy penalty for a hard bound.
 
-The agent minimizes expected discounted log consumption under the worst-case model, subject to a cap $\eta$ on discounted relative entropy:
+Rather than penalizing distortions through $\theta$, the agent minimizes expected discounted log consumption under the worst-case model subject to a cap $\eta$ on discounted relative entropy:
 
 ```{math}
 J(x_0)
@@ -730,15 +743,15 @@ $$
 
 which, apart from the constant $-\theta\eta$, has the same structure as the type II objective {eq}`bhs_type2_objective`.
 
-The first-order condition for $g_{t+1}$ is therefore identical, and the optimal distortion is the same $\hat g_{t+1}$ as in {eq}`bhs_ghat` for the $\theta$ that makes the entropy constraint bind.
+The first-order condition for $g_{t+1}$ is therefore identical, and the optimal distortion is the same $\hat g_{t+1}$ as in {eq}`bhs_ghat`, evaluated at the $\theta$ that makes the entropy constraint bind.
 
 The SDF is again $m_{t+1} = \beta(C_t/C_{t+1})\hat g_{t+1}$.
 
-For the particular $A, B, H$ and $\theta$ used to derive the worst-case joint distribution $\hat\Pi_\infty$, the shadow prices of uncertain claims for a type III agent match those of a type II agent.
+So for the particular endowment process and the $\theta$ that enforces the entropy bound, a type III agent and a type II agent assign the same shadow prices to uncertain claims.
 
 ### Type IV: ex post Bayesian
 
-Type IV is an ordinary expected-utility agent with log preferences evaluated under a single pessimistic probability model $\hat\Pi_\infty$:
+The type IV agent is the simplest of the four: an ordinary expected-utility agent with log preferences who happens to hold a pessimistic probability model $\hat\Pi_\infty$:
 
 ```{math}
 \hat E_0 \sum_{t=0}^{\infty} \beta^t c_t.
@@ -746,9 +759,9 @@ Type IV is an ordinary expected-utility agent with log preferences evaluated und
 
 $\hat E_0$ denotes expectation under the pessimistic model $\hat\Pi_\infty$.
 
-The joint distribution $\hat\Pi_\infty(\cdot \mid x_0, \theta)$ is the one associated with the type II agent's worst-case distortion.
+Here $\hat\Pi_\infty(\cdot \mid x_0, \theta)$ is the joint distribution generated by the type II agent's worst-case distortion.
 
-Under $\hat\Pi_\infty$ the agent has log utility, so the Euler equation for any gross return $R_{t+1}$ is
+Since the agent has log utility under $\hat\Pi_\infty$, the Euler equation for any gross return $R_{t+1}$ is
 
 $$
 1 = \hat E_t \left[\beta \frac{C_t}{C_{t+1}} R_{t+1}\right].
@@ -767,7 +780,7 @@ For the particular $A, B, H$ and $\theta$ used to construct $\hat\Pi_\infty$, th
 
 ### Stochastic discount factor
 
-As we have shown for each of the four agent types, the stochastic discount factor can be written compactly as
+Pulling together the results for all four agent types, the stochastic discount factor can be written compactly as
 
 ```{math}
 :label: bhs_sdf
@@ -776,15 +789,15 @@ m_{t+1}
 \beta \frac{C_t}{C_{t+1}} \hat g_{t+1}.
 ```
 
-The distortion $\hat g_{t+1}$ is a likelihood ratio between the approximating and worst-case one-step models.
+The factor $\hat g_{t+1}$ is a likelihood ratio between the approximating and worst-case one-step models.
 
 With log utility, $C_t/C_{t+1} = \exp(-(c_{t+1}-c_t))$ is the usual intertemporal marginal rate of substitution.
 
-Robustness multiplies that term by $\hat g_{t+1}$, so uncertainty aversion enters pricing only through the distortion.
+Robustness multiplies it by $\hat g_{t+1}$, so uncertainty aversion enters pricing entirely through the distortion.
 
-For constraint preferences, the worst-case distortion is the same as for multiplier preferences with the $\theta$ that makes the entropy constraint bind.
+For the constraint-preference agent, the worst-case distortion coincides with the multiplier agent's at the $\theta$ that makes the entropy constraint bind.
 
-For the ex post Bayesian, the distortion is a change of measure from the approximating model to the pessimistic model.
+For the ex post Bayesian, it is simply a change of measure from the approximating model to the pessimistic one.
 
 ### Value function decomposition
 
@@ -811,15 +824,20 @@ Then $W(x) = J(x) + \theta N(x)$.
 
 Here $J(x_t) = \hat E_t \sum_{j=0}^{\infty} \beta^j c_{t+j}$ is expected discounted log consumption under the *worst-case* model.
 
-$J$ is the value function for both the type III and the type IV agent: the type III agent maximizes expected utility subject to an entropy constraint, and once the worst-case model is determined, the resulting value is expected discounted consumption under that model; the type IV agent uses the same worst-case model as a fixed belief, so evaluates the same expectation.
+$J$ is the value function shared by both the type III and type IV agents.  
 
-The term $N(x)$ is discounted continuation entropy: it measures the total information cost of the probability distortion from date $t$ onward.
+For the type III agent, once the worst-case model is pinned down by the entropy constraint, the resulting value is simply expected discounted consumption under that model.
 
-This decomposition will be important for the welfare calculations in {ref}`the welfare section <welfare_experiments>` below, where it explains why type III uncertainty compensation is twice that of type II.
+The type IV agent adopts the same model as a fixed belief, so she evaluates the same expectation.
+
+The term $N(x)$ is discounted continuation entropy, measuring the total information cost of the probability distortion from date $t$ onward.
+
+This decomposition plays a central role in the welfare calculations of {ref}`the welfare section <welfare_experiments>` below, where it explains why type III uncertainty compensation is twice that of type II.
 
 ### Gaussian mean-shift distortions
 
-The preceding results hold for general distortions $\hat g$.
+Everything so far holds for general distortions $\hat g$.
+
 We now specialize to the Gaussian case that underlies our two consumption models.
 
 Under both models, the shock is $\varepsilon_{t+1} \sim \mathcal{N}(0,1)$.
@@ -848,7 +866,9 @@ Hence $\log \hat g_{t+1}$ is normal with mean $-w^2/2$ and variance $w^2$, and
 ```
 
 The mean shift $w$ is determined by how strongly each shock $\varepsilon_{t+1}$ affects continuation value.
+
 From {eq}`bhs_ghat`, the worst-case distortion puts $\hat g \propto \exp(-W(x_{t+1})/\theta)$.
+
 If $W(x_{t+1})$ loads on $\varepsilon_{t+1}$ with coefficient $\lambda$, then the Gaussian mean shift is $w = -\lambda/\theta$.
 
 By guessing linear value functions and matching coefficients in the Bellman equation ({ref}`Exercise 11 <dov_ex11>` works out both cases), we obtain the worst-case mean shifts
@@ -860,7 +880,9 @@ w_{rw}(\theta) = -\frac{\sigma_\varepsilon}{(1-\beta)\theta},
 w_{ts}(\theta) = -\frac{\sigma_\varepsilon}{(1-\rho\beta)\theta}.
 ```
 
-The denominator $(1-\beta)$ in the random-walk case is replaced by $(1-\beta\rho)$ in the trend-stationary case: because the AR(1) component is persistent, each shock has a larger effect on continuation utility.
+The denominator $(1-\beta)$ in the random-walk case becomes $(1-\beta\rho)$ in the trend-stationary case.  
+
+Because the AR(1) component is persistent, each shock has a larger cumulative effect on continuation utility, so the worst-case distortion is more aggressive.
 
 ```{code-cell} ipython3
 def w_from_θ(θ, model):
@@ -895,9 +917,9 @@ def η_from_θ(θ, model):
     return β * w**2 / (2.0 * (1.0 - β))
 ```
 
-This formula provides a mapping between $\theta$ and $\eta$ that aligns multiplier and constraint preferences along an exogenous endowment process.
+This gives a clean mapping between $\theta$ and $\eta$ that aligns multiplier and constraint preferences along an exogenous endowment process.
 
-In the {ref}`detection-error section <detection_error_section>` below, we show that it is more natural to hold $\eta$ (or equivalently the detection-error probability $p$) fixed rather than $\theta$ when comparing across consumption models.
+As we will see in the {ref}`detection-error section <detection_error_section>` below, it is more natural to hold $\eta$ (or equivalently the detection-error probability $p$) fixed rather than $\theta$ when comparing across consumption models.
 
 ### Value functions for random-walk consumption
 
@@ -928,18 +950,20 @@ Using $W = J + \theta N$, the type III/IV value function is
 J(x_t) = W(x_t) - \theta N(x_t) = \frac{1}{1-\beta}\left[c_t + \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{(1-\beta)\theta}\right)\right].
 ```
 
-The coefficient on $\sigma_\varepsilon^2/[(1-\beta)\theta]$ doubles from $\tfrac{1}{2}$ in $W$ to $1$ in $J$ because $W$ includes the entropy "rebate" $\theta N$ that partially offsets the pessimistic tilt, while $J$ evaluates consumption purely under the worst-case model.
+Notice that the coefficient on $\sigma_\varepsilon^2/[(1-\beta)\theta]$ doubles from $\tfrac{1}{2}$ in $W$ to $1$ in $J$.  
 
-This difference propagates directly into the welfare calculations below.
+The reason is that $W$ includes the entropy "rebate" $\theta N$, which partially offsets the pessimistic tilt, while $J$ evaluates consumption purely under the worst-case model with no such offset.
+
+This seemingly small difference drives a factor-of-two wedge in the welfare calculations below.
 
 (detection_error_section)=
 ## A new calibration language: detection-error probabilities
 
-The preceding section derived SDF moments, value functions, and worst-case distortions as functions of $\gamma$ (or equivalently $\theta$).
+So far we have expressed SDF moments, value functions, and worst-case distortions as functions of $\gamma$ (or equivalently $\theta$).
 
 But if $\gamma$ should not be calibrated by introspection about atemporal gambles, what replaces it?
 
-The answer proposed by {cite:t}`BHS_2009` is a statistical test that asks how easily one could distinguish the approximating model from its worst-case alternative.
+The answer proposed by {cite:t}`BHS_2009` is a statistical test: how easily could an econometrician distinguish the approximating model from its worst-case alternative?
 
 ### Likelihood-ratio testing and detection errors
 
@@ -959,13 +983,15 @@ Then $p(\theta^{-1}) = \frac{1}{2}(p_A + p_B)$ is the average probability of cho
 
 Fix a sample size $T$ (here 235 quarters, matching the postwar US data used in the paper).
 
-For a given $\theta$, compute the worst-case model and ask: if a Bayesian ran a likelihood-ratio test to distinguish the approximating model from the worst-case model, what fraction of the time would she make an error?
+For a given $\theta$, compute the worst-case model and imagine that a Bayesian runs a likelihood-ratio test to distinguish it from the approximating model.  
+
+What fraction of the time would she pick the wrong one?
 
 That fraction is the **detection-error probability** $p(\theta^{-1})$.
 
-A high $p$ (near 0.5) means the two models are nearly indistinguishable, so the consumer's fear is hard to rule out.
+When $p$ is close to 0.5 the two models are nearly indistinguishable, so the consumer's fear is hard to rule out.
 
-A low $p$ means the worst-case model is easy to reject and the robustness concern is less compelling.
+When $p$ is small the worst-case model is easy to reject and the robustness concern carries less force.
 
 ### Market price of model uncertainty
 
@@ -1014,37 +1040,33 @@ def θ_from_detection_probability(p, model):
 
 ### Interpreting the calibration objects
 
-We now summarize the chain of mappings that connects preference parameters to statistical distinguishability.
+Let us trace the chain of mappings that connects preference parameters to statistical distinguishability.
 
-The parameter $\theta$ indexes how expensive it is for the minimizing player to distort the approximating model.
+The parameter $\theta$ governs how expensive it is for the minimizing player to distort the approximating model.
 
-A small $\theta$ means a cheap distortion and therefore stronger robustness concerns.
+A small $\theta$ means cheap distortions and therefore stronger robustness concerns.
 
 The associated $\gamma = 1 + \left[(1-\beta)\theta\right]^{-1}$ can be large even when we do not want to interpret behavior as extreme atemporal risk aversion.
 
-The distortion magnitude $|w(\theta)|$ is a direct measure of how pessimistically the agent tilts one-step probabilities.
+The distortion magnitude $|w(\theta)|$ directly measures how pessimistically the agent tilts one-step probabilities.
 
-Detection error probability $p(\theta^{-1})$ translates that tilt into a statistical statement about finite-sample distinguishability.
+The detection-error probability $p(\theta^{-1})$ translates that tilt into a statistical statement about finite-sample distinguishability.
 
-High $p(\theta^{-1})$ means the two models are hard to distinguish.
+High $p$ means the two models are hard to tell apart, while low $p$ means the worst case is easier to reject.
 
-Low $p(\theta^{-1})$ means they are easier to distinguish.
+This chain bridges econometric identification and preference calibration.
 
-This mapping bridges econometric identification and preference calibration.
-
-Finally, recall from {eq}`bhs_eta_formula` that discounted entropy is $\eta = \frac{\beta}{2(1-\beta)}w(\theta)^2$.
-
-This tells us that when the distortion is a Gaussian mean shift, discounted entropy is proportional to the squared market price of model uncertainty.
+Finally, recall from {eq}`bhs_eta_formula` that discounted entropy is $\eta = \frac{\beta}{2(1-\beta)}w(\theta)^2$, so when the distortion is a Gaussian mean shift, discounted entropy is proportional to the squared market price of model uncertainty.
 
 ### Detection probabilities across the two models
 
-The left panel below plots $p(\theta^{-1})$ against $\theta^{-1}$ for the two consumption specifications.
+The left panel below plots $p(\theta^{-1})$ against $\theta^{-1}$ for both consumption specifications.
 
-Notice that the same numerical $\theta$ corresponds to very different detection probabilities across models, because baseline dynamics differ.
+Because the baseline dynamics differ, the same numerical $\theta$ implies very different detection probabilities across the two models.
 
-The right panel resolves this by plotting detection probabilities against discounted relative entropy $\eta$, which normalizes the statistical distance.
+The right panel resolves this by plotting detection probabilities against discounted relative entropy $\eta$, which normalizes the statistical distance.  
 
-Indexed by $\eta$, the two curves coincide.
+Once indexed by $\eta$, the two curves fall on top of each other.
 
 ```{code-cell} ipython3
 ---
@@ -1083,11 +1105,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-Detection-error probabilities (or equivalently, discounted entropy) therefore provide the right cross-model yardstick.
+Detection-error probabilities (or equivalently, discounted entropy) are therefore the right yardstick for cross-model comparisons.
 
-Holding $\theta$ fixed when switching from a random walk to a trend-stationary specification implicitly changes how much misspecification the consumer fears.
+If we hold $\theta$ fixed when switching from a random walk to a trend-stationary specification, we implicitly change how much misspecification the consumer fears.
 
-Holding $\eta$ or $p$ fixed keeps the statistical difficulty of detecting misspecification constant.
+Holding $\eta$ or $p$ fixed instead keeps the statistical difficulty of detecting misspecification constant.
 
 The explicit mapping that equates discounted entropy across models is ({ref}`Exercise 7 <dov_ex7>` derives it):
 
@@ -1105,9 +1127,9 @@ Because $\rho = 0.98$ and $\beta = 0.995$, the ratio $(1-\beta)/(1-\rho\beta)$ i
 
 ## Detection probabilities unify the two models
 
-We now redraw Tallarini's figure using detection-error probabilities.
+With this machinery in hand, we can redraw Tallarini's figure using detection-error probabilities as the common index.
 
-For each detection-error probability $p(\theta^{-1}) = 0.50, 0.45, \ldots, 0.01$, invert to find the model-specific $\theta$, convert to $\gamma$, and plot the implied $(E(m), \sigma(m))$ pair.
+For each $p(\theta^{-1}) = 0.50, 0.45, \ldots, 0.01$, we invert to find the model-specific $\theta$, convert to $\gamma$, and plot the implied $(E(m), \sigma(m))$ pair.
 
 ```{code-cell} ipython3
 p_points = np.array(
@@ -1194,15 +1216,21 @@ plt.tight_layout()
 plt.show()
 ```
 
-The result is striking: the random-walk and trend-stationary loci nearly coincide.
+The result is striking.
 
-Recall that under Tallarini's $\gamma$-calibration, reaching the Hansen--Jagannathan bound required $\gamma \approx 50$ for the random walk but $\gamma \approx 75$ for the trend-stationary model --- very different numbers for the "same" preference parameter.
+The random-walk and trend-stationary loci nearly coincide.
 
-Under detection-error calibration, both models reach the bound at the same detectability level.
+Recall that under Tallarini's $\gamma$-calibration, reaching the Hansen--Jagannathan bound required $\gamma \approx 50$ for the random walk but $\gamma \approx 75$ for the trend-stationary model.
 
-The apparent model dependence was an artifact of using $\gamma$ as a cross-model yardstick.
+These are very different numbers for what is supposed to be the "same" preference parameter.
 
-Once we measure robustness concerns in units of statistical detectability, the two consumption specifications tell the same story: a representative consumer with moderate, difficult-to-dismiss fears about model misspecification behaves as though she has very high risk aversion.
+Under detection-error calibration, both models reach the bound at essentially the same detectability level.
+
+The apparent model dependence was an artifact of using $\gamma$ as the cross-model yardstick.
+
+Once we measure robustness concerns in units of statistical detectability, the two consumption specifications tell a single, coherent story.
+
+A representative consumer with moderate, difficult-to-dismiss fears about model misspecification behaves as though she has very high risk aversion.
 
 The following figure brings together the two key ideas of this section: a small one-step density shift that is hard to detect (left panel) compounds into a large gap in expected log consumption (right panel).
 
@@ -1274,9 +1302,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-The next figure decomposes the log SDF into two additive components.
+The next figure makes the "doubts or variability?" question by decomposing the log SDF into two additive components.
 
-Taking logs of the SDF {eq}`bhs_sdf` gives
+Taking logs of {eq}`bhs_sdf` gives
 
 $$
 \log m_{t+1}
@@ -1302,9 +1330,15 @@ so the slope of $\log m_{t+1}$ in $\varepsilon_{t+1}$ is $\sigma_\varepsilon - w
 
 Since $w < 0$, the distortion steepens the SDF relative to what log utility alone would deliver.
 
-In the figure below, the intertemporal marginal rate of substitution (IMRS) is nearly flat: at postwar calibrated volatility ($\sigma_\varepsilon = 0.005$), it contributes almost nothing to the pricing kernel's slope.
+The figure below reveals how little work log utility does on its own.  
 
-The distortion accounts for virtually all of the SDF volatility --- what looks like extreme risk aversion ($\gamma \approx 34$) is really log utility plus moderate fears of model misspecification.
+The intertemporal marginal rate of substitution (IMRS) is nearly flat.
+
+At postwar calibrated volatility ($\sigma_\varepsilon = 0.005$), it contributes almost nothing to the pricing kernel's slope.
+
+The worst-case distortion accounts for virtually all of the SDF's volatility.  
+
+What looks like extreme risk aversion ($\gamma \approx 34$) is really just log utility combined with moderate fears of model misspecification.
 
 ```{code-cell} ipython3
 ---
@@ -1345,19 +1379,19 @@ plt.show()
 (welfare_experiments)=
 ## What do risk premia measure?
 
-{cite:t}`Lucas_2003` asked how much consumption a representative consumer would sacrifice to eliminate aggregate fluctuations.
+{cite:t}`Lucas_2003` asked how much consumption a representative consumer would sacrifice to eliminate aggregate fluctuations.  
 
-His answer rested on the assumption that the consumer knows the data-generating process.
+His answer rested on the assumption that the consumer knows the true data-generating process.
 
-The robust reinterpretation introduces a second, distinct thought experiment.
+The robust reinterpretation opens up a second, quite different thought experiment.
 
-Instead of eliminating all randomness, suppose we keep randomness but remove the consumer's fear of model misspecification (set $\theta = \infty$).
+Instead of eliminating all randomness, suppose we keep the randomness but remove the consumer's fear of model misspecification (set $\theta = \infty$).  
 
 How much would she pay for that relief?
 
-Formally, we seek a permanent proportional reduction $c_0 - c_0^k$ in initial log consumption that leaves an agent of type $k$ indifferent between the original risky plan and a deterministic certainty-equivalent path.
+To answer this, we seek a permanent proportional reduction $c_0 - c_0^k$ in initial log consumption that leaves an agent of type $k$ indifferent between the original risky plan and a deterministic certainty-equivalent path.
 
-Because utility is log and the consumption process is Gaussian, these compensations are available in closed form.
+Because utility is log and the consumption process is Gaussian, these compensations can be computed in closed form.
 
 ### The certainty equivalent path
 
@@ -1368,7 +1402,9 @@ The point of comparison is the deterministic path with the same mean level of co
 c_{t+1}^{ce} - c_t^{ce} = \mu + \tfrac{1}{2}\sigma_\varepsilon^2.
 ```
 
-The additional $\tfrac{1}{2}\sigma_\varepsilon^2$ term is a Jensen's inequality correction: $E[C_t] = E[e^{c_t}] = \exp(c_0 + t\mu + \tfrac{1}{2}t\sigma_\varepsilon^2)$, so {eq}`bhs_ce_path` matches the mean *level* of consumption at every date.
+The additional $\tfrac{1}{2}\sigma_\varepsilon^2$ term is a Jensen's inequality correction.
+
+Since $E[C_t] = E[e^{c_t}] = \exp(c_0 + t\mu + \tfrac{1}{2}t\sigma_\varepsilon^2)$, {eq}`bhs_ce_path` matches the mean *level* of consumption at every date.
 
 ### Compensating variations from the value functions
 
@@ -1428,7 +1464,7 @@ where the last step uses $\gamma = 1 + [(1-\beta)\theta]^{-1}$.
 
 Because $W \equiv U$, we have $c_0^{II} = c_0^I$ and the total compensation is the same.
 
-However, the interpretation differs: we can now decompose it into **risk** and **model uncertainty** components.
+However, the interpretation differs because we can now decompose it into **risk** and **model uncertainty** components.
 
 A type II agent with $\theta = \infty$ (no model uncertainty) has log preferences and requires
 
@@ -1443,9 +1479,13 @@ A type II agent with $\theta = \infty$ (no model uncertainty) has log preference
 \frac{\beta \sigma_\varepsilon^2}{2(1-\beta)^2\theta}.
 ```
 
-The risk term $\Delta c_0^{risk}$ is Lucas's cost of business cycles: at postwar consumption volatility ($\sigma_\varepsilon \approx 0.005$), it is small.
+The risk term $\Delta c_0^{risk}$ is Lucas's cost of business cycles.
 
-The uncertainty term $\Delta c_0^{uncertainty}$ is the additional compensation a type II agent requires for facing model misspecification. It can be first-order whenever the detection-error probability is moderate, because $\theta$ appears in the denominator.
+At postwar consumption volatility ($\sigma_\varepsilon \approx 0.005$), it is negligibly small.
+
+The uncertainty term $\Delta c_0^{uncertainty}$ captures the additional compensation a type II agent demands for facing model misspecification. 
+
+With $\theta$ in the denominator, this term can be first-order even when the detection-error probability is only moderate.
 
 ### Type III (constraint) compensation
 
@@ -1474,7 +1514,9 @@ c_0 - c_0^{III}
 \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)}(2\gamma - 1).
 ```
 
-The risk component is the same $\frac{\beta\sigma_\varepsilon^2}{2(1-\beta)}$ as before. The uncertainty component alone is
+The risk component is the same $\frac{\beta\sigma_\varepsilon^2}{2(1-\beta)}$ as before.
+
+The uncertainty component alone is
 
 $$
 c_0^{III}(r) - c_0^{III}
@@ -1483,22 +1525,24 @@ c_0^{III}(r) - c_0^{III}
 $$
 
 which is *twice* the type II uncertainty compensation {eq}`bhs_type2_rw_decomp`.
-The factor of two traces back to the difference between $W$ and $J$ noted after {eq}`bhs_J_rw`: the entropy rebate $\theta N$ in $W = J + \theta N$ partially offsets the pessimistic tilt for the type II agent, but not for the type III agent who evaluates consumption purely under the worst-case model.
+
+The factor of two traces back to the difference between $W$ and $J$ noted after {eq}`bhs_J_rw`.
+
+The entropy rebate $\theta N$ in $W = J + \theta N$ partially offsets the pessimistic tilt for the type II agent, but not for the type III agent who evaluates consumption purely under the worst-case model.
 
 ### Type IV (ex post Bayesian) compensation
 
 A type IV agent believes the pessimistic model, so the perceived drift is $\tilde\mu = \mu - \sigma_\varepsilon^2/[(1-\beta)\theta]$.
+
 The compensation for moving to the certainty-equivalent path is the same as {eq}`bhs_type3_rw_decomp`, because this agent ranks plans using the same value function $J$.
 
 ### Comparison with a risky but free-of-model-uncertainty path
 
-The certainty equivalents above compare a risky plan to a deterministic path, eliminating both risk and uncertainty simultaneously.
+The certainty equivalents above compare a risky plan to a deterministic path, thereby eliminating both risk and uncertainty at once.
 
-We now describe an alternative measure that isolates compensation for model uncertainty by keeping risk intact.
+We now describe an alternative measure that isolates compensation for model uncertainty alone by keeping risk intact.
 
-We compare two situations with identical risky consumption for all dates $t \geq 1$.
-
-All compensation for model uncertainty is concentrated in an adjustment to date-zero consumption.
+The idea is to compare two situations with identical risky consumption for all dates $t \geq 1$, concentrating all compensation for model uncertainty in a single adjustment to date-zero consumption.
 
 Specifically, we seek $c_0^{II}(u)$ that makes a type II agent indifferent between:
 
@@ -1526,7 +1570,9 @@ $$
 = \frac{\beta}{1-\beta}\left[c_0 + \frac{\mu}{1-\beta}\right],
 $$
 
-where we used $E[c_1] = c_0 + \mu$ (the noise term has zero mean). Expanding gives
+where we used $E[c_1] = c_0 + \mu$ (the noise term has zero mean).
+
+Expanding gives
 
 $$
 \beta E\left[V^{\log}(c_1)\right]
@@ -1550,7 +1596,9 @@ c_0 - c_0^{II}(u) = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^3\theta} = \frac
 
 This is $\frac{1}{1-\beta}$ times the uncertainty compensation $\Delta c_0^{\text{uncertainty}}$ from {eq}`bhs_type2_rw_decomp`.
 
-The multiplicative factor $\frac{1}{1-\beta}$ arises because all compensation is concentrated in a single period: adjusting $c_0$ alone must offset the cumulative loss in continuation value that the uncertainty penalty imposes in every future period.
+The extra factor of $\frac{1}{1-\beta}$ arises because all compensation is packed into a single period.
+
+Adjusting $c_0$ alone must offset the cumulative loss in continuation value that the uncertainty penalty imposes in every future period.
 
 An analogous calculation for a **type III** agent, using $J(c_0)$ from {eq}`bhs_J_rw`, gives
 
@@ -1575,7 +1623,9 @@ The following table collects all compensating variations for the random walk mod
 | III | $c_0^{III}(r) - c_0^{III}$ | $\frac{\beta\sigma_\varepsilon^2}{(1-\beta)^2\theta}$ | uncertainty only (vs. deterministic) |
 | III | $c_0 - c_0^{III}(u)$ | $\frac{\beta\sigma_\varepsilon^2}{(1-\beta)^3\theta}$ | uncertainty only (vs. risky path) |
 
-The "vs. deterministic" rows use the certainty-equivalent path {eq}`bhs_ce_path` as a benchmark; the "vs. risky path" rows use the risky-but-uncertainty-free comparison of {eq}`bhs_comp_type2u`--{eq}`bhs_comp_type3u`.
+The "vs. deterministic" rows use the certainty-equivalent path {eq}`bhs_ce_path` as a benchmark.
+
+The "vs. risky path" rows use the risky-but-uncertainty-free comparison of {eq}`bhs_comp_type2u`--{eq}`bhs_comp_type3u`.
 
 ### Trend-stationary formulas
 
@@ -1589,7 +1639,7 @@ $$
 \Delta c_0^{unc,ts,III} = \frac{\beta\sigma_\varepsilon^2}{(1-\beta\rho)^2\theta}.
 $$
 
-The qualitative message is the same: the risk component is negligible, and the model-uncertainty component dominates.
+The qualitative message carries over: the risk component is negligible, and the model-uncertainty component dominates.
 
 ## Visualizing the welfare decomposition
 
@@ -1674,9 +1724,12 @@ The left panel illustrates the elimination of model uncertainty and risk for a t
 
 The shaded fan shows a one-standard-deviation band for the $j$-step-ahead conditional distribution of $c_t$ under the calibrated random-walk model.
 
-The dashed line $c^{II}$ shows the certainty-equivalent path whose date-zero consumption is reduced by $c_0 - c_0^{II}$, making the type II agent indifferent between this deterministic trajectory and the stochastic plan; it compensates for bearing both risk and model ambiguity.
+The dashed line $c^{II}$ shows the certainty-equivalent path whose date-zero consumption is reduced by $c_0 - c_0^{II}$, making the type II agent indifferent between this deterministic trajectory and the stochastic plan.
+
+It compensates for bearing both risk and model ambiguity.
 
 The solid line $c^r$ shows the certainty equivalent for a type II agent without model uncertainty ($\theta = \infty$), initialized at $c_0 - c_0^{II}(r)$.
+
 At postwar calibrated values this gap is small, so $c^r$ sits just below the center of the fan.
 
 Consistent with {cite:t}`Lucas_2003`, the welfare gains from eliminating well-understood risk are very small.
@@ -1687,7 +1740,7 @@ The right panel shows the set of nearby models that the robust consumer guards a
 
 Each shaded fan depicts a one-standard-deviation band for a different model in the ambiguity set.
 
-The models are statistically close to the baseline --- their detection-error probability is $p = 0.10$ --- but imply very different long-run consumption levels.
+The models are statistically close to the baseline, with detection-error probability $p = 0.10$, but imply very different long-run consumption levels.
 
 The consumer's caution against such alternatives accounts for the large certainty-equivalent gap in the left panel.
 
@@ -1695,11 +1748,11 @@ The consumer's caution against such alternatives accounts for the large certaint
 
 A type III (constraint-preference) agent evaluates the worst model inside an entropy ball of radius $\eta$.
 
-As $\eta$ grows, the set of plausible misspecifications expands and the welfare cost of confronting model uncertainty rises.
+As $\eta$ grows the set of plausible misspecifications expands, and with it the welfare cost of confronting model uncertainty.
 
-Because $\eta$ is not directly interpretable, we instead index these costs by the associated detection-error probability $p(\eta)$.
+Since $\eta$ itself is not easy to interpret, we instead index these costs by the associated detection-error probability $p(\eta)$.
 
-The figure below plots compensation for removing model uncertainty, measured as a proportion of consumption, against $p(\eta)$.
+The figure below plots the compensation for removing model uncertainty, measured as a proportion of consumption, against $p(\eta)$.
 
 ```{code-cell} ipython3
 η_grid = np.linspace(0.0, 5.0, 300)
@@ -1755,21 +1808,21 @@ plt.tight_layout()
 plt.show()
 ```
 
-The random-walk model implies somewhat larger costs than the trend-stationary model at the same detection-error probability, but both curves greatly exceed the classic Lucas cost of business cycles.
+The random-walk model implies somewhat larger costs than the trend-stationary model at the same detection-error probability, but both curves dwarf the classic Lucas cost of business cycles.
 
-To put these magnitudes in perspective, Lucas estimated that eliminating all aggregate consumption risk is worth roughly 0.05% of consumption.
+To put the magnitudes in perspective, Lucas estimated that eliminating all aggregate consumption risk is worth roughly 0.05% of consumption.
 
-At detection-error probabilities of 10--20%, the model-uncertainty compensation alone runs to several percent of consumption.
+At detection-error probabilities of 10--20%, the model-uncertainty compensation alone runs to several percent, orders of magnitude larger.
 
-Under the robust reading, the large risk premia that Tallarini matched with high $\gamma$ are compensations for bearing model uncertainty, and the implied welfare gains from resolving that uncertainty are correspondingly large.
+Under the robust reading, the large risk premia that Tallarini matched with high $\gamma$ are really compensations for bearing model uncertainty, and the implied welfare gains from resolving that uncertainty are correspondingly large.
 
-The following contour plot shows how type II (multiplier) compensation varies over a two-dimensional parameter space: the detection-error probability $p$ and the consumption volatility $\sigma_\varepsilon$.
+The following contour plot shows how type II (multiplier) compensation varies over two dimensions: the detection-error probability $p$ and the consumption volatility $\sigma_\varepsilon$.
 
-The star marks the calibrated point ($p = 0.10$, $\sigma_\varepsilon = 0.5\%$).
+The cross marks the calibrated point ($p = 0.10$, $\sigma_\varepsilon = 0.5\%$).
 
 At the calibrated volatility, moving left (lower $p$, stronger robustness concerns) increases compensation dramatically, while the classic risk-only cost (the $p = 50\%$ edge) remains negligible.
 
-Comparing the two panels shows that the random-walk model generates much larger welfare costs than the trend-stationary model at the same ($p$, $\sigma_\varepsilon$), because permanent shocks compound the worst-case drift indefinitely.
+A comparison of the two panels reveals that the random-walk model generates much larger welfare costs than the trend-stationary model at the same ($p$, $\sigma_\varepsilon$), because permanent shocks compound the worst-case drift indefinitely.
 
 ```{code-cell} ipython3
 ---
@@ -1819,17 +1872,17 @@ plt.show()
 
 ## Why doesn't learning eliminate these fears?
 
-A natural objection is: if the consumer has 235 quarters of data, why can't she learn the true drift well enough to dismiss the worst-case model?
+A natural objection arises: if the consumer has 235 quarters of data, why can't she learn the true drift well enough to dismiss the worst-case model?
 
-The answer is that the drift is a low-frequency feature of the data.
+The answer is that the drift is a low-frequency feature of the data, and low-frequency features are hard to pin down.
 
 Estimating the mean of a random walk to the precision needed to reject small but economically meaningful shifts requires far more data than estimating volatility.
 
 The following figure makes this point concrete.
 
-Consumption is measured as real personal consumption expenditures on nondurable goods and services, deflated by its implicit chain price deflator, and expressed in per-capita terms using the civilian noninstitutional population aged 16+.
+We measure consumption as real personal consumption expenditures on nondurable goods and services, deflated by its implicit chain price deflator and expressed in per-capita terms using the civilian noninstitutional population aged 16+.
 
-We construct real per-capita nondurables-plus-services consumption from four FRED series:
+The construction uses four FRED series:
 
 | FRED series | Description |
 | --- | --- |
@@ -1838,7 +1891,9 @@ We construct real per-capita nondurables-plus-services consumption from four FRE
 | `DPCERD3Q086SBEA` | PCE implicit price deflator (index 2017 $= 100$, quarterly) |
 | `CNP16OV` | Civilian noninstitutional population, 16+ (thousands, monthly) |
 
-We use nominal rather than chained-dollar components because chained-dollar series are not additive: chain-weighted indices update their base-period expenditure weights every period, so components deflated with different price changes do not sum to the separately chained aggregate. 
+We use nominal rather than chained-dollar components because chained-dollar series are not additive.
+
+Chain-weighted indices update their base-period expenditure weights every period, so components deflated with different price changes do not sum to the separately chained aggregate.
 
 Adding nominal series and deflating the sum with a single price index avoids this problem.
 
@@ -1987,15 +2042,15 @@ plt.show()
 
 In the left panel, postwar U.S. log consumption is shown alongside two deterministic trend lines: the approximating-model drift $\mu$ and the worst-case drift $\mu + \sigma_\varepsilon w(\theta)$ for $p(\theta^{-1}) = 0.20$.
 
-The two trends are close enough that, even with decades of data, it is hard to distinguish them by eye.
+The two trends are close enough that, even with six decades of data, it is hard to distinguish them by eye.
 
-In the right panel, as the detection-error probability rises (models become harder to tell apart), the worst-case mean growth rate moves back toward $\hat\mu$.
+In the right panel, as the detection-error probability rises (the two models become harder to tell apart), the worst-case mean growth rate drifts back toward $\hat\mu$.
 
-The dashed gray lines mark a two-standard-error band around the maximum-likelihood estimate of $\mu$.
+The dashed gray lines mark a two-standard-error band around the maximum-likelihood estimate of $\mu$.  
 
 Even at detection probabilities in the 5--20% range, the worst-case drift remains inside (or very near) this confidence band.
 
-Drift distortions that are economically large --- large enough to generate substantial model-uncertainty premia --- are statistically small relative to sampling uncertainty in $\hat\mu$.
+Drift distortions that are economically large, large enough to generate substantial model-uncertainty premia, are statistically small relative to sampling uncertainty in $\hat\mu$.
 
 Robustness concerns persist despite long histories precisely because the low-frequency features that matter most for pricing are the hardest to estimate precisely.
 
@@ -2003,18 +2058,20 @@ Robustness concerns persist despite long histories precisely because the low-fre
 
 The title of this lecture poses a question: are large risk premia prices of **variability** (atemporal risk aversion) or prices of **doubts** (model uncertainty)?
 
-The analysis above shows that the answer cannot be settled by asset-pricing data alone, because the two interpretations are observationally equivalent.
+Asset-pricing data alone cannot settle the question, because the two interpretations are observationally equivalent.
 
 But the choice of interpretation matters for the conclusions we draw.
 
 Under the risk-aversion reading, high Sharpe ratios imply that consumers would pay a great deal to smooth known aggregate consumption fluctuations.
 
-Under the robustness reading, those same Sharpe ratios tell us consumers would pay a great deal to resolve uncertainty about which probability model governs consumption growth.
+Under the robustness reading, those same Sharpe ratios tell us that consumers would pay a great deal to resolve uncertainty about which probability model actually governs consumption growth.
 
 Three features of the analysis support the robustness reading:
 
-1. Detection-error probabilities provide a more stable calibration language than $\gamma$: the two consumption models that required very different $\gamma$ values to match the data yield nearly identical pricing implications when indexed by detectability.
-2. The welfare gains implied by asset prices decompose overwhelmingly into a model-uncertainty component, with the pure risk component remaining small --- consistent with Lucas's original finding.
+1. Detection-error probabilities provide a more stable calibration language than $\gamma$. 
+
+The two consumption models that required very different $\gamma$ values to match the data yield nearly identical pricing implications when indexed by detectability.
+2. The welfare gains implied by asset prices decompose overwhelmingly into a model-uncertainty component, with the pure risk component remaining small, consistent with Lucas's original finding.
 3. The drift distortions that drive pricing are small enough to hide inside standard-error bands, so finite-sample learning cannot eliminate the consumer's fears.
 
 Whether one ultimately prefers the risk or the uncertainty interpretation, the framework clarifies that the question is not about the size of risk premia but about the economic object those premia measure.
