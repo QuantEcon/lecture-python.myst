@@ -65,6 +65,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 
 ```{code-cell} ipython3
 :tags: [hide-output]
+
 !pip install pandas-datareader
 ```
 
@@ -212,7 +213,6 @@ def hj_std_bound(E_m):
     return np.sqrt(np.maximum(var_lb, 0.0))
 ```
 
-
 ### The puzzle
 
 Reconciling formula {eq}`bhs_crra_sdf` with the market price of risk extracted from data on asset returns (like those in Table 1 below) requires a value of $\gamma$ so high that it provokes skepticism.
@@ -268,7 +268,6 @@ def moments_crra_rw(γ):
 For each value of $\gamma \in \{1, 5, 10, \ldots, 51\}$, we plot the implied $(E(m),\sigma(m))$ pair for three specifications.
 
 These are time-separable CRRA (crosses), Epstein--Zin preferences with random-walk consumption (circles), and Epstein--Zin preferences with trend-stationary consumption (pluses).
-
 
 ```{code-cell} ipython3
 ---
@@ -897,18 +896,30 @@ def w_from_θ(θ, model):
 
 ### Discounted entropy
 
-When the approximating and worst-case conditional densities are $\mathcal{N}(0,1)$ and $\mathcal{N}(w,1)$, conditional relative entropy is
+When the approximating and worst-case conditional densities are $\mathcal{N}(0,1)$ and $\mathcal{N}(w,1)$, the likelihood ratio is $\hat g(\varepsilon) = \exp(w\varepsilon - \frac{1}{2}w^2)$, so $\log \hat g(\varepsilon) = w\varepsilon - \frac{1}{2}w^2$.  
+
+Under the worst-case measure $\varepsilon \sim \mathcal{N}(w,1)$, so $E_{\hat\pi}[\varepsilon] = w$, giving conditional relative entropy
 
 ```{math}
 :label: bhs_conditional_entropy
-E_t[\hat g_{t+1}\log \hat g_{t+1}] = \frac{1}{2}w(\theta)^2.
+E_t[\hat g_{t+1}\log \hat g_{t+1}] = w \cdot w - \frac{1}{2}w^2 = \frac{1}{2}w(\theta)^2.
 ```
 
-Because the distortion is i.i.d., the discounted entropy recursion {eq}`bhs_N_recursion` reduces to $N = \beta(\frac{1}{2}w^2 + N)$, giving discounted entropy
+Because the distortion is i.i.d., the conditional entropy $E_t[\hat g_{t+1}\log \hat g_{t+1}] = \frac{1}{2}w(\theta)^2$ from {eq}`bhs_conditional_entropy` is constant and $N(x)$ does not depend on $x$.  
+
+The recursion {eq}`bhs_N_recursion` then reduces to $N(x) = \beta(\frac{1}{2}w^2 + N(x))$, where we have used $\int \hat g(\varepsilon)\pi(\varepsilon)d\varepsilon = 1$ (since $\hat g$ is a likelihood ratio).  
+
+Solving for $N(x)$ gives
+
+$$
+N(x)(1-\beta) = \frac{\beta}{2}w(\theta)^2
+$$
+
+gives discounted entropy
 
 ```{math}
 :label: bhs_eta_formula
-\eta = \frac{\beta}{2(1-\beta)} w(\theta)^2.
+\eta = N(x) = \frac{\beta}{2(1-\beta)} w(\theta)^2.
 ```
 
 ```{code-cell} ipython3
@@ -926,6 +937,14 @@ As we will see in the {ref}`detection-error section <detection_error_section>` b
 We now solve the recursions {eq}`bhs_W_decomp_bellman`, {eq}`bhs_J_recursion`, and {eq}`bhs_N_recursion` in closed form for the random-walk model, where $W$ is the type II (multiplier) value function, $J$ is the type III/IV value function, and $N$ is discounted continuation entropy.
 
 Substituting $w_{rw}(\theta) = -\sigma_\varepsilon / [(1-\beta)\theta]$ from {eq}`bhs_w_formulas` into {eq}`bhs_eta_formula` gives
+
+$$
+N(x) = \frac{\beta}{2(1-\beta)} w_{rw}(\theta)^2
+  = \frac{\beta}{2(1-\beta)} \left(\frac{-\sigma_\varepsilon}{(1-\beta)\theta}\right)^2
+  = \frac{\beta}{2(1-\beta)} \cdot \frac{\sigma_\varepsilon^2}{(1-\beta)^2\theta^2}
+$$
+
+so that
 
 ```{math}
 :label: bhs_N_rw
@@ -1242,8 +1261,8 @@ The right panel reveals the cumulative consequence: a per-period shift that is v
 ---
 mystnb:
   figure:
-    caption: Small one-step density shift (left) produces large cumulative
-      consumption gap (right) at detection-error probability $p = 0.03$ with $T = 240$ quarters
+    caption: Small one-step density shift (left) produces large cumulative consumption
+      gap (right) at detection-error probability $p = 0.03$ with $T = 240$ quarters
     name: fig-bhs-fear
 ---
 p_star = 0.03
@@ -1263,7 +1282,7 @@ ax1.plot(ε, f0, 'k', lw=2.5,
          label=r'Approximating $\mathcal{N}(0, 1)$')
 ax1.fill_between(ε, fw, alpha=0.15, color='C3')
 ax1.plot(ε, fw, 'C3', lw=2, ls='--',
-         label=f'Worst case $\mathcal{{N}}({w_star:.2f},1)$')
+         label=fr'Worst case $\mathcal{{N}}({w_star:.2f},1)$')
 
 peak = norm.pdf(0, 0, 1)
 ax1.annotate('', xy=(w_star, 0.55 * peak), xytext=(0, 0.55 * peak),
@@ -1344,8 +1363,8 @@ What looks like extreme risk aversion ($\gamma \approx 34$) is really just log u
 ---
 mystnb:
   figure:
-    caption: "Doubts or variability? Decomposition of the robust SDF into
-      log-utility IMRS and worst-case distortion at $p = 0.10$"
+    caption: Doubts or variability? Decomposition of the robust SDF into log-utility
+      IMRS and worst-case distortion at $p = 0.10$
     name: fig-bhs-sdf-decomp
 ---
 θ_cal = θ_from_detection_probability(0.10, "rw")
@@ -1828,8 +1847,8 @@ A comparison of the two panels reveals that the random-walk model generates much
 ---
 mystnb:
   figure:
-    caption: Type II compensation across detection-error probability and
-      consumption volatility
+    caption: Type II compensation across detection-error probability and consumption
+      volatility
     name: fig-bhs-contour
 ---
 p_grid = np.linspace(0.02, 0.49, 300)
