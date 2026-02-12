@@ -976,7 +976,7 @@ The reason is that $W$ includes the entropy "rebate" $\theta N$, which partially
 This seemingly small difference drives a factor-of-two wedge in the welfare calculations below.
 
 (detection_error_section)=
-## A new calibration language: detection-error probabilities
+## Detection-error probabilities
 
 So far we have expressed SDF moments, value functions, and worst-case distortions as functions of $\gamma$ (or equivalently $\theta$).
 
@@ -1144,7 +1144,7 @@ At our calibration $\sigma_\varepsilon^{\text{TS}} = \sigma_\varepsilon^{\text{R
 
 Because $\rho = 0.98$ and $\beta = 0.995$, the ratio $(1-\beta)/(1-\rho\beta)$ is much less than one, so holding entropy fixed requires a substantially smaller $\theta$ (stronger robustness) for the trend-stationary model than for the random walk.
 
-## Detection probabilities unify the two models
+## Unify the two models using detection-error probabilities
 
 With this machinery in hand, we can redraw Tallarini's figure using detection-error probabilities as the common index.
 
@@ -1183,7 +1183,6 @@ mystnb:
     caption: Pricing loci from common detectability
     name: fig-bhs-3
 ---
-from scipy.optimize import brentq
 
 # Empirical Sharpe ratio — the minimum of the HJ bound curve
 sharpe = (r_e_mean - r_f_mean) / r_excess_std
