@@ -43,7 +43,7 @@ But matching required setting the risk-aversion coefficient $\gamma$ to around 5
 
 Their answer --- and the theme of this lecture --- is that much of what looks like "risk aversion" can be reinterpreted as **model uncertainty**.
 
-The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to a max–min recursion in which the agent fears that the probability model governing consumption growth may be wrong.
+The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to a max--min recursion in which the agent fears that the probability model governing consumption growth may be wrong.
 
 Under this reading, the parameter that looked like extreme risk aversion instead measures concern about **misspecification**.
 
@@ -115,7 +115,7 @@ A random variable $m_{t+1}$ is said to be a **stochastic discount factor** if it
 
 ```{math}
 :label: bhs_pricing_eq
-p_t = E_t(m_{t+1}\, y_{t+1}),
+p_t = E_t(m_{t+1}  y_{t+1}),
 ```
 
 where $E_t$ denotes the mathematical expectation conditioned on date-$t$ information.
@@ -133,7 +133,7 @@ Setting $y_{t+1} = 1$ (a risk-free bond) in {eq}`bhs_pricing_eq` yields the reci
 
 ```{math}
 :label: bhs_riskfree
-\frac{1}{R_t^f} = E_t[m_{t+1}] = E_t\!\left[\beta\left(\frac{C_{t+1}}{C_t}\right)^{-\gamma}\right].
+\frac{1}{R_t^f} = E_t[m_{t+1}] = E_t \left[\beta\left(\frac{C_{t+1}}{C_t}\right)^{-\gamma}\right].
 ```
 
 ### The Hansen--Jagannathan bound
@@ -151,15 +151,15 @@ An excess return is the payoff on a zero-cost portfolio that is long one dollar 
 Because the portfolio costs nothing to enter, its price is $p_t = 0$, so {eq}`bhs_pricing_eq` implies
 
 $$
-0 = E_t[m_{t+1}\,\xi_{t+1}].
+0 = E_t[m_{t+1} \xi_{t+1}].
 $$
 
 We can decompose the expectation of a product into a covariance plus a product of expectations:
 
 $$
-E_t[m_{t+1}\,\xi_{t+1}]
+E_t[m_{t+1} \xi_{t+1}]
 =
-\operatorname{cov}_t(m_{t+1},\,\xi_{t+1}) + E_t[m_{t+1}]\,E_t[\xi_{t+1}],
+\operatorname{cov}_t(m_{t+1},\xi_{t+1}) + E_t[m_{t+1}] E_t[\xi_{t+1}],
 $$
 
 where $\operatorname{cov}_t$ denotes the conditional covariance and $\sigma_t$ will denote the conditional standard deviation.
@@ -167,21 +167,21 @@ where $\operatorname{cov}_t$ denotes the conditional covariance and $\sigma_t$ w
 Setting the left-hand side to zero and solving for the expected excess return gives
 
 $$
-E_t[\xi_{t+1}] = -\frac{\operatorname{cov}_t(m_{t+1},\,\xi_{t+1})}{E_t[m_{t+1}]}.
+E_t[\xi_{t+1}] = -\frac{\operatorname{cov}_t(m_{t+1}, \xi_{t+1})}{E_t[m_{t+1}]}.
 $$
 
-Taking absolute values and applying the **Cauchy--Schwarz inequality** $|\operatorname{cov}(X,Y)| \leq \sigma(X)\,\sigma(Y)$ yields
+Taking absolute values and applying the **Cauchy--Schwarz inequality** $|\operatorname{cov}(X,Y)| \leq \sigma(X) \sigma(Y)$ yields
 
 ```{math}
 :label: bhs_hj_bound
 \frac{|E_t[\xi_{t+1}]|}{\sigma_t(\xi_{t+1})}
-\;\leq\;
+\leq
 \frac{\sigma_t(m_{t+1})}{E_t[m_{t+1}]}.
 ```
 
 The left-hand side of {eq}`bhs_hj_bound` is the **Sharpe ratio**: the expected excess return per unit of return volatility.
 
-The right-hand side, $\sigma_t(m)/E_t(m)$, is the **market price of risk**: the maximum Sharpe ratio attainable in the market. 
+The right-hand side, $\sigma_t(m)/E_t(m)$, is the **market price of risk**: the maximum Sharpe ratio attainable in the market.
 
 The bound says that the Sharpe ratio of any asset cannot exceed the market price of risk.
 
@@ -189,20 +189,20 @@ The bound says that the Sharpe ratio of any asset cannot exceed the market price
 
 The bound {eq}`bhs_hj_bound` is stated in conditional terms.
 
-An unconditional counterpart considers a vector of $n$ gross returns $R_{t+1}$ (e.g., equity and risk-free) with unconditional mean $E(R)$ and covariance matrix $\Sigma_R$ 
+An unconditional counterpart considers a vector of $n$ gross returns $R_{t+1}$ (e.g., equity and risk-free) with unconditional mean $E(R)$ and covariance matrix $\Sigma_R$:
 
 ```{math}
 :label: bhs_hj_unconditional
-\frac{\sigma(m)}{E(m)}
-\;\geq\;
+\sigma(m)
+\geq
 \sqrt{b^\top \Sigma_R^{-1} b},
 \qquad
-b = \mathbf{1} - E(m)\, E(R).
+b = \mathbf{1} - E(m) E(R).
 ```
 
 In {ref}`Exercise 1 <dov_ex1>`, we will revisit and verify this unconditional version of the HJ bound.
 
-Below we implement a function that computes the right-hand side of {eq}`bhs_hj_unconditional` for any given value of $E(m)$
+Below we implement a function that computes the right-hand side of {eq}`bhs_hj_unconditional` for any given value of $E(m)$.
 
 ```{code-cell} ipython3
 def hj_std_bound(E_m):
@@ -230,7 +230,7 @@ We present this figure before developing the underlying theory because it motiva
 
 The closed-form expressions for the Epstein--Zin SDF moments used in the plot are derived in {ref}`Exercise 2 <dov_ex2>`.
 
-The code below implements those expressions and the corresponding CRRA moments
+The code below implements those expressions and the corresponding CRRA moments.
 
 ```{code-cell} ipython3
 def moments_type1_rw(γ):
@@ -262,7 +262,7 @@ def moments_crra_rw(γ):
     return E_m, mpr
 ```
 
-For each value of $\gamma \in \{1, 5, 10, \ldots, 50\}$, we plot the implied $(E(m),\;\sigma(m))$ pair for three specifications: time-separable CRRA (crosses), Epstein--Zin preferences with random-walk consumption (circles), and Epstein--Zin preferences with trend-stationary consumption (pluses).
+For each value of $\gamma \in \{1, 5, 10, \ldots, 51\}$, we plot the implied $(E(m),\sigma(m))$ pair for three specifications: time-separable CRRA (crosses), Epstein--Zin preferences with random-walk consumption (circles), and Epstein--Zin preferences with trend-stationary consumption (pluses).
 
 
 ```{code-cell} ipython3
@@ -272,7 +272,7 @@ mystnb:
     caption: SDF moments and Hansen-Jagannathan bound
     name: fig-bhs-1
 ---
-γ_grid = np.arange(1, 51, 5)
+γ_grid = np.arange(1, 55, 5)
 
 Em_rw = np.array([moments_type1_rw(γ)[0] for γ in γ_grid])
 σ_m_rw = np.array([moments_type1_rw(γ)[0] * moments_type1_rw(γ)[1] for γ in γ_grid])
@@ -344,7 +344,7 @@ where the eigenvalues of $A$ are bounded in modulus by $1/\sqrt{\beta}$.
 The time-$t$ consumption can therefore be written as
 
 ```{math}
-c_t = H\!\left(B\varepsilon_t + AB\varepsilon_{t-1} + \cdots + A^{t-1}B\varepsilon_1\right) + HA^t x_0.
+c_t = H \left(B\varepsilon_t + AB\varepsilon_{t-1} + \cdots + A^{t-1}B\varepsilon_1\right) + HA^t x_0.
 ```
 
 The equivalence theorems and Bellman equations below hold for arbitrary plans in $\mathcal{C}(A,B,H;x_0)$.
@@ -399,7 +399,7 @@ Equivalently, defining the detrended series $\tilde c_t := c_t - \mu t$,
 
 The estimated parameters are $(\mu, \sigma_\varepsilon)$ for the random walk and $(\mu, \sigma_\varepsilon, \rho, \zeta)$ for the trend-stationary case.
 
-Below we record these parameters and moments in the paper's tables for later reference
+Below we record these parameters and moments in the paper's tables for later reference.
 
 ```{code-cell} ipython3
 print("Table 2 parameters")
@@ -477,7 +477,7 @@ The general Epstein--Zin--Weil specification aggregates current consumption and 
 
 ```{math}
 :label: bhs_ez_general
-V_t = \left[(1-\beta)\, C_t^{\,\rho} + \beta\, \mathcal{R}_t(V_{t+1})^{\,\rho}\right]^{1/\rho},
+V_t = \left[(1-\beta) C_t^{\rho} + \beta \mathcal{R}_t(V_{t+1})^{\rho}\right]^{1/\rho},
 \qquad
 \rho := 1 - \frac{1}{\psi},
 ```
@@ -488,11 +488,11 @@ where $\psi > 0$ is the intertemporal elasticity of substitution and the certain
 :label: bhs_certainty_equiv
 \mathcal{R}_t(V_{t+1})
 =
-\left(E_t\!\left[V_{t+1}^{1-\gamma}\right]\right)^{\!\frac{1}{1-\gamma}}.
+\left(E_t\left[V_{t+1}^{1-\gamma}\right]\right)^{\frac{1}{1-\gamma}}.
 ```
 
 ```{note}
-For readers interested in a general class of aggregatiors and certainty equivalents, see Section 
+For readers interested in a general class of aggregators and certainty equivalents, see Section
 7.3 of {cite:t}`Sargent_Stachurski_2025`.
 ```
 
@@ -501,7 +501,7 @@ Let $\psi = 1$, so $\rho \to 0$.
 In this limit the CES aggregator reduces to
 
 $$
-V_t = C_t^{1-\beta} \cdot \mathcal{R}_t(V_{t+1})^{\,\beta}.
+V_t = C_t^{1-\beta} \cdot \mathcal{R}_t(V_{t+1})^{\beta}.
 $$
 
 Taking logs and expanding the certainty equivalent {eq}`bhs_certainty_equiv` gives the *type I recursion*:
@@ -534,7 +534,7 @@ Substituting into {eq}`bhs_type1_recursion` yields the **risk-sensitive recursio
 
 ```{math}
 :label: bhs_risk_sensitive
-U_t = c_t - \beta\theta \log E_t\!\left[\exp\!\left(\frac{-U_{t+1}}{\theta}\right)\right].
+U_t = c_t - \beta\theta \log E_t\left[\exp\left(\frac{-U_{t+1}}{\theta}\right)\right].
 ```
 
 When $\gamma = 1$ (equivalently $\theta = +\infty$), the $\log E \exp$ term reduces to $E_t U_{t+1}$ and the recursion becomes standard discounted expected log utility: $U_t = c_t + \beta E_t U_{t+1}$.
@@ -543,7 +543,7 @@ For consumption plans in $\mathcal{C}(A, B, H; x_0)$, the recursion {eq}`bhs_ris
 
 ```{math}
 :label: bhs_bellman_type1
-U(x) = c - \beta\theta \log \int \exp\!\left[\frac{-U(Ax + B\varepsilon)}{\theta}\right] \pi(\varepsilon)\,d\varepsilon.
+U(x) = c - \beta\theta \log \int \exp\left[\frac{-U(Ax + B\varepsilon)}{\theta}\right] \pi(\varepsilon)d\varepsilon.
 ```
 
 #### Deriving the stochastic discount factor
@@ -563,7 +563,7 @@ $$
 =
 -\beta\theta
 \frac{\exp(-U_{t+1}/\theta)  (-1/\theta)}{E_t[\exp(-U_{t+1}/\theta)]}
-\underbrace{\frac{\partial U_{t+1}}{\partial c_{t+1}}}_{=\,1}
+\underbrace{\frac{\partial U_{t+1}}{\partial c_{t+1}}}_{=1}
 =
 \beta \frac{\exp(-U_{t+1}/\theta)}{E_t[\exp(-U_{t+1}/\theta)]}.
 $$
@@ -612,9 +612,9 @@ g_{t+1} \geq 0,
 G_0 = 1,
 ```
 
-define distorted conditional expectations: $\tilde E_t[b_{t+1}] = E_t[g_{t+1}\,b_{t+1}]$.
+define distorted conditional expectations: $\tilde E_t[b_{t+1}] = E_t[g_{t+1}b_{t+1}]$.
 
-The conditional relative entropy of the distortion is $E_t[g_{t+1}\log g_{t+1}]$, and the discounted entropy over the entire path is $\beta E\bigl[\sum_{t=0}^{\infty} \beta^t G_t\,E_t(g_{t+1}\log g_{t+1})\,\big|\,x_0\bigr]$.
+The conditional relative entropy of the distortion is $E_t[g_{t+1}\log g_{t+1}]$, and the discounted entropy over the entire path is $\beta E\bigl[\sum_{t=0}^{\infty} \beta^t G_tE_t(g_{t+1}\log g_{t+1})\big|x_0\bigr]$.
 
 
 A type II agent's *multiplier* preference ordering over consumption plans $C^\infty \in \mathcal{C}(A,B,H;x_0)$ is defined by
@@ -622,9 +622,9 @@ A type II agent's *multiplier* preference ordering over consumption plans $C^\in
 ```{math}
 :label: bhs_type2_objective
 \min_{\{g_{t+1}\}}
-\sum_{t=0}^{\infty} E\!\left\{\beta^t G_t
-\left[c_t + \beta\theta\,E_t\!\left(g_{t+1}\log g_{t+1}\right)\right]
-\,\Big|\, x_0\right\},
+\sum_{t=0}^{\infty} E\left\{\beta^t G_t
+\left[c_t + \beta\theta E_t\left(g_{t+1}\log g_{t+1}\right)\right]
+\Big| x_0\right\},
 ```
 
 where $G_{t+1} = g_{t+1}G_t$, $E_t[g_{t+1}] = 1$, $g_{t+1} \geq 0$, and $G_0 = 1$.
@@ -637,14 +637,14 @@ The value function satisfies the Bellman equation
 :label: bhs_bellman_type2
 W(x)
 =
-c + \min_{g(\varepsilon) \geq 0}\;
-\beta \int \bigl[g(\varepsilon)\,W(Ax + B\varepsilon)
-+ \theta\,g(\varepsilon)\log g(\varepsilon)\bigr]\,\pi(\varepsilon)\,d\varepsilon
+c + \min_{g(\varepsilon) \geq 0}
+\beta \int \bigl[g(\varepsilon) W(Ax + B\varepsilon)
++ \theta g(\varepsilon)\log g(\varepsilon)\bigr] \pi(\varepsilon) d\varepsilon
 ```
 
-subject to $\int g(\varepsilon)\,\pi(\varepsilon)\,d\varepsilon = 1$.
+subject to $\int g(\varepsilon) \pi(\varepsilon) d\varepsilon = 1$.
 
-Inside the integral, $g(\varepsilon)\,W(Ax + B\varepsilon)$ is the continuation value under the distorted model $g\pi$, while $\theta\,g(\varepsilon)\log g(\varepsilon)$ is the entropy penalty that makes large departures from the approximating model $\pi$ costly.
+Inside the integral, $g(\varepsilon) W(Ax + B\varepsilon)$ is the continuation value under the distorted model $g\pi$, while $\theta g(\varepsilon)\log g(\varepsilon)$ is the entropy penalty that makes large departures from the approximating model $\pi$ costly.
 
 The minimizer is ({ref}`Exercise 4 <dov_ex4>` derives this and verifies the equivalence $W \equiv U$)
 
@@ -652,7 +652,7 @@ The minimizer is ({ref}`Exercise 4 <dov_ex4>` derives this and verifies the equi
 :label: bhs_ghat
 \hat g_{t+1}
 =
-\frac{\exp\!\bigl(-W(Ax_t + B\varepsilon_{t+1})/\theta\bigr)}{E_t\!\left[\exp\!\bigl(-W(Ax_t + B\varepsilon_{t+1})/\theta\bigr)\right]}.
+\frac{\exp \bigl(-W(Ax_t + B\varepsilon_{t+1})/\theta\bigr)}{E_t \left[\exp \bigl(-W(Ax_t + B\varepsilon_{t+1})/\theta\bigr)\right]}.
 ```
 
 The fact that $g(\varepsilon)$ multiplies both the continuation value $W$ and the entropy penalty is the key structural feature that makes $\hat g$ a likelihood ratio.
@@ -660,7 +660,7 @@ The fact that $g(\varepsilon)$ multiplies both the continuation value $W$ and th
 
 Substituting {eq}`bhs_ghat` back into {eq}`bhs_bellman_type2` gives
 
-$$W(x) = c - \beta\theta \log \int \exp\!\left[\frac{-W(Ax + B\varepsilon)}{\theta}\right]\pi(\varepsilon)\,d\varepsilon,$$
+$$W(x) = c - \beta\theta \log \int \exp \left[\frac{-W(Ax + B\varepsilon)}{\theta}\right]\pi(\varepsilon) d\varepsilon,$$
 
 which is identical to {eq}`bhs_bellman_type1`.
 
@@ -695,13 +695,13 @@ The agent minimizes expected discounted log consumption under the worst-case mod
 J(x_0)
 =
 \min_{\{g_{t+1}\}}
-\sum_{t=0}^{\infty} E\!\left[\beta^t G_t\,c_t \,\Big|\, x_0\right]
+\sum_{t=0}^{\infty} E \left[\beta^t G_t c_t \Big|  x_0\right]
 ```
 
 subject to $G_{t+1} = g_{t+1}G_t$, $E_t[g_{t+1}] = 1$, $g_{t+1} \geq 0$, $G_0 = 1$, and
 
 ```{math}
-\beta E\!\left[\sum_{t=0}^{\infty} \beta^t G_t\,E_t\!\left(g_{t+1}\log g_{t+1}\right)\,\Big|\,x_0\right] \leq \eta.
+\beta E \left[\sum_{t=0}^{\infty} \beta^t G_t E_t\left(g_{t+1}\log g_{t+1}\right)\Big|x_0\right] \leq \eta.
 ```
 
 The Lagrangian for the type III problem is
@@ -709,10 +709,10 @@ The Lagrangian for the type III problem is
 $$
 \mathcal{L}
 =
-\sum_{t=0}^{\infty} E\!\left[\beta^t G_t\,c_t \,\Big|\, x_0\right]
-\;+\;
-\theta\!\left[
-\beta E\!\left(\sum_{t=0}^{\infty} \beta^t G_t\,E_t(g_{t+1}\log g_{t+1})\,\Big|\,x_0\right) - \eta
+\sum_{t=0}^{\infty} E\left[\beta^t G_t c_t \Big| x_0\right]
++
+\theta \left[
+\beta E \left(\sum_{t=0}^{\infty} \beta^t G_t E_t(g_{t+1}\log g_{t+1})\Big| x_0 \right) - \eta
 \right],
 $$
 
@@ -723,14 +723,14 @@ Collecting terms inside the expectation gives
 $$
 \mathcal{L}
 =
-\sum_{t=0}^{\infty} E\!\left\{\beta^t G_t
-\left[c_t + \beta\theta\,E_t(g_{t+1}\log g_{t+1})\right]
-\,\Big|\, x_0\right\} - \theta\eta,
+\sum_{t=0}^{\infty} E \left \{\beta^t G_t
+\left[c_t + \beta \theta E_t(g_{t+1}\log g_{t+1})\right]
+\Big| x_0\right\} - \theta\eta,
 $$
 
 which, apart from the constant $-\theta\eta$, has the same structure as the type II objective {eq}`bhs_type2_objective`.
 
-The FOC for $g_{t+1}$ is therefore identical, and the optimal distortion is the same $\hat g_{t+1}$ as in {eq}`bhs_ghat` for the $\theta$ that makes the entropy constraint bind.
+The first-order condition for $g_{t+1}$ is therefore identical, and the optimal distortion is the same $\hat g_{t+1}$ as in {eq}`bhs_ghat` for the $\theta$ that makes the entropy constraint bind.
 
 The SDF is again $m_{t+1} = \beta(C_t/C_{t+1})\hat g_{t+1}$.
 
@@ -751,14 +751,14 @@ The joint distribution $\hat\Pi_\infty(\cdot \mid x_0, \theta)$ is the one assoc
 Under $\hat\Pi_\infty$ the agent has log utility, so the Euler equation for any gross return $R_{t+1}$ is
 
 $$
-1 = \hat E_t\!\left[\beta \frac{C_t}{C_{t+1}} R_{t+1}\right].
+1 = \hat E_t \left[\beta \frac{C_t}{C_{t+1}} R_{t+1}\right].
 $$
 
 To express this in terms of the approximating model $\Pi_\infty$, apply a change of measure using the one-step likelihood ratio $\hat g_{t+1} = d\hat\Pi / d\Pi$:
 
 $$
-1 = E_t\!\left[\hat g_{t+1} \cdot \beta \frac{C_t}{C_{t+1}} R_{t+1}\right]
-= E_t\!\left[m_{t+1}\, R_{t+1}\right],
+1 = E_t\left[\hat g_{t+1} \cdot \beta \frac{C_t}{C_{t+1}} R_{t+1}\right]
+= E_t\left[m_{t+1} R_{t+1}\right],
 $$
 
 so the effective SDF under the approximating model is $m_{t+1} = \beta(C_t/C_{t+1})\hat g_{t+1}$.
@@ -792,19 +792,19 @@ Substituting the minimizing $\hat g$ back into the Bellman equation {eq}`bhs_bel
 
 ```{math}
 :label: bhs_W_decomp_bellman
-W(x) = c + \beta \int \bigl[\hat g(\varepsilon)\,W(Ax + B\varepsilon) + \theta\,\hat g(\varepsilon)\log \hat g(\varepsilon)\bigr]\,\pi(\varepsilon)\,d\varepsilon.
+W(x) = c + \beta \int \bigl[\hat g(\varepsilon) W(Ax + B\varepsilon) + \theta \hat g(\varepsilon)\log \hat g(\varepsilon)\bigr] \pi(\varepsilon)d\varepsilon.
 ```
 
 Define two components:
 
 ```{math}
 :label: bhs_J_recursion
-J(x) = c + \beta \int \hat g(\varepsilon)\,J(Ax + B\varepsilon)\,\pi(\varepsilon)\,d\varepsilon,
+J(x) = c + \beta \int \hat g(\varepsilon) J(Ax + B\varepsilon) \pi(\varepsilon)d\varepsilon,
 ```
 
 ```{math}
 :label: bhs_N_recursion
-N(x) = \beta \int \hat g(\varepsilon)\bigl[\log \hat g(\varepsilon) + N(Ax + B\varepsilon)\bigr]\,\pi(\varepsilon)\,d\varepsilon.
+N(x) = \beta \int \hat g(\varepsilon)\bigl[\log \hat g(\varepsilon) + N(Ax + B\varepsilon)\bigr] \pi(\varepsilon)d\varepsilon.
 ```
 
 Then $W(x) = J(x) + \theta N(x)$.
@@ -813,7 +813,7 @@ Here $J(x_t) = \hat E_t \sum_{j=0}^{\infty} \beta^j c_{t+j}$ is expected discoun
 
 $J$ is the value function for both the type III and the type IV agent: the type III agent maximizes expected utility subject to an entropy constraint, and once the worst-case model is determined, the resulting value is expected discounted consumption under that model; the type IV agent uses the same worst-case model as a fixed belief, so evaluates the same expectation.
 
-And $N(x)$ is discounted continuation entropy: it measures the total information cost of the probability distortion from date $t$ onward.
+The term $N(x)$ is discounted continuation entropy: it measures the total information cost of the probability distortion from date $t$ onward.
 
 This decomposition will be important for the welfare calculations in {ref}`the welfare section <welfare_experiments>` below, where it explains why type III uncertainty compensation is twice that of type II.
 
@@ -833,6 +833,7 @@ The worst-case model therefore keeps the variance at one but shifts the mean of 
 The resulting likelihood ratio is ({ref}`Exercise 5 <dov_ex5>` verifies its properties)
 
 ```{math}
+:label: bhs_ghat_gaussian
 \hat g_{t+1}
 =
 \exp\left(w \varepsilon_{t+1} - \frac{1}{2}w^2\right),
@@ -885,7 +886,7 @@ Because the distortion is i.i.d., the discounted entropy recursion {eq}`bhs_N_re
 
 ```{math}
 :label: bhs_eta_formula
-\eta = \frac{\beta}{2(1-\beta)}\,w(\theta)^2.
+\eta = \frac{\beta}{2(1-\beta)} w(\theta)^2.
 ```
 
 ```{code-cell} ipython3
@@ -917,14 +918,14 @@ Using the fact that $\log E[e^Z] = \mu_Z + \frac{1}{2}\sigma_Z^2$ for a normal r
 
 ```{math}
 :label: bhs_W_rw
-W(x_t) = \frac{1}{1-\beta}\!\left[c_t + \frac{\beta}{1-\beta}\!\left(\mu - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right)\right].
+W(x_t) = \frac{1}{1-\beta}\left[c_t + \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right)\right].
 ```
 
 Using $W = J + \theta N$, the type III/IV value function is
 
 ```{math}
 :label: bhs_J_rw
-J(x_t) = W(x_t) - \theta N(x_t) = \frac{1}{1-\beta}\!\left[c_t + \frac{\beta}{1-\beta}\!\left(\mu - \frac{\sigma_\varepsilon^2}{(1-\beta)\theta}\right)\right].
+J(x_t) = W(x_t) - \theta N(x_t) = \frac{1}{1-\beta}\left[c_t + \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{(1-\beta)\theta}\right)\right].
 ```
 
 The coefficient on $\sigma_\varepsilon^2/[(1-\beta)\theta]$ doubles from $\tfrac{1}{2}$ in $W$ to $1$ in $J$ because $W$ includes the entropy "rebate" $\theta N$ that partially offsets the pessimistic tilt, while $J$ evaluates consumption purely under the worst-case model.
@@ -991,7 +992,7 @@ p(\theta^{-1})
 
 ```{math}
 :label: bhs_detection_closed
-p(\theta^{-1}) = \Phi\!\left(-\frac{|w(\theta)|\sqrt{T}}{2}\right).
+p(\theta^{-1}) = \Phi \left(-\frac{|w(\theta)|\sqrt{T}}{2}\right).
 ```
 
 ```{code-cell} ipython3
@@ -1095,10 +1096,10 @@ The explicit mapping that equates discounted entropy across models is ({ref}`Exe
 \theta_{\text{TS}}
 =
 \left(\frac{\sigma_\varepsilon^{\text{TS}}}{\sigma_\varepsilon^{\text{RW}}}\right)
-\frac{1-\beta}{1-\rho\beta}\;\theta_{\text{RW}}.
+\frac{1-\beta}{1-\rho\beta} \theta_{\text{RW}}.
 ```
 
-At our calibration $\sigma_\varepsilon^{\text{TS}} = \sigma_\varepsilon^{\text{RW}}$, this simplifies to $\theta_{\text{TS}} = \frac{1-\beta}{1-\rho\beta}\,\theta_{\text{RW}}$.
+At our calibration $\sigma_\varepsilon^{\text{TS}} = \sigma_\varepsilon^{\text{RW}}$, this simplifies to $\theta_{\text{TS}} = \frac{1-\beta}{1-\rho\beta}\theta_{\text{RW}}$.
 
 Because $\rho = 0.98$ and $\beta = 0.995$, the ratio $(1-\beta)/(1-\rho\beta)$ is much less than one, so holding entropy fixed requires a substantially smaller $\theta$ (stronger robustness) for the trend-stationary model than for the random walk.
 
@@ -1106,7 +1107,7 @@ Because $\rho = 0.98$ and $\beta = 0.995$, the ratio $(1-\beta)/(1-\rho\beta)$ i
 
 We now redraw Tallarini's figure using detection-error probabilities.
 
-For each detection-error probability $p(\theta^{-1}) = 0.50, 0.45, \ldots, 0.01$, invert to find the model-specific $\theta$, convert to $\gamma$, and plot the implied $(E(m),\;\sigma(m))$ pair.
+For each detection-error probability $p(\theta^{-1}) = 0.50, 0.45, \ldots, 0.01$, invert to find the model-specific $\theta$, convert to $\gamma$, and plot the implied $(E(m), \sigma(m))$ pair.
 
 ```{code-cell} ipython3
 p_points = np.array(
@@ -1231,10 +1232,10 @@ fw = norm.pdf(ε, w_star, 1)
 
 ax1.fill_between(ε, f0, alpha=0.15, color='k')
 ax1.plot(ε, f0, 'k', lw=2.5,
-         label=r'Approximating $\mathcal{N}(0,\,1)$')
+         label=r'Approximating $\mathcal{N}(0, 1)$')
 ax1.fill_between(ε, fw, alpha=0.15, color='C3')
 ax1.plot(ε, fw, 'C3', lw=2, ls='--',
-         label=f'Worst case $\\mathcal{{N}}({w_star:.2f},\\,1)$')
+         label=f'Worst case $\mathcal{{N}}({w_star:.2f},1)$')
 
 peak = norm.pdf(0, 0, 1)
 ax1.annotate('', xy=(w_star, 0.55 * peak), xytext=(0, 0.55 * peak),
@@ -1245,7 +1246,6 @@ ax1.text(w_star / 2, 0.59 * peak, f'$w = {w_star:.2f}$',
 ax1.set_xlabel(r'$\varepsilon_{t+1}$')
 ax1.set_ylabel('Density')
 ax1.legend(frameon=False)
-ax1.spines[['top', 'right']].set_visible(False)
 
 quarters = np.arange(0, 241)
 years = quarters / 4
@@ -1268,15 +1268,82 @@ ax2.text(61, gap_ts[-1], f'{gap_ts[-1]:.1f}%',
 ax2.set_xlabel('Years')
 ax2.set_ylabel('Gap in expected log consumption (%)')
 ax2.legend(frameon=False, loc='lower left')
-ax2.spines[['top', 'right']].set_visible(False)
 ax2.set_xlim(0, 68)
 
 plt.tight_layout()
 plt.show()
 ```
 
+The next figure decomposes the log SDF into two additive components.
+
+Taking logs of the SDF {eq}`bhs_sdf` gives
+
+$$
+\log m_{t+1}
+=
+\underbrace{\log \beta - \Delta c_{t+1}}_{\text{log-utility intertemporal MRS}}
++
+\underbrace{\log \hat g_{t+1}}_{\text{worst-case distortion}}.
+$$
+
+Under the random-walk model, $\Delta c_{t+1} = \mu + \sigma_\varepsilon \varepsilon_{t+1}$, and the Gaussian distortion {eq}`bhs_ghat_gaussian` gives $\log \hat g_{t+1} = w \varepsilon_{t+1} - \tfrac{1}{2}w^2$.
+
+Substituting, we can write
+
+$$
+\log m_{t+1}
+=
+\bigl(\log\beta - \mu - \tfrac{1}{2}w^2\bigr)
+-
+(\sigma_\varepsilon - w)\varepsilon_{t+1},
+$$
+
+so the slope of $\log m_{t+1}$ in $\varepsilon_{t+1}$ is $\sigma_\varepsilon - w$.
+
+Since $w < 0$, the distortion steepens the SDF relative to what log utility alone would deliver.
+
+In the figure below, the intertemporal marginal rate of substitution (IMRS) is nearly flat: at postwar calibrated volatility ($\sigma_\varepsilon = 0.005$), it contributes almost nothing to the pricing kernel's slope.
+
+The distortion accounts for virtually all of the SDF volatility --- what looks like extreme risk aversion ($\gamma \approx 34$) is really log utility plus moderate fears of model misspecification.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Doubts or variability? Decomposition of the robust SDF into
+      log-utility IMRS and worst-case distortion at $p = 0.10$"
+    name: fig-bhs-sdf-decomp
+---
+θ_cal = θ_from_detection_probability(0.10, "rw")
+γ_cal = γ_from_θ(θ_cal)
+w_cal = w_from_θ(θ_cal, "rw")
+
+μ_c, σ_c = rw["μ"], rw["σ_ε"]
+Δc = np.linspace(μ_c - 3.5 * σ_c, μ_c + 3.5 * σ_c, 300)
+ε = (Δc - μ_c) / σ_c
+
+log_imrs = np.log(β) - Δc
+log_ghat = w_cal * ε - 0.5 * w_cal**2
+log_sdf = log_imrs + log_ghat
+
+fig, ax = plt.subplots(figsize=(8, 5))
+
+ax.plot(100 * Δc, log_imrs, 'C1', lw=2,
+        label=r'IMRS: $\log\beta - \Delta c$')
+ax.plot(100 * Δc, log_ghat, 'C3', lw=2, ls='--',
+        label=r'Distortion: $\log\hat{g}$')
+ax.plot(100 * Δc, log_sdf, 'k', lw=2,
+        label=r'SDF: $\log m = \log\mathrm{IMRS} + \log\hat{g}$')
+ax.axhline(0, color='k', lw=0.5, alpha=0.3)
+ax.set_xlabel(r'Consumption growth $\Delta c_{t+1}$ (%)')
+ax.set_ylabel('Log SDF component')
+ax.legend(frameon=False, fontsize=10, loc='upper right')
+
+plt.show()
+```
+
 (welfare_experiments)=
-## What do risk premia measure? Two mental experiments
+## What do risk premia measure?
 
 {cite:t}`Lucas_2003` asked how much consumption a representative consumer would sacrifice to eliminate aggregate fluctuations.
 
@@ -1307,7 +1374,7 @@ The additional $\tfrac{1}{2}\sigma_\varepsilon^2$ term is a Jensen's inequality 
 
 We use the closed-form value functions derived earlier: {eq}`bhs_W_rw` for the type I/II value function $W$ and {eq}`bhs_J_rw` for the type III/IV value function $J$.
 
-For the certainty-equivalent path {eq}`bhs_ce_path`, there is no risk and no model uncertainty ($\theta = \infty$, so $\hat g = 1$), so the value function reduces to discounted expected log utility.  
+For the certainty-equivalent path {eq}`bhs_ce_path`, there is no risk and no model uncertainty ($\theta = \infty$, so $\hat g = 1$), so the value function reduces to discounted expected log utility.
 
 With $c_t^{ce} = c_0^J + t(\mu + \tfrac{1}{2}\sigma_\varepsilon^2)$, we have
 
@@ -1318,10 +1385,12 @@ U^{ce}(c_0^J)
 = \frac{c_0^J}{1-\beta} + \frac{\beta(\mu + \tfrac{1}{2}\sigma_\varepsilon^2)}{(1-\beta)^2},
 $$
 
-where we used $\sum_{t \geq 0}\beta^t = \frac{1}{1-\beta}$ and $\sum_{t \geq 0}t\beta^t = \frac{\beta}{(1-\beta)^2}$.  Factoring gives
+where we used $\sum_{t \geq 0}\beta^t = \frac{1}{1-\beta}$ and $\sum_{t \geq 0}t\beta^t = \frac{\beta}{(1-\beta)^2}$. 
+
+Factoring gives
 
 $$
-U^{ce}(c_0^J) = \frac{1}{1-\beta}\!\left[c_0^J + \frac{\beta}{1-\beta}\!\left(\mu + \tfrac{1}{2}\sigma_\varepsilon^2\right)\right].
+U^{ce}(c_0^J) = \frac{1}{1-\beta}\left[c_0^J + \frac{\beta}{1-\beta}\left(\mu + \tfrac{1}{2}\sigma_\varepsilon^2\right)\right].
 $$
 
 ### Type I (Epstein--Zin) compensation
@@ -1329,9 +1398,9 @@ $$
 Setting $U^{ce}(c_0^I) = W(x_0)$ from {eq}`bhs_W_rw`:
 
 $$
-\frac{1}{1-\beta}\!\left[c_0^I + \frac{\beta}{1-\beta}\!\left(\mu + \tfrac{1}{2}\sigma_\varepsilon^2\right)\right]
+\frac{1}{1-\beta}\left[c_0^I + \frac{\beta}{1-\beta}\left(\mu + \tfrac{1}{2}\sigma_\varepsilon^2\right)\right]
 =
-\frac{1}{1-\beta}\!\left[c_0 + \frac{\beta}{1-\beta}\!\left(\mu - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right)\right].
+\frac{1}{1-\beta}\left[c_0 + \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right)\right].
 $$
 
 Multiplying both sides by $(1-\beta)$ and cancelling the common $\frac{\beta\mu}{1-\beta}$ terms gives
@@ -1348,7 +1417,7 @@ Solving for $c_0 - c_0^I$:
 :label: bhs_comp_type1
 c_0 - c_0^I
 =
-\frac{\beta\sigma_\varepsilon^2}{2(1-\beta)}\!\left(1 + \frac{1}{(1-\beta)\theta}\right)
+\frac{\beta\sigma_\varepsilon^2}{2(1-\beta)}\left(1 + \frac{1}{(1-\beta)\theta}\right)
 =
 \frac{\beta\sigma_\varepsilon^2\gamma}{2(1-\beta)},
 ```
@@ -1383,9 +1452,9 @@ The uncertainty term $\Delta c_0^{uncertainty}$ is the additional compensation a
 For a type III agent, we set $U^{ce}(c_0^{III}) = J(x_0)$ using the value function $J$ from {eq}`bhs_J_rw`:
 
 $$
-\frac{1}{1-\beta}\!\left[c_0^{III} + \frac{\beta}{1-\beta}\!\left(\mu + \tfrac{1}{2}\sigma_\varepsilon^2\right)\right]
+\frac{1}{1-\beta}\left[c_0^{III} + \frac{\beta}{1-\beta}\left(\mu + \tfrac{1}{2}\sigma_\varepsilon^2\right)\right]
 =
-\frac{1}{1-\beta}\!\left[c_0 + \frac{\beta}{1-\beta}\!\left(\mu - \frac{\sigma_\varepsilon^2}{(1-\beta)\theta}\right)\right].
+\frac{1}{1-\beta}\left[c_0 + \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{(1-\beta)\theta}\right)\right].
 $$
 
 Following the same algebra as for type I but with the doubled uncertainty correction in $J$:
@@ -1443,24 +1512,24 @@ For the type II agent under $\theta < \infty$, the total value is $W(c_0)$ from 
 For the agent liberated from model uncertainty ($\theta = \infty$), the value is
 
 $$
-c_0^{II}(u) + \beta\,E\!\left[V^{\log}(c_1)\right],
+c_0^{II}(u) + \beta E\left[V^{\log}(c_1)\right],
 $$
 
-where $V^{\log}(c_t) = \frac{1}{1-\beta}\!\left[c_t + \frac{\beta\mu}{1-\beta}\right]$ is the log-utility value function and $c_1 = c_0 + \mu + \sigma_\varepsilon \varepsilon_1$.
+where $V^{\log}(c_t) = \frac{1}{1-\beta} \left[c_t + \frac{\beta\mu}{1-\beta}\right]$ is the log-utility value function and $c_1 = c_0 + \mu + \sigma_\varepsilon \varepsilon_1$.
 
 Since $c_1$ is built from $c_0$ (not $c_0^{II}(u)$), the continuation is
 
 $$
-\beta\,E\!\left[V^{\log}(c_1)\right]
-= \frac{\beta}{1-\beta}\,E\!\left[c_1 + \frac{\beta\mu}{1-\beta}\right]
-= \frac{\beta}{1-\beta}\!\left[c_0 + \mu + \frac{\beta\mu}{1-\beta}\right]
-= \frac{\beta}{1-\beta}\!\left[c_0 + \frac{\mu}{1-\beta}\right],
+\beta E\left[V^{\log}(c_1)\right]
+= \frac{\beta}{1-\beta} E\left[c_1 + \frac{\beta\mu}{1-\beta}\right]
+= \frac{\beta}{1-\beta}\left[c_0 + \mu + \frac{\beta\mu}{1-\beta}\right]
+= \frac{\beta}{1-\beta}\left[c_0 + \frac{\mu}{1-\beta}\right],
 $$
 
 where we used $E[c_1] = c_0 + \mu$ (the noise term has zero mean). Expanding gives
 
 $$
-\beta\,E\!\left[V^{\log}(c_1)\right]
+\beta E\left[V^{\log}(c_1)\right]
 = \frac{\beta c_0}{1-\beta} + \frac{\beta\mu}{(1-\beta)^2}.
 $$
 
@@ -1513,11 +1582,11 @@ The "vs. deterministic" rows use the certainty-equivalent path {eq}`bhs_ce_path`
 For the trend-stationary model, the denominators $(1-\beta)$ in the uncertainty terms are replaced by $(1-\beta\rho)$, and the risk terms involve $(1-\beta\rho^2)$:
 
 $$
-\Delta c_0^{risk,\,ts} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho^2)},
+\Delta c_0^{risk,ts} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho^2)},
 \qquad
-\Delta c_0^{unc,\,ts,\,II} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho)^2\theta},
+\Delta c_0^{unc,ts,II} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho)^2\theta},
 \qquad
-\Delta c_0^{unc,\,ts,\,III} = \frac{\beta\sigma_\varepsilon^2}{(1-\beta\rho)^2\theta}.
+\Delta c_0^{unc,ts,III} = \frac{\beta\sigma_\varepsilon^2}{(1-\beta\rho)^2\theta}.
 $$
 
 The qualitative message is the same: the risk component is negligible, and the model-uncertainty component dominates.
@@ -1676,12 +1745,10 @@ mystnb:
     name: fig-bhs-5
 ---
 fig, ax = plt.subplots(figsize=(7, 4))
-ax.plot(p_plot, gain_rw_plot, lw=2, color="black", label="RW type III")
-ax.plot(p_plot, gain_ts_plot, lw=2, ls="--", color="gray", label="TS type III")
+ax.plot(p_plot, gain_rw_plot, lw=2, label="RW type III")
+ax.plot(p_plot, gain_ts_plot, lw=2, label="TS type III")
 ax.set_xlabel(r"detection error probability $p(\eta)$ (percent)")
 ax.set_ylabel("proportion of consumption (percent)")
-ax.set_xlim(0.0, 50.0)
-ax.set_ylim(0.0, 30.0)
 ax.legend(frameon=False)
 
 plt.tight_layout()
@@ -1695,6 +1762,60 @@ To put these magnitudes in perspective, Lucas estimated that eliminating all agg
 At detection-error probabilities of 10--20%, the model-uncertainty compensation alone runs to several percent of consumption.
 
 Under the robust reading, the large risk premia that Tallarini matched with high $\gamma$ are compensations for bearing model uncertainty, and the implied welfare gains from resolving that uncertainty are correspondingly large.
+
+The following contour plot shows how type II (multiplier) compensation varies over a two-dimensional parameter space: the detection-error probability $p$ and the consumption volatility $\sigma_\varepsilon$.
+
+The star marks the calibrated point ($p = 0.10$, $\sigma_\varepsilon = 0.5\%$).
+
+At the calibrated volatility, moving left (lower $p$, stronger robustness concerns) increases compensation dramatically, while the classic risk-only cost (the $p = 50\%$ edge) remains negligible.
+
+Comparing the two panels shows that the random-walk model generates much larger welfare costs than the trend-stationary model at the same ($p$, $\sigma_\varepsilon$), because permanent shocks compound the worst-case drift indefinitely.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Type II compensation across detection-error probability and
+      consumption volatility
+    name: fig-bhs-contour
+---
+p_grid = np.linspace(0.02, 0.49, 300)
+σ_grid = np.linspace(0.001, 0.015, 300)
+P, Σ = np.meshgrid(p_grid, σ_grid)
+
+W_abs = -2 * norm.ppf(P) / np.sqrt(T)
+
+# RW: total type II = βσ²γ / [2(1-β)] 
+Γ_rw = 1 + W_abs / Σ
+comp_rw = 100 * (np.exp(β * Σ**2 * Γ_rw / (2 * (1 - β))) - 1)
+
+# TS: risk + uncertainty 
+ρ_val = ts["ρ"]
+risk_ts = β * Σ**2 / (2 * (1 - β * ρ_val**2))
+unc_ts = β * Σ * W_abs / (2 * (1 - β * ρ_val))
+comp_ts = 100 * (np.exp(risk_ts + unc_ts) - 1)
+
+levels = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50]
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5.5), sharey=True)
+
+for ax, comp, title in [(ax1, comp_rw, 'Random walk'),
+                         (ax2, comp_ts, 'Trend stationary')]:
+    cf = ax.contourf(100 * P, 100 * Σ, comp, levels=levels,
+                     cmap='Blues', extend='both')
+    cs = ax.contour(100 * P, 100 * Σ, comp, levels=levels,
+                    colors='k', linewidths=0.5)
+    ax.clabel(cs, fmt='%g%%', fontsize=8)
+    ax.plot(10, 0.5, 'x', markersize=14, color='w',
+            mec='k', mew=1, zorder=5)
+    ax.set_xlabel(r'Detection-error probability $p$ (%)')
+    ax.set_title(title)
+
+ax1.set_ylabel(r'Consumption volatility $\sigma_\varepsilon$ (%)')
+
+plt.tight_layout()
+plt.show()
+```
 
 ## Why doesn't learning eliminate these fears?
 
@@ -1717,7 +1838,9 @@ We construct real per-capita nondurables-plus-services consumption from four FRE
 | `DPCERD3Q086SBEA` | PCE implicit price deflator (index 2017 $= 100$, quarterly) |
 | `CNP16OV` | Civilian noninstitutional population, 16+ (thousands, monthly) |
 
-We use nominal rather than chained-dollar components because chained-dollar series are not additive: chain-weighted indices update their base-period expenditure weights every period, so components deflated with different price changes do not sum to the separately chained aggregate.  Adding nominal series and deflating the sum with a single price index avoids this problem.
+We use nominal rather than chained-dollar components because chained-dollar series are not additive: chain-weighted indices update their base-period expenditure weights every period, so components deflated with different price changes do not sum to the separately chained aggregate. 
+
+Adding nominal series and deflating the sum with a single price index avoids this problem.
 
 The processing pipeline is:
 
@@ -1872,7 +1995,7 @@ The dashed gray lines mark a two-standard-error band around the maximum-likeliho
 
 Even at detection probabilities in the 5--20% range, the worst-case drift remains inside (or very near) this confidence band.
 
-Drift distortions that are economically large---large enough to generate substantial model-uncertainty premia---are statistically small relative to sampling uncertainty in $\hat\mu$.
+Drift distortions that are economically large --- large enough to generate substantial model-uncertainty premia --- are statistically small relative to sampling uncertainty in $\hat\mu$.
 
 Robustness concerns persist despite long histories precisely because the low-frequency features that matter most for pricing are the hardest to estimate precisely.
 
@@ -1905,20 +2028,20 @@ The following exercises ask you to fill in several derivation steps.
 
 Let $R_{t+1}$ be an $n \times 1$ vector of gross returns with unconditional mean $E(R)$ and covariance matrix $\Sigma_R$.
 
-Let $m_{t+1}$ be a stochastic discount factor satisfying $\mathbf{1} = E[m_{t+1}\,R_{t+1}]$.
+Let $m_{t+1}$ be a stochastic discount factor satisfying $\mathbf{1} = E[m_{t+1} R_{t+1}]$.
 
-1. Use the covariance decomposition $E[mR] = E[m]\,E[R] + \operatorname{cov}(m,R)$ to show that $\operatorname{cov}(m,R) = \mathbf{1} - E[m]\,E[R] =: b$.
+1. Use the covariance decomposition $E[mR] = E[m] E[R] + \operatorname{cov}(m,R)$ to show that $\operatorname{cov}(m,R) = \mathbf{1} - E[m] E[R] =: b$.
 2. For a portfolio with weight vector $\alpha$ and return $R^p = \alpha^\top R$, show that $\operatorname{cov}(m, R^p) = \alpha^\top b$.
-3. Apply the Cauchy--Schwarz inequality to the pair $(m, R^p)$ to obtain $|\alpha^\top b| \leq \sigma(m)\,\sqrt{\alpha^\top \Sigma_R\,\alpha}$.
-4. Maximize the ratio $|\alpha^\top b|/\sqrt{\alpha^\top \Sigma_R\,\alpha}$ over $\alpha$ and show that the maximum is $\sqrt{b^\top \Sigma_R^{-1} b}$, attained at $\alpha^\star = \Sigma_R^{-1}b$.
-5. Conclude that $\sigma(m)/E(m) \geq \sqrt{b^\top \Sigma_R^{-1} b}$, which is {eq}`bhs_hj_unconditional`.
+3. Apply the Cauchy--Schwarz inequality to the pair $(m, R^p)$ to obtain $|\alpha^\top b| \leq \sigma(m)\sqrt{\alpha^\top \Sigma_R\alpha}$.
+4. Maximize the ratio $|\alpha^\top b|/\sqrt{\alpha^\top \Sigma_R \alpha}$ over $\alpha$ and show that the maximum is $\sqrt{b^\top \Sigma_R^{-1} b}$, attained at $\alpha^\star = \Sigma_R^{-1}b$.
+5. Conclude that $\sigma(m) \geq \sqrt{b^\top \Sigma_R^{-1} b}$, which is {eq}`bhs_hj_unconditional`.
 ```
 
 ```{solution-start} dov_ex1
 :class: dropdown
 ```
 
-**Part 1.** From $\mathbf{1} = E[m\,R] = E[m]\,E[R] + \operatorname{cov}(m,R)$, rearranging gives $\operatorname{cov}(m,R) = \mathbf{1} - E[m]\,E[R]= b$.
+**Part 1.** From $\mathbf{1} = E[mR] = E[m] E[R] + \operatorname{cov}(m,R)$, rearranging gives $\operatorname{cov}(m,R) = \mathbf{1} - E[m] E[R]= b$.
 
 **Part 2.** The portfolio return is $R^p = \alpha^\top R$, so
 
@@ -1927,49 +2050,48 @@ $$
 $$
 
 **Part 3.** 
-Applying Cauchy--Schwarz inequality to $(m, R^p)$:
+Applying the Cauchy--Schwarz inequality to $(m, R^p)$:
 
 $$
-|\alpha^\top b| = |\operatorname{cov}(m, R^p)| \leq \sigma(m)\,\sigma(R^p) = \sigma(m)\,\sqrt{\alpha^\top \Sigma_R\,\alpha}.
+|\alpha^\top b| = |\operatorname{cov}(m, R^p)| \leq \sigma(m) \sigma(R^p) = \sigma(m) \sqrt{\alpha^\top \Sigma_R \alpha}.
 $$
 
 **Part 4.** Rearranging Part 3 gives
 
 $$
-\frac{|\alpha^\top b|}{\sqrt{\alpha^\top \Sigma_R\,\alpha}} \leq \sigma(m).
+\frac{|\alpha^\top b|}{\sqrt{\alpha^\top \Sigma_R \alpha}} \leq \sigma(m).
 $$
 
-To maximize the left-hand side over $\alpha$, define the $\Sigma_R$-inner product $\langle u, v \rangle_{\Sigma} = u^\top \Sigma_R\, v$.
+To maximize the left-hand side over $\alpha$, define the $\Sigma_R$-inner product $\langle u, v \rangle_{\Sigma} = u^\top \Sigma_R v$.
 
-Insert $I = \Sigma_R \Sigma_R^{-1}$ gives
+Inserting $I = \Sigma_R \Sigma_R^{-1}$ gives
 
 $$
 \alpha^\top b
 = \alpha^\top (\Sigma_R \Sigma_R^{-1}) b
 = (\alpha^\top \Sigma_R)(\Sigma_R^{-1} b)
-= \langle \alpha,\, \Sigma_R^{-1}b \rangle_{\Sigma}.
+= \langle \alpha, \Sigma_R^{-1}b \rangle_{\Sigma}.
 $$
 
 Cauchy--Schwarz in this inner product gives
 
 $$
-|\langle \alpha,\, \Sigma_R^{-1}b \rangle_{\Sigma}|
+|\langle \alpha, \Sigma_R^{-1}b \rangle_{\Sigma}|
 \leq
-\sqrt{\langle \alpha, \alpha \rangle_{\Sigma}}\;\sqrt{\langle \Sigma_R^{-1}b,\, \Sigma_R^{-1}b \rangle_{\Sigma}}
+\sqrt{\langle \alpha, \alpha \rangle_{\Sigma}}\sqrt{\langle \Sigma_R^{-1}b, \Sigma_R^{-1}b \rangle_{\Sigma}}
 =
-\sqrt{\alpha^\top \Sigma_R\,\alpha}\;\sqrt{b^\top \Sigma_R^{-1} b},
+\sqrt{\alpha^\top \Sigma_R \alpha} \sqrt{b^\top \Sigma_R^{-1} b},
 $$
 
 with equality when $\alpha \propto \Sigma_R^{-1} b$.
 
-Substituting $\alpha^\star = \Sigma_R^{-1} b$ confirms
+Substituting $\alpha^\star = \Sigma_R^{-1} b$ verifies
 
 $$
-\max_\alpha \frac{|\alpha^\top b|}{\sqrt{\alpha^\top \Sigma_R\,\alpha}} = \sqrt{b^\top \Sigma_R^{-1} b}.
+\max_\alpha \frac{|\alpha^\top b|}{\sqrt{\alpha^\top \Sigma_R \alpha}} = \sqrt{b^\top \Sigma_R^{-1} b}.
 $$
 
-**Part 5.** Combining Parts 3 and 4 gives $\sqrt{b^\top \Sigma_R^{-1} b} \leq \sigma(m)$ and 
-dividing by $E[m] > 0$ yields {eq}`bhs_hj_unconditional`. 
+**Part 5.** Combining Parts 3 and 4 gives $\sigma(m) \geq \sqrt{b^\top \Sigma_R^{-1} b}$, which is {eq}`bhs_hj_unconditional`.
 
 ```{solution-end}
 ```
@@ -2000,7 +2122,7 @@ with $\varepsilon_{t+1}\sim\mathcal{N}(0,1)$ under the approximating model.
 Using {eq}`bhs_sdf` and the Gaussian distortion
 
 $$
-\hat g_{t+1}=\exp\!\left(w\varepsilon_{t+1}-\tfrac{1}{2}w^2\right),
+\hat g_{t+1}=\exp \left(w\varepsilon_{t+1}-\tfrac{1}{2}w^2\right),
 
 $$
 we get
@@ -2008,9 +2130,9 @@ we get
 $$
 m_{t+1}
 =
-\beta \exp\!\left(-(c_{t+1}-c_t)\right)\hat g_{t+1}
+\beta \exp \left(-(c_{t+1}-c_t)\right)\hat g_{t+1}
 =
-\beta \exp\!\left(-\mu-\sigma_\varepsilon\varepsilon_{t+1}\right)\exp\!\left(w\varepsilon_{t+1}-\frac{1}{2}w^2\right).
+\beta \exp \left(-\mu-\sigma_\varepsilon\varepsilon_{t+1}\right)\exp \left(w\varepsilon_{t+1}-\frac{1}{2}w^2\right).
 $$
 
 Therefore
@@ -2050,11 +2172,11 @@ Hence
 $$
 E[m]
 =
-\beta\exp\!\left(
+\beta\exp\left(
 -\mu-\frac{1}{2}w^2+\frac{1}{2}(w-\sigma_\varepsilon)^2
 \right)
 =
-\beta\exp\!\left(-\mu+\frac{\sigma_\varepsilon^2}{2}-\sigma_\varepsilon w\right),
+\beta\exp\left(-\mu+\frac{\sigma_\varepsilon^2}{2}-\sigma_\varepsilon w\right),
 
 $$
 and
@@ -2062,7 +2184,7 @@ and
 $$
 \frac{\sigma(m)}{E[m]}
 =
-\sqrt{\exp\!\left((w-\sigma_\varepsilon)^2\right)-1}.
+\sqrt{\exp\left((w-\sigma_\varepsilon)^2\right)-1}.
 $$
 
 Now use $w_{\text{RW}}(\theta)=-\sigma_\varepsilon/[(1-\beta)\theta]$ from {eq}`bhs_w_formulas` and
@@ -2083,12 +2205,12 @@ Substituting gives the closed-form expressions for the random-walk model:
 
 ```{math}
 :label: bhs_Em_rw
-E[m] = \beta \exp\!\left[-\mu + \frac{\sigma_\varepsilon^2}{2}(2\gamma - 1)\right],
+E[m] = \beta \exp\left[-\mu + \frac{\sigma_\varepsilon^2}{2}(2\gamma - 1)\right],
 ```
 
 ```{math}
 :label: bhs_sigma_rw
-\frac{\sigma(m)}{E[m]} = \sqrt{\exp\!\left(\sigma_\varepsilon^2 \gamma^2\right) - 1}.
+\frac{\sigma(m)}{E[m]} = \sqrt{\exp\left(\sigma_\varepsilon^2 \gamma^2\right) - 1}.
 ```
 
 Notice that in {eq}`bhs_Em_rw`, because $\sigma_\varepsilon$ is small ($\approx 0.005$), the term $\frac{\sigma_\varepsilon^2}{2}(2\gamma-1)$ grows slowly with $\gamma$, keeping $E[m]$ roughly constant near $1/(1+r^f)$.
@@ -2101,12 +2223,12 @@ An analogous calculation for the trend-stationary model yields:
 
 ```{math}
 :label: bhs_Em_ts
-E[m] = \beta \exp\!\left[-\mu + \frac{\sigma_\varepsilon^2}{2}\!\left(1 - \frac{2(1-\beta)(1-\gamma)}{1-\beta\rho} + \frac{1-\rho}{1+\rho}\right)\right],
+E[m] = \beta \exp\left[-\mu + \frac{\sigma_\varepsilon^2}{2}\left(1 - \frac{2(1-\beta)(1-\gamma)}{1-\beta\rho} + \frac{1-\rho}{1+\rho}\right)\right],
 ```
 
 ```{math}
 :label: bhs_sigma_ts
-\frac{\sigma(m)}{E[m]} = \sqrt{\exp\!\left[\sigma_\varepsilon^2\!\left(\!\left(\frac{(1-\beta)(1-\gamma)}{1-\beta\rho} - 1\right)^{\!2} + \frac{1-\rho}{1+\rho}\right)\right] - 1}.
+\frac{\sigma(m)}{E[m]} = \sqrt{\exp\left[\sigma_\varepsilon^2\left(\left(\frac{(1-\beta)(1-\gamma)}{1-\beta\rho} - 1\right)^{2} + \frac{1-\rho}{1+\rho}\right)\right] - 1}.
 ```
 
 ```{solution-end}
@@ -2127,7 +2249,7 @@ Verify that as $\gamma \to 1$ (equivalently $\theta \to \infty$), the recursion 
 Start from the type I recursion {eq}`bhs_type1_recursion` and write
 
 $$
-(V_{t+1})^{1-\gamma} = \exp\!\bigl((1-\gamma)\log V_{t+1}\bigr).
+(V_{t+1})^{1-\gamma} = \exp\bigl((1-\gamma)\log V_{t+1}\bigr).
 $$
 
 Using $\log V_t = (1-\beta)U_t$ from {eq}`bhs_Ut_def`, we obtain
@@ -2136,8 +2258,8 @@ $$
 (1-\beta)U_t
 =
 (1-\beta)c_t
-\;+\;
-\frac{\beta}{1-\gamma}\log E_t\!\left[\exp\!\bigl((1-\gamma)(1-\beta)U_{t+1}\bigr)\right].
++
+\frac{\beta}{1-\gamma}\log E_t\left[\exp\bigl((1-\gamma)(1-\beta)U_{t+1}\bigr)\right].
 $$
 
 Divide by $(1-\beta)$ and use {eq}`bhs_theta_def`,
@@ -2151,7 +2273,7 @@ Then $(1-\gamma)(1-\beta)=-1/\theta$ and $\beta/[(1-\beta)(1-\gamma)]=-\beta\the
 $$
 U_t
 =
-c_t - \beta\theta \log E_t\!\left[\exp\!\left(-\frac{U_{t+1}}{\theta}\right)\right],
+c_t - \beta\theta \log E_t \left[\exp \left(-\frac{U_{t+1}}{\theta}\right)\right],
 $$
 
 which is {eq}`bhs_risk_sensitive`.
@@ -2191,7 +2313,7 @@ $$
 
 Consider the type II Bellman equation {eq}`bhs_bellman_type2`.
 
-1. Use a Lagrange multiplier to impose the normalization constraint $\int g(\varepsilon)\,\pi(\varepsilon)\,d\varepsilon = 1$.
+1. Use a Lagrange multiplier to impose the normalization constraint $\int g(\varepsilon) \pi(\varepsilon) d\varepsilon = 1$.
 2. Derive the first-order condition for $g(\varepsilon)$ and show that the minimizer is the exponential tilt in {eq}`bhs_ghat`.
 3. Substitute your minimizing $g$ back into {eq}`bhs_bellman_type2` to recover the risk-sensitive Bellman equation {eq}`bhs_bellman_type1`.
 
@@ -2209,9 +2331,9 @@ Form the Lagrangian
 $$
 \mathcal{L}[g,\lambda]
 =
-\beta \int \Bigl[g(\varepsilon)W'(\varepsilon) + \theta g(\varepsilon)\log g(\varepsilon)\Bigr]\pi(\varepsilon)\,d\varepsilon
-\;+\;
-\lambda\left(\int g(\varepsilon)\pi(\varepsilon)\,d\varepsilon - 1\right).
+\beta \int \Bigl[g(\varepsilon)W'(\varepsilon) + \theta g(\varepsilon)\log g(\varepsilon)\Bigr]\pi(\varepsilon)d\varepsilon
++
+\lambda\left(\int g(\varepsilon)\pi(\varepsilon) d\varepsilon - 1\right).
 $$
 
 The pointwise first-order condition for $g(\varepsilon)$ is
@@ -2222,8 +2344,8 @@ $$
 \frac{\partial \mathcal{L}}{\partial g(\varepsilon)}
 =
 \beta\Bigl[W'(\varepsilon) + \theta(1+\log g(\varepsilon))\Bigr]\pi(\varepsilon)
-\;+\;
-\lambda\,\pi(\varepsilon),
++
+\lambda\pi(\varepsilon),
 $$
 
 so (dividing by $\beta\pi(\varepsilon)$)
@@ -2236,10 +2358,10 @@ $$
 
 Exponentiating yields $g(\varepsilon)=K\exp(-W'(\varepsilon)/\theta)$ where $K = \exp(-1 - \lambda/(\beta\theta))$ is a constant that does not depend on $\varepsilon$.
 
-To pin down $K$, impose the normalization $\int g(\varepsilon)\pi(\varepsilon)\,d\varepsilon=1$:
+To pin down $K$, impose the normalization $\int g(\varepsilon)\pi(\varepsilon)d\varepsilon=1$:
 
 $$
-1 = K \int \exp\!\left(-\frac{W(Ax+B\varepsilon)}{\theta}\right)\pi(\varepsilon)\,d\varepsilon,
+1 = K \int \exp \left(-\frac{W(Ax+B\varepsilon)}{\theta}\right)\pi(\varepsilon) d\varepsilon,
 $$
 
 so
@@ -2247,7 +2369,7 @@ so
 $$
 K^{-1}
 =
-\int \exp\!\left(-\frac{W(Ax+B\varepsilon)}{\theta}\right)\pi(\varepsilon)\,d\varepsilon.
+\int \exp\left(-\frac{W(Ax+B\varepsilon)}{\theta}\right)\pi(\varepsilon) d\varepsilon.
 $$
 
 Substituting $K^{-1}$ into the denominator of $g = K\exp(-W'/\theta)$ gives the minimizer:
@@ -2255,8 +2377,8 @@ Substituting $K^{-1}$ into the denominator of $g = K\exp(-W'/\theta)$ gives the 
 $$
 g^*(\varepsilon)
 =
-\frac{\exp\!\left(-W(Ax+B\varepsilon)/\theta\right)}{
-    \int \exp\!\left(-W(Ax+B\tilde\varepsilon)/\theta\right)\pi(\tilde\varepsilon)\,d\tilde\varepsilon}.
+\frac{\exp\left(-W(Ax+B\varepsilon)/\theta\right)}{
+    \int \exp\left(-W(Ax+B\tilde\varepsilon)/\theta\right)\pi(\tilde\varepsilon) d\tilde\varepsilon}.
 $$
 
 This has exactly the same form as the distortion $\hat g_{t+1} = \exp(-U_{t+1}/\theta)/E_t[\exp(-U_{t+1}/\theta)]$ that appears in the type I SDF {eq}`bhs_sdf_Ut`, with $W$ in place of $U$.
@@ -2266,7 +2388,7 @@ Once we verify below that $W \equiv U$, the minimizer $g^*$ and the SDF distorti
 To substitute back, define
 
 $$
-Z(x):=\int \exp(-W(Ax+B\varepsilon)/\theta)\pi(\varepsilon)\,d\varepsilon.
+Z(x):=\int \exp(-W(Ax+B\varepsilon)/\theta)\pi(\varepsilon) d\varepsilon.
 $$
 
 Then $\hat g(\varepsilon)=\exp(-W(Ax+B\varepsilon)/\theta)/Z(x)$ and
@@ -2278,12 +2400,12 @@ $$
 Hence
 
 $$
-\int \Bigl[\hat g(\varepsilon)W(Ax+B\varepsilon) + \theta \hat g(\varepsilon)\log \hat g(\varepsilon)\Bigr]\pi(\varepsilon)\,d\varepsilon
+\int \Bigl[\hat g(\varepsilon)W(Ax+B\varepsilon) + \theta \hat g(\varepsilon)\log \hat g(\varepsilon)\Bigr]\pi(\varepsilon) d\varepsilon
 =
 -\theta\log Z(x),
 $$
 
-because the $W$ terms cancel and $\int \hat g\,\pi = 1$.
+because the $W$ terms cancel and $\int \hat g \pi = 1$.
 
 Plugging this into {eq}`bhs_bellman_type2` gives
 
@@ -2292,7 +2414,7 @@ W(x)
 =
 c-\beta\theta\log Z(x)
 =
-c-\beta\theta \log \int \exp\!\left(-\frac{W(Ax+B\varepsilon)}{\theta}\right)\pi(\varepsilon)\,d\varepsilon,
+c-\beta\theta \log \int \exp\left(-\frac{W(Ax+B\varepsilon)}{\theta}\right)\pi(\varepsilon) d\varepsilon,
 $$
 
 which is {eq}`bhs_bellman_type1`. Therefore $W(x)\equiv U(x)$.
@@ -2306,7 +2428,7 @@ which is {eq}`bhs_bellman_type1`. Therefore $W(x)\equiv U(x)$.
 Let $\varepsilon \sim \mathcal{N}(0,1)$ under the approximating model and define
 
 $$
-\hat g(\varepsilon) = \exp\!\left(w\varepsilon - \frac{1}{2}w^2\right)
+\hat g(\varepsilon) = \exp\left(w\varepsilon - \frac{1}{2}w^2\right)
 $$
 
 as in the Gaussian mean-shift section.
@@ -2339,9 +2461,9 @@ $$
 $$
 E[\hat g(\varepsilon)]
 =
-e^{-w^2/2}\,E[e^{w\varepsilon}]
+e^{-w^2/2}E[e^{w\varepsilon}]
 =
-e^{-w^2/2}\,e^{w^2/2}
+e^{-w^2/2}e^{w^2/2}
 =
 1.
 $$
@@ -2354,20 +2476,20 @@ $$
 \hat g(\varepsilon)\varphi(\varepsilon)
 =
 \frac{1}{\sqrt{2\pi}}
-\exp\!\left(w\varepsilon-\frac{1}{2}w^2-\frac{1}{2}\varepsilon^2\right)
+\exp\left(w\varepsilon-\frac{1}{2}w^2-\frac{1}{2}\varepsilon^2\right)
 =
 \frac{1}{\sqrt{2\pi}}
-\exp\!\left(-\frac{1}{2}(\varepsilon-w)^2\right),
+\exp\left(-\frac{1}{2}(\varepsilon-w)^2\right),
 $$
 
-which is the $\mathcal{N}(w,1)$ density
+which is the $\mathcal{N}(w,1)$ density.
 
 Therefore, for bounded measurable $f$,
 
 $$
 E[\hat g(\varepsilon)f(\varepsilon)]
 =
-\int f(\varepsilon)\,\hat g(\varepsilon)\varphi(\varepsilon)\,d\varepsilon
+\int f(\varepsilon)\hat g(\varepsilon)\varphi(\varepsilon)d\varepsilon
 $$
 
 equals the expectation of $f$ under $\mathcal{N}(w,1)$.
@@ -2387,11 +2509,11 @@ Now
 $$
 E[\hat g^2]
 =
-E\!\left[\exp\!\left(2w\varepsilon - w^2\right)\right]
+E\left[\exp\left(2w\varepsilon - w^2\right)\right]
 =
-e^{-w^2}\,E[e^{2w\varepsilon}]
+e^{-w^2}E[e^{2w\varepsilon}]
 =
-e^{-w^2}\,e^{(2w)^2/2}
+e^{-w^2}e^{(2w)^2/2}
 =
 e^{w^2},
 
@@ -2403,7 +2525,7 @@ so $\operatorname{std}(\hat g)=\sqrt{e^{w^2}-1}$.
 $$
 E[\hat g\log \hat g]
 =
-E_{\mathcal{N}(w,1)}\!\left[w\varepsilon-\frac{1}{2}w^2\right]
+E_{\mathcal{N}(w,1)}\left[w\varepsilon-\frac{1}{2}w^2\right]
 =
 w\cdot E_{\mathcal{N}(w,1)}[\varepsilon]-\frac{1}{2}w^2
 =
@@ -2462,13 +2584,13 @@ $$
 Under the approximating model, $\sum_{i=1}^T \varepsilon_i \sim \mathcal{N}(0,T)$, so
 
 $$
-L_T \sim \mathcal{N}\!\left(\frac{1}{2}w^2T,\; w^2T\right).
+L_T \sim \mathcal{N}\left(\frac{1}{2}w^2T, w^2T\right).
 $$
 
 Under the worst-case model, $\sum_{i=1}^T \varepsilon_i \sim \mathcal{N}(wT,T)$, so
 
 $$
-L_T \sim \mathcal{N}\!\left(-\frac{1}{2}w^2T,\; w^2T\right).
+L_T \sim \mathcal{N}\left(-\frac{1}{2}w^2T, w^2T\right).
 $$
 
 Now
@@ -2476,9 +2598,9 @@ Now
 $$
 p_A = \Pr_A(L_T<0)
 =
-\Phi\!\left(\frac{0-\frac{1}{2}w^2T}{|w|\sqrt{T}}\right)
+\Phi\left(\frac{0-\frac{1}{2}w^2T}{|w|\sqrt{T}}\right)
 =
-\Phi\!\left(-\frac{|w|\sqrt{T}}{2}\right),
+\Phi\left(-\frac{|w|\sqrt{T}}{2}\right),
 $$
 
 and
@@ -2486,17 +2608,17 @@ and
 $$
 p_B = \Pr_B(L_T>0)
 =
-1-\Phi\!\left(\frac{0-(-\frac{1}{2}w^2T)}{|w|\sqrt{T}}\right)
+1-\Phi\left(\frac{0-(-\frac{1}{2}w^2T)}{|w|\sqrt{T}}\right)
 =
-1-\Phi\!\left(\frac{|w|\sqrt{T}}{2}\right)
+1-\Phi\left(\frac{|w|\sqrt{T}}{2}\right)
 =
-\Phi\!\left(-\frac{|w|\sqrt{T}}{2}\right).
+\Phi\left(-\frac{|w|\sqrt{T}}{2}\right).
 $$
 
 Therefore
 
 $$
-p(\theta^{-1})=\tfrac{1}{2}(p_A+p_B)=\Phi\!\left(-\tfrac{|w|\sqrt{T}}{2}\right),
+p(\theta^{-1})=\tfrac{1}{2}(p_A+p_B)=\Phi\left(-\tfrac{|w|\sqrt{T}}{2}\right),
 
 $$
 which is {eq}`bhs_detection_closed`.
@@ -2542,7 +2664,7 @@ $$
 \theta_{\text{TS}}
 =
 \left(\frac{\sigma_\varepsilon^{\text{TS}}}{\sigma_\varepsilon^{\text{RW}}}\right)
-\frac{1-\beta}{1-\beta\rho}\,\theta_{\text{RW}},
+\frac{1-\beta}{1-\beta\rho}\theta_{\text{RW}},
 $$
 
 which is {eq}`bhs_theta_cross_model`.
@@ -2553,8 +2675,9 @@ $$
 \theta_{\text{TS}}=\frac{1-\beta}{1-\beta\rho}\theta_{\text{RW}}.
 $$
 
-Since $\rho\in(0,1)$ implies $1-\beta\rho < 1-\beta$, the ratio $(1-\beta)/(1-\beta\rho)$ is less than one.
-So to hold entropy fixed, the trend-stationary model requires a smaller $\theta$ (i.e., a cheaper distortion / stronger robustness) than the random-walk model.
+Since $\rho\in(0,1)$ implies $1-\beta\rho > 1-\beta$, the ratio $(1-\beta)/(1-\beta\rho)$ is less than one.
+
+To hold entropy fixed, the trend-stationary model therefore requires a smaller $\theta$ (i.e., a cheaper distortion and stronger robustness) than the random-walk model.
 
 ```{solution-end}
 ```
@@ -2636,7 +2759,7 @@ $$
 J(w)
 =
 \sum_{t\geq 0}\beta^t\Bigl(c_0+t(\mu+\sigma_\varepsilon w)\Bigr)
-\;+\;
++
 \sum_{t\geq 0}\beta^{t+1}\theta\cdot\frac{w^2}{2}.
 $$
 
@@ -2646,9 +2769,9 @@ $$
 J(w)
 =
 \frac{c_0}{1-\beta}
-\;+\;
++
 \frac{\beta(\mu+\sigma_\varepsilon w)}{(1-\beta)^2}
-\;+\;
++
 \frac{\beta\theta}{1-\beta}\cdot\frac{w^2}{2}.
 $$
 
@@ -2658,8 +2781,8 @@ $$
 0=\frac{\partial J}{\partial w}
 =
 \frac{\beta\sigma_\varepsilon}{(1-\beta)^2}
-\;+\;
-\frac{\beta\theta}{1-\beta}\,w
++
+\frac{\beta\theta}{1-\beta}w
 \quad\Rightarrow\quad
 w^*=-\frac{\sigma_\varepsilon}{(1-\beta)\theta},
 $$
@@ -2672,7 +2795,7 @@ $$
 J(w^*)
 =
 \frac{c_0}{1-\beta}
-\;+\;
++
 \frac{\beta\mu}{(1-\beta)^2}
 -\frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^3\theta}.
 $$
@@ -2726,7 +2849,7 @@ $$
 **Part 2.** The Bellman equation {eq}`bhs_bellman_type1` requires computing
 
 $$
--\beta\theta\log E_t\!\left[\exp\!\left(\frac{-W(Ax_t + B\varepsilon_{t+1})}{\theta}\right)\right].
+-\beta\theta\log E_t\left[\exp\left(\frac{-W(Ax_t + B\varepsilon_{t+1})}{\theta}\right)\right].
 $$
 
 Substituting the guess:
@@ -2748,9 +2871,9 @@ $$
 Using $\log E[e^Z] = \mu_Z + \frac{1}{2}\sigma_Z^2$:
 
 $$
--\beta\theta\!\left[\frac{-(c_t + \mu + d)}{(1-\beta)\theta} + \frac{\sigma_\varepsilon^2}{2(1-\beta)^2\theta^2}\right]
+-\beta\theta\left[\frac{-(c_t + \mu + d)}{(1-\beta)\theta} + \frac{\sigma_\varepsilon^2}{2(1-\beta)^2\theta^2}\right]
 =
-\frac{\beta}{1-\beta}\!\left[c_t + \mu + d - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right].
+\frac{\beta}{1-\beta}\left[c_t + \mu + d - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right].
 $$
 
 **Part 3.** The Bellman equation becomes
@@ -2758,7 +2881,7 @@ $$
 $$
 \frac{1}{1-\beta}[c_t + d]
 =
-c_t + \frac{\beta}{1-\beta}\!\left[c_t + \mu + d - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right].
+c_t + \frac{\beta}{1-\beta}\left[c_t + \mu + d - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right].
 $$
 
 Expanding the right-hand side:
@@ -2778,10 +2901,10 @@ $$
 Solving: $d - \beta d = \beta\mu - \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)\theta}$, so
 
 $$
-d = \frac{\beta}{1-\beta}\!\left(\mu - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right),
+d = \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right),
 $$
 
-confirming {eq}`bhs_W_rw`.
+which matches {eq}`bhs_W_rw`.
 
 ```{solution-end}
 ```
@@ -2791,10 +2914,10 @@ confirming {eq}`bhs_W_rw`.
 
 Derive the trend-stationary risk compensation stated in the lecture.
 
-For the trend-stationary model with $\tilde c_{t+1} - \zeta = \rho(\tilde c_t - \zeta) + \sigma_\varepsilon\varepsilon_{t+1}$, where $\tilde c_t = c_t - \mu t$, compute the risk compensation $\Delta c_0^{risk,\,ts}$ by comparing expected log utility under the stochastic plan to the deterministic certainty-equivalent path, and show that
+For the trend-stationary model with $\tilde c_{t+1} - \zeta = \rho(\tilde c_t - \zeta) + \sigma_\varepsilon\varepsilon_{t+1}$, where $\tilde c_t = c_t - \mu t$, compute the risk compensation $\Delta c_0^{risk,ts}$ by comparing expected log utility under the stochastic plan to the deterministic certainty-equivalent path, and show that
 
 $$
-\Delta c_0^{risk,\,ts} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho^2)}.
+\Delta c_0^{risk,ts} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho^2)}.
 $$
 
 *Hint:* You will need $\operatorname{Var}(z_t) = \sigma_\varepsilon^2(1 + \rho^2 + \cdots + \rho^{2(t-1)})$ and the formula $\sum_{t \geq 1}\beta^t \sum_{j=0}^{t-1}\rho^{2j} = \frac{\beta}{(1-\beta)(1-\beta\rho^2)}$.
@@ -2832,10 +2955,10 @@ Equating values and solving:
 $$
 \frac{\Delta c_0^{risk}}{1-\beta} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)(1-\beta\rho^2)}
 \quad\Rightarrow\quad
-\Delta c_0^{risk,\,ts} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho^2)}.
+\Delta c_0^{risk,ts} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho^2)}.
 $$
 
-The uncertainty compensation follows from the value function: $\Delta c_0^{unc,\,ts,\,II} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho)^2\theta}$, with the $(1-\beta)$ factors replaced by $(1-\beta\rho)$ because the worst-case mean shift scales with $1/(1-\beta\rho)$ rather than $1/(1-\beta)$.
+The uncertainty compensation follows from the value function: $\Delta c_0^{unc,ts,II} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho)^2\theta}$, with the $(1-\beta)$ factors replaced by $(1-\beta\rho)$ because the worst-case mean shift scales with $1/(1-\beta\rho)$ rather than $1/(1-\beta)$.
 
 ```{solution-end}
 ```
