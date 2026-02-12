@@ -896,23 +896,23 @@ def w_from_θ(θ, model):
 
 ### Discounted entropy
 
-When the approximating and worst-case conditional densities are $\mathcal{N}(0,1)$ and $\mathcal{N}(w,1)$, the likelihood ratio is $\hat g(\varepsilon) = \exp(w\varepsilon - \frac{1}{2}w^2)$, so $\log \hat g(\varepsilon) = w\varepsilon - \frac{1}{2}w^2$.  
+When the approximating and worst-case conditional densities are $\mathcal{N}(0,1)$ and $\mathcal{N}(w(\theta),1)$, the likelihood ratio is $\hat g(\varepsilon) = \exp(w(\theta)\varepsilon - \frac{1}{2}w(\theta)^2)$, so $\log \hat g(\varepsilon) = w(\theta)\varepsilon - \frac{1}{2}w(\theta)^2$.
 
-Under the worst-case measure $\varepsilon \sim \mathcal{N}(w,1)$, so $E_{\hat\pi}[\varepsilon] = w$, giving conditional relative entropy
+Under the worst-case measure $\varepsilon \sim \mathcal{N}(w(\theta),1)$, so $E_{\hat\pi}[\varepsilon] = w(\theta)$, giving conditional relative entropy
 
 ```{math}
 :label: bhs_conditional_entropy
-E_t[\hat g_{t+1}\log \hat g_{t+1}] = w \cdot w - \frac{1}{2}w^2 = \frac{1}{2}w(\theta)^2.
+E_t[\hat g_{t+1}\log \hat g_{t+1}] = w(\theta) \cdot w(\theta) - \frac{1}{2}w(\theta)^2 = \frac{1}{2}w(\theta)^2.
 ```
 
 Because the distortion is i.i.d., the conditional entropy $E_t[\hat g_{t+1}\log \hat g_{t+1}] = \frac{1}{2}w(\theta)^2$ from {eq}`bhs_conditional_entropy` is constant and $N(x)$ does not depend on $x$.  
 
-The recursion {eq}`bhs_N_recursion` then reduces to $N(x) = \beta(\frac{1}{2}w^2 + N(x))$, where we have used $\int \hat g(\varepsilon)\pi(\varepsilon)d\varepsilon = 1$ (since $\hat g$ is a likelihood ratio).  
+The recursion {eq}`bhs_N_recursion` then reduces to $N(x) = \beta(\frac{1}{2}w(\theta)^2 + N(x))$, where we have used $\int \hat g(\varepsilon)\pi(\varepsilon)d\varepsilon = 1$ (since $\hat g$ is a likelihood ratio).  
 
-Solving for $N(x)$ gives
+Solving for $N(x)$,
 
 $$
-N(x)(1-\beta) = \frac{\beta}{2}w(\theta)^2
+N(x)(1-\beta) = \frac{\beta}{2}w(\theta)^2,
 $$
 
 gives discounted entropy
