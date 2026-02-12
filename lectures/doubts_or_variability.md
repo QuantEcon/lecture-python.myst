@@ -870,7 +870,7 @@ From {eq}`bhs_ghat`, the worst-case distortion puts $\hat g \propto \exp(-W(x_{t
 
 If $W(x_{t+1})$ loads on $\varepsilon_{t+1}$ with coefficient $\lambda$, then the Gaussian mean shift is $w = -\lambda/\theta$.
 
-By guessing linear value functions and matching coefficients in the Bellman equation ({ref}`Exercise 11 <dov_ex11>` works out both cases), we obtain the worst-case mean shifts
+By guessing linear value functions and matching coefficients in the Bellman equation ({ref}`Exercise 6 <dov_ex6>` works out both cases), we obtain the worst-case mean shifts
 
 ```{math}
 :label: bhs_w_formulas
@@ -955,7 +955,7 @@ For $W$, we guess $W(x_t) = \frac{1}{1-\beta}[c_t + d]$ for some constant $d$ an
 
 Under the random walk, $W(x_{t+1}) = \frac{1}{1-\beta}[c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1} + d]$, so $-W(x_{t+1})/\theta$ is affine in the standard normal $\varepsilon_{t+1}$.
 
-Using the fact that $\log E[e^Z] = \mu_Z + \frac{1}{2}\sigma_Z^2$ for a normal random variable $Z$, the Bellman equation {eq}`bhs_bellman_type1` reduces to a constant-matching condition that pins down $d$ ({ref}`Exercise 9 <dov_ex9>` works through the algebra):
+Using the fact that $\log E[e^Z] = \mu_Z + \frac{1}{2}\sigma_Z^2$ for a normal random variable $Z$, the Bellman equation {eq}`bhs_bellman_type1` reduces to a constant-matching condition that pins down $d$ ({ref}`Exercise 7 <dov_ex7>` works through the algebra):
 
 ```{math}
 :label: bhs_W_rw
@@ -1024,7 +1024,7 @@ The **market price of model uncertainty** (MPU) is the conditional standard devi
 \approx |w(\theta)|.
 ```
 
-In the Gaussian mean-shift setting, $L_T$ is normal with mean $\pm \tfrac{1}{2}w^2T$ and variance $w^2T$, so the detection-error probability has the closed form ({ref}`Exercise 6 <dov_ex6>` derives this)
+In the Gaussian mean-shift setting, $L_T$ is normal with mean $\pm \tfrac{1}{2}w^2T$ and variance $w^2T$, so the detection-error probability has the closed form ({ref}`Exercise 8 <dov_ex8>` derives this)
 
 ```{math}
 :label: bhs_detection_formula
@@ -1128,7 +1128,7 @@ If we hold $\theta$ fixed when switching from a random walk to a trend-stationar
 
 Holding $\eta$ or $p$ fixed instead keeps the statistical difficulty of detecting misspecification constant.
 
-The explicit mapping that equates discounted entropy across models is ({ref}`Exercise 7 <dov_ex7>` derives it):
+The explicit mapping that equates discounted entropy across models is ({ref}`Exercise 9 <dov_ex9>` derives it):
 
 ```{math}
 :label: bhs_theta_cross_model
@@ -1985,8 +1985,6 @@ print(f"  T   = {len(diff_c)} quarters")
 ```{code-cell} ipython3
 p_fig6 = 0.20
 
-# Figure 6 overlays deterministic lines on the loaded consumption data.
-# Use sample-estimated RW moments to avoid data-vintage drift mismatches.
 rw_fig6 = dict(μ=μ_hat, σ_ε=σ_hat)
 w_fig6 = 2.0 * norm.ppf(p_fig6) / np.sqrt(T)
 
@@ -1997,8 +1995,6 @@ t6 = np.arange(T + 1)
 μ_approx = rw_fig6["μ"]
 μ_worst = rw_fig6["μ"] + rw_fig6["σ_ε"] * w_fig6
 
-# Match BHS Figure 6 visual construction by fitting intercepts separately
-# while holding the two drifts fixed.
 a_approx = (c - μ_approx * t6).mean()
 a_worst = (c - μ_worst * t6).mean()
 line_approx = a_approx + μ_approx * t6
@@ -2614,6 +2610,151 @@ $$
 ```{exercise}
 :label: dov_ex6
 
+Derive the worst-case mean shifts {eq}`bhs_w_formulas` for both consumption models.
+
+From {eq}`bhs_ghat`, $\hat g_{t+1} \propto \exp(-W(x_{t+1})/\theta)$.
+
+When $W$ is linear in the state, the exponent is linear in $\varepsilon_{t+1}$, and the Gaussian mean shift is $w = -\lambda/\theta$ where $\lambda$ is the coefficient on $\varepsilon_{t+1}$ in $W(x_{t+1})$.
+
+1. Random-walk model: Guess $W(x_t) = \frac{1}{1-\beta}[c_t + d]$. Using $c_{t+1} = c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1}$, find $\lambda$ and show that $w = -\sigma_\varepsilon/[(1-\beta)\theta]$.
+
+2. Trend-stationary model: Write $z_t = \tilde c_t - \zeta$ and guess $W(x_t) = \frac{1}{1-\beta}[c_t + \alpha_1 z_t + \alpha_0]$. Show that:
+   - The coefficient on $\varepsilon_{t+1}$ in $W(x_{t+1})$ is $(1+\alpha_1)\sigma_\varepsilon/(1-\beta)$.
+   - Matching coefficients on $z_t$ in the Bellman equation gives $\alpha_1 = \beta(\rho-1)/(1-\beta\rho)$.
+   - Therefore $1+\alpha_1 = (1-\beta)/(1-\beta\rho)$ and $w = -\sigma_\varepsilon/[(1-\beta\rho)\theta]$.
+```
+
+```{solution-start} dov_ex6
+:class: dropdown
+```
+
+**Part 1.**
+Under the guess $W(x_t) = \frac{1}{1-\beta}[c_t + d]$ and $c_{t+1} = c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1}$,
+
+$$
+W(x_{t+1}) = \frac{1}{1-\beta}[c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1} + d].
+$$
+
+The coefficient on $\varepsilon_{t+1}$ is $\lambda = \sigma_\varepsilon/(1-\beta)$, so $w = -\lambda/\theta = -\sigma_\varepsilon/[(1-\beta)\theta]$.
+
+**Part 2.**
+Under the guess $W(x_t) = \frac{1}{1-\beta}[c_t + \alpha_1 z_t + \alpha_0]$ with $c_{t+1} = c_t + \mu + (\rho-1)z_t + \sigma_\varepsilon\varepsilon_{t+1}$ and $z_{t+1} = \rho z_t + \sigma_\varepsilon\varepsilon_{t+1}$,
+
+$$
+W(x_{t+1}) = \tfrac{1}{1-\beta}\bigl[c_t + \mu + (\rho-1)z_t + \sigma_\varepsilon\varepsilon_{t+1} + \alpha_1(\rho z_t + \sigma_\varepsilon\varepsilon_{t+1}) + \alpha_0\bigr].
+$$
+
+The coefficient on $\varepsilon_{t+1}$ is $(1+\alpha_1)\sigma_\varepsilon/(1-\beta)$.
+
+To find $\alpha_1$, substitute the guess into the Bellman equation.
+
+The factors of $\frac{1}{1-\beta}$ cancel on both sides, and matching coefficients on $z_t$ gives
+
+$$
+\alpha_1 = \beta\bigl[(\rho-1) + \alpha_1\rho\bigr]
+\quad\Rightarrow\quad
+\alpha_1(1-\beta\rho) = \beta(\rho-1)
+\quad\Rightarrow\quad
+\alpha_1 = \frac{\beta(\rho-1)}{1-\beta\rho}.
+$$
+
+Therefore
+
+$$
+1+\alpha_1 = \frac{1-\beta\rho + \beta(\rho-1)}{1-\beta\rho} = \frac{1-\beta}{1-\beta\rho},
+$$
+
+and the coefficient on $\varepsilon_{t+1}$ becomes $(1+\alpha_1)\sigma_\varepsilon/(1-\beta) = \sigma_\varepsilon/(1-\beta\rho)$, giving $w = -\sigma_\varepsilon/[(1-\beta\rho)\theta]$.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: dov_ex7
+
+Verify the closed-form value function {eq}`bhs_W_rw` for the random-walk model by substituting a guess of the form $W(x_t) = \frac{1}{1-\beta}[c_t + d]$ into the risk-sensitive Bellman equation {eq}`bhs_bellman_type1`.
+
+1. Under the random walk $c_{t+1} = c_t + \mu + \sigma_\varepsilon \varepsilon_{t+1}$, show that $W(Ax_t + B\varepsilon) = \frac{1}{1-\beta}[c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1} + d]$.
+2. Substitute into the $\log E\exp$ term, using the fact that for $Z \sim \mathcal{N}(\mu_Z, \sigma_Z^2)$ we have $\log E[\exp(Z)] = \mu_Z + \frac{1}{2}\sigma_Z^2$.
+3. Solve for $d$ and confirm that it matches {eq}`bhs_W_rw`.
+```
+
+```{solution-start} dov_ex7
+:class: dropdown
+```
+
+**Part 1.** Under the random walk, $c_{t+1} = c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1}$. Substituting the guess $W(x) = \frac{1}{1-\beta}[Hx + d]$ with $Hx_t = c_t$:
+
+$$
+W(Ax_t + B\varepsilon_{t+1}) = \frac{1}{1-\beta}\bigl[c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1} + d\bigr].
+$$
+
+**Part 2.** The Bellman equation {eq}`bhs_bellman_type1` requires computing
+
+$$
+-\beta\theta\log E_t\left[\exp\left(\frac{-W(Ax_t + B\varepsilon_{t+1})}{\theta}\right)\right].
+$$
+
+Substituting the guess:
+
+$$
+\frac{-W(Ax_t + B\varepsilon_{t+1})}{\theta}
+=
+\frac{-1}{(1-\beta)\theta}\bigl[c_t + \mu + d + \sigma_\varepsilon\varepsilon_{t+1}\bigr].
+$$
+
+This is an affine function of the standard normal $\varepsilon_{t+1}$, so the argument of the $\log E\exp$ is normal with
+
+$$
+\mu_Z = \frac{-(c_t + \mu + d)}{(1-\beta)\theta},
+\qquad
+\sigma_Z^2 = \frac{\sigma_\varepsilon^2}{(1-\beta)^2\theta^2}.
+$$
+
+Using $\log E[e^Z] = \mu_Z + \frac{1}{2}\sigma_Z^2$:
+
+$$
+-\beta\theta\left[\frac{-(c_t + \mu + d)}{(1-\beta)\theta} + \frac{\sigma_\varepsilon^2}{2(1-\beta)^2\theta^2}\right]
+=
+\frac{\beta}{1-\beta}\left[c_t + \mu + d - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right].
+$$
+
+**Part 3.** The Bellman equation becomes
+
+$$
+\frac{1}{1-\beta}[c_t + d]
+=
+c_t + \frac{\beta}{1-\beta}\left[c_t + \mu + d - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right].
+$$
+
+Expanding the right-hand side:
+
+$$
+c_t + \frac{\beta c_t}{1-\beta} + \frac{\beta(\mu + d)}{1-\beta} - \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^2\theta}
+=
+\frac{c_t}{1-\beta} + \frac{\beta(\mu + d)}{1-\beta} - \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^2\theta}.
+$$
+
+Equating both sides and cancelling $\frac{c_t}{1-\beta}$:
+
+$$
+\frac{d}{1-\beta} = \frac{\beta(\mu + d)}{1-\beta} - \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^2\theta}.
+$$
+
+Solving: $d - \beta d = \beta\mu - \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)\theta}$, so
+
+$$
+d = \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right),
+$$
+
+which matches {eq}`bhs_W_rw`.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: dov_ex8
+
 In the Gaussian mean-shift setting of {ref}`Exercise 5 <dov_ex5>`, let $L_T$ be the log likelihood ratio between the worst-case and approximating models based on $T$ observations.
 
 1. Show that $L_T$ is normal under each model.
@@ -2621,7 +2762,7 @@ In the Gaussian mean-shift setting of {ref}`Exercise 5 <dov_ex5>`, let $L_T$ be 
 3. Using the definition of detection-error probability in {eq}`bhs_detection_formula`, derive the closed-form expression {eq}`bhs_detection_closed`.
 ```
 
-```{solution-start} dov_ex6
+```{solution-start} dov_ex8
 :class: dropdown
 ```
 
@@ -2701,7 +2842,7 @@ which is {eq}`bhs_detection_closed`.
 ```
 
 ```{exercise}
-:label: dov_ex7
+:label: dov_ex9
 
 Using the formulas for $w(\theta)$ in {eq}`bhs_w_formulas` and the definition of discounted entropy
 
@@ -2714,7 +2855,7 @@ show that holding $\eta$ fixed across the random-walk and trend-stationary consu
 Specialize your result to the case $\sigma_\varepsilon^{\text{TS}} = \sigma_\varepsilon^{\text{RW}}$ and interpret the role of $\rho$.
 ```
 
-```{solution-start} dov_ex7
+```{solution-start} dov_ex9
 :class: dropdown
 ```
 
@@ -2757,7 +2898,7 @@ To hold entropy fixed, the trend-stationary model therefore requires a smaller $
 ```
 
 ```{exercise}
-:label: dov_ex8
+:label: dov_ex10
 
 For type II (multiplier) preferences under random-walk consumption growth, derive the compensating-variation formulas in {eq}`bhs_type2_rw_decomp`.
 
@@ -2767,7 +2908,7 @@ In particular, derive
 2. the *uncertainty* term by comparing a type II agent with parameter $\theta$ to the expected-utility case $\theta=\infty$, holding the stochastic environment fixed.
 ```
 
-```{solution-start} dov_ex8
+```{solution-start} dov_ex10
 :class: dropdown
 ```
 
@@ -2906,90 +3047,7 @@ Together these reproduce {eq}`bhs_type2_rw_decomp`.
 ```
 
 ```{exercise}
-:label: dov_ex9
-
-Verify the closed-form value function {eq}`bhs_W_rw` for the random-walk model by substituting a guess of the form $W(x_t) = \frac{1}{1-\beta}[c_t + d]$ into the risk-sensitive Bellman equation {eq}`bhs_bellman_type1`.
-
-1. Under the random walk $c_{t+1} = c_t + \mu + \sigma_\varepsilon \varepsilon_{t+1}$, show that $W(Ax_t + B\varepsilon) = \frac{1}{1-\beta}[c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1} + d]$.
-2. Substitute into the $\log E\exp$ term, using the fact that for $Z \sim \mathcal{N}(\mu_Z, \sigma_Z^2)$ we have $\log E[\exp(Z)] = \mu_Z + \frac{1}{2}\sigma_Z^2$.
-3. Solve for $d$ and confirm that it matches {eq}`bhs_W_rw`.
-```
-
-```{solution-start} dov_ex9
-:class: dropdown
-```
-
-**Part 1.** Under the random walk, $c_{t+1} = c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1}$. Substituting the guess $W(x) = \frac{1}{1-\beta}[Hx + d]$ with $Hx_t = c_t$:
-
-$$
-W(Ax_t + B\varepsilon_{t+1}) = \frac{1}{1-\beta}\bigl[c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1} + d\bigr].
-$$
-
-**Part 2.** The Bellman equation {eq}`bhs_bellman_type1` requires computing
-
-$$
--\beta\theta\log E_t\left[\exp\left(\frac{-W(Ax_t + B\varepsilon_{t+1})}{\theta}\right)\right].
-$$
-
-Substituting the guess:
-
-$$
-\frac{-W(Ax_t + B\varepsilon_{t+1})}{\theta}
-=
-\frac{-1}{(1-\beta)\theta}\bigl[c_t + \mu + d + \sigma_\varepsilon\varepsilon_{t+1}\bigr].
-$$
-
-This is an affine function of the standard normal $\varepsilon_{t+1}$, so the argument of the $\log E\exp$ is normal with
-
-$$
-\mu_Z = \frac{-(c_t + \mu + d)}{(1-\beta)\theta},
-\qquad
-\sigma_Z^2 = \frac{\sigma_\varepsilon^2}{(1-\beta)^2\theta^2}.
-$$
-
-Using $\log E[e^Z] = \mu_Z + \frac{1}{2}\sigma_Z^2$:
-
-$$
--\beta\theta\left[\frac{-(c_t + \mu + d)}{(1-\beta)\theta} + \frac{\sigma_\varepsilon^2}{2(1-\beta)^2\theta^2}\right]
-=
-\frac{\beta}{1-\beta}\left[c_t + \mu + d - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right].
-$$
-
-**Part 3.** The Bellman equation becomes
-
-$$
-\frac{1}{1-\beta}[c_t + d]
-=
-c_t + \frac{\beta}{1-\beta}\left[c_t + \mu + d - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right].
-$$
-
-Expanding the right-hand side:
-
-$$
-c_t + \frac{\beta c_t}{1-\beta} + \frac{\beta(\mu + d)}{1-\beta} - \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^2\theta}
-=
-\frac{c_t}{1-\beta} + \frac{\beta(\mu + d)}{1-\beta} - \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^2\theta}.
-$$
-
-Equating both sides and cancelling $\frac{c_t}{1-\beta}$:
-
-$$
-\frac{d}{1-\beta} = \frac{\beta(\mu + d)}{1-\beta} - \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^2\theta}.
-$$
-
-Solving: $d - \beta d = \beta\mu - \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)\theta}$, so
-
-$$
-d = \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right),
-$$
-
-which matches {eq}`bhs_W_rw`.
-
-```{solution-end}
-```
-
-```{exercise}
-:label: dov_ex10
+:label: dov_ex11
 
 Derive the trend-stationary risk compensation $\Delta c_0^{risk,ts}$ in {eq}`bhs_ts_compensations`.
 
@@ -3002,7 +3060,7 @@ $$
 *Hint:* You will need $\operatorname{Var}(z_t) = \sigma_\varepsilon^2(1 + \rho^2 + \cdots + \rho^{2(t-1)})$ and the formula $\sum_{t \geq 1}\beta^t \sum_{j=0}^{t-1}\rho^{2j} = \frac{\beta}{(1-\beta)(1-\beta\rho^2)}$.
 ```
 
-```{solution-start} dov_ex10
+```{solution-start} dov_ex11
 :class: dropdown
 ```
 
@@ -3038,68 +3096,6 @@ $$
 $$
 
 The uncertainty compensation follows from the value function: $\Delta c_0^{unc,ts,II} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho)^2\theta}$, with the $(1-\beta)$ factors replaced by $(1-\beta\rho)$ because the worst-case mean shift scales with $1/(1-\beta\rho)$ rather than $1/(1-\beta)$.
-
-```{solution-end}
-```
-
-```{exercise}
-:label: dov_ex11
-
-Derive the worst-case mean shifts {eq}`bhs_w_formulas` for both consumption models.
-
-From {eq}`bhs_ghat`, $\hat g_{t+1} \propto \exp(-W(x_{t+1})/\theta)$.
-
-When $W$ is linear in the state, the exponent is linear in $\varepsilon_{t+1}$, and the Gaussian mean shift is $w = -\lambda/\theta$ where $\lambda$ is the coefficient on $\varepsilon_{t+1}$ in $W(x_{t+1})$.
-
-1. Random-walk model: Guess $W(x_t) = \frac{1}{1-\beta}[c_t + d]$. Using $c_{t+1} = c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1}$, find $\lambda$ and show that $w = -\sigma_\varepsilon/[(1-\beta)\theta]$.
-
-2. Trend-stationary model: Write $z_t = \tilde c_t - \zeta$ and guess $W(x_t) = \frac{1}{1-\beta}[c_t + \alpha_1 z_t + \alpha_0]$. Show that:
-   - The coefficient on $\varepsilon_{t+1}$ in $W(x_{t+1})$ is $(1+\alpha_1)\sigma_\varepsilon/(1-\beta)$.
-   - Matching coefficients on $z_t$ in the Bellman equation gives $\alpha_1 = \beta(\rho-1)/(1-\beta\rho)$.
-   - Therefore $1+\alpha_1 = (1-\beta)/(1-\beta\rho)$ and $w = -\sigma_\varepsilon/[(1-\beta\rho)\theta]$.
-```
-
-```{solution-start} dov_ex11
-:class: dropdown
-```
-
-**Part 1.**
-Under the guess $W(x_t) = \frac{1}{1-\beta}[c_t + d]$ and $c_{t+1} = c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1}$,
-
-$$
-W(x_{t+1}) = \frac{1}{1-\beta}[c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1} + d].
-$$
-
-The coefficient on $\varepsilon_{t+1}$ is $\lambda = \sigma_\varepsilon/(1-\beta)$, so $w = -\lambda/\theta = -\sigma_\varepsilon/[(1-\beta)\theta]$.
-
-**Part 2.**
-Under the guess $W(x_t) = \frac{1}{1-\beta}[c_t + \alpha_1 z_t + \alpha_0]$ with $c_{t+1} = c_t + \mu + (\rho-1)z_t + \sigma_\varepsilon\varepsilon_{t+1}$ and $z_{t+1} = \rho z_t + \sigma_\varepsilon\varepsilon_{t+1}$,
-
-$$
-W(x_{t+1}) = \tfrac{1}{1-\beta}\bigl[c_t + \mu + (\rho-1)z_t + \sigma_\varepsilon\varepsilon_{t+1} + \alpha_1(\rho z_t + \sigma_\varepsilon\varepsilon_{t+1}) + \alpha_0\bigr].
-$$
-
-The coefficient on $\varepsilon_{t+1}$ is $(1+\alpha_1)\sigma_\varepsilon/(1-\beta)$.
-
-To find $\alpha_1$, substitute the guess into the Bellman equation.
-
-The factors of $\frac{1}{1-\beta}$ cancel on both sides, and matching coefficients on $z_t$ gives
-
-$$
-\alpha_1 = \beta\bigl[(\rho-1) + \alpha_1\rho\bigr]
-\quad\Rightarrow\quad
-\alpha_1(1-\beta\rho) = \beta(\rho-1)
-\quad\Rightarrow\quad
-\alpha_1 = \frac{\beta(\rho-1)}{1-\beta\rho}.
-$$
-
-Therefore
-
-$$
-1+\alpha_1 = \frac{1-\beta\rho + \beta(\rho-1)}{1-\beta\rho} = \frac{1-\beta}{1-\beta\rho},
-$$
-
-and the coefficient on $\varepsilon_{t+1}$ becomes $(1+\alpha_1)\sigma_\varepsilon/(1-\beta) = \sigma_\varepsilon/(1-\beta\rho)$, giving $w = -\sigma_\varepsilon/[(1-\beta\rho)\theta]$.
 
 ```{solution-end}
 ```
