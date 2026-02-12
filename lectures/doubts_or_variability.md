@@ -905,7 +905,7 @@ Under the worst-case measure $\varepsilon \sim \mathcal{N}(w(\theta),1)$, so $E_
 E_t[\hat g_{t+1}\log \hat g_{t+1}] = w(\theta) \cdot w(\theta) - \frac{1}{2}w(\theta)^2 = \frac{1}{2}w(\theta)^2.
 ```
 
-Because the distortion is i.i.d., the conditional entropy $E_t[\hat g_{t+1}\log \hat g_{t+1}] = \frac{1}{2}w(\theta)^2$ from {eq}`bhs_conditional_entropy` is constant and $N(x)$ does not depend on $x$.  
+Because the distortion is i.i.d., the conditional entropy $E_t[\hat g_{t+1}\log \hat g_{t+1}] = \frac{1}{2}w(\theta)^2$ from {eq}`bhs_conditional_entropy` is constant and $N(x)$ does not depend on $x$.
 
 The recursion {eq}`bhs_N_recursion` then reduces to $N(x) = \beta(\frac{1}{2}w(\theta)^2 + N(x))$, where we have used $\int \hat g(\varepsilon)\pi(\varepsilon)d\varepsilon = 1$ (since $\hat g$ is a likelihood ratio).  
 
