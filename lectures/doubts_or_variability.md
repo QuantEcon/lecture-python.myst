@@ -728,7 +728,7 @@ $$
 \right],
 $$
 
-where $\theta \ge 0$ is the multiplier on the entropy constraint.
+where $\theta \geq 0$ is the multiplier on the entropy constraint.
 
 Collecting terms inside the expectation gives
 
@@ -972,8 +972,6 @@ J(x_t) = W(x_t) - \theta N(x_t) = \frac{1}{1-\beta}\left[c_t + \frac{\beta}{1-\b
 Notice that the coefficient on $\sigma_\varepsilon^2/[(1-\beta)\theta]$ doubles from $\tfrac{1}{2}$ in $W$ to $1$ in $J$.  
 
 The reason is that $W$ includes the entropy "rebate" $\theta N$, which partially offsets the pessimistic tilt, while $J$ evaluates consumption purely under the worst-case model with no such offset.
-
-This seemingly small difference drives a factor-of-two wedge in the welfare calculations below.
 
 (detection_error_section)=
 ## Detection-error probabilities
@@ -1482,7 +1480,7 @@ where the last step uses $\gamma = 1 + [(1-\beta)\theta]^{-1}$.
 
 Because $W \equiv U$, we have $c_0^{II} = c_0^I$ and the total compensation is the same.
 
-However, the interpretation differs because we can now decompose it into **risk** and **model uncertainty** components.
+However, the interpretation differs because we can now decompose it into *risk* and *model uncertainty* components.
 
 A type II agent with $\theta = \infty$ (no model uncertainty) has log preferences and requires
 
@@ -1649,13 +1647,14 @@ The "vs. risky path" rows use the risky-but-uncertainty-free comparison of {eq}`
 
 For the trend-stationary model, the denominators $(1-\beta)$ in the uncertainty terms are replaced by $(1-\beta\rho)$, and the risk terms involve $(1-\beta\rho^2)$:
 
-$$
+```{math}
+:label: bhs_ts_compensations
 \Delta c_0^{risk,ts} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho^2)},
 \qquad
 \Delta c_0^{unc,ts,II} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho)^2\theta},
 \qquad
 \Delta c_0^{unc,ts,III} = \frac{\beta\sigma_\varepsilon^2}{(1-\beta\rho)^2\theta}.
-$$
+```
 
 The qualitative message carries over: the risk component is negligible, and the model-uncertainty component dominates.
 
@@ -2764,8 +2763,8 @@ For type II (multiplier) preferences under random-walk consumption growth, deriv
 
 In particular, derive
 
-1. the **risk** term by comparing the stochastic economy to a deterministic consumption path with the same mean level of consumption (Lucas's thought experiment), and
-2. the **uncertainty** term by comparing a type II agent with parameter $\theta$ to the expected-utility case $\theta=\infty$, holding the stochastic environment fixed.
+1. the *risk* term by comparing the stochastic economy to a deterministic consumption path with the same mean level of consumption (Lucas's thought experiment), and
+2. the *uncertainty* term by comparing a type II agent with parameter $\theta$ to the expected-utility case $\theta=\infty$, holding the stochastic environment fixed.
 ```
 
 ```{solution-start} dov_ex8
@@ -2780,7 +2779,8 @@ $$
 
 with $\varepsilon_j\stackrel{iid}{\sim}\mathcal{N}(0,1)$.
 
-**Risk term.**
+**Risk term:**
+
 The mean level of consumption is
 
 $$
@@ -2801,6 +2801,7 @@ $$
 \frac{c_0}{1-\beta} + \frac{\beta\mu}{(1-\beta)^2},
 
 $$
+
 while for the deterministic mean-level path it is
 
 $$
@@ -2810,6 +2811,7 @@ $$
 $$
 
 If we reduce initial consumption by $\Delta c_0^{risk}$ (so $\bar c_t$ shifts down by $\Delta c_0^{risk}$ for all $t$), utility falls by $\Delta c_0^{risk}/(1-\beta)$.
+
 Equating the two utilities gives
 
 $$
@@ -2820,8 +2822,10 @@ $$
 \Delta c_0^{risk}=\frac{\beta\sigma_\varepsilon^2}{2(1-\beta)}.
 $$
 
-**Uncertainty term.**
+**Uncertainty term:**
+
 For type II multiplier preferences, the minimizing distortion is a Gaussian mean shift with parameter $w$ and per-period relative entropy $\tfrac{1}{2}w^2$.
+
 Under the distorted model, $E[\varepsilon]=w$, so
 
 $$
@@ -2838,7 +2842,7 @@ J(w)
 \sum_{t\geq 0}\beta^{t+1}\theta\cdot\frac{w^2}{2}.
 $$
 
-Using $\sum_{t\ge0}\beta^t=1/(1-\beta)$ and $\sum_{t\ge0}t\beta^t=\beta/(1-\beta)^2$,
+Using $\sum_{t\geq0}\beta^t=1/(1-\beta)$ and $\sum_{t\geq0}t\beta^t=\beta/(1-\beta)^2$,
 
 $$
 J(w)
@@ -2987,7 +2991,7 @@ which matches {eq}`bhs_W_rw`.
 ```{exercise}
 :label: dov_ex10
 
-Derive the trend-stationary risk compensation stated in the lecture.
+Derive the trend-stationary risk compensation $\Delta c_0^{risk,ts}$ in {eq}`bhs_ts_compensations`.
 
 For the trend-stationary model with $\tilde c_{t+1} - \zeta = \rho(\tilde c_t - \zeta) + \sigma_\varepsilon\varepsilon_{t+1}$, where $\tilde c_t = c_t - \mu t$, compute the risk compensation $\Delta c_0^{risk,ts}$ by comparing expected log utility under the stochastic plan to the deterministic certainty-equivalent path, and show that
 
@@ -3043,7 +3047,7 @@ The uncertainty compensation follows from the value function: $\Delta c_0^{unc,t
 
 Derive the worst-case mean shifts {eq}`bhs_w_formulas` for both consumption models.
 
-Recall that the worst-case distortion {eq}`bhs_ghat` has $\hat g \propto \exp(-W(x_{t+1})/\theta)$.
+From {eq}`bhs_ghat`, $\hat g_{t+1} \propto \exp(-W(x_{t+1})/\theta)$.
 
 When $W$ is linear in the state, the exponent is linear in $\varepsilon_{t+1}$, and the Gaussian mean shift is $w = -\lambda/\theta$ where $\lambda$ is the coefficient on $\varepsilon_{t+1}$ in $W(x_{t+1})$.
 
