@@ -31,29 +31,29 @@ kernelspec:
 > associated with occupations with high earnings risk, or in the revenues raised by
 > state-operated lotteries. It
 > would be good to have the equity premium resolved, but I think we need to look beyond high
-> estimates of risk aversion to do it.* -- Robert Lucas Jr., January 10, 2003
+> estimates of risk aversion to do it.* -- Robert E. Lucas Jr., {cite}`Lucas_2003`
 
 ## Overview
 
 {cite:t}`Tall2000` showed that a recursive preference specification could match the equity premium and the risk-free rate puzzle simultaneously.
 
-But matching required setting the risk-aversion coefficient $\gamma$ to around 50 for a random-walk consumption model and around 75 for a trend-stationary model, exactly the range that provoked Lucas's skepticism.
+But matching required setting the risk-aversion coefficient $\gamma$ to around 50 for a random-walk consumption model and around 75 for a trend-stationary model, exactly the range that provoked the  skepticism in the above quote from {cite:t}`Lucas_2003`.
 
 {cite:t}`BHS_2009` ask whether those large $\gamma$ values really measure aversion to atemporal risk, or whether they instead measure the agent's doubts about the underlying probability model.
 
 Their answer, and the theme of this lecture, is that much of what looks like "risk aversion" can be reinterpreted as **model uncertainty**.
 
-The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to a max--min recursion in which the agent fears that the probability model governing consumption growth may be wrong.
+The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to a another recursion that expresses an agent's concern  that the probability model governing consumption growth may be wrong.
 
-Under this reading, the parameter that looked like extreme risk aversion instead measures concern about *misspecification*.
+Under this reading, the parameter that indicates  extreme risk aversion in one interpretation of the recursion  instead indicates concerns about *misspecification* in another interpretation of the same recursion.
 
-They show that modest amounts of model uncertainty can substitute for large amounts of risk aversion in terms of choices and effects on asset prices.
+{cite:t}`BHS_2009` show that modest amounts of model uncertainty can substitute for large amounts of risk aversion in terms of choices and effects on asset prices.
 
 This reinterpretation changes the welfare question that asset prices answer.
 
-Do large risk premia measure the benefits from reducing well-understood aggregate fluctuations, or the benefits from reducing doubts about the underlying model?
+Do large risk premia measure the benefits from reducing well-understood aggregate fluctuations, or do they measure  benefits from reducing doubts about the  model describing consumption growth?
 
-We begin with the Hansen--Jagannathan bound, then specify the statistical environment, lay out four related preference specifications and the connections among them, and finally revisit Tallarini's calibration through the lens of detection-error probabilities.
+We begin with a {cite:t}`Hansen_Jagannathan_1991` bound, then specify the statistical environment, lay out four related preference specifications and the connections among them, and finally revisit Tallarini's calibration through the lens of detection-error probabilities.
 
 Along the way, we draw on ideas and techniques from
 
@@ -213,7 +213,7 @@ def hj_std_bound(E_m):
     return np.sqrt(np.maximum(var_lb, 0.0))
 ```
 
-### The puzzle
+### Two puzzles
 
 Reconciling formula {eq}`bhs_crra_sdf` with the market price of risk extracted from data on asset returns (like those in Table 1 below) requires a value of $\gamma$ so high that it provokes skepticism.
 
