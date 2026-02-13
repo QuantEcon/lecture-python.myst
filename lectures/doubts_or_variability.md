@@ -45,7 +45,7 @@ Their answer, and the theme of this lecture, is that much of what looks like "ri
 
 The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to a another recursion that expresses an agent's concern  that the probability model governing consumption growth may be wrong.
 
-Under this reading, the parameter that indicates  extreme risk aversion in one interpretation of the recursion  instead indicates concerns about *misspecification* in another interpretation of the same recursion.
+Under this reading, a  parameter value  that indicates  extreme risk aversion in one interpretation of the recursion  indicates concerns about *misspecification* in another interpretation of the same recursion.
 
 {cite:t}`BHS_2009` show that modest amounts of model uncertainty can substitute for large amounts of risk aversion in terms of choices and effects on asset prices.
 
@@ -191,7 +191,7 @@ In words, no asset's Sharpe ratio can exceed the market price of risk.
 
 The bound {eq}`bhs_hj_bound` is stated in conditional terms.
 
-There is also an unconditional counterpart that works with a vector of $n$ gross returns $R_{t+1}$ (e.g., equity and risk-free) with unconditional mean $E(R)$ and covariance matrix $\Sigma_R$:
+There is  an unconditional counterpart that involves a vector of $n$ gross returns $R_{t+1}$ (e.g., equity and risk-free) with unconditional mean $E(R)$ and covariance matrix $\Sigma_R$:
 
 ```{math}
 :label: bhs_hj_unconditional
@@ -219,7 +219,7 @@ Reconciling formula {eq}`bhs_crra_sdf` with the market price of risk extracted f
 
 This is the **equity premium puzzle**.
 
-But the puzzle has a second dimension.
+But high values of $\gamma$  bring another difficulty.  
 
 High values of $\gamma$ that deliver enough volatility $\sigma(m)$ also push $E(m)$, the reciprocal of the gross risk-free rate, too far down, away from the Hansen--Jagannathan bound.
 
@@ -229,9 +229,11 @@ This is the **risk-free rate puzzle** of {cite:t}`Weil_1989`.
 
 The figure below reproduces Tallarini's key diagnostic.
 
-We show it before developing the underlying theory because it motivates much of what follows.
+Because it motivates much of what follow, we show Tallarini's figure  before developing the underlying theory.
 
-The closed-form expressions for the Epstein--Zin SDF moments used in the plot are derived in {ref}`Exercise 2 <dov_ex2>`.
+
+Closed-form expressions for the Epstein--Zin SDF moments used in the plot are derived in {ref}`Exercise 2 <dov_ex2>`.
+
 
 The code below implements them alongside the corresponding CRRA moments.
 
@@ -265,7 +267,7 @@ def moments_crra_rw(γ):
     return E_m, mpr
 ```
 
-For each value of $\gamma \in \{1, 5, 10, \ldots, 51\}$, we plot the implied $(E(m),\sigma(m))$ pair for three specifications.
+For each value of $\gamma \in \{1, 5, 10, \ldots, 51\}$, we plot the implied $(E(m),\sigma(m))$ pair for three combinations of specifications of preferences and consumption growth processes.
 
 These are time-separable CRRA (crosses), Epstein--Zin preferences with random-walk consumption (circles), and Epstein--Zin preferences with trend-stationary consumption (pluses).
 
@@ -332,7 +334,7 @@ Instead, they reflect the agent's doubts about the probability model itself.
 
 ## The choice setting
 
-To make this reinterpretation precise, we first need to formalize the environment.
+To understand  their reinterpretation, we first need to describe their statistical models of consumption growth. 
 
 ### Shocks and consumption plans
 
@@ -432,6 +434,11 @@ print(f"std[r_e-r_f]={r_excess_std:.4f}")
 ### Overview of agents I, II, III, and IV
 
 We compare four preference specifications over consumption plans $C^\infty \in \mathcal{C}$.
+```{note}
+For  origins of the names **multipler** and **constraint**  preferences, see {cite:t}`HansenSargent2001`.
+The risk-sensitive preference specification used here comes from {cite:t}`hansen1995discounted`, which adjusts specifications used earlier by 
+{cite:t}`jacobson1973optimal`, {cite:t}`Whittle_1981`, and  {cite:t}`Whittle_1990` to accommodate discounting in a way that preserves time-invariant optimal decision rules. 
+```
 
 *Type I agent (Kreps--Porteus--Epstein--Zin--Tallarini)* with
 - a discount factor $\beta \in (0,1)$;
@@ -466,7 +473,7 @@ Types I and II turn out to be observationally equivalent in a strong sense, havi
 
 Types III and IV are equivalent in a weaker but still useful sense, delivering the same worst-case pricing implications as a type II agent for a given endowment process.
 
-We now formalize each agent type and develop the equivalences among them.
+We now formalize each agent type and describe relationships among them.
 
 For each type, we derive a Bellman equation that pins down the agent's value function and stochastic discount factor.
 
@@ -479,11 +486,11 @@ $$
 where $\hat g_{t+1}$ is a likelihood-ratio distortion that we will define in each case.
 
 
-Along the way, we introduce the likelihood-ratio distortion that enters the stochastic discount factor and develop the detection-error probability that will serve as our new calibration device.
+Along the way, we introduce the likelihood-ratio distortion that enters the stochastic discount factor and describe  detection-error probabilities that will serve as our new calibration tool.
 
 ### Type I: Kreps--Porteus--Epstein--Zin--Tallarini preferences
 
-The general Epstein--Zin--Weil specification combines current consumption with a certainty equivalent of future utility through a CES aggregator:
+The Epstein--Zin--Weil specification combines current consumption with a certainty equivalent of future utility through a CES aggregator:
 
 ```{math}
 :label: bhs_ez_general
