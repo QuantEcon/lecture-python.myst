@@ -1768,7 +1768,7 @@ The models are statistically close to the baseline, with detection-error probabi
 
 The consumer's caution against such alternatives accounts for the large certainty-equivalent gap in the left panel.
 
-## How large are the welfare gains from resolving model uncertainty?
+## Welfare gains from removing model uncertainty
 
 A type III (constraint-preference) agent evaluates the worst model inside an entropy ball of radius $\eta$.
 
@@ -1894,13 +1894,15 @@ plt.tight_layout()
 plt.show()
 ```
 
-## Why doesn't learning eliminate these fears?
+## Learning doesn't eliminate misspecification fears
 
-A natural objection arises: if the consumer has 235 quarters of data, why can't she learn the true drift well enough to dismiss the worst-case model?
+A reasonable question  arises: if the consumer has 235 quarters of data,  can't she learn enough to dismiss the worst-case model?
 
-The answer is that the drift is a low-frequency feature of the data, and low-frequency features are hard to pin down.
+The answer is no.
 
-Estimating the mean of a random walk to the precision needed to reject small but economically meaningful shifts requires far more data than estimating volatility.
+This is because   the drift is a low-frequency feature that is very  hard to pin down.
+
+Estimating the mean of a random walk to the precision needed to reject small but economically meaningful shifts requires far more data than estimating volatility precisely does.
 
 The following figure makes this point concrete.
 
