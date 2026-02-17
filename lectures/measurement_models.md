@@ -1284,12 +1284,11 @@ We use the following helper function to plot the true series against either the 
 def plot_true_vs_other(t, true_series, other_series, 
                                   other_label, ylabel=""):
     fig, ax = plt.subplots(figsize=(8, 4))
-    ax.plot(t, true_series, lw=2, color="black", label="true")
-    ax.plot(t, other_series, lw=2, ls="--", 
-                          color="#1f77b4", label=other_label)
-    ax.set_xlabel("time", fontsize=12)
-    ax.set_ylabel(ylabel, fontsize=12)
-    ax.legend(loc="best", fontsize=11, frameon=True, shadow=True)
+    ax.plot(t, true_series, lw=2, label="true")
+    ax.plot(t, other_series, lw=2, ls="--", label=other_label)
+    ax.set_xlabel("time")
+    ax.set_ylabel(ylabel)
+    ax.legend()
     plt.tight_layout()
     plt.show()
 
@@ -1421,13 +1420,13 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4))
 
 ax1.plot(t, sim["c_meas"] + sim["dk_meas"] - sim["y_meas"], lw=2)
 ax1.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
-ax1.set_xlabel("time", fontsize=12)
-ax1.set_ylabel("measured residual", fontsize=12)
+ax1.set_xlabel("time")
+ax1.set_ylabel("measured residual")
 
 ax2.plot(t, sim["c_filt"] + sim["dk_filt"] - sim["y_filt"], lw=2)
 ax2.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
-ax2.set_xlabel("time", fontsize=12)
-ax2.set_ylabel("filtered residual", fontsize=12)
+ax2.set_xlabel("time")
+ax2.set_ylabel("filtered residual")
 
 plt.tight_layout()
 plt.show()
