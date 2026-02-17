@@ -58,7 +58,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 ```
 
-We will use the following helper functions throughout the lecture:
+We will use the following helper functions throughout the lecture
 
 ```{code-cell} ipython3
 def spectral_density_var1(A, V, ω_grid):
@@ -209,15 +209,17 @@ A_list = [samuelson_transition(c, v) for _, c, v in cases]
 for (label, c, v), A in zip(cases, A_list):
     eig = np.linalg.eigvals(A)
     disc = (c + v)**2 - 4*v
-    print(f"{label}: c={c}, v={v}, discriminant={disc:.2f}, eigenvalues={eig}")
+    print(
+        f"{label}: c={c}, v={v}, discriminant={disc:.2f}, eigenvalues={eig}")
 ```
 
 With weak acceleration ($v=0.1$), the discriminant is positive and the roots are real.
 
 With strong acceleration ($v=0.8$), the discriminant is negative and the roots are complex conjugates that enable oscillatory dynamics.
 
+Now let's see how these different eigenvalue structures affect the impulse responses to a one-time shock in $Y$
+
 ```{code-cell} ipython3
-# impulse responses from a one-time unit shock in Y
 T = 40
 s0 = np.array([1.0, 0.0])
 irfs = []
@@ -274,7 +276,7 @@ for v in v_grid:
         s = A @ s
     axes[1].plot(range(T_irf + 1), irf, lw=2, label=f'$v={v}$')
 
-# Eigenvalue panel with unit circle
+# Visualize the eigenvalue locations and the unit circle
 θ_circle = np.linspace(0, 2*np.pi, 100)
 axes[0].plot(np.cos(θ_circle), np.sin(θ_circle),
                 'k--', lw=0.8, label='unit circle')
@@ -651,7 +653,7 @@ cos_ω = factor * np.cos(θ)
 print(f"Chow's example: r = {r_example}, θ = {θ_deg}°")
 print(f"  cos(ω) = {cos_ω:.3f}")
 print(f"  ω = {np.rad2deg(ω_example):.1f}°")
-print(f"  Peak period = {360/np.rad2deg(ω_example):.1f} (vs deterministic period = {360/θ_deg:.1f})")
+print(f"  Peak period = {360/np.rad2deg(ω_example):.1f}")
 ```
 
 As $r \to 1$, the peak frequency converges to $\theta$.
@@ -710,8 +712,10 @@ c_real, v_real = 0.8, 0.1
 A_real = samuelson_transition(c_real, v_real)
 eig_real = np.linalg.eigvals(A_real)
 
-print(f"Complex case (c={c_complex}, v={v_complex}): eigenvalues = {eig_complex}")
-print(f"Real case (c={c_real}, v={v_real}): eigenvalues = {eig_real}")
+print(
+    f"Complex case (c={c_complex}, v={v_complex}): eigenvalues = {eig_complex}")
+print(
+    f"Real case (c={c_real}, v={v_real}): eigenvalues = {eig_real}")
 
 F_complex = spectral_density_var1(A_complex, V_hs, ω_grid)
 F_real = spectral_density_var1(A_real, V_hs, ω_grid)
@@ -1045,7 +1049,8 @@ def spectral_density_chow(λ, B, W, ω_grid):
         F_star = np.zeros((p, p), dtype=complex)
         for i in range(p):
             for j in range(p):
-                denom = (1 - λ[i] * np.exp(-1j * ω)) * (1 - λ[j] * np.exp(1j * ω))
+                denom = (1 - λ[i] * np.exp(-1j * ω)) \
+                    * (1 - λ[j] * np.exp(1j * ω))
                 F_star[i, j] = W[i, j] / denom
         F[k] = B @ F_star @ B.T
     return F / (2 * np.pi)
@@ -1265,7 +1270,7 @@ These implied leads and lags are broadly consistent with turning-point timing su
 
 ### Building blocks of spectral shape
 
-Each eigenvalue contributes a characteristic spectral shape through the **scalar kernel**
+Each eigenvalue contributes a characteristic spectral shape through the *scalar kernel*
 
 ```{math}
 :label: chow_scalar_kernel
@@ -1299,6 +1304,7 @@ for i, λ_i in enumerate(λ):
         label = f'$\\lambda_{i+1}$ = {λ_i:.4f}' \
         if np.isreal(λ_i) else f'$\\lambda_{i+1}$ = {λ_i:.3f}'
         ax.semilogy(freq, g_i, label=label, lw=2)
+
 ax.set_xlabel(r'frequency $\omega/2\pi$')
 ax.set_ylabel('$g_i(\\omega)$')
 ax.set_xlim([1/18, 0.5])
@@ -1536,7 +1542,8 @@ plt.show()
 
 threshold_idx = np.where(~np.isnan(peak_periods))[0]
 if len(threshold_idx) > 0:
-    print(f"interior peak appears when correlation >= {corr_grid[threshold_idx[0]]:.2f}")
+    print(
+        f"interior peak when correlation >= {corr_grid[threshold_idx[0]]:.2f}")
 ```
 
 The interior peak appears only when the shock correlation exceeds a threshold.
@@ -1587,7 +1594,8 @@ print("\nRecursion method:")
 print(np.real(Γ_recursion[5][:3, :3]).round(10))
 print("\nEigendecomposition method:")
 print(Γ_eigen[5][:3, :3].round(10))
-print("\nMax absolute difference:", np.max(np.abs(np.real(Γ_recursion[5]) - Γ_eigen[5])))
+print("\nMax absolute difference:", 
+        np.max(np.abs(np.real(Γ_recursion[5]) - Γ_eigen[5])))
 ```
 
 Both methods produce essentially identical results, up to numerical precision.

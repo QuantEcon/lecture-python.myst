@@ -74,7 +74,7 @@ quite different sets of restrictions on the data.
 In this lecture we follow {cite:t}`Sargent1989` and study how these 
 alternative measurement schemes affect  empirical implications.
 
-We start with imports and helper functions to be used throughout this lecture
+We start with imports and helper functions to be used throughout this lecture to generate LaTeX output
 
 ```{code-cell} ipython3
 import numpy as np
@@ -203,7 +203,7 @@ Assumption 1 is crucial for the strict form of the accelerator.
 
 Relaxing it to allow serially correlated $\theta_t$ preserves an
 accelerator in a broad sense but loses the sharp geometric-lag
-form of {eq}`accelerator`.
+form of {eq}`mm_accelerator`.
 
 Adding a second shock breaks the one-index structure entirely
 and can generate nontrivial Granger causality even without
@@ -227,7 +227,7 @@ c_t = \left(\frac{1-\beta}{1-\beta L}\right) y_{nt},
 ```
 
 ```{math}
-:label: accelerator
+:label: mm_accelerator
 k_{t+1} - k_t = f^{-1} \left(\frac{1-L}{1-\beta L}\right) y_{nt},
 ```
 
@@ -240,7 +240,7 @@ Equation {eq}`friedman_consumption` is Friedman's consumption
 model: consumption is a geometric distributed lag of income,
 with the decay coefficient $\beta$ equal to the discount factor.
 
-Equation {eq}`accelerator` is the distributed lag accelerator:
+Equation {eq}`mm_accelerator` is the distributed lag accelerator:
 investment is a geometric distributed lag of the first difference
 of income.
 
@@ -746,7 +746,8 @@ def fev_contributions(psi, V, n_horizons=20):
 
 
 psi1 = measured_wold_coeffs(F1, G1, H1, n_terms=40)
-resp1 = np.array([psi1[j] @ linalg.cholesky(V1, lower=True) for j in range(14)])
+resp1 = np.array(
+      [psi1[j] @ linalg.cholesky(V1, lower=True) for j in range(14)])
 decomp1 = fev_contributions(psi1, V1, n_horizons=20)
 ```
 
@@ -829,7 +830,8 @@ shock_titles = [r'\text{A. Innovation in } y_n',
 parts = []
 for i, title in enumerate(shock_titles):
     arr = df_to_latex_array(fev_table(decomp1, i, horizons)).strip('$')
-    parts.append(r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
+    parts.append(
+      r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
 
 display(Latex('$' + r' \quad '.join(parts) + '$'))
 ```
@@ -896,7 +898,8 @@ wold_titles = [r'\text{A. Response to } y_n \text{ innovation}',
 parts = []
 for i, title in enumerate(wold_titles):
     arr = df_to_latex_array(wold_response_table(resp1, i, lags)).strip('$')
-    parts.append(r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
+    parts.append(
+      r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
 
 display(Latex('$' + r' \quad '.join(parts) + '$'))
 ```
@@ -1130,7 +1133,8 @@ just like the true economy
 parts = []
 for i, title in enumerate(shock_titles):
     arr = df_to_latex_array(fev_table(decomp2, i, horizons)).strip('$')
-    parts.append(r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
+    parts.append(
+      r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
 
 display(Latex('$' + r' \quad '.join(parts) + '$'))
 ```
@@ -1280,12 +1284,11 @@ We use the following helper function to plot the true series against either the 
 def plot_true_vs_other(t, true_series, other_series, 
                                   other_label, ylabel=""):
     fig, ax = plt.subplots(figsize=(8, 4))
-    ax.plot(t, true_series, lw=2, color="black", label="true")
-    ax.plot(t, other_series, lw=2, ls="--", 
-                          color="#1f77b4", label=other_label)
-    ax.set_xlabel("time", fontsize=12)
-    ax.set_ylabel(ylabel, fontsize=12)
-    ax.legend(loc="best", fontsize=11, frameon=True, shadow=True)
+    ax.plot(t, true_series, lw=2, label="true")
+    ax.plot(t, other_series, lw=2, ls="--", label=other_label)
+    ax.set_xlabel("time")
+    ax.set_ylabel(ylabel)
+    ax.legend()
     plt.tight_layout()
     plt.show()
 
@@ -1417,13 +1420,13 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4))
 
 ax1.plot(t, sim["c_meas"] + sim["dk_meas"] - sim["y_meas"], lw=2)
 ax1.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
-ax1.set_xlabel("time", fontsize=12)
-ax1.set_ylabel("measured residual", fontsize=12)
+ax1.set_xlabel("time")
+ax1.set_ylabel("measured residual")
 
 ax2.plot(t, sim["c_filt"] + sim["dk_filt"] - sim["y_filt"], lw=2)
 ax2.axhline(0, color='black', lw=0.8, ls='--', alpha=0.5)
-ax2.set_xlabel("time", fontsize=12)
-ax2.set_ylabel("filtered residual", fontsize=12)
+ax2.set_xlabel("time")
+ax2.set_ylabel("filtered residual")
 
 plt.tight_layout()
 plt.show()
