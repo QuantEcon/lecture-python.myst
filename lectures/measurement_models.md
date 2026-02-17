@@ -74,7 +74,7 @@ quite different sets of restrictions on the data.
 In this lecture we follow {cite:t}`Sargent1989` and study how these 
 alternative measurement schemes affect  empirical implications.
 
-We start with imports and helper functions to be used throughout this lecture
+We start with imports and helper functions to be used throughout this lecture to generate LaTeX output
 
 ```{code-cell} ipython3
 import numpy as np
@@ -203,7 +203,7 @@ Assumption 1 is crucial for the strict form of the accelerator.
 
 Relaxing it to allow serially correlated $\theta_t$ preserves an
 accelerator in a broad sense but loses the sharp geometric-lag
-form of {eq}`accelerator`.
+form of {eq}`mm_accelerator`.
 
 Adding a second shock breaks the one-index structure entirely
 and can generate nontrivial Granger causality even without
@@ -227,7 +227,7 @@ c_t = \left(\frac{1-\beta}{1-\beta L}\right) y_{nt},
 ```
 
 ```{math}
-:label: accelerator
+:label: mm_accelerator
 k_{t+1} - k_t = f^{-1} \left(\frac{1-L}{1-\beta L}\right) y_{nt},
 ```
 
@@ -240,7 +240,7 @@ Equation {eq}`friedman_consumption` is Friedman's consumption
 model: consumption is a geometric distributed lag of income,
 with the decay coefficient $\beta$ equal to the discount factor.
 
-Equation {eq}`accelerator` is the distributed lag accelerator:
+Equation {eq}`mm_accelerator` is the distributed lag accelerator:
 investment is a geometric distributed lag of the first difference
 of income.
 
@@ -746,7 +746,8 @@ def fev_contributions(psi, V, n_horizons=20):
 
 
 psi1 = measured_wold_coeffs(F1, G1, H1, n_terms=40)
-resp1 = np.array([psi1[j] @ linalg.cholesky(V1, lower=True) for j in range(14)])
+resp1 = np.array(
+      [psi1[j] @ linalg.cholesky(V1, lower=True) for j in range(14)])
 decomp1 = fev_contributions(psi1, V1, n_horizons=20)
 ```
 
@@ -829,7 +830,8 @@ shock_titles = [r'\text{A. Innovation in } y_n',
 parts = []
 for i, title in enumerate(shock_titles):
     arr = df_to_latex_array(fev_table(decomp1, i, horizons)).strip('$')
-    parts.append(r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
+    parts.append(
+      r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
 
 display(Latex('$' + r' \quad '.join(parts) + '$'))
 ```
@@ -896,7 +898,8 @@ wold_titles = [r'\text{A. Response to } y_n \text{ innovation}',
 parts = []
 for i, title in enumerate(wold_titles):
     arr = df_to_latex_array(wold_response_table(resp1, i, lags)).strip('$')
-    parts.append(r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
+    parts.append(
+      r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
 
 display(Latex('$' + r' \quad '.join(parts) + '$'))
 ```
@@ -1130,7 +1133,8 @@ just like the true economy
 parts = []
 for i, title in enumerate(shock_titles):
     arr = df_to_latex_array(fev_table(decomp2, i, horizons)).strip('$')
-    parts.append(r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
+    parts.append(
+      r'\begin{array}{c} ' + title + r' \\ ' + arr + r' \end{array}')
 
 display(Latex('$' + r' \quad '.join(parts) + '$'))
 ```
