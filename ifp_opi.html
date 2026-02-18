@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>58. The Income Fluctuation Problem II: Optimistic Policy Iteration &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>60. The Income Fluctuation Problem II: Optimistic Policy Iteration &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -83,7 +83,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=4c010e0d" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="59. The Income Fluctuation Problem III: The Endogenous Grid Method" href="ifp_egm.html" />
-    <link rel="prev" title="57. The Income Fluctuation Problem I: Discretization and VFI" href="ifp_discrete.html" />
+    <link rel="next" title="61. The Income Fluctuation Problem III: The Endogenous Grid Method" href="ifp_egm.html" />
+    <link rel="prev" title="59. The Income Fluctuation Problem I: Discretization and VFI" href="ifp_discrete.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -183,13 +183,13 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">58.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-primitives">58.2. Model and Primitives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operators-and-policies">58.3. Operators and Policies</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">58.4. Value Function Iteration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimistic-policy-iteration">58.5. Optimistic Policy Iteration</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timing-comparison">58.6. Timing Comparison</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">58.7. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">60.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-and-primitives">60.2. Model and Primitives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operators-and-policies">60.3. Operators and Policies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">60.4. Value Function Iteration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optimistic-policy-iteration">60.5. Optimistic Policy Iteration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timing-comparison">60.6. Timing Comparison</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">60.7. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -286,7 +286,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="the-income-fluctuation-problem-ii-optimistic-policy-iteration">
-<h1><span class="section-number">58. </span>The Income Fluctuation Problem II: Optimistic Policy Iteration<a class="headerlink" href="#the-income-fluctuation-problem-ii-optimistic-policy-iteration" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">60. </span>The Income Fluctuation Problem II: Optimistic Policy Iteration<a class="headerlink" href="#the-income-fluctuation-problem-ii-optimistic-policy-iteration" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with access to a GPU — although it will also run without one.</p>
@@ -299,7 +299,7 @@ that you can access as follows:</p>
 </ol>
 </div>
 <section id="overview">
-<h2><span class="section-number">58.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">60.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In <a class="reference internal" href="ifp_discrete.html"><span class="doc">The Income Fluctuation Problem I: Discretization and VFI</span></a> we studied the income fluctuation problem and solved it
 using value function iteration (VFI).</p>
 <p>In this lecture we’ll solve the same problem using <strong>optimistic policy
@@ -358,7 +358,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </section>
 <section id="model-and-primitives">
-<h2><span class="section-number">58.2. </span>Model and Primitives<a class="headerlink" href="#model-and-primitives" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">60.2. </span>Model and Primitives<a class="headerlink" href="#model-and-primitives" title="Link to this heading">#</a></h2>
 <p>The model and parameters are the same as in <a class="reference internal" href="ifp_discrete.html"><span class="doc">The Income Fluctuation Problem I: Discretization and VFI</span></a>.</p>
 <p>We repeat the key elements here for convenience.</p>
 <p>The household’s problem is to maximize</p>
@@ -407,7 +407,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </section>
 <section id="operators-and-policies">
-<h2><span class="section-number">58.3. </span>Operators and Policies<a class="headerlink" href="#operators-and-policies" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">60.3. </span>Operators and Policies<a class="headerlink" href="#operators-and-policies" title="Link to this heading">#</a></h2>
 <p>We repeat some functions from <a class="reference internal" href="ifp_discrete.html"><span class="doc">The Income Fluctuation Problem I: Discretization and VFI</span></a>.</p>
 <p>Here is the right hand side of the Bellman equation:</p>
 <div class="cell docutils container">
@@ -532,7 +532,7 @@ policy <span class="math notranslate nohighlight">\(\sigma\)</span> fixed.</p>
 </div>
 </section>
 <section id="value-function-iteration">
-<h2><span class="section-number">58.4. </span>Value Function Iteration<a class="headerlink" href="#value-function-iteration" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">60.4. </span>Value Function Iteration<a class="headerlink" href="#value-function-iteration" title="Link to this heading">#</a></h2>
 <p>For comparison, here’s VFI from <a class="reference internal" href="ifp_discrete.html"><span class="doc">The Income Fluctuation Problem I: Discretization and VFI</span></a>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -561,7 +561,7 @@ policy <span class="math notranslate nohighlight">\(\sigma\)</span> fixed.</p>
 </div>
 </section>
 <section id="optimistic-policy-iteration">
-<h2><span class="section-number">58.5. </span>Optimistic Policy Iteration<a class="headerlink" href="#optimistic-policy-iteration" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">60.5. </span>Optimistic Policy Iteration<a class="headerlink" href="#optimistic-policy-iteration" title="Link to this heading">#</a></h2>
 <p>Now we implement OPI.</p>
 <p>The algorithm alternates between</p>
 <ol class="arabic simple">
@@ -612,7 +612,7 @@ policy <span class="math notranslate nohighlight">\(\sigma\)</span> fixed.</p>
 </div>
 </section>
 <section id="timing-comparison">
-<h2><span class="section-number">58.6. </span>Timing Comparison<a class="headerlink" href="#timing-comparison" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">60.6. </span>Timing Comparison<a class="headerlink" href="#timing-comparison" title="Link to this heading">#</a></h2>
 <p>Let’s create a model and compare the performance of VFI and OPI.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -635,7 +635,7 @@ policy <span class="math notranslate nohighlight">\(\sigma\)</span> fixed.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
-VFI completed in 0.85 seconds.
+VFI completed in 0.82 seconds.
 </pre></div>
 </div>
 </div>
@@ -652,7 +652,7 @@ VFI completed in 0.85 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.09 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.08 seconds.
 </pre></div>
 </div>
 </div>
@@ -746,7 +746,7 @@ OPI completed in 0.53 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Speedup factor: 2.63
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Speedup factor: 2.46
 </pre></div>
 </div>
 </div>
@@ -775,7 +775,7 @@ OPI with m= 25 completed in 0.04 seconds.
 OPI with m= 50 completed in 0.03 seconds.
 OPI with m=100 completed in 0.04 seconds.
 OPI with m=200 completed in 0.06 seconds.
-OPI with m=400 completed in 0.12 seconds.
+OPI with m=400 completed in 0.13 seconds.
 </pre></div>
 </div>
 </div>
@@ -795,7 +795,7 @@ OPI with m=400 completed in 0.12 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9233c448890161419226f4aba6c2dc4bb672ce47ab353acf7c9cbe9c03fb7916.png" src="_images/9233c448890161419226f4aba6c2dc4bb672ce47ab353acf7c9cbe9c03fb7916.png" />
+<img alt="_images/5e230b0490b6f5c9d039ba61346cfefa5825df6725d2de951fa45b33d328954c.png" src="_images/5e230b0490b6f5c9d039ba61346cfefa5825df6725d2de951fa45b33d328954c.png" />
 </div>
 </div>
 <p>Here’s a summary of the results</p>
@@ -806,10 +806,10 @@ time iterating the policy operator.</p></li>
 </ul>
 </section>
 <section id="exercises">
-<h2><span class="section-number">58.7. </span>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">60.7. </span>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="ifp_opi_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 58.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 60.1 </span></p>
 <section id="exercise-content">
 <p>The speed gains achieved by OPI are quite robust to parameter changes.</p>
 <p>Confirm this by experimenting with different parameter values for the income process (<span class="math notranslate nohighlight">\(\rho\)</span> and <span class="math notranslate nohighlight">\(\nu\)</span>).</p>
@@ -866,42 +866,42 @@ time iterating the policy operator.</p></li>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing ρ=0.8, ν=0.05
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.59x
+  VFI: 0.06s, OPI: 0.03s, Speedup: 1.67x
 
 Testing ρ=0.8, ν=0.1
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.82x
-
-Testing ρ=0.8, ν=0.2
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.70x
-
-Testing ρ=0.9, ν=0.05
   VFI: 0.06s, OPI: 0.03s, Speedup: 1.78x
 
+Testing ρ=0.8, ν=0.2
+  VFI: 0.06s, OPI: 0.03s, Speedup: 1.72x
+
+Testing ρ=0.9, ν=0.05
+  VFI: 0.06s, OPI: 0.03s, Speedup: 1.76x
+
 Testing ρ=0.9, ν=0.1
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.69x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.71x
 
 Testing ρ=0.9, ν=0.2
-  VFI: 0.06s, OPI: 0.03s, Speedup: 1.80x
+  VFI: 0.06s, OPI: 0.03s, Speedup: 1.77x
 
 Testing ρ=0.95, ν=0.05
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.65x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.68x
 
 Testing ρ=0.95, ν=0.1
-  VFI: 0.06s, OPI: 0.04s, Speedup: 1.72x
+  VFI: 0.06s, OPI: 0.04s, Speedup: 1.73x
 
 Testing ρ=0.95, ν=0.2
-  VFI: 0.07s, OPI: 0.04s, Speedup: 1.86x
+  VFI: 0.07s, OPI: 0.04s, Speedup: 1.85x
 
 Summary of speedup factors:
-ρ=0.8, ν=0.05: 1.59x
-ρ=0.8, ν=0.1: 1.82x
-ρ=0.8, ν=0.2: 1.70x
-ρ=0.9, ν=0.05: 1.78x
-ρ=0.9, ν=0.1: 1.69x
-ρ=0.9, ν=0.2: 1.80x
-ρ=0.95, ν=0.05: 1.65x
-ρ=0.95, ν=0.1: 1.72x
-ρ=0.95, ν=0.2: 1.86x
+ρ=0.8, ν=0.05: 1.67x
+ρ=0.8, ν=0.1: 1.78x
+ρ=0.8, ν=0.2: 1.72x
+ρ=0.9, ν=0.05: 1.76x
+ρ=0.9, ν=0.1: 1.71x
+ρ=0.9, ν=0.2: 1.77x
+ρ=0.95, ν=0.05: 1.68x
+ρ=0.95, ν=0.1: 1.73x
+ρ=0.95, ν=0.2: 1.85x
 </pre></div>
 </div>
 </div>
@@ -1189,23 +1189,33 @@ Summary of speedup factors:
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="chow_business_cycles.html">
+   38. The Acceleration Principle and the Nature of Business Cycles
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   38. Kesten Processes and Firm Dynamics
+   39. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   39. Wealth Distribution Dynamics
+   40. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   40. A First Look at the Kalman Filter
+   41. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   41. Another Look at the Kalman Filter
+   42. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="measurement_models.html">
+   43. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1217,47 +1227,47 @@ Summary of speedup factors:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   42. Job Search I: The McCall Search Model
+   44. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   43. Job Search II: Search and Separation
+   45. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   44. Job Search III: Search with Separation and Markov Wages
+   46. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   45. Job Search IV: Fitted Value Function Iteration
+   47. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   46. Job Search V: Persistent and Transitory Wage Shocks
+   48. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   47. Job Search VI: Modeling Career Choice
+   49. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   48. Job Search VII: On-the-Job Search
+   50. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   49. Job Search VIII: Search with Learning
+   51. Job Search VIII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   50. Job Search IX: Search with Q-Learning
+   52. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1269,32 +1279,32 @@ Summary of speedup factors:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   51. Optimal Savings I: Cake Eating
+   53. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   52. Optimal Savings II: Numerical Cake Eating
+   54. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   53. Optimal Savings III: Stochastic Returns
+   55. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   54. Optimal Savings IV: Time Iteration
+   56. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   55. Optimal Savings V: The Endogenous Grid Method
+   57. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   56. Optimal Savings VI: EGM with JAX
+   58. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1306,27 +1316,27 @@ Summary of speedup factors:
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   57. The Income Fluctuation Problem I: Discretization and VFI
+   59. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   58. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   60. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   59. The Income Fluctuation Problem III: The Endogenous Grid Method
+   61. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   60. The Income Fluctuation Problem IV: Transient Income Shocks
+   62. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   61. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   63. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1338,32 +1348,32 @@ Summary of speedup factors:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   64. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   65. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   66. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   67. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   68. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   69. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1375,27 +1385,27 @@ Summary of speedup factors:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   68. Cass-Koopmans Model
+   70. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   69. Cass-Koopmans Competitive Equilibrium
+   71. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   70. Cass-Koopmans Model with Distorting Taxes
+   72. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   71. Two-Country Model with Distorting Taxes
+   73. Two-Country Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   72. Transitions in an Overlapping Generations Model
+   74. Transitions in an Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -1407,42 +1417,42 @@ Summary of speedup factors:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   73. A Lake Model of Employment and Unemployment
+   75. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   74. Lake Model with an Endogenous Job Finding Rate
+   76. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   75. Rational Expectations Equilibrium
+   77. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   76. Stability in Linear Rational Expectations Models
+   78. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   77. Markov Perfect Equilibrium
+   79. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   78. Uncertainty Traps
+   80. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   79. The Aiyagari Model
+   81. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   80. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+   82. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -1454,22 +1464,27 @@ Summary of speedup factors:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   81. Asset Pricing: Finite State Models
+   83. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="doubts_or_variability.html">
+   84. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   82. Competitive Equilibria with Arrow Securities
+   85. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   83. Heterogeneous Beliefs and Bubbles
+   86. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   84. Speculative Behavior with Bayesian Learning
+   87. Speculative Behavior with Bayesian Learning
   </a>
  </li>
 </ul>
@@ -1481,17 +1496,17 @@ Summary of speedup factors:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   85. Pandas for Panel Data
+   88. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   86. Linear Regression in Python
+   89. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   87. Maximum Likelihood Estimation
+   90. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1503,12 +1518,12 @@ Summary of speedup factors:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   88. First-Price and Second-Price Auctions
+   91. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   89. Multiple Good Allocation Mechanisms
+   92. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1520,17 +1535,17 @@ Summary of speedup factors:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   90. Troubleshooting
+   93. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   91. References
+   94. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   92. Execution Statistics
+   95. Execution Statistics
   </a>
  </li>
 </ul>

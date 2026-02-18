@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>78. Uncertainty Traps &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>80. Uncertainty Traps &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -83,7 +83,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=4c010e0d" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="79. The Aiyagari Model" href="aiyagari.html" />
-    <link rel="prev" title="77. Markov Perfect Equilibrium" href="markov_perf.html" />
+    <link rel="next" title="81. The Aiyagari Model" href="aiyagari.html" />
+    <link rel="prev" title="79. Markov Perfect Equilibrium" href="markov_perf.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -183,17 +183,17 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">78.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">78.2. The Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamentals">78.2.1. Fundamentals</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output">78.2.2. Output</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#information-and-beliefs">78.2.3. Information and Beliefs</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#participation">78.2.4. Participation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">80.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">80.2. The Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fundamentals">80.2.1. Fundamentals</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output">80.2.2. Output</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#information-and-beliefs">80.2.3. Information and Beliefs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#participation">80.2.4. Participation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">78.3. Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">78.4. Results</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">78.5. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">80.3. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">80.4. Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">80.5. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -353,7 +353,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">78. </span>Uncertainty Traps</a><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">80. </span>Uncertainty Traps</a><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -369,8 +369,8 @@
 </ul>
 </nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">78.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>In this lecture, we study a simplified version of an uncertainty traps model of Fajgelbaum, Schaal and Taschereau-Dumouchel <span id="id2">[<a class="reference internal" href="zreferences.html#id151" title="Pablo Fajgelbaum, Edouard Schaal, and Mathieu Taschereau-Dumouchel. Uncertainty traps. Technical Report, National Bureau of Economic Research, 2015.">Fajgelbaum <em>et al.</em>, 2015</a>]</span>.</p>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">80.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>In this lecture, we study a simplified version of an uncertainty traps model of Fajgelbaum, Schaal and Taschereau-Dumouchel <span id="id2">[<a class="reference internal" href="zreferences.html#id158" title="Pablo Fajgelbaum, Edouard Schaal, and Mathieu Taschereau-Dumouchel. Uncertainty traps. Technical Report, National Bureau of Economic Research, 2015.">Fajgelbaum <em>et al.</em>, 2015</a>]</span>.</p>
 <p>The model features self-reinforcing uncertainty that has big impacts on economic activity.</p>
 <p>In the model,</p>
 <ul class="simple">
@@ -400,11 +400,11 @@
 </div>
 </section>
 <section id="the-model">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">78.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
-<p>The original model described in <span id="id3">[<a class="reference internal" href="zreferences.html#id151" title="Pablo Fajgelbaum, Edouard Schaal, and Mathieu Taschereau-Dumouchel. Uncertainty traps. Technical Report, National Bureau of Economic Research, 2015.">Fajgelbaum <em>et al.</em>, 2015</a>]</span> has many interesting moving parts.</p>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">80.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
+<p>The original model described in <span id="id3">[<a class="reference internal" href="zreferences.html#id158" title="Pablo Fajgelbaum, Edouard Schaal, and Mathieu Taschereau-Dumouchel. Uncertainty traps. Technical Report, National Bureau of Economic Research, 2015.">Fajgelbaum <em>et al.</em>, 2015</a>]</span> has many interesting moving parts.</p>
 <p>Here we examine a simplified version that nonetheless captures many of the key ideas.</p>
 <section id="fundamentals">
-<h3><span class="section-number">78.2.1. </span>Fundamentals<a class="headerlink" href="#fundamentals" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">80.2.1. </span>Fundamentals<a class="headerlink" href="#fundamentals" title="Link to this heading">#</a></h3>
 <p>The evolution of the fundamental process <span class="math notranslate nohighlight">\(\{\theta_t\}\)</span> is given by</p>
 <div class="math notranslate nohighlight">
 \[
@@ -418,12 +418,12 @@
 <p>The random variable <span class="math notranslate nohighlight">\(\theta_t\)</span> is not observable at any time.</p>
 </section>
 <section id="output">
-<h3><span class="section-number">78.2.2. </span>Output<a class="headerlink" href="#output" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">80.2.2. </span>Output<a class="headerlink" href="#output" title="Link to this heading">#</a></h3>
 <p>There is a total <span class="math notranslate nohighlight">\(\bar M\)</span> of risk-averse entrepreneurs.</p>
 <p>Output of the <span class="math notranslate nohighlight">\(m\)</span>-th entrepreneur, conditional on being active in the market at
 time <span class="math notranslate nohighlight">\(t\)</span>, is equal to</p>
 <div class="math notranslate nohighlight" id="equation-xgt">
-<span class="eqno">(78.1)<a class="headerlink" href="#equation-xgt" title="Link to this equation">#</a></span>\[x_m = \theta + \epsilon_m
+<span class="eqno">(80.1)<a class="headerlink" href="#equation-xgt" title="Link to this equation">#</a></span>\[x_m = \theta + \epsilon_m
 \quad \text{where} \quad
 \epsilon_m \sim N \left(0, \gamma_x^{-1} \right)\]</div>
 <p>Here the time subscript has been dropped to simplify notation.</p>
@@ -432,7 +432,7 @@ time <span class="math notranslate nohighlight">\(t\)</span>, is equal to</p>
 <p>Output shocks are independent across time and firms.</p>
 </section>
 <section id="information-and-beliefs">
-<h3><span class="section-number">78.2.3. </span>Information and Beliefs<a class="headerlink" href="#information-and-beliefs" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">80.2.3. </span>Information and Beliefs<a class="headerlink" href="#information-and-beliefs" title="Link to this heading">#</a></h3>
 <p>All entrepreneurs start with identical beliefs about <span class="math notranslate nohighlight">\(\theta_0\)</span>.</p>
 <p>Signals are publicly observable and hence all agents have identical beliefs always.</p>
 <p>Dropping time subscripts, beliefs for current <span class="math notranslate nohighlight">\(\theta\)</span> are represented by the normal
@@ -447,15 +447,15 @@ distribution <span class="math notranslate nohighlight">\(N(\mu, \gamma^{-1})\)<
 </ul>
 <p>With this notation and primes for next period values, we can write the updating of the mean and precision via</p>
 <div class="math notranslate nohighlight" id="equation-update-mean">
-<span class="eqno">(78.2)<a class="headerlink" href="#equation-update-mean" title="Link to this equation">#</a></span>\[\mu' = \rho \frac{\gamma \mu + M \gamma_x X}{\gamma + M \gamma_x}\]</div>
+<span class="eqno">(80.2)<a class="headerlink" href="#equation-update-mean" title="Link to this equation">#</a></span>\[\mu' = \rho \frac{\gamma \mu + M \gamma_x X}{\gamma + M \gamma_x}\]</div>
 <div class="math notranslate nohighlight" id="equation-update-prec">
-<span class="eqno">(78.3)<a class="headerlink" href="#equation-update-prec" title="Link to this equation">#</a></span>\[\gamma' =
+<span class="eqno">(80.3)<a class="headerlink" href="#equation-update-prec" title="Link to this equation">#</a></span>\[\gamma' =
     \left(
     \frac{\rho^2}{\gamma + M \gamma_x} + \sigma_\theta^2
     \right)^{-1}\]</div>
 <p>These are standard Kalman filtering results applied to the current setting.</p>
-<p>Exercise 1 provides more details on how <a class="reference internal" href="#equation-update-mean">(78.2)</a> and <a class="reference internal" href="#equation-update-prec">(78.3)</a> are derived and then asks you to fill in remaining steps.</p>
-<p>The next figure plots the law of motion for the precision in <a class="reference internal" href="#equation-update-prec">(78.3)</a>
+<p>Exercise 1 provides more details on how <a class="reference internal" href="#equation-update-mean">(80.2)</a> and <a class="reference internal" href="#equation-update-prec">(80.3)</a> are derived and then asks you to fill in remaining steps.</p>
+<p>The next figure plots the law of motion for the precision in <a class="reference internal" href="#equation-update-prec">(80.3)</a>
 as a 45 degree diagram, with one curve for each <span class="math notranslate nohighlight">\(M \in \{0, \ldots, 6\}\)</span>.</p>
 <p>The other parameter values are <span class="math notranslate nohighlight">\(\rho = 0.99, \gamma_x = 0.5, \sigma_\theta =0.5\)</span></p>
 <figure class="align-default">
@@ -472,22 +472,22 @@ fundamental, and hence more precision in steady state</p></li>
 <p>In practice, as we’ll see, the number of active firms fluctuates stochastically.</p>
 </section>
 <section id="participation">
-<h3><span class="section-number">78.2.4. </span>Participation<a class="headerlink" href="#participation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">80.2.4. </span>Participation<a class="headerlink" href="#participation" title="Link to this heading">#</a></h3>
 <p>Omitting time subscripts once more, entrepreneurs enter the market in the current period if</p>
 <div class="math notranslate nohighlight" id="equation-pref1">
-<span class="eqno">(78.4)<a class="headerlink" href="#equation-pref1" title="Link to this equation">#</a></span>\[\mathbb E [ u(x_m - F_m) ] &gt; c\]</div>
+<span class="eqno">(80.4)<a class="headerlink" href="#equation-pref1" title="Link to this equation">#</a></span>\[\mathbb E [ u(x_m - F_m) ] &gt; c\]</div>
 <p>Here</p>
 <ul class="simple">
-<li><p>the mathematical expectation of <span class="math notranslate nohighlight">\(x_m\)</span> is based on <a class="reference internal" href="#equation-xgt">(78.1)</a> and beliefs <span class="math notranslate nohighlight">\(N(\mu, \gamma^{-1})\)</span> for <span class="math notranslate nohighlight">\(\theta\)</span></p></li>
+<li><p>the mathematical expectation of <span class="math notranslate nohighlight">\(x_m\)</span> is based on <a class="reference internal" href="#equation-xgt">(80.1)</a> and beliefs <span class="math notranslate nohighlight">\(N(\mu, \gamma^{-1})\)</span> for <span class="math notranslate nohighlight">\(\theta\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(F_m\)</span> is a stochastic but pre-visible fixed cost, independent across time and firms</p></li>
 <li><p><span class="math notranslate nohighlight">\(c\)</span> is a constant reflecting opportunity costs</p></li>
 </ul>
-<p>The statement that <span class="math notranslate nohighlight">\(F_m\)</span> is pre-visible means that it is realized at the start of the period and treated as a constant in <a class="reference internal" href="#equation-pref1">(78.4)</a>.</p>
+<p>The statement that <span class="math notranslate nohighlight">\(F_m\)</span> is pre-visible means that it is realized at the start of the period and treated as a constant in <a class="reference internal" href="#equation-pref1">(80.4)</a>.</p>
 <p>The utility function has the constant absolute risk aversion form</p>
 <div class="math notranslate nohighlight" id="equation-pref2">
-<span class="eqno">(78.5)<a class="headerlink" href="#equation-pref2" title="Link to this equation">#</a></span>\[u(x) = \frac{1}{a} \left(1 - \exp(-a x) \right)\]</div>
+<span class="eqno">(80.5)<a class="headerlink" href="#equation-pref2" title="Link to this equation">#</a></span>\[u(x) = \frac{1}{a} \left(1 - \exp(-a x) \right)\]</div>
 <p>where <span class="math notranslate nohighlight">\(a\)</span> is a positive parameter.</p>
-<p>Combining <a class="reference internal" href="#equation-pref1">(78.4)</a> and <a class="reference internal" href="#equation-pref2">(78.5)</a>, entrepreneur <span class="math notranslate nohighlight">\(m\)</span> participates in the market (or is said to be active) when</p>
+<p>Combining <a class="reference internal" href="#equation-pref1">(80.4)</a> and <a class="reference internal" href="#equation-pref2">(80.5)</a>, entrepreneur <span class="math notranslate nohighlight">\(m\)</span> participates in the market (or is said to be active) when</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{1}{a}
@@ -500,7 +500,7 @@ fundamental, and hence more precision in steady state</p></li>
 \]</div>
 <p>Using standard formulas for expectations of <a class="reference external" href="https://en.wikipedia.org/wiki/Log-normal_distribution">lognormal</a> random variables, this is equivalent to the condition</p>
 <div class="math notranslate nohighlight" id="equation-firm-test">
-<span class="eqno">(78.6)<a class="headerlink" href="#equation-firm-test" title="Link to this equation">#</a></span>\[\psi(\mu, \gamma, F_m) :=
+<span class="eqno">(80.6)<a class="headerlink" href="#equation-firm-test" title="Link to this equation">#</a></span>\[\psi(\mu, \gamma, F_m) :=
 \frac{1}{a}
     \left(
         1 - \exp \left(
@@ -511,7 +511,7 @@ fundamental, and hence more precision in steady state</p></li>
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">78.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">80.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>We want to simulate this economy.</p>
 <p>As a first step, let’s put together a class that bundles</p>
 <ul class="simple">
@@ -521,7 +521,7 @@ two belief parameters <span class="math notranslate nohighlight">\(\mu\)</span> 
 </ul>
 <p>The updating methods follow the laws of motion for <span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\gamma\)</span> given above.</p>
 <p>The method to evaluate the number of active firms generates <span class="math notranslate nohighlight">\(F_1,
-\ldots, F_{\bar M}\)</span> and tests condition <a class="reference internal" href="#equation-firm-test">(78.6)</a> for each firm.</p>
+\ldots, F_{\bar M}\)</span> and tests condition <a class="reference internal" href="#equation-firm-test">(80.6)</a> for each firm.</p>
 <p>The <strong>init</strong> method encodes as default values the parameters we’ll use in the simulations below</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -591,7 +591,7 @@ two belief parameters <span class="math notranslate nohighlight">\(\mu\)</span> 
 <p>In the results below we use this code to simulate time series for the major variables.</p>
 </section>
 <section id="results">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">78.4. </span>Results</a><a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">80.4. </span>Results</a><a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
 <p>Let’s look first at the dynamics of <span class="math notranslate nohighlight">\(\mu\)</span>, which the agents use to track <span class="math notranslate nohighlight">\(\theta\)</span></p>
 <figure class="align-default">
 <img alt="_images/uncertainty_traps_mu.png" src="_images/uncertainty_traps_mu.png" />
@@ -614,13 +614,13 @@ at once, for a given set of shocks</p>
 <p>Thus, the model gives us a <strong>propagation mechanism</strong> that maps bad random draws into long downturns in economic activity.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">78.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">80.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="uncertainty_traps_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 78.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 80.1 </span></p>
 <section id="exercise-content">
-<p>Fill in the details behind <a class="reference internal" href="#equation-update-mean">(78.2)</a> and <a class="reference internal" href="#equation-update-prec">(78.3)</a> based on
-the following standard result (see, e.g., p. 24 of <span id="id4">[<a class="reference internal" href="zreferences.html#id152" title="G Alastair Young and Richard L Smith. Essentials of statistical inference. Cambridge University Press, 2005.">Young and Smith, 2005</a>]</span>).</p>
+<p>Fill in the details behind <a class="reference internal" href="#equation-update-mean">(80.2)</a> and <a class="reference internal" href="#equation-update-prec">(80.3)</a> based on
+the following standard result (see, e.g., p. 24 of <span id="id4">[<a class="reference internal" href="zreferences.html#id159" title="G Alastair Young and Richard L Smith. Essentials of statistical inference. Cambridge University Press, 2005.">Young and Smith, 2005</a>]</span>).</p>
 <p><strong>Fact</strong> Let <span class="math notranslate nohighlight">\(\mathbf x = (x_1, \ldots, x_M)\)</span> be a vector of IID draws
 from common distribution <span class="math notranslate nohighlight">\(N(\theta, 1/\gamma_x)\)</span>
 and let <span class="math notranslate nohighlight">\(\bar x\)</span> be the sample mean.  If <span class="math notranslate nohighlight">\(\gamma_x\)</span>
@@ -667,7 +667,7 @@ expressions for <span class="math notranslate nohighlight">\(\mu'\)</span> and <
 </div>
 <div class="exercise admonition" id="uncertainty_traps_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 78.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 80.2 </span></p>
 <section id="exercise-content">
 <p>Modulo randomness, replicate the simulation figures shown above.</p>
 <ul class="simple">
@@ -771,7 +771,7 @@ simulations</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/197c3a319ec089a9461c3bbaf3705e594a85747c51464e1c4c977dc2817a5d85.png" src="_images/197c3a319ec089a9461c3bbaf3705e594a85747c51464e1c4c977dc2817a5d85.png" />
+<img alt="_images/7a68cd18dd3064e24c9455bb38ce7f221a3aec43c188d31132666f91f4cda6a2.png" src="_images/7a68cd18dd3064e24c9455bb38ce7f221a3aec43c188d31132666f91f4cda6a2.png" />
 </div>
 </div>
 <p>Now let’s plot the whole thing together</p>
@@ -801,7 +801,7 @@ simulations</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/442a9873c1aaecad724209981e03baea5a189f5810120426b36e02f2c307b76d.png" src="_images/442a9873c1aaecad724209981e03baea5a189f5810120426b36e02f2c307b76d.png" />
+<img alt="_images/7b297b986c72fe2fa4daf95a7ca60068aaafd74e556813083e0c94ac83baf0ef.png" src="_images/7b297b986c72fe2fa4daf95a7ca60068aaafd74e556813083e0c94ac83baf0ef.png" />
 </div>
 </div>
 <p>If you run the code above you’ll get different plots, of course.</p>
@@ -1093,23 +1093,33 @@ us outside the world of the standard Kalman filter)</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="chow_business_cycles.html">
+   38. The Acceleration Principle and the Nature of Business Cycles
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   38. Kesten Processes and Firm Dynamics
+   39. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   39. Wealth Distribution Dynamics
+   40. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   40. A First Look at the Kalman Filter
+   41. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   41. Another Look at the Kalman Filter
+   42. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="measurement_models.html">
+   43. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1121,47 +1131,47 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   42. Job Search I: The McCall Search Model
+   44. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   43. Job Search II: Search and Separation
+   45. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   44. Job Search III: Search with Separation and Markov Wages
+   46. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   45. Job Search IV: Fitted Value Function Iteration
+   47. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   46. Job Search V: Persistent and Transitory Wage Shocks
+   48. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   47. Job Search VI: Modeling Career Choice
+   49. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   48. Job Search VII: On-the-Job Search
+   50. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   49. Job Search VIII: Search with Learning
+   51. Job Search VIII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   50. Job Search IX: Search with Q-Learning
+   52. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1173,32 +1183,32 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   51. Optimal Savings I: Cake Eating
+   53. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   52. Optimal Savings II: Numerical Cake Eating
+   54. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   53. Optimal Savings III: Stochastic Returns
+   55. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   54. Optimal Savings IV: Time Iteration
+   56. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   55. Optimal Savings V: The Endogenous Grid Method
+   57. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   56. Optimal Savings VI: EGM with JAX
+   58. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1210,27 +1220,27 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   57. The Income Fluctuation Problem I: Discretization and VFI
+   59. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   58. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   60. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   59. The Income Fluctuation Problem III: The Endogenous Grid Method
+   61. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   60. The Income Fluctuation Problem IV: Transient Income Shocks
+   62. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   61. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   63. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1242,32 +1252,32 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   64. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   65. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   66. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   67. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   68. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   69. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1279,27 +1289,27 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   68. Cass-Koopmans Model
+   70. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   69. Cass-Koopmans Competitive Equilibrium
+   71. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   70. Cass-Koopmans Model with Distorting Taxes
+   72. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   71. Two-Country Model with Distorting Taxes
+   73. Two-Country Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   72. Transitions in an Overlapping Generations Model
+   74. Transitions in an Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -1311,42 +1321,42 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   73. A Lake Model of Employment and Unemployment
+   75. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   74. Lake Model with an Endogenous Job Finding Rate
+   76. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   75. Rational Expectations Equilibrium
+   77. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   76. Stability in Linear Rational Expectations Models
+   78. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   77. Markov Perfect Equilibrium
+   79. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   78. Uncertainty Traps
+   80. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   79. The Aiyagari Model
+   81. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   80. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+   82. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -1358,22 +1368,27 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   81. Asset Pricing: Finite State Models
+   83. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="doubts_or_variability.html">
+   84. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   82. Competitive Equilibria with Arrow Securities
+   85. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   83. Heterogeneous Beliefs and Bubbles
+   86. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   84. Speculative Behavior with Bayesian Learning
+   87. Speculative Behavior with Bayesian Learning
   </a>
  </li>
 </ul>
@@ -1385,17 +1400,17 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   85. Pandas for Panel Data
+   88. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   86. Linear Regression in Python
+   89. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   87. Maximum Likelihood Estimation
+   90. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1407,12 +1422,12 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   88. First-Price and Second-Price Auctions
+   91. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   89. Multiple Good Allocation Mechanisms
+   92. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1424,17 +1439,17 @@ us outside the world of the standard Kalman filter)</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   90. Troubleshooting
+   93. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   91. References
+   94. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   92. Execution Statistics
+   95. Execution Statistics
   </a>
  </li>
 </ul>

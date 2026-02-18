@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>86. Linear Regression in Python &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>89. Linear Regression in Python &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -83,7 +83,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=4c010e0d" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="87. Maximum Likelihood Estimation" href="mle.html" />
-    <link rel="prev" title="85. Pandas for Panel Data" href="pandas_panel.html" />
+    <link rel="next" title="90. Maximum Likelihood Estimation" href="mle.html" />
+    <link rel="prev" title="88. Pandas for Panel Data" href="pandas_panel.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -183,15 +183,15 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">86.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">86.1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">89.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">89.1.1. Prerequisites</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-linear-regression">86.2. Simple Linear Regression</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-the-linear-regression-model">86.3. Extending the Linear Regression Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#endogeneity">86.4. Endogeneity</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">86.5. Summary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">86.6. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-linear-regression">89.2. Simple Linear Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-the-linear-regression-model">89.3. Extending the Linear Regression Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#endogeneity">89.4. Endogeneity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">89.5. Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">89.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -351,7 +351,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="linear-regression-in-python">
-<h1><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">86. </span>Linear Regression in Python</a><a class="headerlink" href="#linear-regression-in-python" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">89. </span>Linear Regression in Python</a><a class="headerlink" href="#linear-regression-in-python" title="Link to this heading">#</a></h1>
 <nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -404,7 +404,7 @@ Requirement already satisfied: patsy&gt;=0.5.6 in /home/runner/miniconda3/envs/q
 Requirement already satisfied: packaging&gt;=21.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from statsmodels&gt;=0.13.0-&gt;linearmodels) (25.0)
 Downloading linearmodels-7.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.5 MB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">13.5 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">15.2 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
 ?25hDownloading formulaic-1.2.1-py3-none-any.whl (117 kB)
 Downloading interface_meta-1.3.0-py3-none-any.whl (14 kB)
 Downloading pyhdfe-0.2.0-py3-none-any.whl (19 kB)
@@ -421,7 +421,7 @@ Successfully installed formulaic-1.2.1 interface-meta-1.3.0 linearmodels-7.0 pyh
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">86.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">89.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>Linear regression is a standard tool for analyzing the relationship between two or more variables.</p>
 <p>In this lecture, we’ll use the Python package <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> to estimate, interpret, and visualize linear regression models.</p>
 <p>Along the way, we’ll discuss a variety of topics, including</p>
@@ -431,7 +431,7 @@ Successfully installed formulaic-1.2.1 interface-meta-1.3.0 linearmodels-7.0 pyh
 <li><p>endogeneity and omitted variable bias</p></li>
 <li><p>two-stage least squares</p></li>
 </ul>
-<p>As an example, we will replicate results from Acemoglu, Johnson and Robinson’s seminal paper <span id="id1">[<a class="reference internal" href="zreferences.html#id110" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span>.</p>
+<p>As an example, we will replicate results from Acemoglu, Johnson and Robinson’s seminal paper <span id="id1">[<a class="reference internal" href="zreferences.html#id113" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span>.</p>
 <ul class="simple">
 <li><p>You can download a copy <a class="reference external" href="https://economics.mit.edu/research/publications/colonial-origins-comparative-development-empirical-investigation">here</a>.</p></li>
 </ul>
@@ -454,15 +454,15 @@ Successfully installed formulaic-1.2.1 interface-meta-1.3.0 linearmodels-7.0 pyh
 </div>
 </div>
 <section id="prerequisites">
-<h3><span class="section-number">86.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">89.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h3>
 <p>This lecture assumes you are familiar with basic econometrics.</p>
 <p>For an introductory text covering these topics, see, for example,
-<span id="id2">[<a class="reference internal" href="zreferences.html#id109" title="Jeffrey M Wooldridge. Introductory econometrics: A modern approach. Nelson Education, 2015.">Wooldridge, 2015</a>]</span>.</p>
+<span id="id2">[<a class="reference internal" href="zreferences.html#id112" title="Jeffrey M Wooldridge. Introductory econometrics: A modern approach. Nelson Education, 2015.">Wooldridge, 2015</a>]</span>.</p>
 </section>
 </section>
 <section id="simple-linear-regression">
-<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">86.2. </span>Simple Linear Regression</a><a class="headerlink" href="#simple-linear-regression" title="Link to this heading">#</a></h2>
-<p><span id="id3">[<a class="reference internal" href="zreferences.html#id110" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> wish to determine whether or not differences in institutions can help to explain observed economic outcomes.</p>
+<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">89.2. </span>Simple Linear Regression</a><a class="headerlink" href="#simple-linear-regression" title="Link to this heading">#</a></h2>
+<p><span id="id3">[<a class="reference internal" href="zreferences.html#id113" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> wish to determine whether or not differences in institutions can help to explain observed economic outcomes.</p>
 <p>How do we measure <em>institutional differences</em> and <em>economic outcomes</em>?</p>
 <p>In this paper,</p>
 <ul class="simple">
@@ -634,7 +634,7 @@ capita</p></li>
 the linear trend due to factors not included in the model)</p></li>
 </ul>
 <p>Visually, this linear model involves choosing a straight line that best
-fits the data, as in the following plot (Figure 2 in <span id="id4">[<a class="reference internal" href="zreferences.html#id110" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span>)</p>
+fits the data, as in the following plot (Figure 2 in <span id="id4">[<a class="reference internal" href="zreferences.html#id113" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span>)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dropping NA&#39;s is required to use numpy&#39;s polyfit</span>
@@ -743,8 +743,8 @@ coefficients differ slightly.</p>
 Dep. Variable:               logpgp95   R-squared:                       0.611
 Model:                            OLS   Adj. R-squared:                  0.608
 Method:                 Least Squares   F-statistic:                     171.4
-Date:                Mon, 09 Feb 2026   Prob (F-statistic):           4.16e-24
-Time:                        04:55:19   Log-Likelihood:                -119.71
+Date:                Mon, 16 Feb 2026   Prob (F-statistic):           4.16e-24
+Time:                        04:54:56   Log-Likelihood:                -119.71
 No. Observations:                 111   AIC:                             243.4
 Df Residuals:                     109   BIC:                             248.8
 Df Model:                           1                                         
@@ -873,13 +873,13 @@ comparison purposes</p>
 </div>
 </section>
 <section id="extending-the-linear-regression-model">
-<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">86.3. </span>Extending the Linear Regression Model</a><a class="headerlink" href="#extending-the-linear-regression-model" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">89.3. </span>Extending the Linear Regression Model</a><a class="headerlink" href="#extending-the-linear-regression-model" title="Link to this heading">#</a></h2>
 <p>So far we have only accounted for institutions affecting economic
 performance - almost certainly there are numerous other factors
 affecting GDP that are not included in our model.</p>
 <p>Leaving out variables that affect <span class="math notranslate nohighlight">\(logpgp95_i\)</span> will result in <strong>omitted variable bias</strong>, yielding biased and inconsistent parameter estimates.</p>
 <p>We can extend our bivariate regression model to a <strong>multivariate regression model</strong> by adding in other factors that may affect <span class="math notranslate nohighlight">\(logpgp95_i\)</span>.</p>
-<p><span id="id5">[<a class="reference internal" href="zreferences.html#id110" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> consider other factors such as:</p>
+<p><span id="id5">[<a class="reference internal" href="zreferences.html#id113" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> consider other factors such as:</p>
 <ul class="simple">
 <li><p>the effect of climate on economic outcomes; latitude is used to proxy
 this</p></li>
@@ -966,8 +966,8 @@ Standard errors in parentheses.
 </div>
 </section>
 <section id="endogeneity">
-<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">86.4. </span>Endogeneity</a><a class="headerlink" href="#endogeneity" title="Link to this heading">#</a></h2>
-<p>As <span id="id6">[<a class="reference internal" href="zreferences.html#id110" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> discuss, the OLS models likely suffer from
+<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">89.4. </span>Endogeneity</a><a class="headerlink" href="#endogeneity" title="Link to this heading">#</a></h2>
+<p>As <span id="id6">[<a class="reference internal" href="zreferences.html#id113" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> discuss, the OLS models likely suffer from
 <strong>endogeneity</strong> issues, resulting in biased and inconsistent model
 estimates.</p>
 <p>Namely, there is likely a two-way relationship between institutions and
@@ -992,13 +992,13 @@ the dependent variable, otherwise it would be correlated with
 </ol>
 <p>The new set of regressors is called an <strong>instrument</strong>, which aims to
 remove endogeneity in our proxy of institutional differences.</p>
-<p>The main contribution of <span id="id7">[<a class="reference internal" href="zreferences.html#id110" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> is the use of settler mortality
+<p>The main contribution of <span id="id7">[<a class="reference internal" href="zreferences.html#id113" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> is the use of settler mortality
 rates to instrument for institutional differences.</p>
 <p>They hypothesize that higher mortality rates of colonizers led to the
 establishment of institutions that were more extractive in nature (less
 protection against expropriation), and these institutions still persist
 today.</p>
-<p>Using a scatterplot (Figure 3 in <span id="id8">[<a class="reference internal" href="zreferences.html#id110" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span>), we can see protection
+<p>Using a scatterplot (Figure 3 in <span id="id8">[<a class="reference internal" href="zreferences.html#id113" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span>), we can see protection
 against expropriation is negatively correlated with settler mortality
 rates, coinciding with the authors’ hypothesis and satisfying the first
 condition of a valid instrument.</p>
@@ -1039,7 +1039,7 @@ condition of a valid instrument.</p>
 </div>
 <p>The second condition may not be satisfied if settler mortality rates in the 17th to 19th centuries have a direct effect on current GDP (in addition to their indirect effect through institutions).</p>
 <p>For example, settler mortality rates may be related to the current disease environment in a country, which could affect current economic performance.</p>
-<p><span id="id9">[<a class="reference internal" href="zreferences.html#id110" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> argue this is unlikely because:</p>
+<p><span id="id9">[<a class="reference internal" href="zreferences.html#id113" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> argue this is unlikely because:</p>
 <ul class="simple">
 <li><p>The majority of settler deaths were due to malaria and yellow fever
 and had a limited effect on local people.</p></li>
@@ -1087,8 +1087,8 @@ used for estimation)</p>
 Dep. Variable:                 avexpr   R-squared:                       0.270
 Model:                            OLS   Adj. R-squared:                  0.258
 Method:                 Least Squares   F-statistic:                     22.95
-Date:                Mon, 09 Feb 2026   Prob (F-statistic):           1.08e-05
-Time:                        04:55:21   Log-Likelihood:                -104.83
+Date:                Mon, 16 Feb 2026   Prob (F-statistic):           1.08e-05
+Time:                        04:54:57   Log-Likelihood:                -104.83
 No. Observations:                  64   AIC:                             213.7
 Df Residuals:                      62   BIC:                             218.0
 Df Model:                           1                                         
@@ -1137,8 +1137,8 @@ predicted values <span class="math notranslate nohighlight">\(\widehat{avexpr}_i
 Dep. Variable:               logpgp95   R-squared:                       0.477
 Model:                            OLS   Adj. R-squared:                  0.469
 Method:                 Least Squares   F-statistic:                     56.60
-Date:                Mon, 09 Feb 2026   Prob (F-statistic):           2.66e-10
-Time:                        04:55:21   Log-Likelihood:                -72.268
+Date:                Mon, 16 Feb 2026   Prob (F-statistic):           2.66e-10
+Time:                        04:54:57   Log-Likelihood:                -72.268
 No. Observations:                  64   AIC:                             148.5
 Df Residuals:                      62   BIC:                             152.9
 Df Model:                           1                                         
@@ -1190,8 +1190,8 @@ included exogenous variables)</p>
 Dep. Variable:               logpgp95   R-squared:                      0.1870
 Estimator:                    IV-2SLS   Adj. R-squared:                 0.1739
 No. Observations:                  64   F-statistic:                    37.568
-Date:                Mon, Feb 09 2026   P-value (F-stat)                0.0000
-Time:                        04:55:21   Distribution:                  chi2(1)
+Date:                Mon, Feb 16 2026   P-value (F-stat)                0.0000
+Time:                        04:54:57   Distribution:                  chi2(1)
 Cov. Estimator:            unadjusted                                         
                                                                               
                              Parameter Estimates                              
@@ -1214,21 +1214,21 @@ Debiased: False
 from the model we have estimated that institutional differences
 (stemming from institutions set up during colonization) can help
 to explain differences in income levels across countries today.</p>
-<p><span id="id10">[<a class="reference internal" href="zreferences.html#id110" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> use a marginal effect of 0.94 to calculate that the
+<p><span id="id10">[<a class="reference internal" href="zreferences.html#id113" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> use a marginal effect of 0.94 to calculate that the
 difference in the index between Chile and Nigeria (ie. institutional
 quality) implies up to a 7-fold difference in income, emphasizing the
 significance of institutions in economic development.</p>
 </section>
 <section id="summary">
-<h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">86.5. </span>Summary</a><a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">89.5. </span>Summary</a><a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
 <p>We have demonstrated basic OLS and 2SLS regression in <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> and <code class="docutils literal notranslate"><span class="pre">linearmodels</span></code>.</p>
 <p>If you are familiar with R, you may want to use the <a class="reference external" href="https://www.statsmodels.org/dev/example_formulas.html">formula interface</a> to <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>, or consider using <a class="reference external" href="https://rpy2.github.io/">r2py</a> to call R from within Python.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id17" role="doc-backlink"><span class="section-number">86.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id17" role="doc-backlink"><span class="section-number">89.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="ols_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 86.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 89.1 </span></p>
 <section id="exercise-content">
 <p>In the lecture, we think the original model suffers from endogeneity
 bias due to the likely effect income has on institutional development.</p>
@@ -1298,8 +1298,8 @@ results.</p>
 Dep. Variable:               logpgp95   R-squared:                       0.689
 Model:                            OLS   Adj. R-squared:                  0.679
 Method:                 Least Squares   F-statistic:                     74.05
-Date:                Mon, 09 Feb 2026   Prob (F-statistic):           1.07e-17
-Time:                        04:55:22   Log-Likelihood:                -62.031
+Date:                Mon, 16 Feb 2026   Prob (F-statistic):           1.07e-17
+Time:                        04:54:57   Log-Likelihood:                -62.031
 No. Observations:                  70   AIC:                             130.1
 Df Residuals:                      67   BIC:                             136.8
 Df Model:                           2                                         
@@ -1329,7 +1329,7 @@ significant, indicating <span class="math notranslate nohighlight">\(avexpr_i\)<
 </div>
 <div class="exercise admonition" id="ols_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 86.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 89.2 </span></p>
 <section id="exercise-content">
 <p>The OLS parameter <span class="math notranslate nohighlight">\(\beta\)</span> can also be estimated using matrix
 algebra and <code class="docutils literal notranslate"><span class="pre">numpy</span></code> (you may need to review the
@@ -1682,23 +1682,33 @@ computations.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="chow_business_cycles.html">
+   38. The Acceleration Principle and the Nature of Business Cycles
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   38. Kesten Processes and Firm Dynamics
+   39. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   39. Wealth Distribution Dynamics
+   40. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   40. A First Look at the Kalman Filter
+   41. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   41. Another Look at the Kalman Filter
+   42. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="measurement_models.html">
+   43. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1710,47 +1720,47 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   42. Job Search I: The McCall Search Model
+   44. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   43. Job Search II: Search and Separation
+   45. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   44. Job Search III: Search with Separation and Markov Wages
+   46. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   45. Job Search IV: Fitted Value Function Iteration
+   47. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   46. Job Search V: Persistent and Transitory Wage Shocks
+   48. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   47. Job Search VI: Modeling Career Choice
+   49. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   48. Job Search VII: On-the-Job Search
+   50. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   49. Job Search VIII: Search with Learning
+   51. Job Search VIII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   50. Job Search IX: Search with Q-Learning
+   52. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1762,32 +1772,32 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   51. Optimal Savings I: Cake Eating
+   53. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   52. Optimal Savings II: Numerical Cake Eating
+   54. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   53. Optimal Savings III: Stochastic Returns
+   55. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   54. Optimal Savings IV: Time Iteration
+   56. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   55. Optimal Savings V: The Endogenous Grid Method
+   57. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   56. Optimal Savings VI: EGM with JAX
+   58. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1799,27 +1809,27 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   57. The Income Fluctuation Problem I: Discretization and VFI
+   59. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   58. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   60. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   59. The Income Fluctuation Problem III: The Endogenous Grid Method
+   61. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   60. The Income Fluctuation Problem IV: Transient Income Shocks
+   62. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   61. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   63. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1831,32 +1841,32 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   64. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   65. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   66. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   67. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   68. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   69. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1868,27 +1878,27 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   68. Cass-Koopmans Model
+   70. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   69. Cass-Koopmans Competitive Equilibrium
+   71. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   70. Cass-Koopmans Model with Distorting Taxes
+   72. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   71. Two-Country Model with Distorting Taxes
+   73. Two-Country Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   72. Transitions in an Overlapping Generations Model
+   74. Transitions in an Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -1900,42 +1910,42 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   73. A Lake Model of Employment and Unemployment
+   75. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   74. Lake Model with an Endogenous Job Finding Rate
+   76. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   75. Rational Expectations Equilibrium
+   77. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   76. Stability in Linear Rational Expectations Models
+   78. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   77. Markov Perfect Equilibrium
+   79. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   78. Uncertainty Traps
+   80. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   79. The Aiyagari Model
+   81. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   80. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+   82. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -1947,22 +1957,27 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   81. Asset Pricing: Finite State Models
+   83. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="doubts_or_variability.html">
+   84. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   82. Competitive Equilibria with Arrow Securities
+   85. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   83. Heterogeneous Beliefs and Bubbles
+   86. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   84. Speculative Behavior with Bayesian Learning
+   87. Speculative Behavior with Bayesian Learning
   </a>
  </li>
 </ul>
@@ -1974,17 +1989,17 @@ computations.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   85. Pandas for Panel Data
+   88. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   86. Linear Regression in Python
+   89. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   87. Maximum Likelihood Estimation
+   90. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1996,12 +2011,12 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   88. First-Price and Second-Price Auctions
+   91. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   89. Multiple Good Allocation Mechanisms
+   92. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2013,17 +2028,17 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   90. Troubleshooting
+   93. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   91. References
+   94. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   92. Execution Statistics
+   95. Execution Statistics
   </a>
  </li>
 </ul>

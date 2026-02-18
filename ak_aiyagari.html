@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>80. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>82. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -83,7 +83,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=4c010e0d" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="81. Asset Pricing: Finite State Models" href="markov_asset.html" />
-    <link rel="prev" title="79. The Aiyagari Model" href="aiyagari.html" />
+    <link rel="next" title="83. Asset Pricing: Finite State Models" href="markov_asset.html" />
+    <link rel="prev" title="81. The Aiyagari Model" href="aiyagari.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -183,31 +183,31 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">80.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment">80.2. Environment</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demographics-and-time">80.2.1. Demographics and time</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#individuals-state-variables">80.2.2. Individuals’ state variables</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#labor-supply">80.2.3. Labor supply</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-conditions">80.2.4. Initial conditions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">82.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment">82.2. Environment</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demographics-and-time">82.2.1. Demographics and time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#individuals-state-variables">82.2.2. Individuals’ state variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#labor-supply">82.2.3. Labor supply</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-conditions">82.2.4. Initial conditions</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production">80.3. Production</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#government">80.4. Government</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activities-in-factor-markets">80.5. Activities in factor markets</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#age-specific-labor-supplies">80.5.1. Age-specific labor supplies</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asset-market-participation">80.5.2. Asset market participation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">80.5.3. Key features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#production">82.3. Production</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#government">82.4. Government</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activities-in-factor-markets">82.5. Activities in factor markets</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#age-specific-labor-supplies">82.5.1. Age-specific labor supplies</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asset-market-participation">82.5.2. Asset market participation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">82.5.3. Key features</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representative-firms-problem">80.6. Representative firm’s problem</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#households-problems">80.7. Households’ problems</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#population-dynamics">80.8. Population dynamics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium">80.9. Equilibrium</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">80.10. Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-a-steady-state">80.11. Computing a steady state</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transition-dynamics">80.12. Transition dynamics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-1-immediate-tax-cut">80.13. Experiment 1: Immediate tax cut</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-2-preannounced-tax-cut">80.14. Experiment 2: Preannounced tax cut</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#representative-firms-problem">82.6. Representative firm’s problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#households-problems">82.7. Households’ problems</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#population-dynamics">82.8. Population dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium">82.9. Equilibrium</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">82.10. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-a-steady-state">82.11. Computing a steady state</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transition-dynamics">82.12. Transition dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-1-immediate-tax-cut">82.13. Experiment 1: Immediate tax cut</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment-2-preannounced-tax-cut">82.14. Experiment 2: Preannounced tax cut</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -295,7 +295,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="a-long-lived-heterogeneous-agent-overlapping-generations-model">
-<h1><span class="section-number">80. </span>A Long-Lived, Heterogeneous Agent, Overlapping Generations Model<a class="headerlink" href="#a-long-lived-heterogeneous-agent-overlapping-generations-model" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">82. </span>A Long-Lived, Heterogeneous Agent, Overlapping Generations Model<a class="headerlink" href="#a-long-lived-heterogeneous-agent-overlapping-generations-model" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with access to a GPU — although it will also run without one.</p>
@@ -316,13 +316,13 @@ that you can access as follows:</p>
 </div>
 </div>
 <section id="overview">
-<h2><span class="section-number">80.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture describes an  overlapping generations model with these features:</p>
 <ul class="simple">
 <li><p>A competitive equilibrium with incomplete markets determines prices and quantities</p></li>
-<li><p>Agents live many periods as in   <span id="id1">[<a class="reference internal" href="zreferences.html#id274" title="Alan J Auerbach and Laurence J Kotlikoff. Dynamic fiscal policy. Cambridge University Press, Cambridge, 1987.">Auerbach and Kotlikoff, 1987</a>]</span></p></li>
-<li><p>Agents receive idiosyncratic labor productivity shocks that cannot be fully insured as in  <span id="id2">[<a class="reference internal" href="zreferences.html#id155" title="S Rao Aiyagari. Uninsured Idiosyncratic Risk and Aggregate Saving. The Quarterly Journal of Economics, 109(3):659–684, 1994.">Aiyagari, 1994</a>]</span></p></li>
-<li><p>Government fiscal policy instruments include tax rates, debt, and transfers as in chapter 2 of <span id="id3">[<a class="reference internal" href="zreferences.html#id274" title="Alan J Auerbach and Laurence J Kotlikoff. Dynamic fiscal policy. Cambridge University Press, Cambridge, 1987.">Auerbach and Kotlikoff, 1987</a>]</span> and <a class="reference internal" href="ak2.html"><span class="doc">Transitions in an Overlapping Generations Model</span></a></p></li>
+<li><p>Agents live many periods as in   <span id="id1">[<a class="reference internal" href="zreferences.html#id282" title="Alan J Auerbach and Laurence J Kotlikoff. Dynamic fiscal policy. Cambridge University Press, Cambridge, 1987.">Auerbach and Kotlikoff, 1987</a>]</span></p></li>
+<li><p>Agents receive idiosyncratic labor productivity shocks that cannot be fully insured as in  <span id="id2">[<a class="reference internal" href="zreferences.html#id162" title="S Rao Aiyagari. Uninsured Idiosyncratic Risk and Aggregate Saving. The Quarterly Journal of Economics, 109(3):659–684, 1994.">Aiyagari, 1994</a>]</span></p></li>
+<li><p>Government fiscal policy instruments include tax rates, debt, and transfers as in chapter 2 of <span id="id3">[<a class="reference internal" href="zreferences.html#id282" title="Alan J Auerbach and Laurence J Kotlikoff. Dynamic fiscal policy. Cambridge University Press, Cambridge, 1987.">Auerbach and Kotlikoff, 1987</a>]</span> and <a class="reference internal" href="ak2.html"><span class="doc">Transitions in an Overlapping Generations Model</span></a></p></li>
 <li><p>Among other equilibrium objects, a competitive equilibrium determines a sequence of cross-section densities of heterogeneous agents’ consumptions, labor incomes, and savings</p></li>
 </ul>
 <p>We use the model to study:</p>
@@ -353,35 +353,35 @@ that you can access as follows:</p>
 </div>
 </section>
 <section id="environment">
-<h2><span class="section-number">80.2. </span>Environment<a class="headerlink" href="#environment" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.2. </span>Environment<a class="headerlink" href="#environment" title="Link to this heading">#</a></h2>
 <p>We start by introducing the economic environment we are operating in.</p>
 <section id="demographics-and-time">
-<h3><span class="section-number">80.2.1. </span>Demographics and time<a class="headerlink" href="#demographics-and-time" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">82.2.1. </span>Demographics and time<a class="headerlink" href="#demographics-and-time" title="Link to this heading">#</a></h3>
 <p>We work in discrete time indexed by <span class="math notranslate nohighlight">\(t = 0, 1, 2, ...\)</span>.</p>
 <p>Each agent lives for <span class="math notranslate nohighlight">\(J = 50\)</span> periods and faces no mortality risk.</p>
 <p>We index age by <span class="math notranslate nohighlight">\(j = 0, 1, ..., 49\)</span>, and the population size remains fixed at <span class="math notranslate nohighlight">\(1/J\)</span>.</p>
 </section>
 <section id="individuals-state-variables">
-<h3><span class="section-number">80.2.2. </span>Individuals’ state variables<a class="headerlink" href="#individuals-state-variables" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">82.2.2. </span>Individuals’ state variables<a class="headerlink" href="#individuals-state-variables" title="Link to this heading">#</a></h3>
 <p>Each agent <span class="math notranslate nohighlight">\(i\)</span> of age <span class="math notranslate nohighlight">\(j\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> is characterized by two state variables: asset holdings <span class="math notranslate nohighlight">\(a_{i,j,t}\)</span> and idiosyncratic labor productivity <span class="math notranslate nohighlight">\(\gamma_{i,j,t}\)</span>.</p>
 <p>The idiosyncratic labor productivity process follows a two-state Markov chain that takes values <span class="math notranslate nohighlight">\(\gamma_l\)</span> and <span class="math notranslate nohighlight">\(\gamma_h\)</span> with transition matrix <span class="math notranslate nohighlight">\(\Pi\)</span>.</p>
 <p>Newborn agents begin with an initial distribution <span class="math notranslate nohighlight">\(\pi = [0.5, 0.5]\)</span> over these productivity states.</p>
 </section>
 <section id="labor-supply">
-<h3><span class="section-number">80.2.3. </span>Labor supply<a class="headerlink" href="#labor-supply" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">82.2.3. </span>Labor supply<a class="headerlink" href="#labor-supply" title="Link to this heading">#</a></h3>
 <p>An agent with productivity <span class="math notranslate nohighlight">\(\gamma_{i,j,t}\)</span> supplies <span class="math notranslate nohighlight">\(l(j)\gamma_{i,j,t}\)</span> efficiency units of labor.</p>
 <p><span class="math notranslate nohighlight">\(l(j)\)</span> is a deterministic age-specific labor efficiency units profile.</p>
 <p>An agent’s effective labor supply depends on a life-cycle efficiency profile and an idiosyncratic stochastic process.</p>
 </section>
 <section id="initial-conditions">
-<h3><span class="section-number">80.2.4. </span>Initial conditions<a class="headerlink" href="#initial-conditions" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">82.2.4. </span>Initial conditions<a class="headerlink" href="#initial-conditions" title="Link to this heading">#</a></h3>
 <p>Newborns start with zero assets <span class="math notranslate nohighlight">\(a_{i,0,t} = 0\)</span>.</p>
 <p>Initial idiosyncratic productivities are drawn from distribution <span class="math notranslate nohighlight">\(\pi\)</span>.</p>
 <p>Agents leave no bequests and have  terminal value function <span class="math notranslate nohighlight">\(V_J(a) = 0\)</span>.</p>
 </section>
 </section>
 <section id="production">
-<h2><span class="section-number">80.3. </span>Production<a class="headerlink" href="#production" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.3. </span>Production<a class="headerlink" href="#production" title="Link to this heading">#</a></h2>
 <p>A representative firm operates a constant returns to scale Cobb-Douglas production:</p>
 <div class="math notranslate nohighlight">
 \[Y_t = Z_t K_t^\alpha L_t^{1-\alpha}\]</div>
@@ -394,7 +394,7 @@ that you can access as follows:</p>
 </ul>
 </section>
 <section id="government">
-<h2><span class="section-number">80.4. </span>Government<a class="headerlink" href="#government" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.4. </span>Government<a class="headerlink" href="#government" title="Link to this heading">#</a></h2>
 <p>The government follows a fiscal policy that includes debt, taxes, transfers, and government spending.</p>
 <p>The government issues one-period debt <span class="math notranslate nohighlight">\(D_t\)</span> to finance its operations and collects revenues through a flat-rate tax <span class="math notranslate nohighlight">\(\tau_t\)</span> on both labor and capital income.</p>
 <p>The government also implements age-specific lump-sum taxes or transfers <span class="math notranslate nohighlight">\(\delta_{j,t}\)</span> that can redistribute resources across different age groups.</p>
@@ -411,10 +411,10 @@ T_t = \tau_t w_t L_t + \tau_t r_t(D_t + K_t) + \sum_j \delta_{j,t}
 \]</div>
 </section>
 <section id="activities-in-factor-markets">
-<h2><span class="section-number">80.5. </span>Activities in factor markets<a class="headerlink" href="#activities-in-factor-markets" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.5. </span>Activities in factor markets<a class="headerlink" href="#activities-in-factor-markets" title="Link to this heading">#</a></h2>
 <p>At each time <span class="math notranslate nohighlight">\(t \geq 0\)</span>, agents supply labor and capital.</p>
 <section id="age-specific-labor-supplies">
-<h3><span class="section-number">80.5.1. </span>Age-specific labor supplies<a class="headerlink" href="#age-specific-labor-supplies" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">82.5.1. </span>Age-specific labor supplies<a class="headerlink" href="#age-specific-labor-supplies" title="Link to this heading">#</a></h3>
 <p>Agents of age <span class="math notranslate nohighlight">\(j \in \{0,1,...,J-1\}\)</span> supply labor according to:</p>
 <ul class="simple">
 <li><p>Their deterministic age-efficiency profile <span class="math notranslate nohighlight">\(l(j)\)</span></p></li>
@@ -423,7 +423,7 @@ T_t = \tau_t w_t L_t + \tau_t r_t(D_t + K_t) + \sum_j \delta_{j,t}
 <p>Each agent supplies <span class="math notranslate nohighlight">\(l(j)\gamma_{i,j,t}\)</span> effective units of labor and earns a competitive wage <span class="math notranslate nohighlight">\(w_t\)</span> per effective unit, subject to a flat tax rate <span class="math notranslate nohighlight">\(\tau_t\)</span> on labor earnings.</p>
 </section>
 <section id="asset-market-participation">
-<h3><span class="section-number">80.5.2. </span>Asset market participation<a class="headerlink" href="#asset-market-participation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">82.5.2. </span>Asset market participation<a class="headerlink" href="#asset-market-participation" title="Link to this heading">#</a></h3>
 <p>Summarizing activities in the asset market, all agents, regardless of age <span class="math notranslate nohighlight">\(j \in \{0,1,...,J-1\}\)</span>, can:</p>
 <ul class="simple">
 <li><p>Hold assets <span class="math notranslate nohighlight">\(a_{i,j,t}\)</span> (subject to borrowing constraints)</p></li>
@@ -433,7 +433,7 @@ T_t = \tau_t w_t L_t + \tau_t r_t(D_t + K_t) + \sum_j \delta_{j,t}
 </ul>
 </section>
 <section id="key-features">
-<h3><span class="section-number">80.5.3. </span>Key features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">82.5.3. </span>Key features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h3>
 <p><em>Lifecycle patterns</em> shape economic behavior across ages:</p>
 <ul class="simple">
 <li><p>Labor productivity varies systematically with age according to the profile <span class="math notranslate nohighlight">\(l(j)\)</span>, while asset holdings typically follow a lifecycle pattern of accumulation during working years and decumulation during retirement.</p></li>
@@ -451,7 +451,7 @@ T_t = \tau_t w_t L_t + \tau_t r_t(D_t + K_t) + \sum_j \delta_{j,t}
 </section>
 </section>
 <section id="representative-firms-problem">
-<h2><span class="section-number">80.6. </span>Representative firm’s problem<a class="headerlink" href="#representative-firms-problem" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.6. </span>Representative firm’s problem<a class="headerlink" href="#representative-firms-problem" title="Link to this heading">#</a></h2>
 <p>A representative firm chooses capital and effective labor to maximize profits</p>
 <div class="math notranslate nohighlight">
 \[
@@ -469,7 +469,7 @@ r_t = \alpha Z_t(K_t/L_t)^{\alpha-1}
 \]</div>
 </section>
 <section id="households-problems">
-<h2><span class="section-number">80.7. </span>Households’ problems<a class="headerlink" href="#households-problems" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.7. </span>Households’ problems<a class="headerlink" href="#households-problems" title="Link to this heading">#</a></h2>
 <p>A household’s value function satisfies a Bellman equation</p>
 <div class="math notranslate nohighlight">
 \[
@@ -488,7 +488,7 @@ c \geq 0
 <span class="math notranslate nohighlight">\(V_{J,t}(a, \gamma) = 0\)</span></p>
 </section>
 <section id="population-dynamics">
-<h2><span class="section-number">80.8. </span>Population dynamics<a class="headerlink" href="#population-dynamics" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.8. </span>Population dynamics<a class="headerlink" href="#population-dynamics" title="Link to this heading">#</a></h2>
 <p>The joint probability density function <span class="math notranslate nohighlight">\(\mu_{j,t}(a,\gamma)\)</span> of asset holdings and idiosyncratic labor productivity evolves according to</p>
 <ul class="simple">
 <li><p>For newborns <span class="math notranslate nohighlight">\((j=0)\)</span>:</p></li>
@@ -511,7 +511,7 @@ c \geq 0
 <p>where <span class="math notranslate nohighlight">\(\sigma_{j,t}(a,\gamma)\)</span> is the optimal saving policy function.</p>
 </section>
 <section id="equilibrium">
-<h2><span class="section-number">80.9. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.9. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Link to this heading">#</a></h2>
 <p>An equilibrium consists of:</p>
 <ul class="simple">
 <li><p>Value functions <span class="math notranslate nohighlight">\(V_{j,t}\)</span></p></li>
@@ -541,7 +541,7 @@ c \geq 0
 </ul>
 </section>
 <section id="implementation">
-<h2><span class="section-number">80.10. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.10. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>Using tools in  <a class="reference external" href="https://python-advanced.quantecon.org/discrete_dp.html" title="(in Project name not set)"><span>Discrete State Dynamic Programming</span></a>, we solve our model by combining value function iteration with equilibrium price determination.</p>
 <p>A sensible  approach is  to nest a discrete DP solver inside an outer loop that searches for market-clearing prices.</p>
 <p>For a candidate sequence  of prices interest rates <span class="math notranslate nohighlight">\(r_t\)</span> and wages <span class="math notranslate nohighlight">\(w_t\)</span>, we can solve individual households’ dynamic programming problems using either value function iteration or policy iteration to obtain optimal policy functions.</p>
@@ -781,7 +781,7 @@ c \geq 0
 </div>
 </section>
 <section id="computing-a-steady-state">
-<h2><span class="section-number">80.11. </span>Computing a steady state<a class="headerlink" href="#computing-a-steady-state" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.11. </span>Computing a steady state<a class="headerlink" href="#computing-a-steady-state" title="Link to this heading">#</a></h2>
 <p>We first compute a steady state.</p>
 <p>Given  guesses of prices and taxes, we can use backwards induction to solve for  value functions and optimal consumption and saving policies  at all  ages.</p>
 <p>The function <code class="docutils literal notranslate"><span class="pre">backwards_opt</span></code> solves for optimal values by applying the discretized bellman operator backwards.</p>
@@ -849,8 +849,8 @@ c \geq 0
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.34 ms, sys: 64 μs, total: 1.4 ms
-Wall time: 49.6 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.51 ms, sys: 0 ns, total: 1.51 ms
+Wall time: 50.5 ms
 </pre></div>
 </div>
 </div>
@@ -900,8 +900,8 @@ Wall time: 49.6 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 39.8 ms, sys: 38 μs, total: 39.8 ms
-Wall time: 52.7 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 41.4 ms, sys: 1.09 ms, total: 42.5 ms
+Wall time: 55.8 ms
 </pre></div>
 </div>
 </div>
@@ -1122,8 +1122,8 @@ distributions of assets at different ages.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 664 ms, sys: 18.7 ms, total: 682 ms
-Wall time: 745 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 664 ms, sys: 12.4 ms, total: 676 ms
+Wall time: 739 ms
 </pre></div>
 </div>
 </div>
@@ -1198,7 +1198,7 @@ Wall time: 745 ms
 </div>
 </section>
 <section id="transition-dynamics">
-<h2><span class="section-number">80.12. </span>Transition dynamics<a class="headerlink" href="#transition-dynamics" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.12. </span>Transition dynamics<a class="headerlink" href="#transition-dynamics" title="Link to this heading">#</a></h2>
 <p>We compute transition dynamics using a function <code class="docutils literal notranslate"><span class="pre">path_iteration</span></code>.</p>
 <p>In an outer loop, we iterate over guesses of prices and taxes.</p>
 <p>In an inner loop, we  compute the optimal consumption and saving choices by each cohort <span class="math notranslate nohighlight">\(j\)</span> in each time <span class="math notranslate nohighlight">\(t\)</span>, then find the implied  evolution of the joint distribution of assets and productivities.</p>
@@ -1341,7 +1341,7 @@ Wall time: 745 ms
 </div>
 <p>The following algorithm describes the path iteration procedure:</p>
 <div class="proof algorithm admonition" id="ak-aiyagari-algorithm">
-<p class="admonition-title"><span class="caption-number">Algorithm 80.1 </span> (AK-Aiyagari transition path algorithm)</p>
+<p class="admonition-title"><span class="caption-number">Algorithm 82.1 </span> (AK-Aiyagari transition path algorithm)</p>
 <section class="algorithm-content" id="proof-content">
 <p><strong>Inputs</strong> Given initial steady state <span class="math notranslate nohighlight">\(ss_1\)</span>, final steady state <span class="math notranslate nohighlight">\(ss_2\)</span>, time horizon <span class="math notranslate nohighlight">\(T\)</span>, and policy sequences <span class="math notranslate nohighlight">\((D, G, \delta)\)</span></p>
 <p><strong>Output</strong> Compute equilibrium transition paths for value functions <span class="math notranslate nohighlight">\(V\)</span>, policy functions <span class="math notranslate nohighlight">\(\sigma\)</span>, distributions <span class="math notranslate nohighlight">\(\mu\)</span>, and prices <span class="math notranslate nohighlight">\((r, w, \tau)\)</span></p>
@@ -1492,7 +1492,7 @@ Wall time: 745 ms
 <p>We can now   compute  equilibrium transitions that are  ignited by fiscal policy reforms.</p>
 </section>
 <section id="experiment-1-immediate-tax-cut">
-<h2><span class="section-number">80.13. </span>Experiment 1: Immediate tax cut<a class="headerlink" href="#experiment-1-immediate-tax-cut" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.13. </span>Experiment 1: Immediate tax cut<a class="headerlink" href="#experiment-1-immediate-tax-cut" title="Link to this heading">#</a></h2>
 <p>Assume that the government cuts the tax rate and immediately balances its budget by issuing debt.</p>
 <p>At <span class="math notranslate nohighlight">\(t=0\)</span>, the government unexpectedly announces an immediate tax cut.</p>
 <p>From <span class="math notranslate nohighlight">\(t=0\)</span> to <span class="math notranslate nohighlight">\(19\)</span>, the government  issues debt, so debt  <span class="math notranslate nohighlight">\(D_{t+1}\)</span>  increases linearly for <span class="math notranslate nohighlight">\(20\)</span> periods.</p>
@@ -1761,7 +1761,7 @@ Iteration   7: error = 2.955517e-05
 </div>
 </section>
 <section id="experiment-2-preannounced-tax-cut">
-<h2><span class="section-number">80.14. </span>Experiment 2: Preannounced tax cut<a class="headerlink" href="#experiment-2-preannounced-tax-cut" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">82.14. </span>Experiment 2: Preannounced tax cut<a class="headerlink" href="#experiment-2-preannounced-tax-cut" title="Link to this heading">#</a></h2>
 <p>Now the government announces a permanent tax rate cut at time <span class="math notranslate nohighlight">\(0\)</span> but implements it only after 20 periods.</p>
 <p>We will use the same key toolkit <code class="docutils literal notranslate"><span class="pre">path_iteration</span></code>.</p>
 <p>We must specify <code class="docutils literal notranslate"><span class="pre">D_seq</span></code> appropriately.</p>
@@ -2238,23 +2238,33 @@ Iteration   6: error = 7.865898e-05
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="chow_business_cycles.html">
+   38. The Acceleration Principle and the Nature of Business Cycles
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   38. Kesten Processes and Firm Dynamics
+   39. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   39. Wealth Distribution Dynamics
+   40. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   40. A First Look at the Kalman Filter
+   41. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   41. Another Look at the Kalman Filter
+   42. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="measurement_models.html">
+   43. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -2266,47 +2276,47 @@ Iteration   6: error = 7.865898e-05
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   42. Job Search I: The McCall Search Model
+   44. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   43. Job Search II: Search and Separation
+   45. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   44. Job Search III: Search with Separation and Markov Wages
+   46. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   45. Job Search IV: Fitted Value Function Iteration
+   47. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   46. Job Search V: Persistent and Transitory Wage Shocks
+   48. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   47. Job Search VI: Modeling Career Choice
+   49. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   48. Job Search VII: On-the-Job Search
+   50. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   49. Job Search VIII: Search with Learning
+   51. Job Search VIII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   50. Job Search IX: Search with Q-Learning
+   52. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -2318,32 +2328,32 @@ Iteration   6: error = 7.865898e-05
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   51. Optimal Savings I: Cake Eating
+   53. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   52. Optimal Savings II: Numerical Cake Eating
+   54. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   53. Optimal Savings III: Stochastic Returns
+   55. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   54. Optimal Savings IV: Time Iteration
+   56. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   55. Optimal Savings V: The Endogenous Grid Method
+   57. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   56. Optimal Savings VI: EGM with JAX
+   58. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -2355,27 +2365,27 @@ Iteration   6: error = 7.865898e-05
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   57. The Income Fluctuation Problem I: Discretization and VFI
+   59. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   58. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   60. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   59. The Income Fluctuation Problem III: The Endogenous Grid Method
+   61. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   60. The Income Fluctuation Problem IV: Transient Income Shocks
+   62. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   61. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   63. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -2387,32 +2397,32 @@ Iteration   6: error = 7.865898e-05
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   64. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   65. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   66. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   67. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   68. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   69. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2424,27 +2434,27 @@ Iteration   6: error = 7.865898e-05
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   68. Cass-Koopmans Model
+   70. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   69. Cass-Koopmans Competitive Equilibrium
+   71. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   70. Cass-Koopmans Model with Distorting Taxes
+   72. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   71. Two-Country Model with Distorting Taxes
+   73. Two-Country Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   72. Transitions in an Overlapping Generations Model
+   74. Transitions in an Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -2456,42 +2466,42 @@ Iteration   6: error = 7.865898e-05
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   73. A Lake Model of Employment and Unemployment
+   75. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   74. Lake Model with an Endogenous Job Finding Rate
+   76. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   75. Rational Expectations Equilibrium
+   77. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   76. Stability in Linear Rational Expectations Models
+   78. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   77. Markov Perfect Equilibrium
+   79. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   78. Uncertainty Traps
+   80. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   79. The Aiyagari Model
+   81. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   80. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+   82. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -2503,22 +2513,27 @@ Iteration   6: error = 7.865898e-05
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   81. Asset Pricing: Finite State Models
+   83. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="doubts_or_variability.html">
+   84. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   82. Competitive Equilibria with Arrow Securities
+   85. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   83. Heterogeneous Beliefs and Bubbles
+   86. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   84. Speculative Behavior with Bayesian Learning
+   87. Speculative Behavior with Bayesian Learning
   </a>
  </li>
 </ul>
@@ -2530,17 +2545,17 @@ Iteration   6: error = 7.865898e-05
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   85. Pandas for Panel Data
+   88. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   86. Linear Regression in Python
+   89. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   87. Maximum Likelihood Estimation
+   90. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2552,12 +2567,12 @@ Iteration   6: error = 7.865898e-05
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   88. First-Price and Second-Price Auctions
+   91. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   89. Multiple Good Allocation Mechanisms
+   92. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2569,17 +2584,17 @@ Iteration   6: error = 7.865898e-05
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   90. Troubleshooting
+   93. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   91. References
+   94. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   92. Execution Statistics
+   95. Execution Statistics
   </a>
  </li>
 </ul>

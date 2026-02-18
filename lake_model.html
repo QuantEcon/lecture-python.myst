@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>73. A Lake Model of Employment and Unemployment &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>75. A Lake Model of Employment and Unemployment &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -83,7 +83,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=4c010e0d" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="74. Lake Model with an Endogenous Job Finding Rate" href="endogenous_lake.html" />
-    <link rel="prev" title="72. Transitions in an Overlapping Generations Model" href="ak2.html" />
+    <link rel="next" title="76. Lake Model with an Endogenous Job Finding Rate" href="endogenous_lake.html" />
+    <link rel="prev" title="74. Transitions in an Overlapping Generations Model" href="ak2.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -183,29 +183,29 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">73.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">73.1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">75.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">75.1.1. Prerequisites</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">73.2. The model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-variables">73.2.1. Aggregate variables</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#laws-of-motion-for-stock-variables">73.2.2. Laws of motion for stock variables</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#laws-of-motion-for-rates">73.2.3. Laws of motion for rates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">75.2. The model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-variables">75.2.1. Aggregate variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#laws-of-motion-for-stock-variables">75.2.2. Laws of motion for stock variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#laws-of-motion-for-rates">75.2.3. Laws of motion for rates</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">73.3. Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model">73.3.1. Model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-for-dynamics">73.3.2. Code for dynamics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-dynamics">73.3.3. Aggregate dynamics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rate-dynamics">73.3.4. Rate dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">75.3. Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model">75.3.1. Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-for-dynamics">75.3.2. Code for dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregate-dynamics">75.3.3. Aggregate dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rate-dynamics">75.3.4. Rate dynamics</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamics-of-an-individual-worker">73.4. Dynamics of an individual worker</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ergodicity">73.4.1. Ergodicity</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-rate">73.4.2. Convergence rate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamics-of-an-individual-worker">75.4. Dynamics of an individual worker</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ergodicity">75.4.1. Ergodicity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence-rate">75.4.2. Convergence rate</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">73.5. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">75.5. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -312,7 +312,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/cf28a4c9f" class="changelog-hash">cf28a4c9f</a>
                                 
                                 <span class="changelog-author">Copilot</span>
-                                <span class="changelog-time">5 months ago</span>
+                                <span class="changelog-time">6 months ago</span>
                                 <span class="changelog-message">Replace `np.sum(a * b)` with `a @ b` for better performance and accuracy (#542)</span>
                             </li>
                             
@@ -365,7 +365,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="a-lake-model-of-employment-and-unemployment">
-<h1><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">73. </span>A Lake Model of Employment and Unemployment</a><a class="headerlink" href="#a-lake-model-of-employment-and-unemployment" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">75. </span>A Lake Model of Employment and Unemployment</a><a class="headerlink" href="#a-lake-model-of-employment-and-unemployment" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with access to a GPU — although it will also run without one.</p>
@@ -426,7 +426,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">73.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">75.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture describes what has come to be called a <em>lake model</em>.</p>
 <p>The lake model is a basic tool for modeling unemployment.</p>
 <p>It allows us to analyze</p>
@@ -461,14 +461,14 @@ and out of unemployment and employment are exogenous.</p>
 </div>
 </div>
 <section id="prerequisites">
-<h3><span class="section-number">73.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">75.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h3>
 <p>Before working through what follows, we recommend you read the
 <a class="reference internal" href="finite_markov.html"><span class="doc">lecture on finite Markov chains</span></a>.</p>
 <p>You will also need some basic <a class="reference internal" href="linear_algebra.html"><span class="doc">linear algebra</span></a> and probability.</p>
 </section>
 </section>
 <section id="the-model">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">73.2. </span>The model</a><a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">75.2. </span>The model</a><a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
 <p>The economy is inhabited by a very large number of ex-ante identical workers.</p>
 <p>The workers live forever, spending their lives moving between unemployment and employment.</p>
 <p>Their rates of  transition between employment and unemployment are  governed by the following parameters:</p>
@@ -480,7 +480,7 @@ and out of unemployment and employment are exogenous.</p>
 </ul>
 <p>The growth rate of the labor force evidently equals <span class="math notranslate nohighlight">\(g=b-d\)</span>.</p>
 <section id="aggregate-variables">
-<h3><span class="section-number">73.2.1. </span>Aggregate variables<a class="headerlink" href="#aggregate-variables" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">75.2.1. </span>Aggregate variables<a class="headerlink" href="#aggregate-variables" title="Link to this heading">#</a></h3>
 <p>We want to derive the dynamics of the following aggregates:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(E_t\)</span>, the total number of employed workers at date <span class="math notranslate nohighlight">\(t\)</span></p></li>
@@ -489,7 +489,7 @@ and out of unemployment and employment are exogenous.</p>
 </ul>
 </section>
 <section id="laws-of-motion-for-stock-variables">
-<h3><span class="section-number">73.2.2. </span>Laws of motion for stock variables<a class="headerlink" href="#laws-of-motion-for-stock-variables" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">75.2.2. </span>Laws of motion for stock variables<a class="headerlink" href="#laws-of-motion-for-stock-variables" title="Link to this heading">#</a></h3>
 <p>We begin by constructing laws of motion for the aggregate variables <span class="math notranslate nohighlight">\(E_t,U_t, N_t\)</span>.</p>
 <p>Of the mass of workers <span class="math notranslate nohighlight">\(E_t\)</span> who are employed at date <span class="math notranslate nohighlight">\(t\)</span>,</p>
 <ul class="simple">
@@ -531,7 +531,7 @@ A :=
 <p>This law tells us how total employment and unemployment evolve over time.</p>
 </section>
 <section id="laws-of-motion-for-rates">
-<h3><span class="section-number">73.2.3. </span>Laws of motion for rates<a class="headerlink" href="#laws-of-motion-for-rates" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">75.2.3. </span>Laws of motion for rates<a class="headerlink" href="#laws-of-motion-for-rates" title="Link to this heading">#</a></h3>
 <p>Now let’s derive the law of motion for rates.</p>
 <p>We want to track the values of the following objects:</p>
 <ul class="simple">
@@ -576,10 +576,10 @@ R := \frac{1}{1 + g} A
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">73.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">75.3. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>Let’s code up these equations.</p>
 <section id="model">
-<h3><span class="section-number">73.3.1. </span>Model<a class="headerlink" href="#model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">75.3.1. </span>Model<a class="headerlink" href="#model" title="Link to this heading">#</a></h3>
 <p>To begin, we set up a class called <code class="docutils literal notranslate"><span class="pre">LakeModel</span></code> that stores the primitives <span class="math notranslate nohighlight">\(\alpha, \lambda, b, d\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -628,7 +628,7 @@ R := \frac{1}{1 + g} A
 </div>
 <p>The default parameter values are:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\alpha = 0.013\)</span> and <span class="math notranslate nohighlight">\(\lambda = 0.283\)</span> are based on <span id="id1">[<a class="reference internal" href="zreferences.html#id154" title="Steven J Davis, R Jason Faberman, and John Haltiwanger. The flow approach to labor markets: new data sources, micro-macro links and the recent downturn. Journal of Economic Perspectives, 2006.">Davis <em>et al.</em>, 2006</a>]</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha = 0.013\)</span> and <span class="math notranslate nohighlight">\(\lambda = 0.283\)</span> are based on <span id="id1">[<a class="reference internal" href="zreferences.html#id161" title="Steven J Davis, R Jason Faberman, and John Haltiwanger. The flow approach to labor markets: new data sources, micro-macro links and the recent downturn. Journal of Economic Perspectives, 2006.">Davis <em>et al.</em>, 2006</a>]</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(b = 0.0124\)</span> and <span class="math notranslate nohighlight">\(d = 0.00822\)</span> are set to match monthly <a class="reference external" href="https://www.cdc.gov/nchs/fastats/births.htm">birth</a> and <a class="reference external" href="https://www.cdc.gov/nchs/fastats/deaths.htm">death rates</a>, respectively, in the U.S. population</p></li>
 </ul>
 <p>As an experiment, let’s create two instances, one with <span class="math notranslate nohighlight">\(α=0.013\)</span> and another with <span class="math notranslate nohighlight">\(α=0.03\)</span></p>
@@ -676,7 +676,7 @@ New R matrix:
 </div>
 </section>
 <section id="code-for-dynamics">
-<h3><span class="section-number">73.3.2. </span>Code for dynamics<a class="headerlink" href="#code-for-dynamics" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">75.3.2. </span>Code for dynamics<a class="headerlink" href="#code-for-dynamics" title="Link to this heading">#</a></h3>
 <p>We will also use a specialized function to generate time series in an efficient
 JAX-compatible manner.</p>
 <p>Iteratively generating time series is somewhat nontrivial in JAX because arrays
@@ -738,7 +738,7 @@ are immutable.</p>
 </div>
 </section>
 <section id="aggregate-dynamics">
-<h3><span class="section-number">73.3.3. </span>Aggregate dynamics<a class="headerlink" href="#aggregate-dynamics" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">75.3.3. </span>Aggregate dynamics<a class="headerlink" href="#aggregate-dynamics" title="Link to this heading">#</a></h3>
 <p>Let’s run a simulation under the default parameters starting from <span class="math notranslate nohighlight">\(X_0 = (12, 138)\)</span>.</p>
 <p>We will plot the sequences <span class="math notranslate nohighlight">\(\{E_t\}\)</span>, <span class="math notranslate nohighlight">\(\{U_t\}\)</span> and <span class="math notranslate nohighlight">\(\{N_t\}\)</span>.</p>
 <div class="cell docutils container">
@@ -774,7 +774,7 @@ are immutable.</p>
 <p>The aggregates <span class="math notranslate nohighlight">\(E_t\)</span> and <span class="math notranslate nohighlight">\(U_t\)</span> don’t converge because their sum <span class="math notranslate nohighlight">\(E_t + U_t\)</span> grows at rate <span class="math notranslate nohighlight">\(g\)</span>.</p>
 </section>
 <section id="rate-dynamics">
-<h3><span class="section-number">73.3.4. </span>Rate dynamics<a class="headerlink" href="#rate-dynamics" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">75.3.4. </span>Rate dynamics<a class="headerlink" href="#rate-dynamics" title="Link to this heading">#</a></h3>
 <p>On the other hand, the vector of employment and unemployment rates <span class="math notranslate nohighlight">\(x_t\)</span> can be in a steady state <span class="math notranslate nohighlight">\(\bar x\)</span> if
 there exists an <span class="math notranslate nohighlight">\(\bar x\)</span>  such that</p>
 <ul class="simple">
@@ -858,7 +858,7 @@ eigenvalue of <span class="math notranslate nohighlight">\(R\)</span> has modulu
 </div>
 <div class="exercise admonition" id="model_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 73.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 75.1 </span></p>
 <section id="exercise-content">
 <p>Use JAX’s <code class="docutils literal notranslate"><span class="pre">vmap</span></code> to compute steady-state unemployment rates for a range of job finding rates <span class="math notranslate nohighlight">\(\lambda\)</span> (from 0.1 to 0.5), and plot the relationship.</p>
 </section>
@@ -899,7 +899,7 @@ eigenvalue of <span class="math notranslate nohighlight">\(R\)</span> has modulu
 </section>
 </section>
 <section id="dynamics-of-an-individual-worker">
-<span id="dynamics-workers"></span><h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">73.4. </span>Dynamics of an individual worker</a><a class="headerlink" href="#dynamics-of-an-individual-worker" title="Link to this heading">#</a></h2>
+<span id="dynamics-workers"></span><h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">75.4. </span>Dynamics of an individual worker</a><a class="headerlink" href="#dynamics-of-an-individual-worker" title="Link to this heading">#</a></h2>
 <p>An individual worker’s employment dynamics are governed by a <a class="reference internal" href="finite_markov.html"><span class="doc">finite state Markov process</span></a>.</p>
 <p>The worker can be in one of two states:</p>
 <ul class="simple">
@@ -935,7 +935,7 @@ that if <span class="math notranslate nohighlight">\(\alpha \in (0, 1)\)</span> 
 <p>Not surprisingly, probability mass on the unemployment state increases with
 the dismissal rate and falls with the job finding rate.</p>
 <section id="ergodicity">
-<h3><span class="section-number">73.4.1. </span>Ergodicity<a class="headerlink" href="#ergodicity" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">75.4.1. </span>Ergodicity<a class="headerlink" href="#ergodicity" title="Link to this heading">#</a></h3>
 <p>Let’s look at a typical lifetime of employment-unemployment spells.</p>
 <p>We want to compute the average amounts of time an infinitely lived worker would spend employed and unemployed.</p>
 <p>Let</p>
@@ -962,7 +962,7 @@ the dismissal rate and falls with the job finding rate.</p>
 <p>Thus, the percentages of time that an infinitely lived worker spends employed and unemployed equal the fractions of workers employed and unemployed in the steady state distribution.</p>
 </section>
 <section id="convergence-rate">
-<h3><span class="section-number">73.4.2. </span>Convergence rate<a class="headerlink" href="#convergence-rate" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">75.4.2. </span>Convergence rate<a class="headerlink" href="#convergence-rate" title="Link to this heading">#</a></h3>
 <p>How long does it take for time series sample averages to converge to cross-sectional averages?</p>
 <p>We can investigate this by simulating the Markov chain.</p>
 <p>Let’s plot the path of the sample averages over 5,000 periods</p>
@@ -1031,10 +1031,10 @@ the dismissal rate and falls with the job finding rate.</p>
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">73.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">75.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="model_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 73.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 75.2 </span></p>
 <section id="exercise-content">
 <p>Consider an economy with an initial stock of workers <span class="math notranslate nohighlight">\(N_0 = 100\)</span> at the
 steady state level of employment in the baseline parameterization.</p>
@@ -1143,7 +1143,7 @@ steady state levels.</p>
 </div>
 <div class="exercise admonition" id="model_ex3">
 
-<p class="admonition-title"><span class="caption-number">Exercise 73.3 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 75.3 </span></p>
 <section id="exercise-content">
 <p>Consider an economy with an initial stock of workers <span class="math notranslate nohighlight">\(N_0 = 100\)</span> at the
 steady state level of employment in the baseline parameterization.</p>
@@ -1538,23 +1538,33 @@ additional 30 periods</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="chow_business_cycles.html">
+   38. The Acceleration Principle and the Nature of Business Cycles
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   38. Kesten Processes and Firm Dynamics
+   39. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   39. Wealth Distribution Dynamics
+   40. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   40. A First Look at the Kalman Filter
+   41. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   41. Another Look at the Kalman Filter
+   42. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="measurement_models.html">
+   43. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1566,47 +1576,47 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   42. Job Search I: The McCall Search Model
+   44. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   43. Job Search II: Search and Separation
+   45. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   44. Job Search III: Search with Separation and Markov Wages
+   46. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   45. Job Search IV: Fitted Value Function Iteration
+   47. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   46. Job Search V: Persistent and Transitory Wage Shocks
+   48. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   47. Job Search VI: Modeling Career Choice
+   49. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   48. Job Search VII: On-the-Job Search
+   50. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   49. Job Search VIII: Search with Learning
+   51. Job Search VIII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   50. Job Search IX: Search with Q-Learning
+   52. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1618,32 +1628,32 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   51. Optimal Savings I: Cake Eating
+   53. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   52. Optimal Savings II: Numerical Cake Eating
+   54. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   53. Optimal Savings III: Stochastic Returns
+   55. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   54. Optimal Savings IV: Time Iteration
+   56. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   55. Optimal Savings V: The Endogenous Grid Method
+   57. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   56. Optimal Savings VI: EGM with JAX
+   58. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1655,27 +1665,27 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   57. The Income Fluctuation Problem I: Discretization and VFI
+   59. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   58. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   60. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   59. The Income Fluctuation Problem III: The Endogenous Grid Method
+   61. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   60. The Income Fluctuation Problem IV: Transient Income Shocks
+   62. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   61. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   63. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1687,32 +1697,32 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   64. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   65. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   66. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   67. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   68. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   69. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1724,27 +1734,27 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   68. Cass-Koopmans Model
+   70. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   69. Cass-Koopmans Competitive Equilibrium
+   71. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   70. Cass-Koopmans Model with Distorting Taxes
+   72. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   71. Two-Country Model with Distorting Taxes
+   73. Two-Country Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   72. Transitions in an Overlapping Generations Model
+   74. Transitions in an Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -1756,42 +1766,42 @@ additional 30 periods</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   73. A Lake Model of Employment and Unemployment
+   75. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   74. Lake Model with an Endogenous Job Finding Rate
+   76. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   75. Rational Expectations Equilibrium
+   77. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   76. Stability in Linear Rational Expectations Models
+   78. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   77. Markov Perfect Equilibrium
+   79. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   78. Uncertainty Traps
+   80. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   79. The Aiyagari Model
+   81. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   80. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+   82. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -1803,22 +1813,27 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   81. Asset Pricing: Finite State Models
+   83. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="doubts_or_variability.html">
+   84. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   82. Competitive Equilibria with Arrow Securities
+   85. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   83. Heterogeneous Beliefs and Bubbles
+   86. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   84. Speculative Behavior with Bayesian Learning
+   87. Speculative Behavior with Bayesian Learning
   </a>
  </li>
 </ul>
@@ -1830,17 +1845,17 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   85. Pandas for Panel Data
+   88. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   86. Linear Regression in Python
+   89. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   87. Maximum Likelihood Estimation
+   90. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1852,12 +1867,12 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   88. First-Price and Second-Price Auctions
+   91. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   89. Multiple Good Allocation Mechanisms
+   92. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1869,17 +1884,17 @@ additional 30 periods</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   90. Troubleshooting
+   93. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   91. References
+   94. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   92. Execution Statistics
+   95. Execution Statistics
   </a>
  </li>
 </ul>

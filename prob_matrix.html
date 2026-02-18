@@ -83,7 +83,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=4c010e0d" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -264,7 +264,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/7940e5fc7" class="changelog-hash">7940e5fc7</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">6 months ago</span>
+                                <span class="changelog-time">7 months ago</span>
                                 <span class="changelog-message">[likelihood_ratio_process] Update new section (#491)</span>
                             </li>
                             
@@ -273,7 +273,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/d0d810363" class="changelog-hash">d0d810363</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">6 months ago</span>
+                                <span class="changelog-time">7 months ago</span>
                                 <span class="changelog-message">Tom's July 16 edits of prob_matrix lecture (#487)</span>
                             </li>
                             
@@ -300,7 +300,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/ff60b44e7" class="changelog-hash">ff60b44e7</a>
                                 
                                 <span class="changelog-author">thomassargent30</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Tom's evening edit of another lecture</span>
                             </li>
                             
@@ -893,8 +893,8 @@ the population distribution correctly tells us the relative frequencies that we 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 1.  1.  0. ...  1.  0.  0.]
- [20. 20. 10. ... 20. 20. 10.]]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 0.  1.  1. ...  1.  0.  1.]
+ [10. 10. 10. ... 20. 10. 20.]]
 </pre></div>
 </div>
 </div>
@@ -928,20 +928,20 @@ the population distribution correctly tells us the relative frequencies that we 
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>marginal distribution for x
-+---------+----------+
-| x_value |  x_prob  |
-+---------+----------+
-|    0    | 0.500043 |
-|    1    | 0.499957 |
-+---------+----------+
++---------+--------------------+
+| x_value |       x_prob       |
++---------+--------------------+
+|    0    |      0.499894      |
+|    1    | 0.5001059999999999 |
++---------+--------------------+
 
 marginal distribution for y
-+---------+----------+
-| y_value |  y_prob  |
-+---------+----------+
-|    10   | 0.399394 |
-|    20   | 0.600606 |
-+---------+----------+
++---------+--------------------+
+| y_value |       y_prob       |
++---------+--------------------+
+|    10   |      0.399909      |
+|    20   | 0.6000909999999999 |
++---------+--------------------+
 </pre></div>
 </div>
 </div>
@@ -978,20 +978,20 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
-+---------+--------------------+--------------------+
-| y_value |     prob(x=0)      |     prob(x=1)      |
-+---------+--------------------+--------------------+
-|    10   | 0.7504744688202627 | 0.2495255311797373 |
-|    20   | 0.3335098217467025 | 0.6664901782532975 |
-+---------+--------------------+--------------------+
++---------+--------------------+---------------------+
+| y_value |     prob(x=0)      |      prob(x=1)      |
++---------+--------------------+---------------------+
+|    10   | 0.748947885643984  | 0.25105211435601604 |
+|    20   | 0.3339210219783333 |  0.6660789780216667 |
++---------+--------------------+---------------------+
 
 conditional distribution for y
-+---------+--------------------+---------------------+
-| x_value |     prob(y=10)     |      prob(y=20)     |
-+---------+--------------------+---------------------+
-|    0    | 0.5994184500132989 | 0.40058154998670115 |
-|    1    | 0.1993351428222827 |  0.8006648571777173 |
-+---------+--------------------+---------------------+
++---------+--------------------+--------------------+
+| x_value |     prob(y=10)     |     prob(y=20)     |
++---------+--------------------+--------------------+
+|    0    | 0.5991490195921535 | 0.4008509804078465 |
+|    1    | 0.2007534402706626 | 0.7992465597293374 |
++---------+--------------------+--------------------+
 </pre></div>
 </div>
 </div>
@@ -1196,8 +1196,8 @@ discrete bivariate joint distribution.</p>
  +---------+----------+
 | x_value |  x_prob  |
 +---------+----------+
-|    0    | 0.500434 |
-|    1    | 0.499566 |
+|    0    | 0.500357 |
+|    1    | 0.499643 |
 |   sum   |   1.0    |
 +---------+----------+
 
@@ -1205,8 +1205,8 @@ marginal distribution for y
  +---------+----------+
 | y_value |  y_prob  |
 +---------+----------+
-|    10   | 0.400111 |
-|    20   | 0.599889 |
+|    10   | 0.400806 |
+|    20   | 0.599194 |
 |   sum   |   1.0    |
 +---------+----------+
 </pre></div>
@@ -1222,20 +1222,20 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
- +---------+--------------------+---------------------+-----+
-| x_value |         0          |          1          | sum |
-+---------+--------------------+---------------------+-----+
-|    10   | 0.7499094001414608 | 0.25009059985853926 | 1.0 |
-|    20   | 0.3340401307575235 |  0.6659598692424765 | 1.0 |
-+---------+--------------------+---------------------+-----+
+ +---------+---------------------+--------------------+-----+
+| x_value |          0          |         1          | sum |
++---------+---------------------+--------------------+-----+
+|    10   |  0.7493625344929966 | 0.2506374655070034 | 1.0 |
+|    20   | 0.33379506470358516 | 0.6662049352964149 | 1.0 |
++---------+---------------------+--------------------+-----+
 
 conditional distribution for y
- +---------+--------------------+--------------------+-----+
-| y_value |         10         |         20         | sum |
-+---------+--------------------+--------------------+-----+
-|    0    | 0.5995735701411176 | 0.4004264298588825 | 1.0 |
-|    1    | 0.2003018620162301 | 0.7996981379837699 | 1.0 |
-+---------+--------------------+--------------------+-----+
+ +---------+---------------------+---------------------+-----+
+| y_value |          10         |          20         | sum |
++---------+---------------------+---------------------+-----+
+|    0    |  0.6002694076429429 | 0.39973059235705705 | 1.0 |
+|    1    | 0.20105755509433737 |  0.7989424449056627 | 1.0 |
++---------+---------------------+---------------------+-----+
 </pre></div>
 </div>
 </div>
@@ -1274,21 +1274,21 @@ conditional distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>marginal distribution for x
- +---------+----------+
-| x_value |  x_prob  |
-+---------+----------+
-|    10   | 0.299867 |
-|    20   | 0.400033 |
-|    30   |  0.3001  |
-|   sum   |   1.0    |
-+---------+----------+
+ +---------+--------------------+
+| x_value |       x_prob       |
++---------+--------------------+
+|    10   |      0.298998      |
+|    20   |      0.400873      |
+|    30   |      0.300129      |
+|   sum   | 0.9999999999999999 |
++---------+--------------------+
 
 marginal distribution for y
  +---------+----------+
 | y_value |  y_prob  |
 +---------+----------+
-|    1    | 0.449872 |
-|    2    | 0.550128 |
+|    1    | 0.449673 |
+|    2    | 0.550327 |
 |   sum   |   1.0    |
 +---------+----------+
 </pre></div>
@@ -1303,20 +1303,20 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>conditional distribution for x
- +---------+---------------------+---------------------+--------------------+-----+
-| x_value |          10         |          20         |         30         | sum |
-+---------+---------------------+---------------------+--------------------+-----+
-|    1    | 0.44384624959988617 | 0.22216097023153253 | 0.3339927801685813 | 1.0 |
-|    2    |  0.182126705057732  |  0.5454894133728878 | 0.2723838815693802 | 1.0 |
-+---------+---------------------+---------------------+--------------------+-----+
+ +---------+--------------------+---------------------+--------------------+-----+
+| x_value |         10         |          20         |         30         | sum |
++---------+--------------------+---------------------+--------------------+-----+
+|    1    | 0.4434911591311909 | 0.22315994066799652 | 0.3333489002008126 | 1.0 |
+|    2    | 0.1809324274476811 |  0.546082601798567  | 0.2729849707537519 | 1.0 |
++---------+--------------------+---------------------+--------------------+-----+
 
 conditional distribution for y
  +---------+---------------------+--------------------+-----+
 | y_value |          1          |         2          | sum |
 +---------+---------------------+--------------------+-----+
-|    10   |  0.6658752046740721 | 0.3341247953259278 | 1.0 |
-|    20   | 0.24983938825046934 | 0.7501606117495306 | 1.0 |
-|    30   |  0.5006797734088637 | 0.4993202265911363 | 1.0 |
+|    10   |  0.6669810500404685 | 0.3330189499595315 | 1.0 |
+|    20   | 0.25032616314892747 | 0.7496738368510726 | 1.0 |
+|    30   |  0.4994452385474246 | 0.5005547614525754 | 1.0 |
 +---------+---------------------+--------------------+-----+
 </pre></div>
 </div>
@@ -1444,10 +1444,10 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-0.0005537378755149382 2.2348151859304592
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0006882165867244266 2.2374114685106847
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/33d28a40267f8e546b5927bf26a133d5fb5555984465392ae7338c96232005d5.png"><img alt="_images/33d28a40267f8e546b5927bf26a133d5fb5555984465392ae7338c96232005d5.png" src="_images/33d28a40267f8e546b5927bf26a133d5fb5555984465392ae7338c96232005d5.png" style="width: 560px; height: 413px;" />
+<a class="reference internal image-reference" href="_images/2eb33a8d5606024d24b1fb9530f6111ad16ae372acd4db076910689240a9f6ff.png"><img alt="_images/2eb33a8d5606024d24b1fb9530f6111ad16ae372acd4db076910689240a9f6ff.png" src="_images/2eb33a8d5606024d24b1fb9530f6111ad16ae372acd4db076910689240a9f6ff.png" style="width: 560px; height: 413px;" />
 </a>
 </div>
 </div>
@@ -1463,10 +1463,10 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.999836034632761 0.999714627290353
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.99918993079252 0.9988322369716577
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/20027045312ef7cd6c45c08085584eaf497771a85e089c56b96c04e000e942ec.png"><img alt="_images/20027045312ef7cd6c45c08085584eaf497771a85e089c56b96c04e000e942ec.png" src="_images/20027045312ef7cd6c45c08085584eaf497771a85e089c56b96c04e000e942ec.png" style="width: 556px; height: 413px;" />
+<a class="reference internal image-reference" href="_images/6a582caf3aa976d192ccac859a3f3d8f91a11ad9e6dc045a3630af33775784a1.png"><img alt="_images/6a582caf3aa976d192ccac859a3f3d8f91a11ad9e6dc045a3630af33775784a1.png" src="_images/6a582caf3aa976d192ccac859a3f3d8f91a11ad9e6dc045a3630af33775784a1.png" style="width: 556px; height: 413px;" />
 </a>
 </div>
 </div>
@@ -1530,7 +1530,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/d4c2d373cc359f91634ec276dbeb0851d60883eb2b2fa6739a3651ef6b27ad9f.png"><img alt="_images/d4c2d373cc359f91634ec276dbeb0851d60883eb2b2fa6739a3651ef6b27ad9f.png" src="_images/d4c2d373cc359f91634ec276dbeb0851d60883eb2b2fa6739a3651ef6b27ad9f.png" style="width: 565px; height: 413px;" />
+<a class="reference internal image-reference" href="_images/7d0bc087c166f6b31f5bcb14e8429d16c477c8a5c80e574c8556287dbf696ab4.png"><img alt="_images/7d0bc087c166f6b31f5bcb14e8429d16c477c8a5c80e574c8556287dbf696ab4.png" src="_images/7d0bc087c166f6b31f5bcb14e8429d16c477c8a5c80e574c8556287dbf696ab4.png" style="width: 565px; height: 413px;" />
 </a>
 </div>
 </div>
@@ -1563,7 +1563,7 @@ f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/58443c017a12c15116508b57860c3b71182280d36b27cb6891c968c1271e2858.png"><img alt="_images/58443c017a12c15116508b57860c3b71182280d36b27cb6891c968c1271e2858.png" src="_images/58443c017a12c15116508b57860c3b71182280d36b27cb6891c968c1271e2858.png" style="width: 556px; height: 413px;" />
+<a class="reference internal image-reference" href="_images/3dbcc5649e4129c8ee80eaa8f8021bab759efbf342c1444b3db7e7e1333aa5ef.png"><img alt="_images/3dbcc5649e4129c8ee80eaa8f8021bab759efbf342c1444b3db7e7e1333aa5ef.png" src="_images/3dbcc5649e4129c8ee80eaa8f8021bab759efbf342c1444b3db7e7e1333aa5ef.png" style="width: 556px; height: 413px;" />
 </a>
 </div>
 </div>
@@ -1808,16 +1808,16 @@ C(u_1,u_2,\dots,u_n) = H[F^{-1}_1(u_1),F^{-1}_2(u_2),\dots,F^{-1}_N(u_N)]
 +---------+----------+
 | x_value |  x_prob  |
 +---------+----------+
-|    0    | 0.598993 |
-|    1    | 0.401007 |
+|    0    | 0.600358 |
+|    1    | 0.399642 |
 +---------+----------+
 distribution for y
-+---------+----------+
-| y_value |  y_prob  |
-+---------+----------+
-|    0    | 0.299466 |
-|    1    | 0.700534 |
-+---------+----------+
++---------+---------------------+
+| y_value |        y_prob       |
++---------+---------------------+
+|    0    | 0.30045900000000003 |
+|    1    |       0.699541      |
++---------+---------------------+
 </pre></div>
 </div>
 </div>
@@ -1892,10 +1892,10 @@ distribution for y
 +------------+------------+----------+
 | c1_x_value | c1_y_value | c1_prob  |
 +------------+------------+----------+
-|     0      |     0      | 0.179654 |
-|     0      |     1      | 0.419765 |
-|     1      |     0      | 0.120105 |
-|     1      |     1      | 0.280476 |
+|     0      |     0      | 0.180516 |
+|     0      |     1      | 0.419972 |
+|     1      |     0      | 0.119884 |
+|     1      |     1      | 0.279628 |
 +------------+------------+----------+
 </pre></div>
 </div>
@@ -1926,18 +1926,18 @@ distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>marginal distribution for x
-+------------+--------------------+
-| c1_x_value |     c1_x_prob      |
-+------------+--------------------+
-|     0      | 0.5994189999999999 |
-|     1      |      0.400581      |
-+------------+--------------------+
++------------+-----------+
+| c1_x_value | c1_x_prob |
++------------+-----------+
+|     0      |  0.600488 |
+|     1      |  0.399512 |
++------------+-----------+
 marginal distribution for y
 +------------+-----------+
 | c1_y_value | c1_y_prob |
 +------------+-----------+
-|     0      |  0.299759 |
-|     1      |  0.700241 |
+|     0      |   0.3004  |
+|     1      |   0.6996  |
 +------------+-----------+
 </pre></div>
 </div>
@@ -2006,10 +2006,10 @@ marginal distribution for y
 +------------+------------+----------+
 | c2_x_value | c2_y_value | c2_prob  |
 +------------+------------+----------+
-|     0      |     0      | 0.300258 |
-|     0      |     1      | 0.300456 |
+|     0      |     0      | 0.299057 |
+|     0      |     1      | 0.300228 |
 |     1      |     0      |   0.0    |
-|     1      |     1      | 0.399286 |
+|     1      |     1      | 0.400715 |
 +------------+------------+----------+
 </pre></div>
 </div>
@@ -2040,18 +2040,18 @@ marginal distribution for y
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>marginal distribution for x
-+------------+-----------+
-| c2_x_value | c2_x_prob |
-+------------+-----------+
-|     0      |  0.600714 |
-|     1      |  0.399286 |
-+------------+-----------+
++------------+--------------------+
+| c2_x_value |     c2_x_prob      |
++------------+--------------------+
+|     0      | 0.5992850000000001 |
+|     1      |      0.400715      |
++------------+--------------------+
 marginal distribution for y
 +------------+-----------+
 | c2_y_value | c2_y_prob |
 +------------+-----------+
-|     0      |  0.300258 |
-|     1      |  0.699742 |
+|     0      |  0.299057 |
+|     1      |  0.700943 |
 +------------+-----------+
 </pre></div>
 </div>
@@ -2340,23 +2340,33 @@ marginal distribution for y
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="chow_business_cycles.html">
+   38. The Acceleration Principle and the Nature of Business Cycles
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   38. Kesten Processes and Firm Dynamics
+   39. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   39. Wealth Distribution Dynamics
+   40. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   40. A First Look at the Kalman Filter
+   41. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   41. Another Look at the Kalman Filter
+   42. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="measurement_models.html">
+   43. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -2368,47 +2378,47 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   42. Job Search I: The McCall Search Model
+   44. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   43. Job Search II: Search and Separation
+   45. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   44. Job Search III: Search with Separation and Markov Wages
+   46. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   45. Job Search IV: Fitted Value Function Iteration
+   47. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   46. Job Search V: Persistent and Transitory Wage Shocks
+   48. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   47. Job Search VI: Modeling Career Choice
+   49. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   48. Job Search VII: On-the-Job Search
+   50. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   49. Job Search VIII: Search with Learning
+   51. Job Search VIII: Search with Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   50. Job Search IX: Search with Q-Learning
+   52. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -2420,32 +2430,32 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   51. Optimal Savings I: Cake Eating
+   53. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   52. Optimal Savings II: Numerical Cake Eating
+   54. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   53. Optimal Savings III: Stochastic Returns
+   55. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   54. Optimal Savings IV: Time Iteration
+   56. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   55. Optimal Savings V: The Endogenous Grid Method
+   57. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   56. Optimal Savings VI: EGM with JAX
+   58. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -2457,27 +2467,27 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   57. The Income Fluctuation Problem I: Discretization and VFI
+   59. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   58. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   60. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   59. The Income Fluctuation Problem III: The Endogenous Grid Method
+   61. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   60. The Income Fluctuation Problem IV: Transient Income Shocks
+   62. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   61. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   63. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -2489,32 +2499,32 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   62. LQ Control: Foundations
+   64. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   63. Lagrangian for LQ Control
+   65. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   64. Eliminating Cross Products
+   66. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   65. The Permanent Income Model
+   67. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   66. Permanent Income II: LQ Techniques
+   68. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   67. Production Smoothing via Inventories
+   69. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2526,27 +2536,27 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   68. Cass-Koopmans Model
+   70. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   69. Cass-Koopmans Competitive Equilibrium
+   71. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   70. Cass-Koopmans Model with Distorting Taxes
+   72. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   71. Two-Country Model with Distorting Taxes
+   73. Two-Country Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   72. Transitions in an Overlapping Generations Model
+   74. Transitions in an Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -2558,42 +2568,42 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   73. A Lake Model of Employment and Unemployment
+   75. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   74. Lake Model with an Endogenous Job Finding Rate
+   76. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   75. Rational Expectations Equilibrium
+   77. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   76. Stability in Linear Rational Expectations Models
+   78. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   77. Markov Perfect Equilibrium
+   79. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   78. Uncertainty Traps
+   80. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   79. The Aiyagari Model
+   81. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   80. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+   82. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
   </a>
  </li>
 </ul>
@@ -2605,22 +2615,27 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   81. Asset Pricing: Finite State Models
+   83. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="doubts_or_variability.html">
+   84. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   82. Competitive Equilibria with Arrow Securities
+   85. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   83. Heterogeneous Beliefs and Bubbles
+   86. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   84. Speculative Behavior with Bayesian Learning
+   87. Speculative Behavior with Bayesian Learning
   </a>
  </li>
 </ul>
@@ -2632,17 +2647,17 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   85. Pandas for Panel Data
+   88. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   86. Linear Regression in Python
+   89. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   87. Maximum Likelihood Estimation
+   90. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2654,12 +2669,12 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   88. First-Price and Second-Price Auctions
+   91. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   89. Multiple Good Allocation Mechanisms
+   92. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2671,17 +2686,17 @@ marginal distribution for y
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   90. Troubleshooting
+   93. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   91. References
+   94. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   92. Execution Statistics
+   95. Execution Statistics
   </a>
  </li>
 </ul>
