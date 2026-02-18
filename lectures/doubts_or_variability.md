@@ -26,12 +26,12 @@ kernelspec:
 :depth: 2
 ```
 
-> *No one has found risk aversion parameters of 50 or 100 in the diversification of
+> No one has found risk aversion parameters of 50 or 100 in the diversification of
 > individual portfolios, in the level of insurance deductibles, in the wage premiums
 > associated with occupations with high earnings risk, or in the revenues raised by
 > state-operated lotteries. It
 > would be good to have the equity premium resolved, but I think we need to look beyond high
-> estimates of risk aversion to do it.* -- Robert E. Lucas Jr., {cite}`Lucas_2003`
+> estimates of risk aversion to do it. -- Robert E. Lucas Jr., {cite}`Lucas_2003`
 
 ## Overview
 
@@ -2092,8 +2092,10 @@ Three features of the analysis support the robustness reading:
 
 1. Detection-error probabilities provide a more stable calibration language than $\gamma$. 
 
-The two consumption models that required very different $\gamma$ values to match the data yield nearly identical pricing implications when indexed by detectability.
+   - The two consumption models that required very different $\gamma$ values to match the data yield nearly identical pricing implications when indexed by detectability.
+
 2. The welfare gains implied by asset prices decompose overwhelmingly into a model-uncertainty component, with the pure risk component remaining small, consistent with Lucas's original finding.
+
 3. The drift distortions that drive pricing are small enough to hide inside standard-error bands, so finite-sample learning cannot eliminate the consumer's fears.
 
 Whether one ultimately prefers the risk or the uncertainty interpretation, the framework clarifies that the question is not about the size of risk premia but about the economic object those premia measure.
