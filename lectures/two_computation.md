@@ -28,24 +28,26 @@ kernelspec:
 
 ## Overview
 
-This lecture describes two computational experiments for transitioning from an unfunded (pay-as-you-go) to a funded social security system, following {cite:t}`huang1997two`.
+This lecture describes two computational experiments about alternative ways to move gradually from an unfunded (pay-as-you-go) to a fully funded social security system, following {cite:t}`huang1997two`.
 
-As developed economies face aging populations, pay-as-you-go social security systems become increasingly unsustainable.
+As populations age, pay-as-you-go social security systems have faced financial difficulties. 
 
-Any transition to a fully funded system creates distributional challenges because older generations who contributed to the unfunded system would lose benefits without compensation.
+This situation has made some of today's policy makers and policy advisors to think that today's citizens would be better off if earlier policy makers had set up a fullly-funded retirement system. 
 
-We study a general equilibrium overlapping generations model that extends the {cite:t}`auerbach1987dynamic` methodology by incorporating
+But starting from where we are today, a transition to a fully funded system creates distributional challenges because older generations who contributed to the unfunded system could lose benefits.
+
+To study possibilities quantitatively, this lecture employs a general equilibrium overlapping generations model that modifies  the {cite:t}`auerbach1987dynamic` environment by incorporating
 
 * risk-sensitive preferences
 * uncertainty about lifetimes
 * uninsurable labor income risk
-* a theory of consumption distribution within and across cohorts
+* a theory of consumption distributions within and across cohorts
 
-By employing the risk-sensitive linear-quadratic formulation of {cite:t}`hansen1995discounted`, the model yields linear decision rules for individual consumption and savings.
+By employing the discounted risk-sensitive linear-quadratic preferences of {cite:t}`hansen1995discounted`, the model yields linear decision rules for individual consumption and savings.
 
-This makes it computationally feasible to track the distribution of consumption and wealth across cohorts.
+This makes it computationally feasible to track the joint distribution of consumption and wealth across cohorts.
 
-This lecture relates to two other lectures in this series:
+This lecture relates to two other lectures:
 
 - {doc}`ak2` studies how taxes, transfers, and debt affect capital accumulation in a two-period OLG model, introducing the {cite:t}`auerbach1987dynamic` framework that this lecture extends.
 
@@ -72,11 +74,11 @@ jax.config.update("jax_enable_x64", True)
 
 The economy consists of overlapping generations of finitely lived individuals who may live up to $T_0+1$ years and an infinitely lived government.
 
-Both individuals and the government can invest at a constant risk-free gross rate of return.
+Individual consumers and the government can invest at a constant risk-free gross rate of return.
 
-During the first $T_1+1$ periods, consumers receive labor income, which they divide between consumption, taxes, and asset accumulation.
+During the first $T_1+1$ periods of life, consumers receive labor income that  they allocate among  consumption, taxes, and asset accumulation.
 
-During the final $T_0-T_1$ periods (retirement), consumers receive social security benefits and consume their accumulated assets.
+During the final $T_0-T_1$ periods of life (retirement), consumers receive social security benefits and dissave by drawing down their assets.
 
 The government taxes income from capital and labor, issues debt, purchases goods, and pays retirement benefits.
 
@@ -112,13 +114,13 @@ $$
 
 ### Distributions and aggregates
 
-Individuals face life span uncertainty and labor income shocks that they cannot fully insure.
+Individuals face life span uncertainty and labor income shocks. 
 
-They self-insure by accumulating risk-free assets (government bonds and physical capital) and combining these with social security benefits.
+They self-insure by accumulating risk-free assets (government bonds and physical capital), while properly taking into account the social security benefits that they anticipate receiving.
 
-Let $\epsilon^t_0$ denote the history of random shocks an individual has received from birth to age $t$.
+Let $\epsilon^t_0$ denote the history of random shocks  that an individual has received from birth to age $t$.
 
-The state vector $x_t(s) = x_t(s; \epsilon^t_0, x_0)$ measures the stock of assets and variables a consumer uses to forecast future preferences or opportunities.
+The state vector $x_t(s) = x_t(s; \epsilon^t_0, x_0)$ measures the stock of assets as well as information variables a consumer uses to forecast future preferences or opportunities.
 
 The model delivers consumption as a time- and age-dependent linear function of the state vector
 
@@ -134,7 +136,7 @@ $$
 
 with $\epsilon_{t+1}$ a martingale difference sequence satisfying $E(\epsilon_{t+1}|J_t) = 0$, $E(\epsilon_{t+1} \cdot \epsilon'_{t+1}|J_t) = I$, and $J_t = (\epsilon^t_0, x_0)$.
 
-The model delivers probability distributions for state vectors and linear functions of them.
+The model delivers probability distributions for state vectors.  
 
 Let $\mu_t(s) = E[x_t(s)]$ and $\Sigma_t(s) = E[(x_t(s)-\mu_t(s))(x_t(s)-\mu_t(s))']$.
 
@@ -182,9 +184,9 @@ $$
 
 where $\tilde{N}(s) = \sum^{T_1}_{t=0} \varepsilon_t \cdot N^{s-t}_t$ is aggregate labor input in efficiency units and $\tilde{\alpha}$ is capital's share of income.
 
-### Household problem
+### Consumers' problems
 
-Households face a permanent income model (see {doc}`perm_income`) with restricted assets.
+Individual consumers face an overlapping-generations version of a classic consumption-saving problem (see {doc}`perm_income`).
 
 Working-age consumers ($t \leq T_1$) receive labor income $w(s) \cdot \varepsilon_t + d_t$, where $d_t$ is an AR(1) process
 
@@ -212,7 +214,7 @@ $$
 
 where $\mathcal{R}_t(U_{t+1}) = (2/\sigma) \cdot \log E[\exp(\sigma \cdot U_{t+1}/2) | J_t]$, $\sigma$ is the risk-sensitivity parameter, and $\beta_t = \bar{\beta} \cdot \alpha_t$ is the survival-adjusted discount factor.
 
-This preference specification delivers linear decision rules but allows a form of risk-sensitivity that induces precautionary savings.
+This preference specification delivers linear decision rules while  allowing a form of risk-sensitivity that induces a type of precautionary savings.
 
 When $\sigma < 0$, the consumer prefers early resolution of uncertainty, and decision rules depend partly on noise statistics.
 
@@ -232,7 +234,7 @@ $$
 
 where $b_t(s)$ is government debt held by age-$t$ individuals at time $s$ and the last term represents the bequest tax.
 
-The transition between fiscal regimes is described by dates $0 \leq s_1 < s_2 < s_3$:
+A transition between fiscal regimes is described by dates $0 \leq s_1 < s_2 < s_3$:
 
 * Before $s = 0$: initial stationary equilibrium
 * At $s = 0$: government announces a policy change
@@ -324,15 +326,15 @@ In experiment 1, the government terminates social security benefits but compensa
 
 In experiment 2, the government retains social security benefits but temporarily raises taxes to accumulate physical capital, the returns from which eventually finance social security payments.
 
-Both schemes achieve the transition to fully funded social security while maintaining welfare across generations, but through different mechanisms of intergenerational risk-sharing.
+Both proposals finance a transition to fully funded social security while maintaining welfare across generations, but they entail  different amounts of intergenerational risk-sharing.
 
-We compute both experiments under fixed and endogenous factor prices and compare the results below.
+We compute both experiments under fixed and endogenous factor prices and compare outcomes below.
 
 ## Computation strategy
 
-### Dynamic programming problem
+### Dynamic program
 
-The household's problem can be formulated as a discounted risk-sensitive linear control problem (see {doc}`lqcontrol`).
+An individual consumer's problem can be formulated as a discounted risk-sensitive linear control problem (see {doc}`lqcontrol`).
 
 Let $x_t = [a_{t-1}, z_t]'$ where $z_t$ is the vector of shocks.
 
@@ -346,7 +348,7 @@ $$
 
 subject to $x_{t+1} = A_t x_t + B_t u_t + C_t w_{t+1}$.
 
-The solution is characterized by Riccati operators
+We deploy two operators
 
 $$
 \begin{gathered}
@@ -356,14 +358,14 @@ D_t(W)=R_t+A_t^{\prime}\left[\beta_t W-\beta_t^2 W B_t\left(Q_t+\beta_t B_t^{\pr
 \end{gathered}
 $$
 
-which deliver the value function recursion $P_t = (D_t \circ T_t) P_{t+1}$, $\xi_t = \mathcal{S}_t(\xi_{t+1}, P_{t+1})$, and the optimal control
+that we use to construct a value function recursion $P_t = (D_t \circ T_t) P_{t+1}$, $\xi_t = \mathcal{S}_t(\xi_{t+1}, P_{t+1})$, and an optimal control
 
 $$
 u_t = -F_t x_t, \qquad
 F_t = \beta_t \left[Q_t + \beta_t B'_t T_t(P_{t+1}) B_t \right]^{-1} B'_t T_t(P_{t+1}) A_t.
 $$
 
-The operators $T_t$, $D_t$, $\mathcal{S}_t$ and the decision rule $F_t$ are implemented in `solve_riccati_step`.
+Operators $T_t$, $D_t$, $\mathcal{S}_t$ and  decision rule $F_t$ are constructed in `solve_riccati_step`.
 
 Given value function parameters $(P_{t+1}, \xi_{t+1})$ at the next age, it constructs the state-space matrix $A_t$, applies the cross-product trick, evaluates the Riccati operators, and returns the optimal decision rule $F_t$, the closed-loop matrix $A^o_t = A_t - B F_t$, and the updated $(P_t, \xi_t)$
 
@@ -427,7 +429,7 @@ def solve_riccati_step(
     return F.squeeze(), Ao, P, ξ
 ```
 
-### Mapping to LQ form
+### State space preparation
 
 The budget constraint {eq}`two_comp_budget` and the income process can be written in state-space form.
 
@@ -690,7 +692,7 @@ def create_Tech(δ=0.06, w=5.0147, r=0.1275,
 tech = create_Tech()
 ```
 
-## Solving the household problem
+## Individual optimality
 
 ### Steady-state computation
 
