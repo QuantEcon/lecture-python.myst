@@ -281,13 +281,16 @@ mystnb:
 γ_grid = np.arange(1, 55, 5)
 
 Em_rw = np.array([moments_type1_rw(γ)[0] for γ in γ_grid])
-σ_m_rw = np.array([moments_type1_rw(γ)[0] * moments_type1_rw(γ)[1] for γ in γ_grid])
+σ_m_rw = np.array(
+    [moments_type1_rw(γ)[0] * moments_type1_rw(γ)[1] for γ in γ_grid])
 
 Em_ts = np.array([moments_type1_ts(γ)[0] for γ in γ_grid])
-σ_m_ts = np.array([moments_type1_ts(γ)[0] * moments_type1_ts(γ)[1] for γ in γ_grid])
+σ_m_ts = np.array(
+    [moments_type1_ts(γ)[0] * moments_type1_ts(γ)[1] for γ in γ_grid])
 
 Em_crra = np.array([moments_crra_rw(γ)[0] for γ in γ_grid])
-σ_m_crra = np.array([moments_crra_rw(γ)[0] * moments_crra_rw(γ)[1] for γ in γ_grid])
+σ_m_crra = np.array(
+    [moments_crra_rw(γ)[0] * moments_crra_rw(γ)[1] for γ in γ_grid])
 
 Em_grid = np.linspace(0.8, 1.01, 1000)
 HJ_std = np.array([hj_std_bound(x) for x in Em_grid])
@@ -1719,20 +1722,28 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
 # Panel A
 ax = axes[0]
-ax.fill_between(t, mean_base - std_base, mean_base + std_base, alpha=0.25, color="tab:blue")
-ax.plot(t, ce_risk_unc, lw=2, ls="--", color="black", label="certainty equivalent: risk + uncertainty")
-ax.plot(t, ce_risk, lw=2, color="tab:orange", label="certainty equivalent: risk only")
-ax.plot(t, mean_base, lw=2, color="tab:blue", label="approximating-model mean")
+ax.fill_between(t, mean_base - std_base, mean_base + std_base, 
+                alpha=0.25, color="tab:blue")
+ax.plot(t, ce_risk_unc, lw=2, ls="--", color="black", 
+                label="certainty equivalent: risk + uncertainty")
+ax.plot(t, ce_risk, lw=2, color="tab:orange", 
+                label="certainty equivalent: risk only")
+ax.plot(t, mean_base, lw=2, 
+                color="tab:blue", label="approximating-model mean")
 ax.set_xlabel("quarters")
 ax.set_ylabel("log consumption")
 ax.legend(frameon=False, fontsize=8, loc="upper left")
 
 # Panel B
 ax = axes[1]
-ax.fill_between(t, mean_base - std_base, mean_base + std_base, alpha=0.20, color="tab:blue")
-ax.fill_between(t, mean_low - std_base, mean_low + std_base, alpha=0.20, color="tab:red")
-ax.fill_between(t, mean_high - std_base, mean_high + std_base, alpha=0.20, color="tab:green")
-ax.plot(t, ce_risk_unc, lw=2, ls="--", color="black", label="certainty equivalent: risk + uncertainty")
+ax.fill_between(t, mean_base - std_base, mean_base + std_base, 
+                            alpha=0.20, color="tab:blue")
+ax.fill_between(t, mean_low - std_base, mean_low + std_base, 
+                            alpha=0.20, color="tab:red")
+ax.fill_between(t, mean_high - std_base, mean_high + std_base, 
+                            alpha=0.20, color="tab:green")
+ax.plot(t, ce_risk_unc, lw=2, ls="--", color="black", 
+                        label="certainty equivalent: risk + uncertainty")
 ax.plot(t, mean_base, lw=2, color="tab:blue", label="approximating-model mean")
 ax.plot(t, mean_low, lw=2, color="tab:red", label="worst-case-leaning mean")
 ax.plot(t, mean_high, lw=2, color="tab:green", label="best-case-leaning mean")
@@ -1806,7 +1817,7 @@ gain_ts = np.where(
 gain_rw_pct = 100.0 * (np.exp(gain_rw) - 1.0)
 gain_ts_pct = 100.0 * (np.exp(gain_ts) - 1.0)
 
-# Detection error probabilities implied by η (common across RW/TS for the Gaussian mean-shift case)
+# Detection error probabilities implied by η
 p_eta_pct = 100.0 * norm.cdf(-0.5 * w_abs_grid * np.sqrt(T))
 order = np.argsort(p_eta_pct)
 p_plot = p_eta_pct[order]
@@ -1951,7 +1962,7 @@ nom_sv = _read_fred_series("PCESV", start_date, end_date)       # quarterly, 194
 defl = _read_fred_series("DPCERD3Q086SBEA", start_date, end_date)  # quarterly, 1947–
 pop_m = _read_fred_series("CNP16OV", start_date, end_date)      # monthly, 1948–
 
-# Step 1: add nominal nondurables + services (nominal $ are additive)
+# Step 1: add nominal nondurables + services
 nom_total = nom_nd + nom_sv
 
 # Step 2: deflate by PCE implicit price deflator (index 2017=100)
@@ -1965,11 +1976,14 @@ real_pc = (real_total / pop_q).dropna()
 real_pc = real_pc.loc["1948-01-01":"2006-12-31"].dropna()
 
 if real_pc.empty:
-    raise RuntimeError("FRED returned no usable observations after alignment/filtering")
+    raise RuntimeError(
+        "FRED returned no usable observations after alignment/filtering")
 
 # Step 4: log consumption
 log_c_data = np.log(real_pc.to_numpy(dtype=float).reshape(-1))
-years_data = (real_pc.index.year + (real_pc.index.month - 1) / 12.0).to_numpy(dtype=float)
+years_data = (
+    real_pc.index.year 
+    + (real_pc.index.month - 1) / 12.0).to_numpy(dtype=float)
 
 print(f"Fetched {len(log_c_data)} quarterly observations from FRED")
 print(f"Sample: {years_data[0]:.1f} – {years_data[-1] + 0.25:.1f}")
@@ -2029,7 +2043,8 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
 ax = axes[0]
 ax.plot(years, c, lw=2, color="tab:blue", label="log consumption")
-ax.plot(years, line_approx, lw=2, ls="--", color="black", label="approximating model")
+ax.plot(years, line_approx, lw=2, ls="--", 
+            color="black", label="approximating model")
 ax.plot(
     years,
     line_worst,
@@ -2051,7 +2066,8 @@ ax.plot(
     label=r"$\mu + \sigma_\varepsilon w(\theta)$",
 )
 ax.axhline(1_000.0 * rw_fig6["μ"], lw=2, color="black", label=r"$\hat\mu$")
-ax.axhline(1_000.0 * upper_band, lw=2, ls="--", color="gray", label=r"$\hat\mu \pm 2\hat s.e.$")
+ax.axhline(1_000.0 * upper_band, lw=2, ls="--", 
+                    color="gray", label=r"$\hat\mu \pm 2\hat s.e.$")
 ax.axhline(1_000.0 * lower_band, lw=2, ls="--", color="gray")
 ax.set_xlabel("detection error probability (percent)")
 ax.set_ylabel(r"mean consumption growth ($\times 10^{-3}$)")
