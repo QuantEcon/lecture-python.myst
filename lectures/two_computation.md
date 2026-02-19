@@ -32,7 +32,7 @@ This lecture describes two computational experiments about alternative ways to m
 
 As populations age, pay-as-you-go social security systems have faced financial difficulties. 
 
-This situation has made some of today's policy makers and policy advisors to think that today's citizens would be better off if earlier policy makers had set up a fullly-funded retirement system. 
+This situation has led some of today's policy makers and policy advisors to think that today's citizens would be better off if earlier policy makers had set up a fully-funded retirement system. 
 
 But starting from where we are today, a transition to a fully funded system creates distributional challenges because older generations who contributed to the unfunded system could lose benefits.
 
@@ -53,7 +53,7 @@ This lecture relates to two other lectures:
 
 - {doc}`ak_aiyagari` studies how fiscal policy interacts with precautionary savings in a long-lived OLG model, using discrete dynamic programming rather than the linear-quadratic approach adopted here.
 
-We use the following imports and configurations
+We use the following imports and configurations.
 
 ```{code-cell} ipython3
 import jax

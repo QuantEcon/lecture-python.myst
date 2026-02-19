@@ -49,7 +49,7 @@ See {cite}`tobin1992old`.
 
 
 In two classic papers, Lars Peter Hansen and Kenneth Singleton used the method of maximum likelihood
-{cite}`hansen1983stochastic` and a generalized method of moments {cite}`hansen1982generalized` to investigate how well Lucas's model fit some post WWII data .  
+{cite}`hansen1983stochastic` and a generalized method of moments {cite}`hansen1982generalized` to investigate how well Lucas's model fit some post WWII data.  
 
 The Hansen-Singleton papers systematically organized evidence about directions in which Lucas's model misfit the data that macroeconomists subsequently called
 
@@ -63,15 +63,15 @@ The Hansen-Singleton papers systematically organized evidence about directions i
 
 ```
 
-These *puzzles* are just ways of summarizing particular dimensions along with a particular asset pricing model -- such as Lucas's -- fails empirically.
+These *puzzles* are just ways of summarizing particular dimensions along which a particular asset pricing model -- such as Lucas's -- fails empirically.
 
-They are thus special cases of specification failures detected by statistical diagnostics constructed earlier by {cite}`hansen1983stochastic` and {cite}`hansen1983stochastic`.
+They are thus special cases of specification failures detected by statistical diagnostics constructed earlier by {cite}`hansen1983stochastic` and {cite}`hansen1982generalized`.
 
 Macro-finance models that purport to resolve such puzzles all do so by changing features of the economic environment assumed by Lucas {cite}`Lucas1978`.
 
 Many important papers have proceeded by altering the *preferences* that Lucas had imputed to a representative agent.
 
-Hansen-Jagannathan bounds are key tool for evaluating how well such re-specifications do in
+Hansen-Jagannathan bounds are a key tool for evaluating how well such re-specifications do in
 correcting those misfits of Lucas's 1978 model.   
 
 
@@ -82,11 +82,11 @@ After doing that, we proceed to describe a line of research that altered Lucas's
 
 We'll organize much of this lecture around parts of the paper by Thomas Tallarini {cite}`Tall2000`.
 
-His paper is particularly enlighening for macro-finance researchers because it  showed that a recursive preference specification could fit both the equity premium and the risk-free rate, thus *resolving* both of the puzzles mentioned above.
+His paper is particularly enlightening for macro-finance researchers because it  showed that a recursive preference specification could fit both the equity premium and the risk-free rate, thus *resolving* both of the puzzles mentioned above.
 
 But like any good paper in applied economics, in answering some questions (i.e., resolving some puzzles), Tallarini's paper naturally posed new ones.  
 
-Thus, Tallarin's puzzles-resolving required setting the risk-aversion coefficient $\gamma$ to around 50 for a random-walk consumption model and around 75 for a trend-stationary model, exactly the range that provoked the  skepticism in the above quote from {cite:t}`Lucas_2003`.
+Thus, Tallarini's puzzles-resolving required setting the risk-aversion coefficient $\gamma$ to around 50 for a random-walk consumption model and around 75 for a trend-stationary model, exactly the range that provoked the  skepticism in the above quote from {cite:t}`Lucas_2003`.
 
 This brings us to the next parts of this lecture.
 
@@ -95,7 +95,7 @@ Lucas's skeptical response to Tallarini's explanation of the two puzzles led
 
 Their answer, and the theme of the remaining parts of this  lecture, is that much of what looks like "risk aversion" can be reinterpreted as **model uncertainty**.
 
-The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to a another recursion that expresses an agent's concern  that the probability model governing consumption growth may be wrong.
+The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to another recursion that expresses an agent's concern  that the probability model governing consumption growth may be wrong.
 
 Under this reading, a  parameter value  that indicates  extreme risk aversion in one interpretation of the recursion  indicates concerns about *misspecification* in another interpretation of the same recursion.
 
@@ -283,7 +283,7 @@ This is the **risk-free rate puzzle** of {cite:t}`Weil_1989`.
 
 The figure below reproduces Tallarini's key diagnostic.
 
-Because it motivates much of what follow, we show Tallarini's figure  before developing the underlying theory.
+Because it motivates much of what follows, we show Tallarini's figure  before developing the underlying theory.
 
 
 Closed-form expressions for the Epstein--Zin SDF moments used in the plot are derived in {ref}`Exercise 2 <dov_ex2>`.
@@ -1382,7 +1382,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-The next figure makes the "doubts or variability?" question by decomposing the log SDF into two additive components.
+The next figure poses the "doubts or variability?" question by decomposing the log SDF into two additive components.
 
 Taking logs of {eq}`bhs_sdf` gives
 
