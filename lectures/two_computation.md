@@ -557,7 +557,36 @@ UNIT_GRID = jnp.linspace(0.0, 1.0, N_GRID_SS)
 AGE_INDICES = jnp.arange(T0 + 2)
 ```
 
-We load the age-efficiency profile $\{\varepsilon_t\}$ and the survival probabilities $\{\alpha_t\}$ from data files based on {cite:t}`faber1982life` and {cite:t}`hansen1993cyclical`.
+The hidden code cell below defines the age-efficiency profile $\{\varepsilon_t\}$ and the survival probabilities $\{\alpha_t\}$ based on {cite:t}`faber1982life` and {cite:t}`hansen1993cyclical`.
+
+```{code-cell} ipython3
+:tags: [hide-cell]
+
+ε_arr = jnp.array([
+    0.59031284, 0.62902188, 0.66773093, 0.70643996, 0.745149,
+    0.78385804, 0.82256708, 0.86127611, 0.89998515, 0.92861368,
+    0.94716179, 0.9657099,  0.98425792, 1.002806,   1.0211928,
+    1.0399022,  1.0584503,  1.0769984,  1.0955465,  1.1056269,
+    1.1072398,  1.1088527,  1.1104656,  1.1120784,  1.1136913,
+    1.1153042,  1.116917,   1.1185299,  1.1201428,  1.1185299,
+    1.1136913,  1.1088527,  1.1040141,  1.0991755,  1.0943368,
+    1.0894981,  1.0846595,  1.0798209,  1.0749823,  1.0611115,
+    1.0382087,  1.0153058,  0.99240301, 0.96958081
+])
+
+α_arr = jnp.array([
+    1.0,     0.99851, 0.99844, 0.99838, 0.99832, 0.99826, 0.9982,
+    0.99816, 0.99815, 0.99819, 0.99826, 0.99834, 0.9984,  0.99843,
+    0.99841, 0.99835, 0.99828, 0.99818, 0.99807, 0.99794, 0.99778,
+    0.99759, 0.99737, 0.99712, 0.99684, 0.99653, 0.99619, 0.9958,
+    0.99535, 0.99481, 0.99419, 0.9935,  0.99278, 0.99209, 0.99148,
+    0.99088, 0.99021, 0.98942, 0.98851, 0.98746, 0.98625, 0.98495,
+    0.9835,  0.98178, 0.97974, 0.97743, 0.97489, 0.97226, 0.96965,
+    0.96715, 0.96466, 0.962,   0.95907, 0.9559,  0.95246, 0.94872,
+    0.9446,  0.94017, 0.93555, 0.93077, 0.9257,  0.9203,  0.91431,
+    0.90742, 0.89948
+])
+```
 
 ```{code-cell} ipython3
 ---
@@ -566,7 +595,6 @@ mystnb:
     caption: Age-efficiency profile and survival probabilities
     name: two_comp_profiles
 ---
-ε_arr, α_arr = jnp.load("eff.npy"), jnp.load("psurv.npy")
 
 fig, axs = plt.subplots(1, 2, figsize=(10, 6))
 
@@ -1239,7 +1267,7 @@ ss1 = ss_target_debt2gdp_exo(
     ss0.debt2gdp, (τ_a_0, τ_0_0, 0, G_0), (RR_exo, w_exo), hh, tech
 )
 
-print(f"\nTerminal Steady State (s ≥ s₃):")
+print(f"\nTerminal Steady State (s >= s3):")
 print(f"  Labor tax τ_l = {ss1.τ_l:.4f}")
 print(f"  Benefits θ = 0")
 print(f"  Capital/GDP = {ss1.k2gdp:.4f}")
