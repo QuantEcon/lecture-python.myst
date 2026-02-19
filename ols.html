@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>89. Linear Regression in Python &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>90. Linear Regression in Python &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="90. Maximum Likelihood Estimation" href="mle.html" />
-    <link rel="prev" title="88. Pandas for Panel Data" href="pandas_panel.html" />
+    <link rel="next" title="91. Maximum Likelihood Estimation" href="mle.html" />
+    <link rel="prev" title="89. Pandas for Panel Data" href="pandas_panel.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -183,15 +183,15 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">89.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">89.1.1. Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">90.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">90.1.1. Prerequisites</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-linear-regression">89.2. Simple Linear Regression</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-the-linear-regression-model">89.3. Extending the Linear Regression Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#endogeneity">89.4. Endogeneity</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">89.5. Summary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">89.6. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-linear-regression">90.2. Simple Linear Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extending-the-linear-regression-model">90.3. Extending the Linear Regression Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#endogeneity">90.4. Endogeneity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">90.5. Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">90.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -253,7 +253,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a1cd90c5e" class="changelog-hash">a1cd90c5e</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">2 months ago</span>
+                                <span class="changelog-time">3 months ago</span>
                                 <span class="changelog-message">STYLE: Fix emphasis vs definitions style guide compliance (Issue #721) (#723)</span>
                             </li>
                             
@@ -351,7 +351,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="linear-regression-in-python">
-<h1><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">89. </span>Linear Regression in Python</a><a class="headerlink" href="#linear-regression-in-python" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">90. </span>Linear Regression in Python</a><a class="headerlink" href="#linear-regression-in-python" title="Link to this heading">#</a></h1>
 <nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -421,7 +421,7 @@ Successfully installed formulaic-1.2.1 interface-meta-1.3.0 linearmodels-7.0 pyh
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">89.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">90.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>Linear regression is a standard tool for analyzing the relationship between two or more variables.</p>
 <p>In this lecture, we’ll use the Python package <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> to estimate, interpret, and visualize linear regression models.</p>
 <p>Along the way, we’ll discuss a variety of topics, including</p>
@@ -454,14 +454,14 @@ Successfully installed formulaic-1.2.1 interface-meta-1.3.0 linearmodels-7.0 pyh
 </div>
 </div>
 <section id="prerequisites">
-<h3><span class="section-number">89.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">90.1.1. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h3>
 <p>This lecture assumes you are familiar with basic econometrics.</p>
 <p>For an introductory text covering these topics, see, for example,
 <span id="id2">[<a class="reference internal" href="zreferences.html#id112" title="Jeffrey M Wooldridge. Introductory econometrics: A modern approach. Nelson Education, 2015.">Wooldridge, 2015</a>]</span>.</p>
 </section>
 </section>
 <section id="simple-linear-regression">
-<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">89.2. </span>Simple Linear Regression</a><a class="headerlink" href="#simple-linear-regression" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">90.2. </span>Simple Linear Regression</a><a class="headerlink" href="#simple-linear-regression" title="Link to this heading">#</a></h2>
 <p><span id="id3">[<a class="reference internal" href="zreferences.html#id113" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> wish to determine whether or not differences in institutions can help to explain observed economic outcomes.</p>
 <p>How do we measure <em>institutional differences</em> and <em>economic outcomes</em>?</p>
 <p>In this paper,</p>
@@ -873,7 +873,7 @@ comparison purposes</p>
 </div>
 </section>
 <section id="extending-the-linear-regression-model">
-<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">89.3. </span>Extending the Linear Regression Model</a><a class="headerlink" href="#extending-the-linear-regression-model" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">90.3. </span>Extending the Linear Regression Model</a><a class="headerlink" href="#extending-the-linear-regression-model" title="Link to this heading">#</a></h2>
 <p>So far we have only accounted for institutions affecting economic
 performance - almost certainly there are numerous other factors
 affecting GDP that are not included in our model.</p>
@@ -966,7 +966,7 @@ Standard errors in parentheses.
 </div>
 </section>
 <section id="endogeneity">
-<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">89.4. </span>Endogeneity</a><a class="headerlink" href="#endogeneity" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">90.4. </span>Endogeneity</a><a class="headerlink" href="#endogeneity" title="Link to this heading">#</a></h2>
 <p>As <span id="id6">[<a class="reference internal" href="zreferences.html#id113" title="Daron Acemoglu, Simon Johnson, and James A Robinson. The colonial origins of comparative development: an empirical investigation. The American Economic Review, 91(5):1369–1401, 2001.">Acemoglu <em>et al.</em>, 2001</a>]</span> discuss, the OLS models likely suffer from
 <strong>endogeneity</strong> issues, resulting in biased and inconsistent model
 estimates.</p>
@@ -1220,15 +1220,15 @@ quality) implies up to a 7-fold difference in income, emphasizing the
 significance of institutions in economic development.</p>
 </section>
 <section id="summary">
-<h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">89.5. </span>Summary</a><a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">90.5. </span>Summary</a><a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
 <p>We have demonstrated basic OLS and 2SLS regression in <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> and <code class="docutils literal notranslate"><span class="pre">linearmodels</span></code>.</p>
 <p>If you are familiar with R, you may want to use the <a class="reference external" href="https://www.statsmodels.org/dev/example_formulas.html">formula interface</a> to <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>, or consider using <a class="reference external" href="https://rpy2.github.io/">r2py</a> to call R from within Python.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id17" role="doc-backlink"><span class="section-number">89.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id17" role="doc-backlink"><span class="section-number">90.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="ols_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 89.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 90.1 </span></p>
 <section id="exercise-content">
 <p>In the lecture, we think the original model suffers from endogeneity
 bias due to the likely effect income has on institutional development.</p>
@@ -1329,7 +1329,7 @@ significant, indicating <span class="math notranslate nohighlight">\(avexpr_i\)<
 </div>
 <div class="exercise admonition" id="ols_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 89.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 90.2 </span></p>
 <section id="exercise-content">
 <p>The OLS parameter <span class="math notranslate nohighlight">\(\beta\)</span> can also be estimated using matrix
 algebra and <code class="docutils literal notranslate"><span class="pre">numpy</span></code> (you may need to review the
@@ -1948,6 +1948,11 @@ computations.</p>
    82. A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_computation.html">
+   83. Two Computations to Fund Social Security
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1957,27 +1962,27 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   83. Asset Pricing: Finite State Models
+   84. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="doubts_or_variability.html">
-   84. Doubts or Variability?
+   85. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   85. Competitive Equilibria with Arrow Securities
+   86. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   86. Heterogeneous Beliefs and Bubbles
+   87. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   87. Speculative Behavior with Bayesian Learning
+   88. Speculative Behavior with Bayesian Learning
   </a>
  </li>
 </ul>
@@ -1989,17 +1994,17 @@ computations.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   88. Pandas for Panel Data
+   89. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   89. Linear Regression in Python
+   90. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   90. Maximum Likelihood Estimation
+   91. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2011,12 +2016,12 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   91. First-Price and Second-Price Auctions
+   92. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   92. Multiple Good Allocation Mechanisms
+   93. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2028,17 +2033,17 @@ computations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   93. Troubleshooting
+   94. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   94. References
+   95. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   95. Execution Statistics
+   96. Execution Statistics
   </a>
  </li>
 </ul>
