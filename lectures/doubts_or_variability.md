@@ -35,13 +35,53 @@ kernelspec:
 
 ## Overview
 
-{cite:t}`Tall2000` showed that a recursive preference specification could match the equity premium and the risk-free rate puzzle simultaneously.
+This lecture describes basic machinery that macro-finance economists have used to link asset prices to aggregate consumption.
 
-But matching required setting the risk-aversion coefficient $\gamma$ to around 50 for a random-walk consumption model and around 75 for a trend-stationary model, exactly the range that provoked the  skepticism in the above quote from {cite:t}`Lucas_2003`.
+The Lucas asset pricing model {cite}`Lucas1978` functions as a benchmark that motivates much of this work.
 
-{cite:t}`BHS_2009` ask whether those large $\gamma$ values really measure aversion to atemporal risk, or whether they instead measure the agent's doubts about the underlying probability model.
+```{note}
+New Keynesians call the consumption Euler equation for a one-period risk-free bond in the Lucas {cite}`Lucas1978` model the **IS curve**.  The distinguished **old Keynesian** disapproved of that name because the object it described was so remote from the investment function that was an important component of the IS curve of John R. Hicks {cite}`hicks1937mr` that Tobin used. 
+See {cite}`tobin1992old`.
+```
 
-Their answer, and the theme of this lecture, is that much of what looks like "risk aversion" can be reinterpreted as **model uncertainty**.
+
+In two classic papers, Lars Peter Hansen and Kenneth Singleton used the method of maximum likelihood
+{cite}`hansen1983stochastic` and a generalized method of moments {cite}`hansen1982generalized` to investigate how well Lucas's model fit some post WWII data .  
+
+Their papers systematically organized evidence about directions in which Lucas's model misfit the data  that macroeconomists subsequently called
+
+- an **equity premium** puzzle
+- a **risk-free rate** puzzle
+
+These **puzzles** are just ways of summarizing particular dimensions along with a particular asset pricing model -- such as Lucas's -- fails empirically.
+
+Macro-finance models that puport  to resolve such puzzles all do so by changing features of the economic environment assumed by Lucas {cite}`Lucas1978`.
+
+Many important papers have proceeded by altering the **preferences** that Lucas had imputed to a representative agent.
+
+Hansen-Jagannathan bounds are  key tool for evaluating how well such re-specifications do in 
+correcting those misfits of Lucas's 1978 model.   
+
+
+This lecture begins with a description of the {cite}`Hansen_Jagannathan_1991` machinery.
+
+After doing that, we proceed to describe a line of research that altered Lucas's preference specification in ways that we can think of as being designed with the Hansen-Jagannathan bounds in mind.
+
+
+We'll organize much of this lecture around parts of the paper by Thomas Tallarini {cite}`Tall2000`.
+
+His paper is particularly enlighening for macro-finance researchers because it  showed that a recursive preference specification could fit both the equity premium and the risk-free rate, thus *resolving* both of the puzzles mentioned above.
+
+But like any good paper in applied economics, in answering some questions (i.e., resolving some puzzles), Tallarini's paper naturally posed new ones.  
+
+Thus, Tallarin's puzzles-resolving required setting the risk-aversion coefficient $\gamma$ to around 50 for a random-walk consumption model and around 75 for a trend-stationary model, exactly the range that provoked the  skepticism in the above quote from {cite:t}`Lucas_2003`.
+
+This brings us to the next parts of this lecture.
+
+Lucas's skeptical response to Tallarini's explanation of the two puzzles led 
+{cite:t}`BHS_2009` to ask whether those large $\gamma$ values really measure aversion to atemporal risk, or whether they instead measure the agent's doubts about the underlying probability model.
+
+Their answer, and the theme of the remaining parts of this  lecture, is that much of what looks like "risk aversion" can be reinterpreted as **model uncertainty**.
 
 The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to a another recursion that expresses an agent's concern  that the probability model governing consumption growth may be wrong.
 
@@ -49,11 +89,13 @@ Under this reading, a  parameter value  that indicates  extreme risk aversion in
 
 {cite:t}`BHS_2009` show that modest amounts of model uncertainty can substitute for large amounts of risk aversion in terms of choices and effects on asset prices.
 
+
 This reinterpretation changes the welfare question that asset prices answer.
 
 Do large risk premia measure the benefits from reducing well-understood aggregate fluctuations, or do they measure  benefits from reducing doubts about the  model describing consumption growth?
 
-We begin with a {cite:t}`Hansen_Jagannathan_1991` bound, then specify the statistical environment, lay out four related preference specifications and the connections among them, and finally revisit Tallarini's calibration through the lens of detection-error probabilities.
+
+To proceed, we begin by describing   {cite:t}`Hansen_Jagannathan_1991` bounds, then specify the statistical environment, lay out four related preference specifications and the connections among them, and finally revisit Tallarini's calibration through the lens of detection-error probabilities.
 
 Along the way, we draw on ideas and techniques from
 
