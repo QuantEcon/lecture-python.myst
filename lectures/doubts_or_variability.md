@@ -40,7 +40,10 @@ This lecture describes basic machinery that macro-finance economists have used t
 The Lucas asset pricing model {cite}`Lucas1978` functions as a benchmark that motivates much of this work.
 
 ```{note}
-New Keynesians call the consumption Euler equation for a one-period risk-free bond in the Lucas {cite}`Lucas1978` model the **IS curve**.  The distinguished **old Keynesian** disapproved of that name because the object it described was so remote from the investment function that was an important component of the IS curve of John R. Hicks {cite}`hicks1937mr` that Tobin used. 
+New Keynesians call the consumption Euler equation for a one-period risk-free bond in the Lucas {cite}`Lucas1978` model the **IS curve**.  
+
+The distinguished **old Keynesian** disapproved of that name because the object it described was so remote from the investment function that was an important component of the IS curve of John R. Hicks {cite}`hicks1937mr` that Tobin used. 
+
 See {cite}`tobin1992old`.
 ```
 
@@ -48,18 +51,18 @@ See {cite}`tobin1992old`.
 In two classic papers, Lars Peter Hansen and Kenneth Singleton used the method of maximum likelihood
 {cite}`hansen1983stochastic` and a generalized method of moments {cite}`hansen1982generalized` to investigate how well Lucas's model fit some post WWII data .  
 
-Their papers systematically organized evidence about directions in which Lucas's model misfit the data  that macroeconomists subsequently called
+Their papers systematically organized evidence about directions in which Lucas's model misfit the data that macroeconomists subsequently called
 
 - an **equity premium** puzzle
 - a **risk-free rate** puzzle
 
-These **puzzles** are just ways of summarizing particular dimensions along with a particular asset pricing model -- such as Lucas's -- fails empirically.
+These *puzzles* are just ways of summarizing particular dimensions along with a particular asset pricing model -- such as Lucas's -- fails empirically.
 
-Macro-finance models that puport  to resolve such puzzles all do so by changing features of the economic environment assumed by Lucas {cite}`Lucas1978`.
+Macro-finance models that purport to resolve such puzzles all do so by changing features of the economic environment assumed by Lucas {cite}`Lucas1978`.
 
-Many important papers have proceeded by altering the **preferences** that Lucas had imputed to a representative agent.
+Many important papers have proceeded by altering the *preferences* that Lucas had imputed to a representative agent.
 
-Hansen-Jagannathan bounds are  key tool for evaluating how well such re-specifications do in 
+Hansen-Jagannathan bounds are key tool for evaluating how well such re-specifications do in
 correcting those misfits of Lucas's 1978 model.   
 
 
