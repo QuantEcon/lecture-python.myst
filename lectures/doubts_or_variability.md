@@ -35,7 +35,7 @@ kernelspec:
 
 ## Overview
 
-This lecture describes basic machinery that macro-finance economists have used to link asset prices to aggregate consumption.
+This lecture describes machinery that empirical  macro-finance economists have used to evaluate the fits of structural statistical models that link asset prices to aggregate consumption.
 
 The Lucas asset pricing model {cite}`Lucas1978` functions as a benchmark that motivates much of this work.
 
@@ -51,12 +51,21 @@ See {cite}`tobin1992old`.
 In two classic papers, Lars Peter Hansen and Kenneth Singleton used the method of maximum likelihood
 {cite}`hansen1983stochastic` and a generalized method of moments {cite}`hansen1982generalized` to investigate how well Lucas's model fit some post WWII data .  
 
-Their papers systematically organized evidence about directions in which Lucas's model misfit the data that macroeconomists subsequently called
+The Hansen-Singleton papers systematically organized evidence about directions in which Lucas's model misfit the data that macroeconomists subsequently called
 
 - an **equity premium** puzzle
 - a **risk-free rate** puzzle
 
+```{note}
+{cite:t}`MehraPrescott1985` is widely credited for naming the **equity premium** puzzle.
+
+{cite:t}`Weil_1989` is  widely credited for naming the **risk-free rate** puzzle.
+
+```
+
 These *puzzles* are just ways of summarizing particular dimensions along with a particular asset pricing model -- such as Lucas's -- fails empirically.
+
+They are thus special cases of specification failures detected by statistical diagnostics constructed earlier by {cite}`hansen1983stochastic` and {cite}`hansen1983stochastic`.
 
 Macro-finance models that purport to resolve such puzzles all do so by changing features of the economic environment assumed by Lucas {cite}`Lucas1978`.
 
@@ -152,7 +161,7 @@ cov_erf = (r_e_std**2 + r_f_std**2 - r_excess_std**2) / 2.0
 Σ_R_inv = np.linalg.inv(Σ_R)
 ```
 
-## The equity premium and risk-free rate puzzles
+## Asset pricing 101
 
 ### Pricing kernel and the risk-free rate
 
@@ -183,7 +192,7 @@ Setting $y_{t+1} = 1$ (a risk-free bond) in {eq}`bhs_pricing_eq` yields the reci
 \frac{1}{R_t^f} = E_t[m_{t+1}] = E_t \left[\beta\left(\frac{C_{t+1}}{C_t}\right)^{-\gamma}\right].
 ```
 
-### The Hansen--Jagannathan bound
+### Hansen--Jagannathan bounds
 
 Let $R_{t+1}^e$ denote the gross return on a risky asset (e.g., the market portfolio) and $R_{t+1}^f$ the gross return on a one-period risk-free bond.
 
