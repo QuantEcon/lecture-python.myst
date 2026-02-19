@@ -26,6 +26,18 @@ kernelspec:
 :depth: 2
 ```
 
+```{include} _admonition/gpu.md
+```
+
+
+In addition to what's in Anaconda, this lecture will need the following library
+
+```{code-cell} ipython3
+:tags: [skip-execution]
+
+!pip install jax
+```
+
 ## Overview
 
 This lecture describes two computational experiments about alternative ways to move gradually from an unfunded (pay-as-you-go) to a fully funded social security system, following {cite:t}`huang1997two`.
@@ -53,7 +65,7 @@ This lecture relates to two other lectures:
 
 - {doc}`ak_aiyagari` studies how fiscal policy interacts with precautionary savings in a long-lived OLG model, using discrete dynamic programming rather than the linear-quadratic approach adopted here.
 
-We use the following imports and configurations.
+We use the following imports and configurations
 
 ```{code-cell} ipython3
 import jax
