@@ -287,10 +287,19 @@
                             
                             <li class="changelog-entry">
                                 
-                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/ac2918105" class="changelog-hash">ac2918105</a>
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/064c47b19" class="changelog-hash">064c47b19</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
                                 <span class="changelog-time">16 minutes ago</span>
+                                <span class="changelog-message">[two_computation] Embed Data in Lecture into Hidden code cell (#811)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/ac2918105" class="changelog-hash">ac2918105</a>
+                                
+                                <span class="changelog-author">Humphrey Yang</span>
+                                <span class="changelog-time">6 hours ago</span>
                                 <span class="changelog-message">Add a lecture by @shizejin on Two Computations to Fund Social Security and Edits from Tom on BHS lecture (#810)</span>
                             </li>
                             
@@ -882,12 +891,46 @@ A^* = A - BQ^{-1}H, \qquad R^* = R - H'Q^{-1}H.
 </div>
 </div>
 </div>
-<p>We load the age-efficiency profile <span class="math notranslate nohighlight">\(\{\varepsilon_t\}\)</span> and the survival probabilities <span class="math notranslate nohighlight">\(\{\alpha_t\}\)</span> from data files based on <span id="id9">Faber [<a class="reference internal" href="zreferences.html#id287" title="Joseph F Faber. Life tables for the United States: 1900–2050. Actuarial Study Actuarial Study No. 87, Social Security Administration, Office of the Actuary, 1982.">1982</a>]</span> and <span id="id10">Hansen [<a class="reference internal" href="zreferences.html#id288" title="Gary D Hansen. The cyclical and secular behaviour of the labour input: comparing efficiency units and hours worked. Journal of Applied Econometrics, 8(1):71–80, 1993.">1993</a>]</span>.</p>
+<p>The hidden code cell below defines the age-efficiency profile <span class="math notranslate nohighlight">\(\{\varepsilon_t\}\)</span> and the survival probabilities <span class="math notranslate nohighlight">\(\{\alpha_t\}\)</span> based on <span id="id9">Faber [<a class="reference internal" href="zreferences.html#id287" title="Joseph F Faber. Life tables for the United States: 1900–2050. Actuarial Study Actuarial Study No. 87, Social Security Administration, Office of the Actuary, 1982.">1982</a>]</span> and <span id="id10">Hansen [<a class="reference internal" href="zreferences.html#id288" title="Gary D Hansen. The cyclical and secular behaviour of the labour input: comparing efficiency units and hours worked. Journal of Applied Econometrics, 8(1):71–80, 1993.">1993</a>]</span>.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ε_arr</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="mf">0.59031284</span><span class="p">,</span> <span class="mf">0.62902188</span><span class="p">,</span> <span class="mf">0.66773093</span><span class="p">,</span> <span class="mf">0.70643996</span><span class="p">,</span> <span class="mf">0.745149</span><span class="p">,</span>
+    <span class="mf">0.78385804</span><span class="p">,</span> <span class="mf">0.82256708</span><span class="p">,</span> <span class="mf">0.86127611</span><span class="p">,</span> <span class="mf">0.89998515</span><span class="p">,</span> <span class="mf">0.92861368</span><span class="p">,</span>
+    <span class="mf">0.94716179</span><span class="p">,</span> <span class="mf">0.9657099</span><span class="p">,</span>  <span class="mf">0.98425792</span><span class="p">,</span> <span class="mf">1.002806</span><span class="p">,</span>   <span class="mf">1.0211928</span><span class="p">,</span>
+    <span class="mf">1.0399022</span><span class="p">,</span>  <span class="mf">1.0584503</span><span class="p">,</span>  <span class="mf">1.0769984</span><span class="p">,</span>  <span class="mf">1.0955465</span><span class="p">,</span>  <span class="mf">1.1056269</span><span class="p">,</span>
+    <span class="mf">1.1072398</span><span class="p">,</span>  <span class="mf">1.1088527</span><span class="p">,</span>  <span class="mf">1.1104656</span><span class="p">,</span>  <span class="mf">1.1120784</span><span class="p">,</span>  <span class="mf">1.1136913</span><span class="p">,</span>
+    <span class="mf">1.1153042</span><span class="p">,</span>  <span class="mf">1.116917</span><span class="p">,</span>   <span class="mf">1.1185299</span><span class="p">,</span>  <span class="mf">1.1201428</span><span class="p">,</span>  <span class="mf">1.1185299</span><span class="p">,</span>
+    <span class="mf">1.1136913</span><span class="p">,</span>  <span class="mf">1.1088527</span><span class="p">,</span>  <span class="mf">1.1040141</span><span class="p">,</span>  <span class="mf">1.0991755</span><span class="p">,</span>  <span class="mf">1.0943368</span><span class="p">,</span>
+    <span class="mf">1.0894981</span><span class="p">,</span>  <span class="mf">1.0846595</span><span class="p">,</span>  <span class="mf">1.0798209</span><span class="p">,</span>  <span class="mf">1.0749823</span><span class="p">,</span>  <span class="mf">1.0611115</span><span class="p">,</span>
+    <span class="mf">1.0382087</span><span class="p">,</span>  <span class="mf">1.0153058</span><span class="p">,</span>  <span class="mf">0.99240301</span><span class="p">,</span> <span class="mf">0.96958081</span>
+<span class="p">])</span>
+
+<span class="n">α_arr</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="mf">1.0</span><span class="p">,</span>     <span class="mf">0.99851</span><span class="p">,</span> <span class="mf">0.99844</span><span class="p">,</span> <span class="mf">0.99838</span><span class="p">,</span> <span class="mf">0.99832</span><span class="p">,</span> <span class="mf">0.99826</span><span class="p">,</span> <span class="mf">0.9982</span><span class="p">,</span>
+    <span class="mf">0.99816</span><span class="p">,</span> <span class="mf">0.99815</span><span class="p">,</span> <span class="mf">0.99819</span><span class="p">,</span> <span class="mf">0.99826</span><span class="p">,</span> <span class="mf">0.99834</span><span class="p">,</span> <span class="mf">0.9984</span><span class="p">,</span>  <span class="mf">0.99843</span><span class="p">,</span>
+    <span class="mf">0.99841</span><span class="p">,</span> <span class="mf">0.99835</span><span class="p">,</span> <span class="mf">0.99828</span><span class="p">,</span> <span class="mf">0.99818</span><span class="p">,</span> <span class="mf">0.99807</span><span class="p">,</span> <span class="mf">0.99794</span><span class="p">,</span> <span class="mf">0.99778</span><span class="p">,</span>
+    <span class="mf">0.99759</span><span class="p">,</span> <span class="mf">0.99737</span><span class="p">,</span> <span class="mf">0.99712</span><span class="p">,</span> <span class="mf">0.99684</span><span class="p">,</span> <span class="mf">0.99653</span><span class="p">,</span> <span class="mf">0.99619</span><span class="p">,</span> <span class="mf">0.9958</span><span class="p">,</span>
+    <span class="mf">0.99535</span><span class="p">,</span> <span class="mf">0.99481</span><span class="p">,</span> <span class="mf">0.99419</span><span class="p">,</span> <span class="mf">0.9935</span><span class="p">,</span>  <span class="mf">0.99278</span><span class="p">,</span> <span class="mf">0.99209</span><span class="p">,</span> <span class="mf">0.99148</span><span class="p">,</span>
+    <span class="mf">0.99088</span><span class="p">,</span> <span class="mf">0.99021</span><span class="p">,</span> <span class="mf">0.98942</span><span class="p">,</span> <span class="mf">0.98851</span><span class="p">,</span> <span class="mf">0.98746</span><span class="p">,</span> <span class="mf">0.98625</span><span class="p">,</span> <span class="mf">0.98495</span><span class="p">,</span>
+    <span class="mf">0.9835</span><span class="p">,</span>  <span class="mf">0.98178</span><span class="p">,</span> <span class="mf">0.97974</span><span class="p">,</span> <span class="mf">0.97743</span><span class="p">,</span> <span class="mf">0.97489</span><span class="p">,</span> <span class="mf">0.97226</span><span class="p">,</span> <span class="mf">0.96965</span><span class="p">,</span>
+    <span class="mf">0.96715</span><span class="p">,</span> <span class="mf">0.96466</span><span class="p">,</span> <span class="mf">0.962</span><span class="p">,</span>   <span class="mf">0.95907</span><span class="p">,</span> <span class="mf">0.9559</span><span class="p">,</span>  <span class="mf">0.95246</span><span class="p">,</span> <span class="mf">0.94872</span><span class="p">,</span>
+    <span class="mf">0.9446</span><span class="p">,</span>  <span class="mf">0.94017</span><span class="p">,</span> <span class="mf">0.93555</span><span class="p">,</span> <span class="mf">0.93077</span><span class="p">,</span> <span class="mf">0.9257</span><span class="p">,</span>  <span class="mf">0.9203</span><span class="p">,</span>  <span class="mf">0.91431</span><span class="p">,</span>
+    <span class="mf">0.90742</span><span class="p">,</span> <span class="mf">0.89948</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ε_arr</span><span class="p">,</span> <span class="n">α_arr</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;eff.npy&quot;</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;psurv.npy&quot;</span><span class="p">)</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 
 <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ε_arr</span><span class="p">)</span>
 <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Working efficiency&quot;</span><span class="p">)</span>
@@ -1631,7 +1674,7 @@ and return the government budget gap.</p></li>
     <span class="n">ss0</span><span class="o">.</span><span class="n">debt2gdp</span><span class="p">,</span> <span class="p">(</span><span class="n">τ_a_0</span><span class="p">,</span> <span class="n">τ_0_0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">G_0</span><span class="p">),</span> <span class="p">(</span><span class="n">RR_exo</span><span class="p">,</span> <span class="n">w_exo</span><span class="p">),</span> <span class="n">hh</span><span class="p">,</span> <span class="n">tech</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Terminal Steady State (s ≥ s₃):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Terminal Steady State (s &gt;= s3):&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Labor tax τ_l = </span><span class="si">{</span><span class="n">ss1</span><span class="o">.</span><span class="n">τ_l</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Benefits θ = 0&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Capital/GDP = </span><span class="si">{</span><span class="n">ss1</span><span class="o">.</span><span class="n">k2gdp</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1640,7 +1683,7 @@ and return the government budget gap.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminal Steady State (s ≥ s₃):
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminal Steady State (s &gt;= s3):
   Labor tax τ_l = 0.0831
   Benefits θ = 0
   Capital/GDP = 4.1567
