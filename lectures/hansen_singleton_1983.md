@@ -67,6 +67,13 @@ We cover:
 - return-difference tests that bypass consumption measurement
 - the connection to the equity premium puzzle and subsequent literature
 
+Relative to the full empirical scope of {cite:t}`hansen1983stochastic`, this notebook makes deliberate simplifications:
+
+- We estimate bivariate systems with one return at a time (value-weighted market proxy or T-bill), not the full multi-asset systems behind Tables 2, 3, and 5.
+- We focus on monthly nondurable consumption (`ND`) and do not re-estimate the paper's `NDS` or quarterly specifications.
+- We include the return-difference logic and a simulation check, but we do not replicate the paper's multi-stock return-difference rejection table.
+- We do not implement the `NLAG = 0` just-identified comparison emphasized in the paper's joint-system discussion.
+
 In addition to what comes with Anaconda, this lecture requires `pandas-datareader`
 
 ```{code-cell} ipython3
@@ -128,11 +135,15 @@ Both this lecture and the companion lecture {doc}`hansen_singleton_1982` use the
 
 Both {cite:t}`hansen1982generalized` and {cite:t}`hansen1983stochastic` use monthly data on real per capita consumption (nondurables) and stock returns from CRSP for the period 1959:2 through 1978:12.
 
-To align with the paper, we set the default sample to 1959:2--1978:12. You can pass different `start` and `end` dates to study later periods.
+To align with the paper, we set the default sample to 1959:2--1978:12.
+
+You can pass different `start` and `end` dates to study later periods.
 
 This lecture pulls stock-market and one-month bill returns from the Ken French data library (`F-F_Research_Data_Factors`) and constructs gross nominal returns as `1 + (Mkt-RF + RF)/100` for the market and `1 + RF/100` for bills.
 
-Hansen-Singleton use CRSP value-weighted NYSE returns. Exact CRSP NYSE replication is not open-data feasible, so this lecture uses Ken French's CRSP value-weighted market factor as the closest public proxy.
+Hansen-Singleton use CRSP value-weighted NYSE returns.
+
+Exact CRSP NYSE replication is not open-data feasible, so this lecture uses Ken French's CRSP value-weighted market factor as the closest public proxy.
 
 To keep the core message clear, we use one consumption construction throughout: nondurables (`ND`) with the nondurables deflator (the specification most directly aligned with Table 1 discussion in the paper).
 
@@ -300,27 +311,35 @@ Let $x_t = c_t / c_{t-1}$ denote the consumption ratio, and define $u_{it} = \be
 
 The Euler equation states $E_{t-1}[u_{it}] = 1$.
 
+This is the same Euler restriction as above, written with a one-period reindexing.
+
+{cite:t}`hansen1983stochastic` define $u_{it} = x_t^\alpha r_{it}$ and write $E_{t-1}[u_{it}] = 1/\beta$.
+
+Our normalization is equivalent and absorbs $\beta$ directly into $u_{it}$.
+
 Define log variables $X_t = \log x_t$, $R_{it} = \log r_{it}$, and $U_{it} = \log u_{it}$, so that
 
 ```{math}
 :label: hs83-u-def
 
-U_{i,t+1}= \alpha X_{t+1}+R_{i,t+1}+\log\beta.
+U_{i,t}= \alpha X_{t}+R_{i,t}+\log\beta.
 ```
 
-{cite:t}`hansen1983stochastic` now make their key distributional assumption. The vector process $\{Y_t\} = \{(X_t, R_{1t}, \ldots, R_{nt})'\}$ is jointly stationary and Gaussian.
+{cite:t}`hansen1983stochastic` now make their key distributional assumption.
 
-Under this assumption, $U_{it}$ conditional on the information set $\psi_{t-1}$ is normal with constant variance $\sigma_i^2$ and a conditional mean $\mu_{it-1}$ that is a linear function of past $Y$'s.
+The vector process $\{Y_t\} = \{(X_t, R_{1t}, \ldots, R_{nt})^\top\}$ is jointly stationary and Gaussian.
+
+Under this assumption, $U_{it}$ conditional on the information set $\psi_{t-1}$ is normal with constant variance $\sigma_i^2$ and a conditional mean $\mu_{i,t-1}$ that is a linear function of past $Y$'s.
 
 Because $u_{it} = \exp(U_{it})$ is conditionally lognormal, we can evaluate $E_{t-1}[u_{it}]$ in closed form:
 
 ```{math}
 :label: hs83-lognormal-identity
 
-E_{t-1}[u_{it}] = \exp\left(\mu_{it-1} + \tfrac{1}{2}\sigma_i^2\right).
+E_{t-1}[u_{it}] = \exp\left(\mu_{i,t-1} + \tfrac{1}{2}\sigma_i^2\right).
 ```
 
-Setting $E_{t-1}[u_{it}] = 1$ and taking logs gives $\mu_{it-1} + \sigma_i^2/2 = 0$.
+Setting $E_{t-1}[u_{it}] = 1$ and taking logs gives $\mu_{i,t-1} + \sigma_i^2/2 = 0$.
 
 Now define the innovation
 
@@ -372,7 +391,7 @@ def to_mle_array(data):
 
 To build a likelihood, we need to parameterize the conditional expectation $E_{t-1}[X_t]$.
 
-In the single-return case, write $Y_t = (X_t, R_t)'$ and assume that the predictable component of $X_t$ is a finite-order linear function of past observations:
+In the single-return case, write $Y_t = (X_t, R_t)^\top$ and assume that the predictable component of $X_t$ is a finite-order linear function of past observations:
 
 ```{math}
 :label: hs83-x-forecast
@@ -384,7 +403,9 @@ where $a(L)$ is a vector of lag polynomial coefficients in past $(X, R)$ and $\m
 
 The consumption-growth equation is unrestricted, so $X_t$ depends freely on its own lags and on lagged returns.
 
-The return equation, however, is restricted by the Euler equation. Combining {eq}`hs83-cond-mean` with {eq}`hs83-x-forecast` forces the predictable part of $R_t$ to be $-\alpha$ times the predictable part of $X_t$, plus a constant.
+The return equation, however, is restricted by the Euler equation.
+
+Combining {eq}`hs83-cond-mean` with {eq}`hs83-x-forecast` forces the predictable part of $R_t$ to be $-\alpha$ times the predictable part of $X_t$, plus a constant.
 
 This gives the triangular system
 
@@ -408,7 +429,11 @@ A_1(L)=\begin{bmatrix}a(L)^\top\\0\end{bmatrix},
 
 where $\sigma_U^2 \equiv \operatorname{Var}_{t-1}(\alpha X_t + R_t) = \alpha^2 \sigma_{XX} + \sigma_{RR} + 2\alpha \sigma_{XR}$ under conditional homoskedasticity.
 
-The system is "triangular" because $A_0$ is unit lower triangular. The first equation determines consumption growth, and the second equation pins down the return conditional on consumption growth.
+The sign in the second element of $\mu$ follows directly from {eq}`hs83-cond-mean`.
+
+The system is "triangular" because $A_0$ is unit lower triangular.
+
+The first equation determines consumption growth, and the second equation pins down the return conditional on consumption growth.
 
 Because $\det(A_0) = 1$, the Jacobian of the transformation from innovations $V_t$ to observables $Y_t$ is unity.
 
@@ -419,12 +444,14 @@ Given $T$ observations and conditional on initial values, the log-likelihood is 
 ```{math}
 :label: hs83-loglik
 
-L(\theta) = -\frac{T}{2}\log|\Sigma| - \frac{1}{2}\sum_{t=1}^{T}(A_0 Y_t - A_1(L)Y_{t-1} - \mu)'\Sigma^{-1}(A_0 Y_t - A_1(L)Y_{t-1} - \mu),
+L(\theta) = -\frac{T}{2}\log|\Sigma| - \frac{1}{2}\sum_{t=1}^{T}(A_0 Y_t - A_1(L)Y_{t-1} - \mu)^\top\Sigma^{-1}(A_0 Y_t - A_1(L)Y_{t-1} - \mu),
 ```
 
 where $\Sigma$ is the covariance matrix of the innovation $V_t$ and we have dropped the constant $-T\log(2\pi)$.
 
-The restrictions imposed by the Euler equation enter through the structure of $A_0$, $A_1(L)$, and $\mu$. The return equation has no free lag coefficients and its intercept is determined by $\alpha$, $\beta$, and $\Sigma$.
+The restrictions imposed by the Euler equation enter through the structure of $A_0$, $A_1(L)$, and $\mu$.
+
+The return equation has no free lag coefficients and its intercept is determined by $\alpha$, $\beta$, and $\Sigma$.
 
 An unrestricted VAR would estimate both equations freely, with $2(1 + 2p) + 3$ free parameters (where $p$ is the lag length).
 
@@ -769,9 +796,134 @@ def starting_values(y_t, y_lag, n_lags, n_starts=24):
     return starts
 ```
 
-Standard errors come from a numerical Hessian of the negative log-likelihood.
+Standard errors come from an outer-product-of-gradients (OPG) approximation to the
+information matrix, computed by finite differences of per-observation
+log-likelihood contributions.
+
+This tends to be more numerically stable than finite-difference Hessians in this
+application.
 
 ```{code-cell} ipython3
+def log_likelihood_contributions(
+    params,
+    y_t,
+    y_lag,
+    n_lags,
+    include_const=False,
+):
+    """
+    Vector of per-observation Gaussian log-likelihood contributions.
+
+    Returns an array of length T, or None if the parameter vector is infeasible.
+    """
+    parsed = unpack_parameters(params, n_lags)
+    if parsed is None:
+        return None
+
+    resid = triangular_residuals(params, y_t, y_lag, n_lags)
+    if resid is None:
+        return None
+
+    α = float(parsed["α"])
+    sigma_x = float(parsed["sigma_x"])
+    sigma_r = float(parsed["sigma_r"])
+    cov_xr = float(parsed["cov_xr"])
+
+    sigma_e = np.array(
+        [
+            [sigma_x ** 2, cov_xr],
+            [cov_xr, sigma_r ** 2],
+        ]
+    )
+    a0 = np.array([[1.0, 0.0], [α, 1.0]])
+    sigma_v = a0 @ sigma_e @ a0.T
+
+    try:
+        chol = cholesky(sigma_v, lower=True)
+        log_det = 2.0 * np.sum(np.log(np.diag(chol) + 1e-16))
+        std_resid = solve_triangular(chol, resid.T, lower=True).T
+    except (LinAlgError, ValueError):
+        return None
+
+    quad = np.sum(std_resid ** 2, axis=1)
+    ll_t = -0.5 * log_det - 0.5 * quad
+    if include_const:
+        ll_t -= np.log(2.0 * np.pi)
+    if not np.all(np.isfinite(ll_t)):
+        return None
+    return ll_t
+
+
+def opg_standard_errors(
+    params,
+    y_t,
+    y_lag,
+    n_lags,
+    step=1e-6,
+    max_step_shrink=12,
+    eig_floor=1e-12,
+):
+    """
+    Standard errors via OPG approximation to the information matrix.
+    """
+    n = len(params)
+    ll0 = log_likelihood_contributions(params, y_t, y_lag, n_lags, include_const=False)
+    if ll0 is None:
+        return np.full(n, np.nan)
+
+    n_obs = int(ll0.shape[0])
+    scores = np.empty((n_obs, n))
+
+    for i in range(n):
+        base_step = step * (abs(params[i]) + 1.0)
+        hi = base_step
+        ll_plus = None
+        ll_minus = None
+
+        for _ in range(max_step_shrink + 1):
+            p_plus = params.copy()
+            p_minus = params.copy()
+            p_plus[i] += hi
+            p_minus[i] -= hi
+            ll_plus = log_likelihood_contributions(
+                p_plus, y_t, y_lag, n_lags, include_const=False
+            )
+            ll_minus = log_likelihood_contributions(
+                p_minus, y_t, y_lag, n_lags, include_const=False
+            )
+            if ll_plus is not None and ll_minus is not None:
+                break
+            hi *= 0.5
+
+        if ll_plus is None or ll_minus is None:
+            return np.full(n, np.nan)
+
+        scores[:, i] = (ll_plus - ll_minus) / (2.0 * hi)
+
+    if not np.all(np.isfinite(scores)):
+        return np.full(n, np.nan)
+
+    # Center scores to mitigate numerical drift away from the first-order condition.
+    scores = scores - scores.mean(axis=0, keepdims=True)
+
+    opg = scores.T @ scores
+    if not np.all(np.isfinite(opg)):
+        return np.full(n, np.nan)
+    opg = 0.5 * (opg + opg.T)
+
+    try:
+        eigvals, eigvecs = np.linalg.eigh(opg)
+    except (LinAlgError, ValueError):
+        return np.full(n, np.nan)
+
+    floor = float(eig_floor) * max(1.0, float(np.max(eigvals)))
+    eigvals = np.clip(eigvals, floor, None)
+    cov = eigvecs @ np.diag(1.0 / eigvals) @ eigvecs.T
+    se = np.sqrt(np.maximum(np.diag(cov), 0.0))
+    se[~np.isfinite(se)] = np.nan
+    return se
+
+
 def numerical_standard_errors(
     params,
     y_t,
@@ -844,7 +996,9 @@ def numerical_standard_errors(
     return se
 ```
 
-When the finite-difference Hessian is too ill-conditioned, we use the optimizer's inverse-Hessian approximation as a fallback.
+When OPG standard errors fail (e.g., due to infeasible perturbations) we fall back
+to a finite-difference Hessian and then to the optimizer's inverse-Hessian
+approximation.
 
 ```{code-cell} ipython3
 def lbfgs_standard_errors(opt_result, eig_floor=1e-12):
@@ -921,7 +1075,12 @@ def estimate_mle(data, n_lags, base_lags=None, verbose=False):
         }
 
     params = best_result.x
-    se = numerical_standard_errors(params, y_t, y_lag, n_lags)
+    se = opg_standard_errors(params, y_t, y_lag, n_lags)
+    if np.any(~np.isfinite(se)):
+        se_hess = numerical_standard_errors(params, y_t, y_lag, n_lags)
+        if se_hess is not None and se_hess.shape == se.shape:
+            se = np.where(np.isfinite(se), se, se_hess)
+
     if np.any(~np.isfinite(se)):
         se_lbfgs = lbfgs_standard_errors(best_result)
         if se_lbfgs is not None and se_lbfgs.shape == se.shape:
@@ -1002,7 +1161,9 @@ def run_mle_by_lag(
 
 The restricted triangular system identifies preference parameters through cross-equation restrictions.
 
-The parameter $\alpha$ links predictable variation in returns to predictable variation in consumption growth. Under the model, the return equation's dependence on lagged variables is entirely determined by $\alpha$ times the consumption equation's lag coefficients.
+The parameter $\alpha$ links predictable variation in returns to predictable variation in consumption growth.
+
+Under the model, the return equation's dependence on lagged variables is entirely determined by $\alpha$ times the consumption equation's lag coefficients.
 
 The parameter $\beta$ shifts the return-equation intercept through $-\log\beta - \sigma_U^2/2$.
 
@@ -1022,7 +1183,9 @@ where $\ell_u$ and $\ell_r$ are the maximized log-likelihoods of the unrestricte
 
 Both likelihoods must be evaluated on the same effective sample for the LR distribution to be valid.
 
-{cite:t}`hansen1983stochastic` report that for the value-weighted aggregate stock return, the $\chi^2$ test statistics have probability values around 0.52 to 0.83 across lag lengths (Table 1), providing little evidence against the model. In the tables below we report both `chi2.cdf(LR, df)` (paper-style probability value) and the usual right-tail `p(LR) = 1 - chi2.cdf`.
+{cite:t}`hansen1983stochastic` report that for the value-weighted aggregate stock return, the $\chi^2$ test statistics have probability values around 0.52 to 0.83 across lag lengths (Table 1), providing little evidence against the model.
+
+In the tables below we report both `chi2.cdf(LR, df)` and the usual right-tail `p(LR) = 1 - chi2.cdf`.
 
 However, for individual Dow Jones stocks and for Treasury bills, the restrictions are strongly rejected.
 
@@ -1050,12 +1213,12 @@ def likelihood_ratio_test(
     }
 ```
 
-The unrestricted benchmark is a Gaussian VAR for $Y_t = (X_t, R_t)'$ with free coefficients on all lags in both equations.
+The unrestricted benchmark is a Gaussian VAR for $Y_t = (X_t, R_t)^\top$ with free coefficients on all lags in both equations.
 
 ```{code-cell} ipython3
 def estimate_unrestricted_var(data, n_lags, base_lags=None):
     """
-    Estimate an unrestricted Gaussian VAR for Y_t = [X_t, R_t]'.
+    Estimate an unrestricted Gaussian VAR for Y_t = [X_t, R_t].
     """
     y_t, y_lag = build_lagged_data(data, n_lags, base_lags=base_lags)
     n_obs = y_t.shape[0]
@@ -1099,7 +1262,9 @@ def estimate_unrestricted_var(data, n_lags, base_lags=None):
     }
 ```
 
-For paper-style replication, lag-specific samples are often used (`common_sample=False`), so each lag uses all observations available at that lag. If you want direct AIC/BIC comparability across lag lengths, set `common_sample=True`.
+For paper-style replication, lag-specific samples are often used (`common_sample=False`), so each lag uses all observations available at that lag.
+
+If you want direct AIC/BIC comparability across lag lengths, set `common_sample=True`.
 
 ```{code-cell} ipython3
 def run_unrestricted_var_by_lag(data, lags=(2, 4, 6), common_sample=False):
@@ -1254,7 +1419,7 @@ def predictability_metrics(data, restricted_fit, unrestricted_fit, n_lags, base_
 
 {cite:t}`hansen1983stochastic` also propose tests based on differences in log returns across assets.
 
-From {eq}`hs83-cond-mean`, the difference $R_{it} - R_{jt}$ has conditional mean $-(\sigma_i^2 - \sigma_j^2)/2$, which is constant.
+From {eq}`hs83-cond-mean`, the difference $R_{it} - R_{jt}$ has conditional mean $-(\sigma_i^2 - \sigma_j^2)/2 = (\sigma_j^2 - \sigma_i^2)/2$, which is constant.
 
 This means that return differences should be unpredictable if the model is correct, regardless of the values of $\alpha$ and $\beta$.
 
@@ -1262,11 +1427,21 @@ These tests avoid the need to measure consumption or to align consumption timing
 
 If we generalize the CRRA utility to include a multiplicative preference shock $\lambda_t$, so that $U(c_t, \lambda_t) = c_t^\gamma \lambda_t / \gamma$ (with $\alpha=\gamma-1$), the Euler equation becomes $E_t[\beta (c_{t+1}/c_t)^\alpha (\lambda_{t+1}/\lambda_t) r_{it+1}] = 1$.
 
-Under lognormality, the difference in log returns between assets $i$ and $j$ satisfies $R_{it} - R_{jt} = (\tilde\sigma_j^2 - \tilde\sigma_i^2)/2 + \tilde V_{it} - \tilde V_{jt}$, where the consumption, preference shock, and discount factor terms cancel.
+Under lognormality, the difference in log returns between assets $i$ and $j$ satisfies
+
+$$
+R_{it} - R_{jt} = \frac{\tilde\sigma_j^2 - \tilde\sigma_i^2}{2} + \tilde V_{it} - \tilde V_{jt},
+$$
+
+where the consumption, preference shock, and discount factor terms cancel.
+
+This sign convention is the one implied by {eq}`hs83-cond-mean`; some printed versions reverse this constant term.
 
 This means return differences should be unpredictable if the model holds, regardless of $\alpha$, $\beta$, or the preference shock.
 
 {cite:t}`hansen1983stochastic` report that the return-difference restrictions are strongly rejected for models with multiple stock returns, providing substantial evidence against the CRRA-lognormal specification even when consumption measurement problems are eliminated.
+
+The code below is an illustration of this logic on simulated data; reproducing the paper's empirical return-difference tables requires estimating multi-asset systems that are outside this notebook's scope.
 
 ```{code-cell} ipython3
 def simulate_multi_asset_nominal_returns(
@@ -1434,9 +1609,13 @@ display_table(mle_pretty, title="Likelihood Estimates by Lag Length", fmt={
 
 The table reports $\hat\alpha$ and $\hat\beta$ by lag length for the sample used in the code cell above.
 
-For comparison, {cite:t}`hansen1983stochastic` report $\hat\alpha$ values of $-0.33$ to $-1.25$ (standard errors 0.65 to 0.83) for the value-weighted return with nondurables consumption (Table 1 of their paper). In risk-aversion units, this corresponds to $\hat\rho=-\hat\alpha$ between $0.33$ and $1.25$.
+For comparison, {cite:t}`hansen1983stochastic` report $\hat\alpha$ values of $-0.33$ to $-1.25$ (standard errors 0.65 to 0.83) for the value-weighted return with nondurables consumption (Table 1 of their paper).
 
-With `USE_COMMON_SAMPLE=False` above, each lag uses its own maximum available sample (closer to paper-style tables). Set it to `True` for strictly common-sample AIC/BIC comparison across rows.
+In risk-aversion units, this corresponds to $\hat\rho=-\hat\alpha$ between $0.33$ and $1.25$.
+
+With `USE_COMMON_SAMPLE=False` above, each lag uses its own maximum available sample (closer to paper-style tables).
+
+Set it to `True` for strictly common-sample AIC/BIC comparison across rows.
 
 We now compute the predictability summaries that are central to {cite:t}`hansen1983stochastic`.
 
@@ -1538,7 +1717,9 @@ Use the printed comparison message above to reconcile your run with Table 1 of {
 
 We now repeat the estimation using the 1-month Treasury bill return in place of the stock return.
 
-{cite:t}`hansen1983stochastic` find that the model is strongly rejected for Treasury bills (Table 4 of their paper). The nearly predictable, low-volatility behavior of T-bill returns is difficult to reconcile with the volatile, largely unpredictable behavior of consumption growth.
+{cite:t}`hansen1983stochastic` find that the model is strongly rejected for Treasury bills (Table 4 of their paper).
+
+The nearly predictable, low-volatility behavior of T-bill returns is difficult to reconcile with the volatile, largely unpredictable behavior of consumption growth.
 
 ```{code-cell} ipython3
 tbill_frame, tbill_data, tbill_source = get_tbill_estimation_data()
@@ -1570,7 +1751,9 @@ display_table(tbill_mle_pretty, title="Treasury Bill: Likelihood Estimates by La
 })
 ```
 
-If some T-bill standard errors are very large, that reflects weak local identification of $(\alpha,\beta)$ in near risk-free return data, not necessarily a coding error. The LR test below remains the main specification check in the paper.
+If some T-bill standard errors are very large (or `nan`), that is typically a numerical-information-matrix issue (common with finite differences in near risk-free data) rather than an economic conclusion.
+
+The LR test below remains the main specification check in the paper.
 
 ```{code-cell} ipython3
 tbill_unres_table, tbill_unres_fits = run_unrestricted_var_by_lag(
@@ -1579,6 +1762,56 @@ tbill_unres_table, tbill_unres_fits = run_unrestricted_var_by_lag(
     common_sample=USE_COMMON_SAMPLE,
 )
 
+tbill_unres_pretty = tbill_unres_table.rename(columns={"loglike": "logL", "aic": "AIC", "bic": "BIC", "n_obs": "T"})
+display_table(tbill_unres_pretty, title="Treasury Bill: Unrestricted VAR Benchmarks", fmt={
+    "logL": "{:.1f}", "AIC": "{:.1f}", "BIC": "{:.1f}", "T": "{:.0f}",
+})
+```
+
+```{code-cell} ipython3
+tbill_pred_rows = []
+for lag in LAGS:
+    metrics = predictability_metrics(
+        tbill_log_data,
+        restricted_fit=tbill_mle_fits[lag],
+        unrestricted_fit=tbill_unres_fits[lag],
+        n_lags=lag,
+        base_lags=BASE_LAGS,
+    )
+    tbill_pred_rows.append({"n_lags": lag, **metrics})
+
+tbill_pred_df = pd.DataFrame(tbill_pred_rows).set_index("n_lags")
+tbill_pred_pretty = tbill_pred_df[
+    [
+        "alpha_hat",
+        "var_pred_x",
+        "var_pred_r",
+        "alpha2_var_pred_x",
+        "r2_x_unrestricted",
+        "r2_r_unrestricted",
+        "T",
+    ]
+].rename(columns={
+    "alpha_hat": r"\hat{\alpha}",
+    "var_pred_x": r"\mathrm{Var}(\hat E[X_t\mid\psi_{t-1}])",
+    "var_pred_r": r"\mathrm{Var}(\hat E[R_t\mid\psi_{t-1}])",
+    "alpha2_var_pred_x": r"\hat{\alpha}^2\,\mathrm{Var}(\hat E[X_t\mid\psi_{t-1}])",
+    "r2_x_unrestricted": r"$R_X^2$ (unres VAR)",
+    "r2_r_unrestricted": r"$R_R^2$ (unres VAR)",
+    "T": "T",
+})
+display_table(tbill_pred_pretty, title="Treasury Bill: Predictability Metrics (Hansen-Singleton 1983)", fmt={
+    r"\hat{\alpha}": "{:.4f}",
+    r"\mathrm{Var}(\hat E[X_t\mid\psi_{t-1}])": "{:.6f}",
+    r"\mathrm{Var}(\hat E[R_t\mid\psi_{t-1}])": "{:.6f}",
+    r"\hat{\alpha}^2\,\mathrm{Var}(\hat E[X_t\mid\psi_{t-1}])": "{:.6f}",
+    r"$R_X^2$ (unres VAR)": "{:.4f}",
+    r"$R_R^2$ (unres VAR)": "{:.4f}",
+    "T": "{:.0f}",
+})
+```
+
+```{code-cell} ipython3
 tbill_lr = restricted_vs_unrestricted_lr(tbill_mle_fits, tbill_unres_fits, lags=LAGS)
 tbill_lr_pretty = tbill_lr.rename(columns={
     "lr_stat": "LR",
@@ -1601,11 +1834,19 @@ print(f"T-bill model rejected at 5% for lags: {tbill_rejected_lags if tbill_reje
 
 {cite:t}`hansen1983stochastic` find the same qualitative pattern in their 1959--1978 sample (Table 4): the Treasury bill model is rejected much more strongly than the value-weighted stock-return model.
 
-The model cannot reconcile the smooth, nearly predictable behavior of Treasury bill returns with consumption growth. This is a precursor to the *risk-free rate puzzle* of {cite:t}`Weil_1989`.
+The model cannot reconcile the smooth, nearly predictable behavior of Treasury bill returns with consumption growth.
+
+This is a precursor to the *risk-free rate puzzle* of {cite:t}`Weil_1989`.
 
 We inspect the residual paths, histograms, and diagnostic statistics from the restricted model to assess whether the maintained assumptions of normality and serial independence are plausible.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Restricted-model residual diagnostics
+    name: fig-hs83-residual-diagnostics
+---
 diag_lag = 2
 diag_fit = mle_fits[diag_lag]
 resid = diag_fit["residuals"]
@@ -1645,11 +1886,15 @@ if diag_fit["converged"] and resid is not None:
 
 The residual time-series plots reveal periods of unusually large innovations (volatility clustering), while the histograms show departures from the Gaussian bell curve.
 
-The Jarque-Bera statistics are large for both series, decisively rejecting the normality assumption that underlies the likelihood. The Durbin-Watson statistics are close to 2 for returns (no serial correlation) but somewhat above 2 for consumption (mild negative autocorrelation in the residuals).
+The Jarque-Bera statistics are large for both series, decisively rejecting the normality assumption that underlies the likelihood.
+
+The Durbin-Watson statistics are close to 2 for returns (no serial correlation) but somewhat above 2 for consumption (mild negative autocorrelation in the residuals).
 
 Rejection of normality is expected given the well-known fat tails in financial returns.
 
-This is precisely the situation where the robustness of GMM (see {doc}`hansen_singleton_1982`) becomes valuable. Even if the lognormality assumption fails and the MLE is misspecified, the GMM estimates based on orthogonality conditions alone remain consistent.
+This is precisely the situation where the robustness of GMM (see {doc}`hansen_singleton_1982`) becomes valuable.
+
+Even if the lognormality assumption fails and the MLE is misspecified, the GMM estimates based on orthogonality conditions alone remain consistent.
 
 ## Connection to the equity premium puzzle
 
@@ -1657,15 +1902,23 @@ The empirical findings of {cite:t}`hansen1983stochastic` contain the key ingredi
 
 Let us assemble the evidence.
 
-**Low estimated risk aversion.** The estimated $\hat\alpha$ values (and thus $\hat\rho=-\hat\alpha$) from the table above can be compared with {cite:t}`hansen1983stochastic`, who report $\hat\alpha$ between $-0.33$ and $-1.25$ (Table 1). These imply modest risk aversion by equity-premium standards.
+**Low estimated risk aversion.** The estimated $\hat\alpha$ values (and thus $\hat\rho=-\hat\alpha$) from the table above can be compared with {cite:t}`hansen1983stochastic`, who report $\hat\alpha$ between $-0.33$ and $-1.25$ (Table 1).
 
-**Tiny return predictability.** Compare the unrestricted-VAR $R_R^2$ values with the 0.02 to 0.06 range in {cite:t}`hansen1983stochastic`. In both cases, most return variation is unpredictable.
+These imply modest risk aversion by equity-premium standards.
 
-**Strong rejection for Treasury bills.** As the LR tests above confirm, the Euler-equation restrictions are decisively rejected when the model is estimated with Treasury bill returns. {cite:t}`hansen1983stochastic` find the same result at essentially zero significance levels (Table 4 of their paper).
+**Tiny return predictability.** Compare the unrestricted-VAR $R_R^2$ values with the 0.02 to 0.06 range in {cite:t}`hansen1983stochastic`.
+
+In both cases, most return variation is unpredictable.
+
+**Strong rejection for Treasury bills.** As the LR tests above confirm, the Euler-equation restrictions are decisively rejected when the model is estimated with Treasury bill returns.
+
+{cite:t}`hansen1983stochastic` find the same result at essentially zero significance levels (Table 4 of their paper).
 
 The model cannot reconcile the smooth, nearly predictable behavior of Treasury bill returns with the volatile, unpredictable behavior of consumption growth.
 
-This is a precursor to the *risk-free rate puzzle* of {cite:t}`Weil_1989`. Matching the low level and smooth behavior of the risk-free rate requires a discount factor $\beta$ very close to or above 1, which conflicts with the positive time preference needed to match average consumption growth.
+This is a precursor to the *risk-free rate puzzle* of {cite:t}`Weil_1989`.
+
+Matching the low level and smooth behavior of the risk-free rate requires a discount factor $\beta$ very close to or above 1, which conflicts with the positive time preference needed to match average consumption growth.
 
 **Rejection for individual stocks.** When the model is estimated using returns on individual Dow Jones Industrials (American Brands, Exxon, IBM), the $\chi^2$ tests reject the restrictions at extremely low significance levels (Table 3 of {cite:t}`hansen1983stochastic`).
 
@@ -1680,19 +1933,43 @@ In a calibrated version of the consumption-based model with CRRA utility, they s
 
 Matching the equity premium requires very high $\gamma_{\text{MP}}$ (above 30 in many calibrations), while matching the risk-free rate requires $\gamma_{\text{MP}}$ near 1.
 
-This is exactly the tension visible in the {cite:t}`hansen1983stochastic` estimates. The implied risk aversion level $\hat\rho=-\hat\alpha$ is too low to generate a large equity premium.
+This is exactly the tension visible in the {cite:t}`hansen1983stochastic` estimates.
 
-**Why doesn't the LR test reject for aggregate stock returns?** At first glance, the equity premium puzzle might seem to predict that the LR test should reject. If the CRRA model is fundamentally wrong, shouldn't the data tell us so?
+The implied risk aversion level $\hat\rho=-\hat\alpha$ is too low to generate a large equity premium.
 
-The answer involves a subtle but important distinction between *economic* rejection and *statistical* rejection. The equity premium puzzle is about the *level* of expected returns: $\gamma_{\text{MP}} \approx 1$ cannot generate a 6\% annual equity premium. But the LR test of {cite:t}`hansen1983stochastic` does not test the level of expected returns. It tests the *proportionality restriction* that predictable movements in log returns equal $-\alpha$ times predictable movements in log consumption growth.
+**Why doesn't the LR test reject for aggregate stock returns?** At first glance, the equity premium puzzle might seem to predict that the LR test should reject.
 
-When unrestricted-VAR $R_R^2$ is only 0.02 to 0.06, the predictable component of returns accounts for a tiny fraction of total return variation. The unrestricted VAR, which is free to fit this component without the proportionality restriction, barely improves the fit. The LR statistic is therefore small and the test does not reject. Non-rejection here reflects the *low power* of the test: there is so little predictable variation that the data cannot distinguish the restricted model from the unrestricted one.
+If the CRRA model is fundamentally wrong, shouldn't the data tell us so?
 
-The model fails on economic grounds even where it passes on statistical grounds. The estimated parameters imply only modest risk aversion, which implies an equity premium far smaller than the observed value. This contradiction is invisible to the LR test because the test examines time-series restrictions, not whether the implied risk premium matches its observed level.
+The answer involves a subtle but important distinction between *economic* rejection and *statistical* rejection.
 
-For Treasury bills the situation is different. T-bill returns are smooth and highly predictable, so there is ample predictable variation for the test to work with, and the proportionality restriction is strongly violated.
+The equity premium puzzle is about the *level* of expected returns: $\gamma_{\text{MP}} \approx 1$ cannot generate a 6\% annual equity premium.
 
-The aggregate stock-return LR outcome is sensitive to sample choice and data construction. This is why reproducing the paper's sample window is important when comparing conclusions.
+But the LR test of {cite:t}`hansen1983stochastic` does not test the level of expected returns.
+
+It tests the *proportionality restriction* that predictable movements in log returns equal $-\alpha$ times predictable movements in log consumption growth.
+
+When unrestricted-VAR $R_R^2$ is only 0.02 to 0.06, the predictable component of returns accounts for a tiny fraction of total return variation.
+
+The unrestricted VAR, which is free to fit this component without the proportionality restriction, barely improves the fit.
+
+The LR statistic is therefore small and the test does not reject.
+
+Non-rejection here reflects the *low power* of the test: there is so little predictable variation that the data cannot distinguish the restricted model from the unrestricted one.
+
+The model fails on economic grounds even where it passes on statistical grounds.
+
+The estimated parameters imply only modest risk aversion, which implies an equity premium far smaller than the observed value.
+
+This contradiction is invisible to the LR test because the test examines time-series restrictions, not whether the implied risk premium matches its observed level.
+
+For Treasury bills the situation is different.
+
+T-bill returns are smooth and highly predictable, so there is ample predictable variation for the test to work with, and the proportionality restriction is strongly violated.
+
+The aggregate stock-return LR outcome is sensitive to sample choice and data construction.
+
+This is why reproducing the paper's sample window is important when comparing conclusions.
 
 **Subsequent literature.** The equity premium puzzle spurred a large literature seeking to resolve it by modifying preferences, beliefs, or market structure:
 
@@ -1707,9 +1984,15 @@ Each of these approaches effectively finds a way to make the stochastic discount
 
 The interplay between {cite:t}`hansen1982generalized` and {cite:t}`hansen1983stochastic` provides a clean illustration of the fundamental econometric tradeoff between *robustness* and *efficiency*.
 
-The GMM estimator of {doc}`hansen_singleton_1982` is robust to distributional misspecification. It remains consistent whether or not consumption and returns are jointly lognormal, but at the cost of larger standard errors.
+The GMM estimator of {doc}`hansen_singleton_1982` is robust to distributional misspecification.
 
-The MLE estimator of this lecture is efficient under lognormality. It exploits the full distributional structure to produce the smallest possible standard errors. But when lognormality fails, as the Jarque-Bera tests on return residuals invariably suggest, the MLE is not just imprecise but potentially inconsistent.
+It remains consistent whether or not consumption and returns are jointly lognormal, but at the cost of larger standard errors.
+
+The MLE estimator of this lecture is efficient under lognormality.
+
+It exploits the full distributional structure to produce the smallest possible standard errors.
+
+But when lognormality fails, as the Jarque-Bera tests on return residuals invariably suggest, the MLE is not just imprecise but potentially inconsistent.
 
 {cite:t}`hansen1982generalized` (Section 4 and Table II) compare the two approaches directly.
 
@@ -1721,9 +2004,13 @@ The residual diagnostics from our empirical section confirm that lognormality is
 
 This lecture has implemented the maximum likelihood estimator of {cite:t}`hansen1983stochastic` for the consumption-based Euler equation under joint lognormality.
 
-The key findings are low estimated risk aversion, tiny return predictability, and strong rejection for Treasury bills and individual stocks. These are precisely the empirical facts that {cite:t}`MehraPrescott1985` formalized as the equity premium puzzle.
+The key findings are low estimated risk aversion, tiny return predictability, and strong rejection for Treasury bills and individual stocks.
 
-In the original sample of {cite:t}`hansen1983stochastic`, the CRRA-lognormal model is not rejected for aggregate stock returns, but it fails for individual stocks, Treasury bills, and the joint stock-bond system. Across samples, the model struggles to explain the level of the risk-free rate and the magnitude of the equity premium.
+These are precisely the empirical facts that {cite:t}`MehraPrescott1985` formalized as the equity premium puzzle.
+
+In the original sample of {cite:t}`hansen1983stochastic`, the CRRA-lognormal model is not rejected for aggregate stock returns, but it fails for individual stocks, Treasury bills, and the joint stock-bond system.
+
+Across samples, the model struggles to explain the level of the risk-free rate and the magnitude of the equity premium.
 
 These failures motivated a rich subsequent literature that has explored habit formation, long-run risks, rare disasters, and robustness as potential resolutions.
 

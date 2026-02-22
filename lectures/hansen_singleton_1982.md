@@ -161,10 +161,10 @@ The maximization of {eq}`hs82-problem` subject to {eq}`hs82-budget` gives the fi
 ```{math}
 :label: hs82-general-euler
 
-P_{jt} U'(C_t) = \beta^{M_j} E_t\!\left[R_{jt+M_j} U'(C_{t+M_j})\right], \quad j = 1, \ldots, N.
+P_{jt} u'(C_t) = \beta^{M_j} E_t\!\left[R_{jt+M_j} u'(C_{t+M_j})\right], \quad j = 1, \ldots, N.
 ```
 
-When asset $j$ is a one-period stock ($M_j = 1$) with $R_{jt+1} = P_{jt+1} + D_{jt+1}$ where $D_{jt}$ is the dividend, substituting the CRRA marginal utility into {eq}`hs82-general-euler` and dividing both sides by $P_{jt} U'(C_t)$ yields the Euler equation
+When asset $j$ is a one-period stock ($M_j = 1$) with $R_{jt+1} = P_{jt+1} + D_{jt+1}$ where $D_{jt}$ is the dividend, substituting the CRRA marginal utility into {eq}`hs82-general-euler` and dividing both sides by $P_{jt} u'(C_t)$ yields the Euler equation
 
 ```{math}
 :label: hs82-euler
@@ -233,14 +233,23 @@ The resulting unconditional restriction $E[f(x_{t+n}, z_t, b_0)] = 0$ nests both
 The code below encodes the orthogonality condition and lagged instrument vector exactly as in equations {eq}`hs82-uncond` and {eq}`hs82-instruments`.
 
 ```{code-cell} ipython3
-def euler_error(params, exog):
+def euler_error_horizon(params, exog, horizon=1):
     """
-    Compute Euler-equation pricing errors for (γ, β).
+    Compute Euler-equation pricing errors for (γ, β) at a given horizon.
     """
+    if horizon < 1:
+        raise ValueError("horizon must be at least one.")
     γ, β = params
     gross_return = exog[:, 0]
     gross_cons_growth = exog[:, 1]
-    return β * gross_cons_growth ** (-γ) * gross_return - 1.0
+    return (β ** horizon) * gross_cons_growth ** (-γ) * gross_return - 1.0
+
+
+def euler_error(params, exog):
+    """
+    One-period Euler-equation pricing errors for (γ, β).
+    """
+    return euler_error_horizon(params, exog, horizon=1)
 ```
 
 Next, a helper aligns outcomes and lagged instruments for nonlinear IV-GMM.
@@ -274,6 +283,16 @@ def build_gmm_arrays(data, n_lags):
 
 When the asset has maturity $n > 1$, the Euler equation involves $n$-period compounded returns and consumption growth.
 
+For CRRA preferences, the $n$-period Euler restriction is
+
+```{math}
+:label: hs82-euler-n
+
+E_t\!\left[\beta^n \left(\frac{C_{t+n}}{C_t}\right)^{-\gamma} R_{t,t+n}^i\right] = 1.
+```
+
+If one instead uses $\beta$ (not $\beta^n$) in {eq}`hs82-euler-n`, the estimated discount parameter is interpreted as $\tilde\beta = \beta^n$ rather than the one-period $\beta$.
+
 The following helper builds these overlapping horizon aggregates, as needed for the multi-period case in {cite:t}`hansen1982generalized`.
 
 ```{code-cell} ipython3
@@ -298,7 +317,9 @@ def build_overlapping_horizon_data(data, horizon):
     return out
 ```
 
-When $n > 1$, overlapping horizons induce serial dependence in the Euler disturbance $u_{t+n} = h(x_{t+n}, b_0)$. The disturbance has MA($n-1$) structure because the $n$-period return windows overlap.
+When $n > 1$, overlapping horizons induce serial dependence in the Euler disturbance $u_{t+n} = h(x_{t+n}, b_0)$.
+
+The disturbance has MA($n-1$) structure because the $n$-period return windows overlap.
 
 {cite:t}`hansen1982generalized` show that the optimal weighting matrix in this case involves a finite autocovariance sum truncated at order $n-1$, rather than an infinite HAC kernel.
 
@@ -307,7 +328,7 @@ We implement this directly as a finite-order covariance estimator.
 ```{code-cell} ipython3
 def finite_ma_covariance(moment_series, ma_order):
     """
-    Estimate S = Gamma_0 + sum_{j=1}^{ma_order}(Gamma_j + Gamma_j') for moment vectors.
+    Estimate S = Gamma_0 + sum_{j=1}^{ma_order}(Gamma_j + Gamma_j.T) for moment vectors.
     """
     if ma_order < 0:
         raise ValueError("ma_order must be nonnegative.")
@@ -338,9 +359,12 @@ In the second step, we use $b_T$ to construct the estimated optimal weighting ma
 The following function implements this logic.
 
 ```{code-cell} ipython3
-def two_step_gmm(data, n_lags, ma_order=0, start_params=None):
+def two_step_gmm(data, n_lags, ma_order=0, horizon=1, start_params=None):
     """
-    Two-step GMM with finite-order covariance
+    Two-step GMM with finite-order covariance.
+
+    The Euler error uses β**horizon, consistent with the n-period
+    restriction in Hansen and Singleton (1982).
     """
     if start_params is None:
         start_params = np.array([1.0, 0.99])
@@ -349,7 +373,7 @@ def two_step_gmm(data, n_lags, ma_order=0, start_params=None):
     n_obs = exog.shape[0]
 
     def sample_moments(params):
-        err = euler_error(params, exog)
+        err = euler_error_horizon(params, exog, horizon=horizon)
         return err[:, None] * instruments
 
     def objective(params, weight_matrix):
@@ -406,6 +430,9 @@ We also build a simulator that generates synthetic return-growth pairs satisfyin
 
 ```{code-cell} ipython3
 FRED_CODES = {
+    # HS82 divide by a Census population series; we offer both a total-population
+    # proxy (POP) and the commonly used civilian noninstitutional 16+ series.
+    "population_total": "POP",
     "population_16plus": "CNP16OV",
     "cons_nd_real_index": "DNDGRA3M086SBEA",
     "cons_nd_price_index": "DNDGRG3M086SBEA",
@@ -420,7 +447,7 @@ def to_month_end(index):
 
 The simulation block below produces synthetic return-growth pairs that satisfy the Euler equation by construction.
 
-We generate log consumption growth from a stationary AR(1), compute the stochastic discount factor at known true parameters, and construct gross returns as $R_{t+1} = (1 + \eta_{t+1}) / M_{t+1}(\theta_0)$ where $\eta_{t+1}$ is an i.i.d. shock.
+We generate log consumption growth from a stationary AR(1), compute the stochastic discount factor at known true parameters, and construct gross returns as $R_{t+1} = (1 + \eta_{t+1}) / M_{t+1}(\theta_0)$ where $\eta_{t+1}$ is an iid shock.
 
 ```{code-cell} ipython3
 @njit
@@ -468,7 +495,9 @@ def simulate_euler_sample(
 
 The empirical data loader below merges FRED consumption series with the Ken French CRSP market proxy.
 
-We follow {cite:t}`hansen1982generalized` in constructing real per capita consumption of nondurables, dividing by the civilian noninstitutional population.
+{cite:t}`hansen1982generalized` construct *real per capita* consumption by dividing by a Census population series.
+
+Our default uses `POP` as an open-data proxy for that population series; we also support `CNP16OV` (civilian noninstitutional population 16+) as an alternative.
 
 Nominal returns are deflated by the nondurables price index to obtain real gross returns.
 
@@ -476,6 +505,8 @@ Nominal returns are deflated by the nondurables price index to obtain real gross
 def load_hs_monthly_data(
     start="1959-02-01",
     end="1978-12-01",
+    population_key="population_total",
+    per_capita=True,
 ):
     """
     Build monthly gross real return and gross consumption-growth series.
@@ -492,9 +523,14 @@ def load_hs_monthly_data(
     fred = web.DataReader(list(FRED_CODES.values()), "fred", fetch_start, fetch_end)
     fred = fred.rename(columns={v: k for k, v in FRED_CODES.items()})
     fred.index = to_month_end(fred.index)
-    fred["consumption_per_capita"] = (
-        fred["cons_nd_real_index"] / fred["population_16plus"]
-    )
+    if population_key not in fred.columns:
+        raise KeyError(f"Missing population series '{population_key}' in FRED pull.")
+    if per_capita:
+        fred["consumption_per_capita"] = (
+            fred["cons_nd_real_index"] / fred[population_key]
+        )
+    else:
+        fred["consumption_per_capita"] = fred["cons_nd_real_index"]
     fred["gross_cons_growth"] = (
         fred["consumption_per_capita"] / fred["consumption_per_capita"].shift(1)
     )
@@ -531,13 +567,24 @@ A thin wrapper then packages the merged frame into the exact array used by our e
 def get_estimation_data(
     start="1959-02-01",
     end="1978-12-01",
+    population_key="population_total",
+    per_capita=True,
 ):
     """
     Return (dataframe, array, source_label) using observed data.
     """
-    frame = load_hs_monthly_data(start=start, end=end)
+    frame = load_hs_monthly_data(
+        start=start,
+        end=end,
+        population_key=population_key,
+        per_capita=per_capita,
+    )
     data = frame[["gross_real_return", "gross_cons_growth"]].to_numpy()
-    source = "Ken French CRSP market proxy (Mkt-RF + RF) + FRED nondurables consumption"
+    pop_label = "per-capita" if per_capita else "aggregate"
+    source = (
+        "Ken French CRSP market proxy (Mkt-RF + RF) + "
+        f"FRED nondurables consumption ({pop_label}, {population_key})"
+    )
     return frame, data, source
 ```
 
@@ -593,7 +640,7 @@ where $\hat S$ is a consistent estimator of $S$.
 
 A large $J_T$ relative to $\chi^2_{q-k}$ critical values leads to rejection of the model's overidentifying restrictions.
 
-For the multi-period case ($n > 1$), the optimal $S$ involves a finite autocovariance sum because the MA($n-1$) structure of $u_{t+n}$ means that $E[m_t m_{t-j}'] = 0$ for $|j| \geq n$:
+For the multi-period case ($n > 1$), the optimal $S$ involves a finite autocovariance sum because the MA($n-1$) structure of $u_{t+n}$ means that $E[m_t m_{t-j}^\top] = 0$ for $|j| \geq n$:
 
 ```{math}
 :label: hs82-finite-so
@@ -607,9 +654,11 @@ This finite-order structure is important because it means the covariance estimat
 
 For the one-period Euler equation ($n = 1$), the disturbance $u_{t+1} = M_{t+1}(\theta_0) R_{t+1} - 1$ is a martingale difference sequence.
 
-In this case the moment vector $m_t(\theta_0) = u_{t+1} \otimes z_t$ is serially uncorrelated, and the long-run covariance $S$ equals the contemporaneous variance $E[m_t m_t']$.
+In this case the moment vector $m_t(\theta_0) = u_{t+1} \otimes z_t$ is serially uncorrelated, and the long-run covariance $S$ equals the contemporaneous variance $E[m_t m_t^\top]$.
 
-The covariance estimator therefore requires no kernel or bandwidth choice. We simply use the sample analogue $\hat S = T^{-1} \sum_t m_t m_t'$.
+The covariance estimator therefore requires no kernel or bandwidth choice.
+
+We simply use the sample analogue $\hat S = T^{-1} \sum_t m_t m_t^\top$.
 
 In our implementation below, we use a HAC (heteroskedasticity and autocorrelation consistent) estimator as a robustness device against possible mild serial dependence from time aggregation or measurement timing.
 
@@ -700,7 +749,9 @@ def run_gmm_by_lag(
     return table, results
 ```
 
-A difficulty noted in both papers is that the preference parameters $\gamma$ and $\beta$ can be weakly identified. The criterion surface may have elongated valleys where many parameter combinations fit the moments nearly equally well.
+A difficulty noted in both papers is that the preference parameters $\gamma$ and $\beta$ can be weakly identified.
+
+The criterion surface may have elongated valleys where many parameter combinations fit the moments nearly equally well.
 
 We compute the objective over a parameter grid to visualize the identification geometry.
 
@@ -773,26 +824,36 @@ display_table(sim_pretty, title="GMM Simulation Results", fmt={
 })
 ```
 
-GMM recovers the true $\gamma$ and $\beta$ across lag specifications, and the $J$ statistics are small with large `Prob(J)` values (equivalently large right-tail `p(J)`), confirming that the simulated moment conditions are not rejected.
+GMM recovers the true $\gamma$ and $\beta$ across lag specifications, and the $J$ statistics are small with small `Prob(J)` values (equivalently large right-tail `p(J)`), confirming that the simulated moment conditions are not rejected.
 
 To illustrate the multi-period case from Section 2 of {cite:t}`hansen1982generalized`, we aggregate to overlapping three-period returns and estimate with the finite-order covariance targeting appropriate for MA(2) disturbances.
 
 ```{code-cell} ipython3
 horizon_n = 3
 sim_data_n = build_overlapping_horizon_data(sim_data, horizon=horizon_n)
-two_step = two_step_gmm(sim_data_n, n_lags=2, ma_order=horizon_n - 1)
+two_step = two_step_gmm(
+    sim_data_n,
+    n_lags=2,
+    ma_order=horizon_n - 1,
+    horizon=horizon_n,
+)
 
 print(f"Horizon n: {horizon_n}")
 print(f"Step-2 converged: {two_step['success']}")
 print(f"Step-2 gamma: {two_step['params_step2'][0]:.4f}")
-print(f"Step-2 beta: {two_step['params_step2'][1]:.4f}")
+print(f"Step-2 beta (one-period): {two_step['params_step2'][1]:.4f}")
+print(f"Step-2 beta^{horizon_n}: {two_step['params_step2'][1] ** horizon_n:.4f}")
 print(
     f"J({two_step['j_df']}): {two_step['j_stat']:.3f}, "
     f"Prob={two_step['j_prob']:.3f}, p={two_step['j_pval']:.3f}"
 )
 
 _, exog_n, _ = build_gmm_arrays(sim_data_n, n_lags=2)
-acf_n = acf(euler_error(two_step["params_step2"], exog_n), nlags=6, fft=True)
+acf_n = acf(
+    euler_error_horizon(two_step["params_step2"], exog_n, horizon=horizon_n),
+    nlags=6,
+    fft=True,
+)
 print("Euler-error ACF lags 1-3:", ", ".join([f"{v:.3f}" for v in acf_n[1:4]]))
 ```
 
@@ -801,6 +862,12 @@ The ACF values at low lags confirm the MA(2) dependence in the overlapping-horiz
 We now run a Monte Carlo exercise with 500 replications to visualize the finite-sample distribution of $\hat\gamma$, $\hat\beta$, and the $J$ statistic and verify that the asymptotic theory from Section 3 of {cite:t}`hansen1982generalized` provides a reasonable approximation.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Monte Carlo GMM sampling distributions
+    name: fig-hs82-monte-carlo
+---
 n_rep = 500
 estimates = []
 j_stats = []
@@ -869,7 +936,12 @@ print(f"Correlation: {np.corrcoef(emp_data[:, 0], emp_data[:, 1])[0, 1]:.4f}")
 
 The key feature of these data is the large gap between the volatility of returns and the volatility of consumption growth.
 
-This is the empirical fact underlying the equity premium puzzle of {cite:t}`MehraPrescott1985`: matching the observed equity premium with CRRA preferences requires implausibly high risk aversion. The weak consumption-return comovement compounds the difficulty.
+If you want to see how sensitive the $\hat\gamma$ estimates are to the population adjustment, rerun the block above with
+`get_estimation_data(population_key="population_16plus")` (or with `per_capita=False` to drop the population adjustment entirely).
+
+This is the empirical fact underlying the equity premium puzzle of {cite:t}`MehraPrescott1985`: matching the observed equity premium with CRRA preferences requires implausibly high risk aversion.
+
+The weak consumption-return comovement compounds the difficulty.
 
 We now estimate GMM with HAC and HC0 covariance matrices, reporting results for NLAG $= 1, 2, 4, 6$ as in Table I of {cite:t}`hansen1982generalized`.
 
@@ -903,15 +975,25 @@ For comparison, Table I of {cite:t}`hansen1982generalized` reports for ND+VWR:
 
 - $\hat\alpha$ from about $-0.90$ to $-0.82$ (so $\hat\gamma=-\hat\alpha$ is about $0.82$ to $0.90$),
 - $\hat\beta$ near $0.997$,
+- $\mathrm{se}(\hat\alpha)$ from about $0.106$ down to $0.063$ (so $\mathrm{se}(\hat\gamma)$ is the same up to sign),
+- $\mathrm{se}(\hat\beta)$ around $0.0024$ to $0.0025$,
 - `Prob` values around 0.50 to 0.88.
 
-Use the table above to compare your run against those benchmarks. In this lecture, `Prob(J)` is the paper-style `chi2.cdf(J, df)`, while `p(J)` is the right-tail value `1 - Prob(J)`.
+Use the table above to compare your run against those benchmarks.
+
+In this lecture, `Prob(J)` is the paper-style `chi2.cdf(J, df)`, while `p(J)` is the right-tail value `1 - Prob(J)`.
 
 Comparing the HAC and HC0 columns shows that the serial-correlation correction has only a modest effect on inference, consistent with the near-martingale-difference property of one-period Euler errors.
 
 We inspect pricing errors and their autocorrelation structure to diagnose fit beyond summary statistics.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Euler error diagnostics and autocorrelation
+    name: fig-hs82-euler-diagnostics
+---
 lag_diag = 2
 res_diag = gmm_hac_results[lag_diag]
 _, exog_diag, _ = build_gmm_arrays(emp_data, n_lags=lag_diag)
@@ -947,9 +1029,26 @@ For the one-period martingale-difference case, pricing errors should be serially
 
 Bars crossing the red significance bounds indicate remaining predictable structure that the instrument set has not absorbed.
 
+## Scope relative to the 1982 paper
+
+This lecture reproduces the paper's Euler-equation GMM logic and Table I style reporting, but it does not reproduce all components of {cite:t}`hansen1982generalized`.
+
+Two parts worth keeping in mind are:
+
+- Section 4 and Table II, which compare GIV/GMM with maximum-likelihood estimates under additional distributional assumptions.
+- Table III, which estimates the model jointly across multiple returns and finds substantially stronger rejections of the CRRA restrictions.
+
+These omissions matter for interpretation: the paper's full empirical argument is not only about single-return GMM estimates, but also about how conclusions change under ML assumptions and multi-return systems.
+
 To visualize the identification geometry, we plot the GMM criterion over a $(\gamma, \beta)$ grid.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: GMM objective contour surface
+    name: fig-hs82-objective-contour
+---
 γ_grid, β_grid, objective = gmm_objective_surface(emp_data, n_lags=2)
 log_obj = np.log10(objective + 1e-12)
 
