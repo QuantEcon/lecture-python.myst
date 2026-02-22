@@ -245,6 +245,24 @@ def euler_error_horizon(params, exog, horizon=1):
     return (β ** horizon) * gross_cons_growth ** (-γ) * gross_return - 1.0
 
 
+def euler_error_grad_horizon(params, exog, horizon=1):
+    """
+    Gradient of the Euler error wrt (γ, β) at a given horizon.
+    """
+    if horizon < 1:
+        raise ValueError("horizon must be at least one.")
+    γ, β = params
+    gross_return = exog[:, 0]
+    gross_cons_growth = exog[:, 1]
+
+    g_pow = gross_cons_growth ** (-γ)
+    common = (β ** horizon) * g_pow * gross_return
+
+    dγ = -common * np.log(gross_cons_growth)
+    dβ = horizon * (β ** (horizon - 1)) * g_pow * gross_return
+    return np.column_stack([dγ, dβ])
+
+
 def euler_error(params, exog):
     """
     One-period Euler-equation pricing errors for (γ, β).
@@ -397,9 +415,16 @@ def two_step_gmm(data, n_lags, ma_order=0, horizon=1, start_params=None):
     j_prob = float(stats.chi2.cdf(j_stat, df=df)) if df > 0 else np.nan
     p_value = float(1.0 - j_prob) if df > 0 else np.nan
 
+    # Asymptotic covariance under optimal weighting: (D' S^{-1} D)^{-1} / T.
+    grad_err = euler_error_grad_horizon(params2, exog, horizon=horizon)
+    d_hat = (instruments.T @ grad_err) / n_obs
+    cov_hat = np.linalg.pinv(d_hat.T @ w_opt @ d_hat) / n_obs
+    se_hat = np.sqrt(np.diag(cov_hat))
+
     return {
         "params_step1": params1,
         "params_step2": params2,
+        "se_step2": se_hat,
         "weight_opt": w_opt,
         "j_stat": j_stat,
         "j_df": int(df),
@@ -430,8 +455,11 @@ We also build a simulator that generates synthetic return-growth pairs satisfyin
 
 ```{code-cell} ipython3
 FRED_CODES = {
-    # HS82 divide by a Census population series; we offer both a total-population
-    # proxy (POP) and the commonly used civilian noninstitutional 16+ series.
+    # HS82 divide by a Census population series. In open data, a practical choice
+    # is BEA's monthly population series (POPTHM), which is internally consistent
+    # with the BEA consumption measures used below. We also include POP (Census)
+    # and the commonly used civilian noninstitutional 16+ series.
+    "population_bea": "POPTHM",
     "population_total": "POP",
     "population_16plus": "CNP16OV",
     "cons_nd_real_index": "DNDGRA3M086SBEA",
@@ -497,7 +525,9 @@ The empirical data loader below merges FRED consumption series with the Ken Fren
 
 {cite:t}`hansen1982generalized` construct *real per capita* consumption by dividing by a Census population series.
 
-Our default uses `POP` as an open-data proxy for that population series; we also support `CNP16OV` (civilian noninstitutional population 16+) as an alternative.
+Our default uses `POPTHM` as a monthly population series that is internally consistent with BEA consumption measures.
+
+We also support `POP` (Census) and `CNP16OV` (civilian noninstitutional population 16+) as alternatives.
 
 Nominal returns are deflated by the nondurables price index to obtain real gross returns.
 
@@ -505,7 +535,7 @@ Nominal returns are deflated by the nondurables price index to obtain real gross
 def load_hs_monthly_data(
     start="1959-02-01",
     end="1978-12-01",
-    population_key="population_total",
+    population_key="population_bea",
     per_capita=True,
 ):
     """
@@ -520,20 +550,61 @@ def load_hs_monthly_data(
     sample_start = start_period.to_timestamp("M")
     sample_end = end_period.to_timestamp("M")
 
-    fred = web.DataReader(list(FRED_CODES.values()), "fred", fetch_start, fetch_end)
+    fred_keys_base = [
+        "population_total",
+        "population_16plus",
+        "cons_nd_real_index",
+        "cons_nd_price_index",
+    ]
+    fred_keys = fred_keys_base + ["population_bea"]
+    try:
+        fred = web.DataReader([FRED_CODES[k] for k in fred_keys], "fred", fetch_start, fetch_end)
+    except Exception:
+        # Be robust if POPTHM is unavailable.
+        fred = web.DataReader([FRED_CODES[k] for k in fred_keys_base], "fred", fetch_start, fetch_end)
     fred = fred.rename(columns={v: k for k, v in FRED_CODES.items()})
     fred.index = to_month_end(fred.index)
+    if per_capita and population_key == "population_bea" and "population_bea" not in fred.columns:
+        print("Warning: POPTHM unavailable from FRED; falling back to POP.")
+        population_key = "population_total"
     if population_key not in fred.columns:
         raise KeyError(f"Missing population series '{population_key}' in FRED pull.")
-    if per_capita:
-        fred["consumption_per_capita"] = (
-            fred["cons_nd_real_index"] / fred[population_key]
+    if per_capita and population_key == "population_bea" and fred[population_key].isna().all():
+        print("Warning: POPTHM is all-missing in the requested window; falling back to POP.")
+        population_key = "population_total"
+
+    # Alternative consumption-growth constructions for sensitivity checks.
+    fred["gross_cons_growth_agg"] = (
+        fred["cons_nd_real_index"] / fred["cons_nd_real_index"].shift(1)
+    )
+    if "population_bea" in fred.columns:
+        fred["gross_cons_growth_popthm"] = (
+            (fred["cons_nd_real_index"] / fred["population_bea"])
+            / (fred["cons_nd_real_index"] / fred["population_bea"]).shift(1)
         )
     else:
-        fred["consumption_per_capita"] = fred["cons_nd_real_index"]
-    fred["gross_cons_growth"] = (
-        fred["consumption_per_capita"] / fred["consumption_per_capita"].shift(1)
+        fred["gross_cons_growth_popthm"] = np.nan
+    fred["gross_cons_growth_pop"] = (
+        (fred["cons_nd_real_index"] / fred["population_total"])
+        / (fred["cons_nd_real_index"] / fred["population_total"]).shift(1)
     )
+    fred["gross_cons_growth_cnp16ov"] = (
+        (fred["cons_nd_real_index"] / fred["population_16plus"])
+        / (fred["cons_nd_real_index"] / fred["population_16plus"]).shift(1)
+    )
+
+    if per_capita:
+        fred["consumption_level"] = fred["cons_nd_real_index"] / fred[population_key]
+        growth_map = {
+            "population_bea": "gross_cons_growth_popthm",
+            "population_total": "gross_cons_growth_pop",
+            "population_16plus": "gross_cons_growth_cnp16ov",
+        }
+        fred["gross_cons_growth"] = fred[growth_map[population_key]]
+    else:
+        fred["consumption_level"] = fred["cons_nd_real_index"]
+        fred["gross_cons_growth"] = fred["gross_cons_growth_agg"]
+
     fred["gross_inflation_nd"] = (
         fred["cons_nd_price_index"] / fred["cons_nd_price_index"].shift(1)
     )
@@ -550,15 +621,24 @@ def load_hs_monthly_data(
 
     out = fred.join(ff[["gross_nom_return"]], how="inner")
     out["gross_real_return"] = out["gross_nom_return"] / out["gross_inflation_nd"]
-    out = out.loc[sample_start:sample_end].dropna()
+    out = out.loc[sample_start:sample_end].dropna(
+        subset=["gross_real_return", "gross_cons_growth", "gross_inflation_nd", "consumption_level"]
+    )
 
     required_cols = [
         "gross_real_return",
         "gross_cons_growth",
         "gross_inflation_nd",
-        "consumption_per_capita",
+        "consumption_level",
+        "gross_cons_growth_popthm",
+        "gross_cons_growth_pop",
+        "gross_cons_growth_cnp16ov",
+        "gross_cons_growth_agg",
     ]
-    return out[required_cols].copy()
+    out = out[required_cols].copy()
+    out.attrs["population_key_used"] = population_key
+    out.attrs["per_capita_used"] = per_capita
+    return out
 ```
 
 A thin wrapper then packages the merged frame into the exact array used by our estimators.
@@ -567,7 +647,7 @@ A thin wrapper then packages the merged frame into the exact array used by our e
 def get_estimation_data(
     start="1959-02-01",
     end="1978-12-01",
-    population_key="population_total",
+    population_key="population_bea",
     per_capita=True,
 ):
     """
@@ -580,10 +660,13 @@ def get_estimation_data(
         per_capita=per_capita,
     )
     data = frame[["gross_real_return", "gross_cons_growth"]].to_numpy()
-    pop_label = "per-capita" if per_capita else "aggregate"
+    pop_key_used = frame.attrs.get("population_key_used", population_key)
+    per_capita_used = frame.attrs.get("per_capita_used", per_capita)
+    pop_label = "per-capita" if per_capita_used else "aggregate"
+    pop_series = FRED_CODES.get(pop_key_used, pop_key_used)
     source = (
         "Ken French CRSP market proxy (Mkt-RF + RF) + "
-        f"FRED nondurables consumption ({pop_label}, {population_key})"
+        f"FRED nondurables consumption ({pop_label}, {pop_series})"
     )
     return frame, data, source
 ```
@@ -747,6 +830,34 @@ def run_gmm_by_lag(
 
     table = pd.DataFrame(rows).set_index("n_lags")
     return table, results
+
+
+def run_two_step_by_lag(
+    data,
+    lags=(1, 2, 4, 6),
+    horizon=1,
+):
+    """
+    Two-step GMM with exact S0 (MA order 0) across lag lengths.
+    """
+    rows = []
+    for lag in lags:
+        res = two_step_gmm(data, n_lags=lag, ma_order=0, horizon=horizon)
+        rows.append(
+            {
+                "n_lags": lag,
+                "γ_hat": res["params_step2"][0],
+                "se_γ": res["se_step2"][0],
+                "β_hat": res["params_step2"][1],
+                "se_β": res["se_step2"][1],
+                "j_stat": res["j_stat"],
+                "j_prob": res["j_prob"],
+                "j_pval": res["j_pval"],
+                "j_df": res["j_df"],
+                "n_obs": res["n_obs"],
+            }
+        )
+    return pd.DataFrame(rows).set_index("n_lags")
 ```
 
 A difficulty noted in both papers is that the preference parameters $\gamma$ and $\beta$ can be weakly identified.
@@ -931,6 +1042,7 @@ print(f"Mean net real return: {(emp_data[:, 0].mean() - 1.0) * 100:.3f}%")
 print(f"Std net real return: {emp_data[:, 0].std() * 100:.3f}%")
 print(f"Mean net consumption growth: {(emp_data[:, 1].mean() - 1.0) * 100:.3f}%")
 print(f"Std net consumption growth: {emp_data[:, 1].std() * 100:.3f}%")
+print(f"Std log consumption growth: {np.log(emp_data[:, 1]).std() * 100:.3f}%")
 print(f"Correlation: {np.corrcoef(emp_data[:, 0], emp_data[:, 1])[0, 1]:.4f}")
 ```
 
@@ -938,6 +1050,52 @@ The key feature of these data is the large gap between the volatility of returns
 
 If you want to see how sensitive the $\hat\gamma$ estimates are to the population adjustment, rerun the block above with
 `get_estimation_data(population_key="population_16plus")` (or with `per_capita=False` to drop the population adjustment entirely).
+
+To isolate this sensitivity, we compare consumption-growth volatility and a single NLAG estimate across several constructions.
+
+```{code-cell} ipython3
+robust_specs = [
+    ("per-capita (POPTHM)", "gross_cons_growth_popthm"),
+    ("per-capita (POP)", "gross_cons_growth_pop"),
+    ("per-capita (CNP16OV)", "gross_cons_growth_cnp16ov"),
+    ("aggregate", "gross_cons_growth_agg"),
+]
+
+rows = []
+r_vals = emp_frame["gross_real_return"].to_numpy()
+for label, growth_col in robust_specs:
+    g_vals = emp_frame[growth_col].to_numpy()
+    mask = np.isfinite(r_vals) & np.isfinite(g_vals)
+    data_i = np.column_stack([r_vals[mask], g_vals[mask]])
+    if len(data_i) <= 2:
+        continue
+    res_i = two_step_gmm(data_i, n_lags=2, ma_order=0, horizon=1)
+    rows.append(
+        {
+            "spec": label,
+            "T": len(data_i),
+            "std(g-1)%": float((data_i[:, 1] - 1.0).std() * 100.0),
+            r"\hat{\gamma}": res_i["params_step2"][0],
+            r"\mathrm{se}(\hat{\gamma})": res_i["se_step2"][0],
+            r"\hat{\beta}": res_i["params_step2"][1],
+            r"\mathrm{se}(\hat{\beta})": res_i["se_step2"][1],
+        }
+    )
+
+robust_df = pd.DataFrame(rows).set_index("spec")
+display_table(
+    robust_df,
+    title=r"Sensitivity Check (NLAG=2, Exact $S_0$)",
+    fmt={
+        "T": "{:.0f}",
+        "std(g-1)%": "{:.3f}",
+        r"\hat{\gamma}": "{:.4f}",
+        r"\mathrm{se}(\hat{\gamma})": "{:.4f}",
+        r"\hat{\beta}": "{:.4f}",
+        r"\mathrm{se}(\hat{\beta})": "{:.4f}",
+    },
+)
+```
 
 This is the empirical fact underlying the equity premium puzzle of {cite:t}`MehraPrescott1985`: matching the observed equity premium with CRRA preferences requires implausibly high risk aversion.
 
@@ -948,6 +1106,7 @@ We now estimate GMM with HAC and HC0 covariance matrices, reporting results for 
 ```{code-cell} ipython3
 gmm_hac_table, gmm_hac_results = run_gmm_by_lag(emp_data, lags=LAGS, use_hac=True)
 gmm_hc0_table, _ = run_gmm_by_lag(emp_data, lags=LAGS, use_hac=False)
+gmm_exact_table = run_two_step_by_lag(emp_data, lags=LAGS, horizon=1)
 
 gmm_hac_pretty = gmm_hac_table.rename(columns={
     "γ_hat": r"\hat{\gamma}", "se_γ": r"\mathrm{se}(\hat{\gamma})",
@@ -969,6 +1128,17 @@ display_table(gmm_hc0_pretty, title="GMM Estimates (HC0 Covariance)", fmt={
     r"\mathrm{se}(\hat{\gamma})": "{:.4f}", r"\mathrm{se}(\hat{\beta})": "{:.4f}",
     "J": "{:.3f}", "Prob(J)": "{:.3f}", "p(J)": "{:.3f}", "df": "{:.0f}",
 })
+
+gmm_exact_pretty = gmm_exact_table.rename(columns={
+    "γ_hat": r"\hat{\gamma}", "se_γ": r"\mathrm{se}(\hat{\gamma})",
+    "β_hat": r"\hat{\beta}", "se_β": r"\mathrm{se}(\hat{\beta})",
+    "j_stat": "J", "j_prob": "Prob(J)", "j_pval": "p(J)", "j_df": "df", "n_obs": "T",
+})
+display_table(
+    gmm_exact_pretty,
+    title="GMM Estimates (Exact $S_0$, Two-Step)",
+    fmt=gmm_fmt,
+)
 ```
 
 For comparison, Table I of {cite:t}`hansen1982generalized` reports for ND+VWR:
@@ -982,6 +1152,10 @@ For comparison, Table I of {cite:t}`hansen1982generalized` reports for ND+VWR:
 Use the table above to compare your run against those benchmarks.
 
 In this lecture, `Prob(J)` is the paper-style `chi2.cdf(J, df)`, while `p(J)` is the right-tail value `1 - Prob(J)`.
+
+In practice, open-data proxies can match $\hat\beta$ and $\mathrm{se}(\hat\beta)$ closely while producing substantially larger $\mathrm{se}(\hat\gamma)$ than in Table I.
+
+This reflects a combination of (i) differences between the original FRB/CRSP series and modern open-data substitutes and (ii) sensitivity of monthly consumption-growth construction to population adjustment and measurement noise.
 
 Comparing the HAC and HC0 columns shows that the serial-correlation correction has only a modest effect on inference, consistent with the near-martingale-difference property of one-period Euler errors.
 
