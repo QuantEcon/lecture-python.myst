@@ -307,22 +307,18 @@ where $\alpha=\gamma-1$ in the utility index $U(c_t)=c_t^\gamma/\gamma$, $\beta$
 
 The corresponding coefficient of relative risk aversion is $\rho = -\alpha$.
 
-Let $x_t = c_t / c_{t-1}$ denote the consumption ratio, and define $u_{it} = \beta x_t^\alpha r_{it}$ where $r_{it}$ is the gross real return on asset $i$.
+Let $x_t = c_t / c_{t-1}$ denote the consumption ratio, and define $u_{it} = x_t^\alpha r_{it}$ where $r_{it}$ is the gross real return on asset $i$.
 
-The Euler equation states $E_{t-1}[u_{it}] = 1$.
+The Euler equation states $E_{t-1}[u_{it}] = 1/\beta$.
 
 This is the same Euler restriction as above, written with a one-period reindexing.
-
-{cite:t}`hansen1983stochastic` define $u_{it} = x_t^\alpha r_{it}$ and write $E_{t-1}[u_{it}] = 1/\beta$.
-
-Our normalization is equivalent and absorbs $\beta$ directly into $u_{it}$.
 
 Define log variables $X_t = \log x_t$, $R_{it} = \log r_{it}$, and $U_{it} = \log u_{it}$, so that
 
 ```{math}
 :label: hs83-u-def
 
-U_{i,t}= \alpha X_{t}+R_{i,t}+\log\beta.
+U_{i,t}= \alpha X_{t}+R_{i,t}.
 ```
 
 {cite:t}`hansen1983stochastic` now make their key distributional assumption.
@@ -339,7 +335,7 @@ Because $u_{it} = \exp(U_{it})$ is conditionally lognormal, we can evaluate $E_{
 E_{t-1}[u_{it}] = \exp\left(\mu_{i,t-1} + \tfrac{1}{2}\sigma_i^2\right).
 ```
 
-Setting $E_{t-1}[u_{it}] = 1$ and taking logs gives $\mu_{i,t-1} + \sigma_i^2/2 = 0$.
+Setting $E_{t-1}[u_{it}] = 1/\beta$ and taking logs gives $\mu_{i,t-1} + \sigma_i^2/2 = -\log\beta$.
 
 Now define the innovation
 

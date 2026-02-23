@@ -311,28 +311,51 @@ E_t\!\left[\beta^n \left(\frac{C_{t+n}}{C_t}\right)^{-\gamma} R_{t,t+n}^i\right]
 
 If one instead uses $\beta$ (not $\beta^n$) in {eq}`hs82-euler-n`, the estimated discount parameter is interpreted as $\tilde\beta = \beta^n$ rather than the one-period $\beta$.
 
-The following helper builds these overlapping horizon aggregates, as needed for the multi-period case in {cite:t}`hansen1982generalized`.
+For estimation, the $n$-period exog is constructed by compounding one-period returns and consumption growth over overlapping windows of length $n$.
+
+A key requirement from {cite:t}`hansen1982generalized` is that instruments $z_t$ must lie in the agent's time-$t$ information set $\mathcal{I}_t$.
+
+For the multi-period case, this means instruments must be formed from one-period returns and consumption growth dated $t$ or earlier — not from lagged overlapping-horizon aggregates, which would contain information about future outcomes relative to $t$.
+
+The following helper constructs the $n$-period exog from overlapping windows and the correctly timed instruments from one-period data.
 
 ```{code-cell} ipython3
-def build_overlapping_horizon_data(data, horizon):
+def build_gmm_arrays_horizon(one_period_data, n_lags, horizon):
     """
-    Build overlapping horizon aggregates for [gross return, gross consumption growth].
+    Build endog, exog, and instruments for multi-period GMM.
+
+    Exog contains n-period compounded returns and consumption growth.
+    Instruments use only time-t (or earlier) one-period data, as required
+    by the conditional moment restriction in Hansen and Singleton (1982).
     """
     if horizon < 1:
         raise ValueError("horizon must be at least one.")
-    if data.shape[0] < horizon:
-        raise ValueError("Sample size must be at least horizon.")
+    if n_lags < 1:
+        raise ValueError("n_lags must be at least one.")
+    T = one_period_data.shape[0]
+    if T <= n_lags + horizon:
+        raise ValueError("Sample size too small for given n_lags and horizon.")
 
-    t_obs = data.shape[0]
-    n_obs = t_obs - horizon + 1
-    out = np.empty((n_obs, 2))
+    # Each observation starts at index t (the first period in the window).
+    # The window spans one_period_data[t : t + horizon].
+    # Instruments use one_period_data[t - 1], ..., one_period_data[t - n_lags].
+    starts = np.arange(n_lags, T - horizon + 1)
+    n_obs = len(starts)
 
-    for t in range(n_obs):
-        window = data[t : t + horizon, :]
-        out[t, 0] = np.prod(window[:, 0])
-        out[t, 1] = np.prod(window[:, 1])
+    exog = np.empty((n_obs, 2))
+    n_instr = 2 * n_lags + 1
+    instruments = np.empty((n_obs, n_instr))
+    instruments[:, 0] = 1.0
 
-    return out
+    for i, t in enumerate(starts):
+        window = one_period_data[t : t + horizon, :]
+        exog[i, 0] = np.prod(window[:, 0])   # n-period return
+        exog[i, 1] = np.prod(window[:, 1])   # n-period consumption growth
+        for j in range(n_lags):
+            instruments[i, 2 * j + 1 : 2 * j + 3] = one_period_data[t - 1 - j, :]
+
+    endog = np.zeros(n_obs)
+    return endog, exog, instruments
 ```
 
 When $n > 1$, overlapping horizons induce serial dependence in the Euler disturbance $u_{t+n} = h(x_{t+n}, b_0)$.
@@ -387,7 +410,10 @@ def two_step_gmm(data, n_lags, ma_order=0, horizon=1, start_params=None):
     if start_params is None:
         start_params = np.array([1.0, 0.99])
 
-    _, exog, instruments = build_gmm_arrays(data, n_lags)
+    if horizon == 1:
+        _, exog, instruments = build_gmm_arrays(data, n_lags)
+    else:
+        _, exog, instruments = build_gmm_arrays_horizon(data, n_lags, horizon)
     n_obs = exog.shape[0]
 
     def sample_moments(params):
@@ -435,9 +461,7 @@ def two_step_gmm(data, n_lags, ma_order=0, horizon=1, start_params=None):
     }
 ```
 
-This gives a transparent reference algorithm for the finite-order weighting in {cite:t}`hansen1982generalized`.
-
-Our baseline estimator for the one-period case uses statsmodels' nonlinear IV machinery, which implements the same two-step logic with a Newey-West HAC kernel.
+This gives a transparent reference algorithm for the two-step generalized instrumental variables estimator in {cite:t}`hansen1982generalized`, including the finite-order covariance structure used in the multi-period case.
 
 ## Data
 
@@ -455,10 +479,10 @@ We also build a simulator that generates synthetic return-growth pairs satisfyin
 
 ```{code-cell} ipython3
 FRED_CODES = {
-    # HS82 divide by a Census population series. In open data, a practical choice
-    # is BEA's monthly population series (POPTHM), which is internally consistent
-    # with the BEA consumption measures used below. We also include POP (Census)
-    # and the commonly used civilian noninstitutional 16+ series.
+    # HS82 construct real per capita consumption by dividing by a Census
+    # population series. We default to POP for comparability, but also include
+    # BEA's monthly population series (POPTHM) and the civilian noninstitutional
+    # 16+ series (CNP16OV) as alternatives.
     "population_bea": "POPTHM",
     "population_total": "POP",
     "population_16plus": "CNP16OV",
@@ -523,11 +547,11 @@ def simulate_euler_sample(
 
 The empirical data loader below merges FRED consumption series with the Ken French CRSP market proxy.
 
-{cite:t}`hansen1982generalized` construct *real per capita* consumption by dividing by a Census population series.
+{cite:t}`hansen1982generalized` construct real per capita consumption by dividing by a population series published by the Bureau of the Census.
 
-Our default uses `POPTHM` as a monthly population series that is internally consistent with BEA consumption measures.
+To mirror this choice with open data, our default uses FRED `POP`.
 
-We also support `POP` (Census) and `CNP16OV` (civilian noninstitutional population 16+) as alternatives.
+We also support BEA's monthly series `POPTHM` and the civilian noninstitutional 16+ series `CNP16OV` as alternatives.
 
 Nominal returns are deflated by the nondurables price index to obtain real gross returns.
 
@@ -535,7 +559,7 @@ Nominal returns are deflated by the nondurables price index to obtain real gross
 def load_hs_monthly_data(
     start="1959-02-01",
     end="1978-12-01",
-    population_key="population_bea",
+    population_key="population_total",
     per_capita=True,
 ):
     """
@@ -647,7 +671,7 @@ A thin wrapper then packages the merged frame into the exact array used by our e
 def get_estimation_data(
     start="1959-02-01",
     end="1978-12-01",
-    population_key="population_bea",
+    population_key="population_total",
     per_capita=True,
 ):
     """
@@ -923,27 +947,42 @@ We now estimate GMM across lag lengths, following the format of Table I in {cite
 
 ```{code-cell} ipython3
 sim_table, sim_results = run_gmm_by_lag(sim_data, lags=(1, 2, 4, 6), use_hac=True)
-sim_pretty = sim_table.rename(columns={
-    "γ_hat": r"\hat{\gamma}", "se_γ": r"\mathrm{se}(\hat{\gamma})",
-    "β_hat": r"\hat{\beta}", "se_β": r"\mathrm{se}(\hat{\beta})",
-    "j_stat": "J", "j_prob": "Prob(J)", "j_pval": "p(J)", "j_df": "df", "n_obs": "T",
-})
-display_table(sim_pretty, title="GMM Simulation Results", fmt={
-    r"\hat{\gamma}": "{:.4f}", r"\mathrm{se}(\hat{\gamma})": "{:.4f}",
-    r"\hat{\beta}": "{:.4f}", r"\mathrm{se}(\hat{\beta})": "{:.4f}",
-    "J": "{:.3f}", "Prob(J)": "{:.3f}", "p(J)": "{:.3f}", "df": "{:.0f}", "T": "{:.0f}",
-})
+sim_pretty = sim_table[["γ_hat", "se_γ", "β_hat", "se_β", "j_stat", "j_df", "j_prob"]].rename(
+    columns={
+        "γ_hat": r"\hat{\gamma}",
+        "se_γ": r"\mathrm{se}(\hat{\gamma})",
+        "β_hat": r"\hat{\beta}",
+        "se_β": r"\mathrm{se}(\hat{\beta})",
+        "j_stat": "J",
+        "j_df": "df",
+        "j_prob": "Prob(J)",
+    }
+)
+display_table(
+    sim_pretty,
+    title="GMM Simulation Results",
+    fmt={
+        r"\hat{\gamma}": "{:.4f}",
+        r"\mathrm{se}(\hat{\gamma})": "{:.4f}",
+        r"\hat{\beta}": "{:.4f}",
+        r"\mathrm{se}(\hat{\beta})": "{:.4f}",
+        "J": "{:.3f}",
+        "Prob(J)": "{:.3f}",
+        "df": "{:.0f}",
+    },
+)
 ```
 
-GMM recovers the true $\gamma$ and $\beta$ across lag specifications, and the $J$ statistics are small with small `Prob(J)` values (equivalently large right-tail `p(J)`), confirming that the simulated moment conditions are not rejected.
+GMM recovers the true $\gamma$ and $\beta$ across lag specifications.
 
-To illustrate the multi-period case from Section 2 of {cite:t}`hansen1982generalized`, we aggregate to overlapping three-period returns and estimate with the finite-order covariance targeting appropriate for MA(2) disturbances.
+The $J$ statistics are small with small `Prob(J)` (CDF) values and hence large right-tail $p$ values, confirming that the simulated moment conditions are not rejected.
+
+To illustrate the multi-period case from Section 2 of {cite:t}`hansen1982generalized`, we estimate the three-period Euler restriction using overlapping-horizon returns and consumption growth, with instruments formed from one-period data dated $t$ or earlier and the finite-order covariance appropriate for MA(2) disturbances.
 
 ```{code-cell} ipython3
 horizon_n = 3
-sim_data_n = build_overlapping_horizon_data(sim_data, horizon=horizon_n)
 two_step = two_step_gmm(
-    sim_data_n,
+    sim_data,
     n_lags=2,
     ma_order=horizon_n - 1,
     horizon=horizon_n,
@@ -959,7 +998,7 @@ print(
     f"Prob={two_step['j_prob']:.3f}, p={two_step['j_pval']:.3f}"
 )
 
-_, exog_n, _ = build_gmm_arrays(sim_data_n, n_lags=2)
+_, exog_n, _ = build_gmm_arrays_horizon(sim_data, n_lags=2, horizon=horizon_n)
 acf_n = acf(
     euler_error_horizon(two_step["params_step2"], exog_n, horizon=horizon_n),
     nlags=6,
@@ -1048,116 +1087,112 @@ print(f"Correlation: {np.corrcoef(emp_data[:, 0], emp_data[:, 1])[0, 1]:.4f}")
 
 The key feature of these data is the large gap between the volatility of returns and the volatility of consumption growth.
 
-If you want to see how sensitive the $\hat\gamma$ estimates are to the population adjustment, rerun the block above with
-`get_estimation_data(population_key="population_16plus")` (or with `per_capita=False` to drop the population adjustment entirely).
+To keep the flow aligned with the paper, we move directly to the Table I style estimates.
 
-To isolate this sensitivity, we compare consumption-growth volatility and a single NLAG estimate across several constructions.
+(Optional) If you want a quick sensitivity check on the consumption-growth construction (per-capita vs aggregate, and alternative population series), set `RUN_SENSITIVITY = True` in the next cell.
 
 ```{code-cell} ipython3
-robust_specs = [
-    ("per-capita (POPTHM)", "gross_cons_growth_popthm"),
-    ("per-capita (POP)", "gross_cons_growth_pop"),
-    ("per-capita (CNP16OV)", "gross_cons_growth_cnp16ov"),
-    ("aggregate", "gross_cons_growth_agg"),
-]
+RUN_SENSITIVITY = False
 
-rows = []
-r_vals = emp_frame["gross_real_return"].to_numpy()
-for label, growth_col in robust_specs:
-    g_vals = emp_frame[growth_col].to_numpy()
-    mask = np.isfinite(r_vals) & np.isfinite(g_vals)
-    data_i = np.column_stack([r_vals[mask], g_vals[mask]])
-    if len(data_i) <= 2:
-        continue
-    res_i = two_step_gmm(data_i, n_lags=2, ma_order=0, horizon=1)
-    rows.append(
-        {
-            "spec": label,
-            "T": len(data_i),
-            "std(g-1)%": float((data_i[:, 1] - 1.0).std() * 100.0),
-            r"\hat{\gamma}": res_i["params_step2"][0],
-            r"\mathrm{se}(\hat{\gamma})": res_i["se_step2"][0],
-            r"\hat{\beta}": res_i["params_step2"][1],
-            r"\mathrm{se}(\hat{\beta})": res_i["se_step2"][1],
-        }
+if RUN_SENSITIVITY:
+    robust_specs = [
+        ("per-capita (POPTHM)", "gross_cons_growth_popthm"),
+        ("per-capita (POP)", "gross_cons_growth_pop"),
+        ("per-capita (CNP16OV)", "gross_cons_growth_cnp16ov"),
+        ("aggregate", "gross_cons_growth_agg"),
+    ]
+
+    rows = []
+    r_vals = emp_frame["gross_real_return"].to_numpy()
+    for label, growth_col in robust_specs:
+        g_vals = emp_frame[growth_col].to_numpy()
+        mask = np.isfinite(r_vals) & np.isfinite(g_vals)
+        data_i = np.column_stack([r_vals[mask], g_vals[mask]])
+        if len(data_i) <= 2:
+            continue
+        res_i = two_step_gmm(data_i, n_lags=2, ma_order=0, horizon=1)
+        rows.append(
+            {
+                "spec": label,
+                "T": len(data_i),
+                "std(g-1)%": float((data_i[:, 1] - 1.0).std() * 100.0),
+                r"\hat{\gamma}": res_i["params_step2"][0],
+                r"\mathrm{se}(\hat{\gamma})": res_i["se_step2"][0],
+                r"\hat{\beta}": res_i["params_step2"][1],
+                r"\mathrm{se}(\hat{\beta})": res_i["se_step2"][1],
+            }
+        )
+
+    robust_df = pd.DataFrame(rows).set_index("spec")
+    display_table(
+        robust_df,
+        title=r"Sensitivity Check (NLAG=2, Exact $S_0$)",
+        fmt={
+            "T": "{:.0f}",
+            "std(g-1)%": "{:.3f}",
+            r"\hat{\gamma}": "{:.4f}",
+            r"\mathrm{se}(\hat{\gamma})": "{:.4f}",
+            r"\hat{\beta}": "{:.4f}",
+            r"\mathrm{se}(\hat{\beta})": "{:.4f}",
+        },
     )
-
-robust_df = pd.DataFrame(rows).set_index("spec")
-display_table(
-    robust_df,
-    title=r"Sensitivity Check (NLAG=2, Exact $S_0$)",
-    fmt={
-        "T": "{:.0f}",
-        "std(g-1)%": "{:.3f}",
-        r"\hat{\gamma}": "{:.4f}",
-        r"\mathrm{se}(\hat{\gamma})": "{:.4f}",
-        r"\hat{\beta}": "{:.4f}",
-        r"\mathrm{se}(\hat{\beta})": "{:.4f}",
-    },
-)
 ```
 
 This is the empirical fact underlying the equity premium puzzle of {cite:t}`MehraPrescott1985`: matching the observed equity premium with CRRA preferences requires implausibly high risk aversion.
 
 The weak consumption-return comovement compounds the difficulty.
 
-We now estimate GMM with HAC and HC0 covariance matrices, reporting results for NLAG $= 1, 2, 4, 6$ as in Table I of {cite:t}`hansen1982generalized`.
+We now estimate the Euler equation using the two-step generalized instrumental variables (GIV) / GMM procedure in {cite:t}`hansen1982generalized`.
+
+For the one-period stock-return Euler equation ($n=1$), the disturbance is a martingale difference sequence, so the optimal weighting matrix uses the contemporaneous covariance $S_0 = E[m_t m_t^\top]$ (no HAC kernel).
+
+To match Table I, we report the paper's exponent parameter $a$ in
+$E_t[\beta (C_{t+1}/C_t)^a R_{t+1} - 1] = 0$.
+
+Under CRRA, $a = -\gamma$, so the reported standard errors are the same up to sign.
 
 ```{code-cell} ipython3
-gmm_hac_table, gmm_hac_results = run_gmm_by_lag(emp_data, lags=LAGS, use_hac=True)
-gmm_hc0_table, _ = run_gmm_by_lag(emp_data, lags=LAGS, use_hac=False)
-gmm_exact_table = run_two_step_by_lag(emp_data, lags=LAGS, horizon=1)
+gmm_raw = run_two_step_by_lag(emp_data, lags=LAGS, horizon=1)
+gmm_raw.index.name = "NLAG"
 
-gmm_hac_pretty = gmm_hac_table.rename(columns={
-    "γ_hat": r"\hat{\gamma}", "se_γ": r"\mathrm{se}(\hat{\gamma})",
-    "β_hat": r"\hat{\beta}", "se_β": r"\mathrm{se}(\hat{\beta})",
-    "j_stat": "J", "j_prob": "Prob(J)", "j_pval": "p(J)", "j_df": "df", "n_obs": "T",
-})
-gmm_hc0_pretty = gmm_hc0_table[["se_γ", "se_β", "j_stat", "j_prob", "j_pval", "j_df"]].rename(columns={
-    "se_γ": r"\mathrm{se}(\hat{\gamma})", "se_β": r"\mathrm{se}(\hat{\beta})",
-    "j_stat": "J", "j_prob": "Prob(J)", "j_pval": "p(J)", "j_df": "df",
-})
+table_i = pd.DataFrame(index=gmm_raw.index)
+table_i.index.name = "NLAG"
+table_i["a"] = -gmm_raw["γ_hat"]
+table_i["SE(a)"] = gmm_raw["se_γ"]
+table_i[r"\beta"] = gmm_raw["β_hat"]
+table_i[r"\mathrm{SE}(\beta)"] = gmm_raw["se_β"]
+table_i[r"\chi^2"] = gmm_raw["j_stat"]
+table_i["DF"] = gmm_raw["j_df"]
+table_i["Prob"] = gmm_raw["j_prob"]
 
-gmm_fmt = {
-    r"\hat{\gamma}": "{:.4f}", r"\mathrm{se}(\hat{\gamma})": "{:.4f}",
-    r"\hat{\beta}": "{:.4f}", r"\mathrm{se}(\hat{\beta})": "{:.4f}",
-    "J": "{:.3f}", "Prob(J)": "{:.3f}", "p(J)": "{:.3f}", "df": "{:.0f}", "T": "{:.0f}",
-}
-display_table(gmm_hac_pretty, title="GMM Estimates (HAC Covariance)", fmt=gmm_fmt)
-display_table(gmm_hc0_pretty, title="GMM Estimates (HC0 Covariance)", fmt={
-    r"\mathrm{se}(\hat{\gamma})": "{:.4f}", r"\mathrm{se}(\hat{\beta})": "{:.4f}",
-    "J": "{:.3f}", "Prob(J)": "{:.3f}", "p(J)": "{:.3f}", "df": "{:.0f}",
-})
-
-gmm_exact_pretty = gmm_exact_table.rename(columns={
-    "γ_hat": r"\hat{\gamma}", "se_γ": r"\mathrm{se}(\hat{\gamma})",
-    "β_hat": r"\hat{\beta}", "se_β": r"\mathrm{se}(\hat{\beta})",
-    "j_stat": "J", "j_prob": "Prob(J)", "j_pval": "p(J)", "j_df": "df", "n_obs": "T",
-})
 display_table(
-    gmm_exact_pretty,
-    title="GMM Estimates (Exact $S_0$, Two-Step)",
-    fmt=gmm_fmt,
+    table_i,
+    title="Instrumental Variable Estimates (ND + VWR proxy, Table I format)",
+    fmt={
+        "a": "{:.4f}",
+        "SE(a)": "{:.4f}",
+        r"\beta": "{:.4f}",
+        r"\mathrm{SE}(\beta)": "{:.4f}",
+        r"\chi^2": "{:.4f}",
+        "DF": "{:.0f}",
+        "Prob": "{:.4f}",
+    },
 )
 ```
 
 For comparison, Table I of {cite:t}`hansen1982generalized` reports for ND+VWR:
 
-- $\hat\alpha$ from about $-0.90$ to $-0.82$ (so $\hat\gamma=-\hat\alpha$ is about $0.82$ to $0.90$),
+- $\hat a$ from about $-0.90$ to $-0.82$ (so $\hat\gamma=-\hat a$ is about $0.82$ to $0.90$),
 - $\hat\beta$ near $0.997$,
-- $\mathrm{se}(\hat\alpha)$ from about $0.106$ down to $0.063$ (so $\mathrm{se}(\hat\gamma)$ is the same up to sign),
+- $\mathrm{se}(\hat a)$ from about $0.106$ down to $0.063$ (so $\mathrm{se}(\hat\gamma)$ is the same up to sign),
 - $\mathrm{se}(\hat\beta)$ around $0.0024$ to $0.0025$,
 - `Prob` values around 0.50 to 0.88.
 
 Use the table above to compare your run against those benchmarks.
 
-In this lecture, `Prob(J)` is the paper-style `chi2.cdf(J, df)`, while `p(J)` is the right-tail value `1 - Prob(J)`.
-
 In practice, open-data proxies can match $\hat\beta$ and $\mathrm{se}(\hat\beta)$ closely while producing substantially larger $\mathrm{se}(\hat\gamma)$ than in Table I.
 
 This reflects a combination of (i) differences between the original FRB/CRSP series and modern open-data substitutes and (ii) sensitivity of monthly consumption-growth construction to population adjustment and measurement noise.
-
-Comparing the HAC and HC0 columns shows that the serial-correlation correction has only a modest effect on inference, consistent with the near-martingale-difference property of one-period Euler errors.
 
 We inspect pricing errors and their autocorrelation structure to diagnose fit beyond summary statistics.
 
@@ -1169,9 +1204,11 @@ mystnb:
     name: fig-hs82-euler-diagnostics
 ---
 lag_diag = 2
-res_diag = gmm_hac_results[lag_diag]
+params_diag = np.array(
+    [float(gmm_raw.loc[lag_diag, "γ_hat"]), float(gmm_raw.loc[lag_diag, "β_hat"])]
+)
 _, exog_diag, _ = build_gmm_arrays(emp_data, n_lags=lag_diag)
-errors = euler_error(res_diag.params, exog_diag)
+errors = euler_error(params_diag, exog_diag)
 acf_vals = acf(errors, nlags=12, fft=True)
 
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))
@@ -1230,7 +1267,7 @@ fig, ax = plt.subplots()
 contours = ax.contourf(γ_grid, β_grid, log_obj, levels=30, cmap="viridis")
 ax.set_xlabel(r"$\gamma$")
 ax.set_ylabel(r"$\beta$")
-ax.plot(gmm_hac_results[2].params[0], gmm_hac_results[2].params[1], "r*", ms=12, lw=2)
+ax.plot(float(gmm_raw.loc[2, "γ_hat"]), float(gmm_raw.loc[2, "β_hat"]), "r*", ms=12, lw=2)
 plt.colorbar(contours, ax=ax)
 plt.tight_layout()
 plt.show()
