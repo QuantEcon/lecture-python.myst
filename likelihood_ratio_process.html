@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -223,10 +239,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -321,7 +343,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/84a6c0c48" class="changelog-hash">84a6c0c48</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">6 months ago</span>
+                                <span class="changelog-time">7 months ago</span>
                                 <span class="changelog-message">[likelihood_ratio_processes] Update structure and SyntaxWarnings (#497)</span>
                             </li>
                             
@@ -398,7 +420,7 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.11.0)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
@@ -580,7 +602,7 @@ draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d72808b2ae454460973daf14525b2c14e76d87520e810e185beb9d289db938a0.png" src="_images/d72808b2ae454460973daf14525b2c14e76d87520e810e185beb9d289db938a0.png" />
+<img alt="_images/2723bffe864b7c55fdb3527760a2f8e148ae6197839bc1c8cf37a8d3b43bd3fc.png" src="_images/2723bffe864b7c55fdb3527760a2f8e148ae6197839bc1c8cf37a8d3b43bd3fc.png" />
 </div>
 </div>
 <p>Evidently, as sample length <span class="math notranslate nohighlight">\(T\)</span> grows, most probability mass
@@ -597,7 +619,7 @@ paths <span class="math notranslate nohighlight">\(L\left(w^{t}\right)\)</span> 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/622988f4498c10d30df75c0693c23e24eb4a69277f4e6a9cbcca2db44f58296e.png" src="_images/622988f4498c10d30df75c0693c23e24eb4a69277f4e6a9cbcca2db44f58296e.png" />
+<img alt="_images/ad4ee409caf15188719e6551c7fc617f792e20fca3223e636bc81ce8bec76581.png" src="_images/ad4ee409caf15188719e6551c7fc617f792e20fca3223e636bc81ce8bec76581.png" />
 </div>
 </div>
 <p>Despite the evident convergence of most probability mass to a
@@ -708,7 +730,7 @@ diverges toward <span class="math notranslate nohighlight">\(+ \infty\)</span>.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/423527035ee9cdd5029e91d0c75598229b07ce59bbbea47ec9bf38d8209fdaa8.png" src="_images/423527035ee9cdd5029e91d0c75598229b07ce59bbbea47ec9bf38d8209fdaa8.png" />
+<img alt="_images/f55baf5b1d81f9345d43efb7f2532520d9f0c5a6483d59aadfc14145f6ff523a.png" src="_images/f55baf5b1d81f9345d43efb7f2532520d9f0c5a6483d59aadfc14145f6ff523a.png" />
 </div>
 </div>
 <p>We also plot the probability that <span class="math notranslate nohighlight">\(L\left(w^t\right)\)</span> falls into
@@ -722,7 +744,7 @@ fast probability mass diverges to <span class="math notranslate nohighlight">\(+
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/36c72280860c1af031825915a3ea47ea080738b86dbf2feb62d980e02f7b2b8e.png" src="_images/36c72280860c1af031825915a3ea47ea080738b86dbf2feb62d980e02f7b2b8e.png" />
+<img alt="_images/aaae4a142ad62aecc2269bc18a6a9b961e9a2c15fa00d34e8b5c27c2573293fe.png" src="_images/aaae4a142ad62aecc2269bc18a6a9b961e9a2c15fa00d34e8b5c27c2573293fe.png" />
 </div>
 </div>
 </section>
@@ -864,7 +886,7 @@ is what makes it possible eventually to distinguish
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/81115af7e0bf09a71933247a5685c090a36fb0c31f0c280b2947d53340649e83.png" src="_images/81115af7e0bf09a71933247a5685c090a36fb0c31f0c280b2947d53340649e83.png" />
+<img alt="_images/a1d752cdad3890ba24a5945689e96772f490dd4d4653179ea1b7c8c810520595.png" src="_images/a1d752cdad3890ba24a5945689e96772f490dd4d4653179ea1b7c8c810520595.png" />
 </div>
 </div>
 <p>In the above graphs,</p>
@@ -922,7 +944,7 @@ they are integrals of <span class="math notranslate nohighlight">\(\log L_t\)</s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6b4372a19637674209fb60e98d8159f9af6eb5040cd2b8f0ccd97e873b26eb97.png" src="_images/6b4372a19637674209fb60e98d8159f9af6eb5040cd2b8f0ccd97e873b26eb97.png" />
+<img alt="_images/bb22330f49eaddea2197d2e8cf1cdf7c788c3b81c6fd2f5490f573e05261bf61.png" src="_images/bb22330f49eaddea2197d2e8cf1cdf7c788c3b81c6fd2f5490f573e05261bf61.png" />
 </div>
 </div>
 <p>For a given sample size <span class="math notranslate nohighlight">\(t\)</span>, the threshold <span class="math notranslate nohighlight">\(c\)</span> uniquely pins down probabilities
@@ -965,7 +987,7 @@ sample sizes <span class="math notranslate nohighlight">\(t\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/440c622523a46c349fcd7d49c32f307465da254b686ad316f6566ded8f4ce55b.png" src="_images/440c622523a46c349fcd7d49c32f307465da254b686ad316f6566ded8f4ce55b.png" />
+<img alt="_images/568ee853a6d9b724f81965512e1b83901a1d6b392163ac5825a2a0b21c9142b5.png" src="_images/568ee853a6d9b724f81965512e1b83901a1d6b392163ac5825a2a0b21c9142b5.png" />
 </div>
 </div>
 <p>Notice that as <span class="math notranslate nohighlight">\(t\)</span> increases, we are assured a larger probability
@@ -1012,7 +1034,7 @@ target probability of detection, for example, <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/921eab85ef6766be3d95ffb61eecfb6c033618717dcfd09dfa81d5d03d8207ac.png" src="_images/921eab85ef6766be3d95ffb61eecfb6c033618717dcfd09dfa81d5d03d8207ac.png" />
+<img alt="_images/be251f03af2e49f4a3b1e00be4d40009868f7f2a3280b48a9826bf0edbe8dd11.png" src="_images/be251f03af2e49f4a3b1e00be4d40009868f7f2a3280b48a9826bf0edbe8dd11.png" />
 </div>
 </div>
 <p>The United States Navy evidently used a procedure like this to select a sample size <span class="math notranslate nohighlight">\(t\)</span> for doing quality
@@ -1182,7 +1204,7 @@ K_{g} = D_{KL}\bigl(h\|g\bigr) = KL(h, g)
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="_images/895917a77a525fa833962433e7760aef934849d85a88445b9a5981be1039483e.png" src="_images/895917a77a525fa833962433e7760aef934849d85a88445b9a5981be1039483e.png" />
+<img alt="_images/f5dcfa0bdb16716d0cbf78dd82da61ff3fa8f9977e9d875f0feb43d228811eb2.png" src="_images/f5dcfa0bdb16716d0cbf78dd82da61ff3fa8f9977e9d875f0feb43d228811eb2.png" />
 </div>
 </div>
 <p>Note that</p>
@@ -1397,11 +1419,11 @@ p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="_images/925fce86610534b5a556df4c2712cce85ab9bf690990262cd316fbc57c74e896.png" src="_images/925fce86610534b5a556df4c2712cce85ab9bf690990262cd316fbc57c74e896.png" />
+<img alt="_images/b327edfab3727b40be26167fbd1f3decf47ca7591ab36fefecbd12fa9e065794.png" src="_images/b327edfab3727b40be26167fbd1f3decf47ca7591ab36fefecbd12fa9e065794.png" />
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>At T=30:
-α_30 = 0.0048
-β_30 = 0.0028
-Model selection error probability = 0.0038
+α_30 = 0.0053
+β_30 = 0.0025
+Model selection error probability = 0.0039
 </pre></div>
 </div>
 </div>
@@ -1588,7 +1610,7 @@ theoretical classification error probability = 0.3294
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7be1613076f414909b50c01e12fe91ef85374ce2e61ece06022d6f180535b7c4.png" src="_images/7be1613076f414909b50c01e12fe91ef85374ce2e61ece06022d6f180535b7c4.png" />
+<img alt="_images/4d694275c4a77e50e95dcde05a6a66e5850d78aa22f61eb647f6d7e450ce8a1b.png" src="_images/4d694275c4a77e50e95dcde05a6a66e5850d78aa22f61eb647f6d7e450ce8a1b.png" />
 </div>
 </div>
 <p>Let’s watch decisions made by  the two timing protocols as more and more observations accrue.</p>
@@ -1614,7 +1636,7 @@ theoretical classification error probability = 0.3294
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2d78c7a929c013877a08a3ea48aa39596f9d0a7d457977dcea81c6bb20c74ae3.png" src="_images/2d78c7a929c013877a08a3ea48aa39596f9d0a7d457977dcea81c6bb20c74ae3.png" />
+<img alt="_images/e66f116088070af29b9ff4dde3746e271e0b6628fa04c8a4863a86bb325cfada.png" src="_images/e66f116088070af29b9ff4dde3746e271e0b6628fa04c8a4863a86bb325cfada.png" />
 </div>
 </div>
 <p>From the figure above, we can see:</p>
@@ -1705,7 +1727,7 @@ Optimal ϕ = 0.5969
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b733fe294167f6f864253d590a03b7675922c507535f7efa0fb8b366b135651f.png" src="_images/b733fe294167f6f864253d590a03b7675922c507535f7efa0fb8b366b135651f.png" />
+<img alt="_images/61efc2920b965049be368308499dcd3beba0c422758e42fc740a2ac3ecdc27e1.png" src="_images/61efc2920b965049be368308499dcd3beba0c422758e42fc740a2ac3ecdc27e1.png" />
 </div>
 </div>
 <p>Evidently, <span class="math notranslate nohighlight">\(e^{-C(f,g)T}\)</span> is an upper bound on the error rate.</p>
@@ -1866,7 +1888,7 @@ compute how it covaries with the model selection error probability.</p>
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="_images/35e7d692006517bbd07594a30d8f34500c13e8a2c4803316f913fe2a8369ecbf.png" src="_images/35e7d692006517bbd07594a30d8f34500c13e8a2c4803316f913fe2a8369ecbf.png" />
+<img alt="_images/5d2576528a329b4046a0b18c1b0c8549a03373a31ddb4ff2f5909c524335adcc.png" src="_images/5d2576528a329b4046a0b18c1b0c8549a03373a31ddb4ff2f5909c524335adcc.png" />
 </div>
 </div>
 <p>Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with the model selection error probability.</p>
@@ -2112,7 +2134,7 @@ KL divergence rate h(f, g): 0.0588
 KL divergence rate h(g, f): 0.0563
 </pre></div>
 </div>
-<img alt="_images/9a105398bb32ea377c6bdf7e84a9a01b711f49bb7790729a36309cfff213d439.png" src="_images/9a105398bb32ea377c6bdf7e84a9a01b711f49bb7790729a36309cfff213d439.png" />
+<img alt="_images/a78af26b8a56febf489706e59ee9991e2f350bee6cdc4a81f8bc454ce86f166c.png" src="_images/a78af26b8a56febf489706e59ee9991e2f350bee6cdc4a81f8bc454ce86f166c.png" />
 </div>
 </div>
 </section>

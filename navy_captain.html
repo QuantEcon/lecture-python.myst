@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -209,10 +225,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -262,7 +284,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/84a6c0c48" class="changelog-hash">84a6c0c48</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">6 months ago</span>
+                                <span class="changelog-time">7 months ago</span>
                                 <span class="changelog-message">[likelihood_ratio_processes] Update structure and SyntaxWarnings (#497)</span>
                             </li>
                             
@@ -635,7 +657,7 @@ generates data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7fd820d94095d3c040527d14791afa5a9c3b29ecd93aea192be25c9e1a40fc35.png" src="_images/7fd820d94095d3c040527d14791afa5a9c3b29ecd93aea192be25c9e1a40fc35.png" />
+<img alt="_images/3c573f727a2e9b1fe6135dbce5a23aad384ef8f85742d2488da60519a6ea729a.png" src="_images/3c573f727a2e9b1fe6135dbce5a23aad384ef8f85742d2488da60519a6ea729a.png" />
 </div>
 </div>
 <p>We can compute sequences of likelihood ratios using simulated samples.</p>
@@ -684,7 +706,7 @@ generates data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9cf21ee398592e8a6ee3e91c603f8d455f2e062c7e3223df4e9312d298fa5a7c.png" src="_images/9cf21ee398592e8a6ee3e91c603f8d455f2e062c7e3223df4e9312d298fa5a7c.png" />
+<img alt="_images/694efd745a90bc9d2a936093e279f8fcd2bf3284940ee59292dc59bab5e3df8a.png" src="_images/694efd745a90bc9d2a936093e279f8fcd2bf3284940ee59292dc59bab5e3df8a.png" />
 </div>
 </div>
 <p>We can  minimize the expected total loss presented in equation
@@ -768,7 +790,7 @@ consequently the minimal <span class="math notranslate nohighlight">\(\bar{V}_{f
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d2d2ffaab8808087d9e6ad32308089762455714d0a03d191b2d50bce56cd7b78.png" src="_images/d2d2ffaab8808087d9e6ad32308089762455714d0a03d191b2d50bce56cd7b78.png" />
+<img alt="_images/a7c79d210f38f3bf142925827b5a53c32eb5959457cca5e2c2ff034ff4529b67.png" src="_images/a7c79d210f38f3bf142925827b5a53c32eb5959457cca5e2c2ff034ff4529b67.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -814,7 +836,7 @@ rule changes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e86f18845671fb7b7ab7b799bf683c2612a0478b9718243955a55c1df6b42362.png" src="_images/e86f18845671fb7b7ab7b799bf683c2612a0478b9718243955a55c1df6b42362.png" />
+<img alt="_images/cc595b8a0819324b06c81423699c6ffb9fd6745411c007275e4858ce0147cc11.png" src="_images/cc595b8a0819324b06c81423699c6ffb9fd6745411c007275e4858ce0147cc11.png" />
 </div>
 </div>
 <p>The following shows how optimal sample size <span class="math notranslate nohighlight">\(t\)</span> and targeted
@@ -838,7 +860,7 @@ rule changes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/95c10e66919f59bb93b81ffe613f753a669fff453781c98dbb0a868845e34656.png" src="_images/95c10e66919f59bb93b81ffe613f753a669fff453781c98dbb0a868845e34656.png" />
+<img alt="_images/1b5c16af9f1317c6e2b877771bdd50a77ed1dae74eda8efdb286718a0c15f093.png" src="_images/1b5c16af9f1317c6e2b877771bdd50a77ed1dae74eda8efdb286718a0c15f093.png" />
 </div>
 </div>
 </section>
@@ -985,7 +1007,7 @@ that computes optimal values of <span class="math notranslate nohighlight">\(A\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/243bb1f6fb0dd1f687f7a006fcb47d498197c655cf1f05b2c674f63218adfb7b.png" src="_images/243bb1f6fb0dd1f687f7a006fcb47d498197c655cf1f05b2c674f63218adfb7b.png" />
+<img alt="_images/c94100f2ddbccec49befb544cf153160beb983ec0672b159bce8fecdb9335a1d.png" src="_images/c94100f2ddbccec49befb544cf153160beb983ec0672b159bce8fecdb9335a1d.png" />
 </div>
 </div>
 <p>The above figure portrays the value function plotted against the decision
@@ -1091,7 +1113,7 @@ numerically.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fb6901b91979e6c9e4e5874b6657f12282de7ef345f1c03dfd681f461f358715.png" src="_images/fb6901b91979e6c9e4e5874b6657f12282de7ef345f1c03dfd681f461f358715.png" />
+<img alt="_images/f530fdec58ae7dde8636ba65e3bd721b4b653916b6249fca890331e028bd7bd7.png" src="_images/f530fdec58ae7dde8636ba65e3bd721b4b653916b6249fca890331e028bd7bd7.png" />
 </div>
 </div>
 <p>Given an assumed value for
@@ -1143,7 +1165,7 @@ minimizes this objective concept of expected loss.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5f4f95d67210a435f360172b01c367d7e46e94e3a96275e3c3a2d0789fcf4912.png" src="_images/5f4f95d67210a435f360172b01c367d7e46e94e3a96275e3c3a2d0789fcf4912.png" />
+<img alt="_images/5338901e6411da11eb56a14dd3aa90b869d2f7c6bcb0a32151f9d26c90d63de6.png" src="_images/5338901e6411da11eb56a14dd3aa90b869d2f7c6bcb0a32151f9d26c90d63de6.png" />
 </div>
 </div>
 <p>This pattern of outcomes holds more generally.</p>
@@ -1223,7 +1245,7 @@ and Bayesian decision rules.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/97e27371f7d7d94ff50d0b96802d081a2733c3fbfb1987281e887d19b1fec1ae.png" src="_images/97e27371f7d7d94ff50d0b96802d081a2733c3fbfb1987281e887d19b1fec1ae.png" />
+<img alt="_images/de7a3ec0f7f3a367185f27df5ab7ea98ad523ed581a3a4e53682dbfe8d8dde1d.png" src="_images/de7a3ec0f7f3a367185f27df5ab7ea98ad523ed581a3a4e53682dbfe8d8dde1d.png" />
 </div>
 </div>
 <p>Evidently, there is no sample size <span class="math notranslate nohighlight">\(t\)</span> at which the Neyman-Pearson
@@ -1248,7 +1270,7 @@ rule does better on average for all values of <span class="math notranslate nohi
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e1817bb392efe541dc0a2c8ffc580ffe782564d15b0a7eb4a8641626e4eed4be.png" src="_images/e1817bb392efe541dc0a2c8ffc580ffe782564d15b0a7eb4a8641626e4eed4be.png" />
+<img alt="_images/c11d587f0f3f45c7c5327aecd9fcd3c64c7cfe18c2300bd268cb04cf27ca1af5.png" src="_images/c11d587f0f3f45c7c5327aecd9fcd3c64c7cfe18c2300bd268cb04cf27ca1af5.png" />
 </div>
 </div>
 <p>The right panel of the above graph plots the difference
@@ -1361,7 +1383,7 @@ rule when <span class="math notranslate nohighlight">\(q= f_0\)</span> and <stro
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ce63d1eeb24d753fad999833337e7094946c8519c3597886663656683bf32286.png" src="_images/ce63d1eeb24d753fad999833337e7094946c8519c3597886663656683bf32286.png" />
+<img alt="_images/738c7b18a733a9bc11c94fa922f03a10c44de86965e09317482c875b50f3faae.png" src="_images/738c7b18a733a9bc11c94fa922f03a10c44de86965e09317482c875b50f3faae.png" />
 </div>
 </div>
 <p>Later we’ll figure out how these distributions ultimately affect
@@ -1401,7 +1423,7 @@ the one-to-one mapping from <span class="math notranslate nohighlight">\(L_{t}\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3e40b5d871f7190c262ae38ca06ee02594f7cc816ebfe5615d44194b92f7459e.png" src="_images/3e40b5d871f7190c262ae38ca06ee02594f7cc816ebfe5615d44194b92f7459e.png" />
+<img alt="_images/73d51148964786647d9e481fc9275791d156fd985ea5eeabe571afe701ad972a.png" src="_images/73d51148964786647d9e481fc9275791d156fd985ea5eeabe571afe701ad972a.png" />
 </div>
 </div>
 <p>The above figures compare averages and variances of updated Bayesian
@@ -1437,7 +1459,7 @@ confirm the Navy Captain’s hunch.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b1e358cf67986691c9a8669600e7611b1c856cdbb1d570b45608487edd66e86f.png" src="_images/b1e358cf67986691c9a8669600e7611b1c856cdbb1d570b45608487edd66e86f.png" />
+<img alt="_images/53a23ca881279d9fcbec7851b7fb7555cbcabdbfcc56464e015ca04dc6d7f2d2.png" src="_images/53a23ca881279d9fcbec7851b7fb7555cbcabdbfcc56464e015ca04dc6d7f2d2.png" />
 </div>
 </div>
 </section>
@@ -1483,7 +1505,7 @@ with the conditional probabilities that the Bayesian rule decides before
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6f64b7baf12f783bdde870428148e860f46a22a717c7adc72cc16cf0bf1ed1d9.png" src="_images/6f64b7baf12f783bdde870428148e860f46a22a717c7adc72cc16cf0bf1ed1d9.png" />
+<img alt="_images/423d818aa5a53b7222f23fc811c8cfd5bc9c2d15e9919cc1f1e7588517a12166.png" src="_images/423d818aa5a53b7222f23fc811c8cfd5bc9c2d15e9919cc1f1e7588517a12166.png" />
 </div>
 </div>
 <p>By averaging using <span class="math notranslate nohighlight">\(\pi^{*}\)</span>, we also plot the unconditional
@@ -1508,7 +1530,7 @@ distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/57384dba4e5046728b16f324493f74fb6dcc06e250965ebd6288da7262eb1f43.png" src="_images/57384dba4e5046728b16f324493f74fb6dcc06e250965ebd6288da7262eb1f43.png" />
+<img alt="_images/3c665622510fe6f55e0cab2fc6d6e6b243cc23f2d8271e73139899c2f0ffefdc.png" src="_images/3c665622510fe6f55e0cab2fc6d6e6b243cc23f2d8271e73139899c2f0ffefdc.png" />
 </div>
 </div>
 </section>
@@ -1552,7 +1574,7 @@ generating the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f0a38e973e17845594158eeb152e5449db3711bacfa1e800b9e4cc3fe9729531.png" src="_images/f0a38e973e17845594158eeb152e5449db3711bacfa1e800b9e4cc3fe9729531.png" />
+<img alt="_images/bf7db0511ec59aa2b7cb94599b3ba3cdee08db11a7bed098dc33e306c799f873.png" src="_images/bf7db0511ec59aa2b7cb94599b3ba3cdee08db11a7bed098dc33e306c799f873.png" />
 </div>
 </div>
 <p>The next graph plots the unconditional distribution of Bayesian times to
@@ -1575,7 +1597,7 @@ distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/89709435489320b47f548038a75ec3355abcd2f73f919335e219994349084179.png" src="_images/89709435489320b47f548038a75ec3355abcd2f73f919335e219994349084179.png" />
+<img alt="_images/d948c67e45da56b0840d6c2fbd01ff355cd31c7d7ea94cbd0102c761f3a773ff.png" src="_images/d948c67e45da56b0840d6c2fbd01ff355cd31c7d7ea94cbd0102c761f3a773ff.png" />
 </div>
 </div>
 </section>

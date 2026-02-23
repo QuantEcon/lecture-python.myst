@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -226,10 +242,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -882,7 +904,7 @@ estimate on <span class="math notranslate nohighlight">\(z_2 - \mu_2\)</span></p
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.5]]), array([0.50029482]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.5]]), array([0.49851065]))
 </pre></div>
 </div>
 </div>
@@ -896,7 +918,7 @@ degrees-of-freedom adjusted estimate of the variance of <span class="math notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.75]]), np.float64(0.749283355563193))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.75]]), np.float64(0.7503292134793483))
 </pre></div>
 </div>
 </div>
@@ -910,7 +932,7 @@ compare it with <span class="math notranslate nohighlight">\(\hat{\mu}_1\)</span
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([2.5]), array([2.50117929]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([2.5]), array([2.49404261]))
 </pre></div>
 </div>
 </div>
@@ -942,10 +964,10 @@ Numbers explains why  sample analogues approximate  population objects.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.64701751, 0.3394191 , 0.50890234]),
- array([[1.08141667, 1.19827171, 1.30763619],
-        [1.19827171, 1.63553175, 1.41592525],
-        [1.30763619, 1.41592525, 1.96688636]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.27459939, 0.6810646 , 0.51083151]),
+ array([[1.3400823 , 0.4815496 , 0.7851724 ],
+        [0.4815496 , 0.68627256, 0.87829529],
+        [0.7851724 , 0.87829529, 1.20726629]]))
 </pre></div>
 </div>
 </div>
@@ -998,7 +1020,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.41693386, 0.36468248]]), array([0.41748255, 0.36444232]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-1.89550864,  2.02936893]]), array([-1.89154103,  2.02738323]))
 </pre></div>
 </div>
 </div>
@@ -1010,7 +1032,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.10494461]]), np.float64(0.10495864020461919))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[0.65945926]]), np.float64(0.6603507747577453))
 </pre></div>
 </div>
 </div>
@@ -1022,7 +1044,7 @@ order.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([2.97719457]), array([2.97702712]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([6.88472499]), array([6.88104385]))
 </pre></div>
 </div>
 </div>
@@ -1200,7 +1222,7 @@ random vector from our distribution and then compute the distribution of
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(99.70637905687724)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>np.float64(91.22821654914848)
 </pre></div>
 </div>
 </div>
@@ -1218,7 +1240,7 @@ population regression.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([101.10833632]), array([[1.96078431]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([89.88862198]), array([[1.96078431]]))
 </pre></div>
 </div>
 </div>
@@ -1279,7 +1301,7 @@ change as more test results come in.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/000cba3eba1a09125240c131efd766c9295c53c99e080ca1926e5fcfcfb9c835.png" src="_images/000cba3eba1a09125240c131efd766c9295c53c99e080ca1926e5fcfcfb9c835.png" />
+<img alt="_images/10521fd81df7b2eaeac01669102c018d8db335c28d083de4b2bb2617f138a866.png" src="_images/10521fd81df7b2eaeac01669102c018d8db335c28d083de4b2bb2617f138a866.png" />
 </div>
 </div>
 <p>The solid blue line in the plot above shows <span class="math notranslate nohighlight">\(\hat{\mu}_{\theta}\)</span>
@@ -1552,7 +1574,7 @@ the mean vector and covariance matrix of the joint normal distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(85.39576376650763), np.float64(89.89199777745883))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(86.70829557243901), np.float64(99.6276155896018))
 </pre></div>
 </div>
 </div>
@@ -1571,7 +1593,7 @@ the mean vector and covariance matrix of the joint normal distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([91.82885281, 93.38617802]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([ 90.24595259, 107.24990637]),
  array([[33.33333333,  0.        ],
         [ 0.        , 33.33333333]]))
 </pre></div>
@@ -1614,12 +1636,12 @@ separately conditional on various subsets of test scores.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean and variance of θ conditional on y1, y2, y3, y4  are 91.83 and 33.33 respectively
-The mean and variance of θ conditional on y1, y2          are 91.83 and 33.33 respectively
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The mean and variance of θ conditional on y1, y2, y3, y4  are 90.25 and 33.33 respectively
+The mean and variance of θ conditional on y1, y2          are 90.25 and 33.33 respectively
 The mean and variance of θ conditional on y3, y4          are 100.00 and 100.00 respectively
-The mean and variance of η conditional on y1, y2, y3, y4  are 93.39 and 33.33 respectively
+The mean and variance of η conditional on y1, y2, y3, y4  are 107.25 and 33.33 respectively
 The mean and variance of η conditional on y1, y2          are 100.00 and 100.00 respectively
-The mean and variance of η conditional on y3, y4          are 93.39 and 33.33 respectively
+The mean and variance of η conditional on y3, y4          are 107.25 and 33.33 respectively
 </pre></div>
 </div>
 </div>
@@ -1875,12 +1897,12 @@ information about the hidden state</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X =  [-1.86903552 -0.98966078  0.06213788 -1.87778974]
-Y =  [-1.86046702 -0.94807184 -0.00479698 -1.89975518]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X =  [-0.65282586 -0.75285792  0.33515819  1.14176258]
+Y =  [-0.57036144 -0.70165554  0.31357359  1.15457133]
  E [ X | Y] =
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-1.85420968, -0.94797928, -0.01114336, -1.89504265]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.569358  , -0.69906867,  0.31317645,  1.15239498]),
  array([[2.48875094e-03, 5.57449314e-06, 1.24861727e-08, 2.80242496e-11],
         [5.57449314e-06, 2.48876343e-03, 5.57452116e-06, 1.25113948e-08],
         [1.24861727e-08, 5.57452116e-06, 2.48876346e-03, 5.58575339e-06],
@@ -1953,7 +1975,7 @@ matrix of the subvector
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.00622137]), array([[1.00201996]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.28010036]), array([[1.00201996]]))
 </pre></div>
 </div>
 </div>
@@ -2018,7 +2040,7 @@ covariance matrix of the subvector
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.76939401]), array([[1.81413617]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([-0.56795876]), array([[1.81413617]]))
 </pre></div>
 </div>
 </div>
@@ -2063,7 +2085,7 @@ y_{t} = h_{t,t} \epsilon_{t} + h_{t,t-1} \epsilon_{t-1} + \dots + h_{t,0} \epsil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.85814579,  0.72054628,  0.84817057, -1.88926892])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.56964982, -0.1891833 ,  0.94251122,  0.87250136])
 </pre></div>
 </div>
 </div>
@@ -2075,7 +2097,7 @@ y_{t} = h_{t,t} \epsilon_{t} + h_{t,t-1} \epsilon_{t-1} + \dots + h_{t,0} \epsil
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-1.86046702, -0.94807184, -0.00479698, -1.89975518])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([-0.57036144, -0.70165554,  0.31357359,  1.15457133])
 </pre></div>
 </div>
 </div>
@@ -2379,7 +2401,7 @@ the <code class="docutils literal notranslate"><span class="pre">MultivariateNor
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e84ccd9a3c4fd1f0746ff9aa6e4648cd66723154a1dfa76bcac41ebaa26a7559.png" src="_images/e84ccd9a3c4fd1f0746ff9aa6e4648cd66723154a1dfa76bcac41ebaa26a7559.png" />
+<img alt="_images/b8d463e709a1a95ef0dab7b07278b8b4a155c211ec3c4616d2a01ae7d3d58b16.png" src="_images/b8d463e709a1a95ef0dab7b07278b8b4a155c211ec3c4616d2a01ae7d3d58b16.png" />
 </div>
 </div>
 <p>In the above graph, the green line is what the price of the stock would
@@ -2833,7 +2855,7 @@ for the second column.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.14142014, 0.67340051]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.1378912 , 1.21742447]),
  array([[0.04761905, 0.        ],
         [0.        , 0.04761905]]))
 </pre></div>
@@ -2852,7 +2874,7 @@ for the second column.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.14142014, 0.67340051])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.1378912 , 1.21742447])
 </pre></div>
 </div>
 </div>
@@ -2865,8 +2887,8 @@ for the second column.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.17252565, 0.17252565, 0.17252565, 0.17252565, 0.17252565,
-        0.77007632, 0.77007632, 0.77007632, 0.77007632, 0.77007632]),
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.18771133, 0.18771133, 0.18771133, 0.18771133, 0.18771133,
+        1.38837481, 1.38837481, 1.38837481, 1.38837481, 1.38837481]),
  array([[0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
         [0.  , 0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
         [0.  , 0.  , 0.25, 0.  , 0.  , 0.  , 0.  , 0.  , 0.  , 0.  ],
@@ -2890,8 +2912,8 @@ for the second column.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.17252565, 0.17252565, 0.17252565, 0.17252565, 0.17252565,
-       0.77007632, 0.77007632, 0.77007632, 0.77007632, 0.77007632])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.18771133, 0.18771133, 0.18771133, 0.18771133, 0.18771133,
+       1.38837481, 1.38837481, 1.38837481, 1.38837481, 1.38837481])
 </pre></div>
 </div>
 </div>
@@ -2993,8 +3015,8 @@ Y = P \epsilon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ε =  [ 0.3320363   1.58105778 -0.06875162  0.11773158 -0.25902923  0.29371387
- -0.12879333  0.20139587  0.54589253  0.98391678]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ε =  [ 0.3237508   2.85835607 -0.02576948 -0.11640227 -0.51563821 -0.78546453
+  0.10836819 -0.4878582   0.28458565  0.54674932]
 </pre></div>
 </div>
 </div>
@@ -3008,7 +3030,7 @@ Y = P \epsilon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f =  [0.17252565 0.77007632]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>f =  [0.18771133 1.38837481]
 </pre></div>
 </div>
 </div>
@@ -3037,7 +3059,7 @@ non-zero loading in <span class="math notranslate nohighlight">\(\Lambda\)</span
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f3963d13bfdb4500f6f1d5880235fb9e0eec087e730887136f9a779447bf9f0f.png" src="_images/f3963d13bfdb4500f6f1d5880235fb9e0eec087e730887136f9a779447bf9f0f.png" />
+<img alt="_images/d989fd70c95ce54054bff36cf26d0cbd3570d33ef11405ba65a5539fda5e27ab.png" src="_images/d989fd70c95ce54054bff36cf26d0cbd3570d33ef11405ba65a5539fda5e27ab.png" />
 </div>
 </div>
 <p>Consequently, the first two <span class="math notranslate nohighlight">\(\epsilon_{j}\)</span> correspond to the
@@ -3050,7 +3072,7 @@ largest two eigenvalues.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.3320363 , 1.58105778])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.3237508 , 2.85835607])
 </pre></div>
 </div>
 </div>
@@ -3063,7 +3085,7 @@ largest two eigenvalues.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.14142014, 0.67340051])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.1378912 , 1.21742447])
 </pre></div>
 </div>
 </div>
@@ -3119,7 +3141,7 @@ coordinate axis versus <span class="math notranslate nohighlight">\(y\)</span> o
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d52bda2347c6bf0a09d04065429f66a0f120c473441b3dc05663ecf6f07a1cca.png" src="_images/d52bda2347c6bf0a09d04065429f66a0f120c473441b3dc05663ecf6f07a1cca.png" />
+<img alt="_images/5dcc46a475f5b1aa1cbc0b365f03ac0eb14f3ce22558a1b3e812e3b09f996d0d.png" src="_images/5dcc46a475f5b1aa1cbc0b365f03ac0eb14f3ce22558a1b3e812e3b09f996d0d.png" />
 </div>
 </div>
 <p>The covariance matrix of <span class="math notranslate nohighlight">\(\hat{Y}\)</span> can be computed by first

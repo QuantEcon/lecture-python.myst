@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -204,10 +220,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -539,24 +561,24 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
 +----+------------------------+-------------+
 | 1  | 1.6271660538000033e-09 |     0.0     |
 | 2  | 3.606884752589999e-08  |     0.0     |
-| 3  |  5.04963865362601e-07  |    1e-06    |
-| 4  | 5.007558331512455e-06  |    9e-06    |
-| 5  | 3.7389768875293014e-05 |    4e-05    |
-| 6  | 0.00021810698510587546 |   0.000218  |
-| 7  |  0.001017832597160754  |   0.001059  |
-| 8  |  0.003859281930901185  |   0.003763  |
-| 9  |  0.012006654896137007  |   0.012021  |
-| 10 |  0.030817080900085007  |   0.031048  |
-| 11 |  0.06536956554563476   |   0.06504   |
-| 12 |  0.11439673970486108   |   0.114415  |
-| 13 |   0.1642619852172365   |   0.164112  |
-| 14 |  0.19163898275344252   |   0.19146   |
-| 15 |  0.17886305056987967   |   0.179672  |
-| 16 |   0.1304209743738704   |   0.130439  |
-| 17 |  0.07160367220526209   |   0.071222  |
-| 18 |  0.027845872524268643  |   0.027799  |
-| 19 |  0.006839337111223895  |   0.006906  |
-| 20 | 0.0007979226629761189  |   0.000776  |
+| 3  |  5.04963865362601e-07  |     0.0     |
+| 4  | 5.007558331512455e-06  |    4e-06    |
+| 5  | 3.7389768875293014e-05 |   3.1e-05   |
+| 6  | 0.00021810698510587546 |   0.000226  |
+| 7  |  0.001017832597160754  |   0.001018  |
+| 8  |  0.003859281930901185  |   0.003778  |
+| 9  |  0.012006654896137007  |   0.011885  |
+| 10 |  0.030817080900085007  |   0.030701  |
+| 11 |  0.06536956554563476   |   0.065459  |
+| 12 |  0.11439673970486108   |   0.114993  |
+| 13 |   0.1642619852172365   |   0.164195  |
+| 14 |  0.19163898275344252   |   0.191174  |
+| 15 |  0.17886305056987967   |   0.179021  |
+| 16 |   0.1304209743738704   |   0.130727  |
+| 17 |  0.07160367220526209   |   0.071354  |
+| 18 |  0.027845872524268643  |   0.027862  |
+| 19 |  0.006839337111223895  |   0.006765  |
+| 20 | 0.0007979226629761189  |   0.000807  |
 +----+------------------------+-------------+
 </pre></div>
 </div>
@@ -606,7 +628,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fd36226735a9141e49046c4567e59f5bc12edbedc56f3b14f5a8de4c47d300aa.png" src="_images/fd36226735a9141e49046c4567e59f5bc12edbedc56f3b14f5a8de4c47d300aa.png" />
+<img alt="_images/78417298ac4c582fe4ea5343d32fcf0d5443a870deb650fd4ddc868cd2427314.png" src="_images/78417298ac4c582fe4ea5343d32fcf0d5443a870deb650fd4ddc868cd2427314.png" />
 </div>
 </div>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(n\)</span></strong></p>
@@ -645,7 +667,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/579d2313c8fa2d7767c48ea27678e7c0b68ce8d9a954fcb86a26f1cec2bab1b8.png" src="_images/579d2313c8fa2d7767c48ea27678e7c0b68ce8d9a954fcb86a26f1cec2bab1b8.png" />
+<img alt="_images/2d06391eca82f04f246cd68880b8141b158ade2a7bf38a7fa2b85ba0f28cddac.png" src="_images/2d06391eca82f04f246cd68880b8141b158ade2a7bf38a7fa2b85ba0f28cddac.png" />
 </div>
 </div>
 <p><strong>Comparison with different <span class="math notranslate nohighlight">\(I\)</span></strong></p>
@@ -684,7 +706,7 @@ n=20, k=10, I=1,000,000
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5a42cb07b6a7dcee2932018d39f97d444c856b9f11d7986d4a369cf7748b753e.png" src="_images/5a42cb07b6a7dcee2932018d39f97d444c856b9f11d7986d4a369cf7748b753e.png" />
+<img alt="_images/b5a8703e4040aa6b50509bc3417e0304e287ec3db91f80664d0b7b36330eb2ee.png" src="_images/b5a8703e4040aa6b50509bc3417e0304e287ec3db91f80664d0b7b36330eb2ee.png" />
 </div>
 </div>
 <p>From the above graphs, we can see that <strong><span class="math notranslate nohighlight">\(I\)</span>, the number of independent sequences,</strong> plays an important role.</p>
@@ -864,7 +886,7 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/260fb6dddae9d9a851827dd6fe49555747e37aae3904baf94d1b872c10effc12.png" src="_images/260fb6dddae9d9a851827dd6fe49555747e37aae3904baf94d1b872c10effc12.png" />
+<img alt="_images/c3336d68eb2694090b7385e3ac73ce761ee5a7fb20554f38d5420b0a923b9207.png" src="_images/c3336d68eb2694090b7385e3ac73ce761ee5a7fb20554f38d5420b0a923b9207.png" />
 </div>
 </div>
 <p><strong>e)</strong> For various <span class="math notranslate nohighlight">\(n\)</span>’s, please describe and compute  <span class="math notranslate nohighlight">\(.05\)</span> and <span class="math notranslate nohighlight">\(.95\)</span> quantiles for  posterior probabilities.</p>
@@ -921,36 +943,36 @@ L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
     <tr>
       <th>upper</th>
       <td>0.001543</td>
-      <td>0.000868</td>
-      <td>0.000603</td>
+      <td>0.097308</td>
+      <td>0.062413</td>
       <td>0.046007</td>
       <td>0.036447</td>
-      <td>0.117329</td>
-      <td>0.237639</td>
-      <td>0.235206</td>
-      <td>0.366730</td>
-      <td>0.334679</td>
-      <td>0.303401</td>
-      <td>0.351081</td>
-      <td>0.344870</td>
-      <td>0.357002</td>
+      <td>0.060214</td>
+      <td>0.158168</td>
+      <td>0.207092</td>
+      <td>0.238351</td>
+      <td>0.321256</td>
+      <td>0.312809</td>
+      <td>0.347839</td>
+      <td>0.364454</td>
+      <td>0.367846</td>
     </tr>
     <tr>
       <th>lower</th>
       <td>0.771480</td>
-      <td>0.569259</td>
-      <td>0.444067</td>
+      <td>0.902692</td>
+      <td>0.764466</td>
       <td>0.650707</td>
       <td>0.562845</td>
-      <td>0.558127</td>
-      <td>0.582446</td>
-      <td>0.516350</td>
-      <td>0.594938</td>
-      <td>0.526749</td>
-      <td>0.461664</td>
-      <td>0.443718</td>
-      <td>0.416153</td>
-      <td>0.407502</td>
+      <td>0.452496</td>
+      <td>0.481968</td>
+      <td>0.482348</td>
+      <td>0.454987</td>
+      <td>0.512457</td>
+      <td>0.471834</td>
+      <td>0.440341</td>
+      <td>0.436398</td>
+      <td>0.418610</td>
     </tr>
   </tbody>
 </table>
@@ -985,7 +1007,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/39d49e2f13e605bbd6c1a1d74652120fb15338394a5f33c978f038007a3af7ef.png" src="_images/39d49e2f13e605bbd6c1a1d74652120fb15338394a5f33c978f038007a3af7ef.png" />
+<img alt="_images/8b8da64d2a491eeb4553a12c290f4cccee9755280ba745e1a9d6f116f21a521f.png" src="_images/8b8da64d2a491eeb4553a12c290f4cccee9755280ba745e1a9d6f116f21a521f.png" />
 </div>
 </div>
 <p>Notice that in the graph above the posterior probabililty that <span class="math notranslate nohighlight">\(\theta \in [.45, .55]\)</span> typically exhibits a hump shape as <span class="math notranslate nohighlight">\(n\)</span> increases.</p>
@@ -1017,7 +1039,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8e182c0877796b9ba679a154f826e7da406914f912d7aaf4d3be4f9a3d91fdc9.png" src="_images/8e182c0877796b9ba679a154f826e7da406914f912d7aaf4d3be4f9a3d91fdc9.png" />
+<img alt="_images/1840db345c892ed9758d25c20245d687bb2fcb4d815c65bf2733b76924a36a5b.png" src="_images/1840db345c892ed9758d25c20245d687bb2fcb4d815c65bf2733b76924a36a5b.png" />
 </div>
 </div>
 <p>As <span class="math notranslate nohighlight">\(n\)</span> increases, we can see that the probability density functions <em>concentrate</em> on <span class="math notranslate nohighlight">\(0.4\)</span>, the true value of <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
@@ -1047,7 +1069,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/442e6ccecdb43c7610f57ddc2e30c1a1eabb791d6fb1724ee062b55bfcf25adb.png" src="_images/442e6ccecdb43c7610f57ddc2e30c1a1eabb791d6fb1724ee062b55bfcf25adb.png" />
+<img alt="_images/85efa3e8c4b43381b5d723f543106d0237abd5b86f9b7410764b3e8104e4cb23.png" src="_images/85efa3e8c4b43381b5d723f543106d0237abd5b86f9b7410764b3e8104e4cb23.png" />
 </div>
 </div>
 </section>
@@ -1102,7 +1124,7 @@ F(a)=p_1,F(b)=p_2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1af5b6c58b823cf53b15e518bda64cc64eca276423c056cca725d54d5cc35832.png" src="_images/1af5b6c58b823cf53b15e518bda64cc64eca276423c056cca725d54d5cc35832.png" />
+<img alt="_images/3a1adc0a6ace70e08f5a834dfdf3ce26ae7b921111797e52d444f6a9bef2d6ad.png" src="_images/3a1adc0a6ace70e08f5a834dfdf3ce26ae7b921111797e52d444f6a9bef2d6ad.png" />
 </div>
 </div>
 <p>After observing a large number of outcomes, the  posterior distribution collapses around <span class="math notranslate nohighlight">\(0.4\)</span>.</p>

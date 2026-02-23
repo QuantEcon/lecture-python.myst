@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -210,10 +226,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -385,7 +407,7 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.11.0)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
@@ -745,7 +767,7 @@ pertinent figures.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/24c00d8bb38e702479c64d871bb818f11dd1e14f7dd9479a077f54adb2dfaf81.png" src="_images/24c00d8bb38e702479c64d871bb818f11dd1e14f7dd9479a077f54adb2dfaf81.png" />
+<img alt="_images/7d20e563296bb6f8e6961649a4530a999a390a35cce408f957af155dfcfa86ce.png" src="_images/7d20e563296bb6f8e6961649a4530a999a390a35cce408f957af155dfcfa86ce.png" />
 </div>
 </div>
 <p>The figures above illustrate various features of an optimal production
@@ -853,7 +875,7 @@ confine the graphs to the first 10 periods:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8880958d0390b6bc9f5bc68ea2bb50c468cda0082938afe477c419f3d4754b0d.png" src="_images/8880958d0390b6bc9f5bc68ea2bb50c468cda0082938afe477c419f3d4754b0d.png" />
+<img alt="_images/0564779059c544d869d7e65856cc64f16d1348149709d33f715c02d66a206cf9.png" src="_images/0564779059c544d869d7e65856cc64f16d1348149709d33f715c02d66a206cf9.png" />
 </div>
 </div>
 </section>
@@ -899,7 +921,7 @@ the following figures confirm</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/415918eb087c11c7f779885e9f112714ec14bebe0b709935c25f4b87f910b8b1.png" src="_images/415918eb087c11c7f779885e9f112714ec14bebe0b709935c25f4b87f910b8b1.png" />
+<img alt="_images/14b6d8e8f1469854e7ccf11d37a5b9d68898d4ea39021c1894c283e10165883a.png" src="_images/14b6d8e8f1469854e7ccf11d37a5b9d68898d4ea39021c1894c283e10165883a.png" />
 </div>
 </div>
 </section>
@@ -946,7 +968,7 @@ and to <strong>run a Ponzi scheme</strong> by running inventories down forever.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1128363ce867ecfe716d000740098328066b7c3f15efdc9f02d7bfaf5fe56c78.png" src="_images/1128363ce867ecfe716d000740098328066b7c3f15efdc9f02d7bfaf5fe56c78.png" />
+<img alt="_images/39c449eea346911c1acf6dd09647170ba277ad106984dc7ce4f8b4b32ef56dde.png" src="_images/39c449eea346911c1acf6dd09647170ba277ad106984dc7ce4f8b4b32ef56dde.png" />
 </div>
 </div>
 <p>Let’s shorten the time span displayed in order to highlight what is
@@ -960,7 +982,7 @@ going on.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9e9cc80ff04af10b871cd271b86d408ba8a3ba4eea1307ca77a82e3d5f1eaec4.png" src="_images/9e9cc80ff04af10b871cd271b86d408ba8a3ba4eea1307ca77a82e3d5f1eaec4.png" />
+<img alt="_images/bb7f881356ed4f453dae4cdd5d90d46dc04ad97f6f6b3bf097ef8980d488bd72.png" src="_images/bb7f881356ed4f453dae4cdd5d90d46dc04ad97f6f6b3bf097ef8980d488bd72.png" />
 </div>
 </div>
 </section>
@@ -1143,7 +1165,7 @@ firms respond differently by staring at the production plans.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e90fc723c30fcea97013f7a3317a925ba7af99eb9340f4213429f1f19dc1c021.png" src="_images/e90fc723c30fcea97013f7a3317a925ba7af99eb9340f4213429f1f19dc1c021.png" />
+<img alt="_images/7794c023bae7dfa26d80a822341e41f96a8f3841323202ca49d27b4213f9bd69.png" src="_images/7794c023bae7dfa26d80a822341e41f96a8f3841323202ca49d27b4213f9bd69.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1235,7 +1257,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/493d263afe2b84135334d93ae94c32c1328af3fa59c3b4ee06be0feec24964d6.png" src="_images/493d263afe2b84135334d93ae94c32c1328af3fa59c3b4ee06be0feec24964d6.png" />
+<img alt="_images/6d401c53d934ce6252e2a0c892e3c2b35da84d3aea151e989222a0545097ea17.png" src="_images/6d401c53d934ce6252e2a0c892e3c2b35da84d3aea151e989222a0545097ea17.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1245,7 +1267,7 @@ setting <span class="math notranslate nohighlight">\(d_2=5\)</span>.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4833e394f04b1dc371d7198e715bbe49a8e6ea862e995a33854ab6074bc99ea6.png" src="_images/4833e394f04b1dc371d7198e715bbe49a8e6ea862e995a33854ab6074bc99ea6.png" />
+<img alt="_images/63f937d8e493e8a965b6575475b620a74f50191ca656ff1508058c7066699e1f.png" src="_images/63f937d8e493e8a965b6575475b620a74f50191ca656ff1508058c7066699e1f.png" />
 </div>
 </div>
 </section>

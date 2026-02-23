@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -207,10 +223,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -260,7 +282,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/84a6c0c48" class="changelog-hash">84a6c0c48</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">6 months ago</span>
+                                <span class="changelog-time">7 months ago</span>
                                 <span class="changelog-message">[likelihood_ratio_processes] Update structure and SyntaxWarnings (#497)</span>
                             </li>
                             
@@ -565,7 +587,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9574936684386576
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9534441663179654
 </pre></div>
 </div>
 </div>
@@ -578,7 +600,7 @@ E^g\left[\ell\left(\omega\right)\right] = \int_\Omega \ell(\omega) g(\omega) d\o
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9974345776909089
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9971327982293202
 </pre></div>
 </div>
 </div>
@@ -594,7 +616,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4198482208408195
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.41997267218597933
 </pre></div>
 </div>
 </div>
@@ -606,7 +628,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9583289538038178
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9943312664987323
 </pre></div>
 </div>
 </div>
@@ -656,7 +678,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(0.9960680602196872), np.float64(0.007697123780502527))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(0.9934425743984092), np.float64(0.00873772927194716))
 </pre></div>
 </div>
 </div>
@@ -669,7 +691,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(0.9999754590354378), np.float64(2.3229415107717145e-05))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(0.9999697985413577), np.float64(2.3158889599553935e-05))
 </pre></div>
 </div>
 </div>
@@ -707,7 +729,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d13b68e8d288e4eaadcc00fcbeb9491d4f597ba0b9b8dabb80d8c7dc21fb1a55.png" src="_images/d13b68e8d288e4eaadcc00fcbeb9491d4f597ba0b9b8dabb80d8c7dc21fb1a55.png" />
+<img alt="_images/a8b6db72d0f5c144c0af7832320413d8f36af32ad89b1f767eb2d0d99406dfff.png" src="_images/a8b6db72d0f5c144c0af7832320413d8f36af32ad89b1f767eb2d0d99406dfff.png" />
 </div>
 </div>
 <p>The simulation exercises above show that the importance sampling estimates are unbiased under all <span class="math notranslate nohighlight">\(T\)</span> while the standard Monte Carlo estimates are biased downwards.</p>
@@ -815,7 +837,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8f3ce62e86081211cb07a942d5381c0889c0b2d072715178d08b2fcf494d09a6.png" src="_images/8f3ce62e86081211cb07a942d5381c0889c0b2d072715178d08b2fcf494d09a6.png" />
+<img alt="_images/19b50edb212f3777d0184d7fcc0d954b67159e17530e4efab4cda30c9c55d1c9.png" src="_images/19b50edb212f3777d0184d7fcc0d954b67159e17530e4efab4cda30c9c55d1c9.png" />
 </div>
 </div>
 <p>Our simulations suggest that indeed <span class="math notranslate nohighlight">\(h_2\)</span> is a quite  good importance sampling distribution for our problem.</p>
@@ -853,7 +875,7 @@ still produces an estimate close to its theoretical value of unity.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/153b7fbc739e4e7ef473f5c9253cf88b9219c4637bd7781e0d0382ff5c3d628e.png" src="_images/153b7fbc739e4e7ef473f5c9253cf88b9219c4637bd7781e0d0382ff5c3d628e.png" />
+<img alt="_images/7e630b9c2c87389aa38cfdc6fe4c86093ae25f3d84051e10c4071f81b5830e04.png" src="_images/7e630b9c2c87389aa38cfdc6fe4c86093ae25f3d84051e10c4071f81b5830e04.png" />
 </div>
 </div>
 <p>However, <span class="math notranslate nohighlight">\(h_3\)</span> is evidently a poor importance sampling distribution for our problem,

@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -206,10 +222,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -348,7 +370,7 @@ human capital, neither of which the firm observes directly.</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.11.0)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
@@ -563,7 +585,7 @@ y_{t} &amp; = G \hat x_t + a_t
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/aed4595c937ec36c115a673d75a0b0dd822841e97d19d40f8787a62a7ec4c918.png" src="_images/aed4595c937ec36c115a673d75a0b0dd822841e97d19d40f8787a62a7ec4c918.png" />
+<img alt="_images/1486a79703dde623db8bf7c92e0a85759b623c389e2d32ae09a4fec6a4d51da3.png" src="_images/1486a79703dde623db8bf7c92e0a85759b623c389e2d32ae09a4fec6a4d51da3.png" />
 </div>
 </div>
 </section>
@@ -639,7 +661,7 @@ y_{t} &amp; = G \hat x_t + a_t
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c3e4f2b3940e3a3964c424039c4f17783ac0196dde77b5d61f7f2c765117634f.png" src="_images/c3e4f2b3940e3a3964c424039c4f17783ac0196dde77b5d61f7f2c765117634f.png" />
+<img alt="_images/3c1c68ae5ce6edb48e33533cd777115392bb1d8938ebf6422cae52db6a74a939.png" src="_images/3c1c68ae5ce6edb48e33533cd777115392bb1d8938ebf6422cae52db6a74a939.png" />
 </div>
 </div>
 <p>Note how the accumulation of evidence <span class="math notranslate nohighlight">\(y^t\)</span> affects the shape of the confidence ellipsoid as sample size <span class="math notranslate nohighlight">\(t\)</span> grows.</p>
@@ -750,7 +772,7 @@ u_0 = 4.0
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/662617ca42bea309bd77d27baa4ac33f0bcd784e9c24dcbfead2109e689084ec.png" src="_images/662617ca42bea309bd77d27baa4ac33f0bcd784e9c24dcbfead2109e689084ec.png" />
+<img alt="_images/2c593f85bddb2875f95370ee78f3e4f3a1007d4995a331d889d83b7454776bc5.png" src="_images/2c593f85bddb2875f95370ee78f3e4f3a1007d4995a331d889d83b7454776bc5.png" />
 </div>
 </div>
 <p>More generally, we can change some or all of the parameters defining a worker in our <code class="docutils literal notranslate"><span class="pre">create_worker</span></code>
@@ -860,7 +882,7 @@ namedtuple.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4e8f41e8e075a5edd0d8fa6a290d5690e7ea0385c3b47f1e2d3b1390d66b22a5.png" src="_images/4e8f41e8e075a5edd0d8fa6a290d5690e7ea0385c3b47f1e2d3b1390d66b22a5.png" />
+<img alt="_images/160f908eea635d848b287d5779ab8c74aaa528f385f47dc47bf3cc794a1c7d02.png" src="_images/160f908eea635d848b287d5779ab8c74aaa528f385f47dc47bf3cc794a1c7d02.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -886,7 +908,7 @@ namedtuple.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a3e0a4c974aab54e317f892902c7ae98d0a03ba49dd4891c4abe5f882872a67e.png" src="_images/a3e0a4c974aab54e317f892902c7ae98d0a03ba49dd4891c4abe5f882872a67e.png" />
+<img alt="_images/e9781e0ec265bda21d8aa8ec4ef97dbf166099d61b1fa36f73320bd5811778ac.png" src="_images/e9781e0ec265bda21d8aa8ec4ef97dbf166099d61b1fa36f73320bd5811778ac.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -918,7 +940,7 @@ namedtuple.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7f8490ddc1917718948051ab49bd1a1f23d0e9605d658f9186fbfa5cca979b28.png" src="_images/7f8490ddc1917718948051ab49bd1a1f23d0e9605d658f9186fbfa5cca979b28.png" />
+<img alt="_images/20a8cfc8b1f6c01df14621c474c269be8db35d45cbfe93822ceec985fb4a4de0.png" src="_images/20a8cfc8b1f6c01df14621c474c269be8db35d45cbfe93822ceec985fb4a4de0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -953,7 +975,7 @@ namedtuple.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/16dcb616fbd2b64f9cbe023f5b23e41df3992d1bc874a081ea837452e207f556.png" src="_images/16dcb616fbd2b64f9cbe023f5b23e41df3992d1bc874a081ea837452e207f556.png" />
+<img alt="_images/8960c2e88d32faa523771618a731df0545e962a0755326f8ab1028533d2a6f3e.png" src="_images/8960c2e88d32faa523771618a731df0545e962a0755326f8ab1028533d2a6f3e.png" />
 </div>
 </div>
 </section>

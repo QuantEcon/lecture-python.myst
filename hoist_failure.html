@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -209,10 +225,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -504,7 +526,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2242929c67c25983dfd2f5dccbe1bd84b26f26cc93d2d0ba863c55429d1f22f5.png" src="_images/2242929c67c25983dfd2f5dccbe1bd84b26f26cc93d2d0ba863c55429d1f22f5.png" />
+<img alt="_images/0d1943f6286e0a200abd3e067fad35740bdf3f478edf53ded51c8d347f31e993.png" src="_images/0d1943f6286e0a200abd3e067fad35740bdf3f478edf53ded51c8d347f31e993.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -514,7 +536,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b4a79deb2cf90da8515798b0cff05b39057665cb6f7baade6125b246ead6f1e8.png" src="_images/b4a79deb2cf90da8515798b0cff05b39057665cb6f7baade6125b246ead6f1e8.png" />
+<img alt="_images/1e9c3a160852ac4c88d7ceb447555dc4e6f7ead4e7f33c82ffb4cfaa91609025.png" src="_images/1e9c3a160852ac4c88d7ceb447555dc4e6f7ead4e7f33c82ffb4cfaa91609025.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -524,7 +546,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c4c82975b5b9a5d8b3eab4745cf1b9dd6b181d01fc1f1267eeb2cb55eb043ecf.png" src="_images/c4c82975b5b9a5d8b3eab4745cf1b9dd6b181d01fc1f1267eeb2cb55eb043ecf.png" />
+<img alt="_images/78a9415d26e84538605b375a01d287b3a3973fcc352615270a12ffaab442b604.png" src="_images/78a9415d26e84538605b375a01d287b3a3973fcc352615270a12ffaab442b604.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -537,7 +559,7 @@ continuous distributions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(244.69193226422038), np.float64(246.6780743337006), 5.0, 1.0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(np.float64(244.69193226422038), np.float64(241.80712195870333), 5.0, 1.0)
 </pre></div>
 </div>
 </div>
@@ -597,7 +619,7 @@ to compute a convolution of two sequences (discrete distributions).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/bc562ef74f57b0a5f9d18c6dd45829e58482f428c64353711d650c994e9cddf2.png" src="_images/bc562ef74f57b0a5f9d18c6dd45829e58482f428c64353711d650c994e9cddf2.png" />
+<img alt="_images/b79a0fdee2b4533f793deb8bbd670161aaca29849e3eae42cb33383d66e401e4.png" src="_images/b79a0fdee2b4533f793deb8bbd670161aaca29849e3eae42cb33383d66e401e4.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -684,7 +706,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time with np.convolve =  33.75614000399992 ; time with fftconvolve =  0.1390971159999026
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time with np.convolve =  32.52936918899968 ; time with fftconvolve =  0.14722577900010947
 </pre></div>
 </div>
 </div>
@@ -708,7 +730,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/160245cf81a2080b895f96005fb9ae3cc1043e20d29fd02989dc06010ea7448e.png" src="_images/160245cf81a2080b895f96005fb9ae3cc1043e20d29fd02989dc06010ea7448e.png" />
+<img alt="_images/1dda3eaaba4e07d5a6f11fa0e2e6da8eb3bf78ce8eb18f308447dd48a13dd3c4.png" src="_images/1dda3eaaba4e07d5a6f11fa0e2e6da8eb3bf78ce8eb18f308447dd48a13dd3c4.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -727,7 +749,7 @@ calculations very quickly.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7c89ed22473cd993e182f9136a85079ab021eeb4651744c8d6d7b9eba513a81b.png" src="_images/7c89ed22473cd993e182f9136a85079ab021eeb4651744c8d6d7b9eba513a81b.png" />
+<img alt="_images/6d894273225eb42e5575b6a0e16596bb9a01928443cf1106788e5f6925fb6a93.png" src="_images/6d894273225eb42e5575b6a0e16596bb9a01928443cf1106788e5f6925fb6a93.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -928,7 +950,7 @@ and we’ll also present a counterpart to their Table 11 on page 28.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time for 13 convolutions =  7.634427766000044
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>time for 13 convolutions =  8.14446693300033
 </pre></div>
 </div>
 </div>

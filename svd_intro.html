@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -212,10 +228,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -754,14 +776,14 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V =
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.22,  0.23, -0.3 , -0.55, -0.71],
-        [-0.34, -0.62, -0.69,  0.13,  0.1 ],
-        [-0.58, -0.45,  0.65, -0.11, -0.16],
-        [-0.41,  0.4 , -0.05,  0.76, -0.31],
-        [-0.57,  0.45, -0.1 , -0.31,  0.6 ]]),
- array([1.69, 0.79]),
- array([[-0.82, -0.58],
-        [ 0.58, -0.82]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.38,  0.35, -0.2 ,  0.15, -0.82],
+        [-0.43, -0.19, -0.41, -0.78,  0.07],
+        [-0.44, -0.14,  0.86, -0.18, -0.1 ],
+        [-0.48, -0.64, -0.22,  0.55,  0.1 ],
+        [-0.5 ,  0.64, -0.05,  0.19,  0.55]]),
+ array([1.38, 0.89]),
+ array([[-0.68, -0.73],
+        [ 0.73, -0.68]]))
 </pre></div>
 </div>
 </div>
@@ -777,14 +799,14 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat =
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.22,  0.23],
-        [-0.34, -0.62],
-        [-0.58, -0.45],
-        [-0.41,  0.4 ],
-        [-0.57,  0.45]]),
- array([1.69, 0.79]),
- array([[-0.82, -0.58],
-        [ 0.58, -0.82]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[-0.38,  0.35],
+        [-0.43, -0.19],
+        [-0.44, -0.14],
+        [-0.48, -0.64],
+        [-0.5 ,  0.64]]),
+ array([1.38, 0.89]),
+ array([[-0.68, -0.73],
+        [ 0.73, -0.68]]))
 </pre></div>
 </div>
 </div>
@@ -821,16 +843,16 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UUT, UTU =
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.00e+00, -4.61e-17, -5.27e-17, -9.13e-17, -5.21e-17],
-        [-4.61e-17,  1.00e+00, -1.24e-17,  8.30e-18, -4.87e-17],
-        [-5.27e-17, -1.24e-17,  1.00e+00,  1.10e-17, -1.11e-17],
-        [-9.13e-17,  8.30e-18,  1.10e-17,  1.00e+00,  6.68e-17],
-        [-5.21e-17, -4.87e-17, -1.11e-17,  6.68e-17,  1.00e+00]]),
- array([[ 1.00e+00, -3.54e-17, -2.55e-17, -1.02e-16, -1.09e-16],
-        [-3.54e-17,  1.00e+00,  4.94e-17,  1.36e-17,  7.57e-17],
-        [-2.55e-17,  4.94e-17,  1.00e+00, -2.50e-17, -8.97e-18],
-        [-1.02e-16,  1.36e-17, -2.50e-17,  1.00e+00, -3.28e-17],
-        [-1.09e-16,  7.57e-17, -8.97e-18, -3.28e-17,  1.00e+00]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 1.00e+00,  1.05e-16,  8.91e-17,  2.45e-17,  1.06e-16],
+        [ 1.05e-16,  1.00e+00,  4.36e-17, -5.52e-17,  9.98e-17],
+        [ 8.91e-17,  4.36e-17,  1.00e+00,  2.37e-17,  5.75e-17],
+        [ 2.45e-17, -5.52e-17,  2.37e-17,  1.00e+00, -5.80e-18],
+        [ 1.06e-16,  9.98e-17,  5.75e-17, -5.80e-18,  1.00e+00]]),
+ array([[ 1.00e+00, -2.32e-16, -2.57e-17, -5.81e-17,  2.97e-17],
+        [-2.32e-16,  1.00e+00, -4.16e-17, -8.24e-17,  5.29e-17],
+        [-2.57e-17, -4.16e-17,  1.00e+00, -5.90e-18,  2.88e-17],
+        [-5.81e-17, -8.24e-17, -5.90e-18,  1.00e+00,  2.46e-17],
+        [ 2.97e-17,  5.29e-17,  2.88e-17,  2.46e-17,  1.00e+00]]))
 </pre></div>
 </div>
 </div>
@@ -848,13 +870,13 @@ VV^\top  &amp; = I &amp; \quad V^\top  V \neq I
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>UhatUhatT, UhatTUhat=
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.1 , -0.07,  0.02,  0.18,  0.23],
-        [-0.07,  0.5 ,  0.48, -0.1 , -0.08],
-        [ 0.02,  0.48,  0.54,  0.06,  0.13],
-        [ 0.18, -0.1 ,  0.06,  0.33,  0.42],
-        [ 0.23, -0.08,  0.13,  0.42,  0.53]]),
- array([[ 1.00e+00, -3.54e-17],
-        [-3.54e-17,  1.00e+00]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.27,  0.09,  0.12, -0.04,  0.41],
+        [ 0.09,  0.22,  0.21,  0.33,  0.09],
+        [ 0.12,  0.21,  0.21,  0.3 ,  0.13],
+        [-0.04,  0.33,  0.3 ,  0.64, -0.17],
+        [ 0.41,  0.09,  0.13, -0.17,  0.66]]),
+ array([[ 1.00e+00, -2.32e-16],
+        [-2.32e-16,  1.00e+00]]))
 </pre></div>
 </div>
 </div>
@@ -881,14 +903,14 @@ Using <code class="docutils literal notranslate"><span class="pre">full_matrices
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>U, S, V =
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.64, -0.77],
-        [ 0.77,  0.64]]),
- array([1.26, 0.29]),
- array([[ 0.28,  0.81,  0.2 ,  0.08,  0.47],
-        [-0.77,  0.1 ,  0.61,  0.14,  0.01],
-        [ 0.54, -0.38,  0.75, -0.05,  0.03],
-        [ 0.11, -0.12, -0.07,  0.98, -0.  ],
-        [-0.15, -0.42, -0.14, -0.04,  0.88]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.72, -0.7 ],
+        [ 0.7 ,  0.72]]),
+ array([1.5 , 0.31]),
+ array([[ 0.18,  0.38,  0.81,  0.4 ,  0.06],
+        [ 0.28,  0.85, -0.3 , -0.28, -0.19],
+        [-0.84,  0.23,  0.28, -0.4 , -0.11],
+        [-0.43,  0.24, -0.39,  0.77, -0.07],
+        [-0.08,  0.18, -0.1 , -0.07,  0.97]]))
 </pre></div>
 </div>
 </div>
@@ -904,11 +926,11 @@ Using <code class="docutils literal notranslate"><span class="pre">full_matrices
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Uhat, Shat, Vhat =
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.64, -0.77],
-        [ 0.77,  0.64]]),
- array([1.26, 0.29]),
- array([[ 0.28,  0.81,  0.2 ,  0.08,  0.47],
-        [-0.77,  0.1 ,  0.61,  0.14,  0.01]]))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.72, -0.7 ],
+        [ 0.7 ,  0.72]]),
+ array([1.5 , 0.31]),
+ array([[ 0.18,  0.38,  0.81,  0.4 ,  0.06],
+        [ 0.28,  0.85, -0.3 , -0.28, -0.19]]))
 </pre></div>
 </div>
 </div>

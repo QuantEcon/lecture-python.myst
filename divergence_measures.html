@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -209,10 +225,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -365,13 +387,13 @@ Entropy <span class="math notranslate nohighlight">\(H(f)\)</span> for the unifo
 \]</div>
 <p>The following two  concepts are widely used to compare two distributions <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p><strong>Cross-Entropy:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-c5f7f27a-ad52-4bed-a166-3e6abb7ace5c">
-<span class="eqno">(21.1)<a class="headerlink" href="#equation-c5f7f27a-ad52-4bed-a166-3e6abb7ace5c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-910a0edf-4339-4275-97bc-bdfd2052c12a">
+<span class="eqno">(21.1)<a class="headerlink" href="#equation-910a0edf-4339-4275-97bc-bdfd2052c12a" title="Permalink to this equation">#</a></span>\[\begin{equation}
 H(f,g) = -\sum_{i} f_i \log g_i
 \end{equation}\]</div>
 <p><strong>Kullback-Leibler (KL) Divergence:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-19becd47-c1b0-49f3-9ffc-a6d93cab5cec">
-<span class="eqno">(21.2)<a class="headerlink" href="#equation-19becd47-c1b0-49f3-9ffc-a6d93cab5cec" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-dc759543-5985-4b25-b5ce-b64eaad5e8e7">
+<span class="eqno">(21.2)<a class="headerlink" href="#equation-dc759543-5985-4b25-b5ce-b64eaad5e8e7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
 \end{equation}\]</div>
 <p>These concepts are related by the following equality.</p>
@@ -380,8 +402,8 @@ D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
 D_{KL}(f \parallel g) = H(f,g) - H(f)
 \]</div>
 <p>To prove <a class="reference internal" href="#equation-eq-klcross">(21.3)</a>, note that</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dca9581d-ea87-459d-91ff-eaa7629484f1">
-<span class="eqno">(21.4)<a class="headerlink" href="#equation-dca9581d-ea87-459d-91ff-eaa7629484f1" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7ada35f4-7fde-480d-a5d3-facf9b44d72a">
+<span class="eqno">(21.4)<a class="headerlink" href="#equation-7ada35f4-7fde-480d-a5d3-facf9b44d72a" title="Permalink to this equation">#</a></span>\[\begin{align}
 D_{KL}(f \parallel g) &amp;= \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right] \\
 &amp;= \sum_{i} f_i \left[\log f_i - \log g_i\right] \\
 &amp;= \sum_{i} f_i \log f_i - \sum_{i} f_i \log g_i \\

@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -208,10 +224,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -381,8 +403,8 @@ Requirement already satisfied: wcwidth in /home/runner/miniconda3/envs/quantecon
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.329139 
-The sample variance is:  7.768654518679001
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  3.333894 
+The sample variance is:  7.769916796763999
 
 The population mean is:  3.3333333333333335
 The population variance is:  7.777777777777778
@@ -432,8 +454,8 @@ X  &amp; \sim NB(r,p) \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.334072 
-The sample variance is:  78.015829898816
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  23.336376 
+The sample variance is:  77.661255186624
 
 The population mean is:  23.333333333333336
 The population variance is:  77.77777777777779
@@ -541,8 +563,8 @@ X \sim N(\mu,\sigma^2)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  -0.00011526135254952218
-The sample standard deviation is:  0.09986625370568251
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  -0.00010041548749245888
+The sample standard deviation is:  0.0999951169336393
 </pre></div>
 </div>
 </div>
@@ -602,8 +624,8 @@ f(x)&amp; = \begin{cases} \frac{1}{b-a}, &amp; a \leq x \leq b \\ \quad0, &amp; 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  15.000180944104585 
-The sample variance is:  8.330881181556308
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  14.996673629634536 
+The sample variance is:  8.340644260750755
 
 The population mean is:  15.0
 The population variance is:  8.333333333333334
@@ -646,8 +668,8 @@ f(x) = 0.0005
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.532090366953398 
-The sample variance is:  5871.996808415499
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The sample mean is:  17.389173179106354 
+The sample variance is:  5829.544635485792
 </pre></div>
 </div>
 </div>
@@ -785,7 +807,7 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/484de89bcbdab6bf529a2c4f9ce20ae39fb3c773ddcfa0f31eb34b1b0c925b7a.png"><img alt="_images/484de89bcbdab6bf529a2c4f9ce20ae39fb3c773ddcfa0f31eb34b1b0c925b7a.png" src="_images/484de89bcbdab6bf529a2c4f9ce20ae39fb3c773ddcfa0f31eb34b1b0c925b7a.png" style="width: 556px; height: 413px;" />
+<a class="reference internal image-reference" href="_images/a3d8cfb9ae44b254fe10e59a25d9b79a9fa660afc3c8393a2c27f51b04cc044c.png"><img alt="_images/a3d8cfb9ae44b254fe10e59a25d9b79a9fa660afc3c8393a2c27f51b04cc044c.png" src="_images/a3d8cfb9ae44b254fe10e59a25d9b79a9fa660afc3c8393a2c27f51b04cc044c.png" style="width: 563px; height: 413px;" />
 </a>
 </div>
 </div>
@@ -797,7 +819,7 @@ U&amp; =F(X)=1-e^{-\lambda X}\qquad\\
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/1ab4510cec53f33f6c7916ebb3a714a38317a091fffdd603e3a1f49dc785f036.png"><img alt="_images/1ab4510cec53f33f6c7916ebb3a714a38317a091fffdd603e3a1f49dc785f036.png" src="_images/1ab4510cec53f33f6c7916ebb3a714a38317a091fffdd603e3a1f49dc785f036.png" style="width: 556px; height: 413px;" />
+<a class="reference internal image-reference" href="_images/5a618547f552ae6e198283e6f938da57e72e05e86cc220d7d09e20b1f799cd6c.png"><img alt="_images/5a618547f552ae6e198283e6f938da57e72e05e86cc220d7d09e20b1f799cd6c.png" src="_images/5a618547f552ae6e198283e6f938da57e72e05e86cc220d7d09e20b1f799cd6c.png" style="width: 556px; height: 413px;" />
 </a>
 </div>
 </div>
@@ -865,7 +887,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/5566ff7a0f300caca96d56696f59ab3293fbe9fc2a6c631c368de6ff0c1a383b.png"><img alt="_images/5566ff7a0f300caca96d56696f59ab3293fbe9fc2a6c631c368de6ff0c1a383b.png" src="_images/5566ff7a0f300caca96d56696f59ab3293fbe9fc2a6c631c368de6ff0c1a383b.png" style="width: 547px; height: 413px;" />
+<a class="reference internal image-reference" href="_images/a9d5a5c79981daaffe076748e9824528b4fd110aef44362f2392b0aeda9d9cd2.png"><img alt="_images/a9d5a5c79981daaffe076748e9824528b4fd110aef44362f2392b0aeda9d9cd2.png" src="_images/a9d5a5c79981daaffe076748e9824528b4fd110aef44362f2392b0aeda9d9cd2.png" style="width: 547px; height: 413px;" />
 </a>
 </div>
 </div>
@@ -901,7 +923,7 @@ x=\lceil\frac{\log(1-\tilde{U})}{\log\lambda}-1\rceil
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/626c903c2e3929dea4cfbba92f1935f8d1b9fc8329e5f99d99332e4cf6c69f26.png"><img alt="_images/626c903c2e3929dea4cfbba92f1935f8d1b9fc8329e5f99d99332e4cf6c69f26.png" src="_images/626c903c2e3929dea4cfbba92f1935f8d1b9fc8329e5f99d99332e4cf6c69f26.png" style="width: 547px; height: 413px;" />
+<a class="reference internal image-reference" href="_images/2e035434f93a3f1fd19c6cb50c77a16577aefd834d2d056d830dfaff95929d93.png"><img alt="_images/2e035434f93a3f1fd19c6cb50c77a16577aefd834d2d056d830dfaff95929d93.png" src="_images/2e035434f93a3f1fd19c6cb50c77a16577aefd834d2d056d830dfaff95929d93.png" style="width: 547px; height: 413px;" />
 </a>
 </div>
 </div>

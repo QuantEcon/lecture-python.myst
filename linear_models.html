@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -256,10 +272,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -300,7 +322,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/089e35ca2" class="changelog-hash">089e35ca2</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">2 months ago</span>
+                                <span class="changelog-time">3 months ago</span>
                                 <span class="changelog-message">Fix: Add trailing slash to quantecon-py URLs and upgrade quantecon-book-theme==0.13.2 (jupyterbook link fix) (#743)</span>
                             </li>
                             
@@ -432,7 +454,7 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.11.0)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
@@ -670,7 +692,7 @@ y_{-3} = 1
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c926790c3063bfeac36dd57c9385300c7d271c159dca81e91b218955eafcdbf9.png" src="_images/c926790c3063bfeac36dd57c9385300c7d271c159dca81e91b218955eafcdbf9.png" />
+<img alt="_images/66019882ca2fdbbb01a78a4b882926543dd62d5b61ea74c61d99969346610579.png" src="_images/66019882ca2fdbbb01a78a4b882926543dd62d5b61ea74c61d99969346610579.png" />
 </div>
 </div>
 </section>
@@ -1001,7 +1023,7 @@ shocks each time.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/81a78cca5f49e0e8f8162ff235a473371ac2b2f60f65fb422eb175b41dd86de1.png" src="_images/81a78cca5f49e0e8f8162ff235a473371ac2b2f60f65fb422eb175b41dd86de1.png" />
+<img alt="_images/be08c92312b9657ca1fa7e3b0fe2c2b4a743bfbd36ab7837306d711eca8fb6f8.png" src="_images/be08c92312b9657ca1fa7e3b0fe2c2b4a743bfbd36ab7837306d711eca8fb6f8.png" />
 </div>
 </div>
 <p>In the right-hand figure, these values are converted into a rotated histogram
@@ -1015,7 +1037,7 @@ that shows relative frequencies from our sample of 20 <span class="math notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/48ee93c66e7573574f3fac98f30db9ddb3765daacab7c6bc967e132038fb5bde.png" src="_images/48ee93c66e7573574f3fac98f30db9ddb3765daacab7c6bc967e132038fb5bde.png" />
+<img alt="_images/990bc0402e9066875c51fba28171652384808ce21a513c211eb8dbafddeb4c2d.png" src="_images/990bc0402e9066875c51fba28171652384808ce21a513c211eb8dbafddeb4c2d.png" />
 </div>
 </div>
 <p>Let’s now try with 500,000 observations, showing only the histogram (without rotation)</p>
@@ -1045,7 +1067,7 @@ that shows relative frequencies from our sample of 20 <span class="math notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/94042de3dd3ea2a0fcabe712923e56f62c01d3a9c5a050430567ef47999c016b.png" src="_images/94042de3dd3ea2a0fcabe712923e56f62c01d3a9c5a050430567ef47999c016b.png" />
+<img alt="_images/2d1cb0b075c5948b9328ade7fe0856de0739f3ef1c2edd1641e9b647842c7e95.png" src="_images/2d1cb0b075c5948b9328ade7fe0856de0739f3ef1c2edd1641e9b647842c7e95.png" />
 </div>
 </div>
 <p>The black line is the population density of <span class="math notranslate nohighlight">\(y_T\)</span> calculated from <a class="reference internal" href="#equation-lss-mgs-y">(36.12)</a>.</p>
@@ -1107,7 +1129,7 @@ and the sample size is relatively small (<span class="math notranslate nohighlig
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6ad6985cc87f08bcd2d8e6ef468d82292ecbf63eb227342c39bc9183d92a805c.png" src="_images/6ad6985cc87f08bcd2d8e6ef468d82292ecbf63eb227342c39bc9183d92a805c.png" />
+<img alt="_images/f244269a87d5eaa5c2322d21e9870697b16964b4751204fd2cdc713b1d23e272.png" src="_images/f244269a87d5eaa5c2322d21e9870697b16964b4751204fd2cdc713b1d23e272.png" />
 </div>
 </div>
 <p>The ensemble mean for <span class="math notranslate nohighlight">\(x_t\)</span> is</p>
@@ -1227,7 +1249,7 @@ p(x_{t+1} \,|\, x_t) = N(Ax_t, C C')
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a1e5abf5576a85f15d2adc5d4a6013676f7acd13e4ea8780f747286fd0429df1.png" src="_images/a1e5abf5576a85f15d2adc5d4a6013676f7acd13e4ea8780f747286fd0429df1.png" />
+<img alt="_images/576f964674f52fbc51bf6c98f33e6a2d64e9f0cca09dbf58fd60425d1d885ed4.png" src="_images/576f964674f52fbc51bf6c98f33e6a2d64e9f0cca09dbf58fd60425d1d885ed4.png" />
 </div>
 </div>
 <p>Note how the time series “settle down” in the sense that the distributions at
@@ -1271,7 +1293,7 @@ x_{t+1} \sim \psi_{\infty}
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/aaaba506692633418678da29cadb5e0f97343abe8038ab148f1ddc78adaa6d88.png" src="_images/aaaba506692633418678da29cadb5e0f97343abe8038ab148f1ddc78adaa6d88.png" />
+<img alt="_images/7e83b2dac6f688d564cc0071f8186aa7cbaca525e9a4d63e4dbb7272cd2d51ee.png" src="_images/7e83b2dac6f688d564cc0071f8186aa7cbaca525e9a4d63e4dbb7272cd2d51ee.png" />
 </div>
 </div>
 <p>Now the  differences in the observed distributions at <span class="math notranslate nohighlight">\(T, T'\)</span> and <span class="math notranslate nohighlight">\(T''\)</span> come entirely from random fluctuations due to the finite sample size.</p>

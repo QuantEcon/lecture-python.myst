@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -211,10 +227,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -255,7 +277,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/007817b9c" class="changelog-hash">007817b9c</a>
                                 
                                 <span class="changelog-author">thomassargent30</span>
-                                <span class="changelog-time">2 weeks ago</span>
+                                <span class="changelog-time">3 weeks ago</span>
                                 <span class="changelog-message">Tom's Feb 2 edits of Blume and Easley lecture</span>
                             </li>
                             
@@ -282,7 +304,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/6be28fb9b" class="changelog-hash">6be28fb9b</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">5 months ago</span>
+                                <span class="changelog-time">6 months ago</span>
                                 <span class="changelog-message">[likelihood_ratio_processes_2] Update new exercises with learning agents (#566)</span>
                             </li>
                             
@@ -875,7 +897,7 @@ integration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/12653f8d7283b48c177547aae298f4fa267ed828407082b02b783ded8877c523.png" src="_images/12653f8d7283b48c177547aae298f4fa267ed828407082b02b783ded8877c523.png" />
+<img alt="_images/83c67f7962c571554fb5e3bc28c1931257c3ca1d28a981398c5a402aa65d1099.png" src="_images/83c67f7962c571554fb5e3bc28c1931257c3ca1d28a981398c5a402aa65d1099.png" />
 </div>
 </div>
 <p>In the left panel, nature chooses <span class="math notranslate nohighlight">\(f\)</span>. Agent 1’s consumption reaches <span class="math notranslate nohighlight">\(1\)</span> very quickly.</p>
@@ -897,7 +919,7 @@ integration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final shares: f=1.000, g=0.000, mix=0.927
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final shares: f=1.000, g=0.000, mix=0.926
 KL divergences: 
 KL(f,g)=0.759, KL(g,f)=0.344
 KL(h,f)=0.073, KL(h,g)=0.281
@@ -1018,7 +1040,7 @@ KL(h,f)=0.073, KL(h,g)=0.281
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/2d3764233b9f26d91e1733ad38aff70d78b17768a08a500ded98a6bdb1a83bc5.png" src="_images/2d3764233b9f26d91e1733ad38aff70d78b17768a08a500ded98a6bdb1a83bc5.png" />
+<img alt="_images/9a9332e7c23a7677d020de7e4afcfdd533cef187d5325f2797592e9fe2fe1974.png" src="_images/9a9332e7c23a7677d020de7e4afcfdd533cef187d5325f2797592e9fe2fe1974.png" />
 </div>
 </div>
 <p>Holding to our guesses, let’s calculate the four values</p>
@@ -1409,7 +1431,7 @@ m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/92922c32d1956833f7089aa8c62c2aa2e690d999727ff9f68ab18d6576caf189.png" src="_images/92922c32d1956833f7089aa8c62c2aa2e690d999727ff9f68ab18d6576caf189.png" />
+<img alt="_images/91924883fb82d97caf40af7b8551a0687f487380c3ec3b1f58739ec3f482682f.png" src="_images/91924883fb82d97caf40af7b8551a0687f487380c3ec3b1f58739ec3f482682f.png" />
 </div>
 </div>
 <p>We can see that the agent with the  more accurate belief gets higher consumption share.</p>
@@ -1424,7 +1446,7 @@ m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/006b288c405bc00c414d5a6988da3ecb7f6ffc8089cd3bd187808c05cffbdd36.png" src="_images/006b288c405bc00c414d5a6988da3ecb7f6ffc8089cd3bd187808c05cffbdd36.png" />
+<img alt="_images/ab7f6b4c07f5eda3ef00da4507f390b0b73ddc67d4e6ca77e5952bc6c1279923.png" src="_images/ab7f6b4c07f5eda3ef00da4507f390b0b73ddc67d4e6ca77e5952bc6c1279923.png" />
 </div>
 </div>
 <p>We observe  symmetrical outcomes.</p>
@@ -1490,7 +1512,7 @@ m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/771f5bb5aef6c60bba92ee458c671376c2799c7727d77cb69a37b90e4e5208ec.png" src="_images/771f5bb5aef6c60bba92ee458c671376c2799c7727d77cb69a37b90e4e5208ec.png" />
+<img alt="_images/d653cc25e4f54d60186f8bec39293046fe9958e66d4dd491bb82c804d139bce8.png" src="_images/d653cc25e4f54d60186f8bec39293046fe9958e66d4dd491bb82c804d139bce8.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1501,7 +1523,7 @@ m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cf8cdac5855c20d8d6f0821823097c2e178ee8cd4e236aba9ccc86fd51175902.png" src="_images/cf8cdac5855c20d8d6f0821823097c2e178ee8cd4e236aba9ccc86fd51175902.png" />
+<img alt="_images/eb69997c95479963f2f01823b0bf5404027f094ba59b3a8fc35d3685fbfcd759.png" src="_images/eb69997c95479963f2f01823b0bf5404027f094ba59b3a8fc35d3685fbfcd759.png" />
 </div>
 </div>
 <p>Evidently, because the two distributions are further apart, it is easier to distinguish them.</p>
@@ -1839,7 +1861,7 @@ set <span class="math notranslate nohighlight">\(h = \pi^f_0 f + (1-\pi^f_0) g\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e2ac5cb6da602d5163e298d7fc205bcf5e6b3de8f2f57f2230b0092fc9c2adfd.png" src="_images/e2ac5cb6da602d5163e298d7fc205bcf5e6b3de8f2f57f2230b0092fc9c2adfd.png" />
+<img alt="_images/fa2fc913aecb972781e74750bf8c0a77b372073a4ab61a5149d1b89d038dde2a.png" src="_images/fa2fc913aecb972781e74750bf8c0a77b372073a4ab61a5149d1b89d038dde2a.png" />
 </div>
 </div>
 <p>Agent 1’s posterior beliefs are depicted in blue and agent 2’s posterior beliefs are depicted in orange.</p>
@@ -1857,7 +1879,7 @@ set <span class="math notranslate nohighlight">\(h = \pi^f_0 f + (1-\pi^f_0) g\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c4fae7b5cfdc884f98036c8e1a95cec30bb3188c8bb0d3729e254184063e0509.png" src="_images/c4fae7b5cfdc884f98036c8e1a95cec30bb3188c8bb0d3729e254184063e0509.png" />
+<img alt="_images/89dc08f73db334986f58b30655553cb73a51330e2ee8504fc0e3cd2412ca1e15.png" src="_images/89dc08f73db334986f58b30655553cb73a51330e2ee8504fc0e3cd2412ca1e15.png" />
 </div>
 </div>
 <p>Again, agent 1 learns faster than agent 2.</p>
@@ -1871,7 +1893,7 @@ set <span class="math notranslate nohighlight">\(h = \pi^f_0 f + (1-\pi^f_0) g\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d262c12472c0a6e49b99d68f80e39ae9cf5e1a1f9ebefda8787ef42173ec0f08.png" src="_images/d262c12472c0a6e49b99d68f80e39ae9cf5e1a1f9ebefda8787ef42173ec0f08.png" />
+<img alt="_images/ea1203636cf885b2703f4009246a30ec6408d5cdfdc15075ec607dd35a9abb6e.png" src="_images/ea1203636cf885b2703f4009246a30ec6408d5cdfdc15075ec607dd35a9abb6e.png" />
 </div>
 </div>
 <p>As we expected, agent 1 has a higher consumption share compared to agent 2.</p>
@@ -1985,7 +2007,7 @@ KL(f,h) = 0.0105, KL(g,h) = 0.2919
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6004367e0a49b5a04a8fbc7688612025e46c5e0786a621a2efefdb89e2251f58.png" src="_images/6004367e0a49b5a04a8fbc7688612025e46c5e0786a621a2efefdb89e2251f58.png" />
+<img alt="_images/90bfeb1f508bafe440e91f214f670238aaa9f009aeafe8e92323173ef19958aa.png" src="_images/90bfeb1f508bafe440e91f214f670238aaa9f009aeafe8e92323173ef19958aa.png" />
 </div>
 </div>
 <p>Observe how slowly agent 1 learns the truth in the leftmost panel showing <span class="math notranslate nohighlight">\(\pi(f)\)</span>.</p>
@@ -2002,7 +2024,7 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/952ed62551d2f1e13c0a420c52005f7e42e6c96cccf7921089cf4dee9dfd147e.png" src="_images/952ed62551d2f1e13c0a420c52005f7e42e6c96cccf7921089cf4dee9dfd147e.png" />
+<img alt="_images/0a808e3d1dff0357b5b505c8cd1cdf08dfaf77dd69df254562f6814f9eb7e6a3.png" src="_images/0a808e3d1dff0357b5b505c8cd1cdf08dfaf77dd69df254562f6814f9eb7e6a3.png" />
 </div>
 </div>
 <p>When nature draws from <span class="math notranslate nohighlight">\(g\)</span>, it is further away from <span class="math notranslate nohighlight">\(h\)</span> as measured by the KL divergence.</p>
@@ -2016,7 +2038,7 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/611c1884fc367c3ff2b0bc6a5b03c8a22864d0022125098a536a17af5d7ecc8c.png" src="_images/611c1884fc367c3ff2b0bc6a5b03c8a22864d0022125098a536a17af5d7ecc8c.png" />
+<img alt="_images/f188f4405ec6c26f6994e4593952bd99b8ea6d3feec2251fc412bda49e734cde.png" src="_images/f188f4405ec6c26f6994e4593952bd99b8ea6d3feec2251fc412bda49e734cde.png" />
 </div>
 </div>
 <p>In the consumption dynamics plot, notice that agent 1’s consumption share converges to 1 both when nature permanently draws from <span class="math notranslate nohighlight">\(f\)</span> and when nature permanently draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>

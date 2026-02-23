@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -225,10 +241,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -269,7 +291,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/089e35ca2" class="changelog-hash">089e35ca2</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">2 months ago</span>
+                                <span class="changelog-time">3 months ago</span>
                                 <span class="changelog-message">Fix: Add trailing slash to quantecon-py URLs and upgrade quantecon-book-theme==0.13.2 (jupyterbook link fix) (#743)</span>
                             </li>
                             
@@ -395,7 +417,7 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.11.0)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
@@ -1005,7 +1027,7 @@ graph as the population distribution.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ab9a214f5eae5fbfd7d71332f1e452075e0f3940db07a5605a6e87543d2576d1.png" src="_images/ab9a214f5eae5fbfd7d71332f1e452075e0f3940db07a5605a6e87543d2576d1.png" />
+<img alt="_images/d578b6b3fe88e6028214db1c1d7970972fe84d1a8e081d1be3a6787d781d09ab.png" src="_images/d578b6b3fe88e6028214db1c1d7970972fe84d1a8e081d1be3a6787d781d09ab.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1018,7 +1040,7 @@ graph as the population distribution.</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/28d624ea31df7b67bf06f6b79063db865aab64a44178b5730b1370ea52eaaa1d.png" src="_images/28d624ea31df7b67bf06f6b79063db865aab64a44178b5730b1370ea52eaaa1d.png" />
+<img alt="_images/a36a2e4616c2127bab1664494f8245cb5f4580eb1358d188fd0fc4ed2374e898.png" src="_images/a36a2e4616c2127bab1664494f8245cb5f4580eb1358d188fd0fc4ed2374e898.png" />
 </div>
 </div>
 <p>Here is what is going on in the above graphs.</p>
@@ -1084,7 +1106,7 @@ behavior early in the sample.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/c617f5cd9054c685d9daabc213151459d45dbda157eaf2b6a7fffeb7f824d6ae.png" src="_images/c617f5cd9054c685d9daabc213151459d45dbda157eaf2b6a7fffeb7f824d6ae.png" />
+<img alt="_images/fdbc46069e031866e10d70d9bf1d3b3c9b4bdd1582b948bf4193ffe69e1c5f7a.png" src="_images/fdbc46069e031866e10d70d9bf1d3b3c9b4bdd1582b948bf4193ffe69e1c5f7a.png" />
 </div>
 </div>
 </section>
@@ -1129,7 +1151,7 @@ with each other at a gross risk-free interest rate of
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0d07d5ba2f7cc474bead0a151b8dd36e8c40ec36a7e1c5c988b8f79c16ab14af.png" src="_images/0d07d5ba2f7cc474bead0a151b8dd36e8c40ec36a7e1c5c988b8f79c16ab14af.png" />
+<img alt="_images/ff75518b79f585adb951d2b113e928f5e2bd30cabeab19b8647271a5ebe60657.png" src="_images/ff75518b79f585adb951d2b113e928f5e2bd30cabeab19b8647271a5ebe60657.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1142,7 +1164,7 @@ with each other at a gross risk-free interest rate of
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a468eecf2e760f6b20d682a7b3ed763d1baa434cc8ca55203b21b172b2d1be1e.png" src="_images/a468eecf2e760f6b20d682a7b3ed763d1baa434cc8ca55203b21b172b2d1be1e.png" />
+<img alt="_images/209336450224b5ab45cfcc60109bb5bc6bc3fd37ccf431ccb99485158e81f502.png" src="_images/209336450224b5ab45cfcc60109bb5bc6bc3fd37ccf431ccb99485158e81f502.png" />
 </div>
 </div>
 <p>The graphs confirm the following outcomes:</p>
@@ -1164,7 +1186,7 @@ with each other at a gross risk-free interest rate of
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b0a1bb23f5577aacbe099e72d774992b855833985108171814595e7f0df854d1.png" src="_images/b0a1bb23f5577aacbe099e72d774992b855833985108171814595e7f0df854d1.png" />
+<img alt="_images/b793aef96cef5823088425ffa7d0b186d86b37759e1023257adb3cd15289421a.png" src="_images/b793aef96cef5823088425ffa7d0b186d86b37759e1023257adb3cd15289421a.png" />
 </div>
 </div>
 </section>

@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -224,10 +240,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -286,7 +308,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/290c5290e" class="changelog-hash">290c5290e</a>
                                 
                                 <span class="changelog-author">thomassargent30</span>
-                                <span class="changelog-time">10 months ago</span>
+                                <span class="changelog-time">11 months ago</span>
                                 <span class="changelog-message">Tom's March 30 edits of two intermediate lectures</span>
                             </li>
                             
@@ -1245,7 +1267,7 @@ ELBO\equiv\int q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)} d\theta=
 </div>
 <div class="cell_output docutils container">
 <figure class="align-default" id="fig-analytical">
-<img alt="_images/20aa0cd95c32360b86bfb88f6d2e1ab071de85fbad86aa5107ffad90c1efe588.png" src="_images/20aa0cd95c32360b86bfb88f6d2e1ab071de85fbad86aa5107ffad90c1efe588.png" />
+<img alt="_images/5e2c9acfa1a6b4c2578e548eefc30ba6b0ccef9aad0ab41cc7621db72252882f.png" src="_images/5e2c9acfa1a6b4c2578e548eefc30ba6b0ccef9aad0ab41cc7621db72252882f.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.5 </span><span class="caption-text">Analytical density (Beta prior)</span><a class="headerlink" href="#fig-analytical" title="Link to this image">#</a></p>
 </figcaption>
@@ -1264,7 +1286,7 @@ ELBO\equiv\int q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)} d\theta=
 </div>
 <div class="cell_output docutils container">
 <figure class="align-default" id="fig-mcmc-beta">
-<img alt="_images/bbc80578851d0dbf8ab0d707f041f44ef438bf612e733a041e5cc6e85bf872db.png" src="_images/bbc80578851d0dbf8ab0d707f041f44ef438bf612e733a041e5cc6e85bf872db.png" />
+<img alt="_images/8f39a2c6f2c451aa2048bda94dfa051daef6681ded22bf8587c931a2eba05a6b.png" src="_images/8f39a2c6f2c451aa2048bda94dfa051daef6681ded22bf8587c931a2eba05a6b.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.6 </span><span class="caption-text">MCMC density (Beta prior)</span><a class="headerlink" href="#fig-mcmc-beta" title="Link to this image">#</a></p>
 </figcaption>
@@ -1281,7 +1303,7 @@ ELBO\equiv\int q_{\phi}(\theta)\log\frac{p(\theta,Y)}{q_{\phi}(\theta)} d\theta=
 </div>
 <div class="cell_output docutils container">
 <figure class="align-default" id="fig-svi-beta-beta">
-<img alt="_images/507702021f3e6d7cb1f62b7bfedc34fbc205412b114d4a91a35fe174b2df0c8d.png" src="_images/507702021f3e6d7cb1f62b7bfedc34fbc205412b114d4a91a35fe174b2df0c8d.png" />
+<img alt="_images/c5ad6f200df54fc185e180e27e2083ab238576e7e302da67e2ea11d628fa6e99.png" src="_images/c5ad6f200df54fc185e180e27e2083ab238576e7e302da67e2ea11d628fa6e99.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.7 </span><span class="caption-text">SVI density (Beta prior, Beta guide)</span><a class="headerlink" href="#fig-svi-beta-beta" title="Link to this image">#</a></p>
 </figcaption>
@@ -1306,7 +1328,7 @@ that will be more accurate, as we shall see next.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6099e19b4b78b42b75c35c4dae53794e1ad06174d4d1492f3f5ea4b7762921d3.png" src="_images/6099e19b4b78b42b75c35c4dae53794e1ad06174d4d1492f3f5ea4b7762921d3.png" />
+<img alt="_images/46034c0571fbb13862ca3d6b3538e19f683b7ebb0ebb543e326de42fcc1d62be.png" src="_images/46034c0571fbb13862ca3d6b3538e19f683b7ebb0ebb543e326de42fcc1d62be.png" />
 </div>
 </div>
 </section>
@@ -1413,7 +1435,7 @@ Prior Dist: uniform
 </pre></div>
 </div>
 <figure class="align-default" id="fig-mcmc-stduniform">
-<img alt="_images/62e9f05686b296362b2ad04738c5fac7509491d9eb4e481c97e1524d059e92fb.png" src="_images/62e9f05686b296362b2ad04738c5fac7509491d9eb4e481c97e1524d059e92fb.png" />
+<img alt="_images/c550970da5b9451aecf3de3af5813e562a461e1eedced5c444bec6f999a96147.png" src="_images/c550970da5b9451aecf3de3af5813e562a461e1eedced5c444bec6f999a96147.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.8 </span><span class="caption-text">MCMC density (uniform prior)</span><a class="headerlink" href="#fig-mcmc-stduniform" title="Link to this image">#</a></p>
 </figcaption>
@@ -1438,7 +1460,7 @@ Prior Dist: uniform
 </pre></div>
 </div>
 <figure class="align-default" id="fig-mcmc-uniform">
-<img alt="_images/5cbd9cd4a8a9290f145bb90911710866c957ad8987b64e4c09561086898d3219.png" src="_images/5cbd9cd4a8a9290f145bb90911710866c957ad8987b64e4c09561086898d3219.png" />
+<img alt="_images/f4db243fca9b07515329ac65e6287a896044633e6752f159965cee291b4e987f.png" src="_images/f4db243fca9b07515329ac65e6287a896044633e6752f159965cee291b4e987f.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.9 </span><span class="caption-text">MCMC density (uniform prior)</span><a class="headerlink" href="#fig-mcmc-uniform" title="Link to this image">#</a></p>
 </figcaption>
@@ -1467,7 +1489,7 @@ Prior Dist: lognormal
 </pre></div>
 </div>
 <figure class="align-default" id="fig-mcmc-lognormal">
-<img alt="_images/b6523b580cae04d4eef202a6156c03cf6b33abea39e1492e2790ee8c9bd51a4a.png" src="_images/b6523b580cae04d4eef202a6156c03cf6b33abea39e1492e2790ee8c9bd51a4a.png" />
+<img alt="_images/d4cd1d94a6d7daf10df96c04a4f6ff255b0c69d5471bf44f66e6b2d3643e7e38.png" src="_images/d4cd1d94a6d7daf10df96c04a4f6ff255b0c69d5471bf44f66e6b2d3643e7e38.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.10 </span><span class="caption-text">MCMC density (log normal prior)</span><a class="headerlink" href="#fig-mcmc-lognormal" title="Link to this image">#</a></p>
 </figcaption>
@@ -1496,7 +1518,7 @@ NOTE: Shifted von Mises
 </pre></div>
 </div>
 <figure class="align-default" id="fig-mcmc-vonmises">
-<img alt="_images/6f8a92ba7abe33eef00048c26a6dedc8fdad7507b1c8053de167b44df5cfff05.png" src="_images/6f8a92ba7abe33eef00048c26a6dedc8fdad7507b1c8053de167b44df5cfff05.png" />
+<img alt="_images/801dabba0c7c587959e943c6cc7e455d03deeb6e058dd6dc43080f7b56304aa7.png" src="_images/801dabba0c7c587959e943c6cc7e455d03deeb6e058dd6dc43080f7b56304aa7.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.11 </span><span class="caption-text">MCMC density (von Mises prior)</span><a class="headerlink" href="#fig-mcmc-vonmises" title="Link to this image">#</a></p>
 </figcaption>
@@ -1522,7 +1544,7 @@ Prior Dist: laplace
 </pre></div>
 </div>
 <figure class="align-default" id="fig-mcmc-laplace">
-<img alt="_images/bca5c61bf98f19b779df84d281eaeb3e51222368d04a12a3d697fd041014d220.png" src="_images/bca5c61bf98f19b779df84d281eaeb3e51222368d04a12a3d697fd041014d220.png" />
+<img alt="_images/24b2df2d146c9971a3ee9434121978a39606ca6653649f19c70c28cca83d1a69.png" src="_images/24b2df2d146c9971a3ee9434121978a39606ca6653649f19c70c28cca83d1a69.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.12 </span><span class="caption-text">MCMC density (Laplace prior)</span><a class="headerlink" href="#fig-mcmc-laplace" title="Link to this image">#</a></p>
 </figcaption>
@@ -1562,7 +1584,7 @@ Prior Dist: uniform
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-uniform-normal">
-<img alt="_images/c0d75e823d58542ac84f920b6d10039febb305f752c72186e213c48383a38dd2.png" src="_images/c0d75e823d58542ac84f920b6d10039febb305f752c72186e213c48383a38dd2.png" />
+<img alt="_images/881dbf23b1a43ec7f94e390d7a86c45e859ec0f9b6aac69e4c3e3412fd220d80.png" src="_images/881dbf23b1a43ec7f94e390d7a86c45e859ec0f9b6aac69e4c3e3412fd220d80.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.13 </span><span class="caption-text">SVI density (uniform prior, normal guide)</span><a class="headerlink" href="#fig-svi-uniform-normal" title="Link to this image">#</a></p>
 </figcaption>
@@ -1589,7 +1611,7 @@ Prior Dist: lognormal
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-lognormal-normal">
-<img alt="_images/bee124c38c96bbf40e494b92cd689247f2d33e480013ec1a40853386f557abc0.png" src="_images/bee124c38c96bbf40e494b92cd689247f2d33e480013ec1a40853386f557abc0.png" />
+<img alt="_images/aacaf0080a3403675e15d1a15f5253027f8b4f101e35b8a28a5b5b14ef232407.png" src="_images/aacaf0080a3403675e15d1a15f5253027f8b4f101e35b8a28a5b5b14ef232407.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.14 </span><span class="caption-text">SVI density (log normal prior, normal guide)</span><a class="headerlink" href="#fig-svi-lognormal-normal" title="Link to this image">#</a></p>
 </figcaption>
@@ -1616,7 +1638,7 @@ Prior Dist: laplace
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-laplace-normal">
-<img alt="_images/c0bc319ae89ba629202e93820e6788169caafed7e5edc47afc2b07e77dfd1b28.png" src="_images/c0bc319ae89ba629202e93820e6788169caafed7e5edc47afc2b07e77dfd1b28.png" />
+<img alt="_images/144ec6c322c06a801d58f58f8777ba95556aa5c479ee257d7f79d0a83638d778.png" src="_images/144ec6c322c06a801d58f58f8777ba95556aa5c479ee257d7f79d0a83638d778.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.15 </span><span class="caption-text">SVI density (Laplace prior, normal guide)</span><a class="headerlink" href="#fig-svi-laplace-normal" title="Link to this image">#</a></p>
 </figcaption>
@@ -1646,7 +1668,7 @@ Prior Dist: uniform
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-uniform-beta">
-<img alt="_images/4ea8742eb8cfb6ea0068afe3413dc0eddb3390b701cb20f6ef6d4f286e4ffba2.png" src="_images/4ea8742eb8cfb6ea0068afe3413dc0eddb3390b701cb20f6ef6d4f286e4ffba2.png" />
+<img alt="_images/0b270519c06815bc87a68141084a35af9cd92d8486778f62c1a652c388014bc7.png" src="_images/0b270519c06815bc87a68141084a35af9cd92d8486778f62c1a652c388014bc7.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.16 </span><span class="caption-text">SVI density (uniform prior, Beta guide)</span><a class="headerlink" href="#fig-svi-uniform-beta" title="Link to this image">#</a></p>
 </figcaption>
@@ -1673,7 +1695,7 @@ Prior Dist: lognormal
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-lognormal-beta">
-<img alt="_images/e98700732242df040d257ceec41c177580173f75fae6240acd8446da66ad6485.png" src="_images/e98700732242df040d257ceec41c177580173f75fae6240acd8446da66ad6485.png" />
+<img alt="_images/69945f33706b628b7186139b673f494b8781f2821776dce62517a8015041ba94.png" src="_images/69945f33706b628b7186139b673f494b8781f2821776dce62517a8015041ba94.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.17 </span><span class="caption-text">SVI density (log normal prior, Beta guide)</span><a class="headerlink" href="#fig-svi-lognormal-beta" title="Link to this image">#</a></p>
 </figcaption>
@@ -1702,7 +1724,7 @@ Shifted von Mises
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-vonmises-beta">
-<img alt="_images/46019dd3aee06b1136e6f98a8ffb9f919c65fdd954f4a21e46df1b25a63f8433.png" src="_images/46019dd3aee06b1136e6f98a8ffb9f919c65fdd954f4a21e46df1b25a63f8433.png" />
+<img alt="_images/983f32a62c95a8bb64aa9698960e1bb10c356af9e5fda89444b0ebfa4accc9e1.png" src="_images/983f32a62c95a8bb64aa9698960e1bb10c356af9e5fda89444b0ebfa4accc9e1.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.18 </span><span class="caption-text">SVI density (von Mises prior, Beta guide)</span><a class="headerlink" href="#fig-svi-vonmises-beta" title="Link to this image">#</a></p>
 </figcaption>
@@ -1729,7 +1751,7 @@ Prior Dist: laplace
 </pre></div>
 </div>
 <figure class="align-default" id="fig-svi-laplace-beta">
-<img alt="_images/34f7c22472e2b8bc891585cc3b853fad1349fdb52c2297995bf5f139fd34ab5c.png" src="_images/34f7c22472e2b8bc891585cc3b853fad1349fdb52c2297995bf5f139fd34ab5c.png" />
+<img alt="_images/6d34217808ffb27030923b29aadbd203cebd70745fa795995bdd6f0a381c4298.png" src="_images/6d34217808ffb27030923b29aadbd203cebd70745fa795995bdd6f0a381c4298.png" />
 <figcaption>
 <p><span class="caption-number">Fig. 18.19 </span><span class="caption-text">SVI density (Laplace prior, Beta guide)</span><a class="headerlink" href="#fig-svi-laplace-beta" title="Link to this image">#</a></p>
 </figcaption>

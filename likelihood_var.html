@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -210,10 +226,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -615,7 +637,7 @@ L_t = \sum_{s=1}^{t} \ell_s = \sum_{s=1}^{t} \log \frac{p_f(x_s | x_{s-1})}{p_g(
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/30ca197aff23da3daa94f83e9f7d83987486b3740237be04fa2aab7a04b87173.png" src="_images/30ca197aff23da3daa94f83e9f7d83987486b3740237be04fa2aab7a04b87173.png" />
+<img alt="_images/ab9a508e8e340d9bc9cd4700d6c27a4e7bc6983350009cbb972ea6d3b7617433.png" src="_images/ab9a508e8e340d9bc9cd4700d6c27a4e7bc6983350009cbb972ea6d3b7617433.png" />
 </div>
 </div>
 <p>As we expected, the likelihood ratio processes goes to <span class="math notranslate nohighlight">\(+\infty\)</span> as <span class="math notranslate nohighlight">\(T\)</span> increases, indicating that model <span class="math notranslate nohighlight">\(f\)</span> is chosen correctly by our algorithm.</p>
@@ -704,7 +726,7 @@ model g eigenvalues: [0.74494897 0.25505103]
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/a919468bc21c875aace3deeda6d7496d607a8e7a948f949e79489ed9b5d0bf1e.png" src="_images/a919468bc21c875aace3deeda6d7496d607a8e7a948f949e79489ed9b5d0bf1e.png" />
+<img alt="_images/47cc594635ce9e61afd3f75b283d7dc976216f06e2885b0b379b4c985813b211.png" src="_images/47cc594635ce9e61afd3f75b283d7dc976216f06e2885b0b379b4c985813b211.png" />
 </div>
 </div>
 <p>Let’s apply a  Neyman-Pearson frequentist  decision rule described   in <a class="reference internal" href="likelihood_ratio_process.html"><span class="doc">Likelihood Ratio Processes</span></a> that selects model <span class="math notranslate nohighlight">\(f\)</span> when <span class="math notranslate nohighlight">\(\log L_T \geq 0\)</span> and model <span class="math notranslate nohighlight">\(g\)</span> when <span class="math notranslate nohighlight">\(\log L_T &lt; 0\)</span></p>
@@ -734,7 +756,7 @@ model g eigenvalues: [0.74494897 0.25505103]
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/fca98d20ad1c5c69562f9c3538922dd12bd83a70ea59f9338e8be735a0f4e4c7.png" src="_images/fca98d20ad1c5c69562f9c3538922dd12bd83a70ea59f9338e8be735a0f4e4c7.png" />
+<img alt="_images/32ae258376563798dbe2f4da5fb3bd070d08e4bc7db1929e22f71ed10eb30ccd.png" src="_images/32ae258376563798dbe2f4da5fb3bd070d08e4bc7db1929e22f71ed10eb30ccd.png" />
 </div>
 </div>
 <p>Evidently, the accuracy approaches <span class="math notranslate nohighlight">\(1\)</span> as <span class="math notranslate nohighlight">\(T\)</span> increases, and it does so very quickly.</p>
@@ -781,7 +803,7 @@ model g eigenvalues: [0.74494897 0.25505103]
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/123546c02c6cb092c745a9d26a08250488055c71ccddab96a30a81920325c13c.png" src="_images/123546c02c6cb092c745a9d26a08250488055c71ccddab96a30a81920325c13c.png" />
+<img alt="_images/d5795443d5ab551ca571245f5b3d1632d8b9e2e5c4d01c363315d4c7e0c6d9de.png" src="_images/d5795443d5ab551ca571245f5b3d1632d8b9e2e5c4d01c363315d4c7e0c6d9de.png" />
 </div>
 </div>
 </section>
@@ -1084,7 +1106,7 @@ model g:
   dynamics: Damped oscillations
 </pre></div>
 </div>
-<img alt="_images/d81feee59917840a3f5a8990ec3a169174a0b460c1457eed705b176d1a48dfbc.png" src="_images/d81feee59917840a3f5a8990ec3a169174a0b460c1457eed705b176d1a48dfbc.png" />
+<img alt="_images/8e2bd746e60842c99bdba496b27f15762dff23c88b6fea0cf8d357da76ca194f.png" src="_images/8e2bd746e60842c99bdba496b27f15762dff23c88b6fea0cf8d357da76ca194f.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1112,7 +1134,7 @@ model g:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0660b3aaeca014725cb88da0a69284305de600908c9f986d3013ee707fb392e2.png" src="_images/0660b3aaeca014725cb88da0a69284305de600908c9f986d3013ee707fb392e2.png" />
+<img alt="_images/4d9c994e40eb99e1f402cefea5ca7388b71fed0f60407365952f1fd652e1850e.png" src="_images/4d9c994e40eb99e1f402cefea5ca7388b71fed0f60407365952f1fd652e1850e.png" />
 </div>
 </div>
 <p>In the figure on the left, data are generated by <span class="math notranslate nohighlight">\(f\)</span> and the likelihood ratio diverges to plus infinity.</p>

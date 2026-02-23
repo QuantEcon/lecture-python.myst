@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -228,10 +244,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -816,17 +838,18 @@ using T to find a fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.5969764417354373.
-Error at iteration 10 is 0.08771064236289305.
-Error at iteration 15 is 0.017140165378641825.
-Error at iteration 20 is 0.003567524961193058.
-Error at iteration 25 is 0.0007428257738641975.
-Error at iteration 30 is 0.00015467915391376152.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.5511497399339298.
+Error at iteration 10 is 0.09138389506193256.
+Error at iteration 15 is 0.021184373008395596.
+Error at iteration 20 is 0.005187862292848067.
+Error at iteration 25 is 0.0012711276191357257.
+Error at iteration 30 is 0.00031145017849532053.
+Error at iteration 35 is 7.630724673823863e-05.
 
-Converged in 32 iterations.
+Converged in 35 iterations.
 </pre></div>
 </div>
-<img alt="_images/fa745663c7653c7cb1df8e14b5a672ed3c6375d10817b804ff808d4f21d9702e.png" src="_images/fa745663c7653c7cb1df8e14b5a672ed3c6375d10817b804ff808d4f21d9702e.png" />
+<img alt="_images/14852e6a8205bd12c48024f6df6227b529268af80939f100d5b11fb408a1238b.png" src="_images/14852e6a8205bd12c48024f6df6227b529268af80939f100d5b11fb408a1238b.png" />
 </div>
 </div>
 <p>We will also plot the optimal policy</p>
@@ -848,7 +871,7 @@ Converged in 32 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1fe3e77b396d1af12b42de4eb9407972795847043309f91f65e9595eecb15d1a.png" src="_images/1fe3e77b396d1af12b42de4eb9407972795847043309f91f65e9595eecb15d1a.png" />
+<img alt="_images/1b06b504932e55131dbb5b92a8e1daa825afc4b028b260c86a40c6f4686d7276.png" src="_images/1b06b504932e55131dbb5b92a8e1daa825afc4b028b260c86a40c6f4686d7276.png" />
 </div>
 </div>
 <p>The results fit well with our intuition from section <a class="reference internal" href="#looking-forward"><span class="std std-ref">looking
@@ -1101,16 +1124,16 @@ fixed point</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.020764139953211358.
-Error at iteration 10 is 0.00651643788166878.
-Error at iteration 15 is 0.0016898998756010863.
-Error at iteration 20 is 0.0004108877926140009.
-Error at iteration 25 is 9.787252812576419e-05.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 5 is 0.022314647643651875.
+Error at iteration 10 is 0.007442200081866135.
+Error at iteration 15 is 0.001816244474100226.
+Error at iteration 20 is 0.000415285433977286.
+Error at iteration 25 is 9.342914013643622e-05.
 
 Converged in 25 iterations.
 </pre></div>
 </div>
-<img alt="_images/287878655b905debda450d973d0bad60ca3353e11101438fa1d8700f950c2798.png" src="_images/287878655b905debda450d973d0bad60ca3353e11101438fa1d8700f950c2798.png" />
+<img alt="_images/ce62dace72f975cc924027eb45bb8bbaa886f4050ed9769e6b831376692924c1.png" src="_images/ce62dace72f975cc924027eb45bb8bbaa886f4050ed9769e6b831376692924c1.png" />
 </div>
 </div>
 </section>
@@ -1201,7 +1224,7 @@ too optimistic and turn down too many jobs.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/318942d3cc0a3db0aed5f649703fa0f816f0c9ec281992878cee93bb7385077b.png" src="_images/318942d3cc0a3db0aed5f649703fa0f816f0c9ec281992878cee93bb7385077b.png" />
+<img alt="_images/726f95eb60fd599b3b8236ba2a3dec3b1da6c703a70099bd6402081ee4064b9f.png" src="_images/726f95eb60fd599b3b8236ba2a3dec3b1da6c703a70099bd6402081ee4064b9f.png" />
 </div>
 </div>
 </section>
@@ -1463,8 +1486,8 @@ unemployment verifies our conjecture.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d914b8aba19e9692ec2dde72261501f50876b03cc6c1bbb8f73068e6956a1d98.png" src="_images/d914b8aba19e9692ec2dde72261501f50876b03cc6c1bbb8f73068e6956a1d98.png" />
-<img alt="_images/c86e3fa1ba24fd963d7e3236acc6855c1a543802bd2016fd85afddcb0953ac56.png" src="_images/c86e3fa1ba24fd963d7e3236acc6855c1a543802bd2016fd85afddcb0953ac56.png" />
+<img alt="_images/82a5630d0207603063dac05c001858ad14e3a428d64bc552c014d68e445742ed.png" src="_images/82a5630d0207603063dac05c001858ad14e3a428d64bc552c014d68e445742ed.png" />
+<img alt="_images/e4c76f0aefec0881112ae62e801dd4a983f12878826f6fd3617c3d49d68671b8.png" src="_images/e4c76f0aefec0881112ae62e801dd4a983f12878826f6fd3617c3d49d68671b8.png" />
 </div>
 </div>
 </section>
@@ -1484,8 +1507,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/0b8f1f55c42e87694f604e43d9bd50b50303bbbebef68138681a0b9fdb4cf651.png" src="_images/0b8f1f55c42e87694f604e43d9bd50b50303bbbebef68138681a0b9fdb4cf651.png" />
-<img alt="_images/26e027cdd7ee9956bdfeda0607a728567edcb5226f8ae28df14d4f5da16293ae.png" src="_images/26e027cdd7ee9956bdfeda0607a728567edcb5226f8ae28df14d4f5da16293ae.png" />
+<img alt="_images/ecdeecaf76391adcd35c96de4f805470be11bfce0b651643357c76029eb6ecf4.png" src="_images/ecdeecaf76391adcd35c96de4f805470be11bfce0b651643357c76029eb6ecf4.png" />
+<img alt="_images/da010edae5037b2c42ef08d747c18bf37025692d9bf3cb2ea38641123fe5dea6.png" src="_images/da010edae5037b2c42ef08d747c18bf37025692d9bf3cb2ea38641123fe5dea6.png" />
 </div>
 </div>
 </section>
@@ -1502,8 +1525,8 @@ for bad wage offers, <span class="math notranslate nohighlight">\(G\)</span> is 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/14713b49ebcbce35b292460a3ce6826dc6478b50c98c89a19451f7f29b96de4e.png" src="_images/14713b49ebcbce35b292460a3ce6826dc6478b50c98c89a19451f7f29b96de4e.png" />
-<img alt="_images/fe42035595a83a0743295e4b36a81d9928a261ed503ab3704543c9479a0a94a7.png" src="_images/fe42035595a83a0743295e4b36a81d9928a261ed503ab3704543c9479a0a94a7.png" />
+<img alt="_images/bab12d9fd98cf1b741d3b8f4a98759ac541ca2231abacc5633c3bdb074e6d84d.png" src="_images/bab12d9fd98cf1b741d3b8f4a98759ac541ca2231abacc5633c3bdb074e6d84d.png" />
+<img alt="_images/4f31364f4275c4c453d35c3ab46b896bd3743fa166593064db1fbcdc33782a6b.png" src="_images/4f31364f4275c4c453d35c3ab46b896bd3743fa166593064db1fbcdc33782a6b.png" />
 </div>
 </div>
 </section>
@@ -1530,8 +1553,8 @@ when he eventually chooses to accept a wage offer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/7150e8086f5b62d571e9ffac12e7506b3168bfe349a30907ea803fb08874f71f.png" src="_images/7150e8086f5b62d571e9ffac12e7506b3168bfe349a30907ea803fb08874f71f.png" />
-<img alt="_images/9c3c71af12bdd2182a8e4710236c5c553dfa4bcbd82bf16cf4bb3350dab16702.png" src="_images/9c3c71af12bdd2182a8e4710236c5c553dfa4bcbd82bf16cf4bb3350dab16702.png" />
+<img alt="_images/b7860a5cbed111a6528009d5589dab92f46efe24e419df07ea6ec2a8bee0fb3e.png" src="_images/b7860a5cbed111a6528009d5589dab92f46efe24e419df07ea6ec2a8bee0fb3e.png" />
+<img alt="_images/10b26ff38adebfe548bb94da04dcc1768ded65700f4859ad35ef285b2feb7b33.png" src="_images/10b26ff38adebfe548bb94da04dcc1768ded65700f4859ad35ef285b2feb7b33.png" />
 </div>
 </div>
 </section>
@@ -1547,8 +1570,8 @@ after having acquired less information about the wage distribution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e285ecc94f448528dae115cde81fb24e87b31600464dc301ff7dbc2d1ee7d590.png" src="_images/e285ecc94f448528dae115cde81fb24e87b31600464dc301ff7dbc2d1ee7d590.png" />
-<img alt="_images/39e4617d598b3ccf56ce69757cd248f9b7808f0f846207dbd504203db097c084.png" src="_images/39e4617d598b3ccf56ce69757cd248f9b7808f0f846207dbd504203db097c084.png" />
+<img alt="_images/8c2e10f20dad465260598cfbac366d60233d0a3b1e1e1e8d717ff8540c1360c1.png" src="_images/8c2e10f20dad465260598cfbac366d60233d0a3b1e1e1e8d717ff8540c1360c1.png" />
+<img alt="_images/06bb725ead49bd7143182fb5f3e20eebae7a215ce8eeb99584584af5df66eac1.png" src="_images/06bb725ead49bd7143182fb5f3e20eebae7a215ce8eeb99584584af5df66eac1.png" />
 </div>
 </div>
 </section>

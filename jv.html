@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -212,10 +228,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -675,14 +697,14 @@ and iterates to find a fixed point.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.15111140366118292.
-Error at iteration 50 is 0.05446005373350182.
-Error at iteration 75 is 0.01962722456546473.
-Error at iteration 100 is 0.007073587294430084.
-Error at iteration 125 is 0.0025492976373264753.
-Error at iteration 150 is 0.0009187584987859765.
-Error at iteration 175 is 0.00033111754654946424.
-Error at iteration 200 is 0.000119333676677158.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 25 is 0.15110988650266144.
+Error at iteration 50 is 0.05445950695472135.
+Error at iteration 75 is 0.019627027508189343.
+Error at iteration 100 is 0.007073516275635683.
+Error at iteration 125 is 0.002549272042381645.
+Error at iteration 150 is 0.0009187492744526793.
+Error at iteration 175 is 0.0003311142221349428.
+Error at iteration 200 is 0.00011933247856354967.
 
 Converged in 205 iterations.
 </pre></div>
@@ -708,7 +730,7 @@ Converged in 205 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/602a64e2c9a1b7f472e90d60221f4c0993bd49a3f031ce769530eb40b9d43ef0.png" src="_images/602a64e2c9a1b7f472e90d60221f4c0993bd49a3f031ce769530eb40b9d43ef0.png" />
+<img alt="_images/4973a0130f3fc0251372ecbafc49655d9bfa44a656107d33f7dd8fc57a585f06.png" src="_images/4973a0130f3fc0251372ecbafc49655d9bfa44a656107d33f7dd8fc57a585f06.png" />
 </div>
 </div>
 <p>The horizontal axis is the state <span class="math notranslate nohighlight">\(x\)</span>, while the vertical axis gives <span class="math notranslate nohighlight">\(s(x)\)</span> and <span class="math notranslate nohighlight">\(\phi(x)\)</span>.</p>
@@ -792,7 +814,7 @@ diagram, setting</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ea8907c7e7f162061e1d5bc21eb7ad7d852594aec9c4c8cc93c2d21e6b4e4a0d.png" src="_images/ea8907c7e7f162061e1d5bc21eb7ad7d852594aec9c4c8cc93c2d21e6b4e4a0d.png" />
+<img alt="_images/6d77d043e54dc37c45c94fc41cd49f67045cb7b6adf2da5cca90f50f786c2363.png" src="_images/6d77d043e54dc37c45c94fc41cd49f67045cb7b6adf2da5cca90f50f786c2363.png" />
 </div>
 </div>
 <p>Looking at the dynamics, we can see that</p>

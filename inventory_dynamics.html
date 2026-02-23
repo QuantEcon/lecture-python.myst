@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=e5af56cf90610a2e80891240b641e1ffdb5b4bc2" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -159,9 +159,20 @@
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+    }
+  } catch(e) {}
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
 
-<!-- Custom emphasis, strong/bold, and definition colors -->
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -173,7 +184,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -204,10 +220,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -477,7 +499,7 @@ and standard normal.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6fd169d1b955f0966d82d3300c9595db6787ae425ffe667004de5f8cdb702bdc.png" src="_images/6fd169d1b955f0966d82d3300c9595db6787ae425ffe667004de5f8cdb702bdc.png" />
+<img alt="_images/ecf89d27a61917caf85e976a9f91093bf5f5be4c30d87e4a0b7e3c76f2f31d0d.png" src="_images/ecf89d27a61917caf85e976a9f91093bf5f5be4c30d87e4a0b7e3c76f2f31d0d.png" />
 </div>
 </div>
 <p>Now let’s simulate multiple paths in order to build a more complete picture of
@@ -501,7 +523,7 @@ the probabilities of different outcomes:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/70907b67632abebe0b7bb8f3ef7a9d8f1159d7e27ad89b52e45cefb78b2537a5.png" src="_images/70907b67632abebe0b7bb8f3ef7a9d8f1159d7e27ad89b52e45cefb78b2537a5.png" />
+<img alt="_images/2e38133fd7381856d289ff1f1e4953e6b5cae329b04b3020eeea25248984e3b2.png" src="_images/2e38133fd7381856d289ff1f1e4953e6b5cae329b04b3020eeea25248984e3b2.png" />
 </div>
 </div>
 </section>
@@ -555,7 +577,7 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/dcd84397f59376dd1dfdd774ea7eb8d6d87d9daa9f6ba5e30bc1cf1ff782d3cd.png" src="_images/dcd84397f59376dd1dfdd774ea7eb8d6d87d9daa9f6ba5e30bc1cf1ff782d3cd.png" />
+<img alt="_images/bc960f9dfad84ccd9e2d262651fdf38129df9a2ef0423596cb7de0aa853d6fcc.png" src="_images/bc960f9dfad84ccd9e2d262651fdf38129df9a2ef0423596cb7de0aa853d6fcc.png" />
 </div>
 </div>
 <p>We can build up a clearer picture by drawing more samples</p>
@@ -582,7 +604,7 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4dab6a40a83c7e4e2168e477170ca42cd93fb9cb96a333a985358331988a0208.png" src="_images/4dab6a40a83c7e4e2168e477170ca42cd93fb9cb96a333a985358331988a0208.png" />
+<img alt="_images/552556a74eedf0cfe1d5f3f0655cbbe61f902e1b4884d9b38630ebde368be9f7.png" src="_images/552556a74eedf0cfe1d5f3f0655cbbe61f902e1b4884d9b38630ebde368be9f7.png" />
 </div>
 </div>
 <p>Note that the distribution is bimodal</p>
@@ -619,7 +641,7 @@ condition <span class="math notranslate nohighlight">\(X_0\)</span>.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8ab3f851c90517e4c308afbc7a1a1cee3d845a8edb636143c507883640986ce0.png" src="_images/8ab3f851c90517e4c308afbc7a1a1cee3d845a8edb636143c507883640986ce0.png" />
+<img alt="_images/9b01d5f6dc35c1a5b8411e67c923f2c3e9687febd6c5021bf58d1b98b6d26273.png" src="_images/9b01d5f6dc35c1a5b8411e67c923f2c3e9687febd6c5021bf58d1b98b6d26273.png" />
 </div>
 </div>
 <p>The allocation of probability mass is similar to what was shown by the
@@ -707,7 +729,7 @@ code efficiently.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/13f957183be82cc8254b72d3c4652a23e846e9a588738504eecba2c6679886f6.png" src="_images/13f957183be82cc8254b72d3c4652a23e846e9a588738504eecba2c6679886f6.png" />
+<img alt="_images/a68dc863029e6737a6e30d35b649558f08d713a958c88b3373555d8b09f1c888.png" src="_images/a68dc863029e6737a6e30d35b649558f08d713a958c88b3373555d8b09f1c888.png" />
 </div>
 </div>
 <p>Notice that by <span class="math notranslate nohighlight">\(t=500\)</span> or <span class="math notranslate nohighlight">\(t=750\)</span> the densities are barely
@@ -774,9 +796,9 @@ specialized function rather than using the class above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Frequency of at least two stock outs = 0.447517
-CPU times: user 2.82 s, sys: 11 ms, total: 2.83 s
-Wall time: 679 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Frequency of at least two stock outs = 0.447285
+CPU times: user 2.86 s, sys: 6.99 ms, total: 2.86 s
+Wall time: 708 ms
 </pre></div>
 </div>
 </div>
