@@ -31,39 +31,27 @@ kernelspec:
 
 ## Overview
 
-This lecture implements the Generalized Method of Moments (GMM) estimator introduced by {cite:t}`hansen1982generalized` to estimate the consumption-based Euler equation for asset pricing.
+This lecture implements the generalized instrumental variables estimator of {cite:t}`hansen1982generalized` for nonlinear rational expectations models.
 
-The economic model features a representative consumer with CRRA preferences choosing how much to consume and how to allocate wealth across traded assets.
+The preceding lecture {doc}`hansen_singleton_1983` derives the consumption Euler equation from the representative consumer's problem with CRRA preferences and estimates it by maximum likelihood under joint lognormality.
 
-The first-order conditions deliver stochastic Euler equations that relate consumption growth, asset returns, and preference parameters.
+That approach requires specifying the joint distribution of consumption and returns, and its validity depends on lognormality being correct.
 
-{cite:t}`hansen1982generalized` propose an estimation strategy that works directly with the Euler equation's orthogonality conditions.
+{cite:t}`hansen1982generalized` propose an estimation strategy that circumvents this requirement.
 
-A key attraction of GMM is what it does *not* require:
+The key idea is that the Euler equations from economic agents' optimization problems imply a set of population orthogonality conditions that depend on observable variables and unknown preference parameters.
 
-- no distributional assumptions on the joint process of consumption and returns,
-- no closed-form solution for equilibrium prices,
-- no complete specification of the production technology or other "forcing variables."
+By making sample counterparts of these orthogonality conditions close to zero, the parameters can be estimated without explicitly solving for the stochastic equilibrium and without specifying the distribution of the observable variables.
 
-The econometrician needs only the Euler equation itself and a set of predetermined instruments.
+This is attractive because, outside of linear-quadratic environments, closed-form solutions for equilibrium typically require strong assumptions about the stochastic properties of forcing variables, the nature of preferences, or the production technology.
 
-This makes GMM applicable to a broad class of nonlinear rational expectations models.
+The generalized instrumental variables procedure avoids these assumptions, though maximum likelihood estimators (such as the MLE in {doc}`hansen_singleton_1983`) will be asymptotically more efficient when the distributional assumptions are correctly specified.
 
-The cost is that, by ignoring potential information about the distribution of the data, the estimator may be less precise than methods that exploit that information.
+The empirical findings of {cite:t}`hansen1982generalized` complement those in {doc}`hansen_singleton_1983`: risk-aversion estimates from single-return Euler equations are low relative to what is needed to match the observed equity premium, and the overidentifying restrictions are typically not rejected for aggregate stock returns.
 
-The preceding lecture {doc}`hansen_singleton_1983` shows what can be gained by imposing additional distributional structure, and connects the empirical findings to the equity premium puzzle.
+Relative to {cite:t}`hansen1982generalized`, we simplify by estimating one return at a time (value-weighted stock returns), using only monthly nondurable consumption (`ND`), and omitting their maximum-likelihood comparison (Table II) and multi-return systems (Table III).
 
-The findings there, including low estimated risk aversion, strong rejection for Treasury bills, and departures from lognormality, motivate the robust GMM approach developed here.
-
-We cover:
-
-- the consumption CRRA Euler equation and its stochastic discount factor representation
-- GMM estimation using lagged instruments and HAC covariance, with Hansen's $J$ test for overidentifying restrictions
-- the multi-period case with overlapping horizons and finite-order MA covariance
-- simulation exercises verifying that GMM recovers known parameters
-- empirical estimation on monthly FRED consumption and the Ken French CRSP market proxy
-
-In addition to what comes with Anaconda, this lecture requires `pandas-datareader`.
+In addition to what comes with Anaconda, this lecture requires `pandas-datareader`
 
 ```{code-cell} ipython3
 :tags: [hide-output]
@@ -71,11 +59,7 @@ In addition to what comes with Anaconda, this lecture requires `pandas-datareade
 !pip install pandas-datareader
 ```
 
-Let's start by importing packages and defining a helper for displaying tables in LaTeX format
-
 ```{code-cell} ipython3
-from itertools import combinations
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -86,7 +70,12 @@ from scipy import stats
 from scipy.optimize import minimize
 from statsmodels.sandbox.regression import gmm
 from statsmodels.tsa.stattools import acf
+```
 
+We also define a helper to display DataFrames as LaTeX arrays in the hidden cell below
+
+```{code-cell} ipython3
+:tags: [hide-cell]
 
 def display_table(df, title=None, fmt=None):
     """
@@ -120,7 +109,7 @@ def display_table(df, title=None, fmt=None):
 
 ## The economic model
 
-We consider a single-good economy of identical consumers whose preferences are of the CRRA type, following {cite:t}`hansen1982generalized` and {cite:t}`hansen1983stochastic`.
+We consider a single-good economy with a representative consumer whose preferences are of the CRRA type, following {cite:t}`hansen1982generalized` and {cite:t}`hansen1983stochastic`.
 
 The representative consumer chooses stochastic consumption and investment plans to maximize
 
@@ -424,19 +413,59 @@ def two_step_gmm(data, n_lags, ma_order=0, horizon=1, start_params=None):
         g_bar = sample_moments(params).mean(axis=0)
         return float(g_bar @ weight_matrix @ g_bar)
 
+    def objective_grad(params, weight_matrix):
+        g_bar = sample_moments(params).mean(axis=0)
+        grad_err = euler_error_grad_horizon(params, exog, horizon=horizon)
+        d_bar = (instruments.T @ grad_err) / n_obs
+        return 2.0 * d_bar.T @ weight_matrix @ g_bar
+
     q = instruments.shape[1]
     w_identity = np.eye(q)
-    step1 = minimize(objective, x0=start_params, args=(w_identity,), method="BFGS")
+    bounds = [(-2.0, 10.0), (0.85, 1.05)]
+
+    def coarse_start(weight_matrix):
+        γ_grid = np.linspace(bounds[0][0], bounds[0][1], 33)
+        β_grid = np.linspace(bounds[1][0], bounds[1][1], 33)
+        best_params = None
+        best_val = np.inf
+        for γ0 in γ_grid:
+            for β0 in β_grid:
+                val = objective(np.array([γ0, β0]), weight_matrix)
+                if np.isfinite(val) and val < best_val:
+                    best_val = val
+                    best_params = np.array([γ0, β0])
+        return best_params if best_params is not None else start_params
+
+    step1 = minimize(
+        objective,
+        x0=coarse_start(w_identity),
+        args=(w_identity,),
+        jac=objective_grad,
+        method="L-BFGS-B",
+        bounds=bounds,
+    )
     params1 = step1.x
 
     m1 = sample_moments(params1)
     s_hat = finite_ma_covariance(m1, ma_order=ma_order)
     w_opt = np.linalg.pinv(s_hat)
 
-    step2 = minimize(objective, x0=params1, args=(w_opt,), method="BFGS")
+    step2 = minimize(
+        objective,
+        x0=params1,
+        args=(w_opt,),
+        jac=objective_grad,
+        method="L-BFGS-B",
+        bounds=bounds,
+    )
     params2 = step2.x
-    g2 = sample_moments(params2).mean(axis=0)
-    j_stat = float(n_obs * (g2 @ w_opt @ g2))
+
+    # For reporting, evaluate J and standard errors using S_hat at params2.
+    m2 = sample_moments(params2)
+    s_hat2 = finite_ma_covariance(m2, ma_order=ma_order)
+    w_opt2 = np.linalg.pinv(s_hat2)
+    g2 = m2.mean(axis=0)
+    j_stat = float(n_obs * (g2 @ w_opt2 @ g2))
     df = instruments.shape[1] - len(params2)
     j_prob = float(stats.chi2.cdf(j_stat, df=df)) if df > 0 else np.nan
     p_value = float(1.0 - j_prob) if df > 0 else np.nan
@@ -444,14 +473,14 @@ def two_step_gmm(data, n_lags, ma_order=0, horizon=1, start_params=None):
     # Asymptotic covariance under optimal weighting: (D' S^{-1} D)^{-1} / T.
     grad_err = euler_error_grad_horizon(params2, exog, horizon=horizon)
     d_hat = (instruments.T @ grad_err) / n_obs
-    cov_hat = np.linalg.pinv(d_hat.T @ w_opt @ d_hat) / n_obs
+    cov_hat = np.linalg.pinv(d_hat.T @ w_opt2 @ d_hat) / n_obs
     se_hat = np.sqrt(np.diag(cov_hat))
 
     return {
         "params_step1": params1,
         "params_step2": params2,
         "se_step2": se_hat,
-        "weight_opt": w_opt,
+        "weight_opt": w_opt2,
         "j_stat": j_stat,
         "j_df": int(df),
         "j_prob": j_prob,
@@ -465,25 +494,18 @@ This gives a transparent reference algorithm for the two-step generalized instru
 
 ## Data
 
+Both this lecture and the companion lecture {doc}`hansen_singleton_1983` use the same data construction.
+
 Both {cite:t}`hansen1982generalized` and {cite:t}`hansen1983stochastic` use monthly data on real per capita consumption (nondurables) and stock returns from CRSP for the period 1959:2 through 1978:12.
 
-To stay close to their empirical setup with open data, this lecture uses:
+To align with the paper, we set the default sample to 1959:2--1978:12.
 
-- FRED nondurables consumption and deflator series,
-- Ken French's CRSP value-weighted market proxy (`Mkt-RF + RF`) for stock returns,
-- sample window 1959:2 through 1978:12.
-
-Exact CRSP NYSE replication is not open-data feasible, so coefficient-by-coefficient equality with the published tables is not expected.
+This lecture uses CRSP value-weighted returns from a local file (`stock_prices_aggregate_return_full.csv`) when available, and falls back to the Ken French market proxy (`Mkt-RF + RF`) otherwise.
 
 We also build a simulator that generates synthetic return-growth pairs satisfying the Euler equation by construction, so that we can verify our estimators recover known parameters before applying them to actual data.
 
 ```{code-cell} ipython3
 FRED_CODES = {
-    # HS82 construct real per capita consumption by dividing by a Census
-    # population series. We default to POP for comparability, but also include
-    # BEA's monthly population series (POPTHM) and the civilian noninstitutional
-    # 16+ series (CNP16OV) as alternatives.
-    "population_bea": "POPTHM",
     "population_total": "POP",
     "population_16plus": "CNP16OV",
     "cons_nd_real_index": "DNDGRA3M086SBEA",
@@ -499,7 +521,8 @@ def to_month_end(index):
 
 The simulation block below produces synthetic return-growth pairs that satisfy the Euler equation by construction.
 
-We generate log consumption growth from a stationary AR(1), compute the stochastic discount factor at known true parameters, and construct gross returns as $R_{t+1} = (1 + \eta_{t+1}) / M_{t+1}(\theta_0)$ where $\eta_{t+1}$ is an iid shock.
+We generate log consumption growth from a stationary AR(1), compute the stochastic discount factor at known true parameters, and construct gross returns as
+$R_{t+1} = \xi_{t+1} / M_{t+1}(\theta_0)$ where $\xi_{t+1}$ is an iid lognormal shock with mean one.
 
 ```{code-cell} ipython3
 @njit
@@ -527,7 +550,7 @@ def simulate_euler_sample(
     mu_c = 0.0015
     sigma_c = 0.006
     phi_c = 0.4
-    sigma_eta = 0.25
+    sigma_eta = 0.02
     burn_in = 200
 
     total_n = n_obs + burn_in
@@ -537,30 +560,38 @@ def simulate_euler_sample(
     cons_growth = np.exp(delta_c[burn_in:])
     sdf = β_true * cons_growth ** (-γ_true)
 
-    eta = sigma_eta * rng.standard_normal(n_obs)
-    eta = np.clip(eta, -0.95, None)
-    gross_return = (1.0 + eta) / sdf
-    gross_return = np.maximum(gross_return, 1e-6)
+    # Positive mean-one return shock: E[ξ]=1 so E[M R]=1 by construction.
+    eps = rng.standard_normal(n_obs)
+    xi = np.exp(sigma_eta * eps - 0.5 * sigma_eta**2)
+    gross_return = xi / sdf
 
     return np.column_stack([gross_return, cons_growth])
 ```
 
-The empirical data loader below merges FRED consumption series with the Ken French CRSP market proxy.
-
-{cite:t}`hansen1982generalized` construct real per capita consumption by dividing by a population series published by the Bureau of the Census.
-
-To mirror this choice with open data, our default uses FRED `POP`.
-
-We also support BEA's monthly series `POPTHM` and the civilian noninstitutional 16+ series `CNP16OV` as alternatives.
-
-Nominal returns are deflated by the nondurables price index to obtain real gross returns.
+The hidden cell below pulls the relevant FRED series, constructs per capita real consumption, and joins with either CRSP returns (if available locally) or a Ken French proxy.
 
 ```{code-cell} ipython3
+:tags: [hide-cell]
+
+from pathlib import Path
+
+def _find_local_file(filename, max_parents=6):
+    """
+    Search for filename in common project locations (cwd, lectures/, parents).
+    """
+    path = Path.cwd().resolve()
+    for _ in range(max_parents + 1):
+        for candidate in (path / filename, path / "lectures" / filename):
+            if candidate.exists():
+                return candidate
+        path = path.parent
+    return None
+
+
 def load_hs_monthly_data(
     start="1959-02-01",
     end="1978-12-01",
     population_key="population_total",
-    per_capita=True,
 ):
     """
     Build monthly gross real return and gross consumption-growth series.
@@ -574,124 +605,88 @@ def load_hs_monthly_data(
     sample_start = start_period.to_timestamp("M")
     sample_end = end_period.to_timestamp("M")
 
-    fred_keys_base = [
-        "population_total",
-        "population_16plus",
-        "cons_nd_real_index",
-        "cons_nd_price_index",
-    ]
-    fred_keys = fred_keys_base + ["population_bea"]
-    try:
-        fred = web.DataReader([FRED_CODES[k] for k in fred_keys], "fred", fetch_start, fetch_end)
-    except Exception:
-        # Be robust if POPTHM is unavailable.
-        fred = web.DataReader([FRED_CODES[k] for k in fred_keys_base], "fred", fetch_start, fetch_end)
+    fred_keys = ["cons_nd_real_index", "cons_nd_price_index", population_key]
+    fred = web.DataReader([FRED_CODES[k] for k in fred_keys], "fred", fetch_start, fetch_end)
     fred = fred.rename(columns={v: k for k, v in FRED_CODES.items()})
     fred.index = to_month_end(fred.index)
-    if per_capita and population_key == "population_bea" and "population_bea" not in fred.columns:
-        print("Warning: POPTHM unavailable from FRED; falling back to POP.")
-        population_key = "population_total"
-    if population_key not in fred.columns:
-        raise KeyError(f"Missing population series '{population_key}' in FRED pull.")
-    if per_capita and population_key == "population_bea" and fred[population_key].isna().all():
-        print("Warning: POPTHM is all-missing in the requested window; falling back to POP.")
-        population_key = "population_total"
-
-    # Alternative consumption-growth constructions for sensitivity checks.
-    fred["gross_cons_growth_agg"] = (
-        fred["cons_nd_real_index"] / fred["cons_nd_real_index"].shift(1)
+    fred["consumption_per_capita"] = fred["cons_nd_real_index"] \
+        / fred[population_key]
+    fred["gross_cons_growth"] = (
+        fred["consumption_per_capita"] / fred["consumption_per_capita"].shift(1)
     )
-    if "population_bea" in fred.columns:
-        fred["gross_cons_growth_popthm"] = (
-            (fred["cons_nd_real_index"] / fred["population_bea"])
-            / (fred["cons_nd_real_index"] / fred["population_bea"]).shift(1)
-        )
-    else:
-        fred["gross_cons_growth_popthm"] = np.nan
-    fred["gross_cons_growth_pop"] = (
-        (fred["cons_nd_real_index"] / fred["population_total"])
-        / (fred["cons_nd_real_index"] / fred["population_total"]).shift(1)
-    )
-    fred["gross_cons_growth_cnp16ov"] = (
-        (fred["cons_nd_real_index"] / fred["population_16plus"])
-        / (fred["cons_nd_real_index"] / fred["population_16plus"]).shift(1)
-    )
-
-    if per_capita:
-        fred["consumption_level"] = fred["cons_nd_real_index"] / fred[population_key]
-        growth_map = {
-            "population_bea": "gross_cons_growth_popthm",
-            "population_total": "gross_cons_growth_pop",
-            "population_16plus": "gross_cons_growth_cnp16ov",
-        }
-        fred["gross_cons_growth"] = fred[growth_map[population_key]]
-    else:
-        fred["consumption_level"] = fred["cons_nd_real_index"]
-        fred["gross_cons_growth"] = fred["gross_cons_growth_agg"]
-
     fred["gross_inflation_nd"] = (
         fred["cons_nd_price_index"] / fred["cons_nd_price_index"].shift(1)
     )
 
-    ff = web.DataReader("F-F_Research_Data_Factors", "famafrench", fetch_start, fetch_end)[0].copy()
-    ff.columns = [str(col).strip() for col in ff.columns]
-    if ("Mkt-RF" not in ff.columns) or ("RF" not in ff.columns):
-        raise KeyError("Fama-French data missing required columns: 'Mkt-RF' and 'RF'.")
+    returns = None
+    returns_source = None
 
-    # Mkt-RF and RF are reported in percent per month.
-    ff["gross_nom_return"] = 1.0 + (ff["Mkt-RF"] + ff["RF"]) / 100.0
-    ff.index = ff.index.to_timestamp(how="end")
-    ff.index = to_month_end(ff.index)
+    crsp_path = _find_local_file("stock_prices_aggregate_return_full.csv")
+    if crsp_path is not None:
+        try:
+            crsp = pd.read_csv(crsp_path)
+            col_lower = {str(c).strip().lower(): c for c in crsp.columns}
+            date_col = col_lower.get("date")
+            ret_col = col_lower.get("vwretd")
+            if date_col is None or ret_col is None:
+                raise KeyError("Expected columns 'DATE' and 'vwretd' in CRSP CSV.")
+            dates = pd.to_datetime(crsp[date_col].astype(str), format="%Y%m%d", errors="coerce")
+            crsp = crsp.assign(date=dates).dropna(subset=["date"]).set_index("date")
+            crsp.index = to_month_end(crsp.index)
+            crsp["gross_nom_return"] = 1.0 + pd.to_numeric(crsp[ret_col], errors="coerce")
+            returns = crsp[["gross_nom_return"]].copy()
+            returns_source = f"CRSP CSV ({crsp_path.name}, vwretd)"
+        except Exception as err:
+            print(
+                "Warning: failed to load CRSP returns from "
+                f"{crsp_path} ({err}); falling back to Ken French proxy."
+            )
 
-    out = fred.join(ff[["gross_nom_return"]], how="inner")
+    if returns is None:
+        ff = web.DataReader(
+            "F-F_Research_Data_Factors", "famafrench",
+            fetch_start, fetch_end)[0].copy()
+        ff.columns = [str(col).strip() for col in ff.columns]
+        if ("Mkt-RF" not in ff.columns) or ("RF" not in ff.columns):
+            raise KeyError(
+                "Fama-French data missing required columns: 'Mkt-RF' and 'RF'.")
+
+        # Mkt-RF and RF are reported in percent per month.
+        ff["gross_nom_return"] = 1.0 + (ff["Mkt-RF"] + ff["RF"]) / 100.0
+        ff.index = ff.index.to_timestamp(how="end")
+        ff.index = to_month_end(ff.index)
+        returns = ff[["gross_nom_return"]]
+        returns_source = "Ken French market proxy (Mkt-RF + RF)"
+
+    out = fred.join(returns, how="inner")
     out["gross_real_return"] = out["gross_nom_return"] / out["gross_inflation_nd"]
     out = out.loc[sample_start:sample_end].dropna(
-        subset=["gross_real_return", "gross_cons_growth", "gross_inflation_nd", "consumption_level"]
+        subset=["gross_real_return", "gross_cons_growth"]
     )
 
     required_cols = [
         "gross_real_return",
         "gross_cons_growth",
-        "gross_inflation_nd",
-        "consumption_level",
-        "gross_cons_growth_popthm",
-        "gross_cons_growth_pop",
-        "gross_cons_growth_cnp16ov",
-        "gross_cons_growth_agg",
     ]
     out = out[required_cols].copy()
+    out.attrs["return_source_used"] = returns_source
     out.attrs["population_key_used"] = population_key
-    out.attrs["per_capita_used"] = per_capita
     return out
-```
 
-A thin wrapper then packages the merged frame into the exact array used by our estimators.
 
-```{code-cell} ipython3
 def get_estimation_data(
     start="1959-02-01",
     end="1978-12-01",
     population_key="population_total",
-    per_capita=True,
 ):
     """
     Return (dataframe, array, source_label) using observed data.
     """
-    frame = load_hs_monthly_data(
-        start=start,
-        end=end,
-        population_key=population_key,
-        per_capita=per_capita,
-    )
+    frame = load_hs_monthly_data(start=start, end=end, population_key=population_key)
     data = frame[["gross_real_return", "gross_cons_growth"]].to_numpy()
-    pop_key_used = frame.attrs.get("population_key_used", population_key)
-    per_capita_used = frame.attrs.get("per_capita_used", per_capita)
-    pop_label = "per-capita" if per_capita_used else "aggregate"
-    pop_series = FRED_CODES.get(pop_key_used, pop_key_used)
-    source = (
-        "Ken French CRSP market proxy (Mkt-RF + RF) + "
-        f"FRED nondurables consumption ({pop_label}, {pop_series})"
-    )
+    return_source = frame.attrs.get("return_source_used", "Unknown return source")
+    pop_series = FRED_CODES.get(frame.attrs.get("population_key_used", population_key), population_key)
+    source = f"{return_source} + FRED ND consumption (per-capita, {pop_series})"
     return frame, data, source
 ```
 
@@ -729,13 +724,13 @@ Under regularity conditions given in {cite:t}`Hansen1982`, the GMM estimator is 
 
 where $D = E[\partial m_t(\theta_0)/\partial\theta^\top]$ is the Jacobian of the moment conditions, $S$ is the long-run covariance matrix of $m_t(\theta_0)$, and $W$ is the probability limit of $W_T$.
 
-{cite:t}`hansen1982generalized` show that the optimal weighting matrix is $W^* = S^{-1}$, which yields the smallest asymptotic covariance matrix among all choices of $W$.
+{cite:t}`Hansen1982` shows that the optimal weighting matrix is $W^* = S^{-1}$, which yields the smallest asymptotic covariance matrix among all choices of $W$.
 
 Under $W = S^{-1}$ the sandwich simplifies to $(D^\top S^{-1} D)^{-1}$.
 
 When the number of moment conditions $q$ exceeds the number of parameters $k$, the model is overidentified and we can test whether the data are consistent with the maintained restrictions.
 
-{cite:t}`hansen1982generalized` propose the $J$ test:
+{cite:t}`hansen1982generalized` test the overidentifying restrictions using a result from {cite:t}`Hansen1982`:
 
 ```{math}
 :label: hs82-jtest
@@ -946,7 +941,7 @@ print(f"Mean net consumption growth: {(sim_data[:, 1].mean() - 1.0) * 100:.3f}%"
 We now estimate GMM across lag lengths, following the format of Table I in {cite:t}`hansen1982generalized`.
 
 ```{code-cell} ipython3
-sim_table, sim_results = run_gmm_by_lag(sim_data, lags=(1, 2, 4, 6), use_hac=True)
+sim_table = run_two_step_by_lag(sim_data, lags=(1, 2, 4, 6), horizon=1)
 sim_pretty = sim_table[["γ_hat", "se_γ", "β_hat", "se_β", "j_stat", "j_df", "j_prob"]].rename(
     columns={
         "γ_hat": r"\hat{\gamma}",
@@ -975,7 +970,9 @@ display_table(
 
 GMM recovers the true $\gamma$ and $\beta$ across lag specifications.
 
-The $J$ statistics are small with small `Prob(J)` (CDF) values and hence large right-tail $p$ values, confirming that the simulated moment conditions are not rejected.
+The `Prob(J)` column matches the paper's convention: it reports the $\chi^2$ *CDF* at the realized $J$ statistic.
+
+For hypothesis testing, the right-tail $p$ value is $1-\mathrm{Prob}(J)$.
 
 To illustrate the multi-period case from Section 2 of {cite:t}`hansen1982generalized`, we estimate the three-period Euler restriction using overlapping-horizon returns and consumption growth, with instruments formed from one-period data dated $t$ or earlier and the finite-order covariance appropriate for MA(2) disturbances.
 
@@ -1063,9 +1060,9 @@ We now apply GMM to observed data, following the empirical strategy of Section 5
 
 {cite:t}`hansen1982generalized` use monthly per capita consumption of nondurables (ND) and nondurables plus services (NDS) paired with the equally-weighted (EWR) and value-weighted (VWR) aggregate stock returns from CRSP, for 1959:2 through 1978:12.
 
-We focus on the closest open-data analogue to their ND+VWR specification: FRED nondurables consumption and the Ken French CRSP value-weighted market proxy, on the same 1959:2--1978:12 window.
+We focus on their ND+VWR specification using FRED nondurables consumption and CRSP value-weighted returns (falling back to a Ken French proxy if the CRSP series is unavailable), on the same 1959:2--1978:12 window.
 
-Even with matching dates, exact replication of the original CRSP NYSE series and historical data vintages is not open-data feasible, so some numerical differences remain expected.
+Even with the same dates, exact replication of the original CRSP NYSE series and historical data vintages is not always feasible, so small numerical differences relative to the published tables can remain.
 
 We first examine the raw data moments.
 
@@ -1087,60 +1084,7 @@ print(f"Correlation: {np.corrcoef(emp_data[:, 0], emp_data[:, 1])[0, 1]:.4f}")
 
 The key feature of these data is the large gap between the volatility of returns and the volatility of consumption growth.
 
-To keep the flow aligned with the paper, we move directly to the Table I style estimates.
-
-(Optional) If you want a quick sensitivity check on the consumption-growth construction (per-capita vs aggregate, and alternative population series), set `RUN_SENSITIVITY = True` in the next cell.
-
-```{code-cell} ipython3
-RUN_SENSITIVITY = False
-
-if RUN_SENSITIVITY:
-    robust_specs = [
-        ("per-capita (POPTHM)", "gross_cons_growth_popthm"),
-        ("per-capita (POP)", "gross_cons_growth_pop"),
-        ("per-capita (CNP16OV)", "gross_cons_growth_cnp16ov"),
-        ("aggregate", "gross_cons_growth_agg"),
-    ]
-
-    rows = []
-    r_vals = emp_frame["gross_real_return"].to_numpy()
-    for label, growth_col in robust_specs:
-        g_vals = emp_frame[growth_col].to_numpy()
-        mask = np.isfinite(r_vals) & np.isfinite(g_vals)
-        data_i = np.column_stack([r_vals[mask], g_vals[mask]])
-        if len(data_i) <= 2:
-            continue
-        res_i = two_step_gmm(data_i, n_lags=2, ma_order=0, horizon=1)
-        rows.append(
-            {
-                "spec": label,
-                "T": len(data_i),
-                "std(g-1)%": float((data_i[:, 1] - 1.0).std() * 100.0),
-                r"\hat{\gamma}": res_i["params_step2"][0],
-                r"\mathrm{se}(\hat{\gamma})": res_i["se_step2"][0],
-                r"\hat{\beta}": res_i["params_step2"][1],
-                r"\mathrm{se}(\hat{\beta})": res_i["se_step2"][1],
-            }
-        )
-
-    robust_df = pd.DataFrame(rows).set_index("spec")
-    display_table(
-        robust_df,
-        title=r"Sensitivity Check (NLAG=2, Exact $S_0$)",
-        fmt={
-            "T": "{:.0f}",
-            "std(g-1)%": "{:.3f}",
-            r"\hat{\gamma}": "{:.4f}",
-            r"\mathrm{se}(\hat{\gamma})": "{:.4f}",
-            r"\hat{\beta}": "{:.4f}",
-            r"\mathrm{se}(\hat{\beta})": "{:.4f}",
-        },
-    )
-```
-
 This is the empirical fact underlying the equity premium puzzle of {cite:t}`MehraPrescott1985`: matching the observed equity premium with CRRA preferences requires implausibly high risk aversion.
-
-The weak consumption-return comovement compounds the difficulty.
 
 We now estimate the Euler equation using the two-step generalized instrumental variables (GIV) / GMM procedure in {cite:t}`hansen1982generalized`.
 
@@ -1150,6 +1094,8 @@ To match Table I, we report the paper's exponent parameter $a$ in
 $E_t[\beta (C_{t+1}/C_t)^a R_{t+1} - 1] = 0$.
 
 Under CRRA, $a = -\gamma$, so the reported standard errors are the same up to sign.
+
+The following table reports the two-step GMM estimates of $\hat a$ and $\hat\beta$ by lag length
 
 ```{code-cell} ipython3
 gmm_raw = run_two_step_by_lag(emp_data, lags=LAGS, horizon=1)
@@ -1167,7 +1113,7 @@ table_i["Prob"] = gmm_raw["j_prob"]
 
 display_table(
     table_i,
-    title="Instrumental Variable Estimates (ND + VWR proxy, Table I format)",
+    title="Instrumental Variable Estimates (ND + VWR, Table I format; see Data source)",
     fmt={
         "a": "{:.4f}",
         "SE(a)": "{:.4f}",
@@ -1180,19 +1126,36 @@ display_table(
 )
 ```
 
-For comparison, Table I of {cite:t}`hansen1982generalized` reports for ND+VWR:
+For comparison, Table I of {cite:t}`hansen1982generalized` reports the following ND+VWR values for 1959:2--1978:12:
 
-- $\hat a$ from about $-0.90$ to $-0.82$ (so $\hat\gamma=-\hat a$ is about $0.82$ to $0.90$),
-- $\hat\beta$ near $0.997$,
-- $\mathrm{se}(\hat a)$ from about $0.106$ down to $0.063$ (so $\mathrm{se}(\hat\gamma)$ is the same up to sign),
-- $\mathrm{se}(\hat\beta)$ around $0.0024$ to $0.0025$,
-- `Prob` values around 0.50 to 0.88.
+```{code-cell} ipython3
+table_i_paper = pd.DataFrame(
+    {
+        "a": [-0.8985, -0.8757, -0.8174, -0.8514],
+        "SE(a)": [0.1057, 0.0856, 0.0742, 0.0629],
+        r"\beta": [0.9971, 0.9974, 0.9967, 0.9973],
+        r"\mathrm{SE}(\beta)": [0.0025, 0.0025, 0.0024, 0.0024],
+        r"\chi^2": [1.5415, 3.2654, 7.8776, 14.9380],
+        "DF": [1, 3, 7, 11],
+        "Prob": [0.8756, 0.6475, 0.5008, 0.8147],
+    },
+    index=pd.Index([1, 2, 4, 6], name="NLAG"),
+)
 
-Use the table above to compare your run against those benchmarks.
-
-In practice, open-data proxies can match $\hat\beta$ and $\mathrm{se}(\hat\beta)$ closely while producing substantially larger $\mathrm{se}(\hat\gamma)$ than in Table I.
-
-This reflects a combination of (i) differences between the original FRB/CRSP series and modern open-data substitutes and (ii) sensitivity of monthly consumption-growth construction to population adjustment and measurement noise.
+display_table(
+    table_i_paper,
+    title="Hansen and Singleton (1982) Table I: ND + VWR",
+    fmt={
+        "a": "{:.4f}",
+        "SE(a)": "{:.4f}",
+        r"\beta": "{:.4f}",
+        r"\mathrm{SE}(\beta)": "{:.4f}",
+        r"\chi^2": "{:.4f}",
+        "DF": "{:.0f}",
+        "Prob": "{:.4f}",
+    },
+)
+```
 
 We inspect pricing errors and their autocorrelation structure to diagnose fit beyond summary statistics.
 
@@ -1289,6 +1252,6 @@ This robustness comes at the cost of efficiency.
 
 GMM does not exploit information about the distribution of the data that could sharpen inference.
 
-Relative to the original table, the open-data proxy reproduces the same exercise and sample window, but not the exact CRSP NYSE series or historical vintages.
+Relative to the original paper, this lecture uses modern FRED consumption data and the Ken French value-weighted market return as an open-data proxy for the original CRSP series.
 
-The comparison is therefore about closeness of estimates and test outcomes, not exact equality row by row.
+Exact row-by-row replication can still differ due to series definitions and data vintages.

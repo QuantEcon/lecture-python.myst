@@ -363,8 +363,7 @@ The intercept absorbs the discount factor $\beta$ and a Jensen's inequality corr
 
 This restriction has three important special cases that illuminate the connection to the equity premium puzzle:
 
-- Risk neutrality ($\alpha = 0$): Returns are unpredictable and have constant expected log return $-\log\beta - \sigma_i^2/2$.
-    - All assets have the same expected return up to a constant factor.
+- Risk neutrality ($\alpha = 0$): Each asset's log return equals a constant plus a serially uncorrelated error, so returns are serially uncorrelated.
 - Log utility ($\alpha = -1$): The difference $R_{it} - X_t$ is unpredictable, so returns and consumption growth share the same predictable component.
 - Risk aversion ($\alpha < 0$): The predictable component of $R_{it}$ is $-\alpha$ times the predictable component of $X_t$. 
     - A larger $|\alpha|$ amplifies the link between forecastable consumption growth and forecastable returns.
@@ -1522,11 +1521,11 @@ display_table(mle_pretty, fmt={
 
 The table reports $\hat\alpha$ and $\hat\beta$ by lag length for the sample used in the code cell above.
 
-For comparison, {cite:t}`hansen1983stochastic` report $\hat\alpha$ values of $-0.33$ to $-1.25$ (standard errors $0.65$ to $0.83$) for the value-weighted return with nondurables consumption.
+For comparison, {cite:t}`hansen1983stochastic` report $\hat\alpha$ values of $-0.32$ to $-1.25$ (standard errors $0.65$ to $0.83$) for the value-weighted return with nondurables consumption.
 
 Our numbers are very close to the paper's.
 
-In risk-aversion units, this corresponds to $-\hat\alpha$ between $0.33$ and $1.25$.
+In risk-aversion units, this corresponds to $-\hat\alpha$ between $0.32$ and $1.25$.
 
 We now compute the predictability summaries that are central to {cite:t}`hansen1983stochastic`
 
@@ -1821,7 +1820,7 @@ The empirical findings of {cite:t}`hansen1983stochastic` contain the key ingredi
 
 Let us assemble the evidence:
 
-- *Low estimated risk aversion:* The estimated $\hat\alpha$ values (and thus risk aversion $-\hat\alpha$) from the table above is similar to the numbers in {cite:t}`hansen1983stochastic`, who report $\hat\alpha$ between $-0.33$ and $-1.25$.
+- *Low estimated risk aversion:* The estimated $\hat\alpha$ values (and thus risk aversion $-\hat\alpha$) from the table above is similar to the numbers in {cite:t}`hansen1983stochastic`, who report $\hat\alpha$ between $-0.32$ and $-1.25$.
 
 - *Tiny return predictability:* The unrestricted-VAR $R_R^2$ values have a similar range with the 0.02 to 0.06 range in {cite:t}`hansen1983stochastic`, confirming that the predictable component of stock returns is small relative to the unpredictable component.
 
