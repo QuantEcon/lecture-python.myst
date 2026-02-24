@@ -1118,12 +1118,12 @@ We now estimate the Euler equation using the two-step generalized instrumental v
 
 For the one-period stock-return Euler equation ($n=1$), the disturbance is a martingale difference sequence, so the optimal weighting matrix uses the contemporaneous covariance $S_0 = E[m_t m_t^\top]$.
 
-To match Table I, we report the paper's exponent parameter $a$ in
-$E_t[\beta (C_{t+1}/C_t)^a R_{t+1} - 1] = 0$.
+To match Table I, we report the paper's exponent parameter $\alpha$ in
+$E_t[\beta (C_{t+1}/C_t)^\alpha R_{t+1} - 1] = 0$.
 
-Under CRRA, $a = -\gamma$, so the reported standard errors are the same up to sign.
+Under CRRA, $\alpha = -\gamma$, so the reported standard errors are the same up to sign.
 
-The two-step GMM estimates of $\hat a$ and $\hat\beta$ by lag length are
+The two-step GMM estimates of $\hat{\alpha}$ and $\hat{\beta}$ by lag length are
 
 ```{code-cell} ipython3
 gmm_raw = run_two_step_by_lag(emp_data, lags=LAGS, horizon=1)
@@ -1131,8 +1131,8 @@ gmm_raw.index.name = "NLAG"
 
 table_i = pd.DataFrame(index=gmm_raw.index)
 table_i.index.name = "NLAG"
-table_i["a"] = -gmm_raw["γ_hat"]
-table_i["SE(a)"] = gmm_raw["se_γ"]
+table_i[r"\hat{\alpha}"] = -gmm_raw["γ_hat"]
+table_i[r"SE(\hat{\alpha})"] = gmm_raw["se_γ"]
 table_i[r"\beta"] = gmm_raw["β_hat"]
 table_i[r"\mathrm{SE}(\beta)"] = gmm_raw["se_β"]
 table_i[r"\chi^2"] = gmm_raw["j_stat"]
@@ -1142,8 +1142,8 @@ table_i["Prob"] = gmm_raw["j_prob"]
 display_table(
     table_i,
     fmt={
-        "a": "{:.4f}",
-        "SE(a)": "{:.4f}",
+        r"\hat{\alpha}": "{:.4f}",
+        r"SE(\hat{\alpha})": "{:.4f}",
         r"\beta": "{:.4f}",
         r"\mathrm{SE}(\beta)": "{:.4f}",
         r"\chi^2": "{:.4f}",
@@ -1160,8 +1160,8 @@ For comparison, Table I of {cite:t}`hansen1982generalized` (as corrected in the 
 
 table_i_paper = pd.DataFrame(
     {
-        "a": [-1.2028, -0.5761, -0.6565, -0.9638],
-        "SE(a)": [0.7789, 0.7067, 0.6896, 0.6425],
+        r"\alpha": [-1.2028, -0.5761, -0.6565, -0.9638],
+        r"SE(\alpha)": [0.7789, 0.7067, 0.6896, 0.6425],
         r"\beta": [0.9976, 0.9975, 0.9978, 0.9985],
         r"\mathrm{SE}(\beta)": [0.0027, 0.0027, 0.0027, 0.0027],
         r"\chi^2": [1.457, 5.819, 7.923, 10.522],
@@ -1174,8 +1174,8 @@ table_i_paper = pd.DataFrame(
 display_table(
     table_i_paper,
     fmt={
-        "a": "{:.4f}",
-        "SE(a)": "{:.4f}",
+        r"\alpha": "{:.4f}",
+        r"SE(\alpha)": "{:.4f}",
         r"\beta": "{:.4f}",
         r"\mathrm{SE}(\beta)": "{:.4f}",
         r"\chi^2": "{:.4f}",
