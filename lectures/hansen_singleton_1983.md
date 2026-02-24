@@ -47,10 +47,11 @@ This restricted representation can be estimated by maximum likelihood.
 
 The following companion lecture {doc}`hansen_singleton_1982` develops a robust alternative based on GMM that does not require the lognormality assumption.
 
-The empirical findings of {cite:t}`hansen1983stochastic` foreshadow what {cite:t}`MehraPrescott1985` would formalize as the **equity premium puzzle**:
+The empirical findings of {cite:t}`hansen1983stochastic` foreshadow what {cite:t}`MehraPrescott1985` would formalize as the **equity premium puzzle**.
 
+Relative to {cite:t}`hansen1983stochastic`, we simplify by estimating one return at a time (market proxy or T-bill) rather than full multi-asset systems, using only monthly nondurable consumption (`ND`).
 
-Relative to {cite:t}`hansen1983stochastic`, we simplify by estimating one return at a time (market proxy or T-bill) rather than full multi-asset systems, using only monthly nondurable consumption (`ND`), and omitting the multi-stock return-difference rejection table and the just-identified (`NLAG = 0`) comparison.
+We also omit the multi-stock return-difference rejection table and the just-identified (`NLAG = 0`) comparison.
 
 In addition to what comes with Anaconda, this lecture requires `pandas-datareader`
 
@@ -125,11 +126,11 @@ You can pass different `start` and `end` dates to study later periods.
 
 This lecture pulls stock-market and one-month bill returns from the Ken French data library (`F-F_Research_Data_Factors`) and constructs gross nominal returns as `1 + (Mkt-RF + RF)/100` for the market and `1 + RF/100` for T-bills.
 
-`Mkt-RF` Rm-Rf is the value-weighted return on all CRSP firms minus the risk-free rate, and `RF` is the one-month Treasury bill return (see [here](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) for details).
+`Mkt-RF` is the value-weighted return on all CRSP firms minus the risk-free rate, and `RF` is the one-month Treasury bill return (see [here](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) for details).
 
-While Hansen-Singleton use CRSP value-weighted NYSE returns, we choose to use the Ken French market factor as the closest open-data proxy for the CRSP value-weighted market return.
+While Hansen-Singleton use CRSP value-weighted NYSE returns, we use the Ken French market factor as the closest open-data proxy.
 
-To keep the core message clear, we use one consumption construction throughout: nondurables (`ND`) with the nondurables deflator.
+We use one consumption construction throughout: nondurables (`ND`) with the nondurables deflator.
 
 The hidden cell below pulls the relevant FRED series, constructs per capita real consumption, and joins with the Ken French returns
 
@@ -381,18 +382,18 @@ E_{t-1}[R_{i,t}] = -\alpha\, E_{t-1}[X_{t}] - \log\beta - \frac{\sigma_i^2}{2}.
 
 Equation {eq}`hs83-cond-mean` is the central result of {cite:t}`hansen1983stochastic`.
 
-It says that the predictable component of each asset's log return is proportional to the predictable component of log consumption growth, with proportionality factor $-\alpha$.
+The predictable component of each asset's log return is proportional to the predictable component of log consumption growth, with proportionality factor $-\alpha$.
 
 The intercept absorbs the discount factor $\beta$ and the lognormal variance term $\sigma_i^2 / 2$.
 
-This restriction has three important special cases that illuminate the connection to what was later labeled the equity premium puzzle ({cite:t}`MehraPrescott1985`):
+Three special cases connect this restriction to the equity premium puzzle ({cite:t}`MehraPrescott1985`):
 
 - Risk neutrality ($\alpha = 0$): Each asset's log return equals a constant plus a serially uncorrelated error, so returns are serially uncorrelated.
 - Log utility ($\alpha = -1$): The difference $R_{it} - X_t$ is unpredictable, so returns and consumption growth share the same predictable component.
 - Risk aversion ($\alpha < 0$): The predictable component of $R_{it}$ is $-\alpha$ times the predictable component of $X_t$. 
     - A larger $|\alpha|$ amplifies the link between forecastable consumption growth and forecastable returns.
 
-Holding the consumption–return covariance structure fixed, higher relative risk aversion ($-\alpha$) scales the required compensation for consumption risk, widening the gap between risky-asset returns and the nominally risk-free return.
+For a given consumption–return covariance structure, higher relative risk aversion ($-\alpha$) widens the gap between risky-asset returns and the risk-free return.
 
 The equity premium puzzle arises because the observed spread is large but estimated $|\alpha|$ is small.
 
@@ -442,7 +443,9 @@ The sign in the second element of $\boldsymbol{\mu}$ follows directly from {eq}`
 
 The system {eq}`hs83-restricted` is recursive because $\mathbf{A}_0$ in {eq}`hs83-a0a1` is unit lower triangular: the first row determines consumption growth, and the second row pins down the return conditional on consumption growth.
 
-The innovations $\mathbf{V}_t$ are assumed to be Gaussian with density $f_V(\mathbf{v})$.  Since $\mathbf{V}_t = \mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu}$, the observables $\mathbf{Y}_t$ are a linear transformation of $\mathbf{V}_t$ with $\mathbf{Y}_t = \mathbf{A}_0^{-1}(\mathbf{V}_t + \mathbf{A}_1(L)\mathbf{Y}_{t-1} + \boldsymbol{\mu})$.
+The innovations $\mathbf{V}_t$ are assumed to be Gaussian with density $f_V(\mathbf{v})$.
+
+Since $\mathbf{V}_t = \mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu}$, the observables $\mathbf{Y}_t$ are a linear transformation of $\mathbf{V}_t$ with $\mathbf{Y}_t = \mathbf{A}_0^{-1}(\mathbf{V}_t + \mathbf{A}_1(L)\mathbf{Y}_{t-1} + \boldsymbol{\mu})$.
 
 The standard change-of-variables formula for densities gives
 
@@ -452,15 +455,13 @@ $$
 
 Because $\mathbf{A}_0$ is unit lower triangular, $\det(\mathbf{A}_0) = 1$, so the Jacobian term disappears and the log-likelihood of $\mathbf{Y}_t$ equals the log-likelihood of $\mathbf{V}_t$ evaluated at the residuals.
 
-Since the Jacobian is unity, the conditional density of $\mathbf{Y}_t$ is just the Gaussian density of $\mathbf{V}_t$ evaluated at $\mathbf{v}_t = \mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu}$.
+Since the Jacobian is unity, the conditional density of $\mathbf{Y}_t$ is the Gaussian density of $\mathbf{V}_t$ evaluated at $\mathbf{v}_t = \mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu}$.
 
 For a single observation, $\mathbf{V}_t \sim N(\mathbf{0}, \boldsymbol{\Sigma})$ has density
 
 $$
-f_V(\mathbf{v}_t) = (2\pi)^{-1} |\boldsymbol{\Sigma}|^{-1/2} \exp\!\left(-\tfrac{1}{2}\,\mathbf{v}_t^\top \boldsymbol{\Sigma}^{-1} \mathbf{v}_t\right),
+f_V(\mathbf{v}_t) = (2\pi)^{-1} |\boldsymbol{\Sigma}|^{-1/2} \exp\!\left(-\tfrac{1}{2}\,\mathbf{v}_t^\top \boldsymbol{\Sigma}^{-1} \mathbf{v}_t\right).
 $$
-
-where the leading factor is $(2\pi)^{-d/2}$ with $d = 2$.
 
 Taking logarithms gives the per-observation log-likelihood
 
@@ -484,7 +485,9 @@ The second row of {eq}`hs83-restricted` has no free lag coefficients and its int
 
 An unrestricted bivariate VAR($p$) would estimate both rows of {eq}`hs83-restricted` freely.
 
-Each row has 1 intercept plus $2p$ lag coefficients ($p$ lags $\times$ 2 variables), giving $2(1 + 2p)$ mean parameters, plus 3 free covariance parameters ($\sigma_{XX}, \sigma_{RR}, \sigma_{XR}$), for a total of $5 + 4p$.
+Each row has 1 intercept plus $2p$ lag coefficients ($p$ lags $\times$ 2 variables), giving $2(1 + 2p)$ mean parameters.
+
+Adding 3 free covariance parameters ($\sigma_{XX}, \sigma_{RR}, \sigma_{XR}$) gives a total of $5 + 4p$.
 
 The restricted system {eq}`hs83-restricted` has only $6 + 2p$ free parameters: the first row contributes $1 + 2p$ (its intercept $\mu_x$ and $2p$ lag coefficients), plus $\alpha$, $\beta$, and the 3 covariance parameters. 
 
@@ -496,7 +499,15 @@ The difference $(\smash{5 + 4p}) - (\smash{6 + 2p}) = 2p - 1$ gives the degrees 
 
 We now implement the likelihood {eq}`hs83-loglik`.
 
-The building blocks are a function to construct lagged data matrices $(\mathbf{Y}_t, \mathbf{Y}_{t-1}, \ldots, \mathbf{Y}_{t-p})$, a function to map the parameter vector into the matrices $\mathbf{A}_0$, $\mathbf{A}_1$, $\boldsymbol{\mu}$, $\boldsymbol{\Sigma}$, a function to compute the restricted-system residuals $\mathbf{V}_t = \mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L) \mathbf{Y}_{t-1} - \boldsymbol{\mu}$, and finally the Gaussian log-likelihood itself.
+The building blocks are:
+
+- a function to construct lagged data matrices $(\mathbf{Y}_t, \mathbf{Y}_{t-1}, \ldots, \mathbf{Y}_{t-p})$,
+
+- a function to map the parameter vector into the matrices $\mathbf{A}_0$, $\mathbf{A}_1$, $\boldsymbol{\mu}$, $\boldsymbol{\Sigma}$,
+
+- a function to compute the restricted-system residuals $\mathbf{V}_t = \mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L) \mathbf{Y}_{t-1} - \boldsymbol{\mu}$, and
+
+- the Gaussian log-likelihood itself.
 
 Since we are working with log-transformed data, we define a helper for the transformation below
 
@@ -611,11 +622,11 @@ def restricted_residuals(
     return resid
 ```
 
-The recursive structure also gives us a way to generate simulations given parameters. 
+The recursive structure also lets us simulate data from the model.
 
 We draw innovations $\mathbf{V}_t \sim N(\mathbf{0}, \boldsymbol{\Sigma})$ and compute $\mathbf{Y}_t = \mathbf{A}_0^{-1}(\mathbf{A}_1(L) \mathbf{Y}_{t-1} + \boldsymbol{\mu} + \mathbf{V}_t)$ forward in time.
 
-This allows us to generate data from the model and verify that MLE recovers the known parameters in a Monte Carlo exercise
+We can then generate data from the model and verify that MLE recovers the known parameters
 
 ```{code-cell} ipython3
 def simulate_restricted_var(
@@ -724,7 +735,7 @@ def log_likelihood_mle(
     return float(ll)
 ```
 
-To optimize numerically, let's wrap the log-likelihood as a minimization objective
+For numerical optimization, we wrap the log-likelihood as a minimization objective
 
 ```{code-cell} ipython3
 def negative_log_likelihood(
@@ -742,7 +753,7 @@ def negative_log_likelihood(
     return 1e20
 ```
 
-Let's set parameter bounds before generating multiple data-driven starting values for multi-start optimization.
+We set parameter bounds and generate data-driven starting values for multi-start optimization.
 
 We keep $\beta$ positive but do not force $\beta < 1$ in estimation
 
@@ -763,7 +774,7 @@ def parameter_bounds(n_lags):
     return bounds
 ```
 
-Several perturbed starting vectors help local solvers escape poor initializations.
+Perturbed starting vectors help local solvers escape poor initializations.
 
 ```{code-cell} ipython3
 def starting_values(y_t, y_lag, n_lags, n_starts=10):
@@ -965,7 +976,7 @@ def opg_standard_errors(
     return se
 ```
 
-Let's combine the pieces in a multi-start MLE estimator that returns parameters, fit criteria, and residuals
+The multi-start MLE estimator below combines these pieces and returns parameters, fit criteria, and residuals
 
 ```{code-cell} ipython3
 def estimate_mle(data, n_lags, verbose=False):
@@ -1087,10 +1098,13 @@ def run_mle_by_lag(
 
 Before applying the likelihood to empirical data, we verify that it recovers known parameters from simulated data generated by the restricted system.
 
-To avoid confusion about the different "a" objects in the simulation code:
+```{note}
+The different "a" objects in the code play distinct roles:
 
-- `a_lags` are the lag-polynomial coefficients in the consumption-growth forecasting regression, i.e., the vector $\mathbf{a}(L)$ in {eq}`hs83-x-forecast`.
-- `A0` and `A1` are just the matrices $\mathbf{A}_0$ and $\mathbf{A}_1(L)$ in {eq}`hs83-restricted`, built from $\alpha$ and `a_lags` (they are not additional free parameters).
+- `a_lags` are the lag-polynomial coefficients $\mathbf{a}(L)$ in {eq}`hs83-x-forecast`.
+
+- `A0` and `A1` are the matrices $\mathbf{A}_0$ and $\mathbf{A}_1(L)$ in {eq}`hs83-restricted`, built from $\alpha$ and `a_lags`.
+```
 
 For `n_lags = 1`, the parameter vector is
 
@@ -1162,7 +1176,7 @@ display_table(sim_results, fmt={
 })
 ```
 
-Both estimates fall within one or two standard errors of the true values, confirming that the likelihood implementation is correct.
+Both estimates fall within one or two standard errors of the true values, so the likelihood implementation is correct.
 
 The deviation of $\hat\alpha$ from the true value reflects normal sampling variation: with finite data, the cross-equation restriction that identifies $\alpha$ is estimated with noise because the predictable component of returns is small relative to total return variation.
 
@@ -1323,7 +1337,7 @@ def restricted_vs_unrestricted_lr(mle_fits, unrestricted_fits, lags=(2, 4, 6)):
 
 ## Predictability and the $R^2$ restriction
 
-A key empirical implication of the restricted system, emphasized in Section II of {cite:t}`hansen1983stochastic`, concerns the predictability of asset returns.
+Section II of {cite:t}`hansen1983stochastic` emphasizes an implication of the restricted system for return predictability.
 
 From {eq}`hs83-cond-mean` and {eq}`hs83-x-forecast`, the predictable component of the log return is
 
@@ -1348,8 +1362,6 @@ Since the predictable return is a linear function of the predictable consumption
 
 R_R^2 = \frac{\alpha^2 \operatorname{Var}[E(X_t \mid \psi_{t-1})]}{\operatorname{Var}(R_t \mid \psi_{t-1}) + \alpha^2 \operatorname{Var}[E(X_t \mid \psi_{t-1})]}.
 ```
-
-This expression has important implications.
 
 If $\alpha = 0$ (risk neutrality), then $R_R^2 = 0$ and asset returns are unpredictable.
 
@@ -1538,7 +1550,9 @@ Large $p$-values confirm that return differences are unpredictable in this simul
 
 We now apply the maximum likelihood estimator of {cite:t}`hansen1983stochastic` to the historical sample, following the format of Table 1 in {cite:t}`hansen1983stochastic`.
 
-By exploiting lognormality, the MLE is tractable when the assumption is correct; as {cite:t}`hansen1983stochastic` stress, however, $\alpha$ is estimated with relatively large standard errors in this sample, and precise inference on risk aversion cannot be expected from aggregate monthly data alone.
+Lognormality makes the MLE tractable when the assumption is correct.
+
+As {cite:t}`hansen1983stochastic` stress, however, $\alpha$ is estimated with relatively large standard errors, and precise inference on risk aversion cannot be expected from aggregate monthly data alone.
 
 ```{code-cell} ipython3
 lags = (2, 4, 6)
@@ -1635,11 +1649,11 @@ The column $\hat\alpha^2 \operatorname{Var}(\hat E[X_t \mid \psi_{t-1}])$ should
 
 The columns  $R_X^2$ and $R_R^2$ match the paper convention of reporting the values from the unrestricted VAR projections.
 
-In {cite:t}`hansen1983stochastic`, $R_R^2$ is small ($0.02$ to $0.06$) even when $R_X^2$ is nontrivial, highlighting that most stock-return variation is unpredictable.
+In {cite:t}`hansen1983stochastic`, $R_R^2$ is small ($0.02$ to $0.06$) even when $R_X^2$ is nontrivial: most stock-return variation is unpredictable.
 
-This is also consistent with our estimation.
+Our estimates show the same pattern.
 
-We now test the Euler-equation restrictions formally by comparing the restricted system to an unrestricted VAR.
+We now test the Euler-equation restrictions by comparing the restricted system to an unrestricted VAR.
 
 ```{code-cell} ipython3
 lr_hs83 = restricted_vs_unrestricted_lr(mle_fits, unres_fits, lags=lags)
@@ -1664,9 +1678,7 @@ not_rejected_lags = [int(lag) for lag in lr_hs83.index if lr_hs83.loc[lag, "p_va
 print(f"Not rejected at 5%: {not_rejected_lags if not_rejected_lags else 'none'}")
 ```
 
-We find that the LR test does not reject the model for the value-weighted return, consistent with {cite:t}`hansen1983stochastic`.
-
-This means that the Euler-equation restrictions are not strongly contradicted by the data.
+The LR test does not reject the model for the value-weighted return, consistent with {cite:t}`hansen1983stochastic`.
 
 ### Treasury bill estimation
 
@@ -1791,7 +1803,7 @@ print(f"T-bill model rejected at 5% for lags: {tbill_rejected_lags if tbill_reje
 
 {cite:t}`hansen1983stochastic` find the same qualitative pattern in their 1959--1978 sample: the Treasury bill model is rejected much more strongly than the value-weighted stock-return model.
 
-So the question is that why is the LR test not rejecting the model for stocks?
+Why does the LR test not reject the model for stocks?
 
 One reason may be limited test power when return predictability is small (as reflected in the low $R_R^2$ for stocks).
 
@@ -1799,7 +1811,7 @@ When aggregate stock returns are nearly unpredictable ($R_R^2 \approx 0.02$–$0
 
 ## Residual diagnostics
 
-We inspect the residual paths, histograms, and diagnostic statistics from the restricted model to assess whether the maintained assumptions of normality and serial independence holds.
+We inspect the residual paths, histograms, and diagnostic statistics from the restricted model to assess whether the maintained assumptions of normality and serial independence hold.
 
 ```{code-cell} ipython3
 ---
@@ -1854,35 +1866,31 @@ The residual time-series plots reveal periods of volatility clustering, while th
 
 The Jarque-Bera statistics are large for both series, rejecting the normality assumption that underlies the likelihood.
 
-The Durbin-Watson statistics are close to 2 for consumption and return residuals, suggesting that serial correlation is not a major concern.
+The Durbin-Watson statistics are close to 2 for both series, so serial correlation is not a concern.
 
-Rejection of normality is expected given the well-known fat tails in financial returns.
+Rejection of normality is unsurprising given the fat tails in financial returns.
 
-This is precisely the situation where the robustness of GMM (see {doc}`hansen_singleton_1982`) becomes valuable.
-
-We will say more about this in that lecture.
+The companion lecture {doc}`hansen_singleton_1982` discusses how GMM avoids the normality assumption.
 
 ## Connection to the equity premium puzzle
 
-The empirical findings of {cite:t}`hansen1983stochastic` contain the key ingredients of what {cite:t}`MehraPrescott1985` would formalize as the **equity premium puzzle**.
+Our estimates reproduce the pattern that {cite:t}`MehraPrescott1985` would formalize as the **equity premium puzzle**.
 
-Let us assemble the evidence:
+- *Low estimated risk aversion:* The estimated $\hat\alpha$ values (and thus risk aversion $-\hat\alpha$) from the table above are similar to those in {cite:t}`hansen1983stochastic`, who report $\hat\alpha$ between $-0.32$ and $-1.25$.
 
-- *Low estimated risk aversion:* The estimated $\hat\alpha$ values (and thus risk aversion $-\hat\alpha$) from the table above is similar to the numbers in {cite:t}`hansen1983stochastic`, who report $\hat\alpha$ between $-0.32$ and $-1.25$.
-
-- *Tiny return predictability:* The unrestricted-VAR $R_R^2$ values have a similar range with the 0.02 to 0.06 range in {cite:t}`hansen1983stochastic`, confirming that the predictable component of stock returns is small relative to the unpredictable component.
+- *Tiny return predictability:* The unrestricted-VAR $R_R^2$ values are comparable to the 0.02 to 0.06 range in {cite:t}`hansen1983stochastic` — the predictable component of stock returns is small relative to the unpredictable component.
 
 - *Strong rejection for Treasury bills:* The Euler-equation restrictions are decisively rejected for the nominally risk-free Treasury bill return, just as in Table 4 of {cite:t}`hansen1983stochastic`.
 
-One reading is that the restrictions have more bite when the return series is more forecastable (the unrestricted-VAR $R_R^2$ for bills is much larger than for stocks), a precursor to what {cite:t}`Weil_1989` would later call the **risk-free rate puzzle**.
+The restrictions have more bite when the return series is more forecastable (the unrestricted-VAR $R_R^2$ for bills is much larger than for stocks), a precursor to what {cite:t}`Weil_1989` would later call the **risk-free rate puzzle**.
 
-{cite:t}`MehraPrescott1985` crystallized these findings into a sharp quantitative statement.
+{cite:t}`MehraPrescott1985` made these findings precise.
 
-In a calibrated version of the consumption-based model with CRRA utility, they showed that for relative risk aversion $\gamma_{\text{MP}}$ in the range of 0 to 10 (the range considered "reasonable" by most economists), the model could not simultaneously match:
+In a calibrated version of the consumption-based model with CRRA utility, they showed that for relative risk aversion $\gamma_{\text{MP}}$ in the range of 0 to 10, the model could not simultaneously match:
 
 1. the average annual equity premium of about 6\%,
 2. the average annual risk-free rate of about 1\%.
 
-Matching the equity premium requires very high $\gamma_{\text{MP}}$ well outside the range considered "reasonable" by most economists, while matching the risk-free rate requires low $\gamma_{\text{MP}}$.
+Matching the equity premium requires $\gamma_{\text{MP}}$ well above 10, while matching the risk-free rate requires low $\gamma_{\text{MP}}$.
 
-This is exactly the tension visible in our estimates here: the implied risk aversion $-\hat\alpha$ is too low to generate a large equity premium.
+The same tension appears in our estimates: the implied risk aversion $-\hat\alpha$ is too low to generate a large equity premium.
