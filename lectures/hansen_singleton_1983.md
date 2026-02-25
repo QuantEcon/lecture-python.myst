@@ -29,6 +29,15 @@ kernelspec:
 :depth: 2
 ```
 
+> Evans and Honkapohja: What were the profession’s most important responses
+> to the Lucas Critique?
+> 
+> Sargent: There were two. The first and most optimistic response was complete
+> rational expectations econometrics. A rational expectations equilibrium is a
+> likelihood function. Maximize it.
+>
+> — An Interview with Thomas J. Sargent {cite}`evans2005interview`
+
 ## Overview
 
 This lecture describes how   {cite:t}`hansen1983stochastic` formulated a complete statistical model of asset returns and consumption growth, then estimated its parameters by the method of  maximum likelihood.  
