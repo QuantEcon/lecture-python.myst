@@ -20,7 +20,7 @@ kernelspec:
 </div>
 ```
 
-# Risk Aversion, Asset Returns, and the Equity Premium Puzzle
+# Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
 
 ```{index} single: Asset Pricing; MLE Estimation
 ```
