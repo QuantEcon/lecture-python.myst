@@ -112,129 +112,6 @@ def display_table(df, title=None, fmt=None):
     display(Math(latex))
 ```
 
-## Data
-
-Both this lecture and the companion lecture {doc}`hansen_singleton_1982` use the same data construction.
-
-{cite:t}`hansen1982generalized` and {cite:t}`hansen1983stochastic` use monthly data on real per capita consumption (nondurables) and stock returns from CRSP for the period 1959:2 through 1978:12.
-
-To align with the paper, we set the default sample to 1959:2--1978:12.
-
-You can pass different `start` and `end` dates to study later periods.
-
-This lecture pulls stock-market and one-month bill returns from the Ken French data library (`F-F_Research_Data_Factors`) and constructs gross nominal returns as `1 + (Mkt-RF + RF)/100` for the market and `1 + RF/100` for T-bills.
-
-`Mkt-RF` is the value-weighted return on all CRSP firms minus the risk-free rate, and `RF` is the one-month Treasury bill return (see [here](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) for details).
-
-While Hansen-Singleton use CRSP value-weighted NYSE returns, we use the Ken French market factor as the closest open-access alternative.
-
-The consumption series is constructed from consumption of nondurables (`ND`) with the nondurables deflator.
-
-The hidden cell below pulls the relevant FRED series, constructs per capita real consumption, and joins with the Ken French returns
-
-```{code-cell} ipython3
-:tags: [hide-cell]
-
-fred_codes = {
-    "population_16plus": "CNP16OV",
-    "cons_nd_real_index": "DNDGRA3M086SBEA",
-    "cons_nd_price_index": "DNDGRG3M086SBEA",
-}
-
-def to_month_end(index):
-    """
-    Convert a date index to month-end timestamps.
-    """
-    return pd.PeriodIndex(pd.DatetimeIndex(index), freq="M").to_timestamp("M")
-
-
-def load_hs_monthly_data(
-    start="1959-02-01",
-    end="1978-12-01",
-):
-    """
-    Build monthly gross real return and gross consumption-growth series.
-    """
-    start_period = pd.Timestamp(start).to_period("M")
-    end_period = pd.Timestamp(end).to_period("M")
-
-    # Pull one extra month to build the first in-sample growth rate
-    fetch_start = (start_period - 1).to_timestamp(how="start")
-    fetch_end = end_period.to_timestamp("M")
-    sample_start = start_period.to_timestamp("M")
-    sample_end = end_period.to_timestamp("M")
-
-    fred = web.DataReader(
-        list(fred_codes.values()), "fred", fetch_start, fetch_end)
-    fred = fred.rename(columns={v: k for k, v in fred_codes.items()})
-    fred.index = to_month_end(fred.index)
-    fred["cons_real_level"] = fred["cons_nd_real_index"]
-    fred["cons_price_index"] = fred["cons_nd_price_index"]
-    fred["consumption_per_capita"] = fred["cons_real_level"] \
-        / fred["population_16plus"]
-    fred["gross_cons_growth"] = (
-        fred["consumption_per_capita"] / fred["consumption_per_capita"].shift(1)
-    )
-    fred["gross_inflation_cons"] = (
-        fred["cons_price_index"] / fred["cons_price_index"].shift(1)
-    )
-
-    ff = web.DataReader(
-        "F-F_Research_Data_Factors", "famafrench", 
-        fetch_start, fetch_end)[0].copy()
-    ff.columns = [str(col).strip() for col in ff.columns]
-    if ("Mkt-RF" not in ff.columns) or ("RF" not in ff.columns):
-        raise KeyError(
-            "Fama-French data missing required columns: 'Mkt-RF' and 'RF'.")
-
-    # Mkt-RF and RF are reported in percent per month
-    ff["gross_nom_return"] = 1.0 + (ff["Mkt-RF"] + ff["RF"]) / 100.0
-    ff["gross_nom_tbill"] = 1.0 + ff["RF"] / 100.0
-    ff.index = ff.index.to_timestamp(how="end")
-    ff.index = to_month_end(ff.index)
-    market = ff[["gross_nom_return", "gross_nom_tbill"]]
-
-    out = fred.join(market, how="inner")
-    out["gross_real_return"] = out["gross_nom_return"] \
-        / out["gross_inflation_cons"]
-    out["gross_real_tbill"] = out["gross_nom_tbill"] \
-        / out["gross_inflation_cons"]
-    out = out.loc[sample_start:sample_end].dropna()
-
-    required_cols = [
-        "gross_real_return",
-        "gross_cons_growth",
-        "gross_inflation_cons",
-        "consumption_per_capita",
-        "gross_real_tbill",
-    ]
-    return out[required_cols].copy()
-
-
-def get_estimation_data(
-    start="1959-02-01",
-    end="1978-12-01",
-):
-    """
-    Return (dataframe, array) using observed data.
-    """
-    frame = load_hs_monthly_data(start=start, end=end)
-    data = frame[["gross_real_return", "gross_cons_growth"]].to_numpy()
-    return frame, data
-
-
-def get_tbill_estimation_data(
-    start="1959-02-01",
-    end="1978-12-01",
-):
-    """
-    Return (dataframe, array) using Treasury bill data.
-    """
-    frame = load_hs_monthly_data(start=start, end=end)
-    data = frame[["gross_real_tbill", "gross_cons_growth"]].to_numpy()
-    return frame, data
-```
-
 ## Euler equation
 
 Consider a single-good economy of identical consumers whose utility functions are in the CRRA form
@@ -1527,6 +1404,134 @@ Large $p$-values confirm that return differences are unpredictable in this simul
 
 We now apply the maximum likelihood estimator of {cite:t}`hansen1983stochastic` to empirical data.
 
+
+### Data
+
+Both this lecture and the companion lecture {doc}`hansen_singleton_1982` use the same data construction.
+
+{cite:t}`hansen1982generalized` and {cite:t}`hansen1983stochastic` use monthly data on real per capita consumption (nondurables) and stock returns from CRSP for the period 1959:2 through 1978:12.
+
+To align with the paper, we set the default sample to 1959:2--1978:12.
+
+You can pass different `start` and `end` dates to study later periods.
+
+This lecture pulls stock-market and one-month bill returns from the Ken French data library (`F-F_Research_Data_Factors`) and constructs gross nominal returns as `1 + (Mkt-RF + RF)/100` for the market and `1 + RF/100` for T-bills.
+
+`Mkt-RF` is the value-weighted return on all CRSP firms minus the risk-free rate, and `RF` is the one-month Treasury bill return (see [here](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) for details).
+
+While Hansen-Singleton use CRSP value-weighted NYSE returns, we use the Ken French market factor as the closest open-access alternative.
+
+The consumption series is constructed from consumption of nondurables (`ND`) with the nondurables deflator.
+
+The hidden cell below pulls the relevant FRED series, constructs per capita real consumption, and joins with the Ken French returns
+
+```{code-cell} ipython3
+:tags: [hide-cell]
+
+fred_codes = {
+    "population_16plus": "CNP16OV",
+    "cons_nd_real_index": "DNDGRA3M086SBEA",
+    "cons_nd_price_index": "DNDGRG3M086SBEA",
+}
+
+def to_month_end(index):
+    """
+    Convert a date index to month-end timestamps.
+    """
+    return pd.PeriodIndex(pd.DatetimeIndex(index), freq="M").to_timestamp("M")
+
+
+def load_hs_monthly_data(
+    start="1959-02-01",
+    end="1978-12-01",
+):
+    """
+    Build monthly gross real return and gross consumption-growth series.
+    """
+    start_period = pd.Timestamp(start).to_period("M")
+    end_period = pd.Timestamp(end).to_period("M")
+
+    # Pull one extra month to build the first in-sample growth rate
+    fetch_start = (start_period - 1).to_timestamp(how="start")
+    fetch_end = end_period.to_timestamp("M")
+    sample_start = start_period.to_timestamp("M")
+    sample_end = end_period.to_timestamp("M")
+
+    fred = web.DataReader(
+        list(fred_codes.values()), "fred", fetch_start, fetch_end)
+    fred = fred.rename(columns={v: k for k, v in fred_codes.items()})
+    fred.index = to_month_end(fred.index)
+    fred["cons_real_level"] = fred["cons_nd_real_index"]
+    fred["cons_price_index"] = fred["cons_nd_price_index"]
+    fred["consumption_per_capita"] = fred["cons_real_level"] \
+        / fred["population_16plus"]
+    fred["gross_cons_growth"] = (
+        fred["consumption_per_capita"] / fred["consumption_per_capita"].shift(1)
+    )
+    fred["gross_inflation_cons"] = (
+        fred["cons_price_index"] / fred["cons_price_index"].shift(1)
+    )
+
+    ff = web.DataReader(
+        "F-F_Research_Data_Factors", "famafrench", 
+        fetch_start, fetch_end)[0].copy()
+    ff.columns = [str(col).strip() for col in ff.columns]
+    if ("Mkt-RF" not in ff.columns) or ("RF" not in ff.columns):
+        raise KeyError(
+            "Fama-French data missing required columns: 'Mkt-RF' and 'RF'.")
+
+    # Mkt-RF and RF are reported in percent per month
+    ff["gross_nom_return"] = 1.0 + (ff["Mkt-RF"] + ff["RF"]) / 100.0
+    ff["gross_nom_tbill"] = 1.0 + ff["RF"] / 100.0
+    ff.index = ff.index.to_timestamp(how="end")
+    ff.index = to_month_end(ff.index)
+    market = ff[["gross_nom_return", "gross_nom_tbill"]]
+
+    out = fred.join(market, how="inner")
+    out["gross_real_return"] = out["gross_nom_return"] \
+        / out["gross_inflation_cons"]
+    out["gross_real_tbill"] = out["gross_nom_tbill"] \
+        / out["gross_inflation_cons"]
+    out = out.loc[sample_start:sample_end].dropna()
+
+    required_cols = [
+        "gross_real_return",
+        "gross_cons_growth",
+        "gross_inflation_cons",
+        "consumption_per_capita",
+        "gross_real_tbill",
+    ]
+    return out[required_cols].copy()
+
+
+def get_estimation_data(
+    start="1959-02-01",
+    end="1978-12-01",
+):
+    """
+    Return (dataframe, array) using observed data.
+    """
+    frame = load_hs_monthly_data(start=start, end=end)
+    data = frame[["gross_real_return", "gross_cons_growth"]].to_numpy()
+    return frame, data
+
+
+def get_tbill_estimation_data(
+    start="1959-02-01",
+    end="1978-12-01",
+):
+    """
+    Return (dataframe, array) using Treasury bill data.
+    """
+    frame = load_hs_monthly_data(start=start, end=end)
+    data = frame[["gross_real_tbill", "gross_cons_growth"]].to_numpy()
+    return frame, data
+```
+
+### MLE estimation and predictability summaries
+
+With the data in hand, we can run the MLE estimation and compute the predictability summaries.
+
 Lognormality makes the MLE tractable when the assumption is correct.
 
 As {cite:t}`hansen1983stochastic` stress, however, $\alpha$ is estimated with relatively large standard errors, and precise inference on risk aversion cannot be expected from aggregate monthly data alone.
@@ -1658,7 +1663,7 @@ We now repeat the estimation using the 1-month Treasury bill return in place of 
 
 {cite:t}`hansen1983stochastic` find that the model is strongly rejected for Treasury bills (Table 4 of their paper).
 
-Because the nominally risk-free T-bill return is much more forecastable than stock returns, the proportionality restriction has more bite, and the LR test has greater power to detect violations
+Because the nominally risk-free T-bill return is much more predictable than stock returns, the proportionality restriction has more bite, and the LR test has greater power to detect violations
 
 ```{code-cell} ipython3
 tbill_frame, tbill_data = get_tbill_estimation_data()
@@ -1852,7 +1857,7 @@ Our estimates reproduce the pattern that {cite:t}`MehraPrescott1985` would forma
 
 - *Strong rejection for Treasury bills:* The Euler-equation restrictions are decisively rejected for the nominally risk-free Treasury bill return, just as in Table 4 of {cite:t}`hansen1983stochastic`.
 
-The restrictions have more bite when the return series is more forecastable (the unrestricted-VAR $R_R^2$ for bills is much larger than for stocks), a precursor to what {cite:t}`Weil_1989` would later call the **risk-free rate puzzle**.
+The restrictions have more bite when the return series is more predictable (the unrestricted-VAR $R_R^2$ for bills is much larger than for stocks), a precursor to what {cite:t}`Weil_1989` would later call the **risk-free rate puzzle**.
 
 {cite:t}`MehraPrescott1985` made these findings precise.
 
