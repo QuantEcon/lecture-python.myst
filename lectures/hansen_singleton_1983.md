@@ -41,17 +41,15 @@ The first-order conditions generate stochastic Euler equations connecting consum
 
 Under these assumptions, the Euler equation implies a set of restrictions on a linear time-series representation of the logarithms of consumption growth and returns.
 
-Specifically, predictable movements in log returns must be proportional to predictable movements in log consumption growth, with proportionality factor $-\alpha$.
+Specifically, predictable movements in log returns are proportional to predictable movements in log consumption growth with factor $-\alpha$.
 
-This restricted representation can be estimated by maximum likelihood.
+This restricted representation can be estimated by {doc}`mle`.
 
 The following companion lecture {doc}`hansen_singleton_1982` develops a robust alternative based on GMM that does not require the lognormality assumption.
 
 The empirical findings of {cite:t}`hansen1983stochastic` foreshadow what {cite:t}`MehraPrescott1985` would formalize as the **equity premium puzzle**.
 
-Relative to {cite:t}`hansen1983stochastic`, we simplify by estimating one return at a time (market proxy or T-bill) rather than full multi-asset systems, using only monthly nondurable consumption (`ND`).
-
-We also omit the multi-stock return-difference rejection table and the just-identified (`NLAG = 0`) comparison.
+To keep lecture focused, we estimate one return at a time (market proxy or T-bill) rather than full multi-asset systems, using only monthly nondurable consumption (`ND`).
 
 In addition to what comes with Anaconda, this lecture requires `pandas-datareader`
 
@@ -118,7 +116,7 @@ def display_table(df, title=None, fmt=None):
 
 Both this lecture and the companion lecture {doc}`hansen_singleton_1982` use the same data construction.
 
-Both {cite:t}`hansen1982generalized` and {cite:t}`hansen1983stochastic` use monthly data on real per capita consumption (nondurables) and stock returns from CRSP for the period 1959:2 through 1978:12.
+{cite:t}`hansen1982generalized` and {cite:t}`hansen1983stochastic` use monthly data on real per capita consumption (nondurables) and stock returns from CRSP for the period 1959:2 through 1978:12.
 
 To align with the paper, we set the default sample to 1959:2--1978:12.
 
@@ -128,9 +126,9 @@ This lecture pulls stock-market and one-month bill returns from the Ken French d
 
 `Mkt-RF` is the value-weighted return on all CRSP firms minus the risk-free rate, and `RF` is the one-month Treasury bill return (see [here](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) for details).
 
-While Hansen-Singleton use CRSP value-weighted NYSE returns, we use the Ken French market factor as the closest open-data proxy.
+While Hansen-Singleton use CRSP value-weighted NYSE returns, we use the Ken French market factor as the closest open-access alternative.
 
-We use one consumption construction throughout: nondurables (`ND`) with the nondurables deflator.
+The consumption series is constructed from consumption of nondurables (`ND`) with the nondurables deflator.
 
 The hidden cell below pulls the relevant FRED series, constructs per capita real consumption, and joins with the Ken French returns
 
@@ -160,7 +158,7 @@ def load_hs_monthly_data(
     start_period = pd.Timestamp(start).to_period("M")
     end_period = pd.Timestamp(end).to_period("M")
 
-    # Pull one extra month to build the first in-sample growth rate.
+    # Pull one extra month to build the first in-sample growth rate
     fetch_start = (start_period - 1).to_timestamp(how="start")
     fetch_end = end_period.to_timestamp("M")
     sample_start = start_period.to_timestamp("M")
@@ -189,7 +187,7 @@ def load_hs_monthly_data(
         raise KeyError(
             "Fama-French data missing required columns: 'Mkt-RF' and 'RF'.")
 
-    # Mkt-RF and RF are reported in percent per month.
+    # Mkt-RF and RF are reported in percent per month
     ff["gross_nom_return"] = 1.0 + (ff["Mkt-RF"] + ff["RF"]) / 100.0
     ff["gross_nom_tbill"] = 1.0 + ff["RF"] / 100.0
     ff.index = ff.index.to_timestamp(how="end")
@@ -218,15 +216,11 @@ def get_estimation_data(
     end="1978-12-01",
 ):
     """
-    Return (dataframe, array, source_label) using observed data.
+    Return (dataframe, array) using observed data.
     """
     frame = load_hs_monthly_data(start=start, end=end)
     data = frame[["gross_real_return", "gross_cons_growth"]].to_numpy()
-    source = (
-        "Ken French CRSP market proxy (Mkt-RF + RF) + FRED ND consumption "
-        "(closest open-data analog to HS 1983 Table 1 inputs)"
-    )
-    return frame, data, source
+    return frame, data
 
 
 def get_tbill_estimation_data(
@@ -234,7 +228,7 @@ def get_tbill_estimation_data(
     end="1978-12-01",
 ):
     """
-    Return (dataframe, array, source_label) using Treasury bill data.
+    Return (dataframe, array) using Treasury bill data.
     """
     frame = load_hs_monthly_data(start=start, end=end)
     data = frame[["gross_real_tbill", "gross_cons_growth"]].to_numpy()
@@ -243,7 +237,7 @@ def get_tbill_estimation_data(
 
 ## Euler equation
 
-Consider a single-good economy of identical consumers whose utility functions are of the CRRA type:
+Consider a single-good economy of identical consumers whose utility functions are in the CRRA form
 
 ```{math}
 :label: hs83-crra
@@ -289,13 +283,19 @@ Differentiating $\mathcal{L}$ with respect to $c_t$ gives
 \frac{\partial \mathcal{L}}{\partial c_t} = 0 \implies \lambda_t = U'(c_t).
 ```
 
-Differentiating with respect to $w_{i,t+1}$, the holdings of asset $i$ carried from date $t$ into date $t+1$, collects two terms: $w_{i,t+1}$ appears in the date-$t$ budget constraint (cost of purchase) and in the date-$(t+1)$ constraint (cum-dividend payoff):
+Differentiating with respect to $w_{i,t+1}$, the holdings of asset $i$ carried from date $t$ into date $t+1$, collects two terms: $w_{i,t+1}$ appears in the date-$t$ budget constraint as well as in the date-$(t+1)$ constraint:
 
 ```{math}
-\frac{\partial \mathcal{L}}{\partial w_{i,t+1}} = 0 \implies \beta^t \lambda_t\, q_{it} = E_0\!\left[\beta^{t+1} \lambda_{t+1} (q_{i,t+1} + d_{i,t+1})\right].
+\frac{\partial \mathcal{L}}{\partial w_{i,t+1}} = 0 \implies E_0\!\left[\beta^t \big(- \lambda_t\, q_{it} + \beta\, \lambda_{t+1} (q_{i,t+1} + d_{i,t+1})\big)\right] = 0.
 ```
 
-Dividing both sides by $\beta^t$ and using the law of iterated expectations to condition on date-$t$ information gives
+By the law of iterated expectations, this becomes
+
+```{math}
+E_0\!\left[\beta^t\, E_t\!\left(- \lambda_t\, q_{it} + \beta\, \lambda_{t+1} (q_{i,t+1} + d_{i,t+1})\right)\right] = 0.
+```
+
+Hence,
 
 ```{math}
 \lambda_t\, q_{it} = \beta\, E_t\!\left[\lambda_{t+1}(q_{i,t+1} + d_{i,t+1})\right].
@@ -329,13 +329,11 @@ The coefficient of relative risk aversion is $-\alpha$.
 
 ## The Euler equation under lognormality
 
-Using the Euler equation {eq}`hs83-euler` derived above (see also {doc}`hansen_singleton_1982` for generalizations), we now impose the distributional assumptions of {cite:t}`hansen1983stochastic`.
+Using the Euler equation {eq}`hs83-euler` derived above, we now impose the distributional assumptions of {cite:t}`hansen1983stochastic`.
 
 Let $x_t = c_t / c_{t-1}$ denote the consumption ratio, and define $u_{it} = x_t^\alpha r_{it}$ where $r_{it}$ is the gross real return on asset $i$.
 
-The Euler equation states $E_{t-1}[u_{it}] = 1/\beta$.
-
-This is the same Euler restriction as above but reindexed to time $t-1$.
+The Euler equation {eq}`hs83-euler` states $E_{t-1}[u_{it}] = 1/\beta$.
 
 Define log variables $X_t = \log x_t$, $R_{it} = \log r_{it}$, and $U_{it} = \log u_{it}$, so that
 
@@ -345,13 +343,11 @@ Define log variables $X_t = \log x_t$, $R_{it} = \log r_{it}$, and $U_{it} = \lo
 U_{i,t}= \alpha X_{t}+R_{i,t}.
 ```
 
-{cite:t}`hansen1983stochastic` now make their key distributional assumption.
-
-The vector process $\{Y_t\} = \{(X_t, R_{1t}, \ldots, R_{nt})^\top\}$ is jointly stationary and Gaussian.
+Assume the vector process $\{Y_t\} = \{(X_t, R_{1t}, \ldots, R_{nt})^\top\}$ is jointly stationary and Gaussian.
 
 Under this assumption, $U_{it}$ conditional on the information set $\psi_{t-1}$ is normal with constant variance $\sigma_i^2$ and a conditional mean $\mu_{i,t-1}$ that is a linear function of past $Y$'s.
 
-Because $u_{it} = \exp(U_{it})$ is conditionally lognormal, we can evaluate $E_{t-1}[u_{it}]$ in closed form:
+Because $u_{it} = \exp(U_{it})$ is conditionally lognormal, 
 
 ```{math}
 :label: hs83-lognormal-identity
@@ -366,13 +362,13 @@ Now define the innovation
 ```{math}
 :label: hs83-v-it
 
-V_{i,t}=\alpha X_{t}+R_{i,t}+\log\beta+\frac{\sigma_i^2}{2},
-\quad E_{t-1}[V_{i,t}]=0,
+V_{i,t} := U_{i,t} - \mu_{i,t-1} = \alpha X_{t}+R_{i,t}+\log\beta+\frac{\sigma_i^2}{2},
+\quad i = 1, \ldots, N.
 ```
 
-where $\sigma_i^2=\operatorname{Var}_{t-1}(\alpha X_t + R_{it})$ is constant under the stationarity and Gaussian assumptions.
+Then $E_{t-1}[V_{i,t}]=0$, where $\sigma_i^2=\operatorname{Var}_{t-1}(\alpha X_t + R_{it})$ is constant under the stationarity and Gaussian assumptions.
 
-Equation {eq}`hs83-v-it` implies the conditional mean restriction
+Setting $E_{t-1}[V_{i,t}] = 0$ gives the conditional mean restriction
 
 ```{math}
 :label: hs83-cond-mean
@@ -386,16 +382,15 @@ The predictable component of each asset's log return is proportional to the pred
 
 The intercept absorbs the discount factor $\beta$ and the lognormal variance term $\sigma_i^2 / 2$.
 
-Three special cases connect this restriction to the equity premium puzzle ({cite:t}`MehraPrescott1985`):
+Let's consider three special cases to better understand the implications of {eq}`hs83-cond-mean`:
 
 - Risk neutrality ($\alpha = 0$): Each asset's log return equals a constant plus a serially uncorrelated error, so returns are serially uncorrelated.
-- Log utility ($\alpha = -1$): The difference $R_{it} - X_t$ is unpredictable, so returns and consumption growth share the same predictable component.
-- Risk aversion ($\alpha < 0$): The predictable component of $R_{it}$ is $-\alpha$ times the predictable component of $X_t$. 
-    - A larger $|\alpha|$ amplifies the link between forecastable consumption growth and forecastable returns.
+- Log utility ($\alpha = -1$): The difference $R_{it} - X_t$ has no time-varying predictable component, so returns and consumption growth share the same predictable component.
+- Risk aversion ($\alpha < 0$): The time-varying part of $E_{t-1}[R_{it}]$ equals $-\alpha$ times $E_{t-1}[X_t]$, so a larger $|\alpha|$ amplifies the sensitivity of expected returns to expected consumption growth.
 
 For a given consumption–return covariance structure, higher relative risk aversion ($-\alpha$) widens the gap between risky-asset returns and the risk-free return.
 
-The equity premium puzzle arises because the observed spread is large but estimated $|\alpha|$ is small.
+The equity premium puzzle arises because the observed spread is large but estimated $|\alpha|$ is small as we will see soon in our estimation.
 
 ## The restricted system and its likelihood
 
@@ -441,13 +436,11 @@ where $\sigma_U^2 := \operatorname{Var}_{t-1}(\alpha X_t + R_t) = \alpha^2 \sigm
 
 The sign in the second element of $\boldsymbol{\mu}$ follows directly from {eq}`hs83-cond-mean`.
 
-The system {eq}`hs83-restricted` is recursive because $\mathbf{A}_0$ in {eq}`hs83-a0a1` is unit lower triangular: the first row determines consumption growth, and the second row pins down the return conditional on consumption growth.
-
 The innovations $\mathbf{V}_t$ are assumed to be Gaussian with density $f_V(\mathbf{v})$.
 
 Since $\mathbf{V}_t = \mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu}$, the observables $\mathbf{Y}_t$ are a linear transformation of $\mathbf{V}_t$ with $\mathbf{Y}_t = \mathbf{A}_0^{-1}(\mathbf{V}_t + \mathbf{A}_1(L)\mathbf{Y}_{t-1} + \boldsymbol{\mu})$.
 
-The standard change-of-variables formula for densities gives
+The change-of-variables formula for densities gives
 
 $$
 f_Y(\mathbf{y}_t \mid \mathbf{Y}_{t-1}) = f_V(\mathbf{A}_0 \mathbf{y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu})\;\left|\det\!\left(\frac{\partial \mathbf{V}_t}{\partial \mathbf{Y}_t}\right)\right| = f_V(\mathbf{v}_t)\;|\det(\mathbf{A}_0)|.
@@ -463,13 +456,13 @@ $$
 f_V(\mathbf{v}_t) = (2\pi)^{-1} |\boldsymbol{\Sigma}|^{-1/2} \exp\!\left(-\tfrac{1}{2}\,\mathbf{v}_t^\top \boldsymbol{\Sigma}^{-1} \mathbf{v}_t\right).
 $$
 
-Taking logarithms gives the per-observation log-likelihood
+Taking logarithms gives 
 
 $$
 \ell_t(\theta) = -\log(2\pi) - \tfrac{1}{2}\log|\boldsymbol{\Sigma}| - \tfrac{1}{2}\,\mathbf{v}_t^\top \boldsymbol{\Sigma}^{-1}\,\mathbf{v}_t.
 $$
 
-Summing over $T$ observations and dropping the constant $-T\log(2\pi)$ yields the concentrated log-likelihood
+Summing over $T$ observations and dropping the constant $-T\log(2\pi)$ yields the log-likelihood function
 
 ```{math}
 :label: hs83-loglik
@@ -477,13 +470,13 @@ Summing over $T$ observations and dropping the constant $-T\log(2\pi)$ yields th
 L(\theta) = -\frac{T}{2}\log|\boldsymbol{\Sigma}| - \frac{1}{2}\sum_{t=1}^{T}(\mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu})^\top\boldsymbol{\Sigma}^{-1}(\mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu}),
 ```
 
-where $\boldsymbol{\Sigma}$ is the covariance matrix of the innovation $\mathbf{V}_t$ and $\theta$ collects all free parameters — $\alpha$, $\beta$, the covariance parameters, the first-row intercept $\mu_x$, and the first-row lag coefficients.
+where $\boldsymbol{\Sigma}$ is the covariance matrix of the innovation $\mathbf{V}_t$ and $\theta$ collects all free parameters including $\alpha$, $\beta$, the covariance parameters, the first-row intercept $\mu_x$, and the first-row lag coefficients.
 
 The restrictions imposed by {eq}`hs83-euler` enter {eq}`hs83-loglik` through the structure of $\mathbf{A}_0$, $\mathbf{A}_1(L)$, and $\boldsymbol{\mu}$ in {eq}`hs83-a0a1`.
 
 The second row of {eq}`hs83-restricted` has no free lag coefficients and its intercept is determined by $\alpha$, $\beta$, and $\boldsymbol{\Sigma}$.
 
-An unrestricted bivariate VAR($p$) would estimate both rows of {eq}`hs83-restricted` freely.
+An alternative unrestricted bivariate VAR($p$) would estimate both rows of {eq}`hs83-restricted` freely.
 
 Each row has 1 intercept plus $2p$ lag coefficients ($p$ lags $\times$ 2 variables), giving $2(1 + 2p)$ mean parameters.
 
@@ -493,11 +486,11 @@ The restricted system {eq}`hs83-restricted` has only $6 + 2p$ free parameters: t
 
 The second row adds nothing because its lag structure and intercept are pinned down by $\alpha$, $\beta$, and $\boldsymbol{\Sigma}$ via {eq}`hs83-cond-mean`.
 
-The difference $(\smash{5 + 4p}) - (\smash{6 + 2p}) = 2p - 1$ gives the degrees of freedom for the likelihood ratio tests reported by {cite:t}`hansen1983stochastic`.
+The difference $(\smash{5 + 4p}) - (\smash{6 + 2p}) = 2p - 1$ gives the degrees of freedom for the likelihood ratio tests we will perform soon.
 
 ## Likelihood implementation
 
-We now implement the likelihood {eq}`hs83-loglik`.
+Now let's implement the likelihood {eq}`hs83-loglik`.
 
 The building blocks are:
 
@@ -624,9 +617,9 @@ def restricted_residuals(
 
 The recursive structure also lets us simulate data from the model.
 
-We draw innovations $\mathbf{V}_t \sim N(\mathbf{0}, \boldsymbol{\Sigma})$ and compute $\mathbf{Y}_t = \mathbf{A}_0^{-1}(\mathbf{A}_1(L) \mathbf{Y}_{t-1} + \boldsymbol{\mu} + \mathbf{V}_t)$ forward in time.
+We can generate data from the model by drawing innovations $\mathbf{V}_t \sim N(\mathbf{0}, \boldsymbol{\Sigma})$ and compute $\mathbf{Y}_t = \mathbf{A}_0^{-1}(\mathbf{A}_1(L) \mathbf{Y}_{t-1} + \boldsymbol{\mu} + \mathbf{V}_t)$ forward in time.
 
-We can then generate data from the model and verify that MLE recovers the known parameters
+This is useful for checking the likelihood implementation through Monte Carlo
 
 ```{code-cell} ipython3
 def simulate_restricted_var(
@@ -735,7 +728,7 @@ def log_likelihood_mle(
     return float(ll)
 ```
 
-For numerical optimization, we wrap the log-likelihood as a minimization objective
+To pass this into a numerical optimizer, we wrap the log-likelihood as a minimization objective
 
 ```{code-cell} ipython3
 def negative_log_likelihood(
@@ -774,12 +767,12 @@ def parameter_bounds(n_lags):
     return bounds
 ```
 
-Perturbed starting vectors help local solvers escape poor initializations.
+We use multiple starting vectors to help local solvers escape poor initializations
 
 ```{code-cell} ipython3
 def starting_values(y_t, y_lag, n_lags, n_starts=10):
     """
-    Generate multiple data-driven starting values.
+    Generate multiple starting values.
     """
     rng = np.random.default_rng(123)
     starts = []
@@ -1060,7 +1053,7 @@ def residual_diagnostics(resid):
     return out
 ```
 
-Finally, a lag-loop wrapper runs MLE across several instrument lengths
+Finally, a lag-loop wrapper runs MLE across different lag lengths and collects results in a DataFrame 
 
 ```{code-cell} ipython3
 def run_mle_by_lag(
@@ -1098,18 +1091,10 @@ def run_mle_by_lag(
 
 Before applying the likelihood to empirical data, we verify that it recovers known parameters from simulated data generated by the restricted system.
 
-```{note}
-The different "a" objects in the code play distinct roles:
-
-- `a_lags` are the lag-polynomial coefficients $\mathbf{a}(L)$ in {eq}`hs83-x-forecast`.
-
-- `A0` and `A1` are the matrices $\mathbf{A}_0$ and $\mathbf{A}_1(L)$ in {eq}`hs83-restricted`, built from $\alpha$ and `a_lags`.
-```
-
 For `n_lags = 1`, the parameter vector is
 
 ```{math}
-\theta = (\alpha,\ \beta,\ \sigma_x,\ \sigma_r,\ \mathrm{cov}_{xr},\ \mu_x,\ a_{x,1},\ a_{r,1}),
+\theta = (\alpha,\ \beta,\ \sigma_x,\ \sigma_r,\ \sigma_{xr},\ \mu_x,\ a_{x,1},\ a_{r,1}),
 ```
 
 where the last two entries are the coefficients on $X_{t-1}$ and $R_{t-1}$ in the first-row regression for $X_t$.
@@ -1117,12 +1102,12 @@ where the last two entries are the coefficients on $X_{t-1}$ and $R_{t-1}$ in th
 More generally, for `n_lags = p` we pack `a_lags` in the order
 $[a_{x,1}, a_{r,1}, \ldots, a_{x,p}, a_{r,p}]$, so the full parameter vector has length $6 + 2p$.
 
-The covariance parameters $(\sigma_x, \sigma_r, \mathrm{cov}_{xr})$ describe the reduced-form shocks to $(X_t, R_t)$: if $\boldsymbol{\varepsilon}_t = (\varepsilon_{x,t}, \varepsilon_{r,t})^\top \sim N(0, \boldsymbol{\Sigma}_\varepsilon)$, then
-$\boldsymbol{\Sigma}_\varepsilon = \begin{bmatrix}\sigma_x^2 & \mathrm{cov}_{xr}\\ \mathrm{cov}_{xr} & \sigma_r^2\end{bmatrix}$.
+The covariance parameters $(\sigma_x, \sigma_r, \sigma_{xr})$ describe the reduced-form shocks to $(X_t, R_t)$: if $\boldsymbol{\varepsilon}_t = (\varepsilon_{x,t}, \varepsilon_{r,t})^\top \sim N(0, \boldsymbol{\Sigma}_\varepsilon)$, then
+$\boldsymbol{\Sigma}_\varepsilon = \begin{bmatrix}\sigma_x^2 & \sigma_{xr}\\ \sigma_{xr} & \sigma_r^2\end{bmatrix}$.
 
 The restricted-system innovation is $\mathbf{V}_t = \mathbf{A}_0 \boldsymbol{\varepsilon}_t$, so its covariance is $\boldsymbol{\Sigma}_V = \mathbf{A}_0 \boldsymbol{\Sigma}_\varepsilon \mathbf{A}_0^\top$, which is what enters the likelihood.
 
-In the simulation recursion we draw $\mathbf{V}_t \sim N(0, \boldsymbol{\Sigma}_V)$ and solve $\mathbf{Y}_t = \mathbf{A}_0^{-1}(\mathbf{A}_1(L)\mathbf{Y}_{t-1} + \boldsymbol{\mu} + \mathbf{V}_t)$ forward.
+In the simulation recursion we draw $\mathbf{V}_t \sim N(0, \boldsymbol{\Sigma}_V)$ and compute $\mathbf{Y}_t = \mathbf{A}_0^{-1}(\mathbf{A}_1(L)\mathbf{Y}_{t-1} + \boldsymbol{\mu} + \mathbf{V}_t)$ forward.
 
 The following table compares the true parameters to the MLE estimates from a large simulated sample
 
@@ -1176,13 +1161,12 @@ display_table(sim_results, fmt={
 })
 ```
 
-Both estimates fall within one or two standard errors of the true values, so the likelihood implementation is correct.
+The point estimates are close to the true parameters, and the t-statistics for the null hypothesis that the true value is correct are small in magnitude, consistent with sampling variation.
 
-The deviation of $\hat\alpha$ from the true value reflects normal sampling variation: with finite data, the cross-equation restriction that identifies $\alpha$ is estimated with noise because the predictable component of returns is small relative to total return variation.
 
 ## Preference parameters and likelihood ratio tests
 
-The restricted system identifies preference parameters through cross-equation restrictions.
+The restricted system embeds preference parameters through cross-equation restrictions.
 
 The parameter $\alpha$ links predictable variation in returns to predictable variation in consumption growth.
 
@@ -1192,7 +1176,7 @@ The parameter $\beta$ shifts the return-equation intercept through $-\log\beta -
 
 {cite:t}`hansen1983stochastic` test these restrictions by comparing the restricted system to an unrestricted bivariate VAR estimated on the same sample.
 
-If the Euler-equation restrictions are correct, the restricted model should fit nearly as well as the unrestricted model.
+If the restrictions imposed by the Euler-equation are correct, the restricted model should fit nearly as well as the unrestricted model.
 
 The standard test is the likelihood ratio statistic
 
@@ -1207,14 +1191,6 @@ where $\ell_u$ and $\ell_r$ are the maximized log-likelihoods of the unrestricte
 Both likelihoods must be evaluated on the same effective sample for the LR distribution to be valid.
 
 {cite:t}`hansen1983stochastic` report that for the value-weighted aggregate stock return, the $\chi^2$ test statistics provide little evidence against the model.
-
-```{note}
-The numbers in parentheses in Tables 1, 3--5 of {cite:t}`hansen1983stochastic` are $\chi^2$ CDF values (left-tail), *not* right-tail p-values. 
-
-For example, a reported "probability value" of 0.893 corresponds to a right-tail p-value of $1 - 0.893 = 0.107$. 
-
-This convention is consistent with their statement that for Treasury bills "the marginal significance levels are essentially zero": CDF values near 1 imply right-tail p-values near 0.
-```
 
 In the tables below we report both `chi2.cdf(LR, df)` (corresponding to what HS report in parentheses) and the usual right-tail `p(LR) = 1 - chi2.cdf`
 
@@ -1272,7 +1248,8 @@ def estimate_unrestricted_var(data, n_lags):
         }
 
     d = y_t.shape[1]
-    loglike = float(-0.5 * n_obs * d * np.log(2.0 * np.pi) - 0.5 * n_obs * log_det - 0.5 * quad_form)
+    loglike = float(-0.5 * n_obs * d * np.log(2.0 * np.pi) 
+            - 0.5 * n_obs * log_det - 0.5 * quad_form)
 
     return {
         "coef": coef,
@@ -1544,11 +1521,11 @@ display_table(spread_pretty, fmt={
 })
 ```
 
-Large $p$-values confirm that return differences are unpredictable in this simulation, exactly as the model predicts.
+Large $p$-values confirm that return differences are unpredictable in this simulation, exactly as the model predicts when $\alpha = -1$.
 
 ## Empirical MLE estimation
 
-We now apply the maximum likelihood estimator of {cite:t}`hansen1983stochastic` to the historical sample, following the format of Table 1 in {cite:t}`hansen1983stochastic`.
+We now apply the maximum likelihood estimator of {cite:t}`hansen1983stochastic` to empirical data.
 
 Lognormality makes the MLE tractable when the assumption is correct.
 
@@ -1557,7 +1534,7 @@ As {cite:t}`hansen1983stochastic` stress, however, $\alpha$ is estimated with re
 ```{code-cell} ipython3
 lags = (2, 4, 6)
 
-emp_frame, emp_data, source = get_estimation_data()
+emp_frame, emp_data = get_estimation_data()
 ```
 
 The following table reports the restricted MLE estimates of $\hat\alpha$ and $\hat\beta$ by lag length
@@ -1598,11 +1575,6 @@ unres_table, unres_fits = run_unrestricted_var_by_lag(
 
 ```{code-cell} ipython3
 :tags: [hide-input]
-
-unres_pretty = unres_table.rename(columns={"loglike": "logL", "n_obs": "T"})
-display_table(unres_pretty, fmt={
-    "logL": "{:.1f}", "T": "{:.0f}",
-})
 
 pred_rows = []
 for lag in lags:
@@ -1682,7 +1654,7 @@ The LR test does not reject the model for the value-weighted return, consistent 
 
 ### Treasury bill estimation
 
-We now repeat the estimation using the 1-month Treasury bill return (nominally risk-free, deflated by the consumption deflator to form a real return series) in place of the stock return.
+We now repeat the estimation using the 1-month Treasury bill return in place of the stock return.
 
 {cite:t}`hansen1983stochastic` find that the model is strongly rejected for Treasury bills (Table 4 of their paper).
 
@@ -1805,13 +1777,13 @@ print(f"T-bill model rejected at 5% for lags: {tbill_rejected_lags if tbill_reje
 
 Why does the LR test not reject the model for stocks?
 
-One reason may be limited test power when return predictability is small (as reflected in the low $R_R^2$ for stocks).
+As we hinted earlier, one reason may be limited test power when return predictability is small (as reflected in the low $R_R^2$ for stocks).
 
 When aggregate stock returns are nearly unpredictable ($R_R^2 \approx 0.02$–$0.06$ in Table 1 of {cite:t}`hansen1983stochastic`), there is almost no predictable variation to constrain.
 
 ## Residual diagnostics
 
-We inspect the residual paths, histograms, and diagnostic statistics from the restricted model to assess whether the maintained assumptions of normality and serial independence hold.
+As a final check, let's inspect the residual paths, histograms, and diagnostic statistics from the restricted model to assess whether the normality and serial independence assumptions hold.
 
 ```{code-cell} ipython3
 ---
@@ -1862,15 +1834,13 @@ if diag_fit["converged"] and resid is not None:
     })
 ```
 
-The residual time-series plots reveal periods of volatility clustering, while the histograms show departures from the Gaussian bell curve.
+The residual time-series plots reveal periods of volatility clustering, while the histograms show departures from bell curve with fatter tails.
 
 The Jarque-Bera statistics are large for both series, rejecting the normality assumption that underlies the likelihood.
 
 The Durbin-Watson statistics are close to 2 for both series, so serial correlation is not a concern.
 
-Rejection of normality is unsurprising given the fat tails in financial returns.
-
-The companion lecture {doc}`hansen_singleton_1982` discusses how GMM avoids the normality assumption.
+This motivates the companion lecture {doc}`hansen_singleton_1982` where we discuss how GMM avoids the normality assumption.
 
 ## Connection to the equity premium puzzle
 
