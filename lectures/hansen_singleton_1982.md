@@ -1176,8 +1176,14 @@ They are very close to our estimates.
 
 ## Summary
 
-The GMM estimator requires only the orthogonality conditions implied by the Euler equation and a set of predetermined instruments.
+The GMM estimator requires only the orthogonality conditions implied by the Euler equation and a set of conditioning variables.
 
 It does not require assumptions about the joint distribution of consumption and returns, the production technology, or any other part of the economic environment beyond the representative agent's first-order conditions.
 
-This robustness comes at the cost of efficiency: GMM does not exploit information about the distribution of the data that could sharpen inference.
+So GMM is provides a way to estimate some objects of interest while not estimating all of the parameters that {cite:t}`hansen1983stochastic` estimated in their loglinear model of consumption growth and returns.  
+
+  * If the complete model of {cite:t}`hansen1983stochastic` is correctly specified, then their maximum likelihood estimators promise to be more efficient that are the GMM estimators described in this lecture. 
+  * The theme of estimating **something** while not estimating **everything** runs through much of Lars Peter Hansen's work. See {cite:t}`hansen2014nobel`
+
+
+
