@@ -1183,7 +1183,7 @@ It does not require assumptions about the joint distribution of consumption and 
 So GMM is provides a way to estimate some objects of interest while not estimating all of the parameters that {cite:t}`hansen1983stochastic` estimated in their loglinear model of consumption growth and returns.  
 
   * If the complete model of {cite:t}`hansen1983stochastic` is correctly specified, then their maximum likelihood estimators promise to be more efficient that are the GMM estimators described in this lecture. 
-  * The theme of estimating **something** while not estimating **everything** runs through much of Lars Peter Hansen's work. See {cite:t}`hansen2014nobel`
+  * The theme of estimating *something* while not estimating *everything* runs through much of Lars Peter Hansen's work. See {cite:t}`hansen2014nobel`
 
 
 
