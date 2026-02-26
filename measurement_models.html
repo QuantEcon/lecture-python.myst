@@ -282,7 +282,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Feb 17, 2026
+                            Last changed: Feb 26, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -293,10 +293,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/bb3310a3e" class="changelog-hash">bb3310a3e</a>
+                                
+                                <span class="changelog-author">Humphrey Yang</span>
+                                <span class="changelog-time">17 minutes ago</span>
+                                <span class="changelog-message">Add two lectures on Hansen and Singleton [1983] and Hansen and Singleton [1982] (#817)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/969c06cce" class="changelog-hash">969c06cce</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">6 days ago</span>
+                                <span class="changelog-time">1 week ago</span>
                                 <span class="changelog-message">Adding lectures on Chow [1968], Chow and Levitan [1969], and Sargent [1989] (#803)</span>
                             </li>
                             
@@ -357,7 +366,7 @@ probability law for the measured data.</p>
 <p>The model chosen for the data collection agency is an aspect of an
 econometric specification that can make big differences in inferences
 about the economic structure.</p>
-<p><span id="id1">Sargent [<a class="reference internal" href="zreferences.html#id232" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> describes two alternative models of data generation
+<p><span id="id1">Sargent [<a class="reference internal" href="zreferences.html#id234" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> describes two alternative models of data generation
 in a <a class="reference internal" href="perm_income.html"><span class="doc">permanent income</span></a> economy in which the
 investment accelerator, the mechanism studied in these two quantecon lectures –  <a class="reference internal" href="samuelson.html"><span class="doc">Samuelson Multiplier-Accelerator</span></a> and
 <a class="reference internal" href="chow_business_cycles.html"><span class="doc">The Acceleration Principle and the Nature of Business Cycles</span></a> –  shapes  business cycle fluctuations.</p>
@@ -369,7 +378,7 @@ a classical errors-in-variables model, then filters the data,  and reports the f
 </ul>
 <p>Although the two models have the same “deep parameters,” they produce
 quite different sets of restrictions on the data.</p>
-<p>In this lecture we follow <span id="id2">Sargent [<a class="reference internal" href="zreferences.html#id232" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> and study how these
+<p>In this lecture we follow <span id="id2">Sargent [<a class="reference internal" href="zreferences.html#id234" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> and study how these
 alternative measurement schemes affect  empirical implications.</p>
 <p>We start with imports and helper functions to be used throughout this lecture to generate LaTeX output</p>
 <div class="cell docutils container">
@@ -468,7 +477,7 @@ models.</p>
 <span class="eqno">(43.5)<a class="headerlink" href="#equation-net-income" title="Link to this equation">#</a></span>\[y_{nt} = (f-1)k_t + \theta_t.\]</div>
 <p>Note that <a class="reference internal" href="#equation-tech-constraint">(43.2)</a> and <a class="reference internal" href="#equation-net-income">(43.5)</a> imply
 <span class="math notranslate nohighlight">\((k_{t+1} - k_t) + c_t = y_{nt}\)</span>.</p>
-<p>To obtain both a version of <span id="id3">Friedman [<a class="reference internal" href="zreferences.html#id185" title="M. Friedman. A Theory of the Consumption Function. Princeton University Press, 1956.">1956</a>]</span>’s geometric
+<p>To obtain both a version of <span id="id3">Friedman [<a class="reference internal" href="zreferences.html#id187" title="M. Friedman. A Theory of the Consumption Function. Princeton University Press, 1956.">1956</a>]</span>’s geometric
 distributed lag consumption function and a distributed lag
 accelerator, we impose two assumptions:</p>
 <ol class="arabic simple">
@@ -501,11 +510,11 @@ with the decay coefficient <span class="math notranslate nohighlight">\(\beta\)<
 <p>Equation <a class="reference internal" href="#equation-mm-accelerator">(43.8)</a> is the distributed lag accelerator:
 investment is a geometric distributed lag of the first difference
 of income.</p>
-<p>This is the same mechanism that <span id="id4">Chow [<a class="reference internal" href="zreferences.html#id294" title="Gregory C. Chow. The acceleration principle and the nature of business cycles. The Quarterly Journal of Economics, 82(3):403–418, aug 1968.">1968</a>]</span> documented
+<p>This is the same mechanism that <span id="id4">Chow [<a class="reference internal" href="zreferences.html#id303" title="Gregory C. Chow. The acceleration principle and the nature of business cycles. The Quarterly Journal of Economics, 82(3):403–418, aug 1968.">1968</a>]</span> documented
 empirically (see <a class="reference internal" href="chow_business_cycles.html"><span class="doc">The Acceleration Principle and the Nature of Business Cycles</span></a>).</p>
 <p>Equation <a class="reference internal" href="#equation-income-process">(43.9)</a> states that the first difference of disposable income is a
 first-order moving average process with innovation equal to the innovation of the endowment shock <span class="math notranslate nohighlight">\(\theta_t\)</span>.</p>
-<p>As <span id="id5">Muth [<a class="reference internal" href="zreferences.html#id143" title="John F Muth. Optimal properties of exponentially weighted forecasts. Journal of the american statistical association, 55(290):299–306, 1960.">1960</a>]</span> showed, such a process is optimally forecast
+<p>As <span id="id5">Muth [<a class="reference internal" href="zreferences.html#id145" title="John F Muth. Optimal properties of exponentially weighted forecasts. Journal of the american statistical association, 55(290):299–306, 1960.">1960</a>]</span> showed, such a process is optimally forecast
 via a geometric distributed lag or “adaptive expectations” scheme.</p>
 </section>
 <section id="the-accelerator-puzzle">
@@ -517,7 +526,7 @@ the single shock <span class="math notranslate nohighlight">\(\theta_t\)</span>,
 same white noise, so no variable Granger-causes any other.</p>
 <p>Empirically, however, measures of output Granger-cause investment
 but not vice versa.</p>
-<p><span id="id6">Sargent [<a class="reference internal" href="zreferences.html#id232" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> shows that measurement error can resolve
+<p><span id="id6">Sargent [<a class="reference internal" href="zreferences.html#id234" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> shows that measurement error can resolve
 this puzzle.</p>
 <p>To illustrate, suppose first that output <span class="math notranslate nohighlight">\(y_{nt}\)</span> is measured
 perfectly while consumption and capital are each polluted by
@@ -682,7 +691,7 @@ errors.</p>
 <p>The innovation variances are smallest for consumption
 (<span class="math notranslate nohighlight">\(\sigma_\eta = 0.035\)</span>), next for income (<span class="math notranslate nohighlight">\(\sigma_\eta = 0.05\)</span>),
 and largest for investment (<span class="math notranslate nohighlight">\(\sigma_\eta = 0.65\)</span>).</p>
-<p>As in <span id="id8">Sargent [<a class="reference internal" href="zreferences.html#id232" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> and our discussion above, what matters for Granger-causality
+<p>As in <span id="id8">Sargent [<a class="reference internal" href="zreferences.html#id234" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> and our discussion above, what matters for Granger-causality
 asymmetries is the overall measurement quality in the full system:
 output is relatively well measured while investment is relatively
 poorly measured.</p>
@@ -766,7 +775,7 @@ innovation covariance <span class="math notranslate nohighlight">\(V\)</span></p
 </div>
 </div>
 <p>With structural matrices and tools we need in place, we now follow
-<span id="id9">Sargent [<a class="reference internal" href="zreferences.html#id232" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span>’s two reporting schemes in sequence.</p>
+<span id="id9">Sargent [<a class="reference internal" href="zreferences.html#id234" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span>’s two reporting schemes in sequence.</p>
 </section>
 <section id="a-classical-model-of-measurements-initially-collected-by-an-agency">
 <h2><a class="toc-backref" href="#id23" role="doc-backlink"><span class="section-number">43.4. </span>A classical model of measurements initially collected by an agency</a><a class="headerlink" href="#a-classical-model-of-measurements-initially-collected-by-an-agency" title="Link to this heading">#</a></h2>
@@ -801,9 +810,9 @@ the standard Kalman filter with white-noise measurement error
 cannot be applied directly to <span class="math notranslate nohighlight">\(\bar z_t = C x_t + v_t\)</span>.</p>
 <p>An alternative is to augment the state vector with the
 measurement-error AR components (see Appendix B of
-<span id="id10">Sargent [<a class="reference internal" href="zreferences.html#id232" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span>).</p>
+<span id="id10">Sargent [<a class="reference internal" href="zreferences.html#id234" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span>).</p>
 <p>Here we take the quasi-differencing route described in
-<span id="id11">Sargent [<a class="reference internal" href="zreferences.html#id232" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span>, which reduces the
+<span id="id11">Sargent [<a class="reference internal" href="zreferences.html#id234" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span>, which reduces the
 system to one with serially uncorrelated observation noise.</p>
 <p>Define</p>
 <div class="math notranslate nohighlight" id="equation-model1-qd">
@@ -1533,7 +1542,7 @@ the appearance of multiple independent sources of variation in Model 1.</p>
 </div>
 </div>
 </div>
-<p>As <span id="id15">Sargent [<a class="reference internal" href="zreferences.html#id232" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> emphasizes, the two models of measurement
+<p>As <span id="id15">Sargent [<a class="reference internal" href="zreferences.html#id234" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> emphasizes, the two models of measurement
 produce quite different inferences about the economy’s dynamics despite
 sharing identical underlying parameters.</p>
 </section>
@@ -1881,7 +1890,7 @@ both measured and filtered data</p>
 </section>
 <section id="summary">
 <h2><a class="toc-backref" href="#id26" role="doc-backlink"><span class="section-number">43.7. </span>Summary</a><a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
-<p><span id="id17">Sargent [<a class="reference internal" href="zreferences.html#id232" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> shows how measurement error alters an
+<p><span id="id17">Sargent [<a class="reference internal" href="zreferences.html#id234" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> shows how measurement error alters an
 econometrician’s view of a permanent income economy driven by
 the investment accelerator.</p>
 <p>The Wold representations and variance decompositions of Model 1
@@ -1891,7 +1900,7 @@ substantially, even though the underlying economy is the same.</p>
 drive which variables.</p>
 <p>Model 1 reproduces the <strong>Granger causality</strong> pattern documented in
 the empirical accelerator literature: income appears to Granger-cause
-consumption and investment, a result <span id="id18">Sargent [<a class="reference internal" href="zreferences.html#id232" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> attributes
+consumption and investment, a result <span id="id18">Sargent [<a class="reference internal" href="zreferences.html#id234" title="Thomas J Sargent. Two models of measurements and the investment accelerator. Journal of Political Economy, 97(2):251–287, 1989.">1989</a>]</span> attributes
 to measurement error and signal extraction in raw reported data.</p>
 <p>Model 2, working with filtered data, attributes nearly all variance
 to the single structural shock <span class="math notranslate nohighlight">\(\theta_t\)</span> and <em>cannot</em> reproduce
@@ -2466,23 +2475,33 @@ restores it.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="hansen_singleton_1983.html">
+   85. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hansen_singleton_1982.html">
+   86. Estimating Euler Equations by Generalized Method of Moments
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="doubts_or_variability.html">
-   85. Doubts or Variability?
+   87. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   86. Competitive Equilibria with Arrow Securities
+   88. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   87. Heterogeneous Beliefs and Bubbles
+   89. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   88. Speculative Behavior with Bayesian Learning
+   90. Speculative Behavior with Bayesian Learning
   </a>
  </li>
 </ul>
@@ -2494,17 +2513,17 @@ restores it.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   89. Pandas for Panel Data
+   91. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   90. Linear Regression in Python
+   92. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   91. Maximum Likelihood Estimation
+   93. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2516,12 +2535,12 @@ restores it.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   92. First-Price and Second-Price Auctions
+   94. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   93. Multiple Good Allocation Mechanisms
+   95. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2533,17 +2552,17 @@ restores it.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   94. Troubleshooting
+   96. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   95. References
+   97. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   96. Execution Statistics
+   98. Execution Statistics
   </a>
  </li>
 </ul>

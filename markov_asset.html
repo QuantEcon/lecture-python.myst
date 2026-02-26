@@ -131,7 +131,7 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="85. Doubts or Variability?" href="doubts_or_variability.html" />
+    <link rel="next" title="85. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns" href="hansen_singleton_1983.html" />
     <link rel="prev" title="83. Two Computations to Fund Social Security" href="two_computation.html" />
 
 <!-- Normal Meta Tags -->
@@ -311,7 +311,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a73ba0f7d" class="changelog-hash">a73ba0f7d</a>
                                 
                                 <span class="changelog-author">Copilot</span>
-                                <span class="changelog-time">5 months ago</span>
+                                <span class="changelog-time">6 months ago</span>
                                 <span class="changelog-message">[style] Remove local figsize adjustments from all lecture files (#574)</span>
                             </li>
                             
@@ -505,8 +505,8 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <section id="pricing-with-random-discount-factor">
 <h3><span class="section-number">84.2.2. </span>Pricing with Random Discount Factor<a class="headerlink" href="#pricing-with-random-discount-factor" title="Link to this heading">#</a></h3>
 <p id="index-6">What happens if for some reason traders discount payouts differently depending on the state of the world?</p>
-<p>Michael Harrison and David Kreps <span id="id1">[<a class="reference internal" href="zreferences.html#id147" title="J. Michael Harrison and David M. Kreps. Martingales and arbitrage in multiperiod securities markets. Journal of Economic Theory, 20(3):381-408, June 1979.">Harrison and Kreps, 1979</a>]</span> and Lars Peter Hansen
-and Scott Richard <span id="id2">[<a class="reference internal" href="zreferences.html#id148" title="Lars Peter Hansen and Scott F Richard. The role of conditioning information in deducing testable restrictions implied by dynamc asset pricing models. Econometrica, 55(3):587-613, May 1987.">Hansen and Richard, 1987</a>]</span> showed that in quite general
+<p>Michael Harrison and David Kreps <span id="id1">[<a class="reference internal" href="zreferences.html#id149" title="J. Michael Harrison and David M. Kreps. Martingales and arbitrage in multiperiod securities markets. Journal of Economic Theory, 20(3):381-408, June 1979.">Harrison and Kreps, 1979</a>]</span> and Lars Peter Hansen
+and Scott Richard <span id="id2">[<a class="reference internal" href="zreferences.html#id150" title="Lars Peter Hansen and Scott F Richard. The role of conditioning information in deducing testable restrictions implied by dynamc asset pricing models. Econometrica, 55(3):587-613, May 1987.">Hansen and Richard, 1987</a>]</span> showed that in quite general
 settings the price of an ex-dividend asset obeys</p>
 <div class="math notranslate nohighlight" id="equation-lteeqs0">
 <span class="eqno">(84.2)<a class="headerlink" href="#equation-lteeqs0" title="Link to this equation">#</a></span>\[p_t = {\mathbb E}_t \left[ m_{t+1}  ( d_{t+1} + p_{t+1} ) \right]\]</div>
@@ -755,7 +755,7 @@ current states suggest high future states.</p>
 </ul>
 <section id="pricing-a-lucas-tree">
 <h3><span class="section-number">84.4.1. </span>Pricing a Lucas Tree<a class="headerlink" href="#pricing-a-lucas-tree" title="Link to this heading">#</a></h3>
-<p id="index-7">Let’s start with a version of the celebrated asset pricing model of Robert E. Lucas, Jr. <span id="id3">[<a class="reference internal" href="zreferences.html#id208" title="Robert E Lucas, Jr. Asset prices in an exchange economy. Econometrica, 46(6):1429–1445, 1978.">Lucas, 1978</a>]</span>.</p>
+<p id="index-7">Let’s start with a version of the celebrated asset pricing model of Robert E. Lucas, Jr. <span id="id3">[<a class="reference internal" href="zreferences.html#id210" title="Robert E Lucas, Jr. Asset prices in an exchange economy. Econometrica, 46(6):1429–1445, 1978.">Lucas, 1978</a>]</span>.</p>
 <p>Lucas considered an abstract pure exchange economy with these features:</p>
 <ul class="simple">
 <li><p>a single non-storable consumption good</p></li>
@@ -769,14 +769,14 @@ current states suggest high future states.</p>
 </ul>
 </li>
 </ul>
-<p>As in <span id="id4">[<a class="reference internal" href="zreferences.html#id208" title="Robert E Lucas, Jr. Asset prices in an exchange economy. Econometrica, 46(6):1429–1445, 1978.">Lucas, 1978</a>]</span>, we suppose that the stochastic discount factor takes the form</p>
+<p>As in <span id="id4">[<a class="reference internal" href="zreferences.html#id210" title="Robert E Lucas, Jr. Asset prices in an exchange economy. Econometrica, 46(6):1429–1445, 1978.">Lucas, 1978</a>]</span>, we suppose that the stochastic discount factor takes the form</p>
 <div class="math notranslate nohighlight" id="equation-lucsdf">
 <span class="eqno">(84.11)<a class="headerlink" href="#equation-lucsdf" title="Link to this equation">#</a></span>\[m_{t+1} = \beta \frac{u'(c_{t+1})}{u'(c_t)}\]</div>
 <p>where <span class="math notranslate nohighlight">\(u\)</span> is a concave utility function and <span class="math notranslate nohighlight">\(c_t\)</span> is time <span class="math notranslate nohighlight">\(t\)</span> consumption of a representative consumer.</p>
 <p>(A derivation of this expression is given in a <a class="reference external" href="https://python-advanced.quantecon.org/lucas_model.html">later lecture</a>)</p>
 <p>Assume the existence of an endowment that follows growth process <a class="reference internal" href="#equation-mass-fmce">(84.7)</a>.</p>
 <p>The asset being priced is a claim on the endowment process, i.e., the <strong>Lucas tree</strong> described above.</p>
-<p>Following <span id="id5">[<a class="reference internal" href="zreferences.html#id208" title="Robert E Lucas, Jr. Asset prices in an exchange economy. Econometrica, 46(6):1429–1445, 1978.">Lucas, 1978</a>]</span>, we suppose  that in equilibrium the representative consumer’s  consumption equals the aggregate endowment, so that <span class="math notranslate nohighlight">\(d_t = c_t\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Following <span id="id5">[<a class="reference internal" href="zreferences.html#id210" title="Robert E Lucas, Jr. Asset prices in an exchange economy. Econometrica, 46(6):1429–1445, 1978.">Lucas, 1978</a>]</span>, we suppose  that in equilibrium the representative consumer’s  consumption equals the aggregate endowment, so that <span class="math notranslate nohighlight">\(d_t = c_t\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>For utility, we’ll assume the <strong>constant relative risk aversion</strong> (CRRA)
 specification</p>
 <div class="math notranslate nohighlight" id="equation-eqcrra">
@@ -1963,23 +1963,33 @@ the option can be exercised.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="hansen_singleton_1983.html">
+   85. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hansen_singleton_1982.html">
+   86. Estimating Euler Equations by Generalized Method of Moments
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="doubts_or_variability.html">
-   85. Doubts or Variability?
+   87. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   86. Competitive Equilibria with Arrow Securities
+   88. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   87. Heterogeneous Beliefs and Bubbles
+   89. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   88. Speculative Behavior with Bayesian Learning
+   90. Speculative Behavior with Bayesian Learning
   </a>
  </li>
 </ul>
@@ -1991,17 +2001,17 @@ the option can be exercised.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   89. Pandas for Panel Data
+   91. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   90. Linear Regression in Python
+   92. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   91. Maximum Likelihood Estimation
+   93. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2013,12 +2023,12 @@ the option can be exercised.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   92. First-Price and Second-Price Auctions
+   94. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   93. Multiple Good Allocation Mechanisms
+   95. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2030,17 +2040,17 @@ the option can be exercised.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   94. Troubleshooting
+   96. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   95. References
+   97. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   96. Execution Statistics
+   98. Execution Statistics
   </a>
  </li>
 </ul>
