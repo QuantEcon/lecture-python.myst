@@ -110,6 +110,7 @@ def display_table(df, title=None, fmt=None):
     idx_header = r"\text{" + df.index.name + "}" if df.index.name else ""
     columns = " & ".join(
         [idx_header] + [r"\text{" + c + "}" if "\\" not in c
+         and "^" not in c and "_" not in c
          else c for c in formatted.columns])
     rows = r" \\".join(
         [" & ".join([str(idx)] + [str(v) for v in row])
@@ -1620,8 +1621,8 @@ pred_pretty = pred_df[
     "var_pred_x": r"\mathrm{Var}(\hat E[X_t\mid\psi_{t-1}])",
     "var_pred_r": r"\mathrm{Var}(\hat E[R_t\mid\psi_{t-1}])",
     "alpha2_var_pred_x": r"\hat{\alpha}^2\,\mathrm{Var}(\hat E[X_t\mid\psi_{t-1}])",
-    "r2_x_unrestricted": r"$R_X^2$",
-    "r2_r_unrestricted": r"$R_R^2$",
+    "r2_x_unrestricted": r"R_X^2",
+    "r2_r_unrestricted": r"R_R^2",
     "T": "T",
 })
 display_table(pred_pretty, fmt={
@@ -1629,8 +1630,8 @@ display_table(pred_pretty, fmt={
     r"\mathrm{Var}(\hat E[X_t\mid\psi_{t-1}])": "{:.6f}",
     r"\mathrm{Var}(\hat E[R_t\mid\psi_{t-1}])": "{:.6f}",
     r"\hat{\alpha}^2\,\mathrm{Var}(\hat E[X_t\mid\psi_{t-1}])": "{:.6f}",
-    r"$R_X^2$": "{:.4f}",
-    r"$R_R^2$": "{:.4f}",
+    r"R_X^2": "{:.4f}",
+    r"R_R^2": "{:.4f}",
     "T": "{:.0f}",
 })
 ```
@@ -1749,8 +1750,8 @@ tbill_pred_pretty = tbill_pred_df[
     "var_pred_x": r"\mathrm{Var}(\hat E[X_t\mid\psi_{t-1}])",
     "var_pred_r": r"\mathrm{Var}(\hat E[R_t\mid\psi_{t-1}])",
     "alpha2_var_pred_x": r"\hat{\alpha}^2\,\mathrm{Var}(\hat E[X_t\mid\psi_{t-1}])",
-    "r2_x_unrestricted": r"$R_X^2$",
-    "r2_r_unrestricted": r"$R_R^2$",
+    "r2_x_unrestricted": r"R_X^2",
+    "r2_r_unrestricted": r"R_R^2",
     "T": "T",
 })
 display_table(tbill_pred_pretty, fmt={
@@ -1758,8 +1759,8 @@ display_table(tbill_pred_pretty, fmt={
     r"\mathrm{Var}(\hat E[X_t\mid\psi_{t-1}])": "{:.6f}",
     r"\mathrm{Var}(\hat E[R_t\mid\psi_{t-1}])": "{:.6f}",
     r"\hat{\alpha}^2\,\mathrm{Var}(\hat E[X_t\mid\psi_{t-1}])": "{:.6f}",
-    r"$R_X^2$": "{:.4f}",
-    r"$R_R^2$": "{:.4f}",
+    r"R_X^2": "{:.4f}",
+    r"R_R^2": "{:.4f}",
     "T": "{:.0f}",
 })
 ```
