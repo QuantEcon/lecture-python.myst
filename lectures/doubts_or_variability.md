@@ -35,14 +35,14 @@ kernelspec:
 
 ## Overview
 
-This lecture describes machinery that empirical  macro-finance economists have used to evaluate the fits of structural statistical models that link asset prices to aggregate consumption.
+This lecture describes machinery that empirical macro-finance economists have used to evaluate the fits of structural statistical models that link asset prices to aggregate consumption.
 
 The Lucas asset pricing model {cite}`Lucas1978` functions as a benchmark that motivates much of this work.
 
 ```{note}
-New Keynesians call the consumption Euler equation for a one-period risk-free bond in the Lucas {cite}`Lucas1978` model the **IS curve**.  
+New Keynesians call the consumption Euler equation for a one-period risk-free bond in the Lucas {cite}`Lucas1978` model the **IS curve**.
 
-The distinguished **old Keynesian** disapproved of that name because the object it described was so remote from the investment function that was an important component of the IS curve of John R. Hicks {cite}`hicks1937mr` that Tobin used. 
+The distinguished **old Keynesian** disapproved of that name because the object it described was so remote from the investment function that was an important component of the IS curve of John R. Hicks {cite}`hicks1937mr` that Tobin used.
 
 See {cite}`tobin1992old`.
 ```
@@ -59,13 +59,13 @@ The Hansen-Singleton papers systematically organized evidence about directions i
 ```{note}
 {cite:t}`MehraPrescott1985` is widely credited for naming the **equity premium** puzzle.
 
-{cite:t}`Weil_1989` is  widely credited for naming the **risk-free rate** puzzle.
+{cite:t}`Weil_1989` is widely credited for naming the **risk-free rate** puzzle.
 
 ```
 
 These *puzzles* are just ways of summarizing particular dimensions along which a particular asset pricing model -- such as Lucas's -- fails empirically.
 
-They are thus special cases of specification failures detected by statistical diagnostics constructed earlier by {cite}`hansen1983stochastic` and {cite}`hansen1982generalized`.
+They are thus special cases of specification failures detected by statistical diagnostics constructed earlier by {cite:t}`hansen1983stochastic` and {cite:t}`hansen1982generalized`.
 
 Macro-finance models that purport to resolve such puzzles all do so by changing features of the economic environment assumed by Lucas {cite}`Lucas1978`.
 
@@ -75,39 +75,39 @@ Hansen-Jagannathan bounds are a key tool for evaluating how well such re-specifi
 correcting those misfits of Lucas's 1978 model.   
 
 
-This lecture begins with a description of the {cite}`Hansen_Jagannathan_1991` machinery.
+This lecture begins with a description of the {cite:t}`Hansen_Jagannathan_1991` machinery.
 
 After doing that, we proceed to describe a line of research that altered Lucas's preference specification in ways that we can think of as being designed with the Hansen-Jagannathan bounds in mind.
 
 
 We'll organize much of this lecture around parts of the paper by Thomas Tallarini {cite}`Tall2000`.
 
-His paper is particularly enlightening for macro-finance researchers because it  showed that a recursive preference specification could fit both the equity premium and the risk-free rate, thus *resolving* both of the puzzles mentioned above.
+His paper is particularly enlightening for macro-finance researchers because it showed that a recursive preference specification could fit both the equity premium and the risk-free rate, thus *resolving* both of the puzzles mentioned above.
 
 But like any good paper in applied economics, in answering some questions (i.e., resolving some puzzles), Tallarini's paper naturally posed new ones.  
 
-Thus, Tallarini's puzzles-resolving required setting the risk-aversion coefficient $\gamma$ to around 50 for a random-walk consumption model and around 75 for a trend-stationary model, exactly the range that provoked the  skepticism in the above quote from {cite:t}`Lucas_2003`.
+Thus, Tallarini's puzzles-resolving required setting the risk-aversion coefficient $\gamma$ to around 50 for a random-walk consumption model and around 75 for a trend-stationary model, exactly the range that provoked the skepticism in the above quote from {cite:t}`Lucas_2003`.
 
 This brings us to the next parts of this lecture.
 
 Lucas's skeptical response to Tallarini's explanation of the two puzzles led 
 {cite:t}`BHS_2009` to ask whether those large $\gamma$ values really measure aversion to atemporal risk, or whether they instead measure the agent's doubts about the underlying probability model.
 
-Their answer, and the theme of the remaining parts of this  lecture, is that much of what looks like "risk aversion" can be reinterpreted as **model uncertainty**.
+Their answer, and the theme of the remaining parts of this lecture, is that much of what looks like "risk aversion" can be reinterpreted as **model uncertainty**.
 
-The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to another recursion that expresses an agent's concern  that the probability model governing consumption growth may be wrong.
+The same recursion that defines Tallarini's risk-sensitive agent is observationally equivalent to another recursion that expresses an agent's concern that the probability model governing consumption growth may be wrong.
 
-Under this reading, a  parameter value  that indicates  extreme risk aversion in one interpretation of the recursion  indicates concerns about *misspecification* in another interpretation of the same recursion.
+Under this reading, a parameter value that indicates extreme risk aversion in one interpretation of the recursion indicates concerns about *misspecification* in another interpretation of the same recursion.
 
 {cite:t}`BHS_2009` show that modest amounts of model uncertainty can substitute for large amounts of risk aversion in terms of choices and effects on asset prices.
 
 
 This reinterpretation changes the welfare question that asset prices answer.
 
-Do large risk premia measure the benefits from reducing well-understood aggregate fluctuations, or do they measure  benefits from reducing doubts about the  model describing consumption growth?
+Do large risk premia measure the benefits from reducing well-understood aggregate fluctuations, or do they measure benefits from reducing doubts about the model describing consumption growth?
 
 
-To proceed, we begin by describing   {cite:t}`Hansen_Jagannathan_1991` bounds, then specify the statistical environment, lay out four related preference specifications and the connections among them, and finally revisit Tallarini's calibration through the lens of detection-error probabilities.
+To proceed, we begin by describing {cite:t}`Hansen_Jagannathan_1991` bounds, then specify the statistical environment, lay out four related preference specifications and the connections among them, and finally revisit Tallarini's calibration through the lens of detection-error probabilities.
 
 Along the way, we draw on ideas and techniques from
 
@@ -245,7 +245,7 @@ In words, no asset's Sharpe ratio can exceed the market price of risk.
 
 The bound {eq}`bhs_hj_bound` is stated in conditional terms.
 
-There is  an unconditional counterpart that involves a vector of $n$ gross returns $R_{t+1}$ (e.g., equity and risk-free) with unconditional mean $E(R)$ and covariance matrix $\Sigma_R$:
+There is an unconditional counterpart that involves a vector of $n$ gross returns $R_{t+1}$ (e.g., equity and risk-free) with unconditional mean $E(R)$ and covariance matrix $\Sigma_R$:
 
 ```{math}
 :label: bhs_hj_unconditional
@@ -257,6 +257,8 @@ b = \mathbf{1} - E(m) E(R).
 ```
 
 {ref}`Exercise 1 <dov_ex1>` walks through a derivation of this unconditional bound.
+
+Here $\mathbf{1}$ denotes an $n \times 1$ vector of ones.
 
 The function below computes the right-hand side of {eq}`bhs_hj_unconditional` for any given value of $E(m)$.
 
@@ -273,7 +275,7 @@ Reconciling formula {eq}`bhs_crra_sdf` with the market price of risk extracted f
 
 This is the **equity premium puzzle**.
 
-But high values of $\gamma$  bring another difficulty.  
+But high values of $\gamma$ bring another difficulty.  
 
 High values of $\gamma$ that deliver enough volatility $\sigma(m)$ also push $E(m)$, the reciprocal of the gross risk-free rate, too far down, away from the Hansen--Jagannathan bound.
 
@@ -283,7 +285,7 @@ This is the **risk-free rate puzzle** of {cite:t}`Weil_1989`.
 
 The figure below reproduces Tallarini's key diagnostic.
 
-Because it motivates much of what follows, we show Tallarini's figure  before developing the underlying theory.
+Because it motivates much of what follows, we show Tallarini's figure before developing the underlying theory.
 
 
 Closed-form expressions for the Epstein--Zin SDF moments used in the plot are derived in {ref}`Exercise 2 <dov_ex2>`.
@@ -391,7 +393,7 @@ Instead, they reflect the agent's doubts about the probability model itself.
 
 ## The choice setting
 
-To understand  their reinterpretation, we first need to describe their statistical models of consumption growth. 
+To understand their reinterpretation, we first need to describe their statistical models of consumption growth. 
 
 ### Shocks and consumption plans
 
@@ -492,9 +494,10 @@ print(f"std[r_e-r_f]={r_excess_std:.4f}")
 
 We compare four preference specifications over consumption plans $C^\infty \in \mathcal{C}$.
 ```{note}
-For  origins of the names **multipler** and **constraint**  preferences, see {cite:t}`HansenSargent2001`.
-The risk-sensitive preference specification used here comes from {cite:t}`hansen1995discounted`, which adjusts specifications used earlier by 
-{cite:t}`jacobson1973optimal`, {cite:t}`Whittle_1981`, and  {cite:t}`Whittle_1990` to accommodate discounting in a way that preserves time-invariant optimal decision rules. 
+For origins of the names **multiplier** and **constraint** preferences, see {cite:t}`HansenSargent2001`.
+
+The risk-sensitive preference specification used here comes from {cite:t}`hansen1995discounted`, which adjusts specifications used earlier by
+{cite:t}`jacobson1973optimal`, {cite:t}`Whittle_1981`, and {cite:t}`Whittle_1990` to accommodate discounting in a way that preserves time-invariant optimal decision rules.
 ```
 
 *Type I agent (Kreps--Porteus--Epstein--Zin--Tallarini)* with
@@ -543,7 +546,7 @@ $$
 where $\hat g_{t+1}$ is a likelihood-ratio distortion that we will define in each case.
 
 
-Along the way, we introduce the likelihood-ratio distortion that enters the stochastic discount factor and describe  detection-error probabilities that will serve as our new calibration tool.
+Along the way, we introduce the likelihood-ratio distortion that enters the stochastic discount factor and describe detection-error probabilities that will serve as our new calibration tool.
 
 ### Type I: Kreps--Porteus--Epstein--Zin--Tallarini preferences
 
@@ -969,7 +972,7 @@ Under the worst-case measure $\varepsilon \sim \mathcal{N}(w(\theta),1)$, so $E_
 E_t[\hat g_{t+1}\log \hat g_{t+1}] = w(\theta) \cdot w(\theta) - \frac{1}{2}w(\theta)^2 = \frac{1}{2}w(\theta)^2.
 ```
 
-Because the distortion is i.i.d., the conditional entropy $E_t[\hat g_{t+1}\log \hat g_{t+1}] = \frac{1}{2}w(\theta)^2$ from {eq}`bhs_conditional_entropy` is constant and $N(x)$ does not depend on $x$.
+Because the distortion is iid, the conditional entropy $E_t[\hat g_{t+1}\log \hat g_{t+1}] = \frac{1}{2}w(\theta)^2$ from {eq}`bhs_conditional_entropy` is constant and $N(x)$ does not depend on $x$.
 
 The recursion {eq}`bhs_N_recursion` then reduces to $N(x) = \beta(\frac{1}{2}w(\theta)^2 + N(x))$, where we have used $\int \hat g(\varepsilon)\pi(\varepsilon)d\varepsilon = 1$ (since $\hat g$ is a likelihood ratio).  
 
@@ -1262,9 +1265,9 @@ p_hj_rw = brentq(sharpe_gap, 1e-4, 0.49, args=("rw",))
 p_hj_ts = brentq(sharpe_gap, 1e-4, 0.49, args=("ts",))
 
 fig, ax = plt.subplots(figsize=(7, 5))
-ax.plot(Em_rw_p, σ_m_rw_p, "o",
+ax.plot(Em_rw_p, σ_m_rw_p, "o", lw=2,
             label="random walk")
-ax.plot(Em_ts_p, σ_m_ts_p, "+", markersize=12,
+ax.plot(Em_ts_p, σ_m_ts_p, "+", lw=2, markersize=12,
             label="trend stationary")
 ax.plot(Em_grid, HJ_std, lw=2,
             color="black", label="Hansen-Jagannathan bound")
@@ -1282,9 +1285,9 @@ for p_hj, model, color, name, marker in [
     ax.axhline(σ_m_hj, ls="--", lw=1, color=color,
                label=f"{name} reaches bound at $p = {p_hj:.3f}$")
     if model == "ts":
-        ax.plot(Em_hj, σ_m_hj, marker, markersize=12, color=color)
+        ax.plot(Em_hj, σ_m_hj, marker, lw=2, markersize=12, color=color)
     else:
-        ax.plot(Em_hj, σ_m_hj, marker, color=color)
+        ax.plot(Em_hj, σ_m_hj, marker, lw=2, color=color)
 
 ax.set_xlabel(r"$E(m)$")
 ax.set_ylabel(r"$\sigma(m)$")
@@ -1322,8 +1325,7 @@ The right panel reveals the cumulative consequence: a per-period shift that is v
 ---
 mystnb:
   figure:
-    caption: Small one-step density shift (left) produces large cumulative consumption
-      gap (right) at detection-error probability $p = 0.03$ with $T = 240$ quarters
+    caption: Density shift and cumulative consumption
     name: fig-bhs-fear
 ---
 p_star = 0.03
@@ -1339,7 +1341,7 @@ f0 = norm.pdf(ε, 0, 1)
 fw = norm.pdf(ε, w_star, 1)
 
 ax1.fill_between(ε, f0, alpha=0.15, color='k')
-ax1.plot(ε, f0, 'k', lw=2.5,
+ax1.plot(ε, f0, 'k', lw=2,
          label=r'Approximating $\mathcal{N}(0, 1)$')
 ax1.fill_between(ε, fw, alpha=0.15, color='C3')
 ax1.plot(ε, fw, 'C3', lw=2, ls='--',
@@ -1352,7 +1354,7 @@ ax1.text(w_star / 2, 0.59 * peak, f'$w = {w_star:.2f}$',
          ha='center', fontsize=11, color='C3')
 
 ax1.set_xlabel(r'$\varepsilon_{t+1}$')
-ax1.set_ylabel('Density')
+ax1.set_ylabel('density')
 ax1.legend(frameon=False)
 
 quarters = np.arange(0, 241)
@@ -1361,8 +1363,8 @@ years = quarters / 4
 gap_rw = 100 * σ_ε * w_star * quarters
 gap_ts = 100 * σ_ε * w_star * (1 - ρ**quarters) / (1 - ρ)
 
-ax2.plot(years, gap_rw, 'C0', lw=2.5, label='Random walk')
-ax2.plot(years, gap_ts, 'C1', lw=2.5, label='Trend stationary')
+ax2.plot(years, gap_rw, 'C0', lw=2, label='random walk')
+ax2.plot(years, gap_ts, 'C1', lw=2, label='trend stationary')
 ax2.fill_between(years, gap_rw, alpha=0.1, color='C0')
 ax2.fill_between(years, gap_ts, alpha=0.1, color='C1')
 ax2.axhline(0, color='k', lw=0.5, alpha=0.3)
@@ -1373,8 +1375,8 @@ ax2.text(61, gap_rw[-1], f'{gap_rw[-1]:.1f}%',
 ax2.text(61, gap_ts[-1], f'{gap_ts[-1]:.1f}%',
          fontsize=10, color='C1', va='center')
 
-ax2.set_xlabel('Years')
-ax2.set_ylabel('Gap in expected log consumption (%)')
+ax2.set_xlabel('years')
+ax2.set_ylabel('gap in expected log consumption (%)')
 ax2.legend(frameon=False, loc='lower left')
 ax2.set_xlim(0, 68)
 
@@ -1424,8 +1426,7 @@ What looks like extreme risk aversion ($\gamma \approx 34$) is really just log u
 ---
 mystnb:
   figure:
-    caption: Doubts or variability? Decomposition of the robust SDF into log-utility
-      IMRS and worst-case distortion at $p = 0.10$
+    caption: Robust SDF log-utility decomposition
     name: fig-bhs-sdf-decomp
 ---
 θ_cal = θ_from_detection_probability(0.10, "rw")
@@ -1449,8 +1450,8 @@ ax.plot(100 * Δc, log_ghat, 'C3', lw=2, ls='--',
 ax.plot(100 * Δc, log_sdf, 'k', lw=2,
         label=r'SDF: $\log m = \log\mathrm{IMRS} + \log\hat{g}$')
 ax.axhline(0, color='k', lw=0.5, alpha=0.3)
-ax.set_xlabel(r'Consumption growth $\Delta c_{t+1}$ (%)')
-ax.set_ylabel('Log SDF component')
+ax.set_xlabel(r'consumption growth $\Delta c_{t+1}$ (%)')
+ax.set_ylabel('log SDF component')
 ax.legend(frameon=False, fontsize=10, loc='upper right')
 
 plt.show()
@@ -1703,7 +1704,7 @@ The following table collects all compensating variations for the random walk mod
 | III | $c_0^{III}(r) - c_0^{III}$ | $\frac{\beta\sigma_\varepsilon^2}{(1-\beta)^2\theta}$ | uncertainty only (vs. deterministic) |
 | III | $c_0 - c_0^{III}(u)$ | $\frac{\beta\sigma_\varepsilon^2}{(1-\beta)^3\theta}$ | uncertainty only (vs. risky path) |
 
-The "vs. deterministic" rows use the certainty-equivalent path {eq}`bhs_ce_path` as a benchmark.
+The "versus deterministic" rows use the certainty-equivalent path {eq}`bhs_ce_path` as a benchmark.
 
 The "vs. risky path" rows use the risky-but-uncertainty-free comparison of {eq}`bhs_comp_type2u`--{eq}`bhs_comp_type3u`.
 
@@ -1917,8 +1918,7 @@ A comparison of the two panels reveals that the random-walk model generates much
 ---
 mystnb:
   figure:
-    caption: Type II compensation across detection-error probability and consumption
-      volatility
+    caption: Type II compensation contours
     name: fig-bhs-contour
 ---
 p_grid = np.linspace(0.02, 0.49, 300)
@@ -1941,19 +1941,17 @@ levels = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50]
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5.5), sharey=True)
 
-for ax, comp, title in [(ax1, comp_rw, 'Random walk'),
-                         (ax2, comp_ts, 'Trend stationary')]:
+for ax, comp in [(ax1, comp_rw), (ax2, comp_ts)]:
     cf = ax.contourf(100 * P, 100 * Σ, comp, levels=levels,
                      cmap='Blues', extend='both')
     cs = ax.contour(100 * P, 100 * Σ, comp, levels=levels,
                     colors='k', linewidths=0.5)
     ax.clabel(cs, fmt='%g%%', fontsize=8)
-    ax.plot(10, 0.5, 'x', markersize=14, color='w',
+    ax.plot(10, 0.5, 'x', lw=2, markersize=14, color='w',
             mec='k', mew=1, zorder=5)
-    ax.set_xlabel(r'Detection-error probability $p$ (%)')
-    ax.set_title(title)
+    ax.set_xlabel(r'detection-error probability $p$ (%)')
 
-ax1.set_ylabel(r'Consumption volatility $\sigma_\varepsilon$ (%)')
+ax1.set_ylabel(r'consumption volatility $\sigma_\varepsilon$ (%)')
 
 plt.tight_layout()
 plt.show()
@@ -1961,11 +1959,11 @@ plt.show()
 
 ## Learning doesn't eliminate misspecification fears
 
-A reasonable question  arises: if the consumer has 235 quarters of data,  can't she learn enough to dismiss the worst-case model?
+A reasonable question arises: if the consumer has 235 quarters of data, can't she learn enough to dismiss the worst-case model?
 
 The answer is no.
 
-This is because   the drift is a low-frequency feature that is very  hard to pin down.
+This is because the drift is a low-frequency feature that is very hard to pin down.
 
 Estimating the mean of a random walk to the precision needed to reject small but economically meaningful shifts requires far more data than estimating volatility precisely does.
 
@@ -2132,7 +2130,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-In the left panel, postwar U.S. log consumption is shown alongside two deterministic trend lines: the approximating-model drift $\mu$ and the worst-case drift $\mu + \sigma_\varepsilon w(\theta)$ for $p(\theta^{-1}) = 0.20$.
+In the left panel, postwar US log consumption is shown alongside two deterministic trend lines: the approximating-model drift $\mu$ and the worst-case drift $\mu + \sigma_\varepsilon w(\theta)$ for $p(\theta^{-1}) = 0.20$.
 
 The two trends are close enough that, even with six decades of data, it is hard to distinguish them by eye.
 
@@ -2847,7 +2845,7 @@ In the Gaussian mean-shift setting of {ref}`Exercise 5 <dov_ex5>`, let $L_T$ be 
 :class: dropdown
 ```
 
-Let the approximating model be $\varepsilon_i \sim \mathcal{N}(0,1)$ and the worst-case model be $\varepsilon_i \sim \mathcal{N}(w,1)$, i.i.d. for $i=1,\ldots,T$.
+Let the approximating model be $\varepsilon_i \sim \mathcal{N}(0,1)$ and the worst-case model be $\varepsilon_i \sim \mathcal{N}(w,1)$, iid for $i=1,\ldots,T$.
 
 Take the log likelihood ratio in the direction that matches the definitions in the text:
 
