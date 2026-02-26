@@ -56,7 +56,7 @@ In addition to what comes with Anaconda, this lecture requires `pandas-datareade
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install pandas-datareader
+!pip install pandas-datareader 
 ```
 
 ```{code-cell} ipython3
@@ -65,7 +65,7 @@ import warnings
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from IPython.display import Math
+from IPython.display import Latex
 from numba import njit
 from pandas_datareader import data as web
 from scipy import stats
@@ -85,7 +85,7 @@ We also define a helper to display DataFrames as LaTeX arrays in the hidden cell
 
 def display_table(df, title=None, fmt=None):
     """
-    Display a DataFrame as a LaTeX array using IPython Math.
+    Display a DataFrame as a LaTeX array.
     """
     if fmt is None:
         fmt = {}
@@ -94,22 +94,25 @@ def display_table(df, title=None, fmt=None):
         if col in fmt:
             formatted[col] = formatted[col].apply(
                 lambda x: fmt[col].format(x) if np.isfinite(x) else str(x))
+    n_cols = len(formatted.columns)
     idx_header = r"\text{" + df.index.name + "}" if df.index.name else ""
     columns = " & ".join(
         [idx_header] + [r"\text{" + c + "}" if "\\" not in c
+         and "^" not in c and "_" not in c
          else c for c in formatted.columns])
     rows = r" \\".join(
         [" & ".join([str(idx)] + [str(v) for v in row])
          for idx, row in zip(formatted.index, formatted.values)])
-    align = "r" + "c" * len(formatted.columns)
-    latex = rf"""\begin{{array}}{{{align}}}
-{columns} \\
-\hline
-{rows}
-\end{{array}}"""
+    col_format = "r" + "c" * n_cols
+    lines = [r"\begin{array}{" + col_format + "}"]
+    lines.append(columns + r" \\")
+    lines.append(r"\hline")
+    lines.append(rows)
+    lines.append(r"\end{array}")
+    latex = "\n".join(lines)
     if title:
         latex = rf"\textbf{{{title}}}" + r"\\" + "\n" + latex
-    display(Math(latex))
+    display(Latex("$" + latex + "$"))
 ```
 
 
@@ -689,7 +692,7 @@ def run_gmm_by_lag(
         j_prob = float(stats.chi2.cdf(j_stat, df=j_df)) if j_df > 0 else np.nan
         rows.append(
             {
-                "n_lags": lag,
+                "NLAG": lag,
                 "γ_hat": res.params[0],
                 "se_γ": res.bse[0],
                 "β_hat": res.params[1],
@@ -702,7 +705,7 @@ def run_gmm_by_lag(
             }
         )
 
-    table = pd.DataFrame(rows).set_index("n_lags")
+    table = pd.DataFrame(rows).set_index("NLAG")
     return table, results
 
 
@@ -727,7 +730,7 @@ def run_two_step_by_lag(
         start_params = res["params_step2"]
         rows.append(
             {
-                "n_lags": lag,
+                "NLAG": lag,
                 "γ_hat": res["params_step2"][0],
                 "se_γ": res["se_step2"][0],
                 "β_hat": res["params_step2"][1],
@@ -739,7 +742,7 @@ def run_two_step_by_lag(
                 "n_obs": res["n_obs"],
             }
         )
-    return pd.DataFrame(rows).set_index("n_lags")
+    return pd.DataFrame(rows).set_index("NLAG")
 ```
 
 

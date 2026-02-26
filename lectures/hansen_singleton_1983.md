@@ -79,7 +79,7 @@ from itertools import combinations
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from IPython.display import Math
+from IPython.display import Latex
 from pandas_datareader import data as web
 from scipy import stats
 from scipy.linalg import LinAlgError, cholesky, solve_triangular
@@ -88,7 +88,7 @@ from statsmodels.stats.stattools import durbin_watson
 
 warnings.filterwarnings(
     "ignore", message=".*date_parser.*", category=FutureWarning
-)
+) 
 ```
 
 We also define a helper to display DataFrames as LaTeX arrays in the hidden cell below
@@ -98,7 +98,7 @@ We also define a helper to display DataFrames as LaTeX arrays in the hidden cell
 
 def display_table(df, title=None, fmt=None):
     """
-    Display a DataFrame as a LaTeX array using IPython Math.
+    Display a DataFrame as a LaTeX array.
     """
     if fmt is None:
         fmt = {}
@@ -107,6 +107,7 @@ def display_table(df, title=None, fmt=None):
         if col in fmt:
             formatted[col] = formatted[col].apply(
                 lambda x: fmt[col].format(x) if np.isfinite(x) else str(x))
+    n_cols = len(formatted.columns)
     idx_header = r"\text{" + df.index.name + "}" if df.index.name else ""
     columns = " & ".join(
         [idx_header] + [r"\text{" + c + "}" if "\\" not in c
@@ -115,15 +116,16 @@ def display_table(df, title=None, fmt=None):
     rows = r" \\".join(
         [" & ".join([str(idx)] + [str(v) for v in row])
          for idx, row in zip(formatted.index, formatted.values)])
-    align = "r" + "c" * len(formatted.columns)
-    latex = rf"""\begin{{array}}{{{align}}}
-{columns} \\
-\hline
-{rows}
-\end{{array}}"""
+    col_format = "r" + "c" * n_cols
+    lines = [r"\begin{array}{" + col_format + "}"]
+    lines.append(columns + r" \\")
+    lines.append(r"\hline")
+    lines.append(rows)
+    lines.append(r"\end{array}")
+    latex = "\n".join(lines)
     if title:
         latex = rf"\textbf{{{title}}}" + r"\\" + "\n" + latex
-    display(Math(latex))
+    display(Latex("$" + latex + "$"))
 ```
 
 ## Euler equation
@@ -964,7 +966,7 @@ def run_mle_by_lag(
 
         rows.append(
             {
-                "n_lags": lag,
+                "NLAG": lag,
                 "α_hat": fit["params"][0],
                 "se_α": fit["se"][0],
                 "β_hat": fit["params"][1],
@@ -974,7 +976,7 @@ def run_mle_by_lag(
             }
         )
 
-    table = pd.DataFrame(rows).set_index("n_lags")
+    table = pd.DataFrame(rows).set_index("NLAG")
     return table, fits
 ```
 
@@ -1165,13 +1167,13 @@ def run_unrestricted_var_by_lag(data, lags=(2, 4, 6)):
         fits[lag] = fit
         rows.append(
             {
-                "n_lags": lag,
+                "NLAG": lag,
                 "loglike": fit["loglike"],
                 "n_obs": fit["n_obs"],
             }
         )
 
-    table = pd.DataFrame(rows).set_index("n_lags")
+    table = pd.DataFrame(rows).set_index("NLAG")
     return table, fits
 ```
 
@@ -1191,7 +1193,7 @@ def restricted_vs_unrestricted_lr(mle_fits, unrestricted_fits, lags=(2, 4, 6)):
         lr = likelihood_ratio_test(fit_restricted=fit_r, fit_unrestricted=fit_u, df_diff=df_diff)
         rows.append(
             {
-                "n_lags": lag,
+                "NLAG": lag,
                 "lr_stat": lr["lr_stat"],
                 "p_value": lr["p_value"],
                 "chi2_cdf": lr["chi2_cdf"],
@@ -1200,10 +1202,10 @@ def restricted_vs_unrestricted_lr(mle_fits, unrestricted_fits, lags=(2, 4, 6)):
             }
         )
 
-    return pd.DataFrame(rows).set_index("n_lags")
+    return pd.DataFrame(rows).set_index("NLAG")
 ```
 
-## Predictability and the $R^2$ restriction
+## Predictability and the R-squared restriction
 
 Section II of {cite:t}`hansen1983stochastic` emphasizes an implication of the restricted system for return predictability.
 
@@ -1603,9 +1605,9 @@ for lag in lags:
         unrestricted_fit=unres_fits[lag],
         n_lags=lag,
     )
-    pred_rows.append({"n_lags": lag, **metrics})
+    pred_rows.append({"NLAG": lag, **metrics})
 
-pred_df = pd.DataFrame(pred_rows).set_index("n_lags")
+pred_df = pd.DataFrame(pred_rows).set_index("NLAG")
 pred_pretty = pred_df[
     [
         "alpha_hat",
@@ -1732,9 +1734,9 @@ for lag in lags:
         unrestricted_fit=tbill_unres_fits[lag],
         n_lags=lag,
     )
-    tbill_pred_rows.append({"n_lags": lag, **metrics})
+    tbill_pred_rows.append({"NLAG": lag, **metrics})
 
-tbill_pred_df = pd.DataFrame(tbill_pred_rows).set_index("n_lags")
+tbill_pred_df = pd.DataFrame(tbill_pred_rows).set_index("NLAG")
 tbill_pred_pretty = tbill_pred_df[
     [
         "alpha_hat",
@@ -1798,7 +1800,7 @@ Why does the LR test not reject the model for stocks?
 
 As we hinted earlier, one reason may be limited test power when return predictability is small (as reflected in the low $R_R^2$ for stocks).
 
-When aggregate stock returns are nearly unpredictable ($R_R^2 \approx 0.02$–$0.06$ in Table 1 of {cite:t}`hansen1983stochastic`), there is almost no predictable variation to constrain.
+When aggregate stock returns are nearly unpredictable, there is almost no predictable variation to constrain.
 
 ## Residual diagnostics
 

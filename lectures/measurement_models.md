@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-(sargent_measurement_models)=
+(measurement_models)=
 ```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
