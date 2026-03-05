@@ -28,7 +28,7 @@ stochastic discount factor that have become widely used in empirical finance.
 These models are presented in chapter 15 of {cite}`Ljungqvist2012`.
 
 The models discussed here take a different approach from the time-separable CRRA
-stochastic discount factor of Hansen and Singleton {cite}`HansenSingleton1983`.
+stochastic discount factor of Hansen and Singleton {cite}`hansen1983stochastic`.
 
 The CRRA stochastic discount factor is
 
@@ -60,7 +60,7 @@ Key applications we study include:
    (Ang and Piazzesi {cite}`AngPiazzesi2003`).
 1. **Risk-neutral probabilities** — a change-of-measure representation of the pricing equation.
 1. **Distorted beliefs** — reinterpreting risk price estimates when agents hold systematically
-   biased forecasts (Piazzesi, Salomao, and Schneider {cite}`PiazzesiSalomaoSchneider2015`).
+   biased forecasts (Piazzesi, Salomao, and Schneider {cite}`piazzesi2015trend`).
 
 We start with some standard imports:
 
@@ -824,7 +824,7 @@ Riccati recursion {eq}`eq_riccati_A`–{eq}`eq_riccati_B`.
 
 ## Distorted Beliefs
 
-Piazzesi, Salomao, and Schneider {cite}`PiazzesiSalomaoSchneider2015` assemble survey
+Piazzesi, Salomao, and Schneider {cite}`piazzesi2015trend` assemble survey
 evidence suggesting that economic experts' forecasts are **systematically biased**
 relative to the physical measure.
 
@@ -1042,7 +1042,7 @@ framework for studying asset prices.  Key features are:
    policy, real activity, volatility, etc.).
 4. **Belief distortions** — The framework naturally accommodates non-rational beliefs via
    likelihood-ratio twists of the physical measure, as in
-   Piazzesi, Salomao, and Schneider {cite}`PiazzesiSalomaoSchneider2015`.
+   Piazzesi, Salomao, and Schneider {cite}`piazzesi2015trend`.
 
 The model also connects directly to the Hansen–Jagannathan bounds and to robust
 control interpretations of the stochastic discount factor described in other

@@ -52,11 +52,11 @@ with $b_t = 0$, $\lambda_t$, $w_t$, or a worst-case distortion.
 
 The lecture draws primarily on three lines of work:
 
-1. **Lucas (1978)** and **Hansen–Singleton (1983)**: a representative investor's risk
+1. {cite:t}`Lucas1978` and {cite:t}`hansen1983stochastic`: a representative investor's risk
    aversion generates a likelihood ratio that prices risks.
-2. **Piazzesi, Salomao, and Schneider (2015)**: survey data on professional forecasters
+2. {cite:t}`piazzesi2015trend`: survey data on professional forecasters
    decompose the likelihood ratio into a smaller risk price and a belief distortion.
-3. **Hansen, Szőke, Han, and Sargent (2020)** and **Szőke (2022)**: robust control theory
+3. {cite:t}`hansen2020twisted` and {cite:t}`szoke2022estimating`: robust control theory
    constructs twisted probability models from tilted discounted entropy balls to
    price model uncertainty, generating state-dependent uncertainty prices that
    explain puzzling term-structure movements.
@@ -512,12 +512,12 @@ interpretations, and so are the econometric fits.
 > expectations, a model of a risk-neutral investor with appropriately mistaken
 > beliefs produces **observationally equivalent** predictions.
 
-This insight was articulated by Hansen, Sargent, and Tallarini (1999) and
-Piazzesi, Salomao, and Schneider (2015).
+This insight was articulated by {cite:t}`HST_1999` and
+{cite:t}`piazzesi2015trend`.
 
 To distinguish risk aversion from belief distortion, one needs either
 **more information** (the PSS approach using survey data) or **more theory**
-(the Hansen–Szőke robust control approach), or both (Szőke 2022).
+(the Hansen–Szőke robust control approach), or both ({cite:t}`szoke2022estimating`).
 
 ```{code-cell} ipython3
 # ── Observational equivalence ──────────────────────────────────────────────────
@@ -558,7 +558,7 @@ price data alone.
 
 ### The PSS framework
 
-Piazzesi, Salomao, and Schneider (2015, henceforth PSS) exploit data on
+{cite:t}`piazzesi2015trend` (henceforth PSS) exploit data on
 professional forecasters' expectations to decompose the likelihood ratio
 into risk prices and belief distortions. Their setup posits:
 
@@ -896,7 +896,7 @@ worst-case model.
 
 ### Concern about bigger long-run risk
 
-Inspired by Bansal and Yaron (2004), an agent fears particular long-run risks
+Inspired by {cite:t}`Bansal_Yaron_2004`, an agent fears particular long-run risks
 expressed by
 
 $$
@@ -1203,10 +1203,10 @@ The following table summarises how various models perform:
 
 | Model                          | Average slope | Slopes near recessions | Volatile long yield |
 |:-------------------------------|:--------------|:-----------------------|:--------------------|
-| Lucas (1978)                   | no            | no                     | no                  |
+| {cite:t}`Lucas1978`            | no            | no                     | no                  |
 | Epstein–Zin with LRR           | maybe         | yes                    | no                  |
-| PSS (2015)                     | built-in      | built-in               | yes                 |
-| Szőke (2022)                   | **YES**       | yes                    | yes                 |
+| {cite:t}`piazzesi2015trend`    | built-in      | built-in               | yes                 |
+| {cite:t}`szoke2022estimating`  | **YES**       | yes                    | yes                 |
 
 ### Why Szőke's model succeeds
 
@@ -1266,7 +1266,7 @@ A key appeal of the robust control approach is that it lets us deviate from
 rational expectations while still preserving a set of powerful **cross-equation
 restrictions** on decision makers' beliefs.
 
-As Szőke (2022) puts it:
+As {cite:t}`szoke2022estimating` puts it:
 
 > An appealing feature of robust control theory is that it lets us deviate from
 > rational expectations, but still preserves a set of powerful cross-equation
