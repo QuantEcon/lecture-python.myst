@@ -196,7 +196,9 @@ where $y_{t+1}$ collects utility-relevant variables (e.g., consumption growth),
 $r_t = \bar{r}\,x_t$ is the risk-free one-period interest rate, and
 $d_t = \bar{d}\,x_t$ is the payout process from an asset.
 
-![The econometrician's model: estimated state dynamics.](fig2_tom.png)
+```{figure} /_static/lecture_specific/risk_aversion_or_mistaken_beliefs/fig2_tom.png
+The econometrician's model: estimated state dynamics.
+```
 
 
 ## Asset Pricing with Likelihood Ratios
@@ -745,7 +747,9 @@ $$
 
 The likelihood ratio process $\{M_t\}_{t=0}^{\infty}$ is a multiplicative **martingale**.
 
-![Discounted entropy ball around the econometrician's model.](eggs_backus.png)
+```{figure} /_static/lecture_specific/risk_aversion_or_mistaken_beliefs/eggs_backus.png
+Discounted entropy ball around the econometrician's model.
+```
 
 ### Why discounted entropy?
 
@@ -913,7 +917,9 @@ which implies a **quadratic** $\xi$ function:
 \xi(x_t) := x_t'\,\bar{w}'\bar{w}\,x_t =: x_t'\,\Xi\,x_t
 ```
 
-![Tilted discounted entropy balls. Including particular parametric alternatives with more long-run risk tilts the entropy ball and generates state-dependent worst-case distortions.](eggs_backus2.png)
+```{figure} /_static/lecture_specific/risk_aversion_or_mistaken_beliefs/eggs_backus2.png
+Tilted discounted entropy balls. Including particular parametric alternatives with more long-run risk tilts the entropy ball and generates state-dependent worst-case distortions.
+```
 
 ### The Szőke agent's sequence problem
 
@@ -1178,7 +1184,9 @@ plt.show()
 
 ## Empirical Challenges and Model Performances
 
-![U.S. term structure of interest rates.](fig1_tom.png)
+```{figure} /_static/lecture_specific/risk_aversion_or_mistaken_beliefs/fig1_tom.png
+U.S. term structure of interest rates.
+```
 
 Several recognised patterns characterise the U.S. term structure:
 
@@ -1462,30 +1470,9 @@ is therefore essential for both positive and normative macroeconomics.
 
 ## References
 
-```{bibliography}
-:filter: False
-
-Bansal, R. and A. Yaron (2004).
-"Risks for the long run: A potential resolution of asset pricing puzzles,"
-*Journal of Finance* 59, 1481–1509.
-
-Hansen, L. P., B. Szőke, L. S. Han, and T. J. Sargent (2020).
-"Twisted probabilities, uncertainty, and prices,"
-*Journal of Econometrics* 216, 151–174.
-
-Hansen, L. P., T. J. Sargent, and T. D. Tallarini (1999).
-"Robust permanent income and pricing,"
-*Review of Economic Studies* 66, 873–907.
-
-Lucas, R. E. (1978).
-"Asset prices in an exchange economy,"
-*Econometrica* 46, 1429–1445.
-
-Piazzesi, M., J. Salomao, and M. Schneider (2015).
-"Trend and cycle in bond premia,"
-Working Paper, Stanford University.
-
-Szőke, B. (2022).
-"Estimating robustness,"
-*Journal of Economic Theory* 199, 105225.
-```
+- R. Bansal and A. Yaron (2004). "Risks for the long run: A potential resolution of asset pricing puzzles," *Journal of Finance* 59, 1481–1509.
+- L. P. Hansen, B. Szőke, L. S. Han, and T. J. Sargent (2020). "Twisted probabilities, uncertainty, and prices," *Journal of Econometrics* 216, 151–174.
+- L. P. Hansen, T. J. Sargent, and T. D. Tallarini (1999). "Robust permanent income and pricing," *Review of Economic Studies* 66, 873–907.
+- R. E. Lucas (1978). "Asset prices in an exchange economy," *Econometrica* 46, 1429–1445.
+- M. Piazzesi, J. Salomao, and M. Schneider (2015). "Trend and cycle in bond premia," Working Paper, Stanford University.
+- B. Szőke (2022). "Estimating robustness," *Journal of Economic Theory* 199, 105225.
