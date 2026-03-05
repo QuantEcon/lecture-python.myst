@@ -1466,13 +1466,3 @@ important throughout macroeconomics:
 Understanding whether observed asset prices reflect risk aversion, mistaken
 beliefs, or fears of model misspecification — and quantifying each component —
 is therefore essential for both positive and normative macroeconomics.
-
-
-## References
-
-- R. Bansal and A. Yaron (2004). "Risks for the long run: A potential resolution of asset pricing puzzles," *Journal of Finance* 59, 1481–1509.
-- L. P. Hansen, B. Szőke, L. S. Han, and T. J. Sargent (2020). "Twisted probabilities, uncertainty, and prices," *Journal of Econometrics* 216, 151–174.
-- L. P. Hansen, T. J. Sargent, and T. D. Tallarini (1999). "Robust permanent income and pricing," *Review of Economic Studies* 66, 873–907.
-- R. E. Lucas (1978). "Asset prices in an exchange economy," *Econometrica* 46, 1429–1445.
-- M. Piazzesi, J. Salomao, and M. Schneider (2015). "Trend and cycle in bond premia," Working Paper, Stanford University.
-- B. Szőke (2022). "Estimating robustness," *Journal of Economic Theory* 199, 105225.
