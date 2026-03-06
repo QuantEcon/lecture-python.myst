@@ -25,14 +25,19 @@ kernelspec:
 This lecture explores how **risk aversion** and **mistaken beliefs** are
 confounded in asset pricing data.
 
-Under rational expectations with a risk-averse representative investor,
-higher mean returns compensate for higher risks. But if the representative
-investor holds wrong beliefs, observed average returns depend on *both*
-risk aversion *and* misunderstood return distributions. Wrong beliefs
-contribute what look like "stochastic discount factor shocks" and can
-potentially explain observed countercyclical risk prices.
+In a  rational expectations equilibrium  containing a risk-averse representative investor,
+higher mean returns compensate for higher risks. 
 
-We organize ideas around a single mathematical device: the **likelihood ratio**,
+But in a non-rational expectations model in which  representative
+investor holds  beliefs that differ from "the econometrician's", observed average returns depend on *both*
+risk aversion *and* misunderstood return distributions. 
+
+Wrong beliefs contribute what look like "stochastic discount factor shocks" when viewed  from the perspective of an econometrician  who
+trusts his  model. 
+
+Those different perspectives can potentially explain observed countercyclical risk prices.
+
+We organize a discussion of these ideas around a single mathematical device, namely, a **likelihood ratio**,
 a non-negative random variable with unit mean that twists one probability
 distribution into another.
 
@@ -94,7 +99,7 @@ Define a **likelihood ratio**
 m(\varepsilon) = \exp\!\left(-\lambda'\varepsilon - \frac{1}{2}\,\lambda'\lambda\right) \geq 0
 ```
 
-which satisfies $E\, m(\varepsilon) = 1$ by construction.
+which satisfies $E\, m(\varepsilon) = 1$ when the mathematical expectation $E$ is taken with respect to the econometrician's model.
 
 ### The twisted density
 
@@ -307,7 +312,7 @@ class LikelihoodRatioModel:
     Observation:
         y_{t+1} = D x_t + G ε_{t+1}
     Short rate:
-        r_t = r_bar @ x_t
+        r_t = δ₀ + r_bar @ x_t
     Likelihood ratio (risk prices):
         λ_t = Λ x_t
         m_{t+1}^λ = exp(-λ_t' ε_{t+1} - ½ λ_t' λ_t)
@@ -318,17 +323,19 @@ class LikelihoodRatioModel:
     C : array (n, k)   State shock loading
     D : array (p, n)   Observation on state
     G : array (p, k)   Observation shock loading
-    r_bar : array (n,) Short rate loading
+    r_bar : array (n,) Short rate state loading
     Λ : array (k, n)   Risk price loading (λ_t = Λ x_t)
+    delta_0 : float    Short rate intercept (default 0)
     """
 
-    def __init__(self, A, C, D, G, r_bar, Λ):
+    def __init__(self, A, C, D, G, r_bar, Λ, delta_0=0.0):
         self.A = np.atleast_2d(A).astype(float)
         self.C = np.atleast_2d(C).astype(float)
         self.D = np.atleast_2d(D).astype(float)
         self.G = np.atleast_2d(G).astype(float)
         self.r_bar = np.asarray(r_bar, dtype=float)
         self.Λ = np.atleast_2d(Λ).astype(float)
+        self.delta_0 = float(delta_0)
 
         self.n = self.A.shape[0]    # state dimension
         self.k = self.C.shape[1]    # shock dimension
@@ -337,8 +344,8 @@ class LikelihoodRatioModel:
         self.A_Q = self.A - self.C @ self.Λ
 
     def short_rate(self, x):
-        """r_t = r_bar' x_t"""
-        return self.r_bar @ x
+        """r_t = δ_0 + r_bar' x_t"""
+        return self.delta_0 + self.r_bar @ x
 
     def risk_prices(self, x):
         """λ_t = Λ x_t"""
@@ -351,38 +358,38 @@ class LikelihoodRatioModel:
 
     def bond_coefficients(self, n_max):
         """
-        Compute bond price coefficients B_n such that
-            p_t(n) = exp(B_n' x_t)
+        Compute bond price coefficients (A_bar_n, B_n) such that
+            log p_t(n) = A_bar_n + B_n' x_t
         via the recursion under risk-neutral dynamics.
 
-        Returns B : array (n_max+1, n) with B[n] = B_n.
+        Returns
+        -------
+        A_bar : array (n_max+1,)   scalar intercepts
+        B : array (n_max+1, n)     state loadings
         """
+        A_bar = np.zeros(n_max + 1)
         B = np.zeros((n_max + 1, self.n))
-        # B_1 = -r_bar
+
+        # Initial conditions: A_bar_1 = -δ_0, B_1 = -r_bar
+        A_bar[1] = -self.delta_0
         B[1] = -self.r_bar
 
-        CC = self.C.T @ self.C   # k×k → but we need n×n via C C'
         CCt = self.C @ self.C.T  # n×n
 
         for nn in range(1, n_max):
             Bn = B[nn]
-            # B_{n+1} = (A - C Λ)' B_n + ½ B_n' C C' B_n (scalar) ... no,
-            # p_t(n) = exp(B_n' x_t) so log p_t(n+1) = ...
-            # recursion: B_{n+1}' = B_n' (A - C Λ) - r_bar'
-            #  plus convexity: ½ (C' B_n)' (C' B_n)  added to constant
-            # For simplicity, absorb constant into B via augmented state.
-            # Actually with no intercept (μ=0) and r_t = r_bar' x_t:
+            A_bar[nn + 1] = A_bar[nn] + 0.5 * Bn @ CCt @ Bn - self.delta_0
             B[nn + 1] = self.A_Q.T @ Bn - self.r_bar
 
-        return B
+        return A_bar, B
 
     def yields(self, x, n_max):
         """
-        Yield curve: y_t(n) = -log p_t(n) / n = -B_n'x_t / n.
+        Yield curve: y_t(n) = -log p_t(n) / n = -(A_bar_n + B_n'x_t) / n.
         """
-        B = self.bond_coefficients(n_max)
+        A_bar, B = self.bond_coefficients(n_max)
         ns = np.arange(1, n_max + 1)
-        return np.array([-B[n] @ x / n for n in ns])
+        return np.array([(-A_bar[n] - B[n] @ x) / n for n in ns])
 
     def simulate(self, x0, T, rng=None):
         """Simulate state path under the econometrician's model."""
@@ -423,13 +430,19 @@ C = np.array([[0.007, 0.000],
 D = np.array([[0.5, 0.3]])       # consumption growth loading
 G = np.array([[0.004, 0.003]])    # consumption shock loading
 
-r_bar = np.array([0.8, 0.4])     # short rate = r_bar' x_t
+delta_0 = 0.004                   # short rate intercept (~4.8% annual)
+r_bar = np.array([0.06, 0.04])    # short rate state loading: r_t = δ₀ + r̄'x_t
 
 # Risk prices: λ_t = Λ x_t  (state-dependent)
-Λ = np.array([[-12.0,  0.0],
-              [  0.0, -6.0]])
+# Λ must be chosen so that A_Q = A - C Λ is stable (eigenvalues inside unit circle)
+Λ = np.array([[-3.0,  0.0],
+              [ 0.0, -6.0]])
 
-model = LikelihoodRatioModel(A, C, D, G, r_bar, Λ)
+model = LikelihoodRatioModel(A, C, D, G, r_bar, Λ, delta_0=delta_0)
+
+print(f"Eigenvalues of A:   {eigvals(A).round(4)}")
+print(f"Eigenvalues of A_Q: {eigvals(model.A_Q).round(4)}")
+assert all(np.abs(eigvals(model.A_Q)) < 1), "A_Q must be stable!"
 ```
 
 ### Yield curves across states
@@ -497,7 +510,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-## The Identification Challenge
+## An Identification Challenge
 
 The vector $\lambda_t$ can be interpreted as either:
 
@@ -517,7 +530,7 @@ This insight was articulated by {cite:t}`HST_1999` and
 
 To distinguish risk aversion from belief distortion, one needs either
 **more information** (the PSS approach using survey data) or **more theory**
-(the Hansen–Szőke robust control approach), or both ({cite:t}`szoke2022estimating`).
+(the Hansen–Szőke robust control approach), or both (the {cite:t}`szoke2022estimating` approach).
 
 ```{code-cell} ipython3
 # ── Observational equivalence ──────────────────────────────────────────────────
@@ -534,7 +547,8 @@ model_mistaken = LikelihoodRatioModel(
     A=model.A_Q,   # agent uses A* = A - C Λ as transition
     C=C, D=D, G=G,
     r_bar=r_bar,
-    Λ=np.zeros_like(Λ)  # zero risk prices (risk neutral)
+    Λ=np.zeros_like(Λ),  # zero risk prices (risk neutral)
+    delta_0=delta_0
 )
 y_mistaken = model_mistaken.yields(x_test, 60) * 1200
 
@@ -613,9 +627,9 @@ w_star = -inv(C_mat) @ (A_star - A_econ)
 print("Belief distortion w*:")
 print(w_star.round(3))
 
-# RE econometrician's total risk prices
-Λ_total = np.array([[-12.0,  0.0],
-                    [  0.0, -6.0]])
+# RE econometrician's total risk prices (must match Λ used earlier)
+Λ_total = np.array([[-3.0,  0.0],
+                    [ 0.0, -6.0]])
 
 # True risk prices (what the agent actually charges)
 Λ_true = Λ_total - w_star
@@ -666,7 +680,7 @@ prices $\lambda^* x_t$ vary less than the $\lambda x_t$ estimated by the
 rational-expectations econometrician.
 
 
-## Rational Expectations and Its Limits
+## Rationalizing Rational Expectations
 
 ### The informal justification
 
@@ -675,8 +689,8 @@ learning from an infinite history: least-squares learning converges to rational
 expectations. The argument requires that:
 
 - agents know correct functional forms, and
-- a stochastic approximation argument partitions dynamics into fast parts
-  (justifying a law of large numbers) and slow parts (justifying an ODE).
+- a stochastic approximation argument partitions dynamics into a fast part
+  (that justifies a law of large numbers) and a slow part (that justifies an ODE).
 
 However, long intertemporal dependencies make **rates of convergence slow**.
 
@@ -810,25 +824,20 @@ def hansen_worst_case(A, C, D, G, beta, theta):
     Compute the constant worst-case distortion w_bar for Hansen's
     dubious agent with multiplier θ.
 
-    Under the multiplier formulation with linear Gaussian dynamics,
-    the worst-case distortion is w_bar = -(1/θ) (βI - βA')⁻¹ (G'D + C' * something).
-    For the simple case, w_bar = (1/θ) * correction.
+    The value function V(x, c) = c/(1-β) + v'x has linear coefficients
+    v = β(I - βA')⁻¹ D'/(1-β). The FOC for the worst-case distortion is:
 
-    Here we use a simplified version: the worst case distortion
-    solves for the mean shift that minimises value minus θ × entropy.
-    For a risk-linear value function V = v'x + const, the worst case is:
-        w_bar = -(1/θ) (G'v_c + C'v_x)  where v_c, v_x solve Bellman.
+        w_bar = (1/θ) [β/(1-β) G' + β C' v]
+
+    This is a constant vector — it does not depend on x_t.
     """
     n = A.shape[0]
-    # Value coefficients: V(x,c) = c/(1-β) + v'x, where
-    # v = β(I - βA')⁻¹ D' / (1-β)   (for the consumption-level value)
-    # In the linear consumption growth case:
+    # Value coefficients: v = β(I - βA')⁻¹ D' / (1-β)
     v = beta * np.linalg.solve(np.eye(n) - beta * A.T, D.T.flatten()) / (1 - beta)
 
-    # Worst-case distortion (multiplier version):
-    # w_bar = -(1/θ)(G' × β/(1-β) × D_scalar + C' v)
-    # Simplified: w = -(1/θ) C' v  (dominant term)
-    w_bar = -(1.0 / theta) * C.T @ v
+    # Worst-case distortion from FOC:
+    w_bar = (1.0 / theta) * (beta / (1 - beta) * G.T.flatten()
+                              + beta * C.T @ v)
 
     return w_bar
 
@@ -989,50 +998,38 @@ class TiltedEntropyModel:
 
     def _solve_worst_case(self):
         """
-        Solve for the worst-case distortion matrix w̃ such that
-        w̃_t = w̃ x_t.
+        Solve for the worst-case distortion matrix W̃ such that
+        w̃_t = W̃ x_t.
 
-        Under the tilted entropy ball, the worst-case distortion
-        is w̃ = (1/θ̃)(C'P + G'Q) where P solves a modified
-        discrete Lyapunov/Riccati equation.
+        Under the tilted entropy ball, the quadratic value function
+        V(x) = x'Px satisfies the Bellman equation:
 
-        For a simplified linear-quadratic problem:
-        w̃ = (θ̃ I - C'C)⁻¹ (C'v_coeff)
-        where v_coeff depends on the value function.
+            P = -(θ/2) Ξ + (θ/2) W̃'W̃ + β (A - C W̃)' P (A - C W̃)
 
-        Here we use an iterative approach.
+        where the FOC for W̃ gives:
+
+            W̃ = (θ I + 2β C'PC)⁻¹ · 2β C'PA
+
+        We iterate on these two equations until convergence.
         """
         n = self.n
+        k = self.C.shape[1]
         beta = self.beta
         theta = self.theta
 
-        # Value function: V(x, c) = c/(1-β) + v'x + x'Px + const
-        # Linear part: v = β(I - βA')⁻¹ D'/(1-β)
-        v = beta * np.linalg.solve(
-            np.eye(n) - beta * self.A.T,
-            self.D.T.flatten()
-        ) / (1 - beta)
-
-        # Quadratic part: iterate on the Riccati equation
-        # P = β A' P A + (contribution from tilting)
-        # w̃ = (1/θ)(C'P_lin + state-dep part)
-        # Simplified: w̃ ≈ (1/θ)(C' × linear_val_coeff) + correction from Ξ
-
-        # The key insight: the tilting matrix Ξ makes w̃ state-dependent
-        # w̃ = (1/θ) C' P_quad  where P_quad captures the quadratic value
-        # P_quad solves: P = β(A - C w̃)' P (A - C w̃) - θ̃ Ξ + ...
-
-        # Iterate to find P (quadratic value coefficient)
+        # Iterate on (P, W) system
         P = np.zeros((n, n))
-        for _ in range(500):
-            # worst-case distortion given P
-            w = (1.0 / theta) * (self.C.T @ P)
+        for _ in range(2000):
+            # FOC: W = (θI + 2βC'PC)⁻¹ · 2βC'PA
+            M = theta * np.eye(k) + 2 * beta * self.C.T @ P @ self.C
+            W = np.linalg.solve(M, 2 * beta * self.C.T @ P @ self.A)
 
-            # Compute contribution from Ξ tilting
-            A_w = self.A - self.C @ w
-
-            # Updated P from Bellman
-            P_new = beta * A_w.T @ P @ A_w + (1.0 / theta) * self.Xi
+            # Bellman (quadratic part):
+            # P = -(θ/2)Ξ + (θ/2)W'W + β(A - CW)'P(A - CW)
+            A_w = self.A - self.C @ W
+            P_new = (-(theta / 2) * self.Xi
+                     + (theta / 2) * W.T @ W
+                     + beta * A_w.T @ P @ A_w)
             P_new = 0.5 * (P_new + P_new.T)  # symmetrise
 
             if np.max(np.abs(P_new - P)) < 1e-12:
@@ -1040,8 +1037,7 @@ class TiltedEntropyModel:
             P = P_new
 
         self._P_quad = P
-        w_tilde = (1.0 / theta) * (self.C.T @ P)
-        return w_tilde
+        return W
 
     def worst_case_distortion(self, x):
         """State-dependent worst-case distortion w̃_t = w̃ x_t."""
@@ -1096,41 +1092,48 @@ print(f"Eigenvalues of Ã: {eigvals(tilted.A_tilde).round(4)}")
 
 x_grid = np.linspace(-0.03, 0.04, 200)
 
-# Constant (Hansen): w̄ does not depend on state
-w_const = hansen_worst_case(A, C, D, G, beta, theta=1.0)
-entropy_const = np.full(200, 0.5 * w_const @ w_const)
-
 # State-dependent (Szőke): w̃_t = w̃ x_t depends on x
+# Conditional entropy ½ w̃_t'w̃_t is quadratic in x — a parabola
 entropy_tilted = np.array([
     tilted.conditional_entropy(np.array([x, 0.005]))
     for x in x_grid
 ])
 
-# ξ(x_t) — entropy of feared parametric model
+# ξ(x_t) = x_t' Ξ x_t — entropy of the feared parametric model
+# This provides the entropy "budget" that the tilting makes available
 xi_vals = np.array([
     tilted.xi_function(np.array([x, 0.005]))
     for x in x_grid
 ])
 
 fig, ax = plt.subplots(figsize=(9, 5))
-ax.plot(x_grid, entropy_const, 'steelblue', lw=2, ls='--',
-        label=r"Hansen: constant $\frac{1}{2}\bar{w}'\bar{w}$")
+
+# Hansen's constant distortion contributes zero *state-dependent* entropy
+ax.axhline(0, color='steelblue', lw=2, ls='--',
+           label=r"Hansen: constant $\bar{w}$ (no state dependence)")
+
 ax.plot(x_grid, entropy_tilted, 'firebrick', lw=2,
-        label=r"Szőke: state-dependent $\frac{1}{2}\tilde{w}_t'\tilde{w}_t$")
+        label=r"Szőke: $\frac{1}{2}\tilde{w}_t'\tilde{w}_t$"
+              r"$= \frac{1}{2} x_t' \tilde{W}'\tilde{W} x_t$")
 ax.plot(x_grid, 0.5 * xi_vals, 'seagreen', lw=1.5, ls=':',
-        label=r"Feared model: $\frac{1}{2}\xi(x_t)$")
+        label=r"Feared model: $\frac{1}{2}\xi(x_t) = \frac{1}{2} x_t' \Xi x_t$")
+
 ax.set_xlabel(r"Level factor $x_{1,t}$", fontsize=13)
-ax.set_ylabel("Conditional entropy", fontsize=13)
+ax.set_ylabel("State-dependent conditional entropy", fontsize=13)
 ax.set_title("State-Dependent vs. Constant Worst-Case Distortions", fontsize=14)
 ax.legend(fontsize=11)
 plt.tight_layout()
 plt.show()
 ```
 
-The key innovation of the tilted entropy ball is visible: the worst-case
-distortion grows with $|x_t|$, producing **countercyclical uncertainty prices**.
-When the state is far from its mean, the agent's worst-case model deviates
-more from the econometrician's model.
+The key innovation of the tilted entropy ball is visible: the Szőke worst-case
+distortion $\tilde{w}_t = \tilde{W}\,x_t$ grows with $|x_t|$, producing
+**countercyclical uncertainty prices**. When the state is far from its mean,
+the agent's worst-case model deviates more from the econometrician's model.
+By contrast, Hansen's constant distortion $\bar{w}$ contributes nothing
+state-dependent. Note that the Szőke parabola lies inside the feared model's
+entropy budget $\frac{1}{2}\xi(x_t)$, confirming the worst-case distortion
+respects the tilted entropy constraint.
 
 ### Three probability twisters
 
@@ -1223,18 +1226,11 @@ Szőke's framework delivers:
 # ── Yield curve comparison: models with different risk price structures ─────────
 
 # Risk-neutral model (no risk prices)
-model_rn = LikelihoodRatioModel(A, C, D, G, r_bar, Λ=np.zeros((2, 2)))
+model_rn = LikelihoodRatioModel(A, C, D, G, r_bar, Λ=np.zeros((2, 2)), delta_0=delta_0)
 
-# Constant risk prices (Hansen dubious agent)
-w_c = hansen_worst_case(A, C, D, G, beta, theta=1.0)
-Λ_const = np.outer(w_c, np.ones(2)) * np.eye(2) * 0  # construct constant-like
-# For constant prices, we use a model where Λ x ≈ constant
-# Better: use the affine model from affine_risk_prices with constant λ₀
-
-# State-dependent risk prices (Szőke)
-Λ_szoke = tilted.w_tilde + Λ   # total risk prices = model uncertainty + risk aversion
-
-model_szoke = LikelihoodRatioModel(A, C, D, G, r_bar, Λ=Λ_szoke)
+# Model uncertainty only (Szőke worst-case distortion W̃ replaces risk prices)
+# Under this interpretation, W̃ x_t alone explains the term premium
+model_uncert = LikelihoodRatioModel(A, C, D, G, r_bar, Λ=tilted.w_tilde, delta_0=delta_0)
 
 x_test = np.array([0.01, 0.005])
 n_max = 120
@@ -1244,20 +1240,26 @@ fig, ax = plt.subplots(figsize=(9, 5))
 
 y_rn = model_rn.yields(x_test, n_max) * 1200
 y_ra = model.yields(x_test, n_max) * 1200
-y_sz = model_szoke.yields(x_test, n_max) * 1200
+y_unc = model_uncert.yields(x_test, n_max) * 1200
 
-ax.plot(mats, y_rn, 'grey', lw=1.5, ls=':', label='Risk neutral (flat)')
-ax.plot(mats, y_ra, 'steelblue', lw=2, label='Risk averse (state-dep. λ)')
-ax.plot(mats, y_sz, 'firebrick', lw=2, ls='--',
-        label='Szőke: risk aversion + model uncertainty')
+ax.plot(mats, y_rn, 'grey', lw=1.5, ls=':', label='Risk neutral (no risk adjustment)')
+ax.plot(mats, y_ra, 'steelblue', lw=2,
+        label=r'Risk aversion only ($\Lambda x_t$)')
+ax.plot(mats, y_unc, 'firebrick', lw=2, ls='--',
+        label=r'Model uncertainty only ($\tilde{W} x_t$)')
 
 ax.set_xlabel("Maturity (months)", fontsize=13)
 ax.set_ylabel("Yield (annualised %)", fontsize=13)
-ax.set_title("Yield Curves Under Different Models", fontsize=14)
+ax.set_title("Yield Curves: Alternative Sources of Term Premia", fontsize=14)
 ax.legend(fontsize=11)
 plt.tight_layout()
 plt.show()
 ```
+
+The risk-aversion-only and model-uncertainty-only yield curves both slope
+upward, generating a term premium. The two explanations represent *alternative
+channels* for the same observed term premium — reinforcing the identification
+challenge explored throughout this lecture.
 
 
 ## Cross-Equation Restrictions and Estimation
@@ -1345,7 +1347,7 @@ print(f"\nThe worst-case model is {'closer to' if ent_szoke < ent_feared else 'f
       f"the econometrician's model than the feared LRR model.")
 ```
 
-## Appendix: Multiplier Preferences
+## Multiplier Preferences
 
 The **multiplier preference** version of the dubious agent's problem is:
 
@@ -1465,4 +1467,4 @@ important throughout macroeconomics:
 
 Understanding whether observed asset prices reflect risk aversion, mistaken
 beliefs, or fears of model misspecification — and quantifying each component —
-is therefore essential for both positive and normative macroeconomics.
+is interesting for both positive and normative macroeconomics.
