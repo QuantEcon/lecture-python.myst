@@ -33,7 +33,7 @@ jobs:
         shell: bash -l {0}
         run: pip list
       - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v15
+        uses: dawidd6/action-download-artifact@v16
         with:
           workflow: cache.yml
           branch: main
@@ -45,7 +45,7 @@ jobs:
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
       - name: Upload Execution Reports
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: execution-reports
