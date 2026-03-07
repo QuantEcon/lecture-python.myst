@@ -22,18 +22,14 @@ kernelspec:
 
 ## Overview
 
-This lecture explores how **risk aversion** and **mistaken beliefs** are
+This lecture explores how *risk aversion* and *mistaken beliefs* are
 confounded in asset pricing data.
 
-In a  rational expectations equilibrium  containing a risk-averse representative investor,
-higher mean returns compensate for higher risks. 
+In a rational expectations equilibrium containing a risk-averse representative investor, higher mean returns compensate for higher risks.
 
-But in a non-rational expectations model in which  representative
-investor holds  beliefs that differ from "the econometrician's", observed average returns depend on *both*
-risk aversion *and* misunderstood return distributions. 
+But in a non-rational expectations model in which a representative investor holds beliefs that differ from "the econometrician's", observed average returns depend on *both* risk aversion *and* misunderstood return distributions.
 
-Wrong beliefs contribute what look like "stochastic discount factor shocks" when viewed  from the perspective of an econometrician  who
-trusts his  model. 
+Wrong beliefs contribute what look like "stochastic discount factor shocks" when viewed from the perspective of an econometrician who trusts his model.
 
 Those different perspectives can potentially explain observed countercyclical risk prices.
 
@@ -75,11 +71,13 @@ from scipy.linalg import solve_discrete_lyapunov
 from numpy.linalg import inv, eigvals, norm
 ```
 
-## Likelihood Ratios and Twisted Densities
+## Likelihood ratios and twisted densities
 
 ### The baseline model
 
-Let $\varepsilon$ denote a vector of risks to be taken and priced. Under the
+Let $\varepsilon$ denote a vector of risks to be taken and priced. 
+
+Under the
 econometrician's probability model, $\varepsilon$ has a standard multivariate
 normal density:
 
@@ -111,8 +109,9 @@ The **twisted density** is
 \hat\phi(\varepsilon) = m(\varepsilon)\,\phi(\varepsilon) \propto \exp\!\left(-\frac{1}{2}(\varepsilon + \lambda)'(\varepsilon + \lambda)\right)
 ```
 
-which is a $\mathcal{N}(-\lambda, I)$ density. The likelihood ratio has shifted
-the mean of $\varepsilon$ from $0$ to $-\lambda$ while preserving the covariance.
+which is a $\mathcal{N}(-\lambda, I)$ density.
+
+The likelihood ratio has shifted the mean of $\varepsilon$ from $0$ to $-\lambda$ while preserving the covariance.
 
 ### Relative entropy
 
@@ -127,37 +126,40 @@ E\bigl[m(\varepsilon)\log m(\varepsilon)\bigr] = \frac{1}{2}\,\lambda'\lambda
 
 a convenient scalar measure of the statistical distance between the two models.
 
-The vector $\lambda$ is the key object. Depending on context it represents
-**risk prices**, **belief distortions**, or **worst-case mean perturbations**
-under model uncertainty.
+The vector $\lambda$ is the key object.
+
+Depending on context it represents *risk prices*, *belief distortions*, or *worst-case mean perturbations* under model uncertainty.
 
 ### Visualising the twist
 
 ```{code-cell} ipython3
-# ── Visualise how a likelihood ratio twists a density ──────────────────────────
 from scipy.stats import norm as normal_dist
 
-eps = np.linspace(-5, 5, 500)
-lam = 1.5    # scalar risk price
+ε = np.linspace(-5, 5, 500)
+λ_val = 1.5
 
-phi_base   = normal_dist.pdf(eps, 0, 1)
-m_lr       = np.exp(-lam * eps - 0.5 * lam**2)
-phi_twist  = m_lr * phi_base
+ϕ_base  = normal_dist.pdf(ε, 0, 1)
+m_lr    = np.exp(-λ_val * ε - 0.5 * λ_val**2)
+ϕ_twist = m_lr * ϕ_base
 
 fig, axes = plt.subplots(1, 3, figsize=(14, 4))
 
-axes[0].plot(eps, phi_base, 'steelblue', lw=2)
-axes[0].set_title(r"Baseline $\phi(\varepsilon)$:  $\mathcal{N}(0,1)$", fontsize=12)
+axes[0].plot(ε, ϕ_base, 'steelblue', lw=2)
+axes[0].set_title(r"Baseline $\phi(\varepsilon)$: $\mathcal{N}(0,1)$")
 axes[0].set_xlabel(r"$\varepsilon$")
 
-axes[1].plot(eps, m_lr, 'firebrick', lw=2)
+axes[1].plot(ε, m_lr, 'firebrick', lw=2)
 axes[1].axhline(1, color='grey', lw=0.8, ls='--')
-axes[1].set_title(rf"Likelihood ratio $m(\varepsilon)$,  $\lambda={lam}$", fontsize=12)
+axes[1].set_title(rf"Likelihood ratio $m(\varepsilon)$, $\lambda={λ_val}$")
 axes[1].set_xlabel(r"$\varepsilon$")
 
-axes[2].plot(eps, phi_base, 'steelblue', lw=1.5, ls='--', alpha=0.6, label='Baseline')
-axes[2].plot(eps, phi_twist, 'firebrick', lw=2, label='Twisted')
-axes[2].set_title(r"Twisted $\hat\phi(\varepsilon)$:  $\mathcal{N}(-\lambda, 1)$", fontsize=12)
+axes[2].plot(ε, ϕ_base, 'steelblue', lw=1.5,
+             ls='--', alpha=0.6, label='Baseline')
+axes[2].plot(ε, ϕ_twist, 'firebrick', lw=2,
+             label='Twisted')
+axes[2].set_title(
+    r"Twisted $\hat\phi(\varepsilon)$:"
+    r" $\mathcal{N}(-\lambda, 1)$")
 axes[2].set_xlabel(r"$\varepsilon$")
 axes[2].legend()
 
@@ -167,13 +169,14 @@ plt.tight_layout()
 plt.show()
 ```
 
-The left panel shows the baseline $\mathcal{N}(0,1)$ density.  The middle panel shows
-the likelihood ratio $m(\varepsilon)$, which up-weights negative $\varepsilon$ values and
-down-weights positive ones when $\lambda > 0$.  The right panel shows the resulting
-twisted density $\hat\phi(\varepsilon) = \mathcal{N}(-\lambda, 1)$.
+The left panel shows the baseline $\mathcal{N}(0,1)$ density.
+
+The middle panel shows the likelihood ratio $m(\varepsilon)$, which up-weights negative $\varepsilon$ values and down-weights positive ones when $\lambda > 0$.
+
+The right panel shows the resulting twisted density $\hat\phi(\varepsilon) = \mathcal{N}(-\lambda, 1)$.
 
 
-## The Econometrician's State-Space Model
+## The econometrician's state-space model
 
 ### State dynamics
 
@@ -206,7 +209,7 @@ The econometrician's model: estimated state dynamics.
 ```
 
 
-## Asset Pricing with Likelihood Ratios
+## Asset pricing with likelihood ratios
 
 ### Risk-neutral rational expectations pricing
 
@@ -227,7 +230,7 @@ p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,E_t\,p_{t+1}(n), \qquad p_t(n
 ```
 
 These formulas work "pretty well" for conditional means but less well for
-conditional variances — the Shiller **volatility puzzles**.
+conditional variances — the Shiller *volatility puzzles*.
 
 ### Modern asset pricing: adding risk aversion
 
@@ -243,10 +246,11 @@ with $E_t\,m_{t+1}^\lambda = 1$ and $m_{t+1}^\lambda \geq 0$.
 
 The likelihood ratio $m_{t+1}^\lambda$ distorts the conditional distribution
 of $\varepsilon_{t+1}$ from $\mathcal{N}(0,I)$ to $\mathcal{N}(-\lambda\,x_t, I)$.
+
 Covariances of returns with $m_{t+1}^\lambda$ affect mean returns — this is the
 channel through which risk aversion prices risks.
 
-With this device, **modern asset pricing** takes the form:
+With this device, *modern asset pricing* takes the form:
 
 For stocks (Lucas–Hansen):
 
@@ -274,10 +278,9 @@ The risk-neutral representation implies **twisted dynamics**:
 x_{t+1} = (A - C\lambda)\,x_t + C\,\tilde\varepsilon_{t+1}, \qquad \tilde\varepsilon_{t+1} \sim \mathcal{N}(0,I)
 ```
 
-The risk-neutral dynamics assert that the shock distribution $\varepsilon_{t+1}$
-has conditional mean $-\lambda_t$ instead of $0$. The dependence of
-$\lambda_t = \lambda\,x_t$ on the state modifies the dynamics relative to the
-econometrician's model.
+The risk-neutral dynamics assert that the shock distribution $\varepsilon_{t+1}$ has conditional mean $-\lambda_t$ instead of $0$.
+
+The dependence of $\lambda_t = \lambda\,x_t$ on the state modifies the dynamics relative to the econometrician's model.
 
 ### Expectation under a twisted distribution
 
@@ -298,7 +301,7 @@ These are the same formulas as rational-expectations asset pricing, but
 expectations are taken with respect to a probability measure **twisted by
 risk aversion**.
 
-## Python Implementation
+## Python implementation
 
 We implement the state-space model and its asset pricing implications.
 
@@ -307,110 +310,70 @@ class LikelihoodRatioModel:
     """
     Gaussian state-space model with likelihood ratio twists.
 
-    State dynamics (econometrician's model):
-        x_{t+1} = A x_t + C ε_{t+1},    ε_{t+1} ~ N(0, I)
-    Observation:
-        y_{t+1} = D x_t + G ε_{t+1}
-    Short rate:
-        r_t = δ₀ + r_bar @ x_t
-    Likelihood ratio (risk prices):
-        λ_t = Λ x_t
-        m_{t+1}^λ = exp(-λ_t' ε_{t+1} - ½ λ_t' λ_t)
-
-    Parameters
-    ----------
-    A : array (n, n)   State transition
-    C : array (n, k)   State shock loading
-    D : array (p, n)   Observation on state
-    G : array (p, k)   Observation shock loading
-    r_bar : array (n,) Short rate state loading
-    Λ : array (k, n)   Risk price loading (λ_t = Λ x_t)
-    delta_0 : float    Short rate intercept (default 0)
+    x_{t+1} = A x_t + C ε_{t+1},  ε ~ N(0,I)
+    y_{t+1} = D x_t + G ε_{t+1}
+    r_t = delta_0 + r_bar'x_t,  λ_t = Λ x_t
     """
 
-    def __init__(self, A, C, D, G, r_bar, Λ, delta_0=0.0):
+    def __init__(self, A, C, D, G, r_bar, Λ, δ_0=0.0):
         self.A = np.atleast_2d(A).astype(float)
         self.C = np.atleast_2d(C).astype(float)
         self.D = np.atleast_2d(D).astype(float)
         self.G = np.atleast_2d(G).astype(float)
         self.r_bar = np.asarray(r_bar, dtype=float)
         self.Λ = np.atleast_2d(Λ).astype(float)
-        self.delta_0 = float(delta_0)
-
-        self.n = self.A.shape[0]    # state dimension
-        self.k = self.C.shape[1]    # shock dimension
-
-        # Risk-neutral dynamics: A_Q = A - C Λ
+        self.δ_0 = float(δ_0)
+        self.n = self.A.shape[0]
+        self.k = self.C.shape[1]
+        # risk-neutral dynamics
         self.A_Q = self.A - self.C @ self.Λ
 
     def short_rate(self, x):
-        """r_t = δ_0 + r_bar' x_t"""
-        return self.delta_0 + self.r_bar @ x
+        return self.δ_0 + self.r_bar @ x
 
     def risk_prices(self, x):
-        """λ_t = Λ x_t"""
         return self.Λ @ x
 
     def relative_entropy(self, x):
-        """½ λ_t' λ_t — conditional relative entropy of twisted model."""
-        lam = self.risk_prices(x)
-        return 0.5 * lam @ lam
+        λ = self.risk_prices(x)
+        return 0.5 * λ @ λ
 
     def bond_coefficients(self, n_max):
-        """
-        Compute bond price coefficients (A_bar_n, B_n) such that
-            log p_t(n) = A_bar_n + B_n' x_t
-        via the recursion under risk-neutral dynamics.
-
-        Returns
-        -------
-        A_bar : array (n_max+1,)   scalar intercepts
-        B : array (n_max+1, n)     state loadings
-        """
+        """Bond price coefficients: log p_t(n) = A_bar_n + B_n' x_t."""
         A_bar = np.zeros(n_max + 1)
         B = np.zeros((n_max + 1, self.n))
-
-        # Initial conditions: A_bar_1 = -δ_0, B_1 = -r_bar
-        A_bar[1] = -self.delta_0
+        A_bar[1] = -self.δ_0
         B[1] = -self.r_bar
-
-        CCt = self.C @ self.C.T  # n×n
-
+        CCt = self.C @ self.C.T
         for nn in range(1, n_max):
-            Bn = B[nn]
-            A_bar[nn + 1] = A_bar[nn] + 0.5 * Bn @ CCt @ Bn - self.delta_0
-            B[nn + 1] = self.A_Q.T @ Bn - self.r_bar
-
+            A_bar[nn + 1] = A_bar[nn] + 0.5 * B[nn] @ CCt @ B[nn] - self.δ_0
+            B[nn + 1] = self.A_Q.T @ B[nn] - self.r_bar
         return A_bar, B
 
     def yields(self, x, n_max):
-        """
-        Yield curve: y_t(n) = -log p_t(n) / n = -(A_bar_n + B_n'x_t) / n.
-        """
+        """Yield curve: y_t(n) = -(A_bar_n + B_n'x_t) / n."""
         A_bar, B = self.bond_coefficients(n_max)
-        ns = np.arange(1, n_max + 1)
-        return np.array([(-A_bar[n] - B[n] @ x) / n for n in ns])
+        return np.array([(-A_bar[n] - B[n] @ x) / n
+                         for n in range(1, n_max + 1)])
 
     def simulate(self, x0, T, rng=None):
-        """Simulate state path under the econometrician's model."""
+        """Simulate under the econometrician's model."""
         if rng is None:
             rng = np.random.default_rng(42)
         X = np.zeros((T + 1, self.n))
         X[0] = x0
         for t in range(T):
-            eps = rng.standard_normal(self.k)
-            X[t + 1] = self.A @ X[t] + self.C @ eps
+            X[t + 1] = self.A @ X[t] + self.C @ rng.standard_normal(self.k)
         return X
 
     def simulate_twisted(self, x0, T, rng=None):
-        """Simulate state path under the risk-neutral (twisted) model."""
+        """Simulate under the risk-neutral (twisted) model."""
         if rng is None:
             rng = np.random.default_rng(42)
         X = np.zeros((T + 1, self.n))
         X[0] = x0
         for t in range(T):
-            eps = rng.standard_normal(self.k)
-            X[t + 1] = self.A_Q @ X[t] + self.C @ eps
+            X[t + 1] = self.A_Q @ X[t] + self.C @ rng.standard_normal(self.k)
         return X
 ```
 
@@ -420,7 +383,6 @@ We set up a two-factor model with a persistent "level" factor and a
 less persistent "slope" factor, mimicking the U.S. yield curve.
 
 ```{code-cell} ipython3
-# ── Two-factor model ───────────────────────────────────────────────────────────
 A = np.array([[0.97, -0.03],
               [0.00,  0.90]])
 
@@ -430,15 +392,14 @@ C = np.array([[0.007, 0.000],
 D = np.array([[0.5, 0.3]])       # consumption growth loading
 G = np.array([[0.004, 0.003]])    # consumption shock loading
 
-delta_0 = 0.004                   # short rate intercept (~4.8% annual)
-r_bar = np.array([0.06, 0.04])    # short rate state loading: r_t = δ₀ + r̄'x_t
+δ_0 = 0.004                      # short rate intercept (~4.8% annual)
+r_bar = np.array([0.06, 0.04])   # short rate loading
 
-# Risk prices: λ_t = Λ x_t  (state-dependent)
-# Λ must be chosen so that A_Q = A - C Λ is stable (eigenvalues inside unit circle)
+# Risk prices: λ_t = Λ x_t (state-dependent)
 Λ = np.array([[-3.0,  0.0],
               [ 0.0, -6.0]])
 
-model = LikelihoodRatioModel(A, C, D, G, r_bar, Λ, delta_0=delta_0)
+model = LikelihoodRatioModel(A, C, D, G, r_bar, Λ, δ_0=δ_0)
 
 print(f"Eigenvalues of A:   {eigvals(A).round(4)}")
 print(f"Eigenvalues of A_Q: {eigvals(model.A_Q).round(4)}")
@@ -462,10 +423,10 @@ for label, x in states.items():
     y = model.yields(x, n_max) * 1200    # annualise (monthly → ×1200)
     ax.plot(maturities, y, lw=2, label=label)
 
-ax.set_xlabel("Maturity (months)", fontsize=13)
-ax.set_ylabel("Yield (annualised %)", fontsize=13)
-ax.set_title("Yield Curves Under Different States", fontsize=14)
-ax.legend(fontsize=11)
+ax.set_xlabel("Maturity (months)")
+ax.set_ylabel("Yield (annualised %)")
+ax.set_title("Yield curves under different states")
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
@@ -477,40 +438,37 @@ $x_{t+1} = (A - C\Lambda)\,x_t + C\,\tilde\varepsilon_{t+1}$
 differ from the econometrician's dynamics $x_{t+1} = A\,x_t + C\,\varepsilon_{t+1}$.
 
 ```{code-cell} ipython3
-print("Econometrician's transition matrix A:")
-print(model.A)
-print("\nRisk-neutral transition matrix A_Q = A - C Λ:")
-print(model.A_Q)
+print("A:\n", model.A)
+print("\nA_Q = A - CΛ:\n", model.A_Q)
 print(f"\nEigenvalues of A:   {eigvals(model.A).round(4)}")
 print(f"Eigenvalues of A_Q: {eigvals(model.A_Q).round(4)}")
 ```
 
 ```{code-cell} ipython3
-# Compare simulated paths under the two models
 T = 300
 x0 = np.array([0.01, 0.005])
 rng1 = np.random.default_rng(123)
-rng2 = np.random.default_rng(123)   # same seed for comparability
+rng2 = np.random.default_rng(123)  # same seed for comparability
 
 X_econ = model.simulate(x0, T, rng=rng1)
 X_rn   = model.simulate_twisted(x0, T, rng=rng2)
 
 fig, axes = plt.subplots(2, 1, figsize=(10, 7), sharex=True)
+for i, (ax, lab) in enumerate(zip(axes, ["Level factor", "Slope factor"])):
+    ax.plot(X_econ[:, i], 'steelblue', lw=1.2,
+            label="Econometrician (P)")
+    ax.plot(X_rn[:, i], 'firebrick', lw=1.2,
+            alpha=0.8, label="Risk-neutral (Q)")
+    ax.set_ylabel(lab)
+    ax.legend()
 
-labels = ["Level factor", "Slope factor"]
-for i, (ax, lab) in enumerate(zip(axes, labels)):
-    ax.plot(X_econ[:, i], 'steelblue', lw=1.2, label="Econometrician's model (P)")
-    ax.plot(X_rn[:, i], 'firebrick', lw=1.2, alpha=0.8, label="Risk-neutral model (Q)")
-    ax.set_ylabel(lab, fontsize=12)
-    ax.legend(fontsize=10)
-
-axes[1].set_xlabel("Period", fontsize=12)
-axes[0].set_title("State Paths: Physical vs. Risk-Neutral Dynamics", fontsize=13)
+axes[1].set_xlabel("Period")
+axes[0].set_title("State paths: physical vs. risk-neutral")
 plt.tight_layout()
 plt.show()
 ```
 
-## An Identification Challenge
+## An identification challenge
 
 The vector $\lambda_t$ can be interpreted as either:
 
@@ -523,52 +481,45 @@ interpretations, and so are the econometric fits.
 
 > Relative to the model of a risk-averse representative investor with rational
 > expectations, a model of a risk-neutral investor with appropriately mistaken
-> beliefs produces **observationally equivalent** predictions.
+> beliefs produces *observationally equivalent* predictions.
 
 This insight was articulated by {cite:t}`HST_1999` and
 {cite:t}`piazzesi2015trend`.
 
 To distinguish risk aversion from belief distortion, one needs either
-**more information** (the PSS approach using survey data) or **more theory**
+*more information* (the PSS approach using survey data) or *more theory*
 (the Hansen–Szőke robust control approach), or both (the {cite:t}`szoke2022estimating` approach).
 
 ```{code-cell} ipython3
-# ── Observational equivalence ──────────────────────────────────────────────────
-# A risk-averse agent with rational expectations (λ_t = Λ x_t)
-# produces the same bond prices as a risk-neutral agent with
-# beliefs (A*, C) = (A - C Λ, C).
-
-# Show that yields are identical
 x_test = np.array([0.01, 0.005])
 y_risk_averse = model.yields(x_test, 60) * 1200
 
-# Build "mistaken belief" model: zero risk prices but twisted A
+# "Mistaken belief" model: zero risk prices but twisted A
 model_mistaken = LikelihoodRatioModel(
-    A=model.A_Q,   # agent uses A* = A - C Λ as transition
-    C=C, D=D, G=G,
-    r_bar=r_bar,
-    Λ=np.zeros_like(Λ),  # zero risk prices (risk neutral)
-    delta_0=delta_0
+    A=model.A_Q, C=C, D=D, G=G,
+    r_bar=r_bar, Λ=np.zeros_like(Λ), δ_0=δ_0
 )
 y_mistaken = model_mistaken.yields(x_test, 60) * 1200
 
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.plot(np.arange(1, 61), y_risk_averse, 'steelblue', lw=3, label='Risk averse + rational expectations')
-ax.plot(np.arange(1, 61), y_mistaken, 'firebrick', lw=1.5, ls='--', label='Risk neutral + mistaken beliefs')
-ax.set_xlabel("Maturity (months)", fontsize=13)
-ax.set_ylabel("Yield (annualised %)", fontsize=13)
-ax.set_title("Observational Equivalence", fontsize=14)
-ax.legend(fontsize=11)
+ax.plot(np.arange(1, 61), y_risk_averse, 'steelblue', lw=3,
+        label='Risk averse + rational expectations')
+ax.plot(np.arange(1, 61), y_mistaken, 'firebrick', lw=1.5, ls='--',
+        label='Risk neutral + mistaken beliefs')
+ax.set_xlabel("Maturity (months)")
+ax.set_ylabel("Yield (annualised %)")
+ax.set_title("Observational equivalence")
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
 
-The two yield curves are identical. Without additional information
-(e.g., surveys of forecasters), we cannot tell them apart from asset
-price data alone.
+The two yield curves are identical.
+
+Without additional information (e.g., surveys of forecasters), we cannot tell them apart from asset price data alone.
 
 
-## More Information: Experts' Forecasts (PSS)
+## More information: experts' forecasts (PSS)
 
 ### The PSS framework
 
@@ -600,23 +551,19 @@ PSS proceed in four steps:
 
 An econometrician who mistakenly imposes rational expectations estimates risk
 prices $\lambda_t$ that sum two parts:
-- **smaller risk prices** $\lambda_t^*$ actually charged by the erroneous-beliefs
+- *smaller risk prices* $\lambda_t^*$ actually charged by the erroneous-beliefs
   representative agent, and
-- **conditional mean distortions** $w_t^*$ of the risks $\varepsilon_{t+1}$ that
+- *conditional mean distortions* $w_t^*$ of the risks $\varepsilon_{t+1}$ that
   the twisted-beliefs representative agent's model displays relative to the
   econometrician's.
 
 ### Numerical illustration
 
 ```{code-cell} ipython3
-# ── PSS decomposition λ = λ* + w* ─────────────────────────────────────────────
-
-# Econometrician's transition
 A_econ = np.array([[0.97, -0.03],
                    [0.00,  0.90]])
 
-# Experts' subjective transition (more persistent)
-A_star = np.array([[0.985, -0.025],
+A_star = np.array([[0.985, -0.025],   # experts' subjective transition
                    [0.000,  0.955]])
 
 C_mat = np.array([[0.007, 0.000],
@@ -624,81 +571,72 @@ C_mat = np.array([[0.007, 0.000],
 
 # Belief distortion: w* = -C⁻¹(A* - A)
 w_star = -inv(C_mat) @ (A_star - A_econ)
-print("Belief distortion w*:")
-print(w_star.round(3))
 
-# RE econometrician's total risk prices (must match Λ used earlier)
 Λ_total = np.array([[-3.0,  0.0],
                     [ 0.0, -6.0]])
+Λ_true = Λ_total - w_star   # true risk prices
 
-# True risk prices (what the agent actually charges)
-Λ_true = Λ_total - w_star
-print("\nTotal risk prices (RE econometrician's Λ):")
-print(Λ_total.round(3))
-print("\nTrue risk prices (Λ*):")
-print(Λ_true.round(3))
-print("\nBelief distortion (w*):")
-print(w_star.round(3))
+print("Belief distortion w*:\n", w_star.round(3))
+print("\nTotal risk prices Λ:\n", Λ_total.round(3))
+print("\nTrue risk prices Λ*:\n", Λ_true.round(3))
 ```
 
 ```{code-cell} ipython3
-# Compare state-dependent risk prices across states
 x_grid = np.linspace(-0.02, 0.04, 200)
-
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-factor_labels = ["Level factor risk price", "Slope factor risk price"]
-
-for i, (ax, lab) in enumerate(zip(axes, factor_labels)):
-    # Total λ_t = Λ x_t  (for factor i, varying x_i, other factor at median)
+for i, (ax, lab) in enumerate(zip(axes,
+        ["Level factor risk price", "Slope factor risk price"])):
     x_vals = np.zeros((200, 2))
     x_vals[:, i] = x_grid
     x_vals[:, 1 - i] = 0.005
 
-    lam_total = np.array([Λ_total @ x for x in x_vals])[:, i]
-    lam_true  = np.array([Λ_true @ x  for x in x_vals])[:, i]
-    w_dist    = np.array([w_star @ x   for x in x_vals])[:, i]
+    λ_total = np.array([Λ_total @ x for x in x_vals])[:, i]
+    λ_true  = np.array([Λ_true @ x  for x in x_vals])[:, i]
 
-    ax.plot(x_grid, lam_total, 'steelblue', lw=2, label=r"$\lambda_t$ (RE econometrician)")
-    ax.plot(x_grid, lam_true, 'seagreen', lw=2, label=r"$\lambda^*_t$ (true risk price)")
-    ax.fill_between(x_grid, lam_true, lam_total, alpha=0.15, color='firebrick',
+    ax.plot(x_grid, λ_total, 'steelblue', lw=2,
+            label=r"$\lambda_t$ (RE econometrician)")
+    ax.plot(x_grid, λ_true, 'seagreen', lw=2,
+            label=r"$\lambda^*_t$ (true risk price)")
+    ax.fill_between(x_grid, λ_true, λ_total, alpha=0.15, color='firebrick',
                     label=r"$w^*_t$ (belief distortion)")
     ax.axhline(0, color='black', lw=0.5)
-    ax.set_xlabel(f"State $x_{{{i+1},t}}$", fontsize=12)
-    ax.set_ylabel(lab, fontsize=12)
-    ax.legend(fontsize=10)
+    ax.set_xlabel(f"State $x_{{{i+1},t}}$")
+    ax.set_ylabel(lab)
+    ax.legend()
 
-axes[0].set_title("PSS Decomposition: Level", fontsize=13)
-axes[1].set_title("PSS Decomposition: Slope", fontsize=13)
+axes[0].set_title("PSS decomposition: level")
+axes[1].set_title("PSS decomposition: slope")
 plt.tight_layout()
 plt.show()
 ```
 
-PSS find that experts perceive the level and slope of the yield curve to be
-**more persistent** than the econometrician's estimates imply. Subjective risk
-prices $\lambda^* x_t$ vary less than the $\lambda x_t$ estimated by the
-rational-expectations econometrician.
+PSS find that experts perceive the level and slope of the yield curve to be *more persistent* than the econometrician's estimates imply.
+
+Subjective risk prices $\lambda^* x_t$ vary less than the $\lambda x_t$ estimated by the rational-expectations econometrician.
 
 
-## Rationalizing Rational Expectations
+## Rationalizing rational expectations
 
 ### The informal justification
 
-The standard justification for rational expectations treats it as the outcome of
-learning from an infinite history: least-squares learning converges to rational
-expectations. The argument requires that:
+The standard justification for rational expectations treats it as the outcome of learning from an infinite history: least-squares learning converges to rational expectations.
+
+The argument requires that:
 
 - agents know correct functional forms, and
 - a stochastic approximation argument partitions dynamics into a fast part
   (that justifies a law of large numbers) and a slow part (that justifies an ODE).
 
-However, long intertemporal dependencies make **rates of convergence slow**.
+However, long intertemporal dependencies make *rates of convergence slow*.
 
 ### Good econometricians
 
 Good econometricians have limited data and only hunches about functional forms.
-They fear that their fitted models are incorrect. An agent who is like a good
-econometrician:
+
+They fear that their fitted models are incorrect.
+
+An agent who is like a good econometrician:
 
 - has a parametric model estimated from limited data,
 - acknowledges that many other specifications fit nearly as well — other parameter
@@ -708,7 +646,7 @@ econometrician:
 - seeks "good enough" decisions under *all* such alternative models — **robustness**.
 
 
-## A Theory of Belief Distortions: Robust Control
+## A theory of belief distortions: robust control
 
 ### Hansen's dubious agent
 
@@ -718,7 +656,7 @@ Inspired by robust control theory, consider a dubious investor who:
 - expresses doubts by using a continuum of likelihood ratios to form a **discounted
   entropy ball** of size $\eta$ around the econometrician's model,
 - wants a valuation that is good for every model in the entropy ball, and
-- constructs a **lower bound** on values and a **worst-case model** that attains it.
+- constructs a *lower bound* on values and a *worst-case model* that attains it.
 
 ### Valuation under the econometrician's model
 
@@ -768,9 +706,8 @@ Discounted entropy ball around the econometrician's model.
 ### Why discounted entropy?
 
 Discounted entropy includes models that undiscounted entropy excludes.
-Undiscounted entropy over infinite sequences excludes many models that are very
-difficult to distinguish from the econometrician's model with limited data,
-because undiscounted entropy includes only models that share laws of large numbers.
+
+Undiscounted entropy over infinite sequences excludes many models that are very difficult to distinguish from the econometrician's model with limited data, because undiscounted entropy includes only models that share laws of large numbers.
 
 ### Entropy and the likelihood ratio
 
@@ -806,73 +743,54 @@ $$
 
 ### Outcome: constant worst-case distortion
 
-The worst-case mean distortion turns out to be a **constant vector**:
+The worst-case mean distortion turns out to be a *constant vector*:
 
 $$
 w_t = \bar{w}
 $$
 
-The consequence is that the contribution of $w_t$ to risk prices is
-**state-independent**. This does *not* help explain countercyclical prices of
-risk (or prices of model uncertainty).
+The consequence is that the contribution of $w_t$ to risk prices is *state-independent*.
+
+This does *not* help explain countercyclical prices of risk (or prices of model uncertainty).
 
 ```{code-cell} ipython3
-# ── Hansen's dubious agent: constant worst-case distortion ─────────────────────
-
-def hansen_worst_case(A, C, D, G, beta, theta):
-    """
-    Compute the constant worst-case distortion w_bar for Hansen's
-    dubious agent with multiplier θ.
-
-    The value function V(x, c) = c/(1-β) + v'x has linear coefficients
-    v = β(I - βA')⁻¹ D'/(1-β). The FOC for the worst-case distortion is:
-
-        w_bar = (1/θ) [β/(1-β) G' + β C' v]
-
-    This is a constant vector — it does not depend on x_t.
-    """
+def hansen_worst_case(A, C, D, G, β, θ):
+    """Constant worst-case distortion w_bar for Hansen's dubious agent."""
     n = A.shape[0]
-    # Value coefficients: v = β(I - βA')⁻¹ D' / (1-β)
-    v = beta * np.linalg.solve(np.eye(n) - beta * A.T, D.T.flatten()) / (1 - beta)
-
-    # Worst-case distortion from FOC:
-    w_bar = (1.0 / theta) * (beta / (1 - beta) * G.T.flatten()
-                              + beta * C.T @ v)
-
+    v = β * np.linalg.solve(np.eye(n) - β * A.T, D.T.flatten()) / (1 - β)
+    w_bar = (1.0 / θ) * (β / (1 - β) * G.T.flatten() + β * C.T @ v)
     return w_bar
 
 
-beta = 0.995
-theta_values = [0.5, 1.0, 2.0, 5.0]
+β = 0.995
+θ_values = [0.5, 1.0, 2.0, 5.0]
 
 print(f"{'θ':>6}  {'w_bar[0]':>10}  {'w_bar[1]':>10}  {'Entropy':>10}")
 print("-" * 42)
-
-for theta in theta_values:
-    w = hansen_worst_case(A, C, D, G, beta, theta)
-    ent = 0.5 * w @ w
-    print(f"{theta:>6.1f}  {w[0]:>10.4f}  {w[1]:>10.4f}  {ent:>10.4f}")
+for θ in θ_values:
+    w = hansen_worst_case(A, C, D, G, β, θ)
+    print(f"{θ:>6.1f}  {w[0]:>10.4f}  {w[1]:>10.4f}  {0.5 * w @ w:>10.4f}")
 ```
 
-The worst-case distortion $\bar{w}$ is constant — it does not depend on
-the state $x_t$. Larger $\theta$ (less concern about misspecification)
-yields a smaller distortion.
+The worst-case distortion $\bar{w}$ is constant — it does not depend on the state $x_t$.
+
+Larger $\theta$ (less concern about misspecification) yields a smaller distortion.
 
 
-## Tilting the Entropy Ball
+## Tilting the entropy ball
 
 ### Hansen and Szőke's more refined dubious agent
 
-To generate **state-dependent** uncertainty prices, Hansen and Szőke introduce a
+To generate *state-dependent* uncertainty prices, Hansen and Szőke introduce a
 more refined dubious agent who:
 
 - shares the econometrician's model $A$, $C$, $D$, $G$,
 - expresses doubts by using a continuum of likelihood ratios to form a
-  discounted entropy ball around the econometrician's model, **and**
+  discounted entropy ball around the econometrician's model, *and*
 - also insists that some martingales representing particular alternative
   *parametric* models be included in the discounted entropy ball.
 
-The inclusion of those alternative parametric models **tilts** the entropy ball,
+The inclusion of those alternative parametric models *tilts* the entropy ball,
 which affects the worst-case model in a way that can produce countercyclical
 uncertainty prices.
 
@@ -898,10 +816,9 @@ This is accomplished by replacing the earlier entropy constraint with
 \frac{1}{2}\,E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,w_t' w_t \;\middle|\; x_0, c_0\right] \leq E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,\xi(x_t) \;\middle|\; x_0, c_0\right]
 ```
 
-The time-$t$ contributions to the right-hand side of {eq}`eq_tilted_constraint`
-relax the discounted entropy constraint in states $x_t$ in which $\xi(x_t)$ is
-larger. This sets the stage for **state-dependent** mean distortions in the
-worst-case model.
+The time-$t$ contributions to the right-hand side of {eq}`eq_tilted_constraint` relax the discounted entropy constraint in states $x_t$ in which $\xi(x_t)$ is larger.
+
+This sets the stage for *state-dependent* mean distortions in the worst-case model.
 
 ### Concern about bigger long-run risk
 
@@ -918,7 +835,7 @@ $$
 \bar{w} = -C^{-1}(\bar{A} - A)
 $$
 
-which implies a **quadratic** $\xi$ function:
+which implies a *quadratic* $\xi$ function:
 
 ```{math}
 :label: eq_xi
@@ -946,7 +863,7 @@ $$
 c_{t+1} - c_t = D\,x_t + G\,(\tilde\varepsilon_{t+1} - w_t), \qquad x_{t+1} = A\,x_t + C\,(\tilde\varepsilon_{t+1} - w_t)
 $$
 
-The worst-case shock mean distortion is now **state-dependent**:
+The worst-case shock mean distortion is now *state-dependent*:
 
 $$
 \tilde{w}_t = \tilde{w}\,x_t
@@ -965,73 +882,37 @@ class TiltedEntropyModel:
     """
     Hansen–Szőke tilted entropy ball model.
 
-    The agent fears alternative parametric models with
-    more long-run risk, parameterised by Ξ = w̄' w̄.
-
-    Given (A, C, D, G, β, θ̃, Ξ), compute the worst-case
-    state-dependent distortion w̃_t = w̃ x_t.
-
-    Parameters
-    ----------
-    A, C, D, G : arrays  —  econometrician's model
-    beta : float  —  discount factor
-    theta : float  —  robustness parameter (Lagrange multiplier)
-    Xi : array (n, n)  —  tilting matrix from feared parametric model
+    Given (A, C, D, G, β, θ, Ξ), computes the worst-case
+    state-dependent distortion w_tilde_t = W_tilde x_t.
     """
 
-    def __init__(self, A, C, D, G, beta, theta, Xi):
+    def __init__(self, A, C, D, G, β, θ, Ξ):
         self.A = np.atleast_2d(A).astype(float)
         self.C = np.atleast_2d(C).astype(float)
         self.D = np.atleast_2d(D).astype(float)
         self.G = np.atleast_2d(G).astype(float)
-        self.beta = float(beta)
-        self.theta = float(theta)
-        self.Xi = np.atleast_2d(Xi).astype(float)
+        self.β, self.θ = float(β), float(θ)
+        self.Ξ = np.atleast_2d(Ξ).astype(float)
         self.n = self.A.shape[0]
 
-        # Solve for the worst-case distortion
         self.w_tilde = self._solve_worst_case()
-
-        # Worst-case transition
         self.A_tilde = self.A - self.C @ self.w_tilde
         self.D_tilde = self.D - self.G @ self.w_tilde
 
     def _solve_worst_case(self):
-        """
-        Solve for the worst-case distortion matrix W̃ such that
-        w̃_t = W̃ x_t.
+        """Iterate on (P, W) system to find worst-case W_tilde."""
+        n, k = self.n, self.C.shape[1]
+        β, θ = self.β, self.θ
 
-        Under the tilted entropy ball, the quadratic value function
-        V(x) = x'Px satisfies the Bellman equation:
-
-            P = -(θ/2) Ξ + (θ/2) W̃'W̃ + β (A - C W̃)' P (A - C W̃)
-
-        where the FOC for W̃ gives:
-
-            W̃ = (θ I + 2β C'PC)⁻¹ · 2β C'PA
-
-        We iterate on these two equations until convergence.
-        """
-        n = self.n
-        k = self.C.shape[1]
-        beta = self.beta
-        theta = self.theta
-
-        # Iterate on (P, W) system
         P = np.zeros((n, n))
         for _ in range(2000):
-            # FOC: W = (θI + 2βC'PC)⁻¹ · 2βC'PA
-            M = theta * np.eye(k) + 2 * beta * self.C.T @ P @ self.C
-            W = np.linalg.solve(M, 2 * beta * self.C.T @ P @ self.A)
-
-            # Bellman (quadratic part):
-            # P = -(θ/2)Ξ + (θ/2)W'W + β(A - CW)'P(A - CW)
+            M = θ * np.eye(k) + 2 * β * self.C.T @ P @ self.C
+            W = np.linalg.solve(M, 2 * β * self.C.T @ P @ self.A)
             A_w = self.A - self.C @ W
-            P_new = (-(theta / 2) * self.Xi
-                     + (theta / 2) * W.T @ W
-                     + beta * A_w.T @ P @ A_w)
-            P_new = 0.5 * (P_new + P_new.T)  # symmetrise
-
+            P_new = (-(θ / 2) * self.Ξ
+                    + (θ / 2) * W.T @ W
+                    + β * A_w.T @ P @ A_w)
+            P_new = 0.5 * (P_new + P_new.T)
             if np.max(np.abs(P_new - P)) < 1e-12:
                 break
             P = P_new
@@ -1040,100 +921,72 @@ class TiltedEntropyModel:
         return W
 
     def worst_case_distortion(self, x):
-        """State-dependent worst-case distortion w̃_t = w̃ x_t."""
         return self.w_tilde @ x
 
     def conditional_entropy(self, x):
-        """½ w̃_t' w̃_t — conditional entropy of worst-case model."""
         w = self.worst_case_distortion(x)
         return 0.5 * w @ w
 
     def xi_function(self, x):
-        """ξ(x_t) = x_t' Ξ x_t — entropy of feared parametric model."""
-        return x @ self.Xi @ x
+        return x @ self.Ξ @ x
 ```
 
 ```{code-cell} ipython3
-# ── Set up the feared parametric model ─────────────────────────────────────────
-
-# The agent fears an alternative with more persistent state dynamics
+# Feared parametric model: more persistent dynamics
 A_bar = np.array([[0.995, -0.03],
                   [0.000,  0.96]])
 
-# Implied distortion of the feared model
 w_bar = -inv(C) @ (A_bar - A)
-Xi = w_bar.T @ w_bar
+Ξ = w_bar.T @ w_bar
 
-print("Feared model's transition A̅:")
-print(A_bar)
-print("\nImplied distortion w̄ = -C⁻¹(A̅ - A):")
-print(w_bar.round(3))
-print("\nTilting matrix Ξ = w̄'w̄:")
-print(Xi.round(1))
+print("Feared transition A_bar:\n", A_bar)
+print("\nImplied distortion w_bar:\n", w_bar.round(3))
+print("\nTilting matrix Ξ:\n", Ξ.round(1))
 ```
 
 ```{code-cell} ipython3
-# ── Solve the tilted entropy model ─────────────────────────────────────────────
-theta_tilt = 3.0
-tilted = TiltedEntropyModel(A, C, D, G, beta, theta_tilt, Xi)
+θ_tilt = 3.0
+tilted = TiltedEntropyModel(A, C, D, G, β, θ_tilt, Ξ)
 
-print("Worst-case distortion matrix w̃:")
-print(tilted.w_tilde.round(4))
-print("\nWorst-case transition Ã = A - C w̃:")
-print(tilted.A_tilde.round(4))
+print("Worst-case distortion W_tilde:\n", tilted.w_tilde.round(4))
+print("\nWorst-case transition A_tilde:\n", tilted.A_tilde.round(4))
 print(f"\nEigenvalues of A:  {eigvals(A).round(4)}")
-print(f"Eigenvalues of Ã: {eigvals(tilted.A_tilde).round(4)}")
+print(f"Eigenvalues of A_tilde: {eigvals(tilted.A_tilde).round(4)}")
 ```
 
 ### State-dependent entropy: the key innovation
 
 ```{code-cell} ipython3
-# ── Compare state-dependent vs. constant distortions ───────────────────────────
-
 x_grid = np.linspace(-0.03, 0.04, 200)
 
-# State-dependent (Szőke): w̃_t = w̃ x_t depends on x
-# Conditional entropy ½ w̃_t'w̃_t is quadratic in x — a parabola
-entropy_tilted = np.array([
-    tilted.conditional_entropy(np.array([x, 0.005]))
-    for x in x_grid
-])
-
-# ξ(x_t) = x_t' Ξ x_t — entropy of the feared parametric model
-# This provides the entropy "budget" that the tilting makes available
-xi_vals = np.array([
-    tilted.xi_function(np.array([x, 0.005]))
-    for x in x_grid
-])
+entropy_tilted = np.array([tilted.conditional_entropy(np.array([x, 0.005]))
+                           for x in x_grid])
+ξ_vals = np.array([tilted.xi_function(np.array([x, 0.005]))
+                    for x in x_grid])
 
 fig, ax = plt.subplots(figsize=(9, 5))
-
-# Hansen's constant distortion contributes zero *state-dependent* entropy
 ax.axhline(0, color='steelblue', lw=2, ls='--',
-           label=r"Hansen: constant $\bar{w}$ (no state dependence)")
-
+           label=r"Hansen: constant $\bar{w}$")
 ax.plot(x_grid, entropy_tilted, 'firebrick', lw=2,
-        label=r"Szőke: $\frac{1}{2}\tilde{w}_t'\tilde{w}_t$"
-              r"$= \frac{1}{2} x_t' \tilde{W}'\tilde{W} x_t$")
-ax.plot(x_grid, 0.5 * xi_vals, 'seagreen', lw=1.5, ls=':',
-        label=r"Feared model: $\frac{1}{2}\xi(x_t) = \frac{1}{2} x_t' \Xi x_t$")
-
-ax.set_xlabel(r"Level factor $x_{1,t}$", fontsize=13)
-ax.set_ylabel("State-dependent conditional entropy", fontsize=13)
-ax.set_title("State-Dependent vs. Constant Worst-Case Distortions", fontsize=14)
-ax.legend(fontsize=11)
+        label=r"Szőke: $\frac{1}{2}\tilde{w}_t'\tilde{w}_t$")
+ax.plot(x_grid, 0.5 * ξ_vals, 'seagreen', lw=1.5, ls=':',
+        label=r"Feared model: $\frac{1}{2}\xi(x_t)$")
+ax.set_xlabel(r"Level factor $x_{1,t}$")
+ax.set_ylabel("State-dependent conditional entropy")
+ax.set_title("State-dependent vs. constant worst-case distortions")
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
 
-The key innovation of the tilted entropy ball is visible: the Szőke worst-case
-distortion $\tilde{w}_t = \tilde{W}\,x_t$ grows with $|x_t|$, producing
-**countercyclical uncertainty prices**. When the state is far from its mean,
-the agent's worst-case model deviates more from the econometrician's model.
-By contrast, Hansen's constant distortion $\bar{w}$ contributes nothing
-state-dependent. Note that the Szőke parabola lies inside the feared model's
-entropy budget $\frac{1}{2}\xi(x_t)$, confirming the worst-case distortion
-respects the tilted entropy constraint.
+The key innovation of the tilted entropy ball is visible: the Szőke worst-case distortion $\tilde{w}_t = \tilde{W}\,x_t$ grows with $|x_t|$, producing *countercyclical uncertainty prices*.
+
+
+When the state is far from its mean, the agent's worst-case model deviates more from the econometrician's model.
+
+By contrast, Hansen's constant distortion $\bar{w}$ contributes nothing state-dependent.
+
+The Szőke parabola lies inside the feared model's entropy budget $\frac{1}{2}\xi(x_t)$, confirming the worst-case distortion respects the tilted entropy constraint.
 
 ### Three probability twisters
 
@@ -1146,46 +999,36 @@ To summarize, three distinct probability twisters play roles in this analysis:
 | $\tilde{w}_t$  | Szőke's worst-case model      | Worst-case distortion             |
 
 ```{code-cell} ipython3
-# ── Visualise the three probability twisters ───────────────────────────────────
-
-x_state = np.array([0.02, 0.008])   # a particular state
-
-# PSS mistaken beliefs
-w_pss = w_star @ x_state
-
-# Feared parametric model
+x_state = np.array([0.02, 0.008])
+w_pss    = w_star @ x_state
 w_feared = w_bar @ x_state
+w_szoke  = tilted.worst_case_distortion(x_state)
 
-# Szőke worst case
-w_szoke = tilted.worst_case_distortion(x_state)
-
-eps_grid = np.linspace(-4, 4, 500)
+ε_grid = np.linspace(-4, 4, 500)
+ϕ_base = normal_dist.pdf(ε_grid, 0, 1)
 
 fig, ax = plt.subplots(figsize=(9, 5))
+ax.plot(ε_grid, ϕ_base, 'black', lw=2,
+        label='Econometrician: $\\mathcal{N}(0,1)$')
 
-# Baseline density
-phi_base = normal_dist.pdf(eps_grid, 0, 1)
-ax.plot(eps_grid, phi_base, 'black', lw=2, label='Econometrician: $\\mathcal{N}(0,1)$')
-
-# Twist by each distortion (show first component)
 for w_val, label, color, ls in [
     (w_pss[0], r"PSS mistaken $w^*_t$", 'steelblue', '-'),
     (w_feared[0], r"Feared LRR $\bar{w}_t$", 'seagreen', '--'),
     (w_szoke[0], r"Szőke worst-case $\tilde{w}_t$", 'firebrick', '-'),
 ]:
-    phi_tw = normal_dist.pdf(eps_grid, -w_val, 1)
-    ax.plot(eps_grid, phi_tw, color=color, lw=2, ls=ls, label=label)
+    ax.plot(ε_grid, normal_dist.pdf(ε_grid, -w_val, 1),
+            color=color, lw=2, ls=ls, label=label)
 
-ax.set_xlabel(r"$\varepsilon_1$", fontsize=13)
-ax.set_ylabel("Density", fontsize=13)
-ax.set_title("Three Probability Twisters (First Shock Component)", fontsize=14)
-ax.legend(fontsize=10)
+ax.set_xlabel(r"$\varepsilon_1$")
+ax.set_ylabel("Density")
+ax.set_title("Three probability twisters (first shock component)")
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
 
 
-## Empirical Challenges and Model Performances
+## Empirical challenges and model performances
 
 ```{figure} /_static/lecture_specific/risk_aversion_or_mistaken_beliefs/fig1_tom.png
 U.S. term structure of interest rates.
@@ -1193,14 +1036,14 @@ U.S. term structure of interest rates.
 
 Several recognised patterns characterise the U.S. term structure:
 
-- The nominal yield curve usually slopes **upward**.
-- The long-minus-short yield spread **narrows before** U.S. recessions and
-  **widens after** them.
-- Consequently, the slope of the yield curve helps **predict** aggregate inputs
+- The nominal yield curve usually slopes *upward*.
+- The long-minus-short yield spread *narrows before* U.S. recessions and
+  *widens after* them.
+- Consequently, the slope of the yield curve helps *predict* aggregate inputs
   and outputs.
-- Long and short yields are **almost equally volatile** (the Shiller "volatility puzzle").
+- Long and short yields are *almost equally volatile* (the Shiller "volatility puzzle").
 - To solve the Shiller puzzle, risk prices (or something observationally equivalent)
-  must **depend on volatile state variables**.
+  must *depend on volatile state variables*.
 
 The following table summarises how various models perform:
 
@@ -1209,60 +1052,51 @@ The following table summarises how various models perform:
 | {cite:t}`Lucas1978`            | no            | no                     | no                  |
 | Epstein–Zin with LRR           | maybe         | yes                    | no                  |
 | {cite:t}`piazzesi2015trend`    | built-in      | built-in               | yes                 |
-| {cite:t}`szoke2022estimating`  | **YES**       | yes                    | yes                 |
+| {cite:t}`szoke2022estimating`  | *YES*       | yes                    | yes                 |
 
 ### Why Szőke's model succeeds
 
 Szőke's framework delivers:
 
-1. A theory of **state-dependent belief distortions** $\tilde{w}_t = \tilde{w}\,x_t$.
-2. A theory about the **question that professional forecasters answer**: they
+1. A theory of *state-dependent belief distortions* $\tilde{w}_t = \tilde{w}\,x_t$.
+2. A theory about the *question that professional forecasters answer*: they
    respond with their worst-case model because they hear "tell me forecasts that
    rationalise your (max-min) decisions."
-3. A way to **measure** the size of belief distortions relative to the
+3. A way to *measure* the size of belief distortions relative to the
    econometrician's model.
 
 ```{code-cell} ipython3
-# ── Yield curve comparison: models with different risk price structures ─────────
-
-# Risk-neutral model (no risk prices)
-model_rn = LikelihoodRatioModel(A, C, D, G, r_bar, Λ=np.zeros((2, 2)), delta_0=delta_0)
-
-# Model uncertainty only (Szőke worst-case distortion W̃ replaces risk prices)
-# Under this interpretation, W̃ x_t alone explains the term premium
-model_uncert = LikelihoodRatioModel(A, C, D, G, r_bar, Λ=tilted.w_tilde, delta_0=delta_0)
+model_rn = LikelihoodRatioModel(
+    A, C, D, G, r_bar, Λ=np.zeros((2, 2)), δ_0=δ_0)
+model_uncert = LikelihoodRatioModel(
+    A, C, D, G, r_bar, Λ=tilted.w_tilde, δ_0=δ_0)
 
 x_test = np.array([0.01, 0.005])
 n_max = 120
 mats = np.arange(1, n_max + 1)
 
 fig, ax = plt.subplots(figsize=(9, 5))
-
-y_rn = model_rn.yields(x_test, n_max) * 1200
-y_ra = model.yields(x_test, n_max) * 1200
-y_unc = model_uncert.yields(x_test, n_max) * 1200
-
-ax.plot(mats, y_rn, 'grey', lw=1.5, ls=':', label='Risk neutral (no risk adjustment)')
-ax.plot(mats, y_ra, 'steelblue', lw=2,
-        label=r'Risk aversion only ($\Lambda x_t$)')
-ax.plot(mats, y_unc, 'firebrick', lw=2, ls='--',
-        label=r'Model uncertainty only ($\tilde{W} x_t$)')
-
-ax.set_xlabel("Maturity (months)", fontsize=13)
-ax.set_ylabel("Yield (annualised %)", fontsize=13)
-ax.set_title("Yield Curves: Alternative Sources of Term Premia", fontsize=14)
-ax.legend(fontsize=11)
+ax.plot(mats, model_rn.yields(x_test, n_max) * 1200,
+        'grey', lw=1.5, ls=':', label='Risk neutral')
+ax.plot(mats, model.yields(x_test, n_max) * 1200,
+        'steelblue', lw=2, label=r'Risk aversion ($\Lambda x_t$)')
+ax.plot(mats, model_uncert.yields(x_test, n_max) * 1200,
+        'firebrick', lw=2, ls='--',
+        label=r'Model uncertainty ($\tilde{W} x_t$)')
+ax.set_xlabel("Maturity (months)")
+ax.set_ylabel("Yield (annualised %)")
+ax.set_title("Yield curves: alternative sources of term premia")
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
 
-The risk-aversion-only and model-uncertainty-only yield curves both slope
-upward, generating a term premium. The two explanations represent *alternative
-channels* for the same observed term premium — reinforcing the identification
-challenge explored throughout this lecture.
+The risk-aversion-only and model-uncertainty-only yield curves both slope upward, generating a term premium.
+
+The two explanations represent *alternative channels* for the same observed term premium — reinforcing the identification challenge explored throughout this lecture.
 
 
-## Cross-Equation Restrictions and Estimation
+## Cross-equation restrictions and estimation
 
 A key appeal of the robust control approach is that it lets us deviate from
 rational expectations while still preserving a set of powerful **cross-equation
@@ -1309,45 +1143,31 @@ $$
    to distinguish the two models statistically.
 
 ```{code-cell} ipython3
-# ── Measuring statistical distance between models ──────────────────────────────
-
-def discounted_entropy(w_matrix, A_w, C, x0, beta, T_horizon=500):
-    """
-    Approximate the discounted relative entropy
-        (1/2) E^w [Σ β^t w_t'w_t]
-    by simulation under the worst-case model.
-    """
-    n = len(x0)
-    rng = np.random.default_rng(2024)
+def discounted_entropy(W, A_w, C, x0, β, T_horizon=500):
+    """Approximate (1/2) E^w [Σ β^t w_t'w_t] by simulation."""
     n_sims = 10_000
-
+    rng = np.random.default_rng(2024)
     X = np.tile(x0, (n_sims, 1))
-    total_ent = np.zeros(n_sims)
-
+    total = np.zeros(n_sims)
     for t in range(T_horizon):
-        W = X @ w_matrix.T      # (n_sims, k): worst-case distortions
-        ent_t = 0.5 * np.sum(W**2, axis=1)
-        total_ent += (beta**t) * ent_t
+        w_t = X @ W.T
+        total += β**t * 0.5 * np.sum(w_t**2, axis=1)
+        X = X @ A_w.T + rng.standard_normal((n_sims, len(x0))) @ C.T
+    return np.mean(total)
 
-        eps = rng.standard_normal((n_sims, n))
-        X = X @ A_w.T + eps @ C.T
-
-    return np.mean(total_ent)
-
-
-# Compute discounted entropy for different models
 x0_test = np.array([0.01, 0.005])
+ent_szoke  = discounted_entropy(tilted.w_tilde, tilted.A_tilde, C, x0_test, β)
+ent_feared = discounted_entropy(w_bar, A_bar, C, x0_test, β)
 
-ent_szoke = discounted_entropy(tilted.w_tilde, tilted.A_tilde, C, x0_test, beta)
-ent_feared = discounted_entropy(w_bar, A_bar, C, x0_test, beta)
-
-print(f"Discounted relative entropy of Szőke worst-case model: {ent_szoke:.4f}")
-print(f"Discounted relative entropy of feared LRR model:       {ent_feared:.4f}")
-print(f"\nThe worst-case model is {'closer to' if ent_szoke < ent_feared else 'farther from'} "
-      f"the econometrician's model than the feared LRR model.")
+print(f"Szőke worst-case entropy: {ent_szoke:.4f}")
+print(f"Feared LRR entropy:       {ent_feared:.4f}")
+status = ('closer to' if ent_szoke < ent_feared
+          else 'farther from')
+print(f"\nWorst-case model is {status} "
+      f"the econometrician's model.")
 ```
 
-## Multiplier Preferences
+## Multiplier preferences
 
 The **multiplier preference** version of the dubious agent's problem is:
 
@@ -1387,47 +1207,29 @@ W(x_t, c_t \mid \tilde\theta) = J(x_t, c_t \mid \eta) + \tilde\theta\,\eta
 $$
 
 ```{code-cell} ipython3
-# ── Multiplier preferences: risk-sensitivity operator T ────────────────────────
-
-def T_operator(V_next_vals, theta, probs=None):
-    """
-    Risk-sensitivity operator:
-        T[V] = -θ log E[exp(-V/θ)]
-
-    Parameters
-    ----------
-    V_next_vals : array of next-period value function realisations
-    theta : float, robustness parameter (θ → ∞ gives expected value)
-    probs : optional probability weights
-
-    Returns
-    -------
-    T_V : float
-    """
+def T_operator(V, θ, probs=None):
+    """Risk-sensitivity operator: T[V] = -θ log E[exp(-V/θ)]."""
     if probs is None:
-        probs = np.ones(len(V_next_vals)) / len(V_next_vals)
-    # For numerical stability, shift by max
-    V_shifted = V_next_vals / theta
-    max_v = np.max(V_shifted)
-    log_E = max_v + np.log(np.sum(probs * np.exp(V_shifted - max_v)))
-    return -theta * log_E
+        probs = np.ones(len(V)) / len(V)
+    V_s = V / θ
+    max_v = np.max(V_s)
+    return -θ * (max_v + np.log(np.sum(probs * np.exp(V_s - max_v))))
 
-
-# Illustrate: T[V] converges to E[V] as θ → ∞
 rng = np.random.default_rng(42)
-V_samples = rng.normal(loc=5.0, scale=1.0, size=10000)
+V_samples = rng.normal(loc=5.0, scale=1.0, size=10_000)
 E_V = np.mean(V_samples)
 
-thetas = np.logspace(-1, 3, 50)
-T_vals = [T_operator(V_samples, th) for th in thetas]
+θ_grid = np.logspace(-1, 3, 50)
+T_vals = [T_operator(V_samples, θ) for θ in θ_grid]
 
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.semilogx(thetas, T_vals, 'firebrick', lw=2, label=r"$T_\theta[V]$")
-ax.axhline(E_V, color='steelblue', lw=1.5, ls='--', label=r"$E[V]$ (risk neutral)")
-ax.set_xlabel(r"Robustness parameter $\theta$", fontsize=13)
-ax.set_ylabel("Value", fontsize=13)
-ax.set_title(r"Risk-Sensitivity Operator $T_\theta$", fontsize=14)
-ax.legend(fontsize=12)
+ax.semilogx(θ_grid, T_vals, 'firebrick', lw=2, label=r"$T_\theta[V]$")
+ax.axhline(E_V, color='steelblue', lw=1.5,
+           ls='--', label=r"$E[V]$ (risk neutral)")
+ax.set_xlabel(r"Robustness parameter $\theta$")
+ax.set_ylabel("Value")
+ax.set_title(r"Risk-sensitivity operator $T_\theta$")
+ax.legend()
 ax.annotate(r"$\theta \to \infty$: risk neutral",
             xy=(500, E_V), fontsize=11, color='steelblue',
             xytext=(50, E_V - 0.8),
@@ -1440,13 +1242,12 @@ plt.tight_layout()
 plt.show()
 ```
 
-As $\theta \to \infty$, the risk-sensitivity operator converges to the ordinary
-expectation $E[V]$ — the agent becomes risk neutral. As $\theta$ shrinks, the
-operator places more weight on bad outcomes, reflecting greater concern about
-model misspecification.
+As $\theta \to \infty$, the risk-sensitivity operator converges to the ordinary expectation $E[V]$ — the agent becomes risk neutral.
+
+As $\theta$ shrinks, the operator places more weight on bad outcomes, reflecting greater concern about model misspecification.
 
 
-## Who Cares?
+## Who cares?
 
 Joint probability distributions of interest rates and macroeconomic shocks are
 important throughout macroeconomics:
@@ -1468,3 +1269,15 @@ important throughout macroeconomics:
 Understanding whether observed asset prices reflect risk aversion, mistaken
 beliefs, or fears of model misspecification — and quantifying each component —
 is interesting for both positive and normative macroeconomics.
+
+
+## Related lectures
+
+This lecture connects to several others in the series:
+
+- {ref}`Doubts or Variability? <doubts_or_variability>` studies how a preference for robustness generates worst-case likelihood ratios that look like stochastic discount factor shocks, complementing the analysis here with Hansen–Jagannathan bounds and detection-error probabilities.
+- {ref}`Asset Pricing: Finite State Models <mass>` introduces stochastic discount factors and risk-neutral pricing in a finite-state Markov setting — the discrete-state counterpart of the continuous Gaussian framework used here.
+- {ref}`Heterogeneous Beliefs and Bubbles <harrison_kreps>` examines how heterogeneous and possibly mistaken beliefs generate speculative asset price bubbles, providing another perspective on how beliefs affect asset prices.
+- {ref}`Likelihood Ratio Processes <likelihood_ratio_process>` develops the mathematical properties of likelihood ratios — the central device organising this lecture — including their martingale structure and statistical applications.
+- {ref}`Divergence Measures <divergence_measures>` covers Kullback–Leibler divergence and relative entropy in detail, providing the information-theoretic foundations for the entropy constraints used in the robust control sections.
+- {ref}`Affine Models of Asset Prices <affine_risk_prices>` extends the linear Gaussian state-space framework to affine and exponential-quadratic stochastic discount factors, developing risk-neutral pricing formulas closely related to those derived here.
