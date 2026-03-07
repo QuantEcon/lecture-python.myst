@@ -12,7 +12,7 @@ kernelspec:
 ---
 
 
-# A Long-Lived, Heterogeneous Agent, Overlapping Generations Model
+# A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
 
 ```{include} _admonition/gpu.md
 ```
