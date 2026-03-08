@@ -20,7 +20,7 @@ kernelspec:
 </div>
 ```
 
-# Inventory Management via Dynamic Programming and Q-Learning
+# Inventory Management via Q-Learning
 
 ```{contents} Contents
 :depth: 2
@@ -34,22 +34,29 @@ A firm must decide how much stock to order each period, facing uncertain demand 
 
 We approach the problem in two ways.
 
-First, we solve it exactly using **dynamic programming** (value function iteration), assuming full knowledge of the model — the demand distribution, cost parameters, and transition dynamics.
+First, we solve it exactly using dynamic programming, assuming full knowledge of
+the model — the demand distribution, cost parameters, and transition dynamics.
 
-Second, we show how a manager can learn the optimal policy **from experience alone**, using **Q-learning**.
+Second, we show how a manager can learn the optimal policy from experience alone, using *Q-learning*.
 
-The manager observes only the inventory level, the order placed, the resulting profit, and the next inventory level — without knowing any of the underlying parameters.
+The manager observes only the inventory level, the order placed, the resulting
+profit, and the next inventory level — without knowing any of the underlying
+parameters.
 
-A key idea is the **Q-factor**, which reformulates the Bellman equation so that the optimal policy can be recovered without knowledge of the transition function.
+A key idea is the *Q-factor* representation, which reformulates the Bellman
+equation so that the optimal policy can be recovered without knowledge of the
+transition function.
 
-We show that, given enough experience, the manager's learned policy converges to the optimal one.
+We show that, given enough experience, the manager's learned policy converges to
+the optimal one.
 
-In addition to what's in Anaconda, this lecture will need the following libraries:
+We will use the following imports:
 
 ```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install quantecon numba
+import numpy as np
+import numba
+import matplotlib.pyplot as plt
+from typing import NamedTuple
 ```
 
 ## The Model
@@ -74,16 +81,18 @@ We assume $(D_t)_{t \geq 0}$ is IID with common distribution $\phi$ on $\{0, 1, 
 Inventory $(X_t)_{t \geq 0}$ of the product obeys
 
 $$
-    X_{t+1} = h(X_t, D_{t+1}, A_t)
+    X_{t+1} = h(X_t, A_t, D_{t+1})
     \qquad
     \text{where}
     \quad
     h(x,a,d) := (x - d) \vee 0 + a.
 $$
 
-The term $A_t$ is units of stock ordered this period, which arrive at the start of period $t+1$, after the firm caters to current demand $D_{t+1}$.
+The term $A_t$ is units of stock ordered this period, which arrive at the start
+of period $t+1$, after demand $D_{t+1}$ is realized and served.
 
-(We use a $t$ subscript in $A_t$ to indicate the information set: it is chosen before $D_{t+1}$ is observed.)
+(We use a $t$ subscript in $A_t$ to indicate the information set: it is chosen
+before $D_{t+1}$ is observed.)
 
 We assume that the firm can store at most $K$ items at one time.
 
@@ -93,11 +102,13 @@ $$
     \pi(X_t, A_t, D_{t+1}) := X_t \wedge D_{t+1} - c A_t - \kappa 1\{A_t > 0\}.
 $$
 
-We take the minimum of current stock and demand because orders in excess of inventory are assumed to be lost rather than back-filled.
+Here
 
-Here $c$ is unit product cost and $\kappa$ is a fixed cost of ordering inventory.
+* the sales price is set to unity (for convenience)
+* revenue is the minimum of current stock and demand because orders in excess of inventory are lost rather than back-filled
+* $c$ is unit product cost and $\kappa$ is a fixed cost of ordering inventory
 
-We can map our inventory problem into a dynamic program with state space $X := \{0, \ldots, K\}$ and action space $A := X$.
+We can map our inventory problem into a dynamic program with state space $\mathsf X := \{0, \ldots, K\}$ and action space $\mathsf A := \mathsf X$.
 
 The feasible correspondence $\Gamma$ is
 
@@ -114,40 +125,43 @@ The Bellman equation takes the form
     v(x)
     = \max_{a \in \Gamma(x)} \mathbb E
     \left[
-        r(x, a, D)
+        \pi(x, a, D)
         + \beta  v(h(x, a, D))
-    \right]
+    \right].
 ```
 
-where $D$ is a random variable with distribution $\phi$.
+Here $D$ is a random variable with distribution $\phi$.
 
 
 
 ## Solving via Value Function Iteration
 
-We now solve the model numerically using value function iteration (VFI).
+Let's start in a setting where the manager knows all parameters, functional forms, and distributions.
+
+She solves the model numerically using value function iteration (VFI).
 
 The idea is to iterate on the Bellman operator $T$ defined by
 
 $$
     (Tv)(x)
     = \max_{a \in \Gamma(x)}
-      \sum_d \phi(d) \left[ r(x, a, d) + \beta \, v(h(x, a, d)) \right]
+      \sum_d \phi(d) \left[ \pi(x, a, d) + \beta \, v(h(x, a, d)) \right]
 $$
 
 starting from an initial guess $v_0$.
 
-Under standard conditions, the sequence $v_{k+1} = T v_k$ converges to the unique fixed point $v^*$, which is the value function of the optimal policy.
+Then, taking the output $v$ from this iteration process, we compute a
+**$v$-greedy policy** $\sigma$, which obeys
 
-### Imports
+$$
+    \sigma(x) \in \argmax_{a \in \Gamma(x)}
+      \sum_d \phi(d) \left[ \pi(x, a, d) + \beta \, v(h(x, a, d)) \right]
+$$
 
-```{code-cell} ipython3
-import quantecon as qe
-import numpy as np
-import numba
-import matplotlib.pyplot as plt
-from typing import NamedTuple
-```
+When $r > 0$, the sequence $v_{k+1} = T v_k$ converges to the
+unique fixed point $v^*$, which is the value function of the optimal policy
+(see, e.g., {cite}`Sargent_Stachurski_2025`).
+
 
 ### Model specification
 
@@ -184,8 +198,8 @@ def create_sdd_inventory_model(
         return (1 - p)**d * p
 
     d_values = np.arange(D_MAX)
-    ϕ_values = demand_pdf(p, d_values)
-    x_values = np.arange(K + 1)        # 0, 1, ..., K
+    ϕ_values = demand_pdf(p, d_values)     # ϕ_0, ϕ_1,... 
+    x_values = np.arange(K + 1)            # 0, 1, ..., K
 
     return Model(x_values, d_values, ϕ_values, p, c, κ, β)
 ```
@@ -205,7 +219,6 @@ We then take the maximum over $a$.
 
 The inner loops are compiled with Numba for performance.
 
-The wrapper function `T` unpacks the model and calls the compiled kernel.
 
 ```{code-cell} ipython3
 @numba.jit(nopython=True)
@@ -227,6 +240,8 @@ def T_kernel(v, d_values, ϕ_values, c, κ, β, K):
     return new_v
 ```
 
+The wrapper function `T` unpacks the model and calls the compiled kernel.
+
 ```{code-cell} ipython3
 def T(v, model):
     """The Bellman operator."""
@@ -235,16 +250,19 @@ def T(v, model):
     return T_kernel(v, d_values, ϕ_values, c, κ, β, K)
 ```
 
+
 ### Computing the greedy policy
 
-Given a value function $v$, the **$v$-greedy policy** selects the action that attains the maximum in the Bellman equation:
+Recall that, given a value function $v$, the **$v$-greedy policy** is computed
+via
 
 $$
     \sigma(x) = \arg\max_{a \in \Gamma(x)}
-      \sum_d \phi(d) \left[ r(x, a, d) + \beta \, v(h(x, a, d)) \right].
+      \sum_d \phi(d) \left[ \pi(x, a, d) + \beta \, v(h(x, a, d)) \right].
 $$
 
-The structure is the same as the Bellman operator, except we record the maximizing action rather than the maximized value.
+The structure is the same as the Bellman operator, except we record the
+maximizing action rather than the maximized value.
 
 ```{code-cell} ipython3
 @numba.jit(nopython=True)
@@ -332,7 +350,9 @@ def sim_inventories(ts_length, σ, p, X_init=0):
 
 The plot below shows a typical inventory path under the optimal policy.
 
-Notice the **S-s pattern**: when inventory falls to a low level, the firm places a large order to replenish stock (the upward jumps), after which inventory gradually declines as demand is served.
+Notice the **S-s pattern**: when inventory falls to a low level, the firm places
+a large order to replenish stock (the upward jumps), after which inventory
+gradually declines as demand is served.
 
 ```{code-cell} ipython3
 def plot_ts(ts_length=200, fontsize=10):
@@ -358,11 +378,17 @@ plot_ts()
 
 We now ask: can an agent **learn** the optimal policy without knowing the model?
 
-In particular, suppose the agent does not know the demand distribution $\phi$, the cost parameters $c$ and $\kappa$, or the transition function $h$.
+In particular, suppose the agent does not know the demand distribution $\phi$,
+the cost parameters $c$ and $\kappa$, or the transition function $h$.
 
-Instead, the agent only observes the sequence of states, actions, and rewards as it interacts with the environment.
+Instead, the agent only observes the sequence of states, actions, and profits as
+it interacts with the environment.
+
 
 ### The Q-factor Bellman equation
+
+The first step of Q-learning is to modify the Bellman equation, placing it in a
+form that allows learning from this limited information.
 
 Rather than working with the value function $v(x)$, we work with the **Q-function** (or Q-factor) $q(x, a)$.
 
@@ -371,7 +397,7 @@ We define $q$ in terms of the value function $v^*$ as
 $$
    q(x, a) := \mathbb E
    \left[
-      r(x, a, D) + \beta \, v^*(h(x, a, D))
+      \pi(x, a, D) + \beta \, v^*(h(x, a, D))
    \right].
 $$
 
@@ -388,19 +414,24 @@ Substituting this back into the definition of $q$, we can eliminate $v^*$ and ob
 $$
    q(x, a) = \mathbb E
    \left[
-      r(x, a, D) + \beta \max_{a' \in \Gamma(x')} q(x', a')
+      \pi(x, a, D) + \beta \max_{a' \in \Gamma(x')} q(x', a')
    \right]
 $$
 
 where $x' = h(x, a, D)$.
 
-The advantage of working with $q$ is that the optimal policy can be read off directly as $\sigma(x) = \arg\max_a q(x, a)$, without needing to know the transition function.
+One advantage of working with $q$ is that the optimal policy can be read off
+directly as $\sigma(x) = \arg\max_a q(x, a)$, without needing to know the
+transition function.
+
 
 ### The Q-learning update rule
 
 Q-learning approximates the fixed point of the Q-factor Bellman equation using **stochastic approximation**.
 
-At each step, the agent is in state $x$, takes action $a$, observes reward $R_{t+1} = r(x, a, D_{t+1})$ and next state $X_{t+1} = h(x, a, D_{t+1})$, and updates
+At each step, the agent is in state $x$, takes action $a$, observes reward
+$R_{t+1} = \pi(x, a, D_{t+1})$ and next state $X_{t+1} = h(x, a, D_{t+1})$, and
+updates
 
 $$
    q_{t+1}(x, a)
@@ -412,23 +443,73 @@ where $\alpha_t$ is the learning rate.
 
 The update blends the current estimate $q_t(x, a)$ with a fresh sample of the Bellman target.
 
+
 ### The Q-table and the behavior policy
 
-It is important to understand how the update rule relates to the manager's actions.
+It is important to understand how the update rule relates to the manager's
+actions.
 
-The manager maintains a **Q-table** — a lookup table storing an estimate $q_t(x, a)$ for every state-action pair $(x, a)$.
+The manager maintains a **Q-table** — a lookup table storing an estimate $q_t(x,
+a)$ for every state-action pair $(x, a)$.
 
-At each step, the manager is in some state $x$ and must choose a specific action $a$ to take.
+At each step, the manager is in some state $x$ and must choose a specific action
+$a$ to take.  Whichever $a$ is chosen, the manager observes profit $R_{t+1}$
+and next state $X_{t+1}$, and updates **that one entry** $q_t(x, a)$ of the
+table using the rule above.
 
-Whichever $a$ is chosen, the manager observes a reward $R_{t+1}$ and next state $X_{t+1}$, and updates **that one entry** $q_t(x, a)$ of the table using the rule above.
+**The max computes a value, not an action.**
 
-The update rule itself takes the pair $(x, a)$ as given — it says nothing about how $a$ was chosen.
+It is tempting to read the $\max_{a'}$ in the update rule as prescribing the
+manager's next action — that is, to interpret the update as saying "move to
+state $X_{t+1}$ and take action $\argmax_{a'} q_t(X_{t+1}, a')$."
 
-How the manager chooses $a$ is a separate design decision, called the **behavior policy**.
+But the $\max$ plays a different role.  The quantity $\max_{a' \in
+\Gamma(X_{t+1})} q_t(X_{t+1}, a')$ is a **scalar** — it estimates the value of
+being in state $X_{t+1}$ under the best possible continuation.  This scalar
+enters the update as part of the target value for $q_t(x, a)$.
 
-In principle, the manager could choose $a$ completely at random and the Q-table would still converge to $q^*$, provided every $(x, a)$ pair is visited infinitely often.
+Which action the manager *actually takes* at state $X_{t+1}$ is a separate
+decision entirely.
 
-In practice, we want the manager to mostly take good actions (to earn reasonable profits while learning), while still occasionally experimenting to discover better alternatives.
+To see why this distinction matters, consider what happens if we modify the
+update rule by replacing the $\max$ with evaluation under a fixed feasible
+policy $\sigma$:
+
+$$
+   q_{t+1}(x, a)
+   = (1 - \alpha_t) q_t(x, a) +
+       \alpha_t \left(R_{t+1} + \beta \, q_t(X_{t+1}, \sigma(X_{t+1}))\right).
+$$
+
+This modified update is a stochastic sample of the Bellman *evaluation* operator
+for $\sigma$.  The Q-table then converges to $q^\sigma$ — the Q-function
+associated with the lifetime value of $\sigma$, not the optimal one.
+
+By contrast, the original update with the $\max$ is a stochastic sample of the
+Bellman *optimality* operator, whose fixed point is $q^*$.  The $\max$ in the
+update target is therefore what drives convergence to $q^*$.
+
+**The behavior policy.**
+
+The rule governing how the manager chooses actions is called the **behavior
+policy**.  Because the $\max$ in the update target always points toward $q^*$
+regardless of how the manager selects actions, the behavior policy affects only
+which $(x, a)$ entries get visited — and hence updated — over time.
+
+In the reinforcement learning literature, this property is called **off-policy**
+learning: the convergence target ($q^*$) does not depend on the behavior policy.
+
+As long as every $(x, a)$ pair is visited infinitely often (so that every entry
+of the Q-table receives infinitely many updates) and the learning rates satisfy
+standard conditions (see below), the Q-table converges to $q^*$.
+
+The behavior policy affects the *speed* of convergence — visiting important
+state-action pairs more frequently leads to faster learning — but not the
+*limit*.
+
+In practice, we want the manager to mostly take good actions (to earn reasonable
+profits while learning), while still occasionally experimenting to discover
+better alternatives.
 
 ### What the manager needs to know
 
@@ -453,9 +534,7 @@ This decays slowly enough to allow learning from later (better-informed) updates
 
 ### Exploration: epsilon-greedy
 
-As noted above, the behavior policy — how the manager chooses actions — is separate from the Q-learning update rule.
-
-We use an $\varepsilon$-greedy strategy:
+For our behavior policy, we use an $\varepsilon$-greedy strategy:
 
 - With probability $\varepsilon$, choose a random feasible action (explore).
 - With probability $1 - \varepsilon$, choose the action with the highest current $q$-value (exploit).
@@ -519,7 +598,8 @@ def q_learning_kernel(K, p, c, κ, β, n_steps, X_init,
         reward = min(x, d) - c * a - κ * (a > 0)
         x_next = max(x - d, 0) + a
 
-        # === Find best action at x_next (used for both update and next step) ===
+        # === Max over next state (scalar value for update target) ===
+        # Also record the argmax action for use by the behavior policy.
         best_next = -np.inf
         a_next = 0
         for aa in range(K - x_next + 1):
@@ -527,12 +607,12 @@ def q_learning_kernel(K, p, c, κ, β, n_steps, X_init,
                 best_next = q[x_next, aa]
                 a_next = aa
 
-        # === Q-learning update ===
+        # === Q-learning update (uses best_next, the max value) ===
         n[x, a] += 1
         α = 1.0 / n[x, a] ** 0.51
         q[x, a] = (1 - α) * q[x, a] + α * (reward + β * best_next)
 
-        # === Move to next state; epsilon-perturb the action ===
+        # === Behavior policy: ε-greedy (uses a_next, the argmax action) ===
         x = x_next
         if np.random.random() < ε:
             a = np.random.randint(0, K - x + 1)
