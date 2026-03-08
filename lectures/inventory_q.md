@@ -654,7 +654,7 @@ We extract the value function and policy from the final Q-table via
 $$
     v_Q(x) = \max_{a \in \Gamma(x)} q(x, a),
     \qquad
-    \sigma_Q(x) = \arg\max_{a \in \Gamma(x)} q(x, a)
+    \sigma_Q(x) = \argmax_{a \in \Gamma(x)} q(x, a)
 $$
 
 and compare them against $v^*$ and $\sigma^*$ from VFI.
