@@ -79,9 +79,9 @@ The risk-sensitive version of this Bellman equation has the form
 $$
     v(x)
     = \max_{a \in \Gamma(x)}
-    \phi^{-1}
+    \psi^{-1}
     \left\{
-        \mathbb E \phi
+        \mathbb E \psi
         \left[
             \pi(x, a, D)
             + \beta  v(h(x, a, D))
@@ -89,9 +89,9 @@ $$
     \right\},
 $$
 
-where $\phi(t) = \exp(-\gamma t)$ for fixed $\gamma > 0$.
+where $\psi(t) = \exp(-\gamma t)$ for fixed $\gamma > 0$.
 
-Since $\phi^{-1}(y) = -\frac{1}{\gamma} \ln(y)$, the Bellman equation becomes
+Since $\psi^{-1}(y) = -\frac{1}{\gamma} \ln(y)$, the Bellman equation becomes
 
 $$
     v(x)
@@ -423,7 +423,7 @@ $$
     \right].
 $$
 
-In words, $q(x, a)$ applies the risk-sensitivity transformation $\phi(t) =
+In words, $q(x, a)$ applies the risk-sensitivity transformation $\psi(t) =
 \exp(-\gamma t)$ inside the expectation, evaluated at the return from taking
 action $a$ in state $x$ and following the optimal policy thereafter.
 
@@ -434,15 +434,15 @@ Our goal is to obtain a fixed point equation in $q$ alone, eliminating $v^*$.
 **Step 1.** Express $v^*$ in terms of $q$.
 
 The risk-sensitive Bellman equation says $v^*(x) = \max_{a \in \Gamma(x)}
-\phi^{-1}(q(x, a))$.
+\psi^{-1}(q(x, a))$.
 
-Since $\phi^{-1}(y) = -\frac{1}{\gamma} \ln(y)$ is a **decreasing** function,
-the maximum over $a$ of $\phi^{-1}(q(x, a))$ corresponds to the **minimum**
+Since $\psi^{-1}(y) = -\frac{1}{\gamma} \ln(y)$ is a **decreasing** function,
+the maximum over $a$ of $\psi^{-1}(q(x, a))$ corresponds to the **minimum**
 over $a$ of $q(x, a)$:
 
 $$
     v^*(x)
-    = \phi^{-1}\!\left(\min_{a \in \Gamma(x)} q(x, a)\right)
+    = \psi^{-1}\!\left(\min_{a \in \Gamma(x)} q(x, a)\right)
     = -\frac{1}{\gamma} \ln\!\left(\min_{a \in \Gamma(x)} q(x, a)\right).
 $$
 
@@ -516,7 +516,7 @@ Notice several differences from the risk-neutral case:
 
 - The Q-values are **positive** (expectations of exponentials) rather than signed.
 - The optimal policy is $\sigma(x) = \argmin_a q(x, a)$ — we **minimize**
-  rather than maximize, because $\phi^{-1}$ is decreasing.
+  rather than maximize, because $\psi^{-1}$ is decreasing.
 - The observed profit enters through $\exp(-\gamma R_{t+1})$ rather than
   additively.
 - The continuation value enters as a **power** $(\min_{a'} q_t)^\beta$ rather
@@ -746,7 +746,7 @@ variance by holding less stock.
 
 We extended the inventory management problem from {doc}`inventory_q` to
 incorporate risk sensitivity via the certainty equivalent operator
-$\phi^{-1}(\mathbb{E}[\phi(\cdot)])$ with $\phi(t) = \exp(-\gamma t)$.
+$\psi^{-1}(\mathbb{E}[\psi(\cdot)])$ with $\psi(t) = \exp(-\gamma t)$.
 
 Value function iteration confirms that risk-sensitive firms order less
 aggressively, preferring predictable profits over higher but more volatile
