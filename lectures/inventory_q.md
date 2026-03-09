@@ -37,7 +37,7 @@ We approach the problem in two ways.
 First, we solve it exactly using dynamic programming, assuming full knowledge of
 the model — the demand distribution, cost parameters, and transition dynamics.
 
-Second, we show how a manager can learn the optimal policy from experience alone, using *Q-learning*.
+Second, we show how a manager can learn the optimal policy from experience alone, using *[Q-learning](https://en.wikipedia.org/wiki/Q-learning)*.
 
 The manager observes only the inventory level, the order placed, the resulting
 profit, and the next inventory level — without knowing any of the underlying
@@ -49,6 +49,12 @@ transition function.
 
 We show that, given enough experience, the manager's learned policy converges to
 the optimal one.
+
+The lecture proceeds as follows:
+
+1. We set up the inventory model and solve it exactly via value function iteration.
+2. We introduce Q-factors and derive the Q-factor Bellman equation.
+3. We implement Q-learning and show the learned policy converges to the optimal one.
 
 We will use the following imports:
 
@@ -85,11 +91,13 @@ $$
     \qquad
     \text{where}
     \quad
-    h(x,a,d) := (x - d) \vee 0 + a.
+    h(x,a,d) := \max(x - d, 0) + a.
 $$
 
 The term $A_t$ is units of stock ordered this period, which arrive at the start
 of period $t+1$, after demand $D_{t+1}$ is realized and served.
+
+**Timeline for period $t$:** observe $X_t$ → choose $A_t$ → demand $D_{t+1}$ arrives → profit realized → $X_{t+1}$ determined.
 
 (We use a $t$ subscript in $A_t$ to indicate the information set: it is chosen
 before $D_{t+1}$ is observed.)
@@ -99,7 +107,7 @@ We assume that the firm can store at most $K$ items at one time.
 Profits are given by
 
 $$
-    \pi(X_t, A_t, D_{t+1}) := X_t \wedge D_{t+1} - c A_t - \kappa 1\{A_t > 0\}.
+    \pi(X_t, A_t, D_{t+1}) := \min(X_t, D_{t+1}) - c A_t - \kappa 1\{A_t > 0\}.
 $$
 
 Here
@@ -158,7 +166,7 @@ $$
       \sum_d \phi(d) \left[ \pi(x, a, d) + \beta \, v(h(x, a, d)) \right]
 $$
 
-When $r > 0$, the sequence $v_{k+1} = T v_k$ converges to the
+When $r > 0$ (equivalently, $\beta < 1$), the sequence $v_{k+1} = T v_k$ converges to the
 unique fixed point $v^*$, which is the value function of the optimal policy
 (see, e.g., {cite}`Sargent_Stachurski_2025`).
 
@@ -167,7 +175,7 @@ unique fixed point $v^*$, which is the value function of the optimal policy
 
 We store the model primitives in a `NamedTuple`.
 
-Demand follows a geometric distribution with parameter $p$, so $\phi(d) = (1 - p)^d \, p$ for $d = 0, 1, 2, \ldots$.
+Demand follows a [geometric distribution](https://en.wikipedia.org/wiki/Geometric_distribution) with parameter $p$, so $\phi(d) = (1 - p)^d \, p$ for $d = 0, 1, 2, \ldots$.
 
 ```{code-cell} ipython3
 class Model(NamedTuple):
@@ -427,7 +435,7 @@ transition function.
 
 ### The Q-learning update rule
 
-Q-learning approximates the fixed point of the Q-factor Bellman equation using **stochastic approximation**.
+Q-learning approximates the fixed point of the Q-factor Bellman equation using **[stochastic approximation](https://en.wikipedia.org/wiki/Stochastic_approximation)**.
 
 At each step, the agent is in state $x$, takes action $a$, observes reward
 $R_{t+1} = \pi(x, a, D_{t+1})$ and next state $X_{t+1} = h(x, a, D_{t+1})$, and
@@ -443,8 +451,23 @@ where $\alpha_t$ is the learning rate.
 
 The update blends the current estimate $q_t(x, a)$ with a fresh sample of the Bellman target.
 
+### What the manager needs to know
 
-### The Q-table and the behavior policy
+Notice what is **not** required to implement the update.
+
+The manager does not need to know the demand distribution $\phi$, the unit cost $c$, the fixed cost $\kappa$, or the transition function $h$.
+
+All the manager needs to observe at each step is:
+
+1. the current inventory level $x$,
+2. the order quantity $a$ they chose,
+3. the resulting profit $R_{t+1}$ (which appears on the books), and
+4. the next inventory level $X_{t+1}$ (which they can read off the warehouse).
+
+These are all directly observable quantities — no model knowledge is required.
+
+
+### The Q-table and the role of the max
 
 It is important to understand how the update rule relates to the manager's
 actions.
@@ -489,7 +512,9 @@ By contrast, the original update with the $\max$ is a stochastic sample of the
 Bellman *optimality* operator, whose fixed point is $q^*$.  The $\max$ in the
 update target is therefore what drives convergence to $q^*$.
 
-**The behavior policy.**
+In short, the $\max$ is doing the work of finding the optimum; without it, you only evaluate a fixed policy.
+
+### The behavior policy
 
 The rule governing how the manager chooses actions is called the **behavior
 policy**.  Because the $\max$ in the update target always points toward $q^*$
@@ -511,26 +536,11 @@ In practice, we want the manager to mostly take good actions (to earn reasonable
 profits while learning), while still occasionally experimenting to discover
 better alternatives.
 
-### What the manager needs to know
-
-Notice what is **not** required to implement the update.
-
-The manager does not need to know the demand distribution $\phi$, the unit cost $c$, the fixed cost $\kappa$, or the transition function $h$.
-
-All the manager needs to observe at each step is:
-
-1. the current inventory level $x$,
-2. the order quantity $a$ they chose,
-3. the resulting profit $R_{t+1}$ (which appears on the books), and
-4. the next inventory level $X_{t+1}$ (which they can read off the warehouse).
-
-These are all directly observable quantities — no model knowledge is required.
-
 ### Learning rate
 
 We use $\alpha_t = 1 / n_t(x, a)^{0.51}$, where $n_t(x, a)$ is the number of times the pair $(x, a)$ has been visited up to time $t$.
 
-This decays slowly enough to allow learning from later (better-informed) updates, while still satisfying the Robbins-Monro conditions for convergence.
+This decays slowly enough to allow learning from later (better-informed) updates, while still satisfying the [Robbins–Monro conditions](https://en.wikipedia.org/wiki/Stochastic_approximation#Robbins%E2%80%93Monro_algorithm) for convergence.
 
 ### Exploration: epsilon-greedy
 
@@ -593,7 +603,7 @@ def q_learning_kernel(K, p, c, κ, β, n_steps, X_init,
             snapshots[snap_idx] = greedy_policy_from_q(q, K)
             snap_idx += 1
 
-        # === Observe outcome ===
+        # === Draw D_{t+1} and observe outcome ===
         d = np.random.geometric(p) - 1
         reward = min(x, d) - c * a - κ * (a > 0)
         x_next = max(x - d, 0) + a
@@ -661,6 +671,7 @@ and compare them against $v^*$ and $\sigma^*$ from VFI.
 
 ```{code-cell} ipython3
 K = len(x_values) - 1
+# restrict to feasible actions a ∈ {0, ..., K-x}
 v_q = np.array([np.max(q[x, :K - x + 1]) for x in range(K + 1)])
 σ_q = np.array([np.argmax(q[x, :K - x + 1]) for x in range(K + 1)])
 ```
