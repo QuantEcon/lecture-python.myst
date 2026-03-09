@@ -515,7 +515,7 @@ standard Q-learning.
 Notice several differences from the risk-neutral case:
 
 - The Q-values are **positive** (expectations of exponentials) rather than signed.
-- The optimal policy is $\sigma(x) = \arg\min_a q(x, a)$ — we **minimize**
+- The optimal policy is $\sigma(x) = \argmin_a q(x, a)$ — we **minimize**
   rather than maximize, because $\phi^{-1}$ is decreasing.
 - The observed profit enters through $\exp(-\gamma R_{t+1})$ rather than
   additively.
@@ -536,23 +536,23 @@ Our implementation follows the same structure as the risk-neutral Q-learning in
    - Draw demand $D_{t+1}$ and compute observed profit $R_{t+1}$ and next state
      $X_{t+1}$.
    - Compute $\min_{a'} q_t(X_{t+1}, a')$ over feasible actions (this is a
-     scalar for the update target, and the $\arg\min$ action is used by the
+     scalar for the update target, and the $\argmin$ action is used by the
      $\varepsilon$-greedy behavior policy).
    - Update $q_t(x, a)$ using the rule above, with learning rate
      $\alpha_t = 1 / n_t(x, a)^{0.51}$.
    - Choose the next action via $\varepsilon$-greedy: with probability
      $\varepsilon$ pick a random feasible action, otherwise pick the
-     $\arg\min$ action.
+     $\argmin$ action.
    - Decay $\varepsilon$.
 3. **Extract the greedy policy** from the final Q-table via
-   $\sigma(x) = \arg\min_{a \in \Gamma(x)} q(x, a)$.
+   $\sigma(x) = \argmin_{a \in \Gamma(x)} q(x, a)$.
 4. **Compare** the learned policy against the VFI solution.
 
 ### Implementation
 
 We first define a helper to extract the greedy policy from the Q-table.
 
-Since the optimal policy minimizes $q$, we use $\arg\min$ rather than $\arg\max$.
+Since the optimal policy minimizes $q$, we use $\argmin$ rather than $\argmax$.
 
 ```{code-cell} ipython3
 @numba.jit(nopython=True)
@@ -572,7 +572,7 @@ def greedy_policy_from_q_rs(q, K):
 
 The Q-learning loop mirrors the risk-neutral version, with the key changes:
 Q-table initialized to ones, the update target uses $\exp(-\gamma R_{t+1})
-\cdot (\min_{a'} q_t)^\beta$, and the behavior policy follows the $\arg\min$.
+\cdot (\min_{a'} q_t)^\beta$, and the behavior policy follows the $\argmin$.
 
 ```{code-cell} ipython3
 @numba.jit(nopython=True)
@@ -657,7 +657,7 @@ We extract the value function and policy from the final Q-table.
 
 Since Q-values represent $\mathbb{E}[\exp(-\gamma(\cdots))]$, we recover the
 value function via $v_Q(x) = -\frac{1}{\gamma} \ln(\min_{a} q(x, a))$ and the
-policy via $\sigma_Q(x) = \arg\min_a q(x, a)$.
+policy via $\sigma_Q(x) = \argmin_a q(x, a)$.
 
 ```{code-cell} ipython3
 K = len(x_values) - 1
