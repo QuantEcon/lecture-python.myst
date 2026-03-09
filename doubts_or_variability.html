@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>87. Doubts or Variability? &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>88. Doubts or Variability? &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -77,10 +77,10 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=300d9cef76b95d0252c8ff6263fc63de943d6f3a" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
     <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=af25365e6360aeca6ba8101dda3f432eb6b6fa9c"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -124,15 +124,15 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": ["\\operatorname*{argmax}", 0], "argmin": ["\\operatorname*{argmin}", 0]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'doubts_or_variability';</script>
     <link rel="canonical" href="https://python.quantecon.org/doubts_or_variability.html" />
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="88. Competitive Equilibria with Arrow Securities" href="ge_arrow.html" />
-    <link rel="prev" title="86. Estimating Euler Equations by Generalized Method of Moments" href="hansen_singleton_1982.html" />
+    <link rel="next" title="89. Competitive Equilibria with Arrow Securities" href="ge_arrow.html" />
+    <link rel="prev" title="87. Estimating Euler Equations by Generalized Method of Moments" href="hansen_singleton_1982.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -165,8 +165,13 @@
   try {
     if (localStorage.setContrast === '1') {
       document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
     }
-  } catch(e) {}
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
 })();
 </script>
 
@@ -199,65 +204,65 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">87.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#asset-pricing-101">87.2. Asset pricing 101</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pricing-kernel-and-the-risk-free-rate">87.2.1. Pricing kernel and the risk-free rate</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hansenjagannathan-bounds">87.2.2. Hansen–Jagannathan bounds</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#unconditional-version">87.2.2.1. Unconditional version</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">88.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#asset-pricing-101">88.2. Asset pricing 101</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pricing-kernel-and-the-risk-free-rate">88.2.1. Pricing kernel and the risk-free rate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hansenjagannathan-bounds">88.2.2. Hansen–Jagannathan bounds</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#unconditional-version">88.2.2.1. Unconditional version</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-puzzles">87.2.3. Two puzzles</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-puzzles">88.2.3. Two puzzles</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-choice-setting">87.3. The choice setting</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shocks-and-consumption-plans">87.3.1. Shocks and consumption plans</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#consumption-dynamics">87.3.2. Consumption dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-choice-setting">88.3. The choice setting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shocks-and-consumption-plans">88.3.1. Shocks and consumption plans</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#consumption-dynamics">88.3.2. Consumption dynamics</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preferences-distortions-and-detection">87.4. Preferences, distortions, and detection</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-agents-i-ii-iii-and-iv">87.4.1. Overview of agents I, II, III, and IV</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-i-krepsporteusepsteinzintallarini-preferences">87.4.2. Type I: Kreps–Porteus–Epstein–Zin–Tallarini preferences</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-the-stochastic-discount-factor">87.4.2.1. Deriving the stochastic discount factor</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preferences-distortions-and-detection">88.4. Preferences, distortions, and detection</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-agents-i-ii-iii-and-iv">88.4.1. Overview of agents I, II, III, and IV</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-i-krepsporteusepsteinzintallarini-preferences">88.4.2. Type I: Kreps–Porteus–Epstein–Zin–Tallarini preferences</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-the-stochastic-discount-factor">88.4.2.1. Deriving the stochastic discount factor</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-ii-multiplier-preferences">87.4.3. Type II: multiplier preferences</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#martingale-likelihood-ratios">87.4.3.1. Martingale likelihood ratios</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-ii-multiplier-preferences">88.4.3. Type II: multiplier preferences</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#martingale-likelihood-ratios">88.4.3.1. Martingale likelihood ratios</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-iii-constraint-preferences">87.4.4. Type III: constraint preferences</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-iv-ex-post-bayesian">87.4.5. Type IV: ex post Bayesian</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stochastic-discount-factor">87.4.6. Stochastic discount factor</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-decomposition">87.4.7. Value function decomposition</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-mean-shift-distortions">87.4.8. Gaussian mean-shift distortions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discounted-entropy">87.4.9. Discounted entropy</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-functions-for-random-walk-consumption">87.4.10. Value functions for random-walk consumption</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-iii-constraint-preferences">88.4.4. Type III: constraint preferences</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-iv-ex-post-bayesian">88.4.5. Type IV: ex post Bayesian</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stochastic-discount-factor">88.4.6. Stochastic discount factor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-decomposition">88.4.7. Value function decomposition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gaussian-mean-shift-distortions">88.4.8. Gaussian mean-shift distortions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discounted-entropy">88.4.9. Discounted entropy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-functions-for-random-walk-consumption">88.4.10. Value functions for random-walk consumption</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detection-error-probabilities">87.5. Detection-error probabilities</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-testing-and-detection-errors">87.5.1. Likelihood-ratio testing and detection errors</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#market-price-of-model-uncertainty">87.5.2. Market price of model uncertainty</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-calibration-objects">87.5.3. Interpreting the calibration objects</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detection-probabilities-across-the-two-models">87.5.4. Detection probabilities across the two models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detection-error-probabilities">88.5. Detection-error probabilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratio-testing-and-detection-errors">88.5.1. Likelihood-ratio testing and detection errors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#market-price-of-model-uncertainty">88.5.2. Market price of model uncertainty</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-calibration-objects">88.5.3. Interpreting the calibration objects</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detection-probabilities-across-the-two-models">88.5.4. Detection probabilities across the two models</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unify-the-two-models-using-detection-error-probabilities">87.6. Unify the two models using detection-error probabilities</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-do-risk-premia-measure">87.7. What do risk premia measure?</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-certainty-equivalent-path">87.7.1. The certainty equivalent path</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compensating-variations-from-the-value-functions">87.7.2. Compensating variations from the value functions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-i-epsteinzin-compensation">87.7.3. Type I (Epstein–Zin) compensation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-ii-multiplier-decomposition">87.7.4. Type II (multiplier) decomposition</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-iii-constraint-compensation">87.7.5. Type III (constraint) compensation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-iv-ex-post-bayesian-compensation">87.7.6. Type IV (ex post Bayesian) compensation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-a-risky-but-free-of-model-uncertainty-path">87.7.7. Comparison with a risky but free-of-model-uncertainty path</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-welfare-compensations-random-walk">87.7.8. Summary of welfare compensations (random walk)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trend-stationary-formulas">87.7.9. Trend-stationary formulas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unify-the-two-models-using-detection-error-probabilities">88.6. Unify the two models using detection-error probabilities</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-do-risk-premia-measure">88.7. What do risk premia measure?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-certainty-equivalent-path">88.7.1. The certainty equivalent path</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compensating-variations-from-the-value-functions">88.7.2. Compensating variations from the value functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-i-epsteinzin-compensation">88.7.3. Type I (Epstein–Zin) compensation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-ii-multiplier-decomposition">88.7.4. Type II (multiplier) decomposition</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-iii-constraint-compensation">88.7.5. Type III (constraint) compensation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#type-iv-ex-post-bayesian-compensation">88.7.6. Type IV (ex post Bayesian) compensation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-a-risky-but-free-of-model-uncertainty-path">88.7.7. Comparison with a risky but free-of-model-uncertainty path</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-welfare-compensations-random-walk">88.7.8. Summary of welfare compensations (random walk)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trend-stationary-formulas">88.7.9. Trend-stationary formulas</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-welfare-decomposition">87.8. Visualizing the welfare decomposition</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#welfare-gains-from-removing-model-uncertainty">87.9. Welfare gains from removing model uncertainty</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-doesnt-eliminate-misspecification-fears">87.10. Learning doesn’t eliminate misspecification fears</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">87.11. Concluding remarks</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">87.12. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-welfare-decomposition">88.8. Visualizing the welfare decomposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#welfare-gains-from-removing-model-uncertainty">88.9. Welfare gains from removing model uncertainty</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-doesnt-eliminate-misspecification-fears">88.10. Learning doesn’t eliminate misspecification fears</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">88.11. Concluding remarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">88.12. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -360,7 +365,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1><a class="toc-backref" href="#id34" role="doc-backlink"><span class="section-number">87. </span>Doubts or Variability?</a><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id34" role="doc-backlink"><span class="section-number">88. </span>Doubts or Variability?</a><a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -391,7 +396,7 @@ would be good to have the equity premium resolved, but I think we need to look b
 estimates of risk aversion to do it. – Robert E. Lucas Jr., <span id="id2">[<a class="reference internal" href="zreferences.html#id244" title="Robert E Lucas, Jr. Macroeconomic Priorities. American Economic Review, 93(1):1-14, March 2003. URL: https://www.aeaweb.org/articles?id=10.1257/000282803321455133.">Lucas, 2003</a>]</span></p>
 </div></blockquote>
 <section id="overview">
-<h2><a class="toc-backref" href="#id35" role="doc-backlink"><span class="section-number">87.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id35" role="doc-backlink"><span class="section-number">88.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture describes machinery that empirical macro-finance economists have used to evaluate the fits of structural statistical models that link asset prices to aggregate consumption.</p>
 <p>The Lucas asset pricing model <span id="id3">[<a class="reference internal" href="zreferences.html#id210" title="Robert E Lucas, Jr. Asset prices in an exchange economy. Econometrica, 46(6):1429–1445, 1978.">Lucas, 1978</a>]</span> functions as a benchmark that motivates much of this work.</p>
 <div class="admonition note">
@@ -518,24 +523,24 @@ Successfully installed pandas-datareader-0.10.0
 </div>
 </section>
 <section id="asset-pricing-101">
-<h2><a class="toc-backref" href="#id36" role="doc-backlink"><span class="section-number">87.2. </span>Asset pricing 101</a><a class="headerlink" href="#asset-pricing-101" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id36" role="doc-backlink"><span class="section-number">88.2. </span>Asset pricing 101</a><a class="headerlink" href="#asset-pricing-101" title="Link to this heading">#</a></h2>
 <section id="pricing-kernel-and-the-risk-free-rate">
-<h3><span class="section-number">87.2.1. </span>Pricing kernel and the risk-free rate<a class="headerlink" href="#pricing-kernel-and-the-risk-free-rate" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.2.1. </span>Pricing kernel and the risk-free rate<a class="headerlink" href="#pricing-kernel-and-the-risk-free-rate" title="Link to this heading">#</a></h3>
 <p>Let’s briefly review a few key concepts from <a class="reference internal" href="markov_asset.html#mass"><span class="std std-ref">Asset Pricing: Finite State Models</span></a>.</p>
 <p>A random variable <span class="math notranslate nohighlight">\(m_{t+1}\)</span> is called a <strong>stochastic discount factor</strong> if, for a one-period payoff <span class="math notranslate nohighlight">\(y_{t+1}\)</span> with time-<span class="math notranslate nohighlight">\(t\)</span> price <span class="math notranslate nohighlight">\(p_t\)</span>, it satisfies</p>
 <div class="math notranslate nohighlight" id="equation-bhs-pricing-eq">
-<span class="eqno">(87.1)<a class="headerlink" href="#equation-bhs-pricing-eq" title="Link to this equation">#</a></span>\[p_t = E_t(m_{t+1}  y_{t+1}),\]</div>
+<span class="eqno">(88.1)<a class="headerlink" href="#equation-bhs-pricing-eq" title="Link to this equation">#</a></span>\[p_t = E_t(m_{t+1}  y_{t+1}),\]</div>
 <p>where <span class="math notranslate nohighlight">\(E_t\)</span> denotes the mathematical expectation conditioned on date-<span class="math notranslate nohighlight">\(t\)</span> information.</p>
 <p>For time-separable CRRA preferences with discount factor <span class="math notranslate nohighlight">\(\beta\)</span> and coefficient of relative risk aversion <span class="math notranslate nohighlight">\(\gamma\)</span>, the marginal rate of substitution gives</p>
 <div class="math notranslate nohighlight" id="equation-bhs-crra-sdf">
-<span class="eqno">(87.2)<a class="headerlink" href="#equation-bhs-crra-sdf" title="Link to this equation">#</a></span>\[m_{t+1} = \beta \left(\frac{C_{t+1}}{C_t}\right)^{-\gamma},\]</div>
+<span class="eqno">(88.2)<a class="headerlink" href="#equation-bhs-crra-sdf" title="Link to this equation">#</a></span>\[m_{t+1} = \beta \left(\frac{C_{t+1}}{C_t}\right)^{-\gamma},\]</div>
 <p>where <span class="math notranslate nohighlight">\(C_t\)</span> is consumption at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>Setting <span class="math notranslate nohighlight">\(y_{t+1} = 1\)</span> (a risk-free bond) in <a class="reference internal" href="#equation-bhs-pricing-eq">(87.1)</a> yields the reciprocal of the gross one-period risk-free rate:</p>
+<p>Setting <span class="math notranslate nohighlight">\(y_{t+1} = 1\)</span> (a risk-free bond) in <a class="reference internal" href="#equation-bhs-pricing-eq">(88.1)</a> yields the reciprocal of the gross one-period risk-free rate:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-riskfree">
-<span class="eqno">(87.3)<a class="headerlink" href="#equation-bhs-riskfree" title="Link to this equation">#</a></span>\[\frac{1}{R_t^f} = E_t[m_{t+1}] = E_t \left[\beta\left(\frac{C_{t+1}}{C_t}\right)^{-\gamma}\right].\]</div>
+<span class="eqno">(88.3)<a class="headerlink" href="#equation-bhs-riskfree" title="Link to this equation">#</a></span>\[\frac{1}{R_t^f} = E_t[m_{t+1}] = E_t \left[\beta\left(\frac{C_{t+1}}{C_t}\right)^{-\gamma}\right].\]</div>
 </section>
 <section id="hansenjagannathan-bounds">
-<h3><span class="section-number">87.2.2. </span>Hansen–Jagannathan bounds<a class="headerlink" href="#hansenjagannathan-bounds" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.2.2. </span>Hansen–Jagannathan bounds<a class="headerlink" href="#hansenjagannathan-bounds" title="Link to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(R_{t+1}^e\)</span> denote the gross return on a risky asset (e.g., the market portfolio) and <span class="math notranslate nohighlight">\(R_{t+1}^f\)</span> the gross return on a one-period risk-free bond.</p>
 <p>The <strong>excess return</strong> is</p>
 <div class="math notranslate nohighlight">
@@ -543,7 +548,7 @@ Successfully installed pandas-datareader-0.10.0
 \xi_{t+1} = R_{t+1}^e - R_{t+1}^f.
 \]</div>
 <p>An excess return is the payoff on a zero-cost portfolio that is long one dollar of the risky asset and short one dollar of the risk-free bond.</p>
-<p>Because the portfolio costs nothing to enter, its price is <span class="math notranslate nohighlight">\(p_t = 0\)</span>, so <a class="reference internal" href="#equation-bhs-pricing-eq">(87.1)</a> implies</p>
+<p>Because the portfolio costs nothing to enter, its price is <span class="math notranslate nohighlight">\(p_t = 0\)</span>, so <a class="reference internal" href="#equation-bhs-pricing-eq">(88.1)</a> implies</p>
 <div class="math notranslate nohighlight">
 \[
 0 = E_t[m_{t+1} \xi_{t+1}].
@@ -563,25 +568,25 @@ E_t[\xi_{t+1}] = -\frac{\operatorname{cov}_t(m_{t+1}, \xi_{t+1})}{E_t[m_{t+1}]}.
 \]</div>
 <p>Taking absolute values and applying the <strong>Cauchy–Schwarz inequality</strong> <span class="math notranslate nohighlight">\(|\operatorname{cov}(X,Y)| \leq \sigma(X) \sigma(Y)\)</span> yields</p>
 <div class="math notranslate nohighlight" id="equation-bhs-hj-bound">
-<span class="eqno">(87.4)<a class="headerlink" href="#equation-bhs-hj-bound" title="Link to this equation">#</a></span>\[\frac{|E_t[\xi_{t+1}]|}{\sigma_t(\xi_{t+1})}
+<span class="eqno">(88.4)<a class="headerlink" href="#equation-bhs-hj-bound" title="Link to this equation">#</a></span>\[\frac{|E_t[\xi_{t+1}]|}{\sigma_t(\xi_{t+1})}
 \leq
 \frac{\sigma_t(m_{t+1})}{E_t[m_{t+1}]}.\]</div>
-<p>The left-hand side of <a class="reference internal" href="#equation-bhs-hj-bound">(87.4)</a> is the <strong>Sharpe ratio</strong>: the expected excess return per unit of return volatility.</p>
+<p>The left-hand side of <a class="reference internal" href="#equation-bhs-hj-bound">(88.4)</a> is the <strong>Sharpe ratio</strong>: the expected excess return per unit of return volatility.</p>
 <p>The right-hand side, <span class="math notranslate nohighlight">\(\sigma_t(m)/E_t(m)\)</span>, is the <strong>market price of risk</strong>: the maximum Sharpe ratio attainable in the market.</p>
 <p>In words, no asset’s Sharpe ratio can exceed the market price of risk.</p>
 <section id="unconditional-version">
-<h4><span class="section-number">87.2.2.1. </span>Unconditional version<a class="headerlink" href="#unconditional-version" title="Link to this heading">#</a></h4>
-<p>The bound <a class="reference internal" href="#equation-bhs-hj-bound">(87.4)</a> is stated in conditional terms.</p>
+<h4><span class="section-number">88.2.2.1. </span>Unconditional version<a class="headerlink" href="#unconditional-version" title="Link to this heading">#</a></h4>
+<p>The bound <a class="reference internal" href="#equation-bhs-hj-bound">(88.4)</a> is stated in conditional terms.</p>
 <p>There is an unconditional counterpart that involves a vector of <span class="math notranslate nohighlight">\(n\)</span> gross returns <span class="math notranslate nohighlight">\(R_{t+1}\)</span> (e.g., equity and risk-free) with unconditional mean <span class="math notranslate nohighlight">\(E(R)\)</span> and covariance matrix <span class="math notranslate nohighlight">\(\Sigma_R\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-hj-unconditional">
-<span class="eqno">(87.5)<a class="headerlink" href="#equation-bhs-hj-unconditional" title="Link to this equation">#</a></span>\[\sigma(m)
+<span class="eqno">(88.5)<a class="headerlink" href="#equation-bhs-hj-unconditional" title="Link to this equation">#</a></span>\[\sigma(m)
 \geq
 \sqrt{b^\top \Sigma_R^{-1} b},
 \qquad
 b = \mathbf{1} - E(m) E(R).\]</div>
 <p><a class="reference internal" href="#dov_ex1"><span class="std std-ref">Exercise 1</span></a> walks through a derivation of this unconditional bound.</p>
 <p>Here <span class="math notranslate nohighlight">\(\mathbf{1}\)</span> denotes an <span class="math notranslate nohighlight">\(n \times 1\)</span> vector of ones.</p>
-<p>The function below computes the right-hand side of <a class="reference internal" href="#equation-bhs-hj-unconditional">(87.5)</a> for any given value of <span class="math notranslate nohighlight">\(E(m)\)</span>.</p>
+<p>The function below computes the right-hand side of <a class="reference internal" href="#equation-bhs-hj-unconditional">(88.5)</a> for any given value of <span class="math notranslate nohighlight">\(E(m)\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">hj_std_bound</span><span class="p">(</span><span class="n">E_m</span><span class="p">):</span>
@@ -595,8 +600,8 @@ b = \mathbf{1} - E(m) E(R).\]</div>
 </section>
 </section>
 <section id="two-puzzles">
-<h3><span class="section-number">87.2.3. </span>Two puzzles<a class="headerlink" href="#two-puzzles" title="Link to this heading">#</a></h3>
-<p>Reconciling formula <a class="reference internal" href="#equation-bhs-crra-sdf">(87.2)</a> with the market price of risk extracted from data on asset returns (like those in Table 1 below) requires a value of <span class="math notranslate nohighlight">\(\gamma\)</span> so high that it provokes skepticism.</p>
+<h3><span class="section-number">88.2.3. </span>Two puzzles<a class="headerlink" href="#two-puzzles" title="Link to this heading">#</a></h3>
+<p>Reconciling formula <a class="reference internal" href="#equation-bhs-crra-sdf">(88.2)</a> with the market price of risk extracted from data on asset returns (like those in Table 1 below) requires a value of <span class="math notranslate nohighlight">\(\gamma\)</span> so high that it provokes skepticism.</p>
 <p>This is the <strong>equity premium puzzle</strong>.</p>
 <p>But high values of <span class="math notranslate nohighlight">\(\gamma\)</span> bring another difficulty.</p>
 <p>High values of <span class="math notranslate nohighlight">\(\gamma\)</span> that deliver enough volatility <span class="math notranslate nohighlight">\(\sigma(m)\)</span> also push <span class="math notranslate nohighlight">\(E(m)\)</span>, the reciprocal of the gross risk-free rate, too far down, away from the Hansen–Jagannathan bound.</p>
@@ -685,7 +690,7 @@ b = \mathbf{1} - E(m) E(R).\]</div>
 <figure class="align-default" id="fig-bhs-1">
 <img alt="_images/c5552a0d07378259b686d3b60c087e033d35d5c69840fa060d79e921610397cd.png" src="_images/c5552a0d07378259b686d3b60c087e033d35d5c69840fa060d79e921610397cd.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 87.1 </span><span class="caption-text">SDF moments and Hansen-Jagannathan bound</span><a class="headerlink" href="#fig-bhs-1" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 88.1 </span><span class="caption-text">SDF moments and Hansen-Jagannathan bound</span><a class="headerlink" href="#fig-bhs-1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -703,15 +708,15 @@ b = \mathbf{1} - E(m) E(R).\]</div>
 </section>
 </section>
 <section id="the-choice-setting">
-<h2><a class="toc-backref" href="#id37" role="doc-backlink"><span class="section-number">87.3. </span>The choice setting</a><a class="headerlink" href="#the-choice-setting" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id37" role="doc-backlink"><span class="section-number">88.3. </span>The choice setting</a><a class="headerlink" href="#the-choice-setting" title="Link to this heading">#</a></h2>
 <p>To understand their reinterpretation, we first need to describe their statistical models of consumption growth.</p>
 <section id="shocks-and-consumption-plans">
-<h3><span class="section-number">87.3.1. </span>Shocks and consumption plans<a class="headerlink" href="#shocks-and-consumption-plans" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.3.1. </span>Shocks and consumption plans<a class="headerlink" href="#shocks-and-consumption-plans" title="Link to this heading">#</a></h3>
 <p>We work with a general class of consumption plans.</p>
 <p>Let <span class="math notranslate nohighlight">\(x_t\)</span> be an <span class="math notranslate nohighlight">\(n \times 1\)</span> state vector and <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span> an <span class="math notranslate nohighlight">\(m \times 1\)</span> shock.</p>
 <p>A consumption plan belongs to the set <span class="math notranslate nohighlight">\(\mathcal{C}(A, B, H; x_0)\)</span> if it admits the recursive representation</p>
 <div class="math notranslate nohighlight" id="equation-bhs-state-space">
-<span class="eqno">(87.6)<a class="headerlink" href="#equation-bhs-state-space" title="Link to this equation">#</a></span>\[x_{t+1} = A x_t + B \varepsilon_{t+1},
+<span class="eqno">(88.6)<a class="headerlink" href="#equation-bhs-state-space" title="Link to this equation">#</a></span>\[x_{t+1} = A x_t + B \varepsilon_{t+1},
 \qquad
 c_t = H x_t,\]</div>
 <p>where the eigenvalues of <span class="math notranslate nohighlight">\(A\)</span> are bounded in modulus by <span class="math notranslate nohighlight">\(1/\sqrt{\beta}\)</span>.</p>
@@ -722,7 +727,7 @@ c_t = H x_t,\]</div>
 <p>We focus on the random-walk and trend-stationary models as two special cases.</p>
 </section>
 <section id="consumption-dynamics">
-<h3><span class="section-number">87.3.2. </span>Consumption dynamics<a class="headerlink" href="#consumption-dynamics" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.3.2. </span>Consumption dynamics<a class="headerlink" href="#consumption-dynamics" title="Link to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(c_t = \log C_t\)</span> be log consumption.</p>
 <p>The <em>geometric-random-walk</em> specification is</p>
 <div class="math notranslate nohighlight">
@@ -785,9 +790,9 @@ std[r_e-r_f]=0.0767
 </section>
 </section>
 <section id="preferences-distortions-and-detection">
-<span id="pref-equiv"></span><h2><a class="toc-backref" href="#id38" role="doc-backlink"><span class="section-number">87.4. </span>Preferences, distortions, and detection</a><a class="headerlink" href="#preferences-distortions-and-detection" title="Link to this heading">#</a></h2>
+<span id="pref-equiv"></span><h2><a class="toc-backref" href="#id38" role="doc-backlink"><span class="section-number">88.4. </span>Preferences, distortions, and detection</a><a class="headerlink" href="#preferences-distortions-and-detection" title="Link to this heading">#</a></h2>
 <section id="overview-of-agents-i-ii-iii-and-iv">
-<h3><span class="section-number">87.4.1. </span>Overview of agents I, II, III, and IV<a class="headerlink" href="#overview-of-agents-i-ii-iii-and-iv" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.4.1. </span>Overview of agents I, II, III, and IV<a class="headerlink" href="#overview-of-agents-i-ii-iii-and-iv" title="Link to this heading">#</a></h3>
 <p>We compare four preference specifications over consumption plans <span class="math notranslate nohighlight">\(C^\infty \in \mathcal{C}\)</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -839,15 +844,15 @@ m_{t+1} = \beta \frac{\partial U_{t+1}/\partial c_{t+1}}{\partial U_t/\partial c
 <p>Along the way, we introduce the likelihood-ratio distortion that enters the stochastic discount factor and describe detection-error probabilities that will serve as our new calibration tool.</p>
 </section>
 <section id="type-i-krepsporteusepsteinzintallarini-preferences">
-<h3><span class="section-number">87.4.2. </span>Type I: Kreps–Porteus–Epstein–Zin–Tallarini preferences<a class="headerlink" href="#type-i-krepsporteusepsteinzintallarini-preferences" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.4.2. </span>Type I: Kreps–Porteus–Epstein–Zin–Tallarini preferences<a class="headerlink" href="#type-i-krepsporteusepsteinzintallarini-preferences" title="Link to this heading">#</a></h3>
 <p>The Epstein–Zin–Weil specification combines current consumption with a certainty equivalent of future utility through a CES aggregator:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-ez-general">
-<span class="eqno">(87.7)<a class="headerlink" href="#equation-bhs-ez-general" title="Link to this equation">#</a></span>\[V_t = \left[(1-\beta) C_t^{\rho} + \beta \mathcal{R}_t(V_{t+1})^{\rho}\right]^{1/\rho},
+<span class="eqno">(88.7)<a class="headerlink" href="#equation-bhs-ez-general" title="Link to this equation">#</a></span>\[V_t = \left[(1-\beta) C_t^{\rho} + \beta \mathcal{R}_t(V_{t+1})^{\rho}\right]^{1/\rho},
 \qquad
 \rho := 1 - \frac{1}{\psi},\]</div>
 <p>where <span class="math notranslate nohighlight">\(\psi &gt; 0\)</span> is the intertemporal elasticity of substitution and the certainty equivalent uses the risk-aversion parameter <span class="math notranslate nohighlight">\(\gamma \geq 1\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-certainty-equiv">
-<span class="eqno">(87.8)<a class="headerlink" href="#equation-bhs-certainty-equiv" title="Link to this equation">#</a></span>\[\mathcal{R}_t(V_{t+1})
+<span class="eqno">(88.8)<a class="headerlink" href="#equation-bhs-certainty-equiv" title="Link to this equation">#</a></span>\[\mathcal{R}_t(V_{t+1})
 =
 \left(E_t\left[V_{t+1}^{1-\gamma}\right]\right)^{\frac{1}{1-\gamma}}.\]</div>
 <div class="admonition note">
@@ -861,9 +866,9 @@ m_{t+1} = \beta \frac{\partial U_{t+1}/\partial c_{t+1}}{\partial U_t/\partial c
 \[
 V_t = C_t^{1-\beta} \cdot \mathcal{R}_t(V_{t+1})^{\beta}.
 \]</div>
-<p>Taking logs and expanding the certainty equivalent <a class="reference internal" href="#equation-bhs-certainty-equiv">(87.8)</a> gives the <em>type I recursion</em>:</p>
+<p>Taking logs and expanding the certainty equivalent <a class="reference internal" href="#equation-bhs-certainty-equiv">(88.8)</a> gives the <em>type I recursion</em>:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-type1-recursion">
-<span class="eqno">(87.9)<a class="headerlink" href="#equation-bhs-type1-recursion" title="Link to this equation">#</a></span>\[\log V_t
+<span class="eqno">(88.9)<a class="headerlink" href="#equation-bhs-type1-recursion" title="Link to this equation">#</a></span>\[\log V_t
 =
 (1-\beta)c_t
 +
@@ -871,24 +876,24 @@ V_t = C_t^{1-\beta} \cdot \mathcal{R}_t(V_{t+1})^{\beta}.
 \log E_t\left[(V_{t+1})^{1-\gamma}\right].\]</div>
 <p>A useful change of variables is to define the transformed continuation value</p>
 <div class="math notranslate nohighlight" id="equation-bhs-ut-def">
-<span class="eqno">(87.10)<a class="headerlink" href="#equation-bhs-ut-def" title="Link to this equation">#</a></span>\[U_t \equiv \frac{\log V_t}{1-\beta}\]</div>
+<span class="eqno">(88.10)<a class="headerlink" href="#equation-bhs-ut-def" title="Link to this equation">#</a></span>\[U_t \equiv \frac{\log V_t}{1-\beta}\]</div>
 <p>and the robustness parameter</p>
 <div class="math notranslate nohighlight" id="equation-bhs-theta-def">
-<span class="eqno">(87.11)<a class="headerlink" href="#equation-bhs-theta-def" title="Link to this equation">#</a></span>\[\theta = \frac{-1}{(1-\beta)(1-\gamma)}.\]</div>
-<p>Substituting into <a class="reference internal" href="#equation-bhs-type1-recursion">(87.9)</a> yields the <em>risk-sensitive recursion</em> (<a class="reference internal" href="#dov_ex3"><span class="std std-ref">Exercise 3</span></a> asks you to verify this step)</p>
+<span class="eqno">(88.11)<a class="headerlink" href="#equation-bhs-theta-def" title="Link to this equation">#</a></span>\[\theta = \frac{-1}{(1-\beta)(1-\gamma)}.\]</div>
+<p>Substituting into <a class="reference internal" href="#equation-bhs-type1-recursion">(88.9)</a> yields the <em>risk-sensitive recursion</em> (<a class="reference internal" href="#dov_ex3"><span class="std std-ref">Exercise 3</span></a> asks you to verify this step)</p>
 <div class="math notranslate nohighlight" id="equation-bhs-risk-sensitive">
-<span class="eqno">(87.12)<a class="headerlink" href="#equation-bhs-risk-sensitive" title="Link to this equation">#</a></span>\[U_t = c_t - \beta\theta \log E_t\left[\exp\left(\frac{-U_{t+1}}{\theta}\right)\right].\]</div>
+<span class="eqno">(88.12)<a class="headerlink" href="#equation-bhs-risk-sensitive" title="Link to this equation">#</a></span>\[U_t = c_t - \beta\theta \log E_t\left[\exp\left(\frac{-U_{t+1}}{\theta}\right)\right].\]</div>
 <p>When <span class="math notranslate nohighlight">\(\gamma = 1\)</span> (equivalently <span class="math notranslate nohighlight">\(\theta = +\infty\)</span>), the <span class="math notranslate nohighlight">\(\log E \exp\)</span> term reduces to <span class="math notranslate nohighlight">\(E_t U_{t+1}\)</span> and the recursion becomes standard discounted expected log utility, <span class="math notranslate nohighlight">\(U_t = c_t + \beta E_t U_{t+1}\)</span>.</p>
-<p>For consumption plans in <span class="math notranslate nohighlight">\(\mathcal{C}(A, B, H; x_0)\)</span>, the recursion <a class="reference internal" href="#equation-bhs-risk-sensitive">(87.12)</a> implies the Bellman equation</p>
+<p>For consumption plans in <span class="math notranslate nohighlight">\(\mathcal{C}(A, B, H; x_0)\)</span>, the recursion <a class="reference internal" href="#equation-bhs-risk-sensitive">(88.12)</a> implies the Bellman equation</p>
 <div class="math notranslate nohighlight" id="equation-bhs-bellman-type1">
-<span class="eqno">(87.13)<a class="headerlink" href="#equation-bhs-bellman-type1" title="Link to this equation">#</a></span>\[U(x) = c - \beta\theta \log \int \exp\left[\frac{-U(Ax + B\varepsilon)}{\theta}\right] \pi(\varepsilon)d\varepsilon.\]</div>
+<span class="eqno">(88.13)<a class="headerlink" href="#equation-bhs-bellman-type1" title="Link to this equation">#</a></span>\[U(x) = c - \beta\theta \log \int \exp\left[\frac{-U(Ax + B\varepsilon)}{\theta}\right] \pi(\varepsilon)d\varepsilon.\]</div>
 <section id="deriving-the-stochastic-discount-factor">
-<h4><span class="section-number">87.4.2.1. </span>Deriving the stochastic discount factor<a class="headerlink" href="#deriving-the-stochastic-discount-factor" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">88.4.2.1. </span>Deriving the stochastic discount factor<a class="headerlink" href="#deriving-the-stochastic-discount-factor" title="Link to this heading">#</a></h4>
 <p>The stochastic discount factor is the intertemporal marginal rate of substitution, the ratio of marginal utilities at dates <span class="math notranslate nohighlight">\(t+1\)</span> and <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>Because <span class="math notranslate nohighlight">\(c_t\)</span> enters <a class="reference internal" href="#equation-bhs-risk-sensitive">(87.12)</a> linearly, <span class="math notranslate nohighlight">\(\partial U_t / \partial c_t = 1\)</span>.</p>
+<p>Because <span class="math notranslate nohighlight">\(c_t\)</span> enters <a class="reference internal" href="#equation-bhs-risk-sensitive">(88.12)</a> linearly, <span class="math notranslate nohighlight">\(\partial U_t / \partial c_t = 1\)</span>.</p>
 <p>Converting from log consumption to the consumption good gives <span class="math notranslate nohighlight">\(\partial U_t / \partial C_t = 1/C_t\)</span>.</p>
 <p>A perturbation to <span class="math notranslate nohighlight">\(c_{t+1}\)</span> in a particular state feeds into <span class="math notranslate nohighlight">\(U_t\)</span> through the <span class="math notranslate nohighlight">\(\log E_t \exp\)</span> term.</p>
-<p>Differentiating <a class="reference internal" href="#equation-bhs-risk-sensitive">(87.12)</a>:</p>
+<p>Differentiating <a class="reference internal" href="#equation-bhs-risk-sensitive">(88.12)</a>:</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{\partial U_t}{\partial c_{t+1}}
@@ -903,7 +908,7 @@ V_t = C_t^{1-\beta} \cdot \mathcal{R}_t(V_{t+1})^{\beta}.
 <span class="math notranslate nohighlight">\(\partial U_t / \partial C_{t+1} = \beta \frac{\exp(-U_{t+1}/\theta)}{E_t[\exp(-U_{t+1}/\theta)]} \frac{1}{C_{t+1}}\)</span>.</p>
 <p>The ratio of these marginal utilities gives the SDF:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-sdf-ut">
-<span class="eqno">(87.14)<a class="headerlink" href="#equation-bhs-sdf-ut" title="Link to this equation">#</a></span>\[m_{t+1}
+<span class="eqno">(88.14)<a class="headerlink" href="#equation-bhs-sdf-ut" title="Link to this equation">#</a></span>\[m_{t+1}
 =
 \frac{\partial U_t / \partial C_{t+1}}{\partial U_t / \partial C_t}
 =
@@ -913,12 +918,12 @@ V_t = C_t^{1-\beta} \cdot \mathcal{R}_t(V_{t+1})^{\beta}.
 </section>
 </section>
 <section id="type-ii-multiplier-preferences">
-<h3><span class="section-number">87.4.3. </span>Type II: multiplier preferences<a class="headerlink" href="#type-ii-multiplier-preferences" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.4.3. </span>Type II: multiplier preferences<a class="headerlink" href="#type-ii-multiplier-preferences" title="Link to this heading">#</a></h3>
 <p>We now turn to the type II (multiplier) agent.</p>
 <p>Before writing down the preferences, we need the machinery of martingale likelihood ratios that formalizes what it means to distort a probability model.</p>
 <p>These tools build on <a class="reference internal" href="likelihood_ratio_process.html#likelihood-ratio-process"><span class="std std-ref">Likelihood Ratio Processes</span></a>, which develops properties of likelihood ratios in detail, and <a class="reference internal" href="divergence_measures.html#divergence-measures"><span class="std std-ref">Divergence Measures</span></a>, which covers relative entropy.</p>
 <section id="martingale-likelihood-ratios">
-<h4><span class="section-number">87.4.3.1. </span>Martingale likelihood ratios<a class="headerlink" href="#martingale-likelihood-ratios" title="Link to this heading">#</a></h4>
+<h4><span class="section-number">88.4.3.1. </span>Martingale likelihood ratios<a class="headerlink" href="#martingale-likelihood-ratios" title="Link to this heading">#</a></h4>
 <p>Consider a nonnegative martingale <span class="math notranslate nohighlight">\(G_t\)</span> with <span class="math notranslate nohighlight">\(E(G_t \mid x_0) = 1\)</span>.</p>
 <p>Its one-step increments</p>
 <div class="math notranslate nohighlight">
@@ -933,7 +938,7 @@ G_0 = 1,\]</div>
 <p>The conditional relative entropy of the distortion is <span class="math notranslate nohighlight">\(E_t[g_{t+1}\log g_{t+1}]\)</span>, and the discounted entropy over the entire path is <span class="math notranslate nohighlight">\(\beta E\bigl[\sum_{t=0}^{\infty} \beta^t G_tE_t(g_{t+1}\log g_{t+1})\big|x_0\bigr]\)</span>.</p>
 <p>A type II agent’s <em>multiplier</em> preference ordering over consumption plans <span class="math notranslate nohighlight">\(C^\infty \in \mathcal{C}(A,B,H;x_0)\)</span> is defined by</p>
 <div class="math notranslate nohighlight" id="equation-bhs-type2-objective">
-<span class="eqno">(87.15)<a class="headerlink" href="#equation-bhs-type2-objective" title="Link to this equation">#</a></span>\[\min_{\{g_{t+1}\}}
+<span class="eqno">(88.15)<a class="headerlink" href="#equation-bhs-type2-objective" title="Link to this equation">#</a></span>\[\min_{\{g_{t+1}\}}
 \sum_{t=0}^{\infty} E\left\{\beta^t G_t
 \left[c_t + \beta\theta E_t\left(g_{t+1}\log g_{t+1}\right)\right]
 \Big| x_0\right\},\]</div>
@@ -941,7 +946,7 @@ G_0 = 1,\]</div>
 <p>A larger <span class="math notranslate nohighlight">\(\theta\)</span> makes probability distortions more expensive, discouraging departures from the approximating model.</p>
 <p>The value function satisfies the Bellman equation</p>
 <div class="math notranslate nohighlight" id="equation-bhs-bellman-type2">
-<span class="eqno">(87.16)<a class="headerlink" href="#equation-bhs-bellman-type2" title="Link to this equation">#</a></span>\[W(x)
+<span class="eqno">(88.16)<a class="headerlink" href="#equation-bhs-bellman-type2" title="Link to this equation">#</a></span>\[W(x)
 =
 c + \min_{g(\varepsilon) \geq 0}
 \beta \int \bigl[g(\varepsilon) W(Ax + B\varepsilon)
@@ -950,15 +955,15 @@ c + \min_{g(\varepsilon) \geq 0}
 <p>Inside the integral, <span class="math notranslate nohighlight">\(g(\varepsilon) W(Ax + B\varepsilon)\)</span> is the continuation value under the distorted model <span class="math notranslate nohighlight">\(g\pi\)</span>, while <span class="math notranslate nohighlight">\(\theta g(\varepsilon)\log g(\varepsilon)\)</span> is the entropy penalty that makes large departures from the approximating model <span class="math notranslate nohighlight">\(\pi\)</span> costly.</p>
 <p>The minimizer is (<a class="reference internal" href="#dov_ex4"><span class="std std-ref">Exercise 4</span></a> derives this and verifies the equivalence <span class="math notranslate nohighlight">\(W \equiv U\)</span>)</p>
 <div class="math notranslate nohighlight" id="equation-bhs-ghat">
-<span class="eqno">(87.17)<a class="headerlink" href="#equation-bhs-ghat" title="Link to this equation">#</a></span>\[\hat g_{t+1}
+<span class="eqno">(88.17)<a class="headerlink" href="#equation-bhs-ghat" title="Link to this equation">#</a></span>\[\hat g_{t+1}
 =
 \frac{\exp \bigl(-W(Ax_t + B\varepsilon_{t+1})/\theta\bigr)}{E_t \left[\exp \bigl(-W(Ax_t + B\varepsilon_{t+1})/\theta\bigr)\right]}.\]</div>
 <p>Notice that <span class="math notranslate nohighlight">\(g(\varepsilon)\)</span> multiplies both the continuation value <span class="math notranslate nohighlight">\(W\)</span> and the entropy penalty.</p>
 <p>This is the key structural feature that makes <span class="math notranslate nohighlight">\(\hat g\)</span> a likelihood ratio.</p>
-<p>Substituting <a class="reference internal" href="#equation-bhs-ghat">(87.17)</a> back into <a class="reference internal" href="#equation-bhs-bellman-type2">(87.16)</a> gives</p>
+<p>Substituting <a class="reference internal" href="#equation-bhs-ghat">(88.17)</a> back into <a class="reference internal" href="#equation-bhs-bellman-type2">(88.16)</a> gives</p>
 <div class="math notranslate nohighlight">
 \[W(x) = c - \beta\theta \log \int \exp \left[\frac{-W(Ax + B\varepsilon)}{\theta}\right]\pi(\varepsilon) d\varepsilon,\]</div>
-<p>which is identical to <a class="reference internal" href="#equation-bhs-bellman-type1">(87.13)</a>.</p>
+<p>which is identical to <a class="reference internal" href="#equation-bhs-bellman-type1">(88.13)</a>.</p>
 <p>Therefore <span class="math notranslate nohighlight">\(W(x) \equiv U(x)\)</span>, establishing that <em>types I and II are observationally equivalent</em> over elements of <span class="math notranslate nohighlight">\(\mathcal{C}(A,B,H;x_0)\)</span>.</p>
 <p>The mapping between parameters is</p>
 <div class="math notranslate nohighlight">
@@ -982,7 +987,7 @@ c + \min_{g(\varepsilon) \geq 0}
 </section>
 </section>
 <section id="type-iii-constraint-preferences">
-<h3><span class="section-number">87.4.4. </span>Type III: constraint preferences<a class="headerlink" href="#type-iii-constraint-preferences" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.4.4. </span>Type III: constraint preferences<a class="headerlink" href="#type-iii-constraint-preferences" title="Link to this heading">#</a></h3>
 <p>Type III (constraint) preferences swap the entropy penalty for a hard bound.</p>
 <p>Rather than penalizing distortions through <span class="math notranslate nohighlight">\(\theta\)</span>, the agent minimizes expected discounted log consumption under the worst-case model subject to a cap <span class="math notranslate nohighlight">\(\eta\)</span> on discounted relative entropy:</p>
 <div class="math notranslate nohighlight">
@@ -1014,13 +1019,13 @@ c + \min_{g(\varepsilon) \geq 0}
 \left[c_t + \beta \theta E_t(g_{t+1}\log g_{t+1})\right]
 \Big| x_0\right\} - \theta\eta,
 \]</div>
-<p>which, apart from the constant <span class="math notranslate nohighlight">\(-\theta\eta\)</span>, has the same structure as the type II objective <a class="reference internal" href="#equation-bhs-type2-objective">(87.15)</a>.</p>
-<p>The first-order condition for <span class="math notranslate nohighlight">\(g_{t+1}\)</span> is therefore identical, and the optimal distortion is the same <span class="math notranslate nohighlight">\(\hat g_{t+1}\)</span> as in <a class="reference internal" href="#equation-bhs-ghat">(87.17)</a>, evaluated at the <span class="math notranslate nohighlight">\(\theta\)</span> that makes the entropy constraint bind.</p>
+<p>which, apart from the constant <span class="math notranslate nohighlight">\(-\theta\eta\)</span>, has the same structure as the type II objective <a class="reference internal" href="#equation-bhs-type2-objective">(88.15)</a>.</p>
+<p>The first-order condition for <span class="math notranslate nohighlight">\(g_{t+1}\)</span> is therefore identical, and the optimal distortion is the same <span class="math notranslate nohighlight">\(\hat g_{t+1}\)</span> as in <a class="reference internal" href="#equation-bhs-ghat">(88.17)</a>, evaluated at the <span class="math notranslate nohighlight">\(\theta\)</span> that makes the entropy constraint bind.</p>
 <p>The SDF is again <span class="math notranslate nohighlight">\(m_{t+1} = \beta(C_t/C_{t+1})\hat g_{t+1}\)</span>.</p>
 <p>So for the particular endowment process and the <span class="math notranslate nohighlight">\(\theta\)</span> that enforces the entropy bound, a type III agent and a type II agent assign the same shadow prices to uncertain claims.</p>
 </section>
 <section id="type-iv-ex-post-bayesian">
-<h3><span class="section-number">87.4.5. </span>Type IV: ex post Bayesian<a class="headerlink" href="#type-iv-ex-post-bayesian" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.4.5. </span>Type IV: ex post Bayesian<a class="headerlink" href="#type-iv-ex-post-bayesian" title="Link to this heading">#</a></h3>
 <p>The type IV agent is the simplest of the four: an ordinary expected-utility agent with log preferences who happens to hold a pessimistic probability model <span class="math notranslate nohighlight">\(\hat\Pi_\infty\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\hat E_0 \sum_{t=0}^{\infty} \beta^t c_t.\]</div>
@@ -1041,10 +1046,10 @@ c + \min_{g(\varepsilon) \geq 0}
 <p>For the particular <span class="math notranslate nohighlight">\(A, B, H\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span> used to construct <span class="math notranslate nohighlight">\(\hat\Pi_\infty\)</span>, the type IV value function equals <span class="math notranslate nohighlight">\(J(x)\)</span> from type III.</p>
 </section>
 <section id="stochastic-discount-factor">
-<h3><span class="section-number">87.4.6. </span>Stochastic discount factor<a class="headerlink" href="#stochastic-discount-factor" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.4.6. </span>Stochastic discount factor<a class="headerlink" href="#stochastic-discount-factor" title="Link to this heading">#</a></h3>
 <p>Pulling together the results for all four agent types, the stochastic discount factor can be written compactly as</p>
 <div class="math notranslate nohighlight" id="equation-bhs-sdf">
-<span class="eqno">(87.18)<a class="headerlink" href="#equation-bhs-sdf" title="Link to this equation">#</a></span>\[m_{t+1}
+<span class="eqno">(88.18)<a class="headerlink" href="#equation-bhs-sdf" title="Link to this equation">#</a></span>\[m_{t+1}
 =
 \beta \frac{C_t}{C_{t+1}} \hat g_{t+1}.\]</div>
 <p>The factor <span class="math notranslate nohighlight">\(\hat g_{t+1}\)</span> is a likelihood ratio between the approximating and worst-case one-step models.</p>
@@ -1054,15 +1059,15 @@ c + \min_{g(\varepsilon) \geq 0}
 <p>For the ex post Bayesian, it is simply a change of measure from the approximating model to the pessimistic one.</p>
 </section>
 <section id="value-function-decomposition">
-<h3><span class="section-number">87.4.7. </span>Value function decomposition<a class="headerlink" href="#value-function-decomposition" title="Link to this heading">#</a></h3>
-<p>Substituting the minimizing <span class="math notranslate nohighlight">\(\hat g\)</span> back into the Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type2">(87.16)</a> yields a revealing decomposition of the type II value function:</p>
+<h3><span class="section-number">88.4.7. </span>Value function decomposition<a class="headerlink" href="#value-function-decomposition" title="Link to this heading">#</a></h3>
+<p>Substituting the minimizing <span class="math notranslate nohighlight">\(\hat g\)</span> back into the Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type2">(88.16)</a> yields a revealing decomposition of the type II value function:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-w-decomp-bellman">
-<span class="eqno">(87.19)<a class="headerlink" href="#equation-bhs-w-decomp-bellman" title="Link to this equation">#</a></span>\[W(x) = c + \beta \int \bigl[\hat g(\varepsilon) W(Ax + B\varepsilon) + \theta \hat g(\varepsilon)\log \hat g(\varepsilon)\bigr] \pi(\varepsilon)d\varepsilon.\]</div>
+<span class="eqno">(88.19)<a class="headerlink" href="#equation-bhs-w-decomp-bellman" title="Link to this equation">#</a></span>\[W(x) = c + \beta \int \bigl[\hat g(\varepsilon) W(Ax + B\varepsilon) + \theta \hat g(\varepsilon)\log \hat g(\varepsilon)\bigr] \pi(\varepsilon)d\varepsilon.\]</div>
 <p>Define two components:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-j-recursion">
-<span class="eqno">(87.20)<a class="headerlink" href="#equation-bhs-j-recursion" title="Link to this equation">#</a></span>\[J(x) = c + \beta \int \hat g(\varepsilon) J(Ax + B\varepsilon) \pi(\varepsilon)d\varepsilon,\]</div>
+<span class="eqno">(88.20)<a class="headerlink" href="#equation-bhs-j-recursion" title="Link to this equation">#</a></span>\[J(x) = c + \beta \int \hat g(\varepsilon) J(Ax + B\varepsilon) \pi(\varepsilon)d\varepsilon,\]</div>
 <div class="math notranslate nohighlight" id="equation-bhs-n-recursion">
-<span class="eqno">(87.21)<a class="headerlink" href="#equation-bhs-n-recursion" title="Link to this equation">#</a></span>\[N(x) = \beta \int \hat g(\varepsilon)\bigl[\log \hat g(\varepsilon) + N(Ax + B\varepsilon)\bigr] \pi(\varepsilon)d\varepsilon.\]</div>
+<span class="eqno">(88.21)<a class="headerlink" href="#equation-bhs-n-recursion" title="Link to this equation">#</a></span>\[N(x) = \beta \int \hat g(\varepsilon)\bigl[\log \hat g(\varepsilon) + N(Ax + B\varepsilon)\bigr] \pi(\varepsilon)d\varepsilon.\]</div>
 <p>Then <span class="math notranslate nohighlight">\(W(x) = J(x) + \theta N(x)\)</span>.</p>
 <p>Here <span class="math notranslate nohighlight">\(J(x_t) = \hat E_t \sum_{j=0}^{\infty} \beta^j c_{t+j}\)</span> is expected discounted log consumption under the <em>worst-case</em> model.</p>
 <p><span class="math notranslate nohighlight">\(J\)</span> is the value function shared by both the type III and type IV agents.</p>
@@ -1072,16 +1077,16 @@ c + \min_{g(\varepsilon) \geq 0}
 <p>This decomposition plays a central role in the welfare calculations of <a class="reference internal" href="#welfare-experiments"><span class="std std-ref">the welfare section</span></a> below, where it explains why type III uncertainty compensation is twice that of type II.</p>
 </section>
 <section id="gaussian-mean-shift-distortions">
-<h3><span class="section-number">87.4.8. </span>Gaussian mean-shift distortions<a class="headerlink" href="#gaussian-mean-shift-distortions" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.4.8. </span>Gaussian mean-shift distortions<a class="headerlink" href="#gaussian-mean-shift-distortions" title="Link to this heading">#</a></h3>
 <p>Everything so far holds for general distortions <span class="math notranslate nohighlight">\(\hat g\)</span>.</p>
 <p>We now specialize to the Gaussian case that underlies our two consumption models.</p>
 <p>Under both models, the shock is <span class="math notranslate nohighlight">\(\varepsilon_{t+1} \sim \mathcal{N}(0,1)\)</span>.</p>
-<p>As we verify in the next subsection, the value function <span class="math notranslate nohighlight">\(W\)</span> is linear in the state, so the exponent in the worst-case distortion <a class="reference internal" href="#equation-bhs-ghat">(87.17)</a> is linear in <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span>.</p>
+<p>As we verify in the next subsection, the value function <span class="math notranslate nohighlight">\(W\)</span> is linear in the state, so the exponent in the worst-case distortion <a class="reference internal" href="#equation-bhs-ghat">(88.17)</a> is linear in <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span>.</p>
 <p>Exponentially tilting a Gaussian by a linear function produces another Gaussian with the same variance but a shifted mean.</p>
 <p>The worst-case model therefore keeps the variance at one but shifts the mean of <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span> to some <span class="math notranslate nohighlight">\(w &lt; 0\)</span>.</p>
 <p>The resulting likelihood ratio is (<a class="reference internal" href="#dov_ex5"><span class="std std-ref">Exercise 5</span></a> verifies its properties)</p>
 <div class="math notranslate nohighlight" id="equation-bhs-ghat-gaussian">
-<span class="eqno">(87.22)<a class="headerlink" href="#equation-bhs-ghat-gaussian" title="Link to this equation">#</a></span>\[\hat g_{t+1}
+<span class="eqno">(88.22)<a class="headerlink" href="#equation-bhs-ghat-gaussian" title="Link to this equation">#</a></span>\[\hat g_{t+1}
 =
 \exp\left(w \varepsilon_{t+1} - \frac{1}{2}w^2\right),
 \qquad
@@ -1090,11 +1095,11 @@ E_t[\hat g_{t+1}] = 1.\]</div>
 <div class="math notranslate nohighlight">
 \[\operatorname{std}(\hat g_{t+1}) = \sqrt{e^{w^2}-1}.\]</div>
 <p>The mean shift <span class="math notranslate nohighlight">\(w\)</span> is determined by how strongly each shock <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span> affects continuation value.</p>
-<p>From <a class="reference internal" href="#equation-bhs-ghat">(87.17)</a>, the worst-case distortion puts <span class="math notranslate nohighlight">\(\hat g \propto \exp(-W(x_{t+1})/\theta)\)</span>.</p>
+<p>From <a class="reference internal" href="#equation-bhs-ghat">(88.17)</a>, the worst-case distortion puts <span class="math notranslate nohighlight">\(\hat g \propto \exp(-W(x_{t+1})/\theta)\)</span>.</p>
 <p>If <span class="math notranslate nohighlight">\(W(x_{t+1})\)</span> loads on <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span> with coefficient <span class="math notranslate nohighlight">\(\lambda\)</span>, then the Gaussian mean shift is <span class="math notranslate nohighlight">\(w = -\lambda/\theta\)</span>.</p>
 <p>By guessing linear value functions and matching coefficients in the Bellman equation (<a class="reference internal" href="#dov_ex6"><span class="std std-ref">Exercise 6</span></a> works out both cases), we obtain the worst-case mean shifts</p>
 <div class="math notranslate nohighlight" id="equation-bhs-w-formulas">
-<span class="eqno">(87.23)<a class="headerlink" href="#equation-bhs-w-formulas" title="Link to this equation">#</a></span>\[w_{rw}(\theta) = -\frac{\sigma_\varepsilon}{(1-\beta)\theta},
+<span class="eqno">(88.23)<a class="headerlink" href="#equation-bhs-w-formulas" title="Link to this equation">#</a></span>\[w_{rw}(\theta) = -\frac{\sigma_\varepsilon}{(1-\beta)\theta},
 \qquad
 w_{ts}(\theta) = -\frac{\sigma_\varepsilon}{(1-\rho\beta)\theta}.\]</div>
 <p>The denominator <span class="math notranslate nohighlight">\((1-\beta)\)</span> in the random-walk case becomes <span class="math notranslate nohighlight">\((1-\beta\rho)\)</span> in the trend-stationary case.</p>
@@ -1115,13 +1120,13 @@ w_{ts}(\theta) = -\frac{\sigma_\varepsilon}{(1-\rho\beta)\theta}.\]</div>
 </div>
 </section>
 <section id="discounted-entropy">
-<h3><span class="section-number">87.4.9. </span>Discounted entropy<a class="headerlink" href="#discounted-entropy" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.4.9. </span>Discounted entropy<a class="headerlink" href="#discounted-entropy" title="Link to this heading">#</a></h3>
 <p>When the approximating and worst-case conditional densities are <span class="math notranslate nohighlight">\(\mathcal{N}(0,1)\)</span> and <span class="math notranslate nohighlight">\(\mathcal{N}(w(\theta),1)\)</span>, the likelihood ratio is <span class="math notranslate nohighlight">\(\hat g(\varepsilon) = \exp(w(\theta)\varepsilon - \frac{1}{2}w(\theta)^2)\)</span>, so <span class="math notranslate nohighlight">\(\log \hat g(\varepsilon) = w(\theta)\varepsilon - \frac{1}{2}w(\theta)^2\)</span>.</p>
 <p>Under the worst-case measure <span class="math notranslate nohighlight">\(\varepsilon \sim \mathcal{N}(w(\theta),1)\)</span>, so <span class="math notranslate nohighlight">\(E_{\hat\pi}[\varepsilon] = w(\theta)\)</span>, giving conditional relative entropy</p>
 <div class="math notranslate nohighlight" id="equation-bhs-conditional-entropy">
-<span class="eqno">(87.24)<a class="headerlink" href="#equation-bhs-conditional-entropy" title="Link to this equation">#</a></span>\[E_t[\hat g_{t+1}\log \hat g_{t+1}] = w(\theta) \cdot w(\theta) - \frac{1}{2}w(\theta)^2 = \frac{1}{2}w(\theta)^2.\]</div>
-<p>Because the distortion is iid, the conditional entropy <span class="math notranslate nohighlight">\(E_t[\hat g_{t+1}\log \hat g_{t+1}] = \frac{1}{2}w(\theta)^2\)</span> from <a class="reference internal" href="#equation-bhs-conditional-entropy">(87.24)</a> is constant and <span class="math notranslate nohighlight">\(N(x)\)</span> does not depend on <span class="math notranslate nohighlight">\(x\)</span>.</p>
-<p>The recursion <a class="reference internal" href="#equation-bhs-n-recursion">(87.21)</a> then reduces to <span class="math notranslate nohighlight">\(N(x) = \beta(\frac{1}{2}w(\theta)^2 + N(x))\)</span>, where we have used <span class="math notranslate nohighlight">\(\int \hat g(\varepsilon)\pi(\varepsilon)d\varepsilon = 1\)</span> (since <span class="math notranslate nohighlight">\(\hat g\)</span> is a likelihood ratio).</p>
+<span class="eqno">(88.24)<a class="headerlink" href="#equation-bhs-conditional-entropy" title="Link to this equation">#</a></span>\[E_t[\hat g_{t+1}\log \hat g_{t+1}] = w(\theta) \cdot w(\theta) - \frac{1}{2}w(\theta)^2 = \frac{1}{2}w(\theta)^2.\]</div>
+<p>Because the distortion is iid, the conditional entropy <span class="math notranslate nohighlight">\(E_t[\hat g_{t+1}\log \hat g_{t+1}] = \frac{1}{2}w(\theta)^2\)</span> from <a class="reference internal" href="#equation-bhs-conditional-entropy">(88.24)</a> is constant and <span class="math notranslate nohighlight">\(N(x)\)</span> does not depend on <span class="math notranslate nohighlight">\(x\)</span>.</p>
+<p>The recursion <a class="reference internal" href="#equation-bhs-n-recursion">(88.21)</a> then reduces to <span class="math notranslate nohighlight">\(N(x) = \beta(\frac{1}{2}w(\theta)^2 + N(x))\)</span>, where we have used <span class="math notranslate nohighlight">\(\int \hat g(\varepsilon)\pi(\varepsilon)d\varepsilon = 1\)</span> (since <span class="math notranslate nohighlight">\(\hat g\)</span> is a likelihood ratio).</p>
 <p>Solving for <span class="math notranslate nohighlight">\(N(x)\)</span>,</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1129,7 +1134,7 @@ N(x)(1-\beta) = \frac{\beta}{2}w(\theta)^2,
 \]</div>
 <p>gives discounted entropy</p>
 <div class="math notranslate nohighlight" id="equation-bhs-eta-formula">
-<span class="eqno">(87.25)<a class="headerlink" href="#equation-bhs-eta-formula" title="Link to this equation">#</a></span>\[\eta = N(x) = \frac{\beta}{2(1-\beta)} w(\theta)^2.\]</div>
+<span class="eqno">(88.25)<a class="headerlink" href="#equation-bhs-eta-formula" title="Link to this equation">#</a></span>\[\eta = N(x) = \frac{\beta}{2(1-\beta)} w(\theta)^2.\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">η_from_θ</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
@@ -1143,9 +1148,9 @@ N(x)(1-\beta) = \frac{\beta}{2}w(\theta)^2,
 <p>As we will see in the <a class="reference internal" href="#detection-error-section"><span class="std std-ref">detection-error section</span></a> below, it is more natural to hold <span class="math notranslate nohighlight">\(\eta\)</span> (or equivalently the detection-error probability <span class="math notranslate nohighlight">\(p\)</span>) fixed rather than <span class="math notranslate nohighlight">\(\theta\)</span> when comparing across consumption models.</p>
 </section>
 <section id="value-functions-for-random-walk-consumption">
-<h3><span class="section-number">87.4.10. </span>Value functions for random-walk consumption<a class="headerlink" href="#value-functions-for-random-walk-consumption" title="Link to this heading">#</a></h3>
-<p>We now solve the recursions <a class="reference internal" href="#equation-bhs-w-decomp-bellman">(87.19)</a>, <a class="reference internal" href="#equation-bhs-j-recursion">(87.20)</a>, and <a class="reference internal" href="#equation-bhs-n-recursion">(87.21)</a> in closed form for the random-walk model, where <span class="math notranslate nohighlight">\(W\)</span> is the type II (multiplier) value function, <span class="math notranslate nohighlight">\(J\)</span> is the type III/IV value function, and <span class="math notranslate nohighlight">\(N\)</span> is discounted continuation entropy.</p>
-<p>Substituting <span class="math notranslate nohighlight">\(w_{rw}(\theta) = -\sigma_\varepsilon / [(1-\beta)\theta]\)</span> from <a class="reference internal" href="#equation-bhs-w-formulas">(87.23)</a> into <a class="reference internal" href="#equation-bhs-eta-formula">(87.25)</a> gives</p>
+<h3><span class="section-number">88.4.10. </span>Value functions for random-walk consumption<a class="headerlink" href="#value-functions-for-random-walk-consumption" title="Link to this heading">#</a></h3>
+<p>We now solve the recursions <a class="reference internal" href="#equation-bhs-w-decomp-bellman">(88.19)</a>, <a class="reference internal" href="#equation-bhs-j-recursion">(88.20)</a>, and <a class="reference internal" href="#equation-bhs-n-recursion">(88.21)</a> in closed form for the random-walk model, where <span class="math notranslate nohighlight">\(W\)</span> is the type II (multiplier) value function, <span class="math notranslate nohighlight">\(J\)</span> is the type III/IV value function, and <span class="math notranslate nohighlight">\(N\)</span> is discounted continuation entropy.</p>
+<p>Substituting <span class="math notranslate nohighlight">\(w_{rw}(\theta) = -\sigma_\varepsilon / [(1-\beta)\theta]\)</span> from <a class="reference internal" href="#equation-bhs-w-formulas">(88.23)</a> into <a class="reference internal" href="#equation-bhs-eta-formula">(88.25)</a> gives</p>
 <div class="math notranslate nohighlight">
 \[
 N(x) = \frac{\beta}{2(1-\beta)} w_{rw}(\theta)^2
@@ -1154,26 +1159,26 @@ N(x) = \frac{\beta}{2(1-\beta)} w_{rw}(\theta)^2
 \]</div>
 <p>so that</p>
 <div class="math notranslate nohighlight" id="equation-bhs-n-rw">
-<span class="eqno">(87.26)<a class="headerlink" href="#equation-bhs-n-rw" title="Link to this equation">#</a></span>\[N(x) = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^3\theta^2}.\]</div>
-<p>For <span class="math notranslate nohighlight">\(W\)</span>, we guess <span class="math notranslate nohighlight">\(W(x_t) = \frac{1}{1-\beta}[c_t + d]\)</span> for some constant <span class="math notranslate nohighlight">\(d\)</span> and verify it in the risk-sensitive Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type1">(87.13)</a>.</p>
+<span class="eqno">(88.26)<a class="headerlink" href="#equation-bhs-n-rw" title="Link to this equation">#</a></span>\[N(x) = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^3\theta^2}.\]</div>
+<p>For <span class="math notranslate nohighlight">\(W\)</span>, we guess <span class="math notranslate nohighlight">\(W(x_t) = \frac{1}{1-\beta}[c_t + d]\)</span> for some constant <span class="math notranslate nohighlight">\(d\)</span> and verify it in the risk-sensitive Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type1">(88.13)</a>.</p>
 <p>Under the random walk, <span class="math notranslate nohighlight">\(W(x_{t+1}) = \frac{1}{1-\beta}[c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1} + d]\)</span>, so <span class="math notranslate nohighlight">\(-W(x_{t+1})/\theta\)</span> is affine in the standard normal <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span>.</p>
-<p>Using the fact that <span class="math notranslate nohighlight">\(\log E[e^Z] = \mu_Z + \frac{1}{2}\sigma_Z^2\)</span> for a normal random variable <span class="math notranslate nohighlight">\(Z\)</span>, the Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type1">(87.13)</a> reduces to a constant-matching condition that pins down <span class="math notranslate nohighlight">\(d\)</span> (<a class="reference internal" href="#dov_ex7"><span class="std std-ref">Exercise 7</span></a> works through the algebra):</p>
+<p>Using the fact that <span class="math notranslate nohighlight">\(\log E[e^Z] = \mu_Z + \frac{1}{2}\sigma_Z^2\)</span> for a normal random variable <span class="math notranslate nohighlight">\(Z\)</span>, the Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type1">(88.13)</a> reduces to a constant-matching condition that pins down <span class="math notranslate nohighlight">\(d\)</span> (<a class="reference internal" href="#dov_ex7"><span class="std std-ref">Exercise 7</span></a> works through the algebra):</p>
 <div class="math notranslate nohighlight" id="equation-bhs-w-rw">
-<span class="eqno">(87.27)<a class="headerlink" href="#equation-bhs-w-rw" title="Link to this equation">#</a></span>\[W(x_t) = \frac{1}{1-\beta}\left[c_t + \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right)\right].\]</div>
+<span class="eqno">(88.27)<a class="headerlink" href="#equation-bhs-w-rw" title="Link to this equation">#</a></span>\[W(x_t) = \frac{1}{1-\beta}\left[c_t + \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right)\right].\]</div>
 <p>Using <span class="math notranslate nohighlight">\(W = J + \theta N\)</span>, the type III/IV value function is</p>
 <div class="math notranslate nohighlight" id="equation-bhs-j-rw">
-<span class="eqno">(87.28)<a class="headerlink" href="#equation-bhs-j-rw" title="Link to this equation">#</a></span>\[J(x_t) = W(x_t) - \theta N(x_t) = \frac{1}{1-\beta}\left[c_t + \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{(1-\beta)\theta}\right)\right].\]</div>
+<span class="eqno">(88.28)<a class="headerlink" href="#equation-bhs-j-rw" title="Link to this equation">#</a></span>\[J(x_t) = W(x_t) - \theta N(x_t) = \frac{1}{1-\beta}\left[c_t + \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{(1-\beta)\theta}\right)\right].\]</div>
 <p>Notice that the coefficient on <span class="math notranslate nohighlight">\(\sigma_\varepsilon^2/[(1-\beta)\theta]\)</span> doubles from <span class="math notranslate nohighlight">\(\tfrac{1}{2}\)</span> in <span class="math notranslate nohighlight">\(W\)</span> to <span class="math notranslate nohighlight">\(1\)</span> in <span class="math notranslate nohighlight">\(J\)</span>.</p>
 <p>The reason is that <span class="math notranslate nohighlight">\(W\)</span> includes the entropy “rebate” <span class="math notranslate nohighlight">\(\theta N\)</span>, which partially offsets the pessimistic tilt, while <span class="math notranslate nohighlight">\(J\)</span> evaluates consumption purely under the worst-case model with no such offset.</p>
 </section>
 </section>
 <section id="detection-error-probabilities">
-<span id="detection-error-section"></span><h2><a class="toc-backref" href="#id39" role="doc-backlink"><span class="section-number">87.5. </span>Detection-error probabilities</a><a class="headerlink" href="#detection-error-probabilities" title="Link to this heading">#</a></h2>
+<span id="detection-error-section"></span><h2><a class="toc-backref" href="#id39" role="doc-backlink"><span class="section-number">88.5. </span>Detection-error probabilities</a><a class="headerlink" href="#detection-error-probabilities" title="Link to this heading">#</a></h2>
 <p>So far we have expressed SDF moments, value functions, and worst-case distortions as functions of <span class="math notranslate nohighlight">\(\gamma\)</span> (or equivalently <span class="math notranslate nohighlight">\(\theta\)</span>).</p>
 <p>But if <span class="math notranslate nohighlight">\(\gamma\)</span> should not be calibrated by introspection about atemporal gambles, what replaces it?</p>
 <p>The answer proposed by <span id="id30">Barillas <em>et al.</em> [<a class="reference internal" href="zreferences.html#id52" title="Francisco Barillas, Lars Peter Hansen, and Thomas J. Sargent. Doubts or variability? Journal of Economic Theory, 144(6):2388-2418, November 2009. URL: https://ideas.repec.org/a/eee/jetheo/v144y2009i6p2388-2418.html, doi:.">2009</a>]</span> is a statistical test: how easily could an econometrician distinguish the approximating model from its worst-case alternative?</p>
 <section id="likelihood-ratio-testing-and-detection-errors">
-<h3><span class="section-number">87.5.1. </span>Likelihood-ratio testing and detection errors<a class="headerlink" href="#likelihood-ratio-testing-and-detection-errors" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.5.1. </span>Likelihood-ratio testing and detection errors<a class="headerlink" href="#likelihood-ratio-testing-and-detection-errors" title="Link to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(L_T\)</span> be the log likelihood ratio between the worst-case and approximating models based on a sample of length <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>Define</p>
 <div class="math notranslate nohighlight">
@@ -1190,10 +1195,10 @@ p_B = \Pr_B(L_T &gt; 0),\]</div>
 <p>When <span class="math notranslate nohighlight">\(p\)</span> is small the worst-case model is easy to reject and the robustness concern carries less force.</p>
 </section>
 <section id="market-price-of-model-uncertainty">
-<h3><span class="section-number">87.5.2. </span>Market price of model uncertainty<a class="headerlink" href="#market-price-of-model-uncertainty" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.5.2. </span>Market price of model uncertainty<a class="headerlink" href="#market-price-of-model-uncertainty" title="Link to this heading">#</a></h3>
 <p>The <strong>market price of model uncertainty</strong> (MPU) is the conditional standard deviation of the distortion:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-mpu-formula">
-<span class="eqno">(87.29)<a class="headerlink" href="#equation-bhs-mpu-formula" title="Link to this equation">#</a></span>\[\text{MPU}
+<span class="eqno">(88.29)<a class="headerlink" href="#equation-bhs-mpu-formula" title="Link to this equation">#</a></span>\[\text{MPU}
 =
 \operatorname{std}(\hat g_{t+1})
 =
@@ -1201,11 +1206,11 @@ p_B = \Pr_B(L_T &gt; 0),\]</div>
 \approx |w(\theta)|.\]</div>
 <p>In the Gaussian mean-shift setting, <span class="math notranslate nohighlight">\(L_T\)</span> is normal with mean <span class="math notranslate nohighlight">\(\pm \tfrac{1}{2}w^2T\)</span> and variance <span class="math notranslate nohighlight">\(w^2T\)</span>, so the detection-error probability has the closed form (<a class="reference internal" href="#dov_ex8"><span class="std std-ref">Exercise 8</span></a> derives this)</p>
 <div class="math notranslate nohighlight" id="equation-bhs-detection-formula">
-<span class="eqno">(87.30)<a class="headerlink" href="#equation-bhs-detection-formula" title="Link to this equation">#</a></span>\[p(\theta^{-1})
+<span class="eqno">(88.30)<a class="headerlink" href="#equation-bhs-detection-formula" title="Link to this equation">#</a></span>\[p(\theta^{-1})
 =
 \frac{1}{2}\left(p_A + p_B\right),\]</div>
 <div class="math notranslate nohighlight" id="equation-bhs-detection-closed">
-<span class="eqno">(87.31)<a class="headerlink" href="#equation-bhs-detection-closed" title="Link to this equation">#</a></span>\[p(\theta^{-1}) = \Phi \left(-\frac{|w(\theta)|\sqrt{T}}{2}\right).\]</div>
+<span class="eqno">(88.31)<a class="headerlink" href="#equation-bhs-detection-closed" title="Link to this equation">#</a></span>\[p(\theta^{-1}) = \Phi \left(-\frac{|w(\theta)|\sqrt{T}}{2}\right).\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">detection_probability</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
@@ -1228,7 +1233,7 @@ p_B = \Pr_B(L_T &gt; 0),\]</div>
 </div>
 </section>
 <section id="interpreting-the-calibration-objects">
-<h3><span class="section-number">87.5.3. </span>Interpreting the calibration objects<a class="headerlink" href="#interpreting-the-calibration-objects" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.5.3. </span>Interpreting the calibration objects<a class="headerlink" href="#interpreting-the-calibration-objects" title="Link to this heading">#</a></h3>
 <p>Let us trace the chain of mappings that connects preference parameters to statistical distinguishability.</p>
 <p>The parameter <span class="math notranslate nohighlight">\(\theta\)</span> governs how expensive it is for the minimizing player to distort the approximating model.</p>
 <p>A small <span class="math notranslate nohighlight">\(\theta\)</span> means cheap distortions and therefore stronger robustness concerns.</p>
@@ -1237,10 +1242,10 @@ p_B = \Pr_B(L_T &gt; 0),\]</div>
 <p>The detection-error probability <span class="math notranslate nohighlight">\(p(\theta^{-1})\)</span> translates that tilt into a statistical statement about finite-sample distinguishability.</p>
 <p>High <span class="math notranslate nohighlight">\(p\)</span> means the two models are hard to tell apart, while low <span class="math notranslate nohighlight">\(p\)</span> means the worst case is easier to reject.</p>
 <p>This chain bridges econometric identification and preference calibration.</p>
-<p>Finally, recall from <a class="reference internal" href="#equation-bhs-eta-formula">(87.25)</a> that discounted entropy is <span class="math notranslate nohighlight">\(\eta = \frac{\beta}{2(1-\beta)}w(\theta)^2\)</span>, so when the distortion is a Gaussian mean shift, discounted entropy is proportional to the squared market price of model uncertainty.</p>
+<p>Finally, recall from <a class="reference internal" href="#equation-bhs-eta-formula">(88.25)</a> that discounted entropy is <span class="math notranslate nohighlight">\(\eta = \frac{\beta}{2(1-\beta)}w(\theta)^2\)</span>, so when the distortion is a Gaussian mean shift, discounted entropy is proportional to the squared market price of model uncertainty.</p>
 </section>
 <section id="detection-probabilities-across-the-two-models">
-<h3><span class="section-number">87.5.4. </span>Detection probabilities across the two models<a class="headerlink" href="#detection-probabilities-across-the-two-models" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.5.4. </span>Detection probabilities across the two models<a class="headerlink" href="#detection-probabilities-across-the-two-models" title="Link to this heading">#</a></h3>
 <p>The left panel below plots <span class="math notranslate nohighlight">\(p(\theta^{-1})\)</span> against <span class="math notranslate nohighlight">\(\theta^{-1}\)</span> for both consumption specifications.</p>
 <p>Because the baseline dynamics differ, the same numerical <span class="math notranslate nohighlight">\(\theta\)</span> implies very different detection probabilities across the two models.</p>
 <p>The right panel resolves this by plotting detection probabilities against discounted relative entropy <span class="math notranslate nohighlight">\(\eta\)</span>, which normalizes the statistical distance.</p>
@@ -1282,7 +1287,7 @@ p_B = \Pr_B(L_T &gt; 0),\]</div>
 <figure class="align-default" id="fig-bhs-2">
 <img alt="_images/96e6088e8ed226c1aced9cb96298c36e31fa09e6e572c56ab43f88d640308d48.png" src="_images/96e6088e8ed226c1aced9cb96298c36e31fa09e6e572c56ab43f88d640308d48.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 87.2 </span><span class="caption-text">Detection probabilities across two models</span><a class="headerlink" href="#fig-bhs-2" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 88.2 </span><span class="caption-text">Detection probabilities across two models</span><a class="headerlink" href="#fig-bhs-2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -1292,7 +1297,7 @@ p_B = \Pr_B(L_T &gt; 0),\]</div>
 <p>Holding <span class="math notranslate nohighlight">\(\eta\)</span> or <span class="math notranslate nohighlight">\(p\)</span> fixed instead keeps the statistical difficulty of detecting misspecification constant.</p>
 <p>The explicit mapping that equates discounted entropy across models is (<a class="reference internal" href="#dov_ex9"><span class="std std-ref">Exercise 9</span></a> derives it):</p>
 <div class="math notranslate nohighlight" id="equation-bhs-theta-cross-model">
-<span class="eqno">(87.32)<a class="headerlink" href="#equation-bhs-theta-cross-model" title="Link to this equation">#</a></span>\[\theta_{\text{TS}}
+<span class="eqno">(88.32)<a class="headerlink" href="#equation-bhs-theta-cross-model" title="Link to this equation">#</a></span>\[\theta_{\text{TS}}
 =
 \left(\frac{\sigma_\varepsilon^{\text{TS}}}{\sigma_\varepsilon^{\text{RW}}}\right)
 \frac{1-\beta}{1-\rho\beta} \theta_{\text{RW}}.\]</div>
@@ -1301,7 +1306,7 @@ p_B = \Pr_B(L_T &gt; 0),\]</div>
 </section>
 </section>
 <section id="unify-the-two-models-using-detection-error-probabilities">
-<h2><a class="toc-backref" href="#id40" role="doc-backlink"><span class="section-number">87.6. </span>Unify the two models using detection-error probabilities</a><a class="headerlink" href="#unify-the-two-models-using-detection-error-probabilities" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id40" role="doc-backlink"><span class="section-number">88.6. </span>Unify the two models using detection-error probabilities</a><a class="headerlink" href="#unify-the-two-models-using-detection-error-probabilities" title="Link to this heading">#</a></h2>
 <p>With this machinery in hand, we can redraw Tallarini’s figure using detection-error probabilities as the common index.</p>
 <p>For each <span class="math notranslate nohighlight">\(p(\theta^{-1}) = 0.50, 0.45, \ldots, 0.01\)</span>, we invert to find the model-specific <span class="math notranslate nohighlight">\(\theta\)</span>, convert to <span class="math notranslate nohighlight">\(\gamma\)</span>, and plot the implied <span class="math notranslate nohighlight">\((E(m), \sigma(m))\)</span> pair.</p>
 <div class="cell docutils container">
@@ -1406,7 +1411,7 @@ p_B = \Pr_B(L_T &gt; 0),\]</div>
 <figure class="align-default" id="fig-bhs-3">
 <img alt="_images/57d19fa530cfd8c4ede3e4073be600241d45f3f81499991dded3b4918e8e560f.png" src="_images/57d19fa530cfd8c4ede3e4073be600241d45f3f81499991dded3b4918e8e560f.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 87.3 </span><span class="caption-text">Pricing loci from common detectability</span><a class="headerlink" href="#fig-bhs-3" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 88.3 </span><span class="caption-text">Pricing loci from common detectability</span><a class="headerlink" href="#fig-bhs-3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -1485,13 +1490,13 @@ p_B = \Pr_B(L_T &gt; 0),\]</div>
 <figure class="align-default" id="fig-bhs-fear">
 <img alt="_images/c18f0d2897bc5a216b86d6ca44049e9d979705c956284dd1b742fa72c862c6f7.png" src="_images/c18f0d2897bc5a216b86d6ca44049e9d979705c956284dd1b742fa72c862c6f7.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 87.4 </span><span class="caption-text">Density shift and cumulative consumption</span><a class="headerlink" href="#fig-bhs-fear" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 88.4 </span><span class="caption-text">Density shift and cumulative consumption</span><a class="headerlink" href="#fig-bhs-fear" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
 </div>
 <p>The next figure poses the “doubts or variability?” question by decomposing the log SDF into two additive components.</p>
-<p>Taking logs of <a class="reference internal" href="#equation-bhs-sdf">(87.18)</a> gives</p>
+<p>Taking logs of <a class="reference internal" href="#equation-bhs-sdf">(88.18)</a> gives</p>
 <div class="math notranslate nohighlight">
 \[
 \log m_{t+1}
@@ -1500,7 +1505,7 @@ p_B = \Pr_B(L_T &gt; 0),\]</div>
 +
 \underbrace{\log \hat g_{t+1}}_{\text{worst-case distortion}}.
 \]</div>
-<p>Under the random-walk model, <span class="math notranslate nohighlight">\(\Delta c_{t+1} = \mu + \sigma_\varepsilon \varepsilon_{t+1}\)</span>, and the Gaussian distortion <a class="reference internal" href="#equation-bhs-ghat-gaussian">(87.22)</a> gives <span class="math notranslate nohighlight">\(\log \hat g_{t+1} = w \varepsilon_{t+1} - \tfrac{1}{2}w^2\)</span>.</p>
+<p>Under the random-walk model, <span class="math notranslate nohighlight">\(\Delta c_{t+1} = \mu + \sigma_\varepsilon \varepsilon_{t+1}\)</span>, and the Gaussian distortion <a class="reference internal" href="#equation-bhs-ghat-gaussian">(88.22)</a> gives <span class="math notranslate nohighlight">\(\log \hat g_{t+1} = w \varepsilon_{t+1} - \tfrac{1}{2}w^2\)</span>.</p>
 <p>Substituting, we can write</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1552,14 +1557,14 @@ p_B = \Pr_B(L_T &gt; 0),\]</div>
 <figure class="align-default" id="fig-bhs-sdf-decomp">
 <img alt="_images/53bb8bf639af8dbf32952323045d42eecdbbe60504a4c3c8484d9c5388e3a04c.png" src="_images/53bb8bf639af8dbf32952323045d42eecdbbe60504a4c3c8484d9c5388e3a04c.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 87.5 </span><span class="caption-text">Robust SDF log-utility decomposition</span><a class="headerlink" href="#fig-bhs-sdf-decomp" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 88.5 </span><span class="caption-text">Robust SDF log-utility decomposition</span><a class="headerlink" href="#fig-bhs-sdf-decomp" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
 </div>
 </section>
 <section id="what-do-risk-premia-measure">
-<span id="welfare-experiments"></span><h2><a class="toc-backref" href="#id41" role="doc-backlink"><span class="section-number">87.7. </span>What do risk premia measure?</a><a class="headerlink" href="#what-do-risk-premia-measure" title="Link to this heading">#</a></h2>
+<span id="welfare-experiments"></span><h2><a class="toc-backref" href="#id41" role="doc-backlink"><span class="section-number">88.7. </span>What do risk premia measure?</a><a class="headerlink" href="#what-do-risk-premia-measure" title="Link to this heading">#</a></h2>
 <p><span id="id31">Lucas [<a class="reference internal" href="zreferences.html#id244" title="Robert E Lucas, Jr. Macroeconomic Priorities. American Economic Review, 93(1):1-14, March 2003. URL: https://www.aeaweb.org/articles?id=10.1257/000282803321455133.">2003</a>]</span> asked how much consumption a representative consumer would sacrifice to eliminate aggregate fluctuations.</p>
 <p>His answer rested on the assumption that the consumer knows the true data-generating process.</p>
 <p>The robust reinterpretation opens up a second, quite different thought experiment.</p>
@@ -1568,17 +1573,17 @@ p_B = \Pr_B(L_T &gt; 0),\]</div>
 <p>To answer this, we seek a permanent proportional reduction <span class="math notranslate nohighlight">\(c_0 - c_0^k\)</span> in initial log consumption that leaves an agent of type <span class="math notranslate nohighlight">\(k\)</span> indifferent between the original risky plan and a deterministic certainty-equivalent path.</p>
 <p>Because utility is log and the consumption process is Gaussian, these compensations can be computed in closed form.</p>
 <section id="the-certainty-equivalent-path">
-<h3><span class="section-number">87.7.1. </span>The certainty equivalent path<a class="headerlink" href="#the-certainty-equivalent-path" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.7.1. </span>The certainty equivalent path<a class="headerlink" href="#the-certainty-equivalent-path" title="Link to this heading">#</a></h3>
 <p>The point of comparison is the deterministic path with the same mean level of consumption as the stochastic plan:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-ce-path">
-<span class="eqno">(87.33)<a class="headerlink" href="#equation-bhs-ce-path" title="Link to this equation">#</a></span>\[c_{t+1}^{ce} - c_t^{ce} = \mu + \tfrac{1}{2}\sigma_\varepsilon^2.\]</div>
+<span class="eqno">(88.33)<a class="headerlink" href="#equation-bhs-ce-path" title="Link to this equation">#</a></span>\[c_{t+1}^{ce} - c_t^{ce} = \mu + \tfrac{1}{2}\sigma_\varepsilon^2.\]</div>
 <p>The additional <span class="math notranslate nohighlight">\(\tfrac{1}{2}\sigma_\varepsilon^2\)</span> term is a Jensen’s inequality correction.</p>
-<p>Since <span class="math notranslate nohighlight">\(E[C_t] = E[e^{c_t}] = \exp(c_0 + t\mu + \tfrac{1}{2}t\sigma_\varepsilon^2)\)</span>, <a class="reference internal" href="#equation-bhs-ce-path">(87.33)</a> matches the mean <em>level</em> of consumption at every date.</p>
+<p>Since <span class="math notranslate nohighlight">\(E[C_t] = E[e^{c_t}] = \exp(c_0 + t\mu + \tfrac{1}{2}t\sigma_\varepsilon^2)\)</span>, <a class="reference internal" href="#equation-bhs-ce-path">(88.33)</a> matches the mean <em>level</em> of consumption at every date.</p>
 </section>
 <section id="compensating-variations-from-the-value-functions">
-<h3><span class="section-number">87.7.2. </span>Compensating variations from the value functions<a class="headerlink" href="#compensating-variations-from-the-value-functions" title="Link to this heading">#</a></h3>
-<p>We use the closed-form value functions derived earlier: <a class="reference internal" href="#equation-bhs-w-rw">(87.27)</a> for the type I/II value function <span class="math notranslate nohighlight">\(W\)</span> and <a class="reference internal" href="#equation-bhs-j-rw">(87.28)</a> for the type III/IV value function <span class="math notranslate nohighlight">\(J\)</span>.</p>
-<p>For the certainty-equivalent path <a class="reference internal" href="#equation-bhs-ce-path">(87.33)</a>, there is no risk and no model uncertainty (<span class="math notranslate nohighlight">\(\theta = \infty\)</span>, so <span class="math notranslate nohighlight">\(\hat g = 1\)</span>), so the value function reduces to discounted expected log utility.</p>
+<h3><span class="section-number">88.7.2. </span>Compensating variations from the value functions<a class="headerlink" href="#compensating-variations-from-the-value-functions" title="Link to this heading">#</a></h3>
+<p>We use the closed-form value functions derived earlier: <a class="reference internal" href="#equation-bhs-w-rw">(88.27)</a> for the type I/II value function <span class="math notranslate nohighlight">\(W\)</span> and <a class="reference internal" href="#equation-bhs-j-rw">(88.28)</a> for the type III/IV value function <span class="math notranslate nohighlight">\(J\)</span>.</p>
+<p>For the certainty-equivalent path <a class="reference internal" href="#equation-bhs-ce-path">(88.33)</a>, there is no risk and no model uncertainty (<span class="math notranslate nohighlight">\(\theta = \infty\)</span>, so <span class="math notranslate nohighlight">\(\hat g = 1\)</span>), so the value function reduces to discounted expected log utility.</p>
 <p>With <span class="math notranslate nohighlight">\(c_t^{ce} = c_0^J + t(\mu + \tfrac{1}{2}\sigma_\varepsilon^2)\)</span>, we have</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1595,8 +1600,8 @@ U^{ce}(c_0^J) = \frac{1}{1-\beta}\left[c_0^J + \frac{\beta}{1-\beta}\left(\mu + 
 \]</div>
 </section>
 <section id="type-i-epsteinzin-compensation">
-<h3><span class="section-number">87.7.3. </span>Type I (Epstein–Zin) compensation<a class="headerlink" href="#type-i-epsteinzin-compensation" title="Link to this heading">#</a></h3>
-<p>Setting <span class="math notranslate nohighlight">\(U^{ce}(c_0^I) = W(x_0)\)</span> from <a class="reference internal" href="#equation-bhs-w-rw">(87.27)</a>:</p>
+<h3><span class="section-number">88.7.3. </span>Type I (Epstein–Zin) compensation<a class="headerlink" href="#type-i-epsteinzin-compensation" title="Link to this heading">#</a></h3>
+<p>Setting <span class="math notranslate nohighlight">\(U^{ce}(c_0^I) = W(x_0)\)</span> from <a class="reference internal" href="#equation-bhs-w-rw">(88.27)</a>:</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{1}{1-\beta}\left[c_0^I + \frac{\beta}{1-\beta}\left(\mu + \tfrac{1}{2}\sigma_\varepsilon^2\right)\right]
@@ -1612,7 +1617,7 @@ c_0 - \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^2\theta}.
 \]</div>
 <p>Solving for <span class="math notranslate nohighlight">\(c_0 - c_0^I\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-comp-type1">
-<span class="eqno">(87.34)<a class="headerlink" href="#equation-bhs-comp-type1" title="Link to this equation">#</a></span>\[c_0 - c_0^I
+<span class="eqno">(88.34)<a class="headerlink" href="#equation-bhs-comp-type1" title="Link to this equation">#</a></span>\[c_0 - c_0^I
 =
 \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)}\left(1 + \frac{1}{(1-\beta)\theta}\right)
 =
@@ -1620,12 +1625,12 @@ c_0 - \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^2\theta}.
 <p>where the last step uses <span class="math notranslate nohighlight">\(\gamma = 1 + [(1-\beta)\theta]^{-1}\)</span>.</p>
 </section>
 <section id="type-ii-multiplier-decomposition">
-<h3><span class="section-number">87.7.4. </span>Type II (multiplier) decomposition<a class="headerlink" href="#type-ii-multiplier-decomposition" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.7.4. </span>Type II (multiplier) decomposition<a class="headerlink" href="#type-ii-multiplier-decomposition" title="Link to this heading">#</a></h3>
 <p>Because <span class="math notranslate nohighlight">\(W \equiv U\)</span>, we have <span class="math notranslate nohighlight">\(c_0^{II} = c_0^I\)</span> and the total compensation is the same.</p>
 <p>However, the interpretation differs because we can now decompose it into <em>risk</em> and <em>model uncertainty</em> components.</p>
 <p>A type II agent with <span class="math notranslate nohighlight">\(\theta = \infty\)</span> (no model uncertainty) has log preferences and requires</p>
 <div class="math notranslate nohighlight" id="equation-bhs-type2-rw-decomp">
-<span class="eqno">(87.35)<a class="headerlink" href="#equation-bhs-type2-rw-decomp" title="Link to this equation">#</a></span>\[\Delta c_0^{risk}
+<span class="eqno">(88.35)<a class="headerlink" href="#equation-bhs-type2-rw-decomp" title="Link to this equation">#</a></span>\[\Delta c_0^{risk}
 =
 \frac{\beta \sigma_\varepsilon^2}{2(1-\beta)},
 \qquad
@@ -1638,8 +1643,8 @@ c_0 - \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^2\theta}.
 <p>With <span class="math notranslate nohighlight">\(\theta\)</span> in the denominator, this term can be first-order even when the detection-error probability is only moderate.</p>
 </section>
 <section id="type-iii-constraint-compensation">
-<h3><span class="section-number">87.7.5. </span>Type III (constraint) compensation<a class="headerlink" href="#type-iii-constraint-compensation" title="Link to this heading">#</a></h3>
-<p>For a type III agent, we set <span class="math notranslate nohighlight">\(U^{ce}(c_0^{III}) = J(x_0)\)</span> using the value function <span class="math notranslate nohighlight">\(J\)</span> from <a class="reference internal" href="#equation-bhs-j-rw">(87.28)</a>:</p>
+<h3><span class="section-number">88.7.5. </span>Type III (constraint) compensation<a class="headerlink" href="#type-iii-constraint-compensation" title="Link to this heading">#</a></h3>
+<p>For a type III agent, we set <span class="math notranslate nohighlight">\(U^{ce}(c_0^{III}) = J(x_0)\)</span> using the value function <span class="math notranslate nohighlight">\(J\)</span> from <a class="reference internal" href="#equation-bhs-j-rw">(88.28)</a>:</p>
 <div class="math notranslate nohighlight">
 \[
 \frac{1}{1-\beta}\left[c_0^{III} + \frac{\beta}{1-\beta}\left(\mu + \tfrac{1}{2}\sigma_\varepsilon^2\right)\right]
@@ -1655,7 +1660,7 @@ c_0 - c_0^{III}
 \]</div>
 <p>Using <span class="math notranslate nohighlight">\(\frac{1}{(1-\beta)\theta} = \gamma - 1\)</span>, this simplifies to</p>
 <div class="math notranslate nohighlight" id="equation-bhs-type3-rw-decomp">
-<span class="eqno">(87.36)<a class="headerlink" href="#equation-bhs-type3-rw-decomp" title="Link to this equation">#</a></span>\[c_0 - c_0^{III}
+<span class="eqno">(88.36)<a class="headerlink" href="#equation-bhs-type3-rw-decomp" title="Link to this equation">#</a></span>\[c_0 - c_0^{III}
 =
 \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)}(2\gamma - 1).\]</div>
 <p>The risk component is the same <span class="math notranslate nohighlight">\(\frac{\beta\sigma_\varepsilon^2}{2(1-\beta)}\)</span> as before.</p>
@@ -1666,17 +1671,17 @@ c_0^{III}(r) - c_0^{III}
 =
 \frac{\beta\sigma_\varepsilon^2}{(1-\beta)^2\theta},
 \]</div>
-<p>which is <em>twice</em> the type II uncertainty compensation <a class="reference internal" href="#equation-bhs-type2-rw-decomp">(87.35)</a>.</p>
-<p>The factor of two traces back to the difference between <span class="math notranslate nohighlight">\(W\)</span> and <span class="math notranslate nohighlight">\(J\)</span> noted after <a class="reference internal" href="#equation-bhs-j-rw">(87.28)</a>.</p>
+<p>which is <em>twice</em> the type II uncertainty compensation <a class="reference internal" href="#equation-bhs-type2-rw-decomp">(88.35)</a>.</p>
+<p>The factor of two traces back to the difference between <span class="math notranslate nohighlight">\(W\)</span> and <span class="math notranslate nohighlight">\(J\)</span> noted after <a class="reference internal" href="#equation-bhs-j-rw">(88.28)</a>.</p>
 <p>The entropy rebate <span class="math notranslate nohighlight">\(\theta N\)</span> in <span class="math notranslate nohighlight">\(W = J + \theta N\)</span> partially offsets the pessimistic tilt for the type II agent, but not for the type III agent who evaluates consumption purely under the worst-case model.</p>
 </section>
 <section id="type-iv-ex-post-bayesian-compensation">
-<h3><span class="section-number">87.7.6. </span>Type IV (ex post Bayesian) compensation<a class="headerlink" href="#type-iv-ex-post-bayesian-compensation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.7.6. </span>Type IV (ex post Bayesian) compensation<a class="headerlink" href="#type-iv-ex-post-bayesian-compensation" title="Link to this heading">#</a></h3>
 <p>A type IV agent believes the pessimistic model, so the perceived drift is <span class="math notranslate nohighlight">\(\tilde\mu = \mu - \sigma_\varepsilon^2/[(1-\beta)\theta]\)</span>.</p>
-<p>The compensation for moving to the certainty-equivalent path is the same as <a class="reference internal" href="#equation-bhs-type3-rw-decomp">(87.36)</a>, because this agent ranks plans using the same value function <span class="math notranslate nohighlight">\(J\)</span>.</p>
+<p>The compensation for moving to the certainty-equivalent path is the same as <a class="reference internal" href="#equation-bhs-type3-rw-decomp">(88.36)</a>, because this agent ranks plans using the same value function <span class="math notranslate nohighlight">\(J\)</span>.</p>
 </section>
 <section id="comparison-with-a-risky-but-free-of-model-uncertainty-path">
-<h3><span class="section-number">87.7.7. </span>Comparison with a risky but free-of-model-uncertainty path<a class="headerlink" href="#comparison-with-a-risky-but-free-of-model-uncertainty-path" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.7.7. </span>Comparison with a risky but free-of-model-uncertainty path<a class="headerlink" href="#comparison-with-a-risky-but-free-of-model-uncertainty-path" title="Link to this heading">#</a></h3>
 <p>The certainty equivalents above compare a risky plan to a deterministic path, thereby eliminating both risk and uncertainty at once.</p>
 <p>We now describe an alternative measure that isolates compensation for model uncertainty alone by keeping risk intact.</p>
 <p>The idea is to compare two situations with identical risky consumption for all dates <span class="math notranslate nohighlight">\(t \geq 1\)</span>, concentrating all compensation for model uncertainty in a single adjustment to date-zero consumption.</p>
@@ -1686,7 +1691,7 @@ c_0^{III}(r) - c_0^{III}
 <li><p>Facing the <em>same</em> stochastic plan under <span class="math notranslate nohighlight">\(\theta = \infty\)</span> (no fear of misspecification), but consuming only <span class="math notranslate nohighlight">\(c_0^{II}(u) &lt; c_0\)</span> at date zero.</p></li>
 </ol>
 <p>In both cases, continuation consumptions <span class="math notranslate nohighlight">\(c_t\)</span> for <span class="math notranslate nohighlight">\(t \geq 1\)</span> are generated by the random walk starting from the <em>same</em> <span class="math notranslate nohighlight">\(c_0\)</span>.</p>
-<p>For the type II agent under <span class="math notranslate nohighlight">\(\theta &lt; \infty\)</span>, the total value is <span class="math notranslate nohighlight">\(W(c_0)\)</span> from <a class="reference internal" href="#equation-bhs-w-rw">(87.27)</a>.</p>
+<p>For the type II agent under <span class="math notranslate nohighlight">\(\theta &lt; \infty\)</span>, the total value is <span class="math notranslate nohighlight">\(W(c_0)\)</span> from <a class="reference internal" href="#equation-bhs-w-rw">(88.27)</a>.</p>
 <p>For the agent liberated from model uncertainty (<span class="math notranslate nohighlight">\(\theta = \infty\)</span>), the value is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1717,17 +1722,17 @@ c_0^{II}(u) + \frac{\beta c_0}{1-\beta} + \frac{\beta\mu}{(1-\beta)^2}.
 \]</div>
 <p>Because <span class="math notranslate nohighlight">\(\frac{c_0}{1-\beta} - \frac{\beta c_0}{1-\beta} = c_0\)</span>, solving for the compensation gives</p>
 <div class="math notranslate nohighlight" id="equation-bhs-comp-type2u">
-<span class="eqno">(87.37)<a class="headerlink" href="#equation-bhs-comp-type2u" title="Link to this equation">#</a></span>\[c_0 - c_0^{II}(u) = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^3\theta} = \frac{\beta\sigma_\varepsilon^2(\gamma - 1)}{2(1-\beta)^2}.\]</div>
-<p>This is <span class="math notranslate nohighlight">\(\frac{1}{1-\beta}\)</span> times the uncertainty compensation <span class="math notranslate nohighlight">\(\Delta c_0^{\text{uncertainty}}\)</span> from <a class="reference internal" href="#equation-bhs-type2-rw-decomp">(87.35)</a>.</p>
+<span class="eqno">(88.37)<a class="headerlink" href="#equation-bhs-comp-type2u" title="Link to this equation">#</a></span>\[c_0 - c_0^{II}(u) = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^3\theta} = \frac{\beta\sigma_\varepsilon^2(\gamma - 1)}{2(1-\beta)^2}.\]</div>
+<p>This is <span class="math notranslate nohighlight">\(\frac{1}{1-\beta}\)</span> times the uncertainty compensation <span class="math notranslate nohighlight">\(\Delta c_0^{\text{uncertainty}}\)</span> from <a class="reference internal" href="#equation-bhs-type2-rw-decomp">(88.35)</a>.</p>
 <p>The extra factor of <span class="math notranslate nohighlight">\(\frac{1}{1-\beta}\)</span> arises because all compensation is packed into a single period.</p>
 <p>Adjusting <span class="math notranslate nohighlight">\(c_0\)</span> alone must offset the cumulative loss in continuation value that the uncertainty penalty imposes in every future period.</p>
-<p>An analogous calculation for a <strong>type III</strong> agent, using <span class="math notranslate nohighlight">\(J(c_0)\)</span> from <a class="reference internal" href="#equation-bhs-j-rw">(87.28)</a>, gives</p>
+<p>An analogous calculation for a <strong>type III</strong> agent, using <span class="math notranslate nohighlight">\(J(c_0)\)</span> from <a class="reference internal" href="#equation-bhs-j-rw">(88.28)</a>, gives</p>
 <div class="math notranslate nohighlight" id="equation-bhs-comp-type3u">
-<span class="eqno">(87.38)<a class="headerlink" href="#equation-bhs-comp-type3u" title="Link to this equation">#</a></span>\[c_0 - c_0^{III}(u) = \frac{\beta\sigma_\varepsilon^2}{(1-\beta)^3\theta} = \frac{\beta\sigma_\varepsilon^2(\gamma - 1)}{(1-\beta)^2},\]</div>
-<p>which is <span class="math notranslate nohighlight">\(\frac{1}{1-\beta}\)</span> times the type III uncertainty compensation and <em>twice</em> the type II compensation <a class="reference internal" href="#equation-bhs-comp-type2u">(87.37)</a>, again reflecting the absence of the entropy rebate in <span class="math notranslate nohighlight">\(J\)</span>.</p>
+<span class="eqno">(88.38)<a class="headerlink" href="#equation-bhs-comp-type3u" title="Link to this equation">#</a></span>\[c_0 - c_0^{III}(u) = \frac{\beta\sigma_\varepsilon^2}{(1-\beta)^3\theta} = \frac{\beta\sigma_\varepsilon^2(\gamma - 1)}{(1-\beta)^2},\]</div>
+<p>which is <span class="math notranslate nohighlight">\(\frac{1}{1-\beta}\)</span> times the type III uncertainty compensation and <em>twice</em> the type II compensation <a class="reference internal" href="#equation-bhs-comp-type2u">(88.37)</a>, again reflecting the absence of the entropy rebate in <span class="math notranslate nohighlight">\(J\)</span>.</p>
 </section>
 <section id="summary-of-welfare-compensations-random-walk">
-<h3><span class="section-number">87.7.8. </span>Summary of welfare compensations (random walk)<a class="headerlink" href="#summary-of-welfare-compensations-random-walk" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.7.8. </span>Summary of welfare compensations (random walk)<a class="headerlink" href="#summary-of-welfare-compensations-random-walk" title="Link to this heading">#</a></h3>
 <p>The following table collects all compensating variations for the random walk model.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1776,14 +1781,14 @@ c_0^{II}(u) + \frac{\beta c_0}{1-\beta} + \frac{\beta\mu}{(1-\beta)^2}.
 </tbody>
 </table>
 </div>
-<p>The “versus deterministic” rows use the certainty-equivalent path <a class="reference internal" href="#equation-bhs-ce-path">(87.33)</a> as a benchmark.</p>
-<p>The “vs. risky path” rows use the risky-but-uncertainty-free comparison of <a class="reference internal" href="#equation-bhs-comp-type2u">(87.37)</a>–<a class="reference internal" href="#equation-bhs-comp-type3u">(87.38)</a>.</p>
+<p>The “versus deterministic” rows use the certainty-equivalent path <a class="reference internal" href="#equation-bhs-ce-path">(88.33)</a> as a benchmark.</p>
+<p>The “vs. risky path” rows use the risky-but-uncertainty-free comparison of <a class="reference internal" href="#equation-bhs-comp-type2u">(88.37)</a>–<a class="reference internal" href="#equation-bhs-comp-type3u">(88.38)</a>.</p>
 </section>
 <section id="trend-stationary-formulas">
-<h3><span class="section-number">87.7.9. </span>Trend-stationary formulas<a class="headerlink" href="#trend-stationary-formulas" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">88.7.9. </span>Trend-stationary formulas<a class="headerlink" href="#trend-stationary-formulas" title="Link to this heading">#</a></h3>
 <p>For the trend-stationary model, the denominators <span class="math notranslate nohighlight">\((1-\beta)\)</span> in the uncertainty terms are replaced by <span class="math notranslate nohighlight">\((1-\beta\rho)\)</span>, and the risk terms involve <span class="math notranslate nohighlight">\((1-\beta\rho^2)\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-ts-compensations">
-<span class="eqno">(87.39)<a class="headerlink" href="#equation-bhs-ts-compensations" title="Link to this equation">#</a></span>\[\Delta c_0^{risk,ts} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho^2)},
+<span class="eqno">(88.39)<a class="headerlink" href="#equation-bhs-ts-compensations" title="Link to this equation">#</a></span>\[\Delta c_0^{risk,ts} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho^2)},
 \qquad
 \Delta c_0^{unc,ts,II} = \frac{\beta\sigma_\varepsilon^2}{2(1-\beta\rho)^2\theta},
 \qquad
@@ -1792,7 +1797,7 @@ c_0^{II}(u) + \frac{\beta c_0}{1-\beta} + \frac{\beta\mu}{(1-\beta)^2}.
 </section>
 </section>
 <section id="visualizing-the-welfare-decomposition">
-<h2><a class="toc-backref" href="#id42" role="doc-backlink"><span class="section-number">87.8. </span>Visualizing the welfare decomposition</a><a class="headerlink" href="#visualizing-the-welfare-decomposition" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id42" role="doc-backlink"><span class="section-number">88.8. </span>Visualizing the welfare decomposition</a><a class="headerlink" href="#visualizing-the-welfare-decomposition" title="Link to this heading">#</a></h2>
 <p>We set <span class="math notranslate nohighlight">\(\beta = 0.995\)</span> and calibrate <span class="math notranslate nohighlight">\(\theta\)</span> so that <span class="math notranslate nohighlight">\(p(\theta^{-1}) = 0.10\)</span>, a conservative detection-error level.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1890,7 +1895,7 @@ uncertainty component alone (percent): 8.674%
 <figure class="align-default" id="fig-bhs-4">
 <img alt="_images/4c7c33072d3034f64c592b9bd6d0338c7c67d14b5dc7f76dbc284c944b37f340.png" src="_images/4c7c33072d3034f64c592b9bd6d0338c7c67d14b5dc7f76dbc284c944b37f340.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 87.6 </span><span class="caption-text">Certainty equivalents under robustness</span><a class="headerlink" href="#fig-bhs-4" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 88.6 </span><span class="caption-text">Certainty equivalents under robustness</span><a class="headerlink" href="#fig-bhs-4" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -1909,7 +1914,7 @@ uncertainty component alone (percent): 8.674%
 <p>The consumer’s caution against such alternatives accounts for the large certainty-equivalent gap in the left panel.</p>
 </section>
 <section id="welfare-gains-from-removing-model-uncertainty">
-<h2><a class="toc-backref" href="#id43" role="doc-backlink"><span class="section-number">87.9. </span>Welfare gains from removing model uncertainty</a><a class="headerlink" href="#welfare-gains-from-removing-model-uncertainty" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id43" role="doc-backlink"><span class="section-number">88.9. </span>Welfare gains from removing model uncertainty</a><a class="headerlink" href="#welfare-gains-from-removing-model-uncertainty" title="Link to this heading">#</a></h2>
 <p>A type III (constraint-preference) agent evaluates the worst model inside an entropy ball of radius <span class="math notranslate nohighlight">\(\eta\)</span>.</p>
 <p>As <span class="math notranslate nohighlight">\(\eta\)</span> grows the set of plausible misspecifications expands, and with it the welfare cost of confronting model uncertainty.</p>
 <p>Since <span class="math notranslate nohighlight">\(\eta\)</span> itself is not easy to interpret, we instead index these costs by the associated detection-error probability <span class="math notranslate nohighlight">\(p(\eta)\)</span>.</p>
@@ -1971,7 +1976,7 @@ uncertainty component alone (percent): 8.674%
 <figure class="align-default" id="fig-bhs-5">
 <img alt="_images/c8c172bf81a0ac55207e40d679caaba305abe2e87b3f4d8de353b7090f319306.png" src="_images/c8c172bf81a0ac55207e40d679caaba305abe2e87b3f4d8de353b7090f319306.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 87.7 </span><span class="caption-text">Type III uncertainty compensation curve</span><a class="headerlink" href="#fig-bhs-5" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 88.7 </span><span class="caption-text">Type III uncertainty compensation curve</span><a class="headerlink" href="#fig-bhs-5" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -2027,14 +2032,14 @@ uncertainty component alone (percent): 8.674%
 <figure class="align-default" id="fig-bhs-contour">
 <img alt="_images/8534dae85e056690349ad593d575dc918f435d35c622210a1077f3e5deb402de.png" src="_images/8534dae85e056690349ad593d575dc918f435d35c622210a1077f3e5deb402de.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 87.8 </span><span class="caption-text">Type II compensation contours</span><a class="headerlink" href="#fig-bhs-contour" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 88.8 </span><span class="caption-text">Type II compensation contours</span><a class="headerlink" href="#fig-bhs-contour" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
 </div>
 </section>
 <section id="learning-doesnt-eliminate-misspecification-fears">
-<h2><a class="toc-backref" href="#id44" role="doc-backlink"><span class="section-number">87.10. </span>Learning doesn’t eliminate misspecification fears</a><a class="headerlink" href="#learning-doesnt-eliminate-misspecification-fears" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id44" role="doc-backlink"><span class="section-number">88.10. </span>Learning doesn’t eliminate misspecification fears</a><a class="headerlink" href="#learning-doesnt-eliminate-misspecification-fears" title="Link to this heading">#</a></h2>
 <p>A reasonable question arises: if the consumer has 235 quarters of data, can’t she learn enough to dismiss the worst-case model?</p>
 <p>The answer is no.</p>
 <p>This is because the drift is a low-frequency feature that is very hard to pin down.</p>
@@ -2233,7 +2238,7 @@ Observations: 236
 <figure class="align-default" id="fig-bhs-6">
 <img alt="_images/6c339cb97dcaf21d28bdfd6b7a9eebee1b4b3649fa00e1393a3378e32d4672ce.png" src="_images/6c339cb97dcaf21d28bdfd6b7a9eebee1b4b3649fa00e1393a3378e32d4672ce.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 87.9 </span><span class="caption-text">Drift distortion and sampling uncertainty</span><a class="headerlink" href="#fig-bhs-6" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 88.9 </span><span class="caption-text">Drift distortion and sampling uncertainty</span><a class="headerlink" href="#fig-bhs-6" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -2247,7 +2252,7 @@ Observations: 236
 <p>Robustness concerns persist despite long histories precisely because the low-frequency features that matter most for pricing are the hardest to estimate precisely.</p>
 </section>
 <section id="concluding-remarks">
-<h2><a class="toc-backref" href="#id45" role="doc-backlink"><span class="section-number">87.11. </span>Concluding remarks</a><a class="headerlink" href="#concluding-remarks" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id45" role="doc-backlink"><span class="section-number">88.11. </span>Concluding remarks</a><a class="headerlink" href="#concluding-remarks" title="Link to this heading">#</a></h2>
 <p>The title of this lecture poses a question: are large risk premia prices of <em>variability</em> (atemporal risk aversion) or prices of <em>doubts</em> (model uncertainty)?</p>
 <p>Asset-pricing data alone cannot settle the question, because the two interpretations are observationally equivalent.</p>
 <p>But the choice of interpretation matters for the conclusions we draw.</p>
@@ -2266,11 +2271,11 @@ Observations: 236
 <p>Whether one ultimately prefers the risk or the uncertainty interpretation, the framework clarifies that the question is not about the size of risk premia but about the economic object those premia measure.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id46" role="doc-backlink"><span class="section-number">87.12. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id46" role="doc-backlink"><span class="section-number">88.12. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <p>The following exercises ask you to fill in several derivation steps.</p>
 <div class="exercise admonition" id="dov_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 87.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 88.1 </span></p>
 <section id="exercise-content">
 <p>Let <span class="math notranslate nohighlight">\(R_{t+1}\)</span> be an <span class="math notranslate nohighlight">\(n \times 1\)</span> vector of gross returns with unconditional mean <span class="math notranslate nohighlight">\(E(R)\)</span> and covariance matrix <span class="math notranslate nohighlight">\(\Sigma_R\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(m_{t+1}\)</span> be a stochastic discount factor satisfying <span class="math notranslate nohighlight">\(\mathbf{1} = E[m_{t+1} R_{t+1}]\)</span>.</p>
@@ -2279,7 +2284,7 @@ Observations: 236
 <li><p>For a portfolio with weight vector <span class="math notranslate nohighlight">\(\alpha\)</span> and return <span class="math notranslate nohighlight">\(R^p = \alpha^\top R\)</span>, show that <span class="math notranslate nohighlight">\(\operatorname{cov}(m, R^p) = \alpha^\top b\)</span>.</p></li>
 <li><p>Apply the Cauchy–Schwarz inequality to the pair <span class="math notranslate nohighlight">\((m, R^p)\)</span> to obtain <span class="math notranslate nohighlight">\(|\alpha^\top b| \leq \sigma(m)\sqrt{\alpha^\top \Sigma_R\alpha}\)</span>.</p></li>
 <li><p>Maximize the ratio <span class="math notranslate nohighlight">\(|\alpha^\top b|/\sqrt{\alpha^\top \Sigma_R \alpha}\)</span> over <span class="math notranslate nohighlight">\(\alpha\)</span> and show that the maximum is <span class="math notranslate nohighlight">\(\sqrt{b^\top \Sigma_R^{-1} b}\)</span>, attained at <span class="math notranslate nohighlight">\(\alpha^\star = \Sigma_R^{-1}b\)</span>.</p></li>
-<li><p>Conclude that <span class="math notranslate nohighlight">\(\sigma(m) \geq \sqrt{b^\top \Sigma_R^{-1} b}\)</span>, which is <a class="reference internal" href="#equation-bhs-hj-unconditional">(87.5)</a>.</p></li>
+<li><p>Conclude that <span class="math notranslate nohighlight">\(\sigma(m) \geq \sqrt{b^\top \Sigma_R^{-1} b}\)</span>, which is <a class="reference internal" href="#equation-bhs-hj-unconditional">(88.5)</a>.</p></li>
 </ol>
 </section>
 </div>
@@ -2328,14 +2333,14 @@ Applying the Cauchy–Schwarz inequality to <span class="math notranslate nohigh
 \[
 \max_\alpha \frac{|\alpha^\top b|}{\sqrt{\alpha^\top \Sigma_R \alpha}} = \sqrt{b^\top \Sigma_R^{-1} b}.
 \]</div>
-<p><strong>Part 5.</strong> Combining Parts 3 and 4 gives <span class="math notranslate nohighlight">\(\sigma(m) \geq \sqrt{b^\top \Sigma_R^{-1} b}\)</span>, which is <a class="reference internal" href="#equation-bhs-hj-unconditional">(87.5)</a>.</p>
+<p><strong>Part 5.</strong> Combining Parts 3 and 4 gives <span class="math notranslate nohighlight">\(\sigma(m) \geq \sqrt{b^\top \Sigma_R^{-1} b}\)</span>, which is <a class="reference internal" href="#equation-bhs-hj-unconditional">(88.5)</a>.</p>
 </section>
 </div>
 <div class="exercise admonition" id="dov_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 87.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 88.2 </span></p>
 <section id="exercise-content">
-<p>Combine the SDF representation <a class="reference internal" href="#equation-bhs-sdf">(87.18)</a> with the random-walk consumption dynamics and the Gaussian mean-shift distortion to derive closed-form SDF moments.</p>
+<p>Combine the SDF representation <a class="reference internal" href="#equation-bhs-sdf">(88.18)</a> with the random-walk consumption dynamics and the Gaussian mean-shift distortion to derive closed-form SDF moments.</p>
 <ol class="arabic simple">
 <li><p>Show that <span class="math notranslate nohighlight">\(\log m_{t+1}\)</span> is normally distributed under the approximating model and compute its mean and variance in terms of <span class="math notranslate nohighlight">\((\beta,\mu,\sigma_\varepsilon,w)\)</span>.</p></li>
 <li><p>Use lognormal moments to derive expressions for <span class="math notranslate nohighlight">\(E[m]\)</span> and <span class="math notranslate nohighlight">\(\sigma(m)/E[m]\)</span>.</p></li>
@@ -2353,7 +2358,7 @@ Applying the Cauchy–Schwarz inequality to <span class="math notranslate nohigh
 \[
 c_{t+1}-c_t=\mu+\sigma_\varepsilon \varepsilon_{t+1}\]</div>
 <p>with <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\sim\mathcal{N}(0,1)\)</span> under the approximating model.</p>
-<p>Using <a class="reference internal" href="#equation-bhs-sdf">(87.18)</a> and the Gaussian distortion</p>
+<p>Using <a class="reference internal" href="#equation-bhs-sdf">(88.18)</a> and the Gaussian distortion</p>
 <div class="math notranslate nohighlight">
 \[
 \hat g_{t+1}=\exp \left(w\varepsilon_{t+1}-\tfrac{1}{2}w^2\right),\]</div>
@@ -2406,7 +2411,7 @@ E[m]
 =
 \sqrt{\exp\left((w-\sigma_\varepsilon)^2\right)-1}.
 \]</div>
-<p>Now use <span class="math notranslate nohighlight">\(w_{\text{RW}}(\theta)=-\sigma_\varepsilon/[(1-\beta)\theta]\)</span> from <a class="reference internal" href="#equation-bhs-w-formulas">(87.23)</a> and
+<p>Now use <span class="math notranslate nohighlight">\(w_{\text{RW}}(\theta)=-\sigma_\varepsilon/[(1-\beta)\theta]\)</span> from <a class="reference internal" href="#equation-bhs-w-formulas">(88.23)</a> and
 <span class="math notranslate nohighlight">\(\theta=[(1-\beta)(\gamma-1)]^{-1}\)</span> to get <span class="math notranslate nohighlight">\(w=-\sigma_\varepsilon(\gamma-1)\)</span>.
 Then</p>
 <div class="math notranslate nohighlight">
@@ -2418,24 +2423,24 @@ Then</p>
 (w-\sigma_\varepsilon)^2 = (-\sigma_\varepsilon\gamma)^2=\sigma_\varepsilon^2\gamma^2.\]</div>
 <p>Substituting gives the closed-form expressions for the random-walk model:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-em-rw">
-<span class="eqno">(87.40)<a class="headerlink" href="#equation-bhs-em-rw" title="Link to this equation">#</a></span>\[E[m] = \beta \exp\left[-\mu + \frac{\sigma_\varepsilon^2}{2}(2\gamma - 1)\right],\]</div>
+<span class="eqno">(88.40)<a class="headerlink" href="#equation-bhs-em-rw" title="Link to this equation">#</a></span>\[E[m] = \beta \exp\left[-\mu + \frac{\sigma_\varepsilon^2}{2}(2\gamma - 1)\right],\]</div>
 <div class="math notranslate nohighlight" id="equation-bhs-sigma-rw">
-<span class="eqno">(87.41)<a class="headerlink" href="#equation-bhs-sigma-rw" title="Link to this equation">#</a></span>\[\frac{\sigma(m)}{E[m]} = \sqrt{\exp\left(\sigma_\varepsilon^2 \gamma^2\right) - 1}.\]</div>
-<p>Notice that in <a class="reference internal" href="#equation-bhs-em-rw">(87.40)</a>, because <span class="math notranslate nohighlight">\(\sigma_\varepsilon\)</span> is small (<span class="math notranslate nohighlight">\(\approx 0.005\)</span>), the term <span class="math notranslate nohighlight">\(\frac{\sigma_\varepsilon^2}{2}(2\gamma-1)\)</span> grows slowly with <span class="math notranslate nohighlight">\(\gamma\)</span>, keeping <span class="math notranslate nohighlight">\(E[m]\)</span> roughly constant near <span class="math notranslate nohighlight">\(1/(1+r^f)\)</span>.</p>
-<p>Meanwhile <a class="reference internal" href="#equation-bhs-sigma-rw">(87.41)</a> shows that <span class="math notranslate nohighlight">\(\sigma(m)/E[m] \approx \sigma_\varepsilon \gamma\)</span> grows linearly with <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
+<span class="eqno">(88.41)<a class="headerlink" href="#equation-bhs-sigma-rw" title="Link to this equation">#</a></span>\[\frac{\sigma(m)}{E[m]} = \sqrt{\exp\left(\sigma_\varepsilon^2 \gamma^2\right) - 1}.\]</div>
+<p>Notice that in <a class="reference internal" href="#equation-bhs-em-rw">(88.40)</a>, because <span class="math notranslate nohighlight">\(\sigma_\varepsilon\)</span> is small (<span class="math notranslate nohighlight">\(\approx 0.005\)</span>), the term <span class="math notranslate nohighlight">\(\frac{\sigma_\varepsilon^2}{2}(2\gamma-1)\)</span> grows slowly with <span class="math notranslate nohighlight">\(\gamma\)</span>, keeping <span class="math notranslate nohighlight">\(E[m]\)</span> roughly constant near <span class="math notranslate nohighlight">\(1/(1+r^f)\)</span>.</p>
+<p>Meanwhile <a class="reference internal" href="#equation-bhs-sigma-rw">(88.41)</a> shows that <span class="math notranslate nohighlight">\(\sigma(m)/E[m] \approx \sigma_\varepsilon \gamma\)</span> grows linearly with <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
 <p>This is how Epstein–Zin preferences push volatility toward the HJ bound without distorting the risk-free rate.</p>
 <p>An analogous calculation for the trend-stationary model yields:</p>
 <div class="math notranslate nohighlight" id="equation-bhs-em-ts">
-<span class="eqno">(87.42)<a class="headerlink" href="#equation-bhs-em-ts" title="Link to this equation">#</a></span>\[E[m] = \beta \exp\left[-\mu + \frac{\sigma_\varepsilon^2}{2}\left(1 - \frac{2(1-\beta)(1-\gamma)}{1-\beta\rho} + \frac{1-\rho}{1+\rho}\right)\right],\]</div>
+<span class="eqno">(88.42)<a class="headerlink" href="#equation-bhs-em-ts" title="Link to this equation">#</a></span>\[E[m] = \beta \exp\left[-\mu + \frac{\sigma_\varepsilon^2}{2}\left(1 - \frac{2(1-\beta)(1-\gamma)}{1-\beta\rho} + \frac{1-\rho}{1+\rho}\right)\right],\]</div>
 <div class="math notranslate nohighlight" id="equation-bhs-sigma-ts">
-<span class="eqno">(87.43)<a class="headerlink" href="#equation-bhs-sigma-ts" title="Link to this equation">#</a></span>\[\frac{\sigma(m)}{E[m]} = \sqrt{\exp\left[\sigma_\varepsilon^2\left(\left(\frac{(1-\beta)(1-\gamma)}{1-\beta\rho} - 1\right)^{2} + \frac{1-\rho}{1+\rho}\right)\right] - 1}.\]</div>
+<span class="eqno">(88.43)<a class="headerlink" href="#equation-bhs-sigma-ts" title="Link to this equation">#</a></span>\[\frac{\sigma(m)}{E[m]} = \sqrt{\exp\left[\sigma_\varepsilon^2\left(\left(\frac{(1-\beta)(1-\gamma)}{1-\beta\rho} - 1\right)^{2} + \frac{1-\rho}{1+\rho}\right)\right] - 1}.\]</div>
 </section>
 </div>
 <div class="exercise admonition" id="dov_ex3">
 
-<p class="admonition-title"><span class="caption-number">Exercise 87.3 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 88.3 </span></p>
 <section id="exercise-content">
-<p>Starting from the type I recursion <a class="reference internal" href="#equation-bhs-type1-recursion">(87.9)</a> and the definitions of <span class="math notranslate nohighlight">\(U_t\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span> in <a class="reference internal" href="#equation-bhs-ut-def">(87.10)</a>–<a class="reference internal" href="#equation-bhs-theta-def">(87.11)</a>, derive the risk-sensitive recursion <a class="reference internal" href="#equation-bhs-risk-sensitive">(87.12)</a>.</p>
+<p>Starting from the type I recursion <a class="reference internal" href="#equation-bhs-type1-recursion">(88.9)</a> and the definitions of <span class="math notranslate nohighlight">\(U_t\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span> in <a class="reference internal" href="#equation-bhs-ut-def">(88.10)</a>–<a class="reference internal" href="#equation-bhs-theta-def">(88.11)</a>, derive the risk-sensitive recursion <a class="reference internal" href="#equation-bhs-risk-sensitive">(88.12)</a>.</p>
 <p>Verify that as <span class="math notranslate nohighlight">\(\gamma \to 1\)</span> (equivalently <span class="math notranslate nohighlight">\(\theta \to \infty\)</span>), the recursion converges to standard discounted expected log utility <span class="math notranslate nohighlight">\(U_t = c_t + \beta E_t U_{t+1}\)</span>.</p>
 </section>
 </div>
@@ -2443,12 +2448,12 @@ Then</p>
 
 <p class="admonition-title">Solution</p>
 <section id="solution-content">
-<p>Start from the type I recursion <a class="reference internal" href="#equation-bhs-type1-recursion">(87.9)</a> and write</p>
+<p>Start from the type I recursion <a class="reference internal" href="#equation-bhs-type1-recursion">(88.9)</a> and write</p>
 <div class="math notranslate nohighlight">
 \[
 (V_{t+1})^{1-\gamma} = \exp\bigl((1-\gamma)\log V_{t+1}\bigr).
 \]</div>
-<p>Using <span class="math notranslate nohighlight">\(\log V_t = (1-\beta)U_t\)</span> from <a class="reference internal" href="#equation-bhs-ut-def">(87.10)</a>, we obtain</p>
+<p>Using <span class="math notranslate nohighlight">\(\log V_t = (1-\beta)U_t\)</span> from <a class="reference internal" href="#equation-bhs-ut-def">(88.10)</a>, we obtain</p>
 <div class="math notranslate nohighlight">
 \[
 (1-\beta)U_t
@@ -2457,7 +2462,7 @@ Then</p>
 +
 \frac{\beta}{1-\gamma}\log E_t\left[\exp\bigl((1-\gamma)(1-\beta)U_{t+1}\bigr)\right].
 \]</div>
-<p>Divide by <span class="math notranslate nohighlight">\((1-\beta)\)</span> and use <a class="reference internal" href="#equation-bhs-theta-def">(87.11)</a>,</p>
+<p>Divide by <span class="math notranslate nohighlight">\((1-\beta)\)</span> and use <a class="reference internal" href="#equation-bhs-theta-def">(88.11)</a>,</p>
 <div class="math notranslate nohighlight">
 \[
 \theta = -\bigl[(1-\beta)(1-\gamma)\bigr]^{-1}.
@@ -2469,7 +2474,7 @@ U_t
 =
 c_t - \beta\theta \log E_t \left[\exp \left(-\frac{U_{t+1}}{\theta}\right)\right],
 \]</div>
-<p>which is <a class="reference internal" href="#equation-bhs-risk-sensitive">(87.12)</a>.</p>
+<p>which is <a class="reference internal" href="#equation-bhs-risk-sensitive">(88.12)</a>.</p>
 <p>For <span class="math notranslate nohighlight">\(\theta\to\infty\)</span> (equivalently <span class="math notranslate nohighlight">\(\gamma\to 1\)</span>), use the expansion</p>
 <div class="math notranslate nohighlight">
 \[
@@ -2497,13 +2502,13 @@ U_t = c_t + \beta E_t U_{t+1}.
 </div>
 <div class="exercise admonition" id="dov_ex4">
 
-<p class="admonition-title"><span class="caption-number">Exercise 87.4 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 88.4 </span></p>
 <section id="exercise-content">
-<p>Consider the type II Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type2">(87.16)</a>.</p>
+<p>Consider the type II Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type2">(88.16)</a>.</p>
 <ol class="arabic simple">
 <li><p>Use a Lagrange multiplier to impose the normalization constraint <span class="math notranslate nohighlight">\(\int g(\varepsilon) \pi(\varepsilon) d\varepsilon = 1\)</span>.</p></li>
-<li><p>Derive the first-order condition for <span class="math notranslate nohighlight">\(g(\varepsilon)\)</span> and show that the minimizer is the exponential tilt in <a class="reference internal" href="#equation-bhs-ghat">(87.17)</a>.</p></li>
-<li><p>Substitute your minimizing <span class="math notranslate nohighlight">\(g\)</span> back into <a class="reference internal" href="#equation-bhs-bellman-type2">(87.16)</a> to recover the risk-sensitive Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type1">(87.13)</a>.</p></li>
+<li><p>Derive the first-order condition for <span class="math notranslate nohighlight">\(g(\varepsilon)\)</span> and show that the minimizer is the exponential tilt in <a class="reference internal" href="#equation-bhs-ghat">(88.17)</a>.</p></li>
+<li><p>Substitute your minimizing <span class="math notranslate nohighlight">\(g\)</span> back into <a class="reference internal" href="#equation-bhs-bellman-type2">(88.16)</a> to recover the risk-sensitive Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type1">(88.13)</a>.</p></li>
 </ol>
 <p>Conclude that <span class="math notranslate nohighlight">\(W(x) \equiv U(x)\)</span> for consumption plans in <span class="math notranslate nohighlight">\(\mathcal{C}(A,B,H;x_0)\)</span>.</p>
 </section>
@@ -2561,8 +2566,8 @@ g^*(\varepsilon)
 \frac{\exp\left(-W(Ax+B\varepsilon)/\theta\right)}{
     \int \exp\left(-W(Ax+B\tilde\varepsilon)/\theta\right)\pi(\tilde\varepsilon) d\tilde\varepsilon}.
 \]</div>
-<p>This has exactly the same form as the distortion <span class="math notranslate nohighlight">\(\hat g_{t+1} = \exp(-U_{t+1}/\theta)/E_t[\exp(-U_{t+1}/\theta)]\)</span> that appears in the type I SDF <a class="reference internal" href="#equation-bhs-sdf-ut">(87.14)</a>, with <span class="math notranslate nohighlight">\(W\)</span> in place of <span class="math notranslate nohighlight">\(U\)</span>.</p>
-<p>Once we verify below that <span class="math notranslate nohighlight">\(W \equiv U\)</span>, the minimizer <span class="math notranslate nohighlight">\(g^*\)</span> and the SDF distortion <span class="math notranslate nohighlight">\(\hat g\)</span> coincide, which is <a class="reference internal" href="#equation-bhs-ghat">(87.17)</a>.</p>
+<p>This has exactly the same form as the distortion <span class="math notranslate nohighlight">\(\hat g_{t+1} = \exp(-U_{t+1}/\theta)/E_t[\exp(-U_{t+1}/\theta)]\)</span> that appears in the type I SDF <a class="reference internal" href="#equation-bhs-sdf-ut">(88.14)</a>, with <span class="math notranslate nohighlight">\(W\)</span> in place of <span class="math notranslate nohighlight">\(U\)</span>.</p>
+<p>Once we verify below that <span class="math notranslate nohighlight">\(W \equiv U\)</span>, the minimizer <span class="math notranslate nohighlight">\(g^*\)</span> and the SDF distortion <span class="math notranslate nohighlight">\(\hat g\)</span> coincide, which is <a class="reference internal" href="#equation-bhs-ghat">(88.17)</a>.</p>
 <p>To substitute back, define</p>
 <div class="math notranslate nohighlight">
 \[
@@ -2581,7 +2586,7 @@ Z(x):=\int \exp(-W(Ax+B\varepsilon)/\theta)\pi(\varepsilon) d\varepsilon.
 -\theta\log Z(x),
 \]</div>
 <p>because the <span class="math notranslate nohighlight">\(W\)</span> terms cancel and <span class="math notranslate nohighlight">\(\int \hat g \pi = 1\)</span>.</p>
-<p>Plugging this into <a class="reference internal" href="#equation-bhs-bellman-type2">(87.16)</a> gives</p>
+<p>Plugging this into <a class="reference internal" href="#equation-bhs-bellman-type2">(88.16)</a> gives</p>
 <div class="math notranslate nohighlight">
 \[
 W(x)
@@ -2590,12 +2595,12 @@ c-\beta\theta\log Z(x)
 =
 c-\beta\theta \log \int \exp\left(-\frac{W(Ax+B\varepsilon)}{\theta}\right)\pi(\varepsilon) d\varepsilon,
 \]</div>
-<p>which is <a class="reference internal" href="#equation-bhs-bellman-type1">(87.13)</a>. Therefore <span class="math notranslate nohighlight">\(W(x)\equiv U(x)\)</span>.</p>
+<p>which is <a class="reference internal" href="#equation-bhs-bellman-type1">(88.13)</a>. Therefore <span class="math notranslate nohighlight">\(W(x)\equiv U(x)\)</span>.</p>
 </section>
 </div>
 <div class="exercise admonition" id="dov_ex5">
 
-<p class="admonition-title"><span class="caption-number">Exercise 87.5 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 88.5 </span></p>
 <section id="exercise-content">
 <p>Let <span class="math notranslate nohighlight">\(\varepsilon \sim \mathcal{N}(0,1)\)</span> under the approximating model and define</p>
 <div class="math notranslate nohighlight">
@@ -2705,10 +2710,10 @@ w^2-\frac{1}{2}w^2
 </div>
 <div class="exercise admonition" id="dov_ex6">
 
-<p class="admonition-title"><span class="caption-number">Exercise 87.6 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 88.6 </span></p>
 <section id="exercise-content">
-<p>Derive the worst-case mean shifts <a class="reference internal" href="#equation-bhs-w-formulas">(87.23)</a> for both consumption models.</p>
-<p>From <a class="reference internal" href="#equation-bhs-ghat">(87.17)</a>, <span class="math notranslate nohighlight">\(\hat g_{t+1} \propto \exp(-W(x_{t+1})/\theta)\)</span>.</p>
+<p>Derive the worst-case mean shifts <a class="reference internal" href="#equation-bhs-w-formulas">(88.23)</a> for both consumption models.</p>
+<p>From <a class="reference internal" href="#equation-bhs-ghat">(88.17)</a>, <span class="math notranslate nohighlight">\(\hat g_{t+1} \propto \exp(-W(x_{t+1})/\theta)\)</span>.</p>
 <p>When <span class="math notranslate nohighlight">\(W\)</span> is linear in the state, the exponent is linear in <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span>, and the Gaussian mean shift is <span class="math notranslate nohighlight">\(w = -\lambda/\theta\)</span> where <span class="math notranslate nohighlight">\(\lambda\)</span> is the coefficient on <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span> in <span class="math notranslate nohighlight">\(W(x_{t+1})\)</span>.</p>
 <ol class="arabic simple">
 <li><p>Random-walk model: Guess <span class="math notranslate nohighlight">\(W(x_t) = \frac{1}{1-\beta}[c_t + d]\)</span>. Using <span class="math notranslate nohighlight">\(c_{t+1} = c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1}\)</span>, find <span class="math notranslate nohighlight">\(\lambda\)</span> and show that <span class="math notranslate nohighlight">\(w = -\sigma_\varepsilon/[(1-\beta)\theta]\)</span>.</p></li>
@@ -2760,13 +2765,13 @@ W(x_{t+1}) = \tfrac{1}{1-\beta}\bigl[c_t + \mu + (\rho-1)z_t + \sigma_\varepsilo
 </div>
 <div class="exercise admonition" id="dov_ex7">
 
-<p class="admonition-title"><span class="caption-number">Exercise 87.7 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 88.7 </span></p>
 <section id="exercise-content">
-<p>Verify the closed-form value function <a class="reference internal" href="#equation-bhs-w-rw">(87.27)</a> for the random-walk model by substituting a guess of the form <span class="math notranslate nohighlight">\(W(x_t) = \frac{1}{1-\beta}[c_t + d]\)</span> into the risk-sensitive Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type1">(87.13)</a>.</p>
+<p>Verify the closed-form value function <a class="reference internal" href="#equation-bhs-w-rw">(88.27)</a> for the random-walk model by substituting a guess of the form <span class="math notranslate nohighlight">\(W(x_t) = \frac{1}{1-\beta}[c_t + d]\)</span> into the risk-sensitive Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type1">(88.13)</a>.</p>
 <ol class="arabic simple">
 <li><p>Under the random walk <span class="math notranslate nohighlight">\(c_{t+1} = c_t + \mu + \sigma_\varepsilon \varepsilon_{t+1}\)</span>, show that <span class="math notranslate nohighlight">\(W(Ax_t + B\varepsilon) = \frac{1}{1-\beta}[c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1} + d]\)</span>.</p></li>
 <li><p>Substitute into the <span class="math notranslate nohighlight">\(\log E\exp\)</span> term, using the fact that for <span class="math notranslate nohighlight">\(Z \sim \mathcal{N}(\mu_Z, \sigma_Z^2)\)</span> we have <span class="math notranslate nohighlight">\(\log E[\exp(Z)] = \mu_Z + \frac{1}{2}\sigma_Z^2\)</span>.</p></li>
-<li><p>Solve for <span class="math notranslate nohighlight">\(d\)</span> and confirm that it matches <a class="reference internal" href="#equation-bhs-w-rw">(87.27)</a>.</p></li>
+<li><p>Solve for <span class="math notranslate nohighlight">\(d\)</span> and confirm that it matches <a class="reference internal" href="#equation-bhs-w-rw">(88.27)</a>.</p></li>
 </ol>
 </section>
 </div>
@@ -2779,7 +2784,7 @@ W(x_{t+1}) = \tfrac{1}{1-\beta}\bigl[c_t + \mu + (\rho-1)z_t + \sigma_\varepsilo
 \[
 W(Ax_t + B\varepsilon_{t+1}) = \frac{1}{1-\beta}\bigl[c_t + \mu + \sigma_\varepsilon\varepsilon_{t+1} + d\bigr].
 \]</div>
-<p><strong>Part 2.</strong> The Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type1">(87.13)</a> requires computing</p>
+<p><strong>Part 2.</strong> The Bellman equation <a class="reference internal" href="#equation-bhs-bellman-type1">(88.13)</a> requires computing</p>
 <div class="math notranslate nohighlight">
 \[
 -\beta\theta\log E_t\left[\exp\left(\frac{-W(Ax_t + B\varepsilon_{t+1})}{\theta}\right)\right].
@@ -2829,18 +2834,18 @@ c_t + \frac{\beta c_t}{1-\beta} + \frac{\beta(\mu + d)}{1-\beta} - \frac{\beta\s
 \[
 d = \frac{\beta}{1-\beta}\left(\mu - \frac{\sigma_\varepsilon^2}{2(1-\beta)\theta}\right),
 \]</div>
-<p>which matches <a class="reference internal" href="#equation-bhs-w-rw">(87.27)</a>.</p>
+<p>which matches <a class="reference internal" href="#equation-bhs-w-rw">(88.27)</a>.</p>
 </section>
 </div>
 <div class="exercise admonition" id="dov_ex8">
 
-<p class="admonition-title"><span class="caption-number">Exercise 87.8 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 88.8 </span></p>
 <section id="exercise-content">
 <p>In the Gaussian mean-shift setting of <a class="reference internal" href="#dov_ex5"><span class="std std-ref">Exercise 5</span></a>, let <span class="math notranslate nohighlight">\(L_T\)</span> be the log likelihood ratio between the worst-case and approximating models based on <span class="math notranslate nohighlight">\(T\)</span> observations.</p>
 <ol class="arabic simple">
 <li><p>Show that <span class="math notranslate nohighlight">\(L_T\)</span> is normal under each model.</p></li>
 <li><p>Compute its mean and variance under the approximating and worst-case models.</p></li>
-<li><p>Using the definition of detection-error probability in <a class="reference internal" href="#equation-bhs-detection-formula">(87.30)</a>, derive the closed-form expression <a class="reference internal" href="#equation-bhs-detection-closed">(87.31)</a>.</p></li>
+<li><p>Using the definition of detection-error probability in <a class="reference internal" href="#equation-bhs-detection-formula">(88.30)</a>, derive the closed-form expression <a class="reference internal" href="#equation-bhs-detection-closed">(88.31)</a>.</p></li>
 </ol>
 </section>
 </div>
@@ -2907,19 +2912,19 @@ p_B = \Pr_B(L_T&gt;0)
 <div class="math notranslate nohighlight">
 \[
 p(\theta^{-1})=\tfrac{1}{2}(p_A+p_B)=\Phi\left(-\tfrac{|w|\sqrt{T}}{2}\right),\]</div>
-<p>which is <a class="reference internal" href="#equation-bhs-detection-closed">(87.31)</a>.</p>
+<p>which is <a class="reference internal" href="#equation-bhs-detection-closed">(88.31)</a>.</p>
 </section>
 </div>
 <div class="exercise admonition" id="dov_ex9">
 
-<p class="admonition-title"><span class="caption-number">Exercise 87.9 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 88.9 </span></p>
 <section id="exercise-content">
-<p>Using the formulas for <span class="math notranslate nohighlight">\(w(\theta)\)</span> in <a class="reference internal" href="#equation-bhs-w-formulas">(87.23)</a> and the definition of discounted entropy</p>
+<p>Using the formulas for <span class="math notranslate nohighlight">\(w(\theta)\)</span> in <a class="reference internal" href="#equation-bhs-w-formulas">(88.23)</a> and the definition of discounted entropy</p>
 <div class="math notranslate nohighlight">
 \[
 \eta = \frac{\beta}{1-\beta}\cdot \frac{w(\theta)^2}{2},
 \]</div>
-<p>show that holding <span class="math notranslate nohighlight">\(\eta\)</span> fixed across the random-walk and trend-stationary consumption specifications implies the mapping <a class="reference internal" href="#equation-bhs-theta-cross-model">(87.32)</a>.</p>
+<p>show that holding <span class="math notranslate nohighlight">\(\eta\)</span> fixed across the random-walk and trend-stationary consumption specifications implies the mapping <a class="reference internal" href="#equation-bhs-theta-cross-model">(88.32)</a>.</p>
 <p>Specialize your result to the case <span class="math notranslate nohighlight">\(\sigma_\varepsilon^{\text{TS}} = \sigma_\varepsilon^{\text{RW}}\)</span> and interpret the role of <span class="math notranslate nohighlight">\(\rho\)</span>.</p>
 </section>
 </div>
@@ -2928,7 +2933,7 @@ p(\theta^{-1})=\tfrac{1}{2}(p_A+p_B)=\Phi\left(-\tfrac{|w|\sqrt{T}}{2}\right),\]
 <p class="admonition-title">Solution</p>
 <section id="solution-content">
 <p>Because <span class="math notranslate nohighlight">\(\eta\)</span> depends on <span class="math notranslate nohighlight">\(\theta\)</span> only through <span class="math notranslate nohighlight">\(w(\theta)^2\)</span>, holding <span class="math notranslate nohighlight">\(\eta\)</span> fixed across models is equivalent to holding <span class="math notranslate nohighlight">\(|w(\theta)|\)</span> fixed.</p>
-<p>Using <a class="reference internal" href="#equation-bhs-w-formulas">(87.23)</a>,</p>
+<p>Using <a class="reference internal" href="#equation-bhs-w-formulas">(88.23)</a>,</p>
 <div class="math notranslate nohighlight">
 \[
 |w_{\text{RW}}(\theta_{\text{RW}})|
@@ -2947,7 +2952,7 @@ p(\theta^{-1})=\tfrac{1}{2}(p_A+p_B)=\Phi\left(-\tfrac{|w|\sqrt{T}}{2}\right),\]
 \left(\frac{\sigma_\varepsilon^{\text{TS}}}{\sigma_\varepsilon^{\text{RW}}}\right)
 \frac{1-\beta}{1-\beta\rho}\theta_{\text{RW}},
 \]</div>
-<p>which is <a class="reference internal" href="#equation-bhs-theta-cross-model">(87.32)</a>.</p>
+<p>which is <a class="reference internal" href="#equation-bhs-theta-cross-model">(88.32)</a>.</p>
 <p>If <span class="math notranslate nohighlight">\(\sigma_\varepsilon^{\text{TS}}=\sigma_\varepsilon^{\text{RW}}\)</span>, then</p>
 <div class="math notranslate nohighlight">
 \[
@@ -2959,9 +2964,9 @@ p(\theta^{-1})=\tfrac{1}{2}(p_A+p_B)=\Phi\left(-\tfrac{|w|\sqrt{T}}{2}\right),\]
 </div>
 <div class="exercise admonition" id="dov_ex10">
 
-<p class="admonition-title"><span class="caption-number">Exercise 87.10 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 88.10 </span></p>
 <section id="exercise-content">
-<p>For type II (multiplier) preferences under random-walk consumption growth, derive the compensating-variation formulas in <a class="reference internal" href="#equation-bhs-type2-rw-decomp">(87.35)</a>.</p>
+<p>For type II (multiplier) preferences under random-walk consumption growth, derive the compensating-variation formulas in <a class="reference internal" href="#equation-bhs-type2-rw-decomp">(88.35)</a>.</p>
 <p>In particular, derive</p>
 <ol class="arabic simple">
 <li><p>the <em>risk</em> term by comparing the stochastic economy to a deterministic consumption path with the same mean level of consumption (Lucas’s thought experiment), and</p></li>
@@ -3051,7 +3056,7 @@ J(w)
 \quad\Rightarrow\quad
 w^*=-\frac{\sigma_\varepsilon}{(1-\beta)\theta},
 \]</div>
-<p>which matches <a class="reference internal" href="#equation-bhs-w-formulas">(87.23)</a>.</p>
+<p>which matches <a class="reference internal" href="#equation-bhs-w-formulas">(88.23)</a>.</p>
 <p>Substituting <span class="math notranslate nohighlight">\(w^*\)</span> back in gives</p>
 <div class="math notranslate nohighlight">
 \[
@@ -3080,14 +3085,14 @@ Thus the utility gain from removing model uncertainty at fixed <span class="math
 =
 \frac{\beta\sigma_\varepsilon^2}{2(1-\beta)^2\theta}.
 \]</div>
-<p>Together these reproduce <a class="reference internal" href="#equation-bhs-type2-rw-decomp">(87.35)</a>.</p>
+<p>Together these reproduce <a class="reference internal" href="#equation-bhs-type2-rw-decomp">(88.35)</a>.</p>
 </section>
 </div>
 <div class="exercise admonition" id="dov_ex11">
 
-<p class="admonition-title"><span class="caption-number">Exercise 87.11 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 88.11 </span></p>
 <section id="exercise-content">
-<p>Derive the trend-stationary risk compensation <span class="math notranslate nohighlight">\(\Delta c_0^{risk,ts}\)</span> in <a class="reference internal" href="#equation-bhs-ts-compensations">(87.39)</a>.</p>
+<p>Derive the trend-stationary risk compensation <span class="math notranslate nohighlight">\(\Delta c_0^{risk,ts}\)</span> in <a class="reference internal" href="#equation-bhs-ts-compensations">(88.39)</a>.</p>
 <p>For the trend-stationary model with <span class="math notranslate nohighlight">\(\tilde c_{t+1} - \zeta = \rho(\tilde c_t - \zeta) + \sigma_\varepsilon\varepsilon_{t+1}\)</span>, where <span class="math notranslate nohighlight">\(\tilde c_t = c_t - \mu t\)</span>, compute the risk compensation <span class="math notranslate nohighlight">\(\Delta c_0^{risk,ts}\)</span> by comparing expected log utility under the stochastic plan to the deterministic certainty-equivalent path, and show that</p>
 <div class="math notranslate nohighlight">
 \[
@@ -3485,9 +3490,21 @@ Thus the utility gain from removing model uncertainty at fixed <span class="math
    51. Job Search VIII: Search with Learning
   </a>
  </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reinforcement Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_q.html">
+   52. Inventory Management via Q-Learning
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   52. Job Search IX: Search with Q-Learning
+   53. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -3499,32 +3516,32 @@ Thus the utility gain from removing model uncertainty at fixed <span class="math
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   53. Optimal Savings I: Cake Eating
+   54. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   54. Optimal Savings II: Numerical Cake Eating
+   55. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   55. Optimal Savings III: Stochastic Returns
+   56. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   56. Optimal Savings IV: Time Iteration
+   57. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   57. Optimal Savings V: The Endogenous Grid Method
+   58. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   58. Optimal Savings VI: EGM with JAX
+   59. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -3536,27 +3553,27 @@ Thus the utility gain from removing model uncertainty at fixed <span class="math
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   59. The Income Fluctuation Problem I: Discretization and VFI
+   60. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   60. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   61. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   61. The Income Fluctuation Problem III: The Endogenous Grid Method
+   62. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   62. The Income Fluctuation Problem IV: Transient Income Shocks
+   63. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   63. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   64. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -3568,32 +3585,32 @@ Thus the utility gain from removing model uncertainty at fixed <span class="math
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   64. LQ Control: Foundations
+   65. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   65. Lagrangian for LQ Control
+   66. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   66. Eliminating Cross Products
+   67. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   67. The Permanent Income Model
+   68. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   68. Permanent Income II: LQ Techniques
+   69. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   69. Production Smoothing via Inventories
+   70. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -3605,22 +3622,22 @@ Thus the utility gain from removing model uncertainty at fixed <span class="math
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   70. Cass-Koopmans Model
+   71. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   71. Cass-Koopmans Competitive Equilibrium
+   72. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   72. Cass-Koopmans Model with Distorting Taxes
+   73. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   73. Two-Country Model with Distorting Taxes
+   74. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -3632,52 +3649,52 @@ Thus the utility gain from removing model uncertainty at fixed <span class="math
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   74. A Lake Model of Employment and Unemployment
+   75. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   75. Lake Model with an Endogenous Job Finding Rate
+   76. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   76. Rational Expectations Equilibrium
+   77. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   77. Stability in Linear Rational Expectations Models
+   78. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   78. Markov Perfect Equilibrium
+   79. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   79. Uncertainty Traps
+   80. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   80. The Aiyagari Model
+   81. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   81. Transitions in an Overlapping Generations Model
+   82. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   82. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   83. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   83. Two Computations to Fund Social Security
+   84. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -3689,47 +3706,47 @@ Thus the utility gain from removing model uncertainty at fixed <span class="math
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   84. Asset Pricing: Finite State Models
+   85. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   85. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   86. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   86. Estimating Euler Equations by Generalized Method of Moments
+   87. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   87. Doubts or Variability?
+   88. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   88. Competitive Equilibria with Arrow Securities
+   89. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   89. Heterogeneous Beliefs and Bubbles
+   90. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   90. Speculative Behavior with Bayesian Learning
+   91. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   91. Affine Models of Asset Prices
+   92. Affine Models of Asset Prices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="risk_aversion_or_mistaken_beliefs.html">
-   92. Risk Aversion or Mistaken Beliefs?
+   93. Risk Aversion or Mistaken Beliefs?
   </a>
  </li>
 </ul>
@@ -3741,17 +3758,17 @@ Thus the utility gain from removing model uncertainty at fixed <span class="math
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   93. Pandas for Panel Data
+   94. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   94. Linear Regression in Python
+   95. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   95. Maximum Likelihood Estimation
+   96. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -3763,12 +3780,12 @@ Thus the utility gain from removing model uncertainty at fixed <span class="math
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   96. First-Price and Second-Price Auctions
+   97. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   97. Multiple Good Allocation Mechanisms
+   98. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -3780,17 +3797,17 @@ Thus the utility gain from removing model uncertainty at fixed <span class="math
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   98. Troubleshooting
+   99. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   99. References
+   100. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   100. Execution Statistics
+   101. Execution Statistics
   </a>
  </li>
 </ul>

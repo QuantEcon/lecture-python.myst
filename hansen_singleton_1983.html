@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>85. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>86. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -77,10 +77,10 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=300d9cef76b95d0252c8ff6263fc63de943d6f3a" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
     <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=af25365e6360aeca6ba8101dda3f432eb6b6fa9c"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -124,15 +124,15 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": ["\\operatorname*{argmax}", 0], "argmin": ["\\operatorname*{argmin}", 0]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'hansen_singleton_1983';</script>
     <link rel="canonical" href="https://python.quantecon.org/hansen_singleton_1983.html" />
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="86. Estimating Euler Equations by Generalized Method of Moments" href="hansen_singleton_1982.html" />
-    <link rel="prev" title="84. Asset Pricing: Finite State Models" href="markov_asset.html" />
+    <link rel="next" title="87. Estimating Euler Equations by Generalized Method of Moments" href="hansen_singleton_1982.html" />
+    <link rel="prev" title="85. Asset Pricing: Finite State Models" href="markov_asset.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -165,8 +165,13 @@
   try {
     if (localStorage.setContrast === '1') {
       document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
     }
-  } catch(e) {}
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
 })();
 </script>
 
@@ -199,26 +204,26 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">85.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#euler-equation">85.2. Euler equation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-euler-equation-under-lognormality">85.3. The Euler equation under lognormality</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-restricted-system-and-its-likelihood">85.4. The restricted system and its likelihood</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-implementation">85.5. Likelihood implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">85.5.1. Simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">86.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#euler-equation">86.2. Euler equation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-euler-equation-under-lognormality">86.3. The Euler equation under lognormality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-restricted-system-and-its-likelihood">86.4. The restricted system and its likelihood</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-implementation">86.5. Likelihood implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">86.5.1. Simulation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-parameters-and-likelihood-ratio-tests">85.6. Preference parameters and likelihood ratio tests</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictability-and-the-r-squared-restriction">85.7. Predictability and the R-squared restriction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#return-difference-tests">85.8. Return-difference tests</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#empirical-mle-estimation">85.9. Empirical MLE estimation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">85.9.1. Data</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-estimation-and-predictability-summaries">85.9.2. MLE estimation and predictability summaries</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#treasury-bill-estimation">85.9.3. Treasury bill estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preference-parameters-and-likelihood-ratio-tests">86.6. Preference parameters and likelihood ratio tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predictability-and-the-r-squared-restriction">86.7. Predictability and the R-squared restriction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#return-difference-tests">86.8. Return-difference tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#empirical-mle-estimation">86.9. Empirical MLE estimation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">86.9.1. Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-estimation-and-predictability-summaries">86.9.2. MLE estimation and predictability summaries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#treasury-bill-estimation">86.9.3. Treasury bill estimation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-diagnostics">85.10. Residual diagnostics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-to-the-equity-premium-puzzle">85.11. Connection to the equity premium puzzle</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-approach">85.12. Another approach</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-diagnostics">86.10. Residual diagnostics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#connection-to-the-equity-premium-puzzle">86.11. Connection to the equity premium puzzle</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#another-approach">86.12. Another approach</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -303,7 +308,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="stochastic-consumption-risk-aversion-and-the-temporal-behavior-of-asset-returns">
-<h1><a class="toc-backref" href="#id33" role="doc-backlink"><span class="section-number">85. </span>Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns</a><a class="headerlink" href="#stochastic-consumption-risk-aversion-and-the-temporal-behavior-of-asset-returns" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id33" role="doc-backlink"><span class="section-number">86. </span>Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns</a><a class="headerlink" href="#stochastic-consumption-risk-aversion-and-the-temporal-behavior-of-asset-returns" title="Link to this heading">#</a></h1>
 <nav class="contents" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -334,7 +339,7 @@ likelihood function. Maximize it.</p>
 <p>— An Interview with Thomas J. Sargent <span id="id1">[<a class="reference internal" href="zreferences.html#id3" title="George W Evans and Seppo Honkapohja. An interview with thomas j. sargent. Macroeconomic Dynamics, 9(4):561–583, 2005.">Evans and Honkapohja, 2005</a>]</span></p>
 </div></blockquote>
 <section id="overview">
-<h2><a class="toc-backref" href="#id34" role="doc-backlink"><span class="section-number">85.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id34" role="doc-backlink"><span class="section-number">86.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture describes how   <span id="id2">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> formulated a complete statistical model of asset returns and consumption growth, then estimated its parameters by the method of  maximum likelihood.</p>
 <p>They detect a defects in their model, one of which <span id="id3">Mehra and Prescott [<a class="reference internal" href="zreferences.html#id218" title="Rajnish Mehra and Edward C Prescott. The equity premium: A puzzle. Journal of Monetary Economics, 15(2):145–161, 1985.">1985</a>]</span> later  called   the <strong>equity premium puzzle</strong>.</p>
 <p><span id="id4">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> study a consumption-based asset pricing model in which a representative consumer with CRRA preferences chooses how to allocate wealth across traded assets.</p>
@@ -446,23 +451,23 @@ Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/
 </div>
 </section>
 <section id="euler-equation">
-<h2><a class="toc-backref" href="#id35" role="doc-backlink"><span class="section-number">85.2. </span>Euler equation</a><a class="headerlink" href="#euler-equation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id35" role="doc-backlink"><span class="section-number">86.2. </span>Euler equation</a><a class="headerlink" href="#euler-equation" title="Link to this heading">#</a></h2>
 <p>Consider a single-good economy of identical consumers whose utility functions are in the CRRA form</p>
 <div class="math notranslate nohighlight" id="equation-hs83-crra">
-<span class="eqno">(85.1)<a class="headerlink" href="#equation-hs83-crra" title="Link to this equation">#</a></span>\[U(c_t) = c_t^{\gamma}/\gamma, \quad \gamma &lt; 1,\]</div>
+<span class="eqno">(86.1)<a class="headerlink" href="#equation-hs83-crra" title="Link to this equation">#</a></span>\[U(c_t) = c_t^{\gamma}/\gamma, \quad \gamma &lt; 1,\]</div>
 <p>where <span class="math notranslate nohighlight">\(c_t\)</span> is aggregate real per capita consumption and <span class="math notranslate nohighlight">\(U(\cdot)\)</span> is the period utility function.</p>
 <p>The representative consumer chooses a stochastic consumption plan to maximize the expected value of a time-additive utility function,</p>
 <div class="math notranslate nohighlight" id="equation-hs83-objective">
-<span class="eqno">(85.2)<a class="headerlink" href="#equation-hs83-objective" title="Link to this equation">#</a></span>\[E_0 \sum_{t=0}^{\infty} \beta^t U(c_t), \quad 0 &lt; \beta &lt; 1.\]</div>
+<span class="eqno">(86.2)<a class="headerlink" href="#equation-hs83-objective" title="Link to this equation">#</a></span>\[E_0 \sum_{t=0}^{\infty} \beta^t U(c_t), \quad 0 &lt; \beta &lt; 1.\]</div>
 <p>Consumers substitute present for future consumption by trading the ownership rights of <span class="math notranslate nohighlight">\(N\)</span> financial and capital assets.</p>
 <p>Let <span class="math notranslate nohighlight">\(\mathbf{w}_t\)</span> denote the holdings of the <span class="math notranslate nohighlight">\(N\)</span> assets at date <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(\mathbf{q}_t\)</span> the vector of asset prices, <span class="math notranslate nohighlight">\(\mathbf{d}_t\)</span> the vector of dividends, and <span class="math notranslate nohighlight">\(y_t\)</span> real labor income.</p>
 <p>A feasible consumption and investment plan <span class="math notranslate nohighlight">\(\{c_t, \mathbf{w}_t\}\)</span> must satisfy the sequence of budget constraints</p>
 <div class="math notranslate nohighlight" id="equation-hs83-budget">
-<span class="eqno">(85.3)<a class="headerlink" href="#equation-hs83-budget" title="Link to this equation">#</a></span>\[c_t + \mathbf{q}_t \cdot \mathbf{w}_{t+1} \leq (\mathbf{q}_t + \mathbf{d}_t) \cdot \mathbf{w}_t + y_t,\]</div>
+<span class="eqno">(86.3)<a class="headerlink" href="#equation-hs83-budget" title="Link to this equation">#</a></span>\[c_t + \mathbf{q}_t \cdot \mathbf{w}_{t+1} \leq (\mathbf{q}_t + \mathbf{d}_t) \cdot \mathbf{w}_t + y_t,\]</div>
 <p>where <span class="math notranslate nohighlight">\((\mathbf{q}_t + \mathbf{d}_t) \cdot \mathbf{w}_t\)</span> is the cum-dividend value of the portfolio carried into period <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>To derive the first-order conditions, attach a Lagrange multiplier <span class="math notranslate nohighlight">\(\lambda_t\)</span> to the budget constraint <a class="reference internal" href="#equation-hs83-budget">(85.3)</a> at each date <span class="math notranslate nohighlight">\(t\)</span> and form the Lagrangian</p>
+<p>To derive the first-order conditions, attach a Lagrange multiplier <span class="math notranslate nohighlight">\(\lambda_t\)</span> to the budget constraint <a class="reference internal" href="#equation-hs83-budget">(86.3)</a> at each date <span class="math notranslate nohighlight">\(t\)</span> and form the Lagrangian</p>
 <div class="math notranslate nohighlight" id="equation-hs83-lagrangian">
-<span class="eqno">(85.4)<a class="headerlink" href="#equation-hs83-lagrangian" title="Link to this equation">#</a></span>\[\mathcal{L} = E_0 \sum_{t=0}^{\infty} \beta^t \left\{ U(c_t) + \lambda_t \left[ (\mathbf{q}_t + \mathbf{d}_t) \cdot \mathbf{w}_t + y_t - c_t - \mathbf{q}_t \cdot \mathbf{w}_{t+1} \right] \right\}.\]</div>
+<span class="eqno">(86.4)<a class="headerlink" href="#equation-hs83-lagrangian" title="Link to this equation">#</a></span>\[\mathcal{L} = E_0 \sum_{t=0}^{\infty} \beta^t \left\{ U(c_t) + \lambda_t \left[ (\mathbf{q}_t + \mathbf{d}_t) \cdot \mathbf{w}_t + y_t - c_t - \mathbf{q}_t \cdot \mathbf{w}_{t+1} \right] \right\}.\]</div>
 <p>Differentiating <span class="math notranslate nohighlight">\(\mathcal{L}\)</span> with respect to <span class="math notranslate nohighlight">\(c_t\)</span> gives</p>
 <div class="math notranslate nohighlight">
 \[\frac{\partial \mathcal{L}}{\partial c_t} = 0 \implies \lambda_t = U'(c_t).\]</div>
@@ -480,39 +485,39 @@ Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/
 \[q_{it}\, U'(c_t) = \beta\, E_t\!\left[U'(c_{t+1})(q_{i,t+1} + d_{i,t+1})\right].\]</div>
 <p>Dividing both sides by <span class="math notranslate nohighlight">\(q_{it}\)</span> and defining the gross return <span class="math notranslate nohighlight">\(r_{it+1} := (q_{i,t+1} + d_{i,t+1})/q_{it}\)</span> yields the stochastic Euler equation:</p>
 <div class="math notranslate nohighlight" id="equation-hs83-foc">
-<span class="eqno">(85.5)<a class="headerlink" href="#equation-hs83-foc" title="Link to this equation">#</a></span>\[U'(c_t) = \beta E_t\!\left[U'(c_{t+1})\, r_{it+1}\right], \quad i = 1, \ldots, N,\]</div>
+<span class="eqno">(86.5)<a class="headerlink" href="#equation-hs83-foc" title="Link to this equation">#</a></span>\[U'(c_t) = \beta E_t\!\left[U'(c_{t+1})\, r_{it+1}\right], \quad i = 1, \ldots, N,\]</div>
 <p>where <span class="math notranslate nohighlight">\(r_{it+1}\)</span> is the gross real return on asset <span class="math notranslate nohighlight">\(i\)</span>.</p>
-<p>Substituting the CRRA marginal utility <span class="math notranslate nohighlight">\(U'(c_t) = c_t^{\gamma-1} = c_t^{\alpha}\)</span> with <span class="math notranslate nohighlight">\(\alpha := \gamma - 1\)</span> into <a class="reference internal" href="#equation-hs83-foc">(85.5)</a> and rearranging gives</p>
+<p>Substituting the CRRA marginal utility <span class="math notranslate nohighlight">\(U'(c_t) = c_t^{\gamma-1} = c_t^{\alpha}\)</span> with <span class="math notranslate nohighlight">\(\alpha := \gamma - 1\)</span> into <a class="reference internal" href="#equation-hs83-foc">(86.5)</a> and rearranging gives</p>
 <div class="math notranslate nohighlight" id="equation-hs83-euler">
-<span class="eqno">(85.6)<a class="headerlink" href="#equation-hs83-euler" title="Link to this equation">#</a></span>\[E_t\!\left[\beta \left(\frac{c_{t+1}}{c_t}\right)^{\alpha} r_{it+1}\right] = 1, \quad i = 1, \ldots, N.\]</div>
+<span class="eqno">(86.6)<a class="headerlink" href="#equation-hs83-euler" title="Link to this equation">#</a></span>\[E_t\!\left[\beta \left(\frac{c_{t+1}}{c_t}\right)^{\alpha} r_{it+1}\right] = 1, \quad i = 1, \ldots, N.\]</div>
 <p>The coefficient of relative risk aversion is <span class="math notranslate nohighlight">\(-\alpha\)</span>.</p>
 </section>
 <section id="the-euler-equation-under-lognormality">
-<h2><a class="toc-backref" href="#id36" role="doc-backlink"><span class="section-number">85.3. </span>The Euler equation under lognormality</a><a class="headerlink" href="#the-euler-equation-under-lognormality" title="Link to this heading">#</a></h2>
-<p>Using the Euler equation <a class="reference internal" href="#equation-hs83-euler">(85.6)</a> derived above, we now impose the distributional assumptions of <span id="id9">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span>.</p>
+<h2><a class="toc-backref" href="#id36" role="doc-backlink"><span class="section-number">86.3. </span>The Euler equation under lognormality</a><a class="headerlink" href="#the-euler-equation-under-lognormality" title="Link to this heading">#</a></h2>
+<p>Using the Euler equation <a class="reference internal" href="#equation-hs83-euler">(86.6)</a> derived above, we now impose the distributional assumptions of <span id="id9">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(x_t = c_t / c_{t-1}\)</span> denote the consumption ratio, and define <span class="math notranslate nohighlight">\(u_{it} = x_t^\alpha r_{it}\)</span> where <span class="math notranslate nohighlight">\(r_{it}\)</span> is the gross real return on asset <span class="math notranslate nohighlight">\(i\)</span>.</p>
-<p>The Euler equation <a class="reference internal" href="#equation-hs83-euler">(85.6)</a> states <span class="math notranslate nohighlight">\(E_{t-1}[u_{it}] = 1/\beta\)</span>.</p>
+<p>The Euler equation <a class="reference internal" href="#equation-hs83-euler">(86.6)</a> states <span class="math notranslate nohighlight">\(E_{t-1}[u_{it}] = 1/\beta\)</span>.</p>
 <p>Define log variables <span class="math notranslate nohighlight">\(X_t = \log x_t\)</span>, <span class="math notranslate nohighlight">\(R_{it} = \log r_{it}\)</span>, and <span class="math notranslate nohighlight">\(U_{it} = \log u_{it}\)</span>, so that</p>
 <div class="math notranslate nohighlight" id="equation-hs83-u-def">
-<span class="eqno">(85.7)<a class="headerlink" href="#equation-hs83-u-def" title="Link to this equation">#</a></span>\[U_{i,t}= \alpha X_{t}+R_{i,t}.\]</div>
+<span class="eqno">(86.7)<a class="headerlink" href="#equation-hs83-u-def" title="Link to this equation">#</a></span>\[U_{i,t}= \alpha X_{t}+R_{i,t}.\]</div>
 <p>Assume the vector process <span class="math notranslate nohighlight">\(\{Y_t\} = \{(X_t, R_{1t}, \ldots, R_{nt})^\top\}\)</span> is jointly stationary and Gaussian.</p>
 <p>Under this assumption, <span class="math notranslate nohighlight">\(U_{it}\)</span> conditional on the information set <span class="math notranslate nohighlight">\(\psi_{t-1}\)</span> is normal with constant variance <span class="math notranslate nohighlight">\(\sigma_i^2\)</span> and a conditional mean <span class="math notranslate nohighlight">\(\mu_{i,t-1}\)</span> that is a linear function of past <span class="math notranslate nohighlight">\(Y\)</span>’s.</p>
 <p>Because <span class="math notranslate nohighlight">\(u_{it} = \exp(U_{it})\)</span> is conditionally lognormal,</p>
 <div class="math notranslate nohighlight" id="equation-hs83-lognormal-identity">
-<span class="eqno">(85.8)<a class="headerlink" href="#equation-hs83-lognormal-identity" title="Link to this equation">#</a></span>\[E_{t-1}[u_{it}] = \exp\left(\mu_{i,t-1} + \tfrac{1}{2}\sigma_i^2\right).\]</div>
+<span class="eqno">(86.8)<a class="headerlink" href="#equation-hs83-lognormal-identity" title="Link to this equation">#</a></span>\[E_{t-1}[u_{it}] = \exp\left(\mu_{i,t-1} + \tfrac{1}{2}\sigma_i^2\right).\]</div>
 <p>Setting <span class="math notranslate nohighlight">\(E_{t-1}[u_{it}] = 1/\beta\)</span> and taking logs gives <span class="math notranslate nohighlight">\(\mu_{i,t-1} + \sigma_i^2/2 = -\log\beta\)</span>.</p>
 <p>Now define the innovation</p>
 <div class="math notranslate nohighlight" id="equation-hs83-v-it">
-<span class="eqno">(85.9)<a class="headerlink" href="#equation-hs83-v-it" title="Link to this equation">#</a></span>\[V_{i,t} := U_{i,t} - \mu_{i,t-1} = \alpha X_{t}+R_{i,t}+\log\beta+\frac{\sigma_i^2}{2},
+<span class="eqno">(86.9)<a class="headerlink" href="#equation-hs83-v-it" title="Link to this equation">#</a></span>\[V_{i,t} := U_{i,t} - \mu_{i,t-1} = \alpha X_{t}+R_{i,t}+\log\beta+\frac{\sigma_i^2}{2},
 \quad i = 1, \ldots, N.\]</div>
 <p>Then <span class="math notranslate nohighlight">\(E_{t-1}[V_{i,t}]=0\)</span>, where <span class="math notranslate nohighlight">\(\sigma_i^2=\operatorname{Var}_{t-1}(\alpha X_t + R_{it})\)</span> is constant under the stationarity and Gaussian assumptions.</p>
 <p>Setting <span class="math notranslate nohighlight">\(E_{t-1}[V_{i,t}] = 0\)</span> gives the conditional mean restriction</p>
 <div class="math notranslate nohighlight" id="equation-hs83-cond-mean">
-<span class="eqno">(85.10)<a class="headerlink" href="#equation-hs83-cond-mean" title="Link to this equation">#</a></span>\[E_{t-1}[R_{i,t}] = -\alpha\, E_{t-1}[X_{t}] - \log\beta - \frac{\sigma_i^2}{2}.\]</div>
-<p>Equation <a class="reference internal" href="#equation-hs83-cond-mean">(85.10)</a> is the central result of <span id="id10">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span>.</p>
+<span class="eqno">(86.10)<a class="headerlink" href="#equation-hs83-cond-mean" title="Link to this equation">#</a></span>\[E_{t-1}[R_{i,t}] = -\alpha\, E_{t-1}[X_{t}] - \log\beta - \frac{\sigma_i^2}{2}.\]</div>
+<p>Equation <a class="reference internal" href="#equation-hs83-cond-mean">(86.10)</a> is the central result of <span id="id10">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span>.</p>
 <p>The predictable component of each asset’s log return is proportional to the predictable component of log consumption growth, with proportionality factor <span class="math notranslate nohighlight">\(-\alpha\)</span>.</p>
 <p>The intercept absorbs the discount factor <span class="math notranslate nohighlight">\(\beta\)</span> and the lognormal variance term <span class="math notranslate nohighlight">\(\sigma_i^2 / 2\)</span>.</p>
-<p>Let’s consider three special cases to better understand the implications of <a class="reference internal" href="#equation-hs83-cond-mean">(85.10)</a>:</p>
+<p>Let’s consider three special cases to better understand the implications of <a class="reference internal" href="#equation-hs83-cond-mean">(86.10)</a>:</p>
 <ul class="simple">
 <li><p>Risk neutrality (<span class="math notranslate nohighlight">\(\alpha = 0\)</span>): Each asset’s log return equals a constant plus a serially uncorrelated error, so returns are serially uncorrelated.</p></li>
 <li><p>Log utility (<span class="math notranslate nohighlight">\(\alpha = -1\)</span>): The difference <span class="math notranslate nohighlight">\(R_{it} - X_t\)</span> has no time-varying predictable component, so returns and consumption growth share the same predictable component.</p></li>
@@ -522,27 +527,27 @@ Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/
 <p>The equity premium puzzle arises because the observed spread is large but estimated <span class="math notranslate nohighlight">\(|\alpha|\)</span> is small as we will see soon in our estimation.</p>
 </section>
 <section id="the-restricted-system-and-its-likelihood">
-<h2><a class="toc-backref" href="#id37" role="doc-backlink"><span class="section-number">85.4. </span>The restricted system and its likelihood</a><a class="headerlink" href="#the-restricted-system-and-its-likelihood" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id37" role="doc-backlink"><span class="section-number">86.4. </span>The restricted system and its likelihood</a><a class="headerlink" href="#the-restricted-system-and-its-likelihood" title="Link to this heading">#</a></h2>
 <p>To build a likelihood, we need to parameterize the conditional expectation <span class="math notranslate nohighlight">\(E_{t-1}[X_t]\)</span>.</p>
 <p>In the single-return case, write <span class="math notranslate nohighlight">\(\mathbf{Y}_t = (X_t, R_t)^\top\)</span> and assume that the predictable component of <span class="math notranslate nohighlight">\(X_t\)</span> is a finite-order linear function of past observations:</p>
 <div class="math notranslate nohighlight" id="equation-hs83-x-forecast">
-<span class="eqno">(85.11)<a class="headerlink" href="#equation-hs83-x-forecast" title="Link to this equation">#</a></span>\[E(X_t\mid\psi_{t-1})=\mathbf{a}(L)^\top \mathbf{Y}_{t-1}+\mu_x,\]</div>
+<span class="eqno">(86.11)<a class="headerlink" href="#equation-hs83-x-forecast" title="Link to this equation">#</a></span>\[E(X_t\mid\psi_{t-1})=\mathbf{a}(L)^\top \mathbf{Y}_{t-1}+\mu_x,\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{a}(L)\)</span> is a vector of lag polynomial coefficients in past <span class="math notranslate nohighlight">\((X, R)\)</span> and <span class="math notranslate nohighlight">\(\mu_x\)</span> is a constant.</p>
 <p>The consumption-growth equation is unrestricted, so <span class="math notranslate nohighlight">\(X_t\)</span> depends freely on its own lags and on lagged returns.</p>
 <p>The return equation, however, is restricted by the Euler equation.</p>
-<p>Combining <a class="reference internal" href="#equation-hs83-cond-mean">(85.10)</a> with <a class="reference internal" href="#equation-hs83-x-forecast">(85.11)</a> forces the predictable part of <span class="math notranslate nohighlight">\(R_t\)</span> to be <span class="math notranslate nohighlight">\(-\alpha\)</span> times the predictable part of <span class="math notranslate nohighlight">\(X_t\)</span>, plus a constant.</p>
+<p>Combining <a class="reference internal" href="#equation-hs83-cond-mean">(86.10)</a> with <a class="reference internal" href="#equation-hs83-x-forecast">(86.11)</a> forces the predictable part of <span class="math notranslate nohighlight">\(R_t\)</span> to be <span class="math notranslate nohighlight">\(-\alpha\)</span> times the predictable part of <span class="math notranslate nohighlight">\(X_t\)</span>, plus a constant.</p>
 <p>This gives the restricted system</p>
 <div class="math notranslate nohighlight" id="equation-hs83-restricted">
-<span class="eqno">(85.12)<a class="headerlink" href="#equation-hs83-restricted" title="Link to this equation">#</a></span>\[\mathbf{A}_0\mathbf{Y}_t=\mathbf{A}_1(L)\mathbf{Y}_{t-1}+\boldsymbol{\mu}+\mathbf{V}_t,\]</div>
+<span class="eqno">(86.12)<a class="headerlink" href="#equation-hs83-restricted" title="Link to this equation">#</a></span>\[\mathbf{A}_0\mathbf{Y}_t=\mathbf{A}_1(L)\mathbf{Y}_{t-1}+\boldsymbol{\mu}+\mathbf{V}_t,\]</div>
 <p>with</p>
 <div class="math notranslate nohighlight" id="equation-hs83-a0a1">
-<span class="eqno">(85.13)<a class="headerlink" href="#equation-hs83-a0a1" title="Link to this equation">#</a></span>\[\begin{split}\mathbf{A}_0=\begin{bmatrix}1&amp;0\\\alpha&amp;1\end{bmatrix},
+<span class="eqno">(86.13)<a class="headerlink" href="#equation-hs83-a0a1" title="Link to this equation">#</a></span>\[\begin{split}\mathbf{A}_0=\begin{bmatrix}1&amp;0\\\alpha&amp;1\end{bmatrix},
 \quad
 \mathbf{A}_1(L)=\begin{bmatrix}\mathbf{a}(L)^\top\\0\end{bmatrix},
 \quad
 \boldsymbol{\mu}=\begin{bmatrix}\mu_x\\-\log\beta-\sigma_U^2/2\end{bmatrix},\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\sigma_U^2 := \operatorname{Var}_{t-1}(\alpha X_t + R_t) = \alpha^2 \sigma_{XX} + \sigma_{RR} + 2\alpha \sigma_{XR}\)</span> under conditional homoskedasticity.</p>
-<p>The sign in the second element of <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> follows directly from <a class="reference internal" href="#equation-hs83-cond-mean">(85.10)</a>.</p>
+<p>The sign in the second element of <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> follows directly from <a class="reference internal" href="#equation-hs83-cond-mean">(86.10)</a>.</p>
 <p>The innovations <span class="math notranslate nohighlight">\(\mathbf{V}_t\)</span> are assumed to be Gaussian with density <span class="math notranslate nohighlight">\(f_V(\mathbf{v})\)</span>.</p>
 <p>Since <span class="math notranslate nohighlight">\(\mathbf{V}_t = \mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu}\)</span>, the observables <span class="math notranslate nohighlight">\(\mathbf{Y}_t\)</span> are a linear transformation of <span class="math notranslate nohighlight">\(\mathbf{V}_t\)</span> with <span class="math notranslate nohighlight">\(\mathbf{Y}_t = \mathbf{A}_0^{-1}(\mathbf{V}_t + \mathbf{A}_1(L)\mathbf{Y}_{t-1} + \boldsymbol{\mu})\)</span>.</p>
 <p>The change-of-variables formula for densities gives</p>
@@ -564,20 +569,20 @@ f_V(\mathbf{v}_t) = (2\pi)^{-1} |\boldsymbol{\Sigma}|^{-1/2} \exp\!\left(-\tfrac
 \]</div>
 <p>Summing over <span class="math notranslate nohighlight">\(T\)</span> observations and dropping the constant <span class="math notranslate nohighlight">\(-T\log(2\pi)\)</span> yields the log-likelihood function</p>
 <div class="math notranslate nohighlight" id="equation-hs83-loglik">
-<span class="eqno">(85.14)<a class="headerlink" href="#equation-hs83-loglik" title="Link to this equation">#</a></span>\[L(\theta) = -\frac{T}{2}\log|\boldsymbol{\Sigma}| - \frac{1}{2}\sum_{t=1}^{T}(\mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu})^\top\boldsymbol{\Sigma}^{-1}(\mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu}),\]</div>
+<span class="eqno">(86.14)<a class="headerlink" href="#equation-hs83-loglik" title="Link to this equation">#</a></span>\[L(\theta) = -\frac{T}{2}\log|\boldsymbol{\Sigma}| - \frac{1}{2}\sum_{t=1}^{T}(\mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu})^\top\boldsymbol{\Sigma}^{-1}(\mathbf{A}_0 \mathbf{Y}_t - \mathbf{A}_1(L)\mathbf{Y}_{t-1} - \boldsymbol{\mu}),\]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> is the covariance matrix of the innovation <span class="math notranslate nohighlight">\(\mathbf{V}_t\)</span> and <span class="math notranslate nohighlight">\(\theta\)</span> collects all free parameters including <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, the covariance parameters, the first-row intercept <span class="math notranslate nohighlight">\(\mu_x\)</span>, and the first-row lag coefficients.</p>
-<p>The restrictions imposed by <a class="reference internal" href="#equation-hs83-euler">(85.6)</a> enter <a class="reference internal" href="#equation-hs83-loglik">(85.14)</a> through the structure of <span class="math notranslate nohighlight">\(\mathbf{A}_0\)</span>, <span class="math notranslate nohighlight">\(\mathbf{A}_1(L)\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> in <a class="reference internal" href="#equation-hs83-a0a1">(85.13)</a>.</p>
-<p>The second row of <a class="reference internal" href="#equation-hs83-restricted">(85.12)</a> has no free lag coefficients and its intercept is determined by <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
-<p>An alternative unrestricted bivariate VAR(<span class="math notranslate nohighlight">\(p\)</span>) would estimate both rows of <a class="reference internal" href="#equation-hs83-restricted">(85.12)</a> freely.</p>
+<p>The restrictions imposed by <a class="reference internal" href="#equation-hs83-euler">(86.6)</a> enter <a class="reference internal" href="#equation-hs83-loglik">(86.14)</a> through the structure of <span class="math notranslate nohighlight">\(\mathbf{A}_0\)</span>, <span class="math notranslate nohighlight">\(\mathbf{A}_1(L)\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{\mu}\)</span> in <a class="reference internal" href="#equation-hs83-a0a1">(86.13)</a>.</p>
+<p>The second row of <a class="reference internal" href="#equation-hs83-restricted">(86.12)</a> has no free lag coefficients and its intercept is determined by <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>.</p>
+<p>An alternative unrestricted bivariate VAR(<span class="math notranslate nohighlight">\(p\)</span>) would estimate both rows of <a class="reference internal" href="#equation-hs83-restricted">(86.12)</a> freely.</p>
 <p>Each row has 1 intercept plus <span class="math notranslate nohighlight">\(2p\)</span> lag coefficients (<span class="math notranslate nohighlight">\(p\)</span> lags <span class="math notranslate nohighlight">\(\times\)</span> 2 variables), giving <span class="math notranslate nohighlight">\(2(1 + 2p)\)</span> mean parameters.</p>
 <p>Adding 3 free covariance parameters (<span class="math notranslate nohighlight">\(\sigma_{XX}, \sigma_{RR}, \sigma_{XR}\)</span>) gives a total of <span class="math notranslate nohighlight">\(5 + 4p\)</span>.</p>
-<p>The restricted system <a class="reference internal" href="#equation-hs83-restricted">(85.12)</a> has only <span class="math notranslate nohighlight">\(6 + 2p\)</span> free parameters: the first row contributes <span class="math notranslate nohighlight">\(1 + 2p\)</span> (its intercept <span class="math notranslate nohighlight">\(\mu_x\)</span> and <span class="math notranslate nohighlight">\(2p\)</span> lag coefficients), plus <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, and the 3 covariance parameters.</p>
-<p>The second row adds nothing because its lag structure and intercept are pinned down by <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> via <a class="reference internal" href="#equation-hs83-cond-mean">(85.10)</a>.</p>
+<p>The restricted system <a class="reference internal" href="#equation-hs83-restricted">(86.12)</a> has only <span class="math notranslate nohighlight">\(6 + 2p\)</span> free parameters: the first row contributes <span class="math notranslate nohighlight">\(1 + 2p\)</span> (its intercept <span class="math notranslate nohighlight">\(\mu_x\)</span> and <span class="math notranslate nohighlight">\(2p\)</span> lag coefficients), plus <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, and the 3 covariance parameters.</p>
+<p>The second row adds nothing because its lag structure and intercept are pinned down by <span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> via <a class="reference internal" href="#equation-hs83-cond-mean">(86.10)</a>.</p>
 <p>The difference <span class="math notranslate nohighlight">\((\smash{5 + 4p}) - (\smash{6 + 2p}) = 2p - 1\)</span> gives the degrees of freedom for the likelihood ratio tests we will perform soon.</p>
 </section>
 <section id="likelihood-implementation">
-<h2><a class="toc-backref" href="#id38" role="doc-backlink"><span class="section-number">85.5. </span>Likelihood implementation</a><a class="headerlink" href="#likelihood-implementation" title="Link to this heading">#</a></h2>
-<p>Now let’s implement the likelihood <a class="reference internal" href="#equation-hs83-loglik">(85.14)</a>.</p>
+<h2><a class="toc-backref" href="#id38" role="doc-backlink"><span class="section-number">86.5. </span>Likelihood implementation</a><a class="headerlink" href="#likelihood-implementation" title="Link to this heading">#</a></h2>
+<p>Now let’s implement the likelihood <a class="reference internal" href="#equation-hs83-loglik">(86.14)</a>.</p>
 <p>The building blocks are:</p>
 <ul class="simple">
 <li><p>a function to construct lagged data matrices <span class="math notranslate nohighlight">\((\mathbf{Y}_t, \mathbf{Y}_{t-1}, \ldots, \mathbf{Y}_{t-p})\)</span>,</p></li>
@@ -1192,7 +1197,7 @@ application.</p>
 </div>
 </div>
 <section id="simulation">
-<h3><span class="section-number">85.5.1. </span>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">86.5.1. </span>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h3>
 <p>Before applying the likelihood to real data, we verify that it recovers known parameters from simulated data generated by the restricted system.</p>
 <p>For <code class="docutils literal notranslate"><span class="pre">n_lags</span> <span class="pre">=</span> <span class="pre">1</span></code>, the parameter vector is</p>
 <div class="math notranslate nohighlight">
@@ -1277,7 +1282,7 @@ application.</p>
 </section>
 </section>
 <section id="preference-parameters-and-likelihood-ratio-tests">
-<h2><a class="toc-backref" href="#id39" role="doc-backlink"><span class="section-number">85.6. </span>Preference parameters and likelihood ratio tests</a><a class="headerlink" href="#preference-parameters-and-likelihood-ratio-tests" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id39" role="doc-backlink"><span class="section-number">86.6. </span>Preference parameters and likelihood ratio tests</a><a class="headerlink" href="#preference-parameters-and-likelihood-ratio-tests" title="Link to this heading">#</a></h2>
 <p>The restricted system embeds preference parameters through cross-equation restrictions.</p>
 <p>The parameter <span class="math notranslate nohighlight">\(\alpha\)</span> links predictable variation in returns to predictable variation in consumption growth.</p>
 <p>Under the model, the return equation’s dependence on lagged variables is entirely determined by <span class="math notranslate nohighlight">\(-\alpha\)</span> times the consumption equation’s lag coefficients.</p>
@@ -1286,7 +1291,7 @@ application.</p>
 <p>If the restrictions imposed by the Euler-equation are correct, the restricted model should fit nearly as well as the unrestricted model.</p>
 <p>The standard test is the likelihood ratio statistic</p>
 <div class="math notranslate nohighlight" id="equation-hs83-lr-test">
-<span class="eqno">(85.15)<a class="headerlink" href="#equation-hs83-lr-test" title="Link to this equation">#</a></span>\[LR = 2(\ell_u - \ell_r) \Rightarrow \chi^2_d,\]</div>
+<span class="eqno">(86.15)<a class="headerlink" href="#equation-hs83-lr-test" title="Link to this equation">#</a></span>\[LR = 2(\ell_u - \ell_r) \Rightarrow \chi^2_d,\]</div>
 <p>where <span class="math notranslate nohighlight">\(\ell_u\)</span> and <span class="math notranslate nohighlight">\(\ell_r\)</span> are the maximized log-likelihoods of the unrestricted and restricted models, and <span class="math notranslate nohighlight">\(d\)</span> is the difference in the number of free parameters.</p>
 <p>Both likelihoods must be evaluated on the same effective sample for the LR distribution to be valid.</p>
 <p><span id="id12">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> report that for the value-weighted aggregate stock return, the <span class="math notranslate nohighlight">\(\chi^2\)</span> test statistics provide little evidence against the model.</p>
@@ -1421,17 +1426,17 @@ application.</p>
 </div>
 </section>
 <section id="predictability-and-the-r-squared-restriction">
-<h2><a class="toc-backref" href="#id40" role="doc-backlink"><span class="section-number">85.7. </span>Predictability and the R-squared restriction</a><a class="headerlink" href="#predictability-and-the-r-squared-restriction" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id40" role="doc-backlink"><span class="section-number">86.7. </span>Predictability and the R-squared restriction</a><a class="headerlink" href="#predictability-and-the-r-squared-restriction" title="Link to this heading">#</a></h2>
 <p>Section II of <span id="id14">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> emphasizes an implication of the restricted system for return predictability.</p>
-<p>From <a class="reference internal" href="#equation-hs83-cond-mean">(85.10)</a> and <a class="reference internal" href="#equation-hs83-x-forecast">(85.11)</a>, the predictable component of the log return is</p>
+<p>From <a class="reference internal" href="#equation-hs83-cond-mean">(86.10)</a> and <a class="reference internal" href="#equation-hs83-x-forecast">(86.11)</a>, the predictable component of the log return is</p>
 <div class="math notranslate nohighlight" id="equation-hs83-predictable-return">
-<span class="eqno">(85.16)<a class="headerlink" href="#equation-hs83-predictable-return" title="Link to this equation">#</a></span>\[E(R_t \mid \psi_{t-1}) = -\alpha\, E(X_t \mid \psi_{t-1}) - \log\beta - \frac{\sigma_U^2}{2}.\]</div>
+<span class="eqno">(86.16)<a class="headerlink" href="#equation-hs83-predictable-return" title="Link to this equation">#</a></span>\[E(R_t \mid \psi_{t-1}) = -\alpha\, E(X_t \mid \psi_{t-1}) - \log\beta - \frac{\sigma_U^2}{2}.\]</div>
 <p>Since the predictable return is a linear function of the predictable consumption growth, the variance of the predictable return component is exactly <span class="math notranslate nohighlight">\(\alpha^2\)</span> times the variance of the predictable consumption-growth component:</p>
 <div class="math notranslate nohighlight" id="equation-hs83-var-pred">
-<span class="eqno">(85.17)<a class="headerlink" href="#equation-hs83-var-pred" title="Link to this equation">#</a></span>\[\operatorname{Var}[E(R_t \mid \psi_{t-1})] = \alpha^2 \operatorname{Var}[E(X_t \mid \psi_{t-1})].\]</div>
+<span class="eqno">(86.17)<a class="headerlink" href="#equation-hs83-var-pred" title="Link to this equation">#</a></span>\[\operatorname{Var}[E(R_t \mid \psi_{t-1})] = \alpha^2 \operatorname{Var}[E(X_t \mid \psi_{t-1})].\]</div>
 <p><span id="id15">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> derive the implied <span class="math notranslate nohighlight">\(R^2\)</span> of the return projection onto <span class="math notranslate nohighlight">\(\psi_{t-1}\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-hs83-r2">
-<span class="eqno">(85.18)<a class="headerlink" href="#equation-hs83-r2" title="Link to this equation">#</a></span>\[R_R^2 = \frac{\alpha^2 \operatorname{Var}[E(X_t \mid \psi_{t-1})]}{\operatorname{Var}(R_t \mid \psi_{t-1}) + \alpha^2 \operatorname{Var}[E(X_t \mid \psi_{t-1})]}.\]</div>
+<span class="eqno">(86.18)<a class="headerlink" href="#equation-hs83-r2" title="Link to this equation">#</a></span>\[R_R^2 = \frac{\alpha^2 \operatorname{Var}[E(X_t \mid \psi_{t-1})]}{\operatorname{Var}(R_t \mid \psi_{t-1}) + \alpha^2 \operatorname{Var}[E(X_t \mid \psi_{t-1})]}.\]</div>
 <p>If <span class="math notranslate nohighlight">\(\alpha = 0\)</span> (risk neutrality), then <span class="math notranslate nohighlight">\(R_R^2 = 0\)</span> and asset returns are unpredictable.</p>
 <p>If <span class="math notranslate nohighlight">\(\alpha = -1\)</span> (log utility), then <span class="math notranslate nohighlight">\(R_t - X_t\)</span> is unpredictable, so returns and consumption growth share the same predictable component.</p>
 <p>More generally, the <span class="math notranslate nohighlight">\(R_R^2\)</span> for returns will be small whenever the variance of the unpredictable return component <span class="math notranslate nohighlight">\(\operatorname{Var}(R_t \mid \psi_{t-1})\)</span> is large relative to the predictable variance, which is the case for stock returns.</p>
@@ -1498,9 +1503,9 @@ application.</p>
 </div>
 </section>
 <section id="return-difference-tests">
-<h2><a class="toc-backref" href="#id41" role="doc-backlink"><span class="section-number">85.8. </span>Return-difference tests</a><a class="headerlink" href="#return-difference-tests" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id41" role="doc-backlink"><span class="section-number">86.8. </span>Return-difference tests</a><a class="headerlink" href="#return-difference-tests" title="Link to this heading">#</a></h2>
 <p><span id="id16">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> also propose tests based on differences in log returns across assets.</p>
-<p>From <a class="reference internal" href="#equation-hs83-cond-mean">(85.10)</a>, the conditional mean of asset <span class="math notranslate nohighlight">\(i\)</span>’s log return is <span class="math notranslate nohighlight">\(E_{t-1}[R_{it}] = -\alpha\, E_{t-1}[X_t] - \log\beta - \sigma_i^2/2\)</span>.</p>
+<p>From <a class="reference internal" href="#equation-hs83-cond-mean">(86.10)</a>, the conditional mean of asset <span class="math notranslate nohighlight">\(i\)</span>’s log return is <span class="math notranslate nohighlight">\(E_{t-1}[R_{it}] = -\alpha\, E_{t-1}[X_t] - \log\beta - \sigma_i^2/2\)</span>.</p>
 <p>The term <span class="math notranslate nohighlight">\(-\alpha\, E_{t-1}[X_t] - \log\beta\)</span> is common to all assets, so it cancels in the difference:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1621,10 +1626,10 @@ E_{t-1}[R_{it} - R_{jt}] = \frac{\sigma_j^2 - \sigma_i^2}{2},
 <p>Large <span class="math notranslate nohighlight">\(p\)</span>-values confirm that return differences are unpredictable in this simulation, exactly as the model predicts when <span class="math notranslate nohighlight">\(\alpha = -1\)</span>.</p>
 </section>
 <section id="empirical-mle-estimation">
-<h2><a class="toc-backref" href="#id42" role="doc-backlink"><span class="section-number">85.9. </span>Empirical MLE estimation</a><a class="headerlink" href="#empirical-mle-estimation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id42" role="doc-backlink"><span class="section-number">86.9. </span>Empirical MLE estimation</a><a class="headerlink" href="#empirical-mle-estimation" title="Link to this heading">#</a></h2>
 <p>We now apply the maximum likelihood estimator of <span id="id18">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> to real data.</p>
 <section id="data">
-<h3><span class="section-number">85.9.1. </span>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">86.9.1. </span>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h3>
 <p>Both this lecture and the companion lecture <a class="reference internal" href="hansen_singleton_1982.html"><span class="doc">Estimating Euler Equations by Generalized Method of Moments</span></a> use the same data construction.</p>
 <p><span id="id19">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id255" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> and <span id="id20">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> use monthly data on real per capita consumption (nondurables) and stock returns from CRSP for the period 1959:2 through 1978:12.</p>
 <p>To align with the paper, we set the default sample to 1959:2–1978:12.</p>
@@ -1746,7 +1751,7 @@ E_{t-1}[R_{it} - R_{jt}] = \frac{\sigma_j^2 - \sigma_i^2}{2},
 </div>
 </section>
 <section id="mle-estimation-and-predictability-summaries">
-<h3><span class="section-number">85.9.2. </span>MLE estimation and predictability summaries<a class="headerlink" href="#mle-estimation-and-predictability-summaries" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">86.9.2. </span>MLE estimation and predictability summaries<a class="headerlink" href="#mle-estimation-and-predictability-summaries" title="Link to this heading">#</a></h3>
 <p>With the data in hand, we can run the MLE estimation and compute the predictability summaries.</p>
 <p>Lognormality makes the MLE tractable when the assumption is correct.</p>
 <p>As <span id="id21">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> stress, however, <span class="math notranslate nohighlight">\(\alpha\)</span> is estimated with relatively large standard errors, and precise inference on risk aversion cannot be expected from aggregate monthly data alone.</p>
@@ -1862,7 +1867,7 @@ E_{t-1}[R_{it} - R_{jt}] = \frac{\sigma_j^2 - \sigma_i^2}{2},
 \end{array}\end{split}\]</div>
 </div>
 </div>
-<p>The column <span class="math notranslate nohighlight">\(\hat\alpha^2 \operatorname{Var}(\hat E[X_t \mid \psi_{t-1}])\)</span> should equal <span class="math notranslate nohighlight">\(\operatorname{Var}(\hat E[R_t \mid \psi_{t-1}])\)</span> if the restriction <a class="reference internal" href="#equation-hs83-var-pred">(85.17)</a> holds.</p>
+<p>The column <span class="math notranslate nohighlight">\(\hat\alpha^2 \operatorname{Var}(\hat E[X_t \mid \psi_{t-1}])\)</span> should equal <span class="math notranslate nohighlight">\(\operatorname{Var}(\hat E[R_t \mid \psi_{t-1}])\)</span> if the restriction <a class="reference internal" href="#equation-hs83-var-pred">(86.17)</a> holds.</p>
 <p>The columns  <span class="math notranslate nohighlight">\(R_X^2\)</span> and <span class="math notranslate nohighlight">\(R_R^2\)</span> match the paper convention of reporting the values from the unrestricted VAR projections.</p>
 <p>In <span id="id23">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span>, <span class="math notranslate nohighlight">\(R_R^2\)</span> is small (<span class="math notranslate nohighlight">\(0.02\)</span> to <span class="math notranslate nohighlight">\(0.06\)</span>) even when <span class="math notranslate nohighlight">\(R_X^2\)</span> is nontrivial: most stock-return variation is unpredictable.</p>
 <p>Our estimates show the same pattern.</p>
@@ -1907,7 +1912,7 @@ E_{t-1}[R_{it} - R_{jt}] = \frac{\sigma_j^2 - \sigma_i^2}{2},
 <p>The LR test does not reject the model for the value-weighted return, consistent with <span id="id24">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span>.</p>
 </section>
 <section id="treasury-bill-estimation">
-<h3><span class="section-number">85.9.3. </span>Treasury bill estimation<a class="headerlink" href="#treasury-bill-estimation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">86.9.3. </span>Treasury bill estimation<a class="headerlink" href="#treasury-bill-estimation" title="Link to this heading">#</a></h3>
 <p>We now repeat the estimation using the 1-month Treasury bill return in place of the stock return.</p>
 <p><span id="id25">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> find that the model is strongly rejected for Treasury bills (Table 4 of their paper).</p>
 <p>Because the nominally risk-free T-bill return is much more predictable than stock returns, the proportionality restriction has more bite, and the LR test has greater power to detect violations</p>
@@ -2097,7 +2102,7 @@ E_{t-1}[R_{it} - R_{jt}] = \frac{\sigma_j^2 - \sigma_i^2}{2},
 </section>
 </section>
 <section id="residual-diagnostics">
-<h2><a class="toc-backref" href="#id43" role="doc-backlink"><span class="section-number">85.10. </span>Residual diagnostics</a><a class="headerlink" href="#residual-diagnostics" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id43" role="doc-backlink"><span class="section-number">86.10. </span>Residual diagnostics</a><a class="headerlink" href="#residual-diagnostics" title="Link to this heading">#</a></h2>
 <p>As a final check, let’s inspect the residual paths, histograms, and diagnostic statistics from the restricted model to assess whether the normality and serial independence assumptions hold.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2133,7 +2138,7 @@ E_{t-1}[R_{it} - R_{jt}] = \frac{\sigma_j^2 - \sigma_i^2}{2},
 <figure class="align-default" id="fig-hs83-residual-diagnostics">
 <img alt="_images/9f851a22423d3ab6a6f07d4cb1cffd35acb1b0da70676e5edde0e16aebe03877.png" src="_images/9f851a22423d3ab6a6f07d4cb1cffd35acb1b0da70676e5edde0e16aebe03877.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 85.1 </span><span class="caption-text">Restricted-model residual diagnostics</span><a class="headerlink" href="#fig-hs83-residual-diagnostics" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 86.1 </span><span class="caption-text">Restricted-model residual diagnostics</span><a class="headerlink" href="#fig-hs83-residual-diagnostics" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -2169,7 +2174,7 @@ consumption &amp; 18.16 &amp; 0.0001 &amp; 1.969 \\return &amp; 13.27 &amp; 0.00
 <p>This motivates the companion lecture <a class="reference internal" href="hansen_singleton_1982.html"><span class="doc">Estimating Euler Equations by Generalized Method of Moments</span></a> where we discuss how GMM avoids the normality assumption.</p>
 </section>
 <section id="connection-to-the-equity-premium-puzzle">
-<h2><a class="toc-backref" href="#id44" role="doc-backlink"><span class="section-number">85.11. </span>Connection to the equity premium puzzle</a><a class="headerlink" href="#connection-to-the-equity-premium-puzzle" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id44" role="doc-backlink"><span class="section-number">86.11. </span>Connection to the equity premium puzzle</a><a class="headerlink" href="#connection-to-the-equity-premium-puzzle" title="Link to this heading">#</a></h2>
 <p>Our estimates reproduce the pattern that <span id="id27">Mehra and Prescott [<a class="reference internal" href="zreferences.html#id218" title="Rajnish Mehra and Edward C Prescott. The equity premium: A puzzle. Journal of Monetary Economics, 15(2):145–161, 1985.">1985</a>]</span> later called  the <strong>equity premium puzzle</strong>.</p>
 <ul class="simple">
 <li><p><em>Low estimated risk aversion:</em> The estimated <span class="math notranslate nohighlight">\(\hat\alpha\)</span> values (and thus risk aversion <span class="math notranslate nohighlight">\(-\hat\alpha\)</span>) from the table above are similar to those in <span id="id28">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id254" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span>, who report <span class="math notranslate nohighlight">\(\hat\alpha\)</span> between <span class="math notranslate nohighlight">\(-0.32\)</span> and <span class="math notranslate nohighlight">\(-1.25\)</span>.</p></li>
@@ -2187,7 +2192,7 @@ consumption &amp; 18.16 &amp; 0.0001 &amp; 1.969 \\return &amp; 13.27 &amp; 0.00
 <p>The same difficulty appears in our estimates: the implied risk aversion <span class="math notranslate nohighlight">\(-\hat\alpha\)</span> is too low to generate a large equity premium.</p>
 </section>
 <section id="another-approach">
-<h2><a class="toc-backref" href="#id45" role="doc-backlink"><span class="section-number">85.12. </span>Another approach</a><a class="headerlink" href="#another-approach" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id45" role="doc-backlink"><span class="section-number">86.12. </span>Another approach</a><a class="headerlink" href="#another-approach" title="Link to this heading">#</a></h2>
 <p>A companion lecture <a class="reference internal" href="hansen_singleton_1982.html"><span class="doc">Estimating Euler Equations by Generalized Method of Moments</span></a> describes a closely related paper in which
 Hansen and Singleton  specified less about the joint  distribution of returns and consumption growth.</p>
 <p>They formulated an incomplete probability model that stops  short of specifying a likelihood function.</p>
@@ -2549,9 +2554,21 @@ Hansen and Singleton  specified less about the joint  distribution of returns an
    51. Job Search VIII: Search with Learning
   </a>
  </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reinforcement Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_q.html">
+   52. Inventory Management via Q-Learning
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   52. Job Search IX: Search with Q-Learning
+   53. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -2563,32 +2580,32 @@ Hansen and Singleton  specified less about the joint  distribution of returns an
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   53. Optimal Savings I: Cake Eating
+   54. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   54. Optimal Savings II: Numerical Cake Eating
+   55. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   55. Optimal Savings III: Stochastic Returns
+   56. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   56. Optimal Savings IV: Time Iteration
+   57. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   57. Optimal Savings V: The Endogenous Grid Method
+   58. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   58. Optimal Savings VI: EGM with JAX
+   59. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -2600,27 +2617,27 @@ Hansen and Singleton  specified less about the joint  distribution of returns an
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   59. The Income Fluctuation Problem I: Discretization and VFI
+   60. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   60. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   61. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   61. The Income Fluctuation Problem III: The Endogenous Grid Method
+   62. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   62. The Income Fluctuation Problem IV: Transient Income Shocks
+   63. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   63. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   64. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -2632,32 +2649,32 @@ Hansen and Singleton  specified less about the joint  distribution of returns an
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   64. LQ Control: Foundations
+   65. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   65. Lagrangian for LQ Control
+   66. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   66. Eliminating Cross Products
+   67. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   67. The Permanent Income Model
+   68. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   68. Permanent Income II: LQ Techniques
+   69. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   69. Production Smoothing via Inventories
+   70. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2669,22 +2686,22 @@ Hansen and Singleton  specified less about the joint  distribution of returns an
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   70. Cass-Koopmans Model
+   71. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   71. Cass-Koopmans Competitive Equilibrium
+   72. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   72. Cass-Koopmans Model with Distorting Taxes
+   73. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   73. Two-Country Model with Distorting Taxes
+   74. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -2696,52 +2713,52 @@ Hansen and Singleton  specified less about the joint  distribution of returns an
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   74. A Lake Model of Employment and Unemployment
+   75. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   75. Lake Model with an Endogenous Job Finding Rate
+   76. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   76. Rational Expectations Equilibrium
+   77. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   77. Stability in Linear Rational Expectations Models
+   78. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   78. Markov Perfect Equilibrium
+   79. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   79. Uncertainty Traps
+   80. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   80. The Aiyagari Model
+   81. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   81. Transitions in an Overlapping Generations Model
+   82. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   82. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   83. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   83. Two Computations to Fund Social Security
+   84. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -2753,47 +2770,47 @@ Hansen and Singleton  specified less about the joint  distribution of returns an
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   84. Asset Pricing: Finite State Models
+   85. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   85. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   86. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   86. Estimating Euler Equations by Generalized Method of Moments
+   87. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="doubts_or_variability.html">
-   87. Doubts or Variability?
+   88. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   88. Competitive Equilibria with Arrow Securities
+   89. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   89. Heterogeneous Beliefs and Bubbles
+   90. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   90. Speculative Behavior with Bayesian Learning
+   91. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   91. Affine Models of Asset Prices
+   92. Affine Models of Asset Prices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="risk_aversion_or_mistaken_beliefs.html">
-   92. Risk Aversion or Mistaken Beliefs?
+   93. Risk Aversion or Mistaken Beliefs?
   </a>
  </li>
 </ul>
@@ -2805,17 +2822,17 @@ Hansen and Singleton  specified less about the joint  distribution of returns an
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   93. Pandas for Panel Data
+   94. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   94. Linear Regression in Python
+   95. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   95. Maximum Likelihood Estimation
+   96. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2827,12 +2844,12 @@ Hansen and Singleton  specified less about the joint  distribution of returns an
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   96. First-Price and Second-Price Auctions
+   97. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   97. Multiple Good Allocation Mechanisms
+   98. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2844,17 +2861,17 @@ Hansen and Singleton  specified less about the joint  distribution of returns an
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   98. Troubleshooting
+   99. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   99. References
+   100. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   100. Execution Statistics
+   101. Execution Statistics
   </a>
  </li>
 </ul>

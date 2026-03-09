@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>92. Risk Aversion or Mistaken Beliefs? &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>93. Risk Aversion or Mistaken Beliefs? &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -77,10 +77,10 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b64b8e0eefe2e4a15043a771a993bad53e77d658" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=300d9cef76b95d0252c8ff6263fc63de943d6f3a" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
     <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
@@ -102,7 +102,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=239405dfbfda750f9038d3ea275d1490a4be841e"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=af25365e6360aeca6ba8101dda3f432eb6b6fa9c"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -124,15 +124,15 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": ["\\operatorname*{argmax}", 0], "argmin": ["\\operatorname*{argmin}", 0]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'risk_aversion_or_mistaken_beliefs';</script>
     <link rel="canonical" href="https://python.quantecon.org/risk_aversion_or_mistaken_beliefs.html" />
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="93. Pandas for Panel Data" href="pandas_panel.html" />
-    <link rel="prev" title="91. Affine Models of Asset Prices" href="affine_risk_prices.html" />
+    <link rel="next" title="94. Pandas for Panel Data" href="pandas_panel.html" />
+    <link rel="prev" title="92. Affine Models of Asset Prices" href="affine_risk_prices.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -165,8 +165,13 @@
   try {
     if (localStorage.setContrast === '1') {
       document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
     }
-  } catch(e) {}
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
 })();
 </script>
 
@@ -199,74 +204,74 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">92.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratios-and-twisted-densities">92.2. Likelihood ratios and twisted densities</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-baseline-model">92.2.1. The baseline model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-likelihood-ratio">92.2.2. The likelihood ratio</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-twisted-density">92.2.3. The twisted density</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relative-entropy">92.2.4. Relative entropy</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-twist">92.2.5. Visualising the twist</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">93.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-ratios-and-twisted-densities">93.2. Likelihood ratios and twisted densities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-baseline-model">93.2.1. The baseline model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-likelihood-ratio">93.2.2. The likelihood ratio</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-twisted-density">93.2.3. The twisted density</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relative-entropy">93.2.4. Relative entropy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-twist">93.2.5. Visualising the twist</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-econometricians-state-space-model">92.3. The econometrician’s state-space model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-dynamics">92.3.1. State dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-econometricians-state-space-model">93.3. The econometrician’s state-space model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-dynamics">93.3.1. State dynamics</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#asset-pricing-with-likelihood-ratios">92.4. Asset pricing with likelihood ratios</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-neutral-rational-expectations-pricing">92.4.1. Risk-neutral rational expectations pricing</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modern-asset-pricing-adding-risk-aversion">92.4.2. Modern asset pricing: adding risk aversion</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-neutral-dynamics">92.4.3. Risk-neutral dynamics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expectation-under-a-twisted-distribution">92.4.4. Expectation under a twisted distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#asset-pricing-with-likelihood-ratios">93.4. Asset pricing with likelihood ratios</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-neutral-rational-expectations-pricing">93.4.1. Risk-neutral rational expectations pricing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modern-asset-pricing-adding-risk-aversion">93.4.2. Modern asset pricing: adding risk aversion</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-neutral-dynamics">93.4.3. Risk-neutral dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expectation-under-a-twisted-distribution">93.4.4. Expectation under a twisted distribution</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-implementation">92.5. Python implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-a-two-factor-model">92.5.1. Example: a two-factor model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yield-curves-across-states">92.5.2. Yield curves across states</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#econometricians-model-vs-risk-neutral-model">92.5.3. Econometrician’s model vs. risk-neutral model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-implementation">93.5. Python implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-a-two-factor-model">93.5.1. Example: a two-factor model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yield-curves-across-states">93.5.2. Yield curves across states</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#econometricians-model-vs-risk-neutral-model">93.5.3. Econometrician’s model vs. risk-neutral model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-identification-challenge">92.6. An identification challenge</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-information-experts-forecasts-pss">92.7. More information: experts’ forecasts (PSS)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pss-framework">92.7.1. The PSS framework</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimation-strategy">92.7.2. Estimation strategy</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-illustration">92.7.3. Numerical illustration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-identification-challenge">93.6. An identification challenge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#more-information-experts-forecasts-pss">93.7. More information: experts’ forecasts (PSS)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pss-framework">93.7.1. The PSS framework</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimation-strategy">93.7.2. Estimation strategy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-illustration">93.7.3. Numerical illustration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rationalizing-rational-expectations">92.8. Rationalizing rational expectations</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-informal-justification">92.8.1. The informal justification</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#good-econometricians">92.8.2. Good econometricians</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rationalizing-rational-expectations">93.8. Rationalizing rational expectations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-informal-justification">93.8.1. The informal justification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#good-econometricians">93.8.2. Good econometricians</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-theory-of-belief-distortions-robust-control">92.9. A theory of belief distortions: robust control</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hansens-dubious-agent">92.9.1. Hansen’s dubious agent</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valuation-under-the-econometricians-model">92.9.2. Valuation under the econometrician’s model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-sequence-problem">92.9.3. The sequence problem</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-discounted-entropy">92.9.4. Why discounted entropy?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy-and-the-likelihood-ratio">92.9.5. Entropy and the likelihood ratio</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outcome-constant-worst-case-distortion">92.9.6. Outcome: constant worst-case distortion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-theory-of-belief-distortions-robust-control">93.9. A theory of belief distortions: robust control</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hansens-dubious-agent">93.9.1. Hansen’s dubious agent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#valuation-under-the-econometricians-model">93.9.2. Valuation under the econometrician’s model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-sequence-problem">93.9.3. The sequence problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-discounted-entropy">93.9.4. Why discounted entropy?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entropy-and-the-likelihood-ratio">93.9.5. Entropy and the likelihood ratio</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#outcome-constant-worst-case-distortion">93.9.6. Outcome: constant worst-case distortion</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tilting-the-entropy-ball">92.10. Tilting the entropy ball</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hansen-and-szokes-more-refined-dubious-agent">92.10.1. Hansen and Szőke’s more refined dubious agent</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concern-about-other-parametric-models">92.10.2. Concern about other parametric models</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concern-about-bigger-long-run-risk">92.10.3. Concern about bigger long-run risk</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-szoke-agents-sequence-problem">92.10.4. The Szőke agent’s sequence problem</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-tilted-entropy-ball">92.10.5. Implementation: tilted entropy ball</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-dependent-entropy-the-key-innovation">92.10.6. State-dependent entropy: the key innovation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#three-probability-twisters">92.10.7. Three probability twisters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tilting-the-entropy-ball">93.10. Tilting the entropy ball</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hansen-and-szokes-more-refined-dubious-agent">93.10.1. Hansen and Szőke’s more refined dubious agent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concern-about-other-parametric-models">93.10.2. Concern about other parametric models</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concern-about-bigger-long-run-risk">93.10.3. Concern about bigger long-run risk</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-szoke-agents-sequence-problem">93.10.4. The Szőke agent’s sequence problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-tilted-entropy-ball">93.10.5. Implementation: tilted entropy ball</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-dependent-entropy-the-key-innovation">93.10.6. State-dependent entropy: the key innovation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#three-probability-twisters">93.10.7. Three probability twisters</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#empirical-challenges-and-model-performances">92.11. Empirical challenges and model performances</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-szokes-model-succeeds">92.11.1. Why Szőke’s model succeeds</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#empirical-challenges-and-model-performances">93.11. Empirical challenges and model performances</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-szokes-model-succeeds">93.11.1. Why Szőke’s model succeeds</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-equation-restrictions-and-estimation">92.12. Cross-equation restrictions and estimation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#szokes-empirical-strategy">92.12.1. Szőke’s empirical strategy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-equation-restrictions-and-estimation">93.12. Cross-equation restrictions and estimation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#szokes-empirical-strategy">93.12.1. Szőke’s empirical strategy</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiplier-preferences">92.13. Multiplier preferences</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#who-cares">92.14. Who cares?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-lectures">92.15. Related lectures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiplier-preferences">93.13. Multiplier preferences</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#who-cares">93.14. Who cares?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-lectures">93.15. Related lectures</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -334,7 +339,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/7b343ce28" class="changelog-hash">7b343ce28</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">21 hours ago</span>
+                                <span class="changelog-time">1 day ago</span>
                                 <span class="changelog-message">Add Tom's two lectures on asset pricing, risk attitudes, and robustness (#823)</span>
                             </li>
                             
@@ -355,9 +360,9 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1><span class="section-number">92. </span>Risk Aversion or Mistaken Beliefs?<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">93. </span>Risk Aversion or Mistaken Beliefs?<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <section id="overview">
-<h2><span class="section-number">92.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture explores how <em>risk aversion</em> and <em>mistaken beliefs</em> are
 confounded in asset pricing data.</p>
 <p>In a rational expectations equilibrium containing a risk-averse representative investor, higher mean returns compensate for higher risks.</p>
@@ -423,43 +428,43 @@ explain puzzling term-structure movements.</p></li>
 </div>
 </section>
 <section id="likelihood-ratios-and-twisted-densities">
-<h2><span class="section-number">92.2. </span>Likelihood ratios and twisted densities<a class="headerlink" href="#likelihood-ratios-and-twisted-densities" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.2. </span>Likelihood ratios and twisted densities<a class="headerlink" href="#likelihood-ratios-and-twisted-densities" title="Link to this heading">#</a></h2>
 <section id="the-baseline-model">
-<h3><span class="section-number">92.2.1. </span>The baseline model<a class="headerlink" href="#the-baseline-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.2.1. </span>The baseline model<a class="headerlink" href="#the-baseline-model" title="Link to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(\varepsilon\)</span> denote a vector of risks to be taken and priced.</p>
 <p>Under the
 econometrician’s probability model, <span class="math notranslate nohighlight">\(\varepsilon\)</span> has a standard multivariate
 normal density:</p>
 <div class="math notranslate nohighlight" id="equation-eq-baseline">
-<span class="eqno">(92.1)<a class="headerlink" href="#equation-eq-baseline" title="Link to this equation">#</a></span>\[\phi(\varepsilon) \propto \exp\!\left(-\frac{1}{2}\,\varepsilon'\varepsilon\right), \qquad \varepsilon \sim \mathcal{N}(0, I)\]</div>
+<span class="eqno">(93.1)<a class="headerlink" href="#equation-eq-baseline" title="Link to this equation">#</a></span>\[\phi(\varepsilon) \propto \exp\!\left(-\frac{1}{2}\,\varepsilon'\varepsilon\right), \qquad \varepsilon \sim \mathcal{N}(0, I)\]</div>
 </section>
 <section id="the-likelihood-ratio">
-<h3><span class="section-number">92.2.2. </span>The likelihood ratio<a class="headerlink" href="#the-likelihood-ratio" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.2.2. </span>The likelihood ratio<a class="headerlink" href="#the-likelihood-ratio" title="Link to this heading">#</a></h3>
 <p>Define a <strong>likelihood ratio</strong></p>
 <div class="math notranslate nohighlight" id="equation-eq-lr">
-<span class="eqno">(92.2)<a class="headerlink" href="#equation-eq-lr" title="Link to this equation">#</a></span>\[m(\varepsilon) = \exp\!\left(-\lambda'\varepsilon - \frac{1}{2}\,\lambda'\lambda\right) \geq 0\]</div>
+<span class="eqno">(93.2)<a class="headerlink" href="#equation-eq-lr" title="Link to this equation">#</a></span>\[m(\varepsilon) = \exp\!\left(-\lambda'\varepsilon - \frac{1}{2}\,\lambda'\lambda\right) \geq 0\]</div>
 <p>which satisfies <span class="math notranslate nohighlight">\(E\, m(\varepsilon) = 1\)</span> when the mathematical expectation <span class="math notranslate nohighlight">\(E\)</span> is taken with respect to the econometrician’s model.</p>
 </section>
 <section id="the-twisted-density">
-<h3><span class="section-number">92.2.3. </span>The twisted density<a class="headerlink" href="#the-twisted-density" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.2.3. </span>The twisted density<a class="headerlink" href="#the-twisted-density" title="Link to this heading">#</a></h3>
 <p>The <strong>twisted density</strong> is</p>
 <div class="math notranslate nohighlight" id="equation-eq-twisted">
-<span class="eqno">(92.3)<a class="headerlink" href="#equation-eq-twisted" title="Link to this equation">#</a></span>\[\hat\phi(\varepsilon) = m(\varepsilon)\,\phi(\varepsilon) \propto \exp\!\left(-\frac{1}{2}(\varepsilon + \lambda)'(\varepsilon + \lambda)\right)\]</div>
+<span class="eqno">(93.3)<a class="headerlink" href="#equation-eq-twisted" title="Link to this equation">#</a></span>\[\hat\phi(\varepsilon) = m(\varepsilon)\,\phi(\varepsilon) \propto \exp\!\left(-\frac{1}{2}(\varepsilon + \lambda)'(\varepsilon + \lambda)\right)\]</div>
 <p>which is a <span class="math notranslate nohighlight">\(\mathcal{N}(-\lambda, I)\)</span> density.</p>
 <p>The likelihood ratio has shifted the mean of <span class="math notranslate nohighlight">\(\varepsilon\)</span> from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(-\lambda\)</span> while preserving the covariance.</p>
 </section>
 <section id="relative-entropy">
-<h3><span class="section-number">92.2.4. </span>Relative entropy<a class="headerlink" href="#relative-entropy" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.2.4. </span>Relative entropy<a class="headerlink" href="#relative-entropy" title="Link to this heading">#</a></h3>
 <p>The <strong>relative entropy</strong> (Kullback–Leibler divergence) of the twisted density
 with respect to the baseline density is</p>
 <div class="math notranslate nohighlight" id="equation-eq-entropy">
-<span class="eqno">(92.4)<a class="headerlink" href="#equation-eq-entropy" title="Link to this equation">#</a></span>\[E\bigl[m(\varepsilon)\log m(\varepsilon)\bigr] = \frac{1}{2}\,\lambda'\lambda\]</div>
+<span class="eqno">(93.4)<a class="headerlink" href="#equation-eq-entropy" title="Link to this equation">#</a></span>\[E\bigl[m(\varepsilon)\log m(\varepsilon)\bigr] = \frac{1}{2}\,\lambda'\lambda\]</div>
 <p>a convenient scalar measure of the statistical distance between the two models.</p>
 <p>The vector <span class="math notranslate nohighlight">\(\lambda\)</span> is the key object.</p>
 <p>Depending on context it represents <em>risk prices</em>, <em>belief distortions</em>, or <em>worst-case mean perturbations</em> under model uncertainty.</p>
 </section>
 <section id="visualising-the-twist">
-<h3><span class="section-number">92.2.5. </span>Visualising the twist<a class="headerlink" href="#visualising-the-twist" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.2.5. </span>Visualising the twist<a class="headerlink" href="#visualising-the-twist" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span> <span class="k">as</span> <span class="n">normal_dist</span>
@@ -509,31 +514,31 @@ with respect to the baseline density is</p>
 </section>
 </section>
 <section id="the-econometricians-state-space-model">
-<h2><span class="section-number">92.3. </span>The econometrician’s state-space model<a class="headerlink" href="#the-econometricians-state-space-model" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.3. </span>The econometrician’s state-space model<a class="headerlink" href="#the-econometricians-state-space-model" title="Link to this heading">#</a></h2>
 <section id="state-dynamics">
-<h3><span class="section-number">92.3.1. </span>State dynamics<a class="headerlink" href="#state-dynamics" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.3.1. </span>State dynamics<a class="headerlink" href="#state-dynamics" title="Link to this heading">#</a></h3>
 <p>The econometrician works with a linear Gaussian state-space system:</p>
 <div class="math notranslate nohighlight" id="equation-eq-state">
-<span class="eqno">(92.5)<a class="headerlink" href="#equation-eq-state" title="Link to this equation">#</a></span>\[x_{t+1} = A\,x_t + C\,\varepsilon_{t+1}\]</div>
+<span class="eqno">(93.5)<a class="headerlink" href="#equation-eq-state" title="Link to this equation">#</a></span>\[x_{t+1} = A\,x_t + C\,\varepsilon_{t+1}\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-obs">
-<span class="eqno">(92.6)<a class="headerlink" href="#equation-eq-obs" title="Link to this equation">#</a></span>\[y_{t+1} = D\,x_t + G\,\varepsilon_{t+1}\]</div>
+<span class="eqno">(93.6)<a class="headerlink" href="#equation-eq-obs" title="Link to this equation">#</a></span>\[y_{t+1} = D\,x_t + G\,\varepsilon_{t+1}\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-shocks">
-<span class="eqno">(92.7)<a class="headerlink" href="#equation-eq-shocks" title="Link to this equation">#</a></span>\[\varepsilon_{t+1} \sim \mathcal{N}(0, I)\]</div>
+<span class="eqno">(93.7)<a class="headerlink" href="#equation-eq-shocks" title="Link to this equation">#</a></span>\[\varepsilon_{t+1} \sim \mathcal{N}(0, I)\]</div>
 <p>where <span class="math notranslate nohighlight">\(y_{t+1}\)</span> collects utility-relevant variables (e.g., consumption growth),
 <span class="math notranslate nohighlight">\(r_t = \bar{r}\,x_t\)</span> is the risk-free one-period interest rate, and
 <span class="math notranslate nohighlight">\(d_t = \bar{d}\,x_t\)</span> is the payout process from an asset.</p>
 <figure class="align-default" id="id16">
 <img alt="_images/fig2_tom.png" src="_images/fig2_tom.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 92.1 </span><span class="caption-text">The econometrician’s model: estimated state dynamics.</span><a class="headerlink" href="#id16" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 93.1 </span><span class="caption-text">The econometrician’s model: estimated state dynamics.</span><a class="headerlink" href="#id16" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 </section>
 <section id="asset-pricing-with-likelihood-ratios">
-<h2><span class="section-number">92.4. </span>Asset pricing with likelihood ratios<a class="headerlink" href="#asset-pricing-with-likelihood-ratios" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.4. </span>Asset pricing with likelihood ratios<a class="headerlink" href="#asset-pricing-with-likelihood-ratios" title="Link to this heading">#</a></h2>
 <section id="risk-neutral-rational-expectations-pricing">
-<h3><span class="section-number">92.4.1. </span>Risk-neutral rational expectations pricing<a class="headerlink" href="#risk-neutral-rational-expectations-pricing" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.4.1. </span>Risk-neutral rational expectations pricing<a class="headerlink" href="#risk-neutral-rational-expectations-pricing" title="Link to this heading">#</a></h3>
 <p>Under rational expectations with a risk-neutral representative investor,
 stock prices satisfy:</p>
 <div class="math notranslate nohighlight">
@@ -543,15 +548,15 @@ p_t = \exp(-r_t)\,E_t(p_{t+1} + d_{t+1})
 <p>The expectations theory of the term structure of interest rates prices a
 zero-coupon risk-free claim to one dollar at time <span class="math notranslate nohighlight">\(t+n\)</span> as:</p>
 <div class="math notranslate nohighlight" id="equation-eq-rn-recursion">
-<span class="eqno">(92.8)<a class="headerlink" href="#equation-eq-rn-recursion" title="Link to this equation">#</a></span>\[p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,E_t\,p_{t+1}(n), \qquad p_t(n) = \exp(B_n\,x_t)\]</div>
+<span class="eqno">(93.8)<a class="headerlink" href="#equation-eq-rn-recursion" title="Link to this equation">#</a></span>\[p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,E_t\,p_{t+1}(n), \qquad p_t(n) = \exp(B_n\,x_t)\]</div>
 <p>These formulas work “pretty well” for conditional means but less well for
 conditional variances — the Shiller <em>volatility puzzles</em>.</p>
 </section>
 <section id="modern-asset-pricing-adding-risk-aversion">
-<h3><span class="section-number">92.4.2. </span>Modern asset pricing: adding risk aversion<a class="headerlink" href="#modern-asset-pricing-adding-risk-aversion" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.4.2. </span>Modern asset pricing: adding risk aversion<a class="headerlink" href="#modern-asset-pricing-adding-risk-aversion" title="Link to this heading">#</a></h3>
 <p>Let the likelihood ratio increment be</p>
 <div class="math notranslate nohighlight" id="equation-eq-sdf-lr">
-<span class="eqno">(92.9)<a class="headerlink" href="#equation-eq-sdf-lr" title="Link to this equation">#</a></span>\[m_{t+1}^\lambda = \exp\!\left(-\lambda_t'\,\varepsilon_{t+1} - \frac{1}{2}\,\lambda_t'\lambda_t\right), \qquad \lambda_t = \lambda\,x_t\]</div>
+<span class="eqno">(93.9)<a class="headerlink" href="#equation-eq-sdf-lr" title="Link to this equation">#</a></span>\[m_{t+1}^\lambda = \exp\!\left(-\lambda_t'\,\varepsilon_{t+1} - \frac{1}{2}\,\lambda_t'\lambda_t\right), \qquad \lambda_t = \lambda\,x_t\]</div>
 <p>with <span class="math notranslate nohighlight">\(E_t\,m_{t+1}^\lambda = 1\)</span> and <span class="math notranslate nohighlight">\(m_{t+1}^\lambda \geq 0\)</span>.</p>
 <p>The likelihood ratio <span class="math notranslate nohighlight">\(m_{t+1}^\lambda\)</span> distorts the conditional distribution
 of <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span> from <span class="math notranslate nohighlight">\(\mathcal{N}(0,I)\)</span> to <span class="math notranslate nohighlight">\(\mathcal{N}(-\lambda\,x_t, I)\)</span>.</p>
@@ -560,21 +565,21 @@ channel through which risk aversion prices risks.</p>
 <p>With this device, <em>modern asset pricing</em> takes the form:</p>
 <p>For stocks (Lucas–Hansen):</p>
 <div class="math notranslate nohighlight" id="equation-eq-stock-lr">
-<span class="eqno">(92.10)<a class="headerlink" href="#equation-eq-stock-lr" title="Link to this equation">#</a></span>\[p_t = \exp(-r_t)\,E_t\bigl(m_{t+1}^\lambda\,(p_{t+1} + d_{t+1})\bigr)\]</div>
+<span class="eqno">(93.10)<a class="headerlink" href="#equation-eq-stock-lr" title="Link to this equation">#</a></span>\[p_t = \exp(-r_t)\,E_t\bigl(m_{t+1}^\lambda\,(p_{t+1} + d_{t+1})\bigr)\]</div>
 <p>For the term structure (Dai–Singleton–Backus–Zin):</p>
 <div class="math notranslate nohighlight" id="equation-eq-ts-lr">
-<span class="eqno">(92.11)<a class="headerlink" href="#equation-eq-ts-lr" title="Link to this equation">#</a></span>\[p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,E_t\bigl(m_{t+1}^\lambda\,p_{t+1}(n)\bigr), \qquad p_t(n) = \exp(B_n\,x_t)\]</div>
+<span class="eqno">(93.11)<a class="headerlink" href="#equation-eq-ts-lr" title="Link to this equation">#</a></span>\[p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,E_t\bigl(m_{t+1}^\lambda\,p_{t+1}(n)\bigr), \qquad p_t(n) = \exp(B_n\,x_t)\]</div>
 </section>
 <section id="risk-neutral-dynamics">
-<h3><span class="section-number">92.4.3. </span>Risk-neutral dynamics<a class="headerlink" href="#risk-neutral-dynamics" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.4.3. </span>Risk-neutral dynamics<a class="headerlink" href="#risk-neutral-dynamics" title="Link to this heading">#</a></h3>
 <p>The risk-neutral representation implies <strong>twisted dynamics</strong>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-rn-dynamics">
-<span class="eqno">(92.12)<a class="headerlink" href="#equation-eq-rn-dynamics" title="Link to this equation">#</a></span>\[x_{t+1} = (A - C\lambda)\,x_t + C\,\tilde\varepsilon_{t+1}, \qquad \tilde\varepsilon_{t+1} \sim \mathcal{N}(0,I)\]</div>
+<span class="eqno">(93.12)<a class="headerlink" href="#equation-eq-rn-dynamics" title="Link to this equation">#</a></span>\[x_{t+1} = (A - C\lambda)\,x_t + C\,\tilde\varepsilon_{t+1}, \qquad \tilde\varepsilon_{t+1} \sim \mathcal{N}(0,I)\]</div>
 <p>The risk-neutral dynamics assert that the shock distribution <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span> has conditional mean <span class="math notranslate nohighlight">\(-\lambda_t\)</span> instead of <span class="math notranslate nohighlight">\(0\)</span>.</p>
 <p>The dependence of <span class="math notranslate nohighlight">\(\lambda_t = \lambda\,x_t\)</span> on the state modifies the dynamics relative to the econometrician’s model.</p>
 </section>
 <section id="expectation-under-a-twisted-distribution">
-<h3><span class="section-number">92.4.4. </span>Expectation under a twisted distribution<a class="headerlink" href="#expectation-under-a-twisted-distribution" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.4.4. </span>Expectation under a twisted distribution<a class="headerlink" href="#expectation-under-a-twisted-distribution" title="Link to this heading">#</a></h3>
 <p>The mathematical expectation of <span class="math notranslate nohighlight">\(y_{t+1}\)</span> under the probability distribution
 twisted by likelihood ratio <span class="math notranslate nohighlight">\(m_{t+1}\)</span> is</p>
 <div class="math notranslate nohighlight">
@@ -592,7 +597,7 @@ risk aversion</strong>.</p>
 </section>
 </section>
 <section id="python-implementation">
-<h2><span class="section-number">92.5. </span>Python implementation<a class="headerlink" href="#python-implementation" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.5. </span>Python implementation<a class="headerlink" href="#python-implementation" title="Link to this heading">#</a></h2>
 <p>We implement the state-space model and its asset pricing implications.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -670,7 +675,7 @@ risk aversion</strong>.</p>
 </div>
 </div>
 <section id="example-a-two-factor-model">
-<h3><span class="section-number">92.5.1. </span>Example: a two-factor model<a class="headerlink" href="#example-a-two-factor-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.5.1. </span>Example: a two-factor model<a class="headerlink" href="#example-a-two-factor-model" title="Link to this heading">#</a></h3>
 <p>We set up a two-factor model with a persistent “level” factor and a
 less persistent “slope” factor, mimicking the U.S. yield curve.</p>
 <div class="cell docutils container">
@@ -708,7 +713,7 @@ Eigenvalues of A_Q: [0.991 0.96 ]
 </div>
 </section>
 <section id="yield-curves-across-states">
-<h3><span class="section-number">92.5.2. </span>Yield curves across states<a class="headerlink" href="#yield-curves-across-states" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.5.2. </span>Yield curves across states<a class="headerlink" href="#yield-curves-across-states" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_max</span> <span class="o">=</span> <span class="mi">120</span>
@@ -740,7 +745,7 @@ Eigenvalues of A_Q: [0.991 0.96 ]
 </div>
 </section>
 <section id="econometricians-model-vs-risk-neutral-model">
-<h3><span class="section-number">92.5.3. </span>Econometrician’s model vs. risk-neutral model<a class="headerlink" href="#econometricians-model-vs-risk-neutral-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.5.3. </span>Econometrician’s model vs. risk-neutral model<a class="headerlink" href="#econometricians-model-vs-risk-neutral-model" title="Link to this heading">#</a></h3>
 <p>A key implication is that the risk-neutral dynamics
 <span class="math notranslate nohighlight">\(x_{t+1} = (A - C\Lambda)\,x_t + C\,\tilde\varepsilon_{t+1}\)</span>
 differ from the econometrician’s dynamics <span class="math notranslate nohighlight">\(x_{t+1} = A\,x_t + C\,\varepsilon_{t+1}\)</span>.</p>
@@ -801,14 +806,14 @@ Eigenvalues of A_Q: [0.991 0.96 ]
 </section>
 </section>
 <section id="an-identification-challenge">
-<h2><span class="section-number">92.6. </span>An identification challenge<a class="headerlink" href="#an-identification-challenge" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.6. </span>An identification challenge<a class="headerlink" href="#an-identification-challenge" title="Link to this heading">#</a></h2>
 <p>The vector <span class="math notranslate nohighlight">\(\lambda_t\)</span> can be interpreted as either:</p>
 <ul class="simple">
 <li><p>a <strong>risk price vector</strong> expressing the representative agent’s risk aversion, or</p></li>
 <li><p>the representative agent’s <strong>belief distortion</strong> relative to the econometrician’s
 model.</p></li>
 </ul>
-<p>The asset pricing formulas <a class="reference internal" href="#equation-eq-stock-lr">(92.10)</a>–<a class="reference internal" href="#equation-eq-ts-lr">(92.11)</a> are identical under both
+<p>The asset pricing formulas <a class="reference internal" href="#equation-eq-stock-lr">(93.10)</a>–<a class="reference internal" href="#equation-eq-ts-lr">(93.11)</a> are identical under both
 interpretations, and so are the econometric fits.</p>
 <blockquote>
 <div><p>Relative to the model of a risk-averse representative investor with rational
@@ -854,9 +859,9 @@ beliefs produces <em>observationally equivalent</em> predictions.</p>
 <p>Without additional information (e.g., surveys of forecasters), we cannot tell them apart from asset price data alone.</p>
 </section>
 <section id="more-information-experts-forecasts-pss">
-<h2><span class="section-number">92.7. </span>More information: experts’ forecasts (PSS)<a class="headerlink" href="#more-information-experts-forecasts-pss" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.7. </span>More information: experts’ forecasts (PSS)<a class="headerlink" href="#more-information-experts-forecasts-pss" title="Link to this heading">#</a></h2>
 <section id="the-pss-framework">
-<h3><span class="section-number">92.7.1. </span>The PSS framework<a class="headerlink" href="#the-pss-framework" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.7.1. </span>The PSS framework<a class="headerlink" href="#the-pss-framework" title="Link to this heading">#</a></h3>
 <p><span id="id10">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id306" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span> (henceforth PSS) exploit data on
 professional forecasters’ expectations to decompose the likelihood ratio
 into risk prices and belief distortions. Their setup posits:</p>
@@ -870,7 +875,7 @@ survey questions about their forecasts.</p></li>
 </ul>
 </section>
 <section id="estimation-strategy">
-<h3><span class="section-number">92.7.2. </span>Estimation strategy<a class="headerlink" href="#estimation-strategy" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.7.2. </span>Estimation strategy<a class="headerlink" href="#estimation-strategy" title="Link to this heading">#</a></h3>
 <p>PSS proceed in four steps:</p>
 <ol class="arabic simple">
 <li><p>Use data <span class="math notranslate nohighlight">\(\{x_t\}_{t=0}^T\)</span> to estimate the econometrician’s model <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(C\)</span>.</p></li>
@@ -895,7 +900,7 @@ econometrician’s.</p></li>
 </ul>
 </section>
 <section id="numerical-illustration">
-<h3><span class="section-number">92.7.3. </span>Numerical illustration<a class="headerlink" href="#numerical-illustration" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.7.3. </span>Numerical illustration<a class="headerlink" href="#numerical-illustration" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_econ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.97</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.03</span><span class="p">],</span>
@@ -977,9 +982,9 @@ True risk prices Λ*:
 </section>
 </section>
 <section id="rationalizing-rational-expectations">
-<h2><span class="section-number">92.8. </span>Rationalizing rational expectations<a class="headerlink" href="#rationalizing-rational-expectations" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.8. </span>Rationalizing rational expectations<a class="headerlink" href="#rationalizing-rational-expectations" title="Link to this heading">#</a></h2>
 <section id="the-informal-justification">
-<h3><span class="section-number">92.8.1. </span>The informal justification<a class="headerlink" href="#the-informal-justification" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.8.1. </span>The informal justification<a class="headerlink" href="#the-informal-justification" title="Link to this heading">#</a></h3>
 <p>The standard justification for rational expectations treats it as the outcome of learning from an infinite history: least-squares learning converges to rational expectations.</p>
 <p>The argument requires that:</p>
 <ul class="simple">
@@ -990,7 +995,7 @@ True risk prices Λ*:
 <p>However, long intertemporal dependencies make <em>rates of convergence slow</em>.</p>
 </section>
 <section id="good-econometricians">
-<h3><span class="section-number">92.8.2. </span>Good econometricians<a class="headerlink" href="#good-econometricians" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.8.2. </span>Good econometricians<a class="headerlink" href="#good-econometricians" title="Link to this heading">#</a></h3>
 <p>Good econometricians have limited data and only hunches about functional forms.</p>
 <p>They fear that their fitted models are incorrect.</p>
 <p>An agent who is like a good econometrician:</p>
@@ -1005,9 +1010,9 @@ and history dependencies,</p></li>
 </section>
 </section>
 <section id="a-theory-of-belief-distortions-robust-control">
-<h2><span class="section-number">92.9. </span>A theory of belief distortions: robust control<a class="headerlink" href="#a-theory-of-belief-distortions-robust-control" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.9. </span>A theory of belief distortions: robust control<a class="headerlink" href="#a-theory-of-belief-distortions-robust-control" title="Link to this heading">#</a></h2>
 <section id="hansens-dubious-agent">
-<h3><span class="section-number">92.9.1. </span>Hansen’s dubious agent<a class="headerlink" href="#hansens-dubious-agent" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.9.1. </span>Hansen’s dubious agent<a class="headerlink" href="#hansens-dubious-agent" title="Link to this heading">#</a></h3>
 <p>Inspired by robust control theory, consider a dubious investor who:</p>
 <ul class="simple">
 <li><p>shares the econometrician’s model <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(C\)</span>, <span class="math notranslate nohighlight">\(D\)</span>, <span class="math notranslate nohighlight">\(G\)</span>,</p></li>
@@ -1018,7 +1023,7 @@ entropy ball</strong> of size <span class="math notranslate nohighlight">\(\eta\
 </ul>
 </section>
 <section id="valuation-under-the-econometricians-model">
-<h3><span class="section-number">92.9.2. </span>Valuation under the econometrician’s model<a class="headerlink" href="#valuation-under-the-econometricians-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.9.2. </span>Valuation under the econometrician’s model<a class="headerlink" href="#valuation-under-the-econometricians-model" title="Link to this heading">#</a></h3>
 <p>Taking the log consumption process to be linear Gaussian with shocks
 <span class="math notranslate nohighlight">\(\varepsilon_{t+1} \sim \mathcal{N}(0,I)\)</span>:</p>
 <div class="math notranslate nohighlight">
@@ -1032,10 +1037,10 @@ V(x_0, c_0) := E\!\left[\sum_{t=0}^{\infty} \beta^t\,c_t \;\middle|\; x_0, c_0\r
 \]</div>
 </section>
 <section id="the-sequence-problem">
-<h3><span class="section-number">92.9.3. </span>The sequence problem<a class="headerlink" href="#the-sequence-problem" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.9.3. </span>The sequence problem<a class="headerlink" href="#the-sequence-problem" title="Link to this heading">#</a></h3>
 <p>The dubious agent solves:</p>
 <div class="math notranslate nohighlight" id="equation-eq-hansen-seq">
-<span class="eqno">(92.13)<a class="headerlink" href="#equation-eq-hansen-seq" title="Link to this equation">#</a></span>\[J(x_0, c_0 \mid \eta) := \min_{\{m_{t+1}\}} E\!\left[\sum_{t=0}^{\infty} \beta^t\,M_t\,c_t \;\middle|\; x_0, c_0\right]\]</div>
+<span class="eqno">(93.13)<a class="headerlink" href="#equation-eq-hansen-seq" title="Link to this equation">#</a></span>\[J(x_0, c_0 \mid \eta) := \min_{\{m_{t+1}\}} E\!\left[\sum_{t=0}^{\infty} \beta^t\,M_t\,c_t \;\middle|\; x_0, c_0\right]\]</div>
 <p>subject to</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1053,17 +1058,17 @@ M_{t+1} = M_t\,m_{t+1}, \qquad E[m_{t+1} \mid x_t, c_t] = 1, \qquad M_0 = 1
 <figure class="align-default" id="id17">
 <img alt="_images/eggs_backus.png" src="_images/eggs_backus.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 92.2 </span><span class="caption-text">Discounted entropy ball around the econometrician’s model.</span><a class="headerlink" href="#id17" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 93.2 </span><span class="caption-text">Discounted entropy ball around the econometrician’s model.</span><a class="headerlink" href="#id17" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="why-discounted-entropy">
-<h3><span class="section-number">92.9.4. </span>Why discounted entropy?<a class="headerlink" href="#why-discounted-entropy" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.9.4. </span>Why discounted entropy?<a class="headerlink" href="#why-discounted-entropy" title="Link to this heading">#</a></h3>
 <p>Discounted entropy includes models that undiscounted entropy excludes.</p>
 <p>Undiscounted entropy over infinite sequences excludes many models that are very difficult to distinguish from the econometrician’s model with limited data, because undiscounted entropy includes only models that share laws of large numbers.</p>
 </section>
 <section id="entropy-and-the-likelihood-ratio">
-<h3><span class="section-number">92.9.5. </span>Entropy and the likelihood ratio<a class="headerlink" href="#entropy-and-the-likelihood-ratio" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.9.5. </span>Entropy and the likelihood ratio<a class="headerlink" href="#entropy-and-the-likelihood-ratio" title="Link to this heading">#</a></h3>
 <p>With the log-normal likelihood ratio</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1074,9 +1079,9 @@ m_{t+1} := \exp\!\left(-\frac{w_t' w_t}{2} - w_t'\,\varepsilon_{t+1}\right)
 \[
 E\!\left[m_{t+1}\log m_{t+1} \;\middle|\; x_t, c_t\right] = \frac{1}{2}\,w_t' w_t
 \]</div>
-<p>Substituting into <a class="reference internal" href="#equation-eq-hansen-seq">(92.13)</a> yields the reformulated problem:</p>
+<p>Substituting into <a class="reference internal" href="#equation-eq-hansen-seq">(93.13)</a> yields the reformulated problem:</p>
 <div class="math notranslate nohighlight" id="equation-eq-hansen-reform">
-<span class="eqno">(92.14)<a class="headerlink" href="#equation-eq-hansen-reform" title="Link to this equation">#</a></span>\[J(x_0, c_0 \mid \eta) := \min_{\{w_t\}} E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,c_t \;\middle|\; x_0, c_0\right]\]</div>
+<span class="eqno">(93.14)<a class="headerlink" href="#equation-eq-hansen-reform" title="Link to this equation">#</a></span>\[J(x_0, c_0 \mid \eta) := \min_{\{w_t\}} E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,c_t \;\middle|\; x_0, c_0\right]\]</div>
 <p>subject to</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1088,7 +1093,7 @@ c_{t+1} - c_t = D\,x_t + G\,(\tilde\varepsilon_{t+1} - w_t), \qquad x_{t+1} = A\
 \]</div>
 </section>
 <section id="outcome-constant-worst-case-distortion">
-<h3><span class="section-number">92.9.6. </span>Outcome: constant worst-case distortion<a class="headerlink" href="#outcome-constant-worst-case-distortion" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.9.6. </span>Outcome: constant worst-case distortion<a class="headerlink" href="#outcome-constant-worst-case-distortion" title="Link to this heading">#</a></h3>
 <p>The worst-case mean distortion turns out to be a <em>constant vector</em>:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1133,9 +1138,9 @@ w_t = \bar{w}
 </section>
 </section>
 <section id="tilting-the-entropy-ball">
-<h2><span class="section-number">92.10. </span>Tilting the entropy ball<a class="headerlink" href="#tilting-the-entropy-ball" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.10. </span>Tilting the entropy ball<a class="headerlink" href="#tilting-the-entropy-ball" title="Link to this heading">#</a></h2>
 <section id="hansen-and-szokes-more-refined-dubious-agent">
-<h3><span class="section-number">92.10.1. </span>Hansen and Szőke’s more refined dubious agent<a class="headerlink" href="#hansen-and-szokes-more-refined-dubious-agent" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.10.1. </span>Hansen and Szőke’s more refined dubious agent<a class="headerlink" href="#hansen-and-szokes-more-refined-dubious-agent" title="Link to this heading">#</a></h3>
 <p>To generate <em>state-dependent</em> uncertainty prices, Hansen and Szőke introduce a
 more refined dubious agent who:</p>
 <ul class="simple">
@@ -1150,7 +1155,7 @@ which affects the worst-case model in a way that can produce countercyclical
 uncertainty prices.</p>
 </section>
 <section id="concern-about-other-parametric-models">
-<h3><span class="section-number">92.10.2. </span>Concern about other parametric models<a class="headerlink" href="#concern-about-other-parametric-models" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.10.2. </span>Concern about other parametric models<a class="headerlink" href="#concern-about-other-parametric-models" title="Link to this heading">#</a></h3>
 <p>The investor wants to include particular alternative models with</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1163,12 +1168,12 @@ E^{\bar{w}}\!\left[\sum_{t=0}^{\infty} \beta^t\,\xi(x_t) \;\middle|\; x_0, c_0\r
 \]</div>
 <p>This is accomplished by replacing the earlier entropy constraint with</p>
 <div class="math notranslate nohighlight" id="equation-eq-tilted-constraint">
-<span class="eqno">(92.15)<a class="headerlink" href="#equation-eq-tilted-constraint" title="Link to this equation">#</a></span>\[\frac{1}{2}\,E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,w_t' w_t \;\middle|\; x_0, c_0\right] \leq E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,\xi(x_t) \;\middle|\; x_0, c_0\right]\]</div>
-<p>The time-<span class="math notranslate nohighlight">\(t\)</span> contributions to the right-hand side of <a class="reference internal" href="#equation-eq-tilted-constraint">(92.15)</a> relax the discounted entropy constraint in states <span class="math notranslate nohighlight">\(x_t\)</span> in which <span class="math notranslate nohighlight">\(\xi(x_t)\)</span> is larger.</p>
+<span class="eqno">(93.15)<a class="headerlink" href="#equation-eq-tilted-constraint" title="Link to this equation">#</a></span>\[\frac{1}{2}\,E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,w_t' w_t \;\middle|\; x_0, c_0\right] \leq E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,\xi(x_t) \;\middle|\; x_0, c_0\right]\]</div>
+<p>The time-<span class="math notranslate nohighlight">\(t\)</span> contributions to the right-hand side of <a class="reference internal" href="#equation-eq-tilted-constraint">(93.15)</a> relax the discounted entropy constraint in states <span class="math notranslate nohighlight">\(x_t\)</span> in which <span class="math notranslate nohighlight">\(\xi(x_t)\)</span> is larger.</p>
 <p>This sets the stage for <em>state-dependent</em> mean distortions in the worst-case model.</p>
 </section>
 <section id="concern-about-bigger-long-run-risk">
-<h3><span class="section-number">92.10.3. </span>Concern about bigger long-run risk<a class="headerlink" href="#concern-about-bigger-long-run-risk" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.10.3. </span>Concern about bigger long-run risk<a class="headerlink" href="#concern-about-bigger-long-run-risk" title="Link to this heading">#</a></h3>
 <p>Inspired by <span id="id11">Bansal and Yaron [<a class="reference internal" href="zreferences.html#id238" title="Ravi Bansal and Amir Yaron. Risks for the Long Run: A Potential Resolution of Asset Pricing Puzzles. Journal of Finance, 59(4):1481-1509, 08 2004. URL: https://ideas.repec.org/a/bla/jfinan/v59y2004i4p1481-1509.html, doi:.">2004</a>]</span>, an agent fears particular long-run risks
 expressed by</p>
 <div class="math notranslate nohighlight">
@@ -1182,19 +1187,19 @@ x_{t+1} = \bar{A}\,x_t + C\,\tilde\varepsilon_{t+1}
 \]</div>
 <p>which implies a <em>quadratic</em> <span class="math notranslate nohighlight">\(\xi\)</span> function:</p>
 <div class="math notranslate nohighlight" id="equation-eq-xi">
-<span class="eqno">(92.16)<a class="headerlink" href="#equation-eq-xi" title="Link to this equation">#</a></span>\[\xi(x_t) := x_t'\,\bar{w}'\bar{w}\,x_t =: x_t'\,\Xi\,x_t\]</div>
+<span class="eqno">(93.16)<a class="headerlink" href="#equation-eq-xi" title="Link to this equation">#</a></span>\[\xi(x_t) := x_t'\,\bar{w}'\bar{w}\,x_t =: x_t'\,\Xi\,x_t\]</div>
 <figure class="align-default" id="id18">
 <img alt="_images/eggs_backus2.png" src="_images/eggs_backus2.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 92.3 </span><span class="caption-text">Tilted discounted entropy balls. Including particular parametric alternatives with more long-run risk tilts the entropy ball and generates state-dependent worst-case distortions.</span><a class="headerlink" href="#id18" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 93.3 </span><span class="caption-text">Tilted discounted entropy balls. Including particular parametric alternatives with more long-run risk tilts the entropy ball and generates state-dependent worst-case distortions.</span><a class="headerlink" href="#id18" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="the-szoke-agents-sequence-problem">
-<h3><span class="section-number">92.10.4. </span>The Szőke agent’s sequence problem<a class="headerlink" href="#the-szoke-agents-sequence-problem" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.10.4. </span>The Szőke agent’s sequence problem<a class="headerlink" href="#the-szoke-agents-sequence-problem" title="Link to this heading">#</a></h3>
 <p>The resulting linear-quadratic problem is:</p>
 <div class="math notranslate nohighlight" id="equation-eq-szoke-seq">
-<span class="eqno">(92.17)<a class="headerlink" href="#equation-eq-szoke-seq" title="Link to this equation">#</a></span>\[J(x_0, c_0 \mid \Xi) := \max_{\tilde\theta \geq 0}\;\min_{\{w_t\}}\; E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,c_t + \tilde\theta\,\frac{1}{2}\sum_{t=0}^{\infty} \beta^t\bigl(w_t' w_t - x_t'\,\Xi\,x_t\bigr) \;\middle|\; x_0, c_0\right]\]</div>
+<span class="eqno">(93.17)<a class="headerlink" href="#equation-eq-szoke-seq" title="Link to this equation">#</a></span>\[J(x_0, c_0 \mid \Xi) := \max_{\tilde\theta \geq 0}\;\min_{\{w_t\}}\; E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,c_t + \tilde\theta\,\frac{1}{2}\sum_{t=0}^{\infty} \beta^t\bigl(w_t' w_t - x_t'\,\Xi\,x_t\bigr) \;\middle|\; x_0, c_0\right]\]</div>
 <p>subject to</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1212,7 +1217,7 @@ c_{t+1} - c_t = D\,x_t + G\,(\tilde\varepsilon_{t+1} - w_t), \qquad x_{t+1} = A\
 \]</div>
 </section>
 <section id="implementation-tilted-entropy-ball">
-<h3><span class="section-number">92.10.5. </span>Implementation: tilted entropy ball<a class="headerlink" href="#implementation-tilted-entropy-ball" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.10.5. </span>Implementation: tilted entropy ball<a class="headerlink" href="#implementation-tilted-entropy-ball" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">TiltedEntropyModel</span><span class="p">:</span>
@@ -1330,7 +1335,7 @@ Eigenvalues of A_tilde: [0.9863 0.9176]
 </div>
 </section>
 <section id="state-dependent-entropy-the-key-innovation">
-<h3><span class="section-number">92.10.6. </span>State-dependent entropy: the key innovation<a class="headerlink" href="#state-dependent-entropy-the-key-innovation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.10.6. </span>State-dependent entropy: the key innovation<a class="headerlink" href="#state-dependent-entropy-the-key-innovation" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
@@ -1366,7 +1371,7 @@ Eigenvalues of A_tilde: [0.9863 0.9176]
 <p>The Szőke parabola lies inside the feared model’s entropy budget <span class="math notranslate nohighlight">\(\frac{1}{2}\xi(x_t)\)</span>, confirming the worst-case distortion respects the tilted entropy constraint.</p>
 </section>
 <section id="three-probability-twisters">
-<h3><span class="section-number">92.10.7. </span>Three probability twisters<a class="headerlink" href="#three-probability-twisters" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.10.7. </span>Three probability twisters<a class="headerlink" href="#three-probability-twisters" title="Link to this heading">#</a></h3>
 <p>To summarize, three distinct probability twisters play roles in this analysis:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -1429,11 +1434,11 @@ Eigenvalues of A_tilde: [0.9863 0.9176]
 </section>
 </section>
 <section id="empirical-challenges-and-model-performances">
-<h2><span class="section-number">92.11. </span>Empirical challenges and model performances<a class="headerlink" href="#empirical-challenges-and-model-performances" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.11. </span>Empirical challenges and model performances<a class="headerlink" href="#empirical-challenges-and-model-performances" title="Link to this heading">#</a></h2>
 <figure class="align-default" id="id19">
 <img alt="_images/fig1_tom.png" src="_images/fig1_tom.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 92.4 </span><span class="caption-text">U.S. term structure of interest rates.</span><a class="headerlink" href="#id19" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 93.4 </span><span class="caption-text">U.S. term structure of interest rates.</span><a class="headerlink" href="#id19" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>Several recognised patterns characterise the U.S. term structure:</p>
@@ -1481,7 +1486,7 @@ must <em>depend on volatile state variables</em>.</p></li>
 </table>
 </div>
 <section id="why-szokes-model-succeeds">
-<h3><span class="section-number">92.11.1. </span>Why Szőke’s model succeeds<a class="headerlink" href="#why-szokes-model-succeeds" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.11.1. </span>Why Szőke’s model succeeds<a class="headerlink" href="#why-szokes-model-succeeds" title="Link to this heading">#</a></h3>
 <p>Szőke’s framework delivers:</p>
 <ol class="arabic simple">
 <li><p>A theory of <em>state-dependent belief distortions</em> <span class="math notranslate nohighlight">\(\tilde{w}_t = \tilde{w}\,x_t\)</span>.</p></li>
@@ -1528,7 +1533,7 @@ econometrician’s model.</p></li>
 </section>
 </section>
 <section id="cross-equation-restrictions-and-estimation">
-<h2><span class="section-number">92.12. </span>Cross-equation restrictions and estimation<a class="headerlink" href="#cross-equation-restrictions-and-estimation" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.12. </span>Cross-equation restrictions and estimation<a class="headerlink" href="#cross-equation-restrictions-and-estimation" title="Link to this heading">#</a></h2>
 <p>A key appeal of the robust control approach is that it lets us deviate from
 rational expectations while still preserving a set of powerful <strong>cross-equation
 restrictions</strong> on decision makers’ beliefs.</p>
@@ -1543,7 +1548,7 @@ decision maker’s best response to a worst-case model instead of to the
 econometrician’s model.</p>
 </div></blockquote>
 <section id="szokes-empirical-strategy">
-<h3><span class="section-number">92.12.1. </span>Szőke’s empirical strategy<a class="headerlink" href="#szokes-empirical-strategy" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">93.12.1. </span>Szőke’s empirical strategy<a class="headerlink" href="#szokes-empirical-strategy" title="Link to this heading">#</a></h3>
 <p><strong>Stage I: Estimation</strong></p>
 <ol class="arabic simple">
 <li><p>Use <span class="math notranslate nohighlight">\(\{x_t, c_t\}_{t=0}^T\)</span> to estimate the econometrician’s <span class="math notranslate nohighlight">\(A\)</span>, <span class="math notranslate nohighlight">\(C\)</span>, <span class="math notranslate nohighlight">\(D\)</span>, <span class="math notranslate nohighlight">\(G\)</span>.</p></li>
@@ -1610,10 +1615,10 @@ Worst-case model is closer to the econometrician&#39;s model.
 </section>
 </section>
 <section id="multiplier-preferences">
-<h2><span class="section-number">92.13. </span>Multiplier preferences<a class="headerlink" href="#multiplier-preferences" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.13. </span>Multiplier preferences<a class="headerlink" href="#multiplier-preferences" title="Link to this heading">#</a></h2>
 <p>The <strong>multiplier preference</strong> version of the dubious agent’s problem is:</p>
 <div class="math notranslate nohighlight" id="equation-eq-mult-seq">
-<span class="eqno">(92.18)<a class="headerlink" href="#equation-eq-mult-seq" title="Link to this equation">#</a></span>\[W(x_0, c_0 \mid \theta) := \min_{\{m_{t+1}\}} E\!\left[\sum_{t=0}^{\infty} \beta^t\,M_t\bigl(c_t + \theta\,m_{t+1}\log m_{t+1}\bigr) \;\middle|\; x_0, c_0\right]\]</div>
+<span class="eqno">(93.18)<a class="headerlink" href="#equation-eq-mult-seq" title="Link to this equation">#</a></span>\[W(x_0, c_0 \mid \theta) := \min_{\{m_{t+1}\}} E\!\left[\sum_{t=0}^{\infty} \beta^t\,M_t\bigl(c_t + \theta\,m_{t+1}\log m_{t+1}\bigr) \;\middle|\; x_0, c_0\right]\]</div>
 <p>with <span class="math notranslate nohighlight">\(M_{t+1} = M_t\,m_{t+1}\)</span>, <span class="math notranslate nohighlight">\(E[m_{t+1} \mid x_t, c_t] = 1\)</span>, <span class="math notranslate nohighlight">\(M_0 = 1\)</span>.</p>
 <p>The recursive formulation is:</p>
 <div class="math notranslate nohighlight">
@@ -1685,7 +1690,7 @@ W(x_t, c_t \mid \tilde\theta) = J(x_t, c_t \mid \eta) + \tilde\theta\,\eta
 <p>As <span class="math notranslate nohighlight">\(\theta\)</span> shrinks, the operator places more weight on bad outcomes, reflecting greater concern about model misspecification.</p>
 </section>
 <section id="who-cares">
-<h2><span class="section-number">92.14. </span>Who cares?<a class="headerlink" href="#who-cares" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.14. </span>Who cares?<a class="headerlink" href="#who-cares" title="Link to this heading">#</a></h2>
 <p>Joint probability distributions of interest rates and macroeconomic shocks are
 important throughout macroeconomics:</p>
 <ul class="simple">
@@ -1708,7 +1713,7 @@ beliefs, or fears of model misspecification — and quantifying each component �
 is interesting for both positive and normative macroeconomics.</p>
 </section>
 <section id="related-lectures">
-<h2><span class="section-number">92.15. </span>Related lectures<a class="headerlink" href="#related-lectures" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">93.15. </span>Related lectures<a class="headerlink" href="#related-lectures" title="Link to this heading">#</a></h2>
 <p>This lecture connects to several others in the series:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="doubts_or_variability.html#doubts-or-variability"><span class="std std-ref">Doubts or Variability?</span></a> studies how a preference for robustness generates worst-case likelihood ratios that look like stochastic discount factor shocks, complementing the analysis here with Hansen–Jagannathan bounds and detection-error probabilities.</p></li>
@@ -2075,9 +2080,21 @@ is interesting for both positive and normative macroeconomics.</p>
    51. Job Search VIII: Search with Learning
   </a>
  </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reinforcement Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_q.html">
+   52. Inventory Management via Q-Learning
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   52. Job Search IX: Search with Q-Learning
+   53. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -2089,32 +2106,32 @@ is interesting for both positive and normative macroeconomics.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   53. Optimal Savings I: Cake Eating
+   54. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   54. Optimal Savings II: Numerical Cake Eating
+   55. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   55. Optimal Savings III: Stochastic Returns
+   56. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   56. Optimal Savings IV: Time Iteration
+   57. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   57. Optimal Savings V: The Endogenous Grid Method
+   58. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   58. Optimal Savings VI: EGM with JAX
+   59. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -2126,27 +2143,27 @@ is interesting for both positive and normative macroeconomics.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   59. The Income Fluctuation Problem I: Discretization and VFI
+   60. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   60. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   61. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   61. The Income Fluctuation Problem III: The Endogenous Grid Method
+   62. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   62. The Income Fluctuation Problem IV: Transient Income Shocks
+   63. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   63. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   64. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -2158,32 +2175,32 @@ is interesting for both positive and normative macroeconomics.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   64. LQ Control: Foundations
+   65. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   65. Lagrangian for LQ Control
+   66. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   66. Eliminating Cross Products
+   67. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   67. The Permanent Income Model
+   68. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   68. Permanent Income II: LQ Techniques
+   69. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   69. Production Smoothing via Inventories
+   70. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2195,22 +2212,22 @@ is interesting for both positive and normative macroeconomics.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   70. Cass-Koopmans Model
+   71. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   71. Cass-Koopmans Competitive Equilibrium
+   72. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   72. Cass-Koopmans Model with Distorting Taxes
+   73. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   73. Two-Country Model with Distorting Taxes
+   74. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -2222,52 +2239,52 @@ is interesting for both positive and normative macroeconomics.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   74. A Lake Model of Employment and Unemployment
+   75. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   75. Lake Model with an Endogenous Job Finding Rate
+   76. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   76. Rational Expectations Equilibrium
+   77. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   77. Stability in Linear Rational Expectations Models
+   78. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   78. Markov Perfect Equilibrium
+   79. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   79. Uncertainty Traps
+   80. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   80. The Aiyagari Model
+   81. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   81. Transitions in an Overlapping Generations Model
+   82. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   82. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   83. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   83. Two Computations to Fund Social Security
+   84. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -2279,47 +2296,47 @@ is interesting for both positive and normative macroeconomics.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   84. Asset Pricing: Finite State Models
+   85. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   85. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   86. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   86. Estimating Euler Equations by Generalized Method of Moments
+   87. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="doubts_or_variability.html">
-   87. Doubts or Variability?
+   88. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   88. Competitive Equilibria with Arrow Securities
+   89. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   89. Heterogeneous Beliefs and Bubbles
+   90. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   90. Speculative Behavior with Bayesian Learning
+   91. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   91. Affine Models of Asset Prices
+   92. Affine Models of Asset Prices
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   92. Risk Aversion or Mistaken Beliefs?
+   93. Risk Aversion or Mistaken Beliefs?
   </a>
  </li>
 </ul>
@@ -2331,17 +2348,17 @@ is interesting for both positive and normative macroeconomics.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   93. Pandas for Panel Data
+   94. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   94. Linear Regression in Python
+   95. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   95. Maximum Likelihood Estimation
+   96. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2353,12 +2370,12 @@ is interesting for both positive and normative macroeconomics.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   96. First-Price and Second-Price Auctions
+   97. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   97. Multiple Good Allocation Mechanisms
+   98. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2370,17 +2387,17 @@ is interesting for both positive and normative macroeconomics.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   98. Troubleshooting
+   99. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   99. References
+   100. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   100. Execution Statistics
+   101. Execution Statistics
   </a>
  </li>
 </ul>
