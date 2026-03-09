@@ -28,7 +28,7 @@ kernelspec:
 
 ## Introduction
 
-In {ref}`inventory_q`, we looked at an inventory management
+In {doc}`inventory_q`, we looked at an inventory management
 problem and solved it with both value function iteration and Q-learning.
 
 In this lecture, we consider a risk-sensitive variation.
@@ -58,7 +58,7 @@ from typing import NamedTuple
 
 ## The Model
 
-The Bellman equation for the inventory management problem in {ref}`inventory_q` has the form
+The Bellman equation for the inventory management problem in {doc}`inventory_q` has the form
 
 
 $$
@@ -72,7 +72,7 @@ $$
 
 Here $D$ is a random variable with distribution $\phi$.
 
-(Primitives and definitions are the same as in {ref}`inventory_q`.)
+(Primitives and definitions are the same as in {doc}`inventory_q`.)
 
 The risk-sensitive version of this Bellman equation has the form
 
@@ -108,7 +108,7 @@ $$
     \right\}.
 $$
 
-Here $\phi(d)$ denotes the demand probability mass function, as in {ref}`inventory_q`.
+Here $\phi(d)$ denotes the demand probability mass function, as in {doc}`inventory_q`.
 
 The parameter $\gamma$ controls the degree of risk sensitivity.
 
@@ -125,7 +125,7 @@ risk-neutral case, with the expectation replaced by the certainty equivalent.
 
 ### Model specification
 
-We reuse the same model primitives as in {ref}`inventory_q`, adding $\gamma$ as a parameter.
+We reuse the same model primitives as in {doc}`inventory_q`, adding $\gamma$ as a parameter.
 
 ```{code-cell} ipython3
 class RSModel(NamedTuple):
@@ -405,7 +405,7 @@ closely, propagating that variance forward through $v$.
 ## Q-Learning
 
 We now ask whether the optimal policy can be learned without knowledge of the
-model, as we did in the risk-neutral case in {ref}`inventory_q`.
+model, as we did in the risk-neutral case in {doc}`inventory_q`.
 
 ### The Q-factor
 
@@ -528,7 +528,7 @@ $X_{t+1}$ — no model knowledge is required.
 ### Implementation plan
 
 Our implementation follows the same structure as the risk-neutral Q-learning in
-{ref}`inventory_q`, with the modifications above:
+{doc}`inventory_q`, with the modifications above:
 
 1. **Initialize** the Q-table $q$ to ones (since Q-values are positive) and
    visit counts $n$ to zeros.
@@ -738,13 +738,13 @@ by step 20 million the inventory dynamics are nearly indistinguishable from the
 VFI solution.
 
 Note that the converged policy maintains lower inventory levels than in the
-risk-neutral case (compare with {ref}`inventory_q`), consistent with the
+risk-neutral case (compare with {doc}`inventory_q`), consistent with the
 mechanism discussed above: a risk-sensitive agent caps its exposure to demand
 variance by holding less stock.
 
 ## Conclusion
 
-We extended the inventory management problem from {ref}`inventory_q` to
+We extended the inventory management problem from {doc}`inventory_q` to
 incorporate risk sensitivity via the certainty equivalent operator
 $\phi^{-1}(\mathbb{E}[\phi(\cdot)])$ with $\phi(t) = \exp(-\gamma t)$.
 
