@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>62. The Income Fluctuation Problem III: The Endogenous Grid Method &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>63. The Income Fluctuation Problem III: The Endogenous Grid Method &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="63. The Income Fluctuation Problem IV: Transient Income Shocks" href="ifp_egm_transient_shocks.html" />
-    <link rel="prev" title="61. The Income Fluctuation Problem II: Optimistic Policy Iteration" href="ifp_opi.html" />
+    <link rel="next" title="64. The Income Fluctuation Problem IV: Transient Income Shocks" href="ifp_egm_transient_shocks.html" />
+    <link rel="prev" title="62. The Income Fluctuation Problem II: Optimistic Policy Iteration" href="ifp_opi.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -204,32 +204,32 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">62.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-household-problem">62.2. The Household Problem</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">62.2.1. Set-Up</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-and-euler-equation">62.2.2. Value Function and Euler Equation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimality-results">62.2.3. Optimality Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">63.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-household-problem">63.2. The Household Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">63.2.1. Set-Up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-and-euler-equation">63.2.2. Value Function and Euler Equation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimality-results">63.2.3. Optimality Results</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">62.3. Computation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-method">62.3.1. Solution Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">63.3. Computation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-method">63.3.1. Solution Method</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numpy-implementation">62.4. NumPy Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">62.4.1. Set Up</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solver">62.4.2. Solver</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numpy-implementation">63.4. NumPy Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">63.4.1. Set Up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solver">63.4.2. Solver</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-implementation">62.5. JAX Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">62.5.1. Set Up</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">62.5.2. Solver</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-run">62.5.3. Test run</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">62.5.4. Timing</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamics">62.5.5. Dynamics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sanity-check">62.5.6. A Sanity Check</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-implementation">63.5. JAX Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">63.5.1. Set Up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">63.5.2. Solver</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-run">63.5.3. Test run</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">63.5.4. Timing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dynamics">63.5.5. Dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sanity-check">63.5.6. A Sanity Check</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">62.6. Simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">63.6. Simulation</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -395,7 +395,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="the-income-fluctuation-problem-iii-the-endogenous-grid-method">
-<h1><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">62. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem III: The Endogenous Grid Method</a><a class="headerlink" href="#the-income-fluctuation-problem-iii-the-endogenous-grid-method" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">63. </span><span class="target" id="index-0"></span>The Income Fluctuation Problem III: The Endogenous Grid Method</a><a class="headerlink" href="#the-income-fluctuation-problem-iii-the-endogenous-grid-method" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with access to a GPU — although it will also run without one.</p>
@@ -423,7 +423,7 @@ that you can access as follows:</p>
 </ul>
 </nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">62.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">63.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In this lecture we continue examining a version of the IFP from</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="ifp_discrete.html"><span class="doc">The Income Fluctuation Problem I: Discretization and VFI</span></a> and</p></li>
@@ -489,10 +489,10 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </section>
 <section id="the-household-problem">
-<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">62.2. </span>The Household Problem</a><a class="headerlink" href="#the-household-problem" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">63.2. </span>The Household Problem</a><a class="headerlink" href="#the-household-problem" title="Link to this heading">#</a></h2>
 <p id="index-1">Let’s write down the model and then discuss how to solve it.</p>
 <section id="set-up">
-<h3><span class="section-number">62.2.1. </span>Set-Up<a class="headerlink" href="#set-up" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">63.2.1. </span>Set-Up<a class="headerlink" href="#set-up" title="Link to this heading">#</a></h3>
 <p>A household chooses a state-contingent consumption plan <span class="math notranslate nohighlight">\(\{c_t\}_{t \geq 0}\)</span> to maximize</p>
 <div class="math notranslate nohighlight">
 \[
@@ -500,7 +500,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 \]</div>
 <p>subject to</p>
 <div class="math notranslate nohighlight" id="equation-eqst">
-<span class="eqno">(62.1)<a class="headerlink" href="#equation-eqst" title="Link to this equation">#</a></span>\[a_{t+1} = R (a_t - c_t) + Y_{t+1}
+<span class="eqno">(63.1)<a class="headerlink" href="#equation-eqst" title="Link to this equation">#</a></span>\[a_{t+1} = R (a_t - c_t) + Y_{t+1}
 \quad c_t \geq 0,
 \quad a_t \geq 0
 \quad t = 0, 1, \ldots\]</div>
@@ -549,7 +549,7 @@ it suffers heavily from the curse of dimensionality.</p>
 sequence <span class="math notranslate nohighlight">\(\{c_t\}\)</span> such that <span class="math notranslate nohighlight">\(\{c_t\}\)</span> and its induced asset path <span class="math notranslate nohighlight">\(\{a_t\}\)</span> satisfy</p>
 <ol class="arabic simple">
 <li><p><span class="math notranslate nohighlight">\((a_0, z_0) = (a, z)\)</span></p></li>
-<li><p>the feasibility constraints in <a class="reference internal" href="#equation-eqst">(62.1)</a>, and</p></li>
+<li><p>the feasibility constraints in <a class="reference internal" href="#equation-eqst">(63.1)</a>, and</p></li>
 <li><p>adaptedness, which means that <span class="math notranslate nohighlight">\(c_t\)</span> is a function of random
 outcomes up to date <span class="math notranslate nohighlight">\(t\)</span> but not after.</p></li>
 </ol>
@@ -560,21 +560,21 @@ be contingent only on the current state.</p>
 <p>Optimality is defined below.</p>
 </section>
 <section id="value-function-and-euler-equation">
-<h3><span class="section-number">62.2.2. </span>Value Function and Euler Equation<a class="headerlink" href="#value-function-and-euler-equation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">63.2.2. </span>Value Function and Euler Equation<a class="headerlink" href="#value-function-and-euler-equation" title="Link to this heading">#</a></h3>
 <p>The <strong>value function</strong> <span class="math notranslate nohighlight">\(V \colon \mathsf S \to \mathbb{R}\)</span> is defined by</p>
 <div class="math notranslate nohighlight" id="equation-eqvfs-egm">
-<span class="eqno">(62.2)<a class="headerlink" href="#equation-eqvfs-egm" title="Link to this equation">#</a></span>\[V(a, z) := \max \, \mathbb{E}
+<span class="eqno">(63.2)<a class="headerlink" href="#equation-eqvfs-egm" title="Link to this equation">#</a></span>\[V(a, z) := \max \, \mathbb{E}
 \left\{
 \sum_{t=0}^{\infty} \beta^t u(c_t)
 \right\}\]</div>
 <p>where the maximization is overall feasible consumption paths from <span class="math notranslate nohighlight">\((a,z)\)</span>.</p>
-<p>An <strong>optimal consumption path</strong> from <span class="math notranslate nohighlight">\((a,z)\)</span> is a feasible consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> that maximizes <a class="reference internal" href="ifp_discrete.html#equation-eqvfs">(60.1)</a>.</p>
+<p>An <strong>optimal consumption path</strong> from <span class="math notranslate nohighlight">\((a,z)\)</span> is a feasible consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> that maximizes <a class="reference internal" href="ifp_discrete.html#equation-eqvfs">(61.1)</a>.</p>
 <p>To pin down such paths we can use a version of the Euler equation, which in the present setting is</p>
 <div class="math notranslate nohighlight" id="equation-ee00">
-<span class="eqno">(62.3)<a class="headerlink" href="#equation-ee00" title="Link to this equation">#</a></span>\[    u' (c_t) \geq \beta R \,  \mathbb{E}_t  u'(c_{t+1})\]</div>
+<span class="eqno">(63.3)<a class="headerlink" href="#equation-ee00" title="Link to this equation">#</a></span>\[    u' (c_t) \geq \beta R \,  \mathbb{E}_t  u'(c_{t+1})\]</div>
 <p>with</p>
 <div class="math notranslate nohighlight" id="equation-ee01">
-<span class="eqno">(62.4)<a class="headerlink" href="#equation-ee01" title="Link to this equation">#</a></span>\[    c_t &lt; a_t
+<span class="eqno">(63.4)<a class="headerlink" href="#equation-ee01" title="Link to this equation">#</a></span>\[    c_t &lt; a_t
     \; \implies \;
     u' (c_t) = \beta R \,  \mathbb{E}_t  u'(c_{t+1})\]</div>
 <p>When <span class="math notranslate nohighlight">\(c_t\)</span> hits the upper bound <span class="math notranslate nohighlight">\(a_t\)</span>, the
@@ -583,15 +583,15 @@ can occur because <span class="math notranslate nohighlight">\(c_t\)</span> cann
 <p>The case <span class="math notranslate nohighlight">\(c_t = 0\)</span> never arises along the optimal path because <span class="math notranslate nohighlight">\(u'(0) = \infty\)</span>.</p>
 </section>
 <section id="optimality-results">
-<h3><span class="section-number">62.2.3. </span>Optimality Results<a class="headerlink" href="#optimality-results" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">63.2.3. </span>Optimality Results<a class="headerlink" href="#optimality-results" title="Link to this heading">#</a></h3>
 <p>As shown in <span id="id8">[<a class="reference internal" href="zreferences.html#id291" title="Qingyin Ma, John Stachurski, and Alexis Akira Toda. The income fluctuation problem and the evolution of wealth. Journal of Economic Theory, 187:105003, 2020.">Ma <em>et al.</em>, 2020</a>]</span>,</p>
 <ol class="arabic simple">
 <li><p>For each <span class="math notranslate nohighlight">\((a,z) \in \mathsf S\)</span>, a unique optimal consumption path from <span class="math notranslate nohighlight">\((a,z)\)</span> exists</p></li>
 <li><p>This path is the unique feasible path from <span class="math notranslate nohighlight">\((a,z)\)</span> satisfying the
-Euler equations <a class="reference internal" href="#equation-ee00">(62.3)</a>-<a class="reference internal" href="#equation-ee01">(62.4)</a> and the transversality condition</p></li>
+Euler equations <a class="reference internal" href="#equation-ee00">(63.3)</a>-<a class="reference internal" href="#equation-ee01">(63.4)</a> and the transversality condition</p></li>
 </ol>
 <div class="math notranslate nohighlight" id="equation-eqtv">
-<span class="eqno">(62.5)<a class="headerlink" href="#equation-eqtv" title="Link to this equation">#</a></span>\[\lim_{t \to \infty} \beta^t \, \mathbb{E} \, [ u'(c_t) a_{t+1} ] = 0\]</div>
+<span class="eqno">(63.5)<a class="headerlink" href="#equation-eqtv" title="Link to this equation">#</a></span>\[\lim_{t \to \infty} \beta^t \, \mathbb{E} \, [ u'(c_t) a_{t+1} ] = 0\]</div>
 <p>Moreover, there exists an <strong>optimal consumption policy</strong>
 <span class="math notranslate nohighlight">\(\sigma^* \colon \mathsf S \to \mathbb R_+\)</span> such that the path
 from <span class="math notranslate nohighlight">\((a,z)\)</span> generated by</p>
@@ -603,13 +603,13 @@ from <span class="math notranslate nohighlight">\((a,z)\)</span> generated by</p
     \quad \text{and} \quad
     a_{t+1} = R (a_t - c_t) + Y_{t+1}
 \]</div>
-<p>satisfies both the Euler equations <a class="reference internal" href="#equation-ee00">(62.3)</a>-<a class="reference internal" href="#equation-ee01">(62.4)</a> and <a class="reference internal" href="#equation-eqtv">(62.5)</a>, and hence is the unique optimal
+<p>satisfies both the Euler equations <a class="reference internal" href="#equation-ee00">(63.3)</a>-<a class="reference internal" href="#equation-ee01">(63.4)</a> and <a class="reference internal" href="#equation-eqtv">(63.5)</a>, and hence is the unique optimal
 path from <span class="math notranslate nohighlight">\((a,z)\)</span>.</p>
 <p>Thus, to solve the optimization problem, we need to compute the policy <span class="math notranslate nohighlight">\(\sigma^*\)</span>.</p>
 </section>
 </section>
 <section id="computation">
-<span id="ifp-computation"></span><h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">62.3. </span>Computation</a><a class="headerlink" href="#computation" title="Link to this heading">#</a></h2>
+<span id="ifp-computation"></span><h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">63.3. </span>Computation</a><a class="headerlink" href="#computation" title="Link to this heading">#</a></h2>
 <p id="index-2">We solve for the optimal consumption policy using time iteration and the
 endogenous grid method, which were previously discussed in</p>
 <ul class="simple">
@@ -617,11 +617,11 @@ endogenous grid method, which were previously discussed in</p>
 <li><p><a class="reference internal" href="os_egm.html"><span class="doc">Optimal Savings V: The Endogenous Grid Method</span></a></p></li>
 </ul>
 <section id="solution-method">
-<h3><span class="section-number">62.3.1. </span>Solution Method<a class="headerlink" href="#solution-method" title="Link to this heading">#</a></h3>
-<p>We rewrite <a class="reference internal" href="#equation-ee01">(62.4)</a> to make it a statement about functions rather than
+<h3><span class="section-number">63.3.1. </span>Solution Method<a class="headerlink" href="#solution-method" title="Link to this heading">#</a></h3>
+<p>We rewrite <a class="reference internal" href="#equation-ee01">(63.4)</a> to make it a statement about functions rather than
 random variables:</p>
 <div class="math notranslate nohighlight" id="equation-eqeul1">
-<span class="eqno">(62.6)<a class="headerlink" href="#equation-eqeul1" title="Link to this equation">#</a></span>\[    (u' \circ \sigma)  (a, z)
+<span class="eqno">(63.6)<a class="headerlink" href="#equation-eqeul1" title="Link to this equation">#</a></span>\[    (u' \circ \sigma)  (a, z)
     = \beta R \, \sum_{z'} (u' \circ \sigma)
             [R (a - \sigma(a, z)) + y(z'), \, z'] \, \Pi(z, z')\]</div>
 <p>Here</p>
@@ -630,15 +630,15 @@ random variables:</p>
 <li><p>primes indicate next period states (as well as derivatives), and</p></li>
 <li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is the unknown function.</p></li>
 </ul>
-<p>The equality <a class="reference internal" href="#equation-eqeul1">(62.6)</a> holds at all interior choices, meaning <span class="math notranslate nohighlight">\(\sigma(a, z) &lt; a\)</span>.</p>
-<p>We aim to find a fixed point <span class="math notranslate nohighlight">\(\sigma\)</span> of <a class="reference internal" href="#equation-eqeul1">(62.6)</a>.</p>
+<p>The equality <a class="reference internal" href="#equation-eqeul1">(63.6)</a> holds at all interior choices, meaning <span class="math notranslate nohighlight">\(\sigma(a, z) &lt; a\)</span>.</p>
+<p>We aim to find a fixed point <span class="math notranslate nohighlight">\(\sigma\)</span> of <a class="reference internal" href="#equation-eqeul1">(63.6)</a>.</p>
 <p>To do so we use the EGM.</p>
 <p>Below we use the relationships <span class="math notranslate nohighlight">\(a_t = c_t + s_t\)</span> and <span class="math notranslate nohighlight">\(a_{t+1} = R s_t + Y_{t+1}\)</span>.</p>
 <p>We begin with an exogenous savings grid <span class="math notranslate nohighlight">\(s_0 &lt; s_1 &lt; \cdots &lt; s_m\)</span> with <span class="math notranslate nohighlight">\(s_0 = 0\)</span>.</p>
 <p>We fix a current guess of the policy function <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
 <p>For each exogenous savings level <span class="math notranslate nohighlight">\(s_i\)</span> with <span class="math notranslate nohighlight">\(i \geq 1\)</span> and current state <span class="math notranslate nohighlight">\(z_j\)</span>, we set</p>
 <div class="math notranslate nohighlight" id="equation-cfequ">
-<span class="eqno">(62.7)<a class="headerlink" href="#equation-cfequ" title="Link to this equation">#</a></span>\[    c_{ij} := (u')^{-1}
+<span class="eqno">(63.7)<a class="headerlink" href="#equation-cfequ" title="Link to this equation">#</a></span>\[    c_{ij} := (u')^{-1}
         \left[
             \beta R \, \sum_{z'}
             u' [ \sigma(R s_i + y(z'), z') ] \, \Pi(z_j, z')
@@ -666,7 +666,7 @@ the interpolation points</p>
 </section>
 </section>
 <section id="numpy-implementation">
-<h2><a class="toc-backref" href="#id17" role="doc-backlink"><span class="section-number">62.4. </span>NumPy Implementation</a><a class="headerlink" href="#numpy-implementation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id17" role="doc-backlink"><span class="section-number">63.4. </span>NumPy Implementation</a><a class="headerlink" href="#numpy-implementation" title="Link to this heading">#</a></h2>
 <p>In this section we’ll code up a NumPy version of the code that aims only for
 clarity, rather than efficiency.</p>
 <p>Once we have it working, we’ll produce a JAX version that’s far more efficient
@@ -677,7 +677,7 @@ and check that we obtain the same results.</p>
     u(c) = \frac{c^{1 - \gamma}} {1 - \gamma}
 \]</div>
 <section id="id9">
-<h3><span class="section-number">62.4.1. </span>Set Up<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">63.4.1. </span>Set Up<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <p>Here we build a class called <code class="docutils literal notranslate"><span class="pre">IFPNumPy</span></code> that stores the model primitives.</p>
 <p>The exogenous state process <span class="math notranslate nohighlight">\(\{Z_t\}\)</span> defaults to a two-state Markov chain
 with transition matrix <span class="math notranslate nohighlight">\(\Pi\)</span>.</p>
@@ -712,7 +712,7 @@ with transition matrix <span class="math notranslate nohighlight">\(\Pi\)</span>
 </div>
 </section>
 <section id="solver">
-<h3><span class="section-number">62.4.2. </span>Solver<a class="headerlink" href="#solver" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">63.4.2. </span>Solver<a class="headerlink" href="#solver" title="Link to this heading">#</a></h3>
 <p>Here is the operator <span class="math notranslate nohighlight">\(K\)</span> that transforms current guess <span class="math notranslate nohighlight">\(\sigma\)</span> into next period
 guess <span class="math notranslate nohighlight">\(K\sigma\)</span>.</p>
 <p>In practice, it takes in</p>
@@ -722,7 +722,7 @@ guess <span class="math notranslate nohighlight">\(K\sigma\)</span>.</p>
 </ul>
 <p>These are converted into a consumption policy <span class="math notranslate nohighlight">\(a \mapsto \sigma(a, z_j)\)</span> by
 linear interpolation of <span class="math notranslate nohighlight">\((a^e_{ij}, c_{ij})\)</span> over <span class="math notranslate nohighlight">\(i\)</span> for each <span class="math notranslate nohighlight">\(j\)</span>.</p>
-<p>Since there are no shocks to integrate out in this version of the model, we can compute <a class="reference internal" href="#equation-cfequ">(62.7)</a> directly by summing over the finite state space <span class="math notranslate nohighlight">\(\mathsf Z\)</span>.</p>
+<p>Since there are no shocks to integrate out in this version of the model, we can compute <a class="reference internal" href="#equation-cfequ">(63.7)</a> directly by summing over the finite state space <span class="math notranslate nohighlight">\(\mathsf Z\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span>
@@ -834,10 +834,10 @@ linear interpolation of <span class="math notranslate nohighlight">\((a^e_{ij}, 
 </section>
 </section>
 <section id="jax-implementation">
-<h2><a class="toc-backref" href="#id18" role="doc-backlink"><span class="section-number">62.5. </span>JAX Implementation</a><a class="headerlink" href="#jax-implementation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id18" role="doc-backlink"><span class="section-number">63.5. </span>JAX Implementation</a><a class="headerlink" href="#jax-implementation" title="Link to this heading">#</a></h2>
 <p id="index-3">Now we write a more efficient JAX version, which can run on a GPU.</p>
 <section id="id10">
-<h3><span class="section-number">62.5.1. </span>Set Up<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">63.5.1. </span>Set Up<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
 <p>We start with a class called <code class="docutils literal notranslate"><span class="pre">IFP</span></code> that stores the model primitives.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -870,7 +870,7 @@ linear interpolation of <span class="math notranslate nohighlight">\((a^e_{ij}, 
 </div>
 </section>
 <section id="id11">
-<h3><span class="section-number">62.5.2. </span>Solver<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">63.5.2. </span>Solver<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
 <p>Here is the operator <span class="math notranslate nohighlight">\(K\)</span> that transforms current guess <span class="math notranslate nohighlight">\(\sigma\)</span> into next period
 guess <span class="math notranslate nohighlight">\(K\sigma\)</span>.</p>
 <div class="cell docutils container">
@@ -969,7 +969,7 @@ guess <span class="math notranslate nohighlight">\(K\sigma\)</span>.</p>
 </div>
 </section>
 <section id="test-run">
-<h3><span class="section-number">62.5.3. </span>Test run<a class="headerlink" href="#test-run" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">63.5.3. </span>Test run<a class="headerlink" href="#test-run" title="Link to this heading">#</a></h3>
 <p>Let’s road test the EGM code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1007,7 +1007,7 @@ Maximum difference in asset grid:        4.45e-01
 the two approaches.</p>
 </section>
 <section id="timing">
-<h3><span class="section-number">62.5.4. </span>Timing<a class="headerlink" href="#timing" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">63.5.4. </span>Timing<a class="headerlink" href="#timing" title="Link to this heading">#</a></h3>
 <p>Now let’s compare the execution time between NumPy and JAX implementations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1075,7 +1075,7 @@ Speedup (NumPy/JAX):        2.34x
 </div>
 </section>
 <section id="dynamics">
-<h3><span class="section-number">62.5.5. </span>Dynamics<a class="headerlink" href="#dynamics" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">63.5.5. </span>Dynamics<a class="headerlink" href="#dynamics" title="Link to this heading">#</a></h3>
 <p>To begin to understand the long run asset levels held by households under the
 default parameters, let’s look at the
 45 degree diagram showing the law of motion for assets under the optimal consumption policy.</p>
@@ -1137,7 +1137,7 @@ not diverge even in the highest state.</p>
 households when households have idiosyncratic shocks.</p>
 </section>
 <section id="a-sanity-check">
-<h3><span class="section-number">62.5.6. </span>A Sanity Check<a class="headerlink" href="#a-sanity-check" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">63.5.6. </span>A Sanity Check<a class="headerlink" href="#a-sanity-check" title="Link to this heading">#</a></h3>
 <p>One way to check our results is to</p>
 <ul class="simple">
 <li><p>set labor income to zero in each state and</p></li>
@@ -1185,7 +1185,7 @@ households when households have idiosyncratic shocks.</p>
 </section>
 </section>
 <section id="simulation">
-<h2><a class="toc-backref" href="#id19" role="doc-backlink"><span class="section-number">62.6. </span>Simulation</a><a class="headerlink" href="#simulation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id19" role="doc-backlink"><span class="section-number">63.6. </span>Simulation</a><a class="headerlink" href="#simulation" title="Link to this heading">#</a></h2>
 <p>Let’s return to the default model and study the stationary distribution of assets.</p>
 <p>Our plan is to run a large number of households forward for <span class="math notranslate nohighlight">\(T\)</span> periods and then
 histogram the cross-sectional distribution of assets.</p>
@@ -1674,8 +1674,13 @@ distributions have long right-hand tails.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="rs_inventory_q.html">
+   53. Risk-Sensitive Inventory Management via Q-Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   53. Job Search IX: Search with Q-Learning
+   54. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1687,32 +1692,32 @@ distributions have long right-hand tails.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   54. Optimal Savings I: Cake Eating
+   55. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   55. Optimal Savings II: Numerical Cake Eating
+   56. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   56. Optimal Savings III: Stochastic Returns
+   57. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   57. Optimal Savings IV: Time Iteration
+   58. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   58. Optimal Savings V: The Endogenous Grid Method
+   59. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   59. Optimal Savings VI: EGM with JAX
+   60. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1724,27 +1729,27 @@ distributions have long right-hand tails.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   60. The Income Fluctuation Problem I: Discretization and VFI
+   61. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   61. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   62. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   62. The Income Fluctuation Problem III: The Endogenous Grid Method
+   63. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   63. The Income Fluctuation Problem IV: Transient Income Shocks
+   64. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   64. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   65. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1756,32 +1761,32 @@ distributions have long right-hand tails.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   65. LQ Control: Foundations
+   66. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   66. Lagrangian for LQ Control
+   67. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   67. Eliminating Cross Products
+   68. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   68. The Permanent Income Model
+   69. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   69. Permanent Income II: LQ Techniques
+   70. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   70. Production Smoothing via Inventories
+   71. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1793,22 +1798,22 @@ distributions have long right-hand tails.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   71. Cass-Koopmans Model
+   72. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   72. Cass-Koopmans Competitive Equilibrium
+   73. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   73. Cass-Koopmans Model with Distorting Taxes
+   74. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   74. Two-Country Model with Distorting Taxes
+   75. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -1820,52 +1825,52 @@ distributions have long right-hand tails.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   75. A Lake Model of Employment and Unemployment
+   76. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   76. Lake Model with an Endogenous Job Finding Rate
+   77. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   77. Rational Expectations Equilibrium
+   78. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   78. Stability in Linear Rational Expectations Models
+   79. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   79. Markov Perfect Equilibrium
+   80. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   80. Uncertainty Traps
+   81. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   81. The Aiyagari Model
+   82. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   82. Transitions in an Overlapping Generations Model
+   83. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   83. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   84. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   84. Two Computations to Fund Social Security
+   85. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -1877,47 +1882,47 @@ distributions have long right-hand tails.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   85. Asset Pricing: Finite State Models
+   86. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   86. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   87. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   87. Estimating Euler Equations by Generalized Method of Moments
+   88. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="doubts_or_variability.html">
-   88. Doubts or Variability?
+   89. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   89. Competitive Equilibria with Arrow Securities
+   90. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   90. Heterogeneous Beliefs and Bubbles
+   91. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   91. Speculative Behavior with Bayesian Learning
+   92. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   92. Affine Models of Asset Prices
+   93. Affine Models of Asset Prices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="risk_aversion_or_mistaken_beliefs.html">
-   93. Risk Aversion or Mistaken Beliefs?
+   94. Risk Aversion or Mistaken Beliefs?
   </a>
  </li>
 </ul>
@@ -1929,17 +1934,17 @@ distributions have long right-hand tails.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   94. Pandas for Panel Data
+   95. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   95. Linear Regression in Python
+   96. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   96. Maximum Likelihood Estimation
+   97. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1951,12 +1956,12 @@ distributions have long right-hand tails.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   97. First-Price and Second-Price Auctions
+   98. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   98. Multiple Good Allocation Mechanisms
+   99. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1968,17 +1973,17 @@ distributions have long right-hand tails.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   99. Troubleshooting
+   100. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   100. References
+   101. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   101. Execution Statistics
+   102. Execution Statistics
   </a>
  </li>
 </ul>
