@@ -332,8 +332,9 @@ We simulate inventory dynamics under the optimal policy for the baseline $\gamma
 
 ```{code-cell} ipython3
 @numba.jit(nopython=True)
-def sim_inventories(ts_length, σ, p, X_init=0):
+def sim_inventories(ts_length, σ, p, X_init=0, seed=0):
     """Simulate inventory dynamics under policy σ."""
+    np.random.seed(seed)
     X = np.zeros(ts_length, dtype=np.int32)
     X[0] = X_init
     for t in range(ts_length - 1):
@@ -353,8 +354,7 @@ K = len(x_values) - 1
 
 for i, γ in enumerate(γ_values):
     v, σ = results[γ]
-    np.random.seed(sim_seed)
-    X = sim_inventories(ts_length, σ, model.p, X_init=K // 2)
+    X = sim_inventories(ts_length, σ, model.p, X_init=K // 2, seed=sim_seed)
     axes[i].plot(X, alpha=0.7)
     axes[i].set_ylabel("inventory")
     axes[i].set_title(f"$\\gamma = {γ}$")
@@ -577,7 +577,8 @@ Q-table initialized to ones, the update target uses $\exp(-\gamma R_{t+1})
 ```{code-cell} ipython3
 @numba.jit(nopython=True)
 def q_learning_rs_kernel(K, p, c, κ, β, γ, n_steps, X_init,
-                         ε_init, ε_min, ε_decay, snapshot_steps):
+                         ε_init, ε_min, ε_decay, snapshot_steps, seed):
+    np.random.seed(seed)
     q = np.ones((K + 1, K + 1))         # positive Q-values, initialized to 1
     n = np.zeros((K + 1, K + 1))        # visit counts for learning rate
     ε = ε_init
@@ -632,13 +633,13 @@ The wrapper function unpacks the model and provides default hyperparameters.
 ```{code-cell} ipython3
 def q_learning_rs(model, n_steps=20_000_000, X_init=0,
                   ε_init=1.0, ε_min=0.01, ε_decay=0.999999,
-                  snapshot_steps=None):
+                  snapshot_steps=None, seed=1234):
     x_values, d_values, ϕ_values, p, c, κ, β, γ = model
     K = len(x_values) - 1
     if snapshot_steps is None:
         snapshot_steps = np.array([], dtype=np.int64)
     return q_learning_rs_kernel(K, p, c, κ, β, γ, n_steps, X_init,
-                                ε_init, ε_min, ε_decay, snapshot_steps)
+                                ε_init, ε_min, ε_decay, snapshot_steps, seed)
 ```
 
 ### Running Q-learning
@@ -646,7 +647,6 @@ def q_learning_rs(model, n_steps=20_000_000, X_init=0,
 We run 20 million steps and take policy snapshots at steps 10,000, 1,000,000, and at the end.
 
 ```{code-cell} ipython3
-np.random.seed(1234)
 snap_steps = np.array([10_000, 1_000_000, 19_999_999], dtype=np.int64)
 q_table, snapshots = q_learning_rs(model, snapshot_steps=snap_steps)
 ```
@@ -709,8 +709,7 @@ X_init = K // 2
 sim_seed = 5678
 
 # Optimal policy
-np.random.seed(sim_seed)
-X_opt = sim_inventories(ts_length, σ_star, model.p, X_init)
+X_opt = sim_inventories(ts_length, σ_star, model.p, X_init, seed=sim_seed)
 axes[0].plot(X_opt, alpha=0.7)
 axes[0].set_ylabel("inventory")
 axes[0].set_title("Optimal (VFI)")
@@ -719,8 +718,7 @@ axes[0].set_ylim(0, K + 2)
 # Q-learning snapshots
 for i in range(n_snaps):
     σ_snap = snapshots[i]
-    np.random.seed(sim_seed)
-    X = sim_inventories(ts_length, σ_snap, model.p, X_init)
+    X = sim_inventories(ts_length, σ_snap, model.p, X_init, seed=sim_seed)
     axes[i + 1].plot(X, alpha=0.7)
     axes[i + 1].set_ylabel("inventory")
     axes[i + 1].set_title(f"Step {snap_steps[i]:,}")
