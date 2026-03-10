@@ -56,6 +56,8 @@ The lecture proceeds as follows:
 2. We introduce Q-factors and derive the Q-factor Bellman equation.
 3. We implement Q-learning and show the learned policy converges to the optimal one.
 
+A risk-sensitive extension of this model is studied in {doc}`rs_inventory_q`.
+
 We will use the following imports:
 
 ```{code-cell} ipython3

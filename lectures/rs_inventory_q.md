@@ -731,7 +731,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-After 10,000 steps the agent has barely explored and its policy is erratic.
+After 10,000 steps, the agent has barely explored and its policy is erratic.
 
 By 1,000,000 steps the learned policy begins to resemble the optimal one, and
 by step 20 million the inventory dynamics are nearly indistinguishable from the
