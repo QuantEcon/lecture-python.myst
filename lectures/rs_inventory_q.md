@@ -530,7 +530,7 @@ $X_{t+1}$ — no model knowledge is required.
 Our implementation follows the same structure as the risk-neutral Q-learning in
 {doc}`inventory_q`, with the modifications above:
 
-1. **Initialize** the Q-table $q$ to ones (since Q-values are positive) and
+1. **Initialize** the Q-table $q$ optimistically (see below) and
    visit counts $n$ to zeros.
 2. **At each step:**
    - Draw demand $D_{t+1}$ and compute observed profit $R_{t+1}$ and next state
@@ -547,6 +547,17 @@ Our implementation follows the same structure as the risk-neutral Q-learning in
 3. **Extract the greedy policy** from the final Q-table via
    $\sigma(x) = \argmin_{a \in \Gamma(x)} q(x, a)$.
 4. **Compare** the learned policy against the VFI solution.
+
+### Optimistic initialization
+
+As in {doc}`inventory_q`, we use optimistic initialization to accelerate learning.
+
+The logic is the same — initialize the Q-table so that every untried action looks attractive, driving the agent to explore broadly — but the direction is reversed.
+
+Since the optimal policy *minimizes* $q$, "optimistic" means initializing the Q-table *below* the true values.  When the agent tries an action, the update pushes $q$ upward toward reality, making that entry look worse and prompting the agent to try other actions that still appear optimistically good.
+
+The true Q-values are on the order of $\exp(-\gamma \, v^*) \approx 10^{-5}$ to $10^{-4}$.
+We initialize the Q-table at $10^{-5}$, modestly below this range.
 
 ### Implementation
 
@@ -571,15 +582,15 @@ def greedy_policy_from_q_rs(q, K):
 ```
 
 The Q-learning loop mirrors the risk-neutral version, with the key changes:
-Q-table initialized to ones, the update target uses $\exp(-\gamma R_{t+1})
+the update target uses $\exp(-\gamma R_{t+1})
 \cdot (\min_{a'} q_t)^\beta$, and the behavior policy follows the $\argmin$.
 
 ```{code-cell} ipython3
 @numba.jit(nopython=True)
 def q_learning_rs_kernel(K, p, c, κ, β, γ, n_steps, X_init,
-                         ε_init, ε_min, ε_decay, snapshot_steps, seed):
+                         ε_init, ε_min, ε_decay, q_init, snapshot_steps, seed):
     np.random.seed(seed)
-    q = np.ones((K + 1, K + 1))         # positive Q-values, initialized to 1
+    q = np.full((K + 1, K + 1), q_init)  # optimistic initialization
     n = np.zeros((K + 1, K + 1))        # visit counts for learning rate
     ε = ε_init
 
@@ -633,22 +644,23 @@ The wrapper function unpacks the model and provides default hyperparameters.
 ```{code-cell} ipython3
 def q_learning_rs(model, n_steps=20_000_000, X_init=0,
                   ε_init=1.0, ε_min=0.01, ε_decay=0.999999,
-                  snapshot_steps=None, seed=1234):
+                  q_init=1e-5, snapshot_steps=None, seed=1234):
     x_values, d_values, ϕ_values, p, c, κ, β, γ = model
     K = len(x_values) - 1
     if snapshot_steps is None:
         snapshot_steps = np.array([], dtype=np.int64)
     return q_learning_rs_kernel(K, p, c, κ, β, γ, n_steps, X_init,
-                                ε_init, ε_min, ε_decay, snapshot_steps, seed)
+                                ε_init, ε_min, ε_decay, q_init, snapshot_steps, seed)
 ```
 
 ### Running Q-learning
 
-We run 20 million steps and take policy snapshots at steps 10,000, 1,000,000, and at the end.
+We run $n$ = 5 million steps and take policy snapshots at steps 10,000, 1,000,000, and $n$.
 
 ```{code-cell} ipython3
-snap_steps = np.array([10_000, 1_000_000, 19_999_999], dtype=np.int64)
-q_table, snapshots = q_learning_rs(model, snapshot_steps=snap_steps)
+n = 5_000_000
+snap_steps = np.array([10_000, 1_000_000, n], dtype=np.int64)
+q_table, snapshots = q_learning_rs(model, n_steps=n+1, snapshot_steps=snap_steps)
 ```
 
 ### Comparing with the exact solution
@@ -731,8 +743,9 @@ plt.show()
 
 After 10,000 steps, the agent has barely explored and its policy is erratic.
 
-By 1,000,000 steps the learned policy begins to resemble the optimal one, and
-by step 20 million the inventory dynamics are nearly indistinguishable from the
+By 1,000,000 steps the learned policy has improved but still differs noticeably from the optimum.
+
+By step 5 million the inventory dynamics are nearly indistinguishable from the
 VFI solution.
 
 Note that the converged policy maintains lower inventory levels than in the
