@@ -37,18 +37,23 @@ We approach the problem in two ways.
 First, we solve it exactly using dynamic programming, assuming full knowledge of
 the model — the demand distribution, cost parameters, and transition dynamics.
 
-Second, we show how a manager can learn the optimal policy from experience alone, using *[Q-learning](https://en.wikipedia.org/wiki/Q-learning)*.
+Second, we show how a manager can learn the optimal policy from experience alone, using [Q-learning](https://en.wikipedia.org/wiki/Q-learning).
 
-The manager observes only the inventory level, the order placed, the resulting
-profit, and the next inventory level — without knowing any of the underlying
-parameters.
+In this setting, we assume that the manager observes only 
+
+* the inventory level, 
+* the order placed, 
+* the resulting profit, and 
+* the next inventory level.
+
+The manager knows the interest rate -- and hence the discount factor -- but not any of the other underlying parameters.
 
 A key idea is the *Q-factor* representation, which reformulates the Bellman
 equation so that the optimal policy can be recovered without knowledge of the
-transition function.
+transition dynamics.
 
-We show that, given enough experience, the manager's learned policy converges to
-the optimal one.
+We show that, given enough experience, the
+manager's learned policy converges to the optimal one.
 
 The lecture proceeds as follows:
 
@@ -67,16 +72,18 @@ import matplotlib.pyplot as plt
 from typing import NamedTuple
 ```
 
+
 ## The Model
 
-We study a firm where a manager tries to maximize shareholder value.
+We study a firm where a manager tries to maximize shareholder value by
+controlling inventories.
 
 To simplify the problem, we assume that the firm only sells one product.
 
 Letting $\pi_t$ be profits at time $t$ and $r > 0$ be the interest rate, the value of the firm is
 
 $$
-    V_0 = \sum_{t \geq 0} \beta^t \pi_t
+    V_0 = \EE \sum_{t \geq 0} \beta^t \pi_t
     \qquad
     \text{ where }
     \quad \beta := \frac{1}{1+r}.
@@ -97,9 +104,9 @@ $$
 $$
 
 The term $A_t$ is units of stock ordered this period, which arrive at the start
-of period $t+1$, after demand $D_{t+1}$ is realized and served.
+of period $t+1$, after demand $D_{t+1}$ is realized and served:
 
-**Timeline for period $t$:** observe $X_t$ → choose $A_t$ → demand $D_{t+1}$ arrives → profit realized → $X_{t+1}$ determined.
+* observe $X_t$ → choose $A_t$ → demand $D_{t+1}$ arrives → profit realized → $X_{t+1}$ determined.
 
 (We use a $t$ subscript in $A_t$ to indicate the information set: it is chosen
 before $D_{t+1}$ is observed.)
@@ -115,7 +122,7 @@ $$
 Here
 
 * the sales price is set to unity (for convenience)
-* revenue is the minimum of current stock and demand because orders in excess of inventory are lost rather than back-filled
+* revenue is the minimum of current stock and demand because orders in excess of inventory are lost (not back-filled)
 * $c$ is unit product cost and $\kappa$ is a fixed cost of ordering inventory
 
 We can map our inventory problem into a dynamic program with state space $\mathsf X := \{0, \ldots, K\}$ and action space $\mathsf A := \mathsf X$.
@@ -463,8 +470,8 @@ The manager does not need to know the demand distribution $\phi$, the unit cost 
 All the manager needs to observe at each step is:
 
 1. the current inventory level $x$,
-2. the order quantity $a$ they chose,
-3. the resulting profit $R_{t+1}$ (which appears on the books), and
+2. the order quantity $a$, which they choose,
+3. the discount factor $\beta$, which is determined by the interest rate, and
 4. the next inventory level $X_{t+1}$ (which they can read off the warehouse).
 
 These are all directly observable quantities — no model knowledge is required.
@@ -480,47 +487,29 @@ a)$ for every state-action pair $(x, a)$.
 
 At each step, the manager is in some state $x$ and must choose a specific action
 $a$ to take.  Whichever $a$ is chosen, the manager observes profit $R_{t+1}$
-and next state $X_{t+1}$, and updates **that one entry** $q_t(x, a)$ of the
+and next state $X_{t+1}$, and updates *that one entry* $q_t(x, a)$ of the
 table using the rule above.
-
-**The max computes a value, not an action.**
 
 It is tempting to read the $\max_{a'}$ in the update rule as prescribing the
 manager's next action — that is, to interpret the update as saying "move to
-state $X_{t+1}$ and take action $\argmax_{a'} q_t(X_{t+1}, a')$."
+state $X_{t+1}$ and take an action in $\argmax_{a'} q_t(X_{t+1}, a')$."
 
-But the $\max$ plays a different role.  The quantity $\max_{a' \in
-\Gamma(X_{t+1})} q_t(X_{t+1}, a')$ is a **scalar** — it estimates the value of
-being in state $X_{t+1}$ under the best possible continuation.  This scalar
-enters the update as part of the target value for $q_t(x, a)$.
+But the $\max$ plays a different role.  
 
-Which action the manager *actually takes* at state $X_{t+1}$ is a separate
-decision entirely.
+The quantity $\max_{a' \in \Gamma(X_{t+1})} q_t(X_{t+1}, a')$ is just an estimate of the value of
+being in state $X_{t+1}$ under the best possible continuation.  
 
-To see why this distinction matters, consider what happens if we modify the
-update rule by replacing the $\max$ with evaluation under a fixed feasible
-policy $\sigma$:
+This scalar enters the update as part of the target value for $q_t(x, a)$.
 
-$$
-   q_{t+1}(x, a)
-   = (1 - \alpha_t) q_t(x, a) +
-       \alpha_t \left(R_{t+1} + \beta \, q_t(X_{t+1}, \sigma(X_{t+1}))\right).
-$$
+Which action the manager *actually takes* at time $t+1$ is a separate decision.
 
-This modified update is a stochastic sample of the Bellman *evaluation* operator
-for $\sigma$.  The Q-table then converges to $q^\sigma$ — the Q-function
-associated with the lifetime value of $\sigma$, not the optimal one.
-
-By contrast, the original update with the $\max$ is a stochastic sample of the
-Bellman *optimality* operator, whose fixed point is $q^*$.  The $\max$ in the
-update target is therefore what drives convergence to $q^*$.
-
-In short, the $\max$ is doing the work of finding the optimum; without it, you only evaluate a fixed policy.
+In short, the $\max$ is doing the work of finding the optimum; it does not dictate the action that the manager actually takes.
 
 ### The behavior policy
 
-The rule governing how the manager chooses actions is called the **behavior
-policy**.  Because the $\max$ in the update target always points toward $q^*$
+The rule governing how the manager chooses actions is called the **behavior policy**.  
+
+Because the $\max$ in the update target always points toward $q^*$
 regardless of how the manager selects actions, the behavior policy affects only
 which $(x, a)$ entries get visited — and hence updated — over time.
 
@@ -545,6 +534,7 @@ We use $\alpha_t = 1 / n_t(x, a)^{0.51}$, where $n_t(x, a)$ is the number of tim
 
 This decays slowly enough to allow learning from later (better-informed) updates, while still satisfying the [Robbins–Monro conditions](https://en.wikipedia.org/wiki/Stochastic_approximation#Robbins%E2%80%93Monro_algorithm) for convergence.
 
+
 ### Exploration: epsilon-greedy
 
 For our behavior policy, we use an $\varepsilon$-greedy strategy:
@@ -559,6 +549,16 @@ The exploitation ensures the manager earns reasonable profits while learning.
 We decay $\varepsilon$ each step: $\varepsilon_{t+1} = \max(\varepsilon_{\min},\; \varepsilon_t \cdot \lambda)$, so the manager experiments widely early on and increasingly relies on learned $q$-values as experience accumulates.
 
 The stochastic demand shocks naturally drive the manager across different inventory levels, providing exploration over the state space without any artificial resets.
+
+### Optimistic initialization
+
+A simple but powerful technique for accelerating learning is **optimistic initialization**: instead of starting the Q-table at zero, we initialize every entry to a value above the true optimum.
+
+Because every untried action looks optimistically good, the agent is "disappointed" whenever it tries one — the update pulls that entry down toward reality. This drives the agent to try other actions (which still look optimistically high), producing broad exploration of the state-action space early in training.
+
+This idea is sometimes called **optimism in the face of uncertainty** and is widely used in both bandit and reinforcement learning settings.
+
+In our problem, the value function $v^*$ ranges from about 13 to 18. We initialize the Q-table at 20 — modestly above the true maximum — to ensure optimistic exploration without being so extreme as to distort learning.
 
 ### Implementation
 
@@ -587,9 +587,9 @@ At specified step counts (given by `snapshot_steps`), we record the current gree
 ```{code-cell} ipython3
 @numba.jit(nopython=True)
 def q_learning_kernel(K, p, c, κ, β, n_steps, X_init,
-                      ε_init, ε_min, ε_decay, snapshot_steps, seed):
+                      ε_init, ε_min, ε_decay, q_init, snapshot_steps, seed):
     np.random.seed(seed)
-    q = np.zeros((K + 1, K + 1))
+    q = np.full((K + 1, K + 1), q_init)
     n = np.zeros((K + 1, K + 1))       # visit counts for learning rate
     ε = ε_init
 
@@ -642,22 +642,21 @@ The wrapper function unpacks the model and provides default hyperparameters.
 ```{code-cell} ipython3
 def q_learning(model, n_steps=20_000_000, X_init=0,
                ε_init=1.0, ε_min=0.01, ε_decay=0.999999,
-               snapshot_steps=None, seed=1234):
+               q_init=20.0, snapshot_steps=None, seed=1234):
     x_values, d_values, ϕ_values, p, c, κ, β = model
     K = len(x_values) - 1
     if snapshot_steps is None:
         snapshot_steps = np.array([], dtype=np.int64)
     return q_learning_kernel(K, p, c, κ, β, n_steps, X_init,
-                             ε_init, ε_min, ε_decay, snapshot_steps, seed)
+                             ε_init, ε_min, ε_decay, q_init, snapshot_steps, seed)
 ```
 
-### Running Q-learning
-
-We run 20 million steps and take policy snapshots at steps 10,000, 1,000,000, and at the end.
+Next we run $n$ = 5 million steps and take policy snapshots at steps 10,000, 1,000,000, and $n$.
 
 ```{code-cell} ipython3
-snap_steps = np.array([10_000, 1_000_000, 19_999_999], dtype=np.int64)
-q, snapshots = q_learning(model, snapshot_steps=snap_steps)
+n = 5_000_000
+snap_steps = np.array([10_000, 1_000_000, n], dtype=np.int64)
+q, snapshots = q_learning(model, n_steps=n+1, snapshot_steps=snap_steps)
 ```
 
 ### Comparing with the exact solution
@@ -710,9 +709,11 @@ All panels use the **same demand sequence** (via a fixed random seed), so differ
 
 The top panel shows the optimal policy from VFI for reference.
 
-After only 10,000 steps the agent has barely explored and its policy is poor.
+After 10,000 steps the agent has barely explored and its policy is poor.
 
-By step 20 million, the learned policy produces inventory dynamics that closely resemble the S-s pattern of the optimal solution.
+By 1,000,000 steps the policy has improved but still differs noticeably from the optimum.
+
+By step 5 million, the learned policy produces inventory dynamics that closely resemble the S-s pattern of the optimal solution.
 
 ```{code-cell} ipython3
 ts_length = 200
