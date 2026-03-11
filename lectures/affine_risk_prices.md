@@ -40,7 +40,7 @@ $$
 where $r_t = \rho + \gamma\mu - \frac{1}{2}\sigma_c^2\gamma^2$.
 
 This model asserts that exposure to the random part of aggregate consumption growth,
-$\sigma_c\varepsilon_{t+1}$, is the *only* priced risk — the sole source of discrepancies
+$\sigma_c\varepsilon_{t+1}$, is the *only* priced risk, the sole source of discrepancies
 among expected returns across assets.
 
 Empirical difficulties with this specification (the equity premium puzzle, the
@@ -59,11 +59,11 @@ Instead, it
 
 Key applications we study include:
 
-1. *Pricing risky assets* — how risk prices and exposures determine excess returns.
-1. *Affine term structure models* — bond yields as affine functions of a state vector
+1. *Pricing risky assets*: how risk prices and exposures determine excess returns.
+1. *Affine term structure models*: bond yields as affine functions of a state vector
    ({cite:t}`AngPiazzesi2003`).
-1. *Risk-neutral probabilities* — a change-of-measure representation of the pricing equation.
-1. *Distorted beliefs* — reinterpreting risk price estimates when agents hold systematically
+1. *Risk-neutral probabilities*: a change-of-measure representation of the pricing equation.
+1. *Distorted beliefs*: reinterpreting risk price estimates when agents hold systematically
    biased forecasts ({cite:t}`piazzesi2015trend`); see also {doc}`Risk Aversion or Mistaken Beliefs? <risk_aversion_or_mistaken_beliefs>`.
 
 We start with the following imports:
@@ -103,8 +103,8 @@ Here
 * $\varepsilon_{t+1} \sim \mathcal{N}(0, I)$ is an i.i.d. $m \times 1$ random vector,
 * $z_t$ is an $m \times 1$ state vector.
 
-Equation {eq}`eq_shortrate` says that the **short rate** $r_t$ — the net yield on a
-one-period risk-free claim — is an affine function of the state $z_t$.
+Equation {eq}`eq_shortrate` says that the **short rate** $r_t$, the net yield on a
+one-period risk-free claim, is an affine function of the state $z_t$.
 
 *Component 2* is a vector of **risk prices** $\lambda_t$ and an associated stochastic
 discount factor $m_{t+1}$:
@@ -255,7 +255,7 @@ The first equation confirms that $r_t$ is the net yield on a risk-free one-perio
 That is why $r_t$ is called **the short rate** in the exponential quadratic literature.
 
 The second equation says that the conditional standard deviation of the SDF
-is approximately the magnitude of the vector of risk prices — a measure of overall
+is approximately the magnitude of the vector of risk prices, a measure of overall
 **market price of risk**.
 
 ## Pricing risky assets
@@ -411,7 +411,9 @@ by substituting the conjectured bond price {eq}`eq_bondprice` into the pricing
 recursion {eq}`eq_bondrecur` and matching coefficients.
 
 *Hint:* Substitute $p_{t+1}(n) = \exp(\bar A_n + \bar B_n^\top z_{t+1})$ and
-$\log m_{t+1}$ from {eq}`eq_sdf` into {eq}`eq_bondrecur`.  Use the state
+$\log m_{t+1}$ from {eq}`eq_sdf` into {eq}`eq_bondrecur`.  
+
+Use the state
 dynamics {eq}`eq_var` to express $z_{t+1}$ in terms of $z_t$ and
 $\varepsilon_{t+1}$, then evaluate the conditional expectation using the
 lognormal moment generating function.
@@ -664,9 +666,13 @@ Therefore $\bar A_n / n \to L$ and $y_\infty = -L$, giving {eq}`eq_y_inf`.
 
 To see why $y_\infty > \delta_0$, note that the two subtracted terms in {eq}`eq_y_inf` have opposite signs under this parameterization.
 
-The quadratic term $\tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty = \tfrac{1}{2}\|C^\top \bar B_\infty\|^2 \geq 0$ always — a **convexity effect** from Jensen's inequality that pushes $y_\infty$ below $\delta_0$.
+The quadratic term $\tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty = \tfrac{1}{2}\|C^\top \bar B_\infty\|^2 \geq 0$ always. 
 
-The linear term $\bar B_\infty^\top(\mu - C\lambda_0)$ is negative because $\bar B_\infty < 0$ (since $\delta_1 > 0$) while $\mu - C\lambda_0 > 0$ (since $\lambda_0 < 0$).  Subtracting this negative quantity raises $y_\infty$ above $\delta_0$ — a **risk-premium effect**: positive term premiums tilt the average yield curve upward.
+This is a **convexity effect** from Jensen's inequality that pushes $y_\infty$ below $\delta_0$.
+
+The linear term $\bar B_\infty^\top(\mu - C\lambda_0)$ is negative because $\bar B_\infty < 0$ (since $\delta_1 > 0$) while $\mu - C\lambda_0 > 0$ (since $\lambda_0 < 0$).  Subtracting this negative quantity raises $y_\infty$ above $\delta_0$. 
+
+This is a **risk-premium effect**: positive term premiums tilt the average yield curve upward.
 
 Under this parameterization the risk-premium effect dominates the convexity effect, so $y_\infty > \delta_0$.
 
@@ -762,6 +768,10 @@ print(f"Eigenvalues of φ:       {eigvals(φ_2).real.round(4)}")
 print(f"Eigenvalues of φ - Cλ_z: {eigvals(model_2f.φ_rn).real.round(4)}")
 ```
 
+This confirms that the eigenvalues of $\phi - C\lambda_z$ are larger than those of $\phi$, so the state is more persistent under the risk-neutral measure.
+
+The following figure shows yield curves across different states of the world, as well as the factor loadings $B_{n,1}$ and $B_{n,2}$ that determine how yields load on the level and slope factors at each maturity
+
 ```{code-cell} ipython3
 ---
 mystnb:
@@ -817,9 +827,11 @@ plt.tight_layout()
 plt.show()
 ```
 
+We can see that the level factor dominates at long maturities.
+
 ## Risk premiums
 
-A key object in the affine term structure model is the **term premium** — the
+A key object in the affine term structure model is the **term premium**, the
 expected excess return on a long-term bond relative to rolling over short-term bonds.
 
 For an $(n+1)$-period bond held for one period, the shock loading is
@@ -832,19 +844,31 @@ $$
 The term premium equals the inner product of the bond's shock exposure
 $\bar B_n^\top C$ with the risk price vector $\lambda_t$.
 
-To understand the sign of the term premium, note that when $\delta_1 > 0$
-a positive shock $\varepsilon_{t+1}$ raises the short rate and lowers
-long-bond prices, so the bond shock loading
+Because the term premium equals $\bar B_n^\top C \lambda_t$, its sign
+depends on the *current* risk-price vector $\lambda_t$, which is
+state-dependent whenever $\lambda_z \neq 0$.
+
+To see this more concretely, consider a state where $C\lambda_t$ is negative
+componentwise (for example, $z_t = 0$ in our calibration below).
+
+When $\delta_1 > 0$, a positive shock $\varepsilon_{t+1}$ raises the
+short rate and lowers long-bond prices, so the bond shock loading
 $\alpha_n = C^\top \bar B_n$ is negative.
 
-A negative $\lambda_0$ then means the stochastic discount factor
+A negative $C\lambda_t$ then means the stochastic discount factor
 $m_{t+1}$ loads positively on $\varepsilon_{t+1}$, i.e. the SDF is
 high in states where interest rates rise and bond prices fall.
 
-This makes $\text{Cov}(m_{t+1}, R_{t+1}^{(n+1)}) < 0$, so long bonds
-are risky and must offer a positive term premium to compensate
-investors — algebraically, $\bar B_n < 0$ and $C\lambda_0 < 0$ combine
-to give $\bar B_n^\top C \lambda_0 > 0$.
+This makes $\text{Cov}_t(m_{t+1}, R_{t+1}^{(n+1)}) < 0$, so long bonds
+are risky and carry a positive term premium.
+
+Algebraically, $\bar B_n < 0$ and $C\lambda_t < 0$ combine
+to give $\bar B_n^\top C \lambda_t > 0$.
+
+In other states, however, $\lambda_t$ may change sign (e.g. the
+first component flips in the low-rate regime of our two-state
+calibration), and long-bond term premiums can become negative at
+longer maturities.
 
 ```{exercise}
 :label: arp_ex5
@@ -922,6 +946,8 @@ $$
 ```{solution-end}
 ```
 
+The following figure plots term premiums across maturities for different states of the world, as well as the level and slope factor contributions to the term premium in the normal state
+
 ```{code-cell} ipython3
 ---
 mystnb:
@@ -940,8 +966,8 @@ n_max_tp = 60
 maturities_tp = np.arange(1, n_max_tp + 1)
 
 z_states_tp = {
-    "Low rate (z₁ < 0)":  np.array([-3.0, 2.0]),
-    "High rate (z₁ > 0)": np.array([3.0, -2.0]),
+    "Low rate ($z_1 < 0$)":  np.array([-3.0, 2.0]),
+    "High rate ($z_1 > 0$)": np.array([3.0, -2.0]),
 }
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5.5))
@@ -992,6 +1018,8 @@ for ax in (ax1, ax2):
 plt.tight_layout()
 plt.show()
 ```
+
+We see that the term premium is positive at all maturities in the low-rate state, but becomes negative at longer maturities in the high-rate state.
 
 ## Risk-neutral probabilities
 
@@ -1257,7 +1285,7 @@ agent's true risk prices $\lambda^\star_t$ in this calibration.
 
 Below we construct a numerical example to illustrate this point.
 
-We start with the two-factor model from above, which we take as the true data-generating process.
+We keep the same physical state dynamics and short-rate specification as above, but choose a separate true risk-price process $(\lambda_t^\star)$ and a distorted-belief econometrician process $(\hat\lambda_t)$ to illustrate the decomposition.
 
 We then set the subjective parameters $\check\mu, \check\phi$ to match the evidence in
 {cite:t}`piazzesi2015trend` that experts behave as if the level and slope of the yield curve are more persistent than under the physical measure.
@@ -1349,7 +1377,7 @@ than $\phi$), the rational-expectations econometrician attributes too much of
 the observed risk premium to risk aversion.
 
 Disentangling belief distortions from genuine risk prices requires additional
-data — for example, the survey forecasts used by
+data, for example, the survey forecasts used by
 {cite:t}`piazzesi2015trend`.
 
 Our {doc}`Risk Aversion or Mistaken Beliefs? <risk_aversion_or_mistaken_beliefs>` lecture
@@ -1362,14 +1390,14 @@ framework for studying asset prices.
 
 Key features are:
 
-1. **Analytical tractability** — Bond prices are exponential affine in $z_t$;
+1. **Analytical tractability:** Bond prices are exponential affine in $z_t$;
    expected returns decompose cleanly into a short rate plus a risk-price×exposure inner product.
-2. **Empirical flexibility** — The free parameters $(\mu, \phi, C, \delta_0, \delta_1, \lambda_0, \lambda_z)$
+2. **Empirical flexibility:** The free parameters $(\mu, \phi, C, \delta_0, \delta_1, \lambda_0, \lambda_z)$
    can be estimated by maximum likelihood (the {doc}`Kalman filter <kalman>` chapter describes
    the relevant methods) without imposing restrictions from a full general equilibrium model.
-3. **Multiple risks** — The vector structure accommodates many sources of risk (monetary
+3. **Multiple risks:** The vector structure accommodates many sources of risk (monetary
    policy, real activity, volatility, etc.).
-4. **Belief distortions** — The framework naturally accommodates non-rational beliefs via
+4. **Belief distortions:** The framework naturally accommodates non-rational beliefs via
    likelihood-ratio twists of the physical measure, as in
    {cite:t}`piazzesi2015trend`.
 
