@@ -284,7 +284,7 @@ The components of $\alpha_t(j)$ express the **exposures** of $\log R_{j,t+1}$ to
 corresponding components of the risk vector $\varepsilon_{t+1}$.
 
 The specification {eq}`eq_return` implies $\mathbb{E}_t R_{j,t+1} = \exp(\nu_t(j))$,
-so $\nu_t(j)$ is the expected net log return.
+so $\nu_t(j)$ is the log of the expected gross return.
 
 ### Expected excess returns
 
@@ -338,7 +338,7 @@ This is a central result.
 
 It says:
 
-> The expected net return on asset $j$ equals the short rate plus the inner product
+> The log expected gross return on asset $j$ equals the short rate plus the inner product
 > of the asset's exposure vector $\alpha_t(j)$ with the risk price vector $\lambda_t$.
 
 Each component of $\lambda_t$ prices the corresponding component of $\varepsilon_{t+1}$.
@@ -390,13 +390,13 @@ where the scalar $\bar A_n$ and the $m \times 1$ vector $\bar B_n$ satisfy the
 **Riccati difference equations**
 
 ```{math}
-:label: eq_riccati_A
+:label: eq_riccati_a
 
 \bar A_{n+1} = \bar A_n + \bar B_n^\top(\mu - C\lambda_0) + \frac{1}{2}\bar B_n^\top CC^\top\bar B_n - \delta_0
 ```
 
 ```{math}
-:label: eq_riccati_B
+:label: eq_riccati_b
 
 \bar B_{n+1}^\top = \bar B_n^\top(\phi - C\lambda_z) - \delta_1^\top
 ```
@@ -406,7 +406,7 @@ with initial conditions $\bar A_1 = -\delta_0$ and $\bar B_1 = -\delta_1$.
 ```{exercise}
 :label: arp_ex3
 
-Derive the Riccati difference equations {eq}`eq_riccati_A` and {eq}`eq_riccati_B`
+Derive the Riccati difference equations {eq}`eq_riccati_a` and {eq}`eq_riccati_b`
 by substituting the conjectured bond price {eq}`eq_bondprice` into the pricing
 recursion {eq}`eq_bondrecur` and matching coefficients.
 
@@ -424,8 +424,8 @@ lognormal moment generating function.
 We want to show that if $p_t(n) = \exp(\bar A_n + \bar B_n^\top z_t)$,
 then the recursion $p_t(n+1) = \mathbb{E}_t(m_{t+1}\, p_{t+1}(n))$ yields
 $p_t(n+1) = \exp(\bar A_{n+1} + \bar B_{n+1}^\top z_t)$ with
-$\bar A_{n+1}$ and $\bar B_{n+1}$ given by {eq}`eq_riccati_A` and
-{eq}`eq_riccati_B`.
+$\bar A_{n+1}$ and $\bar B_{n+1}$ given by {eq}`eq_riccati_a` and
+{eq}`eq_riccati_b`.
 
 
 From {eq}`eq_sdf` and {eq}`eq_bondprice`,
@@ -463,7 +463,7 @@ $$
 $$
 
 Matching the constant and the coefficient on $z_t$ gives the Riccati
-equations {eq}`eq_riccati_A` and {eq}`eq_riccati_B`.
+equations {eq}`eq_riccati_a` and {eq}`eq_riccati_b`.
 
 Setting $n = 0$ with $p_t(1) = \exp(-r_t) = \exp(-\delta_0 - \delta_1^\top z_t)$ gives $\bar A_1 = -\delta_0$ and $\bar B_1 = -\delta_1$.
 
@@ -496,7 +496,7 @@ where $A_n = -\bar A_n / n$ and $B_n = -\bar B_n / n$.
 
 This is the defining property of affine term structure models.
 
-We now implement the bond pricing formulas {eq}`eq_riccati_A`, {eq}`eq_riccati_B`,
+We now implement the bond pricing formulas {eq}`eq_riccati_a`, {eq}`eq_riccati_b`,
 and {eq}`eq_yield`.
 
 ```{code-cell} ipython3
@@ -545,8 +545,8 @@ the range of short rates the model generates via $r_t = \delta_0 + \delta_1 z_t$
 C      = np.array([[1.0]])
 δ_0    = 0.01                  # 1%/quarter ≈ 4% p.a.
 δ_1    = np.array([0.001])
-λ_0    = np.array([0.05])
-λ_z    = np.array([[-0.01]])   # countercyclical
+λ_0    = np.array([-0.05])
+λ_z    = np.array([[-0.01]])
 
 model_1f = create_affine_model(μ, φ, C, δ_0, δ_1, λ_0, λ_z)
 ```
@@ -556,6 +556,12 @@ model_1f = create_affine_model(μ, φ, C, δ_0, δ_1, λ_0, λ_z)
 We compute yield curves $y_t(n)$ across a range of short-rate states $z_t$.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Yield curves under the one-factor affine model
+    name: fig-yield-curves-1f
+---
 n_max_1f = 60
 maturities_1f = np.arange(1, n_max_1f + 1)
 
@@ -594,7 +600,6 @@ ax.axhline(y_inf, color='black', ls='--', lw=1.2, alpha=0.7,
 
 ax.set_xlabel("Maturity (quarters)")
 ax.set_ylabel("Yield (% per annum)")
-ax.set_title("Yield Curves — One-Factor Affine Model")
 ax.legend(fontsize=10, loc='best')
 ax.set_xlim(1, n_max_1f)
 
@@ -609,11 +614,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-When the short rate is low, the yield curve curve is 
+When the short rate is low, the yield curve is
 upward-sloping, while when the short rate is high, it is downward-sloping.
 
 All three curves converge to the same long-run yield $y_\infty$ at long
-maturities, and the long-run yield lies below the mean short rate
+maturities, and the long-run yield lies above the mean short rate
 $\delta_0$.
 
 ````{exercise}
@@ -631,12 +636,12 @@ y_\infty
 ```
 
 where $\bar B_\infty = -(I - (\phi - C\lambda_z)^\top)^{-1} \delta_1$
-is the fixed point of the recursion {eq}`eq_riccati_B`.
+is the fixed point of the recursion {eq}`eq_riccati_b`.
 
-Then explain why $y_\infty < \delta_0$ under this parameterization.
+Then explain why $y_\infty > \delta_0$ under this parameterization.
 
 *Hint:* Use {eq}`eq_yield` and the Riccati equations
-{eq}`eq_riccati_A`--{eq}`eq_riccati_B`.  For the inequality, consider
+{eq}`eq_riccati_a`--{eq}`eq_riccati_b`.  For the inequality, consider
 each subtracted term separately.
 ````
 
@@ -645,9 +650,7 @@ each subtracted term separately.
 ```
 
 
-**Derivation of $y_\infty$.**
-
-The recursion {eq}`eq_riccati_B` is a linear difference equation $\bar B_{n+1} = (\phi - C\lambda_z)^\top \bar B_n - \delta_1$.
+The recursion {eq}`eq_riccati_b` is a linear difference equation $\bar B_{n+1} = (\phi - C\lambda_z)^\top \bar B_n - \delta_1$.
 
 When $\phi - C\lambda_z$ has eigenvalues inside the unit circle, $\bar B_n$ converges to $\bar B_\infty = -(I - (\phi - C\lambda_z)^\top)^{-1} \delta_1$.
 
@@ -655,25 +658,17 @@ Since $\bar B_\infty$ is finite, $\bar B_n^\top z_t / n \to 0$ in {eq}`eq_yield`
 
 To find this limit, write $\bar A_n = \bar A_1 + \sum_{k=1}^{n-1}(\bar A_{k+1} - \bar A_k)$.
 
-By {eq}`eq_riccati_A`, each increment depends on $\bar B_k$, which converges to $\bar B_\infty$, so the increment converges to $L \equiv \bar B_\infty^\top(\mu - C\lambda_0) + \tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty - \delta_0$.
+By {eq}`eq_riccati_a`, each increment depends on $\bar B_k$, which converges to $\bar B_\infty$, so the increment converges to $L \equiv \bar B_\infty^\top(\mu - C\lambda_0) + \tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty - \delta_0$.
 
 Therefore $\bar A_n / n \to L$ and $y_\infty = -L$, giving {eq}`eq_y_inf`.
 
-**Why $y_\infty < \delta_0$.**
+To see why $y_\infty > \delta_0$, note that the two subtracted terms in {eq}`eq_y_inf` have opposite signs under this parameterization.
 
-Both subtracted terms in {eq}`eq_y_inf` are positive.
+The quadratic term $\tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty = \tfrac{1}{2}\|C^\top \bar B_\infty\|^2 \geq 0$ always — a **convexity effect** from Jensen's inequality that pushes $y_\infty$ below $\delta_0$.
 
-The quadratic term satisfies $\tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty = \tfrac{1}{2}\|C^\top \bar B_\infty\|^2 \geq 0$ always — a **convexity effect** from Jensen's inequality applied to the exponential bond-price formula.
+The linear term $\bar B_\infty^\top(\mu - C\lambda_0)$ is negative because $\bar B_\infty < 0$ (since $\delta_1 > 0$) while $\mu - C\lambda_0 > 0$ (since $\lambda_0 < 0$).  Subtracting this negative quantity raises $y_\infty$ above $\delta_0$ — a **risk-premium effect**: positive term premiums tilt the average yield curve upward.
 
-The linear term $\bar B_\infty^\top(\mu - C\lambda_0)$ is positive because both factors are negative.
-
-$\bar B_\infty < 0$ since $\delta_1 > 0$: a higher state raises the short rate, so bond prices load negatively on the state.
-
-$\mu - C\lambda_0 < 0$ since $\lambda_0 > 0$: positive risk prices shift the risk-neutral drift below the physical drift.
-
-This is a **risk-premium effect**: compensating investors for interest-rate risk lowers the long-run yield.
-
-Together, these two effects push $y_\infty$ below $\delta_0$.
+Under this parameterization the risk-premium effect dominates the convexity effect, so $y_\infty > \delta_0$.
 
 ```{solution-end}
 ```
@@ -682,6 +677,12 @@ Together, these two effects push $y_\infty$ below $\delta_0$.
 Let's also simulate the short rate path:
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Simulated short rate path
+    name: fig-simulated-short-rate
+---
 T = 200
 Z = simulate(model_1f, np.array([0.0]), T)
 short_rates = np.array([short_rate(model_1f, Z[t]) * 4 * 100
@@ -697,7 +698,6 @@ ax.fill_between(quarters, short_rates, r_bar_pct,
                 alpha=0.08, color=line.get_color())
 ax.set_xlabel("Quarter")
 ax.set_ylabel("Short rate (% p.a.)")
-ax.set_title("Simulated Short Rate")
 ax.set_xlim(0, T)
 ax.legend(fontsize=11)
 plt.tight_layout()
@@ -729,19 +729,17 @@ affects the short rate with a smaller loading, capturing the **slope**
 of the yield curve.
 
 The off-diagonal entry $\phi_{12} = -0.03$ allows the level factor to
-respond to slope innovations.
+respond to the current slope state $z_{2t}$.
 
 The short rate is $r_t = \delta_0 + \delta_1^\top z_t$ with
 $\delta_1 = (0.002,\; 0.001)^\top$, so both factors raise the short
 rate when positive, but the level factor has twice the impact.
 
 Risk prices are $\lambda_t = \lambda_0 + \lambda_z z_t$ with
+$\lambda_0 = (-0.01,\; -0.005)^\top$ and
 $\lambda_z = \text{diag}(-0.005,\, -0.003)$.
 
-The negative diagonal entries mean that risk prices rise when
-the state is low — investors demand higher compensation in bad states.
-
-As discussed above, this makes $\phi - C\lambda_z$ have larger
+The negative diagonal entries of $\lambda_z$ make $\phi - C\lambda_z$ have larger
 eigenvalues than $\phi$, so the state is more persistent under the
 risk-neutral measure and the yield curve is more sensitive to the
 current state at long horizons.
@@ -754,7 +752,7 @@ current state at long horizons.
 C_2  = np.eye(2)
 δ_0_2 = 0.01
 δ_1_2 = np.array([0.002, 0.001])
-λ_0_2 = np.array([0.01,  0.005])
+λ_0_2 = np.array([-0.01, -0.005])
 λ_z_2 = np.array([[-0.005, 0.0],
                    [ 0.0, -0.003]])
 
@@ -765,6 +763,12 @@ print(f"Eigenvalues of φ - Cλ_z: {eigvals(model_2f.φ_rn).real.round(4)}")
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Yield curves and factor loadings under the two-factor model
+    name: fig-yield-curves-2f
+---
 n_max_2f = 60
 maturities_2f = np.arange(1, n_max_2f + 1)
 
@@ -785,7 +789,6 @@ for label, z in states.items():
 
 ax1.set_xlabel("Maturity (quarters)")
 ax1.set_ylabel("Yield (% p.a.)")
-ax1.set_title("Yield Curves — Two-Factor Model")
 ax1.legend(fontsize=10)
 ax1.set_xlim(1, n_max_2f)
 
@@ -800,7 +803,6 @@ ax2.plot(ns, B_n[:, 1], lw=2.2,
 ax2.axhline(0, color='black', lw=0.6)
 ax2.set_xlabel("Maturity (quarters)")
 ax2.set_ylabel(r"Yield loading $B_{n,k}$")
-ax2.set_title("Factor Loadings on Yields")
 ax2.legend(fontsize=11)
 ax2.set_xlim(1, n_max_2f)
 
@@ -817,25 +819,121 @@ plt.show()
 
 ## Risk premiums
 
-A key object in the affine term structure model is the **term premium** — the extra
-expected return on a long-term bond relative to rolling over short-term bonds.
+A key object in the affine term structure model is the **term premium** — the
+expected excess return on a long-term bond relative to rolling over short-term bonds.
 
-For an $(n+1)$-period bond held for one period, the excess log return is
-approximately
+For an $(n+1)$-period bond held for one period, the shock loading is
+$\alpha_n = C^\top \bar B_n$, so {eq}`eq_excess` gives
 
 $$
-\mathbb{E}_t\left[\log R_{t+1}^{(n+1)}\right] - r_t \;=\; -\bar B_n^\top C \lambda_t
+\log \mathbb{E}_t R_{t+1}^{(n+1)} - r_t \;=\; \bar B_n^\top C \lambda_t
 $$
 
-That is, the term premium equals (minus) the product of the bond's exposure to
-the shocks $(-\bar B_n^\top C)$ with the risk prices $\lambda_t$.
+The term premium equals the inner product of the bond's shock exposure
+$\bar B_n^\top C$ with the risk price vector $\lambda_t$.
+
+To understand the sign of the term premium, note that when $\delta_1 > 0$
+a positive shock $\varepsilon_{t+1}$ raises the short rate and lowers
+long-bond prices, so the bond shock loading
+$\alpha_n = C^\top \bar B_n$ is negative.
+
+A negative $\lambda_0$ then means the stochastic discount factor
+$m_{t+1}$ loads positively on $\varepsilon_{t+1}$, i.e. the SDF is
+high in states where interest rates rise and bond prices fall.
+
+This makes $\text{Cov}(m_{t+1}, R_{t+1}^{(n+1)}) < 0$, so long bonds
+are risky and must offer a positive term premium to compensate
+investors — algebraically, $\bar B_n < 0$ and $C\lambda_0 < 0$ combine
+to give $\bar B_n^\top C \lambda_0 > 0$.
+
+```{exercise}
+:label: arp_ex5
+
+Derive the term premium formula above by computing the one-period holding
+return on an $(n+1)$-period bond and identifying its shock loading.
+
+*Hint:* Use $R_{t+1}^{(n+1)} = p_{t+1}(n)/p_t(n+1)$ with
+$\log p_t(n) = \bar A_n + \bar B_n^\top z_t$, substitute the state
+dynamics {eq}`eq_var`, and apply the Riccati equations
+{eq}`eq_riccati_a`--{eq}`eq_riccati_b` to simplify.
+```
+
+```{solution-start} arp_ex5
+:class: dropdown
+```
+
+The one-period holding return on an $(n+1)$-period bond is
+$R_{t+1}^{(n+1)} = p_{t+1}(n)/p_t(n+1)$, so
+
+$$
+\log R_{t+1}^{(n+1)} = \bar A_n + \bar B_n^\top z_{t+1} - \bar A_{n+1} - \bar B_{n+1}^\top z_t
+$$
+
+Substituting $z_{t+1} = \mu + \phi z_t + C\varepsilon_{t+1}$ from {eq}`eq_var`:
+
+$$
+= \underbrace{(\bar A_n + \bar B_n^\top \mu - \bar A_{n+1})}_{\text{constant}}
+  + \underbrace{(\bar B_n^\top \phi - \bar B_{n+1}^\top)}_{\text{loading on } z_t} z_t
+  + \underbrace{\bar B_n^\top C}_{\text{shock loading}}\, \varepsilon_{t+1}
+$$
+
+We now use the Riccati equations to simplify each piece.
+
+For the constant piece, {eq}`eq_riccati_a` gives
+$\bar A_{n+1} = \bar A_n + \bar B_n^\top(\mu - C\lambda_0) + \tfrac{1}{2}\bar B_n^\top CC^\top \bar B_n - \delta_0$, so
+
+$$
+\bar A_n + \bar B_n^\top \mu - \bar A_{n+1}
+  = \bar B_n^\top C\lambda_0 - \tfrac{1}{2}\bar B_n^\top CC^\top \bar B_n + \delta_0
+$$
+
+For the $z_t$ coefficient, {eq}`eq_riccati_b` gives
+$\bar B_{n+1}^\top = \bar B_n^\top(\phi - C\lambda_z) - \delta_1^\top$, so
+
+$$
+\bar B_n^\top \phi - \bar B_{n+1}^\top = \bar B_n^\top C\lambda_z + \delta_1^\top
+$$
+
+Combining the pieces:
+
+$$
+\log R_{t+1}^{(n+1)}
+  = \underbrace{(\delta_0 + \delta_1^\top z_t)}_{r_t}
+  + \bar B_n^\top C\underbrace{(\lambda_0 + \lambda_z z_t)}_{\lambda_t}
+  - \tfrac{1}{2}\bar B_n^\top CC^\top \bar B_n
+  + \bar B_n^\top C\,\varepsilon_{t+1}
+$$
+
+Writing $\alpha_n = C^\top \bar B_n$, this takes the generic return form {eq}`eq_return`:
+
+$$
+\log R_{t+1}^{(n+1)}
+  = \underbrace{(r_t + \alpha_n^\top \lambda_t)}_{\nu_t}
+  - \tfrac{1}{2}\alpha_n^\top \alpha_n
+  + \alpha_n^\top \varepsilon_{t+1}
+$$
+
+Since $\mathbb{E}_t R_{t+1}^{(n+1)} = \exp(\nu_t)$, we obtain
+
+$$
+\log \mathbb{E}_t R_{t+1}^{(n+1)} - r_t = \alpha_n^\top \lambda_t = \bar B_n^\top C \lambda_t
+$$
+
+```{solution-end}
+```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Term premiums and factor decomposition under the two-factor model
+    name: fig-term-premiums-2f
+---
 def term_premiums(model, z, n_max):
-    """Approximate term premiums for maturities 1 to n_max."""
+    """Compute term premiums for maturities 1 to n_max."""
     A_bar, B_bar = bond_coefficients(model, n_max + 1)
     λ_t = risk_prices(model, z)
-    return np.array([-B_bar[n] @ model.C @ λ_t
+    return np.array([B_bar[n-1] @ model.C @ λ_t
                      for n in range(1, n_max + 1)])
 
 n_max_tp = 60
@@ -859,8 +957,6 @@ for label, z in z_states_tp.items():
 ax1.axhline(0, color="black", lw=0.8, ls="--")
 ax1.set_xlabel("Maturity (quarters)")
 ax1.set_ylabel("Term premium (% p.a.)")
-ax1.set_title("Term Premiums — Two Regimes\n"
-              r"($\lambda_z < 0$: higher premiums when rates are low)")
 ax1.legend(fontsize=9)
 ax1.set_xlim(1, n_max_tp)
 
@@ -869,9 +965,9 @@ A_bar_d, B_bar_d = bond_coefficients(model_2f, n_max_tp + 1)
 λ_t = risk_prices(model_2f, z_decomp)
 C_lam = model_2f.C @ λ_t
 
-tp_level = np.array([-B_bar_d[n, 0] * C_lam[0]
+tp_level = np.array([B_bar_d[n-1, 0] * C_lam[0]
                       for n in range(1, n_max_tp + 1)]) * 4 * 100
-tp_slope = np.array([-B_bar_d[n, 1] * C_lam[1]
+tp_slope = np.array([B_bar_d[n-1, 1] * C_lam[1]
                       for n in range(1, n_max_tp + 1)]) * 4 * 100
 tp_total = tp_level + tp_slope
 
@@ -883,7 +979,6 @@ ax2.plot(maturities_tp, tp_slope, lw=1.8, ls="--",
 ax2.axhline(0, color="black", lw=0.6, ls=":")
 ax2.set_xlabel("Maturity (quarters)")
 ax2.set_ylabel("Term premium (% p.a.)")
-ax2.set_title("Factor Decomposition at z = [0, 0]")
 ax2.legend(fontsize=10)
 ax2.set_xlim(1, n_max_tp)
 
@@ -924,7 +1019,7 @@ With the risk-price vector $\lambda_t = \lambda_0 + \lambda_z z_t$ from
 {eq}`eq_riskprices`, define the non-negative random variable
 
 ```{math}
-:label: eq_RN_ratio
+:label: eq_rn_ratio
 
 \frac{\xi^Q_{t+1}}{\xi^Q_t}
   = \exp\!\left(-\tfrac{1}{2}\lambda_t^\top\lambda_t
@@ -968,7 +1063,7 @@ nature uses to generate the data.
 Our key asset pricing equation is
 $\mathbb{E}^P_t m_{t+1} R_{j,t+1} = 1$ for all returns $R_{j,t+1}$.
 
-Using {eq}`eq_RN_ratio`, we can express the SDF {eq}`eq_sdf` as
+Using {eq}`eq_rn_ratio`, we can express the SDF {eq}`eq_sdf` as
 
 $$
 m_{t+1} = \frac{\xi^Q_{t+1}}{\xi^Q_t}\,\exp(-r_t)
@@ -980,7 +1075,7 @@ $\mathbb{E}^P_t\bigl(\exp(-r_t)\,
 is equivalent to
 
 ```{math}
-:label: eq_Qpricing
+:label: eq_qpricing
 
 \mathbb{E}^Q_t R_{j,t+1} = \exp(r_t)
 ```
@@ -1034,7 +1129,7 @@ for n, mc in zip(maturities_check, mc_prices):
 ```
 
 The analytical and Monte Carlo bond prices agree closely, validating the
-Riccati recursion {eq}`eq_riccati_A`–{eq}`eq_riccati_B`.
+Riccati recursion {eq}`eq_riccati_a`–{eq}`eq_riccati_b`.
 
 ## Distorted beliefs
 
@@ -1063,7 +1158,7 @@ To organize this evidence, let $\kappa_t = \kappa_0 + \kappa_z z_t$ and define
 the likelihood ratio
 
 ```{math}
-:label: eq_Srat
+:label: eq_srat
 
 \frac{\xi^S_{t+1}}{\xi^S_t}
   = \exp\!\left(-\tfrac{1}{2}\kappa_t^\top\kappa_t
@@ -1111,7 +1206,7 @@ $$
 where $r^\star_t$ is the short rate and $\lambda^\star_t$ is the agent's
 vector of risk prices.
 
-Using {eq}`eq_Srat` to convert to the physical measure, the subjective
+Using {eq}`eq_srat` to convert to the physical measure, the subjective
 pricing equation becomes
 
 $$
@@ -1157,10 +1252,21 @@ we see that what the econometrician interprets as $\lambda_t$ is actually
 $\lambda^\star_t + \kappa_t$.
 
 Because the econometrician's estimates partly reflect systematic
-distortions in subjective beliefs, they overstate the representative
-agent's true risk prices $\lambda^\star_t$.
+distortions in subjective beliefs, they can overstate the representative
+agent's true risk prices $\lambda^\star_t$ in this calibration.
 
-### Numerical illustration
+Below we construct a numerical example to illustrate this point.
+
+We start with the two-factor model from above, which we take as the true data-generating process.
+
+We then set the subjective parameters $\check\mu, \check\phi$ to match the evidence in
+{cite:t}`piazzesi2015trend` that experts behave as if the level and slope of the yield curve are more persistent than under the physical measure.
+
+In particular, we use 
+
+$$
+\check\phi = \begin{pmatrix} 0.985 & -0.025 \\ 0.00 & 0.94 \end{pmatrix}
+$$
 
 ```{code-cell} ipython3
 φ_P = φ_2.copy()
@@ -1168,12 +1274,12 @@ agent's true risk prices $\lambda^\star_t$.
 
 # Subjective parameters: experts believe factors are MORE persistent
 φ_S = np.array([[0.985, -0.025], [0.00, 0.94]])
-μ_S = np.array([-0.005, 0.0])
+μ_S = np.array([0.005, 0.0])
 
 κ_z = np.linalg.solve(C_2, φ_P - φ_S)
 κ_0 = np.linalg.solve(C_2, μ_P - μ_S)
 
-λ_star_0 = np.array([0.03, 0.015])
+λ_star_0 = np.array([-0.03, -0.015])
 λ_star_z = np.array([[-0.006, 0.0], [0.0, -0.004]])
 
 λ_hat_0 = λ_star_0 + κ_0
@@ -1181,6 +1287,12 @@ agent's true risk prices $\lambda^\star_t$.
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: True vs. distorted-belief term premiums and overstatement ratio
+    name: fig-distorted-beliefs
+---
 model_true = create_affine_model(
     μ_2, φ_2, C_2, δ_0_2, δ_1_2, λ_star_0, λ_star_z)
 model_econ = create_affine_model(
@@ -1206,7 +1318,6 @@ ax1.fill_between(maturities_db, tp_true, tp_econ,
 ax1.axhline(0, color="black", lw=0.8, ls=":")
 ax1.set_xlabel("Maturity (quarters)")
 ax1.set_ylabel("Term premium (% p.a.)")
-ax1.set_title("True vs. Distorted-Belief Term Premiums")
 ax1.legend(fontsize=9.5)
 ax1.set_xlim(1, n_max_db)
 
@@ -1219,7 +1330,6 @@ ax2.axhline(1, color="black", lw=0.8, ls="--",
             label="No distortion (ratio = 1)")
 ax2.set_xlabel("Maturity (quarters)")
 ax2.set_ylabel(r"$\hat{tp}\, /\, tp^\star$")
-ax2.set_title("Overstatement Ratio from Ignoring Belief Bias")
 ax2.legend(fontsize=11)
 ax2.set_xlim(1, n_max_db)
 
