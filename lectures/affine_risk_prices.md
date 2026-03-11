@@ -962,13 +962,22 @@ exposure to the risks $\varepsilon_{t+1}$.
 
 ### Asset pricing in a nutshell
 
-Using {eq}`eq_RN_ratio`, we can factor the SDF {eq}`eq_sdf` as
+Let $\mathbb{E}^P$ denote an expectation under the physical measure that
+nature uses to generate the data.
+
+Our key asset pricing equation is
+$\mathbb{E}^P_t m_{t+1} R_{j,t+1} = 1$ for all returns $R_{j,t+1}$.
+
+Using {eq}`eq_RN_ratio`, we can express the SDF {eq}`eq_sdf` as
 
 $$
 m_{t+1} = \frac{\xi^Q_{t+1}}{\xi^Q_t}\,\exp(-r_t)
 $$
 
-The pricing condition $\mathbb{E}^P_t(m_{t+1} R_{j,t+1}) = 1$ then becomes
+Then the condition
+$\mathbb{E}^P_t\bigl(\exp(-r_t)\,
+\tfrac{\xi^Q_{t+1}}{\xi^Q_t}\, R_{j,t+1}\bigr) = 1$
+is equivalent to
 
 ```{math}
 :label: eq_Qpricing
@@ -1081,18 +1090,45 @@ $\check\phi$ has larger eigenvalues than $\phi$.
 
 ### Pricing under distorted beliefs
 
-Suppose a representative agent with subjective beliefs $S$ and true risk
-prices $\lambda^\star_t$ prices assets according to
+{cite:t}`piazzesi2015trend` explore the hypothesis that a representative
+agent with these distorted beliefs prices assets and makes returns satisfy
 
 $$
 \mathbb{E}^S_t\bigl(m^\star_{t+1}\, R_{j,t+1}\bigr) = 1
 $$
 
-where $m^\star_{t+1} = \exp(-r_t - \tfrac{1}{2}\lambda_t^{\star\top}\lambda^\star_t
-- \lambda_t^{\star\top}\varepsilon_{t+1})$.
+where $\mathbb{E}^S_t$ is the conditional expectation under the subjective
+$S$ measure and $m^\star_{t+1}$ is the SDF of an agent with these beliefs.
 
-Expanding in terms of the physical measure $P$, the subjective pricing
-equation becomes
+In particular, the agent's SDF is
+
+$$
+m^\star_{t+1} = \exp\!\left(-r^\star_t
+  - \tfrac{1}{2}\lambda_t^{\star\top}\lambda^\star_t
+  - \lambda_t^{\star\top}\varepsilon_{t+1}\right)
+$$
+
+where $r^\star_t$ is the short rate and $\lambda^\star_t$ is the agent's
+vector of risk prices.
+
+Using {eq}`eq_Srat` to convert to the physical measure, the subjective
+pricing equation becomes
+
+$$
+\mathbb{E}^P_t\!\left[
+  \exp\!\left(-r^\star_t
+    - \tfrac{1}{2}\lambda_t^{\star\top}\lambda^\star_t
+    - \lambda_t^{\star\top}\varepsilon_{t+1}
+  \right)
+  \exp\!\left(
+    - \tfrac{1}{2}\kappa_t^\top\kappa_t
+    - \kappa_t^\top\varepsilon_{t+1}
+  \right)
+  R_{j,t+1}
+\right] = 1
+$$
+
+Combining the two exponentials gives
 
 $$
 \mathbb{E}^P_t\!\left[
@@ -1103,19 +1139,26 @@ $$
 \right] = 1
 $$
 
+where $r_t = r^\star_t - \lambda_t^{\star\top}\kappa_t$.
+
 Comparing this with the rational-expectations econometrician's pricing
-equation $\mathbb{E}^P_t(m_{t+1}\, R_{j,t+1}) = 1$, we see that what the
-econometrician interprets as $\lambda_t$ is actually
+equation
 
 $$
-\hat\lambda_t = \lambda^\star_t + \kappa_t
+\mathbb{E}^P_t\!\left[
+  \exp\!\left(-r_t
+    - \tfrac{1}{2}\lambda_t^\top\lambda_t
+    - \lambda_t^\top\varepsilon_{t+1}
+  \right) R_{j,t+1}
+\right] = 1
 $$
 
-The econometrician's estimate conflates true risk prices $\lambda^\star_t$
-and belief distortions $\kappa_t$.
+we see that what the econometrician interprets as $\lambda_t$ is actually
+$\lambda^\star_t + \kappa_t$.
 
-Part of what looks like a high price of risk is actually a systematic
-forecast bias.
+Because the econometrician's estimates partly reflect systematic
+distortions in subjective beliefs, they overstate the representative
+agent's true risk prices $\lambda^\star_t$.
 
 ### Numerical illustration
 
@@ -1191,12 +1234,13 @@ plt.tight_layout()
 plt.show()
 ```
 
-When expert beliefs are overly persistent ($\hat\phi$ has larger eigenvalues than
-$\phi$), the rational-expectations econometrician attributes too much of the
-observed risk premium to risk aversion.
+When expert beliefs are overly persistent ($\check\phi$ has larger eigenvalues
+than $\phi$), the rational-expectations econometrician attributes too much of
+the observed risk premium to risk aversion.
 
 Disentangling belief distortions from genuine risk prices requires additional
-data — for example, the survey forecasts used by Piazzesi, Salomao, and Schneider.
+data — for example, the survey forecasts used by
+{cite:t}`piazzesi2015trend`.
 
 Our {doc}`Risk Aversion or Mistaken Beliefs? <risk_aversion_or_mistaken_beliefs>` lecture
 explores this confounding in greater depth.
