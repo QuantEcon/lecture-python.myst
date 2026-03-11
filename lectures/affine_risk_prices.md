@@ -59,14 +59,14 @@ Instead, it
 
 Key applications we study include:
 
-1. **Pricing risky assets** — how risk prices and exposures determine excess returns.
-1. **Affine term structure models** — bond yields as affine functions of a state vector
+1. *Pricing risky assets* — how risk prices and exposures determine excess returns.
+1. *Affine term structure models* — bond yields as affine functions of a state vector
    ({cite:t}`AngPiazzesi2003`).
-1. **Risk-neutral probabilities** — a change-of-measure representation of the pricing equation.
-1. **Distorted beliefs** — reinterpreting risk price estimates when agents hold systematically
+1. *Risk-neutral probabilities* — a change-of-measure representation of the pricing equation.
+1. *Distorted beliefs* — reinterpreting risk price estimates when agents hold systematically
    biased forecasts ({cite:t}`piazzesi2015trend`); see also {doc}`Risk Aversion or Mistaken Beliefs? <risk_aversion_or_mistaken_beliefs>`.
 
-We start with some standard imports:
+We start with the following imports:
 
 ```{code-cell} ipython3
 import numpy as np
@@ -81,7 +81,7 @@ from numpy.linalg import eigvals
 
 The model has two components.
 
-**Component 1** is a vector autoregression that describes the state of the economy
+*Component 1* is a vector autoregression that describes the state of the economy
 and the evolution of the short rate:
 
 ```{math}
@@ -106,7 +106,7 @@ Here
 Equation {eq}`eq_shortrate` says that the **short rate** $r_t$ — the net yield on a
 one-period risk-free claim — is an affine function of the state $z_t$.
 
-**Component 2** is a vector of **risk prices** $\lambda_t$ and an associated stochastic
+*Component 2* is a vector of **risk prices** $\lambda_t$ and an associated stochastic
 discount factor $m_{t+1}$:
 
 ```{math}
@@ -130,6 +130,43 @@ to each risk component affect expected returns (as we show below).
 Because $\lambda_t$ is affine in $z_t$, the stochastic discount factor $m_{t+1}$ is
 **exponential quadratic** in the state $z_t$.
 
+We implement the model components as follows.
+
+```{code-cell} ipython3
+AffineModel = namedtuple('AffineModel',
+    ('μ', 'φ', 'C', 'δ_0', 'δ_1', 'λ_0', 'λ_z', 'm', 'φ_rn', 'μ_rn'))
+
+def create_affine_model(μ, φ, C, δ_0, δ_1, λ_0, λ_z):
+    """Create an affine term structure model."""
+    μ = np.asarray(μ, float)
+    φ = np.asarray(φ, float)
+    C = np.asarray(C, float)
+    δ_1 = np.asarray(δ_1, float)
+    λ_0, λ_z = np.asarray(λ_0, float), np.asarray(λ_z, float)
+    return AffineModel(μ=μ, φ=φ, C=C, δ_0=float(δ_0), δ_1=δ_1,
+                       λ_0=λ_0, λ_z=λ_z, m=len(μ),
+                       φ_rn=φ - C @ λ_z, μ_rn=μ - C @ λ_0)
+
+def simulate(model, z0, T, rng=None):
+    """Simulate z_{t+1} = μ + φ z_t + C ε_{t+1} for T periods."""
+    if rng is None:
+        rng = np.random.default_rng(42)
+    Z = np.zeros((T + 1, model.m))
+    Z[0] = z0
+    for t in range(T):
+        ε = rng.standard_normal(model.m)
+        Z[t + 1] = model.μ + model.φ @ Z[t] + model.C @ ε
+    return Z
+
+def short_rate(model, z):
+    """Compute r_t = δ_0 + δ_1^⊤ z_t."""
+    return model.δ_0 + model.δ_1 @ z
+
+def risk_prices(model, z):
+    """Compute λ_t = λ_0 + λ_z z_t."""
+    return model.λ_0 + model.λ_z @ z
+```
+
 ### Properties of the SDF
 
 Since $\lambda_t^\top\varepsilon_{t+1}$ is conditionally normal, it follows that
@@ -138,11 +175,80 @@ $$
 \mathbb{E}_t(m_{t+1}) = \exp(-r_t)
 $$
 
-and   
+and
 
 $$
-\text{std}_t(m_{t+1}) \approx |\lambda_t|.
+\text{std}_t(m_{t+1}) \approx \| \lambda_t \|.
 $$
+
+```{exercise}
+:label: arp_ex1
+
+Show that the SDF defined in {eq}`eq_sdf` satisfies
+
+$$
+\mathbb{E}_t(m_{t+1}) = \exp(-r_t)
+$$
+
+and
+
+$$
+\text{std}_t(m_{t+1}) \approx \| \lambda_t \|
+$$
+
+where $\| \lambda_t \| = \sqrt{\lambda_t^\top\lambda_t}$ denotes the Euclidean norm of the risk price vector.
+
+For the second result, use the lognormal variance formula and the approximations $\exp(x) \approx 1 + x$ and $\exp(-r_t) \approx 1$ for small $x$ and $r_t$.
+```
+
+```{solution-start} arp_ex1
+:class: dropdown
+```
+
+From {eq}`eq_sdf`, we have
+
+$$
+m_{t+1} = \exp\left(-r_t - \frac{1}{2}\lambda_t^\top\lambda_t - \lambda_t^\top\varepsilon_{t+1}\right)
+$$
+
+
+Since $-\lambda_t^\top \varepsilon_{t+1} \sim \mathcal{N}(0, \lambda_t^\top \lambda_t)$, we have
+$\mathbb{E}_t[\exp(-\lambda_t^\top \varepsilon_{t+1})] = \exp\left(\frac{1}{2}\lambda_t^\top \lambda_t\right)$.
+
+Therefore,
+
+$$
+\mathbb{E}_t(m_{t+1}) = \exp(-r_t - \frac{1}{2}\lambda_t^\top\lambda_t) \mathbb{E}_t[\exp(-\lambda_t^\top\varepsilon_{t+1})] = \exp(-r_t)
+$$
+
+$m_{t+1}$ is conditionally lognormal with $\log m_{t+1} \sim \mathcal{N}(-r_t-\frac{1}{2}\lambda_t^\top\lambda_t, \lambda_t^\top \lambda_t)$. 
+
+By the lognormal variance formula
+$\text{Var}(\exp(X)) = (\exp(\sigma^2) - 1) \exp(2\mu + \sigma^2)$ for $X \sim \mathcal{N}(\mu, \sigma^2)$, we have
+
+$$
+\begin{aligned}
+\text{Var}_t(m_{t+1}) &= (\exp(\lambda_t^\top \lambda_t) - 1) \exp(-2r_t) \\
+&\approx \lambda_t^\top \lambda_t \exp(-2r_t)
+\end{aligned}
+$$
+
+by the approximation $\exp(x) \approx 1 + x$ for small $x$.
+
+Hence,
+
+$$
+\text{std}_t(m_{t+1}) \approx \| \lambda_t \| \exp(-r_t)
+$$
+
+With $\exp(-r_t) \approx 1$ for small $r_t$, we obtain
+
+$$
+\text{std}_t(m_{t+1}) \approx \| \lambda_t \|
+$$
+
+```{solution-end}
+```
 
 The first equation confirms that $r_t$ is the net yield on a risk-free one-period bond.
 
@@ -189,6 +295,43 @@ formula for the mean of a lognormal random variable gives
 :label: eq_excess
 
 \nu_t(j) = r_t + \alpha_t(j)^\top\lambda_t
+```
+
+```{exercise}
+:label: arp_ex2
+
+Using the SDF {eq}`eq_sdf` and the return specification {eq}`eq_return`, derive the expected excess return formula {eq}`eq_excess`:
+
+$$
+\nu_t(j) = r_t + \alpha_t(j)^\top\lambda_t
+$$
+
+*Hint:* Start by computing $\log(m_{t+1} R_{j,t+1})$, identify its conditional distribution, and apply the pricing condition $\mathbb{E}_t(m_{t+1}R_{j,t+1}) = 1$.
+```
+
+```{solution-start} arp_ex2
+:class: dropdown
+```
+
+Combining {eq}`eq_sdf` and {eq}`eq_return`, we get
+
+$$
+\log(m_{t+1} R_{j,t+1}) = -r_t + \nu_t(j) - \frac{1}{2}\lambda_t^\top\lambda_t - \frac{1}{2}\alpha_t(j)^\top\alpha_t(j) + (\alpha_t(j) - \lambda_t)^\top\varepsilon_{t+1}
+$$
+
+This is conditionally normal with mean $\mu = -r_t + \nu_t(j) - \frac{1}{2}\lambda_t^\top\lambda_t - \frac{1}{2}\alpha_t(j)^\top\alpha_t(j)$ and variance $\sigma^2 = (\alpha_t(j) - \lambda_t)^\top(\alpha_t(j) - \lambda_t)$.
+
+Since $\mathbb{E}_t[\exp(X)] = \exp(\mu + \frac{1}{2}\sigma^2)$ for $X \sim \mathcal{N}(\mu, \sigma^2)$, the pricing condition $\mathbb{E}_t(m_{t+1}R_{j,t+1}) = 1$ requires $\mu + \frac{1}{2}\sigma^2 = 0$.
+
+Expanding $\frac{1}{2}\sigma^2 = \frac{1}{2}\alpha_t(j)^\top\alpha_t(j) - \alpha_t(j)^\top\lambda_t + \frac{1}{2}\lambda_t^\top\lambda_t$ and adding to $\mu$, the $\frac{1}{2}\lambda_t^\top\lambda_t$ and $\frac{1}{2}\alpha_t(j)^\top\alpha_t(j)$ terms cancel, leaving
+
+$$
+-r_t + \nu_t(j) - \alpha_t(j)^\top\lambda_t = 0
+$$
+
+which gives {eq}`eq_excess`.
+
+```{solution-end}
 ```
 
 This is a central result.
@@ -240,7 +383,7 @@ The recursion {eq}`eq_bondrecur` has an **exponential affine** solution:
 ```{math}
 :label: eq_bondprice
 
-p_t(n) = \exp\!\bigl(\bar A_n + \bar B_n^\top z_t\bigr)
+p_t(n) = \exp \bigl(\bar A_n + \bar B_n^\top z_t\bigr)
 ```
 
 where the scalar $\bar A_n$ and the $m \times 1$ vector $\bar B_n$ satisfy the
@@ -260,9 +403,80 @@ where the scalar $\bar A_n$ and the $m \times 1$ vector $\bar B_n$ satisfy the
 
 with initial conditions $\bar A_1 = -\delta_0$ and $\bar B_1 = -\delta_1$.
 
+```{exercise}
+:label: arp_ex3
+
+Derive the Riccati difference equations {eq}`eq_riccati_A` and {eq}`eq_riccati_B`
+by substituting the conjectured bond price {eq}`eq_bondprice` into the pricing
+recursion {eq}`eq_bondrecur` and matching coefficients.
+
+*Hint:* Substitute $p_{t+1}(n) = \exp(\bar A_n + \bar B_n^\top z_{t+1})$ and
+$\log m_{t+1}$ from {eq}`eq_sdf` into {eq}`eq_bondrecur`.  Use the state
+dynamics {eq}`eq_var` to express $z_{t+1}$ in terms of $z_t$ and
+$\varepsilon_{t+1}$, then evaluate the conditional expectation using the
+lognormal moment generating function.
+```
+
+```{solution-start} arp_ex3
+:class: dropdown
+```
+
+We want to show that if $p_t(n) = \exp(\bar A_n + \bar B_n^\top z_t)$,
+then the recursion $p_t(n+1) = \mathbb{E}_t(m_{t+1}\, p_{t+1}(n))$ yields
+$p_t(n+1) = \exp(\bar A_{n+1} + \bar B_{n+1}^\top z_t)$ with
+$\bar A_{n+1}$ and $\bar B_{n+1}$ given by {eq}`eq_riccati_A` and
+{eq}`eq_riccati_B`.
+
+
+From {eq}`eq_sdf` and {eq}`eq_bondprice`,
+
+$$
+\log(m_{t+1}\, p_{t+1}(n)) = -r_t - \frac{1}{2}\lambda_t^\top\lambda_t - \lambda_t^\top\varepsilon_{t+1} + \bar A_n + \bar B_n^\top z_{t+1}
+$$
+
+Substituting $z_{t+1} = \mu + \phi z_t + C\varepsilon_{t+1}$ from {eq}`eq_var`
+and $r_t = \delta_0 + \delta_1^\top z_t$ from {eq}`eq_shortrate` gives
+
+$$
+\log(m_{t+1}\, p_{t+1}(n)) = \bar A_n + \bar B_n^\top\mu - \delta_0 + (\bar B_n^\top\phi - \delta_1^\top) z_t - \frac{1}{2}\lambda_t^\top\lambda_t + (\bar B_n^\top C - \lambda_t^\top)\varepsilon_{t+1}
+$$
+
+
+Since $\varepsilon_{t+1} \sim \mathcal{N}(0, I)$, and writing the exponent as $a + b^\top\varepsilon_{t+1}$ where
+$b = C^\top \bar B_n - \lambda_t$, we have
+
+$$
+\mathbb{E}_t[\exp(a + b^\top\varepsilon_{t+1})] = \exp\left(a + \frac{1}{2}b^\top b\right)
+$$
+
+Computing $\frac{1}{2}b^\top b$:
+
+$$
+\frac{1}{2}(\bar B_n^\top C - \lambda_t^\top)(\bar B_n^\top C - \lambda_t^\top)^\top = \frac{1}{2}\bar B_n^\top CC^\top \bar B_n - \bar B_n^\top C\lambda_t + \frac{1}{2}\lambda_t^\top\lambda_t
+$$
+
+The $\frac{1}{2}\lambda_t^\top\lambda_t$ cancels with the $-\frac{1}{2}\lambda_t^\top\lambda_t$ already in $a$, and $-\bar B_n^\top C\lambda_t = -\bar B_n^\top C(\lambda_0 + \lambda_z z_t)$.
+
+
+$$
+\log p_t(n+1) = \underbrace{\bar A_n + \bar B_n^\top(\mu - C\lambda_0) + \frac{1}{2}\bar B_n^\top CC^\top \bar B_n - \delta_0}_{\bar A_{n+1}} + \underbrace{(\bar B_n^\top(\phi - C\lambda_z) - \delta_1^\top)}_{\bar B_{n+1}^\top} z_t
+$$
+
+Matching the constant and the coefficient on $z_t$ gives the Riccati
+equations {eq}`eq_riccati_A` and {eq}`eq_riccati_B`.
+
+Setting $n = 0$ with $p_t(1) = \exp(-r_t) = \exp(-\delta_0 - \delta_1^\top z_t)$ gives $\bar A_1 = -\delta_0$ and $\bar B_1 = -\delta_1$.
+
+```{solution-end}
+```
+
 ### Yields
 
-The **yield to maturity** on an $n$-period bond is
+The **yield to maturity** on an $n$-period bond is the constant rate $y$
+at which one would discount the face value to obtain the observed price,
+i.e., $p_t(n) = e^{-n\,y}$.  
+
+Solving for $y$ gives
 
 $$
 y_t(n) = -\frac{\log p_t(n)}{n}
@@ -282,26 +496,10 @@ where $A_n = -\bar A_n / n$ and $B_n = -\bar B_n / n$.
 
 This is the defining property of affine term structure models.
 
-## Python implementation
-
-We now implement the affine term structure model and compute bond prices, yields,
-and risk premiums numerically.
+We now implement the bond pricing formulas {eq}`eq_riccati_A`, {eq}`eq_riccati_B`,
+and {eq}`eq_yield`.
 
 ```{code-cell} ipython3
-AffineModel = namedtuple('AffineModel',
-    ('μ', 'φ', 'C', 'δ_0', 'δ_1', 'λ_0', 'λ_z', 'm', 'φ_rn', 'μ_rn'))
-
-def create_affine_model(μ, φ, C, δ_0, δ_1, λ_0, λ_z):
-    """Create an affine term structure model."""
-    μ = np.asarray(μ, float)
-    φ = np.asarray(φ, float)
-    C = np.asarray(C, float)
-    δ_1 = np.asarray(δ_1, float)
-    λ_0, λ_z = np.asarray(λ_0, float), np.asarray(λ_z, float)
-    return AffineModel(μ=μ, φ=φ, C=C, δ_0=float(δ_0), δ_1=δ_1,
-                       λ_0=λ_0, λ_z=λ_z, m=len(μ),
-                       φ_rn=φ - C @ λ_z, μ_rn=μ - C @ λ_0)
-
 def bond_coefficients(model, n_max):
     """Compute (A_bar_n, B_bar_n) for n = 1, ..., n_max."""
     A_bar = np.zeros(n_max + 1)
@@ -319,38 +517,26 @@ def bond_coefficients(model, n_max):
 def compute_yields(model, z, n_max):
     """Compute yield curve y_t(n) for n = 1, ..., n_max."""
     A_bar, B_bar = bond_coefficients(model, n_max)
-    ns = np.arange(1, n_max + 1)
-    return np.array([(-A_bar[n] - B_bar[n] @ z) / n for n in ns])
+    return np.array([(-A_bar[n] - B_bar[n] @ z) / n
+                     for n in range(1, n_max + 1)])
 
 def bond_prices(model, z, n_max):
     """Compute bond prices p_t(n) for n = 1, ..., n_max."""
     A_bar, B_bar = bond_coefficients(model, n_max)
     return np.array([np.exp(A_bar[n] + B_bar[n] @ z)
                      for n in range(1, n_max + 1)])
-
-def simulate(model, z0, T, rng=None):
-    """Simulate the state process for T periods."""
-    if rng is None:
-        rng = np.random.default_rng(42)
-    Z = np.zeros((T + 1, model.m))
-    Z[0] = z0
-    for t in range(T):
-        ε = rng.standard_normal(model.m)
-        Z[t + 1] = model.μ + model.φ @ Z[t] + model.C @ ε
-    return Z
-
-def short_rate(model, z):
-    """Compute r_t = δ_0 + δ_1^⊤ z_t."""
-    return model.δ_0 + model.δ_1 @ z
-
-def risk_prices(model, z):
-    """Compute λ_t = λ_0 + λ_z z_t."""
-    return model.λ_0 + model.λ_z @ z
 ```
 
 ### A one-factor Gaussian example
 
 To build intuition, we start with a single-factor ($m=1$) Gaussian model.
+
+With $m = 1$, the state $z_t$ follows an AR(1) process
+$z_{t+1} = \mu + \phi z_t + C\varepsilon_{t+1}$.  
+
+The unconditional standard
+deviation of $z_t$ is $\sigma_z = C / \sqrt{1 - \phi^2}$, which determines
+the range of short rates the model generates via $r_t = \delta_0 + \delta_1 z_t$.
 
 ```{code-cell} ipython3
 # One-factor Gaussian model (quarterly)
@@ -363,24 +549,11 @@ C      = np.array([[1.0]])
 λ_z    = np.array([[-0.01]])   # countercyclical
 
 model_1f = create_affine_model(μ, φ, C, δ_0, δ_1, λ_0, λ_z)
-
-φ_Q = model_1f.φ_rn[0, 0]
-half_life = np.log(2) / (-np.log(φ[0, 0]))
-σ_z = 1.0 / np.sqrt(1 - φ[0, 0]**2)
-print(f"Physical AR(1):      φ   = {φ[0,0]:.3f}"
-      f"  (half-life {half_life:.1f} quarters)")
-print(f"Risk-neutral AR(1):  φ^Q = {φ_Q:.3f}  "
-      f"({'stable' if abs(φ_Q) < 1 else 'UNSTABLE'})")
-print(f"Unconditional std of z:  σ_z = {σ_z:.2f}")
-r_mean = short_rate(model_1f, np.array([0.0])) * 4 * 100
-print(f"Mean short rate = {r_mean:.1f}% p.a.")
-print(f"Short rate range (±2σ): [{(δ_0-δ_1[0]*2*σ_z)*4*100:.1f}%, "
-      f"{(δ_0+δ_1[0]*2*σ_z)*4*100:.1f}%] p.a.")
 ```
 
 ### Yield curve shapes
 
-We compute yield curves across a range of short-rate states $z_t$.
+We compute yield curves $y_t(n)$ across a range of short-rate states $z_t$.
 
 ```{code-cell} ipython3
 n_max_1f = 60
@@ -396,21 +569,28 @@ r_low = short_rate(model_1f, z_low) * 4 * 100
 r_mid = short_rate(model_1f, z_mid) * 4 * 100
 r_high = short_rate(model_1f, z_high) * 4 * 100
 
-for z, label, color in [
-    (z_low,  f"Low state  (r₁ = {r_low:.1f}%)",
-     "steelblue"),
-    (z_mid,  f"Median state (r₁ = {r_mid:.1f}%)",
-     "seagreen"),
-    (z_high, f"High state (r₁ = {r_high:.1f}%)",
-     "firebrick"),
+for z, label in [
+    (z_low,  f"Low state  ($y_t(1) = ${r_low:.1f}%)"),
+    (z_mid,  f"Median state ($y_t(1) = ${r_mid:.1f}%)"),
+    (z_high, f"High state ($y_t(1) = ${r_high:.1f}%)"),
 ]:
     y = compute_yields(model_1f, z, n_max_1f) * 4 * 100
-    ax.plot(maturities_1f, y, color=color, lw=2.2, label=label)
-    ax.plot(1, y[0], 'o', color=color, ms=7, zorder=5)
+    line, = ax.plot(maturities_1f, y, lw=2.2, label=label)
+    ax.plot(1, y[0], 'o', color=line.get_color(), ms=7, zorder=5)
 
 r_bar = short_rate(model_1f, np.array([0.0])) * 4 * 100
 ax.axhline(r_bar, color='grey', ls=':', lw=1.2, alpha=0.7,
            label=f"Mean short rate ({r_bar:.1f}%)")
+
+# Long-run yield: B_bar_n converges, so y_inf = lim -A_bar_n / n
+φ_Cλ = (model_1f.φ_rn)[0, 0]          # φ - Cλ_z (scalar)
+B_inf = -model_1f.δ_1[0] / (1 - φ_Cλ) # fixed point of B recursion
+A_increment = (B_inf * model_1f.μ_rn[0]
+               + 0.5 * B_inf**2 * (model_1f.C @ model_1f.C.T)[0, 0]
+               - model_1f.δ_0)
+y_inf = -A_increment * 4 * 100         # annualised %
+ax.axhline(y_inf, color='black', ls='--', lw=1.2, alpha=0.7,
+           label=f"Long-run yield ({y_inf:.1f}%)")
 
 ax.set_xlabel("Maturity (quarters)")
 ax.set_ylabel("Yield (% per annum)")
@@ -420,7 +600,7 @@ ax.set_xlim(1, n_max_1f)
 
 ax2 = ax.twiny()
 ax2.set_xlim(ax.get_xlim())
-year_ticks = [4, 8, 12, 20, 28, 40, 60]
+year_ticks = [4, 20, 40, 60]
 ax2.set_xticks(year_ticks)
 ax2.set_xticklabels([f"{t/4:.0f}y" for t in year_ticks])
 ax2.set_xlabel("Maturity (years)")
@@ -429,10 +609,77 @@ plt.tight_layout()
 plt.show()
 ```
 
-The model generates upward-sloping, flat, and inverted yield curves as the short
-rate moves across states — a key qualitative feature of observed bond markets.
+When the short rate is low, the yield curve curve is 
+upward-sloping, while when the short rate is high, it is downward-sloping.
 
-### Short rate dynamics
+All three curves converge to the same long-run yield $y_\infty$ at long
+maturities, and the long-run yield lies below the mean short rate
+$\delta_0$.
+
+````{exercise}
+:label: arp_ex4
+
+Show that the long-run yield satisfies
+
+```{math}
+:label: eq_y_inf
+
+y_\infty
+  = \delta_0
+  - \bar B_\infty^\top(\mu - C\lambda_0)
+  - \tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty
+```
+
+where $\bar B_\infty = -(I - (\phi - C\lambda_z)^\top)^{-1} \delta_1$
+is the fixed point of the recursion {eq}`eq_riccati_B`.
+
+Then explain why $y_\infty < \delta_0$ under this parameterization.
+
+*Hint:* Use {eq}`eq_yield` and the Riccati equations
+{eq}`eq_riccati_A`--{eq}`eq_riccati_B`.  For the inequality, consider
+each subtracted term separately.
+````
+
+```{solution-start} arp_ex4
+:class: dropdown
+```
+
+
+**Derivation of $y_\infty$.**
+
+The recursion {eq}`eq_riccati_B` is a linear difference equation $\bar B_{n+1} = (\phi - C\lambda_z)^\top \bar B_n - \delta_1$.
+
+When $\phi - C\lambda_z$ has eigenvalues inside the unit circle, $\bar B_n$ converges to $\bar B_\infty = -(I - (\phi - C\lambda_z)^\top)^{-1} \delta_1$.
+
+Since $\bar B_\infty$ is finite, $\bar B_n^\top z_t / n \to 0$ in {eq}`eq_yield`, so $y_t(n) \to \lim_{n\to\infty} -\bar A_n / n$ regardless of $z_t$.
+
+To find this limit, write $\bar A_n = \bar A_1 + \sum_{k=1}^{n-1}(\bar A_{k+1} - \bar A_k)$.
+
+By {eq}`eq_riccati_A`, each increment depends on $\bar B_k$, which converges to $\bar B_\infty$, so the increment converges to $L \equiv \bar B_\infty^\top(\mu - C\lambda_0) + \tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty - \delta_0$.
+
+Therefore $\bar A_n / n \to L$ and $y_\infty = -L$, giving {eq}`eq_y_inf`.
+
+**Why $y_\infty < \delta_0$.**
+
+Both subtracted terms in {eq}`eq_y_inf` are positive.
+
+The quadratic term satisfies $\tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty = \tfrac{1}{2}\|C^\top \bar B_\infty\|^2 \geq 0$ always — a **convexity effect** from Jensen's inequality applied to the exponential bond-price formula.
+
+The linear term $\bar B_\infty^\top(\mu - C\lambda_0)$ is positive because both factors are negative.
+
+$\bar B_\infty < 0$ since $\delta_1 > 0$: a higher state raises the short rate, so bond prices load negatively on the state.
+
+$\mu - C\lambda_0 < 0$ since $\lambda_0 > 0$: positive risk prices shift the risk-neutral drift below the physical drift.
+
+This is a **risk-premium effect**: compensating investors for interest-rate risk lowers the long-run yield.
+
+Together, these two effects push $y_\infty$ below $\delta_0$.
+
+```{solution-end}
+```
+
+
+Let's also simulate the short rate path:
 
 ```{code-cell} ipython3
 T = 200
@@ -443,14 +690,14 @@ r_bar_pct = short_rate(model_1f, np.array([0.0])) * 4 * 100
 
 fig, ax = plt.subplots(figsize=(10, 4))
 quarters = np.arange(T + 1)
-ax.plot(quarters, short_rates, color="steelblue", lw=1.3)
-ax.axhline(r_bar_pct, color="red", ls="--", lw=1.3,
+line, = ax.plot(quarters, short_rates, lw=1.3)
+ax.axhline(r_bar_pct, ls="--", lw=1.3,
            label=f"Unconditional mean ({r_bar_pct:.1f}%)")
 ax.fill_between(quarters, short_rates, r_bar_pct,
-                alpha=0.08, color="steelblue")
+                alpha=0.08, color=line.get_color())
 ax.set_xlabel("Quarter")
 ax.set_ylabel("Short rate (% p.a.)")
-ax.set_title("Simulated Short Rate — One-Factor Model (50 years)")
+ax.set_title("Simulated Short Rate")
 ax.set_xlim(0, T)
 ax.legend(fontsize=11)
 plt.tight_layout()
@@ -459,10 +706,45 @@ plt.show()
 
 ### A two-factor model
 
-To match richer yield-curve dynamics, practitioners routinely use $m \geq 2$ factors.
+To match richer yield-curve dynamics, practitioners routinely use $m \geq 2$
+factors.
 
-We now introduce a two-factor specification in which the factors
-can be interpreted as a **level** component and a **slope** component.
+We now introduce a two-factor specification with state
+$z_t = (z_{1t},\, z_{2t})^\top$, where
+
+$$
+z_{t+1} = \mu + \phi\, z_t + C\,\varepsilon_{t+1},
+\qquad
+\phi = \begin{pmatrix} 0.97 & -0.03 \\ 0 & 0.90 \end{pmatrix},
+\qquad
+C = I_2
+$$
+
+The first factor $z_{1t}$ is highly persistent ($\phi_{11} = 0.97$) and
+drives most of the variation in the short rate through $\delta_1$, so we
+interpret it as a **level** factor.
+
+The second factor $z_{2t}$ mean-reverts faster ($\phi_{22} = 0.90$) and
+affects the short rate with a smaller loading, capturing the **slope**
+of the yield curve.
+
+The off-diagonal entry $\phi_{12} = -0.03$ allows the level factor to
+respond to slope innovations.
+
+The short rate is $r_t = \delta_0 + \delta_1^\top z_t$ with
+$\delta_1 = (0.002,\; 0.001)^\top$, so both factors raise the short
+rate when positive, but the level factor has twice the impact.
+
+Risk prices are $\lambda_t = \lambda_0 + \lambda_z z_t$ with
+$\lambda_z = \text{diag}(-0.005,\, -0.003)$.
+
+The negative diagonal entries mean that risk prices rise when
+the state is low — investors demand higher compensation in bad states.
+
+As discussed above, this makes $\phi - C\lambda_z$ have larger
+eigenvalues than $\phi$, so the state is more persistent under the
+risk-neutral measure and the yield curve is more sensitive to the
+current state at long horizons.
 
 ```{code-cell} ipython3
 # Two-factor model: z = [level, slope]
@@ -478,19 +760,8 @@ C_2  = np.eye(2)
 
 model_2f = create_affine_model(μ_2, φ_2, C_2, δ_0_2, δ_1_2, λ_0_2, λ_z_2)
 
-print("Physical measure VAR:")
-print(f"  φ =\n{φ_2}")
-print(f"  eigenvalues of φ: {eigvals(φ_2).real.round(4)}")
-print()
-print("Risk-neutral measure VAR:")
-print(f"  φ^Q = φ - Cλ_z =\n{model_2f.φ_rn.round(4)}")
-eigs_Q = eigvals(model_2f.φ_rn).real
-stable = all(abs(e) < 1 for e in eigs_Q)
-status = "stable" if stable else "UNSTABLE"
-print(f"  eigenvalues of φ^Q: {eigs_Q.round(4)}"
-      f"  ({status})")
-print()
-print("Risk prices make Q dynamics more persistent than P dynamics.")
+print(f"Eigenvalues of φ:       {eigvals(φ_2).real.round(4)}")
+print(f"Eigenvalues of φ - Cλ_z: {eigvals(model_2f.φ_rn).real.round(4)}")
 ```
 
 ```{code-cell} ipython3
@@ -505,17 +776,13 @@ states = {
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5.5))
 
-colors_2f = ["seagreen", "steelblue", "firebrick"]
-for (label, z), color in zip(states.items(), colors_2f):
+for label, z in states.items():
     r_now = short_rate(model_2f, z) * 4 * 100
     y = compute_yields(model_2f, z, n_max_2f) * 4 * 100
-    ax1.plot(maturities_2f, y, lw=2.2, color=color,
-             label=f"{label} (r₁ = {r_now:.1f}%)")
-    ax1.plot(1, y[0], 'o', color=color, ms=7, zorder=5)
+    line, = ax1.plot(maturities_2f, y, lw=2.2,
+                     label=f"{label} (r₁ = {r_now:.1f}%)")
+    ax1.plot(1, y[0], 'o', color=line.get_color(), ms=7, zorder=5)
 
-ax1.annotate("Curves converge as\nmean reversion dominates",
-             xy=(50, 3.8), fontsize=9, color="gray", ha='center',
-             style='italic')
 ax1.set_xlabel("Maturity (quarters)")
 ax1.set_ylabel("Yield (% p.a.)")
 ax1.set_title("Yield Curves — Two-Factor Model")
@@ -526,9 +793,9 @@ A_bar, B_bar = bond_coefficients(model_2f, n_max_2f)
 ns = np.arange(1, n_max_2f + 1)
 B_n = np.array([-B_bar[n] / n for n in ns])
 
-ax2.plot(ns, B_n[:, 0], lw=2.2, color="purple",
+ax2.plot(ns, B_n[:, 0], lw=2.2,
          label=r"Level loading $B_{n,1}$")
-ax2.plot(ns, B_n[:, 1], lw=2.2, color="orange",
+ax2.plot(ns, B_n[:, 1], lw=2.2,
          label=r"Slope loading $B_{n,2}$")
 ax2.axhline(0, color='black', lw=0.6)
 ax2.set_xlabel("Maturity (quarters)")
@@ -536,9 +803,6 @@ ax2.set_ylabel(r"Yield loading $B_{n,k}$")
 ax2.set_title("Factor Loadings on Yields")
 ax2.legend(fontsize=11)
 ax2.set_xlim(1, n_max_2f)
-ax2.annotate("Level factor stays\nimportant at long maturities",
-             xy=(45, B_n[44, 0]), fontsize=9, color="purple",
-             ha='center', va='bottom')
 
 for ax in (ax1, ax2):
     ax_top = ax.twiny()
@@ -584,12 +848,11 @@ z_states_tp = {
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5.5))
 
-tp_colors = ["steelblue", "firebrick"]
-for (label, z), color in zip(z_states_tp.items(), tp_colors):
+for label, z in z_states_tp.items():
     tp = term_premiums(model_2f, z, n_max_tp) * 4 * 100
     r_now = short_rate(model_2f, z) * 4 * 100
     lam = risk_prices(model_2f, z)
-    ax1.plot(maturities_tp, tp, color=color, lw=2.2,
+    ax1.plot(maturities_tp, tp, lw=2.2,
              label=(f"{label}\n  r={r_now:.1f}%,"
                     f" λ=[{lam[0]:.3f}, {lam[1]:.3f}]"))
 
@@ -613,9 +876,9 @@ tp_slope = np.array([-B_bar_d[n, 1] * C_lam[1]
 tp_total = tp_level + tp_slope
 
 ax2.plot(maturities_tp, tp_total, 'k-', lw=2.2, label="Total")
-ax2.plot(maturities_tp, tp_level, color="purple", lw=1.8, ls="--",
+ax2.plot(maturities_tp, tp_level, lw=1.8, ls="--",
          label="Level factor")
-ax2.plot(maturities_tp, tp_slope, color="orange", lw=1.8, ls="--",
+ax2.plot(maturities_tp, tp_slope, lw=1.8, ls="--",
          label="Slope factor")
 ax2.axhline(0, color="black", lw=0.6, ls=":")
 ax2.set_xlabel("Maturity (quarters)")
@@ -637,24 +900,75 @@ plt.show()
 
 ## Risk-neutral probabilities
 
-The stochastic discount factor {eq}`eq_sdf` defines a **change of measure** from the
-physical measure $P$ to the **risk-neutral measure** $Q$.
+We return to the VAR and short-rate equations
+{eq}`eq_var`--{eq}`eq_shortrate`, which for convenience we repeat here:
 
-Define the likelihood ratio
+$$
+z_{t+1} = \mu + \phi z_t + C\varepsilon_{t+1}, \qquad
+r_t = \delta_0 + \delta_1^\top z_t
+$$
+
+where $\varepsilon_{t+1} \sim \mathcal{N}(0, I)$.
+
+We suppose that this structure describes the data-generating mechanism.
+
+Finance economists call this the **physical measure** $P$, to distinguish it
+from the **risk-neutral measure** $Q$ that we now describe.
+
+Under the physical measure, the conditional distribution of $z_{t+1}$ given
+$z_t$ is $\mathcal{N}(\mu + \phi z_t,\; CC^\top)$.
+
+### Change of measure
+
+With the risk-price vector $\lambda_t = \lambda_0 + \lambda_z z_t$ from
+{eq}`eq_riskprices`, define the non-negative random variable
 
 ```{math}
 :label: eq_RN_ratio
 
-\frac{\xi^Q_{t+1}}{\xi^Q_t} = \exp\!\left(-\frac{1}{2}\lambda_t^\top\lambda_t - \lambda_t^\top\varepsilon_{t+1}\right)
+\frac{\xi^Q_{t+1}}{\xi^Q_t}
+  = \exp\!\left(-\tfrac{1}{2}\lambda_t^\top\lambda_t
+                - \lambda_t^\top\varepsilon_{t+1}\right)
 ```
 
-Then
+This is a log-normal random variable with mean 1, so it is a valid
+likelihood ratio that can be used to twist the conditional distribution of
+$z_{t+1}$.
+
+Multiplying the physical conditional distribution by this likelihood ratio
+transforms it into the **risk-neutral conditional distribution**
 
 $$
-m_{t+1} = \frac{\xi^Q_{t+1}}{\xi^Q_t}\exp(-r_t)
+z_{t+1} \mid z_t \;\overset{Q}{\sim}\;
+  \mathcal{N}\!\bigl(\mu - C\lambda_0 + (\phi - C\lambda_z)z_t,\; CC^\top\bigr)
 $$
 
-and the pricing equation $\mathbb{E}^P_t(m_{t+1}R_{j,t+1}) = 1$ becomes
+In other words, under $Q$ the state follows
+
+$$
+z_{t+1} = (\mu - C\lambda_0) + (\phi - C\lambda_z)\,z_t
+         + C\varepsilon^Q_{t+1}
+$$
+
+where $\varepsilon^Q_{t+1} \sim \mathcal{N}(0, I)$ under $Q$.
+
+The risk-neutral distribution twists the conditional mean from
+$\mu + \phi z_t$ to $\mu - C\lambda_0 + (\phi - C\lambda_z)z_t$.
+
+The adjustments $-C\lambda_0$ (constant) and $-C\lambda_z$
+(state-dependent) encode how the pricing equation
+$\mathbb{E}^P_t m_{t+1} R_{j,t+1} = 1$ adjusts expected returns for
+exposure to the risks $\varepsilon_{t+1}$.
+
+### Asset pricing in a nutshell
+
+Using {eq}`eq_RN_ratio`, we can factor the SDF {eq}`eq_sdf` as
+
+$$
+m_{t+1} = \frac{\xi^Q_{t+1}}{\xi^Q_t}\,\exp(-r_t)
+$$
+
+The pricing condition $\mathbb{E}^P_t(m_{t+1} R_{j,t+1}) = 1$ then becomes
 
 ```{math}
 :label: eq_Qpricing
@@ -662,47 +976,27 @@ and the pricing equation $\mathbb{E}^P_t(m_{t+1}R_{j,t+1}) = 1$ becomes
 \mathbb{E}^Q_t R_{j,t+1} = \exp(r_t)
 ```
 
-*Under the risk-neutral measure, expected returns on all assets equal the risk-free return.*
-
-### The risk-neutral VAR
-
-Multiplying the physical conditional distribution of $z_{t+1}$ by the likelihood
-ratio {eq}`eq_RN_ratio` gives the **risk-neutral conditional distribution**
-
-$$
-z_{t+1} \mid z_t \;\overset{Q}{\sim}\; \mathcal{N}\!\bigl(\mu - C\lambda_0 + (\phi - C\lambda_z)z_t,\; CC^\top\bigr)
-$$
-
-In other words, under $Q$ the state vector follows
-
-$$
-z_{t+1} = (\mu - C\lambda_0) + (\phi - C\lambda_z)\,z_t + C\varepsilon^Q_{t+1}
-$$
-
-where $\varepsilon^Q_{t+1} \sim \mathcal{N}(0, I)$ under $Q$.
-
-The risk-neutral drift adjustments $-C\lambda_0$ (constant) and $-C\lambda_z$ (state-dependent)
-encode exactly how the asset pricing formula $\mathbb{E}^P_t m_{t+1}R_{j,t+1}=1$ adjusts
-expected returns for exposure to the risks $\varepsilon_{t+1}$.
+*Under the risk-neutral measure, expected returns on all assets equal
+the risk-free return.*
 
 ### Verification via risk-neutral pricing
 
 Bond prices can be computed by discounting at $r_t$ under $Q$:
 
 $$
-p_t(n) = \mathbb{E}^Q_t\! \left[\exp\!\left(-\sum_{s=0}^{n-1}r_{t+s}\right)\right]
+p_t(n) = \mathbb{E}^Q_t  \left[\exp \left(-\sum_{s=0}^{n-1}r_{t+s}\right)\right]
 $$
 
 We can verify that this agrees with {eq}`eq_bondprice` by iterating the affine
 recursion under the risk-neutral VAR.
 
-Below we confirm this numerically.
+Below we confirm this numerically
 
 ```{code-cell} ipython3
 def bond_price_mc_Q(model, z0, n, n_sims=50_000, rng=None):
     """Estimate p_t(n) by Monte Carlo under Q."""
     if rng is None:
-        rng = np.random.default_rng(2024)
+        rng = np.random.default_rng(0)
     m = len(z0)
     Z = np.tile(z0, (n_sims, 1))
     disc = np.zeros(n_sims)
@@ -715,9 +1009,9 @@ def bond_price_mc_Q(model, z0, n, n_sims=50_000, rng=None):
 z_test = np.array([0.01, 0.005])
 p_analytic = bond_prices(model_2f, z_test, 40)
 
-rng = np.random.default_rng(2024)
+rng = np.random.default_rng(0)
 maturities_check = [4, 12, 24, 40]
-mc_prices = [bond_price_mc_Q(model_2f, z_test, n, n_sims=80_000, rng=rng)
+mc_prices = [bond_price_mc_Q(model_2f, z_test, n, n_sims=100_000, rng=rng)
              for n in maturities_check]
 
 header = (f"{'Maturity':>10}  {'Analytic':>12}"
@@ -735,70 +1029,93 @@ Riccati recursion {eq}`eq_riccati_A`–{eq}`eq_riccati_B`.
 
 ## Distorted beliefs
 
-{cite:t}`piazzesi2015trend` assemble survey
-evidence suggesting that economic experts' forecasts are *systematically biased*
-relative to the physical measure.
+{cite:t}`piazzesi2015trend` assemble survey evidence suggesting that economic
+experts' forecasts are systematically biased relative to the physical measure.
 
 ### The subjective measure
 
-Let $\hat z_{t+1}$ be one-period-ahead expert forecasts.
+Let $\{z_t\}_{t=1}^T$ be a record of observations on the state and let
+$\{\check z_{t+1}\}_{t=1}^T$ be a record of one-period-ahead expert forecasts.
 
-Regressing these on $z_t$:
+Let $\check\mu, \check\phi$ be the regression coefficients in
 
 $$
-\hat z_{t+1} = \hat\mu + \hat\phi\, z_t + e_{t+1}
+\check z_{t+1} = \check\mu + \check\phi\, z_t + e_{t+1}
 $$
 
-yields estimates $\hat\mu, \hat\phi$ that differ from the physical parameters $\mu, \phi$.
+where the residual $e_{t+1}$ has mean zero, is orthogonal to $z_t$, and
+satisfies $\mathbb{E}\,e_{t+1} e_{t+1}^\top = CC^\top$.
 
-To formalise the distortion, let $\kappa_t = \kappa_0 + \kappa_z z_t$ and define
+By comparing estimates of $\mu, \phi$ from {eq}`eq_var` with estimates of
+$\check\mu, \check\phi$ from the experts' forecasts, {cite:t}`piazzesi2015trend`
+deduce that the experts' beliefs are systematically distorted.
+
+To organize this evidence, let $\kappa_t = \kappa_0 + \kappa_z z_t$ and define
 the likelihood ratio
 
 ```{math}
 :label: eq_Srat
 
 \frac{\xi^S_{t+1}}{\xi^S_t}
-= \exp\!\left(-\frac{1}{2}\kappa_t^\top\kappa_t - \kappa_t^\top\varepsilon_{t+1}\right)
+  = \exp\!\left(-\tfrac{1}{2}\kappa_t^\top\kappa_t
+                - \kappa_t^\top\varepsilon_{t+1}\right)
 ```
 
-Multiplying the physical conditional distribution of $z_{t+1}$ by this likelihood
-ratio gives the **subjective (S) conditional distribution**
+This is log-normal with mean 1, so it is a valid likelihood ratio.
+
+Multiplying the physical conditional distribution of $z_{t+1}$ by this
+likelihood ratio transforms it to the experts' **subjective conditional
+distribution**
 
 $$
 z_{t+1} \mid z_t \;\overset{S}{\sim}\;
-\mathcal{N}\!\bigl(\mu - C\kappa_0 + (\phi - C\kappa_z)\,z_t,\; CC^\top\bigr)
+  \mathcal{N}\!\bigl(\mu - C\kappa_0 + (\phi - C\kappa_z)\,z_t,\; CC^\top\bigr)
 $$
 
-Comparing with the regression implies
+In the experts' forecast regression, $\check\mu$ estimates
+$\mu - C\kappa_0$ and $\check\phi$ estimates $\phi - C\kappa_z$.
 
-$$
-\hat\mu = \mu - C\kappa_0, \qquad \hat\phi = \phi - C\kappa_z
-$$
-
-Piazzesi et al. find that experts behave as if the level and slope of the yield
-curve are *more persistent* than under the physical measure: $\hat\phi$ has
-larger eigenvalues than $\phi$.
+{cite:t}`piazzesi2015trend` find that the experts behave as if the level and
+slope of the yield curve are more persistent than under the physical measure:
+$\check\phi$ has larger eigenvalues than $\phi$.
 
 ### Pricing under distorted beliefs
 
-A representative agent with subjective beliefs $S$ and risk prices $\lambda^\star_t$
-satisfies
+Suppose a representative agent with subjective beliefs $S$ and true risk
+prices $\lambda^\star_t$ prices assets according to
 
 $$
-\mathbb{E}^S_t\bigl(m^\star_{t+1} R_{j,t+1}\bigr) = 1
+\mathbb{E}^S_t\bigl(m^\star_{t+1}\, R_{j,t+1}\bigr) = 1
 $$
 
-Expanding this in terms of the physical measure $P$, one finds that the
-**rational-expectations econometrician** who imposes $P$ will estimate risk prices
+where $m^\star_{t+1} = \exp(-r_t - \tfrac{1}{2}\lambda_t^{\star\top}\lambda^\star_t
+- \lambda_t^{\star\top}\varepsilon_{t+1})$.
+
+Expanding in terms of the physical measure $P$, the subjective pricing
+equation becomes
+
+$$
+\mathbb{E}^P_t\!\left[
+  \exp\!\left(-r_t
+    - \tfrac{1}{2}(\lambda^\star_t + \kappa_t)^\top(\lambda^\star_t + \kappa_t)
+    - (\lambda^\star_t + \kappa_t)^\top\varepsilon_{t+1}
+  \right) R_{j,t+1}
+\right] = 1
+$$
+
+Comparing this with the rational-expectations econometrician's pricing
+equation $\mathbb{E}^P_t(m_{t+1}\, R_{j,t+1}) = 1$, we see that what the
+econometrician interprets as $\lambda_t$ is actually
 
 $$
 \hat\lambda_t = \lambda^\star_t + \kappa_t
 $$
 
-That is, the econometrician's estimate conflates true risk prices $\lambda^\star_t$
+The econometrician's estimate conflates true risk prices $\lambda^\star_t$
 and belief distortions $\kappa_t$.
 
-Part of what looks like a high price of risk is actually a systematic forecast bias.
+Part of what looks like a high price of risk is actually a systematic
+forecast bias.
 
 ### Numerical illustration
 
@@ -813,29 +1130,11 @@ Part of what looks like a high price of risk is actually a systematic forecast b
 κ_z = np.linalg.solve(C_2, φ_P - φ_S)
 κ_0 = np.linalg.solve(C_2, μ_P - μ_S)
 
-print("Distortion parameters"
-      " (κ quantifies how experts' beliefs"
-      " differ from P):")
-print(f"  κ_0 = {κ_0.round(4)}")
-print(f"  κ_z =\n{κ_z.round(4)}")
-print()
-print("Eigenvalue comparison:")
-eig_P = sorted(eigvals(φ_P).real, reverse=True)
-eig_S = sorted(eigvals(φ_S).real, reverse=True)
-print(f"  Physical φ eigenvalues:   {[round(e, 4) for e in eig_P]}")
-print(f"  Subjective φ̂ eigenvalues: {[round(e, 4) for e in eig_S]}")
-print("  Experts believe both factors are more persistent.")
-print()
-
 λ_star_0 = np.array([0.03, 0.015])
 λ_star_z = np.array([[-0.006, 0.0], [0.0, -0.004]])
 
 λ_hat_0 = λ_star_0 + κ_0
 λ_hat_z = λ_star_z + κ_z
-
-print("True risk prices:         λ*_0 =", λ_star_0.round(4))
-print("Econometrician estimates: λ̂_0  =", λ_hat_0.round(4))
-print(f"  Belief distortion inflates λ̂_0 by κ_0 = {κ_0.round(4)}.")
 ```
 
 ```{code-cell} ipython3
@@ -843,11 +1142,6 @@ model_true = create_affine_model(
     μ_2, φ_2, C_2, δ_0_2, δ_1_2, λ_star_0, λ_star_z)
 model_econ = create_affine_model(
     μ_2, φ_2, C_2, δ_0_2, δ_1_2, λ_hat_0, λ_hat_z)
-
-for name, mdl in [("True", model_true), ("Econometrician", model_econ)]:
-    eigs = eigvals(mdl.φ_rn).real
-    status = "stable" if all(abs(e) < 1 for e in eigs) else "UNSTABLE"
-    print(f"{name} model: φ^Q eigenvalues = {eigs.round(4)} ({status})")
 
 z_ref = np.array([0.0, 0.0])
 n_max_db = 60
@@ -858,13 +1152,13 @@ tp_econ = term_premiums(model_econ, z_ref, n_max_db) * 4 * 100
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5.5))
 
-ax1.plot(maturities_db, tp_true, lw=2.2, color="steelblue",
+ax1.plot(maturities_db, tp_true, lw=2.2,
          label=r"True risk prices $\lambda^\star_t$")
-ax1.plot(maturities_db, tp_econ, lw=2.2, color="firebrick", ls="--",
+line_econ, = ax1.plot(maturities_db, tp_econ, lw=2.2, ls="--",
          label=(r"RE econometrician"
                 r" $\hat\lambda_t = \lambda^\star_t + \kappa_t$"))
 ax1.fill_between(maturities_db, tp_true, tp_econ,
-                 alpha=0.15, color="firebrick",
+                 alpha=0.15, color=line_econ.get_color(),
                  label="Belief distortion component")
 ax1.axhline(0, color="black", lw=0.8, ls=":")
 ax1.set_xlabel("Maturity (quarters)")
@@ -877,7 +1171,7 @@ mask = np.abs(tp_true) > 1e-8
 ratio = np.full_like(tp_true, np.nan)
 ratio[mask] = tp_econ[mask] / tp_true[mask]
 
-ax2.plot(maturities_db[mask], ratio[mask], lw=2.2, color="darkred")
+ax2.plot(maturities_db[mask], ratio[mask], lw=2.2)
 ax2.axhline(1, color="black", lw=0.8, ls="--",
             label="No distortion (ratio = 1)")
 ax2.set_xlabel("Maturity (quarters)")
@@ -906,35 +1200,6 @@ data — for example, the survey forecasts used by Piazzesi, Salomao, and Schnei
 
 Our {doc}`Risk Aversion or Mistaken Beliefs? <risk_aversion_or_mistaken_beliefs>` lecture
 explores this confounding in greater depth.
-
-## The bond price recursion
-
-We verify the exponential affine form {eq}`eq_bondprice` by induction.
-
-**Claim:** If $p_{t+1}(n) = \exp(\bar A_n + \bar B_n^\top z_{t+1})$, then
-$p_t(n+1) = \exp(\bar A_{n+1} + \bar B_{n+1}^\top z_t)$ with $\bar A_{n+1}$ and
-$\bar B_{n+1}$ given by {eq}`eq_riccati_A`–{eq}`eq_riccati_B`.
-
-**Proof sketch.**  Using the SDF {eq}`eq_sdf` and the VAR {eq}`eq_var`:
-
-$$
-\log m_{t+1} + \log p_{t+1}(n)
-= -r_t - \tfrac{1}{2}\lambda_t^\top\lambda_t
-  + (\bar A_n + \bar B_n^\top\mu + \bar B_n^\top\phi z_t)
-  + (-\lambda_t + C^\top\bar B_n)^\top\varepsilon_{t+1}
-$$
-
-Taking the conditional expectation (and using $\varepsilon_{t+1}\sim\mathcal{N}(0,I)$):
-
-$$
-\log p_t(n+1) = -r_t - \tfrac{1}{2}\lambda_t^\top\lambda_t
-  + \bar A_n + \bar B_n^\top(\mu + \phi z_t)
-  + \tfrac{1}{2}(\lambda_t - C^\top\bar B_n)^\top(\lambda_t - C^\top\bar B_n)
-$$
-
-Substituting $r_t = \delta_0 + \delta_1^\top z_t$ and $\lambda_t = \lambda_0 + \lambda_z z_t$,
-collecting constant and linear-in-$z_t$ terms, and equating coefficients gives
-exactly {eq}`eq_riccati_A`–{eq}`eq_riccati_B`. $\blacksquare$
 
 ## Concluding remarks
 
