@@ -124,7 +124,7 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": ["\\operatorname*{argmax}", 0], "argmin": ["\\operatorname*{argmin}", 0]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": ["\\operatorname*{argmax}", 0], "argmin": ["\\operatorname*{argmin}", 0], "EE": "\\mathbb{E}"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'divergence_measures';</script>
     <link rel="canonical" href="https://python.quantecon.org/divergence_measures.html" />
@@ -280,7 +280,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/18666c046" class="changelog-hash">18666c046</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">5 months ago</span>
+                                <span class="changelog-time">6 months ago</span>
                                 <span class="changelog-message">[statistics and information] Update reader's suggestions (#585)</span>
                             </li>
                             
@@ -392,13 +392,13 @@ Entropy <span class="math notranslate nohighlight">\(H(f)\)</span> for the unifo
 \]</div>
 <p>The following two  concepts are widely used to compare two distributions <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p><strong>Cross-Entropy:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-b0b3c7bf-0c26-4bd8-949a-2a95e5f63d77">
-<span class="eqno">(21.1)<a class="headerlink" href="#equation-b0b3c7bf-0c26-4bd8-949a-2a95e5f63d77" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-10bebc26-a4f3-4e32-8212-3cda076a1787">
+<span class="eqno">(21.1)<a class="headerlink" href="#equation-10bebc26-a4f3-4e32-8212-3cda076a1787" title="Permalink to this equation">#</a></span>\[\begin{equation}
 H(f,g) = -\sum_{i} f_i \log g_i
 \end{equation}\]</div>
 <p><strong>Kullback-Leibler (KL) Divergence:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-97439c80-b8ff-4030-abf5-5db72caeed50">
-<span class="eqno">(21.2)<a class="headerlink" href="#equation-97439c80-b8ff-4030-abf5-5db72caeed50" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-fcc64ec3-6536-4d5f-b2a5-5ee1859eb124">
+<span class="eqno">(21.2)<a class="headerlink" href="#equation-fcc64ec3-6536-4d5f-b2a5-5ee1859eb124" title="Permalink to this equation">#</a></span>\[\begin{equation}
 D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
 \end{equation}\]</div>
 <p>These concepts are related by the following equality.</p>
@@ -407,8 +407,8 @@ D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
 D_{KL}(f \parallel g) = H(f,g) - H(f)
 \]</div>
 <p>To prove <a class="reference internal" href="#equation-eq-klcross">(21.3)</a>, note that</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a99961a3-abfd-4b42-8fd5-b328d2e0b746">
-<span class="eqno">(21.4)<a class="headerlink" href="#equation-a99961a3-abfd-4b42-8fd5-b328d2e0b746" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3f5da644-80ca-4ed0-a099-2e3763f5b93f">
+<span class="eqno">(21.4)<a class="headerlink" href="#equation-3f5da644-80ca-4ed0-a099-2e3763f5b93f" title="Permalink to this equation">#</a></span>\[\begin{align}
 D_{KL}(f \parallel g) &amp;= \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right] \\
 &amp;= \sum_{i} f_i \left[\log f_i - \log g_i\right] \\
 &amp;= \sum_{i} f_i \log f_i - \sum_{i} f_i \log g_i \\

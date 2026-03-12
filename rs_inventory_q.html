@@ -124,7 +124,7 @@
                 gtag('config', 'G-J0SMYR4SG3');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>window.MathJax = {"tex": {"macros": {"argmax": ["\\operatorname*{argmax}", 0], "argmin": ["\\operatorname*{argmin}", 0]}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": ["\\operatorname*{argmax}", 0], "argmin": ["\\operatorname*{argmin}", 0], "EE": "\\mathbb{E}"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'rs_inventory_q';</script>
     <link rel="canonical" href="https://python.quantecon.org/rs_inventory_q.html" />
@@ -222,10 +222,11 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-the-q-factor-bellman-equation">53.5.2. Deriving the Q-factor Bellman equation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-q-learning-update-rule">53.5.3. The Q-learning update rule</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-plan">53.5.4. Implementation plan</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">53.5.5. Implementation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-q-learning">53.5.6. Running Q-learning</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-with-the-exact-solution">53.5.7. Comparing with the exact solution</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-learning-over-time">53.5.8. Visualizing learning over time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimistic-initialization">53.5.5. Optimistic initialization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">53.5.6. Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-q-learning">53.5.7. Running Q-learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-with-the-exact-solution">53.5.8. Comparing with the exact solution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-learning-over-time">53.5.9. Visualizing learning over time</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">53.6. Conclusion</a></li>
@@ -282,7 +283,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Mar 10, 2026
+                            Last changed: Mar 12, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -293,10 +294,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/d825b9236" class="changelog-hash">d825b9236</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">39 minutes ago</span>
+                                <span class="changelog-message">Add optimistic initialization to Q-learning lecture (#830)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/ad276133c" class="changelog-hash">ad276133c</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">15 minutes ago</span>
+                                <span class="changelog-time">2 days ago</span>
                                 <span class="changelog-message">Add risk-sensitive inventory management lecture (#827)</span>
                             </li>
                             
@@ -841,7 +851,7 @@ than a scaled sum <span class="math notranslate nohighlight">\(\beta \cdot \max_
 <p>Our implementation follows the same structure as the risk-neutral Q-learning in
 <a class="reference internal" href="inventory_q.html"><span class="doc">Inventory Management via Q-Learning</span></a>, with the modifications above:</p>
 <ol class="arabic simple">
-<li><p><strong>Initialize</strong> the Q-table <span class="math notranslate nohighlight">\(q\)</span> to ones (since Q-values are positive) and
+<li><p><strong>Initialize</strong> the Q-table <span class="math notranslate nohighlight">\(q\)</span> optimistically (see below) and
 visit counts <span class="math notranslate nohighlight">\(n\)</span> to zeros.</p></li>
 <li><p><strong>At each step:</strong></p>
 <ul class="simple">
@@ -863,8 +873,16 @@ scalar for the update target, and the <span class="math notranslate nohighlight"
 <li><p><strong>Compare</strong> the learned policy against the VFI solution.</p></li>
 </ol>
 </section>
+<section id="optimistic-initialization">
+<h3><span class="section-number">53.5.5. </span>Optimistic initialization<a class="headerlink" href="#optimistic-initialization" title="Link to this heading">#</a></h3>
+<p>As in <a class="reference internal" href="inventory_q.html"><span class="doc">Inventory Management via Q-Learning</span></a>, we use optimistic initialization to accelerate learning.</p>
+<p>The logic is the same — initialize the Q-table so that every untried action looks attractive, driving the agent to explore broadly — but the direction is reversed.</p>
+<p>Since the optimal policy <em>minimizes</em> <span class="math notranslate nohighlight">\(q\)</span>, “optimistic” means initializing the Q-table <em>below</em> the true values.  When the agent tries an action, the update pushes <span class="math notranslate nohighlight">\(q\)</span> upward toward reality, making that entry look worse and prompting the agent to try other actions that still appear optimistically good.</p>
+<p>The true Q-values are on the order of <span class="math notranslate nohighlight">\(\exp(-\gamma \, v^*) \approx 10^{-8}\)</span> to <span class="math notranslate nohighlight">\(10^{-6}\)</span>.
+We initialize the Q-table at <span class="math notranslate nohighlight">\(10^{-9}\)</span>, modestly below this range.</p>
+</section>
 <section id="implementation">
-<h3><span class="section-number">53.5.5. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">53.5.6. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h3>
 <p>We first define a helper to extract the greedy policy from the Q-table.</p>
 <p>Since the optimal policy minimizes <span class="math notranslate nohighlight">\(q\)</span>, we use <span class="math notranslate nohighlight">\(\argmin\)</span> rather than <span class="math notranslate nohighlight">\(\argmax\)</span>.</p>
 <div class="cell docutils container">
@@ -887,15 +905,15 @@ scalar for the update target, and the <span class="math notranslate nohighlight"
 </div>
 </div>
 <p>The Q-learning loop mirrors the risk-neutral version, with the key changes:
-Q-table initialized to ones, the update target uses <span class="math notranslate nohighlight">\(\exp(-\gamma R_{t+1})
+the update target uses <span class="math notranslate nohighlight">\(\exp(-\gamma R_{t+1})
 \cdot (\min_{a'} q_t)^\beta\)</span>, and the behavior policy follows the <span class="math notranslate nohighlight">\(\argmin\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">q_learning_rs_kernel</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">X_init</span><span class="p">,</span>
-                         <span class="n">ε_init</span><span class="p">,</span> <span class="n">ε_min</span><span class="p">,</span> <span class="n">ε_decay</span><span class="p">,</span> <span class="n">snapshot_steps</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
+                         <span class="n">ε_init</span><span class="p">,</span> <span class="n">ε_min</span><span class="p">,</span> <span class="n">ε_decay</span><span class="p">,</span> <span class="n">q_init</span><span class="p">,</span> <span class="n">snapshot_steps</span><span class="p">,</span> <span class="n">seed</span><span class="p">):</span>
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">K</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>         <span class="c1"># positive Q-values, initialized to 1</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">K</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">q_init</span><span class="p">)</span>  <span class="c1"># optimistic initialization</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">K</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>        <span class="c1"># visit counts for learning rate</span>
     <span class="n">ε</span> <span class="o">=</span> <span class="n">ε_init</span>
 
@@ -951,32 +969,33 @@ Q-table initialized to ones, the update target uses <span class="math notranslat
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">q_learning_rs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">20_000_000</span><span class="p">,</span> <span class="n">X_init</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
                   <span class="n">ε_init</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">ε_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">ε_decay</span><span class="o">=</span><span class="mf">0.999999</span><span class="p">,</span>
-                  <span class="n">snapshot_steps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
+                  <span class="n">q_init</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">,</span> <span class="n">snapshot_steps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
     <span class="n">x_values</span><span class="p">,</span> <span class="n">d_values</span><span class="p">,</span> <span class="n">ϕ_values</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_values</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="k">if</span> <span class="n">snapshot_steps</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">snapshot_steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">q_learning_rs_kernel</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">X_init</span><span class="p">,</span>
-                                <span class="n">ε_init</span><span class="p">,</span> <span class="n">ε_min</span><span class="p">,</span> <span class="n">ε_decay</span><span class="p">,</span> <span class="n">snapshot_steps</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+                                <span class="n">ε_init</span><span class="p">,</span> <span class="n">ε_min</span><span class="p">,</span> <span class="n">ε_decay</span><span class="p">,</span> <span class="n">q_init</span><span class="p">,</span> <span class="n">snapshot_steps</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="running-q-learning">
-<h3><span class="section-number">53.5.6. </span>Running Q-learning<a class="headerlink" href="#running-q-learning" title="Link to this heading">#</a></h3>
-<p>We run 20 million steps and take policy snapshots at steps 10,000, 1,000,000, and at the end.</p>
+<h3><span class="section-number">53.5.7. </span>Running Q-learning<a class="headerlink" href="#running-q-learning" title="Link to this heading">#</a></h3>
+<p>We run <span class="math notranslate nohighlight">\(n\)</span> = 5 million steps and take policy snapshots at steps 10,000, 1,000,000, and <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">snap_steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10_000</span><span class="p">,</span> <span class="mi">1_000_000</span><span class="p">,</span> <span class="mi">19_999_999</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-<span class="n">q_table</span><span class="p">,</span> <span class="n">snapshots</span> <span class="o">=</span> <span class="n">q_learning_rs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">snapshot_steps</span><span class="o">=</span><span class="n">snap_steps</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">5_000_000</span>
+<span class="n">snap_steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10_000</span><span class="p">,</span> <span class="mi">1_000_000</span><span class="p">,</span> <span class="n">n</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+<span class="n">q_table</span><span class="p">,</span> <span class="n">snapshots</span> <span class="o">=</span> <span class="n">q_learning_rs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">snapshot_steps</span><span class="o">=</span><span class="n">snap_steps</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="comparing-with-the-exact-solution">
-<h3><span class="section-number">53.5.7. </span>Comparing with the exact solution<a class="headerlink" href="#comparing-with-the-exact-solution" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">53.5.8. </span>Comparing with the exact solution<a class="headerlink" href="#comparing-with-the-exact-solution" title="Link to this heading">#</a></h3>
 <p>We extract the value function and policy from the final Q-table.</p>
 <p>Since Q-values represent <span class="math notranslate nohighlight">\(\mathbb{E}[\exp(-\gamma(\cdots))]\)</span>, we recover the
 value function via <span class="math notranslate nohighlight">\(v_Q(x) = -\frac{1}{\gamma} \ln(\min_{a} q(x, a))\)</span> and the
@@ -1018,12 +1037,12 @@ policy via <span class="math notranslate nohighlight">\(\sigma_Q(x) = \argmin_a 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/d835b74cfdbdd56665ec8458be2606ae80f961af42c15c502a8c103e7ba6bccd.png" src="_images/d835b74cfdbdd56665ec8458be2606ae80f961af42c15c502a8c103e7ba6bccd.png" />
+<img alt="_images/fe90d1a103e6a10e6ebe30dc7d9d3c6fbcefa5271d01bfeaa05a11526997a191.png" src="_images/fe90d1a103e6a10e6ebe30dc7d9d3c6fbcefa5271d01bfeaa05a11526997a191.png" />
 </div>
 </div>
 </section>
 <section id="visualizing-learning-over-time">
-<h3><span class="section-number">53.5.8. </span>Visualizing learning over time<a class="headerlink" href="#visualizing-learning-over-time" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">53.5.9. </span>Visualizing learning over time<a class="headerlink" href="#visualizing-learning-over-time" title="Link to this heading">#</a></h3>
 <p>The panels below show how the agent’s policy evolves during training.</p>
 <p>Each panel simulates an inventory path using the greedy policy extracted from
 the Q-table at a given training step, with the same demand sequence throughout.</p>
@@ -1061,12 +1080,12 @@ the Q-table at a given training step, with the same demand sequence throughout.<
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/062d159d15289acf275e567d6f0e2bef39191d98985e33ab20478ecfaab757c4.png" src="_images/062d159d15289acf275e567d6f0e2bef39191d98985e33ab20478ecfaab757c4.png" />
+<img alt="_images/33eed1a198002aba4b8a13b09948aa788bf777b905f903d9e8007330b47e5492.png" src="_images/33eed1a198002aba4b8a13b09948aa788bf777b905f903d9e8007330b47e5492.png" />
 </div>
 </div>
 <p>After 10,000 steps, the agent has barely explored and its policy is erratic.</p>
-<p>By 1,000,000 steps the learned policy begins to resemble the optimal one, and
-by step 20 million the inventory dynamics are nearly indistinguishable from the
+<p>By 1,000,000 steps the learned policy has improved but still differs noticeably from the optimum.</p>
+<p>By step 5 million the inventory dynamics are nearly indistinguishable from the
 VFI solution.</p>
 <p>Note that the converged policy maintains lower inventory levels than in the
 risk-neutral case (compare with <a class="reference internal" href="inventory_q.html"><span class="doc">Inventory Management via Q-Learning</span></a>), consistent with the
