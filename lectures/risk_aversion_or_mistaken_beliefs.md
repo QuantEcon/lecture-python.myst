@@ -201,7 +201,7 @@ y_{t+1} = D\,x_t + G\,\varepsilon_{t+1}
 ```
 
 where $y_{t+1}$ collects utility-relevant variables (e.g., consumption growth),
-$r_t = \bar{r}\,x_t$ is the risk-free one-period interest rate, and
+$r_t = \delta_0 + \bar{r}\,x_t$ is the risk-free one-period interest rate, and
 $d_t = \bar{d}\,x_t$ is the payout process from an asset.
 
 ```{figure} /_static/lecture_specific/risk_aversion_or_mistaken_beliefs/fig2_tom.png
@@ -226,13 +226,15 @@ zero-coupon risk-free claim to one dollar at time $t+n$ as:
 ```{math}
 :label: eq_rn_recursion
 
-p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,E_t\,p_{t+1}(n), \qquad p_t(n) = \exp(B_n\,x_t)
+p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,E_t\,p_{t+1}(n), \qquad p_t(n) = \exp(\bar{A}_n + B_n\,x_t)
 ```
 
 These formulas work "pretty well" for conditional means but less well for
 conditional variances — the Shiller *volatility puzzles*.
 
 ### Modern asset pricing: adding risk aversion
+
+It would be convenient if versions of the same pricing formulas worked even when investors are risk averse or hold distorted beliefs — the likelihood ratio makes this possible.
 
 Let the likelihood ratio increment be
 
@@ -265,7 +267,7 @@ For the term structure (Dai–Singleton–Backus–Zin):
 ```{math}
 :label: eq_ts_lr
 
-p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,E_t\bigl(m_{t+1}^\lambda\,p_{t+1}(n)\bigr), \qquad p_t(n) = \exp(B_n\,x_t)
+p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,E_t\bigl(m_{t+1}^\lambda\,p_{t+1}(n)\bigr), \qquad p_t(n) = \exp(\bar{A}_n + B_n\,x_t)
 ```
 
 ### Risk-neutral dynamics
@@ -294,7 +296,7 @@ $$
 Under the risk-neutral dynamics, the term structure theory becomes:
 
 $$
-p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,\tilde{E}_t\,p_{t+1}(n), \qquad p_t(n) = \exp(\tilde{B}_n\,x_t)
+p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,\tilde{E}_t\,p_{t+1}(n), \qquad p_t(n) = \exp(\tilde{\bar{A}}_n + \tilde{B}_n\,x_t)
 $$
 
 These are the same formulas as rational-expectations asset pricing, but
@@ -468,6 +470,8 @@ plt.tight_layout()
 plt.show()
 ```
 
+Both factors are more persistent under the risk-neutral measure $Q$ than under the physical measure $P$, because $A_Q = A - C\Lambda$ has eigenvalues closer to unity when risk prices $\Lambda$ shift the dynamics.
+
 ## An identification challenge
 
 The vector $\lambda_t$ can be interpreted as either:
@@ -476,8 +480,7 @@ The vector $\lambda_t$ can be interpreted as either:
 - the representative agent's **belief distortion** relative to the econometrician's
   model.
 
-The asset pricing formulas {eq}`eq_stock_lr`–{eq}`eq_ts_lr` are identical under both
-interpretations, and so are the econometric fits.
+Because the pricing formulas {eq}`eq_stock_lr`–{eq}`eq_ts_lr` depend only on the composite $\lambda_t$ — not on whether it reflects risk aversion or belief distortion — the two interpretations produce identical asset prices and econometric fits.
 
 > Relative to the model of a risk-averse representative investor with rational
 > expectations, a model of a risk-neutral investor with appropriately mistaken
@@ -615,6 +618,9 @@ PSS find that experts perceive the level and slope of the yield curve to be *mor
 
 Subjective risk prices $\lambda^* x_t$ vary less than the $\lambda x_t$ estimated by the rational-expectations econometrician.
 
+However, PSS offer no explanation for *why* beliefs are distorted — are they mistakes, ignorance of good econometrics, or something else?
+
+The next two sections address this question: first by reviewing why rational expectations may be a poor approximation, and then by developing a robust control theory that *rationalises* belief distortions as optimal responses to model uncertainty.
 
 ## Rationalizing rational expectations
 
@@ -645,6 +651,7 @@ An agent who is like a good econometrician:
 - fears that one of those other models actually prevails, and
 - seeks "good enough" decisions under *all* such alternative models — **robustness**.
 
+Robust control theory formalises this idea by having the agent optimally distort probability assessments toward a worst-case scenario, producing belief distortions that look like the "mistakes" identified by PSS but that arise from a coherent response to model uncertainty rather than from ignorance.
 
 ## A theory of belief distortions: robust control
 
@@ -707,7 +714,11 @@ Discounted entropy ball around the econometrician's model.
 
 Discounted entropy includes models that undiscounted entropy excludes.
 
-Undiscounted entropy over infinite sequences excludes many models that are very difficult to distinguish from the econometrician's model with limited data, because undiscounted entropy includes only models that share laws of large numbers.
+Undiscounted entropy over infinite sequences requires alternative models to share the same long-run averages as the baseline, thereby excluding models that differ only in persistent, low-frequency dynamics.
+
+But those persistent alternatives are precisely the models that are hardest to distinguish from the econometrician's model with finite data and that matter most for pricing long-lived assets.
+
+Discounted entropy, by treating future divergences less severely, admits these statistically elusive but economically important alternatives into the set of models that the dubious agent contemplates.
 
 ### Entropy and the likelihood ratio
 
@@ -743,7 +754,7 @@ $$
 
 ### Outcome: constant worst-case distortion
 
-The worst-case mean distortion turns out to be a *constant vector*:
+Because the econometrician's model is linear Gaussian and the entropy constraint is a scalar bound $\eta$, the worst-case mean distortion turns out to be a *constant vector*:
 
 $$
 w_t = \bar{w}
@@ -751,7 +762,9 @@ $$
 
 The consequence is that the contribution of $w_t$ to risk prices is *state-independent*.
 
-This does *not* help explain countercyclical prices of risk (or prices of model uncertainty).
+This does *not* help explain countercyclical prices of risk (or prices of model uncertainty) — motivating the more refined "tilted" entropy ball in the next section.
+
+We compute $\bar{w}$ using the multiplier formulation (see {ref}`the multiplier preferences section below <mult_pref_section>`), in which the parameter $\theta$ penalises entropy: larger $\theta$ means less concern about misspecification.
 
 ```{code-cell} ipython3
 def hansen_worst_case(A, C, D, G, β, θ):
@@ -794,6 +807,8 @@ The inclusion of those alternative parametric models *tilts* the entropy ball,
 which affects the worst-case model in a way that can produce countercyclical
 uncertainty prices.
 
+"Tilting" means replacing the constant entropy bound $\eta$ with a state-dependent bound $\xi(x_t)$ that is larger in states where the feared parametric alternative deviates more from the baseline.
+
 ### Concern about other parametric models
 
 The investor wants to include particular alternative models with
@@ -822,14 +837,13 @@ This sets the stage for *state-dependent* mean distortions in the worst-case mod
 
 ### Concern about bigger long-run risk
 
-Inspired by {cite:t}`Bansal_Yaron_2004`, an agent fears particular long-run risks
-expressed by
+Inspired by {cite:t}`Bansal_Yaron_2004`, an agent fears that the true state dynamics are more persistent than the econometrician's model implies, expressed by
 
 $$
 x_{t+1} = \bar{A}\,x_t + C\,\tilde\varepsilon_{t+1}
 $$
 
-This corresponds to $\bar{w}_t = \bar{w}\,x_t$ with
+Since $\bar{A}x_t = Ax_t + C(-C^{-1}(\bar{A}-A))x_t = Ax_t - C\bar{w}x_t$, this feared model is equivalent to shifting the mean of $\varepsilon_{t+1}$ by $-\bar{w}x_t$, giving $\bar{w}_t = \bar{w}\,x_t$ with
 
 $$
 \bar{w} = -C^{-1}(\bar{A} - A)
@@ -849,7 +863,7 @@ Tilted discounted entropy balls. Including particular parametric alternatives wi
 
 ### The Szőke agent's sequence problem
 
-The resulting linear-quadratic problem is:
+Attaching a Lagrange multiplier $\tilde\theta \geq 0$ to the tilted entropy constraint {eq}`eq_tilted_constraint` yields the following linear-quadratic problem:
 
 ```{math}
 :label: eq_szoke_seq
@@ -984,7 +998,7 @@ The key innovation of the tilted entropy ball is visible: the Szőke worst-case 
 
 When the state is far from its mean, the agent's worst-case model deviates more from the econometrician's model.
 
-By contrast, Hansen's constant distortion $\bar{w}$ contributes nothing state-dependent.
+By contrast, Hansen's constant distortion $\bar{w}$ has entropy $\frac{1}{2}\bar{w}'\bar{w}$ that does not vary with $x_t$ (shown at zero in the plot to emphasise the absence of state dependence).
 
 The Szőke parabola lies inside the feared model's entropy budget $\frac{1}{2}\xi(x_t)$, confirming the worst-case distortion respects the tilted entropy constraint.
 
@@ -1027,6 +1041,7 @@ plt.tight_layout()
 plt.show()
 ```
 
+Each twister shifts the econometrician's $\mathcal{N}(0,1)$ density to the left by a different amount, reflecting its respective source of pessimism about future shocks.
 
 ## Empirical challenges and model performances
 
@@ -1114,6 +1129,8 @@ As {cite:t}`szoke2022estimating` puts it:
 
 ### Szőke's empirical strategy
 
+In the Szőke framework, the rational-expectations econometrician's single likelihood ratio $m_{t+1}^\lambda$ is decomposed into two multiplicative components: a worst-case belief distortion $m_{t+1}^{\tilde{w}}$ and a residual risk price $m_{t+1}^{\tilde{\lambda}}$, paralleling the PSS decomposition $\lambda = \lambda^* + w^*$.
+
 **Stage I: Estimation**
 
 1. Use $\{x_t, c_t\}_{t=0}^T$ to estimate the econometrician's $A$, $C$, $D$, $G$.
@@ -1167,7 +1184,12 @@ print(f"\nWorst-case model is {status} "
       f"the econometrician's model.")
 ```
 
+The Szőke worst-case model has lower discounted entropy than the feared long-run risk model, meaning it is statistically harder to distinguish from the econometrician's baseline — yet it still generates the state-dependent uncertainty prices needed to match term-structure dynamics.
+
+(mult_pref_section)=
 ## Multiplier preferences
+
+The constraint formulation {eq}`eq_hansen_seq` bounds discounted entropy by $\eta$, but an equivalent **multiplier** formulation replaces the constraint with a penalty term weighted by a Lagrange multiplier $\theta$.
 
 The **multiplier preference** version of the dubious agent's problem is:
 
@@ -1206,12 +1228,16 @@ $$
 W(x_t, c_t \mid \tilde\theta) = J(x_t, c_t \mid \eta) + \tilde\theta\,\eta
 $$
 
+Each choice of $\tilde\theta$ in the multiplier problem corresponds to a particular entropy bound $\eta$ in the constraint problem, so the two formulations are equivalent.
+
+The operator $T_t$ defined above is a **risk-sensitivity operator** that maps the continuation value through an exponential tilt, downweighting good outcomes and upweighting bad ones.
+
 ```{code-cell} ipython3
 def T_operator(V, θ, probs=None):
     """Risk-sensitivity operator: T[V] = -θ log E[exp(-V/θ)]."""
     if probs is None:
         probs = np.ones(len(V)) / len(V)
-    V_s = V / θ
+    V_s = -V / θ
     max_v = np.max(V_s)
     return -θ * (max_v + np.log(np.sum(probs * np.exp(V_s - max_v))))
 
