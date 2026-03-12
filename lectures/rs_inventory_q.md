@@ -556,8 +556,8 @@ The logic is the same — initialize the Q-table so that every untried action lo
 
 Since the optimal policy *minimizes* $q$, "optimistic" means initializing the Q-table *below* the true values.  When the agent tries an action, the update pushes $q$ upward toward reality, making that entry look worse and prompting the agent to try other actions that still appear optimistically good.
 
-The true Q-values are on the order of $\exp(-\gamma \, v^*) \approx 10^{-5}$ to $10^{-4}$.
-We initialize the Q-table at $10^{-5}$, modestly below this range.
+The true Q-values are on the order of $\exp(-\gamma \, v^*) \approx 10^{-8}$ to $10^{-6}$.
+We initialize the Q-table at $10^{-9}$, modestly below this range.
 
 ### Implementation
 
@@ -644,7 +644,7 @@ The wrapper function unpacks the model and provides default hyperparameters.
 ```{code-cell} ipython3
 def q_learning_rs(model, n_steps=20_000_000, X_init=0,
                   ε_init=1.0, ε_min=0.01, ε_decay=0.999999,
-                  q_init=1e-5, snapshot_steps=None, seed=1234):
+                  q_init=1e-9, snapshot_steps=None, seed=1234):
     x_values, d_values, ϕ_values, p, c, κ, β, γ = model
     K = len(x_values) - 1
     if snapshot_steps is None:

@@ -471,8 +471,9 @@ All the manager needs to observe at each step is:
 
 1. the current inventory level $x$,
 2. the order quantity $a$, which they choose,
-3. the discount factor $\beta$, which is determined by the interest rate, and
-4. the next inventory level $X_{t+1}$ (which they can read off the warehouse).
+3. the resulting profit $R_{t+1}$ (which appears on the books),
+4. the discount factor $\beta$, which is determined by the interest rate, and
+5. the next inventory level $X_{t+1}$ (which they can read off the warehouse).
 
 These are all directly observable quantities — no model knowledge is required.
 
