@@ -129,7 +129,7 @@ and complete the square to obtain $-\frac{1}{2}(\varepsilon + \lambda)^\top(\var
 
 For part 1, write $E m(\varepsilon) = \int \exp(-\lambda^\top\varepsilon - \tfrac{1}{2}\lambda^\top\lambda) \phi(\varepsilon) d\varepsilon = \exp(-\tfrac{1}{2}\lambda^\top\lambda) E[\exp(-\lambda^\top\varepsilon)]$.
 
-The moment-generating function of $\varepsilon \sim \mathcal{N}(0,I)$ gives $E[\exp(-\lambda^\top\varepsilon)] = \exp(\tfrac{1}{2}\lambda^\top\lambda)$.
+The moment-generating function of $\varepsilon \sim \mathcal{N}(0,I)$ (or expectation of the log-normal random variable) gives $E[\exp(-\lambda^\top\varepsilon)] = \exp(\tfrac{1}{2}\lambda^\top\lambda)$.
 
 So $E m(\varepsilon) = \exp(-\tfrac{1}{2}\lambda^\top\lambda)\exp(\tfrac{1}{2}\lambda^\top\lambda) = 1$. 
 
@@ -187,8 +187,9 @@ axes[2].plot(ε, ϕ_twist, 'firebrick', lw=2,
 axes[2].set_xlabel(r"$\varepsilon$")
 axes[2].legend()
 
-for ax in axes:
-    ax.set_ylabel("Density")
+axes[0].set_ylabel("Density")
+axes[1].set_ylabel("Likelihood ratio")
+axes[2].set_ylabel("Density")
 plt.tight_layout()
 plt.show()
 ```
@@ -1265,7 +1266,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-Each twister shifts the econometrician's $\mathcal{N}(0,1)$ density to the left by a different amount, reflecting its respective source of pessimism about future shocks.
+Each twister shifts the econometrician's $\mathcal{N}(0,1)$ density by $-w_t$, where the direction and magnitude depend on the current state $x_t$.
+
+For the state shown here, all three distortion vectors $w_t$ are negative in their first component, so the twisted densities $\mathcal{N}(-w_t, 1)$ are shifted slightly to the right.
+
+The shifts are small relative to the unit variance because the state $x_t = (0.02, 0.008)$ is close to the unconditional mean.
 
 ## Empirical challenges and model performances
 
