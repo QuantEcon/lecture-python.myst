@@ -1322,7 +1322,7 @@ plt.show()
 
 Evidently, $e^{-C(f,g)T}$ is an upper bound on the error rate.
 
-In `{doc}`divergence_measures`, we also studied **Jensen-Shannon divergence** as 
+In {doc}`divergence_measures`, we also studied **Jensen-Shannon divergence** as 
 a symmetric measure of distance between distributions.
 
 We can use Jensen-Shannon divergence to measure the distance between distributions $f$ and $g$ and 
