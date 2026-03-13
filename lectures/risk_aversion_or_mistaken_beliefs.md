@@ -44,7 +44,7 @@ Likelihood ratios — equivalently, multiplicative martingale increments — app
 | Doubtful      | $m_{t+1} \in \mathcal{M}$         | misspecification fears|
 
 Each likelihood ratio takes the log-normal form
-$m_{t+1}^b = \exp(-b_t' \varepsilon_{t+1} - \frac{1}{2} b_t' b_t)$
+$m_{t+1}^b = \exp(-b_t^\top \varepsilon_{t+1} - \frac{1}{2} b_t^\top b_t)$
 with $b_t = 0$, $\lambda_t$, $w_t$, or a worst-case distortion.
 
 The lecture draws primarily on three lines of work:
@@ -63,8 +63,11 @@ We start with some standard imports:
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
+from datetime import datetime
 from scipy.linalg import solve_discrete_lyapunov
 from numpy.linalg import inv, eigvals, norm
+from scipy.stats import norm as normal_dist
 ```
 
 ## Likelihood ratios and twisted densities
@@ -78,20 +81,18 @@ Under the econometrician's probability model, $\varepsilon$ has a standard multi
 ```{math}
 :label: eq_baseline
 
-\phi(\varepsilon) \propto \exp\!\left(-\frac{1}{2}\,\varepsilon'\varepsilon\right), \qquad \varepsilon \sim \mathcal{N}(0, I)
+\phi(\varepsilon) \propto \exp\!\left(-\frac{1}{2} \varepsilon^\top\varepsilon\right), \qquad \varepsilon \sim \mathcal{N}(0, I)
 ```
-
-### The likelihood ratio
 
 Define a **likelihood ratio**
 
 ```{math}
 :label: eq_lr
 
-m(\varepsilon) = \exp\!\left(-\lambda'\varepsilon - \frac{1}{2}\,\lambda'\lambda\right) \geq 0
+m(\varepsilon) = \exp\!\left(-\lambda^\top\varepsilon - \frac{1}{2} \lambda^\top\lambda\right) \geq 0
 ```
 
-which satisfies $E\, m(\varepsilon) = 1$ when the mathematical expectation $E$ is taken with respect to the econometrician's model.
+which satisfies $E  m(\varepsilon) = 1$ when the mathematical expectation $E$ is taken with respect to the econometrician's model.
 
 ### The twisted density
 
@@ -100,7 +101,7 @@ The **twisted density** is
 ```{math}
 :label: eq_twisted
 
-\hat\phi(\varepsilon) = m(\varepsilon)\,\phi(\varepsilon) \propto \exp\!\left(-\frac{1}{2}(\varepsilon + \lambda)'(\varepsilon + \lambda)\right)
+\hat\phi(\varepsilon) = m(\varepsilon) \phi(\varepsilon) \propto \exp\!\left(-\frac{1}{2}(\varepsilon + \lambda)^\top(\varepsilon + \lambda)\right)
 ```
 
 which is a $\mathcal{N}(-\lambda, I)$ density.
@@ -112,14 +113,14 @@ The likelihood ratio has shifted the mean of $\varepsilon$ from $0$ to $-\lambda
 
 Verify that:
 
-1. $E\,m(\varepsilon) = 1$ by computing $\int m(\varepsilon)\,\phi(\varepsilon)\,d\varepsilon$ using the moment-generating function of a standard normal.
-2. The twisted density $\hat\phi(\varepsilon) = m(\varepsilon)\,\phi(\varepsilon)$ is indeed $\mathcal{N}(-\lambda, I)$ by combining exponents:
+1. $E m(\varepsilon) = 1$ by computing $\int m(\varepsilon) \phi(\varepsilon) d\varepsilon$ using the moment-generating function of a standard normal.
+2. The twisted density $\hat\phi(\varepsilon) = m(\varepsilon) \phi(\varepsilon)$ is indeed $\mathcal{N}(-\lambda, I)$ by combining exponents:
 
 $$
-m(\varepsilon)\,\phi(\varepsilon) \propto \exp\!\left(-\lambda'\varepsilon - \tfrac{1}{2}\lambda'\lambda\right) \exp\!\left(-\tfrac{1}{2}\varepsilon'\varepsilon\right) = \exp\!\left(-\tfrac{1}{2}\bigl[\varepsilon'\varepsilon + 2\lambda'\varepsilon + \lambda'\lambda\bigr]\right)
+m(\varepsilon) \phi(\varepsilon) \propto \exp\!\left(-\lambda^\top\varepsilon - \tfrac{1}{2}\lambda^\top\lambda\right) \exp\!\left(-\tfrac{1}{2}\varepsilon^\top\varepsilon\right) = \exp\!\left(-\tfrac{1}{2}\bigl[\varepsilon^\top\varepsilon + 2\lambda^\top\varepsilon + \lambda^\top\lambda\bigr]\right)
 $$
 
-and complete the square to obtain $-\frac{1}{2}(\varepsilon + \lambda)'(\varepsilon + \lambda)$.
+and complete the square to obtain $-\frac{1}{2}(\varepsilon + \lambda)^\top(\varepsilon + \lambda)$.
 
 ````
 
@@ -127,20 +128,20 @@ and complete the square to obtain $-\frac{1}{2}(\varepsilon + \lambda)'(\varepsi
 :class: dropdown
 
 **Part 1.**
-Write $E\,m(\varepsilon) = \int \exp(-\lambda'\varepsilon - \tfrac{1}{2}\lambda'\lambda)\,\phi(\varepsilon)\,d\varepsilon = \exp(-\tfrac{1}{2}\lambda'\lambda)\,E[\exp(-\lambda'\varepsilon)]$.
+Write $E m(\varepsilon) = \int \exp(-\lambda^\top\varepsilon - \tfrac{1}{2}\lambda^\top\lambda) \phi(\varepsilon) d\varepsilon = \exp(-\tfrac{1}{2}\lambda^\top\lambda) E[\exp(-\lambda^\top\varepsilon)]$.
 
-The moment-generating function of $\varepsilon \sim \mathcal{N}(0,I)$ gives $E[\exp(-\lambda'\varepsilon)] = \exp(\tfrac{1}{2}\lambda'\lambda)$.
+The moment-generating function of $\varepsilon \sim \mathcal{N}(0,I)$ gives $E[\exp(-\lambda^\top\varepsilon)] = \exp(\tfrac{1}{2}\lambda^\top\lambda)$.
 
-So $E\,m(\varepsilon) = \exp(-\tfrac{1}{2}\lambda'\lambda)\exp(\tfrac{1}{2}\lambda'\lambda) = 1$. 
+So $E m(\varepsilon) = \exp(-\tfrac{1}{2}\lambda^\top\lambda)\exp(\tfrac{1}{2}\lambda^\top\lambda) = 1$. 
 
 **Part 2.**
 Combine the exponents:
 
 $$
-m(\varepsilon)\,\phi(\varepsilon) \propto \exp\!\left(-\tfrac{1}{2}\varepsilon'\varepsilon - \lambda'\varepsilon - \tfrac{1}{2}\lambda'\lambda\right)
+m(\varepsilon) \phi(\varepsilon) \propto \exp\!\left(-\tfrac{1}{2}\varepsilon^\top\varepsilon - \lambda^\top\varepsilon - \tfrac{1}{2}\lambda^\top\lambda\right)
 $$
 
-Recognise the argument as $-\tfrac{1}{2}(\varepsilon'\varepsilon + 2\lambda'\varepsilon + \lambda'\lambda) = -\tfrac{1}{2}(\varepsilon + \lambda)'(\varepsilon + \lambda)$.
+Recognise the argument as $-\tfrac{1}{2}(\varepsilon^\top\varepsilon + 2\lambda^\top\varepsilon + \lambda^\top\lambda) = -\tfrac{1}{2}(\varepsilon + \lambda)^\top(\varepsilon + \lambda)$.
 
 This is the kernel of a $\mathcal{N}(-\lambda, I)$ density. 
 
@@ -153,7 +154,7 @@ The **relative entropy** (Kullback–Leibler divergence) of the twisted density 
 ```{math}
 :label: eq_entropy
 
-E\bigl[m(\varepsilon)\log m(\varepsilon)\bigr] = \frac{1}{2}\,\lambda'\lambda
+E\bigl[m(\varepsilon)\log m(\varepsilon)\bigr] = \frac{1}{2} \lambda^\top\lambda
 ```
 
 a convenient scalar measure of the statistical distance between the two models.
@@ -162,13 +163,9 @@ The vector $\lambda$ is the key object.
 
 Depending on context it represents *risk prices*, *belief distortions*, or *worst-case mean perturbations* under model uncertainty.
 
-### Visualising the twist
-
 For illustration, consider the scalar case $\varepsilon \in \mathbb{R}$ with $\lambda = 1.5$.
 
 ```{code-cell} ipython3
-from scipy.stats import norm as normal_dist
-
 ε = np.linspace(-5, 5, 500)
 λ_val = 1.5
 
@@ -179,21 +176,16 @@ m_lr    = np.exp(-λ_val * ε - 0.5 * λ_val**2)
 fig, axes = plt.subplots(1, 3, figsize=(14, 4))
 
 axes[0].plot(ε, ϕ_base, 'steelblue', lw=2)
-axes[0].set_title(r"Baseline $\phi(\varepsilon)$: $\mathcal{N}(0,1)$")
 axes[0].set_xlabel(r"$\varepsilon$")
 
 axes[1].plot(ε, m_lr, 'firebrick', lw=2)
 axes[1].axhline(1, color='grey', lw=0.8, ls='--')
-axes[1].set_title(rf"Likelihood ratio $m(\varepsilon)$, $\lambda={λ_val}$")
 axes[1].set_xlabel(r"$\varepsilon$")
 
-axes[2].plot(ε, ϕ_base, 'steelblue', lw=1.5,
+axes[2].plot(ε, ϕ_base, 'steelblue', lw=2,
              ls='--', alpha=0.6, label='Baseline')
 axes[2].plot(ε, ϕ_twist, 'firebrick', lw=2,
              label='Twisted')
-axes[2].set_title(
-    r"Twisted $\hat\phi(\varepsilon)$:"
-    r" $\mathcal{N}(-\lambda, 1)$")
 axes[2].set_xlabel(r"$\varepsilon$")
 axes[2].legend()
 
@@ -219,13 +211,13 @@ The econometrician works with a linear Gaussian state-space system at a *monthly
 ```{math}
 :label: eq_state
 
-x_{t+1} = A\,x_t + C\,\varepsilon_{t+1}
+x_{t+1} = A x_t + C \varepsilon_{t+1}
 ```
 
 ```{math}
 :label: eq_obs
 
-y_{t+1} = D\,x_t + G\,\varepsilon_{t+1}
+y_{t+1} = D x_t + G \varepsilon_{t+1}
 ```
 
 ```{math}
@@ -238,12 +230,12 @@ Here $x_t$ is an $n \times 1$ state vector and $\varepsilon_{t+1}$ is a $k \time
 
 Throughout, we assume $n = k$ and that the volatility matrix $C$ is square and invertible — this is needed whenever we back out mean distortions $w = -C^{-1}(\cdot)$ from alternative transition matrices.
 
-The observation $y_{t+1}$ represents consumption growth, $c_{t+1} - c_t = D\,x_t + G\,\varepsilon_{t+1}$.
+The observation $y_{t+1}$ represents consumption growth, $c_{t+1} - c_t = D x_t + G \varepsilon_{t+1}$.
 
 Separately, the risk-free one-period interest rate and the payout process from a risky asset are linear functions of the state:
 
 $$
-r_t = \delta_0 + \bar{r}'\,x_t, \qquad d_t = \bar{d}'\,x_t
+r_t = \delta_0 + \bar{r}^\top x_t, \qquad d_t = \bar{d}^\top x_t
 $$
 
 ```{figure} /_static/lecture_specific/risk_aversion_or_mistaken_beliefs/fig2_tom.png
@@ -258,7 +250,7 @@ The econometrician's model: estimated state dynamics.
 Under rational expectations with a risk-neutral representative investor, the stock price $p_t$ (the ex-dividend market value of a claim to the stream $\{d_{t+j}\}_{j=1}^\infty$) satisfies:
 
 $$
-p_t = \exp(-r_t)\,E_t(p_{t+1} + d_{t+1})
+p_t = \exp(-r_t) E_t(p_{t+1} + d_{t+1})
 $$
 
 The expectations theory of the term structure of interest rates prices a zero-coupon risk-free claim to one dollar at time $t+n$ as:
@@ -266,7 +258,7 @@ The expectations theory of the term structure of interest rates prices a zero-co
 ```{math}
 :label: eq_rn_recursion
 
-p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,E_t\,p_{t+1}(n), \qquad p_t(n) = \exp(\bar{A}_n^{RN} + B_n^{RN}\,x_t)
+p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t) E_t p_{t+1}(n), \qquad p_t(n) = \exp(\bar{A}_n^{RN} + B_n^{RN} x_t)
 ```
 
 The last equality states that bond prices take an **exponential-affine** form in the state — this is a consequence of the linear Gaussian structure and can be verified by substituting the guess into the recursion and matching coefficients (see {ref}`Exercise 3 <arp_ex3>` in {doc}`Affine Models of Asset Prices <affine_risk_prices>`).
@@ -277,7 +269,7 @@ These formulas work "pretty well" for conditional means but less well for condit
 
 It would be convenient if versions of the same pricing formulas worked even when investors are risk averse or hold distorted beliefs — the likelihood ratio makes this possible.
 
-We now promote the static vector $\lambda$ from {eq}`eq_lr` to a *state-dependent* risk price vector by writing $\lambda_t = \Lambda\,x_t$, where $\Lambda$ is a $k \times n$ matrix of risk price coefficients.
+We now promote the static vector $\lambda$ from {eq}`eq_lr` to a *state-dependent* risk price vector by writing $\lambda_t = \Lambda x_t$, where $\Lambda$ is a $k \times n$ matrix of risk price coefficients.
 
 In the code below, this matrix is the parameter `Λ`.
 
@@ -286,12 +278,12 @@ The likelihood ratio increment is
 ```{math}
 :label: eq_sdf_lr
 
-m_{t+1}^\Lambda = \exp\!\left(-\lambda_t'\,\varepsilon_{t+1} - \frac{1}{2}\,\lambda_t'\lambda_t\right), \qquad \lambda_t = \Lambda\,x_t
+m_{t+1}^\Lambda = \exp\!\left(-\lambda_t^\top \varepsilon_{t+1} - \frac{1}{2} \lambda_t^\top\lambda_t\right), \qquad \lambda_t = \Lambda x_t
 ```
 
-with $E_t\,m_{t+1}^\Lambda = 1$ and $m_{t+1}^\Lambda \geq 0$.
+with $E_t m_{t+1}^\Lambda = 1$ and $m_{t+1}^\Lambda \geq 0$.
 
-The likelihood ratio $m_{t+1}^\Lambda$ distorts the conditional distribution of $\varepsilon_{t+1}$ from $\mathcal{N}(0,I)$ to $\mathcal{N}(-\Lambda\,x_t, I)$.
+The likelihood ratio $m_{t+1}^\Lambda$ distorts the conditional distribution of $\varepsilon_{t+1}$ from $\mathcal{N}(0,I)$ to $\mathcal{N}(-\Lambda x_t, I)$.
 
 Covariances of returns with $m_{t+1}^\Lambda$ affect mean returns — this is the channel through which risk aversion prices risks.
 
@@ -302,7 +294,7 @@ For stocks (Lucas–Hansen):
 ```{math}
 :label: eq_stock_lr
 
-p_t = \exp(-r_t)\,E_t\bigl(m_{t+1}^\Lambda\,(p_{t+1} + d_{t+1})\bigr)
+p_t = \exp(-r_t) E_t\bigl(m_{t+1}^\Lambda (p_{t+1} + d_{t+1})\bigr)
 ```
 
 For the term structure (Dai–Singleton–Backus–Zin):
@@ -310,7 +302,7 @@ For the term structure (Dai–Singleton–Backus–Zin):
 ```{math}
 :label: eq_ts_lr
 
-p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,E_t\bigl(m_{t+1}^\Lambda\,p_{t+1}(n)\bigr), \qquad p_t(n) = \exp(\bar{A}_n + B_n\,x_t)
+p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t) E_t\bigl(m_{t+1}^\Lambda p_{t+1}(n)\bigr), \qquad p_t(n) = \exp(\bar{A}_n + B_n x_t)
 ```
 
 Note that the coefficients $\bar{A}_n$, $B_n$ here differ from the risk-neutral coefficients $\bar{A}_n^{RN}$, $B_n^{RN}$ in {eq}`eq_rn_recursion` because the likelihood ratio modifies the recursion.
@@ -319,32 +311,32 @@ Note that the coefficients $\bar{A}_n$, $B_n$ here differ from the risk-neutral 
 
 The risk-neutral representation implies **twisted dynamics**.
 
-Under the twisted measure, define $\tilde\varepsilon_{t+1} := \varepsilon_{t+1} + \lambda_t = \varepsilon_{t+1} + \Lambda\, x_t$.
+Under the twisted measure, define $\tilde\varepsilon_{t+1} := \varepsilon_{t+1} + \lambda_t = \varepsilon_{t+1} + \Lambda  x_t$.
 
 Since $\varepsilon_{t+1} \sim \mathcal{N}(0, I)$ under the econometrician's measure, the change of measure makes $\tilde\varepsilon_{t+1} \sim \mathcal{N}(0, I)$ under the risk-neutral measure.
 
-Substituting $\varepsilon_{t+1} = \tilde\varepsilon_{t+1} - \Lambda\, x_t$ into {eq}`eq_state` gives:
+Substituting $\varepsilon_{t+1} = \tilde\varepsilon_{t+1} - \Lambda  x_t$ into {eq}`eq_state` gives:
 
 ```{math}
 :label: eq_rn_dynamics
 
-x_{t+1} = (A - C\Lambda)\,x_t + C\,\tilde\varepsilon_{t+1}, \qquad \tilde\varepsilon_{t+1} \sim \mathcal{N}(0,I)
+x_{t+1} = (A - C\Lambda) x_t + C \tilde\varepsilon_{t+1}, \qquad \tilde\varepsilon_{t+1} \sim \mathcal{N}(0,I)
 ```
 
-The dependence of $\lambda_t = \Lambda\,x_t$ on the state modifies the dynamics relative to the econometrician's model.
+The dependence of $\lambda_t = \Lambda x_t$ on the state modifies the dynamics relative to the econometrician's model.
 
 ### Expectation under a twisted distribution
 
 The mathematical expectation of $y_{t+1}$ under the probability distribution twisted by likelihood ratio $m_{t+1}$ is
 
 $$
-\tilde{E}_t\,y_{t+1} = E_t\,m_{t+1}\,y_{t+1}
+\tilde{E}_t y_{t+1} = E_t m_{t+1} y_{t+1}
 $$
 
 Under the risk-neutral dynamics, the term structure theory becomes:
 
 $$
-p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t)\,\tilde{E}_t\,p_{t+1}(n), \qquad p_t(n) = \exp(\tilde{\bar{A}}_n + \tilde{B}_n\,x_t)
+p_t(1) = \exp(-r_t), \qquad p_t(n+1) = \exp(-r_t) \tilde{E}_t p_{t+1}(n), \qquad p_t(n) = \exp(\tilde{\bar{A}}_n + \tilde{B}_n x_t)
 $$
 
 These are the same formulas as rational-expectations asset pricing, but expectations are taken with respect to a probability measure *twisted by risk aversion*.
@@ -475,7 +467,6 @@ for label, x in states.items():
 
 ax.set_xlabel("Maturity (months)")
 ax.set_ylabel("Yield (annualised %)")
-ax.set_title("Yield curves under different states")
 ax.legend()
 plt.tight_layout()
 plt.show()
@@ -484,8 +475,8 @@ plt.show()
 ### Econometrician's model vs. risk-neutral model
 
 A key implication is that the risk-neutral dynamics
-$x_{t+1} = (A - C\Lambda)\,x_t + C\,\tilde\varepsilon_{t+1}$
-differ from the econometrician's dynamics $x_{t+1} = A\,x_t + C\,\varepsilon_{t+1}$.
+$x_{t+1} = (A - C\Lambda) x_t + C \tilde\varepsilon_{t+1}$
+differ from the econometrician's dynamics $x_{t+1} = A x_t + C \varepsilon_{t+1}$.
 
 ```{code-cell} ipython3
 print("A:\n", model.A)
@@ -505,15 +496,14 @@ X_rn   = model.simulate_twisted(x0, T, rng=rng2)
 
 fig, axes = plt.subplots(2, 1, figsize=(10, 7), sharex=True)
 for i, (ax, lab) in enumerate(zip(axes, ["Level factor", "Slope factor"])):
-    ax.plot(X_econ[:, i], 'steelblue', lw=1.2,
+    ax.plot(X_econ[:, i], 'steelblue', lw=2,
             label="Econometrician (P)")
-    ax.plot(X_rn[:, i], 'firebrick', lw=1.2,
+    ax.plot(X_rn[:, i], 'firebrick', lw=2,
             alpha=0.8, label="Risk-neutral (Q)")
     ax.set_ylabel(lab)
     ax.legend()
 
 axes[1].set_xlabel("Period")
-axes[0].set_title("State paths: physical vs. risk-neutral")
 plt.tight_layout()
 plt.show()
 ```
@@ -522,7 +512,7 @@ Both factors are more persistent under the risk-neutral measure $Q$ than under t
 
 ## An identification challenge
 
-The risk price vector $\lambda_t = \Lambda\, x_t$ can be interpreted as either:
+The risk price vector $\lambda_t = \Lambda  x_t$ can be interpreted as either:
 
 - a **risk price vector** expressing the representative agent's risk aversion, or
 - the representative agent's **belief distortion** relative to the econometrician's
@@ -553,13 +543,12 @@ model_mistaken = LikelihoodRatioModel(
 y_mistaken = model_mistaken.yields(x_test, 60) * 1200
 
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.plot(np.arange(1, 61), y_risk_averse, 'steelblue', lw=3,
+ax.plot(np.arange(1, 61), y_risk_averse, 'steelblue', lw=2,
         label='Risk averse + rational expectations')
-ax.plot(np.arange(1, 61), y_mistaken, 'firebrick', lw=1.5, ls='--',
+ax.plot(np.arange(1, 61), y_mistaken, 'firebrick', lw=2, ls='--',
         label='Risk neutral + mistaken beliefs')
 ax.set_xlabel("Maturity (months)")
 ax.set_ylabel("Yield (annualised %)")
-ax.set_title("Observational equivalence")
 ax.legend()
 plt.tight_layout()
 plt.show()
@@ -579,8 +568,8 @@ Without additional information (e.g., surveys of forecasters), we cannot tell th
 Their setup posits:
 
 - The representative agent's risk aversion leads him to price risks
-  $\varepsilon_{t+1}$ with prices $\lambda_t^* = \Lambda^*\, x_t$, where $\Lambda^*$ is a $k \times n$ matrix.
-- The representative agent has **twisted beliefs** $(A^*, C) = (A - C\,W^*, C)$
+  $\varepsilon_{t+1}$ with prices $\lambda_t^* = \Lambda^*  x_t$, where $\Lambda^*$ is a $k \times n$ matrix.
+- The representative agent has **twisted beliefs** $(A^*, C) = (A - C W^*, C)$
   relative to the econometrician's model $(A, C)$, where $W^*$ is a $k \times n$ matrix of belief distortion coefficients.
 - Professional forecasters use the twisted beliefs $(A^*, C)$ to answer
   survey questions about their forecasts.
@@ -593,17 +582,17 @@ PSS proceed in four steps:
 2. Project experts' one-step-ahead forecasts $E_t^*[x_{t+1}]$ on $x_t$ to obtain
    $E_t^*[x_{t+1}] = A^* x_t$ and interpret $A^*$ as incorporating belief
    distortions.
-3. Back out the mean distortion matrix $W^* = -C^{-1}(A^* - A)$, so that $w_t^* = W^*\,x_t$ is the state-dependent mean shift applied to the
+3. Back out the mean distortion matrix $W^* = -C^{-1}(A^* - A)$, so that $w_t^* = W^* x_t$ is the state-dependent mean shift applied to the
    density of $\varepsilon_{t+1}$.  (This requires $C$ to be invertible.)
 4. Reinterpret the $\Lambda$ estimated by the rational-expectations econometrician
-   as $\Lambda = \Lambda^* + W^*$, where $\lambda_t^* = \Lambda^*\, x_t$ is the
+   as $\Lambda = \Lambda^* + W^*$, where $\lambda_t^* = \Lambda^*  x_t$ is the
    (smaller) price of risk vector actually charged by the representative agent with
    distorted beliefs.
 
-An econometrician who mistakenly imposes rational expectations estimates risk prices $\lambda_t = \Lambda\, x_t$ that sum two parts:
-- *smaller risk prices* $\lambda_t^* = \Lambda^*\, x_t$ actually charged by the erroneous-beliefs
+An econometrician who mistakenly imposes rational expectations estimates risk prices $\lambda_t = \Lambda  x_t$ that sum two parts:
+- *smaller risk prices* $\lambda_t^* = \Lambda^*  x_t$ actually charged by the erroneous-beliefs
   representative agent, and
-- *conditional mean distortions* $w_t^* = W^*\, x_t$ of the risks $\varepsilon_{t+1}$ that
+- *conditional mean distortions* $w_t^* = W^*  x_t$ of the risks $\varepsilon_{t+1}$ that
   the twisted-beliefs representative agent's model displays relative to the
   econometrician's.
 
@@ -656,15 +645,13 @@ for i, (ax, lab) in enumerate(zip(axes,
     ax.set_ylabel(lab)
     ax.legend()
 
-axes[0].set_title("PSS decomposition: level")
-axes[1].set_title("PSS decomposition: slope")
 plt.tight_layout()
 plt.show()
 ```
 
 PSS find that experts perceive the level and slope of the yield curve to be *more persistent* than the econometrician's estimates imply.
 
-Subjective risk prices $\Lambda^*\, x_t$ vary less than the $\Lambda\, x_t$ estimated by the rational-expectations econometrician.
+Subjective risk prices $\Lambda^*  x_t$ vary less than the $\Lambda  x_t$ estimated by the rational-expectations econometrician.
 
 However, PSS offer no explanation for *why* beliefs are distorted — are they mistakes, ignorance of good econometrics, or something else?
 
@@ -718,13 +705,13 @@ Inspired by robust control theory, consider a dubious investor who:
 Taking the log consumption process to be linear Gaussian with shocks $\varepsilon_{t+1} \sim \mathcal{N}(0,I)$:
 
 $$
-c_{t+1} - c_t = D\,x_t + G\,\varepsilon_{t+1}, \qquad x_{t+1} = A\,x_t + C\,\varepsilon_{t+1}
+c_{t+1} - c_t = D x_t + G \varepsilon_{t+1}, \qquad x_{t+1} = A x_t + C \varepsilon_{t+1}
 $$
 
 the dubious agent's value function is
 
 $$
-V(x_0, c_0) := E\!\left[\sum_{t=0}^{\infty} \beta^t\,c_t \;\middle|\; x_0, c_0\right] = c_0 + \beta\,E\!\left[V(x_1, c_1) \;\middle|\; x_0, c_0\right]
+V(x_0, c_0) := E\!\left[\sum_{t=0}^{\infty} \beta^t c_t \;\middle|\; x_0, c_0\right] = c_0 + \beta E\!\left[V(x_1, c_1) \;\middle|\; x_0, c_0\right]
 $$
 
 Note that the objective is *linear* in consumption — there is no concave utility function $u(c_t)$.
@@ -740,21 +727,21 @@ The dubious agent solves a *min* problem — a malevolent "nature" chooses the w
 ```{math}
 :label: eq_hansen_seq
 
-J(x_0, c_0 \mid \eta) := \min_{\{m_{t+1}\}} E\!\left[\sum_{t=0}^{\infty} \beta^t\,M_t\,c_t \;\middle|\; x_0, c_0\right]
+J(x_0, c_0 \mid \eta) := \min_{\{m_{t+1}\}} E\!\left[\sum_{t=0}^{\infty} \beta^t M_t c_t \;\middle|\; x_0, c_0\right]
 ```
 
 subject to
 
 $$
-c_{t+1} - c_t = D\,x_t + G\,\varepsilon_{t+1}, \qquad x_{t+1} = A\,x_t + C\,\varepsilon_{t+1}
+c_{t+1} - c_t = D x_t + G \varepsilon_{t+1}, \qquad x_{t+1} = A x_t + C \varepsilon_{t+1}
 $$
 
 $$
-E\!\left[\sum_{t=0}^{\infty} \beta^t\,M_t\,E\!\left[m_{t+1}\log m_{t+1} \;\middle|\; x_t, c_t\right] \;\middle|\; x_0, c_0\right] \leq \eta
+E\!\left[\sum_{t=0}^{\infty} \beta^t M_t E\!\left[m_{t+1}\log m_{t+1} \;\middle|\; x_t, c_t\right] \;\middle|\; x_0, c_0\right] \leq \eta
 $$
 
 $$
-M_{t+1} = M_t\,m_{t+1}, \qquad E[m_{t+1} \mid x_t, c_t] = 1, \qquad M_0 = 1
+M_{t+1} = M_t m_{t+1}, \qquad E[m_{t+1} \mid x_t, c_t] = 1, \qquad M_0 = 1
 $$
 
 The cumulative likelihood ratio $M_t = \prod_{s=0}^{t-1} m_{s+1}$ converts the original probability measure into the distorted one.
@@ -782,13 +769,13 @@ Discounted entropy, by treating future divergences less severely, admits these s
 With the log-normal likelihood ratio
 
 $$
-m_{t+1} := \exp\!\left(-\frac{w_t' w_t}{2} - w_t'\,\varepsilon_{t+1}\right)
+m_{t+1} := \exp\!\left(-\frac{w_t^\top w_t}{2} - w_t^\top \varepsilon_{t+1}\right)
 $$
 
 conditional entropy takes the simple form
 
 $$
-E\!\left[m_{t+1}\log m_{t+1} \;\middle|\; x_t, c_t\right] = \frac{1}{2}\,w_t' w_t
+E\!\left[m_{t+1}\log m_{t+1} \;\middle|\; x_t, c_t\right] = \frac{1}{2} w_t^\top w_t
 $$
 
 Substituting into {eq}`eq_hansen_seq` and performing a change of measure (replacing $E[\cdot]$ with $E^w[\cdot]$ under the distorted model) yields the reformulated problem:
@@ -796,22 +783,22 @@ Substituting into {eq}`eq_hansen_seq` and performing a change of measure (replac
 ```{math}
 :label: eq_hansen_reform
 
-J(x_0, c_0 \mid \eta) := \min_{\{w_t\}} E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,c_t \;\middle|\; x_0, c_0\right]
+J(x_0, c_0 \mid \eta) := \min_{\{w_t\}} E^w\!\left[\sum_{t=0}^{\infty} \beta^t c_t \;\middle|\; x_0, c_0\right]
 ```
 
 subject to
 
 $$
-c_{t+1} - c_t = D\,x_t + G\,(\tilde\varepsilon_{t+1} - w_t), \qquad x_{t+1} = A\,x_t + C\,(\tilde\varepsilon_{t+1} - w_t)
+c_{t+1} - c_t = D x_t + G (\tilde\varepsilon_{t+1} - w_t), \qquad x_{t+1} = A x_t + C (\tilde\varepsilon_{t+1} - w_t)
 $$
 
 $$
-\frac{1}{2}\,E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,w_t' w_t \;\middle|\; x_0, c_0\right] \leq \eta
+\frac{1}{2} E^w\!\left[\sum_{t=0}^{\infty} \beta^t w_t^\top w_t \;\middle|\; x_0, c_0\right] \leq \eta
 $$
 
 Here $\tilde\varepsilon_{t+1} \sim \mathcal{N}(0, I)$ under $E^w$, and we have substituted $\varepsilon_{t+1} = \tilde\varepsilon_{t+1} - w_t$ (so $E[\varepsilon_{t+1}] = -w_t$ under the distorted measure).
 
-The shift $-w_t$ *reduces* expected consumption growth by $G\,w_t$ and shifts the state dynamics by $-C\,w_t$ — this is how the worst-case model makes the agent worse off.
+The shift $-w_t$ *reduces* expected consumption growth by $G w_t$ and shifts the state dynamics by $-C w_t$ — this is how the worst-case model makes the agent worse off.
 
 ### Outcome: constant worst-case distortion
 
@@ -827,21 +814,21 @@ This does *not* help explain countercyclical prices of risk (or prices of model 
 
 We compute $\bar{w}$ using the multiplier formulation (see {ref}`the multiplier preferences section below <mult_pref_section>`), in which the parameter $\theta$ penalises entropy: larger $\theta$ means less concern about misspecification.
 
-**Derivation sketch.** In the multiplier formulation, the agent minimises
+In the multiplier formulation, the agent minimises
 
 $$
-E^w\!\left[\sum_{t=0}^\infty \beta^t \bigl(c_t + \tfrac{\theta}{2}\,w_t'w_t\bigr)\right]
+E^w\!\left[\sum_{t=0}^\infty \beta^t \bigl(c_t + \tfrac{\theta}{2} w_t^\top w_t\bigr)\right]
 $$
 
 over $\{w_t\}$ subject to the shifted dynamics.
 
-Since $c_t = c_0 + \sum_{s=0}^{t-1}(D\,x_s + G\,\varepsilon_{s+1})$ and $\varepsilon_{s+1} = \tilde\varepsilon_{s+1} - w_s$, the first-order condition for $w_t$ balances the entropy penalty $\theta\, w_t$ against the marginal effect on discounted consumption:
+Since $c_t = c_0 + \sum_{s=0}^{t-1}(D x_s + G \varepsilon_{s+1})$ and $\varepsilon_{s+1} = \tilde\varepsilon_{s+1} - w_s$, the first-order condition for $w_t$ balances the entropy penalty $\theta  w_t$ against the marginal effect on discounted consumption:
 
 $$
-\theta\,\bar{w} = \frac{\beta}{1-\beta}\,G' + \beta\,C'\,v
+\theta \bar{w} = \frac{\beta}{1-\beta} G^\top + \beta C^\top v
 $$
 
-where $v$ solves $v = \frac{\beta}{1-\beta}\,D' + \beta\,A'\,v$, or equivalently $v = \beta\,(I - \beta A')^{-1}\,D'\,/\,(1-\beta)$.
+where $v$ solves $v = \frac{\beta}{1-\beta} D^\top + \beta A^\top v$, or equivalently $v = \beta (I - \beta A^\top)^{-1} D^\top / (1-\beta)$.
 
 The vector $v$ captures the discounted cumulative effect of a unit change in $x_t$ on future consumption.
 
@@ -873,9 +860,9 @@ Larger $\theta$ (less concern about misspecification) yields a smaller distortio
 
 Derive the formula for $\bar{w}$.
 
-1. Write the discounted consumption path as $\sum_{t=0}^\infty \beta^t c_t = \frac{c_0}{1-\beta} + \sum_{t=0}^\infty \beta^t \sum_{s=0}^{t-1}(D\,x_s - G\,w_s + G\,\tilde\varepsilon_{s+1})$.
-2. Use the state recursion $x_{t+1} = A\,x_t - C\,w_t + C\,\tilde\varepsilon_{t+1}$ and take first-order conditions with respect to the constant $w_t = \bar{w}$.
-3. Verify that the first-order condition gives $\theta\,\bar{w} = \frac{\beta}{1-\beta}\,G' + \beta\,C'\,v$ with $v = \beta(I - \beta A')^{-1} D' / (1-\beta)$.
+1. Write the discounted consumption path as $\sum_{t=0}^\infty \beta^t c_t = \frac{c_0}{1-\beta} + \sum_{t=0}^\infty \beta^t \sum_{s=0}^{t-1}(D x_s - G w_s + G \tilde\varepsilon_{s+1})$.
+2. Use the state recursion $x_{t+1} = A x_t - C w_t + C \tilde\varepsilon_{t+1}$ and take first-order conditions with respect to the constant $w_t = \bar{w}$.
+3. Verify that the first-order condition gives $\theta \bar{w} = \frac{\beta}{1-\beta} G^\top + \beta C^\top v$ with $v = \beta(I - \beta A^\top)^{-1} D^\top / (1-\beta)$.
 4. Check numerically that larger $\theta$ brings $\bar{w}$ closer to zero.
 
 ````
@@ -884,29 +871,29 @@ Derive the formula for $\bar{w}$.
 :class: dropdown
 
 **Part 1.**
-Since $c_t = c_0 + \sum_{s=0}^{t-1}(D\,x_s + G\,\tilde\varepsilon_{s+1} - G\,w_s)$, we have:
+Since $c_t = c_0 + \sum_{s=0}^{t-1}(D x_s + G \tilde\varepsilon_{s+1} - G w_s)$, we have:
 
 $$
-\sum_{t=0}^\infty \beta^t c_t = \frac{c_0}{1-\beta} + \sum_{t=0}^\infty \beta^t \sum_{s=0}^{t-1}\bigl(D\,x_s - G\,\bar{w} + G\,\tilde\varepsilon_{s+1}\bigr)
+\sum_{t=0}^\infty \beta^t c_t = \frac{c_0}{1-\beta} + \sum_{t=0}^\infty \beta^t \sum_{s=0}^{t-1}\bigl(D x_s - G \bar{w} + G \tilde\varepsilon_{s+1}\bigr)
 $$
 
 **Part 2.**
-The multiplier objective is $E^w[\sum \beta^t(c_t + \tfrac{\theta}{2}\bar{w}'\bar{w})]$.
+The multiplier objective is $E^w[\sum \beta^t(c_t + \tfrac{\theta}{2}\bar{w}^\top\bar{w})]$.
 
-Taking $\partial/\partial \bar{w}$ and setting to zero, the entropy penalty contributes $\theta\,\bar{w}$.
+Taking $\partial/\partial \bar{w}$ and setting to zero, the entropy penalty contributes $\theta \bar{w}$.
 
-The consumption term contributes $-\sum_{t=0}^\infty \beta^t \sum_{s=0}^{t-1}G' = -\frac{\beta}{1-\beta}\frac{1}{1-\beta}G'$ from the direct shock effect, plus indirect effects through $x_s$ via $C$.
+The consumption term contributes $-\sum_{t=0}^\infty \beta^t \sum_{s=0}^{t-1}G^\top = -\frac{\beta}{1-\beta}\frac{1}{1-\beta}G^\top$ from the direct shock effect, plus indirect effects through $x_s$ via $C$.
 
 **Part 3.**
-The indirect effect on $x_s$ requires summing $\sum_{t=s+1}^\infty \beta^t D' = \beta^{s+1}\frac{D'}{1-\beta}$, discounted back:
+The indirect effect on $x_s$ requires summing $\sum_{t=s+1}^\infty \beta^t D^\top = \beta^{s+1}\frac{D^\top}{1-\beta}$, discounted back:
 
 $$
-\sum_{s=0}^\infty \beta^s \cdot \beta \frac{D'}{1-\beta} \cdot \frac{\partial x_s}{\partial \bar{w}} = \beta\,C'\,v
+\sum_{s=0}^\infty \beta^s \cdot \beta \frac{D^\top}{1-\beta} \cdot \frac{\partial x_s}{\partial \bar{w}} = \beta C^\top v
 $$
 
-where $v = \beta(I-\beta A')^{-1}\frac{D'}{1-\beta}$ solves $v = \frac{\beta}{1-\beta}D' + \beta A'v$.
+where $v = \beta(I-\beta A^\top)^{-1}\frac{D^\top}{1-\beta}$ solves $v = \frac{\beta}{1-\beta}D^\top + \beta A^\top v$.
 
-So the first-order condition is $\theta\,\bar{w} = \frac{\beta}{1-\beta}G' + \beta\,C'\,v$, giving $\bar{w} = \frac{1}{\theta}\bigl(\frac{\beta}{1-\beta}G' + \beta\,C'\,v\bigr)$. 
+So the first-order condition is $\theta \bar{w} = \frac{\beta}{1-\beta}G^\top + \beta C^\top v$, giving $\bar{w} = \frac{1}{\theta}\bigl(\frac{\beta}{1-\beta}G^\top + \beta C^\top v\bigr)$. 
 
 **Part 4.**
 As $\theta \to \infty$, $\bar{w} = \frac{1}{\theta}(\cdots) \to 0$, which the numerical table confirms.
@@ -934,13 +921,13 @@ The inclusion of those alternative parametric models *tilts* the entropy ball, w
 The investor wants to include particular alternative models with
 
 $$
-E_t\!\left[\bar{m}_{t+1}\log\bar{m}_{t+1}\right] = \frac{1}{2}\,\bar{w}_t'\,\bar{w}_t = \xi(x_t)
+E_t\!\left[\bar{m}_{t+1}\log\bar{m}_{t+1}\right] = \frac{1}{2} \bar{w}_t^\top \bar{w}_t =: \frac{1}{2}\xi(x_t)
 $$
 
 and discounted entropy
 
 $$
-E^{\bar{w}}\!\left[\sum_{t=0}^{\infty} \beta^t\,\xi(x_t) \;\middle|\; x_0, c_0\right]
+\frac{1}{2}\,E^{\bar{w}}\!\left[\sum_{t=0}^{\infty} \beta^t \xi(x_t) \;\middle|\; x_0, c_0\right]
 $$
 
 This is accomplished by replacing the earlier entropy constraint with
@@ -948,7 +935,7 @@ This is accomplished by replacing the earlier entropy constraint with
 ```{math}
 :label: eq_tilted_constraint
 
-\frac{1}{2}\,E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,w_t' w_t \;\middle|\; x_0, c_0\right] \leq E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,\xi(x_t) \;\middle|\; x_0, c_0\right]
+\frac{1}{2} E^w\!\left[\sum_{t=0}^{\infty} \beta^t w_t^\top w_t \;\middle|\; x_0, c_0\right] \leq \frac{1}{2} E^w\!\left[\sum_{t=0}^{\infty} \beta^t \xi(x_t) \;\middle|\; x_0, c_0\right]
 ```
 
 The time-$t$ contributions to the right-hand side of {eq}`eq_tilted_constraint` relax the discounted entropy constraint in states $x_t$ in which $\xi(x_t)$ is larger.
@@ -960,10 +947,10 @@ This sets the stage for *state-dependent* mean distortions in the worst-case mod
 Inspired by {cite:t}`Bansal_Yaron_2004`, an agent fears that the true state dynamics are more persistent than the econometrician's model implies, expressed by
 
 $$
-x_{t+1} = \bar{A}\,x_t + C\,\tilde\varepsilon_{t+1}
+x_{t+1} = \bar{A} x_t + C \tilde\varepsilon_{t+1}
 $$
 
-Since $\bar{A}x_t = Ax_t + C(-C^{-1}(\bar{A}-A))x_t = Ax_t - C\bar{w}x_t$, this feared model is equivalent to shifting the mean of $\varepsilon_{t+1}$ by $-\bar{w}x_t$, giving $\bar{w}_t = \bar{w}\,x_t$ with
+Since $\bar{A}x_t = Ax_t + C(-C^{-1}(\bar{A}-A))x_t = Ax_t - C\bar{w}x_t$, this feared model is equivalent to shifting the mean of $\varepsilon_{t+1}$ by $-\bar{w}x_t$, giving $\bar{w}_t = \bar{w} x_t$ with
 
 $$
 \bar{w} = -C^{-1}(\bar{A} - A)
@@ -974,7 +961,7 @@ $$
 ```{math}
 :label: eq_xi
 
-\xi(x_t) := x_t'\,\bar{w}'\bar{w}\,x_t =: x_t'\,\Xi\,x_t
+\xi(x_t) := x_t^\top \bar{w}^\top\bar{w} x_t =: x_t^\top \Xi x_t
 ```
 
 ```{figure} /_static/lecture_specific/risk_aversion_or_mistaken_beliefs/eggs_backus2.png
@@ -988,36 +975,36 @@ Attaching a Lagrange multiplier $\tilde\theta \geq 0$ to the tilted entropy cons
 ```{math}
 :label: eq_szoke_seq
 
-J(x_0, c_0 \mid \Xi) := \max_{\tilde\theta \geq 0}\;\min_{\{w_t\}}\; E^w\!\left[\sum_{t=0}^{\infty} \beta^t\,c_t + \tilde\theta\,\frac{1}{2}\sum_{t=0}^{\infty} \beta^t\bigl(w_t' w_t - x_t'\,\Xi\,x_t\bigr) \;\middle|\; x_0, c_0\right]
+J(x_0, c_0 \mid \Xi) := \max_{\tilde\theta \geq 0}\;\min_{\{w_t\}}\; E^w\!\left[\sum_{t=0}^{\infty} \beta^t c_t + \tilde\theta \frac{1}{2}\sum_{t=0}^{\infty} \beta^t\bigl(w_t^\top w_t - x_t^\top \Xi x_t\bigr) \;\middle|\; x_0, c_0\right]
 ```
 
 subject to
 
 $$
-c_{t+1} - c_t = D\,x_t + G\,(\tilde\varepsilon_{t+1} - w_t), \qquad x_{t+1} = A\,x_t + C\,(\tilde\varepsilon_{t+1} - w_t)
+c_{t+1} - c_t = D x_t + G (\tilde\varepsilon_{t+1} - w_t), \qquad x_{t+1} = A x_t + C (\tilde\varepsilon_{t+1} - w_t)
 $$
 
 The worst-case shock mean distortion is now *state-dependent*:
 
 $$
-\tilde{w}_t = \tilde{w}\,x_t
+\tilde{w}_t = \tilde{w} x_t
 $$
 
 and the worst-case model is $(\tilde{A}, C, \tilde{D}, G)$ with
 
 $$
-\tilde{A} = A - C\,\tilde{w}, \qquad \tilde{D} = D - G\,\tilde{w}
+\tilde{A} = A - C \tilde{w}, \qquad \tilde{D} = D - G \tilde{w}
 $$
 
 ### Implementation: tilted entropy ball
 
 **Derivation of the iteration.**
-Guess a quadratic value function $J(x) = x'\,P\,x + \text{const}$ for the inner minimisation over $\{w_t\}$ in {eq}`eq_szoke_seq`.
+Guess a quadratic value function $J(x) = x^\top P x + \text{const}$ for the inner minimisation over $\{w_t\}$ in {eq}`eq_szoke_seq`.
 
-Since $w_t = W\,x_t$ is linear in the state, the first-order condition for $w_t$ at each $t$ gives:
+Since $w_t = W x_t$ is linear in the state, the first-order condition for $w_t$ at each $t$ gives:
 
 $$
-\tilde\theta\,W = \beta\,C'\,P\,(A - C\,W) \quad \Longrightarrow \quad (\tilde\theta\,I + 2\beta\,C' P\,C)\,W = 2\beta\,C'\,P\,A
+\tilde\theta W = \beta C^\top P (A - C W) \quad \Longrightarrow \quad (\tilde\theta I + 2\beta C^\top P C) W = 2\beta C^\top P A
 $$
 
 (where we write $\tilde\theta$ as $\theta$ in the code).
@@ -1025,7 +1012,7 @@ $$
 Substituting back into the Bellman equation and matching quadratic terms in $x$ gives the $P$ update:
 
 $$
-P = -\tfrac{\theta}{2}\,\Xi + \tfrac{\theta}{2}\,W'W + \beta\,(A - CW)'\,P\,(A - CW)
+P = -\tfrac{\theta}{2} \Xi + \tfrac{\theta}{2} W^\top W + \beta (A - CW)^\top P (A - CW)
 $$
 
 The code iterates on the $(P, W)$ system until convergence.
@@ -1117,7 +1104,7 @@ print(f"Eigenvalues of A_tilde: {eigvals(tilted.A_tilde).round(4)}")
 Derive the first-order condition for the tilted entropy problem.
 
 1. Start from {eq}`eq_szoke_seq` and write $w_t = W x_t$.  Using the dynamics $x_{t+1} = (A - CW)x_t + C\tilde\varepsilon_{t+1}$, argue that the objective is quadratic in $x_t$.
-2. Take the first-order condition $\partial / \partial W$ and show that it gives $\theta\, W = 2\beta\, C' P (A - CW)$, which can be rearranged to the system solved in the code.
+2. Take the first-order condition $\partial / \partial W$ and show that it gives $\theta  W = 2\beta  C^\top P (A - CW)$, which can be rearranged to the system solved in the code.
 3. Derive the $P$ update by substituting the optimal $W$ back into the Bellman equation.
 
 ````
@@ -1129,21 +1116,21 @@ Derive the first-order condition for the tilted entropy problem.
 With $w_t = Wx_t$ and $x_{t+1} = (A-CW)x_t + C\tilde\varepsilon_{t+1}$, the period-$t$ payoff in {eq}`eq_szoke_seq` is:
 
 $$
-c_t + \tfrac{\theta}{2}(w_t'w_t - x_t'\Xi\,x_t) = c_t + \tfrac{\theta}{2}\,x_t'(W'W - \Xi)\,x_t
+c_t + \tfrac{\theta}{2}(w_t^\top w_t - x_t^\top \Xi x_t) = c_t + \tfrac{\theta}{2} x_t^\top(W^\top W - \Xi) x_t
 $$
 
-Since $c_t$ is linear in past $x_s$ and the dynamics are linear, the value function is quadratic: $J_t = x_t'Px_t + \text{linear and constant terms}$.
+Since $c_t$ is linear in past $x_s$ and the dynamics are linear, the value function is quadratic: $J_t = x_t^\top P x_t + \text{linear and constant terms}$.
 
 **Part 2.**
 The first-order condition for $W$ from the quadratic Bellman equation is:
 
 $$
-\frac{\partial}{\partial W}\bigl[\tfrac{\theta}{2}x_t'W'Wx_t + \beta\,x_t'(A-CW)'P(A-CW)x_t\bigr] = 0
+\frac{\partial}{\partial W}\bigl[\tfrac{\theta}{2}x_t^\top W^\top W x_t + \beta x_t^\top(A-CW)^\top P(A-CW)x_t\bigr] = 0
 $$
 
-This gives $\theta\,W - 2\beta\,C'P(A-CW) = 0$.
+This gives $\theta W - 2\beta C^\top P(A-CW) = 0$.
 
-Rearranging: $(\theta\,I + 2\beta\,C'PC)\,W = 2\beta\,C'PA$. 
+Rearranging: $(\theta I + 2\beta C^\top PC) W = 2\beta C^\top PA$.
 
 **Part 3.**
 Substitute the optimal $W$ back into the Bellman equation.
@@ -1151,7 +1138,7 @@ Substitute the optimal $W$ back into the Bellman equation.
 The quadratic terms in $x_t$ give:
 
 $$
-P = -\tfrac{\theta}{2}\,\Xi + \tfrac{\theta}{2}\,W'W + \beta\,(A-CW)'P(A-CW)
+P = -\tfrac{\theta}{2} \Xi + \tfrac{\theta}{2} W^\top W + \beta (A-CW)^\top P(A-CW)
 $$
 
 This is the matrix Riccati equation that the code iterates to convergence. 
@@ -1168,30 +1155,33 @@ entropy_tilted = np.array([tilted.conditional_entropy(np.array([x, 0.005]))
 ξ_vals = np.array([tilted.xi_function(np.array([x, 0.005]))
                     for x in x_grid])
 
-# Hansen's constant entropy
-w_hansen = hansen_worst_case(A, C, D, G, β, θ_tilt)
+# Calibrate Hansen's θ so constant entropy matches E[ξ(x_t)/2]
+Σ_stat = solve_discrete_lyapunov(A, C @ C.T)
+avg_ξ_half = 0.5 * np.trace(Ξ @ Σ_stat)
+w_unit = hansen_worst_case(A, C, D, G, β, 1.0)
+θ_hansen = norm(w_unit) / np.sqrt(2 * avg_ξ_half)
+w_hansen = w_unit / θ_hansen
 hansen_ent = 0.5 * w_hansen @ w_hansen
 
 fig, ax = plt.subplots(figsize=(9, 5))
 ax.axhline(hansen_ent, color='steelblue', lw=2, ls='--',
-           label=rf"Hansen: constant $\frac{{1}}{{2}}\bar{{w}}'\bar{{w}} = {hansen_ent:.4f}$")
+           label=rf"Hansen: constant $\frac{{1}}{{2}}\bar{{w}}^\top\bar{{w}} = {hansen_ent:.4f}$")
 ax.plot(x_grid, entropy_tilted, 'firebrick', lw=2,
-        label=r"Szőke: $\frac{1}{2}\tilde{w}_t'\tilde{w}_t$")
-ax.plot(x_grid, 0.5 * ξ_vals, 'seagreen', lw=1.5, ls=':',
+        label=r"Szőke: $\frac{1}{2}\tilde{w}_t^\top\tilde{w}_t$")
+ax.plot(x_grid, 0.5 * ξ_vals, 'seagreen', lw=2, ls=':',
         label=r"Feared model: $\frac{1}{2}\xi(x_t)$")
 ax.set_xlabel(r"Level factor $x_{1,t}$")
 ax.set_ylabel("Conditional entropy")
-ax.set_title("State-dependent vs. constant worst-case distortions")
 ax.legend()
 plt.tight_layout()
 plt.show()
 ```
 
-The key innovation of the tilted entropy ball is visible: the Szőke worst-case distortion $\tilde{w}_t = \tilde{W}\,x_t$ grows with $|x_t|$, producing *countercyclical uncertainty prices*.
+The key innovation of the tilted entropy ball is visible: the Szőke worst-case distortion $\tilde{w}_t = \tilde{W} x_t$ grows with $|x_t|$, producing *countercyclical uncertainty prices*.
 
 When the state is far from its mean, the agent's worst-case model deviates more from the econometrician's model.
 
-By contrast, Hansen's constant distortion $\bar{w}$ has entropy $\frac{1}{2}\bar{w}'\bar{w}$ that does not vary with $x_t$ (shown as a horizontal line).
+By contrast, Hansen's constant distortion $\bar{w}$ has entropy $\frac{1}{2}\bar{w}^\top\bar{w}$ that does not vary with $x_t$ (shown as a horizontal line).
 
 The Szőke parabola lies inside the feared model's entropy budget $\frac{1}{2}\xi(x_t)$, confirming the worst-case distortion respects the tilted entropy constraint.
 
@@ -1201,7 +1191,7 @@ To summarize, three distinct probability twisters play roles in this analysis:
 
 | Symbol         | Source                        | Describes                         |
 |:---------------|:------------------------------|:----------------------------------|
-| $w_t^*$        | Piazzesi, Salomao, Schneider  | Mistaken agent's beliefs          |
+| $w_t^*$        | Piazzesi, Salomão, Schneider  | Mistaken agent's beliefs          |
 | $\bar{w}_t$    | Szőke's feared parametric model | Especial LRR parametric worry   |
 | $\tilde{w}_t$  | Szőke's worst-case model      | Worst-case distortion             |
 
@@ -1228,7 +1218,6 @@ for w_val, label, color, ls in [
 
 ax.set_xlabel(r"$\varepsilon_1$")
 ax.set_ylabel("Density")
-ax.set_title("Three probability twisters (first shock component)")
 ax.legend()
 plt.tight_layout()
 plt.show()
@@ -1238,8 +1227,63 @@ Each twister shifts the econometrician's $\mathcal{N}(0,1)$ density to the left 
 
 ## Empirical challenges and model performances
 
-```{figure} /_static/lecture_specific/risk_aversion_or_mistaken_beliefs/fig1_tom.png
-U.S. term structure of interest rates.
+```{code-cell} ipython3
+---
+tags: [hide-input]
+mystnb:
+  figure:
+    caption: U.S. Treasury yields and yield spread
+    name: fig-us-yields
+---
+data = pd.read_csv(
+    'https://raw.githubusercontent.com/QuantEcon/lecture-python.myst/update-asset/lectures/'
+    '_static/lecture_specific/risk_aversion_or_mistaken_beliefs/fred_data.csv',
+    parse_dates=['DATE'], index_col='DATE'
+)
+
+fig, axes = plt.subplots(2, 1, figsize=(12, 8), sharex=True,
+                          gridspec_kw={'height_ratios': [2, 1]})
+
+# Recession shading helper
+def shade_recessions(ax, rec):
+    ax.fill_between(rec.index, 0, 1,
+                    where=rec.values.flatten() == 1,
+                    transform=ax.get_xaxis_transform(),
+                    color='grey', alpha=0.2)
+
+rec = data['USREC'].dropna()
+
+ax = axes[0]
+shade_recessions(ax, rec)
+
+ax.plot(data['GS1'], 'steelblue', lw=2,
+        label=r'$y_{\mathrm{nom}}^{(1)}$')
+ax.plot(data['GS5'], 'seagreen', lw=2,
+        label=r'$y_{\mathrm{nom}}^{(5)}$')
+ax.plot(data['GS10'], 'firebrick', lw=2,
+        label=r'$y_{\mathrm{nom}}^{(10)}$')
+ax.plot(data['DFII5'], 'seagreen', lw=2, ls='--',
+        label=r'$y_{\mathrm{real}}^{(5)}$')
+ax.plot(data['DFII10'], 'firebrick', lw=2, ls='--',
+        label=r'$y_{\mathrm{real}}^{(10)}$')
+
+ax.axhline(0, color='black', lw=0.5)
+ax.set_ylabel('Yield (%)')
+ax.legend(loc='upper right')
+
+ax2 = axes[1]
+shade_recessions(ax2, rec)
+
+spread_10_1 = data['GS10'] - data['GS1']
+ax2.plot(spread_10_1, 'steelblue', lw=2,
+         label=r'$y^{(10)} - y^{(1)}$')
+ax2.axhline(0, color='black', lw=0.5)
+ax2.set_ylabel('Spread (%)')
+ax2.set_xlabel('Year')
+ax2.legend(loc='upper left')
+
+plt.tight_layout()
+plt.show()
 ```
 
 Several recognised patterns characterise the U.S. term structure:
@@ -1266,7 +1310,7 @@ The following table summarises how various models perform:
 
 Szőke's framework delivers:
 
-1. A theory of *state-dependent belief distortions* $\tilde{w}_t = \tilde{w}\,x_t$.
+1. A theory of *state-dependent belief distortions* $\tilde{w}_t = \tilde{w} x_t$.
 2. A theory about the *question that professional forecasters answer*: they
    respond with their worst-case model because they hear "tell me forecasts that
    rationalise your (max-min) decisions."
@@ -1279,13 +1323,13 @@ model_rn = LikelihoodRatioModel(
 model_uncert = LikelihoodRatioModel(
     A, C, D, G, r_bar, Λ=tilted.w_tilde, δ_0=δ_0)
 
-x_test = np.array([0.01, 0.005])
+x_test = np.array([0.01, -0.03])
 n_max = 120
 mats = np.arange(1, n_max + 1)
 
 fig, ax = plt.subplots(figsize=(9, 5))
 ax.plot(mats, model_rn.yields(x_test, n_max) * 1200,
-        'grey', lw=1.5, ls=':', label='Risk neutral')
+        'grey', lw=2, ls=':', label='Risk neutral')
 ax.plot(mats, model.yields(x_test, n_max) * 1200,
         'steelblue', lw=2, label=r'Risk aversion ($\Lambda x_t$)')
 ax.plot(mats, model_uncert.yields(x_test, n_max) * 1200,
@@ -1293,7 +1337,6 @@ ax.plot(mats, model_uncert.yields(x_test, n_max) * 1200,
         label=r'Model uncertainty ($\tilde{W} x_t$)')
 ax.set_xlabel("Maturity (months)")
 ax.set_ylabel("Yield (annualised %)")
-ax.set_title("Yield curves: alternative sources of term premia")
 ax.legend()
 plt.tight_layout()
 plt.show()
@@ -1326,18 +1369,18 @@ In the Szőke framework, the rational-expectations econometrician's single likel
 
 1. Use $\{x_t, c_t\}_{t=0}^T$ to estimate the econometrician's $A$, $C$, $D$, $G$.
 2. View $\Xi$ as a matrix of additional free parameters and estimate them
-   simultaneously with risk prices $\tilde\lambda\,x_t$ from data
+   simultaneously with risk prices $\tilde\lambda x_t$ from data
    $\{p_t(n+1)\}_{n=1}^N$, $t = 0, \ldots, T$, by imposing cross-equation
    restrictions:
 
 $$
-p_t(n+1) = \exp(-r_t)\,E_t\!\left[m_{t+1}^{\tilde{w}}\,m_{t+1}^{\tilde\lambda}\,p_{t+1}(n)\right]
+p_t(n+1) = \exp(-r_t) E_t\!\left[m_{t+1}^{\tilde{w}} m_{t+1}^{\tilde\lambda} p_{t+1}(n)\right]
 $$
 
 where
 
 $$
-m_{t+1}^{\tilde{w}} = \exp\!\left(-\tilde{w}_t'\varepsilon_{t+1} - \frac{\tilde{w}_t'\tilde{w}_t}{2}\right), \qquad m_{t+1}^{\tilde\lambda} = \exp\!\left(-\tilde\lambda_t'\varepsilon_{t+1} - \frac{\tilde\lambda_t'\tilde\lambda_t}{2}\right)
+m_{t+1}^{\tilde{w}} = \exp\!\left(-\tilde{w}_t^\top\varepsilon_{t+1} - \frac{\tilde{w}_t^\top\tilde{w}_t}{2}\right), \qquad m_{t+1}^{\tilde\lambda} = \exp\!\left(-\tilde\lambda_t^\top\varepsilon_{t+1} - \frac{\tilde\lambda_t^\top\tilde\lambda_t}{2}\right)
 $$
 
 **Stage II: Assessment**
@@ -1389,10 +1432,10 @@ The **multiplier preference** version of the dubious agent's problem is:
 ```{math}
 :label: eq_mult_seq
 
-W(x_0, c_0 \mid \theta) := \min_{\{m_{t+1}\}} E\!\left[\sum_{t=0}^{\infty} \beta^t\,M_t\bigl(c_t + \theta\,m_{t+1}\log m_{t+1}\bigr) \;\middle|\; x_0, c_0\right]
+W(x_0, c_0 \mid \theta) := \min_{\{m_{t+1}\}} E\!\left[\sum_{t=0}^{\infty} \beta^t M_t\bigl(c_t + \theta m_{t+1}\log m_{t+1}\bigr) \;\middle|\; x_0, c_0\right]
 ```
 
-with $M_{t+1} = M_t\,m_{t+1}$, $E[m_{t+1} \mid x_t, c_t] = 1$, $M_0 = 1$.
+with $M_{t+1} = M_t m_{t+1}$, $E[m_{t+1} \mid x_t, c_t] = 1$, $M_0 = 1$.
 
 The recursive formulation is:
 
@@ -1411,13 +1454,13 @@ $$
 where the right-hand side is attained by
 
 $$
-m_{t+1}^* \propto \exp\!\left(-\frac{\beta\,W(x_{t+1}, c_{t+1})}{\theta}\right)
+m_{t+1}^* \propto \exp\!\left(-\frac{\beta W(x_{t+1}, c_{t+1})}{\theta}\right)
 $$
 
 **Relationship between multiplier and constraint problems.** By Lagrange multiplier theory,
 
 $$
-W(x_t, c_t \mid \tilde\theta) = J(x_t, c_t \mid \eta) + \tilde\theta\,\eta
+W(x_t, c_t \mid \tilde\theta) = J(x_t, c_t \mid \eta) + \tilde\theta \eta
 $$
 
 Each choice of $\tilde\theta$ in the multiplier problem corresponds to a particular entropy bound $\eta$ in the constraint problem, so the two formulations are equivalent.
@@ -1446,7 +1489,6 @@ ax.axhline(E_V, color='steelblue', lw=1.5,
            ls='--', label=r"$E[V]$ (risk neutral)")
 ax.set_xlabel(r"Robustness parameter $\theta$")
 ax.set_ylabel("Value")
-ax.set_title(r"Risk-sensitivity operator $T_\theta$")
 ax.legend()
 ax.annotate(r"$\theta \to \infty$: risk neutral",
             xy=(500, E_V), fontsize=11, color='steelblue',
