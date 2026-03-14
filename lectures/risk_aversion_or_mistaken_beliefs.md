@@ -1216,7 +1216,7 @@ These come from the penalty $\frac{\theta}{2}(w^\top w - x^\top \Xi x)$ and from
 *Linear terms in $x$:*
 
 $$
-\tfrac{1}{1-\beta}(D - GW)x + \beta v^\top (A-CW)x + \theta a^\top W x - 2\beta a^\top C^\top P(A-CW)x
+\tfrac{\beta}{1-\beta}(D - GW)x + \beta v^\top (A-CW)x + \theta a^\top W x - 2\beta a^\top C^\top P(A-CW)x
 $$
 
 These come from $(c'-c)/(1-\beta)$, from $v^\top x'$, from the cross term in $w^\top w = (a+Wx)^\top(a+Wx)$, and from the cross term in $x'^\top P x'$.
