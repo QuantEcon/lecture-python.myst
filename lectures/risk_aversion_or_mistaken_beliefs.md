@@ -64,7 +64,6 @@ We start with some standard imports:
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from datetime import datetime
 from scipy.linalg import solve_discrete_lyapunov
 from numpy.linalg import inv, eigvals, norm
 from scipy.stats import norm as normal_dist
@@ -81,7 +80,7 @@ Under the econometrician's probability model, $\varepsilon$ has a standard multi
 ```{math}
 :label: eq_baseline
 
-\phi(\varepsilon) \propto \exp\!\left(-\frac{1}{2} \varepsilon^\top\varepsilon\right), \qquad \varepsilon \sim \mathcal{N}(0, I)
+\phi(\varepsilon) \propto \exp \left(-\frac{1}{2} \varepsilon^\top\varepsilon\right), \qquad \varepsilon \sim \mathcal{N}(0, I)
 ```
 
 Define a **likelihood ratio**
@@ -89,7 +88,7 @@ Define a **likelihood ratio**
 ```{math}
 :label: eq_lr
 
-m(\varepsilon) = \exp\!\left(-\lambda^\top\varepsilon - \frac{1}{2} \lambda^\top\lambda\right) \geq 0
+m(\varepsilon) = \exp \left(-\lambda^\top\varepsilon - \frac{1}{2} \lambda^\top\lambda\right) \geq 0
 ```
 
 which satisfies $E  m(\varepsilon) = 1$ when the mathematical expectation $E$ is taken with respect to the econometrician's model.
@@ -101,7 +100,7 @@ The **twisted density** is
 ```{math}
 :label: eq_twisted
 
-\hat\phi(\varepsilon) = m(\varepsilon) \phi(\varepsilon) \propto \exp\!\left(-\frac{1}{2}(\varepsilon + \lambda)^\top(\varepsilon + \lambda)\right)
+\hat\phi(\varepsilon) = m(\varepsilon) \phi(\varepsilon) \propto \exp \left(-\frac{1}{2}(\varepsilon + \lambda)^\top(\varepsilon + \lambda)\right)
 ```
 
 which is a $\mathcal{N}(-\lambda, I)$ density.
@@ -117,7 +116,7 @@ Verify that:
 2. The twisted density $\hat\phi(\varepsilon) = m(\varepsilon) \phi(\varepsilon)$ is indeed $\mathcal{N}(-\lambda, I)$ by combining exponents:
 
 $$
-m(\varepsilon) \phi(\varepsilon) \propto \exp\!\left(-\lambda^\top\varepsilon - \tfrac{1}{2}\lambda^\top\lambda\right) \exp\!\left(-\tfrac{1}{2}\varepsilon^\top\varepsilon\right) = \exp\!\left(-\tfrac{1}{2}\bigl[\varepsilon^\top\varepsilon + 2\lambda^\top\varepsilon + \lambda^\top\lambda\bigr]\right)
+m(\varepsilon) \phi(\varepsilon) \propto \exp \left(-\lambda^\top\varepsilon - \tfrac{1}{2}\lambda^\top\lambda\right) \exp \left(-\tfrac{1}{2}\varepsilon^\top\varepsilon\right) = \exp \left(-\tfrac{1}{2}\bigl[\varepsilon^\top\varepsilon + 2\lambda^\top\varepsilon + \lambda^\top\lambda\bigr]\right)
 $$
 
 and complete the square to obtain $-\frac{1}{2}(\varepsilon + \lambda)^\top(\varepsilon + \lambda)$.
@@ -136,7 +135,7 @@ So $E m(\varepsilon) = \exp(-\tfrac{1}{2}\lambda^\top\lambda)\exp(\tfrac{1}{2}\l
 For part 2, combine the exponents:
 
 $$
-m(\varepsilon) \phi(\varepsilon) \propto \exp\!\left(-\tfrac{1}{2}\varepsilon^\top\varepsilon - \lambda^\top\varepsilon - \tfrac{1}{2}\lambda^\top\lambda\right)
+m(\varepsilon) \phi(\varepsilon) \propto \exp \left(-\tfrac{1}{2}\varepsilon^\top\varepsilon - \lambda^\top\varepsilon - \tfrac{1}{2}\lambda^\top\lambda\right)
 $$
 
 Recognise the argument as $-\tfrac{1}{2}(\varepsilon^\top\varepsilon + 2\lambda^\top\varepsilon + \lambda^\top\lambda) = -\tfrac{1}{2}(\varepsilon + \lambda)^\top(\varepsilon + \lambda)$.
@@ -229,14 +228,14 @@ Here $x_t$ is an $n \times 1$ state vector and $\varepsilon_{t+1}$ is a $k \time
 
 Throughout, we assume $n = k$ and that the volatility matrix $C$ is square and invertible.
 
-This assumption is needed whenever we back out mean distortions $w = -C^{-1}(\cdot)$ from alternative transition matrices.
+This assumption is needed whenever we back out distortion coefficient matrices of the form $W = -C^{-1}(\cdot)$ from alternative transition matrices, so that the time-$t$ distortion is $w_t = W x_t$.
 
 The observation $y_{t+1}$ represents consumption growth, $c_{t+1} - c_t = D x_t + G \varepsilon_{t+1}$.
 
-Separately, the risk-free one-period interest rate and the payout process from a risky asset are linear functions of the state:
+Separately, the risk-free one-period interest rate is a linear function of the state:
 
 $$
-r_t = \delta_0 + \bar{r}^\top x_t, \qquad d_t = \bar{d}^\top x_t
+r_t = \delta_0 + \bar{r}^\top x_t
 $$
 
 ```{figure} /_static/lecture_specific/risk_aversion_or_mistaken_beliefs/fig2_tom.png
@@ -274,7 +273,9 @@ It would be convenient if versions of the same pricing formulas worked even when
 
 The likelihood ratio makes this possible.
 
-We now promote the static vector $\lambda$ from {eq}`eq_lr` to a *state-dependent* risk price vector by writing $\lambda_t = \lambda x_t$, where $\lambda$ is a $k \times n$ matrix of risk price coefficients.
+We now promote the static vector $\lambda$ from {eq}`eq_lr` to a *state-dependent* risk price vector.
+
+With a slight abuse of notation, we now let $\lambda$ denote a $k \times n$ **matrix** of risk price coefficients, so that $\lambda_t = \lambda x_t$ is a $k \times 1$ vector at each date $t$.
 
 In the code below, this matrix is the parameter `Λ`.
 
@@ -283,7 +284,7 @@ The likelihood ratio increment is
 ```{math}
 :label: eq_sdf_lr
 
-m_{t+1}^\lambda = \exp\!\left(-\lambda_t^\top \varepsilon_{t+1} - \frac{1}{2} \lambda_t^\top\lambda_t\right), \qquad \lambda_t = \lambda x_t
+m_{t+1}^\lambda = \exp \left(-\lambda_t^\top \varepsilon_{t+1} - \frac{1}{2} \lambda_t^\top\lambda_t\right), \qquad \lambda_t = \lambda x_t
 ```
 
 with $E_t m_{t+1}^\lambda = 1$ and $m_{t+1}^\lambda \geq 0$.
@@ -320,7 +321,11 @@ The risk-neutral representation implies **twisted dynamics**.
 
 Under the twisted measure, define $\tilde\varepsilon_{t+1} := \varepsilon_{t+1} + \lambda_t = \varepsilon_{t+1} + \lambda  x_t$.
 
-Since $\varepsilon_{t+1} \sim \mathcal{N}(0, I)$ under the econometrician's measure, the change of measure makes $\tilde\varepsilon_{t+1} \sim \mathcal{N}(0, I)$ under the risk-neutral measure.
+Since $\varepsilon_{t+1} \sim \mathcal{N}(0, I)$ under the econometrician's measure, $\tilde\varepsilon_{t+1}$ has mean $\lambda x_t$ and is *not* standard normal under that measure.
+
+However, the likelihood ratio $m_{t+1}^\lambda \propto \exp\bigl(-(\lambda x_t)^\top \varepsilon_{t+1} - \tfrac{1}{2}\|\lambda x_t\|^2\bigr)$ tilts the probability measure in exactly the right way to absorb this shift.
+
+By the standard exponential tilting result for Gaussian models, $\tilde\varepsilon_{t+1} \sim \mathcal{N}(0, I)$ under the risk-neutral measure.
 
 Substituting $\varepsilon_{t+1} = \tilde\varepsilon_{t+1} - \lambda  x_t$ into {eq}`eq_state` gives:
 
@@ -350,7 +355,7 @@ These are the same formulas as rational-expectations asset pricing, but expectat
 
 The derivation of the recursive bond price coefficients is the same as in {ref}`Exercise 3 <arp_ex3>` of {doc}`Affine Models of Asset Prices <affine_risk_prices>`, applied here under the risk-neutral dynamics {eq}`eq_rn_dynamics`.
 
-Now let's implement the state-space model and its asset pricing implications
+Now let's implement the state-space model and its asset pricing implications.
 
 ```{code-cell} ipython3
 class LikelihoodRatioModel:
@@ -510,7 +515,7 @@ print(f"Eigenvalues of A_Q: {eigvals(model.A_Q).round(4)}")
 
 To see the difference in action, we simulate both models from the same initial state using the same shock sequence.
 
-Both simulations draw the same $\tilde\varepsilon$ innovations, but the transition matrices $A$ and $A_Q$ govern how those shocks cumulate over time.
+Both simulations draw the same standard normal random vectors, but the transition matrices $A$ and $A_Q$ govern how those shocks cumulate over time.
 
 ```{code-cell} ipython3
 T = 300
@@ -602,8 +607,8 @@ Their setup posits:
 
 - The representative agent's risk aversion leads him to price risks
   $\varepsilon_{t+1}$ with prices $\lambda_t^* = \lambda^*  x_t$, where $\lambda^*$ is a $k \times n$ matrix.
-- The representative agent has **twisted beliefs** $(A^*, C) = (A - C w^*, C)$
-  relative to the econometrician's model $(A, C)$, where $w^*$ is a $k \times n$ matrix of belief distortion coefficients.
+- The representative agent has **twisted beliefs** $(A^*, C) = (A - C W^*, C)$
+  relative to the econometrician's model $(A, C)$, where $W^*$ is a $k \times n$ matrix of belief distortion coefficients, so that $w_t^* = W^* x_t$.
 - Professional forecasters use the twisted beliefs $(A^*, C)$ to answer
   survey questions about their forecasts.
 
@@ -615,17 +620,17 @@ PSS proceed in four steps:
 2. Project experts' one-step-ahead forecasts $E_t^*[x_{t+1}]$ on $x_t$ to obtain
    $E_t^*[x_{t+1}] = A^* x_t$ and interpret $A^*$ as incorporating belief
    distortions.
-3. Back out the mean distortion matrix $w^* = -C^{-1}(A^* - A)$, so that $w_t^* = w^* x_t$ is the state-dependent mean shift applied to the
+3. Back out the mean distortion matrix $W^* = -C^{-1}(A^* - A)$, so that $w_t^* = W^* x_t$ is the state-dependent mean shift applied to the
    density of $\varepsilon_{t+1}$.  (This requires $C$ to be invertible.)
 4. Reinterpret the $\lambda$ estimated by the rational-expectations econometrician
-   as $\lambda = \lambda^* + w^*$, where $\lambda_t^* = \lambda^*  x_t$ is the
+   as $\lambda = \lambda^* + W^*$, where $\lambda_t^* = \lambda^*  x_t$ is the
    (smaller) price of risk vector actually charged by the representative agent with
    distorted beliefs.
 
 An econometrician who mistakenly imposes rational expectations estimates risk prices $\lambda_t = \lambda  x_t$ that sum two parts:
 - *smaller risk prices* $\lambda_t^* = \lambda^*  x_t$ actually charged by the erroneous-beliefs
   representative agent, and
-- *conditional mean distortions* $w_t^* = w^*  x_t$ of the risks $\varepsilon_{t+1}$ that
+- *conditional mean distortions* $w_t^* = W^*  x_t$ of the risks $\varepsilon_{t+1}$ that
   the twisted-beliefs representative agent's model displays relative to the
   econometrician's.
 
@@ -643,13 +648,13 @@ C_mat = np.array([[0.007, 0.000],
                   [0.000, 0.010]])
 
 # Belief distortion
-w_star = -inv(C_mat) @ (A_star - A_econ)
+W_star = -inv(C_mat) @ (A_star - A_econ)
 
 Λ_total = np.array([[-3.0,  0.0],
                     [ 0.0, -6.0]])
-Λ_true = Λ_total - w_star   # true risk prices
+Λ_true = Λ_total - W_star   # true risk prices
 
-print("Belief distortion w*:\n", w_star.round(3))
+print("Belief distortion W*:\n", W_star.round(3))
 print("\nTotal risk prices Λ:\n", Λ_total.round(3))
 print("\nTrue risk prices Λ*:\n", Λ_true.round(3))
 ```
@@ -746,7 +751,7 @@ $$
 the dubious agent's value function is
 
 $$
-V(x_0, c_0) := E\!\left[\sum_{t=0}^{\infty} \beta^t c_t \;\middle|\; x_0, c_0\right] = c_0 + \beta E\!\left[V(x_1, c_1) \;\middle|\; x_0, c_0\right]
+V(x_0, c_0) := E \left[\sum_{t=0}^{\infty} \beta^t c_t  \middle|  x_0, c_0\right] = c_0 + \beta E \left[V(x_1, c_1)  \middle|  x_0, c_0\right]
 $$
 
 Note that the objective is *linear* in consumption.
@@ -764,7 +769,7 @@ The dubious agent solves a *min* problem in which a malevolent "nature" chooses 
 ```{math}
 :label: eq_hansen_seq
 
-J(x_0, c_0 \mid \eta) := \min_{\{m_{t+1}\}} E\!\left[\sum_{t=0}^{\infty} \beta^t M_t c_t \;\middle|\; x_0, c_0\right]
+J(x_0, c_0 \mid \eta) := \min_{\{m_{t+1}\}} E \left[\sum_{t=0}^{\infty} \beta^t M_t c_t  \middle|  x_0, c_0\right]
 ```
 
 subject to
@@ -774,7 +779,7 @@ c_{t+1} - c_t = D x_t + G \varepsilon_{t+1}, \qquad x_{t+1} = A x_t + C \varepsi
 $$
 
 $$
-E\!\left[\sum_{t=0}^{\infty} \beta^t M_t E\!\left[m_{t+1}\log m_{t+1} \;\middle|\; x_t, c_t\right] \;\middle|\; x_0, c_0\right] \leq \eta
+E \left[\sum_{t=0}^{\infty} \beta^t M_t E \left[m_{t+1}\log m_{t+1}  \middle|  x_t, c_t\right]  \middle|  x_0, c_0\right] \leq \eta
 $$
 
 $$
@@ -808,13 +813,13 @@ Discounted entropy, by treating future divergences less severely, admits these s
 With the log-normal likelihood ratio
 
 $$
-m_{t+1} := \exp\!\left(-\frac{w_t^\top w_t}{2} - w_t^\top \varepsilon_{t+1}\right)
+m_{t+1} := \exp \left(-\frac{w_t^\top w_t}{2} - w_t^\top \varepsilon_{t+1}\right)
 $$
 
 conditional entropy takes the simple form
 
 $$
-E\!\left[m_{t+1}\log m_{t+1} \;\middle|\; x_t, c_t\right] = \frac{1}{2} w_t^\top w_t
+E \left[m_{t+1}\log m_{t+1}  \middle|  x_t, c_t\right] = \frac{1}{2} w_t^\top w_t
 $$
 
 Substituting into {eq}`eq_hansen_seq` and performing a change of measure (replacing $E[\cdot]$ with $E^w[\cdot]$ under the distorted model) yields the reformulated problem:
@@ -822,7 +827,7 @@ Substituting into {eq}`eq_hansen_seq` and performing a change of measure (replac
 ```{math}
 :label: eq_hansen_reform
 
-J(x_0, c_0 \mid \eta) := \min_{\{w_t\}} E^w\!\left[\sum_{t=0}^{\infty} \beta^t c_t \;\middle|\; x_0, c_0\right]
+J(x_0, c_0 \mid \eta) := \min_{\{w_t\}} E^w \left[\sum_{t=0}^{\infty} \beta^t c_t  \middle|  x_0, c_0\right]
 ```
 
 subject to
@@ -832,7 +837,7 @@ c_{t+1} - c_t = D x_t + G (\tilde\varepsilon_{t+1} - w_t), \qquad x_{t+1} = A x_
 $$
 
 $$
-\frac{1}{2} E^w\!\left[\sum_{t=0}^{\infty} \beta^t w_t^\top w_t \;\middle|\; x_0, c_0\right] \leq \eta
+\frac{1}{2} E^w \left[\sum_{t=0}^{\infty} \beta^t w_t^\top w_t  \middle|  x_0, c_0\right] \leq \eta
 $$
 
 Here $\tilde\varepsilon_{t+1} \sim \mathcal{N}(0, I)$ under $E^w$, and we have substituted $\varepsilon_{t+1} = \tilde\varepsilon_{t+1} - w_t$ (so $E[\varepsilon_{t+1}] = -w_t$ under the distorted measure).
@@ -858,7 +863,7 @@ We compute $\bar{w}$ using the multiplier formulation (see {ref}`the multiplier 
 In the multiplier formulation, the agent minimises
 
 $$
-E^w\!\left[\sum_{t=0}^\infty \beta^t \bigl(c_t + \tfrac{\theta}{2} w_t^\top w_t\bigr)\right]
+E^w \left[\sum_{t=0}^\infty \beta^t \bigl(c_t + \tfrac{\theta}{2} w_t^\top w_t\bigr)\right]
 $$
 
 over $\{w_t\}$ subject to the shifted dynamics.
@@ -916,29 +921,29 @@ For part 1, the consumption increment $\Delta c_{s+1} = Dx_s - G\bar{w} + G\tild
 Swapping the order of summation:
 
 $$
-E\!\left[\sum_{t=0}^\infty \beta^t c_t\right] = \frac{c_0}{1-\beta} + \frac{1}{1-\beta}\sum_{s=0}^\infty \beta^{s+1}\bigl(D\, E[x_s] - G\bar{w}\bigr)
+E \left[\sum_{t=0}^\infty \beta^t c_t\right] = \frac{c_0}{1-\beta} + \frac{1}{1-\beta}\sum_{s=0}^\infty \beta^{s+1}\bigl(D  E[x_s] - G\bar{w}\bigr)
 $$
 
 For part 2, define $S = \sum_{s=0}^\infty \beta^{s+1} E[x_s]$.
 
-From $E[x_{s+1}] = A\,E[x_s] - C\bar{w}$, multiply both sides by $\beta^{s+2}$ and sum over $s = 0, 1, \ldots$:
+From $E[x_{s+1}] = A E[x_s] - C\bar{w}$, multiply both sides by $\beta^{s+2}$ and sum over $s = 0, 1, \ldots$:
 
 $$
-S - \beta x_0 = \beta A\, S - \frac{\beta^2}{1-\beta}C\bar{w}
+S - \beta x_0 = \beta A  S - \frac{\beta^2}{1-\beta}C\bar{w}
 $$
 
-Solving: $S = (I - \beta A)^{-1}\!\left(\beta x_0 - \frac{\beta^2}{1-\beta}C\bar{w}\right)$.
+Solving: $S = (I - \beta A)^{-1} \left(\beta x_0 - \frac{\beta^2}{1-\beta}C\bar{w}\right)$.
 
-Substituting back, the expected objective $E[\sum \beta^t(c_t + \frac{\theta}{2}\|\bar{w}\|^2)]$ depends on $\bar{w}$ only through the term $\frac{1}{1-\beta}(D\,S - \frac{\beta}{1-\beta}G\bar{w}) + \frac{\theta}{2(1-\beta)}\|\bar{w}\|^2$.
+Substituting back, the expected objective $E[\sum \beta^t(c_t + \frac{\theta}{2}\|\bar{w}\|^2)]$ depends on $\bar{w}$ only through the term $\frac{1}{1-\beta}(D S - \frac{\beta}{1-\beta}G\bar{w}) + \frac{\theta}{2(1-\beta)}\|\bar{w}\|^2$.
 
 For part 3, differentiate with respect to $\bar{w}$ and set to zero.
 
-The only part of $S$ that depends on $\bar{w}$ is $-\frac{\beta^2}{1-\beta}(I-\beta A)^{-1}C\bar{w}$, so $\nabla_{\bar{w}}(D\,S) = -\frac{\beta^2}{1-\beta}C^\top(I - \beta A^\top)^{-1}D^\top$.
+The only part of $S$ that depends on $\bar{w}$ is $-\frac{\beta^2}{1-\beta}(I-\beta A)^{-1}C\bar{w}$, so $\nabla_{\bar{w}}(D S) = -\frac{\beta^2}{1-\beta}C^\top(I - \beta A^\top)^{-1}D^\top$.
 
 The first-order condition is:
 
 $$
-\frac{\theta}{1-\beta}\bar{w} = \frac{1}{1-\beta}\!\left(\frac{\beta}{1-\beta}G^\top + \frac{\beta^2}{1-\beta}C^\top(I - \beta A^\top)^{-1}D^\top\right)
+\frac{\theta}{1-\beta}\bar{w} = \frac{1}{1-\beta} \left(\frac{\beta}{1-\beta}G^\top + \frac{\beta^2}{1-\beta}C^\top(I - \beta A^\top)^{-1}D^\top\right)
 $$
 
 Simplifying: $\theta\bar{w} = \frac{\beta}{1-\beta}G^\top + \beta C^\top v$, where $v = \frac{\beta}{1-\beta}(I - \beta A^\top)^{-1}D^\top$.
@@ -970,13 +975,13 @@ The inclusion of those alternative parametric models *tilts* the entropy ball, w
 The investor wants to include particular alternative models with
 
 $$
-E_t\!\left[\bar{m}_{t+1}\log\bar{m}_{t+1}\right] = \frac{1}{2} \bar{w}_t^\top \bar{w}_t =: \frac{1}{2}\xi(x_t)
+E_t \left[\bar{m}_{t+1}\log\bar{m}_{t+1}\right] = \frac{1}{2} \bar{w}_t^\top \bar{w}_t =: \frac{1}{2}\xi(x_t)
 $$
 
 and discounted entropy
 
 $$
-\frac{1}{2}\,E^{\bar{w}}\!\left[\sum_{t=0}^{\infty} \beta^t \xi(x_t) \;\middle|\; x_0, c_0\right]
+\frac{1}{2} E^{\bar{W}} \left[\sum_{t=0}^{\infty} \beta^t \xi(x_t)  \middle|  x_0, c_0\right]
 $$
 
 This is accomplished by replacing the earlier entropy constraint with
@@ -984,7 +989,7 @@ This is accomplished by replacing the earlier entropy constraint with
 ```{math}
 :label: eq_tilted_constraint
 
-\frac{1}{2} E^w\!\left[\sum_{t=0}^{\infty} \beta^t w_t^\top w_t \;\middle|\; x_0, c_0\right] \leq \frac{1}{2} E^w\!\left[\sum_{t=0}^{\infty} \beta^t \xi(x_t) \;\middle|\; x_0, c_0\right]
+\frac{1}{2} E^w \left[\sum_{t=0}^{\infty} \beta^t w_t^\top w_t  \middle|  x_0, c_0\right] \leq \frac{1}{2} E^w \left[\sum_{t=0}^{\infty} \beta^t \xi(x_t)  \middle|  x_0, c_0\right]
 ```
 
 The time-$t$ contributions to the right-hand side of {eq}`eq_tilted_constraint` relax the discounted entropy constraint in states $x_t$ in which $\xi(x_t)$ is larger.
@@ -999,10 +1004,10 @@ $$
 x_{t+1} = \bar{A} x_t + C \tilde\varepsilon_{t+1}
 $$
 
-Since $\bar{A}x_t = Ax_t + C(-C^{-1}(\bar{A}-A))x_t = Ax_t - C\bar{w}x_t$, this feared model is equivalent to shifting the mean of $\varepsilon_{t+1}$ by $-\bar{w}x_t$, giving $\bar{w}_t = \bar{w} x_t$ with
+Since $\bar{A} = A - C\bar{W}$, this feared model is equivalent to shifting the mean of $\varepsilon_{t+1}$ by $-\bar{W}x_t$, giving $\bar{w}_t = \bar{W} x_t$ with
 
 $$
-\bar{w} = -C^{-1}(\bar{A} - A)
+\bar{W} = -C^{-1}(\bar{A} - A)
 $$
 
 (again using the assumption that $C$ is square and invertible), which implies a *quadratic* $\xi$ function:
@@ -1010,7 +1015,7 @@ $$
 ```{math}
 :label: eq_xi
 
-\xi(x_t) := x_t^\top \bar{w}^\top\bar{w} x_t =: x_t^\top \Xi x_t
+\xi(x_t) := x_t^\top \bar{W}^\top\bar{W} x_t =: x_t^\top \Xi x_t
 ```
 
 ```{figure} /_static/lecture_specific/risk_aversion_or_mistaken_beliefs/eggs_backus2.png
@@ -1024,7 +1029,7 @@ Attaching a Lagrange multiplier $\tilde\theta \geq 0$ to the tilted entropy cons
 ```{math}
 :label: eq_szoke_seq
 
-J(x_0, c_0 \mid \Xi) := \max_{\tilde\theta \geq 0}\;\min_{\{w_t\}}\; E^w\!\left[\sum_{t=0}^{\infty} \beta^t c_t + \tilde\theta \frac{1}{2}\sum_{t=0}^{\infty} \beta^t\bigl(w_t^\top w_t - x_t^\top \Xi x_t\bigr) \;\middle|\; x_0, c_0\right]
+J(x_0, c_0 \mid \Xi) := \max_{\tilde\theta \geq 0} \min_{\{w_t\}}  E^w \left[\sum_{t=0}^{\infty} \beta^t c_t + \tilde\theta \frac{1}{2}\sum_{t=0}^{\infty} \beta^t\bigl(w_t^\top w_t - x_t^\top \Xi x_t\bigr)  \middle|  x_0, c_0\right]
 ```
 
 subject to
@@ -1033,45 +1038,53 @@ $$
 c_{t+1} - c_t = D x_t + G (\tilde\varepsilon_{t+1} - w_t), \qquad x_{t+1} = A x_t + C (\tilde\varepsilon_{t+1} - w_t)
 $$
 
-The worst-case shock mean distortion is now *state-dependent*:
+The worst-case distortion is now **affine** in the state:
 
 $$
-\tilde{w}_t = \tilde{w} x_t
+\tilde{w}_t = a + \tilde{W} x_t
 $$
 
-and the worst-case model is $(\tilde{A}, C, \tilde{D}, G)$ with
+where $a$ is a constant vector determined by the linear terms in the value function.
+
+The state-dependent component $\tilde{W} x_t$ is the new contribution of the tilted entropy ball, and is what generates countercyclical uncertainty prices.
+
+Writing $\tilde{A} = A - C \tilde{W}$ and $\tilde{D} = D - G \tilde{W}$, the worst-case dynamics are
 
 $$
-\tilde{A} = A - C \tilde{w}, \qquad \tilde{D} = D - G \tilde{w}
+x_{t+1} = \tilde{A} x_t - Ca + C\tilde\varepsilon_{t+1}, \qquad c_{t+1} - c_t = \tilde{D} x_t - Ga + G\tilde\varepsilon_{t+1}
 $$
 
 ### Implementation: tilted entropy ball
 
-Guess a quadratic value function $J(x) = x^\top P x + \text{const}$ for the inner minimisation over $\{w_t\}$ in {eq}`eq_szoke_seq`.
-
-Since $w_t = W x_t$ is linear in the state, the first-order condition for $w_t$ at each $t$ gives:
+For the inner minimisation over $\{w_t\}$ in {eq}`eq_szoke_seq`, the value function is **affine-quadratic** in the state because $c_t$ enters linearly:
 
 $$
-\tilde\theta W = 2\beta C^\top P (A - C W) \quad \Longrightarrow \quad (\tilde\theta I + 2\beta C^\top P C) W = 2\beta C^\top P A
+J(x, c) = \frac{c}{1-\beta} + v^\top x + x^\top P x + K
 $$
 
-(where we write $\tilde\theta$ as $\theta$ in the code).
+The first-order condition for $w_t$ decomposes into a constant part (determining $a$) and a state-dependent part (determining $\tilde{W}$).
 
-Substituting back into the Bellman equation and matching quadratic terms in $x$ gives the $P$ update:
+The state-dependent component satisfies (writing $\tilde\theta$ as $\theta$ in the code):
 
 $$
-P = -\tfrac{\theta}{2} \Xi + \tfrac{\theta}{2} W^\top W + \beta (A - CW)^\top P (A - CW)
+(\theta I + 2\beta C^\top P C) \tilde{W} = 2\beta C^\top P A
 $$
 
-The code iterates on the $(P, W)$ system until convergence.
+Matching quadratic terms in $x$ gives the $P$ update:
+
+$$
+P = -\tfrac{\theta}{2} \Xi + \tfrac{\theta}{2} \tilde{W}^\top \tilde{W} + \beta (A - C\tilde{W})^\top P (A - C\tilde{W})
+$$
+
+The code below iterates on the $(P, \tilde{W})$ system to convergence, solving for the state-dependent component only; the constant $a$ requires separate linear-term equations and does not generally coincide with the Hansen $\bar{w}$.
 
 ```{code-cell} ipython3
 class TiltedEntropyModel:
     """
     Hansen-Szőke tilted entropy ball model.
 
-    Given (A, C, D, G, β, θ, Ξ), computes the worst-case
-    state-dependent distortion w_tilde_t = W_tilde x_t.
+    Given (A, C, D, G, β, θ, Ξ), computes the state-dependent
+    component W_tilde of the worst-case distortion w_t = a + W_tilde x_t.
     """
 
     def __init__(self, A, C, D, G, β, θ, Ξ):
@@ -1083,9 +1096,9 @@ class TiltedEntropyModel:
         self.Ξ = np.atleast_2d(Ξ).astype(float)
         self.n = self.A.shape[0]
 
-        self.w_tilde = self._solve_worst_case()
-        self.A_tilde = self.A - self.C @ self.w_tilde
-        self.D_tilde = self.D - self.G @ self.w_tilde
+        self.W_tilde = self._solve_worst_case()
+        self.A_tilde = self.A - self.C @ self.W_tilde
+        self.D_tilde = self.D - self.G @ self.W_tilde
 
     def _solve_worst_case(self):
         """Iterate on (P, W) system to find worst-case W_tilde."""
@@ -1112,11 +1125,13 @@ class TiltedEntropyModel:
         self._P_quad = P
         return W
 
-    def worst_case_distortion(self, x):
-        return self.w_tilde @ x
+    def state_dependent_distortion(self, x):
+        """State-dependent component W_tilde @ x of the worst-case distortion."""
+        return self.W_tilde @ x
 
-    def conditional_entropy(self, x):
-        w = self.worst_case_distortion(x)
+    def state_dependent_entropy(self, x):
+        """Entropy of the state-dependent component: (1/2)(W_tilde x)'(W_tilde x)."""
+        w = self.state_dependent_distortion(x)
         return 0.5 * w @ w
 
     def xi_function(self, x):
@@ -1128,19 +1143,23 @@ class TiltedEntropyModel:
 A_bar = np.array([[0.995, -0.03],
                   [0.000,  0.96]])
 
-w_bar = -inv(C) @ (A_bar - A)
-Ξ = w_bar.T @ w_bar
+W_bar = -inv(C) @ (A_bar - A)
+Ξ = W_bar.T @ W_bar
 
 print("Feared transition A_bar:\n", A_bar)
-print("\nImplied distortion w_bar:\n", w_bar.round(3))
+print("\nImplied distortion W_bar:\n", W_bar.round(3))
 print("\nTilting matrix Ξ:\n", Ξ.round(1))
 ```
+
+In {eq}`eq_szoke_seq` the multiplier $\tilde\theta$ is determined by the outer maximisation.  
+
+Here we fix $\theta$ at a representative value and solve only the inner minimisation, illustrating the multiplier formulation described in {ref}`the multiplier preferences section below <mult_pref_section>`.
 
 ```{code-cell} ipython3
 θ_tilt = 3.0
 tilted = TiltedEntropyModel(A, C, D, G, β, θ_tilt, Ξ)
 
-print("Worst-case distortion W_tilde:\n", tilted.w_tilde.round(4))
+print("Worst-case distortion W_tilde:\n", tilted.W_tilde.round(4))
 print("\nWorst-case transition A_tilde:\n", tilted.A_tilde.round(4))
 print(f"\nEigenvalues of A:  {eigvals(A).round(4)}")
 print(f"Eigenvalues of A_tilde: {eigvals(tilted.A_tilde).round(4)}")
@@ -1149,26 +1168,33 @@ print(f"Eigenvalues of A_tilde: {eigvals(tilted.A_tilde).round(4)}")
 ````{exercise}
 :label: lr_exercise_4
 
-Derive the first-order condition for the tilted entropy problem.
+Derive the first-order condition for the state-dependent component of the tilted entropy problem.
 
-1. Start from {eq}`eq_szoke_seq` and write $w_t = W x_t$.  Using the dynamics $x_{t+1} = (A - CW)x_t + C\tilde\varepsilon_{t+1}$, argue that the objective is quadratic in $x_t$.
-2. Take the first-order condition $\partial / \partial W$ and show that it gives $\theta  W = 2\beta  C^\top P (A - CW)$, which can be rearranged to the system solved in the code.
-3. Derive the $P$ update by substituting the optimal $W$ back into the Bellman equation.
+1. Start from {eq}`eq_szoke_seq` and write $w_t = \bar{w} + W x_t$;
+argue that the value function is affine-quadratic, $J(x,c) = c/(1-\beta) + v^\top x + x^\top P x + K$, and that the first-order condition separates into a constant part (determining $a$) and a state-dependent part (determining $W$).
+2. Show that the state-dependent first-order condition gives $\theta  W = 2\beta  C^\top P (A - CW)$, which can be rearranged to the system solved in the code.
+3. Derive the $P$ update by substituting the optimal $W$ back into the Bellman equation and matching quadratic terms in $x$.
 
 ````
 
 ````{solution} lr_exercise_4
 :class: dropdown
 
-For part 1, with $w_t = Wx_t$ and $x_{t+1} = (A-CW)x_t + C\tilde\varepsilon_{t+1}$, the period-$t$ payoff in {eq}`eq_szoke_seq` is:
+For part 1, write $w_t = \bar{w} + Wx_t$.
+
+Since $c_t$ is linear in past states and shocks, and the dynamics are linear, the value function takes the affine-quadratic form $J(x,c) = c/(1-\beta) + v^\top x + x^\top P x + K$.
+
+The first-order condition for $w_t$ at each $t$ is:
 
 $$
-c_t + \tfrac{\theta}{2}(w_t^\top w_t - x_t^\top \Xi x_t) = c_t + \tfrac{\theta}{2} x_t^\top(W^\top W - \Xi) x_t
+(\theta I + 2\beta C^\top P C)\, w_t = \frac{\beta}{1-\beta} G^\top + \beta C^\top v + 2\beta C^\top P A x_t
 $$
 
-Since $c_t$ is linear in past $x_s$ and the dynamics are linear, the value function is quadratic: $J_t = x_t^\top P x_t + \text{linear and constant terms}$.
+The constant terms (independent of $x_t$) determine $a$; note that this differs from the Hansen $\bar{w}$ because of the $2\beta C^\top P C$ factor on the left-hand side.
 
-For part 2, the first-order condition for $W$ from the quadratic Bellman equation is:
+The terms proportional to $x_t$ determine $W$.
+
+For part 2, the state-dependent first-order condition from the quadratic terms is:
 
 $$
 \frac{\partial}{\partial W}\bigl[\tfrac{\theta}{2}x_t^\top W^\top W x_t + \beta x_t^\top(A-CW)^\top P(A-CW)x_t\bigr] = 0
@@ -1186,7 +1212,7 @@ $$
 P = -\tfrac{\theta}{2} \Xi + \tfrac{\theta}{2} W^\top W + \beta (A-CW)^\top P(A-CW)
 $$
 
-This is the matrix Riccati equation that the code iterates to convergence. 
+This is the matrix Riccati equation that the code iterates to convergence.
 
 ````
 
@@ -1195,7 +1221,7 @@ This is the matrix Riccati equation that the code iterates to convergence.
 ```{code-cell} ipython3
 x_grid = np.linspace(-0.03, 0.04, 200)
 
-entropy_tilted = np.array([tilted.conditional_entropy(np.array([x, 0.005]))
+entropy_tilted = np.array([tilted.state_dependent_entropy(np.array([x, 0.005]))
                            for x in x_grid])
 ξ_vals = np.array([tilted.xi_function(np.array([x, 0.005]))
                     for x in x_grid])
@@ -1212,7 +1238,7 @@ fig, ax = plt.subplots(figsize=(9, 5))
 ax.axhline(hansen_ent, color='steelblue', lw=2, ls='--',
            label=rf"Hansen: constant $\frac{{1}}{{2}}\bar{{w}}^\top\bar{{w}} = {hansen_ent:.4f}$")
 ax.plot(x_grid, entropy_tilted, 'firebrick', lw=2,
-        label=r"Szőke: $\frac{1}{2}\tilde{w}_t^\top\tilde{w}_t$")
+        label=r"Szőke (state-dep.): $\frac{1}{2}(\tilde{W}x_t)^\top(\tilde{W}x_t)$")
 ax.plot(x_grid, 0.5 * ξ_vals, 'seagreen', lw=2, ls=':',
         label=r"Feared model: $\frac{1}{2}\xi(x_t)$")
 ax.set_xlabel(r"Level factor $x_{1,t}$")
@@ -1222,11 +1248,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-The key innovation of the tilted entropy ball is visible: the Szőke worst-case distortion $\tilde{w}_t = \tilde{W} x_t$ grows with $|x_t|$, producing *countercyclical uncertainty prices*.
+The key innovation of the tilted entropy ball is visible: the state-dependent component $\tilde{W} x_t$ of the worst-case distortion grows with $|x_t|$, producing *countercyclical uncertainty prices*.
 
 By contrast, Hansen's constant distortion $\bar{w}$ has entropy $\frac{1}{2}\bar{w}^\top\bar{w}$ that does not vary with $x_t$ (shown as a horizontal line).
 
-The Szőke parabola lies inside the feared model's entropy budget $\frac{1}{2}\xi(x_t)$, confirming the worst-case distortion respects the tilted entropy constraint.
+The Szőke parabola lies inside the feared model's entropy budget $\frac{1}{2}\xi(x_t)$ along this slice, consistent with the tilted entropy constraint {eq}`eq_tilted_constraint`.
 
 ### Three probability twisters
 
@@ -1236,13 +1262,13 @@ To summarize, three distinct probability twisters play roles in this analysis:
 |:---------------|:------------------------------|:----------------------------------|
 | $w_t^*$        | Piazzesi, Salomão, Schneider  | Mistaken agent's beliefs          |
 | $\bar{w}_t$    | Szőke's feared parametric model | Especial LRR parametric worry   |
-| $\tilde{w}_t$  | Szőke's worst-case model      | Worst-case distortion             |
+| $\tilde{W} x_t$  | Szőke's worst-case model      | State-dependent component of worst-case distortion |
 
 ```{code-cell} ipython3
 x_state = np.array([0.02, 0.008])
-w_pss    = w_star @ x_state
-w_feared = w_bar @ x_state
-w_szoke  = tilted.worst_case_distortion(x_state)
+w_pss    = W_star @ x_state
+w_feared = W_bar @ x_state
+w_szoke  = tilted.state_dependent_distortion(x_state)
 
 ε_grid = np.linspace(-4, 4, 500)
 ϕ_base = normal_dist.pdf(ε_grid, 0, 1)
@@ -1356,7 +1382,7 @@ The following table summarises how various models perform:
 
 Szőke's framework delivers:
 
-1. A theory of *state-dependent belief distortions* $\tilde{w}_t = \tilde{w} x_t$.
+1. A theory of *state-dependent belief distortions* with state-dependent component $\tilde{W} x_t$.
 2. A theory about the *question that professional forecasters answer*: they
    respond with their worst-case model because they hear "tell me forecasts that
    rationalise your (max-min) decisions."
@@ -1367,7 +1393,7 @@ Szőke's framework delivers:
 model_rn = LikelihoodRatioModel(
     A, C, D, G, r_bar, Λ=np.zeros((2, 2)), δ_0=δ_0)
 model_uncert = LikelihoodRatioModel(
-    A, C, D, G, r_bar, Λ=tilted.w_tilde, δ_0=δ_0)
+    A, C, D, G, r_bar, Λ=tilted.W_tilde, δ_0=δ_0)
 
 x_test = np.array([0.01, -0.03])
 n_max = 120
@@ -1408,15 +1434,15 @@ As {cite:t}`szoke2022estimating` puts it:
 
 ### Szőke's empirical strategy
 
-In the Szőke framework, the rational-expectations econometrician's single likelihood ratio $m_{t+1}^\lambda$ is decomposed as $\lambda_t = \tilde{w}_t + \tilde{\lambda}_t$, paralleling the PSS decomposition $\lambda = \lambda^* + w^*$.
+In the Szőke framework, the rational-expectations econometrician's single likelihood ratio $m_{t+1}^\lambda$ is decomposed as $\lambda_t = \tilde{w}_t + \tilde{\lambda}_t$, paralleling the PSS decomposition $\lambda = \lambda^* + W^*$.
 
 The combined likelihood ratio is
 
 $$
-m_{t+1}^\lambda = \exp\!\left(-\lambda_t^\top\varepsilon_{t+1} - \frac{1}{2}\lambda_t^\top\lambda_t\right), \qquad \lambda_t = \tilde{w}_t + \tilde\lambda_t
+m_{t+1}^\lambda = \exp \left(-\lambda_t^\top\varepsilon_{t+1} - \frac{1}{2}\lambda_t^\top\lambda_t\right), \qquad \lambda_t = \tilde{w}_t + \tilde\lambda_t
 $$
 
-where $\tilde{w}_t = \tilde{w} x_t$ is the worst-case belief distortion and $\tilde\lambda_t = \tilde\lambda x_t$ is the residual risk price.
+where $\tilde{w}_t = a + \tilde{W} x_t$ is the worst-case belief distortion (with state-dependent component $\tilde{W} x_t$) and $\tilde\lambda_t = \tilde\lambda x_t$ is the residual risk price.
 
 In stage I (estimation):
 
@@ -1427,14 +1453,14 @@ In stage I (estimation):
    restrictions:
 
 $$
-p_t(n+1) = \exp(-r_t) E_t\!\left[m_{t+1}^\lambda\, p_{t+1}(n)\right]
+p_t(n+1) = \exp(-r_t) E_t \left[m_{t+1}^\lambda  p_{t+1}(n)\right]
 $$
 
 In stage II (assessment):
 
 1. Assess improvements in predicted behaviour of the term structure.
 2. Use estimated worst-case dynamics to form distorted forecasts
-   $\tilde{x}_{t+1} = (A - C\tilde{w})x_t$ and compare them to those of
+   $\tilde{x}_{t+1} = (A - C\tilde{W})x_t - Ca$ and compare them to those of
    professional forecasters.
 3. Compute the discounted KL divergence $\frac{1}{2}E^w[\sum \beta^t w_t^\top w_t]$ of
    each twisted model relative to the econometrician's model and compare them.
@@ -1453,8 +1479,8 @@ def discounted_kl(W, A_w, C, x0, β, T_horizon=500):
     return np.mean(total)
 
 x0_test = np.array([0.01, 0.005])
-kl_szoke  = discounted_kl(tilted.w_tilde, tilted.A_tilde, C, x0_test, β)
-kl_feared = discounted_kl(w_bar, A_bar, C, x0_test, β)
+kl_szoke  = discounted_kl(tilted.W_tilde, tilted.A_tilde, C, x0_test, β)
+kl_feared = discounted_kl(W_bar, A_bar, C, x0_test, β)
 
 print(f"Szőke worst-case KL: {kl_szoke:.4f}")
 print(f"Feared LRR KL:       {kl_feared:.4f}")
@@ -1478,7 +1504,7 @@ The **multiplier preference** version of the dubious agent's problem is:
 ```{math}
 :label: eq_mult_seq
 
-W(x_0, c_0 \mid \theta) := \min_{\{m_{t+1}\}} E\!\left[\sum_{t=0}^{\infty} \beta^t M_t\bigl(c_t + \theta m_{t+1}\log m_{t+1}\bigr) \;\middle|\; x_0, c_0\right]
+\hat{J}(x_0, c_0 \mid \theta) := \min_{\{m_{t+1}\}} E \left[\sum_{t=0}^{\infty} \beta^t M_t\bigl(c_t + \theta m_{t+1}\log m_{t+1}\bigr)  \middle|  x_0, c_0\right]
 ```
 
 with $M_{t+1} = M_t m_{t+1}$, $E[m_{t+1} \mid x_t, c_t] = 1$, $M_0 = 1$.
@@ -1486,30 +1512,30 @@ with $M_{t+1} = M_t m_{t+1}$, $E[m_{t+1} \mid x_t, c_t] = 1$, $M_0 = 1$.
 The recursive formulation is:
 
 $$
-W(x_t, c_t \mid \theta) = c_t + \min_{m_{t+1}} E\!\left[m_{t+1}\bigl[\beta W(x_{t+1}, c_{t+1}) + \theta\log m_{t+1}\bigr] \;\middle|\; x_t, c_t\right]
+\hat{J}(x_t, c_t \mid \theta) = c_t + \min_{m_{t+1}} E \left[m_{t+1}\bigl[\beta \hat{J}(x_{t+1}, c_{t+1}) + \theta\log m_{t+1}\bigr]  \middle|  x_t, c_t\right]
 $$
 
 $$
-= c_t - \theta\log E\!\left[\exp\!\left(-\frac{\beta W(x_{t+1}, c_{t+1})}{\theta}\right) \;\middle|\; x_t, c_t\right]
+= c_t - \theta\log E \left[\exp \left(-\frac{\beta \hat{J}(x_{t+1}, c_{t+1})}{\theta}\right)  \middle|  x_t, c_t\right]
 $$
 
 $$
-=: c_t + T_t\!\left[\beta W(x_{t+1}, c_{t+1})\right]
+=: c_t + T_t \left[\beta \hat{J}(x_{t+1}, c_{t+1})\right]
 $$
 
 where the right-hand side is attained by
 
 $$
-m_{t+1}^* \propto \exp\!\left(-\frac{\beta W(x_{t+1}, c_{t+1})}{\theta}\right)
+m_{t+1}^* \propto \exp \left(-\frac{\beta \hat{J}(x_{t+1}, c_{t+1})}{\theta}\right)
 $$
 
-By Lagrange multiplier theory,
+By Lagrange multiplier theory, for the **corresponding dual pair** $(\tilde\theta, \eta)$,
 
 $$
-W(x_t, c_t \mid \tilde\theta) = J(x_t, c_t \mid \eta) + \tilde\theta \eta
+\hat{J}(x_t, c_t \mid \tilde\theta) = J(x_t, c_t \mid \eta) + \tilde\theta \eta
 $$
 
-Each choice of $\tilde\theta$ in the multiplier problem corresponds to a particular entropy bound $\eta$ in the constraint problem, so the two formulations are equivalent.
+Each choice of $\tilde\theta$ in the multiplier problem corresponds to a particular entropy bound $\eta(\tilde\theta)$ in the constraint problem, so the two formulations are equivalent.
 
 The operator $T_t$ defined above is a **risk-sensitivity operator** that maps the continuation value through an exponential tilt, downweighting good outcomes and upweighting bad ones.
 
