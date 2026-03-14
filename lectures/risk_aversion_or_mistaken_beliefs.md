@@ -1046,6 +1046,10 @@ $$
 
 where $a$ is a constant vector determined by the linear terms in the value function.
 
+When $P = 0$ (no tilting), the constant $a$ reduces to the Hansen $\bar{w}$ from the untilted problem.
+
+However, when $P \neq 0$ the two differ because the quadratic value function contributes an additional $2\beta C^\top P C$ term to the left-hand side of the first-order condition for the constant part.
+
 The state-dependent component $\tilde{W} x_t$ is the new contribution of the tilted entropy ball, and is what generates countercyclical uncertainty prices.
 
 Writing $\tilde{A} = A - C \tilde{W}$ and $\tilde{D} = D - G \tilde{W}$, the worst-case dynamics are
@@ -1076,7 +1080,7 @@ $$
 P = -\tfrac{\theta}{2} \Xi + \tfrac{\theta}{2} \tilde{W}^\top \tilde{W} + \beta (A - C\tilde{W})^\top P (A - C\tilde{W})
 $$
 
-The code below iterates on the $(P, \tilde{W})$ system to convergence, solving for the state-dependent component only; the constant $a$ requires separate linear-term equations and does not generally coincide with the Hansen $\bar{w}$.
+The code below iterates on the $(P, \tilde{W})$ system to convergence, solving for the state-dependent component only; the constant $a$ requires separate linear-term equations.
 
 ```{code-cell} ipython3
 class TiltedEntropyModel:
@@ -1116,6 +1120,7 @@ class TiltedEntropyModel:
                     + β * A_w.T @ P @ A_w)
             P_new = 0.5 * (P_new + P_new.T)
             if np.max(np.abs(P_new - P)) < 1e-12:
+                P = P_new
                 converged = True
                 break
             P = P_new
@@ -1170,7 +1175,7 @@ print(f"Eigenvalues of A_tilde: {eigvals(tilted.A_tilde).round(4)}")
 
 Derive the first-order condition for the state-dependent component of the tilted entropy problem.
 
-1. Start from {eq}`eq_szoke_seq` and write $w_t = \bar{w} + W x_t$;
+1. Start from {eq}`eq_szoke_seq` and write $w_t = a + W x_t$;
 argue that the value function is affine-quadratic, $J(x,c) = c/(1-\beta) + v^\top x + x^\top P x + K$, and that the first-order condition separates into a constant part (determining $a$) and a state-dependent part (determining $W$).
 2. Show that the state-dependent first-order condition gives $\theta  W = 2\beta  C^\top P (A - CW)$, which can be rearranged to the system solved in the code.
 3. Derive the $P$ update by substituting the optimal $W$ back into the Bellman equation and matching quadratic terms in $x$.
@@ -1180,17 +1185,73 @@ argue that the value function is affine-quadratic, $J(x,c) = c/(1-\beta) + v^\to
 ````{solution} lr_exercise_4
 :class: dropdown
 
-For part 1, write $w_t = \bar{w} + Wx_t$.
+For part 1, write $w_t = a + Wx_t$.
 
-Since $c_t$ is linear in past states and shocks, and the dynamics are linear, the value function takes the affine-quadratic form $J(x,c) = c/(1-\beta) + v^\top x + x^\top P x + K$.
+To confirm the affine-quadratic form, substitute this guess into the Bellman equation for the inner minimisation of {eq}`eq_szoke_seq`:
 
-The first-order condition for $w_t$ at each $t$ is:
+$$
+J(x, c) = \min_{w} \left\{ c + \frac{\theta}{2}(w^\top w - x^\top \Xi x) + \beta\, E\bigl[J(x', c')\bigr] \right\}
+$$
+
+where $x' = Ax + C(\tilde\varepsilon - w)$ and $c' - c = Dx + G(\tilde\varepsilon - w)$.
+
+Conjecture $J(x,c) = c/(1-\beta) + v^\top x + x^\top P x + K$.
+
+Under this guess, $J(x',c') = c'/(1-\beta) + v^\top x' + x'^\top P x' + K$.
+
+Write $c'/(1-\beta) = c/(1-\beta) + (c'-c)/(1-\beta)$, so the $c/(1-\beta)$ term passes through both sides and can be cancelled.
+
+Substituting $w = a + Wx$, the next-period state is $x' = (A - CW)x - Ca + C\tilde\varepsilon$, and the consumption increment is $(c'-c) = (D - GW)x - Ga + G\tilde\varepsilon$.
+
+Taking $E[\cdot]$ (with $E[\tilde\varepsilon] = 0$, $E[\tilde\varepsilon\tilde\varepsilon^\top] = I$), the right-hand side after cancelling $c/(1-\beta)$ has the following structure.
+
+*Quadratic terms in $x$:*
+
+$$
+-\tfrac{\theta}{2} x^\top \Xi x + \tfrac{\theta}{2} x^\top W^\top W x + \beta x^\top (A-CW)^\top P (A-CW) x
+$$
+
+These come from the penalty $\frac{\theta}{2}(w^\top w - x^\top \Xi x)$ and from $x'^\top P x'$.
+
+*Linear terms in $x$:*
+
+$$
+\tfrac{1}{1-\beta}(D - GW)x + \beta v^\top (A-CW)x + \theta a^\top W x - 2\beta a^\top C^\top P(A-CW)x
+$$
+
+These come from $(c'-c)/(1-\beta)$, from $v^\top x'$, from the cross term in $w^\top w = (a+Wx)^\top(a+Wx)$, and from the cross term in $x'^\top P x'$.
+
+The remaining terms are constant (independent of $x$).
+
+These come from the constant part of $w^\top w$, from $x'^\top Px'$ evaluated at the constant and noise terms, and from $v^\top x'$ and $(c'-c)/(1-\beta)$ evaluated at their constant parts.
+
+Every term is at most quadratic in $x$, so matching coefficients reproduces the conjectured form $v^\top x + x^\top P x + K$ with updated $v$, $P$, $K$.
+
+This confirms self-consistency of the affine-quadratic guess.
+
+To derive the first-order condition, collect all terms in the Bellman RHS that depend on $w = a + Wx$.
+
+From the penalty $\frac{\theta}{2} w^\top w$, the contribution is $\frac{\theta}{2}(a + Wx)^\top(a + Wx)$.
+
+From $\beta E[v^\top x']$ with $E[x'] = (A-CW)x - Ca$, the $w$-dependent part is $-\beta v^\top C w = -\beta v^\top C(a + Wx)$.
+
+From $\beta E[(c'-c)/(1-\beta)]$ with $E[c'-c] = (D-GW)x - Ga$, the $w$-dependent part is $-\frac{\beta}{1-\beta} G w = -\frac{\beta}{1-\beta} G(a + Wx)$.
+
+From $\beta E[x'^\top P x']$ with $E[x'] = (A-CW)x - Ca$, the $w$-dependent part is $\beta [(A-CW)x - Ca]^\top P [(A-CW)x - Ca]$.
+
+Differentiating the sum of these four contributions with respect to $w$ and setting the result to zero gives:
+
+$$
+\theta w + 2\beta C^\top P C w - \beta C^\top v - \frac{\beta}{1-\beta} G^\top - 2\beta C^\top P A x = 0
+$$
+
+Rearranging:
 
 $$
 (\theta I + 2\beta C^\top P C)\, w_t = \frac{\beta}{1-\beta} G^\top + \beta C^\top v + 2\beta C^\top P A x_t
 $$
 
-The constant terms (independent of $x_t$) determine $a$; note that this differs from the Hansen $\bar{w}$ because of the $2\beta C^\top P C$ factor on the left-hand side.
+The constant terms (independent of $x_t$) on the right determine $a$.
 
 The terms proportional to $x_t$ determine $W$.
 
@@ -1280,7 +1341,7 @@ ax.plot(ε_grid, ϕ_base, 'black', lw=2,
 for w_val, label, color, ls in [
     (w_pss[0], r"PSS mistaken $w^*_t$", 'steelblue', '-'),
     (w_feared[0], r"Feared LRR $\bar{w}_t$", 'seagreen', '--'),
-    (w_szoke[0], r"Szőke worst-case $\tilde{w}_t$", 'firebrick', '-'),
+    (w_szoke[0], r"Szőke worst-case $\tilde{W}x_t$ (state-dep.)", 'firebrick', '-'),
 ]:
     ax.plot(ε_grid, normal_dist.pdf(ε_grid, -w_val, 1),
             color=color, lw=2, ls=ls, label=label)
@@ -1292,9 +1353,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-Each twister shifts the econometrician's $\mathcal{N}(0,1)$ density by $-w_t$, where the direction and magnitude depend on the current state $x_t$.
+Each twister shifts the econometrician's $\mathcal{N}(0,1)$ density by the displayed component, where the direction and magnitude depend on the current state $x_t$.
 
-For the state shown here, all three distortion vectors $w_t$ are negative in their first component, so the twisted densities $\mathcal{N}(-w_t, 1)$ are shifted slightly to the right.
+For the state shown here, all three displayed components are negative in their first element, so the twisted densities are shifted slightly to the right.
 
 The shifts are small relative to the unit variance because the state $x_t = (0.02, 0.008)$ is close to the unconditional mean.
 
@@ -1414,7 +1475,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-The risk-aversion-only and model-uncertainty-only yield curves both slope upward, generating a term premium.
+The risk-aversion-only and model-uncertainty-only yield curves both slope upward, generating a term premium. 
+
+(Note that the model-uncertainty curve uses only the state-dependent component $\tilde{W} x_t$, not the full affine distortion).
 
 The two explanations represent *alternative channels* for the same observed term premium, reinforcing the identification challenge explored throughout this lecture.
 
@@ -1460,14 +1523,15 @@ In stage II (assessment):
 
 1. Assess improvements in predicted behaviour of the term structure.
 2. Use estimated worst-case dynamics to form distorted forecasts
-   $\tilde{x}_{t+1} = (A - C\tilde{W})x_t - Ca$ and compare them to those of
+   $\tilde{E}_t[x_{t+1}] = (A - C\tilde{W})x_t - Ca$ and compare them to those of
    professional forecasters.
 3. Compute the discounted KL divergence $\frac{1}{2}E^w[\sum \beta^t w_t^\top w_t]$ of
-   each twisted model relative to the econometrician's model and compare them.
+   each twisted model relative to the econometrician's model and compare them
+   (the code below uses only the state-dependent component $W x_t$).
 
 ```{code-cell} ipython3
 def discounted_kl(W, A_w, C, x0, β, T_horizon=500):
-    """Approximate discounted KL divergence (1/2) E^w [Σ β^t w_t'w_t]."""
+    """State-dependent-component KL: (1/2) E^w [Σ β^t (Wx_t)'(Wx_t)]."""
     n_sims = 10_000
     rng = np.random.default_rng(2024)
     X = np.tile(x0, (n_sims, 1))
@@ -1482,7 +1546,7 @@ x0_test = np.array([0.01, 0.005])
 kl_szoke  = discounted_kl(tilted.W_tilde, tilted.A_tilde, C, x0_test, β)
 kl_feared = discounted_kl(W_bar, A_bar, C, x0_test, β)
 
-print(f"Szőke worst-case KL: {kl_szoke:.4f}")
+print(f"Szőke state-dep. KL: {kl_szoke:.4f}")
 print(f"Feared LRR KL:       {kl_feared:.4f}")
 status = ('closer to' if kl_szoke < kl_feared
           else 'farther from')
@@ -1490,7 +1554,7 @@ print(f"\nWorst-case model is {status} "
       f"the econometrician's model.")
 ```
 
-The Szőke worst-case model has lower discounted KL divergence from the econometrician's model than the feared long-run risk model, meaning it is statistically harder to distinguish from the baseline.
+Using only the state-dependent component $\tilde{W} x_t$, the Szőke worst-case model has lower discounted KL divergence from the econometrician's model than the feared long-run risk model, meaning it is statistically harder to distinguish from the baseline.
 
 Yet it still generates the state-dependent uncertainty prices needed to match term-structure dynamics.
 
