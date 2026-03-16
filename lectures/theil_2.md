@@ -41,6 +41,8 @@ tags: [hide-output]
 !pip install quantecon
 ```
 
+
+
 ## Overview
 
 
@@ -99,14 +101,15 @@ from quantecon import LQ, RBLQ
 
 Let $y_t$ denote the state vector, partitioned as
 
-$$
+```{math}
+:label: eq:state_partition_o 
 y_t = \begin{bmatrix} x_t \\ z_t \end{bmatrix}
-$$
+```
 
 where $z_t$ is an *exogenous* component with transition law
 
 ```{math}
-:label: t1
+:label: eq:z_transition_o 
 z_{t+1} = f(z_t,\, \epsilon_{t+1})
 ```
 
@@ -114,7 +117,7 @@ and $\epsilon_{t+1}$ is an i.i.d. sequence with c.d.f. $\Phi$.
 The *endogenous* component $x_t$ obeys
 
 ```{math}
-:label: t2
+:label: eq:x_transition_o 
 x_{t+1} = g(x_t,\, z_t,\, u_t)
 ```
 
@@ -123,7 +126,7 @@ where $u_t$ is the decision maker's control.
 The decision maker maximises the discounted expected return
 
 ```{math}
-:label: t3
+:label: eq:objective_o
 \mathbb{E}\!\left[\sum_{t=0}^{\infty} \beta^t\, r(y_t, u_t)\,\Big|\, y^0\right],
 \qquad \beta \in (0,1)
 ```
@@ -131,9 +134,10 @@ The decision maker maximises the discounted expected return
 choosing a control $u_t$ measurable with respect to the history $y^t \equiv
 (x^t, z^t)$.  The solution is a stationary decision rule
 
-$$
+```{math}
+:label: eq:stationary_rule_o 
 u_t = h(x_t, z_t).
-$$
+```
 
 Throughout, we maintain the following assumption from Simon and Theil:
 
@@ -147,12 +151,12 @@ Under Assumption 1, the stochastic optimisation problem separates into two indep
 steps.
 
 **Step 1 — Perfect-foresight control.**  Solve the *nonstochastic* problem of
-maximising {eq}`t3` subject to {eq}`t2`, treating the future sequence
+maximising {eq}`eq:objective_o` subject to {eq}`eq:x_transition_o`, treating the future sequence
 $\mathbf{z}_t = (z_t, z_{t+1}, \ldots)$ as known.  The solution is the
 *feedback-feedforward* rule
 
 ```{math}
-:label: t4
+:label: eq:ff_rule_o
 u_t = h_1(x_t,\, \mathbf{z}_t).
 ```
 
@@ -160,24 +164,25 @@ The function $h_1$ depends only on $r$ and $g$ (i.e., only on $Q$, $R$, and the
 matrices of the $x$-transition law).  It does **not** require knowledge of the
 noise process $f$ or $\Phi$.  Under Assumption 1, $h_1$ is a linear function.
 
-**Step 2 — Optimal forecasting.**  Using $f$ and $\Phi$ in {eq}`t1`,
+**Step 2 — Optimal forecasting.**  Using $f$ and $\Phi$ in {eq}`eq:z_transition_o`,
 iterate the linear law of motion forward:
 
-$$
+```{math}
+:label: eq:forecast_expansion_o
 \mathbf{z}_t = h_2 \cdot z_t\; +\; h_3 \cdot \epsilon_{t+1}^{\infty}.
-$$
+```
 
 Since the shocks are i.i.d. with mean zero,
 
 ```{math}
-:label: t5
+:label: eq:optimal_forecast_o   
 \mathbb{E}[\mathbf{z}_t \mid z^t] = h_2 \cdot z_t.
 ```
 
-**The CE principle.**  Substitute {eq}`t5` for $\mathbf{z}_t$ in {eq}`t4`:
+**The CE principle.**  Substitute {eq}`eq:optimal_forecast_o` for $\mathbf{z}_t$ in {eq}`eq:ff_rule_o` and impose $z^t = z_t$ to get the CE decision rule:
 
 ```{math}
-:label: t6
+:label: eq:ce_rule
 u_t = h_1(x_t,\; h_2 \cdot z_t) \;=\; h(x_t,\, z_t).
 ```
 
@@ -190,7 +195,7 @@ filtering problem.
 The optimal value function takes the quadratic form
 
 ```{math}
-:label: t9
+:label: eq:value_fn_o
 V(y_0) = -y_0' P\, y_0 - p.
 ```
 
@@ -265,11 +270,11 @@ CE principle in action.
 ### Setup and the Multiplier Problem
 
 The decision maker in Simon and Theil's setting knows his model exactly — he has
-no doubt about the transition law {eq}`t1`.  Now suppose he suspects that the true
+no doubt about the transition law {eq}`eq:z_transition`.  Now suppose he suspects that the true
 data-generating process is
 
 ```{math}
-:label: t30
+:label: eq:distorted_law
 z_{t+1} = f(z_t,\; \epsilon_{t+1} + w_{t+1})
 ```
 
@@ -277,19 +282,20 @@ where $w_{t+1} = \omega_t(x^t, z^t)$ is a misspecification term chosen by an
 adversarial "nature."  The decision maker believes his approximating model is a
 good approximation in the sense that
 
-$$
+```{math}
+:label: eq:misspec_budget
 \hat{\mathbb{E}}\!\left[\sum_{t=0}^{\infty} \beta^t\, w_{t+1}' w_{t+1}
       \,\Big|\, y_0\right] \leq \eta_0,
-$$
+```
 
 where $\eta_0$ parametrises the tolerated misspecification budget and $\hat{\mathbb{E}}$
-is the expectation under the distorted law {eq}`t30`.
+is the expectation under the distorted law {eq}`eq:distorted_law`.
 
 To construct a *robust* decision rule the decision maker solves the
 **multiplier problem** — a two-player zero-sum dynamic game:
 
 ```{math}
-:label: t32
+:label: eq:multiplier
 \min_{\{w_{t+1}\}}\, \max_{\{u_t\}}\;
 \hat{\mathbb{E}}\!\left[\sum_{t=0}^{\infty} \beta^t
     \Bigl\{r(y_t, u_t) + \theta\beta\, w_{t+1}' w_{t+1}\Bigr\}\,
@@ -300,7 +306,7 @@ where $\theta > 0$ penalises large distortions.  A larger $\theta$ shrinks the
 feasible misspecification set; as $\theta \to \infty$ the problem reduces to
 ordinary LQ.
 
-The Markov perfect equilibrium of {eq}`t32` delivers a *robust* rule
+The Markov perfect equilibrium of {eq}`eq:multiplier` delivers a *robust* rule
 $u_t = h(x_t, z_t)$ together with a worst-case distortion process
 $w_{t+1} = W(x_t, z_t)$.
 
@@ -316,37 +322,40 @@ To describe the leader's committed plan, introduce "big-letter" state variables
 $(X_t, Z_t)$ (same dimensions as $(x_t, z_t)$) that encode the leader's
 pre-committed strategy:
 
-$$
+```{math}
+:label: eq:stackelberg_plan
 \begin{aligned}
 w_{t+1} &= W(X_t, Z_t), \\
 X_{t+1} &= g(X_t, Z_t,\, h(X_t, Z_t)), \\
 Z_{t+1} &= f(Z_t,\, W(X_t, Z_t) + \epsilon_{t+1}).
 \end{aligned}
-$$
+```
 
 Summarised with $Y_t = \begin{bmatrix} X_t \\ Z_t \end{bmatrix}$:
 
 ```{math}
-:label: t34
+:label: eq:stackelberg_law
 Y_{t+1} = M Y_t + N \epsilon_{t+1}, \qquad w_{t+1} = W(Y_t).
 ```
 
 The maximising player then faces an *ordinary* dynamic programming problem subject
-to his own dynamics {eq}`t2`, the distorted $z$-law {eq}`t30`, and the exogenous
-process {eq}`t34`.  His optimal rule takes the form
+to his own dynamics {eq}`eq:x_transition`, the distorted $z$-law {eq}`eq:distorted_law`, and the exogenous
+process {eq}`eq:stackelberg_law`.  His optimal rule takes the form
 
-$$
+```{math}
+:label: eq:max_rule
 u_t = \tilde{H}(x_t, z_t, Y_t).
-$$
+```
 
 Başar and Bernhard (1995) and Hansen and Sargent (2004) establish that at
 equilibrium (with "big $K$ = little $k$" imposed) this collapses to
 
-$$
+```{math}
+:label: eq:equilibrium_rule
 \tilde{H}(X_t, Z_t, Y_t) = h(Y_t),
-$$
+```
 
-the *same* rule as the Markov perfect equilibrium of {eq}`t32`.
+the *same* rule as the Markov perfect equilibrium of {eq}`eq:multiplier`.
 
 ### Modified Separation Principle
 
@@ -357,20 +366,20 @@ becomes:
 $u_t = h_1(x_t, \mathbf{z}_t)$.
 
 **Step 2** (modified).  Form forecasts using the *distorted* law of motion
-{eq}`t34`.  By the linearity and Gaussianity of the system,
+{eq}`eq:stackelberg_law`.  By the linearity and Gaussianity of the system,
 
 ```{math}
-:label: t37
+:label: eq:distorted_forecast
 \hat{\mathbb{E}}[\mathbf{z}_t \mid z^t, Y^t]
     = \tilde{h}_2 \begin{bmatrix} z_t \\ Y_t \end{bmatrix}
 ```
 
 where $\hat{\mathbb{E}}$ uses the distorted model.
 
-Substituting {eq}`t37` into $h_1$ and imposing $Y_t = y_t$ gives the robust rule
+Substituting {eq}`eq:distorted_forecast` into $h_1$ and imposing $Y_t = y_t$ gives the robust rule
 
 ```{math}
-:label: t38
+:label: eq:robust_ce_rule
 u_t = h_1\!\left(x_t,\; \hat{h}_2 \cdot y_t\right) = h(x_t, z_t).
 ```
 
@@ -437,11 +446,11 @@ and the value matrix depend on the noise loadings** (through $\theta$ and $C$).
 
 ## Value Function Under Robustness
 
-Under a preference for robustness, the optimised value of {eq}`t32` is again
+Under a preference for robustness, the optimised value of {eq}`eq:multiplier` is again
 quadratic,
 
 ```{math}
-:label: t90
+:label: eq:robust_value
 V(y_0) = -y_0' P\, y_0 - p,
 ```
 
@@ -451,23 +460,26 @@ Specifically, $P$ is the fixed point of the composite operator $T \circ \mathcal
 where $T$ is the same Bellman operator as in the non-robust case and
 $\mathcal{D}$ is the **distortion operator**:
 
-$$
+```{math}
+:label: eq:distortion_op
 \mathcal{D}(P) = \mathcal{D}(P;\, f_2,\, \theta).
-$$
+```
 
 Given the fixed point $P = T(\mathcal{D}(P))$, the constant is
 
-$$
+```{math}
+:label: eq:constant_p
 p = p(P;\, f_2,\, \beta,\, \theta).
-$$
+```
 
 Despite $P$ now depending on $f_2$, a form of CE still prevails: the same
-decision rule {eq}`t38` also emerges from the *nonstochastic* game that
-maximises {eq}`t32` subject to {eq}`t2` and
+decision rule {eq}`eq:robust_ce_rule` also emerges from the *nonstochastic* game that
+maximises {eq}`eq:multiplier` subject to {eq}`eq:x_transition` and
 
-$$
+```{math}
+:label: eq:nonstoch_z
 z_{t+1} = f(z_t,\, w_{t+1}),
-$$
+```
 
 i.e., setting $\epsilon_{t+1} \equiv 0$.  The presence of randomness lowers the
 value (the constant $p$) but does not change the decision rule.
@@ -481,21 +493,21 @@ the same decision rules can be reinterpreted through **risk-sensitive preference
 Suppose the decision maker *fully trusts* his model
 
 ```{math}
-:label: rs1
+:label: eq:rs_transition
 y_{t+1} = A\, y_t + B\, u_t + C\, \epsilon_{t+1}
 ```
 
 but evaluates stochastic processes according to the recursion
 
 ```{math}
-:label: rs3
+:label: eq:rs_utility
 U_t = r(y_t, u_t) + \beta\, \mathcal{R}_t(U_{t+1})
 ```
 
 where the *risk-adjusted* continuation operator is
 
 ```{math}
-:label: rs4
+:label: eq:rs_operator
 \mathcal{R}_t(U_{t+1}) = \frac{2}{\sigma}
     \log \mathbb{E}\!\left[\exp\!\left(\frac{\sigma U_{t+1}}{2}\right)
     \,\Big|\, y^t\right], \qquad \sigma \leq 0.
@@ -509,12 +521,13 @@ For a candidate quadratic continuation value
 $U_{t+1}^e = -y_{t+1}' \Omega\, y_{t+1} - \rho$, evaluating $\mathcal{R}_t$
 via the log-moment-generating function of the Gaussian distribution yields
 
-$$
+```{math}
+:label: eq:rs_eval
 \mathcal{R}_t U_{t+1}^e
     = -y_t' \hat{A}_t' \mathcal{D}(\Omega)\, \hat{A}_t\, y_t - \hat{\rho}
-$$
+```
 
-where $\mathcal{D}$ is the **same** distortion operator as in the robust problem
+where $\mathcal{D}$ is the **same** distortion operator as in {eq}`eq:distortion_op`
 with $\theta = -\sigma^{-1}$.  Consequently, the risk-sensitive Bellman equation
 has the *same* fixed point $P$ as the robust control problem, and therefore the
 **same decision rule** $u_t = -F y_t$.
@@ -535,7 +548,7 @@ A consumer receives an exogenous endowment process $\{z_t\}$ and allocates it
 between consumption $c_t$ and savings $x_t$ to maximise
 
 ```{math}
-:label: cshort1
+:label: eq:pi_objective
 -\mathbb{E}_0 \sum_{t=0}^{\infty} \beta^t (c_t - b)^2, \qquad \beta \in (0,1)
 ```
 
@@ -544,12 +557,12 @@ of consumption* $\mu_{ct} \equiv b - c_t$ (the control), the budget constraint
 and endowment process are
 
 ```{math}
-:label: cshort2a
+:label: eq:pi_budget
 x_{t+1} = R\, x_t + z_t - b + \mu_{ct}
 ```
 
 ```{math}
-:label: cshort2b
+:label: eq:endowment
 z_{t+1} = \mu_d(1-\rho) + \rho\, z_t + c_d(\epsilon_{t+1} + w_{t+1})
 ```
 
@@ -559,7 +572,8 @@ is an optional shock-mean distortion representing model misspecification.
 Setting $w_{t+1} \equiv 0$ and taking $Q = 0$ (return depends only on the
 control $\mu_{ct}$) and $R_{\text{ctrl}} = 1$ puts this in the standard LQ form
 
-$$
+```{math}
+:label: eq:pi_lq_matrices
 y_t = \begin{bmatrix} x_t \\ z_t \end{bmatrix},
 \quad
 A = \begin{bmatrix} R & 1 \\ 0 & \rho \end{bmatrix},
@@ -567,7 +581,7 @@ A = \begin{bmatrix} R & 1 \\ 0 & \rho \end{bmatrix},
 B = \begin{bmatrix} 1 \\ 0 \end{bmatrix},
 \quad
 C = \begin{bmatrix} 0 \\ c_d \end{bmatrix}.
-$$
+```
 
 We calibrate to parameters estimated by Hansen, Sargent, and Tallarini (1999) (HST)
 from post-WWII U.S. data:
@@ -605,7 +619,7 @@ Setting $\sigma = 0$ (no preference for robustness), the consumer's Euler
 equation is
 
 ```{math}
-:label: cshort3
+:label: eq:euler
 \mathbb{E}_t[\mu_{c,t+1}] = (\beta R)^{-1} \mu_{ct}.
 ```
 
@@ -619,7 +633,7 @@ projection onto the one-dimensional direction of $\mu_{ct}$ gives the scalar
 AR(1) representation
 
 ```{math}
-:label: cshort6
+:label: eq:std_ar1
 \mu_{c,t+1} = \varphi\, \mu_{ct} + \nu\, \epsilon_{t+1}.
 ```
 
@@ -649,7 +663,7 @@ uses distorted forecasts $\hat{\mathbb{E}}_t[\cdot]$ evaluated under the
 worst-case model.  The consumption rule takes the certainty-equivalent form
 
 ```{math}
-:label: cshort5r
+:label: eq:robust_consumption
 \mu_{ct} = -(1 - R^{-2}\beta^{-1})
     \!\left(R\, x_t + \hat{\mathbb{E}}_t\!\left[
         \sum_{j=0}^{\infty} R^{-j}(z_{t+j} - b)\right]\right)
@@ -661,14 +675,14 @@ non-robust case.  Only the expectations operator changes.
 The resulting AR(1) dynamics for $\mu_{ct}$ become:
 
 ```{math}
-:label: cshort15
+:label: eq:robust_ar1
 \mu_{c,t+1} = \tilde{\varphi}\, \mu_{ct} + \tilde{\nu}\, \epsilon_{t+1}
 ```
 
 with $\tilde{\varphi} < 1$, implying $\mathbb{E}_t[c_{t+1}] > c_t$ under the
 approximating model — a form of **precautionary saving**.
 
-The observational equivalence formula {eq}`cshort12` (derived below) immediately
+The observational equivalence formula {eq}`eq:oe_locus` (derived below) immediately
 gives the robust AR(1) coefficient: $\tilde{\varphi} = 1/(\tilde{\beta} R)$
 where $\tilde{\beta} = \tilde{\beta}(\sigma)$.  The innovation scale $\tilde{\nu}$
 follows from the robust permanent income formula with the distorted persistence;
@@ -746,7 +760,7 @@ $\tilde{\beta}(\sigma)$, with $\sigma$ set back to zero.
 The equivalence locus is given by
 
 ```{math}
-:label: cshort12
+:label: eq:oe_locus
 \tilde{\beta}(\sigma) =
     \frac{\hat{\beta}(1 + \hat{\beta})}{2(1 + \sigma\alpha^2)}
     \left[1 + \sqrt{1 - \frac{4\hat{\beta}(1+\sigma\alpha^2)}{(1+\hat{\beta})^2}}\right]
@@ -914,7 +928,7 @@ convergence.
 **Observational equivalence verification.**
 
 Choose three pairs $(\sigma_i, \beta_i)$ on the observational equivalence locus
-{eq}`cshort12` (i.e., set $\sigma_i < 0$ and compute the matching $\tilde{\beta}_i$).
+{eq}`eq:oe_locus` (i.e., set $\sigma_i < 0$ and compute the matching $\tilde{\beta}_i$).
 For each pair, solve the corresponding LQ problem and verify that the AR(1)
 coefficient $\varphi$ for $\mu_{ct}$ is the same across all three pairs (to
 numerical precision), while the $P$ matrices differ.
