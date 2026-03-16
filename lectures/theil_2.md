@@ -30,37 +30,21 @@ kernelspec:
 :depth: 2
 ```
 
-This lecture draws on {cite}`hansen2004certainty` and  {cite}`HansenSargent2008`.
-
-In addition to what's in Anaconda, this lecture will need the following libraries:
-
-```{code-cell} ipython3
----
-tags: [hide-output]
----
-!pip install quantecon
-```
-
 
 
 ## Overview
 
 
+This is a sequel to {doc}`this lecture on certainty equivalence <theil_1>` that described 
+established an important *certainty equivalence* (CE) property for linear-quadratic (LQ) dynamic programming
+problems.  
 
-Simon {cite}`simon1956dynamic` and Theil {cite}`theil1957note` established a celebrated
-*certainty equivalence* (CE) property for linear-quadratic (LQ) dynamic programming
-problems.  Their result justifies a convenient two-step algorithm:
+The property justifies  a  two-step algorithm for computing optimal decision rules:
 
 1. **Optimize** under perfect foresight (treat future exogenous variables as known).
 2. **Forecast** — substitute optimal forecasts for the unknown future values.
 
-The striking insight is that these two steps are completely separable.  The decision
-rule that emerges from step 1 is *identical* to the decision rule for the original
-stochastic problem once optimal forecasts are substituted in step 2.  In particular,
-the decision rule does not depend on the variance of the shocks — only the *level* of
-the optimal value function does.
-
-This lecture extends the classical result in two directions motivated by
+This lecture extends the certainty equivalence property  in two directions motivated by
 {cite}`hansen2004certainty`:
 
 - **Model uncertainty and robustness.** What happens when the decision maker does not
@@ -80,9 +64,22 @@ application — with Python code using `quantecon`.
 
 * Linear transition laws and quadratic objectives (LQ framework).
 * Ordinary CE: optimal policy independent of noise variance.
-* Robust CE: distorted forecasts replace rational forecasts; policy changes with $\theta$.
+* Robust CE: distorted forecasts replace model baseline model forecasts; policy funciton depends on  $\theta$.
 * Permanent income application: Hall's martingale, precautionary savings under robustness,
   and observational equivalence between robustness and patience.
+
+
+This lecture draws on {cite}`hansen2004certainty` and  {cite}`HansenSargent2008`.
+
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython3
+---
+tags: [hide-output]
+---
+!pip install quantecon
+```
+
 
 We begin with imports:
 
@@ -114,6 +111,7 @@ z_{t+1} = f(z_t,\, \epsilon_{t+1})
 ```
 
 and $\epsilon_{t+1}$ is an i.i.d. sequence with c.d.f. $\Phi$.
+
 The *endogenous* component $x_t$ obeys
 
 ```{math}
@@ -132,7 +130,9 @@ The decision maker maximises the discounted expected return
 ```
 
 choosing a control $u_t$ measurable with respect to the history $y^t \equiv
-(x^t, z^t)$.  The solution is a stationary decision rule
+(x^t, z^t)$.  
+
+The maximizer is a stationary decision rule
 
 ```{math}
 :label: eq:stationary_rule_o 
@@ -152,7 +152,9 @@ steps.
 
 **Step 1 — Perfect-foresight control.**  Solve the *nonstochastic* problem of
 maximising {eq}`eq:objective_o` subject to {eq}`eq:x_transition_o`, treating the future sequence
-$\mathbf{z}_t = (z_t, z_{t+1}, \ldots)$ as known.  The solution is the
+$\mathbf{z}_t = (z_t, z_{t+1}, \ldots)$ as known.  
+
+The solution is the
 *feedback-feedforward* rule
 
 ```{math}
@@ -211,13 +213,16 @@ Two key observations follow from the separation:
 
 An equivalent statement: the same decision rule $h$ emerges from the *nonstochastic*
 version of the problem obtained by setting all shocks to zero,
-$z_{t+1} = f_1 z_t$.  The presence of uncertainty *lowers the value* (larger $p$)
+$z_{t+1} = f_1 z_t$.  
+
+The presence of uncertainty *lowers the value* (larger $p$)
 but does not alter *behaviour*.
 
 ### Python: Demonstrating Certainty Equivalence
 
-The following code verifies the CE principle numerically.  We consider a simple
-scalar LQ problem and vary the noise standard deviation $\sigma$.
+The following code verifies the CE principle numerically. 
+
+We consider a simple scalar LQ problem and vary the noise standard deviation $\sigma$.
 
 ```{code-cell} ipython3
 # ── Simple 1-D scalar LQ problem ───────────────────────────────────────────
@@ -260,8 +265,9 @@ plt.show()
 ```
 
 As the plot confirms, $F$ (the policy gain) is **flat** across all noise levels,
-while the value constant $d$ increases monotonically with $\sigma$.  This is the
-CE principle in action.
+while the value constant $d$ increases monotonically with $\sigma$. 
+
+This is the CE principle in action.
 
 ---
 
@@ -270,7 +276,9 @@ CE principle in action.
 ### Setup and the Multiplier Problem
 
 The decision maker in Simon and Theil's setting knows his model exactly — he has
-no doubt about the transition law {eq}`eq:z_transition`.  Now suppose he suspects that the true
+no doubt about the transition law {eq}`eq:z_transition`.  
+
+Now suppose he suspects that the true
 data-generating process is
 
 ```{math}
@@ -279,7 +287,9 @@ z_{t+1} = f(z_t,\; \epsilon_{t+1} + w_{t+1})
 ```
 
 where $w_{t+1} = \omega_t(x^t, z^t)$ is a misspecification term chosen by an
-adversarial "nature."  The decision maker believes his approximating model is a
+adversarial "nature." 
+
+The decision maker believes his approximating model is a
 good approximation in the sense that
 
 ```{math}
@@ -302,7 +312,9 @@ To construct a *robust* decision rule the decision maker solves the
     \Big|\, y_0\right]
 ```
 
-where $\theta > 0$ penalises large distortions.  A larger $\theta$ shrinks the
+where $\theta > 0$ penalises large distortions. 
+
+A larger $\theta$ shrinks the
 feasible misspecification set; as $\theta \to \infty$ the problem reduces to
 ordinary LQ.
 
@@ -316,6 +328,7 @@ The Markov perfect equilibrium *conceals* a form of CE.  To reveal it, Hansen an
 Sargent {cite}`HansenSargent2001` impose a **Stackelberg timing protocol**: at
 time 0, the *minimising* player commits once and for all to a plan
 $\{w_{t+1}\}$, after which the *maximising* player chooses $u_t$ sequentially.
+
 This makes the minimiser the Stackelberg leader.
 
 To describe the leader's committed plan, introduce "big-letter" state variables
@@ -340,14 +353,16 @@ Y_{t+1} = M Y_t + N \epsilon_{t+1}, \qquad w_{t+1} = W(Y_t).
 
 The maximising player then faces an *ordinary* dynamic programming problem subject
 to his own dynamics {eq}`eq:x_transition`, the distorted $z$-law {eq}`eq:distorted_law`, and the exogenous
-process {eq}`eq:stackelberg_law`.  His optimal rule takes the form
+process {eq}`eq:stackelberg_law`. 
+
+His optimal rule takes the form
 
 ```{math}
 :label: eq:max_rule
 u_t = \tilde{H}(x_t, z_t, Y_t).
 ```
 
-Başar and Bernhard (1995) and Hansen and Sargent (2004) establish that at
+{cite}`bacsar2008h` and {cite}`hansen2008robustness`  establish that at
 equilibrium (with "big $K$ = little $k$" imposed) this collapses to
 
 ```{math}
@@ -552,7 +567,9 @@ between consumption $c_t$ and savings $x_t$ to maximise
 -\mathbb{E}_0 \sum_{t=0}^{\infty} \beta^t (c_t - b)^2, \qquad \beta \in (0,1)
 ```
 
-where $b$ is a bliss level of consumption.  Defining the *marginal utility
+where $b$ is a bliss level of consumption. 
+
+Defining the *marginal utility
 of consumption* $\mu_{ct} \equiv b - c_t$ (the control), the budget constraint
 and endowment process are
 
@@ -583,7 +600,7 @@ B = \begin{bmatrix} 1 \\ 0 \end{bmatrix},
 C = \begin{bmatrix} 0 \\ c_d \end{bmatrix}.
 ```
 
-We calibrate to parameters estimated by Hansen, Sargent, and Tallarini (1999) (HST)
+We calibrate to parameters estimated by Hansen, Sargent, and Tallarini (1999) {cite}`HST_1999`
 from post-WWII U.S. data:
 
 ```{code-cell} ipython3
@@ -684,9 +701,11 @@ approximating model — a form of **precautionary saving**.
 
 The observational equivalence formula {eq}`eq:oe_locus` (derived below) immediately
 gives the robust AR(1) coefficient: $\tilde{\varphi} = 1/(\tilde{\beta} R)$
-where $\tilde{\beta} = \tilde{\beta}(\sigma)$.  The innovation scale $\tilde{\nu}$
+where $\tilde{\beta} = \tilde{\beta}(\sigma)$.
+
+The innovation scale $\tilde{\nu}$
 follows from the robust permanent income formula with the distorted persistence;
-Hansen and Sargent (2001) report $\tilde{\nu} \approx 8.0473$ for the HST
+{cite}`HST_1999` report $\tilde{\nu} \approx 8.0473$ for their
 calibration.
 
 ```{code-cell} ipython3
@@ -794,10 +813,12 @@ print(f"β̃(σ̂ = {sigma_rs}) = {bt_check:.5f}  (paper reports ≈ 0.9995) ✓
 
 The plot confirms the paper's key finding: **activating a preference for
 robustness is observationally equivalent — for consumption and saving behaviour
-— to increasing the discount factor**.  However, as Hansen, Sargent, and
-Tallarini (1999) and Hansen, Sargent, and Whiteman argue, the two
-parametrisations do **not** imply the same asset prices,
-because the robust model generates different state-prices through the
+— to increasing the discount factor**. 
+
+However, {cite}`HST_1999` show that  the two
+parametrisations do **not** imply the same asset prices.
+
+* this happens because the  model in which the representative agent distrusts his model  generates different state-prices through the
 $\mathcal{D}(P)$ matrix that enters the stochastic discount factor.
 
 ---
@@ -814,7 +835,9 @@ The table below condenses the main results:
 
 In all three cases, the decision maker can be described as following a
 two-step procedure: first solve a nonstochastic control problem, then form
-beliefs.  The difference is in which beliefs are formed in the second step.
+beliefs.  
+
+The difference is in which beliefs are formed in the second step.
 
 ---
 

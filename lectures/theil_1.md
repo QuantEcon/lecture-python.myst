@@ -9,7 +9,7 @@ kernelspec:
   name: python3
 ---
 
-(certainty_equiv_robustness)=
+(certainty_equiv_theil1)=
 ```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
@@ -40,12 +40,64 @@ tags: [hide-output]
 !pip install quantecon
 ```
 
+```{code-cell} ipython3
+import numpy as np
+import matplotlib.pyplot as plt
+from quantecon import LQ
+```
 
-## The Central Problem of Empirical Economics
+## Overview 
 
-The papers collected in {cite}`lucas1981rational` address a single overarching question: given observations on an agent's behavior in a particular economic environment, what can we infer about how that behavior **would have differed** had the environment been altered? This is the problem of policy-invariant structural inference.
 
-The difficulty is immediate. Observations arise under one environment; we wish to predict behavior under another. Unless we understand *why* the agent behaves as he does—that is, unless we recover the deep objectives that rationalize observed decisions—estimated behavioral relationships are silent on this question.
+Simon {cite}`simon1956dynamic` and Theil {cite}`theil1957note` established a celebrated
+*certainty equivalence* (CE) property for linear-quadratic (LQ) dynamic programming
+problems.  
+
+Their result justifies a convenient two-step algorithm:
+
+1. **Optimize** under perfect foresight (treat future exogenous variables as known).
+2. **Forecast** — substitute optimal forecasts for the unknown future values.
+
+The striking insight is that these two steps are completely separable. 
+
+The decision rule that emerges from step 1 is *identical* to the decision rule for the original
+stochastic problem once optimal forecasts are substituted in step 2. 
+
+
+The decision rule does not depend on the variance of the shocks, but  the *level* of
+the optimal value function *does*.
+
+After describing the structure of the certainty equivalence property in detail, this lecture describes its role in rational expectations modeling.
+
+We do so  by drawing  heavily on the introduction to {cite}`lucas1981rational`.
+
+In addition to learning the certainty equivalence principle, this lecture describes  troubles with   pre-rational expectations econometric policy evaluation procedures described by {cite}`lucas1976econometric`.
+
+
+```{note}
+That volume that volume collected early  papers on rational expectations modeling and econometrics.
+```
+
+## A Central Problem of Empirical Economics
+
+
+To set the stage,  {cite}`lucas1981rational` stated  the central question for empirical economics that had been posed by Leonid Hurwicz ({cite}`Hurwicz:1962`,{cite}`Hurwicz:1966`):
+
+ *  Given observations on an agent's behavior in a particular economic environment, what can we infer about how that behavior **would have differed** had the environment been altered? 
+
+```{note}
+Hurwicz formulates a notion of 'causality' as a context-specific concept that he casts  in terms of a well posed decision problem. 
+```
+ 
+ This is the problem of policy-invariant structural inference in the following setting.  
+
+  * Observations emerged  under one environment or 'regime'
+  * We want to predict behavior under another 'regime'
+  * Unless we understand *why*  agents behaves as they did in the historical regime, i.e., their purposes, we can't predict their behavior under the constraints they face in the new regime. 
+
+To confront the problem that Hurwicz had posed, {cite}`lucas1981rational` formulated
+the following decision framework. 
+ 
 
 ---
 
@@ -56,7 +108,7 @@ Consider a single decision maker whose situation at date $t$ is fully described 
 **The environment** $z_t \in S_1$ is selected by "nature" and evolves exogenously according to
 
 ```{math}
-:label: eq:z_transition
+:label: eq:z_transition_v3
 z_{t+1} = f(z_t,\, \epsilon_t),
 ```
 
@@ -65,28 +117,35 @@ where the innovations $\epsilon_t \in \mathcal{E}$ are i.i.d. draws from a fixed
 **The endogenous state** $x_t \in S_2$ is under partial control of the agent. Each period the agent selects an action $u_t \in U$. A fixed technology $g : S_1 \times S_2 \times U \to S_2$ governs the transition
 
 ```{math}
-:label: eq:x_transition
+:label: eq:x_transition_v3
 x_{t+1} = g(z_t,\, x_t,\, u_t).
 ```
 
 **The decision rule** $h : S_1 \times S_2 \to U$ maps the agent's current situation into an action:
 
 ```{math}
-:label: eq:decision_rule
+:label: eq:decision_rule_v3
 u_t = h(z_t,\, x_t).
 ```
 
-The econometrician observes (some or all of) the process $\{z_t, x_t, u_t\}$, the joint motion of which is determined by {eq}`eq:z_transition`, {eq}`eq:x_transition`, and {eq}`eq:decision_rule`.
+The econometrician observes (some or all of) the process $\{z_t, x_t, u_t\}$, the joint motion of which is determined by {eq}`eq:z_transition_v3`, {eq}`eq:x_transition_v3`, and {eq}`eq:decision_rule_v3`.
 
 ---
 
-## The Lucas Critique: Why Estimated Rules Are Not Enough
+##  Estimated Rules Are Not Enough
 
-Suppose we have estimated $f$, $g$, and $h$ from a long time series generated under a fixed environment $f_0$. This gives us $h_0 = T(f_0)$, where $T$ is the (unknown) functional mapping environments into optimal decision rules. But this single estimate, however precise, **reveals nothing** about how $T(f)$ varies with $f$.
+Suppose we have estimated $f$, $g$, and $h$ from a long time series generated under a fixed environment $f_0$. 
 
-Policy evaluation requires knowledge of the entire map $f \mapsto T(f)$. Under an environment change $f_0 \to f_1$, agents will in general revise their decision rules $h_0 \to h_1 = T(f_1)$, rendering the estimated rule $h_0$ invalid for forecasting behavior under $f_1$.
+This gives us $h_0 = T(f_0)$, where $T$ is the (unknown) functional mapping environments into optimal decision rules. 
 
-The only nonexperimental path forward is to recover the **return function** $V$ from which $h$ is derived as the solution to an optimization problem, and then re-solve that problem under the counterfactual environment $f_1$.
+But this single estimate, however precise, **reveals nothing** about how $T(f)$ varies with $f$.
+
+Policy evaluation requires knowledge of the entire map $f \mapsto T(f)$.
+
+Under an environment change $f_0 \to f_1$, agents will in general revise their decision rules $h_0 \to h_1 = T(f_1)$, rendering the estimated rule $h_0$ invalid for forecasting behavior under $f_1$.
+
+
+{cite}`lucas1976econometric` and the introduction to {cite}`lucas1981rational` conclude that the only nonexperimental path forward is to recover the **return function** $V$ from which $h$ is derived as the solution to an optimization problem, and then re-solve that problem under the counterfactual environment $f_1$.
 
 ---
 
@@ -95,13 +154,15 @@ The only nonexperimental path forward is to recover the **return function** $V$ 
 Assume the agent selects $h$ to maximize the expected discounted sum of current-period returns $V : S_1 \times S_2 \times U \to \mathbb{R}$:
 
 ```{math}
-:label: eq:objective
+:label: eq:objective_v3
 E_0\!\left\{\sum_{t=0}^{\infty} \beta^t\, V(z_t,\, x_t,\, u_t)\right\}, \qquad 0 < \beta < 1,
 ```
 
-given initial conditions $(z_0, x_0)$, the environment $f$, and the technology $g$. Here $E_0\{\cdot\}$ denotes expectation conditional on $(z_0, x_0)$ with respect to the distribution of $\{z_1, z_2, \ldots\}$ induced by {eq}`eq:z_transition`.
+given initial conditions $(z_0, x_0)$, the environment $f$, and the technology $g$. Here $E_0\{\cdot\}$ denotes expectation conditional on $(z_0, x_0)$ with respect to the distribution of $\{z_1, z_2, \ldots\}$ induced by {eq}`eq:z_transition_v3`.
 
-In principle, knowledge of $V$ (together with $g$ and $f$) allows one to compute $h = T(f)$ theoretically and hence to trace out $T(f)$ for any counterfactual $f$. The empirical question is whether $V$ can itself be recovered from observations on $\{f, g, h\}$—a problem of structural identification that, at this level of generality, is formidably difficult.
+In principle, knowledge of $V$ (together with $g$ and $f$) allows one to compute $h = T(f)$ theoretically and hence to trace out $T(f)$ for any counterfactual $f$. 
+
+The essential question is whether $V$ can itself be recovered from observations on $\{f, g, h\}$.
 
 :::{note}
 The decision rule is in general a functional $h = T(f, g, V)$. The dependence on $g$ and $V$ is suppressed in the main text but made explicit when needed.
@@ -109,25 +170,31 @@ The decision rule is in general a functional $h = T(f, g, V)$. The dependence on
 
 ---
 
-## A Linear-Quadratic Specialization and Certainty Equivalence
+## A Linear-Quadratic DP problems  and Certainty Equivalence
 
-Progress at the level of generality of Section 4 requires restricting the primitives. The most productive restriction, exploited in the bulk of the volume, imposes **quadratic** $V$ and **linear** $g$, which forces $h$ to be linear. Beyond computational tractability, this specialization delivers a striking structural result: the **certainty equivalence** theorem of Simon {cite}`simon1956dynamic`  and Theil {cite}`theil1957note`. 
+Progress beyond the level of generality of the previous section requires restricting the primitives. 
 
-###  The Composite Decomposition of $h$
+A productive restriction, exploited in the papers collected in {cite}`lucas1981rational`, imposes **quadratic** $V$ and **linear** $g$, which forces $h$ to be linear.
+
+As part of its computational tractability, this specialization delivers a striking structural result:
+
+*  the **certainty equivalence** theorem of Simon {cite}`simon1956dynamic`  and Theil {cite}`theil1957note`. 
+
+###   Decomposition of $h$
 
 Under quadratic $V$ and linear $g$, the optimal decision rule $h$ decomposes into two components applied in sequence.
 
 **Step 1 — Forecasting.** Define the infinite sequence of optimal point forecasts of all current and future states of nature:
 
 ```{math}
-:label: eq:forecast_sequence
+:label: eq:forecast_sequence_v3
 \tilde{z}_t \;=\; \bigl(z_t,\;\; {}_{t+1}z_t^e,\;\; {}_{t+2}z_t^e,\;\ldots\bigr) \;\in\; S_1^\infty,
 ```
 
 where ${}_{t+j}z_t^e$ denotes the least-mean-squared-error forecast of $z_{t+j}$ formed at time $t$. The optimal forecast sequence is a (generally nonlinear) function of the current state:
 
 ```{math}
-:label: eq:forecast_rule
+:label: eq:forecast_rule_v3
 \tilde{z}_t = h_2(z_t).
 ```
 
@@ -136,33 +203,37 @@ The function $h_2 : S_1 \to S_1^\infty$ depends entirely on the environment $(f,
 **Step 2 — Optimization.** Given the forecast sequence $\tilde{z}_t$, the optimal action is a **linear** function of $\tilde{z}_t$ and $x_t$:
 
 ```{math}
-:label: eq:optimization_rule
+:label: eq:optimization_rule_v3
 u_t = h_1(\tilde{z}_t,\, x_t).
 ```
 
 The function $h_1 : S_1^\infty \times S_2 \to U$ depends entirely on preferences $(V)$ and technology $(g)$ but **not** on the stochastic environment $(f, \Phi)$.
 
-The full decision rule is therefore the **composite**:
+The ultimate decision rule is therefore the **composite**:
 
 ```{math}
-:label: eq:composite_rule
+:label: eq:composite_rule_v3
 \boxed{h(z_t, x_t) \;=\; h_1\!\bigl[h_2(z_t),\; x_t\bigr].}
 ```
 
 ###  The Separation Principle
 
-{eq}`eq:composite_rule` embodies a clean **separation** of the two sources of dependence in $h$:
+{eq}`eq:composite_rule_v3` embodies a clean **separation** of the two sources of dependence in $h$:
 
 | Component | Depends on | Independent of |
 |-----------|-----------|----------------|
 | $h_1$ (optimization) | $V$, $g$ | $f$, $\Phi$ |
 | $h_2$ (forecasting)  | $f$, $\Phi$ | $V$, $g$ |
 
-Since policy analysis concerns changes in $f$, and since $h_1$ is invariant to $f$, the policy analyst need only re-solve the forecasting problem $h_2 = S(f)$ under the new environment, keeping $h_1$ fixed. The relationship of original interest, $h = T(f)$, then follows directly from {eq}`eq:composite_rule`.
+Since policy analysis concerns changes in $f$, and since $h_1$ is invariant to $f$, the policy analyst need only re-solve the forecasting problem $h_2 = S(f)$ under the new environment, keeping $h_1$ fixed.
+
+The relationship of original interest, $h = T(f)$, then follows directly from {eq}`eq:composite_rule_v3`.
 
 ###  Certainty Equivalence and Perfect Foresight
 
-The name "certainty equivalence" reflects a further implication of the LQ structure: the function $h_1$ can be derived as if the agent **knew the future path $z_{t+1}, z_{t+2}, \ldots$ with certainty** — i.e., by solving the deterministic problem in which $\tilde{z}_t$ is treated as the realized path rather than a forecast. The stochasticity of the environment affects actions only through the forecast $\tilde{z}_t$; conditional on $\tilde{z}_t$, the optimization problem is deterministic.
+The name "certainty equivalence" reflects a further implication of the LQ structure: the function $h_1$ can be derived as if the agent **knew the future path $z_{t+1}, z_{t+2}, \ldots$ with certainty** — i.e., by solving the deterministic problem in which $\tilde{z}_t$ is treated as the realized path rather than a forecast. 
+
+Randomness of the environment affects actions only through the forecast $\tilde{z}_t$; conditional on $\tilde{z}_t$, the optimization problem is deterministic.
 
 This means the LQ problem decouples into:
 
@@ -172,21 +243,155 @@ This means the LQ problem decouples into:
 
 ###  Cross-Equation Restrictions
 
-A hallmark of the rational expectations hypothesis as it appears in this framework is that it ties together what would otherwise be free parameters in different equations. The requirement that $\tilde{z}_t = h_2(z_t) = S(f)(z_t)$ — i.e., that agents' forecasts be *optimal* with respect to the *actual* law of motion $f$ — imposes **cross-equation restrictions** between the parameters of the forecasting rule $h_2$ and the parameters of the environment $f$. These restrictions, rather than any conditions on distributed lags within a single equation, are the operative empirical content of rational expectations.
+A hallmark of the rational expectations hypothesis as it appears in this framework is that it ties together what would otherwise be free parameters in different equations.
+
+The requirement that $\tilde{z}_t = h_2(z_t) = S(f)(z_t)$ — i.e., that agents' forecasts be *optimal* with respect to the *actual* law of motion $f$ — imposes **cross-equation restrictions** between the parameters of the forecasting rule $h_2$ and the parameters of the environment $f$. 
+
+These restrictions, rather than any conditions on distributed lags within a single equation, are the operative empirical content of rational expectations.
+
+```{note}
+This is the message of {cite}`lucas1976econometric` and  {cite}`sargent1981interpreting`. 
+```
+
+### Python: Demonstrating Certainty Equivalence
+
+The following code verifies the CE principle numerically.
+
+We consider a simple scalar LQ problem:
+
+$$y_{t+1} = a\, y_t + b\, u_t + \sigma\, \varepsilon_{t+1}, \qquad r(y_t, u_t) = -(q\, y_t^2 + r\, u_t^2)$$
+
+and vary the noise standard deviation $\sigma$ across a wide range.
+
+The CE theorem predicts that:
+
+* the **policy gain** $F$ (the coefficient in $u_t = -F y_t$) is independent of $\sigma$, and
+* the **value constant** $d$ (the additive term in $V(y) = -y' P y - d$) grows with $\sigma$.
+
+```{code-cell} ipython3
+# ── Simple 1-D scalar LQ problem ───────────────────────────────────────────
+# y_{t+1} = a·y_t + b·u_t + σ·ε_{t+1},   r = −(q·y² + r·u²)
+
+a, b_coeff = 0.9, 1.0
+q_state, r_ctrl = 1.0, 1.0
+beta = 0.95
+
+A = np.array([[a]])
+B = np.array([[b_coeff]])
+Q_mat = np.array([[q_state]])
+R_mat = np.array([[r_ctrl]])
+
+sigma_vals = np.linspace(0.0, 3.0, 80)
+F_vals, d_vals = [], []
+
+for sigma in sigma_vals:
+    C = np.array([[sigma]])
+    lq = LQ(Q_mat, R_mat, A, B, C=C, beta=beta)
+    P, F, d = lq.stationary_values()
+    F_vals.append(float(F[0, 0]))
+    d_vals.append(float(d))
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+
+axes[0].plot(sigma_vals, F_vals, lw=2)
+axes[0].set_xlabel('Noise level $\\sigma$')
+axes[0].set_ylabel('Policy gain $F$')
+axes[0].set_title('CE: Policy does not depend on noise')
+axes[0].set_ylim(0, 2 * max(F_vals) + 0.1)
+
+axes[1].plot(sigma_vals, d_vals, lw=2, color='darkorange')
+axes[1].set_xlabel('Noise level $\\sigma$')
+axes[1].set_ylabel('Value constant $d$')
+axes[1].set_title('Noise lowers value but not the decision rule')
+
+plt.tight_layout()
+plt.show()
+```
+
+As the plot confirms, $F$ (the policy gain) is **flat** across all noise levels,
+while the value constant $d$ increases monotonically with $\sigma$.
+
+This is the CE principle in action: **uncertainty changes the value of the problem but not the optimal decision rule**.
 
 ---
 
 ##  A Trouble with  Ad Hoc Expectations 
 
-Prior practice, exemplified by the adaptive expectations mechanisms of Friedman {cite}`Friedman1956` and Cagan {cite}`Cagan`, directly postulated a particular form of {eq}`eq:forecast_rule`:
+Prior practice, exemplified by the adaptive expectations mechanisms of Friedman {cite}`Friedman1956` and Cagan {cite}`Cagan`, directly postulated a particular form of {eq}`eq:forecast_rule_v3`:
 
 ```{math}
-:label: eq:adaptive_expectations
+:label: eq:adaptive_expectations_v3
 \theta_t^e = \lambda \sum_{i=0}^{\infty} (1-\lambda)^i\, \theta_{t-i}, \qquad 0 < \lambda < 1,
 ```
 
 treating the coefficient $\lambda$ as a free parameter to be estimated from data, with no reference to the underlying environment $f$.
 
-The deficiency is not that {eq}`eq:adaptive_expectations` is a distributed lag — linear forecasting rules are perfectly acceptable simplifications. The deficiency is that the **coefficients** of the distributed lag are left unrestricted by theory. The mapping $h_2 = S(f)$ shows that optimal forecasting coefficients are *determined* by $f$: when $f$ changes, $h_2$ changes, and so does $h$. An estimated $\lambda$ calibrated under $f_0$ is therefore non-structural and will give incorrect predictions whenever $f$ is altered. This is the econometric content of the critique that Muth's paper delivers.
+The deficiency is not that {eq}`eq:adaptive_expectations_v3` is a distributed lag — linear forecasting rules are perfectly acceptable simplifications. The deficiency is that the **coefficients** of the distributed lag are left unrestricted by theory. The mapping $h_2 = S(f)$ shows that optimal forecasting coefficients are *determined* by $f$: when $f$ changes, $h_2$ changes, and so does $h$. An estimated $\lambda$ calibrated under $f_0$ is therefore non-structural and will give incorrect predictions whenever $f$ is altered. This is the econometric content of the critique that Muth's paper delivers.
 
 Rational expectations equates the subjective distribution that agents use in forming $\tilde{z}_t$ to the objective distribution $f$ that actually generates the data, thereby closing the model and eliminating free parameters in $h_2$.
+
+---
+
+## Exercises
+
+```{exercise-start}
+:label: theil1_ex1
+```
+
+**CE and noise variance.**
+
+Using the scalar LQ setup in the code cell above (with $a = 0.9$, $b = 1$,
+$q = r = 1$, $\beta = 0.95$), verify numerically that the value constant $d$
+satisfies $d \propto \sigma^2$.
+
+*Hint:* From the CE analysis, the value constant satisfies
+$d = \tfrac{\beta}{1-\beta}\,\mathrm{tr}(C' P C)$,
+and since $C = \sigma$ in the scalar case, this gives
+$d = \tfrac{\beta}{1-\beta}\, P\, \sigma^2$.
+Confirm that a plot of $d$ against $\sigma^2$ is linear and compute the theoretical
+slope $\tfrac{\beta}{1-\beta} P$.
+
+```{exercise-end}
+```
+
+```{solution-start} theil1_ex1
+:class: dropdown
+```
+
+```{code-cell} ipython3
+# Reuse F_vals and d_vals already computed above
+sigma_sq_vals = sigma_vals ** 2
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.plot(sigma_sq_vals, d_vals, lw=2)
+ax.set_xlabel('$\\sigma^2$')
+ax.set_ylabel('Value constant $d$')
+ax.set_title('Value constant is linear in noise variance (CE principle)')
+
+# Overlay linear fit
+coeffs = np.polyfit(sigma_sq_vals, d_vals, 1)
+ax.plot(sigma_sq_vals, np.polyval(coeffs, sigma_sq_vals),
+        'r--', lw=1.5, label=f'Linear fit: slope = {coeffs[0]:.3f}')
+ax.legend()
+plt.tight_layout()
+plt.show()
+
+# Theoretical slope: β/(1−β) × P
+P_scalar = float(LQ(Q_mat, R_mat, A, B, C=np.zeros((1, 1)),
+                    beta=beta).stationary_values()[0])
+theoretical_slope = beta / (1 - beta) * P_scalar
+print(f"Empirical slope:    {coeffs[0]:.4f}")
+print(f"Theoretical slope β/(1−β)·P = {theoretical_slope:.4f}")
+```
+
+The slope is indeed $\tfrac{\beta}{1-\beta} P$, confirming the analytic formula.
+The policy matrix $P$ is determined entirely by preferences and technology, not by the
+noise level — a direct consequence of the certainty equivalence principle.
+
+```{solution-end}
+```
+
+## Concluding remarks
+
+This sequel  {doc}`certainty equivalence and model uncertainty <theil_2>` describes how to extend the certainty equivalence principle to
+linear-quadratic setting in which a decision distrusts the transition dynamics specified in his baseline model.
