@@ -28,11 +28,33 @@ In a rational expectations equilibrium containing a risk-averse representative i
 
 But in a non-rational expectations model in which a representative investor holds beliefs that differ from "the econometrician's", observed average returns depend on *both* risk aversion *and* misunderstood return distributions.
 
+```{note}
+Whether  beliefs are 'correct' or 'wrong' is itself subjective -- it depends on an observer's point of view.
+```
+
 Wrong beliefs contribute what look like "stochastic discount factor shocks" when viewed from the perspective of an econometrician who trusts his model.
 
-Those different perspectives can potentially explain observed countercyclical risk prices.
+Such divergent beliefs can potentially explain what look like countercyclical risk price from the perpective of someone who trusts the
+econometrician's model. 
 
-We organize a discussion of these ideas around a single mathematical device, namely, a **likelihood ratio**, a non-negative random variable with unit mean that twists one probability distribution into another.
+A key building block of this model will be an econometrician's model that takes the form of a linear state-space model driven by Gaussian disturbances.  
+
+This model will play two key roles:
+
+* it forms the perspective from which 'mistaken' beliefs and their consequences are viewed
+* it forms the 'baseline' model of a dubious representative agent who distrusts it and wants to value assets payoffs by using alternative models that
+seem to fit the historical data about as well as does the 'baseline' model.
+
+```{note}
+When we discuss the setup with a twisted entry ball below, the econometrician's model will be one of *two* baseline models that the distrustful agent is concerned about. 
+```
+
+We'll formalize  different beliefs in terms of divergent probability distributions. 
+
+It is convenient to characterize those differences in terms of a likelihood ratio process, the object studied in this quantecon lecture
+{doc}`likelihood_ratio_process`.
+
+Thus, we'll organize this lecture around a single mathematical device, namely, a **likelihood ratio**, a non-negative random variable with unit mean that twists one probability distribution into another.
 
 Likelihood ratios, equivalently multiplicative martingale increments, appear in at least four distinct roles in modern asset pricing:
 
@@ -43,7 +65,7 @@ Likelihood ratios, equivalently multiplicative martingale increments, appear in 
 | Mistaken      | $m_{t+1}^w$                       | experts' forecasts    |
 | Doubtful      | $m_{t+1} \in \mathcal{M}$         | misspecification fears|
 
-Each likelihood ratio takes the log-normal form
+Each of the key  likelihood ratios in this lecture  takes the log-normal form
 $m_{t+1}^b = \exp(-b_t^\top \varepsilon_{t+1} - \frac{1}{2} b_t^\top b_t)$
 with $b_t = 0$, $\lambda_t$, $w_t$, or a worst-case distortion.
 
