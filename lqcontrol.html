@@ -474,9 +474,9 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </ul>
 <p>For additional reading on LQ control, see, for example,</p>
 <ul class="simple">
-<li><p><span id="id1">[<a class="reference internal" href="zreferences.html#id209" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, chapter 5</p></li>
-<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id193" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">Hansen and Sargent, 2008</a>]</span>, chapter 4</p></li>
-<li><p><span id="id3">[<a class="reference internal" href="zreferences.html#id195" title="O Hernandez-Lerma and J B Lasserre. Discrete-Time Markov Control Processes: Basic Optimality Criteria. Number Vol 1 in Applications of Mathematics Stochastic Modelling and Applied Probability. Springer, 1996.">Hernandez-Lerma and Lasserre, 1996</a>]</span>, section 3.5</p></li>
+<li><p><span id="id1">[<a class="reference internal" href="zreferences.html#id218" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, chapter 5</p></li>
+<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id199" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">Hansen and Sargent, 2008</a>]</span>, chapter 4</p></li>
+<li><p><span id="id3">[<a class="reference internal" href="zreferences.html#id201" title="O Hernandez-Lerma and J B Lasserre. Discrete-Time Markov Control Processes: Basic Optimality Criteria. Number Vol 1 in Applications of Mathematics Stochastic Modelling and Applied Probability. Springer, 1996.">Hernandez-Lerma and Lasserre, 1996</a>]</span>, section 3.5</p></li>
 </ul>
 <p>In order to focus on computation, we leave longer proofs to these sources (while trying to provide as much intuition as possible).</p>
 <p>Let’s start with some imports:</p>
@@ -633,7 +633,7 @@ C :=
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In fact, for many economic problems, the definiteness conditions on <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> can be relaxed.  It is sufficient that certain submatrices of <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> be nonnegative definite. See <span id="id4">[<a class="reference internal" href="zreferences.html#id193" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">Hansen and Sargent, 2008</a>]</span> for details.</p>
+<p>In fact, for many economic problems, the definiteness conditions on <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> can be relaxed.  It is sufficient that certain submatrices of <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> be nonnegative definite. See <span id="id4">[<a class="reference internal" href="zreferences.html#id199" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">Hansen and Sargent, 2008</a>]</span> for details.</p>
 </div>
 <section id="id5">
 <h4><span class="section-number">66.2.2.1. </span>Example 1<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
@@ -870,7 +870,7 @@ propensity to consume from current income.</p>
 <p>Data contradicted the constancy of the marginal propensity to consume.</p>
 <p>In response, Milton Friedman, Franco Modigliani and others built models
 based on a consumer’s preference for an intertemporally smooth consumption stream.</p>
-<p>(See, for example, <span id="id7">[<a class="reference internal" href="zreferences.html#id187" title="M. Friedman. A Theory of the Consumption Function. Princeton University Press, 1956.">Friedman, 1956</a>]</span> or <span id="id8">[<a class="reference internal" href="zreferences.html#id222" title="F. Modigliani and R. Brumberg. Utility analysis and the consumption function: An interpretation of cross-section data. In K.K Kurihara, editor, Post-Keynesian Economics. 1954.">Modigliani and Brumberg, 1954</a>]</span>.)</p>
+<p>(See, for example, <span id="id7">[<a class="reference internal" href="zreferences.html#id193" title="M. Friedman. A Theory of the Consumption Function. Princeton University Press, 1956.">Friedman, 1956</a>]</span> or <span id="id8">[<a class="reference internal" href="zreferences.html#id231" title="F. Modigliani and R. Brumberg. Utility analysis and the consumption function: An interpretation of cross-section data. In K.K Kurihara, editor, Post-Keynesian Economics. 1954.">Modigliani and Brumberg, 1954</a>]</span>.)</p>
 <p>One property of those models is that households purchase and sell financial assets to make consumption streams smoother than income streams.</p>
 <p>The household savings problem <a class="reference internal" href="#lq-hhp"><span class="std std-ref">outlined above</span></a> captures these ideas.</p>
 <p>The optimization problem for the household is to choose a consumption sequence in order to minimize</p>
@@ -1056,7 +1056,7 @@ of assets in the middle periods to fund rising consumption.</p>
 <p>However, the loss of generality is not as large as you might first imagine.</p>
 <p>In fact, we can tackle many models with time-varying parameters by suitable choice of state variables.</p>
 <p>One illustration is given <a class="reference internal" href="#lq-nsi"><span class="std std-ref">below</span></a>.</p>
-<p>For further examples and a more systematic treatment, see <span id="id9">[<a class="reference internal" href="zreferences.html#id192" title="L P Hansen and T J Sargent. Recursive Models of Dynamic Linear Economies. The Gorman Lectures in Economics. Princeton University Press, 2013.">Hansen and Sargent, 2013</a>]</span>, section 2.4.</p>
+<p>For further examples and a more systematic treatment, see <span id="id9">[<a class="reference internal" href="zreferences.html#id198" title="L P Hansen and T J Sargent. Recursive Models of Dynamic Linear Economies. The Gorman Lectures in Economics. Princeton University Press, 2013.">Hansen and Sargent, 2013</a>]</span>, section 2.4.</p>
 </section>
 <section id="adding-a-cross-product-term">
 <span id="lq-cpt"></span><h3><span class="section-number">66.5.2. </span>Adding a Cross-Product Term<a class="headerlink" href="#adding-a-cross-product-term" title="Link to this heading">#</a></h3>
@@ -2199,8 +2199,18 @@ function, which we repeat here for convenience:</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="theil_1.html">
+   71. Certainty Equivalence
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="theil_2.html">
+   72. Certainty Equivalence and Model Uncertainty
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   71. Production Smoothing via Inventories
+   73. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2212,22 +2222,22 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   72. Cass-Koopmans Model
+   74. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   73. Cass-Koopmans Competitive Equilibrium
+   75. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   74. Cass-Koopmans Model with Distorting Taxes
+   76. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   75. Two-Country Model with Distorting Taxes
+   77. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -2239,52 +2249,52 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   76. A Lake Model of Employment and Unemployment
+   78. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   77. Lake Model with an Endogenous Job Finding Rate
+   79. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   78. Rational Expectations Equilibrium
+   80. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   79. Stability in Linear Rational Expectations Models
+   81. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   80. Markov Perfect Equilibrium
+   82. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   81. Uncertainty Traps
+   83. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   82. The Aiyagari Model
+   84. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   83. Transitions in an Overlapping Generations Model
+   85. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   84. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   86. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   85. Two Computations to Fund Social Security
+   87. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -2296,47 +2306,47 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   86. Asset Pricing: Finite State Models
+   88. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   87. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   89. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   88. Estimating Euler Equations by Generalized Method of Moments
+   90. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="doubts_or_variability.html">
-   89. Doubts or Variability?
+   91. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   90. Competitive Equilibria with Arrow Securities
+   92. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   91. Heterogeneous Beliefs and Bubbles
+   93. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   92. Speculative Behavior with Bayesian Learning
+   94. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   93. Affine Models of Asset Prices
+   95. Affine Models of Asset Prices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="risk_aversion_or_mistaken_beliefs.html">
-   94. Risk Aversion or Mistaken Beliefs?
+   96. Risk Aversion or Mistaken Beliefs?
   </a>
  </li>
 </ul>
@@ -2348,17 +2358,17 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   95. Pandas for Panel Data
+   97. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   96. Linear Regression in Python
+   98. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   97. Maximum Likelihood Estimation
+   99. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2370,12 +2380,12 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   98. First-Price and Second-Price Auctions
+   100. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   99. Multiple Good Allocation Mechanisms
+   101. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2387,17 +2397,17 @@ function, which we repeat here for convenience:</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   100. Troubleshooting
+   102. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   101. References
+   103. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   102. Execution Statistics
+   104. Execution Statistics
   </a>
  </li>
 </ul>

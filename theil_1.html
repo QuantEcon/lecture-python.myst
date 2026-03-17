@@ -1,0 +1,1512 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>71. Certainty Equivalence &#8212; Intermediate Quantitative Economics with Python</title>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=300d9cef76b95d0252c8ff6263fc63de943d6f3a" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=1ae7504c"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=af25365e6360aeca6ba8101dda3f432eb6b6fa9c"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": ["\\operatorname*{argmax}", 0], "argmin": ["\\operatorname*{argmin}", 0], "EE": "\\mathbb{E}"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'theil_1';</script>
+    <link rel="canonical" href="https://python.quantecon.org/theil_1.html" />
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="72. Certainty Equivalence and Model Uncertainty" href="theil_2.html" />
+    <link rel="prev" title="70. Permanent Income II: LQ Techniques" href="perm_income_cons.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Certainty Equivalence"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Certainty Equivalence" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/theil_1.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
+<!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=theil_1>
+
+                <div class="qe-page__toc">
+
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">71.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-central-problem-of-empirical-economics">71.2. A central problem of empirical economics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-formal-setup">71.3. A formal setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimated-rules-are-not-enough">71.4. Estimated rules are not enough</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-optimization-problem">71.5. An optimization problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-linear-quadratic-dp-problem-and-certainty-equivalence">71.6. A linear-quadratic DP problem and certainty equivalence</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decomposition-of-h">71.6.1. Decomposition of <span class="math notranslate nohighlight">\(h\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-separation-principle">71.6.2. The separation principle</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#certainty-equivalence-and-perfect-foresight">71.6.3. Certainty equivalence and perfect foresight</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-equation-restrictions">71.6.4. Cross-equation restrictions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-trouble-with-ad-hoc-expectations">71.7. A trouble with ad hoc expectations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">71.8. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">71.9. Concluding remarks</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            
+                            
+                            
+                        </div>
+
+                    </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
+
+                    </div>
+
+                    <!-- Authors section -->
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
+
+                    <!-- Last modified / Changelog dropdown -->
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: Mar 17, 2026
+                            <span class="changelog-icon">▼</span>
+                        </button>
+
+                    <!-- Changelog dropdown content -->
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/theil_1.md">full history</a>)</h4>
+                        <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/d95b663ab" class="changelog-hash">d95b663ab</a>
+                                
+                                <span class="changelog-author">Humphrey Yang</span>
+                                <span class="changelog-time">54 minutes ago</span>
+                                <span class="changelog-message">Add Tom's two lectures on certainty equivalence (#835)</span>
+                            </li>
+                            
+                        </ul>
+                    </div>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="certainty-equivalence">
+<h1><a class="toc-backref" href="#id19" role="doc-backlink"><span class="section-number">71. </span>Certainty Equivalence</a><a class="headerlink" href="#certainty-equivalence" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
+<span id="index-1"></span><span id="index-0"></span><p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#certainty-equivalence" id="id19">Certainty Equivalence</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id20">Overview</a></p></li>
+<li><p><a class="reference internal" href="#a-central-problem-of-empirical-economics" id="id21">A central problem of empirical economics</a></p></li>
+<li><p><a class="reference internal" href="#a-formal-setup" id="id22">A formal setup</a></p></li>
+<li><p><a class="reference internal" href="#estimated-rules-are-not-enough" id="id23">Estimated rules are not enough</a></p></li>
+<li><p><a class="reference internal" href="#an-optimization-problem" id="id24">An optimization problem</a></p></li>
+<li><p><a class="reference internal" href="#a-linear-quadratic-dp-problem-and-certainty-equivalence" id="id25">A linear-quadratic DP problem and certainty equivalence</a></p></li>
+<li><p><a class="reference internal" href="#a-trouble-with-ad-hoc-expectations" id="id26">A trouble with ad hoc expectations</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id27">Exercises</a></p></li>
+<li><p><a class="reference internal" href="#concluding-remarks" id="id28">Concluding remarks</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon
+</pre></div>
+</div>
+</div>
+<details class="admonition hide below-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+  Downloading quantecon-0.11.1-py3-none-any.whl.metadata (5.3 kB)
+Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
+Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
+Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.16.3)
+Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.14.0)
+Requirement already satisfied: llvmlite&lt;0.46,&gt;=0.45.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.45.1)
+Requirement already satisfied: charset_normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.4.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.11)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.5.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.11.12)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Downloading quantecon-0.11.1-py3-none-any.whl (330 kB)
+Installing collected packages: quantecon
+Successfully installed quantecon-0.11.1
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="kn">import</span> <span class="n">LQ</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="overview">
+<h2><a class="toc-backref" href="#id20" role="doc-backlink"><span class="section-number">71.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p><span id="id1">Simon [<a class="reference internal" href="zreferences.html#id58" title="Herbert A Simon. Dynamic programming under uncertainty with a quadratic criterion function. Econometrica, Journal of the Econometric Society, pages 74–81, 1956.">1956</a>]</span> and <span id="id2">Theil [<a class="reference internal" href="zreferences.html#id59" title="Henri Theil. A note on certainty equivalence in dynamic planning. Econometrica: Journal of the Econometric Society, pages 346–349, 1957.">1957</a>]</span> established a celebrated <em>certainty equivalence</em> (CE) property for linear-quadratic (LQ) dynamic programming problems.</p>
+<p>Their result justifies a convenient two-step algorithm:</p>
+<ol class="arabic simple">
+<li><p><strong>Optimize</strong> under perfect foresight (treat future exogenous variables as known).</p></li>
+<li><p><strong>Forecast</strong> — substitute optimal forecasts for the unknown future values.</p></li>
+</ol>
+<p>The striking insight is that these two steps are completely separable.</p>
+<p>The decision rule that emerges from step 1 is <em>identical</em> to the decision rule for the original stochastic problem once optimal forecasts are substituted in step 2.</p>
+<p>The decision rule does not depend on the variance of the shocks, but the <em>level</em> of the optimal value function <em>does</em>.</p>
+<p>After describing the structure of the certainty equivalence property in detail, this lecture describes its role in rational expectations modeling.</p>
+<p>We do so by drawing heavily on the introduction to <span id="id3">[<a class="reference internal" href="zreferences.html#id25" title="Robert E Lucas and Thomas J Sargent. Rational expectations and econometric practice. U of Minnesota Press, Minneapolis, Minnesota, 1981.">Lucas and Sargent, 1981</a>]</span>.</p>
+<p>In addition to learning the certainty equivalence principle, this lecture describes troubles with pre-rational expectations econometric policy evaluation procedures described by <span id="id4">[<a class="reference internal" href="zreferences.html#id206" title="Robert E Jr Lucas. Econometric policy evaluation: a critique. In Carnegie-Rochester conference series on public policy, volume 1, 19–46. North-Holland, 1976.">Lucas, 1976</a>]</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>That volume collected early papers on rational expectations modeling and econometrics.</p>
+</div>
+</section>
+<section id="a-central-problem-of-empirical-economics">
+<h2><a class="toc-backref" href="#id21" role="doc-backlink"><span class="section-number">71.2. </span>A central problem of empirical economics</a><a class="headerlink" href="#a-central-problem-of-empirical-economics" title="Link to this heading">#</a></h2>
+<p>To set the stage, <span id="id5">Lucas and Sargent [<a class="reference internal" href="zreferences.html#id25" title="Robert E Lucas and Thomas J Sargent. Rational expectations and econometric practice. U of Minnesota Press, Minneapolis, Minnesota, 1981.">1981</a>]</span> stated the central question for empirical economics that had been posed by Leonid Hurwicz (<span id="id6">[<a class="reference internal" href="zreferences.html#id27" title="Leonid Hurwicz. On the structural form of interdependent systems. In Logic, Methodology and Philosophy of Science, pages 232-239. Stanford University Press, Stanford, CA, 1962.">Hurwicz, 1962</a>]</span>,<span id="id7">[<a class="reference internal" href="zreferences.html#id28" title="Leonid Hurwicz. On the structural form of interdependent systems. Logic, Methodology and Philosophy of Science Proceeding of the 1960 International Congress, 44:232-239, 1966. URL: http://www.sciencedirect.com/science/article/pii/S0049237X09705907, doi:http://dx.doi.org/10.1016/S0049-237X(09)70590-7.">Hurwicz, 1966</a>]</span>):</p>
+<ul class="simple">
+<li><p>Given observations on an agent’s behavior in a particular economic environment, what can we infer about how that behavior <em>would have differed</em> had the environment been altered?</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Hurwicz formulates a notion of ‘causality’ as a context-specific concept that he casts in terms of a well posed decision problem.</p>
+</div>
+<p>This is the problem of policy-invariant structural inference in the following setting.</p>
+<ul class="simple">
+<li><p>Observations emerged under one environment or ‘regime’</p></li>
+<li><p>We want to predict behavior under another ‘regime’</p></li>
+<li><p>Unless we understand <em>why</em> agents behaved as they did in the historical regime, i.e., their purposes, we can’t predict their behavior under the constraints they face in the new regime.</p></li>
+</ul>
+<p>To confront the problem that Hurwicz had posed, <span id="id8">Lucas and Sargent [<a class="reference internal" href="zreferences.html#id25" title="Robert E Lucas and Thomas J Sargent. Rational expectations and econometric practice. U of Minnesota Press, Minneapolis, Minnesota, 1981.">1981</a>]</span> formulated the following decision framework.</p>
+</section>
+<section id="a-formal-setup">
+<h2><a class="toc-backref" href="#id22" role="doc-backlink"><span class="section-number">71.3. </span>A formal setup</a><a class="headerlink" href="#a-formal-setup" title="Link to this heading">#</a></h2>
+<p>Consider a single decision maker whose situation at date <span class="math notranslate nohighlight">\(t\)</span> is fully described by two state variables <span class="math notranslate nohighlight">\((x_t, z_t)\)</span>.</p>
+<p><strong>The environment</strong> <span class="math notranslate nohighlight">\(z_t \in S_1\)</span> is selected by “nature” and evolves exogenously according to</p>
+<div class="math notranslate nohighlight" id="equation-eq-z-transition-v3">
+<span class="eqno">(71.1)<a class="headerlink" href="#equation-eq-z-transition-v3" title="Link to this equation">#</a></span>\[z_{t+1} = f(z_t,\, \epsilon_{t+1}),\]</div>
+<p>where the innovations <span class="math notranslate nohighlight">\(\{\epsilon_t\}\)</span> are i.i.d. draws from a fixed c.d.f. <span class="math notranslate nohighlight">\(\Phi(\cdot) : \mathcal{E} \to [0,1]\)</span>.</p>
+<p>The function <span class="math notranslate nohighlight">\(f : S_1 \times \mathcal{E} \to S_1\)</span> is called the <strong>decision maker’s environment</strong>.</p>
+<p><strong>The endogenous state</strong> <span class="math notranslate nohighlight">\(x_t \in S_2\)</span> is under partial control of the agent.</p>
+<p>Each period the agent selects an action <span class="math notranslate nohighlight">\(u_t \in U\)</span>.</p>
+<p>A fixed technology <span class="math notranslate nohighlight">\(g : S_1 \times S_2 \times U \to S_2\)</span> governs the transition</p>
+<div class="math notranslate nohighlight" id="equation-eq-x-transition-v3">
+<span class="eqno">(71.2)<a class="headerlink" href="#equation-eq-x-transition-v3" title="Link to this equation">#</a></span>\[x_{t+1} = g(z_t,\, x_t,\, u_t).\]</div>
+<p><strong>The decision rule</strong> <span class="math notranslate nohighlight">\(h : S_1 \times S_2 \to U\)</span> maps the agent’s current situation into an action:</p>
+<div class="math notranslate nohighlight" id="equation-eq-decision-rule-v3">
+<span class="eqno">(71.3)<a class="headerlink" href="#equation-eq-decision-rule-v3" title="Link to this equation">#</a></span>\[u_t = h(z_t,\, x_t).\]</div>
+<p>The econometrician observes (some or all of) the process <span class="math notranslate nohighlight">\(\{z_t, x_t, u_t\}\)</span>, the joint motion of which is determined by <a class="reference internal" href="#equation-eq-z-transition-v3">(71.1)</a>, <a class="reference internal" href="#equation-eq-x-transition-v3">(71.2)</a>, and <a class="reference internal" href="#equation-eq-decision-rule-v3">(71.3)</a>.</p>
+</section>
+<section id="estimated-rules-are-not-enough">
+<h2><a class="toc-backref" href="#id23" role="doc-backlink"><span class="section-number">71.4. </span>Estimated rules are not enough</a><a class="headerlink" href="#estimated-rules-are-not-enough" title="Link to this heading">#</a></h2>
+<p>Suppose we have estimated <span class="math notranslate nohighlight">\(f\)</span>, <span class="math notranslate nohighlight">\(g\)</span>, and <span class="math notranslate nohighlight">\(h\)</span> from a long time series generated under a fixed environment <span class="math notranslate nohighlight">\(f_0\)</span>.</p>
+<p>This gives us <span class="math notranslate nohighlight">\(h_0 = T(f_0)\)</span>, where <span class="math notranslate nohighlight">\(T\)</span> is the (unknown) functional mapping environments into optimal decision rules.</p>
+<p>But this single estimate, however precise, <em>reveals nothing</em> about how <span class="math notranslate nohighlight">\(T(f)\)</span> varies with <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>Policy evaluation requires knowledge of the entire map <span class="math notranslate nohighlight">\(f \mapsto T(f)\)</span>.</p>
+<p>Under an environment change <span class="math notranslate nohighlight">\(f_0 \to f_1\)</span>, agents will in general revise their decision rules <span class="math notranslate nohighlight">\(h_0 \to h_1 = T(f_1)\)</span>, rendering the estimated rule <span class="math notranslate nohighlight">\(h_0\)</span> invalid for forecasting behavior under <span class="math notranslate nohighlight">\(f_1\)</span>.</p>
+<p><span id="id9">Lucas [<a class="reference internal" href="zreferences.html#id206" title="Robert E Jr Lucas. Econometric policy evaluation: a critique. In Carnegie-Rochester conference series on public policy, volume 1, 19–46. North-Holland, 1976.">1976</a>]</span> and the introduction to <span id="id10">[<a class="reference internal" href="zreferences.html#id25" title="Robert E Lucas and Thomas J Sargent. Rational expectations and econometric practice. U of Minnesota Press, Minneapolis, Minnesota, 1981.">Lucas and Sargent, 1981</a>]</span> conclude that the only nonexperimental path forward is to recover the <strong>return function</strong> <span class="math notranslate nohighlight">\(V\)</span> from which <span class="math notranslate nohighlight">\(h\)</span> is derived as the solution to an optimization problem, and then re-solve that problem under the counterfactual environment <span class="math notranslate nohighlight">\(f_1\)</span>.</p>
+</section>
+<section id="an-optimization-problem">
+<h2><a class="toc-backref" href="#id24" role="doc-backlink"><span class="section-number">71.5. </span>An optimization problem</a><a class="headerlink" href="#an-optimization-problem" title="Link to this heading">#</a></h2>
+<p>Assume the agent selects <span class="math notranslate nohighlight">\(h\)</span> to maximize the expected discounted sum of current-period returns <span class="math notranslate nohighlight">\(V : S_1 \times S_2 \times U \to \mathbb{R}\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-objective-v3">
+<span class="eqno">(71.4)<a class="headerlink" href="#equation-eq-objective-v3" title="Link to this equation">#</a></span>\[E_0\!\left\{\sum_{t=0}^{\infty} \beta^t\, V(z_t,\, x_t,\, u_t)\right\}, \qquad 0 &lt; \beta &lt; 1,\]</div>
+<p>given initial conditions <span class="math notranslate nohighlight">\((z_0, x_0)\)</span>, the environment <span class="math notranslate nohighlight">\(f\)</span>, and the technology <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<p>Here <span class="math notranslate nohighlight">\(E_0\{\cdot\}\)</span> denotes expectation conditional on <span class="math notranslate nohighlight">\((z_0, x_0)\)</span> with respect to the distribution of <span class="math notranslate nohighlight">\(\{z_1, z_2, \ldots\}\)</span> induced by <a class="reference internal" href="#equation-eq-z-transition-v3">(71.1)</a>.</p>
+<p>In principle, knowledge of <span class="math notranslate nohighlight">\(V\)</span> (together with <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(f\)</span>) allows one to compute <span class="math notranslate nohighlight">\(h = T(f)\)</span> theoretically and hence to trace out <span class="math notranslate nohighlight">\(T(f)\)</span> for any counterfactual <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>The essential question is whether <span class="math notranslate nohighlight">\(V\)</span> can itself be recovered from observations on <span class="math notranslate nohighlight">\(\{f, g, h\}\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The decision rule is in general a functional <span class="math notranslate nohighlight">\(h = T(f, g, V)\)</span>.
+The dependence on <span class="math notranslate nohighlight">\(g\)</span> and <span class="math notranslate nohighlight">\(V\)</span> is suppressed in the main text but made explicit when needed.</p>
+</div>
+</section>
+<section id="a-linear-quadratic-dp-problem-and-certainty-equivalence">
+<h2><a class="toc-backref" href="#id25" role="doc-backlink"><span class="section-number">71.6. </span>A linear-quadratic DP problem and certainty equivalence</a><a class="headerlink" href="#a-linear-quadratic-dp-problem-and-certainty-equivalence" title="Link to this heading">#</a></h2>
+<p>Progress beyond the level of generality of the previous section requires restricting the primitives.</p>
+<p>A productive restriction, exploited in the papers collected in <span id="id11">[<a class="reference internal" href="zreferences.html#id25" title="Robert E Lucas and Thomas J Sargent. Rational expectations and econometric practice. U of Minnesota Press, Minneapolis, Minnesota, 1981.">Lucas and Sargent, 1981</a>]</span>, imposes <em>quadratic</em> <span class="math notranslate nohighlight">\(V\)</span> and <em>linear</em> <span class="math notranslate nohighlight">\(g\)</span>, which forces <span class="math notranslate nohighlight">\(h\)</span> to be linear.</p>
+<p>As part of its computational tractability, this specialization delivers a striking structural result:</p>
+<ul class="simple">
+<li><p>the <strong>certainty equivalence</strong> theorem of <span id="id12">Simon [<a class="reference internal" href="zreferences.html#id58" title="Herbert A Simon. Dynamic programming under uncertainty with a quadratic criterion function. Econometrica, Journal of the Econometric Society, pages 74–81, 1956.">1956</a>]</span> and <span id="id13">Theil [<a class="reference internal" href="zreferences.html#id59" title="Henri Theil. A note on certainty equivalence in dynamic planning. Econometrica: Journal of the Econometric Society, pages 346–349, 1957.">1957</a>]</span>.</p></li>
+</ul>
+<section id="decomposition-of-h">
+<h3><span class="section-number">71.6.1. </span>Decomposition of <span class="math notranslate nohighlight">\(h\)</span><a class="headerlink" href="#decomposition-of-h" title="Link to this heading">#</a></h3>
+<p>Under quadratic <span class="math notranslate nohighlight">\(V\)</span> and linear <span class="math notranslate nohighlight">\(g\)</span>, the optimal decision rule <span class="math notranslate nohighlight">\(h\)</span> decomposes into two components applied in sequence.</p>
+<p><strong>Step 1 — Forecasting.</strong> Define the infinite sequence of optimal point forecasts of all current and future states of nature:</p>
+<div class="math notranslate nohighlight" id="equation-eq-forecast-sequence-v3">
+<span class="eqno">(71.5)<a class="headerlink" href="#equation-eq-forecast-sequence-v3" title="Link to this equation">#</a></span>\[\tilde{z}_t \;=\; \bigl(z_t,\;\; {}_{t+1}z_t^e,\;\; {}_{t+2}z_t^e,\;\ldots\bigr) \;\in\; S_1^\infty,\]</div>
+<p>where <span class="math notranslate nohighlight">\({}_{t+j}z_t^e\)</span> denotes the least-mean-squared-error forecast of <span class="math notranslate nohighlight">\(z_{t+j}\)</span> formed at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>The optimal forecast sequence is a (generally nonlinear) function of the current state:</p>
+<div class="math notranslate nohighlight" id="equation-eq-forecast-rule-v3">
+<span class="eqno">(71.6)<a class="headerlink" href="#equation-eq-forecast-rule-v3" title="Link to this equation">#</a></span>\[\tilde{z}_t = h_2(z_t).\]</div>
+<p>The function <span class="math notranslate nohighlight">\(h_2 : S_1 \to S_1^\infty\)</span> depends entirely on the environment <span class="math notranslate nohighlight">\((f, \Phi)\)</span> and is obtained as the solution to a <strong>pure forecasting problem</strong>, with no reference to preferences or technology.</p>
+<p><strong>Step 2 — Optimization.</strong> Given the forecast sequence <span class="math notranslate nohighlight">\(\tilde{z}_t\)</span>, the optimal action is a <strong>linear</strong> function of <span class="math notranslate nohighlight">\(\tilde{z}_t\)</span> and <span class="math notranslate nohighlight">\(x_t\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-optimization-rule-v3">
+<span class="eqno">(71.7)<a class="headerlink" href="#equation-eq-optimization-rule-v3" title="Link to this equation">#</a></span>\[u_t = h_1(\tilde{z}_t,\, x_t).\]</div>
+<p>The function <span class="math notranslate nohighlight">\(h_1 : S_1^\infty \times S_2 \to U\)</span> depends entirely on preferences <span class="math notranslate nohighlight">\((V)\)</span> and technology <span class="math notranslate nohighlight">\((g)\)</span> but <strong>not</strong> on the stochastic environment <span class="math notranslate nohighlight">\((f, \Phi)\)</span>.</p>
+<p>The ultimate decision rule is therefore the <strong>composite</strong>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-composite-rule-v3">
+<span class="eqno">(71.8)<a class="headerlink" href="#equation-eq-composite-rule-v3" title="Link to this equation">#</a></span>\[\boxed{h(z_t, x_t) \;=\; h_1\!\bigl[h_2(z_t),\; x_t\bigr].}\]</div>
+</section>
+<section id="the-separation-principle">
+<h3><span class="section-number">71.6.2. </span>The separation principle<a class="headerlink" href="#the-separation-principle" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="#equation-eq-composite-rule-v3">(71.8)</a> embodies a clean <strong>separation</strong> of the two sources of dependence in <span class="math notranslate nohighlight">\(h\)</span>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Depends on</p></th>
+<th class="head"><p>Independent of</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(h_1\)</span> (optimization)</p></td>
+<td><p><span class="math notranslate nohighlight">\(V\)</span>, <span class="math notranslate nohighlight">\(g\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(f\)</span>, <span class="math notranslate nohighlight">\(\Phi\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(h_2\)</span> (forecasting)</p></td>
+<td><p><span class="math notranslate nohighlight">\(f\)</span>, <span class="math notranslate nohighlight">\(\Phi\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(V\)</span>, <span class="math notranslate nohighlight">\(g\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Since policy analysis concerns changes in <span class="math notranslate nohighlight">\(f\)</span>, and since <span class="math notranslate nohighlight">\(h_1\)</span> is invariant to <span class="math notranslate nohighlight">\(f\)</span>, the policy analyst need only re-solve the forecasting problem <span class="math notranslate nohighlight">\(h_2 = S(f)\)</span> under the new environment, keeping <span class="math notranslate nohighlight">\(h_1\)</span> fixed.</p>
+<p>The relationship of original interest, <span class="math notranslate nohighlight">\(h = T(f)\)</span>, then follows directly from <a class="reference internal" href="#equation-eq-composite-rule-v3">(71.8)</a>.</p>
+</section>
+<section id="certainty-equivalence-and-perfect-foresight">
+<h3><span class="section-number">71.6.3. </span>Certainty equivalence and perfect foresight<a class="headerlink" href="#certainty-equivalence-and-perfect-foresight" title="Link to this heading">#</a></h3>
+<p>The name “certainty equivalence” reflects a further implication of the LQ structure: the function <span class="math notranslate nohighlight">\(h_1\)</span> can be derived as if the agent <strong>knew the future path <span class="math notranslate nohighlight">\(z_{t+1}, z_{t+2}, \ldots\)</span> with certainty</strong> — i.e., by solving the deterministic problem in which <span class="math notranslate nohighlight">\(\tilde{z}_t\)</span> is treated as the realized path rather than a forecast.</p>
+<p>Randomness of the environment affects actions only through the forecast <span class="math notranslate nohighlight">\(\tilde{z}_t\)</span>; conditional on <span class="math notranslate nohighlight">\(\tilde{z}_t\)</span>, the optimization problem is deterministic.</p>
+<p>This means the LQ problem decouples into:</p>
+<ul class="simple">
+<li><p><strong>Dynamic optimization under perfect foresight</strong> — solve for <span class="math notranslate nohighlight">\(h_1\)</span> from <span class="math notranslate nohighlight">\((V, g)\)</span> by treating <span class="math notranslate nohighlight">\(\tilde{z}_t\)</span> as known, yielding a standard deterministic LQ regulator problem independent of the environment <span class="math notranslate nohighlight">\((f, \Phi)\)</span>.</p></li>
+<li><p><strong>Optimal linear prediction</strong> — solve for <span class="math notranslate nohighlight">\(h_2 = S(f)\)</span> from <span class="math notranslate nohighlight">\((f, \Phi)\)</span> using least-squares forecasting theory, which reduces to a standard Kalman/Wiener prediction formula when <span class="math notranslate nohighlight">\(f\)</span> is itself linear.</p></li>
+</ul>
+</section>
+<section id="cross-equation-restrictions">
+<h3><span class="section-number">71.6.4. </span>Cross-equation restrictions<a class="headerlink" href="#cross-equation-restrictions" title="Link to this heading">#</a></h3>
+<p>A hallmark of the rational expectations hypothesis as it appears in this framework is that it ties together what would otherwise be free parameters in different equations.</p>
+<p>The requirement that <span class="math notranslate nohighlight">\(\tilde{z}_t = h_2(z_t) = S(f)(z_t)\)</span> — i.e., that agents’ forecasts be <em>optimal</em> with respect to the <em>actual</em> law of motion <span class="math notranslate nohighlight">\(f\)</span> — imposes <strong>cross-equation restrictions</strong> between the parameters of the forecasting rule <span class="math notranslate nohighlight">\(h_2\)</span> and the parameters of the environment <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>These restrictions, rather than any conditions on distributed lags within a single equation, are the operative empirical content of rational expectations.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is the message of <span id="id14">[<a class="reference internal" href="zreferences.html#id206" title="Robert E Jr Lucas. Econometric policy evaluation: a critique. In Carnegie-Rochester conference series on public policy, volume 1, 19–46. North-Holland, 1976.">Lucas, 1976</a>]</span> and <span id="id15">[<a class="reference internal" href="zreferences.html#id205" title="Thomas J Sargent. Interpreting economic time series. Journal of political Economy, 89(2):213–248, 1981.">Sargent, 1981</a>]</span>.</p>
+</div>
+<p>The following code verifies the CE principle numerically.</p>
+<p>We consider a simple scalar LQ problem:</p>
+<div class="math notranslate nohighlight">
+\[y_{t+1} = a\, y_t + b\, u_t + \sigma\, \varepsilon_{t+1}, \qquad r(y_t, u_t) = -(q\, y_t^2 + r\, u_t^2)\]</div>
+<p>and vary the noise standard deviation <span class="math notranslate nohighlight">\(\sigma\)</span> across a wide range.</p>
+<p>The CE theorem predicts that:</p>
+<ul class="simple">
+<li><p>the <strong>policy gain</strong> <span class="math notranslate nohighlight">\(F\)</span> (the coefficient in <span class="math notranslate nohighlight">\(u_t = -F y_t\)</span>) is independent of <span class="math notranslate nohighlight">\(\sigma\)</span>, and</p></li>
+<li><p>the <strong>value constant</strong> <span class="math notranslate nohighlight">\(d\)</span> (the additive term in <span class="math notranslate nohighlight">\(V(y) = -y^\top P y - d\)</span>) grows with <span class="math notranslate nohighlight">\(\sigma\)</span>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">,</span> <span class="n">b_coeff</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.0</span>
+<span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span>
+<span class="n">β</span> <span class="o">=</span> <span class="mf">0.95</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">a</span><span class="p">]])</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">b_coeff</span><span class="p">]])</span>
+<span class="n">R_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">q</span><span class="p">]])</span>          <span class="c1"># state cost</span>
+<span class="n">Q_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">r</span><span class="p">]])</span>          <span class="c1"># control cost</span>
+
+<span class="n">σ_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="n">F_vals</span><span class="p">,</span> <span class="n">d_vals</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">σ</span> <span class="ow">in</span> <span class="n">σ_vals</span><span class="p">:</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">σ</span><span class="p">]])</span>
+    <span class="n">lq</span> <span class="o">=</span> <span class="n">LQ</span><span class="p">(</span><span class="n">Q_mat</span><span class="p">,</span> <span class="n">R_mat</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">β</span><span class="p">)</span>
+    <span class="n">P</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">lq</span><span class="o">.</span><span class="n">stationary_values</span><span class="p">()</span>
+    <span class="n">F_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+    <span class="n">d_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">σ_vals</span><span class="p">,</span> <span class="n">F_vals</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;noise level $</span><span class="se">\\</span><span class="s1">sigma$&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;policy gain $F$&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">F_vals</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">σ_vals</span><span class="p">,</span> <span class="n">d_vals</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkorange&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;noise level $</span><span class="se">\\</span><span class="s1">sigma$&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;value constant $d$&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-default" id="fig-ce-policy-noise">
+<img alt="_images/1786699bdd26098040828f237f449c752a60a98343d024953fdbcb834ddd6193.png" src="_images/1786699bdd26098040828f237f449c752a60a98343d024953fdbcb834ddd6193.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 71.1 </span><span class="caption-text">CE: policy does not depend on noise</span><a class="headerlink" href="#fig-ce-policy-noise" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>As the plot confirms, <span class="math notranslate nohighlight">\(F\)</span> (the policy gain) is <em>flat</em> across all noise levels, while the value constant <span class="math notranslate nohighlight">\(d\)</span> increases monotonically with <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
+<p>This is the CE principle in action: uncertainty changes the value of the problem but not the optimal decision rule.</p>
+</section>
+</section>
+<section id="a-trouble-with-ad-hoc-expectations">
+<h2><a class="toc-backref" href="#id26" role="doc-backlink"><span class="section-number">71.7. </span>A trouble with ad hoc expectations</a><a class="headerlink" href="#a-trouble-with-ad-hoc-expectations" title="Link to this heading">#</a></h2>
+<p>Prior practice, exemplified by the adaptive expectations mechanisms of <span id="id16">Friedman [<a class="reference internal" href="zreferences.html#id193" title="M. Friedman. A Theory of the Consumption Function. Princeton University Press, 1956.">1956</a>]</span> and <span id="id17">Cagan [<a class="reference internal" href="zreferences.html#id117" title="Philip Cagan. The monetary dynamics of hyperinflation. In Milton Friedman, editor, Studies in the Quantity Theory of Money, pages 25–117. University of Chicago Press, Chicago, 1956.">1956</a>]</span>, directly postulated a particular form of <a class="reference internal" href="#equation-eq-forecast-rule-v3">(71.6)</a>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-adaptive-expectations-v3">
+<span class="eqno">(71.9)<a class="headerlink" href="#equation-eq-adaptive-expectations-v3" title="Link to this equation">#</a></span>\[\theta_t^e = \lambda \sum_{i=0}^{\infty} (1-\lambda)^i\, \theta_{t-i}, \qquad 0 &lt; \lambda &lt; 1,\]</div>
+<p>treating the coefficient <span class="math notranslate nohighlight">\(\lambda\)</span> as a free parameter to be estimated from data, with no reference to the underlying environment <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>The deficiency is not that <a class="reference internal" href="#equation-eq-adaptive-expectations-v3">(71.9)</a> is a distributed lag — linear forecasting rules are perfectly acceptable simplifications.</p>
+<p>The deficiency is that the <strong>coefficients</strong> of the distributed lag are left unrestricted by theory.</p>
+<p>The mapping <span class="math notranslate nohighlight">\(h_2 = S(f)\)</span> shows that optimal forecasting coefficients are <em>determined</em> by <span class="math notranslate nohighlight">\(f\)</span>: when <span class="math notranslate nohighlight">\(f\)</span> changes, <span class="math notranslate nohighlight">\(h_2\)</span> changes, and so does <span class="math notranslate nohighlight">\(h\)</span>.</p>
+<p>An estimated <span class="math notranslate nohighlight">\(\lambda\)</span> calibrated under <span class="math notranslate nohighlight">\(f_0\)</span> is therefore non-structural and will give incorrect predictions whenever <span class="math notranslate nohighlight">\(f\)</span> is altered.</p>
+<p>This is the econometric content of the critique delivered by <span id="id18">Muth [<a class="reference internal" href="zreferences.html#id151" title="John F Muth. Optimal properties of exponentially weighted forecasts. Journal of the american statistical association, 55(290):299–306, 1960.">1960</a>]</span>.</p>
+<p>Rational expectations equates the subjective distribution that agents use in forming <span class="math notranslate nohighlight">\(\tilde{z}_t\)</span> to the objective distribution <span class="math notranslate nohighlight">\(f\)</span> that actually generates the data, thereby closing the model and eliminating free parameters in <span class="math notranslate nohighlight">\(h_2\)</span>.</p>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id27" role="doc-backlink"><span class="section-number">71.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<div class="exercise admonition" id="theil1_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 71.1 </span></p>
+<section id="exercise-content">
+<p>Using the scalar LQ setup in the code cell above (with <span class="math notranslate nohighlight">\(a = 0.9\)</span>, <span class="math notranslate nohighlight">\(b = 1\)</span>,
+<span class="math notranslate nohighlight">\(q = r = 1\)</span>, <span class="math notranslate nohighlight">\(\beta = 0.95\)</span>), verify numerically that the value constant <span class="math notranslate nohighlight">\(d\)</span>
+satisfies <span class="math notranslate nohighlight">\(d \propto \sigma^2\)</span>.</p>
+<p><em>Hint:</em> From the CE analysis, the value constant satisfies
+<span class="math notranslate nohighlight">\(d = \tfrac{\beta}{1-\beta}\,\mathrm{tr}(C^\top P C)\)</span>,
+and since <span class="math notranslate nohighlight">\(C = \sigma\)</span> in the scalar case, this gives
+<span class="math notranslate nohighlight">\(d = \tfrac{\beta}{1-\beta}\, P\, \sigma^2\)</span>.</p>
+<p>Confirm that a plot of <span class="math notranslate nohighlight">\(d\)</span> against <span class="math notranslate nohighlight">\(\sigma^2\)</span> is linear and compute the theoretical
+slope <span class="math notranslate nohighlight">\(\tfrac{\beta}{1-\beta} P\)</span>.</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="theil_1-solution-1">
+
+<p class="admonition-title">Solution</p>
+<section id="solution-content">
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">σ_sq_vals</span> <span class="o">=</span> <span class="n">σ_vals</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">σ_sq_vals</span><span class="p">,</span> <span class="n">d_vals</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">sigma^2$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;value constant $d$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Value constant is linear in noise variance (CE principle)&#39;</span><span class="p">)</span>
+
+<span class="n">coeffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">σ_sq_vals</span><span class="p">,</span> <span class="n">d_vals</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">σ_sq_vals</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">polyval</span><span class="p">(</span><span class="n">coeffs</span><span class="p">,</span> <span class="n">σ_sq_vals</span><span class="p">),</span>
+        <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Linear fit: slope = </span><span class="si">{</span><span class="n">coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">P_scalar</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">LQ</span><span class="p">(</span><span class="n">Q_mat</span><span class="p">,</span> <span class="n">R_mat</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+                    <span class="n">beta</span><span class="o">=</span><span class="n">β</span><span class="p">)</span><span class="o">.</span><span class="n">stationary_values</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<span class="n">theoretical_slope</span> <span class="o">=</span> <span class="n">β</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span> <span class="o">*</span> <span class="n">P_scalar</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Empirical slope:    </span><span class="si">{</span><span class="n">coeffs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Theoretical slope β/(1-β)*P = </span><span class="si">{</span><span class="n">theoretical_slope</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/1f05219f5c1a2bc99502c6b0bb333e2ed6de358d49709d2b1742cc9a93929bd8.png" src="_images/1f05219f5c1a2bc99502c6b0bb333e2ed6de358d49709d2b1742cc9a93929bd8.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Empirical slope:    27.9740
+Theoretical slope β/(1-β)*P = 27.9740
+</pre></div>
+</div>
+</div>
+</div>
+<p>The slope is indeed <span class="math notranslate nohighlight">\(\tfrac{\beta}{1-\beta} P\)</span>, confirming the analytic formula.</p>
+<p>The value matrix <span class="math notranslate nohighlight">\(P\)</span> is determined entirely by preferences and technology, not by the noise level — a direct consequence of the certainty equivalence principle.</p>
+</section>
+</div>
+</section>
+<section id="concluding-remarks">
+<h2><a class="toc-backref" href="#id28" role="doc-backlink"><span class="section-number">71.9. </span>Concluding remarks</a><a class="headerlink" href="#concluding-remarks" title="Link to this heading">#</a></h2>
+<p>This sequel <a class="reference internal" href="theil_2.html"><span class="doc std std-doc">certainty equivalence and model uncertainty</span></a> describes how to extend the certainty equivalence principle to a linear-quadratic setting in which a decision maker distrusts the transition dynamics specified in his baseline model.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   1. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   2. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   3. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   4. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   5. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="var_dmd.html">
+   6. VARs and DMDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   7. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_matrix.html">
+   8. Elementary Probability with Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="stats_examples.html">
+   9. Some Probability Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   10. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   11. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   12. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   13. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   14. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   15. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   16. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="util_rand_resp.html">
+   17. Expected Utilities of Random Responses
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   18. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   19. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   20. Forecasting  an AR(1) Process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistics and Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="divergence_measures.html">
+   21. Statistical Divergence Measures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   22. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process_2.html">
+   23. Heterogeneous Beliefs and Financial Markets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_var.html">
+   24. Likelihood Processes For VAR Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   25. Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   26. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman_2.html">
+   27. A Bayesian Formulation of Friedman and Wald’s Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   28. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   29. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   30. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   31. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   32. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   33. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   34. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   35. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   36. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   37. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="chow_business_cycles.html">
+   38. The Acceleration Principle and the Nature of Business Cycles
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   39. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   40. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   41. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   42. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="measurement_models.html">
+   43. Two Models of Measurements and the Investment Accelerator
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   44. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   45. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_sep_markov.html">
+   46. Job Search III: Search with Separation and Markov Wages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   47. Job Search IV: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_persist_trans.html">
+   48. Job Search V: Persistent and Transitory Wage Shocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   49. Job Search VI: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   50. Job Search VII: On-the-Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   51. Job Search VIII: Search with Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reinforcement Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_q.html">
+   52. Inventory Management via Q-Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rs_inventory_q.html">
+   53. Risk-Sensitive Inventory Management via Q-Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   54. Job Search IX: Search with Q-Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Optimal Savings
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="os.html">
+   55. Optimal Savings I: Cake Eating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_numerical.html">
+   56. Optimal Savings II: Numerical Cake Eating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_stochastic.html">
+   57. Optimal Savings III: Stochastic Returns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_time_iter.html">
+   58. Optimal Savings IV: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_egm.html">
+   59. Optimal Savings V: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_egm_jax.html">
+   60. Optimal Savings VI: EGM with JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Household Problems
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_discrete.html">
+   61. The Income Fluctuation Problem I: Discretization and VFI
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_opi.html">
+   62. The Income Fluctuation Problem II: Optimistic Policy Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm.html">
+   63. The Income Fluctuation Problem III: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm_transient_shocks.html">
+   64. The Income Fluctuation Problem IV: Transient Income Shocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   65. The Income Fluctuation Problem V: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   66. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   67. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   68. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   69. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   70. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   71. Certainty Equivalence
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="theil_2.html">
+   72. Certainty Equivalence and Model Uncertainty
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   73. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Optimal Growth
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   74. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   75. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal.html">
+   76. Cass-Koopmans Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal_2.html">
+   77. Two-Country Model with Distorting Taxes
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   78. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="endogenous_lake.html">
+   79. Lake Model with an Endogenous Job Finding Rate
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   80. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   81. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   82. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   83. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   84. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak2.html">
+   85. Transitions in an Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   86. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_computation.html">
+   87. Two Computations to Fund Social Security
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   88. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hansen_singleton_1983.html">
+   89. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hansen_singleton_1982.html">
+   90. Estimating Euler Equations by Generalized Method of Moments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="doubts_or_variability.html">
+   91. Doubts or Variability?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   92. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   93. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="morris_learn.html">
+   94. Speculative Behavior with Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="affine_risk_prices.html">
+   95. Affine Models of Asset Prices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="risk_aversion_or_mistaken_beliefs.html">
+   96. Risk Aversion or Mistaken Beliefs?
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   97. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   98. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   99. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   100. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   101. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   102. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   103. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   104. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/theil_1.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/theil_1.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/theil_1.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/theil_1.ipynb" data-branch=main>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/theil_1.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "theil_1";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/theil_1.ipynb";
+                const branch = "main"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>
