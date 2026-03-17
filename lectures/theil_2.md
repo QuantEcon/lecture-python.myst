@@ -446,6 +446,7 @@ utility $U_{t+1}$.
 For a candidate quadratic continuation value
 $U_{t+1}^e = -y_{t+1}^\top \Omega\, y_{t+1} - \rho$, let
 $\hat{y}_{t+1} \equiv A y_t + B u_t$ denote the conditional mean of $y_{t+1}$.
+
 Evaluating $\mathcal{R}_t$ via the log-moment-generating function of the
 Gaussian distribution yields
 
