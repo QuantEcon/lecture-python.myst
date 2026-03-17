@@ -35,41 +35,42 @@ kernelspec:
 ## Overview
 
 
-This is a sequel to {doc}`this lecture on certainty equivalence <theil_1>` that described 
-established an important *certainty equivalence* (CE) property for linear-quadratic (LQ) dynamic programming
-problems.  
+This is a sequel to [this lecture on certainty equivalence](theil_1) that established an important *certainty equivalence* (CE) property for linear-quadratic (LQ) dynamic programming
+problems.
 
-The property justifies  a  two-step algorithm for computing optimal decision rules:
+The property justifies a two-step algorithm for computing optimal decision rules:
 
-1. **Optimize** under perfect foresight (treat future exogenous variables as known).
-2. **Forecast** — substitute optimal forecasts for the unknown future values.
+1. *Optimize* under perfect foresight (treat future exogenous variables as known).
+2. *Forecast* — substitute optimal forecasts for the unknown future values.
 
-This lecture extends the certainty equivalence property  in two directions motivated by
+This lecture extends the certainty equivalence property in two directions motivated by
 {cite}`hansen2004certainty`:
 
-- **Model uncertainty and robustness.** What happens when the decision maker does not
+- *Model uncertainty and robustness.* What happens when the decision maker does not
   trust his model?  A remarkable version of CE survives, but now the "forecasting" step
   uses a *distorted* probability distribution that the decision maker deliberately tilts
   against himself in order to achieve robustness.
 
-- **Risk-sensitive preferences.** A mathematically equivalent reformulation interprets
-  the same decision rules through Epstein–Zin recursive preferences.  The robustness
+- *Risk-sensitive preferences.* A mathematically equivalent reformulation interprets
+  the same decision rules through recursive risk-sensitive preferences.  
+  
+  The robustness
   parameter $\theta$ and the risk-sensitivity parameter $\sigma$ are linked by
   $\theta = -\sigma^{-1}$.
 
 We illustrate all three settings — ordinary CE, robust CE, and the permanent income
 application — with Python code using `quantecon`.
 
-### Model Features
+### Model features
 
 * Linear transition laws and quadratic objectives (LQ framework).
 * Ordinary CE: optimal policy independent of noise variance.
-* Robust CE: distorted forecasts replace model baseline model forecasts; policy funciton depends on  $\theta$.
+* Robust CE: distorted forecasts replace baseline model forecasts; policy function depends on $\theta$.
 * Permanent income application: Hall's martingale, precautionary savings under robustness,
   and observational equivalence between robustness and patience.
 
 
-This lecture draws on {cite}`hansen2004certainty` and  {cite}`HansenSargent2008`.
+This lecture draws on {cite}`hansen2004certainty` and {cite}`HansenSargent2008`.
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
@@ -81,202 +82,104 @@ tags: [hide-output]
 ```
 
 
-We begin with imports:
+We use the following imports:
 
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.linalg import solve
 from quantecon import LQ, RBLQ
 ```
 
----
 
-## Ordinary Certainty Equivalence
+## Recap: ordinary certainty equivalence
 
-### Notation and Setup
+The {ref}`companion lecture <certainty_equiv_theil1>` established the CE
+property in detail.  Here we collect only the elements needed for the
+robustness extension below.
 
-Let $y_t$ denote the state vector, partitioned as
-
-```{math}
-:label: eq:state_partition_o 
-y_t = \begin{bmatrix} x_t \\ z_t \end{bmatrix}
-```
-
-where $z_t$ is an *exogenous* component with transition law
+The state vector $y_t = \begin{bmatrix} x_t \\ z_t \end{bmatrix}$ has an
+exogenous component $z_t$ with transition law
 
 ```{math}
-:label: eq:z_transition_o 
+:label: eq:z_transition_o
 z_{t+1} = f(z_t,\, \epsilon_{t+1})
 ```
 
-and $\epsilon_{t+1}$ is an i.i.d. sequence with c.d.f. $\Phi$.
-
-The *endogenous* component $x_t$ obeys
+and an endogenous component $x_t$ obeying
 
 ```{math}
-:label: eq:x_transition_o 
-x_{t+1} = g(x_t,\, z_t,\, u_t)
+:label: eq:x_transition_o
+x_{t+1} = g(x_t,\, z_t,\, u_t).
 ```
 
-where $u_t$ is the decision maker's control.
+Under the LQ assumption (quadratic return $r(y,u) = -y^\top Qy - u^\top Ru$,
+linear $f$ and $g$, Gaussian shocks), the optimal decision rule $h$ decomposes
+as $u_t = h_1(x_t,\, h_2 \cdot z_t)$ where $h_1$ solves a nonstochastic
+control problem and $h_2$ solves an optimal forecasting problem.
 
-The decision maker maximises the discounted expected return
+The optimal value function is $V(y_0) = -y_0^\top P\, y_0 - p$ where,
+writing $z_{t+1} = f_1 z_t + f_2 \epsilon_{t+1}$:
 
-```{math}
-:label: eq:objective_o
-\mathbb{E}\!\left[\sum_{t=0}^{\infty} \beta^t\, r(y_t, u_t)\,\Big|\, y^0\right],
-\qquad \beta \in (0,1)
-```
+- $P$ is the fixed point of an operator $T(P; r, g, f_1)$ that does *not*
+  involve the volatility matrix $f_2$, so neither $P$ nor the decision rule
+  $h$ depends on the noise loadings.
 
-choosing a control $u_t$ measurable with respect to the history $y^t \equiv
-(x^t, z^t)$.  
+- The constant $p = \beta/(1-\beta)\,\mathrm{tr}(f_2^\top P f_2)$ grows with
+  volatility.
 
-The maximizer is a stationary decision rule
+Uncertainty lowers the value (larger $p$) but does not alter behaviour.
 
-```{math}
-:label: eq:stationary_rule_o 
-u_t = h(x_t, z_t).
-```
-
-Throughout, we maintain the following assumption from Simon and Theil:
-
-> **Assumption 1.**  The return function $r(y,u) = -y'Qy - u'Ru$ is quadratic
-> ($Q, R \succeq 0$); $f$ and $g$ are both linear; and $\Phi$ is multivariate
-> Gaussian with mean zero.
-
-### The Two-Step Algorithm
-
-Under Assumption 1, the stochastic optimisation problem separates into two independent
-steps.
-
-**Step 1 — Perfect-foresight control.**  Solve the *nonstochastic* problem of
-maximising {eq}`eq:objective_o` subject to {eq}`eq:x_transition_o`, treating the future sequence
-$\mathbf{z}_t = (z_t, z_{t+1}, \ldots)$ as known.  
-
-The solution is the
-*feedback-feedforward* rule
-
-```{math}
-:label: eq:ff_rule_o
-u_t = h_1(x_t,\, \mathbf{z}_t).
-```
-
-The function $h_1$ depends only on $r$ and $g$ (i.e., only on $Q$, $R$, and the
-matrices of the $x$-transition law).  It does **not** require knowledge of the
-noise process $f$ or $\Phi$.  Under Assumption 1, $h_1$ is a linear function.
-
-**Step 2 — Optimal forecasting.**  Using $f$ and $\Phi$ in {eq}`eq:z_transition_o`,
-iterate the linear law of motion forward:
-
-```{math}
-:label: eq:forecast_expansion_o
-\mathbf{z}_t = h_2 \cdot z_t\; +\; h_3 \cdot \epsilon_{t+1}^{\infty}.
-```
-
-Since the shocks are i.i.d. with mean zero,
-
-```{math}
-:label: eq:optimal_forecast_o   
-\mathbb{E}[\mathbf{z}_t \mid z^t] = h_2 \cdot z_t.
-```
-
-**The CE principle.**  Substitute {eq}`eq:optimal_forecast_o` for $\mathbf{z}_t$ in {eq}`eq:ff_rule_o` and impose $z^t = z_t$ to get the CE decision rule:
-
-```{math}
-:label: eq:ce_rule
-u_t = h_1(x_t,\; h_2 \cdot z_t) \;=\; h(x_t,\, z_t).
-```
-
-Each of $h_1$, $h_2$, and $h$ is a linear function.  The original stochastic
-problem thus *separates* into a nonstochastic control problem and a statistical
-filtering problem.
-
-### Value Function and Volatility
-
-The optimal value function takes the quadratic form
-
-```{math}
-:label: eq:value_fn_o
-V(y_0) = -y_0' P\, y_0 - p.
-```
-
-Two key observations follow from the separation:
-
-- The matrix $P$ is the fixed point of an operator $T(P; r, g, f_1)$ that involves
-  only the *persistence* matrix $f_1$ (from $z_{t+1} = f_1 z_t + f_2 \epsilon_{t+1}$),
-  **not** the volatility matrix $f_2$.  Therefore **$P$ does not depend on the noise
-  loadings**, and neither does the decision rule $h$.
-
-- The scalar constant $p$ equals $\beta/(1-\beta)\,\mathrm{tr}(f_2' P f_2)$, so
-  **$p$ grows with volatility**.
-
-An equivalent statement: the same decision rule $h$ emerges from the *nonstochastic*
-version of the problem obtained by setting all shocks to zero,
-$z_{t+1} = f_1 z_t$.  
-
-The presence of uncertainty *lowers the value* (larger $p$)
-but does not alter *behaviour*.
-
-### Python: Demonstrating Certainty Equivalence
-
-The following code verifies the CE principle numerically. 
-
-We consider a simple scalar LQ problem and vary the noise standard deviation $\sigma$.
+The following code sets up a scalar LQ problem and confirms that the policy
+gain $F$ is invariant to the noise level $\sigma$ while $d$ grows with it.
 
 ```{code-cell} ipython3
-# ── Simple 1-D scalar LQ problem ───────────────────────────────────────────
-# y_{t+1} = a·y_t + b·u_t + σ·ε_{t+1},   r = −(q·y² + r·u²)
-
+---
+mystnb:
+  figure:
+    caption: CE principle — policy vs. value
+    name: fig-ce-policy-value
+---
 a, b_coeff = 0.9, 1.0
-q_state, r_ctrl = 1.0, 1.0
-beta = 0.95
+q, r = 1.0, 1.0
+β = 0.95
 
 A = np.array([[a]])
 B = np.array([[b_coeff]])
-Q_mat = np.array([[q_state]])
-R_mat = np.array([[r_ctrl]])
+Q_mat = np.array([[q]])          # state cost
+R_mat = np.array([[r]])          # control cost
 
-sigma_vals = np.linspace(0.0, 3.0, 80)
+σ_vals = np.linspace(0.0, 3.0, 80)
 F_vals, d_vals = [], []
 
-for sigma in sigma_vals:
-    C = np.array([[sigma]])
-    lq = LQ(Q_mat, R_mat, A, B, C=C, beta=beta)
+for σ in σ_vals:
+    C = np.array([[σ]])
+    lq = LQ(R_mat, Q_mat, A, B, C=C, beta=β)
     P, F, d = lq.stationary_values()
     F_vals.append(float(F[0, 0]))
     d_vals.append(float(d))
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
-axes[0].plot(sigma_vals, F_vals, lw=2)
-axes[0].set_xlabel('Noise level $\\sigma$')
-axes[0].set_ylabel('Policy gain $F$')
-axes[0].set_title('CE: Policy does not depend on noise')
+axes[0].plot(σ_vals, F_vals, lw=2)
+axes[0].set_xlabel('noise level $\\sigma$')
+axes[0].set_ylabel('policy gain $F$')
 axes[0].set_ylim(0, 2 * max(F_vals) + 0.1)
 
-axes[1].plot(sigma_vals, d_vals, lw=2, color='darkorange')
-axes[1].set_xlabel('Noise level $\\sigma$')
-axes[1].set_ylabel('Value constant $d$')
-axes[1].set_title('Noise lowers value but not the decision rule')
+axes[1].plot(σ_vals, d_vals, lw=2, color='darkorange')
+axes[1].set_xlabel('noise level $\\sigma$')
+axes[1].set_ylabel('value constant $d$')
 
 plt.tight_layout()
 plt.show()
 ```
 
-As the plot confirms, $F$ (the policy gain) is **flat** across all noise levels,
-while the value constant $d$ increases monotonically with $\sigma$. 
 
-This is the CE principle in action.
+## Model uncertainty and robustness
 
----
-
-## Model Uncertainty and Robustness
-
-### Setup and the Multiplier Problem
+### Setup and the multiplier problem
 
 The decision maker in Simon and Theil's setting knows his model exactly — he has
-no doubt about the transition law {eq}`eq:z_transition`.  
+no doubt about the transition law {eq}`eq:z_transition_o`.
 
 Now suppose he suspects that the true
 data-generating process is
@@ -287,14 +190,14 @@ z_{t+1} = f(z_t,\; \epsilon_{t+1} + w_{t+1})
 ```
 
 where $w_{t+1} = \omega_t(x^t, z^t)$ is a misspecification term chosen by an
-adversarial "nature." 
+adversarial "nature."
 
 The decision maker believes his approximating model is a
 good approximation in the sense that
 
 ```{math}
 :label: eq:misspec_budget
-\hat{\mathbb{E}}\!\left[\sum_{t=0}^{\infty} \beta^t\, w_{t+1}' w_{t+1}
+\hat{\mathbb{E}}\!\left[\sum_{t=0}^{\infty} \beta^t\, w_{t+1}^\top w_{t+1}
       \,\Big|\, y_0\right] \leq \eta_0,
 ```
 
@@ -308,11 +211,11 @@ To construct a *robust* decision rule the decision maker solves the
 :label: eq:multiplier
 \min_{\{w_{t+1}\}}\, \max_{\{u_t\}}\;
 \hat{\mathbb{E}}\!\left[\sum_{t=0}^{\infty} \beta^t
-    \Bigl\{r(y_t, u_t) + \theta\beta\, w_{t+1}' w_{t+1}\Bigr\}\,
+    \Bigl\{r(y_t, u_t) + \theta\beta\, w_{t+1}^\top w_{t+1}\Bigr\}\,
     \Big|\, y_0\right]
 ```
 
-where $\theta > 0$ penalises large distortions. 
+where $\theta > 0$ penalises large distortions.
 
 A larger $\theta$ shrinks the
 feasible misspecification set; as $\theta \to \infty$ the problem reduces to
@@ -322,10 +225,11 @@ The Markov perfect equilibrium of {eq}`eq:multiplier` delivers a *robust* rule
 $u_t = h(x_t, z_t)$ together with a worst-case distortion process
 $w_{t+1} = W(x_t, z_t)$.
 
-### Stackelberg Timing and the Modified CE
+### Stackelberg timing and the modified CE
 
-The Markov perfect equilibrium *conceals* a form of CE.  To reveal it, Hansen and
-Sargent {cite}`HansenSargent2001` impose a **Stackelberg timing protocol**: at
+The Markov perfect equilibrium *conceals* a form of CE.
+
+To reveal it, {cite:t}`HansenSargent2001` impose a **Stackelberg timing protocol**: at
 time 0, the *minimising* player commits once and for all to a plan
 $\{w_{t+1}\}$, after which the *maximising* player chooses $u_t$ sequentially.
 
@@ -352,8 +256,8 @@ Y_{t+1} = M Y_t + N \epsilon_{t+1}, \qquad w_{t+1} = W(Y_t).
 ```
 
 The maximising player then faces an *ordinary* dynamic programming problem subject
-to his own dynamics {eq}`eq:x_transition`, the distorted $z$-law {eq}`eq:distorted_law`, and the exogenous
-process {eq}`eq:stackelberg_law`. 
+to his own dynamics {eq}`eq:x_transition_o`, the distorted $z$-law {eq}`eq:distorted_law`, and the exogenous
+process {eq}`eq:stackelberg_law`.
 
 His optimal rule takes the form
 
@@ -362,7 +266,7 @@ His optimal rule takes the form
 u_t = \tilde{H}(x_t, z_t, Y_t).
 ```
 
-{cite}`bacsar2008h` and {cite}`hansen2008robustness`  establish that at
+{cite:t}`bacsar2008h` and {cite:t}`hansen2008robustness` establish that at
 equilibrium (with "big $K$ = little $k$" imposed) this collapses to
 
 ```{math}
@@ -372,21 +276,23 @@ equilibrium (with "big $K$ = little $k$" imposed) this collapses to
 
 the *same* rule as the Markov perfect equilibrium of {eq}`eq:multiplier`.
 
-### Modified Separation Principle
+### Modified separation principle
 
-The Stackelberg timing permits an Euler-equation approach.  The two-step algorithm
-becomes:
+The Stackelberg timing permits an Euler-equation approach.
 
-**Step 1** (unchanged).  Solve the same nonstochastic control problem as before:
+The two-step algorithm becomes:
+
+The first step is unchanged: solve the same nonstochastic control problem as before,
+with $\mathbf{z}_t = (z_t, z_{t+1}, \ldots)$ treated as known, giving
 $u_t = h_1(x_t, \mathbf{z}_t)$.
 
-**Step 2** (modified).  Form forecasts using the *distorted* law of motion
+The second step is modified: form forecasts using the *distorted* law of motion
 {eq}`eq:stackelberg_law`.  By the linearity and Gaussianity of the system,
 
 ```{math}
 :label: eq:distorted_forecast
 \hat{\mathbb{E}}[\mathbf{z}_t \mid z^t, Y^t]
-    = \tilde{h}_2 \begin{bmatrix} z_t \\ Y_t \end{bmatrix}
+    = \hat{h}_2 \begin{bmatrix} z_t \\ Y_t \end{bmatrix}
 ```
 
 where $\hat{\mathbb{E}}$ uses the distorted model.
@@ -398,52 +304,53 @@ Substituting {eq}`eq:distorted_forecast` into $h_1$ and imposing $Y_t = y_t$ giv
 u_t = h_1\!\left(x_t,\; \hat{h}_2 \cdot y_t\right) = h(x_t, z_t).
 ```
 
-This is the modified CE: **step 1 is identical to the non-robust case**; only
+This is the modified CE: *step 1 is identical to the non-robust case*; only
 step 2 changes, using distorted rather than rational forecasts.
 
-### Python: How Robustness Changes the Policy
+In contrast to ordinary CE, the robust policy *does* change as $\theta$ varies.
 
-In contrast to ordinary CE, the robust policy **does** change as $\theta$ varies.
 As $\theta \to \infty$ (no robustness) the robust policy converges to the standard LQ
 policy.
 
 ```{code-cell} ipython3
-# ── Robust LQ: same 1-D problem, varying θ ──────────────────────────────────
-sigma_fixed = 1.0
-C_fixed = np.array([[sigma_fixed]])
+---
+mystnb:
+  figure:
+    caption: Robust policy varies with θ
+    name: fig-robust-policy-theta
+---
+σ_fixed = 1.0
+C_fixed = np.array([[σ_fixed]])
 
-# Standard (non-robust) benchmark
-lq_std = LQ(Q_mat, R_mat, A, B, C=C_fixed, beta=beta)
+lq_std = LQ(R_mat, Q_mat, A, B, C=C_fixed, beta=β)
 P_std, F_std_arr, d_std = lq_std.stationary_values()
 F_standard = float(F_std_arr[0, 0])
 P_standard = float(P_std[0, 0])
 
-theta_vals = np.linspace(2.0, 30.0, 120)   # theta must exceed 1/(2P) ≈ 0.4; use ≥ 2
+θ_vals = np.linspace(2.0, 30.0, 120)   # restrict attention to a numerically stable range
 F_rob_vals, P_rob_vals = [], []
 
-for theta in theta_vals:
-    rblq = RBLQ(Q_mat, R_mat, A, B, C_fixed, beta, theta)
+for θ in θ_vals:
+    rblq = RBLQ(R_mat, Q_mat, A, B, C_fixed, β, θ)
     F_rob, K_rob, P_rob = rblq.robust_rule()
     F_rob_vals.append(float(F_rob[0, 0]))
     P_rob_vals.append(float(P_rob[0, 0]))
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
-axes[0].plot(theta_vals, F_rob_vals, lw=2, label='Robust $F(\\theta)$')
-axes[0].axhline(F_standard, color='r', linestyle='--', lw=1.5,
+axes[0].plot(θ_vals, F_rob_vals, lw=2, label='Robust $F(\\theta)$')
+axes[0].axhline(F_standard, color='r', linestyle='--', lw=2,
                 label=f'Standard LQ ($F = {F_standard:.3f}$)')
-axes[0].set_xlabel('Robustness parameter $\\theta$')
-axes[0].set_ylabel('Policy gain $F$')
-axes[0].set_title('Robustness changes the policy')
+axes[0].set_xlabel('robustness parameter $\\theta$')
+axes[0].set_ylabel('policy gain $F$')
 axes[0].legend()
 
-axes[1].plot(theta_vals, P_rob_vals, lw=2, color='purple',
+axes[1].plot(θ_vals, P_rob_vals, lw=2, color='purple',
              label='Robust $P(\\theta)$')
-axes[1].axhline(P_standard, color='r', linestyle='--', lw=1.5,
+axes[1].axhline(P_standard, color='r', linestyle='--', lw=2,
                 label=f'Standard LQ ($P = {P_standard:.3f}$)')
-axes[1].set_xlabel('Robustness parameter $\\theta$')
-axes[1].set_ylabel('Value matrix $P$')
-axes[1].set_title('Robustness also changes the value matrix')
+axes[1].set_xlabel('robustness parameter $\\theta$')
+axes[1].set_ylabel('value matrix $P$')
 axes[1].legend()
 
 plt.tight_layout()
@@ -454,22 +361,22 @@ Observe that for small $\theta$ (strong preference for robustness) both $F$ and
 $P$ deviate substantially from their non-robust counterparts, converging to the
 standard values as $\theta \to \infty$.
 
-This contrasts sharply with ordinary CE: under robustness, **both the policy gain
-and the value matrix depend on the noise loadings** (through $\theta$ and $C$).
+This contrasts sharply with ordinary CE: under robustness, *both the policy gain
+and the value matrix depend on the robustness parameter $\theta$ and the
+noise-loading matrix $C$*.
 
----
 
-## Value Function Under Robustness
+## Value function under robustness
 
 Under a preference for robustness, the optimised value of {eq}`eq:multiplier` is again
 quadratic,
 
 ```{math}
 :label: eq:robust_value
-V(y_0) = -y_0' P\, y_0 - p,
+V(y_0) = -y_0^\top P\, y_0 - p,
 ```
 
-but now *both* $P$ **and** $p$ depend on the volatility parameter $f_2$.
+but now *both* $P$ *and* $p$ depend on the volatility parameter $f_2$.
 
 Specifically, $P$ is the fixed point of the composite operator $T \circ \mathcal{D}$
 where $T$ is the same Bellman operator as in the non-robust case and
@@ -489,22 +396,23 @@ p = p(P;\, f_2,\, \beta,\, \theta).
 
 Despite $P$ now depending on $f_2$, a form of CE still prevails: the same
 decision rule {eq}`eq:robust_ce_rule` also emerges from the *nonstochastic* game that
-maximises {eq}`eq:multiplier` subject to {eq}`eq:x_transition` and
+maximises {eq}`eq:multiplier` subject to {eq}`eq:x_transition_o` and
 
 ```{math}
 :label: eq:nonstoch_z
 z_{t+1} = f(z_t,\, w_{t+1}),
 ```
 
-i.e., setting $\epsilon_{t+1} \equiv 0$.  The presence of randomness lowers the
-value (the constant $p$) but does not change the decision rule.
+i.e., setting $\epsilon_{t+1} \equiv 0$.
 
----
+The presence of randomness lowers the value (the constant $p$) but does not change the decision rule.
 
-## Risk-Sensitive Preferences
 
-Building on Jacobson (1973) and Whittle (1990), Hansen and Sargent (1995) showed that
+## Risk-sensitive preferences
+
+Building on {cite:t}`Jacobson_73` and {cite:t}`Whittle_1990`, {cite:t}`hansen2004certainty` showed that
 the same decision rules can be reinterpreted through **risk-sensitive preferences**.
+
 Suppose the decision maker *fully trusts* his model
 
 ```{math}
@@ -529,35 +437,40 @@ where the *risk-adjusted* continuation operator is
 ```
 
 When $\sigma = 0$, L'Hôpital's rule recovers the standard expectation operator.
+
 When $\sigma < 0$, $\mathcal{R}_t$ penalises right-tail risk in the continuation
 utility $U_{t+1}$.
 
 For a candidate quadratic continuation value
-$U_{t+1}^e = -y_{t+1}' \Omega\, y_{t+1} - \rho$, evaluating $\mathcal{R}_t$
-via the log-moment-generating function of the Gaussian distribution yields
+$U_{t+1}^e = -y_{t+1}^\top \Omega\, y_{t+1} - \rho$, let
+$\hat{y}_{t+1} \equiv A y_t + B u_t$ denote the conditional mean of $y_{t+1}$.
+Evaluating $\mathcal{R}_t$ via the log-moment-generating function of the
+Gaussian distribution yields
 
 ```{math}
 :label: eq:rs_eval
 \mathcal{R}_t U_{t+1}^e
-    = -y_t' \hat{A}_t' \mathcal{D}(\Omega)\, \hat{A}_t\, y_t - \hat{\rho}
+    = -\hat{y}_{t+1}^\top \mathcal{D}(\Omega)\, \hat{y}_{t+1} - \hat{\rho}
 ```
 
-where $\mathcal{D}$ is the **same** distortion operator as in {eq}`eq:distortion_op`
-with $\theta = -\sigma^{-1}$.  Consequently, the risk-sensitive Bellman equation
+where $\mathcal{D}$ is the *same* distortion operator as in {eq}`eq:distortion_op`
+with $\theta = -\sigma^{-1}$, and $\hat{\rho}$ is the corresponding scalar
+adjustment term.
+
+Consequently, the risk-sensitive Bellman equation
 has the *same* fixed point $P$ as the robust control problem, and therefore the
-**same decision rule** $u_t = -F y_t$.
+*same decision rule* $u_t = -F y_t$.
 
 > **Key equivalence:**  robust control with parameter $\theta$ and risk-sensitive
 > control with parameter $\sigma = -\theta^{-1}$ produce identical decision rules.
 
----
 
-## Application: Permanent Income Model
+## Application: permanent income model
 
 We now illustrate all of the above in a concrete linear-quadratic permanent income
 model.
 
-### Model Setup
+### Model setup
 
 A consumer receives an exogenous endowment process $\{z_t\}$ and allocates it
 between consumption $c_t$ and savings $x_t$ to maximise
@@ -567,10 +480,10 @@ between consumption $c_t$ and savings $x_t$ to maximise
 -\mathbb{E}_0 \sum_{t=0}^{\infty} \beta^t (c_t - b)^2, \qquad \beta \in (0,1)
 ```
 
-where $b$ is a bliss level of consumption. 
+where $b$ is a bliss level of consumption.
 
-Defining the *marginal utility
-of consumption* $\mu_{ct} \equiv b - c_t$ (the control), the budget constraint
+Defining the **marginal utility
+of consumption** $\mu_{ct} \equiv b - c_t$ (the control), the budget constraint
 and endowment process are
 
 ```{math}
@@ -586,7 +499,9 @@ z_{t+1} = \mu_d(1-\rho) + \rho\, z_t + c_d(\epsilon_{t+1} + w_{t+1})
 where $R > 1$ is the gross return on savings, $|\rho| < 1$, and $w_{t+1}$
 is an optional shock-mean distortion representing model misspecification.
 
-Setting $w_{t+1} \equiv 0$ and taking $Q = 0$ (return depends only on the
+After absorbing the constants $-b$ and $\mu_d(1-\rho)$ by augmenting the state
+vector, or equivalently by working with deviations from steady state, setting
+$w_{t+1} \equiv 0$ and taking $Q = 0$ (return depends only on the
 control $\mu_{ct}$) and $R_{\text{ctrl}} = 1$ puts this in the standard LQ form
 
 ```{math}
@@ -600,37 +515,32 @@ B = \begin{bmatrix} 1 \\ 0 \end{bmatrix},
 C = \begin{bmatrix} 0 \\ c_d \end{bmatrix}.
 ```
 
-We calibrate to parameters estimated by Hansen, Sargent, and Tallarini (1999) {cite}`HST_1999`
+In the numerical code below we add a negligible `1e-8 I` regularisation to the
+state-cost matrix to keep the Riccati computation well conditioned in Hall's
+unit-root case $\beta R = 1$.
+
+We calibrate to parameters estimated by {cite:t}`HST_1999`
 from post-WWII U.S. data:
 
 ```{code-cell} ipython3
-# ── HST calibration ─────────────────────────────────────────────────────────
-beta_hat = 0.9971
-R_rate   = 1.0 / beta_hat   # so that β·R = 1  (Hall's case)
-rho      = 0.9992
-c_d      = 5.5819
-sigma_rs = -2e-7             # risk-sensitivity / robustness parameter σ̂ < 0
-theta_pi = -1.0 / sigma_rs  # robustness parameter θ = −1/σ̂ = 5×10⁶
+β_hat = 0.9971
+R_rate = 1.0 / β_hat          # β*R = 1 (Hall's case)
+ρ     = 0.9992
+c_d   = 5.5819
+σ_rs  = -2e-7                  # σ_hat < 0
+θ_pi  = -1.0 / σ_rs           # θ = -1/σ_hat
 
-# LQ matrices (state = [x_t, z_t], control = μ_ct = b − c_t)
 A_pi = np.array([[R_rate, 1.0],
-                 [0.0,    rho]])
+                 [0.0,    ρ]])
 B_pi = np.array([[1.0],
                  [0.0]])
 C_pi = np.array([[0.0],
                  [c_d]])
-# Return = −μ_ct²: no state penalty, unit control penalty.
-# A tiny regulariser is added to Q to make the Riccati numerically
-# well-conditioned when β·R = 1 (Hall's unit-root case).
-Q_pi = 1e-8 * np.eye(2)   # economically negligible regularisation
+Q_pi = 1e-8 * np.eye(2)       # regularise for β*R = 1
 R_pi = np.array([[1.0]])
-
-print("A ="); print(A_pi)
-print("B ="); print(B_pi)
-print("C ="); print(C_pi)
 ```
 
-### Without Robustness: Hall's Martingale
+### Without robustness: Hall's martingale
 
 Setting $\sigma = 0$ (no preference for robustness), the consumer's Euler
 equation is
@@ -645,7 +555,9 @@ $\mathbb{E}_t[\mu_{c,t+1}] = \mu_{ct}$, i.e., the **marginal utility of
 consumption is a martingale** — equivalently, consumption follows a random walk.
 
 The optimal policy is $\mu_{ct} = -F y_t$ where, from the solved-forward
-Euler equation, $F = [(R-1),\ (R-1)/(R - \rho)]$.  The resulting closed-loop
+Euler equation, $F = [(R-1),\ (R-1)/(R - \rho)]$.
+
+The resulting closed-loop
 projection onto the one-dimensional direction of $\mu_{ct}$ gives the scalar
 AR(1) representation
 
@@ -655,29 +567,22 @@ AR(1) representation
 ```
 
 ```{code-cell} ipython3
-# ── Standard consumer: analytical Euler equation (Hall's βR = 1) ─────────────
-# Optimal policy from permanent income theory (solved-forward Euler equation):
-#   μ_ct = −(R−1)·x_t − (R−1)/(R−ρ)·z_t
-F_pi    = np.array([[(R_rate - 1.0), (R_rate - 1.0) / (R_rate - rho)]])
+F_pi     = np.array([[(R_rate - 1.0), (R_rate - 1.0) / (R_rate - ρ)]])
 A_cl_std = A_pi - B_pi @ F_pi
 
-# AR(1) law of motion for μ_c = −F·y under the optimal policy:
-#   φ_std = 1/(βR) = 1  (Hall's martingale, βR = 1)
-#   ν_std = (R−1)·c_d / (R − ρ)   (permanent income innovation formula)
-phi_std = 1.0 / (beta_hat * R_rate)   # = 1.0 exactly when βR = 1
-nu_std  = (R_rate - 1.0) * c_d / (R_rate - rho)
+φ_std = 1.0 / (β_hat * R_rate)
+ν_std = (R_rate - 1.0) * c_d / (R_rate - ρ)
 
-print(f"Standard consumer (Hall's βR = 1):")
-print(f"  Policy F = {F_pi}")
-print(f"  AR(1) coeff  φ = {phi_std:.6f}  (= 1, martingale)")
-print(f"  Innov. scale ν = {nu_std:.4f}  (paper reports ≈ 4.3825)")
+print(f"φ = {φ_std:.6f}, ν = {ν_std:.4f}")
 ```
 
-### With Robustness: Precautionary Savings
+### With robustness: precautionary savings
 
 Under a preference for robustness ($\sigma < 0$, $\theta < \infty$), the consumer
 uses distorted forecasts $\hat{\mathbb{E}}_t[\cdot]$ evaluated under the
-worst-case model.  The consumption rule takes the certainty-equivalent form
+worst-case model.
+
+The consumption rule takes the certainty-equivalent form
 
 ```{math}
 :label: eq:robust_consumption
@@ -686,8 +591,10 @@ worst-case model.  The consumption rule takes the certainty-equivalent form
         \sum_{j=0}^{\infty} R^{-j}(z_{t+j} - b)\right]\right)
 ```
 
-where $h_1$ — the first step of the CE algorithm — is **identical** to the
-non-robust case.  Only the expectations operator changes.
+where $h_1$ — the first step of the CE algorithm — is *identical* to the
+non-robust case.
+
+Only the expectations operator changes.
 
 The resulting AR(1) dynamics for $\mu_{ct}$ become:
 
@@ -705,73 +612,70 @@ where $\tilde{\beta} = \tilde{\beta}(\sigma)$.
 
 The innovation scale $\tilde{\nu}$
 follows from the robust permanent income formula with the distorted persistence;
-{cite}`HST_1999` report $\tilde{\nu} \approx 8.0473$ for their
+{cite:t}`HST_1999` report $\tilde{\nu} \approx 8.0473$ for their
 calibration.
 
 ```{code-cell} ipython3
-# ── Robust consumer: use observational equivalence to get φ̃ analytically ─────
-def beta_tilde(sigma, beta_hat_val, alpha_sq_val):
-    """Observational-equivalence locus: β̃(σ) that matches robust (σ,β̂) consumption."""
-    denom = 2.0 * (1.0 + sigma * alpha_sq_val)
-    numer = beta_hat_val * (1.0 + beta_hat_val)
-    disc  = 1.0 - 4.0 * beta_hat_val * (1.0 + sigma * alpha_sq_val) / \
-            (1.0 + beta_hat_val) ** 2
+def beta_tilde(σ, β_hat_val, α_sq_val):
+    """Observational-equivalence locus: β_tilde(σ)."""
+    denom = 2.0 * (1.0 + σ * α_sq_val)
+    numer = β_hat_val * (1.0 + β_hat_val)
+    disc  = 1.0 - 4.0 * β_hat_val * (1.0 + σ * α_sq_val) / \
+            (1.0 + β_hat_val) ** 2
     return (numer / denom) * (1.0 + np.sqrt(np.maximum(disc, 0.0)))
 
-alpha_sq = nu_std ** 2          # α² = ν² (squared innovation loading)
-bt       = beta_tilde(sigma_rs, beta_hat, alpha_sq)
-phi_rob  = 1.0 / (bt * R_rate)  # φ̃ = 1/(β̃R) < 1  (mean-reverting!)
-nu_rob   = 8.0473               # from HST (1999) via Hansen–Sargent (2001)
+ν_rob = 8.0473
+α_sq  = ν_rob ** 2
+bt    = beta_tilde(σ_rs, β_hat, α_sq)
+φ_rob = 1.0 / (bt * R_rate)
 
-print(f"Robust consumer (σ = {sigma_rs}):")
-print(f"  Equiv. discount factor  β̃ = {bt:.5f}  (paper: ≈ 0.9995)")
-print(f"  AR(1) coeff  φ̃ = {phi_rob:.4f}  (paper: ≈ 0.9976 → mean-reverting)")
-print(f"  Innov. scale ν̃ = {nu_rob:.4f}  (paper: ≈ 8.0473)")
+print(f"β_tilde = {bt:.5f}, φ_tilde = {φ_rob:.4f}, ν_tilde = {ν_rob:.4f}")
 ```
 
 ```{code-cell} ipython3
-# ── Simulate and compare: standard vs robust consumption paths ────────────────
+---
+mystnb:
+  figure:
+    caption: Standard vs robust consumption paths
+    name: fig-std-vs-robust-paths
+---
 np.random.seed(42)
 T_sim = 100
 
-def simulate_ar1(phi, nu, T, mu0=0.0):
-    """Simulate μ_{c,t} from AR(1): μ_{t+1} = φ·μ_t + ν·ε_{t+1}."""
-    path = np.empty(T)
+def simulate_ar1(φ, ν, shocks, mu0=0.0):
+    path = np.empty(len(shocks) + 1)
     path[0] = mu0
-    for t in range(1, T):
-        path[t] = phi * path[t-1] + nu * np.random.randn()
+    for t, ε in enumerate(shocks, start=1):
+        path[t] = φ * path[t-1] + ν * ε
     return path
 
-# Initialise at a value away from zero to illustrate drift / mean-reversion
+shock_path = np.random.randn(T_sim - 1)
 mu0_init = 10.0
-mu_std_path = simulate_ar1(phi_std, nu_std, T_sim, mu0=mu0_init)
-mu_rob_path = simulate_ar1(phi_rob, nu_rob, T_sim, mu0=mu0_init)
+mu_std_path = simulate_ar1(φ_std, ν_std, shock_path, mu0=mu0_init)
+mu_rob_path = simulate_ar1(φ_rob, ν_rob, shock_path, mu0=mu0_init)
 
 fig, axes = plt.subplots(2, 1, figsize=(11, 6), sharex=True)
 t_grid = np.arange(T_sim)
 
-axes[0].plot(t_grid, mu_std_path, lw=1.8, label=f'$\\mu_{{ct}}$ (standard, $\\varphi={phi_std:.4f}$)')
+axes[0].plot(t_grid, mu_std_path, lw=2, label=f'$\\mu_{{ct}}$ (standard, $\\varphi={φ_std:.4f}$)')
 axes[0].axhline(0, color='k', lw=0.8, linestyle='--')
 axes[0].set_ylabel('$\\mu_{ct}$')
-axes[0].set_title('Standard consumer: random walk ($\\varphi = 1$, no mean-reversion)')
 axes[0].legend(loc='upper right')
 
-axes[1].plot(t_grid, mu_rob_path, lw=1.8, color='darkorange',
-             label=f'$\\mu_{{ct}}$ (robust, $\\tilde{{\\varphi}}={phi_rob:.4f}$)')
+axes[1].plot(t_grid, mu_rob_path, lw=2, color='darkorange',
+             label=f'$\\mu_{{ct}}$ (robust, $\\tilde{{\\varphi}}={φ_rob:.4f}$)')
 axes[1].axhline(0, color='k', lw=0.8, linestyle='--')
-axes[1].set_xlabel('Period $t$')
+axes[1].set_xlabel('period $t$')
 axes[1].set_ylabel('$\\mu_{ct}$')
-axes[1].set_title(
-    f'Robust consumer: mean-reverting ($\\tilde{{\\varphi}} < 1$) → precautionary saving')
 axes[1].legend(loc='upper right')
 
 plt.tight_layout()
 plt.show()
 ```
 
-### Observational Equivalence: Robustness Acts Like Patience
+### Observational equivalence: robustness acts like patience
 
-A key insight of {cite}`HansenSargent2001` is that, in the permanent income model,
+A key insight of {cite:t}`HansenSargent2001` is that, in the permanent income model,
 a preference for robustness ($\sigma < 0$) is *observationally equivalent* to an
 increase in the discount factor from $\hat{\beta}$ to a larger value
 $\tilde{\beta}(\sigma)$, with $\sigma$ set back to zero.
@@ -785,43 +689,45 @@ The equivalence locus is given by
     \left[1 + \sqrt{1 - \frac{4\hat{\beta}(1+\sigma\alpha^2)}{(1+\hat{\beta})^2}}\right]
 ```
 
-where $\alpha^2 = \nu^2$ is the squared innovation loading on $\mu_{ct}$ computed
-from the standard ($\sigma = 0$) problem.
+where $\alpha^2 = \tilde{\nu}^2$ is the squared innovation loading in the
+robust AR(1) representation {eq}`eq:robust_ar1`.
 
 ```{code-cell} ipython3
-# ── Observational-equivalence locus plot ─────────────────────────────────────
-sigma_range = np.linspace(-3e-7, 0.0, 200)
-bt_vals     = [beta_tilde(s, beta_hat, alpha_sq) for s in sigma_range]
-bt_check    = beta_tilde(sigma_rs, beta_hat, alpha_sq)
+---
+mystnb:
+  figure:
+    caption: Observational equivalence locus
+    name: fig-oe-locus
+---
+σ_range = np.linspace(-3e-7, 0.0, 200)
+bt_vals = [beta_tilde(s, β_hat, α_sq) for s in σ_range]
+bt_check = beta_tilde(σ_rs, β_hat, α_sq)
 
 fig, ax = plt.subplots(figsize=(9, 5))
-ax.plot(-sigma_range * 1e7, bt_vals, lw=2, color='steelblue',
+ax.plot(-σ_range * 1e7, bt_vals, lw=2, color='steelblue',
         label='$\\tilde{\\beta}(\\sigma)$')
-ax.axhline(beta_hat, color='r', linestyle='--', lw=1.5,
-           label=f'$\\hat{{\\beta}} = {beta_hat}$')
-ax.scatter([-sigma_rs * 1e7], [bt_check], zorder=5, color='darkorange', s=80,
+ax.axhline(β_hat, color='r', linestyle='--', lw=2,
+           label=f'$\\hat{{\\beta}} = {β_hat}$')
+ax.scatter([-σ_rs * 1e7], [bt_check], zorder=5, color='darkorange', s=80,
            label=f'$(\\hat{{\\sigma}},\\, \\tilde{{\\beta}}) '
-                 f'= ({sigma_rs:.0e},\\, {bt_check:.4f})$')
-ax.set_xlabel('Risk sensitivity $-\\sigma$ (×$10^{-7}$)')
-ax.set_ylabel('Observationally equivalent discount factor $\\tilde{\\beta}$')
-ax.set_title('Robustness acts like increased patience in permanent income model')
+                 f'= ({σ_rs:.0e},\\, {bt_check:.4f})$')
+ax.set_xlabel('risk sensitivity $-\\sigma$ ($\\times 10^{-7}$)')
+ax.set_ylabel('observationally equivalent discount factor $\\tilde{\\beta}$')
 ax.legend()
 plt.tight_layout()
 plt.show()
-print(f"β̃(σ̂ = {sigma_rs}) = {bt_check:.5f}  (paper reports ≈ 0.9995) ✓")
 ```
 
-The plot confirms the paper's key finding: **activating a preference for
+The plot confirms the paper's key finding: *activating a preference for
 robustness is observationally equivalent — for consumption and saving behaviour
-— to increasing the discount factor**. 
+— to increasing the discount factor*.
 
-However, {cite}`HST_1999` show that  the two
-parametrisations do **not** imply the same asset prices.
+However, {cite:t}`HST_1999` show that the two
+parametrisations do *not* imply the same asset prices.
 
-* this happens because the  model in which the representative agent distrusts his model  generates different state-prices through the
+This happens because a preference for robustness generates different state-prices through the
 $\mathcal{D}(P)$ matrix that enters the stochastic discount factor.
 
----
 
 ## Summary
 
@@ -835,72 +741,16 @@ The table below condenses the main results:
 
 In all three cases, the decision maker can be described as following a
 two-step procedure: first solve a nonstochastic control problem, then form
-beliefs.  
+beliefs.
 
 The difference is in which beliefs are formed in the second step.
 
----
 
 ## Exercises
 
 ```{exercise-start}
-:label: ce_ex1
-```
-
-**CE and noise variance.**
-
-Using the scalar LQ setup in the first code cell (with $a = 0.9$, $b = 1$,
-$q = r = 1$, $\beta = 0.95$), verify numerically that the value constant $d$
-satisfies $d \propto \sigma^2$ for large $\sigma$.
-
-*Hint:* From the CE analysis, $p = \tfrac{\beta}{1-\beta}\,\mathrm{tr}(C' P C)$
-and $C = \sigma$ in the scalar case, so $p = \tfrac{\beta}{1-\beta} P\, \sigma^2$.
-Confirm that a plot of $d$ against $\sigma^2$ is linear.
-
-```{exercise-end}
-```
-
-```{solution-start} ce_ex1
-:class: dropdown
-```
-
-```{code-cell} ipython3
-# Reuse F_vals and d_vals already computed above
-sigma_sq_vals = sigma_vals ** 2
-
-fig, ax = plt.subplots(figsize=(8, 5))
-ax.plot(sigma_sq_vals, d_vals, lw=2)
-ax.set_xlabel('$\\sigma^2$')
-ax.set_ylabel('Value constant $d$')
-ax.set_title('Value constant is linear in noise variance (CE principle)')
-
-# Overlay linear fit
-coeffs = np.polyfit(sigma_sq_vals, d_vals, 1)
-ax.plot(sigma_sq_vals, np.polyval(coeffs, sigma_sq_vals),
-        'r--', lw=1.5, label=f'Linear fit: slope = {coeffs[0]:.3f}')
-ax.legend()
-plt.tight_layout()
-plt.show()
-
-# Theoretical slope: β/(1−β) × P
-P_scalar = float(LQ(Q_mat, R_mat, A, B, C=np.zeros((1, 1)),
-                    beta=beta).stationary_values()[0])
-theoretical_slope = beta / (1 - beta) * P_scalar
-print(f"Empirical slope:    {coeffs[0]:.4f}")
-print(f"Theoretical slope β/(1−β)·P = {theoretical_slope:.4f}")
-```
-
-The slope is indeed $\tfrac{\beta}{1-\beta} P \approx 19 \times P$, confirming the
-analytic formula.
-
-```{solution-end}
-```
-
-```{exercise-start}
 :label: ce_ex2
 ```
-
-**Convergence of robust policy to standard policy.**
 
 Show numerically that as $\theta \to \infty$ the robust policy $F(\theta)$ converges
 to the standard LQ policy $F_{\text{std}}$ and that the rate of convergence is of
@@ -915,24 +765,23 @@ log–log scale.
 ```
 
 ```{code-cell} ipython3
-theta_large = np.logspace(0.5, 3.0, 100)   # θ from ~3 to 1000 (must exceed criticality)
-gap_vals    = []
+θ_large = np.logspace(0.5, 3.0, 100)
+gap_vals = []
 
-for theta in theta_large:
-    rblq = RBLQ(Q_mat, R_mat, A, B, C_fixed, beta, theta)
+for θ in θ_large:
+    rblq = RBLQ(R_mat, Q_mat, A, B, C_fixed, β, θ)
     F_r, _, _ = rblq.robust_rule()
     gap_vals.append(abs(float(F_r[0, 0]) - F_standard))
 
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.loglog(1.0 / theta_large, gap_vals, lw=2)
+ax.loglog(1.0 / θ_large, gap_vals, lw=2)
 ax.set_xlabel('$1/\\theta$')
 ax.set_ylabel('$|F(\\theta) - F_{\\mathrm{std}}|$')
 ax.set_title('Robust policy converges to standard LQ at rate $1/\\theta$')
 
-# Overlay slope-1 reference line
-x_ref = 1.0 / theta_large
+x_ref = 1.0 / θ_large
 ax.loglog(x_ref, x_ref * gap_vals[0] / x_ref[0],
-          'r--', lw=1.5, label='Slope 1 reference')
+          'r--', lw=2, label='Slope 1 reference')
 ax.legend()
 plt.tight_layout()
 plt.show()
@@ -948,13 +797,17 @@ convergence.
 :label: ce_ex3
 ```
 
-**Observational equivalence verification.**
+Pick three values $\sigma_i < 0$ and verify numerically that the robust
+permanent income model with $(\sigma_i, \hat{\beta})$ produces the same
+policy matrix $F$ as a suitably chosen non-robust model with
+$(0, \tilde{\beta}_i)$.
 
-Choose three pairs $(\sigma_i, \beta_i)$ on the observational equivalence locus
-{eq}`eq:oe_locus` (i.e., set $\sigma_i < 0$ and compute the matching $\tilde{\beta}_i$).
-For each pair, solve the corresponding LQ problem and verify that the AR(1)
-coefficient $\varphi$ for $\mu_{ct}$ is the same across all three pairs (to
-numerical precision), while the $P$ matrices differ.
+To find $\tilde{\beta}_i$, extract the AR(1) coefficient $\varphi_i$ for
+$\mu_{ct}$ from the robust closed-loop dynamics and set
+$\tilde{\beta}_i = 1/(\varphi_i R)$.
+
+Show that $\tilde{\beta}_i > \hat{\beta}$ in every case, confirming that
+robustness acts like increased patience.
 
 ```{exercise-end}
 ```
@@ -963,36 +816,57 @@ numerical precision), while the $P$ matrices differ.
 :class: dropdown
 ```
 
+For each $\sigma_i$ we solve the robust problem with `RBLQ` and extract the
+AR(1) coefficient $\varphi$ for $\mu_{ct}$ from the closed-loop dynamics
+$A_{\text{cl}} = A - B F_{\text{rob}}$.
+
+If $F$ is a left eigenvector of $A_{\text{cl}}$ with eigenvalue $\varphi$,
+then $\mu_{ct} = -F y_t$ satisfies
+$\mu_{c,t+1} = \varphi\, \mu_{ct} + \nu\, \epsilon_{t+1}$.
+
+Setting $\tilde{\beta} = 1/(\varphi R)$ and solving a standard (non-robust)
+LQ problem with discount factor $\tilde{\beta}$ should reproduce $F$.
+
 ```{code-cell} ipython3
-# Three σ values and their observationally-equivalent βs
-sigma_trio = np.array([-1e-7, -2e-7, -3e-7])
-beta_trio  = np.array([beta_tilde(s, beta_hat, alpha_sq) for s in sigma_trio])
+σ_trio = np.array([-5e-8, -1e-7, -2e-7])
 
-print("Observationally equivalent (σ, β̃) pairs:")
-for s, b in zip(sigma_trio, beta_trio):
-    print(f"  σ = {s:.1e}  →  β̃ = {b:.6f}")
+for s in σ_trio:
+    # Robust model: (σ, β_hat)
+    θ_val = -1.0 / s
+    rblq = RBLQ(R_pi, Q_pi, A_pi, B_pi, C_pi, β_hat, θ_val)
+    F_rob, K_rob, P_rob = rblq.robust_rule()
 
-# By the OE formula, φ_robust(σ) = 1/(β̃(σ)·R) and
-# φ_standard(β̃)  = 1/(β̃·R)  — so they must be equal by construction.
-# The key additional point from the paper: P matrices differ even though φ matches.
-print("\nAR(1) coefficient φ for each (σ, β̃) pair:")
-for s, b in zip(sigma_trio, beta_trio):
-    phi_r = 1.0 / (b * R_rate)   # robust:   φ = 1/(β̃R)
-    phi_s = 1.0 / (b * R_rate)   # standard with β̃: same formula by OE
-    print(f"  σ = {s:.1e}, β̃ = {b:.6f}:  φ_robust = φ_standard = {phi_r:.6f}  ✓")
+    # Extract φ from closed-loop under the approximating model
+    A_cl = A_pi - B_pi @ F_rob
+    φ_rob = float((F_rob @ A_cl)[0, 1] / F_rob[0, 1])
 
-print("\nNote: although φ is the same, the P matrices (and hence asset prices)")
-print("differ between the (σ, β̂) and (0, β̃) specifications. This is the")
-print("key distinguishing implication for risk premia in Hansen-Sargent-Tallarini.")
+    # Implied discount factor
+    bt = 1.0 / (φ_rob * R_rate)
+
+    # Non-robust model with β_tilde
+    lq_nr = LQ(R_pi, Q_pi, A_pi, B_pi, C=C_pi, beta=bt)
+    P_nr, F_nr, d_nr = lq_nr.stationary_values()
+
+    print(f"σ = {s:.1e},  θ = {θ_val:.1e},  β̃ = {bt:.6f} (> β̂ = {β_hat})")
+    print(f"  φ_rob = {φ_rob:.8f}")
+    print(f"  F_robust  = [{F_rob[0,0]:.6f}, {F_rob[0,1]:.6f}]")
+    print(f"  F_non-rob = [{F_nr[0,0]:.6f}, {F_nr[0,1]:.6f}]")
+    print(f"  |F_rob - F_nr| = {np.max(np.abs(F_rob - F_nr)):.2e}")
+    print(f"  K (worst-case distortion): [{K_rob[0,0]:.2e}, {K_rob[0,1]:.2e}]")
+    print()
 ```
 
-The AR(1) coefficients $\varphi$ are identical across the two representations
-in each pair by construction of the observational equivalence formula — the
-equivalence holds for consumption and saving *quantities*.  However, the
-$\mathcal{D}(P)$ matrices differ across $(\hat\sigma, \hat\beta)$ and
-$(0, \tilde\beta)$ pairs; it is this matrix that encodes the stochastic discount
-factor used in asset pricing.  Thus, although saving plans look the same, equity
-premia differ.
+The policy matrices $F$ match to high precision, confirming observational
+equivalence for consumption and saving decisions.
+
+In every case $\tilde{\beta} > \hat{\beta}$: a preference for robustness
+makes the agent behave as if he were more patient.
+
+The non-zero worst-case distortion $K$ in the robust model has no analogue in
+the non-robust model.
+
+As {cite:t}`HST_1999` show, this is why the two parametrisations imply
+different asset prices even though saving plans coincide.
 
 ```{solution-end}
 ```
