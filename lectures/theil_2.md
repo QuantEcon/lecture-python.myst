@@ -94,7 +94,9 @@ from quantecon import LQ, RBLQ
 ## Recap: ordinary certainty equivalence
 
 The {ref}`companion lecture <certainty_equiv_theil1>` established the CE
-property in detail.  Here we collect only the elements needed for the
+property in detail.  
+
+Here we collect only the elements needed for the
 robustness extension below.
 
 The state vector $y_t = \begin{bmatrix} x_t \\ z_t \end{bmatrix}$ has an
