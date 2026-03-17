@@ -1607,8 +1607,8 @@ mystnb:
     name: fig-us-yields
 ---
 data = pd.read_csv(
-    'https://raw.githubusercontent.com/QuantEcon/lecture-python.myst/update-asset/lectures/'
-    '_static/lecture_specific/risk_aversion_or_mistaken_beliefs/fred_data.csv',
+    'https://raw.githubusercontent.com/QuantEcon/lecture-python.myst/refs/heads/'
+    'main/lectures/_static/lecture_specific/risk_aversion_or_mistaken_beliefs/fred_data.csv',
     parse_dates=['DATE'], index_col='DATE'
 )
 
