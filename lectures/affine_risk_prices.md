@@ -48,8 +48,10 @@ risk-free rate puzzle, and the Hansen-Jagannathan bounds discussed in
 {doc}`Doubts or Variability? <doubts_or_variability>`) motivate the alternative approach
 described in this lecture.
 
+Put bluntly, the model to be studied in this lecture  declares the Lucas asset pricing model's stochastic discount factor to be a failure.
+
 The **affine model** maintains $\mathbb{E}(m_{t+1}R_{j,t+1}) = 1$ but *divorces* the
-stochastic discount factor from consumption risk.
+stochastic discount factor from consumption risk, and consequently, from  much of macroeconomics too.
 
 Instead, it
 
@@ -57,13 +59,18 @@ Instead, it
 * uses overidentifying restrictions from $\mathbb{E}(m_{t+1}R_{j,t+1}) = 1$ applied to $N$
   assets to let the data reveal risks and their prices.
 
+```{note}
+Researchers including {cite}`bansal2004risks` and {cite}`hansen2008consumption` have been less willing
+to give up on consumption-based models of the stochastic discount factor.
+```
+
 Key applications we study include:
 
 1. *Pricing risky assets*: how risk prices and exposures determine excess returns.
-1. *Affine term structure models*: bond yields as affine functions of a state vector
+2. *Affine term structure models*: bond yields as affine functions of a state vector
    ({cite:t}`AngPiazzesi2003`).
-1. *Risk-neutral probabilities*: a change-of-measure representation of the pricing equation.
-1. *Distorted beliefs*: reinterpreting risk price estimates when agents hold systematically
+3. *Risk-neutral probabilities*: a change-of-measure representation of the pricing equation.
+4. *Distorted beliefs*: reinterpreting risk price estimates when agents hold systematically
    biased forecasts ({cite:t}`piazzesi2015trend`); see also {doc}`Risk Aversion or Mistaken Beliefs? <risk_aversion_or_mistaken_beliefs>`.
 
 We start with the following imports:
