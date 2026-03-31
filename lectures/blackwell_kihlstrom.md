@@ -28,56 +28,45 @@ kernelspec:
 
 ## Overview
 
-This lecture explains **Blackwell's theorem** {cite}`blackwell1951,blackwell1953` on ranking statistical
-experiments, following the Bayesian exposition of {cite}`kihlstrom1984`.
+This lecture studies *Blackwell's theorem* {cite}`blackwell1951,blackwell1953` on ranking statistical experiments, following the Bayesian exposition in {cite}`kihlstrom1984`.
 
-Consider two random variables, $\tilde{x}_\mu$ and $\tilde{x}_\nu$, each correlated
-with an unknown state $\tilde{s}$.  A decision maker wants to know which observation
-conveys more information about $\tilde{s}$.
+Suppose that two signals, $\tilde{x}_\mu$ and $\tilde{x}_\nu$, are both informative about an unknown state $\tilde{s}$.
 
-Blackwell identified a clean answer: $\tilde{x}_\mu$ is **at least as informative** as
-$\tilde{x}_\nu$ if and only if any decision maker who observes $\tilde{x}_\mu$ can do
-at least as well (in expected utility) as one who observes $\tilde{x}_\nu$.
+Blackwell's question is which signal is more informative.
 
-Remarkably, this economic criterion is equivalent to two purely statistical ones:
+Experiment $\mu$ is **at least as informative as** experiment $\nu$ if every Bayesian decision maker can attain weakly higher expected utility with $\mu$ than with $\nu$.
 
-- **Sufficiency** (Blackwell): $\tilde{x}_\mu$ is sufficient for $\tilde{x}_\nu$ — the
-  distribution of $\tilde{x}_\nu$ can be reproduced by passing $\tilde{x}_\mu$ through
-  a randomisation.
-- **Uncertainty reduction** (DeGroot {cite}`degroot1962`): $\tilde{x}_\mu$ reduces
-  every concave measure of uncertainty at least as much as $\tilde{x}_\nu$ does.
+This economic criterion is equivalent to two statistical criteria:
 
-Kihlstrom's Bayesian restatement places the **posterior distribution** at the centre.
-A more informative experiment creates a more dispersed distribution of posteriors — a
-**mean-preserving spread** — which links Blackwell's ordering directly to
-**second-order stochastic dominance** on the simplex of beliefs.
+- *Sufficiency* (Blackwell): $\tilde{x}_\nu$ can be generated from $\tilde{x}_\mu$ by an additional randomization.
+- *Uncertainty reduction* (DeGroot {cite}`degroot1962`): $\tilde{x}_\mu$ lowers expected uncertainty at least as much as $\tilde{x}_\nu$ for every concave uncertainty function.
 
-We proceed in the following steps:
+Kihlstrom's reformulation places the *posterior distribution* at the center.
+
+More informative experiments generate posterior distributions that are more dispersed in convex order.
+
+In the two-state case, this becomes the familiar mean-preserving-spread comparison on $[0, 1]$, which can be checked with the integrated-CDF test used for second-order stochastic dominance.
+
+The lecture proceeds as follows:
 
 1. Set up notation and define experiments as Markov matrices.
 2. Define stochastic transformations (Markov kernels).
 3. State the three equivalent criteria.
 4. State and sketch the proof of the main theorem.
-5. Develop the Bayesian interpretation via standard experiments and mean-preserving
-   spreads.
+5. Develop the Bayesian interpretation via standard experiments and mean-preserving spreads.
 6. Illustrate each idea with Python simulations.
 
-Let's start by importing some tools.
+We begin with some imports.
 
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.tri as mtri
-from scipy.stats import dirichlet, beta as beta_dist
 from scipy.optimize import minimize
-from itertools import product
 
 np.random.seed(42)
 ```
 
----
-
-## Experiments and Markov Matrices
+## Experiments and Markov matrices
 
 ### The state space and experiments
 
@@ -98,26 +87,23 @@ $$
 Each row $i$ gives the distribution of signals when the true state is $s_i$.
 
 ```{code-cell} ipython3
-# Example: two states, three signals
-# mu[i, j] = Pr(signal j | state i)
-mu = np.array([[0.6, 0.3, 0.1],   # state 1: signal is quite informative
-               [0.1, 0.3, 0.6]])   # state 2: opposite pattern
+μ = np.array([[0.6, 0.3, 0.1],
+              [0.1, 0.3, 0.6]])
 
-nu = np.array([[0.5, 0.2, 0.3],   # coarser experiment
-               [0.2, 0.5, 0.3]])
+ν = np.array([[0.5, 0.2, 0.3],
+              [0.2, 0.5, 0.3]])
 
 print("Experiment μ (rows sum to 1):")
-print(mu)
+print(μ)
 print("\nExperiment ν:")
-print(nu)
-print("\nRow sums μ:", mu.sum(axis=1))
-print("Row sums ν:", nu.sum(axis=1))
+print(ν)
+print("\nRow sums μ:", μ.sum(axis=1))
+print("Row sums ν:", ν.sum(axis=1))
 ```
 
 ### Stochastic transformations (Markov kernels)
 
-A **stochastic transformation** $Q$ maps signals of one experiment to signals of
-another by a further randomisation.
+A **stochastic transformation** $Q$ maps signals of one experiment to signals of another by further randomization.
 
 In the discrete setting with $M$ input signals and $K$ output signals, $Q$ is an
 $M \times K$ Markov matrix: $q_{lk} \geq 0$ and $\sum_k q_{lk} = 1$ for every row $l$.
@@ -135,70 +121,74 @@ meaning that an observer of $\tilde{x}_\mu$ can generate the distribution of
 $\tilde{x}_\nu$ by passing their signal through $Q$.
 ```
 
-The intuition: if you hold the more informative signal $\tilde{x}_\mu$, you can always
-*throw away* information to produce a signal distributed like $\tilde{x}_\nu$;
-the reverse is impossible.
+If you observe the more informative signal $\tilde{x}_\mu$, then you can always *throw away* information to reproduce a less informative signal.
+
+The reverse is not possible: a less informative signal cannot be enriched to recover what was lost.
 
 ```{code-cell} ipython3
 def is_markov(M, tol=1e-10):
     """Check whether a matrix is a valid Markov (row-stochastic) matrix."""
     return np.all(M >= -tol) and np.allclose(M.sum(axis=1), 1.0)
 
-def find_stochastic_transform(mu, nu, tol=1e-8):
+
+def find_stochastic_transform(μ, ν, tol=1e-8):
     """
-    Try to find Q such that nu ≈ mu @ Q using least-squares then project.
-    Returns Q and the residual ||nu - mu @ Q||.
-    This is a simple demonstration for the discrete finite case.
+    Find a row-stochastic matrix Q that minimizes ||ν - μ @ Q||.
     """
-    N, M = mu.shape
-    _, K = nu.shape
+    _, M = μ.shape
+    _, K = ν.shape
 
-    # Solve nu = mu @ Q column by column using non-negative least squares
-    from scipy.optimize import lsq_linear
+    def unpack(q_flat):
+        return q_flat.reshape(M, K)
 
-    Q = np.zeros((M, K))
-    for k in range(K):
-        b = nu[:, k]
-        # Constraints: Q[:, k] >= 0, sum(Q[:, k]) = 1
-        # Use lsq_linear with bounds, ignoring sum constraint for now
-        result = lsq_linear(mu, b, bounds=(0, np.inf))
-        Q[:, k] = result.x
+    def objective(q_flat):
+        Q = unpack(q_flat)
+        return np.linalg.norm(ν - μ @ Q)**2
 
-    # Normalise rows so Q is row-stochastic
-    row_sums = Q.sum(axis=1, keepdims=True)
-    row_sums = np.where(row_sums == 0, 1, row_sums)
-    Q = Q / row_sums
-    residual = np.linalg.norm(nu - mu @ Q)
-    return Q, residual
+    constraints = [
+        {"type": "eq", "fun": lambda q_flat, 
+        row=i: unpack(q_flat)[row].sum() - 1.0}
+        for i in range(M)
+    ]
+    bounds = [(0.0, 1.0)] * (M * K)
+    Q0 = np.full((M, K), 1 / K).ravel()
 
-# Build a ν that is deliberately a garbling of μ
-# Q maps 3 signals -> 2 signals (merge signals 2&3)
+    result = minimize(
+        objective,
+        Q0,
+        method="SLSQP",
+        bounds=bounds,
+        constraints=constraints,
+        options={"ftol": tol, "maxiter": 1_000},
+    )
+
+    Q = unpack(result.x)
+    residual = np.linalg.norm(ν - μ @ Q)
+    return Q, residual, result.success
+
 Q_true = np.array([[1.0, 0.0],
                    [0.0, 1.0],
                    [0.0, 1.0]])
 
-nu_garbled = mu @ Q_true
+ν_garbled = μ @ Q_true
 print("ν = μ @ Q_true:")
-print(nu_garbled)
-print("ν is Markov:", is_markov(nu_garbled))
+print(ν_garbled)
+print("ν is Markov:", is_markov(ν_garbled))
 
-Q_found, res = find_stochastic_transform(mu, nu_garbled)
-print(f"\nRecovered Q (residual = {res:.2e}):")
+Q_found, res, success = find_stochastic_transform(μ, ν_garbled)
+print(f"\nRecovered Q (success = {success}, residual = {res:.2e}):")
 print(np.round(Q_found, 4))
 print("Rows of Q sum to:", Q_found.sum(axis=1).round(4))
 ```
 
----
+## Three equivalent criteria
 
-## Three Equivalent Criteria for "More Informative"
-
-### Criterion 1 — The Economic Criterion
+### Criterion 1: the economic criterion
 
 Let $A$ be a compact convex set of actions and $u: A \times S \to \mathbb{R}$ a
 bounded utility function.
 
-A decision maker observes $x \in X$, applies Bayes' rule to update beliefs about
-$\tilde{s}$, and chooses $d(x) \in A$ to maximise expected utility.
+A decision maker observes $x \in X$, updates beliefs about $\tilde{s}$ by Bayes' rule, and chooses $d(x) \in A$ to maximize expected utility.
 
 Let $p = (p_1, \ldots, p_N)$ be the prior over states, and write
 
@@ -208,34 +198,40 @@ $$
 
 for the probability simplex.
 
-The set of **achievable expected-utility vectors** under experiment $\mu$ is
+For fixed $A$ and $u$, the set of **achievable expected-utility vectors** under experiment $\mu$ is
 
 $$
-B(\mu, A) = \Bigl\{v \in \mathbb{R}^N :
+B(\mu, A, u) = \Bigl\{v \in \mathbb{R}^N :
   v_i = \textstyle\int_X u(f(x), s_i)\,\mu_i(dx)
   \text{ for some measurable } f: X \to A \Bigr\}.
 $$
 
-```{admonition} Definition (Economic Criterion — Bonnenblust–Shapley–Sherman)
+```{admonition} Definition (Economic criterion)
 :class: tip
 $\mu$ is **at least as informative as** $\nu$ in the economic sense if
 
 $$
-B(\mu, A) \supseteq B(\nu, A)
+B(\mu, A, u) \supseteq B(\nu, A, u)
 $$
 
-for every compact convex action set $A$ and every prior $p \in P$.
+for every compact convex action set $A$ and every bounded utility function $u: A \times S \to \mathbb{R}$.
 ```
 
-Equivalently, every rational decision maker weakly prefers to observe $\tilde{x}_\mu$
-over $\tilde{x}_\nu$.
+This criterion says that experiment $\mu$ is better than experiment $\nu$ if anything a decision maker can achieve after seeing $\nu$, they can also achieve after seeing $\mu$.
 
-### Criterion 2 — The Sufficiency Criterion (Blackwell)
+The reason is that a more informative experiment lets the agent imitate a less informative one by *ignoring* or *garbling* some of the extra information.
 
-```{admonition} Definition (Blackwell Sufficiency)
+But the reverse need not be possible.
+
+So $B(\mu, A, u) \supseteq B(\nu, A, u)$ means that $\mu$ gives the decision maker at least as many feasible expected-utility outcomes as $\nu$.
+
+Equivalently, every Bayesian decision maker attains weakly higher expected utility with $\tilde{x}_\mu$ than with $\tilde{x}_\nu$, for every prior $p \in P$.
+
+### Criterion 2: the sufficiency criterion
+
+```{admonition} Definition (Blackwell sufficiency)
 :class: tip
-$\mu \geq \nu$ in Blackwell's sense if there exists a stochastic transformation
-$Q: X \to Y$ such that
+$\mu \geq \nu$ in Blackwell's sense if there exists a stochastic transformation $Q$ from the signal space of $\mu$ to the signal space of $\nu$ such that
 
 $$
 \nu_i(E) = (Q \circ \mu_i)(E)
@@ -245,10 +241,9 @@ $$
 
 In matrix notation for finite experiments: $\nu = \mu \, Q$.
 
-### Criterion 3 — The Uncertainty-Function Criterion (DeGroot)
+### Criterion 3: the uncertainty criterion
 
-{cite}`degroot1962` calls any **concave** function $U: P \to \mathbb{R}$ an
-**uncertainty function**.
+{cite:t}`degroot1962` calls any concave function $U: P \to \mathbb{R}$ an **uncertainty function**.
 
 The prototypical example is Shannon entropy:
 
@@ -256,67 +251,71 @@ $$
 U(p) = -\sum_{i=1}^{N} p_i \log p_i.
 $$
 
-```{admonition} Definition (DeGroot Uncertainty Criterion)
+```{admonition} Definition (DeGroot uncertainty criterion)
 :class: tip
-$\mu$ **reduces expected uncertainty at least as much as** $\nu$ if, for every
-concave $U: P \to \mathbb{R}$,
+$\mu$ **reduces expected uncertainty at least as much as** $\nu$ if, for every prior $p \in P$ and every concave $U: P \to \mathbb{R}$,
 
 $$
-\int_P U(p)\,\hat\mu^c(dp)
+\int_P U(q)\,\hat\mu^p(dq)
 \;\leq\;
-\int_P U(p)\,\hat\nu^c(dp),
+\int_P U(q)\,\hat\nu^p(dq),
 $$
 
-where $\hat\mu^c$ is the distribution of the posterior induced by experiment $\mu$
-starting from the uniform prior $c = (1/N, \ldots, 1/N)$.
+where $\hat\mu^p$ is the distribution of posterior beliefs induced by experiment $\mu$ under prior $p$.
 ```
 
-Jensen's inequality guarantees that observing any signal *weakly* reduces expected
-uncertainty ($\int U(p^\mu)\,d\hat\mu^c \leq U(c)$).  The criterion asks whether $\mu$
-always reduces it *at least as much* as $\nu$.
+To see this, let $Q = p^\mu(X)$ denote the random posterior induced by experiment $\mu$.
 
----
+Then $Q$ has distribution $\hat\mu^p$, so
 
-## The Main Theorem
+$$
+\mathbb{E}[U(Q)] = \int_P U(q)\,\hat\mu^p(dq).
+$$
 
-```{admonition} Theorem (Blackwell 1951, 1953; Bonnenblust et al. 1949; DeGroot 1962)
+Since $U$ is concave, Jensen's inequality gives
+
+$$
+\mathbb{E}[U(Q)] \leq U(\mathbb{E}[Q]) = U(p).
+$$
+
+Hence
+
+$$
+\int_P U(q)\,\hat\mu^p(dq) \leq U(p),
+$$
+
+so any experiment weakly lowers expected uncertainty.
+
+Kihlstrom's standard-experiment construction will later let us compare posterior distributions under the uniform prior $c = (1 / N, \ldots, 1 / N)$.
+
+## The main theorem
+
+```{admonition} Theorem (Blackwell 1953; see also Blackwell 1951, Bonnenblust et al. 1949, and DeGroot 1962)
 :class: important
 The following three conditions are equivalent:
 
-(i) **Economic criterion:** $B(\mu, A) \supseteq B(\nu, A)$ for every compact
-    convex $A$ and every prior $p \in P$.
+(i) Economic criterion: $B(\mu, A, u) \supseteq B(\nu, A, u)$ for every compact convex $A$ and every bounded utility function $u$.
 
-(ii) **Sufficiency criterion:** There exists a stochastic transformation $Q$ from $X$
-     to $Y$ such that $\nu = Q \circ \mu$.
+(ii) Sufficiency criterion: There exists a stochastic transformation $Q$ from the signal space of $\mu$ to the signal space of $\nu$ such that $\nu = Q \circ \mu$.
 
-(iii) **Uncertainty criterion:** $\int_P U(p)\,\hat\mu^c(dp) \leq \int_P U(p)\,\hat\nu^c(dp)$
-      for every concave $U$ and the uniform prior $c$.
+(iii) Uncertainty criterion: $\int_P U(q)\,\hat\mu^p(dq) \leq \int_P U(q)\,\hat\nu^p(dq)$ for every prior $p \in P$ and every concave $U$.
 ```
 
-The proof establishes the chain
-(i) $\Leftrightarrow$ (ii) $\Leftrightarrow$ (iii).
+The hard part is the equivalence between the economic and sufficiency criteria.
 
-**Sketch (ii $\Rightarrow$ i):** If $\nu = \mu Q$, any decision rule $f$ for $\tilde{x}_\nu$
-can be replicated by first observing $\tilde{x}_\mu$, drawing $\tilde{x}_\nu \sim Q(\tilde{x}_\mu, \cdot)$,
-then applying $f$.  Hence $B(\nu, A) \subseteq B(\mu, A)$.
+*Sketch (ii $\Rightarrow$ i):* If $\nu = \mu Q$, then any decision rule based on $\tilde{x}_\nu$ can be replicated by first observing $\tilde{x}_\mu$, then drawing a synthetic $\tilde{x}_\nu$ from $Q$, and then applying the same rule.
 
-**Sketch (i $\Rightarrow$ ii):** This uses a separating-hyperplane argument.  Since
-$B(\mu, A) \supseteq B(\nu, A)$ for every $A$, standard duality implies the existence
-of a mean-preserving stochastic transformation $D$ mapping posteriors of $\nu$ to
-posteriors of $\mu$, which constructs the required $Q$.
+*Sketch (i $\Rightarrow$ ii):* Since $B(\mu, A, u) \supseteq B(\nu, A, u)$ for every $A$ and $u$, a separating-hyperplane (duality) argument implies the existence of a mean-preserving stochastic transformation $D$ mapping posteriors of $\nu$ to posteriors of $\mu$, which constructs the required $Q$.
 
-**Sketch (ii $\Leftrightarrow$ iii):** Given $Q$, Jensen's inequality applied to any
-concave $U$ gives $\mathbb{E}[U(p^\mu)] \leq \mathbb{E}[U(p^\nu)]$.  The converse —
-that the condition for all concave $U$ forces the existence of $Q$ — is proved in
-{cite}`blackwell1953`.
+*Sketch (ii $\Rightarrow$ iii):* Under a garbling, the posterior from the coarser experiment is the conditional expectation of the posterior from the finer experiment, so Jensen's inequality gives the result for every concave $U$.
 
----
+*Sketch (iii $\Rightarrow$ ii):* The converse — that the inequality for all concave $U$ forces the existence of $Q$ — is proved in {cite}`blackwell1953`, and Kihlstrom's posterior-based representation makes the geometry transparent.
 
-## Kihlstrom's Bayesian Interpretation
+## Kihlstrom's Bayesian interpretation
 
 ### Posteriors and standard experiments
 
-The central object in Kihlstrom's analysis is the **posterior belief vector**.
+The key object in Kihlstrom's analysis is the *posterior belief vector*.
 
 When prior $p$ holds and experiment $\mu$ produces signal $x$, Bayes' rule gives
 
@@ -325,7 +324,7 @@ p_i^\mu(x) = \Pr(\tilde{s} = s_i \mid \tilde{x}_\mu = x)
 = \frac{\mu_{ix} \, p_i}{\sum_j \mu_{jx}\, p_j}, \qquad i = 1, \ldots, N.
 $$
 
-The posterior $p^\mu(x) \in P$ is a *random variable* on the simplex.
+The posterior $p^\mu(x) \in P$ is a random point in the simplex.
 
 ```{admonition} Key property (mean preservation)
 :class: note
@@ -335,37 +334,34 @@ $$
 \mathbb{E}[p^\mu] = \sum_x \Pr(\tilde{x}_\mu = x)\, p^\mu(x) = p.
 $$
 
-This is sometimes called the **law of iterated expectations for beliefs**.
+This is sometimes called the *law of iterated expectations for beliefs*.
 ```
 
-The **standard experiment** ${}^c\mu^*$ records only the posterior: it maps the
-prior $c$ to the random variable $p^\mu(x) \in P$.  Its distribution $\hat\mu^c$
-on $P$ satisfies $\int_P p\;\hat\mu^c(dp) = c$.
+For a fixed prior $c$, Kihlstrom's **standard experiment** ${}^c\mu^*$ records only the posterior generated by $\mu$.
 
-Two experiments are **informationally equivalent** when they induce the same
-distribution of posteriors.  The standard experiment is the minimal sufficient
-statistic for $\mu$.
+Its distribution $\hat\mu^c$ on $P$ satisfies $\int_P q \, \hat\mu^c(dq) = c$.
+
+Two experiments are **informationally equivalent** when they induce the same posterior distribution.
+
+The standard experiment strips away every detail of the signal except its posterior, so it is a *minimal sufficient statistic* for the comparison of experiments.
+
+Any two experiments that generate the same distribution over posteriors lead to identical decisions for every Bayesian decision maker, regardless of how different their raw signal spaces may look.
 
 ```{code-cell} ipython3
-def compute_posteriors(mu, prior):
+def compute_posteriors(μ, prior, tol=1e-14):
     """
     Compute the posterior distribution for each signal realisation.
-
-    Parameters
-    ----------
-    mu    : (N, M) Markov matrix — mu[i, j] = Pr(signal j | state i)
-    prior : (N,) prior probabilities over states
-
-    Returns
-    -------
-    posteriors : (M, N) array — posteriors[j] = posterior given signal j
-    signal_probs : (M,) marginal probability of each signal
     """
-    N, M = mu.shape
-    # Marginal probability of each signal: Pr(x_j) = sum_i Pr(x_j|s_i)*p_i
-    signal_probs = mu.T @ prior          # shape (M,)
-    # Posterior: p(s_i | x_j) = mu[i,j]*p[i] / Pr(x_j)
-    posteriors = (mu.T * prior) / signal_probs[:, None]  # shape (M, N)
+    N, M = μ.shape
+    signal_probs = μ.T @ prior
+    numerators = μ.T * prior
+    posteriors = np.zeros((M, N))
+    np.divide(
+        numerators,
+        signal_probs[:, None],
+        out=posteriors,
+        where=signal_probs[:, None] > tol,
+    )
     return posteriors, signal_probs
 
 
@@ -375,142 +371,136 @@ def check_mean_preservation(posteriors, signal_probs, prior):
     return expected_posterior, np.allclose(expected_posterior, prior)
 
 
-# Two-state example: states s1, s2
 N = 2
 prior = np.array([0.5, 0.5])
 
-# More informative experiment μ
-mu_info = np.array([[0.8, 0.2],
-                    [0.2, 0.8]])
+μ_info = np.array([[0.8, 0.2],
+                   [0.2, 0.8]])
 
-# Less informative experiment ν
-nu_info = np.array([[0.6, 0.4],
-                    [0.4, 0.6]])
+ν_info = np.array([[0.6, 0.4],
+                   [0.4, 0.6]])
 
-post_mu, probs_mu = compute_posteriors(mu_info, prior)
-post_nu, probs_nu = compute_posteriors(nu_info, prior)
+post_μ, probs_μ = compute_posteriors(μ_info, prior)
+post_ν, probs_ν = compute_posteriors(ν_info, prior)
 
 print("=== Experiment μ (more informative) ===")
-print("Signal probabilities:", probs_mu.round(3))
+print("Signal probabilities:", probs_μ.round(3))
 print("Posteriors (row = signal, col = state):")
-print(post_mu.round(3))
-mean_mu, ok_mu = check_mean_preservation(post_mu, probs_mu, prior)
-print(f"E[posterior] = {mean_mu.round(4)}  (equals prior: {ok_mu})")
+print(post_μ.round(3))
+mean_μ, ok_μ = check_mean_preservation(post_μ, probs_μ, prior)
+print(f"E[posterior] = {mean_μ.round(4)}  (equals prior: {ok_μ})")
 
 print("\n=== Experiment ν (less informative) ===")
-print("Signal probabilities:", probs_nu.round(3))
+print("Signal probabilities:", probs_ν.round(3))
 print("Posteriors:")
-print(post_nu.round(3))
-mean_nu, ok_nu = check_mean_preservation(post_nu, probs_nu, prior)
-print(f"E[posterior] = {mean_nu.round(4)}  (equals prior: {ok_nu})")
+print(post_ν.round(3))
+mean_ν, ok_ν = check_mean_preservation(post_ν, probs_ν, prior)
+print(f"E[posterior] = {mean_ν.round(4)}  (equals prior: {ok_ν})")
 ```
 
-### Visualising posterior distributions on the simplex
+### Visualizing posterior distributions on the simplex
 
 For $N = 2$ states, the simplex $P$ is the unit interval $[0, 1]$ (the probability
 of state $s_1$).  We can directly plot the distribution of posteriors under
 experiments $\mu$ and $\nu$.
 
 ```{code-cell} ipython3
-def plot_posterior_distributions(mu_matrix, nu_matrix, prior,
+---
+mystnb:
+  figure:
+    caption: Posterior distributions in the two-state case
+    name: fig-blackwell-two-state-posteriors
+---
+def plot_posterior_distributions(μ_matrix, ν_matrix, prior,
                                  labels=("μ (more informative)",
                                          "ν (less informative)")):
     """
     For a two-state experiment, plot the distribution of posteriors
     (i.e., the standard experiment distribution) on [0,1].
     """
-    posts_mu, probs_mu = compute_posteriors(mu_matrix, prior)
-    posts_nu, probs_nu = compute_posteriors(nu_matrix, prior)
+    posts_μ, probs_μ = compute_posteriors(μ_matrix, prior)
+    posts_ν, probs_ν = compute_posteriors(ν_matrix, prior)
 
     fig, axes = plt.subplots(1, 2, figsize=(11, 4), sharey=False)
     prior_val = prior[0]
 
     for ax, posts, probs, label in zip(
-            axes, [posts_mu, posts_nu], [probs_mu, probs_nu], labels):
-        p_s1 = posts[:, 0]          # posterior prob of state s1 for each signal
+        axes, [posts_μ, posts_ν], [probs_μ, probs_ν], labels):
+        p_s1 = posts[:, 0]
         ax.vlines(p_s1, 0, probs, linewidth=6, color="steelblue", alpha=0.7)
-        ax.axvline(prior_val, color="tomato", linestyle="--", linewidth=1.5,
+        ax.axvline(prior_val, color="tomato", linestyle="--", linewidth=2,
                    label=f"prior = {prior_val:.2f}")
         ax.set_xlim(0, 1)
-        ax.set_xlabel(r"Posterior $p(s_1 \mid x)$", fontsize=12)
-        ax.set_ylabel("Probability mass", fontsize=12)
-        ax.set_title(label, fontsize=12)
-        ax.legend()
-        # Annotate mean
+        ax.set_xlabel(r"posterior $p(s_1 \mid x)$", fontsize=12)
+        ax.set_ylabel("probability mass", fontsize=12)
         mean_post = (p_s1 * probs).sum()
-        ax.axvline(mean_post, color="green", linestyle=":", linewidth=1.5,
+        ax.axvline(mean_post, color="green", linestyle=":", linewidth=2,
                    label=f"E[post] = {mean_post:.2f}")
+        ax.text(0.03, 0.94, label, transform=ax.transAxes, va="top")
         ax.legend()
 
-    fig.suptitle("Distribution of posteriors (standard experiment)\n"
-                 "More informative → more dispersed from prior",
-                 fontsize=12, y=1.02)
     plt.tight_layout()
     plt.show()
 
-plot_posterior_distributions(mu_info, nu_info, prior)
+plot_posterior_distributions(μ_info, ν_info, prior)
 ```
 
-The more informative experiment $\mu$ pushes posteriors further from the prior in
-both directions, producing a more dispersed distribution on $[0,1]$.
+The more informative experiment $\mu$ pushes posteriors farther from the prior in both directions.
 
-### Mean-preserving spreads and Blackwell's ordering
+### Mean-preserving spreads and Blackwell's order
 
-Kihlstrom's key reformulation is:
+Kihlstrom's key reformulation is the following.
 
 ```{admonition} Theorem (Kihlstrom's Reformulation)
 :class: important
-$\mu \geq \nu$ in Blackwell's sense **if and only if** $\hat\mu^c$ is a
+$\mu \geq \nu$ in Blackwell's sense if and only if $\hat\mu^c$ is a
 **mean-preserving spread** of $\hat\nu^c$; that is,
 
 $$
 \int_P g(p)\,\hat\mu^c(dp) \;\geq\; \int_P g(p)\,\hat\nu^c(dp)
 $$
 
-for every **convex** function $g: P \to \mathbb{R}$.
+for every convex function $g: P \to \mathbb{R}$.
 ```
 
-Equivalently, $\hat\mu^c$ **second-order stochastically dominates** $\hat\nu^c$
-(in the sense of mean-preserving spreads).
+Equivalently, $\hat\mu^c$ is larger than $\hat\nu^c$ in convex order.
 
-The intuition: a better experiment resolves more uncertainty, spreading posteriors
-further from the prior on average.  Any convex $g$ assigns higher expected value to
-a more dispersed distribution (Jensen's inequality in reverse).
+A better experiment spreads posterior beliefs farther from the prior while preserving their mean.
 
 ```{code-cell} ipython3
-def check_mps_convex_functions(mu_matrix, nu_matrix, prior, n_functions=200):
+---
+mystnb:
+  figure:
+    caption: Convex-order check in the two-state case
+    name: fig-blackwell-convex-order-check
+---
+def check_mps_convex_functions(μ_matrix, ν_matrix, prior, n_functions=200):
     """
-    Verify the mean-preserving spread condition for random convex functions.
-
-    We test:  E[g(p^μ)] >= E[g(p^ν)] for convex g
-    using a family of convex functions g(p) = (p - t)^+ = max(p-t, 0).
+    Verify the mean-preserving spread condition using
+    convex functions g(p) = max(p - t, 0).
     """
-    posts_mu, probs_mu = compute_posteriors(mu_matrix, prior)
-    posts_nu, probs_nu = compute_posteriors(nu_matrix, prior)
+    posts_μ, probs_μ = compute_posteriors(μ_matrix, prior)
+    posts_ν, probs_ν = compute_posteriors(ν_matrix, prior)
 
-    p_mu = posts_mu[:, 0]   # posteriors on s1
-    p_nu = posts_nu[:, 0]
+    p_μ = posts_μ[:, 0]
+    p_ν = posts_ν[:, 0]
 
     thresholds = np.linspace(0, 1, n_functions)
     diffs = []
     for t in thresholds:
-        Eg_mu = (np.maximum(p_mu - t, 0) * probs_mu).sum()
-        Eg_nu = (np.maximum(p_nu - t, 0) * probs_nu).sum()
-        diffs.append(Eg_mu - Eg_nu)
+        Eg_μ = (np.maximum(p_μ - t, 0) * probs_μ).sum()
+        Eg_ν = (np.maximum(p_ν - t, 0) * probs_ν).sum()
+        diffs.append(Eg_μ - Eg_ν)
 
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.plot(thresholds, diffs, color="steelblue", linewidth=2)
-    ax.axhline(0, color="tomato", linestyle="--")
+    ax.axhline(0, color="tomato", linestyle="--", linewidth=2)
     ax.fill_between(thresholds, diffs, 0,
                     where=np.array(diffs) >= 0,
                     alpha=0.25, color="steelblue",
-                    label=r"$E[g(p^\mu)] - E[g(p^\nu)] \geq 0$")
-    ax.set_xlabel("Threshold $t$", fontsize=12)
+                    label="$E[g(p^μ)] - E[g(p^ν)] \\geq 0$")
+    ax.set_xlabel("threshold $t$", fontsize=12)
     ax.set_ylabel(r"$E[\max(p-t,0)]$ difference", fontsize=12)
-    ax.set_title(
-        r"Mean-preserving spread check: $E[g(p^\mu)] \geq E[g(p^\nu)]$"
-        "\nfor convex functions $g(p) = \max(p - t, 0)$",
-        fontsize=11)
     ax.legend(fontsize=11)
     plt.tight_layout()
     plt.show()
@@ -519,64 +509,60 @@ def check_mps_convex_functions(mu_matrix, nu_matrix, prior, n_functions=200):
     print(f"μ is a mean-preserving spread of ν: {all_non_negative}")
     return diffs
 
-_ = check_mps_convex_functions(mu_info, nu_info, prior)
+_ = check_mps_convex_functions(μ_info, ν_info, prior)
 ```
 
----
+## Simulating the Blackwell order with many states
 
-## Simulating the Blackwell Ordering with Many States
+We now move to a three-state example.
 
-To move beyond two states we simulate richer experiments.
-
-We take $N = 3$ states and compare a more-informative experiment $\mu$ (whose
-signal is strongly correlated with the state) against a less-informative $\nu$
-(a garbling of $\mu$).
+Experiment $\mu$ is strongly correlated with the state, and experiment $\nu$ is a garbling of $\mu$.
 
 ```{code-cell} ipython3
-# Three states, three signals
 N3 = 3
 prior3 = np.array([1/3, 1/3, 1/3])
 
-# Informative experiment: strong diagonal
-mu3 = np.array([[0.7, 0.2, 0.1],
-                [0.1, 0.7, 0.2],
-                [0.2, 0.1, 0.7]])
+μ3 = np.array([[0.7, 0.2, 0.1],
+               [0.1, 0.7, 0.2],
+               [0.2, 0.1, 0.7]])
 
-# Garbling matrix: merge signals 2 and 3
 Q3 = np.array([[0.9, 0.05, 0.05],
                [0.05, 0.8, 0.15],
-               [0.05, 0.15, 0.8]])   # row-stochastic
+               [0.05, 0.15, 0.8]])
 
-nu3 = mu3 @ Q3
+ν3 = μ3 @ Q3
 
 print("μ (3×3):")
-print(np.round(mu3, 2))
+print(np.round(μ3, 2))
 print("\nQ (garbling):")
 print(np.round(Q3, 2))
 print("\nν = μ @ Q:")
-print(np.round(nu3, 3))
+print(np.round(ν3, 3))
 ```
 
-### Plotting posterior clouds on the 2-simplex
 
-For three states, posteriors live in a 2-simplex (a triangle).  We draw many
-samples from each experiment and plot where the posteriors land.
+For three states, posterior beliefs live in a 2-simplex.
+
+Let's visualize the posterior clouds under $\mu$ and $\nu$
 
 ```{code-cell} ipython3
-def sample_posteriors(mu_matrix, prior, n_draws=3000):
+---
+mystnb:
+  figure:
+    caption: Posterior clouds on the 2-simplex
+    name: fig-blackwell-simplex-clouds
+---
+def sample_posteriors(μ_matrix, prior, n_draws=3000):
     """
     Simulate n_draws observations from the experiment and compute
     the resulting posterior beliefs.
     Returns array of shape (n_draws, N).
     """
-    N, M = mu_matrix.shape
-    # Draw a state
+    N, M = μ_matrix.shape
     states = np.random.choice(N, size=n_draws, p=prior)
-    # Draw a signal conditioned on the state
-    signals = np.array([np.random.choice(M, p=mu_matrix[s]) for s in states])
-    # Compute posterior
-    posteriors, signal_probs = compute_posteriors(mu_matrix, prior)
-    return posteriors[signals]       # shape (n_draws, N)
+    signals = np.array([np.random.choice(M, p=μ_matrix[s]) for s in states])
+    posteriors, _ = compute_posteriors(μ_matrix, prior)
+    return posteriors[signals]
 
 
 def simplex_to_cart(pts):
@@ -587,27 +573,26 @@ def simplex_to_cart(pts):
     return pts @ corners
 
 
-def plot_simplex_posteriors(mu_matrix, nu_matrix, prior3, n_draws=3000):
-    posts_mu = sample_posteriors(mu_matrix, prior3, n_draws)
-    posts_nu = sample_posteriors(nu_matrix, prior3, n_draws)
+def plot_simplex_posteriors(μ_matrix, ν_matrix, prior3, n_draws=3000):
+    posts_μ = sample_posteriors(μ_matrix, prior3, n_draws)
+    posts_ν = sample_posteriors(ν_matrix, prior3, n_draws)
 
-    cart_mu = simplex_to_cart(posts_mu)
-    cart_nu = simplex_to_cart(posts_nu)
+    cart_μ = simplex_to_cart(posts_μ)
+    cart_ν = simplex_to_cart(posts_ν)
     prior_cart = simplex_to_cart(prior3[None, :])[0]
 
     corners = np.array([[0.0, 0.0],
                         [1.0, 0.0],
                         [0.5, np.sqrt(3)/2]])
-    triangle = plt.Polygon(corners, fill=False, edgecolor="black", linewidth=1.5)
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-    titles = ["μ  (more informative)", "ν  (less informative / garbled)"]
-    data = [(cart_mu, "steelblue"), (cart_nu, "darkorange")]
+    panel_labels = ["μ (more informative)", "ν (garbled)"]
+    data = [(cart_μ, "steelblue"), (cart_ν, "darkorange")]
     labels = ["$s_1$", "$s_2$", "$s_3$"]
-    offsets = [(-0.07, -0.05), (1.02, -0.05), (0.48, np.sqrt(3)/2 + 0.03)]
+    offsets = [(-0.07, -0.05), (0.02, -0.05), (-0.02, 0.03)]
 
-    for ax, (cart, c), title in zip(axes, data, titles):
-        tri = plt.Polygon(corners, fill=False, edgecolor="black", linewidth=1.5)
+    for ax, (cart, c), panel_label in zip(axes, data, panel_labels):
+        tri = plt.Polygon(corners, fill=False, edgecolor="black", linewidth=2)
         ax.add_patch(tri)
         ax.scatter(cart[:, 0], cart[:, 1], s=4, alpha=0.25, color=c)
         ax.scatter(*prior_cart, s=120, color="red", zorder=5,
@@ -618,34 +603,32 @@ def plot_simplex_posteriors(mu_matrix, nu_matrix, prior3, n_draws=3000):
         ax.set_xlim(-0.15, 1.15)
         ax.set_ylim(-0.1, np.sqrt(3)/2 + 0.1)
         ax.set_aspect("equal")
-        ax.axis("off")
-        ax.set_title(title, fontsize=12)
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.text(0.03, 0.94, panel_label, transform=ax.transAxes, va="top")
         ax.legend(fontsize=11, loc="upper right")
 
-    fig.suptitle("Posterior clouds on the 2-simplex\n"
-                 "More informative experiment → posteriors spread further from prior",
-                 fontsize=12)
     plt.tight_layout()
     plt.show()
 
-plot_simplex_posteriors(mu3, nu3, prior3)
+plot_simplex_posteriors(μ3, ν3, prior3)
 ```
 
-The posteriors under $\mu$ cluster near the vertices (near-certain beliefs), while
-those under the garbled $\nu$ cluster closer to the centre (the prior).
+Under $\mu$, the posterior cloud reaches farther toward the vertices.
 
----
+Under the garbled experiment $\nu$, the cloud stays closer to the center.
 
-## The DeGroot Uncertainty Function
+## The DeGroot uncertainty function
 
 ### Concave uncertainty functions and the value of information
 
-{cite}`degroot1962` formalises the value of information through an **uncertainty function**
-$U: P \to \mathbb{R}$ that must be:
+{cite}`degroot1962` formalizes the value of information through an **uncertainty function** $U: P \to \mathbb{R}$.
 
-- **Concave**: by Jensen, observing any signal weakly reduces expected uncertainty.
-- **Symmetric**: depends on the components of $p$, not their labelling.
-- **Normalised**: maximised at $p = (1/N, \ldots, 1/N)$ and minimised at vertices.
+In DeGroot's axiomatization, an uncertainty function is:
+
+- *Concave*: by Jensen, observing any signal weakly reduces expected uncertainty.
+- *Symmetric*: it depends on the components of $p$, not their labeling.
+- *Normalized*: it is maximized at $p = (1/N, \ldots, 1/N)$ and minimized at vertices.
 
 The **value of experiment $\mu$ given prior $p$** is
 
@@ -654,9 +637,9 @@ I(\tilde{x}_\mu;\, \tilde{s};\, U)
 = U(p) - \mathbb{E}[U(p^\mu)],
 $$
 
-the expected reduction in uncertainty.  A key result is that $\mu \geq \nu$ **if and
-only if** $I(\tilde{x}_\mu; \tilde{s}; U) \geq I(\tilde{x}_\nu; \tilde{s}; U)$ for
-**every** concave $U$.
+This quantity is the expected reduction in uncertainty.
+
+Blackwell's order is equivalent to the statement that $I(\tilde{x}_\mu; \tilde{s}; U) \geq I(\tilde{x}_\nu; \tilde{s}; U)$ for *every* concave $U$.
 
 ### Shannon entropy as a special case
 
@@ -673,71 +656,75 @@ I(\tilde{x}_\mu, c;\, U_H)
 = \log N - H(\tilde{s} \mid \tilde{x}_\mu),
 $$
 
-where $H(\tilde{s} \mid \tilde{x}_\mu)$ is the conditional entropy of the state given
-the signal — exactly the **mutual information** between $\tilde{x}_\mu$ and $\tilde{s}$.
+where $H(\tilde{s} \mid \tilde{x}_\mu)$ is the conditional entropy of the state given the signal.
+
+To see why, write $H(\tilde{s} \mid \tilde{x}_\mu) = \sum_x \Pr(\tilde{x}_\mu = x) \, H(\tilde{s} \mid \tilde{x}_\mu = x)$, where each conditional entropy term equals $-\sum_i p_i^\mu(x) \log p_i^\mu(x) = U_H(p^\mu(x))$.
+
+Substituting into DeGroot's formula gives $I = U_H(c) - \mathbb{E}[U_H(p^\mu)] = \log N - H(\tilde{s} \mid \tilde{x}_\mu)$, which is exactly the *mutual information* between $\tilde{x}_\mu$ and $\tilde{s}$.
 
 ```{note}
-The Blackwell ordering implies the entropy-based inequality, but the *converse fails*:
-entropy alone does not pin down the full Blackwell ordering — you need the inequality
-for **every** concave $U$.
+The Blackwell ordering implies the entropy-based inequality, but the *converse fails*: entropy alone does not pin down the full Blackwell ordering.
+
+Two experiments can have the same mutual information yet differ in Blackwell rank, because a single concave function cannot detect all differences in the dispersion of posteriors.
+
+The full Blackwell ordering requires the inequality to hold for *every* concave $U$, not just Shannon entropy.
 ```
 
 ```{code-cell} ipython3
-def entropy(p, eps=1e-12):
+def entropy(p, ε=1e-12):
     """Shannon entropy of a probability vector."""
     p = np.asarray(p, dtype=float)
-    p = np.clip(p, eps, 1.0)
+    p = np.clip(p, ε, 1.0)
     return -np.sum(p * np.log(p))
 
 
-def degroot_value(mu_matrix, prior, U_func):
+def degroot_value(μ_matrix, prior, U_func):
     """
     Compute DeGroot's value of information I = U(prior) - E[U(posterior)].
     """
-    posts, probs = compute_posteriors(mu_matrix, prior)
+    posts, probs = compute_posteriors(μ_matrix, prior)
     prior_uncertainty = U_func(prior)
     expected_post_uncertainty = sum(
         probs[j] * U_func(posts[j]) for j in range(len(probs)))
     return prior_uncertainty - expected_post_uncertainty
 
 
-# --- Several concave uncertainty functions ---
 def gini_impurity(p):
     """Gini impurity: 1 - sum(p_i^2)."""
     return 1.0 - np.sum(np.asarray(p)**2)
+
 
 def tsallis_entropy(p, q=2):
     """Tsallis entropy of order q (concave for q>1)."""
     p = np.clip(p, 1e-12, 1.0)
     return (1 - np.sum(p**q)) / (q - 1)
 
-def min_entropy(p):
-    """Min-entropy: -log(max(p))."""
-    return -np.log(np.max(np.clip(p, 1e-12, 1.0)))
+
+def sqrt_index(p):
+    """Concave uncertainty index based on sum(sqrt(p_i))."""
+    p = np.clip(np.asarray(p), 0.0, 1.0)
+    return np.sum(np.sqrt(p)) - 1.0
 
 uncertainty_functions = {
     "Shannon entropy": entropy,
     "Gini impurity": gini_impurity,
     "Tsallis (q=2)": tsallis_entropy,
-    "Min-entropy": min_entropy,
+    "Square-root index": sqrt_index,
 }
 
-print(f"{'Uncertainty function':<22}  {'I(μ)':<10}  {'I(ν)':<10}  {'I(μ)≥I(ν)?'}")
+print(f"{'Uncertainty function':<22}  {'I(μ)':<10}  {'I(ν)':<10}  {'I(μ)>=I(ν)?'}")
 print("-" * 58)
 for name, U in uncertainty_functions.items():
-    I_mu = degroot_value(mu_info, prior, U)
-    I_nu = degroot_value(nu_info, prior, U)
-    print(f"{name:<22}  {I_mu:<10.4f}  {I_nu:<10.4f}  {I_mu >= I_nu - 1e-10}")
+    I_μ = degroot_value(μ_info, prior, U)
+    I_ν = degroot_value(ν_info, prior, U)
+    print(f"{name:<22}  {I_μ:<10.4f}  {I_ν:<10.4f}  {I_μ >= I_ν - 1e-10}")
 ```
 
-As predicted by the theorem, $I(\mu) \geq I(\nu)$ for every concave uncertainty
-function once we know $\mu \geq \nu$ in the Blackwell sense.
+As predicted by the theorem, $I(\mu) \geq I(\nu)$ for every concave uncertainty function once we know $\mu \geq \nu$ in the Blackwell sense.
 
 ### Value of information as a function of experiment quality
 
-We now parameterise a continuum of experiments that interpolate between the
-completely uninformative experiment (signal is independent of the state) and the
-perfectly informative one (signal perfectly reveals the state).
+We now parameterize a continuum of experiments between the uninformative and perfectly informative cases.
 
 For $N = 2$ states, a natural family is
 
@@ -747,48 +734,43 @@ $$
 \quad \theta \in [0, 1],
 $$
 
-where the first term is the completely mixed (uninformative) matrix and $I_2$ is the
-identity (perfectly informative).
+The first term is the completely mixed matrix and $I_2$ is the identity.
 
 ```{code-cell} ipython3
-def make_experiment(theta, N=2):
-    """
-    Parameterised experiment: theta=0 is uninformative, theta=1 is perfect.
-    mu(theta) = (1-theta)*(1/N)*ones + theta*I
-    """
-    return (1 - theta) * np.ones((N, N)) / N + theta * np.eye(N)
+---
+mystnb:
+  figure:
+    caption: Value of information and experiment quality
+    name: fig-blackwell-value-by-quality
+---
+def make_experiment(θ, N=2):
+    """Parameterized experiment: θ=0 is uninformative, θ=1 is perfect."""
+    return (1 - θ) * np.ones((N, N)) / N + θ * np.eye(N)
 
 
-thetas = np.linspace(0, 1, 100)
+θs = np.linspace(0, 1, 100)
 prior2 = np.array([0.5, 0.5])
 
 fig, ax = plt.subplots(figsize=(9, 4))
 for name, U in uncertainty_functions.items():
-    values = [degroot_value(make_experiment(t), prior2, U) for t in thetas]
-    # Normalise to [0,1] for comparability across functions
+    values = [degroot_value(make_experiment(θ), prior2, U) for θ in θs]
     vmin, vmax = values[0], values[-1]
     normed = (np.array(values) - vmin) / (vmax - vmin + 1e-15)
-    ax.plot(thetas, normed, label=name, linewidth=2)
+    ax.plot(θs, normed, label=name, linewidth=2)
 
-ax.set_xlabel(r"Experiment quality $\theta$  (0 = uninformative, 1 = perfect)",
+ax.set_xlabel("experiment quality θ  (0 = uninformative, 1 = perfect)",
               fontsize=11)
-ax.set_ylabel("Normalised value of information $I(\\mu(\\theta))$", fontsize=11)
-ax.set_title("Value of information rises monotonically with experiment quality\n"
-             "for every concave uncertainty function", fontsize=11)
+ax.set_ylabel("normalized value of information I(μ(θ))", fontsize=11)
 ax.legend(fontsize=10)
 plt.tight_layout()
 plt.show()
 ```
 
-Every concave uncertainty function assigns weakly higher value to a more informative
-experiment — a graphical illustration of the equivalence (i) $\Leftrightarrow$ (iii).
+Every concave uncertainty function assigns weakly higher value to a more informative experiment.
 
----
+## Connection to second-order stochastic dominance
 
-## Connection to Second-Order Stochastic Dominance
-
-The uncertainty-function representation makes the connection to **second-order
-stochastic dominance (SOSD)** explicit.
+The uncertainty-function representation makes the connection to **second-order stochastic dominance (SOSD)** explicit.
 
 Because $U$ is concave, $-U$ is convex, and the condition
 
@@ -796,284 +778,270 @@ $$
 \mathbb{E}[U(p^\mu)] \leq \mathbb{E}[U(p^\nu)] \quad \text{for all concave } U
 $$
 
-is precisely the statement that $\hat\mu^c$ dominates $\hat\nu^c$ in the
-**mean-preserving spread** sense on $P$.
+is precisely the statement that $\hat\mu^c$ dominates $\hat\nu^c$ in the **mean-preserving spread** sense on $P$.
 
-The Blackwell ordering on *experiments* is therefore isomorphic to the SOSD ordering
-on *distributions of posteriors*.
+The Blackwell ordering on *experiments* is therefore isomorphic to the SOSD ordering on *distributions of posteriors*.
+
+When $N = 2$, posterior beliefs are scalars in $[0, 1]$, and the SOSD comparison reduces to the classical integrated-CDF test.
+
+Specifically, $\hat\mu^c$ is a mean-preserving spread of $\hat\nu^c$ if and only if $\int_0^t F_\nu(s)\,ds \geq \int_0^t F_\mu(s)\,ds$ for all $t \in [0,1]$, where $F_\mu$ and $F_\nu$ are the CDFs of the posterior on $s_1$ under each experiment.
+
+We can verify this graphically for the two-state example above
 
 ```{code-cell} ipython3
-def lorenz_curve_1d(weights, values):
-    """
-    Compute the Lorenz-like CDF used for SOSD comparisons.
-    Returns (sorted values, cumulative probability mass).
-    """
+---
+mystnb:
+  figure:
+    caption: Integrated-CDF check in the two-state case
+    name: fig-blackwell-integrated-cdf
+---
+def cdf_data_1d(weights, values):
+    """Sort support points and cumulative masses for a discrete distribution."""
     idx = np.argsort(values)
     sorted_vals = values[idx]
-    sorted_wts  = weights[idx]
+    sorted_wts = weights[idx]
     cum_mass = np.cumsum(sorted_wts)
     return sorted_vals, cum_mass
 
 
-def plot_sosd_posteriors(mu_matrix, nu_matrix, prior, title=""):
-    """
-    Plot the CDFs of the posterior-on-s1 distributions under mu and nu,
-    and verify SOSD (mu dominates nu in the MPS sense).
-    """
-    posts_mu, probs_mu = compute_posteriors(mu_matrix, prior)
-    posts_nu, probs_nu = compute_posteriors(nu_matrix, prior)
+def plot_sosd_posteriors(μ_matrix, ν_matrix, prior):
+    """Plot CDFs and integrated CDFs for the posterior-on-s1 distributions."""
+    posts_μ, probs_μ = compute_posteriors(μ_matrix, prior)
+    posts_ν, probs_ν = compute_posteriors(ν_matrix, prior)
 
-    p_mu = posts_mu[:, 0]
-    p_nu = posts_nu[:, 0]
+    p_μ = posts_μ[:, 0]
+    p_ν = posts_ν[:, 0]
 
-    sv_mu, cm_mu = lorenz_curve_1d(probs_mu, p_mu)
-    sv_nu, cm_nu = lorenz_curve_1d(probs_nu, p_nu)
+    sv_μ, cm_μ = cdf_data_1d(probs_μ, p_μ)
+    sv_ν, cm_ν = cdf_data_1d(probs_ν, p_ν)
 
     fig, axes = plt.subplots(1, 2, figsize=(11, 4))
 
-    # Left: CDFs
     ax = axes[0]
-    for sv, cm, lbl, c in [(sv_mu, cm_mu, "μ", "steelblue"),
-                            (sv_nu, cm_nu, "ν", "darkorange")]:
+    for sv, cm, lbl, c in [(sv_μ, cm_μ, "μ", "steelblue"),
+                           (sv_ν, cm_ν, "ν", "darkorange")]:
         xs = np.concatenate([[0], sv, [1]])
         ys = np.concatenate([[0], cm, [1]])
         ax.step(xs, ys, where="post", label=lbl, color=c, linewidth=2)
-    ax.set_xlabel(r"Posterior $p(s_1 \mid x)$", fontsize=12)
-    ax.set_ylabel("Cumulative probability", fontsize=12)
-    ax.set_title("CDFs of posterior distributions", fontsize=11)
-    ax.legend(fontsize=11)
-    ax.axvline(prior[0], linestyle="--", color="gray", alpha=0.6,
+    ax.axvline(prior[0], linestyle="--", color="gray", alpha=0.6, linewidth=2,
                label="prior")
+    ax.set_xlabel(r"posterior $p(s_1 \mid x)$", fontsize=12)
+    ax.set_ylabel("cumulative probability", fontsize=12)
+    ax.text(0.03, 0.94, "CDFs", transform=ax.transAxes, va="top")
+    ax.legend(fontsize=11)
 
-    # Right: integrated CDFs (SOSD criterion: F_nu integrates >= F_mu)
     ax2 = axes[1]
     grid = np.linspace(0, 1, 200)
 
     def integrated_cdf(sorted_vals, cum_mass, grid):
-        # CDF at each grid point
         cdf = np.array([cum_mass[sorted_vals <= t].max()
                         if np.any(sorted_vals <= t) else 0.0
                         for t in grid])
         return np.cumsum(cdf) * (grid[1] - grid[0])
 
-    int_mu = integrated_cdf(sv_mu, cm_mu, grid)
-    int_nu = integrated_cdf(sv_nu, cm_nu, grid)
+    int_μ = integrated_cdf(sv_μ, cm_μ, grid)
+    int_ν = integrated_cdf(sv_ν, cm_ν, grid)
 
-    ax2.plot(grid, int_mu, label="∫F_μ", color="steelblue", linewidth=2)
-    ax2.plot(grid, int_nu, label="∫F_ν", color="darkorange", linewidth=2)
-    ax2.fill_between(grid, int_mu, int_nu,
-                     where=int_nu >= int_mu,
+    ax2.plot(grid, int_μ, label=r"$\int F_\mu$", color="steelblue", linewidth=2)
+    ax2.plot(grid, int_ν, label=r"$\int F_\nu$", color="darkorange", linewidth=2)
+    ax2.fill_between(grid, int_μ, int_ν,
+                     where=int_ν >= int_μ,
                      alpha=0.2, color="darkorange",
-                     label="∫F_ν ≥ ∫F_μ  (μ MPS-dominates ν)")
+                     label=r"$\int F_\nu \geq \int F_\mu$ ($\mu$ MPS-dominates $\nu$)")
     ax2.set_xlabel(r"$t$", fontsize=12)
-    ax2.set_ylabel("Integrated CDF", fontsize=12)
-    ax2.set_title("SOSD: integrated CDFs\n(μ dominates ν iff ∫F_ν ≥ ∫F_μ everywhere)",
-                  fontsize=11)
+    ax2.set_ylabel("integrated CDF", fontsize=12)
+    ax2.text(0.03, 0.94, "integrated CDFs", transform=ax2.transAxes, va="top")
     ax2.legend(fontsize=10)
 
-    fig.suptitle(title or "Second-order stochastic dominance of posterior distributions",
-                 fontsize=11, y=1.01)
     plt.tight_layout()
     plt.show()
 
-plot_sosd_posteriors(mu_info, nu_info, prior,
-                     title="μ is a mean-preserving spread of ν:\n"
-                           "μ second-order stochastically dominates ν")
+plot_sosd_posteriors(μ_info, ν_info, prior)
 ```
 
----
-
-## The Stochastic Transformation as a Mean-Preserving Randomisation
+## Mean-preserving randomization
 
 Kihlstrom proves that (i) $\Rightarrow$ (ii) by explicit construction.
 
-Given that $\mu$ achieves at least the value of $\nu$ for every user, he constructs
-a stochastic transformation $D(p^0, \cdot)$ on $P$ that is **mean-preserving**:
+Given that $\mu$ achieves at least the value of $\nu$ for every decision maker, he constructs a stochastic transformation $D(p^0, \cdot)$ on $P$ that is **mean-preserving**:
 
 $$
-\int_P p\; D(p^0, dp) = p^0.
+\int_P q \, D(p^0, dq) = p^0.
 $$
 
 Setting $Q = D$ provides the Markov kernel witnessing Blackwell sufficiency.
 
-The mean-preservation condition says: passing $\tilde{x}_\mu$ through $Q$ to
-produce a synthetic $\tilde{x}_\nu$ cannot add information — it only destroys it.
+The mean-preservation condition says: passing $\tilde{x}_\mu$ through $Q$ to produce a synthetic $\tilde{x}_\nu$ cannot add information — it only destroys it.
 
 ```{code-cell} ipython3
-def verify_garbling_mean_preservation(mu_matrix, Q_matrix, prior):
-    """
-    Verify that the garbling Q is mean-preserving:
-    E[posterior under ν] = E[posterior under μ].
-    Both should equal the prior.
-    """
-    nu_matrix = mu_matrix @ Q_matrix
-    posts_mu, probs_mu = compute_posteriors(mu_matrix, prior)
-    posts_nu, probs_nu = compute_posteriors(nu_matrix, prior)
+def verify_garbling_mean_preservation(μ_matrix, Q_matrix, prior):
+    """Verify that a garbling preserves the prior as the mean posterior."""
+    ν_matrix = μ_matrix @ Q_matrix
+    posts_μ, probs_μ = compute_posteriors(μ_matrix, prior)
+    posts_ν, probs_ν = compute_posteriors(ν_matrix, prior)
 
-    mean_mu = (posts_mu * probs_mu[:, None]).sum(axis=0)
-    mean_nu = (posts_nu * probs_nu[:, None]).sum(axis=0)
+    mean_μ = (posts_μ * probs_μ[:, None]).sum(axis=0)
+    mean_ν = (posts_ν * probs_ν[:, None]).sum(axis=0)
 
     print(f"Prior:               {prior.round(4)}")
-    print(f"E[p^μ]:              {mean_mu.round(4)}")
-    print(f"E[p^ν = p^(μQ)]:     {mean_nu.round(4)}")
-    print(f"Both equal prior?    mu: {np.allclose(mean_mu, prior)}, "
-          f"nu: {np.allclose(mean_nu, prior)}")
+    print(f"E[p^μ]:              {mean_μ.round(4)}")
+    print(f"E[p^ν = p^(μQ)]:     {mean_ν.round(4)}")
+    print(f"Both equal prior?    μ: {np.allclose(mean_μ, prior)}, "
+          f"ν: {np.allclose(mean_ν, prior)}")
 
 
-# Q_true maps 2 signals -> 2 signals (a softening garbling)
 Q_soft = np.array([[0.7, 0.3],
                    [0.3, 0.7]])
 
-verify_garbling_mean_preservation(mu_info, Q_soft, prior)
+verify_garbling_mean_preservation(μ_info, Q_soft, prior)
 ```
 
----
+## Comparing experiments systematically
 
-## Comparing Experiments: A Systematic Example
+We now study a grid of experiments indexed by their quality parameter $\theta$.
 
-We now study a grid of experiments indexed by their quality parameter $\theta$
-and verify that the Blackwell ordering is faithfully reflected in:
+We will compare:
 
-1.  The spread of posteriors (mean-preserving spread check).
-2.  The value of information under every concave $U$.
-3.  The SOSD ranking of posterior distributions.
+1. The spread of posterior beliefs.
+2. The value of information under concave uncertainty functions.
+3. The integrated-CDF ranking in the two-state case.
 
 ```{code-cell} ipython3
-thetas_grid = [0.1, 0.4, 0.7, 1.0]
+---
+mystnb:
+  figure:
+    caption: Posterior distributions for increasing experiment quality
+    name: fig-blackwell-quality-grid
+---
+θ_grid = [0.1, 0.4, 0.7, 1.0]
 prior2 = np.array([0.5, 0.5])
 
 fig, axes = plt.subplots(2, 2, figsize=(11, 8))
 axes = axes.flat
 
-for ax, t in zip(axes, thetas_grid):
-    mu_t = make_experiment(t)
-    posts, probs = compute_posteriors(mu_t, prior2)
+for ax, θ in zip(axes, θ_grid):
+    μ_θ = make_experiment(θ)
+    posts, probs = compute_posteriors(μ_θ, prior2)
     p_s1 = posts[:, 0]
     ax.vlines(p_s1, 0, probs, linewidth=8, color="steelblue", alpha=0.7)
-    ax.axvline(prior2[0], color="tomato", linestyle="--", linewidth=1.5,
+    ax.axvline(prior2[0], color="tomato", linestyle="--", linewidth=2,
                label=f"prior = {prior2[0]:.2f}")
-    I_H   = degroot_value(mu_t, prior2, entropy)
-    I_G   = degroot_value(mu_t, prior2, gini_impurity)
-    ax.set_title(fr"$\theta = {t}$  |  $I_H = {I_H:.3f}$  |  $I_G = {I_G:.3f}$",
-                 fontsize=11)
+    I_H = degroot_value(μ_θ, prior2, entropy)
+    I_G = degroot_value(μ_θ, prior2, gini_impurity)
     ax.set_xlim(0, 1)
-    ax.set_xlabel(r"Posterior $p(s_1 \mid x)$", fontsize=11)
-    ax.set_ylabel("Probability mass", fontsize=11)
+    ax.set_xlabel(r"posterior $p(s_1 \mid x)$", fontsize=11)
+    ax.set_ylabel("probability mass", fontsize=11)
+    ax.text(0.03, 0.94,
+            f"θ = {θ}\n" f"I_H = {I_H:.3f}\n" f"I_G = {I_G:.3f}",
+            transform=ax.transAxes, va="top")
     ax.legend(fontsize=10)
 
-fig.suptitle("Distribution of posteriors for experiments of increasing quality\n"
-             r"$\theta = 0$: uninformative; $\theta = 1$: perfect",
-             fontsize=12)
 plt.tight_layout()
 plt.show()
 ```
 
-As $\theta$ rises from 0 (unifomative) to 1 (perfect), posteriors migrate toward the
-vertices $\{0, 1\}$, the value of information rises under every $U$, and the
-distributions form a chain under the SOSD order.
+As $\theta$ rises from 0 to 1, posterior beliefs move toward the vertices $\{0, 1\}$.
 
----
+At the same time, the value of information rises under every concave uncertainty function.
 
-## Application 1 — Product Quality Information (Kihlstrom 1974)
+## Application 1: product quality information
 
-{cite}`kihlstrom1974a` applies Blackwell's theorem to consumer demand for information
-about product quality.
+{cite:t}`kihlstrom1974a` applies Blackwell's theorem to consumer demand for information about product quality.
 
 - The unknown state $\tilde{s}$ is a product parameter $\theta$.
 - A consumer can purchase $\lambda$ units of information at cost $c(\lambda)$.
 - As $\lambda$ rises, the experiment becomes more informative in the Blackwell sense.
 
-The Blackwell ordering certifies that "more information is always better" for every
-expected-utility maximiser when information is free.
+The Blackwell order says that, absent costs, more information is always better for every expected-utility maximizer.
 
-The consumer's demand for information equates the *marginal value of the standard
-experiment* to its *marginal cost*.
+Optimal information demand equates the *marginal value of the standard experiment* to its *marginal cost*.
+
+In the example below, we assume a linear cost $c \cdot \lambda$ and a simple family of experiments $\mu(\theta)$ as above with $c = 0.4$
 
 ```{code-cell} ipython3
-def consumer_value(theta, prior2, U=entropy, cost_per_unit=0.5):
-    """
-    Value of purchasing experiment quality theta.
-    Returns gross value I(theta) and net value I(theta) - cost.
-    """
-    mu_t = make_experiment(theta)
-    gross = degroot_value(mu_t, prior2, U)
-    net   = gross - cost_per_unit * theta
+---
+mystnb:
+  figure:
+    caption: Information demand in a simple quality example
+    name: fig-blackwell-information-demand
+---
+def consumer_value(θ, prior2, U=entropy, cost_per_unit=0.5):
+    """Value of purchasing experiment quality θ."""
+    μ_t = make_experiment(θ)
+    gross = degroot_value(μ_t, prior2, U)
+    net   = gross - cost_per_unit * θ
     return gross, net
 
 
-thetas_fine = np.linspace(0, 1, 200)
+θ_fine = np.linspace(0, 1, 200)
 gross_vals = []
 net_vals   = []
 marginal_vals = []
 
-for t in thetas_fine:
-    g, n = consumer_value(t, prior2, entropy, cost_per_unit=0.4)
+for θ in θ_fine:
+    g, n = consumer_value(θ, prior2, entropy, cost_per_unit=0.4)
     gross_vals.append(g)
     net_vals.append(n)
 
-# Marginal value (numerical derivative)
-marginal_vals = np.gradient(gross_vals, thetas_fine)
+marginal_vals = np.gradient(gross_vals, θ_fine)
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
 ax = axes[0]
-ax.plot(thetas_fine, gross_vals, label="Gross value $I(\\theta)$",
+ax.plot(θ_fine, gross_vals, label="Gross value I(θ)",
         color="steelblue", linewidth=2)
-ax.plot(thetas_fine, [0.4 * t for t in thetas_fine],
-        label="Cost $c \\cdot \\theta$", color="tomato",
+ax.plot(θ_fine, [0.4 * t for t in θ_fine],
+        label="Cost c · θ", color="tomato",
         linestyle="--", linewidth=2)
-ax.plot(thetas_fine, net_vals, label="Net value", color="green", linewidth=2)
-ax.set_xlabel(r"Experiment quality $\theta$", fontsize=11)
-ax.set_ylabel("Value (Shannon entropy units)", fontsize=11)
-ax.set_title("Gross value, cost, and net value of information", fontsize=11)
+ax.plot(θ_fine, net_vals, label="Net value", color="green", linewidth=2)
+ax.set_xlabel("experiment quality θ", fontsize=11)
+ax.set_ylabel("value (Shannon entropy units)", fontsize=11)
 ax.legend(fontsize=10)
 
 ax2 = axes[1]
-ax2.plot(thetas_fine, marginal_vals, label="Marginal value $I'(\\theta)$",
+ax2.plot(θ_fine, marginal_vals, label="Marginal value I'(θ)",
          color="steelblue", linewidth=2)
 ax2.axhline(0.4, color="tomato", linestyle="--", linewidth=2,
             label="Marginal cost $c = 0.4$")
 opt_idx = np.argmin(np.abs(np.array(marginal_vals) - 0.4))
-ax2.axvline(thetas_fine[opt_idx], color="green", linestyle=":",
-            label=fr"Optimal $\theta^* \approx {thetas_fine[opt_idx]:.2f}$")
-ax2.set_xlabel(r"Experiment quality $\theta$", fontsize=11)
-ax2.set_ylabel("Marginal value / Marginal cost", fontsize=11)
-ax2.set_title("Optimal demand for information:\n"
-              "MV = MC at optimal $\\theta^*$", fontsize=11)
+ax2.axvline(θ_fine[opt_idx], color="green", linestyle=":",
+            linewidth=2,
+            label=f"Optimal θ* ≈ {θ_fine[opt_idx]:.2f}")
+ax2.set_xlabel("experiment quality θ", fontsize=11)
+ax2.set_ylabel("marginal value / marginal cost", fontsize=11)
 ax2.legend(fontsize=10)
 
 plt.tight_layout()
 plt.show()
 ```
 
-The optimal demand for information $\theta^*$ occurs where marginal value equals
-marginal cost.  Both axes shift as the cost $c$ changes, demonstrating comparative
-statics.
+The optimal demand for information $\theta^*$ occurs where marginal value equals marginal cost.
 
----
+Comparative statics follow from shifts in either curve.
 
-## Application 2 — Sequential Experimental Design (DeGroot 1962)
+## Application 2: sequential experimental design
 
-{cite}`degroot1962` applies the uncertainty-function framework to **sequential
-experimental design**.
+{cite:t}`degroot1962` applies the uncertainty-function framework to *sequential experimental design*.
 
-Each period a statistician observes one draw and updates their posterior.  The
-question is which sequence of experiments minimises cumulative expected uncertainty.
+Each period a statistician observes one draw and updates the posterior.
 
-The Blackwell theorem implies that if one experiment is more informative than another
-at every stage, the optimal sequential strategy simply uses the better experiment at
-every period.
+The question is which sequence of experiments minimizes cumulative expected uncertainty.
 
-We simulate sequential belief updating for experiments of different quality.
+If one experiment is more informative than another at every stage, then the Blackwell order favors using the better experiment at every date.
+
+We now simulate sequential belief updating for experiments of different quality.
 
 ```{code-cell} ipython3
-def sequential_update(mu_matrix, prior, T=20, seed=0):
-    """
-    Simulate T sequential belief updates under experiment mu.
-    Returns the path of posterior beliefs (T+1, N).
-    """
+---
+mystnb:
+  figure:
+    caption: Sequential posterior paths for different experiment qualities
+    name: fig-blackwell-sequential-paths
+---
+def sequential_update(μ_matrix, prior, T=20, seed=0):
+    """Simulate T sequential belief updates under experiment μ."""
     rng = np.random.default_rng(seed)
-    N, M = mu_matrix.shape
+    N, M = μ_matrix.shape
     beliefs = np.zeros((T + 1, N))
     beliefs[0] = prior.copy()
 
@@ -1081,57 +1049,56 @@ def sequential_update(mu_matrix, prior, T=20, seed=0):
 
     for t in range(T):
         p = beliefs[t]
-        # Draw a signal from the true state
-        signal = rng.choice(M, p=mu_matrix[true_state])
-        # Bayes update
-        unnorm = mu_matrix[:, signal] * p
+        signal = rng.choice(M, p=μ_matrix[true_state])
+        unnorm = μ_matrix[:, signal] * p
         beliefs[t + 1] = unnorm / unnorm.sum()
 
     return beliefs, true_state
 
 
-def plot_sequential_beliefs(thetas_compare, prior2, T=25):
-    fig, axes = plt.subplots(1, len(thetas_compare), figsize=(14, 4), sharey=True)
+def plot_sequential_beliefs(θs_compare, prior2, T=25):
+    fig, axes = plt.subplots(1, len(θs_compare), figsize=(14, 4), sharey=True)
 
-    for ax, theta in zip(axes, thetas_compare):
-        mu_t = make_experiment(theta, N=2)
+    for ax, θ in zip(axes, θs_compare):
+        μ_t = make_experiment(θ, N=2)
         for seed in range(15):
-            beliefs, ts = sequential_update(mu_t, prior2, T=T, seed=seed)
+            beliefs, ts = sequential_update(μ_t, prior2, T=T, seed=seed)
             c = "steelblue" if ts == 0 else "darkorange"
-            ax.plot(beliefs[:, 0], alpha=0.4, color=c, linewidth=1.2)
-        ax.axhline(prior2[0], linestyle="--", color="gray", linewidth=1,
+            ax.plot(beliefs[:, 0], alpha=0.35, color=c, linewidth=2)
+        ax.axhline(prior2[0], linestyle="--", color="gray", linewidth=2,
                    label="prior")
-        ax.axhline(1.0, linestyle=":", color="steelblue", linewidth=0.8)
-        ax.axhline(0.0, linestyle=":", color="darkorange", linewidth=0.8)
-        ax.set_title(fr"$\theta = {theta}$", fontsize=12)
-        ax.set_xlabel("Period $t$", fontsize=11)
-        if theta == thetas_compare[0]:
-            ax.set_ylabel(r"Posterior $p(s_1 \mid x^t)$", fontsize=11)
+        ax.axhline(1.0, linestyle=":", color="steelblue", linewidth=2)
+        ax.axhline(0.0, linestyle=":", color="darkorange", linewidth=2)
+        ax.set_xlabel(r"period $t$", fontsize=11)
+        if θ == θs_compare[0]:
+            ax.set_ylabel(r"posterior $p(s_1 \mid x^t)$", fontsize=11)
         ax.set_ylim(-0.05, 1.05)
+        ax.text(0.03, 0.94, f"θ = {θ}", transform=ax.transAxes, va="top")
         ax.legend(fontsize=9)
 
-    fig.suptitle("Sequential belief paths under experiments of increasing quality\n"
-                 "Blue = true state $s_1$; Orange = true state $s_2$",
-                 fontsize=11)
     plt.tight_layout()
     plt.show()
 
 plot_sequential_beliefs([0.2, 0.5, 0.9], prior2, T=30)
 ```
 
-More informative experiments (larger $\theta$) cause beliefs to converge faster to the
-truth.  Under the uniform prior and perfectly symmetric experiments, belief paths are
-martingales — the law of iterated expectations for beliefs.
+More informative experiments make beliefs converge faster to the truth.
+
+Under the correct prior, the posterior process is a martingale.
 
 ```{code-cell} ipython3
-# Verify the martingale property: E[p_{t+1} | x^t] = p_t
-def check_martingale(mu_matrix, prior, T=15, n_paths=2000, seed=0):
+---
+mystnb:
+  figure:
+    caption: Unconditional implication of the posterior martingale property
+    name: fig-blackwell-martingale-mean
+---
+def check_martingale_mean(μ_matrix, prior, T=15, n_paths=2000, seed=0):
     """
-    Simulate many belief paths and check E[p_{t+1}] ≈ E[p_t].
-    Under the true prior, belief sequences are martingales.
+    Simulate many belief paths and check E[p_t] = p_0.
     """
     rng = np.random.default_rng(seed)
-    N, M = mu_matrix.shape
+    N, M = μ_matrix.shape
     all_paths = np.zeros((n_paths, T + 1, N))
 
     for k in range(n_paths):
@@ -1139,64 +1106,52 @@ def check_martingale(mu_matrix, prior, T=15, n_paths=2000, seed=0):
         p = prior.copy()
         all_paths[k, 0] = p
         for t in range(T):
-            signal = rng.choice(M, p=mu_matrix[true_state])
-            unnorm = mu_matrix[:, signal] * p
+            signal = rng.choice(M, p=μ_matrix[true_state])
+            unnorm = μ_matrix[:, signal] * p
             p = unnorm / unnorm.sum()
             all_paths[k, t + 1] = p
 
-    mean_path = all_paths[:, :, 0].mean(axis=0)   # E[p(s1)] over paths
+    mean_path = all_paths[:, :, 0].mean(axis=0)
 
     fig, ax = plt.subplots(figsize=(8, 4))
     ax.plot(mean_path, color="steelblue", linewidth=2,
             label=r"$\bar p_t(s_1)$ (mean over paths)")
-    ax.axhline(prior[0], linestyle="--", color="tomato", linewidth=1.5,
+    ax.axhline(prior[0], linestyle="--", color="tomato", linewidth=2,
                label=fr"Prior $p_0 = {prior[0]:.2f}$")
-    ax.set_xlabel("Period $t$", fontsize=12)
+    ax.set_xlabel(r"period $t$", fontsize=12)
     ax.set_ylabel(r"$E[p_t(s_1)]$", fontsize=12)
-    ax.set_title(r"Belief martingale: $E[p_t(s_1)]$ stays at the prior"
-                 "\n(law of iterated expectations for beliefs)", fontsize=11)
     ax.legend(fontsize=11)
     ax.set_ylim(0, 1)
     plt.tight_layout()
     plt.show()
 
     print(f"Prior = {prior[0]:.4f}")
-    print(f"Mean belief (averaged over {n_paths} paths and time): "
-          f"{mean_path.mean():.4f}")
+    print(f"Average mean belief across dates: {mean_path.mean():.4f}")
 
-check_martingale(mu_info, prior, T=20, n_paths=5000)
+check_martingale_mean(μ_info, prior, T=20, n_paths=5000)
 ```
 
-The mean posterior tracks the prior throughout — reflecting the law of iterated
-expectations applied to beliefs.
+The simulated cross-sectional mean stays close to the prior at every date.
 
----
+This is the unconditional implication of the posterior martingale property.
 
 ## Summary
 
-Blackwell's theorem identifies a **partial order** on statistical experiments with
-three equivalent characterisations:
+Blackwell's theorem identifies a *partial order* on statistical experiments with
+three equivalent characterizations:
 
 | Criterion | Condition |
 |-----------|-----------|
-| **Economic** | Every decision maker prefers $\mu$ to $\nu$: $B(\mu,A) \supseteq B(\nu,A)$ |
-| **Sufficiency** | $\nu$ is a garbling of $\mu$: $\nu = \mu Q$ for some Markov $Q$ |
-| **Uncertainty** | $\mu$ reduces every concave $U$ more: $E[U(p^\mu)] \leq E[U(p^\nu)]$ |
+| Economic | Every decision maker weakly prefers $\mu$ to $\nu$: $B(\mu, A, u) \supseteq B(\nu, A, u)$ |
+| Sufficiency | $\nu$ is a garbling of $\mu$: $\nu = \mu Q$ for some Markov $Q$ |
+| Uncertainty | $\mu$ reduces expected uncertainty more for every prior $p$ and every concave $U$ |
 
-Kihlstrom's Bayesian exposition clarifies the theorem's geometry by placing the
-**posterior distribution** at the centre:
+Kihlstrom's Bayesian exposition places the *posterior distribution* at the center.
 
-- A more informative experiment creates a **more dispersed** distribution of
-  posteriors — a mean-preserving spread of the posterior distribution induced by
-  the less informative experiment.
-- This links the Blackwell order to **second-order stochastic dominance** on the
-  probability simplex $P$.
-- The uncertainty-function criterion is then transparent: because $U$ is concave,
-  more dispersed posteriors (mean-preserving spread) correspond to higher expected
-  $U$ — equivalently, lower expected uncertainty.
+A more informative experiment generates a more dispersed posterior distribution with the same mean prior.
 
-DeGroot's contribution is to extend the criterion from specific utility functions
-to the *entire class* of concave uncertainty functions, confirming the full
-generality of Blackwell's result.
+The right probabilistic language is convex order, and the Blackwell ordering on experiments is isomorphic to the second-order stochastic dominance (SOSD) ordering on distributions of posteriors.
 
+In the two-state case this reduces to the familiar mean-preserving-spread comparison on $[0, 1]$, which can be verified with the integrated-CDF test.
 
+DeGroot's contribution is to extend the comparison from particular utility functions to the full class of concave uncertainty functions.
