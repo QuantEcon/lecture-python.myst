@@ -28,9 +28,29 @@ kernelspec:
 
 ## Overview
 
-This lecture studies *Blackwell's theorem* {cite}`blackwell1951,blackwell1953` on ranking statistical experiments, following the Bayesian exposition in {cite}`kihlstrom1984`.
 
-Suppose that two signals, $\tilde{x}_\mu$ and $\tilde{x}_\nu$, are both informative about an unknown state $\tilde{s}$.
+
+This lecture studies *Blackwell's theorem* {cite}`blackwell1951,blackwell1953` on ranking statistical experiments.
+
+Our presentation brings in findings from a Bayesian interpretation of Blackwell's theorem by  {cite}`kihlstrom1984`.
+
+Blackwell and Kihlstrom study questions closely related to those encountered in this QuantEcon lecture {doc}`likelihood_bayes`. 
+
+To appreciate the connection involved, it is helpful up front to appreciate how Blackwell's notion of
+an **experiment** is related to the concept of a ''probability distribution'' or ''parameterized statistical model'' appearing in  {doc}`likelihood_bayes`  
+
+Blackwell studies a situation in which a decision maker wants to know a state $s$ living in a space $S$.
+
+For Blackwell, an **experiment** is  a **conditional probability model** $\{\mu(\cdot \mid s) : s \in S\}$, i.e., a family of distributions indexed by the unknown state.
+
+We are free to interpret "state" as "parameter".
+
+In a two-state case $S = \{s_1, s_2\}$, the  two conditional densities $f(\cdot) = \mu(\cdot \mid s_1)$ and $g(\cdot) = \mu(\cdot \mid s_2)$ are the ones used repeatedly in  our studies of classical hypothesis testing and Bayesian inference in this suite of QuantEcon lectures.
+
+Blackwell's question — *which experiment is more informative?* — is  about which conditional probability model allows a Bayesian with a prior over $\{s_1, s_2\}$ to learn more about which model governs the world.
+
+
+Thus, suppose that two signals, $\tilde{x}_\mu$ and $\tilde{x}_\nu$, are both informative about an unknown state $\tilde{s}$.
 
 Blackwell's question is which signal is more informative.
 
@@ -41,7 +61,7 @@ This economic criterion is equivalent to two statistical criteria:
 - *Sufficiency* (Blackwell): $\tilde{x}_\nu$ can be generated from $\tilde{x}_\mu$ by an additional randomization.
 - *Uncertainty reduction* (DeGroot {cite}`degroot1962`): $\tilde{x}_\mu$ lowers expected uncertainty at least as much as $\tilde{x}_\nu$ for every concave uncertainty function.
 
-Kihlstrom's reformulation places the *posterior distribution* at the center.
+Kihlstrom's reformulation focuses on the *posterior distribution*.
 
 More informative experiments generate posterior distributions that are more dispersed in convex order.
 
@@ -85,6 +105,7 @@ $$
 $$
 
 Each row $i$ gives the distribution of signals when the true state is $s_i$.
+
 
 ```{code-cell} ipython3
 μ = np.array([[0.6, 0.3, 0.1],
@@ -1155,3 +1176,141 @@ The right probabilistic language is convex order, and the Blackwell ordering on 
 In the two-state case this reduces to the familiar mean-preserving-spread comparison on $[0, 1]$, which can be verified with the integrated-CDF test.
 
 DeGroot's contribution is to extend the comparison from particular utility functions to the full class of concave uncertainty functions.
+
+---
+
+## Relation to Bayesian likelihood-ratio learning
+
+The lecture {doc}`likelihood_bayes` studies Bayesian learning in a setting that is a special, dynamic instance of everything developed here.
+
+This section transports concepts back and forth between the two lectures.
+
+### The state space is the same
+
+In {doc}`likelihood_bayes` the unknown "state of the world" is which density nature chose permanently: nature drew the data either from $f$ or from $g$, but not which one is known to the observer.
+
+This is a two-element finite state space
+
+$$
+S = \{s_1, s_2\} \qquad \text{with } s_1 \leftrightarrow f,\quad s_2 \leftrightarrow g.
+$$
+
+The Bayesian prior $\pi_0 \in [0,1]$ on $s_1 = f$ plays exactly the role of the prior $p \in P$ on the probability simplex in the present lecture.
+
+### A single draw is an experiment
+
+A single observation $w_t$ constitutes a Blackwell experiment with signal space $X$ and Markov kernel
+
+$$
+\mu = \begin{pmatrix} f(\cdot) \\ g(\cdot) \end{pmatrix},
+$$
+
+where row $i$ is the conditional density of the signal given state $s_i$:
+$\mu(\cdot \mid s_1) = f(\cdot)$ and $\mu(\cdot \mid s_2) = g(\cdot)$.
+
+This is the continuous-signal analogue of the $N \times M$ Markov matrix studied above (with $N = 2$ states and a continuum of signals instead of $M$ discrete ones).
+
+### $t$ IID draws form a richer experiment
+
+Observing the history $w^t = (w_1, \ldots, w_t)$ is a strictly more informative Blackwell experiment than observing any sub-history $w^s$ for $s < t$, because the conditional joint densities for $w^t$ are
+
+$$
+\mu_t(\cdot \mid s_1) = f(w_1) f(w_2) \cdots f(w_t),
+\qquad
+\mu_t(\cdot \mid s_2) = g(w_1) g(w_2) \cdots g(w_t).
+$$
+
+The experiment $\mu_t$ Blackwell-dominates $\mu_s$ for any $t > s$: you can always garble $w^t$ down to $w^s$ by discarding the last $t - s$ draws, which is an explicit stochastic transformation $Q$ satisfying $\mu_s = \mu_t Q$.
+
+The reverse is impossible — you cannot reconstruct information from fewer draws.
+
+This is why more data is always weakly better for every expected-utility maximiser (the economic criterion of Blackwell's theorem).
+
+### The likelihood ratio process is the sufficient statistic of the experiment
+
+The key formula in {doc}`likelihood_bayes` is
+
+$$
+\pi_{t+1} = \frac{\pi_0 \, L(w^{t+1})}{\pi_0 \, L(w^{t+1}) + 1 - \pi_0},
+\qquad
+L(w^t) = \prod_{i=1}^t \frac{f(w_i)}{g(w_i)}.
+$$
+
+Because $\pi_{t+1}$ depends on $w^t$ **only through** $L(w^t)$, the likelihood ratio process is a **sufficient statistic** for the experiment $\mu_t$.
+
+In Blackwell's language, the experiment "report $L(w^t)$" is informationally equivalent to "report $w^t$": passing $w^t$ through the deterministic map $w^t \mapsto L(w^t)$ is a (degenerate) stochastic transformation that discards nothing relevant to discriminating $f$ from $g$.
+
+### The posterior lives on the 1-simplex and is Kihlstrom's standard experiment
+
+With $N = 2$ states the probability simplex $P$ collapses to the unit interval $[0,1]$.
+Kihlstrom's standard experiment records only the posterior
+
+$$
+\pi_t = \Pr(s = f \mid w^t),
+$$
+
+which is the sufficient statistic that the Bayesian tracks throughout.
+
+The **distribution** of $\pi_t$ over all possible histories $w^t$ is Kihlstrom's $\hat{\mu}^c$ — the distribution of posteriors induced by the experiment $\mu_t$ starting from prior $\pi_0 = c$.
+
+### The martingale property is mean preservation
+
+{doc}`likelihood_bayes` proves that $\{\pi_t\}$ is a **martingale**:
+
+$$
+E[\pi_t \mid \pi_{t-1}] = \pi_{t-1},
+$$
+
+and in particular $E[\pi_t] = \pi_0$ for all $t$.
+
+This is exactly the **mean-preservation** condition that sits at the centre of Kihlstrom's reformulation: the distribution of posteriors $\hat{\mu}^c$ must satisfy $\int_P p \, \hat{\mu}^c(dp) = c$.
+
+Mean preservation is not a special feature of this two-state example; it is an exact consequence of Bayes' law for **any** experiment.
+
+### Blackwell's theorem explains why more data always helps
+
+Kihlstrom's reformulation states:
+
+> $\mu_t \geq \mu_s$ in Blackwell's sense if and only if $\hat{\mu}_t^c$ is a **mean-preserving spread** of $\hat{\mu}_s^c$, i.e., posteriors under $\mu_t$ are more dispersed than under $\mu_s$.
+
+In the {doc}`likelihood_bayes` setting this means the distribution of $\pi_t$ is a mean-preserving spread of the distribution of $\pi_s$ for $t > s$: more data pushes posteriors further from the prior toward either $0$ or $1$.
+
+The almost-sure convergence $\pi_t \to 0$ or $1$ is the limit of this spreading process — perfect information resolves all uncertainty, collapsing the distribution to a degenerate point mass at a vertex of the simplex.
+
+### DeGroot uncertainty functions and mutual information
+
+The Shannon entropy of the two-state posterior is
+
+$$
+U_H(\pi) = -\pi \log \pi - (1-\pi)\log(1-\pi).
+$$
+
+DeGroot's value of information for the experiment that generates $t$ draws is
+
+$$
+I(\mu_t;\, U_H) = U_H(\pi_0) - E[U_H(\pi_t)],
+$$
+
+which equals the **mutual information** between the history $w^t$ and the unknown state.
+
+Because $\mu_t$ Blackwell-dominates $\mu_s$ for $t > s$, Blackwell's theorem guarantees $I(\mu_t; U) \geq I(\mu_s; U)$ for **every** concave uncertainty function $U$ — more draws reduce expected uncertainty under every such measure, not just Shannon entropy.
+
+### Summary table
+
+The table below collects the complete translation between concepts in the two lectures.
+
+| Concept in {doc}`likelihood_bayes` | Concept in this lecture |
+|---|---|
+| States $\{f, g\}$ | State space $S = \{s_1, s_2\}$ |
+| Densities $f(\cdot)$, $g(\cdot)$ | Rows of experiment matrix $\mu$ |
+| Single draw $w_t$ | Blackwell experiment with continuous signal space |
+| History $w^t$ of $t$ IID draws | Richer experiment $\mu_t$ Blackwell-dominating $\mu_s$, $s < t$ |
+| Likelihood ratio $L(w^t)$ | Sufficient statistic / standard experiment |
+| Prior $\pi_0$ | Prior $p \in P$ on the 1-simplex $[0,1]$ |
+| Posterior $\pi_t$ | Posterior random variable on $P = [0,1]$ |
+| Distribution of $\pi_t$ across histories | $\hat{\mu}^c$ (Kihlstrom's posterior distribution) |
+| Martingale property $E[\pi_t] = \pi_0$ | Mean preservation of $\hat{\mu}^c$ |
+| $\pi_t \to 0$ or $1$ almost surely | Posteriors spread to vertices (MPS in the limit) |
+| Mutual information $I(\mu_t; U_H)$ | DeGroot value of information |
+| More draws $\Rightarrow$ better for all decision makers | Blackwell ordering $\mu_t \geq \mu_s$ |
+| Garbling (discard last $t - s$ draws) | Stochastic transformation $Q$ with $\mu_s = \mu_t Q$ |
