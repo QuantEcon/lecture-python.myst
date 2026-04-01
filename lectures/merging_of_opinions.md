@@ -71,7 +71,6 @@ from scipy.special import betaln
 np.random.seed(42)
 ```
 
----
 
 ## Probability Measures on Sequence Spaces
 
@@ -167,7 +166,6 @@ $$
 
 almost surely as $n \to \infty$.
 
----
 
 ## The Likelihood-Ratio Martingale
 
@@ -244,7 +242,6 @@ so the $L^1$ convergence of the martingale directly controls the rate at
 which the total variation distance between the two agents' conditional
 forecasts goes to zero.
 
----
 
 ## The Blackwell–Dubins Theorem
 
@@ -315,7 +312,6 @@ not merely sufficient; the dichotomy between $P \ll Q$ and $P \perp Q$
 is qualitatively sharp.
 ```
 
----
 
 ## The Beta–Bernoulli Model
 
@@ -394,7 +390,6 @@ $$
 As $k_n/n \to p^*$ and $n \to \infty$, both posterior Betas concentrate
 around $p^*$ with the same variance $O(1/n)$, so $d_n \to 0$.
 
----
 
 ## Python: Merging in Action
 
@@ -594,7 +589,6 @@ The four panels tell a coherent story:
   apart (one near 0, one near 1) and progressively concentrate to the same
   distribution centred on the truth.
 
----
 
 ## Almost-Sure Convergence Across Many Paths
 
@@ -659,7 +653,6 @@ As predicted, $d_n \to 0$ on essentially every sample path:
 the theorem gives an almost-sure guarantee, not merely a statement about
 expected values.
 
----
 
 ## The Supermartingale Property of $d_n$
 
@@ -712,7 +705,6 @@ The average increment is negative at most steps, and the cumulative drift
 is monotonically downward.  This is the numerical signature of the
 supermartingale property $\mathbb{E}_Q[d_{n+1}\,|\,\mathscr{F}_n] \leq d_n$.
 
----
 
 ## Failure of Merging: Mutual Singularity
 
@@ -809,7 +801,6 @@ disagreement — the two agents are committed to models that are
 separated by events they each regard as having probability zero under
 the other's measure.
 
----
 
 ## Kakutani's Theorem: When Does Merging Hold?
 
@@ -990,7 +981,6 @@ The three panels confirm Kakutani's theorem:
 
 Only in the third case does Blackwell–Dubins apply and merging occur.
 
----
 
 ## Extension to Continuous Time
 
@@ -1056,7 +1046,6 @@ $[0,1]$, so $d_t \to d_\infty$ $Q$-a.s.; the $L^1$ bound
 $\mathbb{E}_Q[d_t] \leq \tfrac{1}{2}\mathbb{E}_Q[|Z_t - Z_\infty|] \to 0$
 forces $d_\infty = 0$.
 
----
 
 ## Applications
 
@@ -1119,7 +1108,6 @@ limit.  Blackwell–Dubins is the appropriate generalisation for
 measure exists and the operative condition is absolute continuity of the
 initial priors.
 
----
 
 ## The Rate of Merging
 
@@ -1181,7 +1169,6 @@ print(f"Fitted log-log slope: {slope:.3f}  (predicted: -0.50)")
 The log–log slope of approximately $-0.5$ confirms the $O(n^{-1/2})$ rate
 for this parametric model on any single sample path.
 
----
 
 ## Summary
 

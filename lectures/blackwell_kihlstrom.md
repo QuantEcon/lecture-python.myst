@@ -1177,7 +1177,6 @@ In the two-state case this reduces to the familiar mean-preserving-spread compar
 
 DeGroot's contribution is to extend the comparison from particular utility functions to the full class of concave uncertainty functions.
 
----
 
 ## Relation to Bayesian likelihood-ratio learning
 
