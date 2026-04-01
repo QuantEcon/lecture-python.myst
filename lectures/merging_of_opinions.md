@@ -28,39 +28,29 @@ kernelspec:
 
 ## Overview
 
-This lecture studies the **merging-of-opinions theorem** of {cite:t}`blackwell1962`.
+This lecture studies the merging-of-opinions theorem of {cite:t}`blackwell1962`.
 
-The theorem answers a central question in Bayesian epistemology and statistical decision theory:
+The theorem asks a simple question:
 
 > If two agents hold different prior beliefs about a stochastic process but observe the same stream of data indefinitely, will their probability assessments eventually converge?
 
-The answer is a striking affirmative.  Provided the two probability measures are
-**mutually absolutely continuous** — each assigns positive probability to every
-event the other considers possible — their conditional forecasts about all future
-events merge to zero total-variation distance, *almost surely*.
+The answer is yes under an absolute-continuity condition.
 
-This result is connected to several other important ideas:
+If $P \ll Q$, then the conditional distributions under $P$ and $Q$ over the entire future path merge in total variation, $Q$-almost surely.
 
-- **Bayesian consistency**: a Bayesian agent's posterior predictions converge to
-  the truth whenever the prior assigns positive probability to the true model
-  ({doc}`likelihood_bayes`).
-- **The rational-expectations hypothesis**: agents who disagree about the initial
-  model but share a common history will eventually agree on all conditional
-  forecasts ({cite:t}`aumann1976`).
-- **Ergodic theory**: merging plays the role of ergodicity for non-Markovian
-  processes, forcing long-run agreement without requiring a common stationary
-  distribution.
-- **Kakutani's dichotomy**: for product measures, mutual absolute continuity is
-  equivalent to a simple condition on Hellinger affinities, giving a clean
-  operational criterion for when merging is guaranteed.
+If in addition $Q \ll P$, then the same conclusion holds under both agents' probabilities.
 
-We develop the theory in discrete time, where the argument is sharpest, and
-sketch the continuous-time extension. 
+This result connects to several other ideas:
 
-Throughout we use the
-**Beta–Bernoulli conjugate model** as a running numerical example: two
-agents observe the same stream of coin flips but start with  different
-priors over the coin's bias.
+- Bayesian consistency: posterior predictions approach the truth when the prior lies in the right absolute-continuity class ({doc}`likelihood_bayes`).
+- Agreement results: common data can eliminate disagreement even when agents start from different priors ({cite:t}`aumann1976`).
+- Kakutani's dichotomy: for product measures, equivalence versus singularity can be read from a Hellinger criterion.
+
+We develop the theory in discrete time and then sketch the continuous-time analogue.
+
+Throughout, we use the Beta–Bernoulli model as a running example.
+
+Two agents observe the same stream of coin flips but start from different priors over the coin's bias.
 
 Let us start with some imports.
 
@@ -69,16 +59,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import beta as beta_dist
 from scipy.special import betaln
-
-np.random.seed(42)
 ```
 
 
-## Probability Measures on Sequence Spaces
+## Probability measures on sequence spaces
 
 ### The sequence space and its filtration
 
-Let $(S, \mathscr{S})$ be a measurable space (the *signal space*).
+Let $(S, \mathscr{S})$ be a measurable space, called the signal space.
 Set $\Omega = S^{\mathbb{N}}$, the set of all infinite sequences
 $\omega = (x_1, x_2, \ldots)$ with $x_n \in S$, equipped with the product
 $\sigma$-algebra $\mathscr{F} = \mathscr{S}^{\otimes \mathbb{N}}$.
@@ -100,32 +88,29 @@ restrictions to the history up to time $n$.
 
 ### Absolute continuity
 
-```{admonition} Definition
-:class: tip
-**Absolute continuity.**
-$P$ is *absolutely continuous* with respect to $Q$, written $P \ll Q$, if
+```{prf:definition} Absolute Continuity
+:label: absolute_continuity
+
+$P$ is **absolutely continuous** with respect to $Q$, written $P \ll Q$, if
 $Q(A) = 0$ implies $P(A) = 0$ for every $A \in \mathscr{F}$.
-They are *mutually absolutely continuous* (or *equivalent*), written $P \sim Q$,
+They are **mutually absolutely continuous**, or **equivalent**, written $P \sim Q$,
 if both $P \ll Q$ and $Q \ll P$.
 
-$P$ is *locally absolutely continuous* with respect to $Q$ if $P_n \ll Q_n$
+$P$ is **locally absolutely continuous** with respect to $Q$ if $P_n \ll Q_n$
 for every $n \geq 1$.
 Global absolute continuity $P \ll Q$ implies local absolute continuity, but
 not conversely.
 ```
 
-Mutual absolute continuity has a natural interpretation: $P \sim Q$ means the two
-agents agree on which individual events are *possible*.  
+Mutual absolute continuity means the two agents agree on which events are *possible*.
 
-They can disagree about
-how *likely* those events are, but neither agent considers an event impossible
-that the other considers possible.
+They can disagree about probabilities, but neither agent rules out an event the other deems possible.
 
 ### Total variation distance
 
-```{admonition} Definition
-:class: tip
-**Total variation distance.**
+```{prf:definition} Total Variation Distance
+:label: total_variation_distance
+
 For two probability measures $\mu$ and $\nu$ on $(E, \mathscr{E})$,
 
 $$
@@ -145,26 +130,22 @@ $$
 \|\mu - \nu\|_{\mathrm{TV}} = \mathbb{E}_\nu[(f-1)^+] = 1 - \mathbb{E}_\nu[\min(f,1)].
 $$
 
-The total variation distance is the **strongest** notion of convergence of
-probability measures.  If two probability measures are close in total variation,
-they are close in every possible statistical sense: their probabilities of any
-event differ by at most $\|\mu - \nu\|_{\mathrm{TV}}$.
+Total variation is one of the strongest standard notions of distance between probability measures.
+
+If two measures are close in total variation, then their probabilities of every event are close.
 
 ### The merging question
 
-The Blackwell–Dubins theorem is about the conditional distributions of the
-**future** given the **past**.  
+The Blackwell–Dubins theorem studies the conditional distribution of the *future* given the *past*.
 
-At time $n$, after observing $(x_1,\ldots,x_n)$,
-each agent forms a conditional distribution over all future events:
+At time $n$, after observing $(x_1,\ldots,x_n)$, each agent forms a conditional distribution over all future events:
 
 $$
 P(\,\cdot\,|\,\mathscr{F}_n)(\omega), \qquad
 Q(\,\cdot\,|\,\mathscr{F}_n)(\omega).
 $$
 
-These are probability measures on the whole future path, not just the next
-observation.  
+These are probability measures on the whole future path, not just the next observation.
 
 The merging question asks whether
 
@@ -176,14 +157,14 @@ $$
 almost surely as $n \to \infty$.
 
 
-## The Likelihood-Ratio Martingale
+## The likelihood-ratio martingale
 
-The main mathematical tool is the **Radon–Nikodym derivative process**.
+Our main tool is the Radon–Nikodym derivative process.
 
 ### The likelihood ratio
 
 Since $P \ll Q$ implies $P_n \ll Q_n$ for every $n$, the Radon–Nikodym
-theorem guarantees the existence of the **likelihood ratio**
+theorem guarantees the existence of the likelihood ratio
 
 $$
 Z_n = \frac{dP_n}{dQ_n}, \qquad Z_n \geq 0 \;\; Q\text{-a.s.},
@@ -198,11 +179,12 @@ $$
 Z_n = \mathbb{E}_Q[Z \,|\, \mathscr{F}_n] \qquad Q\text{-a.s.}
 $$
 
-That is, $\{Z_n, \mathscr{F}_n\}_{n \geq 1}$ is a **non-negative, uniformly
-integrable $Q$-martingale**.
+That is, $\{Z_n, \mathscr{F}_n\}_{n \geq 1}$ is a non-negative, uniformly
+integrable $Q$-martingale.
 
-```{admonition} Lemma (Martingale convergence)
-:class: note
+```{prf:lemma} Martingale Convergence
+:label: martingale_convergence
+
 The likelihood-ratio process $\{Z_n\}$ satisfies:
 
 1. $Z_n \to Z_\infty$ $Q$-almost surely as $n \to \infty$.
@@ -218,8 +200,7 @@ $L^1(Q)$ convergence. $\square$
 
 ### Connecting conditional measures to the likelihood ratio
 
-The following identity is the key bridge between the likelihood ratio and the
-conditional distributions.
+The following identity connects the likelihood ratio to the conditional distributions.
 
 On the set $\{Z_n > 0\}$, the Radon–Nikodym derivative of
 $P(\,\cdot\,|\,\mathscr{F}_n)$ with respect to $Q(\,\cdot\,|\,\mathscr{F}_n)$
@@ -247,15 +228,14 @@ $$
 2\,\mathbb{E}_Q[d_n] \;\leq\; \mathbb{E}_Q[|Z_\infty - Z_n|],
 $$
 
-so the $L^1$ convergence of the martingale directly controls the rate at
-which the total variation distance between the two agents' conditional
-forecasts goes to zero.
+So the $L^1$ convergence of the martingale controls how fast the total variation distance goes to zero.
 
 
-## The Blackwell–Dubins Theorem
+## The Blackwell–Dubins theorem
 
-```{admonition} Theorem (Blackwell–Dubins, 1962)
-:class: important
+```{prf:theorem} Blackwell–Dubins (1962)
+:label: blackwell_dubins
+
 Let $P$ and $Q$ be probability measures on $(\Omega, \mathscr{F})$ with
 $P \ll Q$.  Define
 
@@ -268,17 +248,17 @@ Then $d_n \to 0$ almost surely under $Q$ (and hence also under $P$).
 
 ### Proof ingredients
 
-The proof has three steps, each transparent once the framework is in place.
+The proof has three steps.
 
-**Step 1 — Representation of $d_n$ via $Z_n$.**
-As derived above, $d_n$ is expressed in terms of $Z_\infty / Z_n$ via the
-conditional Bayes formula.  This reduces the problem from a statement about
-two different probability measures to a statement about a single martingale
-under $Q$.
+Step 1. Representation of $d_n$ via $Z_n$.
+As shown above, $d_n$ can be written in terms of $Z_\infty / Z_n$.
 
-**Step 2 — $\{d_n\}$ is a $Q$-supermartingale.**
-Conditioning on more information cannot make the two measures easier to
-distinguish; it can only make them harder.  Formally, because
+This reduces the problem to a statement about one martingale under $Q$.
+
+Step 2. $\{d_n\}$ is a $Q$-supermartingale.
+Conditioning on more information reduces distinguishability on average.
+
+Formally, because
 $P(\,\cdot\,|\,\mathscr{F}_n) = \mathbb{E}[P(\,\cdot\,|\,\mathscr{F}_{n+1})\,|\,\mathscr{F}_n]$
 and total variation is convex,
 
@@ -286,48 +266,47 @@ $$
 \mathbb{E}_Q[d_{n+1}\,|\,\mathscr{F}_n] \leq d_n \qquad Q\text{-a.s.}
 $$
 
-So $\{d_n, \mathscr{F}_n\}$ is a non-negative $Q$-supermartingale taking
-values in $[0,1]$.  
+So $\{d_n, \mathscr{F}_n\}$ is a non-negative $Q$-supermartingale in $[0,1]$.
 
-By Doob's supermartingale convergence theorem, $d_n \to d_\infty$
-$Q$-almost surely for some $[0,1]$-valued random variable $d_\infty$.
+By Doob's theorem, $d_n \to d_\infty$ $Q$-almost surely for some $[0,1]$-valued random variable $d_\infty$.
 
-**Step 3 — The almost-sure limit is zero.**
+Step 3. The almost-sure limit is zero.
 From Step 1 and the $L^1$ bound:
 
 $$
 \mathbb{E}_Q[d_n] \leq \tfrac{1}{2}\,\mathbb{E}_Q[|Z_\infty - Z_n|] \to 0.
 $$
 
-Hence $d_n \to 0$ in $L^1(Q)$, so $d_n \to 0$ in probability under $Q$.
+Hence $d_n \to 0$ in $L^1(Q)$ and therefore in probability.
 
-But $d_n \to d_\infty$ $Q$-a.s. and $d_n \to 0$ in probability together
-force $d_\infty = 0$ $Q$-a.s.  
+Since $d_n$ already converges almost surely, its limit must satisfy $d_\infty = 0$ $Q$-a.s.
 
-Since $P \ll Q$, every $Q$-null set is
-$P$-null, so $d_n \to 0$ $P$-a.s. as well. $\square$
+Because $P \ll Q$, the same conclusion also holds $P$-almost surely. $\square$
 
-```{admonition} Remark (One-sided vs. mutual absolute continuity)
-:class: note
+```{prf:remark} One-Sided vs. Mutual Absolute Continuity
+:label: one_sided_vs_mutual
+
 The theorem requires only $P \ll Q$, not $Q \ll P$.  
 Under one-sided absolute continuity, merging holds $Q$-a.s. (and hence
-$P$-a.s.).  If additionally $Q \ll P$ — that is, $P \sim Q$ — then merging
+$P$-a.s.).  If additionally $Q \ll P$, that is, if $P \sim Q$, then merging
 holds under *both* agents' measures: neither agent has a positive-probability
 path on which the other agent's beliefs remain permanently different.
 ```
 
-```{admonition} Remark (Tightness)
-:class: note
-The theorem is sharp.  If $P \perp Q$ (mutual singularity), then there
-exists a set $A$ with $P(A) = 1$ and $Q(A) = 0$.  By Lévy's zero-one
-law, $Q(A|\mathscr{F}_n) \to 0$ and $P(A|\mathscr{F}_n) \to 1$
-almost surely, so $d_n \to 1$ rather than zero.  Absolute continuity is
-not merely sufficient; the dichotomy between $P \ll Q$ and $P \perp Q$
-is qualitatively sharp.
+```{prf:remark} Sharpness
+:label: sharpness
+
+Absolute continuity matters.
+
+When $P$ and $Q$ are singular, merging can fail completely.
+
+The point-mass example below has $d_n = 1$ for every $n$.
+
+For product measures, Kakutani's theorem later gives a sharp equivalence-versus-singularity dichotomy.
 ```
 
 
-## The Beta–Bernoulli Model
+## The Beta–Bernoulli model
 
 Before turning to Python, we introduce the main example used throughout
 the simulations.
@@ -404,11 +383,10 @@ d_n
 - \mathrm{Beta}(\alpha_2 + k_n,\,\beta_2 + n - k_n)\bigr\|_{\mathrm{TV}}.
 $$
 
-As $k_n/n \to p^*$ and $n \to \infty$, both posterior Betas concentrate
-around $p^*$ with the same variance $O(1/n)$, so $d_n \to 0$.
+As $k_n/n \to p^*$ and $n \to \infty$, both posterior Betas concentrate around $p^*$ with variance of order $1/n$, so $d_n \to 0$.
 
 
-## Python: Merging in Action
+## Python: merging in action
 
 We set up helper functions and then run the main simulation.
 
@@ -488,7 +466,7 @@ def run_simulation(p_true, a1, b1, a2, b2, n_steps, seed=0):
     pred2    = predictive_prob(a2p, b2p)
     tv_1step = np.abs(pred1 - pred2)
 
-    # TV between posterior Betas — the exact Blackwell-Dubins d_n
+    # TV between posterior Betas; in this model this equals d_n
     tv_beta = np.array([
         tv_distance_beta(a1p[i], b1p[i], a2p[i], b2p[i])
         for i in range(n_steps + 1)
@@ -502,24 +480,33 @@ def run_simulation(p_true, a1, b1, a2, b2, n_steps, seed=0):
 
 ### The main merging figure
 
-We choose two agents with very different beliefs about the bias of a coin
-whose true probability of heads is $p^* = 0.65$.
+We choose two agents with very different beliefs about the bias of a coin whose true probability of heads is $p^* = 0.65$.
 
-- **Agent 1** (skeptic): prior $\mathrm{Beta}(1, 8)$, so
+- Agent 1 (skeptic): prior $\mathrm{Beta}(1, 8)$, so
   $\hat{p}_1^0 = 1/9 \approx 0.11$.
-- **Agent 2** (optimist): prior $\mathrm{Beta}(8, 1)$, so
+- Agent 2 (optimist): prior $\mathrm{Beta}(8, 1)$, so
   $\hat{p}_2^0 = 8/9 \approx 0.89$.
 
 Both priors are supported on all of $(0,1)$, so $P_1 \sim P_2$.
 
-Blackwell–Dubins guarantees merging; the question is  how fast.
+Blackwell–Dubins guarantees merging.
+
+The figure below shows what that merging looks like.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Merging in the Beta–Bernoulli example.
+      The four panels show posterior predictive means, the total-variation distance $d_n$, the likelihood-ratio martingale, and posterior densities at selected horizons.
+    name: fig-merging-of-opinions-beta-bernoulli
+---
 # -------------------------------------------------------------------------
 # Simulation parameters
 # -------------------------------------------------------------------------
 p_true = 0.65
-a1, b1 = 1.0, 8.0    # sceptic:  prior mean = 1/9 ≈ 0.11
+a1, b1 = 1.0, 8.0    # skeptic: prior mean = 1/9 ≈ 0.11
 a2, b2 = 8.0, 1.0    # optimist: prior mean = 8/9 ≈ 0.89
 n_steps = 600
 
@@ -530,62 +517,62 @@ steps = np.arange(n_steps + 1)
 # Figure 1: merging of predictive distributions and TV distance
 # -------------------------------------------------------------------------
 fig, axes = plt.subplots(2, 2, figsize=(11, 7))
-fig.suptitle("Merging of Opinions: Beta–Bernoulli Model", fontsize=13)
 
 # --- Panel (a): posterior predictive probabilities ---
 ax = axes[0, 0]
-ax.plot(steps, sim['pred1'], color='steelblue',  lw=1.5,
-        label=r'Agent 1  $\hat p_1^n$  (prior: sceptic)')
-ax.plot(steps, sim['pred2'], color='firebrick', lw=1.5,
-        label=r'Agent 2  $\hat p_2^n$  (prior: optimist)')
+ax.plot(steps, sim['pred1'], color='steelblue', lw=2,
+        label=r'Agent 1 $\hat p_1^n$ (prior: skeptic)')
+ax.plot(steps, sim['pred2'], color='firebrick', lw=2,
+        label=r'Agent 2 $\hat p_2^n$ (prior: optimist)')
 ax.axhline(p_true, color='black', lw=1.0, ls='--', label=f'Truth $p^*={p_true}$')
-ax.set_xlabel('Observations $n$')
-ax.set_ylabel('Predictive probability')
-ax.set_title('(a)  Posterior predictive means')
+ax.set_xlabel('observations $n$')
+ax.set_ylabel('predictive probability')
+ax.text(0.03, 0.93, '(a)', transform=ax.transAxes)
 ax.legend(fontsize=8)
 ax.set_ylim(0, 1)
 
 # --- Panel (b): TV distance (exact Blackwell-Dubins d_n) ---
 ax = axes[0, 1]
-ax.semilogy(steps, sim['tv_beta'] + 1e-10, color='purple', lw=1.5)
-ax.set_xlabel('Observations $n$')
+ax.semilogy(steps, sim['tv_beta'] + 1e-10, color='mediumpurple', lw=2)
+ax.set_xlabel('observations $n$')
 ax.set_ylabel(r'$d_n = \|P(\cdot|\mathscr{F}_n) - Q(\cdot|\mathscr{F}_n)\|_{\mathrm{TV}}$')
-ax.set_title(r'(b)  Total-variation distance $d_n \to 0$')
+ax.text(0.03, 0.93, '(b)', transform=ax.transAxes)
 ax.set_ylim(bottom=1e-4)
 
 # --- Panel (c): log likelihood ratio ---
 ax = axes[1, 0]
-ax.plot(steps, sim['log_Z'], color='darkorange', lw=1.5)
+ax.plot(steps, sim['log_Z'], color='darkorange', lw=2)
 ax.axhline(0, color='black', lw=0.8, ls=':')
-ax.set_xlabel('Observations $n$')
+ax.set_xlabel('observations $n$')
 ax.set_ylabel(r'$\log Z_n$')
-ax.set_title(r'(c)  Log likelihood ratio $\log Z_n \to \log Z_\infty$')
+ax.text(0.03, 0.93, '(c)', transform=ax.transAxes)
 
 # --- Panel (d): posterior Beta densities at selected epochs ---
 ax = axes[1, 1]
 xs = np.linspace(0.01, 0.99, 500)
 epochs = [0, 20, 100, n_steps]
 colors = plt.cm.viridis(np.linspace(0.2, 0.85, len(epochs)))
-cum_k = int(np.sum(sim['data']))   # total successes in full sample
 
 for epoch, col in zip(epochs, colors):
-    k_e  = int(np.sum(sim['data'][:epoch]))
+    k_e = int(np.sum(sim['data'][:epoch]))
     pdf1 = beta_dist.pdf(xs, a1 + k_e, b1 + epoch - k_e)
     pdf2 = beta_dist.pdf(xs, a2 + k_e, b2 + epoch - k_e)
-    ax.plot(xs, pdf1, color=col, lw=1.6, ls='-')
-    ax.plot(xs, pdf2, color=col, lw=1.6, ls='--',
-            label=f'$n={epoch}$' if (epoch == 0 or epoch == n_steps) else None)
+    ax.plot(xs, pdf1, color=col, lw=2, ls='-')
+    ax.plot(xs, pdf2, color=col, lw=2, ls='--')
 
 ax.axvline(p_true, color='black', lw=1.0, ls=':', label=f'$p^*={p_true}$')
 ax.set_xlabel('$p$')
-ax.set_ylabel('Posterior density')
-ax.set_title('(d)  Posterior Beta densities over time\n'
-             '(solid = Agent 1, dashed = Agent 2)')
-# Custom legend
+ax.set_ylabel('posterior density')
+ax.text(0.03, 0.93, '(d)', transform=ax.transAxes)
+
 from matplotlib.lines import Line2D
-handles = [Line2D([0],[0], color=colors[0], lw=1.6, label='$n=0$ (prior)'),
-           Line2D([0],[0], color=colors[-1], lw=1.6, label=f'$n={n_steps}$'),
-           Line2D([0],[0], color='black', lw=1.0, ls=':', label=f'$p^*={p_true}$')]
+handles = [
+    Line2D([0], [0], color='black', lw=2, label='agent 1'),
+    Line2D([0], [0], color='black', lw=2, ls='--', label='agent 2'),
+    Line2D([0], [0], color=colors[0], lw=2, label='$n=0$'),
+    Line2D([0], [0], color=colors[-1], lw=2, label=f'$n={n_steps}$'),
+    Line2D([0], [0], color='black', lw=1.0, ls=':', label=f'$p^*={p_true}$')
+]
 ax.legend(handles=handles, fontsize=8)
 ax.set_ylim(bottom=0)
 
@@ -595,26 +582,33 @@ plt.show()
 
 The four panels tell a coherent story:
 
-- **Panel (a)**: Starting from $\hat{p}_1^0 \approx 0.11$ and
+- Panel (a): Starting from $\hat{p}_1^0 \approx 0.11$ and
   $\hat{p}_2^0 \approx 0.89$, both agents' predictive probabilities
   converge to $p^* = 0.65$.
-- **Panel (b)**: The total-variation distance $d_n$ decays to zero on a
+- Panel (b): The total-variation distance $d_n$ decays to zero on a
   logarithmic scale, consistent with the theorem.
-- **Panel (c)**: The log likelihood ratio $\log Z_n$ converges to a finite
-  value — confirming that the two measures are mutually absolutely continuous
-  and that neither singular case applies.
-- **Panel (d)**: The posterior Beta densities for the two agents start far
+- Panel (c): The log likelihood ratio $\log Z_n$ converges to a finite
+  value, which is consistent with mutual absolute continuity in this example.
+- Panel (d): The posterior Beta densities for the two agents start far
   apart (one near 0, one near 1) and progressively concentrate to the same
   distribution centred on the truth.
 
 
-## Almost-Sure Convergence Across Many Paths
+## Almost-sure convergence across many paths
 
-To see the "almost-sure" character of the theorem, we run many independent
-replications.  On *every* path the TV distance should converge to zero,
-not just on average.
+To illustrate the almost-sure character of the theorem, we run many independent replications.
+
+The theorem concerns almost every path under the reference measure, not just averages across paths.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Almost-sure merging across many sample paths.
+      The left panel plots the total-variation distance and the right panel plots the likelihood-ratio martingale.
+    name: fig-merging-of-opinions-many-paths
+---
 # -------------------------------------------------------------------------
 # Simulate N_paths independent realisations
 # -------------------------------------------------------------------------
@@ -622,7 +616,6 @@ N_paths = 80
 n_steps = 500
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
-fig.suptitle("Almost-sure merging across sample paths", fontsize=12)
 
 ax_tv  = axes[0]
 ax_log = axes[1]
@@ -639,24 +632,24 @@ for i in range(N_paths):
 # --- Panel (a): TV distance paths ---
 for i in range(N_paths):
     ax_tv.semilogy(steps, tv_all[i] + 1e-10, color='steelblue',
-                   lw=0.5, alpha=0.3)
+                   lw=0.8, alpha=0.3)
 ax_tv.semilogy(steps, tv_all.mean(axis=0) + 1e-10,
-               color='black', lw=2, label='Cross-path mean')
-ax_tv.set_xlabel('Observations $n$')
-ax_tv.set_ylabel(r'$d_n$  (log scale)')
-ax_tv.set_title(r'(a)  TV distance $d_n \to 0$  on every path')
+               color='black', lw=2, label='mean across paths')
+ax_tv.set_xlabel('observations $n$')
+ax_tv.set_ylabel(r'$d_n$ (log scale)')
+ax_tv.text(0.03, 0.93, '(a)', transform=ax_tv.transAxes)
 ax_tv.legend()
 
 # --- Panel (b): log Z_n paths ---
 for i in range(N_paths):
     ax_log.plot(steps, logZ_all[i], color='firebrick',
-                lw=0.5, alpha=0.3)
+                lw=0.8, alpha=0.3)
 ax_log.plot(steps, logZ_all.mean(axis=0),
-            color='black', lw=2, label='Cross-path mean')
+            color='black', lw=2, label='mean across paths')
 ax_log.axhline(0, color='gray', lw=0.8, ls=':')
-ax_log.set_xlabel('Observations $n$')
+ax_log.set_xlabel('observations $n$')
 ax_log.set_ylabel(r'$\log Z_n$')
-ax_log.set_title(r'(b)  Likelihood ratio $\log Z_n$ converges on every path')
+ax_log.text(0.03, 0.93, '(b)', transform=ax_log.transAxes)
 ax_log.legend()
 
 plt.tight_layout()
@@ -667,21 +660,28 @@ frac_small = np.mean(tv_all[:, -1] < 0.01)
 print(f"Fraction of paths with d_n < 0.01 at n = {n_steps}: {frac_small:.2f}")
 ```
 
-As predicted, $d_n \to 0$ on essentially every sample path:
-the theorem gives an almost-sure guarantee, not merely a statement about
-expected values.
+In this simulation, the distances are small on almost all sampled paths by the final horizon.
+
+That is consistent with the theorem's almost-sure conclusion.
 
 
-## The Supermartingale Property of $d_n$
+## The supermartingale property of $d_n$
 
 The proof relies on $\{d_n\}$ being a non-negative supermartingale.
 
-We can verify this numerically by checking that $d_n$ tends to decrease
-over time and that its conditional expectation does not increase.
+We can illustrate this numerically by looking at average increments across many paths.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      An illustration of the supermartingale property.
+      The plots show average increments of $d_n$ and their cumulative sum across many simulated paths.
+    name: fig-merging-of-opinions-supermartingale
+---
 # -------------------------------------------------------------------------
-# Verify the supermartingale property:
+# Illustrate the supermartingale property:
 #   E_Q[d_{n+1} | F_n]  <=  d_n
 # -------------------------------------------------------------------------
 # Proxy: average d_{n+1} - d_n across many paths should be <= 0.
@@ -693,25 +693,25 @@ cum_sum   = np.cumsum(mean_diffs)        # cumulative average change
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 
 ax = axes[0]
-ax.plot(mean_diffs[:200], color='purple', lw=1.2)
+ax.plot(mean_diffs[:200], color='purple', lw=2)
 ax.axhline(0, color='black', lw=0.8, ls='--')
 ax.fill_between(range(200), mean_diffs[:200], 0,
-                where=(mean_diffs[:200] < 0),
-                alpha=0.25, color='purple', label='Decrements (negative)')
+                where=(mean_diffs[:200] < 0), alpha=0.25,
+                color='purple', label='negative increments')
 ax.fill_between(range(200), mean_diffs[:200], 0,
-                where=(mean_diffs[:200] > 0),
-                alpha=0.25, color='red', label='Increments (positive)')
-ax.set_xlabel('Observations $n$')
+                where=(mean_diffs[:200] > 0), alpha=0.25,
+                color='red', label='positive increments')
+ax.set_xlabel('observations $n$')
 ax.set_ylabel(r'$\mathbb{E}[d_{n+1} - d_n]$')
-ax.set_title(r'(a)  Average increments of $d_n$')
+ax.text(0.03, 0.93, '(a)', transform=ax.transAxes)
 ax.legend(fontsize=8)
 
 ax = axes[1]
-ax.plot(cum_sum[:200], color='darkorange', lw=1.5)
+ax.plot(cum_sum[:200], color='darkorange', lw=2)
 ax.axhline(0, color='black', lw=0.8, ls='--')
-ax.set_xlabel('Observations $n$')
-ax.set_ylabel(r'Cumulative average change in $d_n$')
-ax.set_title(r'(b)  Cumulative drift: net decrease confirms supermartingale')
+ax.set_xlabel('observations $n$')
+ax.set_ylabel(r'cumulative average change in $d_n$')
+ax.text(0.03, 0.93, '(b)', transform=ax.transAxes)
 
 plt.tight_layout()
 plt.show()
@@ -720,50 +720,55 @@ frac_decrease = np.mean(mean_diffs < 0)
 print(f"Fraction of steps with average decrement: {frac_decrease:.2%}")
 ```
 
-The average increment is negative at most steps, and the cumulative drift
-is monotonically downward.  This is the numerical signature of the
-supermartingale property $\mathbb{E}_Q[d_{n+1}\,|\,\mathscr{F}_n] \leq d_n$.
+The average increment is negative at most steps, and the cumulative drift is downward.
+
+This is only an illustration, not a proof, because it uses unconditional averages rather than the full conditional expectation in the theorem.
 
 
-## Failure of Merging: Mutual Singularity
+## Failure of merging: mutual singularity
 
-What happens when the hypothesis of the theorem fails — that is, when
-$P \not\ll Q$?  
+What happens when the hypothesis $P \ll Q$ fails?
 
-The answer is both instructive and stark.
+The singular case is the cleanest counterexample.
 
 ### Point-mass priors
 
 Suppose both agents hold degenerate (point-mass) priors:
 
-- **Agent P**: certain that $p = p_P = 0.30$.
-- **Agent Q**: certain that $p = p_Q = 0.75$.
+- Agent P: certain that $p = p_P = 0.30$.
+- Agent Q: certain that $p = p_Q = 0.75$.
 
-Since $P$ charges only sequences whose empirical frequency converges to
-$0.30$, and $Q$ charges only sequences whose empirical frequency converges
-to $0.75$, the two measures are mutually **singular**: $P \perp Q$.
+Since $P$ charges only sequences whose empirical frequency converges to $0.30$, and $Q$ charges only sequences whose empirical frequency converges to $0.75$, the two measures are mutually singular: $P \perp Q$.
 
-The conditional distributions do not update — both agents are certain of
-their model — so
+The conditional distributions do not update, because both agents are already certain of their model.
+
+For the theorem's object, namely the conditional law of the entire future path,
 
 $$
 \|P(\,\cdot\,|\,\mathscr{F}_n) - Q(\,\cdot\,|\,\mathscr{F}_n)\|_{\mathrm{TV}}
-= \|P - Q\|_{\mathrm{TV}} = |p_P - p_Q| = 0.45
+= \|P - Q\|_{\mathrm{TV}} = 1
 \quad \text{for all } n.
 $$
 
-The empirical frequency converges to the truth under the true measure,
-which means one agent's model is eventually falsified (and indeed, under
-$Q$, the empirical frequency $\to 0.75$ reveals that agent $P$'s model
-is wrong with probability 1).
+This equality holds because the infinite-product Bernoulli measures with distinct success probabilities are singular.
+
+If we look only one step ahead, the predictive distance is $|p_P - p_Q| = 0.45$.
+
+That is smaller than one, but it is not the quantity that appears in Blackwell–Dubins.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Failure of merging under singular priors.
+      The right panel separates the full future-path distance, which stays at one, from the one-step predictive gap, which stays at $|p_P - p_Q|$.
+    name: fig-merging-of-opinions-singular-priors
+---
 # -------------------------------------------------------------------------
 # Failure of merging: mutually singular point-mass priors
 # -------------------------------------------------------------------------
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
-fig.suptitle("Failure of Merging: Mutually Singular Priors ($P \\perp Q$)",
-             fontsize=12)
 
 # True data drawn under Q's model (p_Q = 0.75)
 p_P = 0.30        # agent P's fixed belief
@@ -776,8 +781,9 @@ data = rng.binomial(1, p_Q, n_steps)
 # Empirical frequency of successes
 emp_freq = np.cumsum(data) / np.arange(1, n_steps + 1)
 
-# 1-step predictive TV distance (constant: |p_P - p_Q|)
-tv_singular = np.full(n_steps, np.abs(p_P - p_Q))
+# Full future-path TV distance and one-step predictive TV distance
+tv_singular_full = np.ones(n_steps + 1)
+tv_singular_1step = np.full(n_steps + 1, np.abs(p_P - p_Q))
 
 # For comparison: run a Beta-Bernoulli merging experiment with the same truth
 sim_abs_cont = run_simulation(p_Q, 1.0, 8.0, 8.0, 1.0, n_steps, seed=1)
@@ -785,47 +791,48 @@ sim_abs_cont = run_simulation(p_Q, 1.0, 8.0, 8.0, 1.0, n_steps, seed=1)
 # --- Panel (a): empirical frequency ---
 ax = axes[0]
 ax.plot(np.arange(1, n_steps + 1), emp_freq,
-        color='steelblue', lw=1.5, label='Empirical frequency $k_n/n$')
+        color='steelblue', lw=2, label='empirical frequency $k_n/n$')
 ax.axhline(p_Q, color='firebrick', lw=1.2, ls='--',
-           label=f'Truth $p_Q = {p_Q}$')
-ax.axhline(p_P, color='gray',     lw=1.2, ls=':',
+           label=f'truth $p_Q = {p_Q}$')
+ax.axhline(p_P, color='gray', lw=1.2, ls=':',
            label=f"Agent P's belief $p_P = {p_P}$")
-ax.set_xlabel('Observations $n$')
-ax.set_ylabel('Probability')
-ax.set_title('(a)  Empirical frequency converges to truth')
+ax.set_xlabel('observations $n$')
+ax.set_ylabel('probability')
+ax.text(0.03, 0.93, '(a)', transform=ax.transAxes)
 ax.legend(fontsize=8)
 ax.set_ylim(0, 1)
 
 # --- Panel (b): TV distance comparison ---
 ax = axes[1]
-ax.plot(np.arange(1, n_steps + 1), tv_singular,
-        color='firebrick', lw=2.0,
-        label=r'Singular priors:  $d_n = |p_P - p_Q| = 0.45$')
-ax.semilogy(np.arange(n_steps + 1),
-            sim_abs_cont['tv_beta'] + 1e-10,
-            color='steelblue', lw=2.0,
-            label=r'$\mathrm{Beta}(1,8)$ vs $\mathrm{Beta}(8,1)$: $d_n \to 0$')
-ax.set_xlabel('Observations $n$')
+ax.plot(np.arange(n_steps + 1), tv_singular_full,
+        color='firebrick', lw=2,
+        label=r'singular priors: full-path $d_n = 1$')
+ax.plot(np.arange(n_steps + 1), tv_singular_1step,
+        color='gray', lw=2, ls=':',
+        label=r'one-step predictive gap $= |p_P - p_Q|$')
+ax.plot(np.arange(n_steps + 1), sim_abs_cont['tv_beta'],
+        color='steelblue', lw=2,
+        label=r'$\mathrm{Beta}(1,8)$ vs $\mathrm{Beta}(8,1)$')
+ax.set_xlabel('observations $n$')
 ax.set_ylabel(r'$d_n$')
-ax.set_title('(b)  TV distance: merging vs non-merging')
+ax.text(0.03, 0.93, '(b)', transform=ax.transAxes)
 ax.legend(fontsize=8)
+ax.set_ylim(0, 1.05)
 
 plt.tight_layout()
 plt.show()
 ```
 
-The contrast is vivid.  With mutually absolutely continuous priors (blue),
-the total-variation distance decays to zero as Blackwell–Dubins guarantees.
-With mutually singular point-mass priors (red), the distance stays
-permanently at $|p_P - p_Q| = 0.45$. 
+The contrast is sharp.
 
-More data never resolves the
-disagreement — the two agents are committed to models that are
-separated by events they each regard as having probability zero under
-the other's measure.
+With mutually absolutely continuous priors, $d_n$ decays to zero.
+
+With singular point-mass priors, the full future-path distance stays at one forever.
+
+More data does not reconcile the agents, because each rules out paths the other assigns positive probability.
 
 
-## Kakutani's Theorem: When Does Merging Hold?
+## Kakutani's theorem: when does merging hold?
 
 A natural question is: for which product measures does the Blackwell–Dubins
 hypothesis $P \ll Q$ hold?  For infinite product measures, the answer is
@@ -833,11 +840,11 @@ given by a classical result of {cite:t}`kakutani1948`.
 
 ### Hellinger affinities
 
-```{admonition} Definition
-:class: tip
-**Hellinger affinity.**
+```{prf:definition} Hellinger Affinity
+:label: hellinger_affinity
+
 For probability measures $P_n$ and $Q_n$ on $(S, \mathscr{S})$ with common
-dominating measure $\lambda$, the *Hellinger affinity* is
+dominating measure $\lambda$, the **Hellinger affinity** is
 
 $$
 \rho_n = \int_S \sqrt{\frac{dP_n}{d\lambda} \cdot \frac{dQ_n}{d\lambda}}\,d\lambda
@@ -849,13 +856,13 @@ $\rho_n = 1$ if and only if $P_n = Q_n$.
 
 For two specific one-dimensional families:
 
-- **Gaussian**: $P_n = \mathcal{N}(\mu_n, 1)$ vs $Q_n = \mathcal{N}(0,1)$:
+- Gaussian: $P_n = \mathcal{N}(\mu_n, 1)$ vs $Q_n = \mathcal{N}(0,1)$:
 
 $$
 \rho_n^{\text{Gauss}} = \exp\!\left(-\frac{\mu_n^2}{8}\right).
 $$
 
-- **Bernoulli**: $P_n = \mathrm{Bernoulli}(p)$ vs $Q_n = \mathrm{Bernoulli}(q)$:
+- Bernoulli: $P_n = \mathrm{Bernoulli}(p)$ vs $Q_n = \mathrm{Bernoulli}(q)$:
 
 $$
 \rho_n^{\text{Bern}} = \sqrt{pq} + \sqrt{(1-p)(1-q)}.
@@ -863,8 +870,9 @@ $$
 
 ### Kakutani's dichotomy
 
-```{admonition} Theorem (Kakutani, 1948)
-:class: important
+```{prf:theorem} Kakutani (1948)
+:label: kakutani_dichotomy
+
 Let $P = \bigotimes_{n=1}^\infty P_n$ and $Q = \bigotimes_{n=1}^\infty Q_n$
 be infinite product measures.  Then either $P \sim Q$ or $P \perp Q$; there
 is no intermediate case.  Specifically,
@@ -879,13 +887,12 @@ $$
 
 If $\prod_{n=1}^\infty \rho_n = 0$, then $P \perp Q$.
 
-*Proof sketch.*
-The likelihood ratio $Z_N = \prod_{n=1}^N (dP_n/dQ_n)$ is a $Q$-martingale.
-Its $L^{1/2}(Q)$ norm equals $\prod_{n=1}^N \rho_n$.
-If $\prod \rho_n > 0$: the martingale is bounded in $L^{1/2}$, hence
-uniformly integrable in $L^1$, giving $P \ll Q$.
-If $\prod \rho_n = 0$: $Z_N \to 0$ in $L^{1/2}$, so $Z_\infty = 0$
-$Q$-a.s. and $P \perp Q$.  $\square$
+*Proof idea.*
+A standard proof studies the likelihood-ratio martingale
+$Z_N = \prod_{n=1}^N (dP_n/dQ_n)$ together with the identity
+$\mathbb{E}_Q[\sqrt{Z_N}] = \prod_{n=1}^N \rho_n$.
+
+The product staying positive corresponds to equivalence, while the product collapsing to zero corresponds to singularity. $\square$
 ```
 
 ### Implication for merging
@@ -895,31 +902,37 @@ For i.i.d.-type sequences, Kakutani's theorem gives the following picture:
 | Scenario | $\sum_n (1-\rho_n)$ | Conclusion | Merging? |
 |---|---|---|---|
 | $P_n = Q_n$ for all $n$ | $0$ | $P = Q$ | Trivially yes |
-| $P_n \ne Q_n$ with $\sum_n (1-\rho_n) < \infty$ | Finite | $P \sim Q$ | Yes — Blackwell–Dubins applies |
+| $P_n \ne Q_n$ with $\sum_n (1-\rho_n) < \infty$ | Finite | $P \sim Q$ | Yes; Blackwell–Dubins applies |
 | $P_n = P \ne Q = Q_n$ fixed, $n \ge 1$ | $\infty$ | $P \perp Q$ | No |
 
-The i.i.d. case with different fixed marginals is the most common "no merging"
-scenario: if two agents ascribe permanently different distributions to each
-observation, they will eventually be in completely disjoint worlds.
+The i.i.d. case with different fixed marginals is the standard no-merging example.
 
-### Python: the Gaussian product measure example
+If two agents assign permanently different distributions to each observation, they end up in disjoint probability worlds.
 
-We illustrate Kakutani's dichotomy with Gaussian product measures,
-$Q = \mathcal{N}(0,1)^{\otimes\mathbb{N}}$ as the reference measure and
-$P = \bigotimes_n \mathcal{N}(\mu_n,1)$ as the alternative.
+### Python: a Gaussian product-measure example
+
+We illustrate Kakutani's dichotomy with Gaussian product measures.
+
+Take $Q = \mathcal{N}(0,1)^{\otimes\mathbb{N}}$ as the reference measure and $P = \bigotimes_n \mathcal{N}(\mu_n,1)$ as the alternative.
 
 Three choices of $\mu_n$:
 
-1. $\mu_n = \mu > 0$ **constant** ($\sum (1-\rho_n) = \infty$) $\Rightarrow P \perp Q$.
+1. $\mu_n = \mu > 0$ constant ($\sum (1-\rho_n) = \infty$) $\Rightarrow P \perp Q$.
 2. $\mu_n = c/\!\sqrt{n}$ ($\sum (1-\rho_n) \approx \sum c^2/(8n) = \infty$) $\Rightarrow P \perp Q$.
 3. $\mu_n = c/n$ ($\sum (1-\rho_n) \approx \sum c^2/(8n^2) < \infty$) $\Rightarrow P \sim Q$.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Kakutani's dichotomy for Gaussian product measures.
+      Only the $\mu_n = c/n$ sequence produces a finite Hellinger sum and a nondegenerate limiting likelihood ratio.
+    name: fig-merging-of-opinions-kakutani-gaussian
+---
 # -------------------------------------------------------------------------
 # Kakutani's theorem: Gaussian product measures
 # -------------------------------------------------------------------------
-from scipy.stats import norm as scipy_norm
-
 def hellinger_affinity_gauss(mu_n):
     """Hellinger affinity between N(mu_n, 1) and N(0, 1)."""
     return np.exp(-mu_n**2 / 8.0)
@@ -939,22 +952,19 @@ sequences = {
 }
 
 fig, axes = plt.subplots(1, 3, figsize=(13, 4))
-fig.suptitle(r"Kakutani's Dichotomy: Gaussian Product Measures  ($c = 2$)",
-             fontsize=12)
 
 colors_k = ['firebrick', 'darkorange', 'steelblue']
-labels_k = list(sequences.keys())
 
 # --- Panel (a): log Hellinger product  log prod rho_n = sum log rho_n ---
 ax = axes[0]
 for (label, mu_seq), col in zip(sequences.items(), colors_k):
     rho  = hellinger_affinity_gauss(mu_seq)
     log_prod = np.cumsum(np.log(rho))
-    ax.plot(ns, log_prod, color=col, lw=1.8, label=label)
+    ax.plot(ns, log_prod, color=col, lw=2, label=label)
 ax.axhline(0, color='black', lw=0.8, ls=':')
-ax.set_xlabel('$N$')
+ax.set_xlabel('horizon $N$')
 ax.set_ylabel(r'$\log \prod_{n=1}^{N} \rho_n$')
-ax.set_title(r'(a)  Log Hellinger product')
+ax.text(0.03, 0.93, '(a)', transform=ax.transAxes)
 ax.legend(fontsize=7.5)
 
 # --- Panel (b): sum of (1 - rho_n) ---
@@ -962,10 +972,10 @@ ax = axes[1]
 for (label, mu_seq), col in zip(sequences.items(), colors_k):
     rho     = hellinger_affinity_gauss(mu_seq)
     cum_sum = np.cumsum(1 - rho)
-    ax.plot(ns, cum_sum, color=col, lw=1.8, label=label)
-ax.set_xlabel('$N$')
+    ax.plot(ns, cum_sum, color=col, lw=2, label=label)
+ax.set_xlabel('horizon $N$')
 ax.set_ylabel(r'$\sum_{n=1}^{N}(1 - \rho_n)$')
-ax.set_title(r'(b)  Cumulative $\sum (1-\rho_n)$: finite $\Leftrightarrow$ $P \sim Q$')
+ax.text(0.03, 0.93, '(b)', transform=ax.transAxes)
 ax.legend(fontsize=7.5)
 
 # --- Panel (c): simulated log Z_N trajectories ---
@@ -979,12 +989,12 @@ for (label, mu_seq), col in zip(sequences.items(), colors_k):
     # log Z_N = sum_{n=1}^N [mu_n * x_n  -  mu_n^2 / 2]
     log_Z_increments = mu_seq[:N_plot] * x - mu_seq[:N_plot]**2 / 2.0
     log_Z_path = np.concatenate([[0], np.cumsum(log_Z_increments)])
-    ax.plot(np.arange(N_plot + 1), log_Z_path, color=col, lw=1.5, label=label)
+    ax.plot(np.arange(N_plot + 1), log_Z_path, color=col, lw=2, label=label)
 
 ax.axhline(0, color='black', lw=0.8, ls=':')
-ax.set_xlabel('$N$')
-ax.set_ylabel(r'$\log Z_N$ (one trajectory under $Q$)')
-ax.set_title('(c)  Likelihood ratio: diverges or converges')
+ax.set_xlabel('horizon $N$')
+ax.set_ylabel(r'$\log Z_N$ under $Q$')
+ax.text(0.03, 0.93, '(c)', transform=ax.transAxes)
 ax.legend(fontsize=7.5)
 
 plt.tight_layout()
@@ -993,21 +1003,21 @@ plt.show()
 
 The three panels confirm Kakutani's theorem:
 
-- **Constant drift** (red): $\log \prod \rho_n \to -\infty$ and
+- Constant drift (red): $\log \prod \rho_n \to -\infty$ and
   $\sum (1-\rho_n) \to \infty$; the likelihood ratio drifts to $-\infty$
   under $Q$, so $Z_N \to 0$ $Q$-a.s. and $P \perp Q$.
-- **$\mu_n = c/\sqrt{n}$** (orange): the same qualitative picture.
+- $\mu_n = c/\sqrt{n}$ (orange): the same qualitative picture.
   Despite the drift vanishing, it does so too slowly.
-- **$\mu_n = c/n$** (blue): $\sum (1-\rho_n) < \infty$, the log Hellinger
-  product stabilises to a finite limit, and the likelihood ratio converges
-  to a finite positive value — confirming $P \sim Q$.
+- $\mu_n = c/n$ (blue): $\sum (1-\rho_n) < \infty$, the log Hellinger
+  product stabilises to a finite limit, and the simulated likelihood ratio
+  remains nondegenerate, which is consistent with $P \sim Q$.
 
 Only in the third case does Blackwell–Dubins apply and merging occur.
 
 
-## Extension to Continuous Time
+## Extension to continuous time
 
-The Blackwell–Dubins theorem extends naturally to continuous time.
+The same logic extends to continuous time.
 
 ### Girsanov's theorem and the likelihood-ratio process
 
@@ -1019,8 +1029,8 @@ $$
 W_t = \widetilde{W}_t + \int_0^t \theta_s\, ds,
 $$
 
-where $\widetilde{W}$ is a $P$-Brownian motion.  The
-**Girsanov–Cameron–Martin theorem** {cite:p}`girsanov1960` gives the
+where $\widetilde{W}$ is a $P$-Brownian motion.
+The Girsanov–Cameron–Martin theorem {cite:p}`girsanov1960` gives the
 likelihood-ratio process as the stochastic exponential
 
 $$
@@ -1031,16 +1041,17 @@ $$
 $Z_t$ is always a non-negative $Q$-local martingale: it is a true martingale
 if and only if $\mathbb{E}_Q[Z_t] = 1$ for all $t$.
 
-**Novikov's condition** {cite:p}`novikov1972` — $\mathbb{E}_Q\!\left[\exp\!\left(\tfrac{1}{2}\int_0^T \theta_s^2\,ds\right)\right] < \infty$ for all $T$ — is sufficient.
+Novikov's condition {cite:p}`novikov1972`,
+$\mathbb{E}_Q\!\left[\exp\!\left(\tfrac{1}{2}\int_0^T \theta_s^2\,ds\right)\right] < \infty$ for all $T$,
+is sufficient.
 
 ### The dichotomy at infinity
 
-A key subtlety on $[0,+\infty)$: local absolute continuity ($P_t \ll Q_t$
-for every finite $t$) does *not* imply global absolute continuity
-($P \ll Q$ on $\mathscr{F}_\infty$).
+A key subtlety on $[0,+\infty)$ is that local absolute continuity does *not* imply global absolute continuity on $\mathscr{F}_\infty$.
 
-```{admonition} Proposition (Dichotomy at infinity)
-:class: note
+```{prf:proposition} Dichotomy at Infinity
+:label: dichotomy_at_infinity
+
 Suppose $Z_t$ is a true $Q$-martingale for every finite horizon.  Then
 $Z_t \to Z_\infty$ $Q$-a.s., and exactly one of the following holds:
 
@@ -1051,18 +1062,15 @@ $Z_t \to Z_\infty$ $Q$-a.s., and exactly one of the following holds:
    $Z_\infty = 0$ $Q$-a.s. and $P \perp Q$ on $\mathscr{F}_\infty$.
 ```
 
-A sufficient condition for case 1 is the **energy condition**
+A convenient sufficient condition in deterministic-drift examples is the **energy condition**
 
 $$
 \int_0^\infty \theta_s^2\,ds < \infty \quad Q\text{-a.s.}
 $$
 
-Informally, this says the total amount of information that separates the
-two measures over the infinite horizon is finite. 
+Informally, this says the total amount of information separating the two measures over the infinite horizon is finite.
 
-When $\theta$ is a
-non-zero constant — meaning the two agents predict permanently different
-drifts — the energy condition fails, $P \perp Q$, and merging cannot occur.
+When $\theta$ is a non-zero constant, the condition fails, the measures are singular on $\mathscr{F}_\infty$, and merging does not occur.
 
 With $P \ll Q$ on $\mathscr{F}_\infty$ established, the proof of the
 continuous-time Blackwell–Dubins theorem is identical to the discrete-time
@@ -1076,51 +1084,40 @@ forces $d_\infty = 0$.
 
 ### Bayesian learning
 
-The most direct application is to Bayesian inference. 
+The most direct application is Bayesian inference.
 
-Suppose data
-$(x_1, x_2, \ldots)$ are drawn from the true measure $Q^*$.  An agent
-holds a prior $\pi$ over a family $\{Q_\theta : \theta \in \Theta\}$,
-inducing a marginal $P = \int Q_\theta\,\pi(d\theta)$.  
+Suppose data $(x_1, x_2, \ldots)$ are drawn from the true measure $Q^*$.
 
-If $P \ll Q^*$ (equivalently: the prior assigns positive probability to every
-neighbourhood of the true model), then by Blackwell–Dubins,
+An agent holds a prior $\pi$ over a family $\{Q_\theta : \theta \in \Theta\}$, inducing a marginal $P = \int Q_\theta\,\pi(d\theta)$.
+
+If $P \ll Q^*$, then Blackwell–Dubins gives
 
 $$
 \bigl\|P(\,\cdot\,|\,x_1,\ldots,x_n) - Q^*(\,\cdot\,|\,x_1,\ldots,x_n)\bigr\|_{\mathrm{TV}}
 \to 0 \quad Q^*\text{-a.s.}
 $$
 
-This is a strong form of **Bayesian consistency**: the agent's predictions
-become indistinguishable from the truth, regardless of the specific prior,
-as long as the prior is in the right absolute-continuity class.
+This is a strong form of Bayesian consistency.
 
-{cite:t}`diaconis1986` establish that absolute continuity of the prior
-with respect to the truth is not just sufficient but essentially *necessary*
-for Doob consistency.  
+In many dominated parametric models, absolute continuity follows from the prior assigning positive mass to a suitable neighbourhood of the true parameter.
 
-When $P \perp Q^*$, there exist events of probability
-one under $Q^*$ that have probability zero under $P$, so the agent maintains
-fundamentally wrong beliefs forever.
+{cite:t}`diaconis1986` show that this absolute-continuity condition is not just sufficient but essentially *necessary* for Doob consistency.  
+
+When $P \perp Q^*$, there are events of probability one under $Q^*$ that have probability zero under $P$, so the agent's beliefs remain fundamentally misspecified.
 
 ### Rational expectations and heterogeneous priors
 
-In macroeconomics, the **common prior assumption** embedded in rational
-expectations models requires all agents to agree on the probability model
-for the economy.  
+In macroeconomics, rational-expectations models typically impose a common prior.
 
-Blackwell–Dubins provides a dynamic justification: if
-two agents start with heterogeneous but mutually absolutely continuous
-priors and observe a common history, their conditional forecasts will
-eventually agree on every event, even if they never explicitly coordinate
-their beliefs.
+Blackwell–Dubins gives a dynamic justification for weaker initial agreement.
 
-{cite:t}`aumann1976`'s **agreement theorem** strengthens this: agents with
+If two agents start with equivalent priors and observe the same history, their conditional forecasts eventually agree on every event.
+
+{cite:t}`aumann1976`'s agreement theorem strengthens this: agents with
 a common prior cannot "agree to disagree" on posterior probabilities.
 
 
-Blackwell–Dubins complements Aumann by showing that even without a common
-prior, merging occurs eventually if the initial priors are equivalent.
+Blackwell–Dubins complements Aumann by showing that equivalent priors are enough for eventual agreement.
 
 ### Ergodic Markov chains
 
@@ -1137,20 +1134,16 @@ $$
 \to 0.
 $$
 
-This is a special form of merging that does *not* require absolute
-continuity, because ergodicity already forces both distributions to the same
-limit.  
+This is a special form of merging that does *not* require absolute continuity, because ergodicity already forces both distributions to the same limit.
 
-Blackwell–Dubins is the appropriate generalisation for
-**non-ergodic** or **non-Markovian** processes, where no single invariant
-measure exists and the operative condition is absolute continuity of the
-initial priors.
+Blackwell–Dubins is the right analogue for non-ergodic or non-Markovian environments, where no single invariant distribution need exist.
 
 
-## The Rate of Merging
+## The rate of merging
 
-Blackwell–Dubins gives only almost-sure convergence; it says nothing about
-*how fast* $d_n \to 0$. 
+Blackwell–Dubins is qualitative.
+
+It tells us that $d_n \to 0$, but not how fast.
 
 The bound
 
@@ -1158,16 +1151,21 @@ $$
 \mathbb{E}_Q[d_n] \leq \tfrac{1}{2}\,\mathbb{E}_Q[|Z_n - Z_\infty|]
 $$
 
-shows that the rate of merging is controlled by the $L^1$ convergence
-rate of the likelihood ratio martingale.
+shows that the rate of merging is controlled by the $L^1$ convergence rate of the likelihood-ratio martingale.
 
-For parametric Bayesian models, the posterior contracts at the
-$n^{-1/2}$ rate (Bernstein–von Mises theorem), which implies
-$d_n = O(n^{-1/2})$ in expectation. 
+In regular parametric examples, one often sees $n^{-1/2}$-type behavior.
 
-The following figure illustrates this for our Beta–Bernoulli model.
+The next figure checks that heuristic in the Beta–Bernoulli model.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      A log-log plot of the average merging distance in the Beta–Bernoulli model.
+      The fitted slope is close to $-1/2$, which is consistent with square-root decay in this experiment.
+    name: fig-merging-of-opinions-rate
+---
 # -------------------------------------------------------------------------
 # Rate of merging: compare d_n to n^{-1/2}
 # -------------------------------------------------------------------------
@@ -1195,11 +1193,10 @@ ref_curve = C_ref / np.sqrt(ns_rate)
 fig, ax = plt.subplots(figsize=(8, 4))
 ax.loglog(ns_rate, mean_tv,  color='steelblue', lw=2,
           label=r'$\mathbb{E}_Q[d_n]$ (Monte Carlo)')
-ax.loglog(ns_rate, ref_curve, color='firebrick', lw=1.5, ls='--',
+ax.loglog(ns_rate, ref_curve, color='firebrick', lw=2, ls='--',
           label=rf'Reference $C/\sqrt{{n}}$  (fitted slope $\approx {slope:.2f}$)')
-ax.set_xlabel('$n$')
+ax.set_xlabel('sample size $n$')
 ax.set_ylabel(r'$\mathbb{E}_Q[d_n]$')
-ax.set_title(r'Rate of merging: $\mathbb{E}_Q[d_n] = O(n^{-1/2})$')
 ax.legend()
 plt.tight_layout()
 plt.show()
@@ -1207,148 +1204,67 @@ plt.show()
 print(f"Fitted log-log slope: {slope:.3f}  (predicted: -0.50)")
 ```
 
-The log–log slope of approximately $-0.5$ confirms the $O(n^{-1/2})$ rate
-for this parametric model on any single sample path.
+The fitted slope is close to $-0.5$.
+
+That is consistent with $n^{-1/2}$ scaling in this simulation.
 
 
 ## Summary
 
-The logical flow  underlying the Blackwell–Dubins theorem is:
+The logical flow underlying the Blackwell–Dubins theorem is:
 
 $$
 P \ll Q
 \;\Longrightarrow\;
-Z_n = \mathbb{E}_Q[Z_\infty\,|\,\mathscr{F}_n]
-\text{ uniformly integrable}
+Z = \frac{dP}{dQ} \in L^1(Q)
 \;\Longrightarrow\;
-Z_n \xrightarrow{L^1(Q)} Z_\infty
+Z_n = \mathbb{E}_Q[Z \,|\, \mathscr{F}_n]
+\xrightarrow{L^1(Q)}
+Z_\infty
 \;\Longrightarrow\;
 d_n \xrightarrow{Q\text{-a.s.}} 0.
 $$
 
 Key takeaways:
 
-1. **Mutual absolute continuity** is the operative condition.
-   It is a statement about which events are deemed *possible*, not about
-   how likely they are.  Two agents can disagree wildly on probabilities
-   yet still be guaranteed to eventually agree — provided neither agent
-   rules out events the other considers possible.
+1. One-sided absolute continuity is enough for the theorem.
+   If $P \ll Q$, merging holds $Q$-almost surely.
+   If $P \sim Q$, then the conclusion is symmetric.
 
-2. **The likelihood-ratio martingale** is the central object.
+2. The likelihood-ratio martingale is the central object.
    Its $L^1$ convergence (guaranteed by uniform integrability under $P \ll Q$)
    drives the almost-sure convergence of the total-variation distance $d_n$.
 
-3. **The supermartingale structure of $d_n$** provides the almost-sure
+3. The supermartingale structure of $d_n$ provides the almost-sure
    convergence: more data can only reduce (in expectation) the difficulty
    of telling two hypotheses apart.
 
-4. **Kakutani's theorem** tells us when $P \ll Q$ holds for product
+4. Kakutani's theorem tells us when $P \ll Q$ holds for product
    measures: precisely when the Hellinger affinities satisfy
    $\sum_n (1 - \rho_n) < \infty$.
 
-5. **There is a sharp dichotomy**: either $P \sim Q$ (merging) or
-   $P \perp Q$ (permanent disagreement).  There is no middle ground.
+5. For the product-measure settings covered by Kakutani, there is a sharp dichotomy:
+   either $P \sim Q$ and merging occurs, or $P \perp Q$ and disagreement can persist forever.
 
-## Applications in Economics
+## Applications in economics
 
-{cite}`KalaiLehrer1993Nash` apply the Blackwell--Dubins theorem to show that
-rational Bayesian learning in an infinitely repeated game leads play to
-resemble a Nash equilibrium.  
+Some influential applications and extensions are:
 
-If each player's prior is absolutely continuous
-with respect to the true distribution of opponents' strategies, beliefs merge
-with the truth and best responses converge to approximate Nash behavior.  
+- {cite}`KalaiLehrer1993Nash`: repeated-game learning drives play toward Nash behavior when priors are absolutely continuous with respect to the truth.
+- {cite}`KalaiLehrer1993Subjective`: subjective and objective equilibria coincide asymptotically under the same condition.
+- {cite}`KalaiLehrer1994Merging`: weak and strong notions of merging are introduced for environments where full total-variation convergence is too strong.
+- {cite}`KalaiLehrerSmorodinsky1999`: merging is linked to calibrated forecasting.
+- {cite}`JacksonKalaiSmorodinsky1999`: de~Finetti-style representations are connected to Bayesian learning and posterior convergence.
+- {cite}`JacksonKalai1999`: social learning erodes reputational effects that rely on persistent disagreement across cohorts.
+- {cite}`Sandroni1998Nash`: near-absolute-continuity conditions are shown to suffice for Nash-type convergence in repeated games.
+- {cite}`Sandroni2000`: gives an alternative proof and an economic interpretation of persistent disagreement in terms of mutually favorable bets.
+- {cite}`LehrerSmorodinsky1996Compatible`: studies broader compatibility notions beyond Blackwell--Dubins absolute continuity.
+- {cite}`LehrerSmorodinsky1996Learning`: surveys merging and learning in repeated strategic environments.
+- {cite}`Nyarko1994`: relates Bayesian learning under absolute continuity to convergence toward correlated equilibrium.
+- {cite}`PomattoAlNajjarSandroni2014`: extends the theorem to finitely additive probabilities and connects merging to test manipulability.
+- {cite}`AcemogluChernozhukovYildiz2016`: shows how disagreement can persist when agents are uncertain about the signal structure itself.
 
-This paper is a primary conduit through which Blackwell--Dubins entered mainstream
-economic theory.
-
-{cite}`KalaiLehrer1993Subjective` introduce the notion of a subjective
-equilibrium in repeated games and use the merging result to establish that
-subjective and objective equilibria coincide in the long run under the same
-absolute continuity condition.
-
-{cite}`KalaiLehrer1994Merging` extend the Blackwell--Dubins framework by
-introducing weaker notions of merging---weak and strong---suited to studying
-convergence to equilibrium in infinite games and dynamic economies where
-full total-variation merging is too demanding.
-
-{cite}`KalaiLehrerSmorodinsky1999` connect merging of opinions to the theory
-of calibrated forecasting, showing that a forecaster whose priors satisfy an
-absolute-continuity condition relative to the true process will be calibrated
-in the long run.
-
-
-{cite}`JacksonKalaiSmorodinsky1999` revisit de~Finetti's representation theorem
-through the lens of Bayesian learning.  
-
-They show that when agents learn about
-a stochastic process by observing its realizations, the beliefs that emerge
-have a de~Finetti-style exchangeability structure, with the Blackwell--Dubins
-theorem playing a central role in establishing convergence of posterior
-representations.
-
-{cite}`JacksonKalai1999` study a model of recurring games in which successive
-cohorts of players observe the history of earlier play.  Using the
-rational-learning machinery of Kalai--Lehrer together with Blackwell--Dubins,
-they show that reputational effects that can sustain non-Nash behavior in an
-isolated group dissipate over time as social learning spreads through the
-population.
-
-
-{cite}`Sandroni1998Nash` shows that the absolute continuity condition required
-by Blackwell--Dubins and by Kalai--Lehrer can be weakened to *almost* absolute
-continuity---a condition under which Nash convergence of learning still holds,
-broadening the scope of the rational-learning program.
-
-{cite}`Sandroni2000` provides an alternative proof of the Blackwell--Dubins
-theorem that makes the role of absolute continuity transparent.  
-
-The paper
-argues that *persistent disagreement*---the negation of merging---implies the
-existence of mutually favorable bets on which each agent is certain to profit
-on average, a violation of absolute continuity.  
-
-The analysis raises questions
-about the economic relevance of the merging result by clarifying just how
-strong the absolute continuity hypothesis is.
-
-
-{cite}`LehrerSmorodinsky1996Compatible` characterize the class of
-*compatible* pairs of measures---those for which some form of merging
-obtains---going beyond the sufficient condition of absolute continuity
-used by Blackwell and Dubins.
-
-{cite}`LehrerSmorodinsky1996Learning` survey the relationship between merging
-of opinions and learning in repeated strategic environments, collected in a
-volume honoring David Blackwell.
-
-
-{cite}`Nyarko1994` uses Blackwell--Dubins to prove that Bayesian learning in
-an infinitely repeated normal-form game leads beliefs and empirical
-distributions to converge to a correlated equilibrium of the true game,
-under the absolute continuity of priors.
-
-{cite}`PomattoAlNajjarSandroni2014` extend the Blackwell--Dubins theorem to
-the class of finitely additive (Savagean) probability measures.  
-
-They show
-that the theorem holds for extreme points of the set of measures compatible
-with a given prior, and they exploit this characterization to study when
-statistical tests of forecasting ability can be manipulated---connecting
-the merging and testing literatures.
-
-{cite}`AcemogluChernozhukovYildiz2016` identify a fragility in the
-Blackwell--Dubins consensus result.  
-
-When agents are uncertain not just about
-an underlying parameter but also about the mapping from the parameter to signal
-distributions, absolute continuity of priors is no longer sufficient for
-asymptotic agreement.  
-
-Even with identical support, agents may disagree
-forever, providing a Bayesian foundation for persistent heterogeneous beliefs.
-
-## A Key Companion Paper from Probability
+## A key companion paper from probability
 
 {cite}`DiaconisFreedman1986` establish consistency of Bayes estimates under
 misspecification, a result in the same intellectual tradition as
@@ -1357,4 +1273,3 @@ Blackwell--Dubins.
 It is routinely co-cited with the merging theorem in the
 economics learning literature as providing the probabilistic underpinning for
 Bayesian consistency.
-
