@@ -55,9 +55,11 @@ This result is connected to several other important ideas:
   operational criterion for when merging is guaranteed.
 
 We develop the theory in discrete time, where the argument is sharpest, and
-sketch the continuous-time extension.  Throughout we use the
-**Beta–Bernoulli conjugate model** as the running numerical example: two
-agents observe the same stream of coin flips but start with very different
+sketch the continuous-time extension. 
+
+Throughout we use the
+**Beta–Bernoulli conjugate model** as a running numerical example: two
+agents observe the same stream of coin flips but start with  different
 priors over the coin's bias.
 
 Let us start with some imports.
@@ -113,7 +115,9 @@ not conversely.
 ```
 
 Mutual absolute continuity has a natural interpretation: $P \sim Q$ means the two
-agents agree on which individual events are *possible*.  They may disagree about
+agents agree on which individual events are *possible*.  
+
+They can disagree about
 how *likely* those events are, but neither agent considers an event impossible
 that the other considers possible.
 
@@ -130,8 +134,9 @@ $$
 = \frac{1}{2} \int_E \left|\frac{d\mu}{d\lambda} - \frac{d\nu}{d\lambda}\right| d\lambda,
 $$
 
-where $\lambda$ is any dominating measure.  Equivalently, $\|\mu - \nu\|_{\mathrm{TV}} \in [0,1]$,
-with 0 meaning $\mu = \nu$ and 1 meaning $\mu \perp \nu$ (mutual singularity).
+where $\lambda$ is any dominating measure. 
+
+Equivalently, $\|\mu - \nu\|_{\mathrm{TV}} \in [0,1]$, with 0 meaning $\mu = \nu$ and 1 meaning $\mu \perp \nu$ (mutual singularity).
 ```
 
 When $\mu \ll \nu$ with $f = d\mu/d\nu$,
@@ -148,7 +153,9 @@ event differ by at most $\|\mu - \nu\|_{\mathrm{TV}}$.
 ### The merging question
 
 The Blackwell–Dubins theorem is about the conditional distributions of the
-**future** given the **past**.  At time $n$, after observing $(x_1,\ldots,x_n)$,
+**future** given the **past**.  
+
+At time $n$, after observing $(x_1,\ldots,x_n)$,
 each agent forms a conditional distribution over all future events:
 
 $$
@@ -157,7 +164,9 @@ Q(\,\cdot\,|\,\mathscr{F}_n)(\omega).
 $$
 
 These are probability measures on the whole future path, not just the next
-observation.  The merging question asks whether
+observation.  
+
+The merging question asks whether
 
 $$
 d_n \;:=\; \bigl\|P(\,\cdot\,|\,\mathscr{F}_n) - Q(\,\cdot\,|\,\mathscr{F}_n)\bigr\|_{\mathrm{TV}}
@@ -278,7 +287,9 @@ $$
 $$
 
 So $\{d_n, \mathscr{F}_n\}$ is a non-negative $Q$-supermartingale taking
-values in $[0,1]$.  By Doob's supermartingale convergence theorem, $d_n \to d_\infty$
+values in $[0,1]$.  
+
+By Doob's supermartingale convergence theorem, $d_n \to d_\infty$
 $Q$-almost surely for some $[0,1]$-valued random variable $d_\infty$.
 
 **Step 3 — The almost-sure limit is zero.**
@@ -289,8 +300,11 @@ $$
 $$
 
 Hence $d_n \to 0$ in $L^1(Q)$, so $d_n \to 0$ in probability under $Q$.
+
 But $d_n \to d_\infty$ $Q$-a.s. and $d_n \to 0$ in probability together
-force $d_\infty = 0$ $Q$-a.s.  Since $P \ll Q$, every $Q$-null set is
+force $d_\infty = 0$ $Q$-a.s.  
+
+Since $P \ll Q$, every $Q$-null set is
 $P$-null, so $d_n \to 0$ $P$-a.s. as well. $\square$
 
 ```{admonition} Remark (One-sided vs. mutual absolute continuity)
@@ -321,8 +335,9 @@ the simulations.
 ### Model
 
 Suppose the data stream $(x_1, x_2, \ldots)$ consists of IID Bernoulli
-draws with unknown probability $p^* \in (0,1)$.  Agent $i$ holds a
-Beta prior:
+draws with unknown probability $p^* \in (0,1)$.  
+
+Agent $i$ has a Beta prior:
 
 $$
 p \sim \mathrm{Beta}(\alpha_i, \beta_i), \qquad i = 1, 2.
@@ -373,9 +388,11 @@ that $P_1 \sim P_2$ for any Beta priors with positive parameters.
 ### The exact Blackwell–Dubins distance
 
 For the Beta–Bernoulli model, there is a clean formula for $d_n$.
+
 By de Finetti's theorem, each agent's conditional distribution of the
 *future infinite sequence* given the past is a mixture of IID Bernoulli$(p)$
 processes, where $p$ is drawn from the posterior Beta distribution.
+
 Since the Bernoulli$(p)^{\infty}$ measures for different $p$ are mutually
 singular (the empirical frequency identifies $p$ exactly), the TV distance
 between the two conditional distributions over the future equals the TV
@@ -494,7 +511,8 @@ whose true probability of heads is $p^* = 0.65$.
   $\hat{p}_2^0 = 8/9 \approx 0.89$.
 
 Both priors are supported on all of $(0,1)$, so $P_1 \sim P_2$.
-Blackwell–Dubins guarantees merging; the question is only how fast.
+
+Blackwell–Dubins guarantees merging; the question is  how fast.
 
 ```{code-cell} ipython3
 # -------------------------------------------------------------------------
@@ -657,6 +675,7 @@ expected values.
 ## The Supermartingale Property of $d_n$
 
 The proof relies on $\{d_n\}$ being a non-negative supermartingale.
+
 We can verify this numerically by checking that $d_n$ tends to decrease
 over time and that its conditional expectation does not increase.
 
@@ -709,7 +728,9 @@ supermartingale property $\mathbb{E}_Q[d_{n+1}\,|\,\mathscr{F}_n] \leq d_n$.
 ## Failure of Merging: Mutual Singularity
 
 What happens when the hypothesis of the theorem fails — that is, when
-$P \not\ll Q$?  The answer is both instructive and stark.
+$P \not\ll Q$?  
+
+The answer is both instructive and stark.
 
 ### Point-mass priors
 
@@ -796,7 +817,9 @@ plt.show()
 The contrast is vivid.  With mutually absolutely continuous priors (blue),
 the total-variation distance decays to zero as Blackwell–Dubins guarantees.
 With mutually singular point-mass priors (red), the distance stays
-permanently at $|p_P - p_Q| = 0.45$.  More data never resolves the
+permanently at $|p_P - p_Q| = 0.45$. 
+
+More data never resolves the
 disagreement — the two agents are committed to models that are
 separated by events they each regard as having probability zero under
 the other's measure.
@@ -1034,8 +1057,10 @@ $$
 \int_0^\infty \theta_s^2\,ds < \infty \quad Q\text{-a.s.}
 $$
 
-Intuitively, this says the total amount of information that separates the
-two measures over the infinite horizon is finite.  When $\theta$ is a
+Informally, this says the total amount of information that separates the
+two measures over the infinite horizon is finite. 
+
+When $\theta$ is a
 non-zero constant — meaning the two agents predict permanently different
 drifts — the energy condition fails, $P \perp Q$, and merging cannot occur.
 
@@ -1051,11 +1076,14 @@ forces $d_\infty = 0$.
 
 ### Bayesian learning
 
-The most direct application is to Bayesian inference.  Suppose data
+The most direct application is to Bayesian inference. 
+
+Suppose data
 $(x_1, x_2, \ldots)$ are drawn from the true measure $Q^*$.  An agent
 holds a prior $\pi$ over a family $\{Q_\theta : \theta \in \Theta\}$,
-inducing a marginal $P = \int Q_\theta\,\pi(d\theta)$.  If $P \ll Q^*$
-(equivalently: the prior assigns positive probability to every
+inducing a marginal $P = \int Q_\theta\,\pi(d\theta)$.  
+
+If $P \ll Q^*$ (equivalently: the prior assigns positive probability to every
 neighbourhood of the true model), then by Blackwell–Dubins,
 
 $$
@@ -1069,7 +1097,9 @@ as long as the prior is in the right absolute-continuity class.
 
 {cite:t}`diaconis1986` establish that absolute continuity of the prior
 with respect to the truth is not just sufficient but essentially *necessary*
-for Doob consistency.  When $P \perp Q^*$, there exist events of probability
+for Doob consistency.  
+
+When $P \perp Q^*$, there exist events of probability
 one under $Q^*$ that have probability zero under $P$, so the agent maintains
 fundamentally wrong beliefs forever.
 
@@ -1077,7 +1107,9 @@ fundamentally wrong beliefs forever.
 
 In macroeconomics, the **common prior assumption** embedded in rational
 expectations models requires all agents to agree on the probability model
-for the economy.  Blackwell–Dubins provides a dynamic justification: if
+for the economy.  
+
+Blackwell–Dubins provides a dynamic justification: if
 two agents start with heterogeneous but mutually absolutely continuous
 priors and observe a common history, their conditional forecasts will
 eventually agree on every event, even if they never explicitly coordinate
@@ -1085,6 +1117,8 @@ their beliefs.
 
 {cite:t}`aumann1976`'s **agreement theorem** strengthens this: agents with
 a common prior cannot "agree to disagree" on posterior probabilities.
+
+
 Blackwell–Dubins complements Aumann by showing that even without a common
 prior, merging occurs eventually if the initial priors are equivalent.
 
@@ -1092,7 +1126,9 @@ prior, merging occurs eventually if the initial priors are equivalent.
 
 For a Markov chain with transition kernel $\Pi$ and two initial
 distributions $\mu$ and $\nu$, the $n$-step distributions are $\mu\Pi^n$
-and $\nu\Pi^n$.  If $\Pi$ is ergodic with unique stationary distribution
+and $\nu\Pi^n$.  
+
+If $\Pi$ is ergodic with unique stationary distribution
 $\pi$, both converge to $\pi$, so
 
 $$
@@ -1103,7 +1139,9 @@ $$
 
 This is a special form of merging that does *not* require absolute
 continuity, because ergodicity already forces both distributions to the same
-limit.  Blackwell–Dubins is the appropriate generalisation for
+limit.  
+
+Blackwell–Dubins is the appropriate generalisation for
 **non-ergodic** or **non-Markovian** processes, where no single invariant
 measure exists and the operative condition is absolute continuity of the
 initial priors.
@@ -1112,7 +1150,9 @@ initial priors.
 ## The Rate of Merging
 
 Blackwell–Dubins gives only almost-sure convergence; it says nothing about
-*how fast* $d_n \to 0$.  The bound
+*how fast* $d_n \to 0$. 
+
+The bound
 
 $$
 \mathbb{E}_Q[d_n] \leq \tfrac{1}{2}\,\mathbb{E}_Q[|Z_n - Z_\infty|]
@@ -1123,8 +1163,9 @@ rate of the likelihood ratio martingale.
 
 For parametric Bayesian models, the posterior contracts at the
 $n^{-1/2}$ rate (Bernstein–von Mises theorem), which implies
-$d_n = O(n^{-1/2})$ in expectation.  The following figure illustrates
-this for our Beta–Bernoulli model.
+$d_n = O(n^{-1/2})$ in expectation. 
+
+The following figure illustrates this for our Beta–Bernoulli model.
 
 ```{code-cell} ipython3
 # -------------------------------------------------------------------------
@@ -1172,7 +1213,7 @@ for this parametric model on any single sample path.
 
 ## Summary
 
-The main logical chain underlying the Blackwell–Dubins theorem is:
+The logical flow  underlying the Blackwell–Dubins theorem is:
 
 $$
 P \ll Q
@@ -1208,4 +1249,112 @@ Key takeaways:
 5. **There is a sharp dichotomy**: either $P \sim Q$ (merging) or
    $P \perp Q$ (permanent disagreement).  There is no middle ground.
 
+## Applications in Economics
+
+{cite}`KalaiLehrer1993Nash` apply the Blackwell--Dubins theorem to show that
+rational Bayesian learning in an infinitely repeated game leads play to
+resemble a Nash equilibrium.  
+
+If each player's prior is absolutely continuous
+with respect to the true distribution of opponents' strategies, beliefs merge
+with the truth and best responses converge to approximate Nash behavior.  
+
+This paper is a primary conduit through which Blackwell--Dubins entered mainstream
+economic theory.
+
+{cite}`KalaiLehrer1993Subjective` introduce the notion of a subjective
+equilibrium in repeated games and use the merging result to establish that
+subjective and objective equilibria coincide in the long run under the same
+absolute continuity condition.
+
+{cite}`KalaiLehrer1994Merging` extend the Blackwell--Dubins framework by
+introducing weaker notions of merging---weak and strong---suited to studying
+convergence to equilibrium in infinite games and dynamic economies where
+full total-variation merging is too demanding.
+
+{cite}`KalaiLehrerSmorodinsky1999` connect merging of opinions to the theory
+of calibrated forecasting, showing that a forecaster whose priors satisfy an
+absolute-continuity condition relative to the true process will be calibrated
+in the long run.
+
+
+{cite}`JacksonKalaiSmorodinsky1999` revisit de~Finetti's representation theorem
+through the lens of Bayesian learning.  
+
+They show that when agents learn about
+a stochastic process by observing its realizations, the beliefs that emerge
+have a de~Finetti-style exchangeability structure, with the Blackwell--Dubins
+theorem playing a central role in establishing convergence of posterior
+representations.
+
+{cite}`JacksonKalai1999` study a model of recurring games in which successive
+cohorts of players observe the history of earlier play.  Using the
+rational-learning machinery of Kalai--Lehrer together with Blackwell--Dubins,
+they show that reputational effects that can sustain non-Nash behavior in an
+isolated group dissipate over time as social learning spreads through the
+population.
+
+
+{cite}`Sandroni1998Nash` shows that the absolute continuity condition required
+by Blackwell--Dubins and by Kalai--Lehrer can be weakened to *almost* absolute
+continuity---a condition under which Nash convergence of learning still holds,
+broadening the scope of the rational-learning program.
+
+{cite}`Sandroni2000` provides an alternative proof of the Blackwell--Dubins
+theorem that makes the role of absolute continuity transparent.  
+
+The paper
+argues that *persistent disagreement*---the negation of merging---implies the
+existence of mutually favorable bets on which each agent is certain to profit
+on average, a violation of absolute continuity.  
+
+The analysis raises questions
+about the economic relevance of the merging result by clarifying just how
+strong the absolute continuity hypothesis is.
+
+
+{cite}`LehrerSmorodinsky1996Compatible` characterize the class of
+*compatible* pairs of measures---those for which some form of merging
+obtains---going beyond the sufficient condition of absolute continuity
+used by Blackwell and Dubins.
+
+{cite}`LehrerSmorodinsky1996Learning` survey the relationship between merging
+of opinions and learning in repeated strategic environments, collected in a
+volume honoring David Blackwell.
+
+
+{cite}`Nyarko1994` uses Blackwell--Dubins to prove that Bayesian learning in
+an infinitely repeated normal-form game leads beliefs and empirical
+distributions to converge to a correlated equilibrium of the true game,
+under the absolute continuity of priors.
+
+{cite}`PomattoAlNajjarSandroni2014` extend the Blackwell--Dubins theorem to
+the class of finitely additive (Savagean) probability measures.  
+
+They show
+that the theorem holds for extreme points of the set of measures compatible
+with a given prior, and they exploit this characterization to study when
+statistical tests of forecasting ability can be manipulated---connecting
+the merging and testing literatures.
+
+{cite}`AcemogluChernozhukovYildiz2016` identify a fragility in the
+Blackwell--Dubins consensus result.  
+
+When agents are uncertain not just about
+an underlying parameter but also about the mapping from the parameter to signal
+distributions, absolute continuity of priors is no longer sufficient for
+asymptotic agreement.  
+
+Even with identical support, agents may disagree
+forever, providing a Bayesian foundation for persistent heterogeneous beliefs.
+
+## A Key Companion Paper from Probability
+
+{cite}`DiaconisFreedman1986` establish consistency of Bayes estimates under
+misspecification, a result in the same intellectual tradition as
+Blackwell--Dubins. 
+
+It is routinely co-cited with the merging theorem in the
+economics learning literature as providing the probabilistic underpinning for
+Bayesian consistency.
 
