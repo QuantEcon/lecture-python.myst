@@ -135,7 +135,7 @@ When $\gamma = \rho$, preferences reduce to the standard separable CRRA case.
 
 ## Planner's problem
 
-Following {cite}`Dumas_Uppal_Wang2000`, we study equilibrium allocations through a social planner's problem.
+Following {cite:t}`Dumas_Uppal_Wang2000`, we study equilibrium allocations through a social planner's problem.
 
 The planner chooses consumption shares $z^1$ and $z^2 = 1 - z^1$ and discount-rate processes $\nu^n$ for the two agents.
 
@@ -447,7 +447,9 @@ $$
 (\pi^1 - \pi^2)(\mu_R - r) = \frac{\omega^1 - \omega^2}{\gamma \sigma_Y} \cdot (\gamma \sigma_Y^2 - \omega^2 \sigma_Y) - \frac{\omega^1 - \omega^2}{2\gamma}.
 $$
 
-For the volatility term, write $(\pi^1)^2 - (\pi^2)^2 = (\pi^1 - \pi^2)(\pi^1 + \pi^2)$ and note $\pi^1 + \pi^2 = 2 + (\omega^1 + \omega^2 - 2\omega^2)/(\gamma \sigma_Y)$. After simplification:
+For the volatility term, write $(\pi^1)^2 - (\pi^2)^2 = (\pi^1 - \pi^2)(\pi^1 + \pi^2)$ and note $\pi^1 + \pi^2 = 2 + (\omega^1 + \omega^2 - 2\omega^2)/(\gamma \sigma_Y)$. 
+
+After simplification:
 
 $$
 \tfrac{1}{2}[(\pi^1)^2 - (\pi^2)^2]\sigma_Y^2 = \frac{\omega^1 - \omega^2}{\gamma}\left(\sigma_Y + \frac{\omega^1 - \omega^2}{2\gamma}\right).
@@ -469,10 +471,10 @@ $$ (eq:consumption_rates)
 
 The term in brackets is the difference in *subjective* expected portfolio returns — what agent 1 believes she earns relative to agent 2.
 
-The prefactor $(1-\rho)/\rho$ translates this perceived return advantage into a saving response.
+The factor $(1-\rho)/\rho$ translates this perceived return advantage into a saving response.
 
-- When IES $> 1$ ($\rho < 1$), the prefactor is positive: a higher perceived return makes the agent save more, because the substitution effect dominates the income effect.
-- When IES $< 1$ ($\rho > 1$), the prefactor is negative: the income effect dominates and the agent saves less, working against survival.
+- When IES $> 1$ ($\rho < 1$), the factor is positive: a higher perceived return makes the agent save more, because the substitution effect dominates the income effect.
+- When IES $< 1$ ($\rho > 1$), the factor is negative: the income effect dominates and the agent saves less, working against survival.
 - When IES $= 1$ ($\rho = 1$), the two effects cancel and the saving channel vanishes entirely.
 
 This is the channel through which recursive preferences alter survival outcomes by separating $\gamma$ from $\rho$.
@@ -482,7 +484,9 @@ This is the channel through which recursive preferences alter survival outcomes 
 
 Derive {eq}`eq:consumption_rates`.
 
-In the homogeneous economy populated by agent 2, the consumption-wealth ratio is $(y(0))^{-1} = \beta - (1-\rho)\mu_V^2$, where $\mu_V^2$ is agent 2's expected log return on wealth. Agent 1, as a negligible price-taker, has consumption-wealth ratio $(y^1)^{-1} = \beta - (1-\rho)\mu_V^1$, where $\mu_V^1$ is her own expected log return.
+In the homogeneous economy populated by agent 2, the consumption-wealth ratio is $(y(0))^{-1} = \beta - (1-\rho)\mu_V^2$, where $\mu_V^2$ is agent 2's expected log return on wealth. 
+
+Agent 1, as a negligible price-taker, has consumption-wealth ratio $(y^1)^{-1} = \beta - (1-\rho)\mu_V^1$, where $\mu_V^1$ is her own expected log return.
 
 Use $(y^2)^{-1} - (y^1)^{-1} = (1-\rho)(\mu_V^1 - \mu_V^2)$ and express $\mu_V^1 - \mu_V^2$ in terms of agent 1's *subjective* expected excess return.
 
@@ -530,22 +534,6 @@ The survival conditions do not depend on $\beta$ or $\mu_Y$, which affect the le
 def portfolio_return_diff(ω_1, ω_2, γ, σ_y):
     """
     Difference in expected log portfolio returns at the boundary.
-
-    Parameters
-    ----------
-    ω_1 : float
-        Belief distortion of agent 1
-    ω_2 : float
-        Belief distortion of agent 2
-    γ : float
-        Risk aversion
-    σ_y : float
-        Endowment volatility
-
-    Returns
-    -------
-    float
-        Difference in expected log portfolio returns
     """
     Δω = ω_1 - ω_2
     risky_share_diff = Δω / (γ * σ_y)
@@ -557,21 +545,6 @@ def portfolio_return_diff(ω_1, ω_2, γ, σ_y):
 def saving_channel(ω_1, ω_2, γ, ρ, σ_y):
     """
     Difference in consumption-wealth ratios at the boundary.
-
-    Parameters
-    ----------
-    ω_1, ω_2 : float
-        Belief distortions
-    γ : float
-        Risk aversion
-    ρ : float
-        Inverse of IES
-    σ_y : float
-        Endowment volatility
-
-    Returns
-    -------
-    float
     """
     Δω = ω_1 - ω_2
     subjective_return_diff = Δω * σ_y + Δω**2 / (2 * γ)
@@ -583,22 +556,6 @@ def boundary_drift(ω_1, ω_2, γ, ρ, σ_y):
     Boundary drift m_ϑ when agent 1 becomes negligible.
 
     Positive drift means agent 1 survives (repelling boundary).
-
-    Parameters
-    ----------
-    ω_1, ω_2 : float
-        Belief distortions of agents 1 and 2
-    γ : float
-        Risk aversion
-    ρ : float
-        Inverse of IES
-    σ_y : float
-        Endowment volatility
-
-    Returns
-    -------
-    float
-        Drift at v = 0
     """
     return γ * (
         portfolio_return_diff(ω_1, ω_2, γ, σ_y)
@@ -608,7 +565,7 @@ def boundary_drift(ω_1, ω_2, γ, ρ, σ_y):
 
 ## Survival regions
 
-A central contribution of {cite}`Borovicka2020` is the characterization of survival regions in the $(\gamma, \rho)$ plane.
+A central contribution of {cite:t}`Borovicka2020` is the characterization of survival regions in the $(\gamma, \rho)$ plane.
 
 Under separable preferences, $\gamma = \rho$, the agent with more accurate beliefs always dominates.
 
@@ -625,11 +582,6 @@ def compute_survival_boundary(ω_1, ω_2, σ_y, γ_grid, boundary="lower"):
 
     For boundary='lower', agent 1 is the small agent.
     For boundary='upper', agent 2 is the small agent.
-
-    Returns
-    -------
-    np.ndarray
-        Boundary values of ρ as a function of γ
     """
     ρ_boundary = []
 
@@ -730,8 +682,8 @@ for idx, (case, value, label) in enumerate(panel_specs):
     ax.set_title(label, fontsize=12)
     ax.set_xlim(0, 6)
     ax.set_ylim(0, 2)
-    ax.set_xlabel(r"risk aversion $\gamma$")
-    ax.set_ylabel(r"inverse IES $\rho$")
+    ax.set_xlabel(r"$\gamma$")
+    ax.set_ylabel(r"$\rho$")
 
 axes[0, 0].legend(loc="upper left", fontsize=9)
 plt.tight_layout()
@@ -745,11 +697,11 @@ Each panel plots two curves in the $(\gamma, \rho)$ plane for a different value 
 - The shaded region between the two curves is where both agents survive.
 - The dotted diagonal $\gamma = \rho$ is the separable CRRA case, along which the agent with more accurate beliefs always dominates.
 
-Moderate optimism ($\omega^1 = 0.10$) produces a narrow coexistence region.
+Moderate optimism ($\omega^1 = 0.10$) produces a wide coexistence region that extends across most of the $\gamma$ range.
 
-Stronger optimism ($\omega^1 = 0.20$) widens it substantially.
+Stronger optimism ($\omega^1 = 0.20$) narrows the region: the agent 2 boundary shifts out of the plotted range for moderate and large $\gamma$, shrinking the set of $(\gamma, \rho)$ pairs where both agents coexist.
 
-In the limit $|\omega^1|/\sigma_Y \to \infty$ (bottom-left), the boundaries simplify to closed-form expressions.
+In the limit $|\omega^1|/\sigma_Y \to \infty$ (bottom-left), the boundaries simplify to closed-form expressions and the coexistence region contracts further, existing only for $\gamma < 1$.
 
 Pessimistic distortions ($\omega^1 = -0.25$, bottom-right) can also survive, but only in a much narrower part of the parameter space.
 
@@ -892,11 +844,11 @@ This figure plots the two boundary drifts as a function of $\gamma$ ($\omega^1 =
 
 The figure illustrates asymptotic result 1.
 
-For small $\gamma$, the blue curve is negative and the red curve is also negative.
+For small $\gamma$, the blue curve is negative and the red curve is positive.
 
-Both drifts push the Pareto share in the same direction — toward $\upsilon = 1$ — so whichever agent happens to get ahead early will dominate.
+Both boundaries are attracting: near $\upsilon = 0$ the negative drift pulls $\upsilon$ toward 0, and near $\upsilon = 1$ the positive drift pushes $\upsilon$ toward 1.
 
-This is outcome (d) in {prf:ref}`survival_conditions`: neither boundary is repelling, so each agent dominates with strictly positive probability depending on the realized Brownian path.
+This is outcome (d) in {prf:ref}`survival_conditions`: neither boundary is repelling, so whichever agent happens to get ahead early will dominate, with each agent having strictly positive probability of dominance depending on the realized Brownian path.
 
 As $\gamma$ increases past roughly 1, the blue curve crosses zero and becomes positive while the red curve stays negative.
 
@@ -968,22 +920,6 @@ This figure simulates 20 sample paths of the Pareto share $\upsilon_t$ under sep
 Agent 2 has correct beliefs, so the log-odds drift is negative and all paths trend toward $\upsilon = 0$.
 
 Agent 1 is driven to extinction — the classical market-selection result of {cite:t}`Blume_Easley2006`.
-
-## Constant aggregate endowment
-
-Section IV.D.3 studies the limiting case in which aggregate endowment is constant, so $\mu_Y = \sigma_Y = 0$.
-
-In the notation of the paper, this case is equivalent to the limit $|\omega^1| / \sigma_Y \to \infty$ studied in the bottom-left panel of figure 2.
-
-The point of the exercise is that the survival results do not rely on unbounded aggregate endowment.
-
-Even with deterministic aggregate consumption, agents can trade for purely speculative motives in complete markets.
-
-As the negligible agent faces prices generated by the large agent, she can choose a speculative portfolio with a high *subjective* expected return.
-
-When IES is above one, that high perceived return raises her saving rate and can allow her to outsave extinction.
-
-This is the pure saving channel in isolation.
 
 ## Asset pricing implications
 
@@ -1169,7 +1105,7 @@ def simulate_pareto_share_toy(ω_1, ω_2, γ, ρ, σ_y, T, dt, n_paths=20, seed=
 
 ω_1 = 0.25
 ω_2 = 0.0
-γ = 10.0
+γ = 5.0
 ρ = 0.67
 σ_y = 0.02
 
@@ -1204,7 +1140,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-The left panel shows 20 sample paths of the Pareto share $\upsilon_t$ under parameters inside the coexistence region ($\omega^1 = 0.25$, $\omega^2 = 0$, $\gamma = 10$, IES $\approx 1.49$).
+The left panel shows 20 sample paths of the Pareto share $\upsilon_t$ under parameters inside the coexistence region ($\omega^1 = 0.25$, $\omega^2 = 0$, $\gamma = 5$, IES $\approx 1.49$).
 
 Unlike the separable case in {numref}`fig-crra-pareto-paths`, the paths do not drift to zero — they repeatedly visit a wide range of values, bouncing between the two repelling boundaries.
 
