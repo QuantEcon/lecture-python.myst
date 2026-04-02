@@ -96,7 +96,7 @@ An **experiment** is described by the conditional distribution of an observed si
 $\tilde{x}$ given the state $\tilde{s}$.
 
 When the signal space is also finite, say $X = \{x_1, \ldots, x_M\}$, an experiment
-reduces to an $N \times M$ **Markov matrix**
+reduces to an $N \times M$ *Markov matrix*
 
 $$
 \mu = [\mu_{ij}], \qquad
@@ -131,7 +131,7 @@ $M \times K$ Markov matrix: $q_{lk} \geq 0$ and $\sum_k q_{lk} = 1$ for every ro
 
 ```{admonition} Definition (Sufficiency)
 :class: tip
-Experiment $\mu$ is **sufficient for** $\nu$ if there exists a stochastic
+Experiment $\mu$ is *sufficient for* $\nu$ if there exists a stochastic
 transformation $Q$ (an $M \times K$ Markov matrix) such that
 
 $$
@@ -219,7 +219,7 @@ $$
 
 for the probability simplex.
 
-For fixed $A$ and $u$, the set of **achievable expected-utility vectors** under experiment $\mu$ is
+For fixed $A$ and $u$, the set of *achievable expected-utility vectors* under experiment $\mu$ is
 
 $$
 B(\mu, A, u) = \Bigl\{v \in \mathbb{R}^N :
@@ -651,7 +651,7 @@ In DeGroot's axiomatization, an uncertainty function is:
 - *Symmetric*: it depends on the components of $p$, not their labeling.
 - *Normalized*: it is maximized at $p = (1/N, \ldots, 1/N)$ and minimized at vertices.
 
-The **value of experiment $\mu$ given prior $p$** is
+The *value of experiment $\mu$ given prior $p$* is
 
 $$
 I(\tilde{x}_\mu;\, \tilde{s};\, U)
@@ -1251,7 +1251,7 @@ $$
 
 which is the sufficient statistic that the Bayesian tracks throughout.
 
-The **distribution** of $\pi_t$ over all possible histories $w^t$ is Kihlstrom's $\hat{\mu}^c$ — the distribution of posteriors induced by the experiment $\mu_t$ starting from prior $\pi_0 = c$.
+The *distribution* of $\pi_t$ over all possible histories $w^t$ is Kihlstrom's $\hat{\mu}^c$ — the distribution of posteriors induced by the experiment $\mu_t$ starting from prior $\pi_0 = c$.
 
 ### Why more data always helps
 
@@ -1265,7 +1265,7 @@ and in particular $E[\pi_t] = \pi_0$ for all $t$.
 
 This is exactly the **mean-preservation** condition that sits at the centre of Kihlstrom's reformulation: the distribution of posteriors $\hat{\mu}^c$ must satisfy $\int_P p \, \hat{\mu}^c(dp) = c$.
 
-Mean preservation is not a special feature of this two-state example; it is an exact consequence of Bayes' law for **any** experiment.
+Mean preservation is not a special feature of this two-state example; it is an exact consequence of Bayes' law for *any* experiment.
 
 Blackwell's theorem explains why more data always helps.
 
@@ -1293,7 +1293,7 @@ $$
 
 which equals the **mutual information** between the history $w^t$ and the unknown state.
 
-Because $\mu_t$ Blackwell-dominates $\mu_s$ for $t > s$, Blackwell's theorem guarantees $I(\mu_t; U) \geq I(\mu_s; U)$ for **every** concave uncertainty function $U$ — more draws reduce expected uncertainty under every such measure, not just Shannon entropy.
+Because $\mu_t$ Blackwell-dominates $\mu_s$ for $t > s$, Blackwell's theorem guarantees $I(\mu_t; U) \geq I(\mu_s; U)$ for *every* concave uncertainty function $U$ — more draws reduce expected uncertainty under every such measure, not just Shannon entropy.
 
 ### Summary table
 

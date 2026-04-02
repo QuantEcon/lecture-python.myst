@@ -11,157 +11,193 @@ kernelspec:
   name: python3
 ---
 
+(survival_recursive_preferences)=
+```{raw} jupyter
+<div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div>
+```
+
 # Survival and Long-Run Dynamics under Recursive Preferences
 
 ```{index} single: Survival; Recursive Preferences
 ```
 
-## Overview
-
-This lecture describes a theory of **long-run survival** of agents with heterogeneous beliefs
-developed by {cite}`Borovicka2020`.
-
-The classical **market selection hypothesis** asserts that agents with incorrect beliefs
-will be driven from the market in the long run --- they will lose all of their wealth
-to agents with more accurate beliefs.
-
-This result was established rigorously by {cite}`Sandroni2000` and {cite}`Blume_Easley2006`
-for economies in which agents have **separable** (CRRA) preferences.
-
-{cite}`Borovicka2020` shows that when agents have **recursive preferences**
-of the {cite}`Epstein_Zin1989` type, the market selection hypothesis can fail:
-agents with incorrect beliefs can survive and even prosper in the long run.
-
-The key insight is that recursive preferences **disentangle** risk aversion from the
-intertemporal elasticity of substitution (IES), and this separation opens new channels
-through which agents with incorrect beliefs can accumulate wealth.
-
-Three survival channels emerge:
-
-1. **Risk premium channel**: a more optimistic agent earns a higher expected logarithmic
-   return on her portfolio by holding a larger share of risky assets
-2. **Speculative volatility channel**: speculative portfolio positions generate volatile
-   returns that penalize survival through a Jensen's inequality effect
-3. **Saving channel**: under high IES, an agent who believes her portfolio has a high
-   expected return responds by saving more, which can help her outsave extinction
-
-Under separable CRRA preferences, only the first two channels operate, and they ensure
-that the agent with more accurate beliefs always dominates.
-With recursive preferences, the saving channel can tip the balance in favor of an agent
-whose beliefs are less accurate.
-
-```{note}
-The paper builds on the continuous-time recursive utility formulation of {cite}`Duffie_Epstein1992a`,
-using the planner's problem approach of {cite}`Dumas_Uppal_Wang2000`.
-Important foundations for the market selection hypothesis were laid by
-{cite}`DeLong_etal1991` and {cite}`Blume_Easley1992`.
+```{contents} Contents
+:depth: 2
 ```
 
-Let's start with some imports:
+## Overview
+
+This lecture studies the theory of long-run survival in {cite:t}`Borovicka2020`.
+
+The classical **market selection hypothesis** says that agents with less accurate beliefs are driven out of the market in the long run.
+
+This result was established rigorously by {cite:t}`Sandroni2000Markets` and {cite:t}`Blume_Easley2006` for economies with separable CRRA preferences.
+
+Borovicka shows that the conclusion can fail under Epstein-Zin recursive preferences.
+
+With recursive preferences, agents with distorted beliefs can survive and can even dominate.
+
+The key mechanism is that recursive preferences separate risk aversion from the intertemporal elasticity of substitution.
+
+That separation creates three channels that matter for survival:
+
+1. The *risk premium channel* rewards the more optimistic agent for holding more of the risky asset.
+1. The *speculative volatility channel* penalizes aggressive positions through log-return volatility.
+1. The *saving channel* changes consumption and saving decisions when the IES differs from one.
+
+Under separable preferences, only the first two channels remain.
+
+Under recursive preferences, the saving channel can overturn market selection.
+
+```{note}
+The paper builds on the continuous-time recursive utility formulation of {cite:t}`Duffie_Epstein1992a`,
+using the planner's problem approach of {cite:t}`Dumas_Uppal_Wang2000`.
+
+Important foundations for the market selection hypothesis were laid by
+{cite:t}`DeLong_etal1991` and {cite:t}`Blume_Easley1992`.
+```
+
+We start with some imports.
 
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.integrate import solve_bvp
-from scipy.optimize import brentq
 ```
 
 ## Environment
 
-The economy is populated by two types of infinitely lived agents, $n \in \{1, 2\}$,
-who have identical recursive preferences but **differ in their beliefs** about the
-distribution of future aggregate endowment.
+The economy contains two infinitely lived agents, indexed by $n \in \{1, 2\}$.
+
+The agents have identical recursive preferences but different beliefs about aggregate endowment growth.
+
+We write Borovička's belief distortions $u^n$ as $\omega^n$.
 
 ### Aggregate endowment
 
-Aggregate endowment $Y$ follows a geometric Brownian motion under the true probability
-measure $P$:
+Under the true probability measure $P$, aggregate endowment satisfies
 
 $$
 d \log Y_t = \mu_Y dt + \sigma_Y dW_t, \quad Y_0 > 0
 $$ (eq:endowment)
 
-where $W$ is a standard Brownian motion, $\mu_Y$ is the drift, and $\sigma_Y > 0$ is the
-volatility.
+where $W$ is a standard Brownian motion, $\mu_Y$ is the drift, and $\sigma_Y > 0$ is the volatility.
 
 ### Heterogeneous beliefs
 
-Agent $n$ perceives the drift of aggregate endowment to be $\mu_Y + \omega^n \sigma_Y$ instead
-of $\mu_Y$.
+Agent $n$ believes that the drift is $\mu_Y + \omega^n \sigma_Y$ instead of $\mu_Y$.
 
-The parameter $\omega^n$ captures the degree of **optimism** ($\omega^n > 0$) or **pessimism**
-($\omega^n < 0$) of agent $n$.
+The parameter $\omega^n$ measures optimism when $\omega^n > 0$ and pessimism when $\omega^n < 0$.
 
-Formally, agent $n$'s subjective probability measure $Q^n$ is defined by the
-Radon-Nikodým derivative
+Agent $n$'s subjective probability measure $Q^n$ is defined by the Radon–Nikodym derivative
 
 $$
 M_t^n = \frac{dQ^n}{dP}\bigg|_t = \exp\left(-\frac{1}{2} |\omega^n|^2 t + \omega^n W_t\right)
 $$ (eq:radon_nikodym)
 
-Under her own measure $Q^n$, agent $n$ believes that $W_t^n = W_t - \omega^n t$ is a
-Brownian motion, so that
+Under $Q^n$, the process $W_t^n = W_t - \omega^n t$ is a Brownian motion, and agent $n$ perceives
 
 $$
-d \log Y_t = (\mu_Y + \omega^n \sigma_Y) dt + \sigma_Y dW_t^n
+d \log Y_t = (\mu_Y + \omega^n \sigma_Y) dt + \sigma_Y dW_t^n .
 $$
 
-Agent $n$ with $\omega^n > 0$ is **optimistic** about the growth rate of aggregate endowment;
-agent $n$ with $\omega^n < 0$ is **pessimistic**.
+An agent with $\omega^n > 0$ is optimistic about endowment growth, while an agent with $\omega^n < 0$ is pessimistic.
 
 ### Recursive preferences
 
-Both agents have Duffie-Epstein-Zin recursive preferences characterized by three
-parameters:
+Both agents have Epstein-Zin recursive preferences.
 
-* $\gamma > 0$: coefficient of relative risk aversion (CRRA)
-* $\rho^{-1} > 0$: intertemporal elasticity of substitution (IES)
-* $\beta > 0$: time-preference rate
+We use $\gamma > 0$ for relative risk aversion, $\rho > 0$ for the inverse of the IES, and $\beta > 0$ for the time-preference rate.
 
-The felicity function for these preferences is
+The Duffie-Epstein-Zin felicity function is
 
 $$
-F(C, \nu) = \beta \frac{C^{1-\gamma}}{1-\gamma} \cdot \frac{(1-\gamma) - (1-\rho)\nu / \beta}{\rho - \gamma}
+F(C, \nu)
+= \beta \frac{C^{1-\gamma}}{1-\gamma}
+\cdot
+\frac{(1-\gamma) - (1-\rho)\nu / \beta}{\rho - \gamma}
 $$ (eq:felicity)
 
 where $\nu$ is the endogenous discount rate.
 
 ```{note}
+In discrete time, Epstein-Zin preferences aggregate current consumption with a certainty equivalent of future utility via a CES aggregator (see {doc}`doubts_or_variability`).
+
+In continuous time there is no "next-period $V_{t+1}$," so {cite:t}`Duffie_Epstein1992a` recast the recursion as a felicity function $F(C,\nu)$ that depends on the agent's own continuation-value rate $\nu$.
+
+The two formulations encode the same separation of risk aversion $\gamma$ from the inverse IES $\rho$.
+
 When $\gamma = \rho$, preferences reduce to the standard separable CRRA case.
-The disentanglement of risk aversion $\gamma$ from the inverse IES $\rho$ is the key
-feature that drives the new survival results.
 ```
 
-## Planner's Problem
+## Planner's problem
 
-Following {cite}`Dumas_Uppal_Wang2000`, we study optimal allocations using a social
-planner who maximizes a weighted average of the two agents' continuation values.
+Following {cite}`Dumas_Uppal_Wang2000`, we study equilibrium allocations through a social planner's problem.
 
-The planner assigns consumption shares $z^1$ and $z^2 = 1 - z^1$ to the two agents
-and chooses discount rate processes $\nu^n$ for each agent.
+The planner chooses consumption shares $z^1$ and $z^2 = 1 - z^1$ and discount-rate processes $\nu^n$ for the two agents.
 
 ### Modified discount factors
 
-It is convenient to incorporate the belief distortions into modified discount factor
-processes $\tilde{\lambda}^n = \lambda^n M^n$, where $\lambda^n$ is the standard discount factor.
+It is convenient to absorb belief distortions into the modified discount factors $\tilde{\lambda}^n = \lambda^n M^n$, where $M^n$ is the Radon-Nikodym derivative {eq}`eq:radon_nikodym`.
 
-The modified discount factor evolves as
+These processes satisfy
 
 $$
-d \log \tilde{\lambda}_t^n = -\left(\nu_t^n + \frac{1}{2}(\omega^n)^2\right) dt + \omega^n dW_t
+d \log \tilde{\lambda}_t^n
+= -\left(\nu_t^n + \frac{1}{2} (\omega^n)^2\right) dt + \omega^n dW_t .
 $$ (eq:modified_discount)
+
+```{exercise}
+:label: ex_modified_discount
+
+Derive {eq}`eq:modified_discount`.
+
+*Hint:* Use $\log \tilde{\lambda}^n = \log \lambda^n + \log M^n$. The Pareto weight $\lambda^n$ evolves as $d\log \lambda_t^n = -\nu_t^n \, dt$, and $\log M_t^n$ is given by {eq}`eq:radon_nikodym`.
+```
+
+```{solution-start} ex_modified_discount
+:class: dropdown
+```
+
+From the definition $\tilde{\lambda}^n = \lambda^n M^n$, we have
+
+$$
+\log \tilde{\lambda}_t^n = \log \lambda_t^n + \log M_t^n.
+$$
+
+The Pareto weight satisfies $d\log \lambda_t^n = -\nu_t^n \, dt$.
+
+From {eq}`eq:radon_nikodym`, $\log M_t^n = -\frac{1}{2}|\omega^n|^2 t + \omega^n W_t$, so
+
+$$
+d \log M_t^n = -\tfrac{1}{2}(\omega^n)^2 \, dt + \omega^n \, dW_t.
+$$
+
+Adding the two:
+
+$$
+d \log \tilde{\lambda}_t^n = -\nu_t^n \, dt - \tfrac{1}{2}(\omega^n)^2 \, dt + \omega^n \, dW_t = -\left(\nu_t^n + \tfrac{1}{2}(\omega^n)^2\right) dt + \omega^n \, dW_t.
+$$
+
+```{solution-end}
+```
 
 ### State variable: Pareto share
 
-The key state variable is the **Pareto share** of agent 1:
+The key state variable is the Pareto share of agent 1:
 
 $$
 \upsilon = \frac{\tilde{\lambda}^1}{\tilde{\lambda}^1 + \tilde{\lambda}^2} \in (0, 1)
 $$ (eq:pareto_share)
 
-This single scalar captures the relative weight of agent 1 in the planner's allocation.
+It captures the relative weight of agent 1 in the planner's allocation.
 
-The dynamics of the log-odds ratio $\vartheta = \log(\upsilon / (1-\upsilon))$ are
+Define the log-odds ratio $\vartheta = \log(\upsilon / (1 - \upsilon))$.
+
+Its dynamics are
 
 $$
 d\vartheta_t = \underbrace{\left[\nu_t^2 + \frac{1}{2}(\omega^2)^2 - \nu_t^1 - \frac{1}{2}(\omega^1)^2\right]}_{m_{\vartheta}(\upsilon_t)} dt + (\omega^1 - \omega^2) dW_t
@@ -169,27 +205,91 @@ $$ (eq:log_odds)
 
 The drift $m_\vartheta(\upsilon)$ determines the long-run behavior of the Pareto share.
 
+```{exercise}
+:label: ex_log_odds
+
+Derive {eq}`eq:log_odds` from {eq}`eq:modified_discount` and the definition $\vartheta = \log(\upsilon/(1-\upsilon))$.
+
+*Hint:* First show that $\vartheta = \log \tilde{\lambda}^1 - \log \tilde{\lambda}^2$, then subtract the two SDEs.
+```
+
+```{solution-start} ex_log_odds
+:class: dropdown
+```
+
+Since $\upsilon = \tilde{\lambda}^1 / (\tilde{\lambda}^1 + \tilde{\lambda}^2)$, we have $1 - \upsilon = \tilde{\lambda}^2 / (\tilde{\lambda}^1 + \tilde{\lambda}^2)$, so
+
+$$
+\vartheta = \log\frac{\upsilon}{1-\upsilon} = \log \tilde{\lambda}^1 - \log \tilde{\lambda}^2.
+$$
+
+From {eq}`eq:modified_discount`, the two log-discount-factor SDEs are
+
+$$
+d\log \tilde{\lambda}^1_t = -\left(\nu_t^1 + \tfrac{1}{2}(\omega^1)^2\right)dt + \omega^1 dW_t,
+$$
+
+$$
+d\log \tilde{\lambda}^2_t = -\left(\nu_t^2 + \tfrac{1}{2}(\omega^2)^2\right)dt + \omega^2 dW_t.
+$$
+
+Subtracting the second from the first:
+
+$$
+d\vartheta_t = \left[\nu_t^2 + \tfrac{1}{2}(\omega^2)^2 - \nu_t^1 - \tfrac{1}{2}(\omega^1)^2\right]dt + (\omega^1 - \omega^2)dW_t.
+$$
+
+```{solution-end}
+```
+
 ### HJB equation
 
-The planner's value function takes the form
-$J(\tilde{\lambda}_t, Y_t) = (\tilde{\lambda}_t^1 + \tilde{\lambda}_t^2) Y_t^{1-\gamma} \tilde{J}(\upsilon_t)$,
-where $\tilde{J}(\upsilon)$ solves a nonlinear ODE:
+Homotheticity reduces the planner's problem to a nonlinear ODE in the single state variable $\upsilon$.
+
+Because each agent's utility is homogeneous of degree $1-\gamma$ in consumption, the planner's value function factors as $J(\upsilon, Y) = \tilde{J}(\upsilon) \cdot Y^{1-\gamma}/(1-\gamma)$, eliminating $Y$ as a state variable.
+
+#### From discrete to continuous time
+
+In discrete time, a planner maximizes a weighted sum of agents' utilities by choosing allocations at each date.
+
+The Bellman equation is
+
+$$
+\tilde{J}(\upsilon) = \max_{z^1, z^2} \left\{ \upsilon \, u(z^1) + (1-\upsilon) \, u(z^2) + \beta \, \mathbb{E}\left[\tilde{J}(\upsilon')\right] \right\}.
+$$
+
+In continuous time, the period length shrinks to $dt$.
+
+The "flow payoff" over $[t, t+dt)$ becomes $\left[\upsilon F(z^1, \nu^1) + (1-\upsilon)F(z^2, \nu^2)\right] dt$, where $F$ is the Duffie-Epstein-Zin felicity {eq}`eq:felicity`.
+
+The expected change in the value function over $dt$ is captured by the **infinitesimal generator** $\mathcal{L}$.
+
+For a diffusion $d\upsilon = m \, dt + s \, dW$, Itô's lemma gives
+
+$$
+\mathcal{L}\tilde{J}(\upsilon) = m(\upsilon)\,\tilde{J}'(\upsilon) + \tfrac{1}{2} s(\upsilon)^2 \, \tilde{J}''(\upsilon),
+$$
+
+where $m$ and $s$ are the drift and diffusion of the Pareto share.
+
+This is the continuous-time analogue of $\beta \, \mathbb{E}[\tilde{J}(\upsilon')] - \tilde{J}(\upsilon)$: it measures how the value function drifts and fluctuates as $\upsilon$ evolves.
+
+Setting flow payoff plus expected capital gain equal to zero gives the HJB equation:
 
 $$
 0 = \sup_{(z^1,z^2,\nu^1,\nu^2)} \left\{ \upsilon F(z^1, \nu^1) + (1-\upsilon) F(z^2, \nu^2) + \mathcal{L} \tilde{J}(\upsilon) \right\}
 $$ (eq:hjb)
 
-subject to $z^1 + z^2 \leq 1$, where $\mathcal{L}$ is a second-order differential operator
-that captures the drift and diffusion of the state variables.
+subject to $z^1 + z^2 \leq 1$.
 
-The boundary conditions are $\tilde{J}(0) = V^2$ and $\tilde{J}(1) = V^1$, where $V^n$ is the
-value in a homogeneous economy populated only by agent $n$.
+This is the continuous-time counterpart of the discrete-time planner's problem in {cite:t}`Blume_Easley2006` (see also {doc}`likelihood_ratio_process_2`).
+
+The boundary conditions match the continuation values of the corresponding homogeneous economies.
 
 
-## Survival Conditions
+## Survival conditions
 
-The central result of the paper characterizes survival in terms of the boundary behavior
-of the drift $m_\vartheta(\upsilon)$.
+The central result characterizes survival by the boundary behavior of $m_\vartheta(\upsilon)$.
 
 ```{prf:proposition}
 :label: survival_conditions
@@ -209,138 +309,290 @@ $$
 
 Then:
 
-**(a)** If (i) and (ii) hold, both agents survive under $P$.
+*(a)* If (i) and (ii) hold, both agents survive under $P$.
 
-**(b)** If (i) and (ii') hold, agent 1 dominates in the long run under $P$.
+*(b)* If (i) and (ii') hold, agent 1 dominates in the long run under $P$.
 
-**(c)** If (i') and (ii) hold, agent 2 dominates in the long run under $P$.
+*(c)* If (i') and (ii) hold, agent 2 dominates in the long run under $P$.
 
-**(d)** If (i') and (ii') hold, each agent dominates with strictly positive probability.
+*(d)* If (i') and (ii') hold, each agent dominates with strictly positive probability.
 ```
 
-The proof uses the Feller classification of boundary behavior for diffusion processes,
-as discussed in {cite}`Karlin_Taylor1981`.
+The proof uses the Feller classification of boundary behavior for diffusions, as in {cite:t}`Karlin_Taylor1981`.
 
-The intuition is straightforward: condition (i) says that when agent 1's share is
-nearly zero, there is a force pushing it back up; condition (ii) says that when agent 1's
-share is nearly one, there is a force pushing it back down.
+Condition (i) says that when agent 1 is close to extinction, there is a force pushing her share back up.
+
+Condition (ii) says that when agent 1 is close to absorbing the whole economy, there is a force pushing her share back down.
+
 When both forces are present, the Pareto share is recurrent and both agents survive.
 
-## Wealth Dynamics Decomposition
+## Wealth dynamics decomposition
 
-The survival conditions can be expressed in terms of equilibrium wealth dynamics.
-When agent 1 becomes negligible ($\upsilon \searrow 0$), equilibrium prices converge to
-those in a homogeneous economy populated by agent 2.
+We now rewrite the survival conditions from {prf:ref}`survival_conditions` in terms of equilibrium wealth dynamics.
 
-The difference in logarithmic wealth growth rates decomposes as
+Agent 1 survives near extinction if and only if her wealth grows faster than agent 2's when she is negligibly small.
+
+When $\upsilon \searrow 0$, prices are set entirely by agent 2, as if the economy were homogeneous.
+
+Agent 1 is a price-taker in agent 2's economy.
+
+Let $m_A^n(\upsilon)$ denote the expected log growth rate of agent $n$'s wealth.
+
+The difference decomposes into two channels:
 
 $$
 \lim_{\upsilon \searrow 0} [m_A^1(\upsilon) - m_A^2(\upsilon)]
 = \underbrace{\lim_{\upsilon \searrow 0} [m_R^1(\upsilon) - m_R^2(\upsilon)]}_{\text{portfolio returns}}
-+ \underbrace{\lim_{\upsilon \searrow 0} [(y^2(\upsilon))^{-1} - (y^1(\upsilon))^{-1}]}_{\text{consumption rates}}
++ \underbrace{\lim_{\upsilon \searrow 0} [(y^2(\upsilon))^{-1} - (y^1(\upsilon))^{-1}]}_{\text{consumption-wealth ratios}}
 $$ (eq:wealth_decomp)
+
+The first term measures how much faster agent 1's portfolio grows.
+
+The second measures how much less agent 1 consumes out of wealth — a lower consumption-wealth ratio means more saving and faster wealth accumulation.
+
+When this total difference is positive, agent 1 survives; when negative, she shrinks toward extinction.
+
+```{exercise}
+:label: ex_wealth_decomp
+
+Derive {eq}`eq:wealth_decomp`.
+
+Let $A^n$ denote agent $n$'s wealth and $C^n$ her consumption. 
+
+The budget constraint is $dA^n = A^n dR^n - C^n dt$, where $dR^n$ is the return on agent $n$'s portfolio. 
+
+Define the consumption-wealth ratio $c^n = C^n / A^n = (y^n)^{-1}$.
+
+Show that $d\log A^n = m_R^n \, dt - (y^n)^{-1} dt + \ldots$, so the difference in expected log wealth growth is $m_A^1 - m_A^2 = (m_R^1 - m_R^2) + [(y^2)^{-1} - (y^1)^{-1}]$.
+```
+
+```{solution-start} ex_wealth_decomp
+:class: dropdown
+```
+
+Dividing the budget constraint by $A^n$:
+
+$$
+\frac{dA^n}{A^n} = dR^n - (y^n)^{-1} dt.
+$$
+
+By Itô's lemma, $d\log A^n = \frac{dA^n}{A^n} - \frac{1}{2}\left(\frac{dA^n}{A^n}\right)^2$.
+
+Write $dR^n = m_R^n \, dt + \sigma_R^n \, dW$ (the portfolio return under $P$). 
+
+Then
+
+$$
+d\log A^n = \left(m_R^n - (y^n)^{-1} - \tfrac{1}{2}(\sigma_R^n)^2\right) dt + \sigma_R^n \, dW.
+$$
+
+Taking the difference for agents 1 and 2:
+
+$$
+m_A^1 - m_A^2 = (m_R^1 - m_R^2) + \left[(y^2)^{-1} - (y^1)^{-1}\right] - \tfrac{1}{2}\left[(\sigma_R^1)^2 - (\sigma_R^2)^2\right].
+$$
+
+The volatility terms $\tfrac{1}{2}[(\sigma_R^1)^2 - (\sigma_R^2)^2]$ are absorbed into $m_R^1 - m_R^2$ when we define $m_R^n$ as the expected log portfolio return (i.e., the drift of $\log R^n$ rather than the arithmetic return), giving {eq}`eq:wealth_decomp`.
+
+```{solution-end}
+```
 
 ### Portfolio returns
 
-The difference in expected logarithmic portfolio returns at the boundary is
+At the boundary $\upsilon \searrow 0$, the difference in expected log portfolio returns is
 
 $$
-\lim_{\upsilon \searrow 0} [m_R^1 - m_R^2] = \underbrace{\frac{\omega^1 - \omega^2}{\gamma} \cdot \sigma_Y}_{\text{difference in portfolios}}
+\lim_{\upsilon \searrow 0} [m_R^1 - m_R^2]
+= \underbrace{\frac{\omega^1 - \omega^2}{\gamma \sigma_Y}}_{\text{difference in risky shares}}
 \cdot \underbrace{(\gamma \sigma_Y^2 - \omega^2 \sigma_Y)}_{\text{risk premium}}
-- \underbrace{\frac{1}{2}\left(\frac{\omega^1 - \omega^2}{\gamma}\right)^2}_{\text{volatility penalty}}
+- \underbrace{\frac{\omega^1 - \omega^2}{\gamma}
+\left(\sigma_Y + \frac{\omega^1 - \omega^2}{2\gamma}\right)}_{\text{volatility term}}
 $$ (eq:portfolio_returns)
 
-This depends **only** on risk aversion $\gamma$, not on the IES.
+An optimistic agent ($\omega^1 > \omega^2$) overweights the risky asset by $(\omega^1 - \omega^2)/(\gamma \sigma_Y)$ relative to agent 2 and earns the equity risk premium on that extra exposure.
 
-### Consumption rates
+The subtracted *volatility penalty* reflects the cost of holding a more extreme portfolio: higher variance of log returns drags down expected log wealth growth.
 
-The difference in consumption rates at the boundary is
+This term depends on risk aversion $\gamma$ but not on the IES, because portfolio choice is determined by risk aversion alone.
+
+```{exercise}
+:label: ex_portfolio_returns
+
+Derive {eq}`eq:portfolio_returns`.
+
+At the boundary $\upsilon \searrow 0$, agent $n$'s optimal risky-asset share is $\pi^n = 1 + (\omega^n - \omega^2)/(\gamma \sigma_Y)$ (see {eq}`eq:portfolio`). 
+
+The expected log return on the risky asset under $P$ is $\mu_R = \mu_Y + \gamma \sigma_Y^2 - \omega^2 \sigma_Y - \frac{1}{2}\sigma_Y^2$, and the risk-free rate is $r$.
+
+ The expected log portfolio return is $m_R^n = r + \pi^n(\mu_R - r) - \frac{1}{2}(\pi^n)^2 \sigma_Y^2$.
+
+Compute $m_R^1 - m_R^2$ and simplify.
+```
+
+```{solution-start} ex_portfolio_returns
+:class: dropdown
+```
+
+Using $m_R^n = r + \pi^n(\mu_R - r) - \frac{1}{2}(\pi^n)^2 \sigma_Y^2$, the difference is
+
+$$
+m_R^1 - m_R^2 = (\pi^1 - \pi^2)(\mu_R - r) - \tfrac{1}{2}[(\pi^1)^2 - (\pi^2)^2]\sigma_Y^2.
+$$
+
+The difference in risky shares is $\pi^1 - \pi^2 = (\omega^1 - \omega^2)/(\gamma \sigma_Y)$.
+
+The equity premium (log) is $\mu_R - r = \gamma \sigma_Y^2 - \omega^2 \sigma_Y - \frac{1}{2}\sigma_Y^2$, but for the first term we only need the product:
+
+$$
+(\pi^1 - \pi^2)(\mu_R - r) = \frac{\omega^1 - \omega^2}{\gamma \sigma_Y} \cdot (\gamma \sigma_Y^2 - \omega^2 \sigma_Y) - \frac{\omega^1 - \omega^2}{2\gamma}.
+$$
+
+For the volatility term, write $(\pi^1)^2 - (\pi^2)^2 = (\pi^1 - \pi^2)(\pi^1 + \pi^2)$ and note $\pi^1 + \pi^2 = 2 + (\omega^1 + \omega^2 - 2\omega^2)/(\gamma \sigma_Y)$. After simplification:
+
+$$
+\tfrac{1}{2}[(\pi^1)^2 - (\pi^2)^2]\sigma_Y^2 = \frac{\omega^1 - \omega^2}{\gamma}\left(\sigma_Y + \frac{\omega^1 - \omega^2}{2\gamma}\right).
+$$
+
+Combining the two pieces gives {eq}`eq:portfolio_returns`.
+
+```{solution-end}
+```
+
+### Consumption-wealth ratios
+
+The difference in consumption-wealth ratios at the boundary is
 
 $$
 \lim_{\upsilon \searrow 0} [(y^2)^{-1} - (y^1)^{-1}]
 = \frac{1-\rho}{\rho} \left[(\omega^1 - \omega^2)\sigma_Y + \frac{(\omega^1 - \omega^2)^2}{2\gamma}\right]
 $$ (eq:consumption_rates)
 
-This depends on $\rho$ (and hence the IES) but enters **only** through the consumption-saving
-decision.
+The term in brackets is the difference in *subjective* expected portfolio returns — what agent 1 believes she earns relative to agent 2.
+
+The prefactor $(1-\rho)/\rho$ translates this perceived return advantage into a saving response.
+
+- When IES $> 1$ ($\rho < 1$), the prefactor is positive: a higher perceived return makes the agent save more, because the substitution effect dominates the income effect.
+- When IES $< 1$ ($\rho > 1$), the prefactor is negative: the income effect dominates and the agent saves less, working against survival.
+- When IES $= 1$ ($\rho = 1$), the two effects cancel and the saving channel vanishes entirely.
+
+This is the channel through which recursive preferences alter survival outcomes by separating $\gamma$ from $\rho$.
+
+```{exercise}
+:label: ex_consumption_wealth
+
+Derive {eq}`eq:consumption_rates`.
+
+In the homogeneous economy populated by agent 2, the consumption-wealth ratio is $(y(0))^{-1} = \beta - (1-\rho)\mu_V^2$, where $\mu_V^2$ is agent 2's expected log return on wealth. Agent 1, as a negligible price-taker, has consumption-wealth ratio $(y^1)^{-1} = \beta - (1-\rho)\mu_V^1$, where $\mu_V^1$ is her own expected log return.
+
+Use $(y^2)^{-1} - (y^1)^{-1} = (1-\rho)(\mu_V^1 - \mu_V^2)$ and express $\mu_V^1 - \mu_V^2$ in terms of agent 1's *subjective* expected excess return.
+
+*Hint:* Under agent 1's beliefs, her portfolio earns an extra $(\omega^1 - \omega^2)\sigma_Y + (\omega^1 - \omega^2)^2/(2\gamma)$ in expected log returns relative to agent 2's portfolio.
+```
+
+```{solution-start} ex_consumption_wealth
+:class: dropdown
+```
+
+The consumption-wealth ratio for agent $n$ satisfies $(y^n)^{-1} = \beta - (1-\rho)\mu_V^n$, where $\mu_V^n$ is the expected log return on agent $n$'s wealth under her own subjective measure.
+
+Taking the difference:
+
+$$
+(y^2)^{-1} - (y^1)^{-1} = (1-\rho)(\mu_V^1 - \mu_V^2).
+$$
+
+Agent 1's subjective expected log portfolio return exceeds agent 2's by the amount she believes she gains from tilting toward the risky asset.
+
+Her extra risky share is $\pi^1 - 1 = (\omega^1 - \omega^2)/(\gamma\sigma_Y)$, and under her subjective measure $Q^1$ the risky asset's expected excess log return is $(\gamma\sigma_Y^2 + (\omega^1 - \omega^2)\sigma_Y - \omega^2\sigma_Y) - r - \frac{1}{2}\sigma_Y^2$.
+
+After simplification, the subjective expected log return difference is
+
+$$
+\mu_V^1 - \mu_V^2 = (\omega^1 - \omega^2)\sigma_Y + \frac{(\omega^1 - \omega^2)^2}{2\gamma}.
+$$
+
+Substituting and dividing through by $\rho$ (from the relationship between $(y^n)^{-1}$ and $\beta$):
+
+$$
+(y^2)^{-1} - (y^1)^{-1} = \frac{1-\rho}{\rho}\left[(\omega^1 - \omega^2)\sigma_Y + \frac{(\omega^1 - \omega^2)^2}{2\gamma}\right].
+$$
+
+```{solution-end}
+```
+
+### Two comparative statics
+
+Survival depends on $\gamma$, $\rho$, and the signal-to-noise ratios $\omega^1 / \sigma_Y$ and $\omega^2 / \sigma_Y$, not on $\omega^1$, $\omega^2$, and $\sigma_Y$ separately.
+
+The survival conditions do not depend on $\beta$ or $\mu_Y$, which affect the level of consumption and prices but not relative wealth dynamics at the boundary.
 
 ```{code-cell} ipython3
-def portfolio_return_diff(omega1, omega2, gamma, sigma_y):
+def portfolio_return_diff(ω_1, ω_2, γ, σ_y):
     """
-    Difference in expected log portfolio returns at boundary v → 0.
+    Difference in expected log portfolio returns at the boundary.
 
     Parameters
     ----------
-    omega1 : float
+    ω_1 : float
         Belief distortion of agent 1
-    omega2 : float
+    ω_2 : float
         Belief distortion of agent 2
-    gamma : float
+    γ : float
         Risk aversion
-    sigma_y : float
+    σ_y : float
         Endowment volatility
 
     Returns
     -------
     float
-        Difference in log portfolio returns, decomposed into
-        (risk_premium_effect, volatility_penalty)
+        Difference in expected log portfolio returns
     """
-    delta_omega = omega1 - omega2
-    portfolio_diff = delta_omega / gamma
-    risk_premium = gamma * sigma_y**2 - omega2 * sigma_y
-    risk_premium_effect = portfolio_diff * risk_premium * sigma_y
-    # Correct formula from the paper:
-    # (ω1-ω2)/γ * σ_y * (γσ_y² - ω²σ_y) - (1/2)((ω1-ω2)/γ + ω1-ω2)²
-    # Simplify using Prop 3.4
-    diff_portfolios = delta_omega / gamma
-    rp = gamma * sigma_y - omega2
-    volatility_penalty = 0.5 * (delta_omega * sigma_y / gamma
-                                 + delta_omega)**2
-    total = diff_portfolios * sigma_y * rp - volatility_penalty
-    return total
+    Δω = ω_1 - ω_2
+    risky_share_diff = Δω / (γ * σ_y)
+    risk_premium = γ * σ_y**2 - ω_2 * σ_y
+    volatility_term = (Δω / γ) * (σ_y + 0.5 * Δω / γ)
+    return risky_share_diff * risk_premium - volatility_term
 
 
-def consumption_rate_diff(omega1, omega2, gamma, rho, sigma_y):
+def saving_channel(ω_1, ω_2, γ, ρ, σ_y):
     """
-    Difference in consumption rates at boundary v → 0.
+    Difference in consumption-wealth ratios at the boundary.
 
     Parameters
     ----------
-    omega1, omega2 : float
+    ω_1, ω_2 : float
         Belief distortions
-    gamma : float
+    γ : float
         Risk aversion
-    rho : float
+    ρ : float
         Inverse of IES
-    sigma_y : float
+    σ_y : float
         Endowment volatility
 
     Returns
     -------
     float
     """
-    delta_omega = omega1 - omega2
-    subjective_return_diff = (delta_omega * sigma_y
-                               + delta_omega**2 / (2 * gamma))
-    return (1 - rho) / rho * subjective_return_diff
+    Δω = ω_1 - ω_2
+    subjective_return_diff = Δω * σ_y + Δω**2 / (2 * γ)
+    return (1 - ρ) / ρ * subjective_return_diff
 
 
-def survival_drift(omega1, omega2, gamma, rho, sigma_y):
+def boundary_drift(ω_1, ω_2, γ, ρ, σ_y):
     """
-    Drift m_ϑ at boundary v → 0, determining survival of agent 1.
+    Boundary drift m_ϑ when agent 1 becomes negligible.
 
     Positive drift means agent 1 survives (repelling boundary).
 
     Parameters
     ----------
-    omega1, omega2 : float
+    ω_1, ω_2 : float
         Belief distortions of agents 1 and 2
-    gamma : float
+    γ : float
         Risk aversion
-    rho : float
+    ρ : float
         Inverse of IES
-    sigma_y : float
+    σ_y : float
         Endowment volatility
 
     Returns
@@ -348,806 +600,626 @@ def survival_drift(omega1, omega2, gamma, rho, sigma_y):
     float
         Drift at v = 0
     """
-    pr = portfolio_return_diff(omega1, omega2, gamma, sigma_y)
-    cr = consumption_rate_diff(omega1, omega2, gamma, rho, sigma_y)
-    return gamma * (pr + cr)
+    return γ * (
+        portfolio_return_diff(ω_1, ω_2, γ, σ_y)
+        + saving_channel(ω_1, ω_2, γ, ρ, σ_y)
+    )
 ```
 
-## Survival Regions
+## Survival regions
 
-A central contribution of {cite}`Borovicka2020` is the characterization of
-**survival regions** in the $(\gamma, \rho)$ parameter space.
+A central contribution of {cite}`Borovicka2020` is the characterization of survival regions in the $(\gamma, \rho)$ plane.
 
-Under separable CRRA preferences ($\gamma = \rho$), the agent with more accurate beliefs
-always dominates --- this is the market selection hypothesis.
+Under separable preferences, $\gamma = \rho$, the agent with more accurate beliefs always dominates.
 
-Under recursive preferences, all four survival outcomes from {prf:ref}`survival_conditions`
-can occur.
+Under recursive preferences, all four outcomes in {prf:ref}`survival_conditions` can occur.
 
-Let us compute and plot the survival regions for different levels of belief distortion,
-following Figure 2 of {cite}`Borovicka2020`.
+Figure 2 in the paper studies the case where agent 2 has correct beliefs, so $\omega^2 = 0$.
 
-We focus on the case where agent 2 has correct beliefs ($\omega^2 = 0$) and agent 1
-has distorted beliefs.
+The next cell follows that figure.
 
 ```{code-cell} ipython3
-def compute_survival_boundary(omega1, omega2, sigma_y,
-                               gamma_range, boundary='lower'):
+def compute_survival_boundary(ω_1, ω_2, σ_y, γ_grid, boundary="lower"):
     """
-    Compute the boundary curve in (γ, ρ) space where survival
-    condition holds with equality.
+    Compute the curve in (γ, ρ) space where the boundary drift is zero.
 
-    For boundary='lower' (v → 0): drift at v=0 = 0, giving
-    condition for agent 1's survival.
-    For boundary='upper' (v → 1): drift at v=1 = 0, giving
-    condition for agent 2's survival (symmetric).
+    For boundary='lower', agent 1 is the small agent.
+    For boundary='upper', agent 2 is the small agent.
 
-    Returns ρ as function of γ along the boundary.
+    Returns
+    -------
+    np.ndarray
+        Boundary values of ρ as a function of γ
     """
-    rho_boundary = []
+    ρ_boundary = []
 
-    if boundary == 'lower':
-        # Agent 1 survival: drift at v→0 = 0
-        # portfolio_returns + consumption_rate_diff = 0
-        for gamma in gamma_range:
-            pr = portfolio_return_diff(omega1, omega2, gamma,
-                                        sigma_y)
-            delta_omega = omega1 - omega2
-            subj_ret = (delta_omega * sigma_y
-                        + delta_omega**2 / (2 * gamma))
-            if abs(subj_ret) < 1e-15:
-                rho_boundary.append(np.nan)
-                continue
-            # pr + (1-ρ)/ρ * subj_ret = 0
-            # pr*ρ + subj_ret - ρ*subj_ret = 0
-            # ρ(pr - subj_ret) = -subj_ret
-            # ρ = -subj_ret / (pr - subj_ret)
-            #   = subj_ret / (subj_ret - pr)
-            denom = subj_ret - pr
-            if abs(denom) < 1e-15:
-                rho_boundary.append(np.nan)
-            else:
-                rho_val = subj_ret / denom
-                rho_boundary.append(rho_val)
+    if boundary == "lower":
+        small_agent = (ω_1, ω_2)
     else:
-        # Agent 2 survival: drift at v→1 = 0 (symmetric)
-        for gamma in gamma_range:
-            pr = portfolio_return_diff(omega2, omega1, gamma,
-                                        sigma_y)
-            delta_omega = omega2 - omega1
-            subj_ret = (delta_omega * sigma_y
-                        + delta_omega**2 / (2 * gamma))
-            if abs(subj_ret) < 1e-15:
-                rho_boundary.append(np.nan)
-                continue
-            denom = subj_ret - pr
-            if abs(denom) < 1e-15:
-                rho_boundary.append(np.nan)
-            else:
-                rho_val = subj_ret / denom
-                rho_boundary.append(rho_val)
+        small_agent = (ω_2, ω_1)
 
-    return np.array(rho_boundary)
+    ω_small, ω_large = small_agent
+
+    for γ in γ_grid:
+        pr = portfolio_return_diff(ω_small, ω_large, γ, σ_y)
+        Δω = ω_small - ω_large
+        subj_ret = Δω * σ_y + Δω**2 / (2 * γ)
+
+        if abs(subj_ret) < 1e-14:
+            ρ_boundary.append(np.nan)
+            continue
+
+        denom = subj_ret - pr
+        if abs(denom) < 1e-14:
+            ρ_boundary.append(np.nan)
+        else:
+            ρ_boundary.append(subj_ret / denom)
+
+    return np.asarray(ρ_boundary)
+
+
+def compute_limit_boundary(γ_grid, boundary="lower"):
+    """
+    Boundary curves for the limit |ω_1| / σ_y -> ∞.
+
+    This is equivalent to the constant-endowment case discussed in the paper.
+    """
+    if boundary == "lower":
+        return γ_grid / (1 + γ_grid)
+
+    ρ = np.full_like(γ_grid, np.nan, dtype=float)
+    mask = γ_grid < 1
+    ρ[mask] = γ_grid[mask] / (1 - γ_grid[mask])
+    return ρ
 ```
 
 ```{code-cell} ipython3
-sigma_y = 0.02
+---
+mystnb:
+  figure:
+    caption: Survival regions corresponding to Figure 2 in Borovicka (2020)
+    name: fig-survival-regions
+---
+σ_y = 0.02
+γ_grid = np.linspace(0.01, 6.0, 500)
+ρ_max = 2.0
 
-fig, axes = plt.subplots(2, 2, figsize=(14, 12))
-
-# Four cases of belief distortion
-cases = [
-    (0.25, 0, r'$\omega^1 = 0.25$ (moderate optimism)'),
-    (1.0, 0, r'$\omega^1 = 1.0$ (strong optimism)'),
-    (5.0, 0, r'$\omega^1 \to \infty$ (extreme optimism / $\sigma_Y \to 0$)'),
-    (-0.5, 0, r'$\omega^1 = -0.5$ (pessimism)')
+panel_specs = [
+    ("finite", 0.10, r"$\omega^1 = 0.10$"),
+    ("finite", 0.20, r"$\omega^1 = 0.20$"),
+    ("limit", None, r"$|\omega^1| / \sigma_Y \to \infty$"),
+    ("finite", -0.25, r"$\omega^1 = -0.25$"),
 ]
 
-gamma_range = np.linspace(0.1, 30, 500)
+fig, axes = plt.subplots(2, 2, figsize=(13, 10), sharex=True, sharey=True)
 
-for idx, (omega1, omega2, title) in enumerate(cases):
-    ax = axes[idx // 2][idx % 2]
+for idx, (case, value, label) in enumerate(panel_specs):
+    ax = axes.flat[idx]
 
-    # Compute boundaries
-    rho_lower = compute_survival_boundary(omega1, omega2, sigma_y,
-                                           gamma_range,
-                                           boundary='lower')
-    rho_upper = compute_survival_boundary(omega1, omega2, sigma_y,
-                                           gamma_range,
-                                           boundary='upper')
+    if case == "limit":
+        ρ_1 = compute_limit_boundary(γ_grid, boundary="lower")
+        ρ_2 = compute_limit_boundary(γ_grid, boundary="upper")
+    else:
+        ρ_1 = compute_survival_boundary(value, 0.0, σ_y, γ_grid, boundary="lower")
+        ρ_2 = compute_survival_boundary(value, 0.0, σ_y, γ_grid, boundary="upper")
 
-    # Clean up invalid values
-    rho_lower = np.clip(rho_lower, 0.01, 30)
-    rho_upper = np.clip(rho_upper, 0.01, 30)
+    ρ_1 = np.where((ρ_1 > 0) & (ρ_1 < ρ_max), ρ_1, np.nan)
+    ρ_2 = np.where((ρ_2 > 0) & (ρ_2 < ρ_max), ρ_2, np.nan)
 
-    # Plot boundaries
-    ax.plot(gamma_range, rho_lower, 'b--', linewidth=2,
-            label=r'Agent 1 survival boundary')
-    ax.plot(gamma_range, rho_upper, 'r-', linewidth=2,
-            label=r'Agent 2 survival boundary')
+    lower = np.minimum(ρ_1, ρ_2)
+    upper = np.maximum(ρ_1, ρ_2)
+    mask = np.isfinite(lower) & np.isfinite(upper)
 
-    # CRRA diagonal
-    ax.plot(gamma_range, gamma_range, 'k:', linewidth=1,
-            label=r'CRRA ($\gamma = \rho$)')
+    ax.fill_between(
+        γ_grid, lower, upper, where=mask, color="C2", alpha=0.18,
+        label="both survive" if idx == 0 else None
+    )
+    ax.plot(
+        γ_grid, ρ_1, "--", color="C0", lw=2,
+        label="agent 1 boundary" if idx == 0 else None
+    )
+    ax.plot(
+        γ_grid, ρ_2, "-", color="C3", lw=2,
+        label="agent 2 boundary" if idx == 0 else None
+    )
+    ax.plot(
+        γ_grid, γ_grid, ":", color="black", lw=2,
+        label=r"$\gamma = \rho$" if idx == 0 else None
+    )
 
-    # Label regions
-    ax.set_xlabel(r'Risk aversion $\gamma$', fontsize=12)
-    ax.set_ylabel(r'Inverse of IES $\rho$', fontsize=12)
-    ax.set_title(title, fontsize=13)
-    ax.set_xlim(0, 30)
-    ax.set_ylim(0, 30)
-    ax.legend(fontsize=9, loc='upper left')
+    ax.set_title(label, fontsize=12)
+    ax.set_xlim(0, 6)
+    ax.set_ylim(0, 2)
+    ax.set_xlabel(r"risk aversion $\gamma$")
+    ax.set_ylabel(r"inverse IES $\rho$")
 
+axes[0, 0].legend(loc="upper left", fontsize=9)
 plt.tight_layout()
 plt.show()
 ```
 
-The **shaded region** between the two boundaries corresponds to parameter combinations
-where both agents coexist in the long run --- a **nondegenerate stationary distribution**
-of wealth exists.
+Each panel plots two curves in the $(\gamma, \rho)$ plane for a different value of agent 1's belief distortion $\omega^1$ (agent 2 has correct beliefs, $\omega^2 = 0$).
 
-Key observations:
+- The dashed curve (blue) is where the boundary drift at $\upsilon = 0$ equals zero — condition (i) in {prf:ref}`survival_conditions`.
+- The solid curve (red) is where the boundary drift at $\upsilon = 1$ equals zero — condition (ii).
+- The shaded region between the two curves is where both agents survive.
+- The dotted diagonal $\gamma = \rho$ is the separable CRRA case, along which the agent with more accurate beliefs always dominates.
 
-* Along the CRRA diagonal ($\gamma = \rho$, dotted line), the agent with more accurate
-  beliefs always dominates, confirming {cite}`Sandroni2000` and {cite}`Blume_Easley2006`
+Moderate optimism ($\omega^1 = 0.10$) produces a narrow coexistence region.
 
-* The coexistence region lies in the empirically relevant part of the parameter space
-  where $\gamma > \rho$ (i.e., risk aversion exceeds the inverse of IES)
+Stronger optimism ($\omega^1 = 0.20$) widens it substantially.
 
-* As optimism increases, the coexistence region expands
+In the limit $|\omega^1|/\sigma_Y \to \infty$ (bottom-left), the boundaries simplify to closed-form expressions.
 
-* A pessimistic agent can survive only when IES is sufficiently high and risk aversion
-  is not too large
+Pessimistic distortions ($\omega^1 = -0.25$, bottom-right) can also survive, but only in a much narrower part of the parameter space.
 
+## Three survival channels
 
-## Three Survival Channels
-
-Let us now visualize the contribution of each survival channel to the total survival
-drift, varying one parameter at a time.
+The decomposition above can be visualized directly.
 
 ```{code-cell} ipython3
-def decompose_survival(omega1, omega2, gamma_vals, rho, sigma_y):
+def decompose_survival(ω_1, ω_2, γ_grid, ρ, σ_y):
     """
-    Decompose survival drift into three channels.
-
-    Returns arrays for:
-    - risk premium channel
-    - volatility penalty
-    - saving channel
+    Decompose the wealth-growth differential in proposition 3.4.
     """
-    delta_omega = omega1 - omega2
-
-    risk_premium_ch = np.zeros_like(gamma_vals)
-    vol_penalty_ch = np.zeros_like(gamma_vals)
-    saving_ch = np.zeros_like(gamma_vals)
-
-    for i, gamma in enumerate(gamma_vals):
-        # Portfolio difference × risk premium
-        diff_port = delta_omega / gamma
-        rp = gamma * sigma_y - omega2
-        risk_premium_ch[i] = diff_port * sigma_y * rp
-
-        # Volatility penalty (always negative for survival)
-        vol_penalty_ch[i] = -0.5 * (delta_omega * sigma_y / gamma
-                                      + delta_omega)**2
-
-        # Saving channel
-        subj_ret = (delta_omega * sigma_y
-                    + delta_omega**2 / (2 * gamma))
-        saving_ch[i] = (1 - rho) / rho * subj_ret
-
-    total = risk_premium_ch + vol_penalty_ch + saving_ch
-    return risk_premium_ch, vol_penalty_ch, saving_ch, total
+    Δω = ω_1 - ω_2
+    risk_premium_term = Δω * (γ_grid * σ_y - ω_2) / γ_grid
+    volatility_term = -(Δω / γ_grid) * (σ_y + 0.5 * Δω / γ_grid)
+    saving_term = (1 - ρ) / ρ * (Δω * σ_y + Δω**2 / (2 * γ_grid))
+    total = risk_premium_term + volatility_term + saving_term
+    return risk_premium_term, volatility_term, saving_term, total
 
 
-# Parameters
-sigma_y = 0.02
-omega1 = 0.25
-omega2 = 0.0  # correct beliefs
-rho = 0.67     # IES = 1.5
+ω_1 = 0.25
+ω_2 = 0.0
+ρ = 0.67
+σ_y = 0.02
+γ_grid = np.linspace(0.5, 25.0, 300)
 
-gamma_vals = np.linspace(0.5, 25, 300)
-
-rp, vp, sc, total = decompose_survival(omega1, omega2, gamma_vals,
-                                         rho, sigma_y)
-
-fig, ax = plt.subplots(figsize=(12, 7))
-
-ax.plot(gamma_vals, rp, 'b-', linewidth=2,
-        label='Risk premium channel')
-ax.plot(gamma_vals, vp, 'r--', linewidth=2,
-        label='Volatility penalty')
-ax.plot(gamma_vals, sc, 'g-.', linewidth=2,
-        label='Saving channel')
-ax.plot(gamma_vals, total, 'k-', linewidth=3,
-        label='Total survival drift')
-ax.axhline(0, color='gray', linewidth=0.5)
-ax.set_xlabel(r'Risk aversion $\gamma$', fontsize=13)
-ax.set_ylabel('Contribution to survival drift', fontsize=13)
-ax.set_title(
-    rf'Decomposition of survival channels ($\omega^1={omega1}$, '
-    rf'$\omega^2={omega2}$, IES$={1/rho:.1f}$, '
-    rf'$\sigma_Y={sigma_y}$)',
-    fontsize=13
+risk_term, vol_term, save_term, total = decompose_survival(
+    ω_1, ω_2, γ_grid, ρ, σ_y
 )
-ax.legend(fontsize=11)
+
+fig, ax = plt.subplots(figsize=(11, 6))
+ax.plot(γ_grid, risk_term, color="C0", lw=2, label="risk premium term")
+ax.plot(γ_grid, vol_term, "--", color="C3", lw=2, label="volatility term")
+ax.plot(γ_grid, save_term, "-.", color="C2", lw=2, label="saving term")
+ax.plot(γ_grid, total, color="black", lw=2, label="total")
+ax.axhline(0, color="gray", lw=1)
+ax.set_xlabel(r"risk aversion $\gamma$")
+ax.set_ylabel("contribution to wealth-growth differential")
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
 
-The figure reveals the distinct roles of the three channels:
+This figure decomposes the boundary drift at $\upsilon = 0$ into three terms for an optimistic agent ($\omega^1 = {0.25}$, $\omega^2 = 0$) with IES $= 1/\rho \approx 1.49$ and $\sigma_Y = 0.02$.
 
-* The **volatility penalty** (red dashed) is dominant at low risk aversion --- speculative
-  portfolios generate volatile returns that hurt the incorrect agent
+- The risk premium term (blue) is positive throughout because the optimistic agent overweights the risky asset and earns the equity premium.
+- The volatility term (red dashed) is negative and large at low $\gamma$, reflecting the cost of holding a volatile portfolio.
+- The saving term (green dash-dot) is positive when IES $> 1$ because the optimistic agent perceives a high return on wealth and saves more aggressively.
+- The total (black) crosses zero at the critical $\gamma$ below which the volatility penalty dominates and the agent cannot survive.
 
-* The **risk premium channel** (blue) increases with risk aversion --- the more optimistic
-  agent earns a higher return by holding more of the risky asset
+## Varying the IES
 
-* The **saving channel** (green) provides a constant positive lift when IES $> 1$ ---
-  the optimistic agent saves more in response to her perceived high returns
-
-
-## Varying IES
-
-The intertemporal elasticity of substitution plays a critical role in survival outcomes.
+The sign of the saving term is pinned down by the IES.
 
 ```{code-cell} ipython3
-fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+---
+mystnb:
+  figure:
+    caption: Boundary decomposition for different IES values
+    name: fig-survival-ies-panels
+---
+fig, axes = plt.subplots(1, 3, figsize=(16, 4.5), sharey=True)
 
-gamma_fixed = 10.0
-omega1 = 0.25
-omega2 = 0.0
-sigma_y = 0.02
+ω_1 = 0.25
+ω_2 = 0.0
+σ_y = 0.02
+γ_grid = np.linspace(0.5, 25.0, 300)
 
 ies_values = [0.5, 1.0, 1.5]
-ies_labels = ['IES = 0.5 (inelastic)', 'IES = 1.0 (log)',
-              'IES = 1.5 (elastic)']
 
-gamma_range = np.linspace(0.5, 25, 300)
-
-for idx, (ies, label) in enumerate(zip(ies_values, ies_labels)):
-    rho = 1.0 / ies
-
-    rp, vp, sc, total = decompose_survival(omega1, omega2,
-                                             gamma_range,
-                                             rho, sigma_y)
+for idx, ies in enumerate(ies_values):
+    ρ = 1.0 / ies
+    risk_term, vol_term, save_term, total = decompose_survival(
+        ω_1, ω_2, γ_grid, ρ, σ_y
+    )
 
     ax = axes[idx]
-    ax.plot(gamma_range, rp, 'b-', linewidth=2,
-            label='Risk premium')
-    ax.plot(gamma_range, vp, 'r--', linewidth=2,
-            label='Volatility penalty')
-    ax.plot(gamma_range, sc, 'g-.', linewidth=2,
-            label='Saving channel')
-    ax.plot(gamma_range, total, 'k-', linewidth=3,
-            label='Total')
-    ax.axhline(0, color='gray', linewidth=0.5)
-    ax.set_xlabel(r'Risk aversion $\gamma$', fontsize=12)
-    ax.set_ylabel('Contribution', fontsize=12)
-    ax.set_title(label, fontsize=13)
-    ax.legend(fontsize=9)
+    ax.plot(γ_grid, risk_term, color="C0", lw=2, label="risk premium")
+    ax.plot(γ_grid, vol_term, "--", color="C3", lw=2, label="volatility")
+    ax.plot(γ_grid, save_term, "-.", color="C2", lw=2, label="saving")
+    ax.plot(γ_grid, total, color="black", lw=2, label="total")
+    ax.axhline(0, color="gray", lw=1)
+    ax.set_title(f"IES = {ies:.1f}", fontsize=12)
+    ax.set_xlabel(r"risk aversion $\gamma$")
+    ax.set_ylabel("contribution")
 
+axes[0].legend(fontsize=9)
 plt.tight_layout()
 plt.show()
 ```
 
-Key insights:
+Each panel shows the same three-term decomposition as the previous figure, but now for three different values of the IES ($\omega^1 = 0.25$, $\omega^2 = 0$, $\sigma_Y = 0.02$).
 
-* When **IES $= 1$** (center), the saving channel vanishes: consumption-wealth ratios
-  are constant and equal to $\beta$, as in the logarithmic case.
-  Only the risk premium and volatility channels matter.
+- Left panel (IES $= 0.5$): the saving term is negative, so the optimistic agent actually saves less, working against survival.
+- Center panel (IES $= 1.0$): the saving term vanishes entirely, reproducing the separable benchmark.
+- Right panel (IES $= 1.5$): the saving term is positive and shifts the total drift upward, expanding the range of $\gamma$ values for which the optimistic agent survives.
 
-* When **IES $> 1$** (right), the saving channel is positive for the optimistic agent:
-  she perceives high expected returns and responds by saving more, helping her survive.
+## Asymptotic results
 
-* When **IES $< 1$** (left), the saving channel reverses direction: higher perceived
-  returns lead to *lower* saving (the income effect dominates), hurting the
-  optimistic agent's survival.
+Borovicka derives several useful asymptotic results.
 
+1. As $\gamma \searrow 0$, each agent dominates with strictly positive probability.
+1. As $\gamma \nearrow \infty$, the relatively more optimistic agent dominates.
+1. As $\rho \searrow 0$, the relatively more optimistic agent always survives.
+1. As $\rho \nearrow \infty$, a nondegenerate long-run equilibrium cannot exist.
 
-## Asymptotic Results
-
-{cite}`Borovicka2020` establishes four key asymptotic results:
-
-**(a) Near risk neutrality** ($\gamma \searrow 0$): each agent dominates with strictly positive
-probability.
-Low risk aversion encourages speculative portfolio positions.
-The volatile returns create a diverging force --- one agent must eventually become
-extinct, but which one depends on the realized path.
-
-**(b) High risk aversion** ($\gamma \nearrow \infty$): the relatively more optimistic agent
-always dominates.
-The risk premium channel dominates, and the pessimistic agent pays too high a price
-for insurance.
-
-**(c) High IES** ($\rho \searrow 0$): the relatively more optimistic agent always survives.
-The saving channel is strong enough to prevent her extinction.
-Whether the pessimistic agent also survives depends on risk aversion.
-
-**(d) Low IES** ($\rho \nearrow \infty$): a nondegenerate long-run equilibrium cannot exist.
-Inelastic preferences cause the saving channel to work against survival of the
-small agent, regardless of identity.
+The next figure illustrates the first result by plotting both boundary drifts as $\gamma$ becomes small.
 
 ```{code-cell} ipython3
-# Illustrate asymptotic result (a): near risk neutrality
-fig, ax = plt.subplots(figsize=(10, 6))
+---
+mystnb:
+  figure:
+    caption: Boundary drifts for small risk aversion
+    name: fig-boundary-drifts-small-gamma
+---
+ω_1 = 0.25
+ω_2 = 0.0
+ρ = 0.67
+σ_y = 0.02
+γ_grid = np.linspace(0.05, 5.0, 300)
 
-omega1 = 0.25
-omega2 = 0.0
-sigma_y = 0.02
-rho = 0.67  # IES = 1.5
+drift_at_0 = np.array([boundary_drift(ω_1, ω_2, γ, ρ, σ_y) for γ in γ_grid])
+drift_at_1 = np.array([-boundary_drift(ω_2, ω_1, γ, ρ, σ_y) for γ in γ_grid])
 
-# Show drift at both boundaries as function of gamma
-gamma_vals = np.linspace(0.05, 5, 300)
-
-drift_v0 = np.array([survival_drift(omega1, omega2, g, rho, sigma_y)
-                      for g in gamma_vals])
-# Drift at v=1 by swapping agents
-drift_v1 = np.array([survival_drift(omega2, omega1, g, rho, sigma_y)
-                      for g in gamma_vals])
-
-ax.plot(gamma_vals, drift_v0, 'b-', linewidth=2,
-        label=r'Drift at $\upsilon \to 0$ (agent 1 survival)')
-ax.plot(gamma_vals, -drift_v1, 'r--', linewidth=2,
-        label=r'Drift at $\upsilon \to 1$ (agent 2 survival)')
-ax.axhline(0, color='gray', linewidth=0.5)
-ax.set_xlabel(r'Risk aversion $\gamma$', fontsize=13)
-ax.set_ylabel('Survival drift', fontsize=13)
-ax.set_title('Boundary drifts as risk aversion varies', fontsize=13)
-ax.legend(fontsize=11)
+fig, ax = plt.subplots(figsize=(10, 5))
+ax.plot(γ_grid, drift_at_0, color="C0", lw=2, label=r"$\upsilon \to 0$")
+ax.plot(γ_grid, drift_at_1, "--", color="C3", lw=2, label=r"$\upsilon \to 1$")
+ax.axhline(0, color="gray", lw=1)
+ax.set_xlabel(r"risk aversion $\gamma$")
+ax.set_ylabel("boundary drift")
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
 
+This figure plots the two boundary drifts as a function of $\gamma$ ($\omega^1 = 0.25$, $\omega^2 = 0$, IES $\approx 1.49$).
 
-## The Separable Case: CRRA Benchmark
+- The solid blue curve is the drift $m_\vartheta$ at $\upsilon \to 0$ (agent 1 near extinction); coexistence requires this to be positive (condition (i)).
+- The dashed red curve is the drift $m_\vartheta$ at $\upsilon \to 1$ (agent 2 near extinction); coexistence requires this to be negative (condition (ii)).
 
-Under separable CRRA preferences ($\gamma = \rho$), the dynamics of the log-odds
-Pareto share $\vartheta$ become a Brownian motion with constant drift:
+The figure illustrates asymptotic result 1.
+
+For small $\gamma$, the blue curve is negative and the red curve is also negative.
+
+Both drifts push the Pareto share in the same direction — toward $\upsilon = 1$ — so whichever agent happens to get ahead early will dominate.
+
+This is outcome (d) in {prf:ref}`survival_conditions`: neither boundary is repelling, so each agent dominates with strictly positive probability depending on the realized Brownian path.
+
+As $\gamma$ increases past roughly 1, the blue curve crosses zero and becomes positive while the red curve stays negative.
+
+Now both boundaries are repelling and we enter the coexistence region — outcome (a).
+
+## The separable case
+
+When $\gamma = \rho$, the model collapses to the separable CRRA benchmark.
+
+In that case, the log-odds process becomes
 
 $$
-d\vartheta_t = \frac{1}{2}\left[(\omega^2)^2 - (\omega^1)^2\right] dt + (\omega^1 - \omega^2) dW_t
+d\vartheta_t = \frac{1}{2}\left[(\omega^2)^2 - (\omega^1)^2\right] dt + (\omega^1 - \omega^2) dW_t .
 $$
 
-The drift does not depend on the state $\upsilon$ and is determined entirely by the
-**relative entropy** (Kullback-Leibler divergence) of the agents' beliefs:
-$\frac{1}{2}|\omega^n|^2$.
+The drift is constant and depends only on the relative entropy of the two belief distortions.
 
-The agent with small $|\omega^n|$ --- more accurate beliefs --- always dominates.
+The agent with the smaller $|\omega^n|$ dominates under $P$.
+
+If the two agents have equal magnitudes of belief distortions, neither becomes extinct almost surely, but no nondegenerate stationary wealth distribution exists.
 
 ```{code-cell} ipython3
-def simulate_crra_pareto(omega1, omega2, T, dt, n_paths, seed=42):
+---
+mystnb:
+  figure:
+    caption: Pareto-share paths in the separable benchmark
+    name: fig-crra-pareto-paths
+---
+def simulate_crra_pareto(ω_1, ω_2, T, dt, n_paths, seed=42):
     """
-    Simulate Pareto share dynamics under CRRA (γ = ρ).
-
-    Parameters
-    ----------
-    omega1, omega2 : float
-        Belief distortions
-    T : float
-        Time horizon
-    dt : float
-        Time step
-    n_paths : int
-        Number of sample paths
-    seed : int
-        Random seed
-
-    Returns
-    -------
-    t_grid : array
-        Time grid
-    v_paths : array
-        Pareto share paths, shape (n_paths, n_steps)
+    Simulate Pareto-share dynamics in the separable benchmark.
     """
     rng = np.random.default_rng(seed)
     n_steps = int(T / dt)
     t_grid = np.linspace(0, T, n_steps + 1)
 
-    # Drift and vol of log-odds
-    drift = 0.5 * (omega2**2 - omega1**2)
-    vol = omega1 - omega2
+    drift = 0.5 * (ω_2**2 - ω_1**2)
+    volatility = ω_1 - ω_2
 
-    # Initial log-odds (v0 = 0.5 -> theta0 = 0)
-    theta = np.zeros((n_paths, n_steps + 1))
-    dW = rng.normal(0, np.sqrt(dt), (n_paths, n_steps))
+    θ = np.zeros((n_paths, n_steps + 1))
+    dW = rng.normal(0.0, np.sqrt(dt), size=(n_paths, n_steps))
 
     for t in range(n_steps):
-        theta[:, t+1] = theta[:, t] + drift * dt + vol * dW[:, t]
+        θ[:, t + 1] = θ[:, t] + drift * dt + volatility * dW[:, t]
 
-    # Convert to Pareto share
-    v_paths = 1.0 / (1.0 + np.exp(-theta))
-
-    return t_grid, v_paths
+    υ_paths = 1.0 / (1.0 + np.exp(-θ))
+    return t_grid, υ_paths
 
 
-# Simulate
-T = 200
-dt = 0.01
-n_paths = 50
+ω_1 = 0.10
+ω_2 = 0.0
+t_grid, υ_paths = simulate_crra_pareto(ω_1, ω_2, T=200, dt=0.01, n_paths=50)
 
-omega1 = 0.1   # slightly optimistic (incorrect)
-omega2 = 0.0   # correct beliefs
+fig, ax = plt.subplots(figsize=(11, 5))
 
-t_grid, v_paths = simulate_crra_pareto(omega1, omega2, T, dt,
-                                        n_paths)
+for i in range(20):
+    ax.plot(t_grid, υ_paths[i], color="C0", alpha=0.25, lw=1)
 
-fig, ax = plt.subplots(figsize=(12, 6))
-
-for i in range(min(20, n_paths)):
-    ax.plot(t_grid, v_paths[i], alpha=0.3, linewidth=0.5)
-
-ax.axhline(0.5, color='gray', linestyle=':', alpha=0.5)
-ax.set_xlabel('Time $t$', fontsize=13)
-ax.set_ylabel(r'Pareto share $\upsilon_t$', fontsize=13)
-ax.set_title(
-    rf'CRRA case ($\gamma = \rho$): Agent 2 (correct, $\omega^2=0$) '
-    rf'dominates over agent 1 ($\omega^1={omega1}$)',
-    fontsize=13
-)
+ax.axhline(0.5, color="gray", linestyle=":", lw=1)
+ax.set_xlabel("time")
+ax.set_ylabel(r"Pareto share $\upsilon_t$")
 ax.set_ylim(0, 1)
 plt.tight_layout()
 plt.show()
 ```
 
-Under separable preferences, agent 2 (with correct beliefs) always drives agent 1's
-Pareto share to zero.
+This figure simulates 20 sample paths of the Pareto share $\upsilon_t$ under separable CRRA preferences ($\gamma = \rho$) with $\omega^1 = 0.10$ and $\omega^2 = 0$.
 
+Agent 2 has correct beliefs, so the log-odds drift is negative and all paths trend toward $\upsilon = 0$.
 
-## Economy with Constant Aggregate Endowment
+Agent 1 is driven to extinction — the classical market-selection result of {cite:t}`Blume_Easley2006`.
 
-An illuminating special case arises when aggregate endowment is constant
-($\mu_Y = \sigma_Y = 0$).
-In this economy, agents trade purely for **speculative** motives.
+## Constant aggregate endowment
 
-The survival results do not depend on $\mu_Y$ or $\sigma_Y$ independently but only on
-the ratio $\omega^n / \sigma_Y$.
-The limit $\sigma_Y \to 0$ with $\omega^1 \neq 0$ thus isolates the saving channel.
+Section IV.D.3 studies the limiting case in which aggregate endowment is constant, so $\mu_Y = \sigma_Y = 0$.
 
-In this case:
+In the notation of the paper, this case is equivalent to the limit $|\omega^1| / \sigma_Y \to \infty$ studied in the bottom-left panel of figure 2.
 
-* The risk premium is zero (no aggregate risk)
-* The speculative volatility channel is present but muted at high risk aversion
-* The saving channel alone can generate survival of the incorrect agent when IES $> 1$
+The point of the exercise is that the survival results do not rely on unbounded aggregate endowment.
 
-```{code-cell} ipython3
-# Show survival regions for the limiting case ω/σ_y → ∞
-# (equivalent to σ_y → 0 or ω → ∞)
+Even with deterministic aggregate consumption, agents can trade for purely speculative motives in complete markets.
 
-fig, ax = plt.subplots(figsize=(10, 8))
+As the negligible agent faces prices generated by the large agent, she can choose a speculative portfolio with a high *subjective* expected return.
 
-gamma_range = np.linspace(0.1, 30, 500)
+When IES is above one, that high perceived return raises her saving rate and can allow her to outsave extinction.
 
-# In the limit, survival of agent 1 requires IES > 1
-# i.e., ρ < 1
-ax.axhline(1.0, color='b', linestyle='--', linewidth=2,
-           label=r'Agent 1 survival: $\rho < 1$ (IES $> 1$)')
+This is the pure saving channel in isolation.
 
-# Agent 2 always survives (correct beliefs, no risk premium cost)
-# The boundary is the CRRA line
-ax.plot(gamma_range, gamma_range, 'k:', linewidth=1,
-        label=r'CRRA ($\gamma = \rho$)')
+## Asset pricing implications
 
-# Shade coexistence region
-ax.fill_between(gamma_range, 0, np.minimum(1.0, gamma_range),
-                alpha=0.2, color='green',
-                label='Both agents survive')
-ax.fill_between(gamma_range, np.minimum(1.0, gamma_range),
-                np.ones_like(gamma_range),
-                where=gamma_range > 1,
-                alpha=0.2, color='blue',
-                label='Both survive (above CRRA, below ρ=1)')
+As one agent becomes negligible, current prices converge to those of the homogeneous economy populated by the large agent.
 
-ax.set_xlabel(r'Risk aversion $\gamma$', fontsize=13)
-ax.set_ylabel(r'Inverse of IES $\rho$', fontsize=13)
-ax.set_title(
-    r'Survival regions: $\sigma_Y \to 0$ (pure speculation)',
-    fontsize=13)
-ax.set_xlim(0, 30)
-ax.set_ylim(0, 10)
-ax.legend(fontsize=10, loc='upper right')
-plt.tight_layout()
-plt.show()
-```
-
-In the economy without aggregate risk, IES $> 1$ is sufficient for the incorrect agent
-to survive when risk aversion is sufficiently high.
-This is the pure saving channel at work.
-
-
-## Asset Pricing Implications
-
-{cite}`Borovicka2020` also shows that as the Pareto share of one agent becomes negligible,
-current asset prices converge to those in a homogeneous economy populated by the
-large agent.
-
-### Prices at the boundary
-
-As $\upsilon \searrow 0$ (agent 2 dominates):
-
-**Risk-free rate:**
+When agent 2 is the large agent, proposition 5.1 implies
 
 $$
-\lim_{\upsilon \searrow 0} r(\upsilon) = \beta + \rho \mu_Y + \omega^2 \sigma_Y
-+ \frac{1}{2}(1-\gamma)\sigma_Y^2 - \frac{1}{2}\gamma \sigma_Y^2
+\lim_{\upsilon \searrow 0} r(\upsilon)
+= \beta + \rho \mu_Y + \omega^2 \sigma_Y
++ \frac{1}{2} (1 - \gamma) \sigma_Y^2
+- \frac{1}{2} \gamma \sigma_Y^2
 $$ (eq:riskfree)
 
-**Wealth-consumption ratio:**
+and
 
 $$
-\lim_{\upsilon \searrow 0} y(\upsilon) = \left[\beta - (1-\rho)\left(\mu_Y
-+ \omega^2 \sigma_Y + \frac{1}{2}(1-\gamma)\sigma_Y^2\right)\right]^{-1}
+\lim_{\upsilon \searrow 0} y(\upsilon)
+= \left[
+\beta - (1 - \rho)
+\left(
+\mu_Y + \omega^2 \sigma_Y + \frac{1}{2} (1 - \gamma) \sigma_Y^2
+\right)
+\right]^{-1} .
 $$ (eq:wc_ratio)
 
-### Portfolio choice of the negligible agent
-
-The small agent's portfolio share in the risky asset converges to
+The aggregate wealth dynamics also converge to those of the homogeneous economy:
 
 $$
-\lim_{\upsilon \searrow 0} \pi^1(\upsilon) = 1 + \frac{\omega^1 - \omega^2}{\gamma \sigma_Y}
+\lim_{\upsilon \searrow 0} m_A(\upsilon) = \mu_Y,
+\qquad
+\lim_{\upsilon \searrow 0} \sigma_A(\upsilon) = \sigma_Y .
+$$
+
+Proposition 5.3 then gives the negligible agent's own consumption-saving and portfolio choices.
+
+Her consumption-wealth ratio converges to
+
+$$
+\lim_{\upsilon \searrow 0} (y^1(\upsilon))^{-1}
+= (y(0))^{-1}
+- \frac{1-\rho}{\rho}
+\left[
+(\omega^1 - \omega^2)\sigma_Y
++ \frac{(\omega^1 - \omega^2)^2}{2 \gamma}
+\right] .
+$$
+
+The small agent's risky-asset share converges to
+
+$$
+\lim_{\upsilon \searrow 0} \pi^1(\upsilon)
+= 1 + \frac{\omega^1 - \omega^2}{\gamma \sigma_Y} .
 $$ (eq:portfolio)
 
-An optimistic agent ($\omega^1 > \omega^2$) holds a **leveraged** position ($\pi^1 > 1$).
-
-A pessimistic agent ($\omega^1 < \omega^2$) **shorts** the risky asset when
-$\omega^1 - \omega^2 < -\gamma \sigma_Y$.
+Hence optimism implies leverage, while sufficiently strong pessimism implies shorting.
 
 ```{code-cell} ipython3
-# Portfolio share of agent 1 as function of belief distortion
-fig, ax = plt.subplots(figsize=(10, 6))
+---
+mystnb:
+  figure:
+    caption: Limiting risky-asset shares of the small agent
+    name: fig-limiting-portfolio-shares
+---
+ω_2 = 0.0
+σ_y = 0.02
+ω_grid = np.linspace(-0.5, 1.0, 300)
 
-omega2 = 0.0
-sigma_y = 0.02
+fig, ax = plt.subplots(figsize=(10, 5))
 
-omega1_range = np.linspace(-0.5, 1.0, 300)
+for γ in [2, 5, 10, 20]:
+    π_1 = 1 + (ω_grid - ω_2) / (γ * σ_y)
+    ax.plot(ω_grid, π_1, lw=2, label=rf"$\gamma = {γ}$")
 
-for gamma in [2, 5, 10, 20]:
-    pi1 = 1 + (omega1_range - omega2) / (gamma * sigma_y)
-    ax.plot(omega1_range, pi1, linewidth=2,
-            label=rf'$\gamma = {gamma}$')
-
-ax.axhline(1.0, color='gray', linestyle=':', alpha=0.5)
-ax.axhline(0.0, color='gray', linestyle=':', alpha=0.5)
-ax.axvline(0.0, color='gray', linestyle=':', alpha=0.5)
-
-ax.set_xlabel(r'Belief distortion $\omega^1$', fontsize=13)
-ax.set_ylabel(r'Portfolio share $\pi^1$', fontsize=13)
-ax.set_title(
-    'Portfolio share of negligible agent in risky asset',
-    fontsize=13)
-ax.legend(fontsize=11)
+ax.axhline(1.0, color="gray", linestyle=":", lw=1)
+ax.axhline(0.0, color="gray", linestyle=":", lw=1)
+ax.axvline(0.0, color="gray", linestyle=":", lw=1)
+ax.set_xlabel(r"belief distortion $\omega^1$")
+ax.set_ylabel(r"risky share $\pi^1$")
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
 
-Key observations:
+This figure plots the limiting risky-asset share $\pi^1$ of the negligible agent as a function of her belief distortion $\omega^1$ ($\omega^2 = 0$, $\sigma_Y = 0.02$), for four levels of risk aversion.
 
-* At $\omega^1 = 0$ (correct beliefs), the agent holds the market portfolio ($\pi^1 = 1$)
+At $\omega^1 = 0$ the agent agrees with agent 2 and holds the market portfolio ($\pi^1 = 1$).
 
-* Higher risk aversion reduces the speculative position toward the market portfolio
+Optimism ($\omega^1 > 0$) leads to leverage ($\pi^1 > 1$), while sufficient pessimism ($\omega^1 < 0$) leads to shorting ($\pi^1 < 0$).
 
-* A pessimistic agent with low risk aversion may take a large short position,
-  generating the volatile returns needed for the saving channel to operate
+Higher risk aversion compresses these deviations toward one.
 
+## Optimistic and pessimistic distortions
 
-## Optimistic versus Pessimistic Distortions
+Optimistic and pessimistic beliefs affect survival asymmetrically.
 
-A striking feature of the model is that optimistic and pessimistic belief distortions
-have **asymmetric** effects on survival.
+An optimistic agent benefits from the risk premium term and, when IES $> 1$, from the saving term as well.
 
-An optimistic agent ($\omega^1 > 0$) benefits from both the risk premium channel
-(she holds more of the risky asset and earns the risk premium) and the saving
-channel (she perceives high returns and saves more under IES $> 1$).
-
-A pessimistic agent ($\omega^1 < 0$) is disadvantaged by the risk premium channel
-(she holds less risky asset and foregoes the premium).
-However, she can potentially survive through the saving channel if she shorts the
-risky asset aggressively enough to perceive a high expected return on her own portfolio.
+A pessimistic agent gives up the risk premium and can survive only if the saving effect is strong enough to offset that loss.
 
 ```{code-cell} ipython3
-fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+---
+mystnb:
+  figure:
+    caption: Total boundary drift for optimistic and pessimistic distortions
+    name: fig-optimistic-pessimistic-drifts
+---
+fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
 
-sigma_y = 0.02
-omega2 = 0.0
-rho = 0.67  # IES = 1.5
-gamma_range = np.linspace(0.5, 25, 300)
+σ_y = 0.02
+ω_2 = 0.0
+ρ = 0.67
+γ_grid = np.linspace(0.5, 25.0, 300)
 
-# Optimistic agent
 ax = axes[0]
-for omega1 in [0.1, 0.25, 0.5, 1.0]:
-    rp, vp, sc, total = decompose_survival(omega1, omega2,
-                                             gamma_range,
-                                             rho, sigma_y)
-    ax.plot(gamma_range, total, linewidth=2,
-            label=rf'$\omega^1 = {omega1}$')
+for ω_1 in [0.1, 0.25, 0.5, 1.0]:
+    _, _, _, total = decompose_survival(ω_1, ω_2, γ_grid, ρ, σ_y)
+    ax.plot(γ_grid, total, lw=2, label=rf"$\omega^1 = {ω_1}$")
+ax.axhline(0, color="gray", lw=1)
+ax.set_title("optimistic", fontsize=12)
+ax.set_xlabel(r"risk aversion $\gamma$")
+ax.set_ylabel("boundary drift")
+ax.legend(fontsize=9)
 
-ax.axhline(0, color='gray', linewidth=0.5)
-ax.set_xlabel(r'Risk aversion $\gamma$', fontsize=12)
-ax.set_ylabel('Total survival drift', fontsize=12)
-ax.set_title('Optimistic agent 1', fontsize=13)
-ax.legend(fontsize=10)
-
-# Pessimistic agent
 ax = axes[1]
-for omega1 in [-0.1, -0.25, -0.5, -1.0]:
-    rp, vp, sc, total = decompose_survival(omega1, omega2,
-                                             gamma_range,
-                                             rho, sigma_y)
-    ax.plot(gamma_range, total, linewidth=2,
-            label=rf'$\omega^1 = {omega1}$')
-
-ax.axhline(0, color='gray', linewidth=0.5)
-ax.set_xlabel(r'Risk aversion $\gamma$', fontsize=12)
-ax.set_ylabel('Total survival drift', fontsize=12)
-ax.set_title('Pessimistic agent 1', fontsize=13)
-ax.legend(fontsize=10)
+for ω_1 in [-0.1, -0.25, -0.5, -1.0]:
+    _, _, _, total = decompose_survival(ω_1, ω_2, γ_grid, ρ, σ_y)
+    ax.plot(γ_grid, total, lw=2, label=rf"$\omega^1 = {ω_1}$")
+ax.axhline(0, color="gray", lw=1)
+ax.set_title("pessimistic", fontsize=12)
+ax.set_xlabel(r"risk aversion $\gamma$")
+ax.legend(fontsize=9)
 
 plt.tight_layout()
 plt.show()
 ```
 
-For the optimistic agent (left), survival drift turns positive at moderate risk
-aversion and stays positive.
+Both panels plot the total boundary drift at $\upsilon = 0$ as a function of $\gamma$ (IES $\approx 1.49$, $\omega^2 = 0$).
 
-For the pessimistic agent (right), survival drift is negative for high risk aversion
-and becomes positive only at intermediate risk aversion levels --- and only when the
-belief distortion is large enough to induce an aggressive short position.
+Where the curve is positive, agent 1 survives near extinction.
 
+- Left panel (optimistic agent): larger $\omega^1$ means a bigger bet on the risky asset, so the volatility penalty dominates at low $\gamma$ but the drift turns positive once $\gamma$ is large enough.
+- Right panel (pessimistic agent): a pessimistic agent gives up the risk premium by underweighting the risky asset, so the drift is negative for most of the parameter space and survival requires saving motives strong enough to offset the portfolio losses.
 
+## Long-run consumption distribution
 
-## Long-Run Consumption Distribution
+When both agents survive, the Pareto share keeps moving across the whole interval $(0, 1)$.
 
-When both agents survive, the stationary distribution of consumption shares provides
-information about the typical wealth allocation.
+The next simulation is only a toy approximation.
 
-{cite}`Borovicka2020` shows that when agent $n$ survives, she attains an
-arbitrarily large consumption share $z^n \in (0, 1)$ with probability one at some
-future date.
-
-Let us simulate the Pareto share dynamics in a simplified model to illustrate
-the ergodic behavior.
+It interpolates the drift between its two boundary values, so it illustrates the recurrence logic without solving the full equilibrium ODE.
 
 ```{code-cell} ipython3
-def simulate_pareto_share(omega1, omega2, gamma, rho, sigma_y,
-                           beta, T, dt, n_paths=20, seed=42):
+---
+mystnb:
+  figure:
+    caption: A toy stationary Pareto-share simulation
+    name: fig-toy-stationary-pareto-share
+---
+def simulate_pareto_share_toy(ω_1, ω_2, γ, ρ, σ_y, T, dt, n_paths=20, seed=42):
     """
-    Simulate Pareto share dynamics with state-dependent drift.
-
-    This uses a simplified approximation where the endogenous
-    discount rate difference is computed from the boundary formulas.
-
-    Parameters
-    ----------
-    omega1, omega2 : float
-        Belief distortions
-    gamma, rho : float
-        Preference parameters
-    sigma_y : float
-        Endowment volatility
-    beta : float
-        Time preference
-    T : float
-        Time horizon
-    dt : float
-        Time step
-    n_paths : int
-        Number of paths
-    seed : int
-        Random seed
-
-    Returns
-    -------
-    t_grid, v_paths : arrays
+    Simulate a toy Pareto-share process by interpolating boundary drifts.
     """
     rng = np.random.default_rng(seed)
     n_steps = int(T / dt)
     t_grid = np.linspace(0, T, n_steps + 1)
 
-    vol_theta = omega1 - omega2
+    volatility = ω_1 - ω_2
+    m_0 = boundary_drift(ω_1, ω_2, γ, ρ, σ_y)
+    m_1 = -boundary_drift(ω_2, ω_1, γ, ρ, σ_y)
 
-    # Compute boundary drifts for interpolation
-    drift_at_0 = survival_drift(omega1, omega2, gamma, rho, sigma_y)
-    drift_at_1 = -survival_drift(omega2, omega1, gamma, rho, sigma_y)
-
-    theta = np.zeros((n_paths, n_steps + 1))
-    dW = rng.normal(0, np.sqrt(dt), (n_paths, n_steps))
+    θ = np.zeros((n_paths, n_steps + 1))
+    dW = rng.normal(0.0, np.sqrt(dt), size=(n_paths, n_steps))
 
     for t in range(n_steps):
-        v = 1.0 / (1.0 + np.exp(-theta[:, t]))
-        # Interpolate drift between boundaries
-        # Simple linear interpolation
-        drift = drift_at_0 * (1 - v) + drift_at_1 * v
-        theta[:, t+1] = (theta[:, t]
-                          + drift * dt
-                          + vol_theta * dW[:, t])
+        υ = 1.0 / (1.0 + np.exp(-θ[:, t]))
+        drift = m_0 * (1 - υ) + m_1 * υ
+        θ[:, t + 1] = θ[:, t] + drift * dt + volatility * dW[:, t]
 
-    v_paths = 1.0 / (1.0 + np.exp(-theta))
-    return t_grid, v_paths
+    υ_paths = 1.0 / (1.0 + np.exp(-θ))
+    return t_grid, υ_paths
 
 
-# Parameters for coexistence region
-omega1 = 0.25
-omega2 = 0.0
-gamma = 10.0
-rho = 0.67    # IES = 1.5
-sigma_y = 0.02
-beta = 0.05
+ω_1 = 0.25
+ω_2 = 0.0
+γ = 10.0
+ρ = 0.67
+σ_y = 0.02
 
-T = 500
-dt = 0.05
-
-t_grid, v_paths = simulate_pareto_share(
-    omega1, omega2, gamma, rho, sigma_y, beta, T, dt,
-    n_paths=50, seed=42
+t_grid, υ_paths = simulate_pareto_share_toy(
+    ω_1, ω_2, γ, ρ, σ_y, T=500, dt=0.05, n_paths=50, seed=42
 )
 
-fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
-# Sample paths
 ax = axes[0]
 for i in range(20):
-    ax.plot(t_grid, v_paths[i], alpha=0.3, linewidth=0.5)
-ax.axhline(0.5, color='gray', linestyle=':', alpha=0.5)
-ax.set_xlabel('Time $t$', fontsize=12)
-ax.set_ylabel(r'Pareto share $\upsilon_t$', fontsize=12)
-ax.set_title('Sample paths of Pareto share\n'
-             r'($\gamma=10$, IES$=1.5$, $\omega^1=0.25$, '
-             r'$\omega^2=0$)',
-             fontsize=12)
+    ax.plot(t_grid, υ_paths[i], color="C0", alpha=0.25, lw=1)
+ax.axhline(0.5, color="gray", linestyle=":", lw=1)
+ax.set_title("sample paths", fontsize=12)
+ax.set_xlabel("time")
+ax.set_ylabel(r"Pareto share $\upsilon_t$")
 ax.set_ylim(0, 1)
 
-# Histogram of final values (approximate stationary distribution)
 ax = axes[1]
-# Use last half of a very long simulation
-t_grid_long, v_long = simulate_pareto_share(
-    omega1, omega2, gamma, rho, sigma_y, beta,
-    T=2000, dt=0.05, n_paths=5, seed=123
+_, υ_long = simulate_pareto_share_toy(
+    ω_1, ω_2, γ, ρ, σ_y, T=2000, dt=0.05, n_paths=5, seed=123
 )
-# Pool observations from second half
-v_stationary = v_long[:, v_long.shape[1]//2:].flatten()
-ax.hist(v_stationary, bins=80, density=True, alpha=0.7,
-        color='steelblue', edgecolor='white')
-ax.set_xlabel(r'Pareto share $\upsilon$', fontsize=12)
-ax.set_ylabel('Density', fontsize=12)
-ax.set_title('Approximate stationary distribution', fontsize=12)
+υ_stationary = υ_long[:, υ_long.shape[1] // 2:].ravel()
+ax.hist(υ_stationary, bins=80, density=True, color="steelblue",
+        edgecolor="white", alpha=0.7)
+ax.set_title("approximate stationary density", fontsize=12)
+ax.set_xlabel(r"Pareto share $\upsilon$")
+ax.set_ylabel("density")
 ax.set_xlim(0, 1)
 
 plt.tight_layout()
 plt.show()
 ```
 
-When both agents survive, the Pareto share fluctuates persistently across the full
-interval $(0, 1)$.
-This means the incorrect agent periodically commands a substantial share of
-aggregate consumption.
+The left panel shows 20 sample paths of the Pareto share $\upsilon_t$ under parameters inside the coexistence region ($\omega^1 = 0.25$, $\omega^2 = 0$, $\gamma = 10$, IES $\approx 1.49$).
+
+Unlike the separable case in {numref}`fig-crra-pareto-paths`, the paths do not drift to zero — they repeatedly visit a wide range of values, bouncing between the two repelling boundaries.
+
+The right panel approximates the stationary density by pooling the second half of longer simulations.
+
+The interior mode confirms that neither agent is driven to extinction and the economy sustains a nondegenerate long-run distribution of wealth shares.
 
 ## Summary
 
-{cite}`Borovicka2020` overturns the classical market selection hypothesis by showing
-that under recursive preferences of the Epstein-Zin type, agents with incorrect
-beliefs can survive --- and even thrive --- in the long run.
+Recursive preferences weaken the classical market-selection result.
 
-The key findings are:
+The portfolio return channel still rewards more optimistic beliefs.
 
-1. **Three channels** determine survival: the risk premium channel, the speculative
-   volatility channel, and the saving channel. Only the first two operate under
-   separable CRRA preferences.
+The volatility channel still penalizes aggressive positions.
 
-2. **IES matters**: When IES $> 1$, the saving channel helps agents with distorted beliefs
-   outsave extinction. When IES $< 1$, it works against them.
+But when IES $> 1$, the saving channel can be strong enough to keep a distorted-belief agent alive.
 
-3. **Coexistence is generic**: For empirically relevant parameter values
-   ($\gamma > \rho$, IES $> 1$), nondegenerate stationary wealth distributions exist.
-
-4. **Optimism vs. pessimism**: Optimistic agents benefit from both the risk premium and
-   saving channels. Pessimistic agents can survive only through aggressive shorting
-   combined with high IES.
-
-5. **Price impact**: A surviving agent with currently negligible wealth has no impact on
-   current prices, but will affect prices in the future when her wealth share recovers.
-
-These results have important implications for asset pricing.
-Models that feature agents with heterogeneous beliefs and recursive preferences can
-generate persistent heterogeneity and endogenous fluctuations in the wealth
-distribution, enriching the dynamics of equilibrium asset prices, risk premia,
-and trading volume.
+This is why recursive-preference economies can support stationary long-run wealth distributions with persistent heterogeneity in beliefs and portfolio positions.
