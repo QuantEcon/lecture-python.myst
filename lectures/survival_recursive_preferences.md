@@ -274,17 +274,56 @@ where $m$ and $s$ are the drift and diffusion of the Pareto share.
 
 This is the continuous-time analogue of $\beta \, \mathbb{E}[\tilde{J}(\upsilon')] - \tilde{J}(\upsilon)$: it measures how the value function drifts and fluctuates as $\upsilon$ evolves.
 
-Setting flow payoff plus expected capital gain equal to zero gives the HJB equation:
+Setting flow payoff plus expected capital gain equal to zero gives the schematic HJB equation:
 
 $$
 0 = \sup_{(z^1,z^2,\nu^1,\nu^2)} \left\{ \upsilon F(z^1, \nu^1) + (1-\upsilon) F(z^2, \nu^2) + \mathcal{L} \tilde{J}(\upsilon) \right\}
-$$ (eq:hjb)
+$$ (eq:hjb_sketch)
 
 subject to $z^1 + z^2 \leq 1$.
 
-This is the continuous-time counterpart of the discrete-time planner's problem in {cite:t}`Blume_Easley2006` (see also {doc}`likelihood_ratio_process_2`).
+#### Exact reduced ODE
 
-The boundary conditions match the continuation values of the corresponding homogeneous economies.
+Proposition 2.3 of {cite:t}`Borovicka2020` gives the exact HJB equation after substituting the homogeneity reduction $J(\tilde{\lambda}, Y) = (\tilde{\lambda}^1 + \tilde{\lambda}^2) Y^{1-\gamma} \tilde{J}(\upsilon)$ and the dynamics of $\upsilon$ and $Y$:
+
+$$
+0 = \sup_{(z^1, z^2, \nu^1, \nu^2)} \;
+\upsilon \, F(z^1, \nu^1) + (1 - \upsilon) \, F(z^2, \nu^2)
+$$ (eq:hjb)
+
+$$
++ \left[
+-\upsilon \nu^1 - (1-\upsilon)\nu^2
++ \bigl(\upsilon \omega^1 + (1-\upsilon)\omega^2\bigr)(1-\gamma)\sigma_Y
++ (1-\gamma)\mu_Y
++ \tfrac{1}{2}(1-\gamma)^2 \sigma_Y^2
+\right] \tilde{J}(\upsilon)
+$$
+
+$$
++ \upsilon(1-\upsilon)
+\left[\nu^2 - \nu^1 + (\omega^1 - \omega^2)(1-\gamma)\sigma_Y\right]
+\tilde{J}'(\upsilon)
+$$
+
+$$
++ \tfrac{1}{2}\upsilon^2(1-\upsilon)^2 (\omega^1 - \omega^2)^2 \,
+\tilde{J}''(\upsilon)
+$$
+
+subject to $z^1 + z^2 \leq 1$.
+
+The first line is the flow payoff from the two agents' felicity functions.
+
+The second line multiplies $\tilde{J}(\upsilon)$ by a term that combines the agents' discount rates, belief-weighted endowment drift, and a variance correction — these arise from absorbing the $Y^{1-\gamma}$ factor via Itô's lemma.
+
+The third line multiplies $\tilde{J}'(\upsilon)$ by the drift of the Pareto share, which depends on the difference in discount rates and the belief-weighted response to endowment risk.
+
+The fourth line multiplies $\tilde{J}''(\upsilon)$ by the squared diffusion of the Pareto share.
+
+The boundary conditions are $\tilde{J}(0) = \tilde{V}^2$ and $\tilde{J}(1) = \tilde{V}^1$, where $\tilde{V}^n$ is the continuation value in the homogeneous economy populated by agent $n$ alone.
+
+This is the continuous-time counterpart of the discrete-time planner's problem in {cite:t}`Blume_Easley2006` (see also {doc}`likelihood_ratio_process_2`).
 
 
 ## Survival conditions
@@ -422,9 +461,9 @@ Derive {eq}`eq:portfolio_returns`.
 
 At the boundary $\upsilon \searrow 0$, agent $n$'s optimal risky-asset share is $\pi^n = 1 + (\omega^n - \omega^2)/(\gamma \sigma_Y)$ (see {eq}`eq:portfolio`). 
 
-The expected log return on the risky asset under $P$ is $\mu_R = \mu_Y + \gamma \sigma_Y^2 - \omega^2 \sigma_Y - \frac{1}{2}\sigma_Y^2$, and the risk-free rate is $r$.
+Let $\bar{\mu}_R = \mu_Y + \gamma \sigma_Y^2 - \omega^2 \sigma_Y$ denote the expected return on the risky asset under $P$, and $r$ the risk-free rate.
 
- The expected log portfolio return is $m_R^n = r + \pi^n(\mu_R - r) - \frac{1}{2}(\pi^n)^2 \sigma_Y^2$.
+The continuously rebalanced portfolio has expected log return $m_R^n = r + \pi^n(\bar{\mu}_R - r) - \frac{1}{2}(\pi^n)^2 \sigma_Y^2$.
 
 Compute $m_R^1 - m_R^2$ and simplify.
 ```
@@ -433,18 +472,18 @@ Compute $m_R^1 - m_R^2$ and simplify.
 :class: dropdown
 ```
 
-Using $m_R^n = r + \pi^n(\mu_R - r) - \frac{1}{2}(\pi^n)^2 \sigma_Y^2$, the difference is
+Using $m_R^n = r + \pi^n(\bar{\mu}_R - r) - \frac{1}{2}(\pi^n)^2 \sigma_Y^2$, the difference is
 
 $$
-m_R^1 - m_R^2 = (\pi^1 - \pi^2)(\mu_R - r) - \tfrac{1}{2}[(\pi^1)^2 - (\pi^2)^2]\sigma_Y^2.
+m_R^1 - m_R^2 = (\pi^1 - \pi^2)(\bar{\mu}_R - r) - \tfrac{1}{2}[(\pi^1)^2 - (\pi^2)^2]\sigma_Y^2.
 $$
 
 The difference in risky shares is $\pi^1 - \pi^2 = (\omega^1 - \omega^2)/(\gamma \sigma_Y)$.
 
-The equity premium (log) is $\mu_R - r = \gamma \sigma_Y^2 - \omega^2 \sigma_Y - \frac{1}{2}\sigma_Y^2$, but for the first term we only need the product:
+The arithmetic equity premium is $\bar{\mu}_R - r = \gamma \sigma_Y^2 - \omega^2 \sigma_Y$, so:
 
 $$
-(\pi^1 - \pi^2)(\mu_R - r) = \frac{\omega^1 - \omega^2}{\gamma \sigma_Y} \cdot (\gamma \sigma_Y^2 - \omega^2 \sigma_Y) - \frac{\omega^1 - \omega^2}{2\gamma}.
+(\pi^1 - \pi^2)(\bar{\mu}_R - r) = \frac{\omega^1 - \omega^2}{\gamma \sigma_Y} \cdot (\gamma \sigma_Y^2 - \omega^2 \sigma_Y).
 $$
 
 For the volatility term, write $(\pi^1)^2 - (\pi^2)^2 = (\pi^1 - \pi^2)(\pi^1 + \pi^2)$ and note $\pi^1 + \pi^2 = 2 + (\omega^1 + \omega^2 - 2\omega^2)/(\gamma \sigma_Y)$. 
@@ -627,14 +666,16 @@ def compute_limit_boundary(γ_grid, boundary="lower"):
 
 ```{code-cell} ipython3
 ---
+tags: [hide-input]
 mystnb:
   figure:
     caption: Survival regions corresponding to Figure 2 in Borovicka (2020)
     name: fig-survival-regions
 ---
 σ_y = 0.02
-γ_grid = np.linspace(0.01, 6.0, 500)
-ρ_max = 2.0
+γ_vals = np.linspace(0.01, 6.0, 500)
+ρ_vals = np.linspace(0.01, 2.0, 400)
+G, R = np.meshgrid(γ_vals, ρ_vals)
 
 panel_specs = [
     ("finite", 0.10, r"$\omega^1 = 0.10$"),
@@ -649,35 +690,74 @@ for idx, (case, value, label) in enumerate(panel_specs):
     ax = axes.flat[idx]
 
     if case == "limit":
-        ρ_1 = compute_limit_boundary(γ_grid, boundary="lower")
-        ρ_2 = compute_limit_boundary(γ_grid, boundary="upper")
+        ρ_1 = compute_limit_boundary(γ_vals, boundary="lower")
+        ρ_2 = compute_limit_boundary(γ_vals, boundary="upper")
+        # Limit boundary drifts: use closed-form expressions
+        # m0 > 0 (agent 1 survives) when ρ < γ/(1+γ)
+        m0 = G - (1 + G) * R
+        # m1 < 0 (agent 2 survives) when ρ < γ/(1-γ) for γ<1, always for γ>=1
+        m1 = (1 - G) * R - G
     else:
-        ρ_1 = compute_survival_boundary(value, 0.0, σ_y, γ_grid, boundary="lower")
-        ρ_2 = compute_survival_boundary(value, 0.0, σ_y, γ_grid, boundary="upper")
+        ρ_1 = compute_survival_boundary(value, 0.0, σ_y, γ_vals,
+                                        boundary="lower")
+        ρ_2 = compute_survival_boundary(value, 0.0, σ_y, γ_vals,
+                                        boundary="upper")
+        # Evaluate boundary drifts on the grid
+        m0 = boundary_drift(value, 0.0, G, R, σ_y)
+        m1 = -boundary_drift(0.0, value, G, R, σ_y)
 
-    ρ_1 = np.where((ρ_1 > 0) & (ρ_1 < ρ_max), ρ_1, np.nan)
-    ρ_2 = np.where((ρ_2 > 0) & (ρ_2 < ρ_max), ρ_2, np.nan)
+    # Classify all four regions
+    both = (m0 > 0) & (m1 < 0)
+    ag1_dom = (m0 > 0) & (m1 > 0)
+    ag2_dom = (m0 < 0) & (m1 < 0)
+    either = (m0 < 0) & (m1 > 0)
 
-    lower = np.minimum(ρ_1, ρ_2)
-    upper = np.maximum(ρ_1, ρ_2)
-    mask = np.isfinite(lower) & np.isfinite(upper)
+    # Shade coexistence region
+    ax.contourf(G, R, both.astype(float), levels=[0.5, 1.5],
+                colors=["C2"], alpha=0.18)
+    if idx == 0:
+        ax.fill_between([], [], color="C2", alpha=0.18,
+                        label="both survive")
 
-    ax.fill_between(
-        γ_grid, lower, upper, where=mask, color="C2", alpha=0.18,
-        label="both survive" if idx == 0 else None
-    )
+    # Plot boundary curves
+    ax.contour(G, R, m0, levels=[0], colors=["C0"],
+               linestyles="--", linewidths=2)
+    ax.contour(G, R, m1, levels=[0], colors=["C3"],
+               linestyles="-", linewidths=2)
+    if idx == 0:
+        ax.plot([], [], "--", color="C0", lw=2, label="agent 1 boundary")
+        ax.plot([], [], "-", color="C3", lw=2, label="agent 2 boundary")
+
     ax.plot(
-        γ_grid, ρ_1, "--", color="C0", lw=2,
-        label="agent 1 boundary" if idx == 0 else None
-    )
-    ax.plot(
-        γ_grid, ρ_2, "-", color="C3", lw=2,
-        label="agent 2 boundary" if idx == 0 else None
-    )
-    ax.plot(
-        γ_grid, γ_grid, ":", color="black", lw=2,
+        γ_vals, γ_vals, ":", color="black", lw=2,
         label=r"$\gamma = \rho$" if idx == 0 else None
     )
+
+    tkw = dict(ha="center", va="center", style="italic", color="0.15")
+    if case == "finite" and value == 0.10:
+        ax.text(0.31, 1.05, "either agent dominates", rotation=90,
+                fontsize=10, **tkw)
+        ax.text(1.8, 1.55, "agent 2\ndominates", fontsize=11, **tkw)
+        ax.text(3.5, 0.75, "both\nsurvive", fontsize=11, **tkw)
+        if ag1_dom.any():
+            ax.text(5.0, 0.25, "agent 1\ndominates", fontsize=11, **tkw)
+    elif case == "finite" and value == 0.20:
+        ax.text(0.31, 1.05, "either agent dominates", rotation=90,
+                fontsize=10, **tkw)
+        ax.text(2.5, 1.55, "agent 2\ndominates", fontsize=11, **tkw)
+        ax.text(3.8, 0.55, "both\nsurvive", fontsize=11, **tkw)
+        if ag1_dom.any():
+            ax.text(5.2, 0.08, "agent 1\ndominates", fontsize=9, **tkw)
+    elif case == "limit":
+        ax.text(0.31, 1.05, "either agent dominates", rotation=90,
+                fontsize=10, **tkw)
+        ax.text(3.0, 1.40, "agent 2\ndominates", fontsize=11, **tkw)
+        ax.text(3.5, 0.30, "both\nsurvive", fontsize=11, **tkw)
+    elif case == "finite" and value == -0.25:
+        ax.text(0.31, 1.05, "either agent dominates", rotation=90,
+                fontsize=10, **tkw)
+        ax.text(3.5, 1.20, "agent 2\ndominates", fontsize=11, **tkw)
+        ax.text(2.5, 0.18, "both\nsurvive", fontsize=11, **tkw)
 
     ax.set_title(label, fontsize=12)
     ax.set_xlim(0, 6)
@@ -701,7 +781,9 @@ Moderate optimism ($\omega^1 = 0.10$) produces a wide coexistence region that ex
 
 Stronger optimism ($\omega^1 = 0.20$) narrows the region: the agent 2 boundary shifts out of the plotted range for moderate and large $\gamma$, shrinking the set of $(\gamma, \rho)$ pairs where both agents coexist.
 
-In the limit $|\omega^1|/\sigma_Y \to \infty$ (bottom-left), the boundaries simplify to closed-form expressions and the coexistence region contracts further, existing only for $\gamma < 1$.
+In the limit $|\omega^1|/\sigma_Y \to \infty$ (bottom-left), the boundaries simplify to closed-form expressions.
+
+The coexistence region narrows but extends to large $\gamma$ values below the agent 2 boundary curve.
 
 Pessimistic distortions ($\omega^1 = -0.25$, bottom-right) can also survive, but only in a much narrower part of the parameter space.
 
@@ -726,7 +808,7 @@ def decompose_survival(ω_1, ω_2, γ_grid, ρ, σ_y):
 ω_2 = 0.0
 ρ = 0.67
 σ_y = 0.02
-γ_grid = np.linspace(0.5, 25.0, 300)
+γ_grid = np.linspace(0.5, 15.0, 300)
 
 risk_term, vol_term, save_term, total = decompose_survival(
     ω_1, ω_2, γ_grid, ρ, σ_y
@@ -796,7 +878,9 @@ plt.show()
 Each panel shows the same three-term decomposition as the previous figure, but now for three different values of the IES ($\omega^1 = 0.25$, $\omega^2 = 0$, $\sigma_Y = 0.02$).
 
 - Left panel (IES $= 0.5$): the saving term is negative, so the optimistic agent actually saves less, working against survival.
-- Center panel (IES $= 1.0$): the saving term vanishes entirely, reproducing the separable benchmark.
+- Center panel (IES $= 1.0$): the saving term vanishes entirely, so only the portfolio return and volatility channels remain. 
+
+    - This eliminates the saving channel but does not by itself reproduce the full separable CRRA benchmark, which requires $\gamma = \rho$ (i.e., IES $= 1/\gamma$), not merely $\rho = 1$.
 - Right panel (IES $= 1.5$): the saving term is positive and shifts the total drift upward, expanding the range of $\gamma$ values for which the optimistic agent survives.
 
 ## Asymptotic results
@@ -806,6 +890,7 @@ Borovicka derives several useful asymptotic results.
 1. As $\gamma \searrow 0$, each agent dominates with strictly positive probability.
 1. As $\gamma \nearrow \infty$, the relatively more optimistic agent dominates.
 1. As $\rho \searrow 0$, the relatively more optimistic agent always survives.
+   - The relatively more pessimistic agent can also survive when risk aversion is sufficiently low.
 1. As $\rho \nearrow \infty$, a nondegenerate long-run equilibrium cannot exist.
 
 The next figure illustrates the first result by plotting both boundary drifts as $\gamma$ becomes small.
@@ -925,7 +1010,7 @@ Agent 1 is driven to extinction — the classical market-selection result of {ci
 
 As one agent becomes negligible, current prices converge to those of the homogeneous economy populated by the large agent.
 
-When agent 2 is the large agent, proposition 5.1 implies
+When agent 2 is the large agent, Proposition 5.1 in {cite:t}`Borovicka2020` implies
 
 $$
 \lim_{\upsilon \searrow 0} r(\upsilon)
@@ -1146,7 +1231,9 @@ Unlike the separable case in {numref}`fig-crra-pareto-paths`, the paths do not d
 
 The right panel approximates the stationary density by pooling the second half of longer simulations.
 
-The interior mode confirms that neither agent is driven to extinction and the economy sustains a nondegenerate long-run distribution of wealth shares.
+The interior mode is consistent with neither agent being driven to extinction.
+
+However, this toy interpolation only illustrates the recurrence logic; it does not reproduce the quantitative stationary consumption-share density in Figure 4 of {cite:t}`Borovicka2020`, which requires solving the full interior equilibrium ODE.
 
 ## Summary
 
