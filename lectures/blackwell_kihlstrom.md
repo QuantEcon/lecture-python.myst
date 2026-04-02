@@ -1184,7 +1184,7 @@ The lecture {doc}`likelihood_bayes` studies Bayesian learning in a setting that 
 
 This section transports concepts back and forth between the two lectures.
 
-### The state space is the same
+### Setup: states, experiments, and IID draws
 
 In {doc}`likelihood_bayes` the unknown "state of the world" is which density nature chose permanently: nature drew the data either from $f$ or from $g$, but not which one is known to the observer.
 
@@ -1196,7 +1196,7 @@ $$
 
 The Bayesian prior $\pi_0 \in [0,1]$ on $s_1 = f$ plays exactly the role of the prior $p \in P$ on the probability simplex in the present lecture.
 
-### A single draw is an experiment
+A single draw is an experiment.
 
 A single observation $w_t$ constitutes a Blackwell experiment with signal space $X$ and Markov kernel
 
@@ -1209,7 +1209,7 @@ $\mu(\cdot \mid s_1) = f(\cdot)$ and $\mu(\cdot \mid s_2) = g(\cdot)$.
 
 This is the continuous-signal analogue of the $N \times M$ Markov matrix studied above (with $N = 2$ states and a continuum of signals instead of $M$ discrete ones).
 
-### $t$ IID draws form a richer experiment
+$t$ IID draws form a richer experiment.
 
 Observing the history $w^t = (w_1, \ldots, w_t)$ is a strictly more informative Blackwell experiment than observing any sub-history $w^s$ for $s < t$, because the conditional joint densities for $w^t$ are
 
@@ -1225,7 +1225,7 @@ The reverse is impossible — you cannot reconstruct information from fewer draw
 
 This is why more data is always weakly better for every expected-utility maximiser (the economic criterion of Blackwell's theorem).
 
-### The likelihood ratio process is the sufficient statistic of the experiment
+### Sufficient statistics and posteriors
 
 The key formula in {doc}`likelihood_bayes` is
 
@@ -1239,9 +1239,10 @@ Because $\pi_{t+1}$ depends on $w^t$ **only through** $L(w^t)$, the likelihood r
 
 In Blackwell's language, the experiment "report $L(w^t)$" is informationally equivalent to "report $w^t$": passing $w^t$ through the deterministic map $w^t \mapsto L(w^t)$ is a (degenerate) stochastic transformation that discards nothing relevant to discriminating $f$ from $g$.
 
-### The posterior lives on the 1-simplex and is Kihlstrom's standard experiment
+The posterior lives on the 1-simplex and is Kihlstrom's standard experiment.
 
 With $N = 2$ states the probability simplex $P$ collapses to the unit interval $[0,1]$.
+
 Kihlstrom's standard experiment records only the posterior
 
 $$
@@ -1252,7 +1253,7 @@ which is the sufficient statistic that the Bayesian tracks throughout.
 
 The **distribution** of $\pi_t$ over all possible histories $w^t$ is Kihlstrom's $\hat{\mu}^c$ — the distribution of posteriors induced by the experiment $\mu_t$ starting from prior $\pi_0 = c$.
 
-### The martingale property is mean preservation
+### Why more data always helps
 
 {doc}`likelihood_bayes` proves that $\{\pi_t\}$ is a **martingale**:
 
@@ -1266,7 +1267,7 @@ This is exactly the **mean-preservation** condition that sits at the centre of K
 
 Mean preservation is not a special feature of this two-state example; it is an exact consequence of Bayes' law for **any** experiment.
 
-### Blackwell's theorem explains why more data always helps
+Blackwell's theorem explains why more data always helps.
 
 Kihlstrom's reformulation states:
 
@@ -1276,7 +1277,7 @@ In the {doc}`likelihood_bayes` setting this means the distribution of $\pi_t$ is
 
 The almost-sure convergence $\pi_t \to 0$ or $1$ is the limit of this spreading process — perfect information resolves all uncertainty, collapsing the distribution to a degenerate point mass at a vertex of the simplex.
 
-### DeGroot uncertainty functions and mutual information
+DeGroot uncertainty functions connect to mutual information.
 
 The Shannon entropy of the two-state posterior is
 
@@ -1296,7 +1297,7 @@ Because $\mu_t$ Blackwell-dominates $\mu_s$ for $t > s$, Blackwell's theorem gua
 
 ### Summary table
 
-The table below collects the complete translation between concepts in the two lectures.
+The following table collects the translation between concepts in the two lectures.
 
 | Concept in {doc}`likelihood_bayes` | Concept in this lecture |
 |---|---|
