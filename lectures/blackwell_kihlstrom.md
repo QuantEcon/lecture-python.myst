@@ -34,38 +34,37 @@ This lecture studies *Blackwell's theorem* {cite}`blackwell1951,blackwell1953` o
 
 Our presentation brings in findings from a Bayesian interpretation of Blackwell's theorem by  {cite}`kihlstrom1984`.
 
-Blackwell and Kihlstrom study questions closely related to those encountered in this QuantEcon lecture {doc}`likelihood_bayes`. 
+Blackwell and Kihlstrom study statistical model-selection questions closely related to those encountered in this QuantEcon lecture {doc}`likelihood_bayes`. 
 
-To appreciate the connection involved, it is helpful up front to appreciate how Blackwell's notion of
+To appreciate the connection involved, it is helpful to appreciate how Blackwell's notion of
 an **experiment** is related to the concept of a ''probability distribution'' or ''parameterized statistical model'' appearing in  {doc}`likelihood_bayes`  
 
-Blackwell studies a situation in which a decision maker wants to know a state $s$ living in a space $S$.
+Blackwell studies a situation in which a decision maker wants to know the value of a state $s$ that lives in a space $S$.
 
-For Blackwell, an **experiment** is  a **conditional probability model** $\{\mu(\cdot \mid s) : s \in S\}$, i.e., a family of distributions indexed by the unknown state.
+For Blackwell, an **experiment** is  a **conditional probability model** $\{\mu(\cdot \mid s) : s \in S\}$, i.e., a family of probability distributions that are conditioned by the same state $s \in S$.
 
-We are free to interpret "state" as "parameter".
+We are free to interpret the "state" as a "parameter" or "parameter vector".
 
-In a two-state case $S = \{s_1, s_2\}$, the  two conditional densities $f(\cdot) = \mu(\cdot \mid s_1)$ and $g(\cdot) = \mu(\cdot \mid s_2)$ are the ones used repeatedly in  our studies of classical hypothesis testing and Bayesian inference in this suite of QuantEcon lectures.
+In a two-state case $S = \{s_1, s_2\}$, the  two conditional densities $f(\cdot) = \mu(\cdot \mid s_1)$ and $g(\cdot) = \mu(\cdot \mid s_2)$ are the ones used repeatedly in  our studies of classical hypothesis testing and Bayesian inference in this  QuantEcon lecture {doc}`likelihood_bayes` as well as several other lectures in this suite of QuantEcon lectures.
 
-Blackwell's question — *which experiment is more informative?* — is  about which conditional probability model allows a Bayesian with a prior over $\{s_1, s_2\}$ to learn more about which model governs the world.
+{cite}`kihlstrom1984` interprets the question — *which experiment is more informative?* — as asking  which conditional probability model allows a Bayesian decision maker with a prior over $\{s_1, s_2\}$ to gather higher expected utility.
 
+We'll use the terms "signal" and "experiment" as synyomyms.
 
 Thus, suppose that two signals, $\tilde{x}_\mu$ and $\tilde{x}_\nu$, are both informative about an unknown state $\tilde{s}$.
 
-Blackwell's question is which signal is more informative.
-
-Experiment $\mu$ is **at least as informative as** experiment $\nu$ if every Bayesian decision maker can attain weakly higher expected utility with $\mu$ than with $\nu$.
+Signal $\mu$ is **at least as informative as** signal $\nu$ if every Bayesian decision maker can attain weakly higher expected utility with $\mu$ than with $\nu$.
 
 This economic criterion is equivalent to two statistical criteria:
 
 - *Sufficiency* (Blackwell): $\tilde{x}_\nu$ can be generated from $\tilde{x}_\mu$ by an additional randomization.
 - *Uncertainty reduction* (DeGroot {cite}`degroot1962`): $\tilde{x}_\mu$ lowers expected uncertainty at least as much as $\tilde{x}_\nu$ for every concave uncertainty function.
 
-Kihlstrom's reformulation focuses on the *posterior distribution*.
+Kihlstrom's formulation focuses on the *posterior distribution*.
 
 More informative experiments generate posterior distributions that are more dispersed in convex order.
 
-In the two-state case, this becomes the familiar mean-preserving-spread comparison on $[0, 1]$, which can be checked with the integrated-CDF test used for second-order stochastic dominance.
+In the two-state case, this becomes a mean-preserving-spread comparison on $[0, 1]$, which can be checked with the integrated-CDF test used for second-order stochastic dominance.
 
 The lecture proceeds as follows:
 
@@ -124,7 +123,7 @@ print("Row sums ν:", ν.sum(axis=1))
 
 ### Stochastic transformations (Markov kernels)
 
-A **stochastic transformation** $Q$ maps signals of one experiment to signals of another by further randomization.
+A **stochastic transformation** $Q$ maps signals from one experiment to signals from another by further randomization.
 
 In the discrete setting with $M$ input signals and $K$ output signals, $Q$ is an
 $M \times K$ Markov matrix: $q_{lk} \geq 0$ and $\sum_k q_{lk} = 1$ for every row $l$.
@@ -1176,6 +1175,272 @@ The right probabilistic language is convex order, and the Blackwell ordering on 
 In the two-state case this reduces to the familiar mean-preserving-spread comparison on $[0, 1]$, which can be verified with the integrated-CDF test.
 
 DeGroot's contribution is to extend the comparison from particular utility functions to the full class of concave uncertainty functions.
+
+
+## The Data Processing Inequality and Coarse-Graining
+
+Blackwell's garbling condition — that $\nu = \mu Q$ for some Markov kernel $Q$ — is the same mathematical operation that underlies the **data processing inequality** (DPI) and the **coarse-graining theorem** in information theory, information geometry, and machine learning.
+
+### The DPI for f-divergences
+
+An **f-divergence** between two probability distributions $P$ and $Q$ over a finite space $\Omega$ is
+
+$$
+D_f(P \| Q) = \sum_{\omega \in \Omega} q_\omega \, f\!\left(\frac{p_\omega}{q_\omega}\right),
+$$
+
+where $f : (0,\infty) \to \mathbb{R}$ is a convex function with $f(1) = 0$.
+
+Special cases include:
+
+| Divergence | Generator $f(t)$ |
+|:---|:---|
+| KL-divergence | $t \log t$ |
+| Squared Hellinger $H^2$ | $(\sqrt{t} - 1)^2 / 2$ |
+| Total variation TV | $\lvert t - 1 \rvert / 2$ |
+| Chi-squared $\chi^2$ | $(t-1)^2$ |
+
+The class of f-divergences was introduced independently by {cite}`csiszar1963` and Morimoto (1963); see also {cite}`ali1966`.
+
+```{admonition} Coarse-Graining Theorem / Data Processing Inequality
+:class: important
+For any f-divergence $D_f$ and any Markov kernel (stochastic transformation)
+$\kappa$ — with $P \kappa$ denoting the image of $P$ under $\kappa$ — we have
+
+$$
+D_f(P \| Q) \geq D_f(P\kappa \| Q\kappa).
+$$
+
+Equality holds if and only if $\kappa$ is induced by a sufficient statistic for
+the pair $\{P, Q\}$.
+```
+
+The proof follows from Jensen's inequality applied to the convex function $f$, using the fact that $\kappa$ is a stochastic matrix {cite}`csiszar1963`.
+
+### Connection to Blackwell's sufficiency condition
+
+In Blackwell's framework, $\mu$ and $\nu$ are experiments over the same state space $S = \{s_1, \ldots, s_N\}$.
+
+For two states, each experiment has two rows: $\mu_1 = \mu(s_1, \cdot)$ and $\mu_2 = \mu(s_2, \cdot)$.
+
+If $\nu = \mu Q$ (i.e., $\nu$ is a garbling of $\mu$), then the pair $(\nu_1, \nu_2) = (\mu_1 Q, \mu_2 Q)$ is obtained by applying the Markov kernel $Q$ to the pair $(\mu_1, \mu_2)$.
+
+The coarse-graining theorem then implies immediately:
+
+$$
+D_f(\mu_1 \| \mu_2) \geq D_f(\nu_1 \| \nu_2)
+\quad \text{for every f-divergence } D_f,
+$$
+
+whenever $\mu \geq \nu$ in the Blackwell order.
+
+So a more informative experiment always produces *more separated* conditional signal distributions, in the sense of every f-divergence simultaneously.
+
+The DPI is thus a statement about the *distinguishability* of states: garbling an experiment makes the states harder to tell apart under every statistical measure of separability.
+
+The equality condition links the DPI directly back to Blackwell:  $D_f(\mu_1 Q \| \mu_2 Q) = D_f(\mu_1 \| \mu_2)$ for some (hence every) strictly convex $f$ if and only if $Q$ is a sufficient statistic for $(\mu_1, \mu_2)$, i.e., the garbling discards nothing relevant.
+
+### Information geometry: Chentsov's theorem
+
+The DPI has an infinitesimal, differential-geometric companion.
+
+**Chentsov's theorem** {cite}`chentsov1981` states that the **Fisher information matrix** $I_F(\theta)$ is, up to a constant rescaling, the *unique* Riemannian metric on a statistical manifold that contracts under every Markov morphism (coarse-graining):
+
+$$
+I_F(\theta;\, \mu) \succeq I_F(\theta;\, \mu\kappa)
+\quad \text{for every differentiable family } \{\mu_\theta\} \text{ and every Markov kernel } \kappa.
+$$
+
+Equality holds if and only if $\kappa$ is a sufficient statistic for $\theta$.
+
+The uniqueness clause is deep: it says that the Fisher information is not merely *one* metric that happens to contract under coarse-graining, but the *only one* with that property.
+
+See Amari and Nagaoka (2000) for a thorough treatment of information geometry and its connections to sufficiency.
+
+### The information bottleneck in machine learning
+
+The **information bottleneck** method of {cite}`tishby_pereira_bialek1999` provides a prominent application of the DPI in machine learning.
+
+Given a joint distribution $p(X, Y)$ over an input $X$ and a target $Y$, the goal is to find a compressed representation $T$ — formed by a stochastic mapping $p(T \mid X)$ — that retains as much information about $Y$ as possible while using as few bits as possible to describe $X$.
+
+The method minimizes the Lagrangian
+
+$$
+\mathcal{L}[p(T \mid X)] = I(X;\, T) - \beta \, I(T;\, Y),
+$$
+
+where $I(\cdot\,;\,\cdot)$ denotes mutual information and $\beta \geq 0$ governs the compression–relevance trade-off.
+
+Because $Y - X - T$ forms a Markov chain (T is derived from X alone), the DPI implies
+
+$$
+I(T;\, Y) \leq I(X;\, Y),
+$$
+
+with equality if and only if $T$ is a **sufficient statistic** for $Y$ given $X$.
+
+The Blackwell ordering explains why no deterministic or random post-processing of $X$ can increase the mutual information with $Y$: any Markov kernel applied to $X$ is a garbling in Blackwell's sense, and the DPI is the mutual-information form of the coarse-graining theorem.
+
+In machine learning language the information bottleneck searches among all garblings of $X$ for the one that best preserves relevant information about $Y$ subject to a compression budget.
+
+In a deep neural network with input $X$ and target $Y$ and layers $X \to T_1 \to T_2 \to \cdots \to T_L \to \hat{Y}$, each layer's representation is a garbling of the previous one.
+The DPI then implies the chain of inequalities
+
+$$
+I(X;\, Y) \geq I(T_1;\, Y) \geq I(T_2;\, Y) \geq \cdots \geq I(T_L;\, Y),
+$$
+
+so successive layers can only lose, never gain, information about $Y$.
+This observation was placed at the center of the study of what deep networks learn by {cite}`shwartz_ziv_tishby2017`.
+
+### Demonstrating the coarse-graining theorem numerically
+
+The following code verifies that applying a progressively more mixing garbling $Q(\alpha)$ — interpolating between the identity matrix ($\alpha = 0$, no garbling) and the fully-mixing uniform kernel ($\alpha = 1$, complete garbling) — decreases *all* f-divergences between the experiment's rows simultaneously.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: All f-divergences contract monotonically under progressive garbling
+    name: fig-blackwell-dpi-fdivergences
+---
+def kl_divergence_rows(p, q, eps=1e-12):
+    """D_KL(p || q) for row vectors p, q."""
+    p = np.clip(np.asarray(p, float), eps, 1.0)
+    q = np.clip(np.asarray(q, float), eps, 1.0)
+    return float(np.sum(p * np.log(p / q)))
+
+
+def squared_hellinger_rows(p, q, eps=1e-12):
+    """H^2(p, q) = (1/2) * sum (sqrt(p_i) - sqrt(q_i))^2."""
+    p = np.clip(np.asarray(p, float), eps, 1.0)
+    q = np.clip(np.asarray(q, float), eps, 1.0)
+    return float(0.5 * np.sum((np.sqrt(p) - np.sqrt(q)) ** 2))
+
+
+def total_variation_rows(p, q):
+    """TV(p, q) = (1/2) * sum |p_i - q_i|."""
+    return float(0.5 * np.sum(np.abs(np.asarray(p, float)
+                                     - np.asarray(q, float))))
+
+
+def make_mixing_garbling(alpha, M=2):
+    """
+    Garbling that interpolates between the identity (alpha=0)
+    and the fully-mixing uniform kernel (alpha=1).
+    """
+    return (1.0 - alpha) * np.eye(M) + alpha * np.ones((M, M)) / M
+
+
+# Rows of the binary experiment: distribution of signal given each state
+row1 = np.array([0.8, 0.2])   # state s_1
+row2 = np.array([0.2, 0.8])   # state s_2
+
+alpha_grid = np.linspace(0, 1, 200)
+dpi_results = {
+    r"KL divergence $D_\mathrm{KL}(\nu_1 \| \nu_2)$": [],
+    r"Squared Hellinger $H^2(\nu_1, \nu_2)$": [],
+    r"Total variation $\mathrm{TV}(\nu_1, \nu_2)$": [],
+}
+
+for alpha in alpha_grid:
+    Q = make_mixing_garbling(alpha)
+    ν1 = row1 @ Q
+    ν2 = row2 @ Q
+    dpi_results[r"KL divergence $D_\mathrm{KL}(\nu_1 \| \nu_2)$"].append(
+        kl_divergence_rows(ν1, ν2))
+    dpi_results[r"Squared Hellinger $H^2(\nu_1, \nu_2)$"].append(
+        squared_hellinger_rows(ν1, ν2))
+    dpi_results[r"Total variation $\mathrm{TV}(\nu_1, \nu_2)$"].append(
+        total_variation_rows(ν1, ν2))
+
+fig, ax = plt.subplots(figsize=(9, 4))
+colors_dpi = ["steelblue", "darkorange", "green"]
+for (name, vals), c in zip(dpi_results.items(), colors_dpi):
+    arr = np.array(vals)
+    ax.plot(alpha_grid, arr / arr[0], label=name, color=c, linewidth=2)
+
+ax.set_xlabel(r"garbling intensity $\alpha$  (0 = identity, 1 = fully mixed)",
+              fontsize=11)
+ax.set_ylabel("divergence normalised by its value at $\\alpha = 0$", fontsize=11)
+ax.legend(fontsize=10)
+ax.set_ylim(-0.05, 1.1)
+plt.tight_layout()
+plt.show()
+
+print("Divergences at α = 0 (no garbling):")
+for name, vals in dpi_results.items():
+    print(f"  {name.ljust(50)}: {vals[0]:.4f}")
+print("\nDivergences at α = 1 (complete garbling):")
+for name, vals in dpi_results.items():
+    print(f"  {name.ljust(50)}: {vals[-1]:.2e}")
+```
+
+All three f-divergences decrease monotonically to zero as the experiment is progressively garbled toward complete mixing.
+
+This confirms the coarse-graining theorem: a single Blackwell garbling simultaneously contracts every f-divergence between the conditional distributions of signals given states.
+
+The following code makes the connection between the Blackwell ordering and the DPI explicit.
+
+It computes multiple f-divergences for experiments of increasing quality $\theta$ (the same parameterization used earlier) and verifies that Blackwell-higher experiments have strictly larger f-divergences.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: More informative experiments have larger f-divergences between rows
+    name: fig-blackwell-dpi-quality
+---
+θ_vals = np.linspace(0, 1, 100)
+dpi_quality = {
+    r"KL divergence $D_\mathrm{KL}$": [],
+    r"Squared Hellinger $H^2$": [],
+    r"Total variation TV": [],
+}
+
+for θ in θ_vals:
+    μ_θ = make_experiment(θ, N=2)
+    r1, r2 = μ_θ[0], μ_θ[1]
+    dpi_quality[r"KL divergence $D_\mathrm{KL}$"].append(
+        kl_divergence_rows(r1, r2))
+    dpi_quality[r"Squared Hellinger $H^2$"].append(
+        squared_hellinger_rows(r1, r2))
+    dpi_quality[r"Total variation TV"].append(
+        total_variation_rows(r1, r2))
+
+fig, ax = plt.subplots(figsize=(9, 4))
+for (name, vals), c in zip(dpi_quality.items(), colors_dpi):
+    arr = np.array(vals)
+    ax.plot(θ_vals, arr / (arr[-1] + 1e-15), label=name, color=c, linewidth=2)
+
+ax.set_xlabel(r"experiment quality $\theta$  (0 = uninformative, 1 = perfect)",
+              fontsize=11)
+ax.set_ylabel("divergence normalised by value at $\\theta = 1$", fontsize=11)
+ax.legend(fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+Every f-divergence between the rows $(\mu_1, \mu_2)$ is strictly increasing in experiment quality $\theta$.
+
+At $\theta = 0$ the rows are both $[0.5, 0.5]$, so every divergence is zero.
+
+At $\theta = 1$ the rows are $[1, 0]$ and $[0, 1]$, so the KL-divergence is infinite and the Hellinger distance and total variation reach their maximum values.
+
+### Summary of the DPI–Blackwell correspondence
+
+The table below collects the precise correspondence between Blackwell's framework and the data-processing and coarse-graining literature.
+
+| Blackwell / DeGroot | Data processing / coarse-graining |
+|:---|:---|
+| Garbling $\nu = \mu Q$ | Applying Markov kernel $\kappa$ to a pair $(P, Q) = (\mu_1, \mu_2)$ |
+| $\mu \geq \nu$ in Blackwell order | $D_f(\mu_1 \| \mu_2) \geq D_f(\nu_1 \| \nu_2)$ for every f-divergence |
+| Sufficiency ($Q$ discards nothing) | Equality in DPI for every strictly convex $f$ |
+| DeGroot value $I(\mu; U_H)$ | Mutual information $I(\tilde{x}_\mu;\, \tilde{s})$ (Shannon DPI) |
+| Posterior spreads under $\mu$ vs $\nu$ | $D_f$ between rows larger under $\mu$ |
+| Blackwell theorem (economic $\Leftrightarrow$ garbling) | DPI for all $f$ $\Leftrightarrow$ single Markov kernel witnesses dominance |
+| Chentsov's uniqueness theorem | Fisher information is the unique coarse-graining-contracting metric |
+| Information bottleneck $I(T;Y) \leq I(X;Y)$ | DPI for mutual information applied to Markov chain $Y{-}X{-}T$ |
 
 
 ## Relation to Bayesian likelihood-ratio learning
