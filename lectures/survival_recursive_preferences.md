@@ -118,7 +118,7 @@ $$
 F(C, \nu)
 = \beta \frac{C^{1-\gamma}}{1-\gamma}
 \cdot
-\frac{(1-\gamma) - (1-\rho)\nu / \beta}{\rho - \gamma}
+\left(\frac{(1-\gamma) - (1-\rho)\nu / \beta}{\rho - \gamma}\right)^{(\gamma - \rho)/(1-\rho)}
 $$ (eq:felicity)
 
 where $\nu$ is the endogenous discount rate.
@@ -1014,8 +1014,8 @@ When agent 2 is the large agent, Proposition 5.1 in {cite:t}`Borovicka2020` impl
 
 $$
 \lim_{\upsilon \searrow 0} r(\upsilon)
-= \beta + \rho \mu_Y + \omega^2 \sigma_Y
-+ \frac{1}{2} (1 - \gamma) \sigma_Y^2
+= \beta + \rho \left(\mu_Y + \omega^2 \sigma_Y
++ \frac{1}{2} (1 - \gamma) \sigma_Y^2\right)
 - \frac{1}{2} \gamma \sigma_Y^2
 $$ (eq:riskfree)
 

@@ -32,7 +32,7 @@ kernelspec:
 
 This lecture studies *Blackwell's theorem* {cite}`blackwell1951,blackwell1953` on ranking statistical experiments.
 
-Our presentation brings in findings from a Bayesian interpretation of Blackwell's theorem by  {cite}`kihlstrom1984`.
+Our presentation brings in findings from a Bayesian interpretation of Blackwell's theorem by  {cite:t}`kihlstrom1984`.
 
 Blackwell and Kihlstrom study statistical model-selection questions closely related to those encountered in this QuantEcon lecture {doc}`likelihood_bayes`. 
 
@@ -47,7 +47,7 @@ We are free to interpret the "state" as a "parameter" or "parameter vector".
 
 In a two-state case $S = \{s_1, s_2\}$, the  two conditional densities $f(\cdot) = \mu(\cdot \mid s_1)$ and $g(\cdot) = \mu(\cdot \mid s_2)$ are the ones used repeatedly in  our studies of classical hypothesis testing and Bayesian inference in this  QuantEcon lecture {doc}`likelihood_bayes` as well as several other lectures in this suite of QuantEcon lectures.
 
-{cite}`kihlstrom1984` interprets the question — *which experiment is more informative?* — as asking  which conditional probability model allows a Bayesian decision maker with a prior over $\{s_1, s_2\}$ to gather higher expected utility.
+{cite:t}`kihlstrom1984` interprets the question *which experiment is more informative?* as asking which conditional probability model allows a Bayesian decision maker with a prior over $\{s_1, s_2\}$ to gather higher expected utility.
 
 We'll use the terms "signal" and "experiment" as synyomyms.
 
@@ -58,7 +58,7 @@ Signal $\mu$ is **at least as informative as** signal $\nu$ if every Bayesian de
 This economic criterion is equivalent to two statistical criteria:
 
 - *Sufficiency* (Blackwell): $\tilde{x}_\nu$ can be generated from $\tilde{x}_\mu$ by an additional randomization.
-- *Uncertainty reduction* (DeGroot {cite}`degroot1962`): $\tilde{x}_\mu$ lowers expected uncertainty at least as much as $\tilde{x}_\nu$ for every concave uncertainty function.
+- *Uncertainty reduction* ({cite:t}`degroot1962`): $\tilde{x}_\mu$ lowers expected uncertainty at least as much as $\tilde{x}_\nu$ for every concave uncertainty function.
 
 Kihlstrom's formulation focuses on the *posterior distribution*.
 
@@ -69,7 +69,7 @@ In the two-state case, this becomes a mean-preserving-spread comparison on $[0, 
 The lecture proceeds as follows:
 
 1. Set up notation and define experiments as Markov matrices.
-2. Define stochastic transformations (Markov kernels).
+2. Define stochastic transformations using Markov kernels.
 3. State the three equivalent criteria.
 4. State and sketch the proof of the main theorem.
 5. Develop the Bayesian interpretation via standard experiments and mean-preserving spreads.
@@ -85,7 +85,7 @@ from scipy.optimize import minimize
 np.random.seed(42)
 ```
 
-## Experiments and Markov matrices
+## Experiments and stochastic transformations
 
 ### The state space and experiments
 
@@ -110,26 +110,32 @@ Each row $i$ gives the distribution of signals when the true state is $s_i$.
 μ = np.array([[0.6, 0.3, 0.1],
               [0.1, 0.3, 0.6]])
 
-ν = np.array([[0.5, 0.2, 0.3],
-              [0.2, 0.5, 0.3]])
+Q = np.array([[1.0, 0.0],
+              [0.5, 0.5],
+              [0.0, 1.0]])
 
-print("Experiment μ (rows sum to 1):")
+ν = μ @ Q
+
+print("Experiment μ (3 signals, rows sum to 1):")
 print(μ)
-print("\nExperiment ν:")
+print("\nStochastic transformation Q (3 × 2):")
+print(Q)
+print("\nExperiment ν = μ @ Q (2 signals):")
 print(ν)
 print("\nRow sums μ:", μ.sum(axis=1))
 print("Row sums ν:", ν.sum(axis=1))
 ```
 
-### Stochastic transformations (Markov kernels)
+### Stochastic transformations
 
 A **stochastic transformation** $Q$ maps signals from one experiment to signals from another by further randomization.
 
 In the discrete setting with $M$ input signals and $K$ output signals, $Q$ is an
 $M \times K$ Markov matrix: $q_{lk} \geq 0$ and $\sum_k q_{lk} = 1$ for every row $l$.
 
-```{admonition} Definition (Sufficiency)
-:class: tip
+```{prf:definition} Sufficiency
+:label: def-sufficiency
+
 Experiment $\mu$ is *sufficient for* $\nu$ if there exists a stochastic
 transformation $Q$ (an $M \times K$ Markov matrix) such that
 
@@ -143,14 +149,19 @@ $\tilde{x}_\nu$ by passing their signal through $Q$.
 
 If you observe the more informative signal $\tilde{x}_\mu$, then you can always *throw away* information to reproduce a less informative signal.
 
-The reverse is not possible: a less informative signal cannot be enriched to recover what was lost.
+The reverse is not possible: a less informative signal cannot be enriched to
+recover what was lost.
+
+We can verify this numerically using the two experiments $\mu$ and $\nu$
+defined above.
+
+The function below searches for a stochastic transformation $Q$ that
+minimizes $\|\nu - \mu \, Q\|$.
+
+If an exact $Q$ exists the residual will be close to zero; otherwise it will
+be large.
 
 ```{code-cell} ipython3
-def is_markov(M, tol=1e-10):
-    """Check whether a matrix is a valid Markov (row-stochastic) matrix."""
-    return np.all(M >= -tol) and np.allclose(M.sum(axis=1), 1.0)
-
-
 def find_stochastic_transform(μ, ν, tol=1e-8):
     """
     Find a row-stochastic matrix Q that minimizes ||ν - μ @ Q||.
@@ -184,26 +195,41 @@ def find_stochastic_transform(μ, ν, tol=1e-8):
 
     Q = unpack(result.x)
     residual = np.linalg.norm(ν - μ @ Q)
-    return Q, residual, result.success
+    return Q, residual
 
-Q_true = np.array([[1.0, 0.0],
-                   [0.0, 1.0],
-                   [0.0, 1.0]])
+# Forward: find Q such that ν = μ @ Q  (should succeed)
+Q_fwd, res_fwd = find_stochastic_transform(μ, ν)
+print("Forward (μ to ν):")
+print(f"  residual = {res_fwd:.2e}")
+print(f"  exact transformation exists: {res_fwd < 1e-6}")
 
-ν_garbled = μ @ Q_true
-print("ν = μ @ Q_true:")
-print(ν_garbled)
-print("ν is Markov:", is_markov(ν_garbled))
-
-Q_found, res, success = find_stochastic_transform(μ, ν_garbled)
-print(f"\nRecovered Q (success = {success}, residual = {res:.2e}):")
-print(np.round(Q_found, 4))
-print("Rows of Q sum to:", Q_found.sum(axis=1).round(4))
+# Reverse: find Q' such that μ = ν @ Q'  (should fail)
+Q_rev, res_rev = find_stochastic_transform(ν, μ)
+print("\nReverse (ν to μ):")
+print(f"  residual = {res_rev:.2e}")
+print(f"  exact transformation exists: {res_rev < 1e-6}")
 ```
+
+The forward residual is close to zero: a stochastic transformation from
+$\mu$ to $\nu$ exists, confirming that $\mu$ is sufficient for $\nu$.
+
+The reverse residual is large: no stochastic transformation can recover
+$\mu$ from $\nu$.
+
+No stochastic transformation can undo the
+information loss.
+
+The key is that the inverse of a stochastic transformation in general is not a stochastic transformation.
+
+In fact, the only stochastic transformations whose inverses are also stochastic are permutation matrices, which merely relabel signals without losing any information.
 
 ## Three equivalent criteria
 
+Blackwell's theorem establishes that three different ways of comparing experiments all turn out to be equivalent.
+
 ### Criterion 1: the economic criterion
+
+The first criterion compares experiments by their value to decision makers.
 
 Let $A$ be a compact convex set of actions and $u: A \times S \to \mathbb{R}$ a
 bounded utility function.
@@ -226,8 +252,9 @@ B(\mu, A, u) = \Bigl\{v \in \mathbb{R}^N :
   \text{ for some measurable } f: X \to A \Bigr\}.
 $$
 
-```{admonition} Definition (Economic criterion)
-:class: tip
+```{prf:definition} Economic criterion
+:label: def-economic-criterion
+
 $\mu$ is **at least as informative as** $\nu$ in the economic sense if
 
 $$
@@ -249,8 +276,11 @@ Equivalently, every Bayesian decision maker attains weakly higher expected utili
 
 ### Criterion 2: the sufficiency criterion
 
-```{admonition} Definition (Blackwell sufficiency)
-:class: tip
+The second criterion uses the stochastic transformation idea introduced above.
+
+```{prf:definition} Blackwell sufficiency
+:label: def-blackwell-sufficiency
+
 $\mu \geq \nu$ in Blackwell's sense if there exists a stochastic transformation $Q$ from the signal space of $\mu$ to the signal space of $\nu$ such that
 
 $$
@@ -263,6 +293,8 @@ In matrix notation for finite experiments: $\nu = \mu \, Q$.
 
 ### Criterion 3: the uncertainty criterion
 
+The third criterion compares experiments by how much they reduce uncertainty about the state.
+
 {cite:t}`degroot1962` calls any concave function $U: P \to \mathbb{R}$ an **uncertainty function**.
 
 The prototypical example is Shannon entropy:
@@ -271,8 +303,9 @@ $$
 U(p) = -\sum_{i=1}^{N} p_i \log p_i.
 $$
 
-```{admonition} Definition (DeGroot uncertainty criterion)
-:class: tip
+```{prf:definition} DeGroot uncertainty criterion
+:label: def-degroot-uncertainty
+
 $\mu$ **reduces expected uncertainty at least as much as** $\nu$ if, for every prior $p \in P$ and every concave $U: P \to \mathbb{R}$,
 
 $$
@@ -310,8 +343,9 @@ Kihlstrom's standard-experiment construction will later let us compare posterior
 
 ## The main theorem
 
-```{admonition} Theorem (Blackwell 1953; see also Blackwell 1951, Bonnenblust et al. 1949, and DeGroot 1962)
-:class: important
+```{prf:theorem} Blackwell's theorem
+:label: thm-blackwell
+
 The following three conditions are equivalent:
 
 (i) Economic criterion: $B(\mu, A, u) \supseteq B(\nu, A, u)$ for every compact convex $A$ and every bounded utility function $u$.
@@ -321,15 +355,17 @@ The following three conditions are equivalent:
 (iii) Uncertainty criterion: $\int_P U(q)\,\hat\mu^p(dq) \leq \int_P U(q)\,\hat\nu^p(dq)$ for every prior $p \in P$ and every concave $U$.
 ```
 
+See also {cite:t}`blackwell1951`, {cite:t}`bonnenblust1949`, and {cite:t}`degroot1962`.
+
 The hard part is the equivalence between the economic and sufficiency criteria.
 
 *Sketch (ii $\Rightarrow$ i):* If $\nu = \mu Q$, then any decision rule based on $\tilde{x}_\nu$ can be replicated by first observing $\tilde{x}_\mu$, then drawing a synthetic $\tilde{x}_\nu$ from $Q$, and then applying the same rule.
 
-*Sketch (i $\Rightarrow$ ii):* Since $B(\mu, A, u) \supseteq B(\nu, A, u)$ for every $A$ and $u$, a separating-hyperplane (duality) argument implies the existence of a mean-preserving stochastic transformation $D$ mapping posteriors of $\nu$ to posteriors of $\mu$, which constructs the required $Q$.
+*Sketch (i $\Rightarrow$ ii):* Since $B(\mu, A, u) \supseteq B(\nu, A, u)$ for every $A$ and $u$, a separating-hyperplane (duality) argument implies the existence of a posterior-space mean-preserving kernel $D$ sending the standard experiment of $\nu$ into that of $\mu$. Passing from these posterior laws back to the original signal spaces then yields the required garbling $Q$ with $\nu = \mu Q$. Thus $D$ is an intermediate randomization on posterior beliefs, not literally the signal-space kernel $Q$.
 
 *Sketch (ii $\Rightarrow$ iii):* Under a garbling, the posterior from the coarser experiment is the conditional expectation of the posterior from the finer experiment, so Jensen's inequality gives the result for every concave $U$.
 
-*Sketch (iii $\Rightarrow$ ii):* The converse — that the inequality for all concave $U$ forces the existence of $Q$ — is proved in {cite}`blackwell1953`, and Kihlstrom's posterior-based representation makes the geometry transparent.
+*Sketch (iii $\Rightarrow$ ii):* The converse, that the inequality for all concave $U$ forces the existence of $Q$, is proved in {cite}`blackwell1953`. Kihlstrom's posterior-based representation makes the geometry transparent.
 
 ## Kihlstrom's Bayesian interpretation
 
@@ -346,8 +382,9 @@ $$
 
 The posterior $p^\mu(x) \in P$ is a random point in the simplex.
 
-```{admonition} Key property (mean preservation)
-:class: note
+```{prf:property} Mean preservation
+:label: prop-mean-preservation
+
 The prior $p$ is the expectation of the posterior:
 
 $$
@@ -357,15 +394,41 @@ $$
 This is sometimes called the *law of iterated expectations for beliefs*.
 ```
 
-For a fixed prior $c$, Kihlstrom's **standard experiment** ${}^c\mu^*$ records only the posterior generated by $\mu$.
+For a fixed prior $c$, Kihlstrom's **standard experiment** replaces the raw signals of $\mu$ with the posterior beliefs they generate.
 
-Its distribution $\hat\mu^c$ on $P$ satisfies $\int_P q \, \hat\mu^c(dq) = c$.
+Let $\hat\mu^c$ denote the distribution over posteriors induced by $\mu$ under prior $c$.
+Mean preservation implies $\int_P q \, \hat\mu^c(dq) = c$.
 
 Two experiments are **informationally equivalent** when they induce the same posterior distribution.
 
-The standard experiment strips away every detail of the signal except its posterior, so it is a *minimal sufficient statistic* for the comparison of experiments.
+The standard experiment strips away every detail of the signal except its posterior, so it provides a canonical Bayesian representation for comparing experiments.
+
+A stochastic kernel on posterior beliefs lives on the simplex $P$, whereas a Blackwell garbling $Q$ lives on the original signal space. Kihlstrom's construction uses the former to study convex order and then recovers the latter after passing to standard experiments.
 
 Any two experiments that generate the same distribution over posteriors lead to identical decisions for every Bayesian decision maker, regardless of how different their raw signal spaces may look.
+
+### Mean-preserving spreads and Blackwell's order
+
+Kihlstrom's key reformulation is the following.
+
+```{prf:theorem} Kihlstrom's Reformulation
+:label: thm-kihlstrom
+
+$\mu \geq \nu$ in Blackwell's sense if and only if $\hat\mu^c$ is a
+**mean-preserving spread** of $\hat\nu^c$; that is,
+
+$$
+\int_P g(p)\,\hat\mu^c(dp) \;\geq\; \int_P g(p)\,\hat\nu^c(dp)
+$$
+
+for every convex function $g: P \to \mathbb{R}$.
+```
+
+Equivalently, $\hat\mu^c$ is larger than $\hat\nu^c$ in convex order.
+
+A better experiment spreads posterior beliefs farther from the prior while preserving their mean.
+
+To see this concretely, we define two experiments for the two-state case and compute their posteriors.
 
 ```{code-cell} ipython3
 def compute_posteriors(μ, prior, tol=1e-14):
@@ -403,14 +466,14 @@ prior = np.array([0.5, 0.5])
 post_μ, probs_μ = compute_posteriors(μ_info, prior)
 post_ν, probs_ν = compute_posteriors(ν_info, prior)
 
-print("=== Experiment μ (more informative) ===")
+print("Experiment μ (more informative):\n")
 print("Signal probabilities:", probs_μ.round(3))
 print("Posteriors (row = signal, col = state):")
 print(post_μ.round(3))
 mean_μ, ok_μ = check_mean_preservation(post_μ, probs_μ, prior)
 print(f"E[posterior] = {mean_μ.round(4)}  (equals prior: {ok_μ})")
 
-print("\n=== Experiment ν (less informative) ===")
+print("\n Experiment ν (less informative):\n")
 print("Signal probabilities:", probs_ν.round(3))
 print("Posteriors:")
 print(post_ν.round(3))
@@ -418,10 +481,10 @@ mean_ν, ok_ν = check_mean_preservation(post_ν, probs_ν, prior)
 print(f"E[posterior] = {mean_ν.round(4)}  (equals prior: {ok_ν})")
 ```
 
-### Visualizing posterior distributions on the simplex
-
 For $N = 2$ states, the simplex $P$ is the unit interval $[0, 1]$ (the probability
-of state $s_1$).  We can directly plot the distribution of posteriors under
+of state $s_1$).  
+
+We can directly plot the distribution of posteriors under
 experiments $\mu$ and $\nu$.
 
 ```{code-cell} ipython3
@@ -465,27 +528,17 @@ def plot_posterior_distributions(μ_matrix, ν_matrix, prior,
 plot_posterior_distributions(μ_info, ν_info, prior)
 ```
 
-The more informative experiment $\mu$ pushes posteriors farther from the prior in both directions.
+This is the mean-preserving spread in action: both distributions have the same mean (equal to the prior), but the more informative experiment $\mu$ spreads its posteriors farther apart.
 
-### Mean-preserving spreads and Blackwell's order
+We can verify the mean-preserving spread condition numerically.
 
-Kihlstrom's key reformulation is the following.
+The key fact is that, up to an affine term, any convex function can be represented as a mixture of
+"call option" payoffs $g_t(p) = \max(p - t, 0)$.
 
-```{admonition} Theorem (Kihlstrom's Reformulation)
-:class: important
-$\mu \geq \nu$ in Blackwell's sense if and only if $\hat\mu^c$ is a
-**mean-preserving spread** of $\hat\nu^c$; that is,
+Because the two posterior distributions being compared have the same mean, that affine term cancels in the comparison.
 
-$$
-\int_P g(p)\,\hat\mu^c(dp) \;\geq\; \int_P g(p)\,\hat\nu^c(dp)
-$$
-
-for every convex function $g: P \to \mathbb{R}$.
-```
-
-Equivalently, $\hat\mu^c$ is larger than $\hat\nu^c$ in convex order.
-
-A better experiment spreads posterior beliefs farther from the prior while preserving their mean.
+So it suffices to check $E[g_t(p^\mu)] \geq E[g_t(p^\nu)]$ for all
+thresholds $t \in [0, 1]$.
 
 ```{code-cell} ipython3
 ---
@@ -532,6 +585,8 @@ def check_mps_convex_functions(μ_matrix, ν_matrix, prior, n_functions=200):
 _ = check_mps_convex_functions(μ_info, ν_info, prior)
 ```
 
+The difference $E[g_t(p^\mu)] - E[g_t(p^\nu)]$ is non-negative for every threshold $t$, confirming that $\hat\mu^c$ is a mean-preserving spread of $\hat\nu^c$ and therefore $\mu \geq \nu$ in the Blackwell order.
+
 ## Simulating the Blackwell order with many states
 
 We now move to a three-state example.
@@ -563,13 +618,13 @@ print(np.round(ν3, 3))
 
 For three states, posterior beliefs live in a 2-simplex.
 
-Let's visualize the posterior clouds under $\mu$ and $\nu$
+Let's visualize sampled posterior points under $\mu$ and $\nu$
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Posterior clouds on the 2-simplex
+    caption: Sampled posterior points on the 2-simplex
     name: fig-blackwell-simplex-clouds
 ---
 def sample_posteriors(μ_matrix, prior, n_draws=3000):
@@ -634,9 +689,11 @@ def plot_simplex_posteriors(μ_matrix, ν_matrix, prior3, n_draws=3000):
 plot_simplex_posteriors(μ3, ν3, prior3)
 ```
 
-Under $\mu$, the posterior cloud reaches farther toward the vertices.
+Because this example has only three signals, each panel consists of three posterior atoms sampled repeatedly rather than a continuous cloud.
 
-Under the garbled experiment $\nu$, the cloud stays closer to the center.
+Under $\mu$, the sampled posterior points reach farther toward the vertices.
+
+Under the garbled experiment $\nu$, the sampled posterior points stay closer to the center.
 
 ## The DeGroot uncertainty function
 
@@ -720,6 +777,11 @@ def tsallis_entropy(p, q=2):
     return (1 - np.sum(p**q)) / (q - 1)
 
 
+def tsallis_q15(p):
+    """Tsallis entropy with q=1.5 for an independent concavity check."""
+    return tsallis_entropy(p, q=1.5)
+
+
 def sqrt_index(p):
     """Concave uncertainty index based on sum(sqrt(p_i))."""
     p = np.clip(np.asarray(p), 0.0, 1.0)
@@ -728,11 +790,14 @@ def sqrt_index(p):
 uncertainty_functions = {
     "Shannon entropy": entropy,
     "Gini impurity": gini_impurity,
-    "Tsallis (q=2)": tsallis_entropy,
+    "Tsallis (q=1.5)": tsallis_q15,
     "Square-root index": sqrt_index,
 }
 
-print(f"{'Uncertainty function':<22}  {'I(μ)':<10}  {'I(ν)':<10}  {'I(μ)>=I(ν)?'}")
+header = (f"{'Uncertainty function':<22}  "
+          f"{'I(μ)':<10}  {'I(ν)':<10}  "
+          f"{'I(μ)>=I(ν)?'}")
+print(header)
 print("-" * 58)
 for name, U in uncertainty_functions.items():
     I_μ = degroot_value(μ_info, prior, U)
@@ -790,7 +855,13 @@ Every concave uncertainty function assigns weakly higher value to a more informa
 
 ## Connection to second-order stochastic dominance
 
-The uncertainty-function representation makes the connection to **second-order stochastic dominance (SOSD)** explicit.
+A random variable $X$ **second-order stochastically dominates**
+$Y$ (written $X \succeq_{\text{SOSD}} Y$) if
+$E[u(X)] \geq E[u(Y)]$ for every concave function $u$.
+Equivalently, $Y$ is a mean-preserving spread of $X$.
+
+The uncertainty-function representation makes the connection
+to SOSD explicit.
 
 Because $U$ is concave, $-U$ is convex, and the condition
 
@@ -798,13 +869,11 @@ $$
 \mathbb{E}[U(p^\mu)] \leq \mathbb{E}[U(p^\nu)] \quad \text{for all concave } U
 $$
 
-is precisely the statement that $\hat\mu^c$ dominates $\hat\nu^c$ in the **mean-preserving spread** sense on $P$.
-
-The Blackwell ordering on *experiments* is therefore isomorphic to the SOSD ordering on *distributions of posteriors*.
+is precisely the statement that $\hat\mu^c$ dominates $\hat\nu^c$ in convex order on $P$.
 
 When $N = 2$, posterior beliefs are scalars in $[0, 1]$, and the SOSD comparison reduces to the classical integrated-CDF test.
 
-Specifically, $\hat\mu^c$ is a mean-preserving spread of $\hat\nu^c$ if and only if $\int_0^t F_\nu(s)\,ds \geq \int_0^t F_\mu(s)\,ds$ for all $t \in [0,1]$, where $F_\mu$ and $F_\nu$ are the CDFs of the posterior on $s_1$ under each experiment.
+Specifically, $\hat\mu^c$ is a mean-preserving spread of $\hat\nu^c$ if and only if $\int_0^t F_\mu(s)\,ds \geq \int_0^t F_\nu(s)\,ds$ for all $t \in [0,1]$, where $F_\mu$ and $F_\nu$ are the CDFs of the posterior on $s_1$ under each experiment. Equivalently, in SOSD language, the less informative posterior under $\nu$ dominates the more dispersed posterior under $\mu$.
 
 We can verify this graphically for the two-state example above
 
@@ -863,11 +932,13 @@ def plot_sosd_posteriors(μ_matrix, ν_matrix, prior):
     int_ν = integrated_cdf(sv_ν, cm_ν, grid)
 
     ax2.plot(grid, int_μ, label=r"$\int F_\mu$", color="steelblue", linewidth=2)
-    ax2.plot(grid, int_ν, label=r"$\int F_\nu$", color="darkorange", linewidth=2)
-    ax2.fill_between(grid, int_μ, int_ν,
-                     where=int_ν >= int_μ,
-                     alpha=0.2, color="darkorange",
-                     label=r"$\int F_\nu \geq \int F_\mu$ ($\mu$ MPS-dominates $\nu$)")
+    ax2.plot(grid, int_ν, color="darkorange",
+             label=r"$\int F_\nu$", linewidth=2)
+    ax2.fill_between(grid, int_ν, int_μ,
+                     where=int_μ >= int_ν,
+                     alpha=0.2, color="steelblue",
+                     label=(r"$\int F_\mu \geq \int F_\nu$"
+                            r" ($\mu$ is an MPS of $\nu$)"))
     ax2.set_xlabel(r"$t$", fontsize=12)
     ax2.set_ylabel("integrated CDF", fontsize=12)
     ax2.text(0.03, 0.94, "integrated CDFs", transform=ax2.transAxes, va="top")
@@ -879,91 +950,6 @@ def plot_sosd_posteriors(μ_matrix, ν_matrix, prior):
 plot_sosd_posteriors(μ_info, ν_info, prior)
 ```
 
-## Mean-preserving randomization
-
-Kihlstrom proves that (i) $\Rightarrow$ (ii) by explicit construction.
-
-Given that $\mu$ achieves at least the value of $\nu$ for every decision maker, he constructs a stochastic transformation $D(p^0, \cdot)$ on $P$ that is **mean-preserving**:
-
-$$
-\int_P q \, D(p^0, dq) = p^0.
-$$
-
-Setting $Q = D$ provides the Markov kernel witnessing Blackwell sufficiency.
-
-The mean-preservation condition says: passing $\tilde{x}_\mu$ through $Q$ to produce a synthetic $\tilde{x}_\nu$ cannot add information — it only destroys it.
-
-```{code-cell} ipython3
-def verify_garbling_mean_preservation(μ_matrix, Q_matrix, prior):
-    """Verify that a garbling preserves the prior as the mean posterior."""
-    ν_matrix = μ_matrix @ Q_matrix
-    posts_μ, probs_μ = compute_posteriors(μ_matrix, prior)
-    posts_ν, probs_ν = compute_posteriors(ν_matrix, prior)
-
-    mean_μ = (posts_μ * probs_μ[:, None]).sum(axis=0)
-    mean_ν = (posts_ν * probs_ν[:, None]).sum(axis=0)
-
-    print(f"Prior:               {prior.round(4)}")
-    print(f"E[p^μ]:              {mean_μ.round(4)}")
-    print(f"E[p^ν = p^(μQ)]:     {mean_ν.round(4)}")
-    print(f"Both equal prior?    μ: {np.allclose(mean_μ, prior)}, "
-          f"ν: {np.allclose(mean_ν, prior)}")
-
-
-Q_soft = np.array([[0.7, 0.3],
-                   [0.3, 0.7]])
-
-verify_garbling_mean_preservation(μ_info, Q_soft, prior)
-```
-
-## Comparing experiments systematically
-
-We now study a grid of experiments indexed by their quality parameter $\theta$.
-
-We will compare:
-
-1. The spread of posterior beliefs.
-2. The value of information under concave uncertainty functions.
-3. The integrated-CDF ranking in the two-state case.
-
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Posterior distributions for increasing experiment quality
-    name: fig-blackwell-quality-grid
----
-θ_grid = [0.1, 0.4, 0.7, 1.0]
-prior2 = np.array([0.5, 0.5])
-
-fig, axes = plt.subplots(2, 2, figsize=(11, 8))
-axes = axes.flat
-
-for ax, θ in zip(axes, θ_grid):
-    μ_θ = make_experiment(θ)
-    posts, probs = compute_posteriors(μ_θ, prior2)
-    p_s1 = posts[:, 0]
-    ax.vlines(p_s1, 0, probs, linewidth=8, color="steelblue", alpha=0.7)
-    ax.axvline(prior2[0], color="tomato", linestyle="--", linewidth=2,
-               label=f"prior = {prior2[0]:.2f}")
-    I_H = degroot_value(μ_θ, prior2, entropy)
-    I_G = degroot_value(μ_θ, prior2, gini_impurity)
-    ax.set_xlim(0, 1)
-    ax.set_xlabel(r"posterior $p(s_1 \mid x)$", fontsize=11)
-    ax.set_ylabel("probability mass", fontsize=11)
-    ax.text(0.03, 0.94,
-            f"θ = {θ}\n" f"I_H = {I_H:.3f}\n" f"I_G = {I_G:.3f}",
-            transform=ax.transAxes, va="top")
-    ax.legend(fontsize=10)
-
-plt.tight_layout()
-plt.show()
-```
-
-As $\theta$ rises from 0 to 1, posterior beliefs move toward the vertices $\{0, 1\}$.
-
-At the same time, the value of information rises under every concave uncertainty function.
-
 ## Application 1: product quality information
 
 {cite:t}`kihlstrom1974a` applies Blackwell's theorem to consumer demand for information about product quality.
@@ -974,70 +960,77 @@ At the same time, the value of information rises under every concave uncertainty
 
 The Blackwell order says that, absent costs, more information is always better for every expected-utility maximizer.
 
-Optimal information demand equates the *marginal value of the standard experiment* to its *marginal cost*.
+With costs, the consumer chooses quality investment $\theta$ to maximize *net value*.
 
-In the example below, we assume a linear cost $c \cdot \lambda$ and a simple family of experiments $\mu(\theta)$ as above with $c = 0.4$
+If quality investment translates into experiment accuracy with diminishing returns — say, accuracy $\phi(\theta) = 1 - e^{-a\theta}$ for a rate parameter $a$ — then the marginal value of information eventually decreases in $\theta$.
+
+With a convex cost $c(\theta) = c \, \theta^2$, the increasing marginal cost eventually overtakes the declining marginal value, producing an interior optimum.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Information demand in a simple quality example
+    caption: Information demand with a quadratic cost
     name: fig-blackwell-information-demand
 ---
-def consumer_value(θ, prior2, U=entropy, cost_per_unit=0.5):
-    """Value of purchasing experiment quality θ."""
-    μ_t = make_experiment(θ)
-    gross = degroot_value(μ_t, prior2, U)
-    net   = gross - cost_per_unit * θ
-    return gross, net
+def gross_value(θ, prior2, U=entropy, rate=2):
+    """Gross value of quality investment θ (diminishing returns)."""
+    accuracy = 1 - np.exp(-rate * θ)
+    μ_t = (1 - accuracy) * np.ones((2, 2)) / 2 + accuracy * np.eye(2)
+    return degroot_value(μ_t, prior2, U)
 
 
 θ_fine = np.linspace(0, 1, 200)
-gross_vals = []
-net_vals   = []
-marginal_vals = []
+c = 0.6
 
-for θ in θ_fine:
-    g, n = consumer_value(θ, prior2, entropy, cost_per_unit=0.4)
-    gross_vals.append(g)
-    net_vals.append(n)
-
+gross_vals = np.array([gross_value(θ, prior2) for θ in θ_fine])
+cost_vals = c * θ_fine**2
+net_vals = gross_vals - cost_vals
 marginal_vals = np.gradient(gross_vals, θ_fine)
+marginal_cost = 2 * c * θ_fine
+opt_idx = int(np.argmax(net_vals))
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
 ax = axes[0]
-ax.plot(θ_fine, gross_vals, label="Gross value I(θ)",
+ax.plot(θ_fine, gross_vals,
+        label="Gross value I(θ)",
         color="steelblue", linewidth=2)
-ax.plot(θ_fine, [0.4 * t for t in θ_fine],
-        label="Cost c · θ", color="tomato",
-        linestyle="--", linewidth=2)
-ax.plot(θ_fine, net_vals, label="Net value", color="green", linewidth=2)
-ax.set_xlabel("experiment quality θ", fontsize=11)
-ax.set_ylabel("value (Shannon entropy units)", fontsize=11)
+ax.plot(θ_fine, cost_vals,
+        label=r"Cost $c\theta^2$",
+        color="tomato", linestyle="--", linewidth=2)
+ax.plot(θ_fine, net_vals,
+        label="Net value", color="green", linewidth=2)
+ax.axvline(θ_fine[opt_idx], color="green",
+           linestyle=":", linewidth=2,
+           label=f"θ* ≈ {θ_fine[opt_idx]:.2f}")
+ax.set_xlabel("quality investment θ", fontsize=11)
+ax.set_ylabel("value (entropy units)", fontsize=11)
 ax.legend(fontsize=10)
 
 ax2 = axes[1]
-ax2.plot(θ_fine, marginal_vals, label="Marginal value I'(θ)",
+ax2.plot(θ_fine, marginal_vals,
+         label="Marginal value I'(θ)",
          color="steelblue", linewidth=2)
-ax2.axhline(0.4, color="tomato", linestyle="--", linewidth=2,
-            label="Marginal cost $c = 0.4$")
-opt_idx = np.argmin(np.abs(np.array(marginal_vals) - 0.4))
-ax2.axvline(θ_fine[opt_idx], color="green", linestyle=":",
-            linewidth=2,
-            label=f"Optimal θ* ≈ {θ_fine[opt_idx]:.2f}")
-ax2.set_xlabel("experiment quality θ", fontsize=11)
-ax2.set_ylabel("marginal value / marginal cost", fontsize=11)
+ax2.plot(θ_fine, marginal_cost,
+         label=r"Marginal cost $2c\theta$",
+         color="tomato", linestyle="--", linewidth=2)
+ax2.axvline(θ_fine[opt_idx], color="green",
+            linestyle=":", linewidth=2,
+            label=f"θ* ≈ {θ_fine[opt_idx]:.2f}")
+ax2.set_xlabel("quality investment θ", fontsize=11)
+ax2.set_ylabel("marginal value / cost", fontsize=11)
 ax2.legend(fontsize=10)
 
 plt.tight_layout()
 plt.show()
 ```
 
-The optimal demand for information $\theta^*$ occurs where marginal value equals marginal cost.
+The optimal investment $\theta^*$ occurs where marginal value equals marginal cost.
 
-Comparative statics follow from shifts in either curve.
+Because experiment accuracy has diminishing returns in $\theta$, the marginal value of investment eventually falls below the rising marginal cost, yielding a genuine interior optimum.
+
+Raising $c$ shifts the marginal cost curve up and reduces $\theta^*$, while a more asymmetric prior shifts the marginal value curve and changes the optimum.
 
 ## Application 2: sequential experimental design
 
@@ -1170,16 +1163,16 @@ Kihlstrom's Bayesian exposition places the *posterior distribution* at the cente
 
 A more informative experiment generates a more dispersed posterior distribution with the same mean prior.
 
-The right probabilistic language is convex order, and the Blackwell ordering on experiments is isomorphic to the second-order stochastic dominance (SOSD) ordering on distributions of posteriors.
+The right probabilistic language is convex order on the simplex of posterior beliefs.
 
-In the two-state case this reduces to the familiar mean-preserving-spread comparison on $[0, 1]$, which can be verified with the integrated-CDF test.
+In the two-state case this reduces to the familiar SOSD / integrated-CDF test on $[0, 1]$.
 
 DeGroot's contribution is to extend the comparison from particular utility functions to the full class of concave uncertainty functions.
 
 
 ## The Data Processing Inequality and Coarse-Graining
 
-Blackwell's garbling condition — that $\nu = \mu Q$ for some Markov kernel $Q$ — is the same mathematical operation that underlies the **data processing inequality** (DPI) and the **coarse-graining theorem** in information theory, information geometry, and machine learning.
+Blackwell's condition that $\nu = \mu Q$ for some Markov kernel $Q$ is the same mathematical operation that underlies the **data processing inequality** (DPI) and the **coarse-graining theorem** in information theory, information geometry, and machine learning.
 
 ### The DPI for f-divergences
 
@@ -1200,19 +1193,21 @@ Special cases include:
 | Total variation TV | $\lvert t - 1 \rvert / 2$ |
 | Chi-squared $\chi^2$ | $(t-1)^2$ |
 
-The class of f-divergences was introduced independently by {cite}`csiszar1963` and Morimoto (1963); see also {cite}`ali1966`.
+The class of f-divergences was introduced independently by {cite:t}`ali1966`, {cite:t}`csiszar1963`, and {cite:t}`morimoto1963`; see also {cite:t}`liese2012`.
 
-```{admonition} Coarse-Graining Theorem / Data Processing Inequality
-:class: important
+```{prf:theorem} Data Processing Inequality
+:label: thm-data-processing
+
 For any f-divergence $D_f$ and any Markov kernel (stochastic transformation)
-$\kappa$ — with $P \kappa$ denoting the image of $P$ under $\kappa$ — we have
+$\kappa$, with $P \kappa$ denoting the image of $P$ under $\kappa$, we have
 
 $$
 D_f(P \| Q) \geq D_f(P\kappa \| Q\kappa).
 $$
 
-Equality holds if and only if $\kappa$ is induced by a sufficient statistic for
-the pair $\{P, Q\}$.
+If $\kappa$ is induced by a sufficient statistic for the pair $\{P, Q\}$, then equality holds.
+
+A converse of this form requires additional hypotheses; a clean binary-model characterization is given below.
 ```
 
 The proof follows from Jensen's inequality applied to the convex function $f$, using the fact that $\kappa$ is a stochastic matrix {cite}`csiszar1963`.
@@ -1238,7 +1233,9 @@ So a more informative experiment always produces *more separated* conditional si
 
 The DPI is thus a statement about the *distinguishability* of states: garbling an experiment makes the states harder to tell apart under every statistical measure of separability.
 
-The equality condition links the DPI directly back to Blackwell:  $D_f(\mu_1 Q \| \mu_2 Q) = D_f(\mu_1 \| \mu_2)$ for some (hence every) strictly convex $f$ if and only if $Q$ is a sufficient statistic for $(\mu_1, \mu_2)$, i.e., the garbling discards nothing relevant.
+For binary experiments, the equality condition links the DPI directly back to Blackwell: $D_f(\mu_1 Q \| \mu_2 Q) = D_f(\mu_1 \| \mu_2)$ for some strictly convex $f$ if and only if $Q$ is a sufficient statistic for $(\mu_1, \mu_2)$. 
+
+Once sufficiency holds, equality follows for every convex $f$ {cite}`liese2012`.
 
 ### Information geometry: Chentsov's theorem
 
@@ -1255,13 +1252,13 @@ Equality holds if and only if $\kappa$ is a sufficient statistic for $\theta$.
 
 The uniqueness clause is deep: it says that the Fisher information is not merely *one* metric that happens to contract under coarse-graining, but the *only one* with that property.
 
-See Amari and Nagaoka (2000) for a thorough treatment of information geometry and its connections to sufficiency.
+See {cite:t}`amari_nagaoka2000` for a thorough treatment of information geometry and its connections to sufficiency.
 
 ### The information bottleneck in machine learning
 
-The **information bottleneck** method of {cite}`tishby_pereira_bialek1999` provides a prominent application of the DPI in machine learning.
+The **information bottleneck** method of {cite:t}`tishby_pereira_bialek1999` provides a prominent application of the DPI in machine learning.
 
-Given a joint distribution $p(X, Y)$ over an input $X$ and a target $Y$, the goal is to find a compressed representation $T$ — formed by a stochastic mapping $p(T \mid X)$ — that retains as much information about $Y$ as possible while using as few bits as possible to describe $X$.
+Given a joint distribution $p(X, Y)$ over an input $X$ and a target $Y$, the goal is to find a compressed representation $T$, formed by a stochastic mapping $p(T \mid X)$, that retains as much information about $Y$ as possible while using as few bits as possible to describe $X$.
 
 The method minimizes the Lagrangian
 
@@ -1284,6 +1281,7 @@ The Blackwell ordering explains why no deterministic or random post-processing o
 In machine learning language the information bottleneck searches among all garblings of $X$ for the one that best preserves relevant information about $Y$ subject to a compression budget.
 
 In a deep neural network with input $X$ and target $Y$ and layers $X \to T_1 \to T_2 \to \cdots \to T_L \to \hat{Y}$, each layer's representation is a garbling of the previous one.
+
 The DPI then implies the chain of inequalities
 
 $$
@@ -1291,141 +1289,12 @@ I(X;\, Y) \geq I(T_1;\, Y) \geq I(T_2;\, Y) \geq \cdots \geq I(T_L;\, Y),
 $$
 
 so successive layers can only lose, never gain, information about $Y$.
+
 This observation was placed at the center of the study of what deep networks learn by {cite}`shwartz_ziv_tishby2017`.
 
-### Demonstrating the coarse-graining theorem numerically
+{numref}`fig-blackwell-value-by-quality` already illustrates this: as experiment quality $\theta$ increases, every measure of informativeness rises monotonically. 
 
-The following code verifies that applying a progressively more mixing garbling $Q(\alpha)$ — interpolating between the identity matrix ($\alpha = 0$, no garbling) and the fully-mixing uniform kernel ($\alpha = 1$, complete garbling) — decreases *all* f-divergences between the experiment's rows simultaneously.
-
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: All f-divergences contract monotonically under progressive garbling
-    name: fig-blackwell-dpi-fdivergences
----
-def kl_divergence_rows(p, q, eps=1e-12):
-    """D_KL(p || q) for row vectors p, q."""
-    p = np.clip(np.asarray(p, float), eps, 1.0)
-    q = np.clip(np.asarray(q, float), eps, 1.0)
-    return float(np.sum(p * np.log(p / q)))
-
-
-def squared_hellinger_rows(p, q, eps=1e-12):
-    """H^2(p, q) = (1/2) * sum (sqrt(p_i) - sqrt(q_i))^2."""
-    p = np.clip(np.asarray(p, float), eps, 1.0)
-    q = np.clip(np.asarray(q, float), eps, 1.0)
-    return float(0.5 * np.sum((np.sqrt(p) - np.sqrt(q)) ** 2))
-
-
-def total_variation_rows(p, q):
-    """TV(p, q) = (1/2) * sum |p_i - q_i|."""
-    return float(0.5 * np.sum(np.abs(np.asarray(p, float)
-                                     - np.asarray(q, float))))
-
-
-def make_mixing_garbling(alpha, M=2):
-    """
-    Garbling that interpolates between the identity (alpha=0)
-    and the fully-mixing uniform kernel (alpha=1).
-    """
-    return (1.0 - alpha) * np.eye(M) + alpha * np.ones((M, M)) / M
-
-
-# Rows of the binary experiment: distribution of signal given each state
-row1 = np.array([0.8, 0.2])   # state s_1
-row2 = np.array([0.2, 0.8])   # state s_2
-
-alpha_grid = np.linspace(0, 1, 200)
-dpi_results = {
-    r"KL divergence $D_\mathrm{KL}(\nu_1 \| \nu_2)$": [],
-    r"Squared Hellinger $H^2(\nu_1, \nu_2)$": [],
-    r"Total variation $\mathrm{TV}(\nu_1, \nu_2)$": [],
-}
-
-for alpha in alpha_grid:
-    Q = make_mixing_garbling(alpha)
-    ν1 = row1 @ Q
-    ν2 = row2 @ Q
-    dpi_results[r"KL divergence $D_\mathrm{KL}(\nu_1 \| \nu_2)$"].append(
-        kl_divergence_rows(ν1, ν2))
-    dpi_results[r"Squared Hellinger $H^2(\nu_1, \nu_2)$"].append(
-        squared_hellinger_rows(ν1, ν2))
-    dpi_results[r"Total variation $\mathrm{TV}(\nu_1, \nu_2)$"].append(
-        total_variation_rows(ν1, ν2))
-
-fig, ax = plt.subplots(figsize=(9, 4))
-colors_dpi = ["steelblue", "darkorange", "green"]
-for (name, vals), c in zip(dpi_results.items(), colors_dpi):
-    arr = np.array(vals)
-    ax.plot(alpha_grid, arr / arr[0], label=name, color=c, linewidth=2)
-
-ax.set_xlabel(r"garbling intensity $\alpha$  (0 = identity, 1 = fully mixed)",
-              fontsize=11)
-ax.set_ylabel("divergence normalised by its value at $\\alpha = 0$", fontsize=11)
-ax.legend(fontsize=10)
-ax.set_ylim(-0.05, 1.1)
-plt.tight_layout()
-plt.show()
-
-print("Divergences at α = 0 (no garbling):")
-for name, vals in dpi_results.items():
-    print(f"  {name.ljust(50)}: {vals[0]:.4f}")
-print("\nDivergences at α = 1 (complete garbling):")
-for name, vals in dpi_results.items():
-    print(f"  {name.ljust(50)}: {vals[-1]:.2e}")
-```
-
-All three f-divergences decrease monotonically to zero as the experiment is progressively garbled toward complete mixing.
-
-This confirms the coarse-graining theorem: a single Blackwell garbling simultaneously contracts every f-divergence between the conditional distributions of signals given states.
-
-The following code makes the connection between the Blackwell ordering and the DPI explicit.
-
-It computes multiple f-divergences for experiments of increasing quality $\theta$ (the same parameterization used earlier) and verifies that Blackwell-higher experiments have strictly larger f-divergences.
-
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: More informative experiments have larger f-divergences between rows
-    name: fig-blackwell-dpi-quality
----
-θ_vals = np.linspace(0, 1, 100)
-dpi_quality = {
-    r"KL divergence $D_\mathrm{KL}$": [],
-    r"Squared Hellinger $H^2$": [],
-    r"Total variation TV": [],
-}
-
-for θ in θ_vals:
-    μ_θ = make_experiment(θ, N=2)
-    r1, r2 = μ_θ[0], μ_θ[1]
-    dpi_quality[r"KL divergence $D_\mathrm{KL}$"].append(
-        kl_divergence_rows(r1, r2))
-    dpi_quality[r"Squared Hellinger $H^2$"].append(
-        squared_hellinger_rows(r1, r2))
-    dpi_quality[r"Total variation TV"].append(
-        total_variation_rows(r1, r2))
-
-fig, ax = plt.subplots(figsize=(9, 4))
-for (name, vals), c in zip(dpi_quality.items(), colors_dpi):
-    arr = np.array(vals)
-    ax.plot(θ_vals, arr / (arr[-1] + 1e-15), label=name, color=c, linewidth=2)
-
-ax.set_xlabel(r"experiment quality $\theta$  (0 = uninformative, 1 = perfect)",
-              fontsize=11)
-ax.set_ylabel("divergence normalised by value at $\\theta = 1$", fontsize=11)
-ax.legend(fontsize=10)
-plt.tight_layout()
-plt.show()
-```
-
-Every f-divergence between the rows $(\mu_1, \mu_2)$ is strictly increasing in experiment quality $\theta$.
-
-At $\theta = 0$ the rows are both $[0.5, 0.5]$, so every divergence is zero.
-
-At $\theta = 1$ the rows are $[1, 0]$ and $[0, 1]$, so the KL-divergence is infinite and the Hellinger distance and total variation reach their maximum values.
+The DPI says the same thing in reverse: garbling (decreasing $\theta$) can only contract these measures.
 
 ### Summary of the DPI–Blackwell correspondence
 
@@ -1435,7 +1304,7 @@ The table below collects the precise correspondence between Blackwell's framewor
 |:---|:---|
 | Garbling $\nu = \mu Q$ | Applying Markov kernel $\kappa$ to a pair $(P, Q) = (\mu_1, \mu_2)$ |
 | $\mu \geq \nu$ in Blackwell order | $D_f(\mu_1 \| \mu_2) \geq D_f(\nu_1 \| \nu_2)$ for every f-divergence |
-| Sufficiency ($Q$ discards nothing) | Equality in DPI for every strictly convex $f$ |
+| Sufficiency ($Q$ discards nothing) | Equality in DPI; in binary models, one strictly convex $f$ already characterizes sufficiency |
 | DeGroot value $I(\mu; U_H)$ | Mutual information $I(\tilde{x}_\mu;\, \tilde{s})$ (Shannon DPI) |
 | Posterior spreads under $\mu$ vs $\nu$ | $D_f$ between rows larger under $\mu$ |
 | Blackwell theorem (economic $\Leftrightarrow$ garbling) | DPI for all $f$ $\Leftrightarrow$ single Markov kernel witnesses dominance |
@@ -1445,124 +1314,36 @@ The table below collects the precise correspondence between Blackwell's framewor
 
 ## Relation to Bayesian likelihood-ratio learning
 
-The lecture {doc}`likelihood_bayes` studies Bayesian learning in a setting that is a special, dynamic instance of everything developed here.
+The lecture {doc}`likelihood_bayes` is a dynamic two-state special case of the framework developed here.
 
-This section transports concepts back and forth between the two lectures.
+Let $S = \{s_1, s_2\}$ with $s_1 \leftrightarrow f$ and $s_2 \leftrightarrow g$, where $f$ and $g$ are the two candidate data-generating densities.
 
-### Setup: states, experiments, and IID draws
+Then a single observation is a Blackwell experiment with rows $f(\cdot)$ and $g(\cdot)$, and the history $w^t = (w_1, \ldots, w_t)$ defines a richer experiment $\mu_t$.
 
-In {doc}`likelihood_bayes` the unknown "state of the world" is which density nature chose permanently: nature drew the data either from $f$ or from $g$, but not which one is known to the observer.
+Because one can always discard the last $t-s$ observations, $\mu_t$ Blackwell-dominates $\mu_s$ for every $t > s$.
 
-This is a two-element finite state space
-
-$$
-S = \{s_1, s_2\} \qquad \text{with } s_1 \leftrightarrow f,\quad s_2 \leftrightarrow g.
-$$
-
-The Bayesian prior $\pi_0 \in [0,1]$ on $s_1 = f$ plays exactly the role of the prior $p \in P$ on the probability simplex in the present lecture.
-
-A single draw is an experiment.
-
-A single observation $w_t$ constitutes a Blackwell experiment with signal space $X$ and Markov kernel
+The likelihood-ratio process
 
 $$
-\mu = \begin{pmatrix} f(\cdot) \\ g(\cdot) \end{pmatrix},
+L(w^t) = \prod_{i=1}^t \frac{f(w_i)}{g(w_i)}
 $$
 
-where row $i$ is the conditional density of the signal given state $s_i$:
-$\mu(\cdot \mid s_1) = f(\cdot)$ and $\mu(\cdot \mid s_2) = g(\cdot)$.
-
-This is the continuous-signal analogue of the $N \times M$ Markov matrix studied above (with $N = 2$ states and a continuum of signals instead of $M$ discrete ones).
-
-$t$ IID draws form a richer experiment.
-
-Observing the history $w^t = (w_1, \ldots, w_t)$ is a strictly more informative Blackwell experiment than observing any sub-history $w^s$ for $s < t$, because the conditional joint densities for $w^t$ are
+is a sufficient statistic for $\mu_t$, and the posterior
 
 $$
-\mu_t(\cdot \mid s_1) = f(w_1) f(w_2) \cdots f(w_t),
-\qquad
-\mu_t(\cdot \mid s_2) = g(w_1) g(w_2) \cdots g(w_t).
+\pi_t = \Pr(s_1 \mid w^t)
+= \frac{\pi_0 L(w^t)}{\pi_0 L(w^t) + 1 - \pi_0}
 $$
 
-The experiment $\mu_t$ Blackwell-dominates $\mu_s$ for any $t > s$: you can always garble $w^t$ down to $w^s$ by discarding the last $t - s$ draws, which is an explicit stochastic transformation $Q$ satisfying $\mu_s = \mu_t Q$.
+is Kihlstrom's standard experiment in this two-state setting.
 
-The reverse is impossible — you cannot reconstruct information from fewer draws.
+Its martingale property, $E[\pi_t] = \pi_0$, is exactly the mean-preservation result proved above for posterior distributions.
 
-This is why more data is always weakly better for every expected-utility maximiser (the economic criterion of Blackwell's theorem).
-
-### Sufficient statistics and posteriors
-
-The key formula in {doc}`likelihood_bayes` is
-
-$$
-\pi_{t+1} = \frac{\pi_0 \, L(w^{t+1})}{\pi_0 \, L(w^{t+1}) + 1 - \pi_0},
-\qquad
-L(w^t) = \prod_{i=1}^t \frac{f(w_i)}{g(w_i)}.
-$$
-
-Because $\pi_{t+1}$ depends on $w^t$ **only through** $L(w^t)$, the likelihood ratio process is a **sufficient statistic** for the experiment $\mu_t$.
-
-In Blackwell's language, the experiment "report $L(w^t)$" is informationally equivalent to "report $w^t$": passing $w^t$ through the deterministic map $w^t \mapsto L(w^t)$ is a (degenerate) stochastic transformation that discards nothing relevant to discriminating $f$ from $g$.
-
-The posterior lives on the 1-simplex and is Kihlstrom's standard experiment.
-
-With $N = 2$ states the probability simplex $P$ collapses to the unit interval $[0,1]$.
-
-Kihlstrom's standard experiment records only the posterior
-
-$$
-\pi_t = \Pr(s = f \mid w^t),
-$$
-
-which is the sufficient statistic that the Bayesian tracks throughout.
-
-The *distribution* of $\pi_t$ over all possible histories $w^t$ is Kihlstrom's $\hat{\mu}^c$ — the distribution of posteriors induced by the experiment $\mu_t$ starting from prior $\pi_0 = c$.
-
-### Why more data always helps
-
-{doc}`likelihood_bayes` proves that $\{\pi_t\}$ is a **martingale**:
-
-$$
-E[\pi_t \mid \pi_{t-1}] = \pi_{t-1},
-$$
-
-and in particular $E[\pi_t] = \pi_0$ for all $t$.
-
-This is exactly the **mean-preservation** condition that sits at the centre of Kihlstrom's reformulation: the distribution of posteriors $\hat{\mu}^c$ must satisfy $\int_P p \, \hat{\mu}^c(dp) = c$.
-
-Mean preservation is not a special feature of this two-state example; it is an exact consequence of Bayes' law for *any* experiment.
-
-Blackwell's theorem explains why more data always helps.
-
-Kihlstrom's reformulation states:
-
-> $\mu_t \geq \mu_s$ in Blackwell's sense if and only if $\hat{\mu}_t^c$ is a **mean-preserving spread** of $\hat{\mu}_s^c$, i.e., posteriors under $\mu_t$ are more dispersed than under $\mu_s$.
-
-In the {doc}`likelihood_bayes` setting this means the distribution of $\pi_t$ is a mean-preserving spread of the distribution of $\pi_s$ for $t > s$: more data pushes posteriors further from the prior toward either $0$ or $1$.
-
-The almost-sure convergence $\pi_t \to 0$ or $1$ is the limit of this spreading process — perfect information resolves all uncertainty, collapsing the distribution to a degenerate point mass at a vertex of the simplex.
-
-DeGroot uncertainty functions connect to mutual information.
-
-The Shannon entropy of the two-state posterior is
-
-$$
-U_H(\pi) = -\pi \log \pi - (1-\pi)\log(1-\pi).
-$$
-
-DeGroot's value of information for the experiment that generates $t$ draws is
-
-$$
-I(\mu_t;\, U_H) = U_H(\pi_0) - E[U_H(\pi_t)],
-$$
-
-which equals the **mutual information** between the history $w^t$ and the unknown state.
-
-Because $\mu_t$ Blackwell-dominates $\mu_s$ for $t > s$, Blackwell's theorem guarantees $I(\mu_t; U) \geq I(\mu_s; U)$ for *every* concave uncertainty function $U$ — more draws reduce expected uncertainty under every such measure, not just Shannon entropy.
+Likewise, $\mu_t \geq \mu_s$ implies that the distribution of $\pi_t$ is a mean-preserving spread of the distribution of $\pi_s$, so additional data pushes beliefs farther toward $0$ and $1$ while lowering expected uncertainty under every concave uncertainty function.
 
 ### Summary table
 
-The following table collects the translation between concepts in the two lectures.
+The table below records the dictionary between the two lectures without repeating the earlier arguments.
 
 | Concept in {doc}`likelihood_bayes` | Concept in this lecture |
 |---|---|
@@ -1570,9 +1351,9 @@ The following table collects the translation between concepts in the two lecture
 | Densities $f(\cdot)$, $g(\cdot)$ | Rows of experiment matrix $\mu$ |
 | Single draw $w_t$ | Blackwell experiment with continuous signal space |
 | History $w^t$ of $t$ IID draws | Richer experiment $\mu_t$ Blackwell-dominating $\mu_s$, $s < t$ |
-| Likelihood ratio $L(w^t)$ | Sufficient statistic / standard experiment |
+| Likelihood ratio $L(w^t)$ | Sufficient statistic for $\mu_t$ |
 | Prior $\pi_0$ | Prior $p \in P$ on the 1-simplex $[0,1]$ |
-| Posterior $\pi_t$ | Posterior random variable on $P = [0,1]$ |
+| Posterior $\pi_t$ | Posterior on $P = [0,1]$ (Kihlstrom's standard experiment) |
 | Distribution of $\pi_t$ across histories | $\hat{\mu}^c$ (Kihlstrom's posterior distribution) |
 | Martingale property $E[\pi_t] = \pi_0$ | Mean preservation of $\hat{\mu}^c$ |
 | $\pi_t \to 0$ or $1$ almost surely | Posteriors spread to vertices (MPS in the limit) |
