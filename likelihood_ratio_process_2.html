@@ -80,7 +80,7 @@
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=300d9cef76b95d0252c8ff6263fc63de943d6f3a" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
     <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
@@ -268,7 +268,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Feb 02, 2026
+                            Last changed: Apr 04, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -279,10 +279,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a8966965b" class="changelog-hash">a8966965b</a>
+                                
+                                <span class="changelog-author">Humphrey Yang</span>
+                                <span class="changelog-time">19 minutes ago</span>
+                                <span class="changelog-message">Update lectures on Blackwell's theorem and survival topics (#844)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/007817b9c" class="changelog-hash">007817b9c</a>
                                 
                                 <span class="changelog-author">thomassargent30</span>
-                                <span class="changelog-time">1 month ago</span>
+                                <span class="changelog-time">2 months ago</span>
                                 <span class="changelog-message">Tom's Feb 2 edits of Blume and Easley lecture</span>
                             </li>
                             
@@ -291,7 +300,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a137f5d12" class="changelog-hash">a137f5d12</a>
                                 
                                 <span class="changelog-author">Copilot</span>
-                                <span class="changelog-time">5 months ago</span>
+                                <span class="changelog-time">6 months ago</span>
                                 <span class="changelog-message">Fix inconsistent quotation mark usage across lecture files (#641)</span>
                             </li>
                             
@@ -309,7 +318,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/6be28fb9b" class="changelog-hash">6be28fb9b</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">6 months ago</span>
+                                <span class="changelog-time">7 months ago</span>
                                 <span class="changelog-message">[likelihood_ratio_processes_2] Update new exercises with learning agents (#566)</span>
                             </li>
                             
@@ -359,11 +368,11 @@
 <section id="overview">
 <h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">23.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>A likelihood ratio process lies behind Lawrence Blume and David Easley’s answer to their question
-“If you’re so smart, why aren’t you rich?” <span id="id1">[<a class="reference internal" href="zreferences.html#id20" title="Lawrence Blume and David Easley. If you're so smart, why aren't you rich? belief selection in complete and incomplete markets. Econometrica, 74(4):929–966, 2006.">Blume and Easley, 2006</a>]</span>.</p>
+“If you’re so smart, why aren’t you rich?” <span id="id1">[<a class="reference internal" href="zreferences.html#id5" title="Lawrence Blume and David Easley. If you're so smart, why aren't you rich? Belief selection in complete and incomplete markets. Econometrica, 74(4):929–966, 2006.">Blume and Easley, 2006</a>]</span>.</p>
 <p>Blume and Easley constructed formal models to study how differences of opinions about probabilities governing risky income processes would influence outcomes and be reflected in prices of stocks, bonds, and insurance policies that individuals use to share and hedge risks.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><span id="id2">[<a class="reference internal" href="zreferences.html#id19" title="Armen A Alchian. Uncertainty, evolution, and economic theory. Journal of political economy, 58(3):211–221, 1950.">Alchian, 1950</a>]</span> and <span id="id3">[<a class="reference internal" href="zreferences.html#id18" title="Milton Friedman. Essays in positive economics. University of Chicago press, 1953.">Friedman, 1953</a>]</span> conjectured that, by rewarding traders with more realistic probability models, competitive markets in financial securities put wealth in the hands of better informed traders and help
+<p><span id="id2">[<a class="reference internal" href="zreferences.html#id74" title="Armen A Alchian. Uncertainty, evolution, and economic theory. Journal of political economy, 58(3):211–221, 1950.">Alchian, 1950</a>]</span> and <span id="id3">[<a class="reference internal" href="zreferences.html#id73" title="Milton Friedman. Essays in positive economics. University of Chicago press, 1953.">Friedman, 1953</a>]</span> conjectured that, by rewarding traders with more realistic probability models, competitive markets in financial securities put wealth in the hands of better informed traders and help
 make prices of risky assets reflect realistic probability assessments.</p>
 </div>
 <p>Here we’ll provide an example that illustrates basic components of Blume and Easley’s analysis.</p>
@@ -434,7 +443,7 @@ L(w^t) = \ell (w_t) L (w^{t-1}) .
 \]</div>
 <p>The likelihood ratio and its logarithm are key tools for making
 inferences using a classic frequentist approach due to Neyman and
-Pearson <span id="id4">[<a class="reference internal" href="zreferences.html#id299" title="J. Neyman and E. S Pearson. On the problem of the most efficient tests of statistical hypotheses. Phil. Trans. R. Soc. Lond. A. 231 (694–706), pages 289–337, 1933.">Neyman and Pearson, 1933</a>]</span>.</p>
+Pearson <span id="id4">[<a class="reference internal" href="zreferences.html#id342" title="J. Neyman and E. S Pearson. On the problem of the most efficient tests of statistical hypotheses. Phil. Trans. R. Soc. Lond. A. 231 (694–706), pages 289–337, 1933.">Neyman and Pearson, 1933</a>]</span>.</p>
 <p>To help us appreciate how things work, the following Python code evaluates <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span> as two different
 Beta distributions, then computes and simulates an associated likelihood
 ratio process by generating a sequence <span class="math notranslate nohighlight">\(w^t\)</span> from one of the two
@@ -671,7 +680,7 @@ values of the likelihood ratio process <span class="math notranslate nohighlight
 <p>Soon we’ll do some simulations that will shed further light on possible outcomes.</p>
 <p>But before we do that, let’s take a detour and study some  “shadow prices” for the social planning problem.</p>
 <p>We shall soon see  that these shadow prices can readily be converted to “equilibrium prices” for a competitive equilibrium.</p>
-<p>Doing this will allow us to connect our analysis with claims by  <span id="id5">[<a class="reference internal" href="zreferences.html#id19" title="Armen A Alchian. Uncertainty, evolution, and economic theory. Journal of political economy, 58(3):211–221, 1950.">Alchian, 1950</a>]</span> and <span id="id6">[<a class="reference internal" href="zreferences.html#id18" title="Milton Friedman. Essays in positive economics. University of Chicago press, 1953.">Friedman, 1953</a>]</span> that transfers of wealth coming from trades in  competitive asset markets eventually make prices of risky assets reflect realistic probability assessments.</p>
+<p>Doing this will allow us to connect our analysis with claims by  <span id="id5">[<a class="reference internal" href="zreferences.html#id74" title="Armen A Alchian. Uncertainty, evolution, and economic theory. Journal of political economy, 58(3):211–221, 1950.">Alchian, 1950</a>]</span> and <span id="id6">[<a class="reference internal" href="zreferences.html#id73" title="Milton Friedman. Essays in positive economics. University of Chicago press, 1953.">Friedman, 1953</a>]</span> that transfers of wealth coming from trades in  competitive asset markets eventually make prices of risky assets reflect realistic probability assessments.</p>
 </section>
 <section id="competitive-equilibrium-prices">
 <h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">23.8. </span>Competitive equilibrium prices</a><a class="headerlink" href="#competitive-equilibrium-prices" title="Link to this heading">#</a></h2>
@@ -902,7 +911,7 @@ integration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8ef22102858f5807861ecadd57143367c95b52209d29612daf7c2b519518f5da.png" src="_images/8ef22102858f5807861ecadd57143367c95b52209d29612daf7c2b519518f5da.png" />
+<img alt="_images/227d4e442293422890dc4a253daba0d1e89a1e120561cc5646071ff8e37157f4.png" src="_images/227d4e442293422890dc4a253daba0d1e89a1e120561cc5646071ff8e37157f4.png" />
 </div>
 </div>
 <p>In the left panel, nature chooses <span class="math notranslate nohighlight">\(f\)</span>. Agent 1’s consumption reaches <span class="math notranslate nohighlight">\(1\)</span> very quickly.</p>
@@ -924,7 +933,7 @@ integration.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final shares: f=1.000, g=0.000, mix=0.922
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final shares: f=1.000, g=0.000, mix=0.926
 KL divergences: 
 KL(f,g)=0.759, KL(g,f)=0.344
 KL(h,f)=0.073, KL(h,g)=0.281
@@ -1045,7 +1054,7 @@ KL(h,f)=0.073, KL(h,g)=0.281
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/386f9abdde5a3f749f63530dae4c52f41b3d67998f9725d6d50810fa5ef41382.png" src="_images/386f9abdde5a3f749f63530dae4c52f41b3d67998f9725d6d50810fa5ef41382.png" />
+<img alt="_images/344408ccfcee93f9c3fbdc39470d5bbc9d4a6e03b5dbb5c50d670d9f0e51a23e.png" src="_images/344408ccfcee93f9c3fbdc39470d5bbc9d4a6e03b5dbb5c50d670d9f0e51a23e.png" />
 </div>
 </div>
 <p>Holding to our guesses, let’s calculate the four values</p>
@@ -1086,7 +1095,7 @@ KL(h,f)=0.073, KL(h,g)=0.281
 <section id="related-lectures">
 <h2><a class="toc-backref" href="#id18" role="doc-backlink"><span class="section-number">23.10. </span>Related lectures</a><a class="headerlink" href="#related-lectures" title="Link to this heading">#</a></h2>
 <p>Complete markets models with homogeneous beliefs, a kind often used in macroeconomics and finance,  are studied in this quantecon lecture <a class="reference internal" href="ge_arrow.html"><span class="doc">Competitive Equilibria with Arrow Securities</span></a>.</p>
-<p><span id="id7">[<a class="reference internal" href="zreferences.html#id14" title="Lawrence E Blume, Timothy Cogley, David A Easley, Thomas J Sargent, and Viktor Tsyrennikov. A case for incomplete markets. Journal of Economic Theory, 178:191–221, 2018.">Blume <em>et al.</em>, 2018</a>]</span> discuss a paternalistic  case against complete markets.  They study the consequences of assuming that a social planner  disregards  individuals preferences in the sense that it ignores  the subjective belief components of their preferences and replaces it with the social planner’s beliefs about probabilities.</p>
+<p><span id="id7">[<a class="reference internal" href="zreferences.html#id69" title="Lawrence E Blume, Timothy Cogley, David A Easley, Thomas J Sargent, and Viktor Tsyrennikov. A case for incomplete markets. Journal of Economic Theory, 178:191–221, 2018.">Blume <em>et al.</em>, 2018</a>]</span> discuss a paternalistic  case against complete markets.  They study the consequences of assuming that a social planner  disregards  individuals preferences in the sense that it ignores  the subjective belief components of their preferences and replaces it with the social planner’s beliefs about probabilities.</p>
 <p>Likelihood processes play an important role in Bayesian learning, as described in <a class="reference internal" href="likelihood_bayes.html"><span class="doc">Likelihood Ratio Processes and Bayesian Learning</span></a> and as applied in <a class="reference internal" href="odu.html"><span class="doc">Job Search VIII: Search with Learning</span></a>.</p>
 <p>Likelihood ratio processes appear again in <a class="reference external" href="https://python-advanced.quantecon.org/additive_functionals.html" title="(in Project name not set)"><span>Additive and Multiplicative Functionals</span></a>.</p>
 </section>
@@ -1436,7 +1445,7 @@ m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/3d1a8ece754ee1aa29d0ae36d1313fea7b0085e0277a7631f088b3a8de564bf9.png" src="_images/3d1a8ece754ee1aa29d0ae36d1313fea7b0085e0277a7631f088b3a8de564bf9.png" />
+<img alt="_images/c3247505ef0cd250694f5a5476584412cb451621064dc476436a3269a9e863cd.png" src="_images/c3247505ef0cd250694f5a5476584412cb451621064dc476436a3269a9e863cd.png" />
 </div>
 </div>
 <p>We can see that the agent with the  more accurate belief gets higher consumption share.</p>
@@ -1451,7 +1460,7 @@ m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/606da8be3f2d763bf02779af35c81aeca9466aaa4ace8188866f92d0b0ff42ea.png" src="_images/606da8be3f2d763bf02779af35c81aeca9466aaa4ace8188866f92d0b0ff42ea.png" />
+<img alt="_images/3b86c8cf5fc361af74403c4dc25ee2c6bab4c2648772ed221dfa945d5b98023f.png" src="_images/3b86c8cf5fc361af74403c4dc25ee2c6bab4c2648772ed221dfa945d5b98023f.png" />
 </div>
 </div>
 <p>We observe  symmetrical outcomes.</p>
@@ -1517,7 +1526,7 @@ m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/5942e352165364f079c3d08ec29f303a44687b765d50c3db6d86bfe888f8f28b.png" src="_images/5942e352165364f079c3d08ec29f303a44687b765d50c3db6d86bfe888f8f28b.png" />
+<img alt="_images/78b590a8e3f925e3b554d53e86057d14b946cfe2c1af4db6d49fa5e4700425b5.png" src="_images/78b590a8e3f925e3b554d53e86057d14b946cfe2c1af4db6d49fa5e4700425b5.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1528,7 +1537,7 @@ m^i(s^t) = \pi^i_t f(s^t) + (1- \pi^i_t) g(s^t)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/656685504b20737330af45caa2da4cc6b99c431dc7cc556dddb505ae2d96afa2.png" src="_images/656685504b20737330af45caa2da4cc6b99c431dc7cc556dddb505ae2d96afa2.png" />
+<img alt="_images/dadf34884362c56fdab9a2d1a9e9a814f62d5508595fc497e670f57d53cf1cd5.png" src="_images/dadf34884362c56fdab9a2d1a9e9a814f62d5508595fc497e670f57d53cf1cd5.png" />
 </div>
 </div>
 <p>Evidently, because the two distributions are further apart, it is easier to distinguish them.</p>
@@ -1866,7 +1875,7 @@ set <span class="math notranslate nohighlight">\(h = \pi^f_0 f + (1-\pi^f_0) g\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b7da909a781176394aa71cd16eeacce9cf86e3ab86c402eb5cc9cf4f62a39615.png" src="_images/b7da909a781176394aa71cd16eeacce9cf86e3ab86c402eb5cc9cf4f62a39615.png" />
+<img alt="_images/679d2a23dd5470f4c61b6c738ccd18301b0d058d9b8a19d8804ab9f1c888bf1a.png" src="_images/679d2a23dd5470f4c61b6c738ccd18301b0d058d9b8a19d8804ab9f1c888bf1a.png" />
 </div>
 </div>
 <p>Agent 1’s posterior beliefs are depicted in blue and agent 2’s posterior beliefs are depicted in orange.</p>
@@ -1884,7 +1893,7 @@ set <span class="math notranslate nohighlight">\(h = \pi^f_0 f + (1-\pi^f_0) g\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/76cd5873cc340af256d4ec5b439abb2800f2aa4428d8bb38bd7137193c5d3bf6.png" src="_images/76cd5873cc340af256d4ec5b439abb2800f2aa4428d8bb38bd7137193c5d3bf6.png" />
+<img alt="_images/982630d9dce04b8f93107bc54b7cc7577e2abd204a778452693b8961bac24b97.png" src="_images/982630d9dce04b8f93107bc54b7cc7577e2abd204a778452693b8961bac24b97.png" />
 </div>
 </div>
 <p>Again, agent 1 learns faster than agent 2.</p>
@@ -1898,7 +1907,7 @@ set <span class="math notranslate nohighlight">\(h = \pi^f_0 f + (1-\pi^f_0) g\)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/11b4e97be2ba30e98014a71e57f72cd1e9063ec33cffcb2464f98b8cf08acbe2.png" src="_images/11b4e97be2ba30e98014a71e57f72cd1e9063ec33cffcb2464f98b8cf08acbe2.png" />
+<img alt="_images/c2a642f93442fc946bf961470460ba03c0b38bbf0c787bb5121e8f9650a8ad16.png" src="_images/c2a642f93442fc946bf961470460ba03c0b38bbf0c787bb5121e8f9650a8ad16.png" />
 </div>
 </div>
 <p>As we expected, agent 1 has a higher consumption share compared to agent 2.</p>
@@ -2012,7 +2021,7 @@ KL(f,h) = 0.0105, KL(g,h) = 0.2919
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/47ef016a680665a0dd26b4c9395771ad61158ff795ed51c61e28c495e99b4a1e.png" src="_images/47ef016a680665a0dd26b4c9395771ad61158ff795ed51c61e28c495e99b4a1e.png" />
+<img alt="_images/d796582eb0d8e984bef17e92b7d77e20d7c96f89a7496d1664fc09877ae77008.png" src="_images/d796582eb0d8e984bef17e92b7d77e20d7c96f89a7496d1664fc09877ae77008.png" />
 </div>
 </div>
 <p>Observe how slowly agent 1 learns the truth in the leftmost panel showing <span class="math notranslate nohighlight">\(\pi(f)\)</span>.</p>
@@ -2029,7 +2038,7 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/834ff2d3d65aa9d0e7a10e33718e900c84fa8affa61049e9d54868c16867f7a8.png" src="_images/834ff2d3d65aa9d0e7a10e33718e900c84fa8affa61049e9d54868c16867f7a8.png" />
+<img alt="_images/95fe83a501c5a2211ff0dc1f9fc373b1433e4751d2b6a0f3a9d40f80ddf419e2.png" src="_images/95fe83a501c5a2211ff0dc1f9fc373b1433e4751d2b6a0f3a9d40f80ddf419e2.png" />
 </div>
 </div>
 <p>When nature draws from <span class="math notranslate nohighlight">\(g\)</span>, it is further away from <span class="math notranslate nohighlight">\(h\)</span> as measured by the KL divergence.</p>
@@ -2043,7 +2052,7 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/8ce25e7e2e15fe3e482701b51b1ee912ddd1db728ef1d2c9e46d28520ccf38fa.png" src="_images/8ce25e7e2e15fe3e482701b51b1ee912ddd1db728ef1d2c9e46d28520ccf38fa.png" />
+<img alt="_images/d594c2cca1dad0fa88ef0c394a1aafe2732defe7da87641eebab4a1749d29b95.png" src="_images/d594c2cca1dad0fa88ef0c394a1aafe2732defe7da87641eebab4a1749d29b95.png" />
 </div>
 </div>
 <p>In the consumption dynamics plot, notice that agent 1’s consumption share converges to 1 both when nature permanently draws from <span class="math notranslate nohighlight">\(f\)</span> and when nature permanently draws from <span class="math notranslate nohighlight">\(g\)</span>.</p>
@@ -2276,13 +2285,28 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="blackwell_kihlstrom.html">
+   30. Blackwell’s Theorem on Comparing Experiments
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   30. Incorrect Models
+   31. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   31. Bayesian versus Frequentist Decision Rules
+   32. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="merging_of_opinions.html">
+   33. Merging of Opinions: The Blackwell–Dubins Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="survival_recursive_preferences.html">
+   34. Survival and Long-Run Dynamics under Recursive Preferences
   </a>
  </li>
 </ul>
@@ -2294,12 +2318,12 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   32. Optimal Transport
+   35. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   33. Von Neumann Growth Model (and a Generalization)
+   36. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -2311,52 +2335,57 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   34. Finite Markov Chains
+   37. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   35. Inventory Dynamics
+   38. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   36. Linear State Space Models
+   39. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   37. Samuelson Multiplier-Accelerator
+   40. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chow_business_cycles.html">
-   38. The Acceleration Principle and the Nature of Business Cycles
+   41. The Acceleration Principle and the Nature of Business Cycles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   39. Kesten Processes and Firm Dynamics
+   42. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   40. Wealth Distribution Dynamics
+   43. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   41. A First Look at the Kalman Filter
+   44. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   42. Another Look at the Kalman Filter
+   45. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="organization_capital.html">
+   46. Organization Capital
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="measurement_models.html">
-   43. Two Models of Measurements and the Investment Accelerator
+   47. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -2368,42 +2397,42 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   44. Job Search I: The McCall Search Model
+   48. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   45. Job Search II: Search and Separation
+   49. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   46. Job Search III: Search with Separation and Markov Wages
+   50. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   47. Job Search IV: Fitted Value Function Iteration
+   51. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   48. Job Search V: Persistent and Transitory Wage Shocks
+   52. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   49. Job Search VI: Modeling Career Choice
+   53. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   50. Job Search VII: On-the-Job Search
+   54. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   51. Job Search VIII: Search with Learning
+   55. Job Search VIII: Search with Learning
   </a>
  </li>
 </ul>
@@ -2415,17 +2444,17 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_q.html">
-   52. Inventory Management via Q-Learning
+   56. Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rs_inventory_q.html">
-   53. Risk-Sensitive Inventory Management via Q-Learning
+   57. Risk-Sensitive Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   54. Job Search IX: Search with Q-Learning
+   58. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -2437,32 +2466,32 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   55. Optimal Savings I: Cake Eating
+   59. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   56. Optimal Savings II: Numerical Cake Eating
+   60. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   57. Optimal Savings III: Stochastic Returns
+   61. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   58. Optimal Savings IV: Time Iteration
+   62. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   59. Optimal Savings V: The Endogenous Grid Method
+   63. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   60. Optimal Savings VI: EGM with JAX
+   64. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -2474,27 +2503,27 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   61. The Income Fluctuation Problem I: Discretization and VFI
+   65. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   62. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   66. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   63. The Income Fluctuation Problem III: The Endogenous Grid Method
+   67. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   64. The Income Fluctuation Problem IV: Transient Income Shocks
+   68. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   65. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   69. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -2506,42 +2535,42 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   66. LQ Control: Foundations
+   70. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   67. Lagrangian for LQ Control
+   71. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   68. Eliminating Cross Products
+   72. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   69. The Permanent Income Model
+   73. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   70. Permanent Income II: LQ Techniques
+   74. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_1.html">
-   71. Certainty Equivalence
+   75. Certainty Equivalence
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_2.html">
-   72. Certainty Equivalence and Model Uncertainty
+   76. Certainty Equivalence and Model Uncertainty
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   73. Production Smoothing via Inventories
+   77. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2553,22 +2582,22 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   74. Cass-Koopmans Model
+   78. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   75. Cass-Koopmans Competitive Equilibrium
+   79. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   76. Cass-Koopmans Model with Distorting Taxes
+   80. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   77. Two-Country Model with Distorting Taxes
+   81. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -2580,52 +2609,52 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   78. A Lake Model of Employment and Unemployment
+   82. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   79. Lake Model with an Endogenous Job Finding Rate
+   83. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   80. Rational Expectations Equilibrium
+   84. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   81. Stability in Linear Rational Expectations Models
+   85. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   82. Markov Perfect Equilibrium
+   86. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   83. Uncertainty Traps
+   87. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   84. The Aiyagari Model
+   88. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   85. Transitions in an Overlapping Generations Model
+   89. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   86. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   90. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   87. Two Computations to Fund Social Security
+   91. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -2637,47 +2666,47 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   88. Asset Pricing: Finite State Models
+   92. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   89. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   90. Estimating Euler Equations by Generalized Method of Moments
+   94. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="doubts_or_variability.html">
-   91. Doubts or Variability?
+   95. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   92. Competitive Equilibria with Arrow Securities
+   96. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   93. Heterogeneous Beliefs and Bubbles
+   97. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   94. Speculative Behavior with Bayesian Learning
+   98. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   95. Affine Models of Asset Prices
+   99. Affine Models of Asset Prices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="risk_aversion_or_mistaken_beliefs.html">
-   96. Risk Aversion or Mistaken Beliefs?
+   100. Risk Aversion or Mistaken Beliefs?
   </a>
  </li>
 </ul>
@@ -2689,17 +2718,17 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   97. Pandas for Panel Data
+   101. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   98. Linear Regression in Python
+   102. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   99. Maximum Likelihood Estimation
+   103. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2711,12 +2740,12 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   100. First-Price and Second-Price Auctions
+   104. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   101. Multiple Good Allocation Mechanisms
+   105. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2728,17 +2757,17 @@ a very similar model <span class="math notranslate nohighlight">\(f\)</span></p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   102. Troubleshooting
+   106. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   103. References
+   107. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   104. Execution Statistics
+   108. Execution Statistics
   </a>
  </li>
 </ul>

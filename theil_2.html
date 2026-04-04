@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>72. Certainty Equivalence and Model Uncertainty &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>76. Certainty Equivalence and Model Uncertainty &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -80,7 +80,7 @@
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=300d9cef76b95d0252c8ff6263fc63de943d6f3a" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
     <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="73. Production Smoothing via Inventories" href="lq_inventories.html" />
-    <link rel="prev" title="71. Certainty Equivalence" href="theil_1.html" />
+    <link rel="next" title="77. Production Smoothing via Inventories" href="lq_inventories.html" />
+    <link rel="prev" title="75. Certainty Equivalence" href="theil_1.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -204,28 +204,28 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">72.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-features">72.1.1. Model features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">76.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-features">76.1.1. Model features</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recap-ordinary-certainty-equivalence">72.2. Recap: ordinary certainty equivalence</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-uncertainty-and-robustness">72.3. Model uncertainty and robustness</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-the-multiplier-problem">72.3.1. Setup and the multiplier problem</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stackelberg-timing-and-the-modified-ce">72.3.2. Stackelberg timing and the modified CE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modified-separation-principle">72.3.3. Modified separation principle</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recap-ordinary-certainty-equivalence">76.2. Recap: ordinary certainty equivalence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-uncertainty-and-robustness">76.3. Model uncertainty and robustness</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-and-the-multiplier-problem">76.3.1. Setup and the multiplier problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stackelberg-timing-and-the-modified-ce">76.3.2. Stackelberg timing and the modified CE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modified-separation-principle">76.3.3. Modified separation principle</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-under-robustness">72.4. Value function under robustness</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-sensitive-preferences">72.5. Risk-sensitive preferences</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-permanent-income-model">72.6. Application: permanent income model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">72.6.1. Model setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#without-robustness-halls-martingale">72.6.2. Without robustness: Hall’s martingale</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#with-robustness-precautionary-savings">72.6.3. With robustness: precautionary savings</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#observational-equivalence-robustness-acts-like-patience">72.6.4. Observational equivalence: robustness acts like patience</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-under-robustness">76.4. Value function under robustness</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-sensitive-preferences">76.5. Risk-sensitive preferences</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application-permanent-income-model">76.6. Application: permanent income model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">76.6.1. Model setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#without-robustness-halls-martingale">76.6.2. Without robustness: Hall’s martingale</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#with-robustness-precautionary-savings">76.6.3. With robustness: precautionary savings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#observational-equivalence-robustness-acts-like-patience">76.6.4. Observational equivalence: robustness acts like patience</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">72.7. Summary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">72.8. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">76.7. Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">76.8. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -279,7 +279,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Mar 17, 2026
+                            Last changed: Apr 04, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -290,10 +290,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a8966965b" class="changelog-hash">a8966965b</a>
+                                
+                                <span class="changelog-author">Humphrey Yang</span>
+                                <span class="changelog-time">19 minutes ago</span>
+                                <span class="changelog-message">Update lectures on Blackwell's theorem and survival topics (#844)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/d95b663ab" class="changelog-hash">d95b663ab</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">54 minutes ago</span>
+                                <span class="changelog-time">2 weeks ago</span>
                                 <span class="changelog-message">Add Tom's two lectures on certainty equivalence (#835)</span>
                             </li>
                             
@@ -310,7 +319,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="certainty-equivalence-and-model-uncertainty">
-<h1><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">72. </span>Certainty Equivalence and Model Uncertainty</a><a class="headerlink" href="#certainty-equivalence-and-model-uncertainty" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">76. </span>Certainty Equivalence and Model Uncertainty</a><a class="headerlink" href="#certainty-equivalence-and-model-uncertainty" title="Link to this heading">#</a></h1>
 <nav class="contents" id="contents">
 <span id="index-1"></span><span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -329,7 +338,7 @@
 </ul>
 </nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">72.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">76.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This is a sequel to <a class="reference internal" href="theil_1.html"><span class="doc std std-doc">this lecture on certainty equivalence</span></a> that established an important <em>certainty equivalence</em> (CE) property for linear-quadratic (LQ) dynamic programming
 problems.</p>
 <p>The property justifies a two-step algorithm for computing optimal decision rules:</p>
@@ -338,7 +347,7 @@ problems.</p>
 <li><p><em>Forecast</em> — substitute optimal forecasts for the unknown future values.</p></li>
 </ol>
 <p>This lecture extends the certainty equivalence property in two directions motivated by
-<span id="id1">[<a class="reference internal" href="zreferences.html#id3" title="Lars Peter Hansen and Thomas J Sargent. Certainty equivalence and model uncertainty. In Conference on Models and Monetary Policy: Research in the Tradition of Dale Henderson, Richard Porter, and Peter Tinsley (http://www. federalreserve. gov/events/conferences/mmp2004/pdf/hansensargent. pdf). 2004.">Hansen and Sargent, 2004</a>]</span>:</p>
+<span id="id1">[<a class="reference internal" href="zreferences.html#id58" title="Lars Peter Hansen and Thomas J Sargent. Certainty equivalence and model uncertainty. In Conference on Models and Monetary Policy: Research in the Tradition of Dale Henderson, Richard Porter, and Peter Tinsley (http://www. federalreserve. gov/events/conferences/mmp2004/pdf/hansensargent. pdf). 2004.">Hansen and Sargent, 2004</a>]</span>:</p>
 <ul>
 <li><p><em>Model uncertainty and robustness.</em> What happens when the decision maker does not
 trust his model?  A remarkable version of CE survives, but now the “forecasting” step
@@ -354,7 +363,7 @@ parameter <span class="math notranslate nohighlight">\(\theta\)</span> and the r
 <p>We illustrate all three settings — ordinary CE, robust CE, and the permanent income
 application — with Python code using <code class="docutils literal notranslate"><span class="pre">quantecon</span></code>.</p>
 <section id="model-features">
-<h3><span class="section-number">72.1.1. </span>Model features<a class="headerlink" href="#model-features" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">76.1.1. </span>Model features<a class="headerlink" href="#model-features" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Linear transition laws and quadratic objectives (LQ framework).</p></li>
 <li><p>Ordinary CE: optimal policy independent of noise variance.</p></li>
@@ -362,7 +371,7 @@ application — with Python code using <code class="docutils literal notranslate
 <li><p>Permanent income application: Hall’s martingale, precautionary savings under robustness,
 and observational equivalence between robustness and patience.</p></li>
 </ul>
-<p>This lecture draws on <span id="id2">[<a class="reference internal" href="zreferences.html#id3" title="Lars Peter Hansen and Thomas J Sargent. Certainty equivalence and model uncertainty. In Conference on Models and Monetary Policy: Research in the Tradition of Dale Henderson, Richard Porter, and Peter Tinsley (http://www. federalreserve. gov/events/conferences/mmp2004/pdf/hansensargent. pdf). 2004.">Hansen and Sargent, 2004</a>]</span> and <span id="id3">[<a class="reference internal" href="zreferences.html#id199" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">Hansen and Sargent, 2008</a>]</span>.</p>
+<p>This lecture draws on <span id="id2">[<a class="reference internal" href="zreferences.html#id58" title="Lars Peter Hansen and Thomas J Sargent. Certainty equivalence and model uncertainty. In Conference on Models and Monetary Policy: Research in the Tradition of Dale Henderson, Richard Porter, and Peter Tinsley (http://www. federalreserve. gov/events/conferences/mmp2004/pdf/hansensargent. pdf). 2004.">Hansen and Sargent, 2004</a>]</span> and <span id="id3">[<a class="reference internal" href="zreferences.html#id249" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">Hansen and Sargent, 2008</a>]</span>.</p>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -376,7 +385,8 @@ and observational equivalence between robustness and patience.</p></li>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.11.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+  Downloading quantecon-0.11.1-py3-none-any.whl.metadata (5.3 kB)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
@@ -388,6 +398,9 @@ Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/env
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.5.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.11.12)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Downloading quantecon-0.11.1-py3-none-any.whl (330 kB)
+Installing collected packages: quantecon
+Successfully installed quantecon-0.11.1
 </pre></div>
 </div>
 </div>
@@ -406,7 +419,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </section>
 </section>
 <section id="recap-ordinary-certainty-equivalence">
-<h2><a class="toc-backref" href="#id17" role="doc-backlink"><span class="section-number">72.2. </span>Recap: ordinary certainty equivalence</a><a class="headerlink" href="#recap-ordinary-certainty-equivalence" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id17" role="doc-backlink"><span class="section-number">76.2. </span>Recap: ordinary certainty equivalence</a><a class="headerlink" href="#recap-ordinary-certainty-equivalence" title="Link to this heading">#</a></h2>
 <p>The <a class="reference internal" href="theil_1.html#certainty-equiv-theil1"><span class="std std-ref">companion lecture</span></a> established the CE
 property in detail.</p>
 <p>Here we collect only the elements needed for the
@@ -414,10 +427,10 @@ robustness extension below.</p>
 <p>The state vector <span class="math notranslate nohighlight">\(y_t = \begin{bmatrix} x_t \\ z_t \end{bmatrix}\)</span> has an
 exogenous component <span class="math notranslate nohighlight">\(z_t\)</span> with transition law</p>
 <div class="math notranslate nohighlight" id="equation-eq-z-transition-o">
-<span class="eqno">(72.1)<a class="headerlink" href="#equation-eq-z-transition-o" title="Link to this equation">#</a></span>\[z_{t+1} = f(z_t,\, \epsilon_{t+1})\]</div>
+<span class="eqno">(76.1)<a class="headerlink" href="#equation-eq-z-transition-o" title="Link to this equation">#</a></span>\[z_{t+1} = f(z_t,\, \epsilon_{t+1})\]</div>
 <p>and an endogenous component <span class="math notranslate nohighlight">\(x_t\)</span> obeying</p>
 <div class="math notranslate nohighlight" id="equation-eq-x-transition-o">
-<span class="eqno">(72.2)<a class="headerlink" href="#equation-eq-x-transition-o" title="Link to this equation">#</a></span>\[x_{t+1} = g(x_t,\, z_t,\, u_t).\]</div>
+<span class="eqno">(76.2)<a class="headerlink" href="#equation-eq-x-transition-o" title="Link to this equation">#</a></span>\[x_{t+1} = g(x_t,\, z_t,\, u_t).\]</div>
 <p>Under the LQ assumption (quadratic return <span class="math notranslate nohighlight">\(r(y,u) = -y^\top Qy - u^\top Ru\)</span>,
 linear <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>, Gaussian shocks), the optimal decision rule <span class="math notranslate nohighlight">\(h\)</span> decomposes
 as <span class="math notranslate nohighlight">\(u_t = h_1(x_t,\, h_2 \cdot z_t)\)</span> where <span class="math notranslate nohighlight">\(h_1\)</span> solves a nonstochastic
@@ -475,35 +488,35 @@ gain <span class="math notranslate nohighlight">\(F\)</span> is invariant to the
 <figure class="align-default" id="fig-ce-policy-value">
 <img alt="_images/1786699bdd26098040828f237f449c752a60a98343d024953fdbcb834ddd6193.png" src="_images/1786699bdd26098040828f237f449c752a60a98343d024953fdbcb834ddd6193.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 72.1 </span><span class="caption-text">CE principle — policy vs. value</span><a class="headerlink" href="#fig-ce-policy-value" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 76.1 </span><span class="caption-text">CE principle — policy vs. value</span><a class="headerlink" href="#fig-ce-policy-value" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
 </div>
 </section>
 <section id="model-uncertainty-and-robustness">
-<h2><a class="toc-backref" href="#id18" role="doc-backlink"><span class="section-number">72.3. </span>Model uncertainty and robustness</a><a class="headerlink" href="#model-uncertainty-and-robustness" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id18" role="doc-backlink"><span class="section-number">76.3. </span>Model uncertainty and robustness</a><a class="headerlink" href="#model-uncertainty-and-robustness" title="Link to this heading">#</a></h2>
 <section id="setup-and-the-multiplier-problem">
-<h3><span class="section-number">72.3.1. </span>Setup and the multiplier problem<a class="headerlink" href="#setup-and-the-multiplier-problem" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">76.3.1. </span>Setup and the multiplier problem<a class="headerlink" href="#setup-and-the-multiplier-problem" title="Link to this heading">#</a></h3>
 <p>The decision maker in Simon and Theil’s setting knows his model exactly — he has
-no doubt about the transition law <a class="reference internal" href="#equation-eq-z-transition-o">(72.1)</a>.</p>
+no doubt about the transition law <a class="reference internal" href="#equation-eq-z-transition-o">(76.1)</a>.</p>
 <p>Now suppose he suspects that the true
 data-generating process is</p>
 <div class="math notranslate nohighlight" id="equation-eq-distorted-law">
-<span class="eqno">(72.3)<a class="headerlink" href="#equation-eq-distorted-law" title="Link to this equation">#</a></span>\[z_{t+1} = f(z_t,\; \epsilon_{t+1} + w_{t+1})\]</div>
+<span class="eqno">(76.3)<a class="headerlink" href="#equation-eq-distorted-law" title="Link to this equation">#</a></span>\[z_{t+1} = f(z_t,\; \epsilon_{t+1} + w_{t+1})\]</div>
 <p>where <span class="math notranslate nohighlight">\(w_{t+1} = \omega_t(x^t, z^t)\)</span> is a misspecification term chosen by an
 adversarial “nature.”</p>
 <p>The decision maker believes his approximating model is a
 good approximation in the sense that</p>
 <div class="math notranslate nohighlight" id="equation-eq-misspec-budget">
-<span class="eqno">(72.4)<a class="headerlink" href="#equation-eq-misspec-budget" title="Link to this equation">#</a></span>\[\hat{\mathbb{E}}\!\left[\sum_{t=0}^{\infty} \beta^t\, w_{t+1}^\top w_{t+1}
+<span class="eqno">(76.4)<a class="headerlink" href="#equation-eq-misspec-budget" title="Link to this equation">#</a></span>\[\hat{\mathbb{E}}\!\left[\sum_{t=0}^{\infty} \beta^t\, w_{t+1}^\top w_{t+1}
       \,\Big|\, y_0\right] \leq \eta_0,\]</div>
 <p>where <span class="math notranslate nohighlight">\(\eta_0\)</span> parametrises the tolerated misspecification budget and <span class="math notranslate nohighlight">\(\hat{\mathbb{E}}\)</span>
-is the expectation under the distorted law <a class="reference internal" href="#equation-eq-distorted-law">(72.3)</a>.</p>
+is the expectation under the distorted law <a class="reference internal" href="#equation-eq-distorted-law">(76.3)</a>.</p>
 <p>To construct a <em>robust</em> decision rule the decision maker solves the
 <strong>multiplier problem</strong> — a two-player zero-sum dynamic game:</p>
 <div class="math notranslate nohighlight" id="equation-eq-multiplier">
-<span class="eqno">(72.5)<a class="headerlink" href="#equation-eq-multiplier" title="Link to this equation">#</a></span>\[\min_{\{w_{t+1}\}}\, \max_{\{u_t\}}\;
+<span class="eqno">(76.5)<a class="headerlink" href="#equation-eq-multiplier" title="Link to this equation">#</a></span>\[\min_{\{w_{t+1}\}}\, \max_{\{u_t\}}\;
 \hat{\mathbb{E}}\!\left[\sum_{t=0}^{\infty} \beta^t
     \Bigl\{r(y_t, u_t) + \theta\beta\, w_{t+1}^\top w_{t+1}\Bigr\}\,
     \Big|\, y_0\right]\]</div>
@@ -511,14 +524,14 @@ is the expectation under the distorted law <a class="reference internal" href="#
 <p>A larger <span class="math notranslate nohighlight">\(\theta\)</span> shrinks the
 feasible misspecification set; as <span class="math notranslate nohighlight">\(\theta \to \infty\)</span> the problem reduces to
 ordinary LQ.</p>
-<p>The Markov perfect equilibrium of <a class="reference internal" href="#equation-eq-multiplier">(72.5)</a> delivers a <em>robust</em> rule
+<p>The Markov perfect equilibrium of <a class="reference internal" href="#equation-eq-multiplier">(76.5)</a> delivers a <em>robust</em> rule
 <span class="math notranslate nohighlight">\(u_t = h(x_t, z_t)\)</span> together with a worst-case distortion process
 <span class="math notranslate nohighlight">\(w_{t+1} = W(x_t, z_t)\)</span>.</p>
 </section>
 <section id="stackelberg-timing-and-the-modified-ce">
-<h3><span class="section-number">72.3.2. </span>Stackelberg timing and the modified CE<a class="headerlink" href="#stackelberg-timing-and-the-modified-ce" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">76.3.2. </span>Stackelberg timing and the modified CE<a class="headerlink" href="#stackelberg-timing-and-the-modified-ce" title="Link to this heading">#</a></h3>
 <p>The Markov perfect equilibrium <em>conceals</em> a form of CE.</p>
-<p>To reveal it, <span id="id4">Hansen and Sargent [<a class="reference internal" href="zreferences.html#id98" title="Lars Peter Hansen and Thomas J. Sargent. Robust control and model uncertainty. American Economic Review, 91(2):60-66, 2001.">2001</a>]</span> impose a <strong>Stackelberg timing protocol</strong>: at
+<p>To reveal it, <span id="id4">Hansen and Sargent [<a class="reference internal" href="zreferences.html#id152" title="Lars Peter Hansen and Thomas J. Sargent. Robust control and model uncertainty. American Economic Review, 91(2):60-66, 2001.">2001</a>]</span> impose a <strong>Stackelberg timing protocol</strong>: at
 time 0, the <em>minimising</em> player commits once and for all to a plan
 <span class="math notranslate nohighlight">\(\{w_{t+1}\}\)</span>, after which the <em>maximising</em> player chooses <span class="math notranslate nohighlight">\(u_t\)</span> sequentially.</p>
 <p>This makes the minimiser the Stackelberg leader.</p>
@@ -526,42 +539,42 @@ time 0, the <em>minimising</em> player commits once and for all to a plan
 <span class="math notranslate nohighlight">\((X_t, Z_t)\)</span> (same dimensions as <span class="math notranslate nohighlight">\((x_t, z_t)\)</span>) that encode the leader’s
 pre-committed strategy:</p>
 <div class="math notranslate nohighlight" id="equation-eq-stackelberg-plan">
-<span class="eqno">(72.6)<a class="headerlink" href="#equation-eq-stackelberg-plan" title="Link to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(76.6)<a class="headerlink" href="#equation-eq-stackelberg-plan" title="Link to this equation">#</a></span>\[\begin{split}\begin{aligned}
 w_{t+1} &amp;= W(X_t, Z_t), \\
 X_{t+1} &amp;= g(X_t, Z_t,\, h(X_t, Z_t)), \\
 Z_{t+1} &amp;= f(Z_t,\, W(X_t, Z_t) + \epsilon_{t+1}).
 \end{aligned}\end{split}\]</div>
 <p>Summarised with <span class="math notranslate nohighlight">\(Y_t = \begin{bmatrix} X_t \\ Z_t \end{bmatrix}\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-stackelberg-law">
-<span class="eqno">(72.7)<a class="headerlink" href="#equation-eq-stackelberg-law" title="Link to this equation">#</a></span>\[Y_{t+1} = M Y_t + N \epsilon_{t+1}, \qquad w_{t+1} = W(Y_t).\]</div>
+<span class="eqno">(76.7)<a class="headerlink" href="#equation-eq-stackelberg-law" title="Link to this equation">#</a></span>\[Y_{t+1} = M Y_t + N \epsilon_{t+1}, \qquad w_{t+1} = W(Y_t).\]</div>
 <p>The maximising player then faces an <em>ordinary</em> dynamic programming problem subject
-to his own dynamics <a class="reference internal" href="#equation-eq-x-transition-o">(72.2)</a>, the distorted <span class="math notranslate nohighlight">\(z\)</span>-law <a class="reference internal" href="#equation-eq-distorted-law">(72.3)</a>, and the exogenous
-process <a class="reference internal" href="#equation-eq-stackelberg-law">(72.7)</a>.</p>
+to his own dynamics <a class="reference internal" href="#equation-eq-x-transition-o">(76.2)</a>, the distorted <span class="math notranslate nohighlight">\(z\)</span>-law <a class="reference internal" href="#equation-eq-distorted-law">(76.3)</a>, and the exogenous
+process <a class="reference internal" href="#equation-eq-stackelberg-law">(76.7)</a>.</p>
 <p>His optimal rule takes the form</p>
 <div class="math notranslate nohighlight" id="equation-eq-max-rule">
-<span class="eqno">(72.8)<a class="headerlink" href="#equation-eq-max-rule" title="Link to this equation">#</a></span>\[u_t = \tilde{H}(x_t, z_t, Y_t).\]</div>
-<p><span id="id5">Başar and Bernhard [<a class="reference internal" href="zreferences.html#id204" title="Tamer Başar and Pierre Bernhard. H-infinity optimal control and related minimax design problems: a dynamic game approach. Springer Science &amp; Business Media, 2008.">2008</a>]</span> and <span id="id6">Hansen and Sargent [<a class="reference internal" href="zreferences.html#id146" title="Lars Peter Hansen and Thomas J Sargent. Robustness. Princeton university press, 2008.">2008</a>]</span> establish that at
+<span class="eqno">(76.8)<a class="headerlink" href="#equation-eq-max-rule" title="Link to this equation">#</a></span>\[u_t = \tilde{H}(x_t, z_t, Y_t).\]</div>
+<p><span id="id5">Başar and Bernhard [<a class="reference internal" href="zreferences.html#id254" title="Tamer Başar and Pierre Bernhard. H-infinity optimal control and related minimax design problems: a dynamic game approach. Springer Science &amp; Business Media, 2008.">2008</a>]</span> and <span id="id6">Hansen and Sargent [<a class="reference internal" href="zreferences.html#id249" title="L P Hansen and T J Sargent. Robustness. Princeton University Press, 2008.">2008</a>]</span> establish that at
 equilibrium (with “big <span class="math notranslate nohighlight">\(K\)</span> = little <span class="math notranslate nohighlight">\(k\)</span>” imposed) this collapses to</p>
 <div class="math notranslate nohighlight" id="equation-eq-equilibrium-rule">
-<span class="eqno">(72.9)<a class="headerlink" href="#equation-eq-equilibrium-rule" title="Link to this equation">#</a></span>\[\tilde{H}(X_t, Z_t, Y_t) = h(Y_t),\]</div>
-<p>the <em>same</em> rule as the Markov perfect equilibrium of <a class="reference internal" href="#equation-eq-multiplier">(72.5)</a>.</p>
+<span class="eqno">(76.9)<a class="headerlink" href="#equation-eq-equilibrium-rule" title="Link to this equation">#</a></span>\[\tilde{H}(X_t, Z_t, Y_t) = h(Y_t),\]</div>
+<p>the <em>same</em> rule as the Markov perfect equilibrium of <a class="reference internal" href="#equation-eq-multiplier">(76.5)</a>.</p>
 </section>
 <section id="modified-separation-principle">
-<h3><span class="section-number">72.3.3. </span>Modified separation principle<a class="headerlink" href="#modified-separation-principle" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">76.3.3. </span>Modified separation principle<a class="headerlink" href="#modified-separation-principle" title="Link to this heading">#</a></h3>
 <p>The Stackelberg timing permits an Euler-equation approach.</p>
 <p>The two-step algorithm becomes:</p>
 <p>The first step is unchanged: solve the same nonstochastic control problem as before,
 with <span class="math notranslate nohighlight">\(\mathbf{z}_t = (z_t, z_{t+1}, \ldots)\)</span> treated as known, giving
 <span class="math notranslate nohighlight">\(u_t = h_1(x_t, \mathbf{z}_t)\)</span>.</p>
 <p>The second step is modified: form forecasts using the <em>distorted</em> law of motion
-<a class="reference internal" href="#equation-eq-stackelberg-law">(72.7)</a>.  By the linearity and Gaussianity of the system,</p>
+<a class="reference internal" href="#equation-eq-stackelberg-law">(76.7)</a>.  By the linearity and Gaussianity of the system,</p>
 <div class="math notranslate nohighlight" id="equation-eq-distorted-forecast">
-<span class="eqno">(72.10)<a class="headerlink" href="#equation-eq-distorted-forecast" title="Link to this equation">#</a></span>\[\begin{split}\hat{\mathbb{E}}[\mathbf{z}_t \mid z^t, Y^t]
+<span class="eqno">(76.10)<a class="headerlink" href="#equation-eq-distorted-forecast" title="Link to this equation">#</a></span>\[\begin{split}\hat{\mathbb{E}}[\mathbf{z}_t \mid z^t, Y^t]
     = \hat{h}_2 \begin{bmatrix} z_t \\ Y_t \end{bmatrix}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\hat{\mathbb{E}}\)</span> uses the distorted model.</p>
-<p>Substituting <a class="reference internal" href="#equation-eq-distorted-forecast">(72.10)</a> into <span class="math notranslate nohighlight">\(h_1\)</span> and imposing <span class="math notranslate nohighlight">\(Y_t = y_t\)</span> gives the robust rule</p>
+<p>Substituting <a class="reference internal" href="#equation-eq-distorted-forecast">(76.10)</a> into <span class="math notranslate nohighlight">\(h_1\)</span> and imposing <span class="math notranslate nohighlight">\(Y_t = y_t\)</span> gives the robust rule</p>
 <div class="math notranslate nohighlight" id="equation-eq-robust-ce-rule">
-<span class="eqno">(72.11)<a class="headerlink" href="#equation-eq-robust-ce-rule" title="Link to this equation">#</a></span>\[u_t = h_1\!\left(x_t,\; \hat{h}_2 \cdot y_t\right) = h(x_t, z_t).\]</div>
+<span class="eqno">(76.11)<a class="headerlink" href="#equation-eq-robust-ce-rule" title="Link to this equation">#</a></span>\[u_t = h_1\!\left(x_t,\; \hat{h}_2 \cdot y_t\right) = h(x_t, z_t).\]</div>
 <p>This is the modified CE: <em>step 1 is identical to the non-robust case</em>; only
 step 2 changes, using distorted rather than rational forecasts.</p>
 <p>In contrast to ordinary CE, the robust policy <em>does</em> change as <span class="math notranslate nohighlight">\(\theta\)</span> varies.</p>
@@ -612,7 +625,7 @@ policy.</p>
 <figure class="align-default" id="fig-robust-policy-theta">
 <img alt="_images/ee813068d12da70d76f4da1eb4c0cf65e1a786b4add28a9f84c07dcd83097c25.png" src="_images/ee813068d12da70d76f4da1eb4c0cf65e1a786b4add28a9f84c07dcd83097c25.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 72.2 </span><span class="caption-text">Robust policy varies with θ</span><a class="headerlink" href="#fig-robust-policy-theta" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 76.2 </span><span class="caption-text">Robust policy varies with θ</span><a class="headerlink" href="#fig-robust-policy-theta" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -626,41 +639,41 @@ noise-loading matrix <span class="math notranslate nohighlight">\(C\)</span></em
 </section>
 </section>
 <section id="value-function-under-robustness">
-<h2><a class="toc-backref" href="#id19" role="doc-backlink"><span class="section-number">72.4. </span>Value function under robustness</a><a class="headerlink" href="#value-function-under-robustness" title="Link to this heading">#</a></h2>
-<p>Under a preference for robustness, the optimised value of <a class="reference internal" href="#equation-eq-multiplier">(72.5)</a> is again
+<h2><a class="toc-backref" href="#id19" role="doc-backlink"><span class="section-number">76.4. </span>Value function under robustness</a><a class="headerlink" href="#value-function-under-robustness" title="Link to this heading">#</a></h2>
+<p>Under a preference for robustness, the optimised value of <a class="reference internal" href="#equation-eq-multiplier">(76.5)</a> is again
 quadratic,</p>
 <div class="math notranslate nohighlight" id="equation-eq-robust-value">
-<span class="eqno">(72.12)<a class="headerlink" href="#equation-eq-robust-value" title="Link to this equation">#</a></span>\[V(y_0) = -y_0^\top P\, y_0 - p,\]</div>
+<span class="eqno">(76.12)<a class="headerlink" href="#equation-eq-robust-value" title="Link to this equation">#</a></span>\[V(y_0) = -y_0^\top P\, y_0 - p,\]</div>
 <p>but now <em>both</em> <span class="math notranslate nohighlight">\(P\)</span> <em>and</em> <span class="math notranslate nohighlight">\(p\)</span> depend on the volatility parameter <span class="math notranslate nohighlight">\(f_2\)</span>.</p>
 <p>Specifically, <span class="math notranslate nohighlight">\(P\)</span> is the fixed point of the composite operator <span class="math notranslate nohighlight">\(T \circ \mathcal{D}\)</span>
 where <span class="math notranslate nohighlight">\(T\)</span> is the same Bellman operator as in the non-robust case and
 <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> is the <strong>distortion operator</strong>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-distortion-op">
-<span class="eqno">(72.13)<a class="headerlink" href="#equation-eq-distortion-op" title="Link to this equation">#</a></span>\[\mathcal{D}(P) = \mathcal{D}(P;\, f_2,\, \theta).\]</div>
+<span class="eqno">(76.13)<a class="headerlink" href="#equation-eq-distortion-op" title="Link to this equation">#</a></span>\[\mathcal{D}(P) = \mathcal{D}(P;\, f_2,\, \theta).\]</div>
 <p>Given the fixed point <span class="math notranslate nohighlight">\(P = T(\mathcal{D}(P))\)</span>, the constant is</p>
 <div class="math notranslate nohighlight" id="equation-eq-constant-p">
-<span class="eqno">(72.14)<a class="headerlink" href="#equation-eq-constant-p" title="Link to this equation">#</a></span>\[p = p(P;\, f_2,\, \beta,\, \theta).\]</div>
+<span class="eqno">(76.14)<a class="headerlink" href="#equation-eq-constant-p" title="Link to this equation">#</a></span>\[p = p(P;\, f_2,\, \beta,\, \theta).\]</div>
 <p>Despite <span class="math notranslate nohighlight">\(P\)</span> now depending on <span class="math notranslate nohighlight">\(f_2\)</span>, a form of CE still prevails: the same
-decision rule <a class="reference internal" href="#equation-eq-robust-ce-rule">(72.11)</a> also emerges from the <em>nonstochastic</em> game that
-maximises <a class="reference internal" href="#equation-eq-multiplier">(72.5)</a> subject to <a class="reference internal" href="#equation-eq-x-transition-o">(72.2)</a> and</p>
+decision rule <a class="reference internal" href="#equation-eq-robust-ce-rule">(76.11)</a> also emerges from the <em>nonstochastic</em> game that
+maximises <a class="reference internal" href="#equation-eq-multiplier">(76.5)</a> subject to <a class="reference internal" href="#equation-eq-x-transition-o">(76.2)</a> and</p>
 <div class="math notranslate nohighlight" id="equation-eq-nonstoch-z">
-<span class="eqno">(72.15)<a class="headerlink" href="#equation-eq-nonstoch-z" title="Link to this equation">#</a></span>\[z_{t+1} = f(z_t,\, w_{t+1}),\]</div>
+<span class="eqno">(76.15)<a class="headerlink" href="#equation-eq-nonstoch-z" title="Link to this equation">#</a></span>\[z_{t+1} = f(z_t,\, w_{t+1}),\]</div>
 <p>i.e., setting <span class="math notranslate nohighlight">\(\epsilon_{t+1} \equiv 0\)</span>.</p>
 <p>The presence of randomness lowers the value (the constant <span class="math notranslate nohighlight">\(p\)</span>) but does not change the decision rule.</p>
 </section>
 <section id="risk-sensitive-preferences">
-<h2><a class="toc-backref" href="#id20" role="doc-backlink"><span class="section-number">72.5. </span>Risk-sensitive preferences</a><a class="headerlink" href="#risk-sensitive-preferences" title="Link to this heading">#</a></h2>
-<p>Building on <span id="id7">Jacobson [<a class="reference internal" href="zreferences.html#id60" title="D. H. Jacobson. Optimal stochastic linear systems with exponential performance criteria and their relation to differential games. IEEE Transactions on Automatic Control, 18(2):124-131, 1973.">1973</a>]</span> and <span id="id8">Whittle [<a class="reference internal" href="zreferences.html#id62" title="Peter Whittle. Risk-Sensitive Optimal Control. Wiley, New York, 1990.">1990</a>]</span>, <span id="id9">Hansen and Sargent [<a class="reference internal" href="zreferences.html#id3" title="Lars Peter Hansen and Thomas J Sargent. Certainty equivalence and model uncertainty. In Conference on Models and Monetary Policy: Research in the Tradition of Dale Henderson, Richard Porter, and Peter Tinsley (http://www. federalreserve. gov/events/conferences/mmp2004/pdf/hansensargent. pdf). 2004.">2004</a>]</span> showed that
+<h2><a class="toc-backref" href="#id20" role="doc-backlink"><span class="section-number">76.5. </span>Risk-sensitive preferences</a><a class="headerlink" href="#risk-sensitive-preferences" title="Link to this heading">#</a></h2>
+<p>Building on <span id="id7">Jacobson [<a class="reference internal" href="zreferences.html#id114" title="D. H. Jacobson. Optimal stochastic linear systems with exponential performance criteria and their relation to differential games. IEEE Transactions on Automatic Control, 18(2):124-131, 1973.">1973</a>]</span> and <span id="id8">Whittle [<a class="reference internal" href="zreferences.html#id116" title="Peter Whittle. Risk-Sensitive Optimal Control. Wiley, New York, 1990.">1990</a>]</span>, <span id="id9">Hansen and Sargent [<a class="reference internal" href="zreferences.html#id58" title="Lars Peter Hansen and Thomas J Sargent. Certainty equivalence and model uncertainty. In Conference on Models and Monetary Policy: Research in the Tradition of Dale Henderson, Richard Porter, and Peter Tinsley (http://www. federalreserve. gov/events/conferences/mmp2004/pdf/hansensargent. pdf). 2004.">2004</a>]</span> showed that
 the same decision rules can be reinterpreted through <strong>risk-sensitive preferences</strong>.</p>
 <p>Suppose the decision maker <em>fully trusts</em> his model</p>
 <div class="math notranslate nohighlight" id="equation-eq-rs-transition">
-<span class="eqno">(72.16)<a class="headerlink" href="#equation-eq-rs-transition" title="Link to this equation">#</a></span>\[y_{t+1} = A\, y_t + B\, u_t + C\, \epsilon_{t+1}\]</div>
+<span class="eqno">(76.16)<a class="headerlink" href="#equation-eq-rs-transition" title="Link to this equation">#</a></span>\[y_{t+1} = A\, y_t + B\, u_t + C\, \epsilon_{t+1}\]</div>
 <p>but evaluates stochastic processes according to the recursion</p>
 <div class="math notranslate nohighlight" id="equation-eq-rs-utility">
-<span class="eqno">(72.17)<a class="headerlink" href="#equation-eq-rs-utility" title="Link to this equation">#</a></span>\[U_t = r(y_t, u_t) + \beta\, \mathcal{R}_t(U_{t+1})\]</div>
+<span class="eqno">(76.17)<a class="headerlink" href="#equation-eq-rs-utility" title="Link to this equation">#</a></span>\[U_t = r(y_t, u_t) + \beta\, \mathcal{R}_t(U_{t+1})\]</div>
 <p>where the <em>risk-adjusted</em> continuation operator is</p>
 <div class="math notranslate nohighlight" id="equation-eq-rs-operator">
-<span class="eqno">(72.18)<a class="headerlink" href="#equation-eq-rs-operator" title="Link to this equation">#</a></span>\[\mathcal{R}_t(U_{t+1}) = \frac{2}{\sigma}
+<span class="eqno">(76.18)<a class="headerlink" href="#equation-eq-rs-operator" title="Link to this equation">#</a></span>\[\mathcal{R}_t(U_{t+1}) = \frac{2}{\sigma}
     \log \mathbb{E}\!\left[\exp\!\left(\frac{\sigma U_{t+1}}{2}\right)
     \,\Big|\, y^t\right], \qquad \sigma \leq 0.\]</div>
 <p>When <span class="math notranslate nohighlight">\(\sigma = 0\)</span>, L’Hôpital’s rule recovers the standard expectation operator.</p>
@@ -672,9 +685,9 @@ utility <span class="math notranslate nohighlight">\(U_{t+1}\)</span>.</p>
 <p>Evaluating <span class="math notranslate nohighlight">\(\mathcal{R}_t\)</span> via the log-moment-generating function of the
 Gaussian distribution yields</p>
 <div class="math notranslate nohighlight" id="equation-eq-rs-eval">
-<span class="eqno">(72.19)<a class="headerlink" href="#equation-eq-rs-eval" title="Link to this equation">#</a></span>\[\mathcal{R}_t U_{t+1}^e
+<span class="eqno">(76.19)<a class="headerlink" href="#equation-eq-rs-eval" title="Link to this equation">#</a></span>\[\mathcal{R}_t U_{t+1}^e
     = -\hat{y}_{t+1}^\top \mathcal{D}(\Omega)\, \hat{y}_{t+1} - \hat{\rho}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> is the <em>same</em> distortion operator as in <a class="reference internal" href="#equation-eq-distortion-op">(72.13)</a>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{D}\)</span> is the <em>same</em> distortion operator as in <a class="reference internal" href="#equation-eq-distortion-op">(76.13)</a>
 with <span class="math notranslate nohighlight">\(\theta = -\sigma^{-1}\)</span>, and <span class="math notranslate nohighlight">\(\hat{\rho}\)</span> is the corresponding scalar
 adjustment term.</p>
 <p>Consequently, the risk-sensitive Bellman equation
@@ -686,23 +699,23 @@ control with parameter <span class="math notranslate nohighlight">\(\sigma = -\t
 </div></blockquote>
 </section>
 <section id="application-permanent-income-model">
-<h2><a class="toc-backref" href="#id21" role="doc-backlink"><span class="section-number">72.6. </span>Application: permanent income model</a><a class="headerlink" href="#application-permanent-income-model" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id21" role="doc-backlink"><span class="section-number">76.6. </span>Application: permanent income model</a><a class="headerlink" href="#application-permanent-income-model" title="Link to this heading">#</a></h2>
 <p>We now illustrate all of the above in a concrete linear-quadratic permanent income
 model.</p>
 <section id="model-setup">
-<h3><span class="section-number">72.6.1. </span>Model setup<a class="headerlink" href="#model-setup" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">76.6.1. </span>Model setup<a class="headerlink" href="#model-setup" title="Link to this heading">#</a></h3>
 <p>A consumer receives an exogenous endowment process <span class="math notranslate nohighlight">\(\{z_t\}\)</span> and allocates it
 between consumption <span class="math notranslate nohighlight">\(c_t\)</span> and savings <span class="math notranslate nohighlight">\(x_t\)</span> to maximise</p>
 <div class="math notranslate nohighlight" id="equation-eq-pi-objective">
-<span class="eqno">(72.20)<a class="headerlink" href="#equation-eq-pi-objective" title="Link to this equation">#</a></span>\[-\mathbb{E}_0 \sum_{t=0}^{\infty} \beta^t (c_t - b)^2, \qquad \beta \in (0,1)\]</div>
+<span class="eqno">(76.20)<a class="headerlink" href="#equation-eq-pi-objective" title="Link to this equation">#</a></span>\[-\mathbb{E}_0 \sum_{t=0}^{\infty} \beta^t (c_t - b)^2, \qquad \beta \in (0,1)\]</div>
 <p>where <span class="math notranslate nohighlight">\(b\)</span> is a bliss level of consumption.</p>
 <p>Defining the <strong>marginal utility
 of consumption</strong> <span class="math notranslate nohighlight">\(\mu_{ct} \equiv b - c_t\)</span> (the control), the budget constraint
 and endowment process are</p>
 <div class="math notranslate nohighlight" id="equation-eq-pi-budget">
-<span class="eqno">(72.21)<a class="headerlink" href="#equation-eq-pi-budget" title="Link to this equation">#</a></span>\[x_{t+1} = R\, x_t + z_t - b + \mu_{ct}\]</div>
+<span class="eqno">(76.21)<a class="headerlink" href="#equation-eq-pi-budget" title="Link to this equation">#</a></span>\[x_{t+1} = R\, x_t + z_t - b + \mu_{ct}\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-endowment">
-<span class="eqno">(72.22)<a class="headerlink" href="#equation-eq-endowment" title="Link to this equation">#</a></span>\[z_{t+1} = \mu_d(1-\rho) + \rho\, z_t + c_d(\epsilon_{t+1} + w_{t+1})\]</div>
+<span class="eqno">(76.22)<a class="headerlink" href="#equation-eq-endowment" title="Link to this equation">#</a></span>\[z_{t+1} = \mu_d(1-\rho) + \rho\, z_t + c_d(\epsilon_{t+1} + w_{t+1})\]</div>
 <p>where <span class="math notranslate nohighlight">\(R &gt; 1\)</span> is the gross return on savings, <span class="math notranslate nohighlight">\(|\rho| &lt; 1\)</span>, and <span class="math notranslate nohighlight">\(w_{t+1}\)</span>
 is an optional shock-mean distortion representing model misspecification.</p>
 <p>After absorbing the constants <span class="math notranslate nohighlight">\(-b\)</span> and <span class="math notranslate nohighlight">\(\mu_d(1-\rho)\)</span> by augmenting the state
@@ -710,7 +723,7 @@ vector, or equivalently by working with deviations from steady state, setting
 <span class="math notranslate nohighlight">\(w_{t+1} \equiv 0\)</span> and taking <span class="math notranslate nohighlight">\(Q = 0\)</span> (return depends only on the
 control <span class="math notranslate nohighlight">\(\mu_{ct}\)</span>) and <span class="math notranslate nohighlight">\(R_{\text{ctrl}} = 1\)</span> puts this in the standard LQ form</p>
 <div class="math notranslate nohighlight" id="equation-eq-pi-lq-matrices">
-<span class="eqno">(72.23)<a class="headerlink" href="#equation-eq-pi-lq-matrices" title="Link to this equation">#</a></span>\[\begin{split}y_t = \begin{bmatrix} x_t \\ z_t \end{bmatrix},
+<span class="eqno">(76.23)<a class="headerlink" href="#equation-eq-pi-lq-matrices" title="Link to this equation">#</a></span>\[\begin{split}y_t = \begin{bmatrix} x_t \\ z_t \end{bmatrix},
 \quad
 A = \begin{bmatrix} R &amp; 1 \\ 0 &amp; \rho \end{bmatrix},
 \quad
@@ -720,7 +733,7 @@ C = \begin{bmatrix} 0 \\ c_d \end{bmatrix}.\end{split}\]</div>
 <p>In the numerical code below we add a negligible <code class="docutils literal notranslate"><span class="pre">1e-8</span> <span class="pre">I</span></code> regularisation to the
 state-cost matrix to keep the Riccati computation well conditioned in Hall’s
 unit-root case <span class="math notranslate nohighlight">\(\beta R = 1\)</span>.</p>
-<p>We calibrate to parameters estimated by <span id="id10">Hansen <em>et al.</em> [<a class="reference internal" href="zreferences.html#id57" title="Lars Peter Hansen, Thomas J. Sargent, and Thomas D. Tallarini. Robust Permanent Income and Pricing. Review of Economic Studies, 66(4):873-907, 1999. URL: https://ideas.repec.org/a/oup/restud/v66y1999i4p873-907..html, doi:.">1999</a>]</span>
+<p>We calibrate to parameters estimated by <span id="id10">Hansen <em>et al.</em> [<a class="reference internal" href="zreferences.html#id111" title="Lars Peter Hansen, Thomas J. Sargent, and Thomas D. Tallarini. Robust Permanent Income and Pricing. Review of Economic Studies, 66(4):873-907, 1999. URL: https://ideas.repec.org/a/oup/restud/v66y1999i4p873-907..html, doi:.">1999</a>]</span>
 from post-WWII U.S. data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -745,11 +758,11 @@ from post-WWII U.S. data:</p>
 </div>
 </section>
 <section id="without-robustness-halls-martingale">
-<h3><span class="section-number">72.6.2. </span>Without robustness: Hall’s martingale<a class="headerlink" href="#without-robustness-halls-martingale" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">76.6.2. </span>Without robustness: Hall’s martingale<a class="headerlink" href="#without-robustness-halls-martingale" title="Link to this heading">#</a></h3>
 <p>Setting <span class="math notranslate nohighlight">\(\sigma = 0\)</span> (no preference for robustness), the consumer’s Euler
 equation is</p>
 <div class="math notranslate nohighlight" id="equation-eq-euler">
-<span class="eqno">(72.24)<a class="headerlink" href="#equation-eq-euler" title="Link to this equation">#</a></span>\[\mathbb{E}_t[\mu_{c,t+1}] = (\beta R)^{-1} \mu_{ct}.\]</div>
+<span class="eqno">(76.24)<a class="headerlink" href="#equation-eq-euler" title="Link to this equation">#</a></span>\[\mathbb{E}_t[\mu_{c,t+1}] = (\beta R)^{-1} \mu_{ct}.\]</div>
 <p>With <span class="math notranslate nohighlight">\(\beta R = 1\)</span> (Hall’s case), this is
 <span class="math notranslate nohighlight">\(\mathbb{E}_t[\mu_{c,t+1}] = \mu_{ct}\)</span>, i.e., the <strong>marginal utility of
 consumption is a martingale</strong> — equivalently, consumption follows a random walk.</p>
@@ -759,7 +772,7 @@ Euler equation, <span class="math notranslate nohighlight">\(F = [(R-1),\ (R-1)/
 projection onto the one-dimensional direction of <span class="math notranslate nohighlight">\(\mu_{ct}\)</span> gives the scalar
 AR(1) representation</p>
 <div class="math notranslate nohighlight" id="equation-eq-std-ar1">
-<span class="eqno">(72.25)<a class="headerlink" href="#equation-eq-std-ar1" title="Link to this equation">#</a></span>\[\mu_{c,t+1} = \varphi\, \mu_{ct} + \nu\, \epsilon_{t+1}.\]</div>
+<span class="eqno">(76.25)<a class="headerlink" href="#equation-eq-std-ar1" title="Link to this equation">#</a></span>\[\mu_{c,t+1} = \varphi\, \mu_{ct} + \nu\, \epsilon_{t+1}.\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F_pi</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[(</span><span class="n">R_rate</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="n">R_rate</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">R_rate</span> <span class="o">-</span> <span class="n">ρ</span><span class="p">)]])</span>
@@ -780,13 +793,13 @@ AR(1) representation</p>
 </div>
 </section>
 <section id="with-robustness-precautionary-savings">
-<h3><span class="section-number">72.6.3. </span>With robustness: precautionary savings<a class="headerlink" href="#with-robustness-precautionary-savings" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">76.6.3. </span>With robustness: precautionary savings<a class="headerlink" href="#with-robustness-precautionary-savings" title="Link to this heading">#</a></h3>
 <p>Under a preference for robustness (<span class="math notranslate nohighlight">\(\sigma &lt; 0\)</span>, <span class="math notranslate nohighlight">\(\theta &lt; \infty\)</span>), the consumer
 uses distorted forecasts <span class="math notranslate nohighlight">\(\hat{\mathbb{E}}_t[\cdot]\)</span> evaluated under the
 worst-case model.</p>
 <p>The consumption rule takes the certainty-equivalent form</p>
 <div class="math notranslate nohighlight" id="equation-eq-robust-consumption">
-<span class="eqno">(72.26)<a class="headerlink" href="#equation-eq-robust-consumption" title="Link to this equation">#</a></span>\[\mu_{ct} = -(1 - R^{-2}\beta^{-1})
+<span class="eqno">(76.26)<a class="headerlink" href="#equation-eq-robust-consumption" title="Link to this equation">#</a></span>\[\mu_{ct} = -(1 - R^{-2}\beta^{-1})
     \!\left(R\, x_t + \hat{\mathbb{E}}_t\!\left[
         \sum_{j=0}^{\infty} R^{-j}(z_{t+j} - b)\right]\right)\]</div>
 <p>where <span class="math notranslate nohighlight">\(h_1\)</span> — the first step of the CE algorithm — is <em>identical</em> to the
@@ -794,15 +807,15 @@ non-robust case.</p>
 <p>Only the expectations operator changes.</p>
 <p>The resulting AR(1) dynamics for <span class="math notranslate nohighlight">\(\mu_{ct}\)</span> become:</p>
 <div class="math notranslate nohighlight" id="equation-eq-robust-ar1">
-<span class="eqno">(72.27)<a class="headerlink" href="#equation-eq-robust-ar1" title="Link to this equation">#</a></span>\[\mu_{c,t+1} = \tilde{\varphi}\, \mu_{ct} + \tilde{\nu}\, \epsilon_{t+1}\]</div>
+<span class="eqno">(76.27)<a class="headerlink" href="#equation-eq-robust-ar1" title="Link to this equation">#</a></span>\[\mu_{c,t+1} = \tilde{\varphi}\, \mu_{ct} + \tilde{\nu}\, \epsilon_{t+1}\]</div>
 <p>with <span class="math notranslate nohighlight">\(\tilde{\varphi} &lt; 1\)</span>, implying <span class="math notranslate nohighlight">\(\mathbb{E}_t[c_{t+1}] &gt; c_t\)</span> under the
 approximating model — a form of <strong>precautionary saving</strong>.</p>
-<p>The observational equivalence formula <a class="reference internal" href="#equation-eq-oe-locus">(72.28)</a> (derived below) immediately
+<p>The observational equivalence formula <a class="reference internal" href="#equation-eq-oe-locus">(76.28)</a> (derived below) immediately
 gives the robust AR(1) coefficient: <span class="math notranslate nohighlight">\(\tilde{\varphi} = 1/(\tilde{\beta} R)\)</span>
 where <span class="math notranslate nohighlight">\(\tilde{\beta} = \tilde{\beta}(\sigma)\)</span>.</p>
 <p>The innovation scale <span class="math notranslate nohighlight">\(\tilde{\nu}\)</span>
 follows from the robust permanent income formula with the distorted persistence;
-<span id="id11">Hansen <em>et al.</em> [<a class="reference internal" href="zreferences.html#id57" title="Lars Peter Hansen, Thomas J. Sargent, and Thomas D. Tallarini. Robust Permanent Income and Pricing. Review of Economic Studies, 66(4):873-907, 1999. URL: https://ideas.repec.org/a/oup/restud/v66y1999i4p873-907..html, doi:.">1999</a>]</span> report <span class="math notranslate nohighlight">\(\tilde{\nu} \approx 8.0473\)</span> for their
+<span id="id11">Hansen <em>et al.</em> [<a class="reference internal" href="zreferences.html#id111" title="Lars Peter Hansen, Thomas J. Sargent, and Thomas D. Tallarini. Robust Permanent Income and Pricing. Review of Economic Studies, 66(4):873-907, 1999. URL: https://ideas.repec.org/a/oup/restud/v66y1999i4p873-907..html, doi:.">1999</a>]</span> report <span class="math notranslate nohighlight">\(\tilde{\nu} \approx 8.0473\)</span> for their
 calibration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -831,7 +844,7 @@ calibration.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">T_sim</span> <span class="o">=</span> <span class="mi">100</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">simulate_ar1</span><span class="p">(</span><span class="n">φ</span><span class="p">,</span> <span class="n">ν</span><span class="p">,</span> <span class="n">shocks</span><span class="p">,</span> <span class="n">mu0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
@@ -868,27 +881,27 @@ calibration.</p>
 </div>
 <div class="cell_output docutils container">
 <figure class="align-default" id="fig-std-vs-robust-paths">
-<img alt="_images/9932371fe5c622eb18dbdb4a2e91f74dc438d90a511bd4d1b9fa799e7e0da756.png" src="_images/9932371fe5c622eb18dbdb4a2e91f74dc438d90a511bd4d1b9fa799e7e0da756.png" />
+<img alt="_images/5203da04a48bb7c98b578efd6bff44bcf9ed771430244f5ad40c8834d425d6d9.png" src="_images/5203da04a48bb7c98b578efd6bff44bcf9ed771430244f5ad40c8834d425d6d9.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 72.3 </span><span class="caption-text">Standard vs robust consumption paths</span><a class="headerlink" href="#fig-std-vs-robust-paths" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 76.3 </span><span class="caption-text">Standard vs robust consumption paths</span><a class="headerlink" href="#fig-std-vs-robust-paths" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
 </div>
 </section>
 <section id="observational-equivalence-robustness-acts-like-patience">
-<h3><span class="section-number">72.6.4. </span>Observational equivalence: robustness acts like patience<a class="headerlink" href="#observational-equivalence-robustness-acts-like-patience" title="Link to this heading">#</a></h3>
-<p>A key insight of <span id="id12">Hansen and Sargent [<a class="reference internal" href="zreferences.html#id98" title="Lars Peter Hansen and Thomas J. Sargent. Robust control and model uncertainty. American Economic Review, 91(2):60-66, 2001.">2001</a>]</span> is that, in the permanent income model,
+<h3><span class="section-number">76.6.4. </span>Observational equivalence: robustness acts like patience<a class="headerlink" href="#observational-equivalence-robustness-acts-like-patience" title="Link to this heading">#</a></h3>
+<p>A key insight of <span id="id12">Hansen and Sargent [<a class="reference internal" href="zreferences.html#id152" title="Lars Peter Hansen and Thomas J. Sargent. Robust control and model uncertainty. American Economic Review, 91(2):60-66, 2001.">2001</a>]</span> is that, in the permanent income model,
 a preference for robustness (<span class="math notranslate nohighlight">\(\sigma &lt; 0\)</span>) is <em>observationally equivalent</em> to an
 increase in the discount factor from <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> to a larger value
 <span class="math notranslate nohighlight">\(\tilde{\beta}(\sigma)\)</span>, with <span class="math notranslate nohighlight">\(\sigma\)</span> set back to zero.</p>
 <p>The equivalence locus is given by</p>
 <div class="math notranslate nohighlight" id="equation-eq-oe-locus">
-<span class="eqno">(72.28)<a class="headerlink" href="#equation-eq-oe-locus" title="Link to this equation">#</a></span>\[\tilde{\beta}(\sigma) =
+<span class="eqno">(76.28)<a class="headerlink" href="#equation-eq-oe-locus" title="Link to this equation">#</a></span>\[\tilde{\beta}(\sigma) =
     \frac{\hat{\beta}(1 + \hat{\beta})}{2(1 + \sigma\alpha^2)}
     \left[1 + \sqrt{1 - \frac{4\hat{\beta}(1+\sigma\alpha^2)}{(1+\hat{\beta})^2}}\right]\]</div>
 <p>where <span class="math notranslate nohighlight">\(\alpha^2 = \tilde{\nu}^2\)</span> is the squared innovation loading in the
-robust AR(1) representation <a class="reference internal" href="#equation-eq-robust-ar1">(72.27)</a>.</p>
+robust AR(1) representation <a class="reference internal" href="#equation-eq-robust-ar1">(76.27)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">σ_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">3e-7</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
@@ -915,7 +928,7 @@ robust AR(1) representation <a class="reference internal" href="#equation-eq-rob
 <figure class="align-default" id="fig-oe-locus">
 <img alt="_images/13f6d188be5e2dab301f0228ce6bbefed3f6bb837cb016682d040de73ca75c53.png" src="_images/13f6d188be5e2dab301f0228ce6bbefed3f6bb837cb016682d040de73ca75c53.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 72.4 </span><span class="caption-text">Observational equivalence locus</span><a class="headerlink" href="#fig-oe-locus" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 76.4 </span><span class="caption-text">Observational equivalence locus</span><a class="headerlink" href="#fig-oe-locus" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -923,14 +936,14 @@ robust AR(1) representation <a class="reference internal" href="#equation-eq-rob
 <p>The plot confirms the paper’s key finding: <em>activating a preference for
 robustness is observationally equivalent — for consumption and saving behaviour
 — to increasing the discount factor</em>.</p>
-<p>However, <span id="id13">Hansen <em>et al.</em> [<a class="reference internal" href="zreferences.html#id57" title="Lars Peter Hansen, Thomas J. Sargent, and Thomas D. Tallarini. Robust Permanent Income and Pricing. Review of Economic Studies, 66(4):873-907, 1999. URL: https://ideas.repec.org/a/oup/restud/v66y1999i4p873-907..html, doi:.">1999</a>]</span> show that the two
+<p>However, <span id="id13">Hansen <em>et al.</em> [<a class="reference internal" href="zreferences.html#id111" title="Lars Peter Hansen, Thomas J. Sargent, and Thomas D. Tallarini. Robust Permanent Income and Pricing. Review of Economic Studies, 66(4):873-907, 1999. URL: https://ideas.repec.org/a/oup/restud/v66y1999i4p873-907..html, doi:.">1999</a>]</span> show that the two
 parametrisations do <em>not</em> imply the same asset prices.</p>
 <p>This happens because a preference for robustness generates different state-prices through the
 <span class="math notranslate nohighlight">\(\mathcal{D}(P)\)</span> matrix that enters the stochastic discount factor.</p>
 </section>
 </section>
 <section id="summary">
-<h2><a class="toc-backref" href="#id22" role="doc-backlink"><span class="section-number">72.7. </span>Summary</a><a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id22" role="doc-backlink"><span class="section-number">76.7. </span>Summary</a><a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
 <p>The table below condenses the main results:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -965,10 +978,10 @@ beliefs.</p>
 <p>The difference is in which beliefs are formed in the second step.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id23" role="doc-backlink"><span class="section-number">72.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id23" role="doc-backlink"><span class="section-number">76.8. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="ce_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 72.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 76.1 </span></p>
 <section id="exercise-content">
 <p>Show numerically that as <span class="math notranslate nohighlight">\(\theta \to \infty\)</span> the robust policy <span class="math notranslate nohighlight">\(F(\theta)\)</span> converges
 to the standard LQ policy <span class="math notranslate nohighlight">\(F_{\text{std}}\)</span> and that the rate of convergence is of
@@ -1015,7 +1028,7 @@ convergence.</p>
 </div>
 <div class="exercise admonition" id="ce_ex3">
 
-<p class="admonition-title"><span class="caption-number">Exercise 72.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 76.2 </span></p>
 <section id="exercise-content">
 <p>Pick three values <span class="math notranslate nohighlight">\(\sigma_i &lt; 0\)</span> and verify numerically that the robust
 permanent income model with <span class="math notranslate nohighlight">\((\sigma_i, \hat{\beta})\)</span> produces the same
@@ -1102,7 +1115,7 @@ equivalence for consumption and saving decisions.</p>
 makes the agent behave as if he were more patient.</p>
 <p>The non-zero worst-case distortion <span class="math notranslate nohighlight">\(K\)</span> in the robust model has no analogue in
 the non-robust model.</p>
-<p>As <span id="id14">Hansen <em>et al.</em> [<a class="reference internal" href="zreferences.html#id57" title="Lars Peter Hansen, Thomas J. Sargent, and Thomas D. Tallarini. Robust Permanent Income and Pricing. Review of Economic Studies, 66(4):873-907, 1999. URL: https://ideas.repec.org/a/oup/restud/v66y1999i4p873-907..html, doi:.">1999</a>]</span> show, this is why the two parametrisations imply
+<p>As <span id="id14">Hansen <em>et al.</em> [<a class="reference internal" href="zreferences.html#id111" title="Lars Peter Hansen, Thomas J. Sargent, and Thomas D. Tallarini. Robust Permanent Income and Pricing. Review of Economic Studies, 66(4):873-907, 1999. URL: https://ideas.repec.org/a/oup/restud/v66y1999i4p873-907..html, doi:.">1999</a>]</span> show, this is why the two parametrisations imply
 different asset prices even though saving plans coincide.</p>
 </section>
 </div>
@@ -1333,13 +1346,28 @@ different asset prices even though saving plans coincide.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="blackwell_kihlstrom.html">
+   30. Blackwell’s Theorem on Comparing Experiments
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   30. Incorrect Models
+   31. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   31. Bayesian versus Frequentist Decision Rules
+   32. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="merging_of_opinions.html">
+   33. Merging of Opinions: The Blackwell–Dubins Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="survival_recursive_preferences.html">
+   34. Survival and Long-Run Dynamics under Recursive Preferences
   </a>
  </li>
 </ul>
@@ -1351,12 +1379,12 @@ different asset prices even though saving plans coincide.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   32. Optimal Transport
+   35. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   33. Von Neumann Growth Model (and a Generalization)
+   36. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1368,52 +1396,57 @@ different asset prices even though saving plans coincide.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   34. Finite Markov Chains
+   37. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   35. Inventory Dynamics
+   38. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   36. Linear State Space Models
+   39. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   37. Samuelson Multiplier-Accelerator
+   40. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chow_business_cycles.html">
-   38. The Acceleration Principle and the Nature of Business Cycles
+   41. The Acceleration Principle and the Nature of Business Cycles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   39. Kesten Processes and Firm Dynamics
+   42. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   40. Wealth Distribution Dynamics
+   43. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   41. A First Look at the Kalman Filter
+   44. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   42. Another Look at the Kalman Filter
+   45. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="organization_capital.html">
+   46. Organization Capital
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="measurement_models.html">
-   43. Two Models of Measurements and the Investment Accelerator
+   47. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1425,42 +1458,42 @@ different asset prices even though saving plans coincide.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   44. Job Search I: The McCall Search Model
+   48. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   45. Job Search II: Search and Separation
+   49. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   46. Job Search III: Search with Separation and Markov Wages
+   50. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   47. Job Search IV: Fitted Value Function Iteration
+   51. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   48. Job Search V: Persistent and Transitory Wage Shocks
+   52. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   49. Job Search VI: Modeling Career Choice
+   53. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   50. Job Search VII: On-the-Job Search
+   54. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   51. Job Search VIII: Search with Learning
+   55. Job Search VIII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1472,17 +1505,17 @@ different asset prices even though saving plans coincide.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_q.html">
-   52. Inventory Management via Q-Learning
+   56. Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rs_inventory_q.html">
-   53. Risk-Sensitive Inventory Management via Q-Learning
+   57. Risk-Sensitive Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   54. Job Search IX: Search with Q-Learning
+   58. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1494,32 +1527,32 @@ different asset prices even though saving plans coincide.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   55. Optimal Savings I: Cake Eating
+   59. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   56. Optimal Savings II: Numerical Cake Eating
+   60. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   57. Optimal Savings III: Stochastic Returns
+   61. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   58. Optimal Savings IV: Time Iteration
+   62. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   59. Optimal Savings V: The Endogenous Grid Method
+   63. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   60. Optimal Savings VI: EGM with JAX
+   64. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1531,27 +1564,27 @@ different asset prices even though saving plans coincide.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   61. The Income Fluctuation Problem I: Discretization and VFI
+   65. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   62. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   66. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   63. The Income Fluctuation Problem III: The Endogenous Grid Method
+   67. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   64. The Income Fluctuation Problem IV: Transient Income Shocks
+   68. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   65. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   69. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1563,42 +1596,42 @@ different asset prices even though saving plans coincide.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   66. LQ Control: Foundations
+   70. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   67. Lagrangian for LQ Control
+   71. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   68. Eliminating Cross Products
+   72. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   69. The Permanent Income Model
+   73. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   70. Permanent Income II: LQ Techniques
+   74. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_1.html">
-   71. Certainty Equivalence
+   75. Certainty Equivalence
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   72. Certainty Equivalence and Model Uncertainty
+   76. Certainty Equivalence and Model Uncertainty
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   73. Production Smoothing via Inventories
+   77. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1610,22 +1643,22 @@ different asset prices even though saving plans coincide.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   74. Cass-Koopmans Model
+   78. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   75. Cass-Koopmans Competitive Equilibrium
+   79. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   76. Cass-Koopmans Model with Distorting Taxes
+   80. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   77. Two-Country Model with Distorting Taxes
+   81. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -1637,52 +1670,52 @@ different asset prices even though saving plans coincide.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   78. A Lake Model of Employment and Unemployment
+   82. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   79. Lake Model with an Endogenous Job Finding Rate
+   83. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   80. Rational Expectations Equilibrium
+   84. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   81. Stability in Linear Rational Expectations Models
+   85. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   82. Markov Perfect Equilibrium
+   86. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   83. Uncertainty Traps
+   87. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   84. The Aiyagari Model
+   88. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   85. Transitions in an Overlapping Generations Model
+   89. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   86. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   90. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   87. Two Computations to Fund Social Security
+   91. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -1694,47 +1727,47 @@ different asset prices even though saving plans coincide.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   88. Asset Pricing: Finite State Models
+   92. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   89. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   90. Estimating Euler Equations by Generalized Method of Moments
+   94. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="doubts_or_variability.html">
-   91. Doubts or Variability?
+   95. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   92. Competitive Equilibria with Arrow Securities
+   96. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   93. Heterogeneous Beliefs and Bubbles
+   97. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   94. Speculative Behavior with Bayesian Learning
+   98. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   95. Affine Models of Asset Prices
+   99. Affine Models of Asset Prices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="risk_aversion_or_mistaken_beliefs.html">
-   96. Risk Aversion or Mistaken Beliefs?
+   100. Risk Aversion or Mistaken Beliefs?
   </a>
  </li>
 </ul>
@@ -1746,17 +1779,17 @@ different asset prices even though saving plans coincide.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   97. Pandas for Panel Data
+   101. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   98. Linear Regression in Python
+   102. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   99. Maximum Likelihood Estimation
+   103. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1768,12 +1801,12 @@ different asset prices even though saving plans coincide.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   100. First-Price and Second-Price Auctions
+   104. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   101. Multiple Good Allocation Mechanisms
+   105. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1785,17 +1818,17 @@ different asset prices even though saving plans coincide.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   102. Troubleshooting
+   106. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   103. References
+   107. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   104. Execution Statistics
+   108. Execution Statistics
   </a>
  </li>
 </ul>

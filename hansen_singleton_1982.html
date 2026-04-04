@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>90. Estimating Euler Equations by Generalized Method of Moments &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>94. Estimating Euler Equations by Generalized Method of Moments &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -80,7 +80,7 @@
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=300d9cef76b95d0252c8ff6263fc63de943d6f3a" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
     <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="91. Doubts or Variability?" href="doubts_or_variability.html" />
-    <link rel="prev" title="89. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns" href="hansen_singleton_1983.html" />
+    <link rel="next" title="95. Doubts or Variability?" href="doubts_or_variability.html" />
+    <link rel="prev" title="93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns" href="hansen_singleton_1983.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -204,16 +204,16 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">90.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-economic-model">90.2. The economic model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-conditional-to-unconditional-moments">90.3. From conditional to unconditional moments</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gmm-criterion-and-asymptotic-theory">90.4. GMM criterion and asymptotic theory</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-estimation-and-the-choice-of-instruments">90.5. Covariance estimation and the choice of instruments</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">90.5.1. Simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">94.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-economic-model">94.2. The economic model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-conditional-to-unconditional-moments">94.3. From conditional to unconditional moments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gmm-criterion-and-asymptotic-theory">94.4. GMM criterion and asymptotic theory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariance-estimation-and-the-choice-of-instruments">94.5. Covariance estimation and the choice of instruments</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">94.5.1. Simulation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#empirical-gmm-estimation">90.6. Empirical GMM estimation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">90.7. Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#empirical-gmm-estimation">94.6. Empirical GMM estimation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">94.7. Summary</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -281,7 +281,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/bb3310a3e" class="changelog-hash">bb3310a3e</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">2 weeks ago</span>
+                                <span class="changelog-time">1 month ago</span>
                                 <span class="changelog-message">Add two lectures on Hansen and Singleton [1983] and Hansen and Singleton [1982] (#817)</span>
                             </li>
                             
@@ -298,7 +298,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="estimating-euler-equations-by-generalized-method-of-moments">
-<h1><a class="toc-backref" href="#id34" role="doc-backlink"><span class="section-number">90. </span>Estimating Euler Equations by Generalized Method of Moments</a><a class="headerlink" href="#estimating-euler-equations-by-generalized-method-of-moments" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id34" role="doc-backlink"><span class="section-number">94. </span>Estimating Euler Equations by Generalized Method of Moments</a><a class="headerlink" href="#estimating-euler-equations-by-generalized-method-of-moments" title="Link to this heading">#</a></h1>
 <nav class="contents" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -316,13 +316,13 @@
 </ul>
 </nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id35" role="doc-backlink"><span class="section-number">90.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>This lecture implements the generalized instrumental variables estimator of <span id="id1">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> for nonlinear rational expectations models.</p>
+<h2><a class="toc-backref" href="#id35" role="doc-backlink"><span class="section-number">94.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>This lecture implements the generalized instrumental variables estimator of <span id="id1">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> for nonlinear rational expectations models.</p>
 <p>The preceding lecture <a class="reference internal" href="hansen_singleton_1983.html"><span class="doc">Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns</span></a> derives the consumption Euler equation from the representative consumer’s problem with CRRA preferences and estimates it by maximum likelihood under normality assumptions.</p>
 <p>That approach requires specifying the joint distribution of consumption and returns, and its validity depends on lognormality being correct.</p>
 <p>However, as we saw in <a class="reference internal" href="hansen_singleton_1983.html"><span class="doc">Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns</span></a>, the lognormal model is rejected by the data.</p>
 <p>Moreover, outside of linear-quadratic environments, closed-form solutions for equilibrium typically require strong assumptions about the stochastic properties of forcing variables, the nature of preferences, or the production technology.</p>
-<p><span id="id2">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> propose an estimation strategy that circumvents this requirement.</p>
+<p><span id="id2">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> propose an estimation strategy that circumvents this requirement.</p>
 <p>The key idea is that the Euler equations from economic agents’ optimization problems imply a set of population orthogonality conditions that depend on observable variables and unknown preference parameters.</p>
 <p>By making sample counterparts of these orthogonality conditions close to zero, the parameters can be estimated without explicitly solving for the stochastic equilibrium and without specifying the distribution of the observable variables.</p>
 <p>Though maximum likelihood estimators (such as the MLE in <a class="reference internal" href="hansen_singleton_1983.html"><span class="doc">Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns</span></a>) will be asymptotically more efficient when the distributional assumptions are correctly specified.</p>
@@ -425,48 +425,48 @@ Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/
 </div>
 </section>
 <section id="the-economic-model">
-<h2><a class="toc-backref" href="#id36" role="doc-backlink"><span class="section-number">90.2. </span>The economic model</a><a class="headerlink" href="#the-economic-model" title="Link to this heading">#</a></h2>
-<p>We consider a single-good economy with a representative consumer whose preferences are of the CRRA type, following <span id="id3">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> and <span id="id4">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id263" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span>.</p>
+<h2><a class="toc-backref" href="#id36" role="doc-backlink"><span class="section-number">94.2. </span>The economic model</a><a class="headerlink" href="#the-economic-model" title="Link to this heading">#</a></h2>
+<p>We consider a single-good economy with a representative consumer whose preferences are of the CRRA type, following <span id="id3">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> and <span id="id4">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id308" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The following discussion is very close to the setup in <a class="reference internal" href="hansen_singleton_1983.html"><span class="doc">Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns</span></a>, but it is more general in that it allows for multiple assets with different maturities and does not assume lognormality.</p>
 </div>
 <p>The representative consumer chooses stochastic consumption and investment plans to maximize</p>
 <div class="math notranslate nohighlight" id="equation-hs82-problem">
-<span class="eqno">(90.1)<a class="headerlink" href="#equation-hs82-problem" title="Link to this equation">#</a></span>\[\max E_0 \sum_{t=0}^{\infty} \beta^t u(C_t)\]</div>
+<span class="eqno">(94.1)<a class="headerlink" href="#equation-hs82-problem" title="Link to this equation">#</a></span>\[\max E_0 \sum_{t=0}^{\infty} \beta^t u(C_t)\]</div>
 <p>where <span class="math notranslate nohighlight">\(C_t\)</span> is consumption in period <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span> is a subjective discount factor, and <span class="math notranslate nohighlight">\(u(\cdot)\)</span> is a strictly concave period utility function.</p>
 <p>The consumer trades <span class="math notranslate nohighlight">\(N\)</span> assets with potentially different maturities.</p>
 <p>Let <span class="math notranslate nohighlight">\(Q_{jt}\)</span> denote the quantity of asset <span class="math notranslate nohighlight">\(j\)</span> held at the end of date <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(P_{jt}\)</span> its price at date <span class="math notranslate nohighlight">\(t\)</span>, and <span class="math notranslate nohighlight">\(R_{jt}\)</span> the date-<span class="math notranslate nohighlight">\(t\)</span> payoff from holding one unit of an <span class="math notranslate nohighlight">\(M_j\)</span>-period asset purchased at date <span class="math notranslate nohighlight">\(t - M_j\)</span>.</p>
 <p>Feasible consumption and investment plans must satisfy the sequence of budget constraints</p>
 <div class="math notranslate nohighlight" id="equation-hs82-budget">
-<span class="eqno">(90.2)<a class="headerlink" href="#equation-hs82-budget" title="Link to this equation">#</a></span>\[C_t + \sum_{j=1}^{N} P_{jt} Q_{jt} \leq \sum_{j=1}^{N} R_{jt} Q_{jt-M_j} + W_t,\]</div>
+<span class="eqno">(94.2)<a class="headerlink" href="#equation-hs82-budget" title="Link to this equation">#</a></span>\[C_t + \sum_{j=1}^{N} P_{jt} Q_{jt} \leq \sum_{j=1}^{N} R_{jt} Q_{jt-M_j} + W_t,\]</div>
 <p>where <span class="math notranslate nohighlight">\(W_t\)</span> is real labor income at date <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>We specialize to CRRA preferences</p>
 <div class="math notranslate nohighlight" id="equation-hs82-crra">
-<span class="eqno">(90.3)<a class="headerlink" href="#equation-hs82-crra" title="Link to this equation">#</a></span>\[u(C_t) = \frac{C_t^{1-\gamma}}{1-\gamma}, \quad \gamma &gt; 0,\]</div>
+<span class="eqno">(94.3)<a class="headerlink" href="#equation-hs82-crra" title="Link to this equation">#</a></span>\[u(C_t) = \frac{C_t^{1-\gamma}}{1-\gamma}, \quad \gamma &gt; 0,\]</div>
 <p>where <span class="math notranslate nohighlight">\(\gamma\)</span> is the coefficient of relative risk aversion.</p>
-<p>The maximization of <a class="reference internal" href="#equation-hs82-problem">(90.1)</a> subject to <a class="reference internal" href="#equation-hs82-budget">(90.2)</a> gives the first-order necessary conditions (see <span id="id5">Lucas [<a class="reference internal" href="zreferences.html#id219" title="Robert E Lucas, Jr. Asset prices in an exchange economy. Econometrica, 46(6):1429–1445, 1978.">1978</a>]</span>, <span id="id6">Brock [<a class="reference internal" href="zreferences.html#id268" title="William A Brock. Asset prices in a production economy. The Economics of Information and Uncertainty, pages 1–43, 1982.">1982</a>]</span>, <span id="id7">Prescott and Mehra [<a class="reference internal" href="zreferences.html#id269" title="Edward C Prescott and Rajnish Mehra. Recursive competitive equilibrium: the case of homogeneous households. Econometrica, 48(6):1365–1379, 1980.">1980</a>]</span>, and <a class="reference internal" href="hansen_singleton_1983.html"><span class="doc">Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns</span></a>):</p>
+<p>The maximization of <a class="reference internal" href="#equation-hs82-problem">(94.1)</a> subject to <a class="reference internal" href="#equation-hs82-budget">(94.2)</a> gives the first-order necessary conditions (see <span id="id5">Lucas [<a class="reference internal" href="zreferences.html#id269" title="Robert E Lucas, Jr. Asset prices in an exchange economy. Econometrica, 46(6):1429–1445, 1978.">1978</a>]</span>, <span id="id6">Brock [<a class="reference internal" href="zreferences.html#id313" title="William A Brock. Asset prices in a production economy. The Economics of Information and Uncertainty, pages 1–43, 1982.">1982</a>]</span>, <span id="id7">Prescott and Mehra [<a class="reference internal" href="zreferences.html#id314" title="Edward C Prescott and Rajnish Mehra. Recursive competitive equilibrium: the case of homogeneous households. Econometrica, 48(6):1365–1379, 1980.">1980</a>]</span>, and <a class="reference internal" href="hansen_singleton_1983.html"><span class="doc">Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns</span></a>):</p>
 <div class="math notranslate nohighlight" id="equation-hs82-general-euler">
-<span class="eqno">(90.4)<a class="headerlink" href="#equation-hs82-general-euler" title="Link to this equation">#</a></span>\[P_{jt} u'(C_t) = \beta^{M_j} E_t\!\left[R_{jt+M_j} u'(C_{t+M_j})\right], \quad j = 1, \ldots, N.\]</div>
+<span class="eqno">(94.4)<a class="headerlink" href="#equation-hs82-general-euler" title="Link to this equation">#</a></span>\[P_{jt} u'(C_t) = \beta^{M_j} E_t\!\left[R_{jt+M_j} u'(C_{t+M_j})\right], \quad j = 1, \ldots, N.\]</div>
 <p>When asset <span class="math notranslate nohighlight">\(j\)</span> is a one-period stock (<span class="math notranslate nohighlight">\(M_j = 1\)</span>) with payoff <span class="math notranslate nohighlight">\(R_{jt+1} = P_{jt+1} + D_{jt+1}\)</span> where <span class="math notranslate nohighlight">\(D_{jt}\)</span> is the dividend, the <strong>gross real return</strong> is <span class="math notranslate nohighlight">\(R_{t+1}^i = (P_{i,t+1}+D_{i,t+1})/P_{i,t}\)</span>.</p>
-<p>Substituting the CRRA marginal utility into <a class="reference internal" href="#equation-hs82-general-euler">(90.4)</a> and dividing both sides by <span class="math notranslate nohighlight">\(P_{jt} u'(C_t)\)</span> yields the Euler equation</p>
+<p>Substituting the CRRA marginal utility into <a class="reference internal" href="#equation-hs82-general-euler">(94.4)</a> and dividing both sides by <span class="math notranslate nohighlight">\(P_{jt} u'(C_t)\)</span> yields the Euler equation</p>
 <div class="math notranslate nohighlight" id="equation-hs82-euler">
-<span class="eqno">(90.5)<a class="headerlink" href="#equation-hs82-euler" title="Link to this equation">#</a></span>\[E_t\!\left[\beta \left(\frac{C_{t+1}}{C_t}\right)^{-\gamma} R_{t+1}^i\right] = 1,\]</div>
+<span class="eqno">(94.5)<a class="headerlink" href="#equation-hs82-euler" title="Link to this equation">#</a></span>\[E_t\!\left[\beta \left(\frac{C_{t+1}}{C_t}\right)^{-\gamma} R_{t+1}^i\right] = 1,\]</div>
 <p>where <span class="math notranslate nohighlight">\(R_{t+1}^i\)</span> is the gross real return on asset <span class="math notranslate nohighlight">\(i\)</span>.</p>
 <p>We define the <strong>stochastic discount factor</strong> <span class="math notranslate nohighlight">\(M_{t+1}(\theta) = \beta (C_{t+1}/C_t)^{-\gamma}\)</span> with parameter vector <span class="math notranslate nohighlight">\(\theta = (\gamma, \beta)\)</span>.</p>
 <p>In this notation the Euler equation becomes <span class="math notranslate nohighlight">\(E_t[M_{t+1}(\theta) R_{t+1}^i - 1] = 0\)</span>.</p>
-<p>As we have seen and will see, equation <a class="reference internal" href="#equation-hs82-euler">(90.5)</a> is the central object of both <a class="reference internal" href="hansen_singleton_1983.html"><span class="doc">Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns</span></a> and this lecture.</p>
+<p>As we have seen and will see, equation <a class="reference internal" href="#equation-hs82-euler">(94.5)</a> is the central object of both <a class="reference internal" href="hansen_singleton_1983.html"><span class="doc">Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns</span></a> and this lecture.</p>
 <p>It holds for every traded asset for which the agent’s optimality conditions apply (interior solution, no binding portfolio constraints or transaction costs).</p>
 <p>It depends on observable quantities (consumption growth and returns) and unknown preference parameters (<span class="math notranslate nohighlight">\(\gamma\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span>).</p>
-<p>The challenge that <span id="id8">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> address is how to estimate <span class="math notranslate nohighlight">\(\theta\)</span> from <a class="reference internal" href="#equation-hs82-euler">(90.5)</a> without specifying the rest of the economic environment.</p>
+<p>The challenge that <span id="id8">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> address is how to estimate <span class="math notranslate nohighlight">\(\theta\)</span> from <a class="reference internal" href="#equation-hs82-euler">(94.5)</a> without specifying the rest of the economic environment.</p>
 </section>
 <section id="from-conditional-to-unconditional-moments">
-<h2><a class="toc-backref" href="#id37" role="doc-backlink"><span class="section-number">90.3. </span>From conditional to unconditional moments</a><a class="headerlink" href="#from-conditional-to-unconditional-moments" title="Link to this heading">#</a></h2>
-<p>A natural approach to estimating <span class="math notranslate nohighlight">\(\theta\)</span> from <a class="reference internal" href="#equation-hs82-euler">(90.5)</a> would be to specify the entire economic environment, solve for equilibrium, and apply maximum likelihood.</p>
+<h2><a class="toc-backref" href="#id37" role="doc-backlink"><span class="section-number">94.3. </span>From conditional to unconditional moments</a><a class="headerlink" href="#from-conditional-to-unconditional-moments" title="Link to this heading">#</a></h2>
+<p>A natural approach to estimating <span class="math notranslate nohighlight">\(\theta\)</span> from <a class="reference internal" href="#equation-hs82-euler">(94.5)</a> would be to specify the entire economic environment, solve for equilibrium, and apply maximum likelihood.</p>
 <p>Just like what we did together in <a class="reference internal" href="hansen_singleton_1983.html"><span class="doc">Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns</span></a>,</p>
-<p><span id="id9">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> argue that this is impractical for most nonlinear models because it requires strong assumptions about the stochastic properties of “forcing variables” and the production technology.</p>
+<p><span id="id9">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> argue that this is impractical for most nonlinear models because it requires strong assumptions about the stochastic properties of “forcing variables” and the production technology.</p>
 <p>Their alternative is to work directly with the Euler equation’s implications for observable moments.</p>
-<p>The Euler equation <a class="reference internal" href="#equation-hs82-euler">(90.5)</a> states that <span class="math notranslate nohighlight">\(E_t[M_{t+1}(\theta_0) R_{t+1}^i - 1] = 0\)</span>.</p>
+<p>The Euler equation <a class="reference internal" href="#equation-hs82-euler">(94.5)</a> states that <span class="math notranslate nohighlight">\(E_t[M_{t+1}(\theta_0) R_{t+1}^i - 1] = 0\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(z_t\)</span> denote any <span class="math notranslate nohighlight">\(q\)</span>-dimensional vector of variables that are in the agent’s time-<span class="math notranslate nohighlight">\(t\)</span> information set and observed by the econometrician.</p>
 <p>Because <span class="math notranslate nohighlight">\(z_t\)</span> is known at date <span class="math notranslate nohighlight">\(t\)</span>,</p>
 <div class="math notranslate nohighlight">
@@ -476,7 +476,7 @@ E\!\left[\left(M_{t+1}(\theta_0)R_{t+1}^i - 1\right) \otimes z_t\right]
 \]</div>
 <p>This yields the moment restriction</p>
 <div class="math notranslate nohighlight" id="equation-hs82-uncond">
-<span class="eqno">(90.6)<a class="headerlink" href="#equation-hs82-uncond" title="Link to this equation">#</a></span>\[E\!\left[\left(M_{t+1}(\theta_0)R_{t+1}^i - 1\right) \otimes z_t\right] = 0,\]</div>
+<span class="eqno">(94.6)<a class="headerlink" href="#equation-hs82-uncond" title="Link to this equation">#</a></span>\[E\!\left[\left(M_{t+1}(\theta_0)R_{t+1}^i - 1\right) \otimes z_t\right] = 0,\]</div>
 <p>where <span class="math notranslate nohighlight">\(\otimes\)</span> denotes the Kronecker product.</p>
 <p>The vector <span class="math notranslate nohighlight">\(z_t\)</span> plays the role of <strong>instruments</strong>.</p>
 <p>The conditional Euler equation <span class="math notranslate nohighlight">\(E_t[M_{t+1}R_{t+1}^i - 1] = 0\)</span> says that the pricing error is unpredictable given <em>everything</em> in the agent’s time-<span class="math notranslate nohighlight">\(t\)</span> information set.</p>
@@ -485,20 +485,20 @@ E\!\left[\left(M_{t+1}(\theta_0)R_{t+1}^i - 1\right) \otimes z_t\right]
 <p>Each variable we include in <span class="math notranslate nohighlight">\(z_t\)</span> gives us one sample moment condition <span class="math notranslate nohighlight">\(\frac{1}{T}\sum_t (M_{t+1}R_{t+1}^i - 1)\, z_{kt} \approx 0\)</span> that we can compute from data.</p>
 <p>More instruments means more orthogonality conditions to match, which can improve efficiency and provides more overidentifying restrictions to test the model against.</p>
 <p>With <span class="math notranslate nohighlight">\(q\)</span> instruments and <span class="math notranslate nohighlight">\(m\)</span> Euler equations we obtain <span class="math notranslate nohighlight">\(mq\)</span> moment restrictions for estimating the parameter vector <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
-<p>For one return and <span class="math notranslate nohighlight">\(p\)</span> lags of instruments, <span id="id10">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> use</p>
+<p>For one return and <span class="math notranslate nohighlight">\(p\)</span> lags of instruments, <span id="id10">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> use</p>
 <div class="math notranslate nohighlight" id="equation-hs82-instruments">
-<span class="eqno">(90.7)<a class="headerlink" href="#equation-hs82-instruments" title="Link to this equation">#</a></span>\[z_t = \left[1, R_t, g_t, R_{t-1}, g_{t-1}, \ldots, R_{t-p+1}, g_{t-p+1}\right]^\top,\]</div>
+<span class="eqno">(94.7)<a class="headerlink" href="#equation-hs82-instruments" title="Link to this equation">#</a></span>\[z_t = \left[1, R_t, g_t, R_{t-1}, g_{t-1}, \ldots, R_{t-p+1}, g_{t-p+1}\right]^\top,\]</div>
 <p>where <span class="math notranslate nohighlight">\(g_t = C_t / C_{t-1}\)</span> is gross consumption growth.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><span id="id11">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> describe <span class="math notranslate nohighlight">\(z_t\)</span> as “lagged values of <span class="math notranslate nohighlight">\(x_{t+1}\)</span>” where <span class="math notranslate nohighlight">\(x_{t+1} = (R_{t+1}, g_{t+1})\)</span>.</p>
+<p><span id="id11">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> describe <span class="math notranslate nohighlight">\(z_t\)</span> as “lagged values of <span class="math notranslate nohighlight">\(x_{t+1}\)</span>” where <span class="math notranslate nohighlight">\(x_{t+1} = (R_{t+1}, g_{t+1})\)</span>.</p>
 <p>The constant 1 is not stated explicitly but is implied by the degrees of freedom reported in their Table I.</p>
 </div>
-<p>More generally, <span id="id12">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> write the first-order condition as <span class="math notranslate nohighlight">\(E_t[h(x_{t+n}, b_0)] = 0\)</span>, where <span class="math notranslate nohighlight">\(x_{t+n}\)</span> is a vector of observables dated <span class="math notranslate nohighlight">\(t+n\)</span> and <span class="math notranslate nohighlight">\(b_0\)</span> is the true parameter vector.</p>
+<p>More generally, <span id="id12">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> write the first-order condition as <span class="math notranslate nohighlight">\(E_t[h(x_{t+n}, b_0)] = 0\)</span>, where <span class="math notranslate nohighlight">\(x_{t+n}\)</span> is a vector of observables dated <span class="math notranslate nohighlight">\(t+n\)</span> and <span class="math notranslate nohighlight">\(b_0\)</span> is the true parameter vector.</p>
 <p>The disturbance <span class="math notranslate nohighlight">\(u_{t+1} = h(x_{t+1}, b_0)\)</span> is serially uncorrelated in the one-period stock case.</p>
 <p>Stacking moment conditions via the Kronecker product gives <span class="math notranslate nohighlight">\(f(x_{t+n}, z_t, b) = h(x_{t+n}, b) \otimes z_t\)</span>, a vector of dimension <span class="math notranslate nohighlight">\(mq\)</span>.</p>
 <p>The resulting unconditional restriction <span class="math notranslate nohighlight">\(E[f(x_{t+n}, z_t, b_0)] = 0\)</span> nests both the single-return one-period Euler equation and the multi-maturity asset pricing restrictions.</p>
-<p>The orthogonality condition and lagged instrument vector follow equations <a class="reference internal" href="#equation-hs82-uncond">(90.6)</a> and <a class="reference internal" href="#equation-hs82-instruments">(90.7)</a></p>
+<p>The orthogonality condition and lagged instrument vector follow equations <a class="reference internal" href="#equation-hs82-uncond">(94.6)</a> and <a class="reference internal" href="#equation-hs82-instruments">(94.7)</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">euler_error_horizon</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">exog</span><span class="p">,</span> <span class="n">horizon</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -574,9 +574,9 @@ E\!\left[\left(M_{t+1}(\theta_0)R_{t+1}^i - 1\right) \otimes z_t\right]
 <p>When the asset has maturity <span class="math notranslate nohighlight">\(n &gt; 1\)</span>, the Euler equation involves <span class="math notranslate nohighlight">\(n\)</span>-period compounded returns and consumption growth.</p>
 <p>For CRRA preferences, the <span class="math notranslate nohighlight">\(n\)</span>-period Euler restriction is</p>
 <div class="math notranslate nohighlight" id="equation-hs82-euler-n">
-<span class="eqno">(90.8)<a class="headerlink" href="#equation-hs82-euler-n" title="Link to this equation">#</a></span>\[E_t\!\left[\beta^n \left(\frac{C_{t+n}}{C_t}\right)^{-\gamma} R_{t,t+n}^i\right] = 1.\]</div>
+<span class="eqno">(94.8)<a class="headerlink" href="#equation-hs82-euler-n" title="Link to this equation">#</a></span>\[E_t\!\left[\beta^n \left(\frac{C_{t+n}}{C_t}\right)^{-\gamma} R_{t,t+n}^i\right] = 1.\]</div>
 <p>For estimation, the <span class="math notranslate nohighlight">\(n\)</span>-period exog can either use directly observed <span class="math notranslate nohighlight">\(n\)</span>-period returns/payoffs, or be constructed by compounding one-period returns and consumption growth over <span class="math notranslate nohighlight">\(n\)</span> consecutive periods.</p>
-<p>Again, a key requirement from <span id="id13">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> is that instruments <span class="math notranslate nohighlight">\(z_t\)</span> must lie in the agent’s time-<span class="math notranslate nohighlight">\(t\)</span> information set <span class="math notranslate nohighlight">\(\mathcal{I}_t\)</span>.</p>
+<p>Again, a key requirement from <span id="id13">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> is that instruments <span class="math notranslate nohighlight">\(z_t\)</span> must lie in the agent’s time-<span class="math notranslate nohighlight">\(t\)</span> information set <span class="math notranslate nohighlight">\(\mathcal{I}_t\)</span>.</p>
 <p>For the multi-period case, instruments must be measurable with respect to <span class="math notranslate nohighlight">\(\mathcal{I}_t\)</span>.</p>
 <p>In particular, one should avoid any lagged multi-period aggregates that still include periods after <span class="math notranslate nohighlight">\(t\)</span>, since these would embed realizations not in <span class="math notranslate nohighlight">\(\mathcal{I}_t\)</span>.</p>
 <p>The <span class="math notranslate nohighlight">\(n\)</span>-period exog is constructed by compounding one-period data, and instruments are timed to lie in <span class="math notranslate nohighlight">\(\mathcal{I}_t\)</span>.</p>
@@ -622,7 +622,7 @@ E\!\left[\left(M_{t+1}(\theta_0)R_{t+1}^i - 1\right) \otimes z_t\right]
 </div>
 </div>
 <p>When <span class="math notranslate nohighlight">\(n &gt; 1\)</span>, the Euler equation involves variables dated <span class="math notranslate nohighlight">\(t + n\)</span>, and the disturbance <span class="math notranslate nohighlight">\(u_{t+n} = h(x_{t+n}, b_0)\)</span> will generally be serially correlated.</p>
-<p>As <span id="id14">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> note, if the <span class="math notranslate nohighlight">\(m\)</span> assets are all one-period stocks, then <span class="math notranslate nohighlight">\(u\)</span> is serially uncorrelated because observations on <span class="math notranslate nohighlight">\(x_{t-s}\)</span>, <span class="math notranslate nohighlight">\(s \geq 0\)</span>, are in the agent’s time-<span class="math notranslate nohighlight">\(t\)</span> information set and <span class="math notranslate nohighlight">\(E_t[h(x_{t+1}, b_0)] = 0\)</span>.</p>
+<p>As <span id="id14">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> note, if the <span class="math notranslate nohighlight">\(m\)</span> assets are all one-period stocks, then <span class="math notranslate nohighlight">\(u\)</span> is serially uncorrelated because observations on <span class="math notranslate nohighlight">\(x_{t-s}\)</span>, <span class="math notranslate nohighlight">\(s \geq 0\)</span>, are in the agent’s time-<span class="math notranslate nohighlight">\(t\)</span> information set and <span class="math notranslate nohighlight">\(E_t[h(x_{t+1}, b_0)] = 0\)</span>.</p>
 <p>But if <span class="math notranslate nohighlight">\(n_j &gt; 1\)</span> for some asset <span class="math notranslate nohighlight">\(j\)</span>, the condition <span class="math notranslate nohighlight">\(E_t[h(x_{t+n}, b_0)] = 0\)</span> does not preclude serial correlation in <span class="math notranslate nohighlight">\(u\)</span>, since <span class="math notranslate nohighlight">\(x_{t+n-1}\)</span> is not necessarily in <span class="math notranslate nohighlight">\(I_t\)</span> when <span class="math notranslate nohighlight">\(n &gt; 1\)</span>.</p>
 <p>The number of population autocovariances in the long-run covariance <span class="math notranslate nohighlight">\(S_0\)</span> is determined by <span class="math notranslate nohighlight">\(n\)</span>, the order of the moving average disturbance term <span class="math notranslate nohighlight">\(u_t\)</span>.</p>
 <p>We implement this directly as a finite-order covariance estimator</p>
@@ -656,7 +656,7 @@ E\!\left[\left(M_{t+1}(\theta_0)R_{t+1}^i - 1\right) \otimes z_t\right]
 </div>
 </div>
 </div>
-<p>The estimation procedure in <span id="id15">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> is a two-step generalized instrumental variables procedure.</p>
+<p>The estimation procedure in <span id="id15">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> is a two-step generalized instrumental variables procedure.</p>
 <p>In the first step, we minimize the GMM criterion with a suboptimal weighting matrix (the identity) to obtain a consistent preliminary estimate <span class="math notranslate nohighlight">\(b_T\)</span>.</p>
 <p>In the second step, we use <span class="math notranslate nohighlight">\(b_T\)</span> to estimate the covariance matrix of the sample moment conditions and invert it to form the optimal weighting matrix, then re-minimize the criterion.</p>
 <p>Let’s implement this algorithm</p>
@@ -782,42 +782,42 @@ E\!\left[\left(M_{t+1}(\theta_0)R_{t+1}^i - 1\right) \otimes z_t\right]
 </div>
 </section>
 <section id="gmm-criterion-and-asymptotic-theory">
-<h2><a class="toc-backref" href="#id38" role="doc-backlink"><span class="section-number">90.4. </span>GMM criterion and asymptotic theory</a><a class="headerlink" href="#gmm-criterion-and-asymptotic-theory" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id38" role="doc-backlink"><span class="section-number">94.4. </span>GMM criterion and asymptotic theory</a><a class="headerlink" href="#gmm-criterion-and-asymptotic-theory" title="Link to this heading">#</a></h2>
 <p>We now formalize the estimation procedure.</p>
 <p>Let <span class="math notranslate nohighlight">\(m_t(\theta) = (M_{t+1}(\theta) R_{t+1}^i - 1) \otimes z_t\)</span> denote the vector of moment conditions at date <span class="math notranslate nohighlight">\(t\)</span>, and define the sample mean</p>
 <div class="math notranslate nohighlight" id="equation-hs82-sample-moments">
-<span class="eqno">(90.9)<a class="headerlink" href="#equation-hs82-sample-moments" title="Link to this equation">#</a></span>\[g_T(\theta) = \frac{1}{T} \sum_{t=1}^T m_t(\theta).\]</div>
+<span class="eqno">(94.9)<a class="headerlink" href="#equation-hs82-sample-moments" title="Link to this equation">#</a></span>\[g_T(\theta) = \frac{1}{T} \sum_{t=1}^T m_t(\theta).\]</div>
 <p>If the model is correctly specified, <span class="math notranslate nohighlight">\(g_T(\theta_0)\)</span> should be close to zero for large <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>We estimate <span class="math notranslate nohighlight">\(\theta\)</span> by choosing the parameter vector that makes <span class="math notranslate nohighlight">\(g_T\)</span> as close to zero as possible, measured by a quadratic form:</p>
 <div class="math notranslate nohighlight" id="equation-hs82-criterion">
-<span class="eqno">(90.10)<a class="headerlink" href="#equation-hs82-criterion" title="Link to this equation">#</a></span>\[\hat\theta = \arg\min_\theta g_T(\theta)^\top W_T g_T(\theta)\]</div>
+<span class="eqno">(94.10)<a class="headerlink" href="#equation-hs82-criterion" title="Link to this equation">#</a></span>\[\hat\theta = \arg\min_\theta g_T(\theta)^\top W_T g_T(\theta)\]</div>
 <p>where <span class="math notranslate nohighlight">\(W_T\)</span> is a symmetric positive-definite weighting matrix.</p>
-<p>Under regularity conditions given in <span id="id16">Hansen [<a class="reference internal" href="zreferences.html#id270" title="Lars Peter Hansen. Large sample properties of generalized method of moments estimators. Econometrica, 50(4):1029–1054, 1982.">1982</a>]</span>, the GMM estimator is consistent, asymptotically normal, and has the sandwich covariance matrix</p>
+<p>Under regularity conditions given in <span id="id16">Hansen [<a class="reference internal" href="zreferences.html#id315" title="Lars Peter Hansen. Large sample properties of generalized method of moments estimators. Econometrica, 50(4):1029–1054, 1982.">1982</a>]</span>, the GMM estimator is consistent, asymptotically normal, and has the sandwich covariance matrix</p>
 <div class="math notranslate nohighlight" id="equation-hs82-asymptotic">
-<span class="eqno">(90.11)<a class="headerlink" href="#equation-hs82-asymptotic" title="Link to this equation">#</a></span>\[\sqrt{T}(\hat\theta-\theta_0) \Rightarrow N\!\left(0, (D^\top W D)^{-1} D^\top W S W D (D^\top W D)^{-1}\right),\]</div>
+<span class="eqno">(94.11)<a class="headerlink" href="#equation-hs82-asymptotic" title="Link to this equation">#</a></span>\[\sqrt{T}(\hat\theta-\theta_0) \Rightarrow N\!\left(0, (D^\top W D)^{-1} D^\top W S W D (D^\top W D)^{-1}\right),\]</div>
 <p>where <span class="math notranslate nohighlight">\(D = E[\partial m_t(\theta_0)/\partial\theta^\top]\)</span> is the Jacobian of the moment conditions, <span class="math notranslate nohighlight">\(S\)</span> is the long-run covariance matrix of <span class="math notranslate nohighlight">\(m_t(\theta_0)\)</span>, and <span class="math notranslate nohighlight">\(W\)</span> is the probability limit of <span class="math notranslate nohighlight">\(W_T\)</span>.</p>
-<p><span id="id17">Hansen [<a class="reference internal" href="zreferences.html#id270" title="Lars Peter Hansen. Large sample properties of generalized method of moments estimators. Econometrica, 50(4):1029–1054, 1982.">1982</a>]</span> shows that the optimal weighting matrix is <span class="math notranslate nohighlight">\(W^* = S^{-1}\)</span>, which yields the smallest asymptotic covariance matrix among all choices of <span class="math notranslate nohighlight">\(W\)</span>.</p>
+<p><span id="id17">Hansen [<a class="reference internal" href="zreferences.html#id315" title="Lars Peter Hansen. Large sample properties of generalized method of moments estimators. Econometrica, 50(4):1029–1054, 1982.">1982</a>]</span> shows that the optimal weighting matrix is <span class="math notranslate nohighlight">\(W^* = S^{-1}\)</span>, which yields the smallest asymptotic covariance matrix among all choices of <span class="math notranslate nohighlight">\(W\)</span>.</p>
 <p>Under <span class="math notranslate nohighlight">\(W = S^{-1}\)</span> the sandwich simplifies to <span class="math notranslate nohighlight">\((D^\top S^{-1} D)^{-1}\)</span>.</p>
 <p>When the number of moment conditions <span class="math notranslate nohighlight">\(r\)</span> (e.g., <span class="math notranslate nohighlight">\(r = mq\)</span> for <span class="math notranslate nohighlight">\(m\)</span> Euler equations and <span class="math notranslate nohighlight">\(q\)</span> instruments) exceeds the number of parameters <span class="math notranslate nohighlight">\(k\)</span>, the model is overidentified and we can test whether the data are consistent with the maintained restrictions.</p>
-<p><span id="id18">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> test the overidentifying restrictions using a result from <span id="id19">Hansen [<a class="reference internal" href="zreferences.html#id270" title="Lars Peter Hansen. Large sample properties of generalized method of moments estimators. Econometrica, 50(4):1029–1054, 1982.">1982</a>]</span>:</p>
+<p><span id="id18">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> test the overidentifying restrictions using a result from <span id="id19">Hansen [<a class="reference internal" href="zreferences.html#id315" title="Lars Peter Hansen. Large sample properties of generalized method of moments estimators. Econometrica, 50(4):1029–1054, 1982.">1982</a>]</span>:</p>
 <div class="math notranslate nohighlight" id="equation-hs82-jtest">
-<span class="eqno">(90.12)<a class="headerlink" href="#equation-hs82-jtest" title="Link to this equation">#</a></span>\[J_T = T\, g_T(\hat\theta)^\top \hat S^{-1} g_T(\hat\theta) \Rightarrow \chi^2_{r-k},\]</div>
+<span class="eqno">(94.12)<a class="headerlink" href="#equation-hs82-jtest" title="Link to this equation">#</a></span>\[J_T = T\, g_T(\hat\theta)^\top \hat S^{-1} g_T(\hat\theta) \Rightarrow \chi^2_{r-k},\]</div>
 <p>where <span class="math notranslate nohighlight">\(\hat S\)</span> is a consistent estimator of <span class="math notranslate nohighlight">\(S\)</span>.</p>
 <p>A large <span class="math notranslate nohighlight">\(J_T\)</span> relative to <span class="math notranslate nohighlight">\(\chi^2_{r-k}\)</span> critical values leads to rejection of the model’s overidentifying restrictions.</p>
-<p>For the multi-period case (<span class="math notranslate nohighlight">\(n &gt; 1\)</span>), the disturbance is at most MA(<span class="math notranslate nohighlight">\(n-1\)</span>) as discussed above, so <span id="id20">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> obtain the optimal weighting matrix by setting <span class="math notranslate nohighlight">\(W_0 = S_0^{-1}\)</span> where</p>
+<p>For the multi-period case (<span class="math notranslate nohighlight">\(n &gt; 1\)</span>), the disturbance is at most MA(<span class="math notranslate nohighlight">\(n-1\)</span>) as discussed above, so <span id="id20">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> obtain the optimal weighting matrix by setting <span class="math notranslate nohighlight">\(W_0 = S_0^{-1}\)</span> where</p>
 <div class="math notranslate nohighlight" id="equation-hs82-finite-so">
-<span class="eqno">(90.13)<a class="headerlink" href="#equation-hs82-finite-so" title="Link to this equation">#</a></span>\[S_0 = \sum_{j=-n+1}^{n-1} E\!\left[f(x_{t+n}, z_t, b_0)\, f(x_{t+n-j}, z_{t-j}, b_0)^\top\right].\]</div>
+<span class="eqno">(94.13)<a class="headerlink" href="#equation-hs82-finite-so" title="Link to this equation">#</a></span>\[S_0 = \sum_{j=-n+1}^{n-1} E\!\left[f(x_{t+n}, z_t, b_0)\, f(x_{t+n-j}, z_{t-j}, b_0)^\top\right].\]</div>
 </section>
 <section id="covariance-estimation-and-the-choice-of-instruments">
-<h2><a class="toc-backref" href="#id39" role="doc-backlink"><span class="section-number">90.5. </span>Covariance estimation and the choice of instruments</a><a class="headerlink" href="#covariance-estimation-and-the-choice-of-instruments" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id39" role="doc-backlink"><span class="section-number">94.5. </span>Covariance estimation and the choice of instruments</a><a class="headerlink" href="#covariance-estimation-and-the-choice-of-instruments" title="Link to this heading">#</a></h2>
 <p>For the one-period Euler equation (<span class="math notranslate nohighlight">\(n = 1\)</span>), the disturbance <span class="math notranslate nohighlight">\(u_{t+1} = M_{t+1}(\theta_0) R_{t+1} - 1\)</span> is a martingale difference sequence.</p>
 <p>In this case the moment vector <span class="math notranslate nohighlight">\(m_t(\theta_0) = u_{t+1} \otimes z_t\)</span> is serially uncorrelated, and the long-run covariance <span class="math notranslate nohighlight">\(S\)</span> equals the contemporaneous variance <span class="math notranslate nohighlight">\(E[m_t m_t^\top]\)</span>.</p>
 <p>The covariance estimator therefore requires no kernel or bandwidth choice.</p>
 <p>We simply use the sample analogue <span class="math notranslate nohighlight">\(\hat S = T^{-1} \sum_t m_t m_t^\top\)</span>.</p>
 <p>In our implementation below, we use a HAC (heteroskedasticity and autocorrelation consistent) estimator  against possible mild serial dependence from time aggregation or measurement timing.</p>
-<p>This is a modern precaution, not part of the original <span id="id21">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> procedure, which exploits the known MA order directly as in <a class="reference internal" href="#equation-hs82-finite-so">(90.13)</a>.</p>
+<p>This is a modern precaution, not part of the original <span id="id21">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> procedure, which exploits the known MA order directly as in <a class="reference internal" href="#equation-hs82-finite-so">(94.13)</a>.</p>
 <p>The number of instrument lags <span class="math notranslate nohighlight">\(p\)</span> determines how many orthogonality conditions we use and hence the power of the <span class="math notranslate nohighlight">\(J\)</span> test.</p>
-<p><span id="id22">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> report results for NLAG <span class="math notranslate nohighlight">\(= 1, 2, 4, 6\)</span> and note (footnote 12) that using more orthogonality conditions may lead to estimators with less desirable small-sample properties.</p>
+<p><span id="id22">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> report results for NLAG <span class="math notranslate nohighlight">\(= 1, 2, 4, 6\)</span> and note (footnote 12) that using more orthogonality conditions may lead to estimators with less desirable small-sample properties.</p>
 <p>Below we implement the estimation procedure and allow the user to choose the number of lags and whether to use a HAC estimator for the covariance matrix</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -942,7 +942,7 @@ E\!\left[\left(M_{t+1}(\theta_0)R_{t+1}^i - 1\right) \otimes z_t\right]
 </div>
 </div>
 <section id="simulation">
-<h3><span class="section-number">90.5.1. </span>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">94.5.1. </span>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h3>
 <p>Before applying the estimator to real data, we verify that GMM recovers known parameters from simulated data.</p>
 <p>We build a simulator that generates synthetic return-growth pairs satisfying the Euler equation by construction.</p>
 <p>We generate log consumption growth from a stationary AR(1), compute the stochastic discount factor at known true parameters, and construct gross returns as
@@ -1020,7 +1020,7 @@ True β: 0.995
 </div>
 </div>
 </div>
-<p>We now estimate GMM across lag lengths, following the format of Table I in <span id="id23">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span>.</p>
+<p>We now estimate GMM across lag lengths, following the format of Table I in <span id="id23">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim_table</span> <span class="o">=</span> <span class="n">run_two_step_by_lag</span><span class="p">(</span><span class="n">sim_data</span><span class="p">,</span> <span class="n">lags</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">horizon</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -1128,13 +1128,13 @@ True β: 0.995
 <figure class="align-default" id="fig-hs82-objective-contour">
 <img alt="_images/05b54a9195aa267505f93148e3ec65a5815a835ab18963db933e65bf70541b52.png" src="_images/05b54a9195aa267505f93148e3ec65a5815a835ab18963db933e65bf70541b52.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 90.1 </span><span class="caption-text">GMM objective contour surface (simulated data)</span><a class="headerlink" href="#fig-hs82-objective-contour" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 94.1 </span><span class="caption-text">GMM objective contour surface (simulated data)</span><a class="headerlink" href="#fig-hs82-objective-contour" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
 </div>
 <p>The criterion surface may have elongated valleys where many parameter combinations fit the moments nearly equally well.</p>
-<p>To illustrate the multi-period case from Section 2 of <span id="id24">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span>, we estimate the three-period Euler restriction using overlapping-horizon returns and consumption growth, with instruments formed from one-period data dated <span class="math notranslate nohighlight">\(t\)</span> or earlier and the finite-order covariance appropriate for MA(2) disturbances.</p>
+<p>To illustrate the multi-period case from Section 2 of <span id="id24">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span>, we estimate the three-period Euler restriction using overlapping-horizon returns and consumption growth, with instruments formed from one-period data dated <span class="math notranslate nohighlight">\(t\)</span> or earlier and the finite-order covariance appropriate for MA(2) disturbances.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">horizon_n</span> <span class="o">=</span> <span class="mi">3</span>
@@ -1176,7 +1176,7 @@ Euler-error ACF lags 1-3: 0.678, 0.356, 0.023
 </div>
 </div>
 <p>The low-lag ACF is consistent with the MA(2) dependence implied by the 3-period horizon.</p>
-<p>We now run a Monte Carlo exercise with 500 replications to visualize the finite-sample distribution of <span class="math notranslate nohighlight">\(\hat\gamma\)</span>, <span class="math notranslate nohighlight">\(\hat\beta\)</span>, and the <span class="math notranslate nohighlight">\(J\)</span> statistic and verify that the asymptotic theory from Section 3 of <span id="id25">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> provides a reasonable approximation.</p>
+<p>We now run a Monte Carlo exercise with 500 replications to visualize the finite-sample distribution of <span class="math notranslate nohighlight">\(\hat\gamma\)</span>, <span class="math notranslate nohighlight">\(\hat\beta\)</span>, and the <span class="math notranslate nohighlight">\(J\)</span> statistic and verify that the asymptotic theory from Section 3 of <span id="id25">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> provides a reasonable approximation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_rep</span> <span class="o">=</span> <span class="mi">500</span>
@@ -1219,7 +1219,7 @@ Euler-error ACF lags 1-3: 0.678, 0.356, 0.023
 <figure class="align-default" id="fig-hs82-monte-carlo">
 <img alt="_images/8cf40b671363f5737434d39be6d5224f1259e85d523911287c4f875c2e943727.png" src="_images/8cf40b671363f5737434d39be6d5224f1259e85d523911287c4f875c2e943727.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 90.2 </span><span class="caption-text">Monte Carlo GMM sampling distributions</span><a class="headerlink" href="#fig-hs82-monte-carlo" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 94.2 </span><span class="caption-text">Monte Carlo GMM sampling distributions</span><a class="headerlink" href="#fig-hs82-monte-carlo" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -1228,9 +1228,9 @@ Euler-error ACF lags 1-3: 0.678, 0.356, 0.023
 </section>
 </section>
 <section id="empirical-gmm-estimation">
-<h2><a class="toc-backref" href="#id40" role="doc-backlink"><span class="section-number">90.6. </span>Empirical GMM estimation</a><a class="headerlink" href="#empirical-gmm-estimation" title="Link to this heading">#</a></h2>
-<p>We now apply GMM to observed data, following the empirical strategy of Section 5 in <span id="id26">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span>.</p>
-<p><span id="id27">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> use monthly per capita consumption of nondurables (ND) and nondurables plus services (NDS) paired with the equally-weighted (EWR) and value-weighted (VWR) aggregate stock returns from CRSP, for 1959:2 through 1978:12.</p>
+<h2><a class="toc-backref" href="#id40" role="doc-backlink"><span class="section-number">94.6. </span>Empirical GMM estimation</a><a class="headerlink" href="#empirical-gmm-estimation" title="Link to this heading">#</a></h2>
+<p>We now apply GMM to observed data, following the empirical strategy of Section 5 in <span id="id26">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span>.</p>
+<p><span id="id27">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> use monthly per capita consumption of nondurables (ND) and nondurables plus services (NDS) paired with the equally-weighted (EWR) and value-weighted (VWR) aggregate stock returns from CRSP, for 1959:2 through 1978:12.</p>
 <p>We focus on their ND+VWR specification using FRED nondurables consumption and the Ken French value-weighted market return as a proxy for CRSP, on the same 1959:2–1978:12 sample period.</p>
 <p>Because the Ken French return is not identical to the original CRSP NYSE value-weighted return, we only want to match the paper qualitatively.</p>
 <p>Both this lecture and the companion lecture <a class="reference internal" href="hansen_singleton_1983.html"><span class="doc">Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns</span></a> use the same data construction.</p>
@@ -1354,8 +1354,8 @@ Std log consumption growth: 0.915%
 </div>
 </div>
 <p>One feature of these data is the large gap between the volatility of returns and the volatility of consumption growth.</p>
-<p>This is again an empirical fact underlying the equity premium puzzle of <span id="id28">Mehra and Prescott [<a class="reference internal" href="zreferences.html#id227" title="Rajnish Mehra and Edward C Prescott. The equity premium: A puzzle. Journal of Monetary Economics, 15(2):145–161, 1985.">1985</a>]</span>: matching the observed equity premium with CRRA preferences requires implausibly high risk aversion.</p>
-<p>We now estimate the Euler equation using the two-step generalized instrumental variables (GIV) / GMM procedure in <span id="id29">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span>.</p>
+<p>This is again an empirical fact underlying the equity premium puzzle of <span id="id28">Mehra and Prescott [<a class="reference internal" href="zreferences.html#id276" title="Rajnish Mehra and Edward C Prescott. The equity premium: A puzzle. Journal of Monetary Economics, 15(2):145–161, 1985.">1985</a>]</span>: matching the observed equity premium with CRRA preferences requires implausibly high risk aversion.</p>
+<p>We now estimate the Euler equation using the two-step generalized instrumental variables (GIV) / GMM procedure in <span id="id29">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span>.</p>
 <p>For the one-period stock-return Euler equation (<span class="math notranslate nohighlight">\(n=1\)</span>), the disturbance is a martingale difference sequence, so the optimal weighting matrix uses the contemporaneous covariance <span class="math notranslate nohighlight">\(S_0 = E[m_t m_t^\top]\)</span>.</p>
 <p>To match Table I, we report the paper’s exponent parameter <span class="math notranslate nohighlight">\(\alpha\)</span> in
 <span class="math notranslate nohighlight">\(E_t[\beta (C_{t+1}/C_t)^\alpha R_{t+1} - 1] = 0\)</span>.</p>
@@ -1399,7 +1399,7 @@ Std log consumption growth: 0.915%
 \end{array}\end{split}\]</div>
 </div>
 </div>
-<p>For comparison, Table I of <span id="id30">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id264" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> (as corrected in the <a class="reference external" href="https://www.jstor.org/stable/1911486?seq=2">1984 <em>Econometrica</em> errata</a>) reports the following ND+VWR values for 1959:2–1978:12:</p>
+<p>For comparison, Table I of <span id="id30">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id309" title="Lars Peter Hansen and Kenneth J Singleton. Generalized instrumental variables estimation of nonlinear rational expectations models. Econometrica: Journal of the Econometric Society, pages 1269–1286, 1982.">1982</a>]</span> (as corrected in the <a class="reference external" href="https://www.jstor.org/stable/1911486?seq=2">1984 <em>Econometrica</em> errata</a>) reports the following ND+VWR values for 1959:2–1978:12:</p>
 <div class="cell tag_hide-input docutils container">
 <details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1448,13 +1448,13 @@ Std log consumption growth: 0.915%
 <p>They are very close to our estimates.</p>
 </section>
 <section id="summary">
-<h2><a class="toc-backref" href="#id41" role="doc-backlink"><span class="section-number">90.7. </span>Summary</a><a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id41" role="doc-backlink"><span class="section-number">94.7. </span>Summary</a><a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
 <p>The GMM estimator requires only the orthogonality conditions implied by the Euler equation and a set of conditioning variables.</p>
 <p>It does not require assumptions about the joint distribution of consumption and returns, the production technology, or any other part of the economic environment beyond the representative agent’s first-order conditions.</p>
-<p>So GMM is provides a way to estimate some objects of interest while not estimating all of the parameters that <span id="id31">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id263" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> estimated in their loglinear model of consumption growth and returns.</p>
+<p>So GMM is provides a way to estimate some objects of interest while not estimating all of the parameters that <span id="id31">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id308" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> estimated in their loglinear model of consumption growth and returns.</p>
 <ul class="simple">
-<li><p>If the complete model of <span id="id32">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id263" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> is correctly specified, then their maximum likelihood estimators promise to be more efficient that are the GMM estimators described in this lecture.</p></li>
-<li><p>The theme of estimating <em>something</em> while not estimating <em>everything</em> runs through much of Lars Peter Hansen’s work. See <span id="id33">Hansen [<a class="reference internal" href="zreferences.html#id5" title="Lars Peter Hansen. Nobel lecture: uncertainty outside and inside economic models. Journal of Political Economy, 122(5):945–987, 2014.">2014</a>]</span></p></li>
+<li><p>If the complete model of <span id="id32">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id308" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span> is correctly specified, then their maximum likelihood estimators promise to be more efficient that are the GMM estimators described in this lecture.</p></li>
+<li><p>The theme of estimating <em>something</em> while not estimating <em>everything</em> runs through much of Lars Peter Hansen’s work. See <span id="id33">Hansen [<a class="reference internal" href="zreferences.html#id60" title="Lars Peter Hansen. Nobel lecture: uncertainty outside and inside economic models. Journal of Political Economy, 122(5):945–987, 2014.">2014</a>]</span></p></li>
 </ul>
 </section>
 </section>
@@ -1683,13 +1683,28 @@ Std log consumption growth: 0.915%
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="blackwell_kihlstrom.html">
+   30. Blackwell’s Theorem on Comparing Experiments
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   30. Incorrect Models
+   31. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   31. Bayesian versus Frequentist Decision Rules
+   32. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="merging_of_opinions.html">
+   33. Merging of Opinions: The Blackwell–Dubins Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="survival_recursive_preferences.html">
+   34. Survival and Long-Run Dynamics under Recursive Preferences
   </a>
  </li>
 </ul>
@@ -1701,12 +1716,12 @@ Std log consumption growth: 0.915%
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   32. Optimal Transport
+   35. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   33. Von Neumann Growth Model (and a Generalization)
+   36. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1718,52 +1733,57 @@ Std log consumption growth: 0.915%
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   34. Finite Markov Chains
+   37. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   35. Inventory Dynamics
+   38. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   36. Linear State Space Models
+   39. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   37. Samuelson Multiplier-Accelerator
+   40. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chow_business_cycles.html">
-   38. The Acceleration Principle and the Nature of Business Cycles
+   41. The Acceleration Principle and the Nature of Business Cycles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   39. Kesten Processes and Firm Dynamics
+   42. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   40. Wealth Distribution Dynamics
+   43. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   41. A First Look at the Kalman Filter
+   44. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   42. Another Look at the Kalman Filter
+   45. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="organization_capital.html">
+   46. Organization Capital
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="measurement_models.html">
-   43. Two Models of Measurements and the Investment Accelerator
+   47. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1775,42 +1795,42 @@ Std log consumption growth: 0.915%
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   44. Job Search I: The McCall Search Model
+   48. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   45. Job Search II: Search and Separation
+   49. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   46. Job Search III: Search with Separation and Markov Wages
+   50. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   47. Job Search IV: Fitted Value Function Iteration
+   51. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   48. Job Search V: Persistent and Transitory Wage Shocks
+   52. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   49. Job Search VI: Modeling Career Choice
+   53. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   50. Job Search VII: On-the-Job Search
+   54. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   51. Job Search VIII: Search with Learning
+   55. Job Search VIII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1822,17 +1842,17 @@ Std log consumption growth: 0.915%
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_q.html">
-   52. Inventory Management via Q-Learning
+   56. Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rs_inventory_q.html">
-   53. Risk-Sensitive Inventory Management via Q-Learning
+   57. Risk-Sensitive Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   54. Job Search IX: Search with Q-Learning
+   58. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1844,32 +1864,32 @@ Std log consumption growth: 0.915%
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   55. Optimal Savings I: Cake Eating
+   59. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   56. Optimal Savings II: Numerical Cake Eating
+   60. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   57. Optimal Savings III: Stochastic Returns
+   61. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   58. Optimal Savings IV: Time Iteration
+   62. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   59. Optimal Savings V: The Endogenous Grid Method
+   63. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   60. Optimal Savings VI: EGM with JAX
+   64. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1881,27 +1901,27 @@ Std log consumption growth: 0.915%
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   61. The Income Fluctuation Problem I: Discretization and VFI
+   65. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   62. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   66. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   63. The Income Fluctuation Problem III: The Endogenous Grid Method
+   67. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   64. The Income Fluctuation Problem IV: Transient Income Shocks
+   68. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   65. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   69. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1913,42 +1933,42 @@ Std log consumption growth: 0.915%
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   66. LQ Control: Foundations
+   70. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   67. Lagrangian for LQ Control
+   71. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   68. Eliminating Cross Products
+   72. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   69. The Permanent Income Model
+   73. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   70. Permanent Income II: LQ Techniques
+   74. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_1.html">
-   71. Certainty Equivalence
+   75. Certainty Equivalence
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_2.html">
-   72. Certainty Equivalence and Model Uncertainty
+   76. Certainty Equivalence and Model Uncertainty
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   73. Production Smoothing via Inventories
+   77. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1960,22 +1980,22 @@ Std log consumption growth: 0.915%
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   74. Cass-Koopmans Model
+   78. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   75. Cass-Koopmans Competitive Equilibrium
+   79. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   76. Cass-Koopmans Model with Distorting Taxes
+   80. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   77. Two-Country Model with Distorting Taxes
+   81. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -1987,52 +2007,52 @@ Std log consumption growth: 0.915%
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   78. A Lake Model of Employment and Unemployment
+   82. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   79. Lake Model with an Endogenous Job Finding Rate
+   83. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   80. Rational Expectations Equilibrium
+   84. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   81. Stability in Linear Rational Expectations Models
+   85. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   82. Markov Perfect Equilibrium
+   86. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   83. Uncertainty Traps
+   87. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   84. The Aiyagari Model
+   88. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   85. Transitions in an Overlapping Generations Model
+   89. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   86. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   90. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   87. Two Computations to Fund Social Security
+   91. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -2044,47 +2064,47 @@ Std log consumption growth: 0.915%
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   88. Asset Pricing: Finite State Models
+   92. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   89. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   90. Estimating Euler Equations by Generalized Method of Moments
+   94. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="doubts_or_variability.html">
-   91. Doubts or Variability?
+   95. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   92. Competitive Equilibria with Arrow Securities
+   96. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   93. Heterogeneous Beliefs and Bubbles
+   97. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   94. Speculative Behavior with Bayesian Learning
+   98. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   95. Affine Models of Asset Prices
+   99. Affine Models of Asset Prices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="risk_aversion_or_mistaken_beliefs.html">
-   96. Risk Aversion or Mistaken Beliefs?
+   100. Risk Aversion or Mistaken Beliefs?
   </a>
  </li>
 </ul>
@@ -2096,17 +2116,17 @@ Std log consumption growth: 0.915%
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   97. Pandas for Panel Data
+   101. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   98. Linear Regression in Python
+   102. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   99. Maximum Likelihood Estimation
+   103. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2118,12 +2138,12 @@ Std log consumption growth: 0.915%
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   100. First-Price and Second-Price Auctions
+   104. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   101. Multiple Good Allocation Mechanisms
+   105. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2135,17 +2155,17 @@ Std log consumption growth: 0.915%
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   102. Troubleshooting
+   106. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   103. References
+   107. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   104. Execution Statistics
+   108. Execution Statistics
   </a>
  </li>
 </ul>

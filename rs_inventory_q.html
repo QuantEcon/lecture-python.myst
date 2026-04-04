@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>53. Risk-Sensitive Inventory Management via Q-Learning &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>57. Risk-Sensitive Inventory Management via Q-Learning &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -80,7 +80,7 @@
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=300d9cef76b95d0252c8ff6263fc63de943d6f3a" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
     <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="54. Job Search IX: Search with Q-Learning" href="mccall_q.html" />
-    <link rel="prev" title="52. Inventory Management via Q-Learning" href="inventory_q.html" />
+    <link rel="next" title="58. Job Search IX: Search with Q-Learning" href="mccall_q.html" />
+    <link rel="prev" title="56. Inventory Management via Q-Learning" href="inventory_q.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -204,32 +204,32 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">53.1. Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">53.2. The Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-via-value-function-iteration">53.3. Solving via Value Function Iteration</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specification">53.3.1. Model specification</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-bellman-operator">53.3.2. The Bellman operator</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-greedy-policy">53.3.3. Computing the greedy policy</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">53.3.4. Value function iteration</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-and-solving-an-instance">53.3.5. Creating and solving an instance</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-risk-sensitivity-on-the-optimal-policy">53.3.6. Effect of risk sensitivity on the optimal policy</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulating-the-optimal-policy">53.3.7. Simulating the optimal policy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">57.1. Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">57.2. The Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-via-value-function-iteration">57.3. Solving via Value Function Iteration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specification">57.3.1. Model specification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-bellman-operator">57.3.2. The Bellman operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-greedy-policy">57.3.3. Computing the greedy policy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">57.3.4. Value function iteration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-and-solving-an-instance">57.3.5. Creating and solving an instance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-risk-sensitivity-on-the-optimal-policy">57.3.6. Effect of risk sensitivity on the optimal policy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulating-the-optimal-policy">57.3.7. Simulating the optimal policy</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-outcomes">53.4. Interpreting the Outcomes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q-learning">53.5. Q-Learning</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-q-factor">53.5.1. The Q-factor</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-the-q-factor-bellman-equation">53.5.2. Deriving the Q-factor Bellman equation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-q-learning-update-rule">53.5.3. The Q-learning update rule</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-plan">53.5.4. Implementation plan</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimistic-initialization">53.5.5. Optimistic initialization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">53.5.6. Implementation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-q-learning">53.5.7. Running Q-learning</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-with-the-exact-solution">53.5.8. Comparing with the exact solution</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-learning-over-time">53.5.9. Visualizing learning over time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interpreting-the-outcomes">57.4. Interpreting the Outcomes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q-learning">57.5. Q-Learning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-q-factor">57.5.1. The Q-factor</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-the-q-factor-bellman-equation">57.5.2. Deriving the Q-factor Bellman equation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-q-learning-update-rule">57.5.3. The Q-learning update rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-plan">57.5.4. Implementation plan</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimistic-initialization">57.5.5. Optimistic initialization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">57.5.6. Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-q-learning">57.5.7. Running Q-learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-with-the-exact-solution">57.5.8. Comparing with the exact solution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-learning-over-time">57.5.9. Visualizing learning over time</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">53.6. Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">57.6. Conclusion</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -297,7 +297,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/d825b9236" class="changelog-hash">d825b9236</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">5 days ago</span>
+                                <span class="changelog-time">3 weeks ago</span>
                                 <span class="changelog-message">Add optimistic initialization to Q-learning lecture (#830)</span>
                             </li>
                             
@@ -306,7 +306,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/ad276133c" class="changelog-hash">ad276133c</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 week ago</span>
+                                <span class="changelog-time">3 weeks ago</span>
                                 <span class="changelog-message">Add risk-sensitive inventory management lecture (#827)</span>
                             </li>
                             
@@ -323,7 +323,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="risk-sensitive-inventory-management-via-q-learning">
-<h1><a class="toc-backref" href="#id1" role="doc-backlink"><span class="section-number">53. </span>Risk-Sensitive Inventory Management via Q-Learning</a><a class="headerlink" href="#risk-sensitive-inventory-management-via-q-learning" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id1" role="doc-backlink"><span class="section-number">57. </span>Risk-Sensitive Inventory Management via Q-Learning</a><a class="headerlink" href="#risk-sensitive-inventory-management-via-q-learning" title="Link to this heading">#</a></h1>
 <nav class="contents" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -340,7 +340,7 @@
 </ul>
 </nav>
 <section id="introduction">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">53.1. </span>Introduction</a><a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">57.1. </span>Introduction</a><a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>In <a class="reference internal" href="inventory_q.html"><span class="doc">Inventory Management via Q-Learning</span></a>, we looked at an inventory management
 problem and solved it with both value function iteration and Q-learning.</p>
 <p>In this lecture, we consider a risk-sensitive variation.</p>
@@ -364,7 +364,7 @@ equation.</p>
 </div>
 </section>
 <section id="the-model">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">53.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">57.2. </span>The Model</a><a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
 <p>The Bellman equation for the inventory management problem in <a class="reference internal" href="inventory_q.html"><span class="doc">Inventory Management via Q-Learning</span></a> has the form</p>
 <div class="math notranslate nohighlight">
 \[
@@ -416,9 +416,9 @@ equation.</p>
 risk-neutral case, with the expectation replaced by the certainty equivalent.</p>
 </section>
 <section id="solving-via-value-function-iteration">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">53.3. </span>Solving via Value Function Iteration</a><a class="headerlink" href="#solving-via-value-function-iteration" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">57.3. </span>Solving via Value Function Iteration</a><a class="headerlink" href="#solving-via-value-function-iteration" title="Link to this heading">#</a></h2>
 <section id="model-specification">
-<h3><span class="section-number">53.3.1. </span>Model specification<a class="headerlink" href="#model-specification" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.3.1. </span>Model specification<a class="headerlink" href="#model-specification" title="Link to this heading">#</a></h3>
 <p>We reuse the same model primitives as in <a class="reference internal" href="inventory_q.html"><span class="doc">Inventory Management via Q-Learning</span></a>, adding <span class="math notranslate nohighlight">\(\gamma\)</span> as a parameter.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -461,7 +461,7 @@ risk-neutral case, with the expectation replaced by the certainty equivalent.</p
 </div>
 </section>
 <section id="the-bellman-operator">
-<h3><span class="section-number">53.3.2. </span>The Bellman operator<a class="headerlink" href="#the-bellman-operator" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.3.2. </span>The Bellman operator<a class="headerlink" href="#the-bellman-operator" title="Link to this heading">#</a></h3>
 <p>The risk-sensitive Bellman operator replaces the expected value with the certainty equivalent.</p>
 <p>For numerical stability, we use the <a class="reference external" href="https://en.wikipedia.org/wiki/LogSumExp">log-sum-exp trick</a>: given values <span class="math notranslate nohighlight">\(z_i = \pi(x, a, d_i) + \beta \, v(h(x, a, d_i))\)</span>, we compute</p>
 <div class="math notranslate nohighlight">
@@ -519,7 +519,7 @@ risk-neutral case, with the expectation replaced by the certainty equivalent.</p
 </div>
 </section>
 <section id="computing-the-greedy-policy">
-<h3><span class="section-number">53.3.3. </span>Computing the greedy policy<a class="headerlink" href="#computing-the-greedy-policy" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.3.3. </span>Computing the greedy policy<a class="headerlink" href="#computing-the-greedy-policy" title="Link to this heading">#</a></h3>
 <p>The greedy policy records the maximizing action instead of the maximized value.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -566,7 +566,7 @@ risk-neutral case, with the expectation replaced by the certainty equivalent.</p
 </div>
 </section>
 <section id="value-function-iteration">
-<h3><span class="section-number">53.3.4. </span>Value function iteration<a class="headerlink" href="#value-function-iteration" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.3.4. </span>Value function iteration<a class="headerlink" href="#value-function-iteration" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_rs_inventory_model</span><span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
@@ -589,7 +589,7 @@ risk-neutral case, with the expectation replaced by the certainty equivalent.</p
 </div>
 </section>
 <section id="creating-and-solving-an-instance">
-<h3><span class="section-number">53.3.5. </span>Creating and solving an instance<a class="headerlink" href="#creating-and-solving-an-instance" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.3.5. </span>Creating and solving an instance<a class="headerlink" href="#creating-and-solving-an-instance" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_rs_inventory_model</span><span class="p">()</span>
@@ -614,7 +614,7 @@ risk-neutral case, with the expectation replaced by the certainty equivalent.</p
 </div>
 </section>
 <section id="effect-of-risk-sensitivity-on-the-optimal-policy">
-<h3><span class="section-number">53.3.6. </span>Effect of risk sensitivity on the optimal policy<a class="headerlink" href="#effect-of-risk-sensitivity-on-the-optimal-policy" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.3.6. </span>Effect of risk sensitivity on the optimal policy<a class="headerlink" href="#effect-of-risk-sensitivity-on-the-optimal-policy" title="Link to this heading">#</a></h3>
 <p>We solve the model for several values of <span class="math notranslate nohighlight">\(\gamma\)</span> and compare the resulting policies.</p>
 <p>As we will see, a risk-sensitive firm orders less aggressively than a risk-neutral one.</p>
 <div class="cell docutils container">
@@ -667,7 +667,7 @@ Converged in 583 iterations with error 9.96e-07
 </div>
 </section>
 <section id="simulating-the-optimal-policy">
-<h3><span class="section-number">53.3.7. </span>Simulating the optimal policy<a class="headerlink" href="#simulating-the-optimal-policy" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.3.7. </span>Simulating the optimal policy<a class="headerlink" href="#simulating-the-optimal-policy" title="Link to this heading">#</a></h3>
 <p>We simulate inventory dynamics under the optimal policy for the baseline <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -716,7 +716,7 @@ Converged in 583 iterations with error 9.96e-07
 </section>
 </section>
 <section id="interpreting-the-outcomes">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">53.4. </span>Interpreting the Outcomes</a><a class="headerlink" href="#interpreting-the-outcomes" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">57.4. </span>Interpreting the Outcomes</a><a class="headerlink" href="#interpreting-the-outcomes" title="Link to this heading">#</a></h2>
 <p>The plots above show that a more risk-sensitive firm (larger <span class="math notranslate nohighlight">\(\gamma\)</span>) orders
 less inventory and maintains lower stock levels.</p>
 <p>At first glance this may seem surprising: wouldn’t holding more inventory
@@ -741,11 +741,11 @@ randomness of revenue</strong>.</p>
 closely, propagating that variance forward through <span class="math notranslate nohighlight">\(v\)</span>.</p>
 </section>
 <section id="q-learning">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">53.5. </span>Q-Learning</a><a class="headerlink" href="#q-learning" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">57.5. </span>Q-Learning</a><a class="headerlink" href="#q-learning" title="Link to this heading">#</a></h2>
 <p>We now ask whether the optimal policy can be learned without knowledge of the
 model, as we did in the risk-neutral case in <a class="reference internal" href="inventory_q.html"><span class="doc">Inventory Management via Q-Learning</span></a>.</p>
 <section id="the-q-factor">
-<h3><span class="section-number">53.5.1. </span>The Q-factor<a class="headerlink" href="#the-q-factor" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.5.1. </span>The Q-factor<a class="headerlink" href="#the-q-factor" title="Link to this heading">#</a></h3>
 <p>The first step is to define the Q-factor in a way that is compatible with the
 risk-sensitive Bellman equation.</p>
 <p>We define</p>
@@ -763,7 +763,7 @@ risk-sensitive Bellman equation.</p>
 action <span class="math notranslate nohighlight">\(a\)</span> in state <span class="math notranslate nohighlight">\(x\)</span> and following the optimal policy thereafter.</p>
 </section>
 <section id="deriving-the-q-factor-bellman-equation">
-<h3><span class="section-number">53.5.2. </span>Deriving the Q-factor Bellman equation<a class="headerlink" href="#deriving-the-q-factor-bellman-equation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.5.2. </span>Deriving the Q-factor Bellman equation<a class="headerlink" href="#deriving-the-q-factor-bellman-equation" title="Link to this heading">#</a></h3>
 <p>Our goal is to obtain a fixed point equation in <span class="math notranslate nohighlight">\(q\)</span> alone, eliminating <span class="math notranslate nohighlight">\(v^*\)</span>.</p>
 <p><strong>Step 1.</strong> Express <span class="math notranslate nohighlight">\(v^*\)</span> in terms of <span class="math notranslate nohighlight">\(q\)</span>.</p>
 <p>The risk-sensitive Bellman equation says <span class="math notranslate nohighlight">\(v^*(x) = \max_{a \in \Gamma(x)}
@@ -812,7 +812,7 @@ a')\right]^\beta\)</span>.</p>
 <p>This is a fixed point equation in <span class="math notranslate nohighlight">\(q\)</span> alone — <span class="math notranslate nohighlight">\(v^*\)</span> has been eliminated.</p>
 </section>
 <section id="the-q-learning-update-rule">
-<h3><span class="section-number">53.5.3. </span>The Q-learning update rule<a class="headerlink" href="#the-q-learning-update-rule" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.5.3. </span>The Q-learning update rule<a class="headerlink" href="#the-q-learning-update-rule" title="Link to this heading">#</a></h3>
 <p>As in the risk-neutral case, we approximate the fixed point using stochastic
 approximation.</p>
 <p>At each step, the agent is in state <span class="math notranslate nohighlight">\(x\)</span>, takes action <span class="math notranslate nohighlight">\(a\)</span>, observes profit
@@ -847,7 +847,7 @@ than a scaled sum <span class="math notranslate nohighlight">\(\beta \cdot \max_
 <span class="math notranslate nohighlight">\(X_{t+1}\)</span> — no model knowledge is required.</p>
 </section>
 <section id="implementation-plan">
-<h3><span class="section-number">53.5.4. </span>Implementation plan<a class="headerlink" href="#implementation-plan" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.5.4. </span>Implementation plan<a class="headerlink" href="#implementation-plan" title="Link to this heading">#</a></h3>
 <p>Our implementation follows the same structure as the risk-neutral Q-learning in
 <a class="reference internal" href="inventory_q.html"><span class="doc">Inventory Management via Q-Learning</span></a>, with the modifications above:</p>
 <ol class="arabic simple">
@@ -874,7 +874,7 @@ scalar for the update target, and the <span class="math notranslate nohighlight"
 </ol>
 </section>
 <section id="optimistic-initialization">
-<h3><span class="section-number">53.5.5. </span>Optimistic initialization<a class="headerlink" href="#optimistic-initialization" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.5.5. </span>Optimistic initialization<a class="headerlink" href="#optimistic-initialization" title="Link to this heading">#</a></h3>
 <p>As in <a class="reference internal" href="inventory_q.html"><span class="doc">Inventory Management via Q-Learning</span></a>, we use optimistic initialization to accelerate learning.</p>
 <p>The logic is the same — initialize the Q-table so that every untried action looks attractive, driving the agent to explore broadly — but the direction is reversed.</p>
 <p>Since the optimal policy <em>minimizes</em> <span class="math notranslate nohighlight">\(q\)</span>, “optimistic” means initializing the Q-table <em>below</em> the true values.  When the agent tries an action, the update pushes <span class="math notranslate nohighlight">\(q\)</span> upward toward reality, making that entry look worse and prompting the agent to try other actions that still appear optimistically good.</p>
@@ -882,7 +882,7 @@ scalar for the update target, and the <span class="math notranslate nohighlight"
 We initialize the Q-table at <span class="math notranslate nohighlight">\(10^{-9}\)</span>, modestly below this range.</p>
 </section>
 <section id="implementation">
-<h3><span class="section-number">53.5.6. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.5.6. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h3>
 <p>We first define a helper to extract the greedy policy from the Q-table.</p>
 <p>Since the optimal policy minimizes <span class="math notranslate nohighlight">\(q\)</span>, we use <span class="math notranslate nohighlight">\(\argmin\)</span> rather than <span class="math notranslate nohighlight">\(\argmax\)</span>.</p>
 <div class="cell docutils container">
@@ -982,7 +982,7 @@ the update target uses <span class="math notranslate nohighlight">\(\exp(-\gamma
 </div>
 </section>
 <section id="running-q-learning">
-<h3><span class="section-number">53.5.7. </span>Running Q-learning<a class="headerlink" href="#running-q-learning" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.5.7. </span>Running Q-learning<a class="headerlink" href="#running-q-learning" title="Link to this heading">#</a></h3>
 <p>We run <span class="math notranslate nohighlight">\(n\)</span> = 5 million steps and take policy snapshots at steps 10,000, 1,000,000, and <span class="math notranslate nohighlight">\(n\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -995,7 +995,7 @@ the update target uses <span class="math notranslate nohighlight">\(\exp(-\gamma
 </div>
 </section>
 <section id="comparing-with-the-exact-solution">
-<h3><span class="section-number">53.5.8. </span>Comparing with the exact solution<a class="headerlink" href="#comparing-with-the-exact-solution" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.5.8. </span>Comparing with the exact solution<a class="headerlink" href="#comparing-with-the-exact-solution" title="Link to this heading">#</a></h3>
 <p>We extract the value function and policy from the final Q-table.</p>
 <p>Since Q-values represent <span class="math notranslate nohighlight">\(\mathbb{E}[\exp(-\gamma(\cdots))]\)</span>, we recover the
 value function via <span class="math notranslate nohighlight">\(v_Q(x) = -\frac{1}{\gamma} \ln(\min_{a} q(x, a))\)</span> and the
@@ -1042,7 +1042,7 @@ policy via <span class="math notranslate nohighlight">\(\sigma_Q(x) = \argmin_a 
 </div>
 </section>
 <section id="visualizing-learning-over-time">
-<h3><span class="section-number">53.5.9. </span>Visualizing learning over time<a class="headerlink" href="#visualizing-learning-over-time" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">57.5.9. </span>Visualizing learning over time<a class="headerlink" href="#visualizing-learning-over-time" title="Link to this heading">#</a></h3>
 <p>The panels below show how the agent’s policy evolves during training.</p>
 <p>Each panel simulates an inventory path using the greedy policy extracted from
 the Q-table at a given training step, with the same demand sequence throughout.</p>
@@ -1094,7 +1094,7 @@ variance by holding less stock.</p>
 </section>
 </section>
 <section id="conclusion">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">53.6. </span>Conclusion</a><a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">57.6. </span>Conclusion</a><a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
 <p>We extended the inventory management problem from <a class="reference internal" href="inventory_q.html"><span class="doc">Inventory Management via Q-Learning</span></a> to
 incorporate risk sensitivity via the certainty equivalent operator
 <span class="math notranslate nohighlight">\(\psi^{-1}(\mathbb{E}[\psi(\cdot)])\)</span> with <span class="math notranslate nohighlight">\(\psi(t) = \exp(-\gamma t)\)</span>.</p>
@@ -1334,13 +1334,28 @@ to observe states, actions, and profits.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="blackwell_kihlstrom.html">
+   30. Blackwell’s Theorem on Comparing Experiments
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   30. Incorrect Models
+   31. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   31. Bayesian versus Frequentist Decision Rules
+   32. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="merging_of_opinions.html">
+   33. Merging of Opinions: The Blackwell–Dubins Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="survival_recursive_preferences.html">
+   34. Survival and Long-Run Dynamics under Recursive Preferences
   </a>
  </li>
 </ul>
@@ -1352,12 +1367,12 @@ to observe states, actions, and profits.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   32. Optimal Transport
+   35. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   33. Von Neumann Growth Model (and a Generalization)
+   36. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1369,52 +1384,57 @@ to observe states, actions, and profits.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   34. Finite Markov Chains
+   37. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   35. Inventory Dynamics
+   38. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   36. Linear State Space Models
+   39. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   37. Samuelson Multiplier-Accelerator
+   40. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chow_business_cycles.html">
-   38. The Acceleration Principle and the Nature of Business Cycles
+   41. The Acceleration Principle and the Nature of Business Cycles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   39. Kesten Processes and Firm Dynamics
+   42. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   40. Wealth Distribution Dynamics
+   43. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   41. A First Look at the Kalman Filter
+   44. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   42. Another Look at the Kalman Filter
+   45. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="organization_capital.html">
+   46. Organization Capital
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="measurement_models.html">
-   43. Two Models of Measurements and the Investment Accelerator
+   47. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1426,42 +1446,42 @@ to observe states, actions, and profits.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   44. Job Search I: The McCall Search Model
+   48. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   45. Job Search II: Search and Separation
+   49. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   46. Job Search III: Search with Separation and Markov Wages
+   50. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   47. Job Search IV: Fitted Value Function Iteration
+   51. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   48. Job Search V: Persistent and Transitory Wage Shocks
+   52. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   49. Job Search VI: Modeling Career Choice
+   53. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   50. Job Search VII: On-the-Job Search
+   54. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   51. Job Search VIII: Search with Learning
+   55. Job Search VIII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1473,17 +1493,17 @@ to observe states, actions, and profits.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_q.html">
-   52. Inventory Management via Q-Learning
+   56. Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   53. Risk-Sensitive Inventory Management via Q-Learning
+   57. Risk-Sensitive Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   54. Job Search IX: Search with Q-Learning
+   58. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1495,32 +1515,32 @@ to observe states, actions, and profits.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   55. Optimal Savings I: Cake Eating
+   59. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   56. Optimal Savings II: Numerical Cake Eating
+   60. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   57. Optimal Savings III: Stochastic Returns
+   61. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   58. Optimal Savings IV: Time Iteration
+   62. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   59. Optimal Savings V: The Endogenous Grid Method
+   63. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   60. Optimal Savings VI: EGM with JAX
+   64. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1532,27 +1552,27 @@ to observe states, actions, and profits.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   61. The Income Fluctuation Problem I: Discretization and VFI
+   65. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   62. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   66. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   63. The Income Fluctuation Problem III: The Endogenous Grid Method
+   67. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   64. The Income Fluctuation Problem IV: Transient Income Shocks
+   68. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   65. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   69. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1564,42 +1584,42 @@ to observe states, actions, and profits.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   66. LQ Control: Foundations
+   70. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   67. Lagrangian for LQ Control
+   71. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   68. Eliminating Cross Products
+   72. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   69. The Permanent Income Model
+   73. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   70. Permanent Income II: LQ Techniques
+   74. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_1.html">
-   71. Certainty Equivalence
+   75. Certainty Equivalence
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_2.html">
-   72. Certainty Equivalence and Model Uncertainty
+   76. Certainty Equivalence and Model Uncertainty
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   73. Production Smoothing via Inventories
+   77. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1611,22 +1631,22 @@ to observe states, actions, and profits.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   74. Cass-Koopmans Model
+   78. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   75. Cass-Koopmans Competitive Equilibrium
+   79. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   76. Cass-Koopmans Model with Distorting Taxes
+   80. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   77. Two-Country Model with Distorting Taxes
+   81. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -1638,52 +1658,52 @@ to observe states, actions, and profits.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   78. A Lake Model of Employment and Unemployment
+   82. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   79. Lake Model with an Endogenous Job Finding Rate
+   83. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   80. Rational Expectations Equilibrium
+   84. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   81. Stability in Linear Rational Expectations Models
+   85. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   82. Markov Perfect Equilibrium
+   86. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   83. Uncertainty Traps
+   87. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   84. The Aiyagari Model
+   88. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   85. Transitions in an Overlapping Generations Model
+   89. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   86. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   90. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   87. Two Computations to Fund Social Security
+   91. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -1695,47 +1715,47 @@ to observe states, actions, and profits.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   88. Asset Pricing: Finite State Models
+   92. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   89. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   90. Estimating Euler Equations by Generalized Method of Moments
+   94. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="doubts_or_variability.html">
-   91. Doubts or Variability?
+   95. Doubts or Variability?
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   92. Competitive Equilibria with Arrow Securities
+   96. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   93. Heterogeneous Beliefs and Bubbles
+   97. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   94. Speculative Behavior with Bayesian Learning
+   98. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   95. Affine Models of Asset Prices
+   99. Affine Models of Asset Prices
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="risk_aversion_or_mistaken_beliefs.html">
-   96. Risk Aversion or Mistaken Beliefs?
+   100. Risk Aversion or Mistaken Beliefs?
   </a>
  </li>
 </ul>
@@ -1747,17 +1767,17 @@ to observe states, actions, and profits.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   97. Pandas for Panel Data
+   101. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   98. Linear Regression in Python
+   102. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   99. Maximum Likelihood Estimation
+   103. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1769,12 +1789,12 @@ to observe states, actions, and profits.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   100. First-Price and Second-Price Auctions
+   104. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   101. Multiple Good Allocation Mechanisms
+   105. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1786,17 +1806,17 @@ to observe states, actions, and profits.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   102. Troubleshooting
+   106. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   103. References
+   107. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   104. Execution Statistics
+   108. Execution Statistics
   </a>
  </li>
 </ul>

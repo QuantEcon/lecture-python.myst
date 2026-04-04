@@ -1,0 +1,2033 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>46. Organization Capital &#8212; Intermediate Quantitative Economics with Python</title>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=300d9cef76b95d0252c8ff6263fc63de943d6f3a" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=1ae7504c"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=af25365e6360aeca6ba8101dda3f432eb6b6fa9c"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": ["\\operatorname*{argmax}", 0], "argmin": ["\\operatorname*{argmin}", 0], "EE": "\\mathbb{E}"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'organization_capital';</script>
+    <link rel="canonical" href="https://python.quantecon.org/organization_capital.html" />
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="47. Two Models of Measurements and the Investment Accelerator" href="measurement_models.html" />
+    <link rel="prev" title="45. Another Look at the Kalman Filter" href="kalman_2.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Organization Capital"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Organization Capital" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/organization_capital.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
+<!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=organization_capital>
+
+                <div class="qe-page__toc">
+
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">46.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basic-idea">46.2. The basic idea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#personnel-information-as-organization-capital">46.3. Personnel information as organization capital</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">46.3.1. Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#three-tasks">46.3.2. Three tasks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-learning">46.3.3. Bayesian learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#per-unit-costs-of-production">46.3.4. Per unit costs of production</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#growth-rate-and-screening-time">46.3.5. Growth rate and screening time</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combined-effect-growth-rate-and-per-unit-costs">46.3.6. Combined effect: growth rate and per unit costs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#industry-equilibrium">46.4. Industry equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#key-property-growth-rates-independent-of-size">46.4.1. Key property: growth rates independent of size</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-screening-simulation">46.5. Bayesian screening simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#team-information">46.6. Team information</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">46.6.1. Structure</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#firm-specific-human-capital">46.7. Firm-specific human capital</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concave-transformation-frontier">46.7.1. Concave transformation frontier</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#costs-of-transferring-organization-capital">46.8. Costs of transferring organization capital</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-and-implications">46.9. Summary and implications</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            
+                            
+                            
+                        </div>
+
+                    </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
+
+                    </div>
+
+                    <!-- Authors section -->
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
+
+                    <!-- Last modified / Changelog dropdown -->
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: Apr 04, 2026
+                            <span class="changelog-icon">▼</span>
+                        </button>
+
+                    <!-- Changelog dropdown content -->
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/organization_capital.md">full history</a>)</h4>
+                        <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a8966965b" class="changelog-hash">a8966965b</a>
+                                
+                                <span class="changelog-author">Humphrey Yang</span>
+                                <span class="changelog-time">19 minutes ago</span>
+                                <span class="changelog-message">Update lectures on Blackwell's theorem and survival topics (#844)</span>
+                            </li>
+                            
+                        </ul>
+                    </div>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="organization-capital">
+<h1><span class="section-number">46. </span>Organization Capital<a class="headerlink" href="#organization-capital" title="Link to this heading">#</a></h1>
+<section id="overview">
+<span id="index-0"></span><h2><span class="section-number">46.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>This lecture describes a theory of <strong>organization capital</strong> proposed by
+<span id="id1">Prescott and Visscher [<a class="reference internal" href="zreferences.html#id38" title="Edward C. Prescott and Michael Visscher. Organization capital. Journal of Political Economy, 88(3):446–461, 1980.">1980</a>]</span>.</p>
+<p>Prescott and Visscher define organization capital as information that a firm accumulates
+about its employees, teams, and production processes.</p>
+<p>This information is an <em>asset</em> to the firm because it affects the production possibility set
+and is produced jointly with output.</p>
+<p>Costs of adjusting the stock of organization capital constrain the firm’s growth rate,
+providing an explanation for</p>
+<ol class="arabic simple">
+<li><p>why firm growth rates are independent of firm size (Gibrat’s Law)</p></li>
+<li><p>why adjustment costs for rapid growth arise endogenously rather than being assumed</p></li>
+</ol>
+<p>The paper offers three examples of organization capital:</p>
+<ul class="simple">
+<li><p><em>Personnel information</em>: knowledge about the match between workers and tasks</p></li>
+<li><p><em>Team information</em>: knowledge about how well groups of workers mesh</p></li>
+<li><p><em>Firm-specific human capital</em>: skills of employees enhanced by on-the-job training</p></li>
+</ul>
+<p>In each case, the investment possibilities lead firms to grow at a common rate,
+yielding constant returns to scale together with increasing costs of rapid size adjustment.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The theory is related to ideas of <span id="id2">Coase [<a class="reference internal" href="zreferences.html#id39" title="Ronald H. Coase. The nature of the firm. Economica, 4(16):386–405, 1937.">1937</a>]</span> and <span id="id3">Williamson [<a class="reference internal" href="zreferences.html#id40" title="Oliver E. Williamson. Markets and Hierarchies: Analysis and Antitrust Implications. Free Press, New York, 1975.">1975</a>]</span> about the nature of the firm.</p>
+<p>Prescott and Visscher stress the firm’s role as a storehouse of information and argue that
+incentives within the firm are created for efficient accumulation and use of that information.</p>
+</div>
+<p>Let’s start with some imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">brentq</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-basic-idea">
+<h2><span class="section-number">46.2. </span>The basic idea<a class="headerlink" href="#the-basic-idea" title="Link to this heading">#</a></h2>
+<p>The firm is a storehouse of information.</p>
+<p>Within the firm, incentives are created for the efficient accumulation and use of that information.</p>
+<p>Prescott and Visscher exploit this concept to explain certain facts about firm growth and
+size distribution.</p>
+<p>The key insight: the process by which information is accumulated naturally leads to</p>
+<ol class="arabic simple">
+<li><p><em>constant returns to scale</em>, and</p></li>
+<li><p><em>increasing costs to rapid firm size adjustment</em></p></li>
+</ol>
+<p>Constant returns to scale explain the absence of an observed unique optimum firm size
+(see <span id="id4">Stigler [<a class="reference internal" href="zreferences.html#id42" title="George J. Stigler. The economies of scale. Journal of Law and Economics, 1:54–71, 1958.">1958</a>]</span>).</p>
+<p>Without costs of adjustment, the pattern of investment
+by firms in the face of a change in market demand would exhibit
+discontinuities we do not observe.</p>
+<p>Further, without a cost penalty to rapid growth, the first firm to
+discover a previously untapped market would preempt competition by
+usurping all profitable investments as they appear, thus implying
+monopoly more prevalent than it is.</p>
+</section>
+<section id="personnel-information-as-organization-capital">
+<h2><span class="section-number">46.3. </span>Personnel information as organization capital<a class="headerlink" href="#personnel-information-as-organization-capital" title="Link to this heading">#</a></h2>
+<p id="index-1">The first example of organization capital is information about the
+match between workers and tasks.</p>
+<section id="setup">
+<h3><span class="section-number">46.3.1. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h3>
+<p>Workers have different sets of skills and talents.</p>
+<p>A variable <span class="math notranslate nohighlight">\(\theta\)</span> measures the aptitude of a worker for a particular kind of work.</p>
+<ul class="simple">
+<li><p>Workers with high <span class="math notranslate nohighlight">\(\theta\)</span> have comparative advantage in tasks requiring repeated attention to detail</p></li>
+<li><p>Workers with low <span class="math notranslate nohighlight">\(\theta\)</span> have comparative advantage in work requiring broadly defined duties</p></li>
+</ul>
+<p>The population distribution of <span class="math notranslate nohighlight">\(\theta\)</span> is normal with mean zero and precision (inverse of variance) <span class="math notranslate nohighlight">\(\pi\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\theta \sim N(0, 1/\pi)
+\]</div>
+<p>When a worker is hired from the labor pool, neither the worker nor the employer knows <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>Both know only the population distribution.</p>
+</section>
+<section id="three-tasks">
+<h3><span class="section-number">46.3.2. </span>Three tasks<a class="headerlink" href="#three-tasks" title="Link to this heading">#</a></h3>
+<p>If <span class="math notranslate nohighlight">\(q\)</span> units of output are produced, assume:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\varphi_1 q\)</span> workers are assigned to <em>task 1</em> (screening)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\varphi q\)</span> workers are assigned to <em>task 2</em></p></li>
+<li><p>the remaining workers are assigned to <em>task 3</em></p></li>
+</ul>
+<p>where <span class="math notranslate nohighlight">\(\varphi_1 + 2\varphi = 1\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The fixed coefficients technology requires a constant ratio between the number of
+personnel in jobs 2 and 3 and the number assigned to job 1.</p>
+</div>
+<p>For task 1, the screening task, per unit cost of production is <em>invariant</em> to the <span class="math notranslate nohighlight">\(\theta\)</span>-values of the individuals assigned.</p>
+<p>However, the larger a worker’s <span class="math notranslate nohighlight">\(\theta\)</span>, the larger is his product in task 2 relative to
+his product in task 3.</p>
+<p>Consequently:</p>
+<ul class="simple">
+<li><p>a worker with a highly positive <span class="math notranslate nohighlight">\(\theta\)</span> is much better suited for task 2</p></li>
+<li><p>a worker with a highly negative <span class="math notranslate nohighlight">\(\theta\)</span> is much better suited for task 3</p></li>
+</ul>
+</section>
+<section id="bayesian-learning">
+<h3><span class="section-number">46.3.3. </span>Bayesian learning<a class="headerlink" href="#bayesian-learning" title="Link to this heading">#</a></h3>
+<p>Performance in tasks 2 or 3 cannot be observed at the individual level.</p>
+<p>But information about a worker’s <span class="math notranslate nohighlight">\(\theta\)</span>-value can be obtained from observing
+performance in task 1, the screening task.</p>
+<p>The expert supervising the apprentice determines a value of <span class="math notranslate nohighlight">\(z\)</span> each period:</p>
+<div class="math notranslate nohighlight" id="equation-eq-signal">
+<span class="eqno">(46.1)<a class="headerlink" href="#equation-eq-signal" title="Link to this equation">#</a></span>\[
+z_{it} = \theta_i + \epsilon_{it}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\epsilon_{it} \sim N(0, 1)\)</span> are independently distributed over both workers <span class="math notranslate nohighlight">\(i\)</span> and periods <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>After <span class="math notranslate nohighlight">\(n\)</span> observations on a worker in the screening job, the <em>posterior distribution</em> of <span class="math notranslate nohighlight">\(\theta\)</span> is normal with</p>
+<p><em>posterior mean:</em></p>
+<div class="math notranslate nohighlight" id="equation-eq-post-mean">
+<span class="eqno">(46.2)<a class="headerlink" href="#equation-eq-post-mean" title="Link to this equation">#</a></span>\[
+m = \frac{1}{\pi + n} \sum_{k=1}^{n} z_k
+\]</div>
+<p><em>posterior precision:</em></p>
+<div class="math notranslate nohighlight" id="equation-eq-post-prec">
+<span class="eqno">(46.3)<a class="headerlink" href="#equation-eq-post-prec" title="Link to this equation">#</a></span>\[
+h = \pi + n
+\]</div>
+<p>Knowledge of an individual is thus completely characterized by the pair <span class="math notranslate nohighlight">\((m, h)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">bayesian_update</span><span class="p">(</span><span class="n">z_observations</span><span class="p">,</span> <span class="n">prior_precision</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute posterior mean and precision after observing signals.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_observations</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">prior_precision</span> <span class="o">+</span> <span class="n">n</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">z_observations</span><span class="p">)</span> <span class="o">/</span> <span class="n">h</span>
+    <span class="k">return</span> <span class="n">m</span><span class="p">,</span> <span class="n">h</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s visualize how the posterior evolves as we observe a worker whose true <span class="math notranslate nohighlight">\(\theta = 0.8\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">θ_true</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">π</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">ε</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">z_signals</span> <span class="o">=</span> <span class="n">θ_true</span> <span class="o">+</span> <span class="n">ε</span>
+
+<span class="n">posterior_means</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">posterior_stds</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">bayesian_update</span><span class="p">(</span><span class="n">z_signals</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">π</span><span class="p">)</span>
+    <span class="n">posterior_means</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">posterior_stds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">h</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">posterior_means</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Posterior mean $m$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">θ_true</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s1">&#39;True $\theta = </span><span class="si">{</span><span class="n">θ_true</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;number of observations $n$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;posterior mean $m$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">posterior_stds</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Posterior std $1/\sqrt</span><span class="si">{h}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;number of observations $n$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;posterior standard deviation&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-default" id="fig-posterior-evolution">
+<img alt="_images/801d604c48ad25c29730f598e913b83c8e1bd149b57ec0adf8d86214122ca379.png" src="_images/801d604c48ad25c29730f598e913b83c8e1bd149b57ec0adf8d86214122ca379.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 46.1 </span><span class="caption-text">Posterior mean convergence and uncertainty</span><a class="headerlink" href="#fig-posterior-evolution" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>As the number of screening observations <span class="math notranslate nohighlight">\(n\)</span> increases, the posterior mean converges
+to the true <span class="math notranslate nohighlight">\(\theta\)</span>, and the posterior uncertainty shrinks at rate <span class="math notranslate nohighlight">\(1/\sqrt{n}\)</span>.</p>
+</section>
+<section id="per-unit-costs-of-production">
+<h3><span class="section-number">46.3.4. </span>Per unit costs of production<a class="headerlink" href="#per-unit-costs-of-production" title="Link to this heading">#</a></h3>
+<p>Under the nonsequential assignment rule, employees with the greatest seniority
+are assigned to jobs 2 and 3, while newer employees remain in the screening task.</p>
+<p>Workers with <span class="math notranslate nohighlight">\(m &gt; 0\)</span> are assigned to task 2, and those with <span class="math notranslate nohighlight">\(m \leq 0\)</span> to task 3.</p>
+<p>Per unit costs of production, assuming this assignment after <span class="math notranslate nohighlight">\(n\)</span> screening periods, are:</p>
+<div class="math notranslate nohighlight" id="equation-eq-unit-cost">
+<span class="eqno">(46.4)<a class="headerlink" href="#equation-eq-unit-cost" title="Link to this equation">#</a></span>\[
+c(n) = c_1 + c_2 + c_3 - E\{\theta \mid m &gt; 0\} + E\{\theta \mid m \leq 0\}
+\]</div>
+<p>Because <span class="math notranslate nohighlight">\(m\)</span> is normally distributed, evaluation of the conditional expectation in
+<a class="reference internal" href="#equation-eq-unit-cost">(46.4)</a> yields per unit costs as a function of <span class="math notranslate nohighlight">\(n\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-cost-n">
+<span class="eqno">(46.5)<a class="headerlink" href="#equation-eq-cost-n" title="Link to this equation">#</a></span>\[
+c(n) = c - 0.7978 \frac{n}{\pi(\pi + n)}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(c = c_1 + c_2 + c_3\)</span> and <span class="math notranslate nohighlight">\(0.7978 = 2 \int_0^{\infty} \frac{t}{\sqrt{2\pi}} e^{-t^2/2} dt\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The constant <span class="math notranslate nohighlight">\(0.7978 \approx \sqrt{2/\pi}\)</span> is the mean of the standard half-normal distribution.</p>
+<p>It arises from computing <span class="math notranslate nohighlight">\(E[\theta \mid m &gt; 0] - E[\theta \mid m \leq 0]\)</span> for a normal distribution.</p>
+</div>
+<p>The function <span class="math notranslate nohighlight">\(c(n)\)</span> decreases at a <em>decreasing rate</em> in <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p>More screening observations reduce costs but with diminishing returns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cost_per_unit</span><span class="p">(</span><span class="n">n_vals</span><span class="p">,</span> <span class="n">π</span><span class="p">,</span> <span class="n">c_bar</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Per unit cost as a function of screening periods n.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">n_vals</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">c_bar</span> <span class="o">-</span> <span class="mf">0.7978</span> <span class="o">*</span> <span class="n">n_vals</span> <span class="o">/</span> <span class="p">(</span><span class="n">π</span> <span class="o">*</span> <span class="p">(</span><span class="n">π</span> <span class="o">+</span> <span class="n">n_vals</span><span class="p">))</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">n_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">π</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">]:</span>
+    <span class="n">costs</span> <span class="o">=</span> <span class="n">cost_per_unit</span><span class="p">(</span><span class="n">n_vals</span><span class="p">,</span> <span class="n">π</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_vals</span><span class="p">,</span> <span class="n">costs</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s1">&#39;$\pi = </span><span class="si">{</span><span class="n">π</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;screening periods $n$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;per unit cost $c(n)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-default" id="fig-cost-screening">
+<img alt="_images/43b262d450f602907f9ec73fd1ad617e7789f11f0a8b341d9006d5e38b976395.png" src="_images/43b262d450f602907f9ec73fd1ad617e7789f11f0a8b341d9006d5e38b976395.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 46.2 </span><span class="caption-text">Per unit costs by screening time</span><a class="headerlink" href="#fig-cost-screening" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>The figure shows that:</p>
+<ul class="simple">
+<li><p>costs decrease with more screening time <span class="math notranslate nohighlight">\(n\)</span></p></li>
+<li><p>the decrease is at a declining rate (diminishing returns to screening)</p></li>
+<li><p>for smaller prior precision <span class="math notranslate nohighlight">\(\pi\)</span> (more initial uncertainty about worker types), the gains from screening are larger</p></li>
+</ul>
+<p>This diminishing-returns structure is the source of the <em>increasing costs of rapid adjustment</em>.</p>
+</section>
+<section id="growth-rate-and-screening-time">
+<h3><span class="section-number">46.3.5. </span>Growth rate and screening time<a class="headerlink" href="#growth-rate-and-screening-time" title="Link to this heading">#</a></h3>
+<p>The greater the growth rate, the smaller must be <span class="math notranslate nohighlight">\(n\)</span> — the time spent in the screening
+task before assignment to job 2 or 3.</p>
+<p>If <span class="math notranslate nohighlight">\(\gamma\)</span> is the growth rate of output and <span class="math notranslate nohighlight">\(\rho\)</span> is the quit rate, and <span class="math notranslate nohighlight">\(y_i\)</span> is the current number
+of vintage <span class="math notranslate nohighlight">\(i\)</span> employees, then</p>
+<div class="math notranslate nohighlight">
+\[
+(1 + \gamma) y_{i+1} = (1 - \rho) y_i
+\]</div>
+<p>Letting <span class="math notranslate nohighlight">\(\xi = (1 - \rho)/(1 + \gamma)\)</span>, from the above <span class="math notranslate nohighlight">\(y_i = \xi^i y_0\)</span>.</p>
+<p>For the fixed coefficients technology, the fraction of present personnel with vintage
+greater than <span class="math notranslate nohighlight">\(n\)</span> must equal <span class="math notranslate nohighlight">\(2\varphi / (\varphi_1 + 2\varphi)\)</span>, which gives:</p>
+<div class="math notranslate nohighlight" id="equation-eq-cutoff">
+<span class="eqno">(46.6)<a class="headerlink" href="#equation-eq-cutoff" title="Link to this equation">#</a></span>\[
+\xi^{n+1} = \frac{2\varphi}{\varphi_1 + 2\varphi}
+\]</div>
+<p>Solving for <span class="math notranslate nohighlight">\(n\)</span> as a function of <span class="math notranslate nohighlight">\(\gamma\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-eq-n-gamma">
+<span class="eqno">(46.7)<a class="headerlink" href="#equation-eq-n-gamma" title="Link to this equation">#</a></span>\[
+n(\gamma) = \frac{\log(2\varphi) - \log(\varphi_1 + 2\varphi)}{\log(1 - \rho) - \log(1 + \gamma)} - 1 \quad \text{for } \gamma &gt; -\rho
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">screening_time</span><span class="p">(</span><span class="n">γ</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">φ1</span><span class="p">,</span> <span class="n">φ</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Screening time n as a function of growth rate γ.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">γ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">γ</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">φ</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">φ1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">φ</span><span class="p">)</span>
+    <span class="n">denominator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ρ</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">γ</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span> <span class="o">-</span> <span class="mi">1</span>
+
+
+<span class="n">ρ</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">φ1</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">φ</span> <span class="o">=</span> <span class="mf">0.25</span>
+
+<span class="n">γ_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.30</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+<span class="n">valid</span> <span class="o">=</span> <span class="n">γ_vals</span> <span class="o">&gt;</span> <span class="o">-</span><span class="n">ρ</span>
+<span class="n">γ_valid</span> <span class="o">=</span> <span class="n">γ_vals</span><span class="p">[</span><span class="n">valid</span><span class="p">]</span>
+<span class="n">n_vals</span> <span class="o">=</span> <span class="n">screening_time</span><span class="p">(</span><span class="n">γ_valid</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">φ1</span><span class="p">,</span> <span class="n">φ</span><span class="p">)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">n_vals</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="n">γ_plot</span> <span class="o">=</span> <span class="n">γ_valid</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+<span class="n">n_plot</span> <span class="o">=</span> <span class="n">n_vals</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">γ_plot</span><span class="p">,</span> <span class="n">n_plot</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;growth rate $\gamma$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;screening periods $n(\gamma)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">γ_plot</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">γ_plot</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-default" id="fig-screening-growth">
+<img alt="_images/b25abff6c17abe4e65f17c484e80444b3fb9fec6fe72c4b154fba41cfc23072e.png" src="_images/b25abff6c17abe4e65f17c484e80444b3fb9fec6fe72c4b154fba41cfc23072e.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 46.3 </span><span class="caption-text">Screening time vs. growth rate</span><a class="headerlink" href="#fig-screening-growth" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>The figure shows the key trade-off: <em>faster growth forces shorter screening periods</em>.</p>
+<p>When growth is rapid, new workers must be promoted from the screening task to
+productive tasks more quickly, so less information is gathered about each worker
+before assignment.</p>
+</section>
+<section id="combined-effect-growth-rate-and-per-unit-costs">
+<h3><span class="section-number">46.3.6. </span>Combined effect: growth rate and per unit costs<a class="headerlink" href="#combined-effect-growth-rate-and-per-unit-costs" title="Link to this heading">#</a></h3>
+<p>Composing the functions <span class="math notranslate nohighlight">\(c(n)\)</span> and <span class="math notranslate nohighlight">\(n(\gamma)\)</span> reveals how per unit costs depend on the
+growth rate:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">π</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">c_bar</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="n">n_of_γ</span> <span class="o">=</span> <span class="n">screening_time</span><span class="p">(</span><span class="n">γ_plot</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">φ1</span><span class="p">,</span> <span class="n">φ</span><span class="p">)</span>
+<span class="n">costs_of_γ</span> <span class="o">=</span> <span class="n">cost_per_unit</span><span class="p">(</span><span class="n">n_of_γ</span><span class="p">,</span> <span class="n">π</span><span class="p">,</span> <span class="n">c_bar</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">γ_plot</span><span class="p">,</span> <span class="n">costs_of_γ</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;growth rate $\gamma$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;per unit cost $c(n(\gamma))$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">γ_plot</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">γ_plot</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-default" id="fig-cost-growth">
+<img alt="_images/b1da741883a8de16201929dbad4dee94996875158c89f5352820a2ca7dcc59f4.png" src="_images/b1da741883a8de16201929dbad4dee94996875158c89f5352820a2ca7dcc59f4.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 46.4 </span><span class="caption-text">Per unit costs vs. growth rate</span><a class="headerlink" href="#fig-cost-growth" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>This establishes the key result: <em>increasing costs of rapid adjustment arise endogenously</em>
+from the trade-off between screening and growth.</p>
+<p>The faster the firm grows, the less time it has to screen workers, the poorer the
+match between workers and tasks, and the higher the per unit production costs.</p>
+</section>
+</section>
+<section id="industry-equilibrium">
+<h2><span class="section-number">46.4. </span>Industry equilibrium<a class="headerlink" href="#industry-equilibrium" title="Link to this heading">#</a></h2>
+<p id="index-2">Firm growth rates are independent of firm size in this model because the
+mathematical structure of the technology constraint is the same as that
+considered in <span id="id5">Lucas Jr [<a class="reference internal" href="zreferences.html#id37" title="Robert E Lucas Jr. Adjustment costs and the theory of supply. Journal of political economy, 75(4, Part 1):321–334, 1967.">1967</a>]</span>, except that the stock of organization capital
+is a vector rather than a scalar.</p>
+<p>The technology set facing price-taking firms is a <strong>convex cone</strong>: there are
+constant returns to scale.</p>
+<p>Constant returns and internal adjustment costs, along with some costs of
+transferring capital between firms, yield an optimum rate of firm growth
+<em>independent of the firm’s size</em> — this is Gibrat’s Law.</p>
+<p>The bounded, downward-sloping, inverse industry demand function is</p>
+<div class="math notranslate nohighlight">
+\[
+P_t = p(Q_t, u_t)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(Q_t\)</span> is the sum of output over all firms and <span class="math notranslate nohighlight">\(u_t\)</span> is a demand shock
+subject to a stationary Markov process.</p>
+<p>Prescott and Visscher show that a competitive equilibrium exists using the
+framework of <span id="id6">Lucas and Prescott [<a class="reference internal" href="zreferences.html#id41" title="Jr. Lucas, Robert E. and Edward C. Prescott. Investment under uncertainty. Econometrica, 39(5):659–681, 1971.">1971</a>]</span>.</p>
+<p>The discounted consumer surplus to be maximized is</p>
+<div class="math notranslate nohighlight" id="equation-eq-surplus">
+<span class="eqno">(46.8)<a class="headerlink" href="#equation-eq-surplus" title="Link to this equation">#</a></span>\[
+\sum_{t=0}^{\infty} \beta^t \left\{ \int_0^{Q_t} p(y, u_t) dy - Bw - Q_t \sum_i (A_{i2t} + A_{i3t}) c(i) / \sum_i (A_{i2t} + A_{i3t}) \right\}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(A_{i2t}, A_{i3t}\)</span>, and <span class="math notranslate nohighlight">\(B\)</span> are obtained by summing <span class="math notranslate nohighlight">\(a_{i2t}\)</span>, <span class="math notranslate nohighlight">\(a_{i3t}\)</span>, and <span class="math notranslate nohighlight">\(b\)</span>,
+respectively, over all firms in the industry.</p>
+<section id="key-property-growth-rates-independent-of-size">
+<h3><span class="section-number">46.4.1. </span>Key property: growth rates independent of size<a class="headerlink" href="#key-property-growth-rates-independent-of-size" title="Link to this heading">#</a></h3>
+<p>If two firms have organization capital vectors <span class="math notranslate nohighlight">\(\underline{k}\)</span> that are proportional at a point in time,
+they will be proportional in all future periods.</p>
+<p>That is, <em>growth rates are independent of firm size</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulate_firm_growth</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">q0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate firm output growth with stochastic shocks.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">q0</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+        <span class="n">shock</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+        <span class="n">output</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">γ</span> <span class="o">+</span> <span class="n">shock</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span>
+
+
+<span class="n">T</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">γ_eq</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">ρ</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">q0</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Small firm&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;Medium firm&#39;</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;Large firm&#39;</span><span class="p">)]:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">simulate_firm_growth</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">γ_eq</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">q0</span><span class="p">,</span>
+                                  <span class="n">seed</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">q0</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">output</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1"> ($q_0=</span><span class="si">{</span><span class="n">q0</span><span class="si">}</span><span class="s1">$)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;period&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;output $q_t$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">q0</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Small firm&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;Medium firm&#39;</span><span class="p">),</span>
+                   <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;Large firm&#39;</span><span class="p">)]:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">simulate_firm_growth</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">γ_eq</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">q0</span><span class="p">,</span>
+                                  <span class="n">seed</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">q0</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">output</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1"> ($q_0=</span><span class="si">{</span><span class="n">q0</span><span class="si">}</span><span class="s1">$)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;period&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;$\log(q_t)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-default" id="fig-firm-growth">
+<img alt="_images/a79fca83c13d957ea7ca5014c712e92ebf6cbf2f2abdc144a618ad0c133895d4.png" src="_images/a79fca83c13d957ea7ca5014c712e92ebf6cbf2f2abdc144a618ad0c133895d4.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 46.5 </span><span class="caption-text">Firm output levels and growth rates</span><a class="headerlink" href="#fig-firm-growth" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>The right panel shows that all firms grow at the same rate regardless of initial size —
+the log output paths are parallel.</p>
+<p>This is <strong>Gibrat’s Law</strong>: growth rates are independent of firm size.</p>
+</section>
+</section>
+<section id="bayesian-screening-simulation">
+<h2><span class="section-number">46.5. </span>Bayesian screening simulation<a class="headerlink" href="#bayesian-screening-simulation" title="Link to this heading">#</a></h2>
+<p id="index-3">Let’s simulate the full screening and assignment process for a single firm.</p>
+<p>We draw workers from the population, observe their signals in the screening task,
+and then assign them to the appropriate productive task based on the posterior mean.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulate_screening</span><span class="p">(</span><span class="n">n_workers</span><span class="p">,</span> <span class="n">n_screen</span><span class="p">,</span> <span class="n">π</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate screening and assignment of workers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="n">θ</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">π</span><span class="p">),</span> <span class="n">n_workers</span><span class="p">)</span>
+    <span class="n">signals</span> <span class="o">=</span> <span class="p">(</span><span class="n">θ</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+               <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">n_workers</span><span class="p">,</span> <span class="n">n_screen</span><span class="p">)))</span>
+    <span class="n">posterior_means</span> <span class="o">=</span> <span class="n">signals</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">π</span> <span class="o">+</span> <span class="n">n_screen</span><span class="p">)</span>
+
+    <span class="n">assignment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">posterior_means</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">correct_assignment</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">θ</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">misassignment_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">assignment</span> <span class="o">!=</span> <span class="n">correct_assignment</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;theta&#39;</span><span class="p">:</span> <span class="n">θ</span><span class="p">,</span>
+        <span class="s1">&#39;posterior_means&#39;</span><span class="p">:</span> <span class="n">posterior_means</span><span class="p">,</span>
+        <span class="s1">&#39;assignment&#39;</span><span class="p">:</span> <span class="n">assignment</span><span class="p">,</span>
+        <span class="s1">&#39;correct_assignment&#39;</span><span class="p">:</span> <span class="n">correct_assignment</span><span class="p">,</span>
+        <span class="s1">&#39;misassignment_rate&#39;</span><span class="p">:</span> <span class="n">misassignment_rate</span>
+    <span class="p">}</span>
+
+
+<span class="n">π</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">n_workers</span> <span class="o">=</span> <span class="mi">5000</span>
+<span class="n">screening_periods</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="n">misassignment_rates</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">n_screen</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">screening_periods</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">simulate_screening</span><span class="p">(</span><span class="n">n_workers</span><span class="p">,</span> <span class="n">n_screen</span><span class="p">,</span> <span class="n">π</span><span class="p">)</span>
+    <span class="n">misassignment_rates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;misassignment_rate&#39;</span><span class="p">])</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">θ</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;theta&#39;</span><span class="p">]</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;posterior_means&#39;</span><span class="p">]</span>
+
+    <span class="n">correct</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;assignment&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;correct_assignment&#39;</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">θ</span><span class="p">[</span><span class="n">correct</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="n">correct</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+               <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Correct&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">θ</span><span class="p">[</span><span class="o">~</span><span class="n">correct</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">~</span><span class="n">correct</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+               <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Misassigned&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">mis</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;misassignment_rate&#39;</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;true $\theta$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;posterior mean $m$&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">markerscale</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-default" id="fig-screening-assignment">
+<img alt="_images/ccac234aaa9557c981ddbd0e37d4502b99715ccff595fd72d7928dadcd6dc462.png" src="_images/ccac234aaa9557c981ddbd0e37d4502b99715ccff595fd72d7928dadcd6dc462.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 46.6 </span><span class="caption-text">Screening and worker assignment accuracy</span><a class="headerlink" href="#fig-screening-assignment" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>Red dots are workers who are <em>misassigned</em> — placed in the wrong productive task
+because the posterior mean had the wrong sign relative to their true <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>As <span class="math notranslate nohighlight">\(n\)</span> increases:</p>
+<ul class="simple">
+<li><p>The posterior mean <span class="math notranslate nohighlight">\(m\)</span> becomes more strongly correlated with <span class="math notranslate nohighlight">\(\theta\)</span></p></li>
+<li><p>Misassignment rates fall</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">n_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">51</span><span class="p">)</span>
+<span class="n">mis_rates</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">n_screen</span> <span class="ow">in</span> <span class="n">n_range</span><span class="p">:</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">simulate_screening</span><span class="p">(</span><span class="n">n_workers</span><span class="p">,</span> <span class="n">n_screen</span><span class="p">,</span> <span class="n">π</span><span class="p">)</span>
+    <span class="n">mis_rates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;misassignment_rate&#39;</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_range</span><span class="p">,</span> <span class="n">mis_rates</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;screening periods $n$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;misassignment rate&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-default" id="fig-misassignment-rate">
+<img alt="_images/72412e56adf3d7ea08bd5a96a288d454a05d9f2ecbf2df7bf48f9bd78226ebf5.png" src="_images/72412e56adf3d7ea08bd5a96a288d454a05d9f2ecbf2df7bf48f9bd78226ebf5.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 46.7 </span><span class="caption-text">Misassignment rate by screening time</span><a class="headerlink" href="#fig-misassignment-rate" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>This confirms the theoretical prediction: the cost savings from better assignment
+exhibit <em>diminishing returns</em> in the screening time <span class="math notranslate nohighlight">\(n\)</span>.</p>
+</section>
+<section id="team-information">
+<h2><span class="section-number">46.6. </span>Team information<a class="headerlink" href="#team-information" title="Link to this heading">#</a></h2>
+<p id="index-4">Personnel information need not be valuable only because it facilitates the matching of
+workers to tasks.</p>
+<p>Another equally valuable use of personnel information is in the <em>matching of workers to workers</em>.</p>
+<p>What is important to performance in many activities within the firm is not just
+the aptitude of an individual assigned to a task, but also how well the
+characteristics of the individual mesh with those of others performing related duties.</p>
+<section id="structure">
+<h3><span class="section-number">46.6.1. </span>Structure<a class="headerlink" href="#structure" title="Link to this heading">#</a></h3>
+<p>Suppose workers are grouped into teams, and team <span class="math notranslate nohighlight">\(i\)</span> assigned to a screening task
+has an observed productivity indicator</p>
+<div class="math notranslate nohighlight">
+\[
+z_{it} = \theta_i + \epsilon_{it}
+\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\theta_i\)</span> is a deterministic component directly related to how well team workers are paired</p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon_{it} \sim N(0, 1)\)</span> are i.i.d. stochastic components</p></li>
+</ul>
+<p>The <span class="math notranslate nohighlight">\(\theta\)</span> from all possible teams are approximately independently and normally distributed
+<span class="math notranslate nohighlight">\(N(\mu, 1/\pi)\)</span>.</p>
+<p>After <span class="math notranslate nohighlight">\(n\)</span> observations on team <span class="math notranslate nohighlight">\(i\)</span>, the posterior distribution on <span class="math notranslate nohighlight">\(\theta_i\)</span> is normal with</p>
+<div class="math notranslate nohighlight">
+\[
+m = \mu + \frac{1}{\pi + n} \sum_{k=1}^{n} (z_k - \mu)
+\]</div>
+<p>and precision <span class="math notranslate nohighlight">\(h = \pi + n\)</span>.</p>
+<p>If dissolution of a team also dissolves the accrued information, the team information
+model has the <em>same mathematical structure</em> as the personnel information model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulate_team_screening</span><span class="p">(</span><span class="n">n_teams</span><span class="p">,</span> <span class="n">n_screen</span><span class="p">,</span> <span class="n">π</span><span class="p">,</span> <span class="n">μ</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                            <span class="n">seed</span><span class="o">=</span><span class="mi">456</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate team screening with Bayesian updating.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="n">θ</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">μ</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">π</span><span class="p">),</span> <span class="n">n_teams</span><span class="p">)</span>
+    <span class="n">signals</span> <span class="o">=</span> <span class="p">(</span><span class="n">θ</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+               <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">n_teams</span><span class="p">,</span> <span class="n">n_screen</span><span class="p">)))</span>
+    <span class="n">z_bar</span> <span class="o">=</span> <span class="n">signals</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">post_means</span> <span class="o">=</span> <span class="n">μ</span> <span class="o">+</span> <span class="n">n_screen</span> <span class="o">*</span> <span class="p">(</span><span class="n">z_bar</span> <span class="o">-</span> <span class="n">μ</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">π</span> <span class="o">+</span> <span class="n">n_screen</span><span class="p">)</span>
+    <span class="n">post_prec</span> <span class="o">=</span> <span class="n">π</span> <span class="o">+</span> <span class="n">n_screen</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;theta&#39;</span><span class="p">:</span> <span class="n">θ</span><span class="p">,</span>
+        <span class="s1">&#39;posterior_means&#39;</span><span class="p">:</span> <span class="n">post_means</span><span class="p">,</span>
+        <span class="s1">&#39;posterior_precision&#39;</span><span class="p">:</span> <span class="n">post_prec</span>
+    <span class="p">}</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">n_screen</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">]):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">simulate_team_screening</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="n">n_screen</span><span class="p">,</span> <span class="n">π</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">μ</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;theta&#39;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;posterior_means&#39;</span><span class="p">],</span>
+               <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">lims</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lims</span><span class="p">,</span> <span class="n">lims</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;45° line&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;true team quality $\theta$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;posterior mean $m$&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">lims</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">lims</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-default" id="fig-team-screening">
+<img alt="_images/14f59f5c17df153fc1068f2eabdfa336ef9e560248c149f13e3d2e49f9adbc1f.png" src="_images/14f59f5c17df153fc1068f2eabdfa336ef9e560248c149f13e3d2e49f9adbc1f.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 46.8 </span><span class="caption-text">Team quality estimates by screening periods</span><a class="headerlink" href="#fig-team-screening" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>As with individual screening, more observations improve the precision of team quality
+estimates.</p>
+<p>Rapid growth forces fewer observations before team assignments must be finalized, leading
+to higher costs.</p>
+</section>
+</section>
+<section id="firm-specific-human-capital">
+<h2><span class="section-number">46.7. </span>Firm-specific human capital<a class="headerlink" href="#firm-specific-human-capital" title="Link to this heading">#</a></h2>
+<p id="index-5">The third example: organization capital consists of the <strong>human capital</strong> of the firm’s employees.</p>
+<p>The capacity of the organization to function effectively as a production unit is
+determined largely by the level and meshing of the skills of the employees.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The case for the human capital of employees being part of the capital stock of the firm
+is well established (see <span id="id7">Becker [<a class="reference internal" href="zreferences.html#id43" title="Gary S. Becker. Human Capital: A Theoretical and Empirical Analysis, with Special Reference to Education. National Bureau of Economic Research, New York, 2nd edition, 1975.">1975</a>]</span>).</p>
+<p>Productivity in the future depends on levels of human capital in the future, but to acquire
+human capital for the future, a sacrifice in real resources is required in the present.</p>
+</div>
+<p>The key features are:</p>
+<ul class="simple">
+<li><p>Output and skill enhancement are <strong>joint products</strong> resulting from the combination of
+labor inputs possessing different skill levels</p></li>
+<li><p>Experienced and inexperienced workers are combined in one of several available technical
+processes to generate the firm’s product, and in the process, the overall competence
+of the work force is improved</p></li>
+<li><p>The transformation frontier between current output and future human capital is
+<em>concave</em> and linearly homogeneous</p></li>
+</ul>
+<p>This gives the technology set the structure of a closed convex cone with a vertex at the
+origin — sufficient for optimal proportional growth by firms.</p>
+<section id="concave-transformation-frontier">
+<h3><span class="section-number">46.7.1. </span>Concave transformation frontier<a class="headerlink" href="#concave-transformation-frontier" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">transformation_frontier</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.7</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Concave transformation frontier between output and human capital.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">q</span><span class="o">**</span><span class="n">α</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">α</span><span class="p">)</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="n">q_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">α</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]:</span>
+    <span class="n">hk</span> <span class="o">=</span> <span class="n">transformation_frontier</span><span class="p">(</span><span class="n">q_vals</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">q_vals</span><span class="p">,</span> <span class="n">hk</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s1">&#39;$\alpha = </span><span class="si">{</span><span class="n">α</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;current output $q$ (fraction of capacity)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;future human capital increment $</span><span class="se">\\</span><span class="s1">Delta h$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-default" id="fig-transformation-frontier">
+<img alt="_images/9abcc4a77a9afb1105be5c3b53bc0fe46758a3b3a604d1372cacd07b1ea5d524.png" src="_images/9abcc4a77a9afb1105be5c3b53bc0fe46758a3b3a604d1372cacd07b1ea5d524.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 46.9 </span><span class="caption-text">Concave transformation frontier</span><a class="headerlink" href="#fig-transformation-frontier" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>The concavity of the transformation frontier means that moving from an extremely
+unbalanced bundle of production and learning activity to a more balanced bundle
+entails little sacrifice.</p>
+<p>But a workday consisting primarily of learning also has diminishing returns,
+creating the cost of rapid adjustment.</p>
+</section>
+</section>
+<section id="costs-of-transferring-organization-capital">
+<h2><span class="section-number">46.8. </span>Costs of transferring organization capital<a class="headerlink" href="#costs-of-transferring-organization-capital" title="Link to this heading">#</a></h2>
+<p id="index-6">If there were no cost to transferring organization capital from one firm to another,
+the model would not place constraints on the firm’s growth rate.</p>
+<p>Firms could then merge, divest, or pirate each other’s personnel without a cost penalty
+and thus produce a pattern of growth not restricted by the model.</p>
+<p>Organization capital is <em>not</em> costlessly moved, however:</p>
+<ol class="arabic simple">
+<li><p><em>Moving is disruptive</em>: relocating from one locale to another is disruptive to both
+employee and family</p></li>
+<li><p><em>Information is firm-specific</em>: the information set that makes a person productive
+in one organization may not make that person as productive in another, even if both
+firms produce identical output</p>
+<ul class="simple">
+<li><p>Facility with a computer system at one firm</p></li>
+<li><p>Knowing whom to ask when problems arise</p></li>
+<li><p>Rapport with buyers or sellers</p></li>
+</ul>
+</li>
+</ol>
+<p>These are types of organization capital in one firm that <em>cannot be transferred costlessly</em>
+to another.</p>
+</section>
+<section id="summary-and-implications">
+<h2><span class="section-number">46.9. </span>Summary and implications<a class="headerlink" href="#summary-and-implications" title="Link to this heading">#</a></h2>
+<p>The Prescott-Visscher model provides a unified framework in which:</p>
+<ul class="simple">
+<li><p>The firm exists as an entity because it is an efficient structure for accumulating,
+storing, and using information</p></li>
+<li><p><em>Constant returns to scale</em> arise because once the best combinations of worker types
+are discovered, nothing prevents the firm from replicating those combinations with
+proportional gains in product</p></li>
+<li><p><em>Increasing adjustment costs</em> arise endogenously from the trade-off between
+current production and investment in organization capital</p></li>
+<li><p><em>Gibrat’s Law</em> — growth rates independent of firm size — is a natural implication</p></li>
+<li><p>Large firms should have growth rates that display <em>less variance</em> than small firms
+because large firms are essentially portfolios of smaller production units</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulate_growth_rate_distribution</span><span class="p">(</span><span class="n">n_firms</span><span class="p">,</span> <span class="n">n_subunits</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span>
+                                      <span class="n">σ</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">789</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulate growth rate distributions for firms of different sizes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">subunit_growth</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">γ</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span>
+                                <span class="p">(</span><span class="n">n_firms</span><span class="p">,</span> <span class="n">n_subunits</span><span class="p">,</span> <span class="n">T</span><span class="p">))</span>
+    <span class="n">firm_growth</span> <span class="o">=</span> <span class="n">subunit_growth</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">firm_growth</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">sizes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Small (1 unit)&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s1">&#39;Medium (5 units)&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+         <span class="s1">&#39;Large (20 units)&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span>
+
+<span class="n">γ</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">σ</span> <span class="o">=</span> <span class="mf">0.10</span>
+
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">n_sub</span> <span class="ow">in</span> <span class="n">sizes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">rates</span> <span class="o">=</span> <span class="n">simulate_growth_rate_distribution</span><span class="p">(</span>
+        <span class="mi">2000</span><span class="p">,</span> <span class="n">n_sub</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">σ</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">rates</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">: std=</span><span class="si">{</span><span class="n">rates</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;average growth rate&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;density&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">γ</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\gamma$&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-default" id="fig-growth-rate-dist">
+<img alt="_images/3148c03acb94788a48155e473f323361ec2a129f3036f386bd0a60b15d32b31e.png" src="_images/3148c03acb94788a48155e473f323361ec2a129f3036f386bd0a60b15d32b31e.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 46.10 </span><span class="caption-text">Growth rate distributions by firm size</span><a class="headerlink" href="#fig-growth-rate-dist" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>The figure shows that although all firms have the <em>same mean growth rate</em> (Gibrat’s Law),
+large firms display <em>less variance</em> in realized growth rates because they are effectively
+portfolios of independent subunits.</p>
+<p>This is consistent with the empirical findings of <span id="id8">Mansfield [<a class="reference internal" href="zreferences.html#id44" title="Edwin Mansfield. Entry, Gibrat's law, innovation, and the growth of firms. American Economic Review, 52(5):1023–1051, 1962.">1962</a>]</span> and <span id="id9">Hymer and Pashigian [<a class="reference internal" href="zreferences.html#id45" title="Stephen Hymer and Peter Pashigian. Firm size and rate of growth. Journal of Political Economy, 70(6):556–569, 1962.">1962</a>]</span>.</p>
+<p>The essence of the Prescott-Visscher theory is that the nature of the firm is tied to
+<em>organization capital</em>.</p>
+<p>What distinguishes the firm from other relationships is that it is a structure within which
+agents have the incentive to acquire and reveal information in a manner that is less
+costly than in possible alternative institutions.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   1. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   2. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   3. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   4. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   5. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="var_dmd.html">
+   6. VARs and DMDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   7. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_matrix.html">
+   8. Elementary Probability with Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="stats_examples.html">
+   9. Some Probability Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   10. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   11. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   12. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   13. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   14. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   15. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   16. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="util_rand_resp.html">
+   17. Expected Utilities of Random Responses
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   18. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   19. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   20. Forecasting  an AR(1) Process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistics and Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="divergence_measures.html">
+   21. Statistical Divergence Measures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   22. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process_2.html">
+   23. Heterogeneous Beliefs and Financial Markets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_var.html">
+   24. Likelihood Processes For VAR Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   25. Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   26. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman_2.html">
+   27. A Bayesian Formulation of Friedman and Wald’s Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   28. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   29. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="blackwell_kihlstrom.html">
+   30. Blackwell’s Theorem on Comparing Experiments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   31. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   32. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="merging_of_opinions.html">
+   33. Merging of Opinions: The Blackwell–Dubins Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="survival_recursive_preferences.html">
+   34. Survival and Long-Run Dynamics under Recursive Preferences
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   35. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   36. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   37. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   38. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   39. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   40. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="chow_business_cycles.html">
+   41. The Acceleration Principle and the Nature of Business Cycles
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   42. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   43. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   44. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   45. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   46. Organization Capital
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="measurement_models.html">
+   47. Two Models of Measurements and the Investment Accelerator
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   48. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   49. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_sep_markov.html">
+   50. Job Search III: Search with Separation and Markov Wages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   51. Job Search IV: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_persist_trans.html">
+   52. Job Search V: Persistent and Transitory Wage Shocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   53. Job Search VI: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   54. Job Search VII: On-the-Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   55. Job Search VIII: Search with Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reinforcement Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_q.html">
+   56. Inventory Management via Q-Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rs_inventory_q.html">
+   57. Risk-Sensitive Inventory Management via Q-Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   58. Job Search IX: Search with Q-Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Optimal Savings
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="os.html">
+   59. Optimal Savings I: Cake Eating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_numerical.html">
+   60. Optimal Savings II: Numerical Cake Eating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_stochastic.html">
+   61. Optimal Savings III: Stochastic Returns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_time_iter.html">
+   62. Optimal Savings IV: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_egm.html">
+   63. Optimal Savings V: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_egm_jax.html">
+   64. Optimal Savings VI: EGM with JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Household Problems
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_discrete.html">
+   65. The Income Fluctuation Problem I: Discretization and VFI
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_opi.html">
+   66. The Income Fluctuation Problem II: Optimistic Policy Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm.html">
+   67. The Income Fluctuation Problem III: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm_transient_shocks.html">
+   68. The Income Fluctuation Problem IV: Transient Income Shocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   69. The Income Fluctuation Problem V: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   70. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   71. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   72. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   73. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   74. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="theil_1.html">
+   75. Certainty Equivalence
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="theil_2.html">
+   76. Certainty Equivalence and Model Uncertainty
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   77. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Optimal Growth
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   78. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   79. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal.html">
+   80. Cass-Koopmans Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal_2.html">
+   81. Two-Country Model with Distorting Taxes
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   82. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="endogenous_lake.html">
+   83. Lake Model with an Endogenous Job Finding Rate
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   84. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   85. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   86. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   87. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   88. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak2.html">
+   89. Transitions in an Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   90. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_computation.html">
+   91. Two Computations to Fund Social Security
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   92. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hansen_singleton_1983.html">
+   93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hansen_singleton_1982.html">
+   94. Estimating Euler Equations by Generalized Method of Moments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="doubts_or_variability.html">
+   95. Doubts or Variability?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   96. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   97. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="morris_learn.html">
+   98. Speculative Behavior with Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="affine_risk_prices.html">
+   99. Affine Models of Asset Prices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="risk_aversion_or_mistaken_beliefs.html">
+   100. Risk Aversion or Mistaken Beliefs?
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   101. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   102. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   103. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   104. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   105. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   106. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   107. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   108. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/organization_capital.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/organization_capital.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/organization_capital.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/organization_capital.ipynb" data-branch=main>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/organization_capital.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "organization_capital";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/organization_capital.ipynb";
+                const branch = "main"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>
