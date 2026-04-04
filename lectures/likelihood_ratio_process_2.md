@@ -29,7 +29,7 @@ kernelspec:
 ## Overview
 
 A likelihood ratio process lies behind Lawrence Blume and David Easley's answer to their question
-"If you're so smart, why aren't you rich?" {cite}`blume2006if`.  
+"If you're so smart, why aren't you rich?" {cite}`Blume_Easley2006`.  
 
 Blume and Easley constructed formal models to study how differences of opinions about probabilities governing risky income processes would influence outcomes and be reflected in prices of stocks, bonds, and insurance policies that individuals use to share and hedge risks.
 

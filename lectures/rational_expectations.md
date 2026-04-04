@@ -42,7 +42,7 @@ tags: [hide-output]
 This lecture introduces the concept of a *rational expectations equilibrium*.
 
 To illustrate it, we describe a linear quadratic version of a  model
-due to Lucas and Prescott {cite}`LucasPrescott1971`.
+due to Lucas and Prescott {cite}`Lucas_Prescott_1971`.
 
 That 1971 paper is one of a small number of research articles that ignited a *rational expectations revolution*.
 
@@ -203,7 +203,7 @@ This type of outcome provides an intellectual justification for liking a competi
 
 References for this lecture include
 
-* {cite}`LucasPrescott1971`
+* {cite}`Lucas_Prescott_1971`
 * {cite}`Sargent1987`, chapter XIV
 * {cite}`Ljungqvist2012`, chapter 7
 
@@ -439,7 +439,7 @@ Fortunately,  another method  works here.
 The method exploits a  connection between equilibrium and Pareto optimality expressed in
 the fundamental theorems of welfare economics (see, e.g, {cite}`MCWG1995`).
 
-Lucas and Prescott {cite}`LucasPrescott1971` used this method to construct a rational expectations equilibrium.
+Lucas and Prescott {cite}`Lucas_Prescott_1971` used this method to construct a rational expectations equilibrium.
 
 Some details follow.
 
