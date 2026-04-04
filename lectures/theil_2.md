@@ -268,7 +268,7 @@ His optimal rule takes the form
 u_t = \tilde{H}(x_t, z_t, Y_t).
 ```
 
-{cite:t}`bacsar2008h` and {cite:t}`hansen2008robustness` establish that at
+{cite:t}`bacsar2008h` and {cite:t}`HansenSargent2008` establish that at
 equilibrium (with "big $K$ = little $k$" imposed) this collapses to
 
 ```{math}

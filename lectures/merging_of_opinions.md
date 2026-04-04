@@ -1150,7 +1150,7 @@ For example, in the Beta–Bernoulli model with a non-atomic prior $\pi$, the mi
 
 Global absolute continuity does hold under additional structure, for instance when the parameter space is finite or the model is sufficiently regular to admit a Doob-consistency argument.
 
-{cite:t}`diaconis1986` study the consistency of Bayes estimates and show, among other results, that the interplay between local and global absolute continuity plays a central role in ensuring posterior convergence.
+{cite:t}`DiaconisFreedman1986` study the consistency of Bayes estimates and show, among other results, that the interplay between local and global absolute continuity plays a central role in ensuring posterior convergence.
 
 When $P \perp Q^*$, there are events of probability one under $Q^*$ that have probability zero under $P$, so the agent's beliefs remain fundamentally misspecified.
 
