@@ -1295,7 +1295,7 @@ Some influential applications and extensions are:
 - {cite}`JacksonKalaiSmorodinsky1999`: de Finetti-style representations are connected to Bayesian learning and posterior convergence.
 - {cite}`JacksonKalai1999`: social learning erodes reputational effects that rely on persistent disagreement across cohorts.
 - {cite}`Sandroni1998Nash`: near-absolute-continuity conditions are shown to suffice for Nash-type convergence in repeated games.
-- {cite}`Sandroni2000`: gives an alternative proof and an economic interpretation of persistent disagreement in terms of mutually favorable bets.
+- {cite}`MillerSanchirico1999`: gives an alternative proof and an economic interpretation of persistent disagreement in terms of mutually favorable bets.
 - {cite}`LehrerSmorodinsky1996Compatible`: studies broader compatibility notions beyond Blackwell--Dubins absolute continuity.
 - {cite}`LehrerSmorodinsky1996Learning`: surveys merging and learning in repeated strategic environments.
 - {cite}`Nyarko1994`: relates Bayesian learning under absolute continuity to convergence toward correlated equilibrium.
