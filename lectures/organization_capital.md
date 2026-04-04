@@ -19,12 +19,12 @@ kernelspec:
 ## Overview
 
 This lecture describes a theory of **organization capital** proposed by
-{cite}`Prescott_Visscher_1980`.
+{cite:t}`Prescott_Visscher_1980`.
 
 Prescott and Visscher define organization capital as information that a firm accumulates
 about its employees, teams, and production processes.
 
-This information is an **asset** to the firm because it affects the production possibility set
+This information is an *asset* to the firm because it affects the production possibility set
 and is produced jointly with output.
 
 Costs of adjusting the stock of organization capital constrain the firm's growth rate,
@@ -35,17 +35,18 @@ providing an explanation for
 
 The paper offers three examples of organization capital:
 
-* **Personnel information**: knowledge about the match between workers and tasks
-* **Team information**: knowledge about how well groups of workers mesh
-* **Firm-specific human capital**: skills of employees enhanced by on-the-job training
+* *Personnel information*: knowledge about the match between workers and tasks
+* *Team information*: knowledge about how well groups of workers mesh
+* *Firm-specific human capital*: skills of employees enhanced by on-the-job training
 
 In each case, the investment possibilities lead firms to grow at a common rate,
 yielding constant returns to scale together with increasing costs of rapid size adjustment.
 
 ```{note}
-The theory is related to ideas of {cite}`Coase_1937` and {cite}`Williamson_1975` about the nature of the firm.
+The theory is related to ideas of {cite:t}`Coase_1937` and {cite:t}`Williamson_1975` about the nature of the firm.
+
 Prescott and Visscher stress the firm's role as a storehouse of information and argue that
-incentives within the firm  are created for efficient accumulation and use of that information.
+incentives within the firm are created for efficient accumulation and use of that information.
 ```
 
 Let's start with some imports:
@@ -57,7 +58,7 @@ from scipy.stats import norm
 from scipy.optimize import brentq
 ```
 
-## The Basic Idea
+## The basic idea
 
 The firm is a storehouse of information.
 
@@ -68,11 +69,11 @@ size distribution.
 
 The key insight: the process by which information is accumulated naturally leads to
 
-1. **constant returns to scale**, and
-2. **increasing costs to rapid firm size adjustment**
+1. *constant returns to scale*, and
+2. *increasing costs to rapid firm size adjustment*
 
 Constant returns to scale explain the absence of an observed unique optimum firm size
-(see {cite}`Stigler_1958`).
+(see {cite:t}`Stigler_1958`).
 
 Without costs of adjustment, the pattern of investment
 by firms in the face of a change in market demand would exhibit
@@ -84,7 +85,7 @@ usurping all profitable investments as they appear, thus implying
 monopoly more prevalent than it is.
 
 
-## Personnel Information as Organization Capital
+## Personnel information as organization capital
 
 ```{index} single: Organization Capital; Personnel Information
 ```
@@ -108,15 +109,16 @@ $$
 $$
 
 When a worker is hired from the labor pool, neither the worker nor the employer knows $\theta$.
+
 Both know only the population distribution.
 
-### Three Tasks
+### Three tasks
 
 If $q$ units of output are produced, assume:
 
-* $\varphi_1 q$ workers are assigned to **task 1** (screening)
-* $\varphi q$ workers are assigned to **task 2**
-* the remaining workers are assigned to **task 3**
+* $\varphi_1 q$ workers are assigned to *task 1* (screening)
+* $\varphi q$ workers are assigned to *task 2*
+* the remaining workers are assigned to *task 3*
 
 where $\varphi_1 + 2\varphi = 1$.
 
@@ -125,7 +127,7 @@ The fixed coefficients technology requires a constant ratio between the number o
 personnel in jobs 2 and 3 and the number assigned to job 1.
 ```
 
-For task 1, the screening task, per unit cost of production is **invariant** to the $\theta$-values of the individuals assigned.
+For task 1, the screening task, per unit cost of production is *invariant* to the $\theta$-values of the individuals assigned.
 
 However, the larger a worker's $\theta$, the larger is his product in task 2 relative to
 his product in task 3.
@@ -135,7 +137,7 @@ Consequently:
 * a worker with a highly positive $\theta$ is much better suited for task 2
 * a worker with a highly negative $\theta$ is much better suited for task 3
 
-### Bayesian Learning
+### Bayesian learning
 
 Performance in tasks 2 or 3 cannot be observed at the individual level.
 
@@ -150,15 +152,15 @@ $$ (eq:signal)
 
 where $\epsilon_{it} \sim N(0, 1)$ are independently distributed over both workers $i$ and periods $t$.
 
-After $n$ observations on a worker in the screening job, the **posterior distribution** of $\theta$ is normal with
+After $n$ observations on a worker in the screening job, the *posterior distribution* of $\theta$ is normal with
 
-**posterior mean:**
+*posterior mean:*
 
 $$
 m = \frac{1}{\pi + n} \sum_{k=1}^{n} z_k
 $$ (eq:post_mean)
 
-**posterior precision:**
+*posterior precision:*
 
 $$
 h = \pi + n
@@ -170,20 +172,6 @@ Knowledge of an individual is thus completely characterized by the pair $(m, h)$
 def bayesian_update(z_observations, prior_precision):
     """
     Compute posterior mean and precision after observing signals.
-
-    Parameters
-    ----------
-    z_observations : array_like
-        Observed signals z_1, ..., z_n
-    prior_precision : float
-        Precision π of the prior distribution
-
-    Returns
-    -------
-    m : float
-        Posterior mean
-    h : float
-        Posterior precision
     """
     n = len(z_observations)
     h = prior_precision + n
@@ -194,48 +182,45 @@ def bayesian_update(z_observations, prior_precision):
 Let's visualize how the posterior evolves as we observe a worker whose true $\theta = 0.8$:
 
 ```{code-cell} ipython3
-np.random.seed(42)
+---
+mystnb:
+  figure:
+    caption: Posterior mean convergence and uncertainty
+    name: fig-posterior-evolution
+---
+np.random.seed(0)
 
-# True worker type
-theta_true = 0.8
+θ_true = 0.8
+π = 1.0
 
-# Prior precision
-pi = 1.0
-
-# Generate signals
 T = 20
-epsilons = np.random.randn(T)
-z_signals = theta_true + epsilons
+ε = np.random.randn(T)
+z_signals = θ_true + ε
 
-# Track posterior evolution
 posterior_means = []
 posterior_stds = []
 
 for n in range(1, T + 1):
-    m, h = bayesian_update(z_signals[:n], pi)
+    m, h = bayesian_update(z_signals[:n], π)
     posterior_means.append(m)
     posterior_stds.append(1 / np.sqrt(h))
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-# Plot posterior mean convergence
 ax = axes[0]
-ax.plot(range(1, T + 1), posterior_means, 'b-o', markersize=4,
+ax.plot(range(1, T + 1), posterior_means, '-o', markersize=4, lw=2,
         label='Posterior mean $m$')
-ax.axhline(theta_true, color='r', linestyle='--',
-           label=fr'True $\theta = {theta_true}$')
-ax.set_xlabel('Number of observations $n$')
-ax.set_ylabel('Posterior mean $m$')
-ax.set_title('Convergence of Posterior Mean')
+ax.axhline(θ_true, color='r', linestyle='--',
+           label=fr'True $\theta = {θ_true}$')
+ax.set_xlabel('number of observations $n$')
+ax.set_ylabel('posterior mean $m$')
 ax.legend()
 
-# Plot posterior standard deviation
 ax = axes[1]
-ax.plot(range(1, T + 1), posterior_stds, 'g-o', markersize=4,
-        label='Posterior std $1/\sqrt{h}$')
-ax.set_xlabel('Number of observations $n$')
-ax.set_ylabel('Posterior standard deviation')
-ax.set_title('Shrinking Posterior Uncertainty')
+ax.plot(range(1, T + 1), posterior_stds, '-o', markersize=4, lw=2,
+        label=r'Posterior std $1/\sqrt{h}$')
+ax.set_xlabel('number of observations $n$')
+ax.set_ylabel('posterior standard deviation')
 ax.legend()
 
 plt.tight_layout()
@@ -245,7 +230,7 @@ plt.show()
 As the number of screening observations $n$ increases, the posterior mean converges
 to the true $\theta$, and the posterior uncertainty shrinks at rate $1/\sqrt{n}$.
 
-### Per Unit Costs of Production
+### Per unit costs of production
 
 Under the nonsequential assignment rule, employees with the greatest seniority
 are assigned to jobs 2 and 3, while newer employees remain in the screening task.
@@ -268,47 +253,40 @@ $$ (eq:cost_n)
 where $c = c_1 + c_2 + c_3$ and $0.7978 = 2 \int_0^{\infty} \frac{t}{\sqrt{2\pi}} e^{-t^2/2} dt$.
 
 ```{note}
-The constant $0.7978 \approx \sqrt{2/\pi}$ is twice the mean of the half-normal distribution.
+The constant $0.7978 \approx \sqrt{2/\pi}$ is the mean of the standard half-normal distribution.
+
 It arises from computing $E[\theta \mid m > 0] - E[\theta \mid m \leq 0]$ for a normal distribution.
 ```
 
-The function $c(n)$ decreases at a **decreasing rate** in $n$: more screening observations
-reduce costs but with diminishing returns.
+The function $c(n)$ decreases at a *decreasing rate* in $n$.
+
+More screening observations reduce costs but with diminishing returns.
 
 ```{code-cell} ipython3
-def cost_per_unit(n_vals, pi, c_bar=1.0):
+---
+mystnb:
+  figure:
+    caption: Per unit costs by screening time
+    name: fig-cost-screening
+---
+def cost_per_unit(n_vals, π, c_bar=1.0):
     """
-    Per unit cost of production as a function of screening periods n.
-
-    Parameters
-    ----------
-    n_vals : array_like
-        Number of screening periods
-    pi : float
-        Prior precision
-    c_bar : float
-        Base cost c = c1 + c2 + c3
-
-    Returns
-    -------
-    costs : array
-        Per unit costs c(n)
+    Per unit cost as a function of screening periods n.
     """
     n_vals = np.asarray(n_vals, dtype=float)
-    return c_bar - 0.7978 * n_vals / (pi * (pi + n_vals))
+    return c_bar - 0.7978 * n_vals / (π * (π + n_vals))
 
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
 n_vals = np.linspace(0.1, 50, 200)
 
-for pi in [0.5, 1.0, 2.0, 5.0]:
-    costs = cost_per_unit(n_vals, pi)
-    ax.plot(n_vals, costs, label=fr'$\pi = {pi}$')
+for π in [0.5, 1.0, 2.0, 5.0]:
+    costs = cost_per_unit(n_vals, π)
+    ax.plot(n_vals, costs, lw=2, label=fr'$\pi = {π}$')
 
-ax.set_xlabel('Screening periods $n$')
-ax.set_ylabel('Per unit cost $c(n)$')
-ax.set_title('Per Unit Costs Decrease with Screening Time')
+ax.set_xlabel('screening periods $n$')
+ax.set_ylabel('per unit cost $c(n)$')
 ax.legend()
 ax.set_xlim(0, 50)
 plt.tight_layout()
@@ -321,10 +299,10 @@ The figure shows that:
 * the decrease is at a declining rate (diminishing returns to screening)
 * for smaller prior precision $\pi$ (more initial uncertainty about worker types), the gains from screening are larger
 
-This diminishing-returns structure is the source of the **increasing costs of rapid adjustment**.
+This diminishing-returns structure is the source of the *increasing costs of rapid adjustment*.
 
 
-### Growth Rate and Screening Time
+### Growth rate and screening time
 
 The greater the growth rate, the smaller must be $n$ --- the time spent in the screening
 task before assignment to job 2 or 3.
@@ -352,104 +330,94 @@ n(\gamma) = \frac{\log(2\varphi) - \log(\varphi_1 + 2\varphi)}{\log(1 - \rho) - 
 $$ (eq:n_gamma)
 
 ```{code-cell} ipython3
-def screening_time(gamma, rho, phi1, phi):
+---
+mystnb:
+  figure:
+    caption: Screening time vs. growth rate
+    name: fig-screening-growth
+---
+def screening_time(γ, ρ, φ1, φ):
     """
-    Compute the screening time n as a function of growth rate γ.
-
-    Parameters
-    ----------
-    gamma : array_like
-        Growth rate of output
-    rho : float
-        Quit rate
-    phi1 : float
-        Fraction of workers in task 1 per unit output
-    phi : float
-        Fraction of workers in each of tasks 2, 3 per unit output
-
-    Returns
-    -------
-    n : array
-        Screening periods before assignment
+    Screening time n as a function of growth rate γ.
     """
-    gamma = np.asarray(gamma, dtype=float)
-    numerator = np.log(2 * phi) - np.log(phi1 + 2 * phi)
-    denominator = np.log(1 - rho) - np.log(1 + gamma)
+    γ = np.asarray(γ, dtype=float)
+    numerator = np.log(2 * φ) - np.log(φ1 + 2 * φ)
+    denominator = np.log(1 - ρ) - np.log(1 + γ)
     return numerator / denominator - 1
 
 
-# Parameters
-rho = 0.1       # quit rate
-phi1 = 0.5      # fraction in screening
-phi = 0.25      # fraction in each of tasks 2, 3
+ρ = 0.1
+φ1 = 0.5
+φ = 0.25
 
-gamma_vals = np.linspace(-0.05, 0.30, 200)
+γ_vals = np.linspace(-0.05, 0.30, 200)
 
-# Filter valid range: γ > -ρ and ensure n > 0
-valid = gamma_vals > -rho
-gamma_valid = gamma_vals[valid]
-n_vals = screening_time(gamma_valid, rho, phi1, phi)
-# Only keep non-negative n
+valid = γ_vals > -ρ
+γ_valid = γ_vals[valid]
+n_vals = screening_time(γ_valid, ρ, φ1, φ)
 mask = n_vals > 0
-gamma_plot = gamma_valid[mask]
+γ_plot = γ_valid[mask]
 n_plot = n_vals[mask]
 
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.plot(gamma_plot, n_plot, 'b-', linewidth=2)
-ax.set_xlabel(r'Growth rate $\gamma$')
-ax.set_ylabel(r'Screening periods $n(\gamma)$')
-ax.set_title('Faster Growth Means Less Screening Time')
-ax.set_xlim(gamma_plot[0], gamma_plot[-1])
+ax.plot(γ_plot, n_plot, lw=2)
+ax.set_xlabel(r'growth rate $\gamma$')
+ax.set_ylabel(r'screening periods $n(\gamma)$')
+ax.set_xlim(γ_plot[0], γ_plot[-1])
 plt.tight_layout()
 plt.show()
 ```
 
-The figure shows the key trade-off: **faster growth forces shorter screening periods**.
+The figure shows the key trade-off: *faster growth forces shorter screening periods*.
 
 When growth is rapid, new workers must be promoted from the screening task to
 productive tasks more quickly, so less information is gathered about each worker
 before assignment.
 
 
-### Combined Effect: Growth Rate and Per Unit Costs
+### Combined effect: growth rate and per unit costs
 
 Composing the functions $c(n)$ and $n(\gamma)$ reveals how per unit costs depend on the
 growth rate:
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Per unit costs vs. growth rate
+    name: fig-cost-growth
+---
 fig, ax = plt.subplots(figsize=(10, 6))
 
-pi = 1.0
+π = 1.0
 c_bar = 1.0
 
-# Compute per unit costs as function of growth rate
-n_of_gamma = screening_time(gamma_plot, rho, phi1, phi)
-costs_of_gamma = cost_per_unit(n_of_gamma, pi, c_bar)
+n_of_γ = screening_time(γ_plot, ρ, φ1, φ)
+costs_of_γ = cost_per_unit(n_of_γ, π, c_bar)
 
-ax.plot(gamma_plot, costs_of_gamma, 'r-', linewidth=2)
-ax.set_xlabel(r'Growth rate $\gamma$')
-ax.set_ylabel(r'Per unit cost $c(n(\gamma))$')
-ax.set_title('Per Unit Costs Increase with Growth Rate')
-ax.set_xlim(gamma_plot[0], gamma_plot[-1])
+ax.plot(γ_plot, costs_of_γ, lw=2)
+ax.set_xlabel(r'growth rate $\gamma$')
+ax.set_ylabel(r'per unit cost $c(n(\gamma))$')
+ax.set_xlim(γ_plot[0], γ_plot[-1])
 plt.tight_layout()
 plt.show()
 ```
 
-This establishes the key result: **increasing costs of rapid adjustment arise endogenously**
+This establishes the key result: *increasing costs of rapid adjustment arise endogenously*
 from the trade-off between screening and growth.
 
 The faster the firm grows, the less time it has to screen workers, the poorer the
 match between workers and tasks, and the higher the per unit production costs.
 
 
-## Industry Equilibrium
+## Industry equilibrium
 
 ```{index} single: Organization Capital; Industry Equilibrium
 ```
 
 Firm growth rates are independent of firm size in this model because the
 mathematical structure of the technology constraint is the same as that
-considered in {cite}`lucas1967adjustment`, except that the stock of organization capital
+considered in {cite:t}`lucas1967adjustment`, except that the stock of organization capital
 is a vector rather than a scalar.
 
 The technology set facing price-taking firms is a **convex cone**: there are
@@ -457,7 +425,7 @@ constant returns to scale.
 
 Constant returns and internal adjustment costs, along with some costs of
 transferring capital between firms, yield an optimum rate of firm growth
-**independent of the firm's size** --- this is Gibrat's Law.
+*independent of the firm's size* --- this is Gibrat's Law.
 
 The bounded, downward-sloping, inverse industry demand function is
 
@@ -469,7 +437,7 @@ where $Q_t$ is the sum of output over all firms and $u_t$ is a demand shock
 subject to a stationary Markov process.
 
 Prescott and Visscher show that a competitive equilibrium exists using the
-framework of {cite}`Lucas_Prescott_1971`.
+framework of {cite:t}`Lucas_Prescott_1971`.
 
 The discounted consumer surplus to be maximized is
 
@@ -481,76 +449,58 @@ where $A_{i2t}, A_{i3t}$, and $B$ are obtained by summing $a_{i2t}$, $a_{i3t}$, 
 respectively, over all firms in the industry.
 
 
-### Key Property: Growth Rates Independent of Size
+### Key property: growth rates independent of size
 
 If two firms have organization capital vectors $\underline{k}$ that are proportional at a point in time,
 they will be proportional in all future periods.
 
-That is, **growth rates are independent of firm size**.
+That is, *growth rates are independent of firm size*.
 
 ```{code-cell} ipython3
-def simulate_firm_growth(T, gamma, rho, q0, seed=42):
+---
+mystnb:
+  figure:
+    caption: Firm output levels and growth rates
+    name: fig-firm-growth
+---
+def simulate_firm_growth(T, γ, ρ, q0, seed=42):
     """
-    Simulate firm output growth with constant growth rate
-    and stochastic quit turnover.
-
-    Parameters
-    ----------
-    T : int
-        Number of periods
-    gamma : float
-        Equilibrium growth rate
-    rho : float
-        Quit rate
-    q0 : float
-        Initial output
-    seed : int
-        Random seed
-
-    Returns
-    -------
-    output : array
-        Firm output path
+    Simulate firm output growth with stochastic shocks.
     """
     rng = np.random.default_rng(seed)
     output = np.zeros(T)
     output[0] = q0
     for t in range(1, T):
-        # Stochastic growth around equilibrium rate
         shock = rng.normal(0, 0.02)
-        output[t] = output[t-1] * (1 + gamma + shock)
+        output[t] = output[t-1] * (1 + γ + shock)
     return output
 
 
 T = 50
-gamma_eq = 0.05  # equilibrium growth rate
-rho = 0.1
+γ_eq = 0.05
+ρ = 0.1
 
-# Simulate firms of different initial sizes
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
-# Level plots
 ax = axes[0]
 for q0, label in [(10, 'Small firm'), (50, 'Medium firm'),
                    (200, 'Large firm')]:
-    output = simulate_firm_growth(T, gamma_eq, rho, q0,
+    output = simulate_firm_growth(T, γ_eq, ρ, q0,
                                   seed=int(q0))
-    ax.plot(range(T), output, label=f'{label} ($q_0={q0}$)')
-ax.set_xlabel('Period')
-ax.set_ylabel('Output $q_t$')
-ax.set_title('Firm Output Levels')
+    ax.plot(range(T), output, lw=2, label=f'{label} ($q_0={q0}$)')
+ax.set_xlabel('period')
+ax.set_ylabel('output $q_t$')
 ax.legend()
 
-# Log plots (growth rates)
 ax = axes[1]
 for q0, label in [(10, 'Small firm'), (50, 'Medium firm'),
                    (200, 'Large firm')]:
-    output = simulate_firm_growth(T, gamma_eq, rho, q0,
+    output = simulate_firm_growth(T, γ_eq, ρ, q0,
                                   seed=int(q0))
-    ax.plot(range(T), np.log(output), label=f'{label} ($q_0={q0}$)')
-ax.set_xlabel('Period')
+    ax.plot(range(T), np.log(output), lw=2,
+            label=f'{label} ($q_0={q0}$)')
+ax.set_xlabel('period')
 ax.set_ylabel(r'$\log(q_t)$')
-ax.set_title('Log Output (Parallel = Equal Growth Rates)')
 ax.legend()
 
 plt.tight_layout()
@@ -562,7 +512,7 @@ the log output paths are parallel.
 
 This is **Gibrat's Law**: growth rates are independent of firm size.
 
-## Bayesian Screening Simulation
+## Bayesian screening simulation
 
 ```{index} single: Organization Capital; Bayesian Screening
 ```
@@ -573,50 +523,29 @@ We draw workers from the population, observe their signals in the screening task
 and then assign them to the appropriate productive task based on the posterior mean.
 
 ```{code-cell} ipython3
-def simulate_screening(n_workers, n_screen, pi, seed=123):
+---
+mystnb:
+  figure:
+    caption: Screening and worker assignment accuracy
+    name: fig-screening-assignment
+---
+def simulate_screening(n_workers, n_screen, π, seed=123):
     """
-    Simulate the screening and assignment of workers.
-
-    Parameters
-    ----------
-    n_workers : int
-        Number of workers to screen
-    n_screen : int
-        Number of screening periods per worker
-    pi : float
-        Prior precision of θ distribution
-    seed : int
-        Random seed
-
-    Returns
-    -------
-    results : dict
-        Dictionary with θ values, posterior means,
-        assignments, and misassignment rate
+    Simulate screening and assignment of workers.
     """
     rng = np.random.default_rng(seed)
 
-    # Draw true worker types
-    theta = rng.normal(0, 1/np.sqrt(pi), n_workers)
-
-    # Generate screening signals
-    signals = (theta[:, None]
+    θ = rng.normal(0, 1/np.sqrt(π), n_workers)
+    signals = (θ[:, None]
                + rng.normal(0, 1, (n_workers, n_screen)))
+    posterior_means = signals.sum(axis=1) / (π + n_screen)
 
-    # Compute posterior means after screening
-    posterior_means = signals.sum(axis=1) / (pi + n_screen)
-
-    # Assign workers: m > 0 → task 2, m ≤ 0 → task 3
     assignment = np.where(posterior_means > 0, 2, 3)
-
-    # Correct assignment based on true θ
-    correct_assignment = np.where(theta > 0, 2, 3)
-
-    # Misassignment rate
+    correct_assignment = np.where(θ > 0, 2, 3)
     misassignment_rate = np.mean(assignment != correct_assignment)
 
     return {
-        'theta': theta,
+        'theta': θ,
         'posterior_means': posterior_means,
         'assignment': assignment,
         'correct_assignment': correct_assignment,
@@ -624,7 +553,7 @@ def simulate_screening(n_workers, n_screen, pi, seed=123):
     }
 
 
-pi = 1.0
+π = 1.0
 n_workers = 5000
 screening_periods = [1, 3, 5, 10, 20, 50]
 
@@ -634,25 +563,23 @@ axes = axes.flatten()
 misassignment_rates = []
 
 for idx, n_screen in enumerate(screening_periods):
-    results = simulate_screening(n_workers, n_screen, pi)
+    results = simulate_screening(n_workers, n_screen, π)
     misassignment_rates.append(results['misassignment_rate'])
 
     ax = axes[idx]
-    theta = results['theta']
+    θ = results['theta']
     m = results['posterior_means']
 
-    # Color by whether assignment matches true type
     correct = results['assignment'] == results['correct_assignment']
-    ax.scatter(theta[correct], m[correct], alpha=0.1, s=5,
+    ax.scatter(θ[correct], m[correct], alpha=0.1, s=5,
                color='blue', label='Correct')
-    ax.scatter(theta[~correct], m[~correct], alpha=0.3, s=5,
+    ax.scatter(θ[~correct], m[~correct], alpha=0.3, s=5,
                color='red', label='Misassigned')
     ax.axhline(0, color='k', linewidth=0.5)
     ax.axvline(0, color='k', linewidth=0.5)
     mis = results['misassignment_rate']
-    ax.set_title(f'$n = {n_screen}$, misassign = {mis:.1%}')
-    ax.set_xlabel(r'True $\theta$')
-    ax.set_ylabel('Posterior mean $m$')
+    ax.set_xlabel(r'true $\theta$')
+    ax.set_ylabel('posterior mean $m$')
     if idx == 0:
         ax.legend(markerscale=5, loc='upper left')
 
@@ -660,7 +587,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Red dots are workers who are **misassigned** --- placed in the wrong productive task
+Red dots are workers who are *misassigned* --- placed in the wrong productive task
 because the posterior mean had the wrong sign relative to their true $\theta$.
 
 As $n$ increases:
@@ -668,26 +595,31 @@ As $n$ increases:
 * Misassignment rates fall
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Misassignment rate by screening time
+    name: fig-misassignment-rate
+---
 fig, ax = plt.subplots(figsize=(10, 6))
 
 n_range = np.arange(1, 51)
 mis_rates = []
 for n_screen in n_range:
-    results = simulate_screening(n_workers, n_screen, pi)
+    results = simulate_screening(n_workers, n_screen, π)
     mis_rates.append(results['misassignment_rate'])
 
-ax.plot(n_range, mis_rates, 'b-o', markersize=3)
-ax.set_xlabel('Screening periods $n$')
-ax.set_ylabel('Misassignment rate')
-ax.set_title('Misassignment Rate Decreases with Screening Time')
+ax.plot(n_range, mis_rates, '-o', markersize=3, lw=2)
+ax.set_xlabel('screening periods $n$')
+ax.set_ylabel('misassignment rate')
 plt.tight_layout()
 plt.show()
 ```
 
 This confirms the theoretical prediction: the cost savings from better assignment
-exhibit **diminishing returns** in the screening time $n$.
+exhibit *diminishing returns* in the screening time $n$.
 
-## Team Information
+## Team information
 
 ```{index} single: Organization Capital; Team Information
 ```
@@ -695,7 +627,7 @@ exhibit **diminishing returns** in the screening time $n$.
 Personnel information need not be valuable only because it facilitates the matching of
 workers to tasks.
 
-Another equally valuable use of personnel information is in the **matching of workers to workers**.
+Another equally valuable use of personnel information is in the *matching of workers to workers*.
 
 What is important to performance in many activities within the firm is not just
 the aptitude of an individual assigned to a task, but also how well the
@@ -726,47 +658,31 @@ $$
 and precision $h = \pi + n$.
 
 If dissolution of a team also dissolves the accrued information, the team information
-model has the **same mathematical structure** as the personnel information model.
+model has the *same mathematical structure* as the personnel information model.
 
 ```{code-cell} ipython3
-def simulate_team_screening(n_teams, n_screen, pi, mu=0.5,
+---
+mystnb:
+  figure:
+    caption: Team quality estimates by screening periods
+    name: fig-team-screening
+---
+def simulate_team_screening(n_teams, n_screen, π, μ=0.5,
                             seed=456):
     """
     Simulate team screening with Bayesian updating.
-
-    Parameters
-    ----------
-    n_teams : int
-        Number of teams to screen
-    n_screen : int
-        Number of screening periods
-    pi : float
-        Prior precision
-    mu : float
-        Prior mean of team quality
-    seed : int
-        Random seed
-
-    Returns
-    -------
-    results : dict
     """
     rng = np.random.default_rng(seed)
 
-    # True team qualities
-    theta = rng.normal(mu, 1/np.sqrt(pi), n_teams)
-
-    # Generate signals
-    signals = (theta[:, None]
+    θ = rng.normal(μ, 1/np.sqrt(π), n_teams)
+    signals = (θ[:, None]
                + rng.normal(0, 1, (n_teams, n_screen)))
-
-    # Posterior means
     z_bar = signals.mean(axis=1)
-    post_means = mu + n_screen * (z_bar - mu) / (pi + n_screen)
-    post_prec = pi + n_screen
+    post_means = μ + n_screen * (z_bar - μ) / (π + n_screen)
+    post_prec = π + n_screen
 
     return {
-        'theta': theta,
+        'theta': θ,
         'posterior_means': post_means,
         'posterior_precision': post_prec
     }
@@ -775,16 +691,15 @@ def simulate_team_screening(n_teams, n_screen, pi, mu=0.5,
 fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
 for idx, n_screen in enumerate([1, 5, 20]):
-    results = simulate_team_screening(500, n_screen, pi=1.0, mu=0.5)
+    results = simulate_team_screening(500, n_screen, π=1.0, μ=0.5)
 
     ax = axes[idx]
     ax.scatter(results['theta'], results['posterior_means'],
                alpha=0.4, s=10)
     lims = [-1.5, 2.5]
-    ax.plot(lims, lims, 'r--', alpha=0.5, label='45° line')
-    ax.set_xlabel(r'True team quality $\theta$')
-    ax.set_ylabel('Posterior mean $m$')
-    ax.set_title(f'$n = {n_screen}$ screening periods')
+    ax.plot(lims, lims, 'r--', alpha=0.5, lw=2, label='45° line')
+    ax.set_xlabel(r'true team quality $\theta$')
+    ax.set_ylabel('posterior mean $m$')
     ax.set_xlim(lims)
     ax.set_ylim(lims)
     ax.legend()
@@ -796,11 +711,12 @@ plt.show()
 
 As with individual screening, more observations improve the precision of team quality
 estimates.
+
 Rapid growth forces fewer observations before team assignments must be finalized, leading
 to higher costs.
 
 
-## Firm-Specific Human Capital
+## Firm-specific human capital
 
 ```{index} single: Organization Capital; Human Capital
 ```
@@ -812,9 +728,10 @@ determined largely by the level and meshing of the skills of the employees.
 
 ```{note}
 The case for the human capital of employees being part of the capital stock of the firm
-is well established (see {cite}`Becker_1975`). Productivity in the future depends on levels
-of human capital in the future, but to acquire human capital for the future, a sacrifice
-in real resources is required in the present.
+is well established (see {cite:t}`Becker_1975`).
+
+Productivity in the future depends on levels of human capital in the future, but to acquire
+human capital for the future, a sacrifice in real resources is required in the present.
 ```
 
 The key features are:
@@ -827,47 +744,39 @@ The key features are:
   of the work force is improved
 
 * The transformation frontier between current output and future human capital is
-  **concave** and linearly homogeneous
+  *concave* and linearly homogeneous
 
 This gives the technology set the structure of a closed convex cone with a vertex at the
 origin --- sufficient for optimal proportional growth by firms.
 
-### Concave Transformation Frontier
+### Concave transformation frontier
 
 ```{code-cell} ipython3
-def transformation_frontier(q, alpha=0.7):
+---
+mystnb:
+  figure:
+    caption: Concave transformation frontier
+    name: fig-transformation-frontier
+---
+def transformation_frontier(q, α=0.7):
     """
-    Concave transformation frontier between current output
-    and future human capital increment.
-
-    Parameters
-    ----------
-    q : array_like
-        Current output (fraction of capacity)
-    alpha : float
-        Concavity parameter
-
-    Returns
-    -------
-    hk : array
-        Future human capital increment
+    Concave transformation frontier between output and human capital.
     """
     q = np.asarray(q, dtype=float)
-    return (1 - q**alpha)**(1/alpha)
+    return (1 - q**α)**(1/α)
 
 
 fig, ax = plt.subplots(figsize=(8, 8))
 
 q_vals = np.linspace(0, 1, 200)
 
-for alpha in [0.5, 0.7, 1.0, 1.5]:
-    hk = transformation_frontier(q_vals, alpha)
+for α in [0.5, 0.7, 1.0, 1.5]:
+    hk = transformation_frontier(q_vals, α)
     ax.plot(q_vals, hk,
-            label=fr'$\alpha = {alpha}$', linewidth=2)
+            label=fr'$\alpha = {α}$', lw=2)
 
-ax.set_xlabel('Current output $q$ (fraction of capacity)')
-ax.set_ylabel('Future human capital increment $\\Delta h$')
-ax.set_title('Concave Transformation Frontier')
+ax.set_xlabel('current output $q$ (fraction of capacity)')
+ax.set_ylabel('future human capital increment $\\Delta h$')
 ax.legend()
 ax.set_xlim(0, 1.05)
 ax.set_ylim(0, 1.05)
@@ -884,7 +793,7 @@ But a workday consisting primarily of learning also has diminishing returns,
 creating the cost of rapid adjustment.
 
 
-## Costs of Transferring Organization Capital
+## Costs of transferring organization capital
 
 ```{index} single: Organization Capital; Transfer Costs
 ```
@@ -895,12 +804,12 @@ the model would not place constraints on the firm's growth rate.
 Firms could then merge, divest, or pirate each other's personnel without a cost penalty
 and thus produce a pattern of growth not restricted by the model.
 
-Organization capital is **not** costlessly moved, however:
+Organization capital is *not* costlessly moved, however:
 
-1. **Moving is disruptive**: relocating from one locale to another is disruptive to both
+1. *Moving is disruptive*: relocating from one locale to another is disruptive to both
    employee and family
 
-2. **Information is firm-specific**: the information set that makes a person productive
+2. *Information is firm-specific*: the information set that makes a person productive
    in one organization may not make that person as productive in another, even if both
    firms produce identical output
 
@@ -908,62 +817,45 @@ Organization capital is **not** costlessly moved, however:
    * Knowing whom to ask when problems arise
    * Rapport with buyers or sellers
 
-These are types of organization capital in one firm that **cannot be transferred costlessly**
+These are types of organization capital in one firm that *cannot be transferred costlessly*
 to another.
 
 
-## Summary and Implications
+## Summary and implications
 
 The Prescott-Visscher model provides a unified framework in which:
 
 * The firm exists as an entity because it is an efficient structure for accumulating,
   storing, and using information
 
-* **Constant returns to scale** arise because once the best combinations of worker types
+* *Constant returns to scale* arise because once the best combinations of worker types
   are discovered, nothing prevents the firm from replicating those combinations with
   proportional gains in product
 
-* **Increasing adjustment costs** arise endogenously from the trade-off between
+* *Increasing adjustment costs* arise endogenously from the trade-off between
   current production and investment in organization capital
 
-* **Gibrat's Law** --- growth rates independent of firm size --- is a natural implication
+* *Gibrat's Law* --- growth rates independent of firm size --- is a natural implication
 
-* Large firms should have growth rates that display **less variance** than small firms
+* Large firms should have growth rates that display *less variance* than small firms
   because large firms are essentially portfolios of smaller production units
 
 ```{code-cell} ipython3
-# Illustrate the variance reduction in growth rates for large vs small firms
-def simulate_growth_rate_distribution(n_firms, n_subunits, gamma,
-                                      sigma, T=100, seed=789):
+---
+mystnb:
+  figure:
+    caption: Growth rate distributions by firm size
+    name: fig-growth-rate-dist
+---
+def simulate_growth_rate_distribution(n_firms, n_subunits, γ,
+                                      σ, T=100, seed=789):
     """
     Simulate growth rate distributions for firms of different sizes.
-
-    Parameters
-    ----------
-    n_firms : int
-        Number of firms to simulate
-    n_subunits : int
-        Number of independent subunits per firm
-    gamma : float
-        Mean growth rate
-    sigma : float
-        Std dev of growth rate per subunit
-    T : int
-        Number of periods
-    seed : int
-        Random seed
-
-    Returns
-    -------
-    growth_rates : array
-        Realized growth rates for each firm
     """
     rng = np.random.default_rng(seed)
-    # Each firm's growth is average of n_subunit growth rates
-    subunit_growth = rng.normal(gamma, sigma,
+    subunit_growth = rng.normal(γ, σ,
                                 (n_firms, n_subunits, T))
-    firm_growth = subunit_growth.mean(axis=1)  # average across subunits
-    # Return time-averaged growth rate for each firm
+    firm_growth = subunit_growth.mean(axis=1)
     return firm_growth.mean(axis=1)
 
 
@@ -973,33 +865,32 @@ sizes = {'Small (1 unit)': 1,
          'Medium (5 units)': 5,
          'Large (20 units)': 20}
 
-gamma = 0.05
-sigma = 0.10
+γ = 0.05
+σ = 0.10
 
 for label, n_sub in sizes.items():
     rates = simulate_growth_rate_distribution(
-        2000, n_sub, gamma, sigma)
+        2000, n_sub, γ, σ)
     ax.hist(rates, bins=50, alpha=0.5, density=True,
             label=f'{label}: std={rates.std():.4f}')
 
-ax.set_xlabel('Average growth rate')
-ax.set_ylabel('Density')
-ax.set_title('Growth Rate Distributions by Firm Size')
+ax.set_xlabel('average growth rate')
+ax.set_ylabel('density')
 ax.legend()
-ax.axvline(gamma, color='k', linestyle='--',
+ax.axvline(γ, color='k', linestyle='--',
            label=r'$\gamma$', alpha=0.5)
 plt.tight_layout()
 plt.show()
 ```
 
-The figure shows that although all firms have the **same mean growth rate** (Gibrat's Law),
-large firms display **less variance** in realized growth rates because they are effectively
+The figure shows that although all firms have the *same mean growth rate* (Gibrat's Law),
+large firms display *less variance* in realized growth rates because they are effectively
 portfolios of independent subunits.
 
-This is consistent with the empirical findings of {cite}`Mansfield_1962` and {cite}`Hymer_Pashigian_1962`.
+This is consistent with the empirical findings of {cite:t}`Mansfield_1962` and {cite:t}`Hymer_Pashigian_1962`.
 
 The essence of the Prescott-Visscher theory is that the nature of the firm is tied to
-**organization capital**.
+*organization capital*.
 
 What distinguishes the firm from other relationships is that it is a structure within which
 agents have the incentive to acquire and reveal information in a manner that is less
