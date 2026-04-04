@@ -82,7 +82,7 @@ Under the true probability measure $P$, aggregate endowment satisfies
 
 $$
 d \log Y_t = \mu_Y dt + \sigma_Y dW_t, \quad Y_0 > 0
-$$ (eq:endowment)
+$$ (eq:srp_endowment)
 
 where $W$ is a standard Brownian motion, $\mu_Y$ is the drift, and $\sigma_Y > 0$ is the volatility.
 
