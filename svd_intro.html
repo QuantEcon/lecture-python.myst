@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=300d9cef76b95d0252c8ff6263fc63de943d6f3a" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
@@ -101,8 +101,8 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=af25365e6360aeca6ba8101dda3f432eb6b6fa9c"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -155,6 +155,9 @@
 <meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
 <meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
 <meta name="theme-color" content="#ffffff" />
+
+
+
 
   </head>
 <body>
@@ -269,7 +272,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Aug 14, 2025
+                            Last changed: Apr 06, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -277,6 +280,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/svd_intro.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/388b2735b" class="changelog-hash">388b2735b</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">2 hours ago</span>
+                                <span class="changelog-message">Reduce bold font overuse in svd_intro "The Setting" section (#841)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -359,15 +371,6 @@
                                 <span class="changelog-message">Tom's Feb 20 edits of 2 lectures and toc</span>
                             </li>
                             
-                            <li class="changelog-entry">
-                                
-                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/81cd6a3e6" class="changelog-hash">81cd6a3e6</a>
-                                
-                                <span class="changelog-author">thomassargent30</span>
-                                <span class="changelog-time">3 years ago</span>
-                                <span class="changelog-message">Tom's Jan 18 edit of SVD lecture</span>
-                            </li>
-                            
                         </ul>
                     </div>
 
@@ -399,7 +402,7 @@ form  foundations for many statistical and  machine learning methods.</p>
 <h2><span class="section-number">5.2. </span>The Setting<a class="headerlink" href="#the-setting" title="Link to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(X\)</span> be an <span class="math notranslate nohighlight">\(m \times n\)</span> matrix of rank <span class="math notranslate nohighlight">\(p\)</span>.</p>
 <p>Necessarily, <span class="math notranslate nohighlight">\(p \leq \min(m,n)\)</span>.</p>
-<p>In  much of this lecture, we’ll think of <span class="math notranslate nohighlight">\(X\)</span> as a matrix of <strong>data</strong> in which</p>
+<p>In  much of this lecture, we’ll think of <span class="math notranslate nohighlight">\(X\)</span> as a matrix of data in which</p>
 <ul class="simple">
 <li><p>each column is an <strong>individual</strong> – a time period or person, depending on the application</p></li>
 <li><p>each row is a <strong>random variable</strong> describing an attribute of a time period or a person, depending on the application</p></li>
@@ -411,9 +414,9 @@ form  foundations for many statistical and  machine learning methods.</p>
 </ul>
 <p>We’ll apply a <strong>singular value decomposition</strong> of <span class="math notranslate nohighlight">\(X\)</span> in both situations.</p>
 <p>In the <span class="math notranslate nohighlight">\( m &lt; &lt; n\)</span> case  in which there are many more individuals <span class="math notranslate nohighlight">\(n\)</span> than attributes <span class="math notranslate nohighlight">\(m\)</span>, we can calculate sample moments of  a joint distribution  by taking averages  across observations of functions of the observations.</p>
-<p>In this <span class="math notranslate nohighlight">\( m &lt; &lt; n\)</span> case,  we’ll look for <strong>patterns</strong> by using a <strong>singular value decomposition</strong> to do a <strong>principal components analysis</strong> (PCA).</p>
+<p>In this <span class="math notranslate nohighlight">\( m &lt; &lt; n\)</span> case,  we’ll look for patterns by using a singular value decomposition to do a principal components analysis (PCA).</p>
 <p>In the <span class="math notranslate nohighlight">\(m &gt; &gt; n\)</span>  case in which there are many more attributes <span class="math notranslate nohighlight">\(m\)</span> than individuals <span class="math notranslate nohighlight">\(n\)</span> and when we are in a time-series setting in which <span class="math notranslate nohighlight">\(n\)</span> equals the number of time periods covered in the data set <span class="math notranslate nohighlight">\(X\)</span>, we’ll proceed in a different way.</p>
-<p>We’ll again use a <strong>singular value decomposition</strong>,  but now to construct a <strong>dynamic mode decomposition</strong> (DMD)</p>
+<p>We’ll again use a singular value decomposition,  but now to construct a <strong>dynamic mode decomposition</strong> (DMD)</p>
 </section>
 <section id="singular-value-decomposition">
 <h2><span class="section-number">5.3. </span>Singular Value Decomposition<a class="headerlink" href="#singular-value-decomposition" title="Link to this heading">#</a></h2>
@@ -2167,6 +2170,8 @@ X^{+}  = V \Sigma^{+} U^\top
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/svd_intro.md" download><i data-feather="github"></i></a></li>
                     -->
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
+                    
+                    
                 </ul>
 
             </div>

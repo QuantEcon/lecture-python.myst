@@ -34,7 +34,7 @@ Let $X$ be an $m \times n$ matrix of rank $p$.
 
 Necessarily, $p \leq \min(m,n)$.
 
-In  much of this lecture, we'll think of $X$ as a matrix of **data** in which
+In  much of this lecture, we'll think of $X$ as a matrix of data in which
 
 * each column is an **individual** -- a time period or person, depending on the application
 
@@ -52,11 +52,11 @@ We'll apply a **singular value decomposition** of $X$ in both situations.
 
 In the $ m < < n$ case  in which there are many more individuals $n$ than attributes $m$, we can calculate sample moments of  a joint distribution  by taking averages  across observations of functions of the observations.
 
-In this $ m < < n$ case,  we'll look for **patterns** by using a **singular value decomposition** to do a **principal components analysis** (PCA).
+In this $ m < < n$ case,  we'll look for patterns by using a singular value decomposition to do a principal components analysis (PCA).
 
 In the $m > > n$  case in which there are many more attributes $m$ than individuals $n$ and when we are in a time-series setting in which $n$ equals the number of time periods covered in the data set $X$, we'll proceed in a different way.
 
-We'll again use a **singular value decomposition**,  but now to construct a **dynamic mode decomposition** (DMD)
+We'll again use a singular value decomposition,  but now to construct a **dynamic mode decomposition** (DMD)
 
 ## Singular Value Decomposition
 

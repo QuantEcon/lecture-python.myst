@@ -77,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=300d9cef76b95d0252c8ff6263fc63de943d6f3a" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
@@ -101,8 +101,8 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=1ae7504c"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=af25365e6360aeca6ba8101dda3f432eb6b6fa9c"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -155,6 +155,9 @@
 <meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
 <meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
 <meta name="theme-color" content="#ffffff" />
+
+
+
 
   </head>
 <body>
@@ -392,13 +395,13 @@ Entropy <span class="math notranslate nohighlight">\(H(f)\)</span> for the unifo
 \]</div>
 <p>The following two  concepts are widely used to compare two distributions <span class="math notranslate nohighlight">\(f\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.</p>
 <p><strong>Cross-Entropy:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-dea5563a-4354-4797-8c57-4a206de5f26d">
-<span class="eqno">(21.1)<a class="headerlink" href="#equation-dea5563a-4354-4797-8c57-4a206de5f26d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e5bc1550-57fe-4b1d-afad-3ec78fa03dcb">
+<span class="eqno">(21.1)<a class="headerlink" href="#equation-e5bc1550-57fe-4b1d-afad-3ec78fa03dcb" title="Permalink to this equation">#</a></span>\[\begin{equation}
 H(f,g) = -\sum_{i} f_i \log g_i
 \end{equation}\]</div>
 <p><strong>Kullback-Leibler (KL) Divergence:</strong></p>
-<div class="amsmath math notranslate nohighlight" id="equation-5873d95a-0d95-4e7e-af26-8ebf6f2dec4c">
-<span class="eqno">(21.2)<a class="headerlink" href="#equation-5873d95a-0d95-4e7e-af26-8ebf6f2dec4c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1612491c-7ce0-46f4-b005-7e70cf460b5b">
+<span class="eqno">(21.2)<a class="headerlink" href="#equation-1612491c-7ce0-46f4-b005-7e70cf460b5b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
 \end{equation}\]</div>
 <p>These concepts are related by the following equality.</p>
@@ -407,8 +410,8 @@ D_{KL}(f \parallel g) = \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right]
 D_{KL}(f \parallel g) = H(f,g) - H(f)
 \]</div>
 <p>To prove <a class="reference internal" href="#equation-eq-klcross">(21.3)</a>, note that</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fc6c092d-3548-4c13-ae8a-7f6b98cae13f">
-<span class="eqno">(21.4)<a class="headerlink" href="#equation-fc6c092d-3548-4c13-ae8a-7f6b98cae13f" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-ecff1436-3c8f-443b-a9b1-908c057eb761">
+<span class="eqno">(21.4)<a class="headerlink" href="#equation-ecff1436-3c8f-443b-a9b1-908c057eb761" title="Permalink to this equation">#</a></span>\[\begin{align}
 D_{KL}(f \parallel g) &amp;= \sum_{i} f_i \log\left[\frac{f_i}{g_i}\right] \\
 &amp;= \sum_{i} f_i \left[\log f_i - \log g_i\right] \\
 &amp;= \sum_{i} f_i \log f_i - \sum_{i} f_i \log g_i \\
@@ -1641,6 +1644,8 @@ Optimal ϕ = 0.5969
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/divergence_measures.md" download><i data-feather="github"></i></a></li>
                     -->
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
+                    
+                    
                 </ul>
 
             </div>
