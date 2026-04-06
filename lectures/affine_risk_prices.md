@@ -60,7 +60,7 @@ Instead, it
   assets to let the data reveal risks and their prices.
 
 ```{note}
-Researchers including {cite}`bansal2004risks` and {cite}`hansen2008consumption` have been less willing
+Researchers including {cite}`Bansal_Yaron_2004` and {cite}`hansen2008consumption` have been less willing
 to give up on consumption-based models of the stochastic discount factor.
 ```
 
