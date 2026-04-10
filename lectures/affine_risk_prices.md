@@ -45,7 +45,7 @@ among expected returns across assets.
 
 Empirical difficulties with this specification (the equity premium puzzle, the
 risk-free rate puzzle, and the Hansen-Jagannathan bounds discussed in
-{doc}`Doubts or Variability? <doubts_or_variability>`) motivate the alternative approach
+{doc}`advanced:doubts_or_variability`) motivate the alternative approach
 described in this lecture.
 
 Put bluntly, the model to be studied in this lecture  declares the Lucas asset pricing model's stochastic discount factor to be a failure.
@@ -71,7 +71,7 @@ Key applications we study include:
    ({cite:t}`AngPiazzesi2003`).
 3. *Risk-neutral probabilities*: a change-of-measure representation of the pricing equation.
 4. *Distorted beliefs*: reinterpreting risk price estimates when agents hold systematically
-   biased forecasts ({cite:t}`piazzesi2015trend`); see also {doc}`Risk Aversion or Mistaken Beliefs? <risk_aversion_or_mistaken_beliefs>`.
+   biased forecasts ({cite:t}`piazzesi2015trend`); see also {doc}`advanced:risk_aversion_or_mistaken_beliefs`.
 
 We start with the following imports:
 
@@ -1387,7 +1387,7 @@ Disentangling belief distortions from genuine risk prices requires additional
 data, for example, the survey forecasts used by
 {cite:t}`piazzesi2015trend`.
 
-Our {doc}`Risk Aversion or Mistaken Beliefs? <risk_aversion_or_mistaken_beliefs>` lecture
+Our {doc}`advanced:risk_aversion_or_mistaken_beliefs` lecture
 explores this confounding in greater depth.
 
 ## Concluding remarks
@@ -1409,7 +1409,7 @@ Key features are:
    {cite:t}`piazzesi2015trend`.
 
 The model also connects directly to the Hansen–Jagannathan bounds studied in
-{doc}`Doubts or Variability? <doubts_or_variability>` and to robust
+{doc}`advanced:doubts_or_variability` and to robust
 control interpretations of the stochastic discount factor described in other
 chapters of {cite:t}`Ljungqvist2012`.
 
