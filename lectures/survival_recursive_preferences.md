@@ -124,7 +124,7 @@ $$ (eq:felicity)
 where $\nu$ is the endogenous discount rate.
 
 ```{note}
-In discrete time, Epstein-Zin preferences aggregate current consumption with a certainty equivalent of future utility via a CES aggregator (see {doc}`advanced:doubts_or_variability`).
+In discrete time, Epstein-Zin preferences aggregate current consumption with a certainty equivalent of future utility via a CES aggregator (see {doc}`doubts_or_variability`).
 
 In continuous time there is no "next-period $V_{t+1}$," so {cite:t}`Duffie_Epstein1992a` recast the recursion as a felicity function $F(C,\nu)$ that depends on the agent's own continuation-value rate $\nu$.
 
