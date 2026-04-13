@@ -50,6 +50,9 @@ jobs:
           branch: main
           name: build-cache
           path: _build
+      - name: Clear stale Sphinx environment
+        shell: bash -l {0}
+        run: rm -rf _build/.doctrees
       # Build Assets (Download Notebooks and PDF via LaTeX)
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
