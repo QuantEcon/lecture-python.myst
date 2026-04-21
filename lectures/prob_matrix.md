@@ -66,35 +66,45 @@ We'll briefly define what we mean by a **probability space**, a **probability me
 For most of this lecture, we sweep these objects into the background
  
 ```{note}
-Nevertheless, they'll be lurking beneath **induced distributions** of random variables that we'll focus on here. These deeper objects are essential for defining and analysing the concepts of stationarity and ergodicity that underly laws of large numbers. For a relatively
-nontechnical presentation of some of these results see this chapter from Lars Peter Hansen and Thomas J. Sargent's online monograph titled "Risk, Uncertainty, and Values":<https://lphansen.github.io/QuantMFR/book/1_stochastic_processes.html>.
+Nevertheless, they'll be lurking beneath **induced distributions** of random variables that we'll focus on here. 
+
+These deeper objects are essential for defining and analysing the concepts of stationarity and ergodicity that underly laws of large numbers.
+
+For a relatively
+nontechnical presentation of some of these results see this chapter from Lars Peter Hansen and Thomas J. Sargent's online monograph titled [*Risk, Uncertainty, and Values*](https://lphansen.github.io/QuantMFR/book/1_stochastic_processes.html).
 ``` 
   
 
 
-Let $\Omega$ be a set of possible underlying outcomes and let $\omega \in \Omega$ be a particular underlying outcomes.
+Let $\Omega$ be a set of possible underlying outcomes and let $\omega \in \Omega$ be a particular underlying outcome.
 
-Let $\mathcal{G} \subset \Omega$ be a subset of $\Omega$.
+Let $\mathcal{F}$ be a collection of subsets of $\Omega$ that we call **events**.
 
-Let $\mathcal{F}$ be a collection of such subsets $\mathcal{G} \subset \Omega$.
+(Technically, $\mathcal{F}$ is a [$\sigma$-algebra](https://en.wikipedia.org/wiki/Sigma-algebra).)
 
-The pair $\Omega,\mathcal{F}$ forms our **probability space** on which we want to put a probability measure.
+A **probability measure** $\mu$ maps each event $\mathcal{G} \in \mathcal{F}$ into a scalar number $\mu(\mathcal{G})$ between $0$ and $1$, with $\mu(\Omega)=1$.
 
-A **probability measure** $\mu$ maps a set of possible underlying outcomes $\mathcal{G} \in \mathcal{F}$ into a scalar number between $0$ and $1$
+The triple $\Omega,\mathcal{F},\mu$ forms our **probability space**.
 
-- this is the "probability" that $X$ belongs to $A$, denoted by $ \textrm{Prob}\{X\in A\}$.
+A **random variable** $X(\omega)$ is a function of the underlying outcome $\omega \in \Omega$ that assigns a value in some set of possible values.
 
-A **random variable** $X(\omega)$ is a function of the underlying outcome $\omega \in \Omega$.
-
-
-The random variable $X(\omega)$ has a **probability distribution** that is induced by the underlying probability measure $\mu$ and the function
-$X(\omega)$:
+If $A$ is a set of possible values of $X$, then the event that $X$ lies in $A$ is
 
 $$
-\textrm{Prob} (X \in A ) = \int_{\mathcal{G}} \mu(\omega) d \omega
-$$ (eq:CDFfromdensity)
+\mathcal{G} = \{\omega \in \Omega : X(\omega) \in A\}.
+$$
 
-where ${\mathcal G}$ is the subset of $\Omega$ for which $X(\omega) \in A$.
+The random variable $X(\omega)$ has a **probability distribution** induced by the probability measure $\mu$:
+
+$$
+\textrm{Prob}(X \in A) = \mu(\mathcal{G}).
+$$
+
+If $\mu$ has a density $p(\omega)$, then we can also write
+
+$$
+\textrm{Prob}(X \in A) = \int_{\mathcal{G}} p(\omega)\, d \omega
+$$ (eq:CDFfromdensity)
 
 We call this the induced probability distribution of random variable $X$.
 
@@ -124,6 +134,7 @@ To appreciate how statisticians connect probabilities to data, the key is to und
      - **Law of Large Numbers (LLN)**
      - **Central Limit Theorem (CLT)**
 
+### A discrete random variable example
 
 #### Scalar example
 
@@ -156,7 +167,7 @@ What do "identical" and "independent" mean in IID or iid ("identically and indep
 
 $$
 \begin{aligned}
-\textrm{Prob}\{x_0 = i_0, x_1 = i_1, \dots , x_{N-1} = i_{N-1}\} &= \textrm{Prob}\{x_0 = i_0\} \cdot \dots \cdot \textrm{Prob}\{x_{I-1} = i_{I-1}\}\\
+\textrm{Prob}\{x_0 = i_0, x_1 = i_1, \dots , x_{N-1} = i_{N-1}\} &= \textrm{Prob}\{x_0 = i_0\} \cdot \dots \cdot \textrm{Prob}\{x_{N-1} = i_{N-1}\}\\
 &= f_{i_0} f_{i_1} \cdot \dots \cdot f_{i_{N-1}}\\
 \end{aligned}
 $$
@@ -182,12 +193,13 @@ A Central Limit Theorem (CLT) describes a **rate** at which $\tilde {f_i} \to f_
 
 See {doc}`lln_clt` for a detailed treatment of both results.
 
+### Understanding probability: frequentist vs. Bayesian
+
 For "frequentist" statisticians, **anticipated relative frequency** is **all** that a probability distribution means.
 
 But for a Bayesian it means something else -- something partly subjective and purely personal.
 
 We say "partly" because a Bayesian also pays attention to relative frequencies.
-
 
 ## Representing probability distributions
 
@@ -216,7 +228,7 @@ For a **discrete-valued** random variable
 
 * the number  of possible values of $X$ is finite or countably infinite
 * we replace a  **density** with a **probability mass function**, a non-negative sequence that sums to one
-* we replace integration with summation in the formula like {eq}`eq:CDFfromdensity` that relates a CDF to a probability mass function
+* when a density exists, we replace integration with summation in formulas like {eq}`eq:CDFfromdensity`
 
 
 In this lecture, we mostly discuss discrete random variables.
@@ -297,7 +309,7 @@ An example of a parametric probability distribution is  a **geometric distributi
 It is described by
 
 $$
-f_{i} = \textrm{Prob}\{X=i\} = (1-\lambda)\lambda^{i},\quad \lambda \in [0,1], \quad i = 0, 1, 2, \ldots
+f_{i} = \textrm{Prob}\{X=i\} = (1-\lambda)\lambda^{i},\quad \lambda \in [0,1), \quad i = 0, 1, 2, \ldots
 $$
 
 Evidently,  $\sum_{i=0}^{\infty}f_i=1$.
@@ -310,7 +322,7 @@ $$
 
 ### Continuous random variable
 
-Let $X$ be a continous random variable that takes values $X \in \tilde{X}\equiv[X_U,X_L]$ whose distributions have parameters $\theta$.
+Let $X$ be a continuous random variable that takes values in a set $\tilde{X} \subseteq \mathbb{R}$ and whose distribution has parameters $\theta$.
 
 $$
 \textrm{Prob}\{X\in A\} = \int_{x\in A} f(x;\theta)\,dx;  \quad f(x;\theta)\ge0
@@ -432,7 +444,7 @@ $$
 $$ (eq:condprobbayes)
 
 ```{note}
-Formula {eq}`eq:condprobbayes` is also  what a  Bayesian calls **Bayes' Law**. A Bayesian statistician regards  marginal probability distribution $\textrm{Prob}({X=i}), i = 1,  \ldots, J$ as a **prior** distribution that describes his personal subjective beliefs about $X$.
+Formula {eq}`eq:condprobbayes` is also  what a  Bayesian calls **Bayes' Law**. A Bayesian statistician regards  marginal probability distribution $\textrm{Prob}({X=i}), i = 0,  \ldots, I-1$ as a **prior** distribution that describes his personal subjective beliefs about $X$.
 He  then interprets  formula {eq}`eq:condprobbayes` as a procedure for constructing a **posterior** distribution that describes how he would  revise his subjective beliefs after observing that $Y$ equals $j$.  
 ```
 
@@ -839,6 +851,8 @@ class discrete_bijoint:
 
 Let's apply our code to some examples.
 
+### Numerical examples
+
 #### Example 1
 
 ```{code-cell} ipython3
@@ -924,6 +938,8 @@ y = np.linspace(-10, 10, 1_000)
 x_mesh, y_mesh = np.meshgrid(x, y, indexing="ij")
 ```
 
+### Joint, marginal, and conditional distributions
+
 #### Joint distribution
 
 Let's plot the **population** joint density.
@@ -987,9 +1003,9 @@ plt.show()
 For a bivariate normal population distribution, the conditional distributions are also normal:
 
 $$
-\begin{aligned} \\
-[X|Y &= y ]\sim \mathbb{N}\bigg[\mu_X+\rho\sigma_X\frac{y-\mu_Y}{\sigma_Y},\sigma_X^2(1-\rho^2)\bigg] \\
-[Y|X &= x ]\sim \mathbb{N}\bigg[\mu_Y+\rho\sigma_Y\frac{x-\mu_X}{\sigma_X},\sigma_Y^2(1-\rho^2)\bigg]
+\begin{aligned}
+X \mid Y = y &\sim \mathbb{N}\bigg[\mu_X+\rho\sigma_X\frac{y-\mu_Y}{\sigma_Y},\sigma_X^2(1-\rho^2)\bigg] \\
+Y \mid X = x &\sim \mathbb{N}\bigg[\mu_Y+\rho\sigma_Y\frac{x-\mu_X}{\sigma_X},\sigma_Y^2(1-\rho^2)\bigg]
 \end{aligned}
 $$
 
@@ -997,30 +1013,33 @@ $$
 Please see this {doc}`quantecon lecture <multivariate_normal>` for more details.
 ```
 
-Let's approximate  the joint density by discretizing and mapping the approximating joint density into a  matrix.
+Let's approximate the joint density by discretizing and mapping the approximating joint density into a matrix.
 
-We can compute the discretized marginal density  by just using matrix algebra and  noting that
+On an evenly spaced grid, we can approximate the conditional distribution by assigning probability weights proportional to a slice of the joint density.
+
+For fixed $y$, this means that
 
 $$
-\textrm{Prob}\{X=i|Y=j\}=\frac{f_{ij}}{\sum_{i}f_{ij}}
+z_i
+\equiv \frac{f(x_i,y)}{\sum_k f(x_k,y)}
 $$
 
 Fix $y=0$.
 
 ```{code-cell} ipython3
-# discretized marginal density
+# discretized conditional distribution of X given Y = 0
 x = np.linspace(-10, 10, 1_000_000)
 z = func(x, y=0) / np.sum(func(x, y=0))
 plt.plot(x, z)
 plt.show()
 ```
 
-The mean and variance are computed by
+The conditional mean and variance are then approximated by
 
 $$
 \begin{aligned}
-\mathbb{E}\left[X\vert Y=j\right] & =\sum_{i}iProb\{X=i\vert Y=j\}=\sum_{i}i\frac{f_{ij}}{\sum_{i}f_{ij}} \\
-\mathbb{D}\left[X\vert Y=j\right] &=\sum_{i}\left(i-\mu_{X\vert Y=j}\right)^{2}\frac{f_{ij}}{\sum_{i}f_{ij}}
+\mathbb{E}\left[X\vert Y=y\right] & \approx \sum_i x_i z_i \\
+\mathbb{D}\left[X\vert Y=y\right] & \approx \sum_i\left(x_i-\mu_{X\vert Y=y}\right)^{2} z_i
 \end{aligned}
 $$
 
@@ -1042,14 +1061,14 @@ plt.show()
 Fix $x=1$.
 
 ```{code-cell} ipython3
-y = np.linspace(0, 10, 1_000_000)
+y = np.linspace(-10, 10, 1_000_000)
 z = func(x=1, y=y) / np.sum(func(x=1, y=y))
 plt.plot(y,z)
 plt.show()
 ```
 
 ```{code-cell} ipython3
-# discretized mean and standard deviation
+# discretized conditional mean and standard deviation
 μy = np.dot(y,z)
 σy = np.sqrt(np.dot((y - μy)**2, z))
 
@@ -1226,7 +1245,7 @@ Couplings are important in optimal transport problems and in Markov processes. P
 
 ## Copula functions
 
-Suppose that $X_1, X_2, \dots, X_n$ are $N$ random variables  and that
+Suppose that $X_1, X_2, \dots, X_N$ are $N$ random variables  and that
 
 * their marginal distributions are $F_1(x_1), F_2(x_2),\dots, F_N(x_N)$,  and
 
@@ -1238,11 +1257,14 @@ $$
 H(x_1,x_2,\dots,x_N) = C(F_1(x_1), F_2(x_2),\dots,F_N(x_N)).
 $$
 
-We can obtain
+If the marginal distributions are continuous, then the copula is unique.
+In that case, we can recover it from the marginal inverses:
 
 $$
-C(u_1,u_2,\dots,u_n) = H[F^{-1}_1(u_1),F^{-1}_2(u_2),\dots,F^{-1}_N(u_N)]
+C(u_1,u_2,\dots,u_N) = H(F^{-1}_1(u_1),F^{-1}_2(u_2),\dots,F^{-1}_N(u_N))
 $$
+
+When marginal distributions are not continuous, one uses generalized inverses, and the copula is uniquely determined only on $\textrm{Ran}(F_1)\times \cdots \times \textrm{Ran}(F_N)$.
 
 In a reverse direction of logic, given univariate  **marginal distributions**
 $F_1(x_1), F_2(x_2),\dots,F_N(x_N)$ and a copula function $C(\cdot)$, the function $H(x_1,x_2,\dots,x_N) = C(F_1(x_1), F_2(x_2),\dots,F_N(x_N))$ is a **coupling** of $F_1(x_1), F_2(x_2),\dots,F_N(x_N)$.
@@ -1251,6 +1273,8 @@ Thus, for given marginal distributions, we can use  a copula function to determi
 
 
 Copula functions are often used to characterize **dependence** of  random variables.
+
+### Bivariate examples with discrete and continuous distributions
 
 #### Discrete marginal distribution
 
@@ -1272,9 +1296,8 @@ For these two random variables there can be more than one coupling.
 Let's first generate X and Y.
 
 ```{code-cell} ipython3
-# define parameters
-mu = np.array([0.6, 0.4])
-nu = np.array([0.3, 0.7])
+μ = np.array([0.6, 0.4])
+ν = np.array([0.3, 0.7])
 
 # number of draws
 draws = 1_000_000
@@ -1285,10 +1308,10 @@ p = np.random.rand(draws)
 # generate draws of X and Y via uniform distribution
 x = np.ones(draws)
 y = np.ones(draws)
-x[p <= mu[0]] = 0
-x[p > mu[0]] = 1
-y[p <= nu[0]] = 0
-y[p > nu[0]] = 1
+x[p <= μ[0]] = 0
+x[p > μ[0]] = 1
+y[p <= ν[0]] = 0
+y[p > ν[0]] = 1
 ```
 
 ```{code-cell} ipython3
@@ -1499,12 +1522,12 @@ mystnb:
 from scipy import stats
 
 # Gaussian copula parameters
-rho_cop = 0.8
+ρ_cop = 0.8
 n_cop = 100_000
 
-# Step 1: draw from bivariate standard normal with correlation rho_cop
+# Step 1: draw from bivariate standard normal with correlation ρ_cop
 z = np.random.multivariate_normal(
-    [0, 0], [[1, rho_cop], [rho_cop, 1]], n_cop
+    [0, 0], [[1, ρ_cop], [ρ_cop, 1]], n_cop
 )
 
 # Step 2: apply normal CDF -> uniform marginals (the copula itself)
@@ -1569,24 +1592,20 @@ import numpy as np
 F = np.array([[0.3, 0.2],
               [0.1, 0.4]])
 
-# (a) marginals
-mu = F.sum(axis=1)   # sum over columns -> marginal for X
-nu = F.sum(axis=0)   # sum over rows    -> marginal for Y
-print("mu (marginal of X):", mu)
-print("nu (marginal of Y):", nu)
+μ = F.sum(axis=1)
+ν = F.sum(axis=0)
+print("μ (marginal of X):", μ)
+print("ν (marginal of Y):", ν)
 
-# (b) independence matrix
-F_indep = np.outer(mu, nu)
+F_indep = np.outer(μ, ν)
 print("\nIndependence matrix (outer product):\n", F_indep)
 print("\nActual joint F:\n", F)
 
-# (c) test independence
-print("\nIndependent (F == mu ⊗ nu)?", np.allclose(F, F_indep))
+print("\nIndependent (F == μ ⊗ ν)?", np.allclose(F, F_indep))
 
-# (d) conditional vs. marginal
-prob_X0_given_Y10 = F[0, 0] / nu[0]
+prob_X0_given_Y10 = F[0, 0] / ν[0]
 print(f"\nProb(X=0 | Y=10) = {prob_X0_given_Y10:.4f}")
-print(f"Prob(X=0)         = {mu[0]:.4f}")
+print(f"Prob(X=0)         = {μ[0]:.4f}")
 ```
 
 ```{solution-end}
@@ -1620,22 +1639,19 @@ ys = np.array([10, 20])
 F  = np.array([[0.3, 0.2],
                [0.1, 0.4]])
 
-mu = F.sum(axis=1)
-nu = F.sum(axis=0)
+μ = F.sum(axis=1)
+ν = F.sum(axis=0)
 
-# (a)
-E_X  = xs @ mu
-E_Y  = ys @ nu
+E_X  = xs @ μ
+E_Y  = ys @ ν
 E_XY = sum(xs[i] * ys[j] * F[i, j] for i in range(2) for j in range(2))
 print(f"E[X] = {E_X}, E[Y] = {E_Y}, E[XY] = {E_XY}")
 
-# (b)
 cov_XY = E_XY - E_X * E_Y
 print(f"Cov(X,Y) = {cov_XY:.4f}")
 
-# (c)
-var_X  = ((xs - E_X)**2) @ mu
-var_Y  = ((ys - E_Y)**2) @ nu
+var_X  = ((xs - E_X)**2) @ μ
+var_Y  = ((ys - E_Y)**2) @ ν
 cor_XY = cov_XY / np.sqrt(var_X * var_Y)
 print(f"Cor(X,Y) = {cor_XY:.4f}")
 ```
@@ -1677,12 +1693,10 @@ Let $X$ and $Y$ each be uniformly distributed on $\{1,2,3,4,5,6\}$, and let $Z =
 import numpy as np
 import matplotlib.pyplot as plt
 
-# (a) convolution
 f = np.ones(6) / 6
-h = np.convolve(f, f)        # Z takes values 2,...,12
+h = np.convolve(f, f)
 z_vals = np.arange(2, 13)
 
-# (b & c) plot theory and simulation
 n = 1_000_000
 z_sim = np.random.randint(1, 7, n) + np.random.randint(1, 7, n)
 counts = np.bincount(z_sim, minlength=13)[2:]
@@ -1695,7 +1709,6 @@ ax.set_ylabel('Probability')
 ax.legend()
 plt.show()
 
-# (d) moments
 E_Z   = z_vals @ h
 Var_Z = ((z_vals - E_Z)**2) @ h
 print(f"Theory:     E[Z] = {E_Z:.2f}, Var(Z) = {Var_Z:.4f}")
@@ -1734,21 +1747,18 @@ import numpy as np
 
 P    = np.array([[0.9, 0.1],
                  [0.2, 0.8]])
-psi0 = np.array([1.0, 0.0])
+ψ0 = np.array([1.0, 0.0])
 
-# (a)
 for n in [1, 5, 20, 100]:
-    print(f"psi_{n:3d} = {psi0 @ np.linalg.matrix_power(P, n)}")
+    print(f"ψ_{n:3d} = {ψ0 @ np.linalg.matrix_power(P, n)}")
 
-# (b) stationary: solve (P^T - I) psi = 0  with  sum = 1
 A = np.vstack([P.T - np.eye(2), np.ones(2)])
 b = np.array([0.0, 0.0, 1.0])
-psi_star, *_ = np.linalg.lstsq(A, b, rcond=None)
-print(f"\nStationary distribution: {psi_star}")
+ψ_star, *_ = np.linalg.lstsq(A, b, rcond=None)
+print(f"\nStationary distribution: {ψ_star}")
 
-# (c) verify
-psi_100 = psi0 @ np.linalg.matrix_power(P, 100)
-print(f"psi_100 close to stationary? {np.allclose(psi_100, psi_star, atol=1e-6)}")
+ψ_100 = ψ0 @ np.linalg.matrix_power(P, 100)
+print(f"ψ_100 close to stationary? {np.allclose(ψ_100, ψ_star, atol=1e-6)}")
 ```
 
 ```{solution-end}
@@ -1781,37 +1791,32 @@ import numpy as np
 
 xs = np.array([0, 1])
 ys = np.array([0, 1])
-mu = np.array([0.5, 0.5])
-nu = np.array([0.4, 0.6])
+μ = np.array([0.5, 0.5])
+ν = np.array([0.4, 0.6])
 
-# (a) upper Fréchet: maximise P(X=i, Y=i)
 F_upper = np.array([[0.4, 0.1],
                     [0.0, 0.5]])
 
-# (b) lower Fréchet: maximise P(X=i, Y=1-i)
 F_lower = np.array([[0.0, 0.5],
                     [0.4, 0.1]])
 
-# (c) independent
-F_indep = np.outer(mu, nu)
+F_indep = np.outer(μ, ν)
 
-# (d) check marginals
 for F, name in [(F_upper, "Upper Fréchet"),
                 (F_lower, "Lower Fréchet"),
                 (F_indep, "Independent  ")]:
     print(f"{name}: row sums = {F.sum(axis=1)}, col sums = {F.sum(axis=0)}")
 
-# (e) correlations
 def correlation(F, xs, ys):
-    mu_x  = F.sum(axis=1)
-    nu_y  = F.sum(axis=0)
-    E_X   = xs @ mu_x
-    E_Y   = ys @ nu_y
+    μ_x  = F.sum(axis=1)
+    ν_y  = F.sum(axis=0)
+    E_X  = xs @ μ_x
+    E_Y  = ys @ ν_y
     E_XY  = sum(xs[i]*ys[j]*F[i,j] for i in range(2) for j in range(2))
     cov   = E_XY - E_X * E_Y
-    sig_X = np.sqrt(((xs - E_X)**2) @ mu_x)
-    sig_Y = np.sqrt(((ys - E_Y)**2) @ nu_y)
-    return cov / (sig_X * sig_Y)
+    σ_X = np.sqrt(((xs - E_X)**2) @ μ_x)
+    σ_Y = np.sqrt(((ys - E_Y)**2) @ ν_y)
+    return cov / (σ_X * σ_Y)
 
 print(f"\nCor upper Fréchet = {correlation(F_upper, xs, ys):.4f}  (maximum)")
 print(f"Cor lower Fréchet = {correlation(F_lower, xs, ys):.4f}  (minimum)")
@@ -1852,28 +1857,28 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.special import comb
 
-thetas = np.array([0.2, 0.5, 0.8])
-prior  = np.array([0.25, 0.50, 0.25])
+θ_vals = np.array([0.2, 0.5, 0.8])
+π = np.array([0.25, 0.50, 0.25])
 
-def compute_posterior(k, n, thetas, prior):
-    likelihood = comb(n, k) * thetas**k * (1 - thetas)**(n - k)
-    unnorm = likelihood * prior
+def compute_posterior(k, n, θ_vals, π):
+    likelihood = comb(n, k) * θ_vals**k * (1 - θ_vals)**(n - k)
+    unnorm = likelihood * π
     return unnorm / unnorm.sum(), likelihood
 
-post7, lik7 = compute_posterior(7, 10, thetas, prior)
-post3, lik3 = compute_posterior(3, 10, thetas, prior)
+post7, lik7 = compute_posterior(7, 10, θ_vals, π)
+post3, lik3 = compute_posterior(3, 10, θ_vals, π)
 
 print("k=7:  likelihood =", lik7.round(4), " posterior =", post7.round(4))
 print("k=3:  likelihood =", lik3.round(4), " posterior =", post3.round(4))
 
-x = np.arange(len(thetas))
+x = np.arange(len(θ_vals))
 w = 0.3
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 for ax, post, title in zip(axes, [post7, post3], ['k=7 heads', 'k=3 heads']):
-    ax.bar(x - w/2, prior, w, label='Prior',     alpha=0.7)
+    ax.bar(x - w/2, π, w, label='Prior',     alpha=0.7)
     ax.bar(x + w/2, post,  w, label='Posterior', alpha=0.7)
     ax.set_xticks(x)
-    ax.set_xticklabels([f'θ={t}' for t in thetas])
+    ax.set_xticklabels([f'θ={t}' for t in θ_vals])
     ax.set_ylabel('Probability')
     ax.set_title(title)
     ax.legend()

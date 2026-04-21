@@ -326,13 +326,13 @@ Let's compute $a_1, a_2, b_1, b_2$.
 
 ```{code-cell} python3
 
-beta = multi_normal.βs
+β = multi_normal.βs
 
-a1 = μ[0] - beta[0]*μ[1]
-b1 = beta[0]
+a1 = μ[0] - β[0]*μ[1]
+b1 = β[0]
 
-a2 = μ[1] - beta[1]*μ[0]
-b2 = beta[1]
+a2 = μ[1] - β[1]*μ[0]
+b2 = β[1]
 ```
 
 Let's print out the intercepts and slopes.
@@ -2339,18 +2339,15 @@ the retained $z_1$ values.
 
 ```{code-cell} python3
 import numpy as np
-import statsmodels.api as sm
 
 μ = np.array([.5, 1.])
 Σ = np.array([[1., .5], [.5, 1.]])
 
-# (a) analytical conditional distribution
 mn = MultivariateNormal(μ, Σ)
 mn.partition(1)
 μ1_hat, Σ11_hat = mn.cond_dist(0, np.array([2.]))
 print(f"Analytical  μ̂₁ = {μ1_hat[0]:.4f},  Σ̂₁₁ = {Σ11_hat[0,0]:.4f}")
 
-# (b) simulation
 n = 1_000_000
 data = np.random.multivariate_normal(μ, Σ, size=n)
 z1_all, z2_all = data[:, 0], data[:, 1]
@@ -2396,12 +2393,12 @@ so $b_1 b_2 = \rho^2$.
 ```{code-cell} python3
 import numpy as np
 
-for rho in [0.2, 0.5, 0.9]:
-    Σ = np.array([[1., rho], [rho, 1.]])
+for ρ in [0.2, 0.5, 0.9]:
+    Σ = np.array([[1., ρ], [ρ, 1.]])
     mn = MultivariateNormal(np.zeros(2), Σ)
     mn.partition(1)
     product = float(mn.βs[0]) * float(mn.βs[1])
-    print(f"ρ={rho:.1f}:  b1*b2 = {product:.4f},  ρ² = {rho**2:.4f},  match: {np.isclose(product, rho**2)}")
+    print(f"ρ={ρ:.1f}:  b1*b2 = {product:.4f},  ρ² = {ρ**2:.4f},  match: {np.isclose(product, ρ**2)}")
 ```
 
 ```{solution-end}
@@ -2442,7 +2439,7 @@ for σy_val in [1., 5., 10., 20., 50.]:
         μ_i, Σ_i, _ = construct_moments_IQ(i, μθ_val, σθ_val, σy_val)
         mn_i = MultivariateNormal(μ_i, Σ_i)
         mn_i.partition(i)
-        _, Σθ_i = mn_i.cond_dist(1, np.zeros(i))   # conditioning value doesn't affect variance
+        _, Σθ_i = mn_i.cond_dist(1, np.zeros(i))
         σθ_hat_arr[i - 1] = np.sqrt(Σθ_i[0, 0])
     ax.plot(range(1, n_max + 1), σθ_hat_arr, label=f'σy={σy_val:.0f}')
 
@@ -2490,7 +2487,6 @@ import matplotlib.pyplot as plt
 n_scores = 20
 μθ_val, σy_val = 100., 10.
 
-# draw one set of test scores from a fixed "true" θ
 np.random.seed(42)
 true_θ = 108.
 y_obs = true_θ + σy_val * np.random.randn(n_scores)
@@ -2564,7 +2560,6 @@ T_ex = 60
 x0_hat_ex = np.zeros(2)
 Σ0_ex = np.eye(2)
 
-# simulate true states and observations
 np.random.seed(7)
 x_true = np.zeros((T_ex + 1, 2))
 y_seq_ex = np.zeros(T_ex)
@@ -2572,10 +2567,8 @@ for t in range(T_ex):
     x_true[t + 1] = A_ex @ x_true[t] + C_ex[:, 0] * np.random.randn()
     y_seq_ex[t] = G_ex @ x_true[t] + np.random.randn()
 
-# run filter
 x_hat_seq, Σ_hat_seq = iterate(x0_hat_ex, Σ0_ex, A_ex, C_ex, G_ex, R_ex, y_seq_ex)
 
-# (b) conditional variances
 fig, ax = plt.subplots()
 ax.plot(Σ_hat_seq[:, 0, 0], label=r'$\Sigma_t[0,0]$')
 ax.plot(Σ_hat_seq[:, 1, 1], label=r'$\Sigma_t[1,1]$')
@@ -2584,7 +2577,6 @@ ax.set_ylabel('conditional variance')
 ax.legend()
 plt.show()
 
-# (c) filtered state vs. truth vs. observations
 fig, ax = plt.subplots()
 ax.plot(x_true[1:, 0], label='true $x_t[0]$', alpha=0.7)
 ax.plot(x_hat_seq[1:, 0], label=r'filtered $\hat{x}_t[0]$', ls='--')
@@ -2633,7 +2625,6 @@ k_fa = 2
 Λ_fa[:N_fa//2, 0] = 1
 Λ_fa[N_fa//2:, 1] = 1
 
-results_table = {}
 for σu_val in [0.5, 2.0]:
     D_fa = np.eye(N_fa) * σu_val ** 2
     Σy_fa = Λ_fa @ Λ_fa.T + D_fa
@@ -2644,10 +2635,8 @@ for σu_val in [0.5, 2.0]:
     λ_fa   = λ_fa[ind_fa]
 
     frac = λ_fa[:2].sum() / λ_fa.sum()
-    results_table[σu_val] = frac
     print(f"σu={σu_val}: fraction explained by first 2 PCs = {frac:.4f}")
 
-# (b) comparison using σu=0.5
 σu_b = 0.5
 D_b  = np.eye(N_fa) * σu_b ** 2
 Σy_b = Λ_fa @ Λ_fa.T + D_b
@@ -2658,11 +2647,9 @@ z_b  = np.random.multivariate_normal(μz_b, Σz_b)
 f_b  = z_b[:k_fa]
 y_b  = z_b[k_fa:]
 
-# factor-analytic E[f|y]
 B_b    = Λ_fa.T @ np.linalg.inv(Σy_b)
 Efy_b  = B_b @ y_b
 
-# PCA projection
 λ_b, P_b = np.linalg.eigh(Σy_b)
 ind_b    = sorted(range(N_fa), key=lambda x: λ_b[x], reverse=True)
 P_b      = P_b[:, ind_b]
