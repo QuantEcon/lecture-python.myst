@@ -1032,11 +1032,11 @@ mystnb:
     caption: price distribution convergence
     name: fig-price-convergence
 ---
-def price_expectation(h_t, p_bar_true, p_bar_alt, sigma_p, p_grid):
+def price_expectation(h_t, p_bar_true, p_bar_alt, σ_p, p_grid):
     """Return the predictive price density at posterior weight h_t."""
     return (
-        h_t * norm.pdf(p_grid, loc=p_bar_true, scale=sigma_p)
-        + (1 - h_t) * norm.pdf(p_grid, loc=p_bar_alt, scale=sigma_p)
+        h_t * norm.pdf(p_grid, loc=p_bar_true, scale=σ_p)
+        + (1 - h_t) * norm.pdf(p_grid, loc=p_bar_alt, scale=σ_p)
     )
 
 
@@ -1542,7 +1542,7 @@ prior support.
 
 ```{code-cell} ipython3
 def simulate_misspecified(
-    T, p_bar_true, p_bar_wrong, sigma_p, h0, n_paths, seed=0
+    T, p_bar_true, p_bar_wrong, σ_p, h0, n_paths, seed=0
 ):
     """Simulate learning under a misspecified two-model prior."""
     rng = np.random.default_rng(seed)
@@ -1551,9 +1551,9 @@ def simulate_misspecified(
 
     for path in range(n_paths):
         h = np.array(h0, dtype=float)
-        prices = rng.normal(p_bar_true, sigma_p, size=T)
+        prices = rng.normal(p_bar_true, σ_p, size=T)
         for t, price in enumerate(prices):
-            likes = norm.pdf(price, loc=p_bar_wrong, scale=sigma_p)
+            likes = norm.pdf(price, loc=p_bar_wrong, scale=σ_p)
             h = h * likes
             h /= h.sum()
             h_paths[path, t + 1, :] = h
@@ -1561,24 +1561,24 @@ def simulate_misspecified(
     return h_paths
 
 
-def predictive_density(weights, means, sigma_p, p_grid):
+def predictive_density(weights, means, σ_p, p_grid):
     """Return the predictive density under the current posterior weights."""
     density = np.zeros_like(p_grid)
     for weight, mean in zip(weights, means):
-        density += weight * norm.pdf(p_grid, loc=mean, scale=sigma_p)
+        density += weight * norm.pdf(p_grid, loc=mean, scale=σ_p)
     return density
 
 
 T = 1000
 p_true = 2.0
 p_wrong = np.array([1.5, 2.3])
-sigma_p = 0.4
+σ_p = 0.4
 h0 = np.array([0.5, 0.5])
 n_paths = 30
 
-h_misspec = simulate_misspecified(T, p_true, p_wrong, sigma_p, h0, n_paths)
+h_misspec = simulate_misspecified(T, p_true, p_wrong, σ_p, h0, n_paths)
 
-kl_vals = (p_true - p_wrong)**2 / (2 * sigma_p**2)
+kl_vals = (p_true - p_wrong)**2 / (2 * σ_p**2)
 for mean, kl in zip(p_wrong, kl_vals):
     print(f"KL(true || N({mean:.1f}, sigma^2)) = {kl:.4f}")
 
@@ -1607,12 +1607,12 @@ closer_idx = np.argmin(kl_vals)
 fig, ax = plt.subplots(figsize=(8, 4))
 colors = plt.cm.Blues(np.linspace(0.3, 1.0, 4))
 for t_snap, color in zip([0, 10, 100, T], colors):
-    dens = predictive_density(median_path[t_snap], p_wrong, sigma_p, p_grid)
+    dens = predictive_density(median_path[t_snap], p_wrong, σ_p, p_grid)
     ax.plot(p_grid, dens, color=color, lw=2, label=f"t = {t_snap}")
 
 ax.plot(
     p_grid,
-    norm.pdf(p_grid, loc=p_wrong[closer_idx], scale=sigma_p),
+    norm.pdf(p_grid, loc=p_wrong[closer_idx], scale=σ_p),
     "k--",
     lw=2,
     label="KL-best wrong model",
