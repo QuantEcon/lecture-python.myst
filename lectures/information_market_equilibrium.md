@@ -43,11 +43,11 @@ answered by {cite:t}`kihlstrom_mirman1975`.
 
 Kihlstrom and Mirman's answers rely on two classical ideas from statistics:
 
-- **Blackwell sufficiency**: a random variable $\tilde{y}$ is  *sufficient* for
+- **Blackwell sufficiency**: a random variable $\tilde{y}$ is said to be  *sufficient* for a random variable
   $\tilde{y}'$ with respect to an unknown state if knowing $\tilde{y}$ gives all the
   information about the state that $\tilde{y}'$ contains.
-- **Bayesian consistency**: as the sample grows, the posterior concentrates on the true
-  parameter value (even when the underlying economic ßstructure is not globally identified from prices alone).
+- **Bayesian consistency**: as the sample grows, a Bayesian statistician's posterior probability distribution concentrates on the true
+  parameter value *even when the underlying economic structure is not globally identified from prices alone*.
 
 Important findings of {cite:t}`kihlstrom_mirman1975` are:
 
@@ -58,12 +58,12 @@ Important findings of {cite:t}`kihlstrom_mirman1975` are:
   elasticity of substitution $\sigma \neq 1$.  With Cobb-Douglas preferences ($\sigma = 1$)
   the equilibrium price is independent of the insider's posterior, so information is never
   transmitted.
-- In the dynamic economy, as information accumulates, Bayesian price expectations converge to **rational expectations**, even when the deep structure of the economy is notß  identified.
+- In the dynamic economy, as information accumulates, Bayesian price expectations converge to **rational expectations**, even when the deep structure of the economy is not  identified.
 
 ```{note}
-{cite:t}`kihlstrom_mirman1975` use the terms ''reduced form'' and ''structural'' models in the same
-way that careful econometricians do.  These two objects come in pairs. To each structure or structural model
-there is a reduced form, or collection of reduced forms traced out by different possible regressions.
+{cite:t}`kihlstrom_mirman1975` use the terms ''reduced form'' and ''structural'' models in a
+way that careful econometricians do.  Reduced-form  and structural models  come in pairs. To each structure or structural model
+there is a reduced form, or collection of reduced forms, underlying  different possible regressions.
 ```
 
 The lecture is organized as follows.
@@ -164,7 +164,7 @@ $p(\mu_{\tilde{y}})$ is **sufficient** for $\tilde{y}$.
 
 **Definition.**  A random variable $\tilde{y}$ is *sufficient* for $\tilde{y}'$ (with
 respect to $\bar{a}$) if there exists a conditional distribution $PR(y' \mid y)$,
-**independent of $\bar{a}$**, such that
+**independent of**$\bar{a}$, such that
 
 $$
 \phi'_a(y') = \sum_{y \in Y} PR(y' \mid y)\, \phi_a(y)
@@ -468,7 +468,7 @@ equilibrium price strictly monotone in the posterior $q$ in both cases.
 (bayesian_price_expectations)=
 ## Bayesian Price Expectations in a Dynamic Economy
 
-We now turn to the **dynamic** question of Section 3 in {cite:t}`kihlstrom_mirman1975`.
+We now turn to a question addressed in Section 3 of {cite:t}`kihlstrom_mirman1975`.
 
 ### A Stochastic Exchange Economy
 
@@ -550,13 +550,13 @@ $$
 
 which equals the rational-expectations price distribution for a fully informed observer.
 
-The convergence uses the **Bayesian consistency** result of {cite:t}`degroot1962`: as
+Establishing convergence relies on appealing to  the **Bayesian consistency** result of {cite:t}`degroot1962`: as
 long as $g(\cdot \mid \mu)$ and $g(\cdot \mid \mu')$ generate mutually singular measures
 (which holds here generically), the posterior concentrates on the true reduced form.
 
 **Key insight.**  Price observers converge to **rational expectations** even if they
-never identify the underlying structure $\bar\lambda$.  It is the reduced form
-$g(p \mid \bar\mu)$ that governs equilibrium price expectations, and the Bayesian
+never identify the underlying structure $\bar\lambda$.  The reduced form
+$g(p \mid \bar\mu)$ statistical model is used to form equilibrium price expectations, and the Bayesian
 observer learns the reduced form from prices alone.
 
 (bayesian_simulation)=

@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.1
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -60,7 +62,7 @@ We apply our Python class to some examples.
 
 We  use the following imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
 from numba import jit
@@ -95,7 +97,7 @@ def f(z, μ, Σ):
     μ: ndarray(float, dim=1 or 2)
         the mean of z, N by 1
     Σ: ndarray(float, dim=2)
-        the covarianece matrix of z, N by 1
+        the covariance matrix of z, N by N
     """
 
     z = np.atleast_2d(z)
@@ -186,7 +188,7 @@ class MultivariateNormal:
     μ: ndarray(float, dim=1)
         the mean of z, N by 1
     Σ: ndarray(float, dim=2)
-        the covarianece matrix of z, N by 1
+        the covariance matrix of z, N by N
 
     Arguments
     ---------
@@ -1093,8 +1095,8 @@ for indices, IQ, conditions in [([*range(2*n), 2*n], 'θ', 'y1, y2, y3, y4'),
           f'{μ_hat[0]:1.2f} and {Σ_hat[0, 0]:1.2f} respectively')
 ```
 
-Evidently, math tests provide no information about $\mu$ and
-language tests provide no information about $\eta$.
+Evidently, math tests provide no information about $\eta$ and
+language tests provide no information about $\theta$.
 
 ## Univariate Time Series Analysis
 
@@ -1688,7 +1690,7 @@ plt.show()
 
 In the above graph, the green line is what the price of the stock would
 be if people had perfect foresight about the path of dividends while the
-green line is the conditional expectation $E p_t | y_t, y_{t-1}$, which is what the price would
+red line is the conditional expectation $E p_t | y_t, y_{t-1}$, which is what the price would
 be if people did not have perfect foresight but were optimally
 predicting future dividends on the basis of the information
 $y_t, y_{t-1}$ at time $t$.
@@ -1895,7 +1897,7 @@ G = np.array([[1., 3.]])
 R = np.array([[1.]])
 
 x0_hat = np.array([0., 1.])
-Σ0 = np.array([[1., .5], [.3, 2.]])
+Σ0 = np.array([[1., .5], [.5, 2.]])
 
 μ = np.hstack([x0_hat, G @ x0_hat])
 Σ = np.block([[Σ0, Σ0 @ G.T], [G @ Σ0, G @ Σ0 @ G.T + R]])
@@ -2299,4 +2301,386 @@ Pjk = P[:, :2]
 
 Σy_hat = Pjk @ Σεjk @ Pjk.T
 print('Σy_hat = \n', Σy_hat)
+```
+
+## Exercises
+
+```{exercise}
+:label: mv_normal_ex1
+
+**Verify conditional mean and variance by simulation**
+
+For the bivariate normal with
+
+$$
+\mu = \begin{bmatrix} 0.5 \\ 1.0 \end{bmatrix}, \quad
+\Sigma = \begin{bmatrix} 1 & 0.5 \\ 0.5 & 1 \end{bmatrix}
+$$
+
+fix $z_2 = 2$.
+
+(a) Use `MultivariateNormal` to compute the analytical conditional mean
+$\hat{\mu}_1$ and variance $\hat{\Sigma}_{11}$ of $z_1 \mid z_2 = 2$.
+
+(b) Draw $10^6$ samples from the joint distribution. Retain only those
+for which $|z_2 - 2| < 0.05$. Compute the sample mean and variance of
+the retained $z_1$ values.
+
+(c) Confirm that the sample estimates are close to the analytical values.
+```
+
+```{solution-start} mv_normal_ex1
+:class: dropdown
+```
+
+```{code-cell} python3
+import numpy as np
+import statsmodels.api as sm
+
+μ = np.array([.5, 1.])
+Σ = np.array([[1., .5], [.5, 1.]])
+
+# (a) analytical conditional distribution
+mn = MultivariateNormal(μ, Σ)
+mn.partition(1)
+μ1_hat, Σ11_hat = mn.cond_dist(0, np.array([2.]))
+print(f"Analytical  μ̂₁ = {μ1_hat[0]:.4f},  Σ̂₁₁ = {Σ11_hat[0,0]:.4f}")
+
+# (b) simulation
+n = 1_000_000
+data = np.random.multivariate_normal(μ, Σ, size=n)
+z1_all, z2_all = data[:, 0], data[:, 1]
+
+mask = np.abs(z2_all - 2.) < 0.05
+z1_cond = z1_all[mask]
+print(f"Sample size in band: {mask.sum()}")
+print(f"Sample      μ̂₁ = {np.mean(z1_cond):.4f},  Σ̂₁₁ = {np.var(z1_cond, ddof=1):.4f}")
+```
+
+```{solution-end}
+```
+
+```{exercise}
+:label: mv_normal_ex2
+
+**Product of regression slopes equals squared correlation**
+
+For a bivariate normal with standard deviations $\sigma_1 = \sigma_2 = 1$ and
+correlation $\rho$, show analytically that $b_1 b_2 = \rho^2$, where
+$b_1$ is the slope of $z_1$ on $z_2$ and $b_2$ is the slope of $z_2$
+on $z_1$.
+
+Then verify numerically for $\rho \in \{0.2, 0.5, 0.9\}$ that
+`βs[0] * βs[1]` $= \rho^2$ by constructing the appropriate
+`MultivariateNormal` instances.
+```
+
+```{solution-start} mv_normal_ex2
+:class: dropdown
+```
+
+The regression slopes are
+
+$$
+b_1 = \frac{\Sigma_{12}}{\Sigma_{22}} = \frac{\rho \sigma_1 \sigma_2}{\sigma_2^2}
+= \rho \frac{\sigma_1}{\sigma_2}, \qquad
+b_2 = \frac{\Sigma_{21}}{\Sigma_{11}} = \rho \frac{\sigma_2}{\sigma_1}
+$$
+
+so $b_1 b_2 = \rho^2$.
+
+```{code-cell} python3
+import numpy as np
+
+for rho in [0.2, 0.5, 0.9]:
+    Σ = np.array([[1., rho], [rho, 1.]])
+    mn = MultivariateNormal(np.zeros(2), Σ)
+    mn.partition(1)
+    product = float(mn.βs[0]) * float(mn.βs[1])
+    print(f"ρ={rho:.1f}:  b1*b2 = {product:.4f},  ρ² = {rho**2:.4f},  match: {np.isclose(product, rho**2)}")
+```
+
+```{solution-end}
+```
+
+```{exercise}
+:label: mv_normal_ex3
+
+**IQ inference: effect of the signal-to-noise ratio**
+
+Using the one-dimensional IQ model with $n = 50$ test scores and
+$\mu_\theta = 100$, $\sigma_\theta = 10$:
+
+(a) Vary the test-score noise $\sigma_y \in \{1, 5, 10, 20, 50\}$.
+For each value, plot the posterior standard deviation
+$\hat{\sigma}_\theta$ as a function of the number of test scores
+included (from 1 to 50), with all curves on the same axes.
+
+(b) Explain intuitively why a larger $\sigma_y$ leads to a slower
+decline of posterior uncertainty.
+```
+
+```{solution-start} mv_normal_ex3
+:class: dropdown
+```
+
+```{code-cell} python3
+import numpy as np
+import matplotlib.pyplot as plt
+
+n_max = 50
+μθ_val, σθ_val = 100., 10.
+
+fig, ax = plt.subplots()
+for σy_val in [1., 5., 10., 20., 50.]:
+    σθ_hat_arr = np.empty(n_max)
+    for i in range(1, n_max + 1):
+        μ_i, Σ_i, _ = construct_moments_IQ(i, μθ_val, σθ_val, σy_val)
+        mn_i = MultivariateNormal(μ_i, Σ_i)
+        mn_i.partition(i)
+        _, Σθ_i = mn_i.cond_dist(1, np.zeros(i))   # conditioning value doesn't affect variance
+        σθ_hat_arr[i - 1] = np.sqrt(Σθ_i[0, 0])
+    ax.plot(range(1, n_max + 1), σθ_hat_arr, label=f'σy={σy_val:.0f}')
+
+ax.set_xlabel('number of test scores')
+ax.set_ylabel(r'posterior $\hat{\sigma}_\theta$')
+ax.legend()
+plt.show()
+```
+
+When $\sigma_y$ is large each test score is a noisy signal about $\theta$,
+so many more observations are required before the posterior variance falls
+appreciably. In the limit $\sigma_y \to 0$ a single observation pins down
+$\theta$ exactly.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: mv_normal_ex4
+
+**Prior vs. likelihood in IQ inference**
+
+Using the one-dimensional IQ model with $n = 20$ test scores and
+$\mu_\theta = 100$, $\sigma_y = 10$:
+
+(a) Fix $\sigma_y = 10$ and vary the prior spread
+$\sigma_\theta \in \{1, 5, 10, 50, 500\}$. For each value compute the
+posterior mean $\hat{\mu}_\theta$ given the same set of $n = 20$ test
+scores and plot $\hat{\mu}_\theta$ against $\sigma_\theta$.
+
+(b) Show analytically (or verify numerically) that as $\sigma_\theta \to \infty$
+the posterior mean converges to the sample mean $\bar{y}$, and as
+$\sigma_y \to \infty$ the posterior mean converges to the prior mean
+$\mu_\theta$.
+```
+
+```{solution-start} mv_normal_ex4
+:class: dropdown
+```
+
+```{code-cell} python3
+import numpy as np
+import matplotlib.pyplot as plt
+
+n_scores = 20
+μθ_val, σy_val = 100., 10.
+
+# draw one set of test scores from a fixed "true" θ
+np.random.seed(42)
+true_θ = 108.
+y_obs = true_θ + σy_val * np.random.randn(n_scores)
+y_bar = np.mean(y_obs)
+
+σθ_vals = [1., 5., 10., 50., 500.]
+μθ_hat_vals = []
+
+for σθ_val in σθ_vals:
+    μ_i, Σ_i, _ = construct_moments_IQ(n_scores, μθ_val, σθ_val, σy_val)
+    mn_i = MultivariateNormal(μ_i, Σ_i)
+    mn_i.partition(n_scores)
+    μθ_hat, _ = mn_i.cond_dist(1, y_obs)
+    μθ_hat_vals.append(float(μθ_hat))
+
+fig, ax = plt.subplots()
+ax.semilogx(σθ_vals, μθ_hat_vals, 'o-', label=r'$\hat{\mu}_\theta$')
+ax.axhline(y_bar,  ls='--', color='r', label=f'sample mean ȳ = {y_bar:.1f}')
+ax.axhline(μθ_val, ls=':',  color='g', label=f'prior mean μθ = {μθ_val:.0f}')
+ax.set_xlabel(r'$\sigma_\theta$')
+ax.set_ylabel(r'posterior mean $\hat{\mu}_\theta$')
+ax.legend()
+plt.show()
+
+print(f"ȳ = {y_bar:.4f}")
+print(f"Large σθ posterior mean ≈ {μθ_hat_vals[-1]:.4f}")
+```
+
+```{solution-end}
+```
+
+```{exercise}
+:label: mv_normal_ex5
+
+**Kalman filter convergence**
+
+Using the `iterate` function from the Filtering Foundations section with
+
+$$
+A = \begin{bmatrix} 0.9 & 0 \\ 0 & 0.5 \end{bmatrix}, \quad
+C = \begin{bmatrix} 1 \\ 1 \end{bmatrix}, \quad
+G = \begin{bmatrix} 1 & 0 \end{bmatrix}, \quad
+R = \begin{bmatrix} 1 \end{bmatrix}
+$$
+
+and initial conditions $\hat{x}_0 = [0, 0]'$, $\Sigma_0 = I_2$:
+
+(a) Simulate $T = 60$ periods of $\{x_t, y_t\}$ and run the filter.
+
+(b) Plot the sequences of conditional variances $\Sigma_t[0,0]$ and
+$\Sigma_t[1,1]$ over time. Verify that they converge to a steady state.
+
+(c) Plot the filtered state estimates $\hat{x}_t[0]$ together with the
+true $x_t[0]$ and the raw observations $y_t$ on a single figure.
+```
+
+```{solution-start} mv_normal_ex5
+:class: dropdown
+```
+
+```{code-cell} python3
+import numpy as np
+import matplotlib.pyplot as plt
+
+A_ex = np.array([[0.9, 0.], [0., 0.5]])
+C_ex = np.array([[1.], [1.]])
+G_ex = np.array([[1., 0.]])
+R_ex = np.array([[1.]])
+
+T_ex = 60
+x0_hat_ex = np.zeros(2)
+Σ0_ex = np.eye(2)
+
+# simulate true states and observations
+np.random.seed(7)
+x_true = np.zeros((T_ex + 1, 2))
+y_seq_ex = np.zeros(T_ex)
+for t in range(T_ex):
+    x_true[t + 1] = A_ex @ x_true[t] + C_ex[:, 0] * np.random.randn()
+    y_seq_ex[t] = G_ex @ x_true[t] + np.random.randn()
+
+# run filter
+x_hat_seq, Σ_hat_seq = iterate(x0_hat_ex, Σ0_ex, A_ex, C_ex, G_ex, R_ex, y_seq_ex)
+
+# (b) conditional variances
+fig, ax = plt.subplots()
+ax.plot(Σ_hat_seq[:, 0, 0], label=r'$\Sigma_t[0,0]$')
+ax.plot(Σ_hat_seq[:, 1, 1], label=r'$\Sigma_t[1,1]$')
+ax.set_xlabel('t')
+ax.set_ylabel('conditional variance')
+ax.legend()
+plt.show()
+
+# (c) filtered state vs. truth vs. observations
+fig, ax = plt.subplots()
+ax.plot(x_true[1:, 0], label='true $x_t[0]$', alpha=0.7)
+ax.plot(x_hat_seq[1:, 0], label=r'filtered $\hat{x}_t[0]$', ls='--')
+ax.plot(y_seq_ex, label='observations $y_t$', alpha=0.4, lw=0.8)
+ax.set_xlabel('t')
+ax.legend()
+plt.show()
+```
+
+```{solution-end}
+```
+
+```{exercise}
+:label: mv_normal_ex6
+
+**PCA vs. factor analysis**
+
+In the classic factor analysis model at the end of the lecture the true
+covariance is $\Sigma_y = \Lambda \Lambda' + D$.
+
+(a) Set $\sigma_u = 2$ (instead of $0.5$). Recompute the fraction of
+variance explained by the first two principal components and compare
+it with the $\sigma_u = 0.5$ result. Explain the change.
+
+(b) Show that the conditional expectation $E[f \mid Y] = BY$ with
+$B = \Lambda' \Sigma_y^{-1}$ is **not** equal to the two-component PCA
+projection $\hat{Y} = P_{:,1:2}\,\epsilon_{1:2}$. Plot both on the same
+axes.
+
+(c) In one or two sentences, explain why PCA is misspecified for
+factor-analytic data.
+```
+
+```{solution-start} mv_normal_ex6
+:class: dropdown
+```
+
+```{code-cell} python3
+import numpy as np
+import matplotlib.pyplot as plt
+
+N_fa = 10
+k_fa = 2
+
+Λ_fa = np.zeros((N_fa, k_fa))
+Λ_fa[:N_fa//2, 0] = 1
+Λ_fa[N_fa//2:, 1] = 1
+
+results_table = {}
+for σu_val in [0.5, 2.0]:
+    D_fa = np.eye(N_fa) * σu_val ** 2
+    Σy_fa = Λ_fa @ Λ_fa.T + D_fa
+
+    λ_fa, P_fa = np.linalg.eigh(Σy_fa)
+    ind_fa = sorted(range(N_fa), key=lambda x: λ_fa[x], reverse=True)
+    P_fa   = P_fa[:, ind_fa]
+    λ_fa   = λ_fa[ind_fa]
+
+    frac = λ_fa[:2].sum() / λ_fa.sum()
+    results_table[σu_val] = frac
+    print(f"σu={σu_val}: fraction explained by first 2 PCs = {frac:.4f}")
+
+# (b) comparison using σu=0.5
+σu_b = 0.5
+D_b  = np.eye(N_fa) * σu_b ** 2
+Σy_b = Λ_fa @ Λ_fa.T + D_b
+
+μz_b = np.zeros(k_fa + N_fa)
+Σz_b = np.block([[np.eye(k_fa), Λ_fa.T], [Λ_fa, Σy_b]])
+z_b  = np.random.multivariate_normal(μz_b, Σz_b)
+f_b  = z_b[:k_fa]
+y_b  = z_b[k_fa:]
+
+# factor-analytic E[f|y]
+B_b    = Λ_fa.T @ np.linalg.inv(Σy_b)
+Efy_b  = B_b @ y_b
+
+# PCA projection
+λ_b, P_b = np.linalg.eigh(Σy_b)
+ind_b    = sorted(range(N_fa), key=lambda x: λ_b[x], reverse=True)
+P_b      = P_b[:, ind_b]
+ε_b      = P_b.T @ y_b
+y_hat_b  = P_b[:, :2] @ ε_b[:2]
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.scatter(range(N_fa), Λ_fa @ Efy_b, label=r'Factor-analytic $\Lambda E[f\mid y]$')
+ax.scatter(range(N_fa), y_hat_b, marker='x', label=r'PCA projection $\hat{y}$')
+ax.scatter(range(N_fa), Λ_fa @ f_b, marker='^', alpha=0.6, label=r'True signal $\Lambda f$')
+ax.set_xlabel('observation index')
+ax.legend()
+plt.show()
+```
+
+PCA is misspecified for factor-analytic data because it imposes no
+structure on the residual covariance: it decomposes $\Sigma_y$ into
+eigenvectors that need not align with the factor loadings $\Lambda$.
+The factor model, by contrast, correctly separates the covariance into a
+low-rank systematic part $\Lambda\Lambda'$ and a diagonal idiosyncratic
+part $D$, so its conditional expectation $E[f\mid Y]$ is the minimum-variance
+linear estimator of the factors.
+
+```{solution-end}
 ```

@@ -1,10 +1,10 @@
 ---
 jupytext:
   text_representation:
-    extension: .myst
+    extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.13.8
+    jupytext_version: 1.17.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -465,7 +465,7 @@ $$
 An associated conditional distribution is
 
 $$
-\textrm{Prob}\{Y=i\vert X=j\} = \frac{\rho_{ij}}{ \sum_{j}\rho_{ij}}
+\textrm{Prob}\{Y=j\vert X=i\} = \frac{\rho_{ij}}{ \sum_{j}\rho_{ij}}
 = \frac{\textrm{Prob}\{Y=j, X=i\}}{\textrm{Prob}\{ X=i\}}
 $$
 
@@ -491,7 +491,7 @@ The first row is the probability that $Y=j, j=0,1$ conditional on $X=0$.
 The second row is the probability that $Y=j, j=0,1$ conditional on $X=1$.
 
 Note that
-- $\sum_{j}\rho_{ij}= \frac{ \sum_{j}\rho_{ij}}{ \sum_{j}\rho_{ij}}=1$, so each row of the transition matrix $P$ is a probability distribution (not so for each column).
+- $\sum_{j}p_{ij}= \frac{ \sum_{j}\rho_{ij}}{ \sum_{j}\rho_{ij}}=1$, so each row of the transition matrix $P$ is a probability distribution (not so for each column).
 
 
 
@@ -891,11 +891,6 @@ $$
 f(x,y) =(2\pi\sigma_1\sigma_2\sqrt{1-\rho^2})^{-1}\exp\left[-\frac{1}{2(1-\rho^2)}\left(\frac{(x-\mu_1)^2}{\sigma_1^2}-\frac{2\rho(x-\mu_1)(y-\mu_2)}{\sigma_1\sigma_2}+\frac{(y-\mu_2)^2}{\sigma_2^2}\right)\right]
 $$
 
-
-$$
-\frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}}\exp\left[-\frac{1}{2(1-\rho^2)}\left(\frac{(x-\mu_1)^2}{\sigma_1^2}-\frac{2\rho(x-\mu_1)(y-\mu_2)}{\sigma_1\sigma_2}+\frac{(y-\mu_2)^2}{\sigma_2^2}\right)\right]
-$$
-
 We start with a  bivariate normal distribution pinned down by
 
 $$
@@ -1199,7 +1194,7 @@ $$
 \mu_{0}= (1-q)(1-r)+(1-q)r & =1-q\\
 \mu_{1}= q(1-r)+qr & =q\\
 \nu_{0}= (1-q)(1-r)+(1-r)q& =1-r\\
-\mu_{1}= r(1-q)+qr& =r
+\nu_{1}= r(1-q)+qr& =r
 \end{aligned}
 $$
 
@@ -1488,3 +1483,405 @@ print(c2_ymtb)
 We have verified that both joint distributions, $c_1$ and $c_2$, have identical marginal distributions of $X$ and $Y$, respectively.
 
 So they are both couplings of $X$ and $Y$.
+
+**Gaussian Copula Example**
+
+A **Gaussian copula** uses the bivariate normal distribution to induce dependence between
+arbitrary marginal distributions.
+
+The construction has three steps:
+
+1. Draw $(Z_1, Z_2)$ from a bivariate standard normal with correlation $\rho$.
+2. Apply the standard normal CDF: $U_k = \Phi(Z_k)$. The pair $(U_1, U_2)$ has uniform marginals but retains the dependence structure of $(Z_1, Z_2)$ — this is the copula.
+3. Apply the inverse CDF of any desired marginal: $X_k = F_k^{-1}(U_k)$.
+
+The following code illustrates this with exponential marginals.
+
+```{code-cell} ipython3
+from scipy import stats
+
+# Gaussian copula parameters
+rho_cop = 0.8
+n_cop = 100_000
+
+# Step 1: draw from bivariate standard normal with correlation rho_cop
+z = np.random.multivariate_normal(
+    [0, 0], [[1, rho_cop], [rho_cop, 1]], n_cop
+)
+
+# Step 2: apply normal CDF -> uniform marginals (the copula itself)
+u1 = stats.norm.cdf(z[:, 0])
+u2 = stats.norm.cdf(z[:, 1])
+
+# Step 3: apply inverse CDFs of desired marginals (here: Exponential)
+x1 = stats.expon.ppf(u1, scale=1.0)   # Exp with mean 1
+x2 = stats.expon.ppf(u2, scale=0.5)   # Exp with mean 0.5
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+axes[0].scatter(u1[:3000], u2[:3000], alpha=0.2, s=2)
+axes[0].set_xlabel('$u_1$')
+axes[0].set_ylabel('$u_2$')
+axes[0].set_title(f'Copula (uniform marginals, ρ={rho_cop})')
+axes[1].scatter(x1[:3000], x2[:3000], alpha=0.2, s=2)
+axes[1].set_xlabel('$x_1$ (Exp, mean=1)')
+axes[1].set_ylabel('$x_2$ (Exp, mean=0.5)')
+axes[1].set_title('Exponential marginals via Gaussian copula')
+plt.tight_layout()
+plt.show()
+
+print(f"Sample correlation of (x1, x2): {np.corrcoef(x1, x2)[0, 1]:.3f}")
+print(f"Sample correlation of (u1, u2): {np.corrcoef(u1, u2)[0, 1]:.3f}")
+```
+
+The left panel shows the copula itself — the dependence structure in uniform coordinates.
+The right panel shows the same dependence translated to exponential marginals.
+Changing $\rho$ controls the strength of dependence while the marginals remain unchanged.
+
+## Exercises
+
+```{exercise}
+:label: prob_matrix_ex1
+
+**Independence Test**
+
+Consider the joint distribution
+
+$$
+F = \begin{bmatrix} 0.3 & 0.2 \\ 0.1 & 0.4 \end{bmatrix}
+$$
+
+where $X \in \{0,1\}$ and $Y \in \{10, 20\}$.
+
+(a) Compute the marginal distributions $\mu_i = \text{Prob}\{X=i\}$ and $\nu_j = \text{Prob}\{Y=j\}$.
+
+(b) Form the independence matrix $f^{\perp}_{ij} = \mu_i \nu_j$ (the outer product of the two marginal vectors).
+
+(c) Compare $F$ with $f^{\perp}$ and determine whether $X$ and $Y$ are independent.
+
+(d) Verify your conclusion by computing $\text{Prob}\{X=0|Y=10\}$ and checking whether it equals $\text{Prob}\{X=0\}$.
+```
+
+```{solution-start} prob_matrix_ex1
+:class: dropdown
+```
+
+```{code-cell} ipython3
+import numpy as np
+
+F = np.array([[0.3, 0.2],
+              [0.1, 0.4]])
+
+# (a) marginals
+mu = F.sum(axis=1)   # sum over columns -> marginal for X
+nu = F.sum(axis=0)   # sum over rows    -> marginal for Y
+print("mu (marginal of X):", mu)
+print("nu (marginal of Y):", nu)
+
+# (b) independence matrix
+F_indep = np.outer(mu, nu)
+print("\nIndependence matrix (outer product):\n", F_indep)
+print("\nActual joint F:\n", F)
+
+# (c) test independence
+print("\nIndependent (F == mu ⊗ nu)?", np.allclose(F, F_indep))
+
+# (d) conditional vs. marginal
+prob_X0_given_Y10 = F[0, 0] / nu[0]
+print(f"\nProb(X=0 | Y=10) = {prob_X0_given_Y10:.4f}")
+print(f"Prob(X=0)         = {mu[0]:.4f}")
+```
+
+```{solution-end}
+```
+
+```{exercise}
+:label: prob_matrix_ex2
+
+**Covariance and Correlation**
+
+Using the same joint distribution $F$ and values $X \in \{0,1\}$, $Y \in \{10, 20\}$ as in Exercise 1:
+
+(a) Compute $\mathbb{E}[X]$, $\mathbb{E}[Y]$, and $\mathbb{E}[XY] = \sum_i \sum_j x_i y_j f_{ij}$.
+
+(b) Compute $\text{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]$.
+
+(c) Compute $\text{Cor}(X,Y) = \text{Cov}(X,Y) / (\sigma_X \sigma_Y)$.
+
+(d) Show analytically that $X \perp Y$ implies $\text{Cov}(X,Y) = 0$.
+```
+
+```{solution-start} prob_matrix_ex2
+:class: dropdown
+```
+
+```{code-cell} ipython3
+import numpy as np
+
+xs = np.array([0, 1])
+ys = np.array([10, 20])
+F  = np.array([[0.3, 0.2],
+               [0.1, 0.4]])
+
+mu = F.sum(axis=1)
+nu = F.sum(axis=0)
+
+# (a)
+E_X  = xs @ mu
+E_Y  = ys @ nu
+E_XY = sum(xs[i] * ys[j] * F[i, j] for i in range(2) for j in range(2))
+print(f"E[X] = {E_X}, E[Y] = {E_Y}, E[XY] = {E_XY}")
+
+# (b)
+cov_XY = E_XY - E_X * E_Y
+print(f"Cov(X,Y) = {cov_XY:.4f}")
+
+# (c)
+var_X  = ((xs - E_X)**2) @ mu
+var_Y  = ((ys - E_Y)**2) @ nu
+cor_XY = cov_XY / np.sqrt(var_X * var_Y)
+print(f"Cor(X,Y) = {cor_XY:.4f}")
+```
+
+For part (d): if $X \perp Y$ then $f_{ij} = \mu_i \nu_j$, so
+
+$$
+\mathbb{E}[XY] = \sum_i \sum_j x_i y_j \mu_i \nu_j
+= \left(\sum_i x_i \mu_i\right)\!\left(\sum_j y_j \nu_j\right)
+= \mathbb{E}[X]\,\mathbb{E}[Y]
+$$
+
+and therefore $\text{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y] = 0$.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: prob_matrix_ex3
+
+**Sum of Two Dice (Convolution)**
+
+Let $X$ and $Y$ each be uniformly distributed on $\{1,2,3,4,5,6\}$, and let $Z = X + Y$.
+
+(a) Use the convolution formula $h_k = \sum_i f_i g_{k-i}$ to compute the distribution of $Z$.
+
+(b) Plot the theoretical distribution.
+
+(c) Simulate $10^6$ rolls and overlay the empirical histogram on the plot.
+
+(d) Compute $\mathbb{E}[Z]$ and $\text{Var}(Z)$ both from the theoretical distribution and from the simulation.
+```
+
+```{solution-start} prob_matrix_ex3
+:class: dropdown
+```
+
+```{code-cell} ipython3
+import numpy as np
+import matplotlib.pyplot as plt
+
+# (a) convolution
+f = np.ones(6) / 6
+h = np.convolve(f, f)        # Z takes values 2,...,12
+z_vals = np.arange(2, 13)
+
+# (b & c) plot theory and simulation
+n = 1_000_000
+z_sim = np.random.randint(1, 7, n) + np.random.randint(1, 7, n)
+counts = np.bincount(z_sim, minlength=13)[2:]
+
+fig, ax = plt.subplots()
+ax.bar(z_vals - 0.2, h,          0.4, alpha=0.7, label='Theoretical')
+ax.bar(z_vals + 0.2, counts / n, 0.4, alpha=0.7, label='Empirical')
+ax.set_xlabel('Z = X + Y')
+ax.set_ylabel('Probability')
+ax.legend()
+plt.show()
+
+# (d) moments
+E_Z   = z_vals @ h
+Var_Z = ((z_vals - E_Z)**2) @ h
+print(f"Theory:     E[Z] = {E_Z:.2f}, Var(Z) = {Var_Z:.4f}")
+print(f"Simulation: E[Z] = {np.mean(z_sim):.2f}, Var(Z) = {np.var(z_sim):.4f}")
+```
+
+```{solution-end}
+```
+
+```{exercise}
+:label: prob_matrix_ex4
+
+**Multi-Step Transition Probabilities**
+
+Consider a two-state Markov chain with transition matrix
+
+$$
+P = \begin{bmatrix} 0.9 & 0.1 \\ 0.2 & 0.8 \end{bmatrix}
+$$
+
+where $p_{ij} = \text{Prob}\{X(t+1)=j \mid X(t)=i\}$.
+
+(a) Starting from $\psi_0 = [1, 0]$, compute $\psi_n = \psi_0 P^n$ for $n = 1, 5, 20, 100$.
+
+(b) Find the stationary distribution $\psi^*$ satisfying $\psi^* P = \psi^*$ and $\sum_i \psi^*_i = 1$.
+
+(c) Verify numerically that $\psi_n \to \psi^*$ as $n$ grows.
+```
+
+```{solution-start} prob_matrix_ex4
+:class: dropdown
+```
+
+```{code-cell} ipython3
+import numpy as np
+
+P    = np.array([[0.9, 0.1],
+                 [0.2, 0.8]])
+psi0 = np.array([1.0, 0.0])
+
+# (a)
+for n in [1, 5, 20, 100]:
+    print(f"psi_{n:3d} = {psi0 @ np.linalg.matrix_power(P, n)}")
+
+# (b) stationary: solve (P^T - I) psi = 0  with  sum = 1
+A = np.vstack([P.T - np.eye(2), np.ones(2)])
+b = np.array([0.0, 0.0, 1.0])
+psi_star, *_ = np.linalg.lstsq(A, b, rcond=None)
+print(f"\nStationary distribution: {psi_star}")
+
+# (c) verify
+psi_100 = psi0 @ np.linalg.matrix_power(P, 100)
+print(f"psi_100 close to stationary? {np.allclose(psi_100, psi_star, atol=1e-6)}")
+```
+
+```{solution-end}
+```
+
+```{exercise}
+:label: prob_matrix_ex5
+
+**Fréchet–Hoeffding Bounds**
+
+Let $X \in \{0,1\}$ and $Y \in \{0,1\}$ with marginals $\mu = [0.5,\, 0.5]$ and $\nu = [0.4,\, 0.6]$.
+
+(a) Construct the **comonotone** (upper Fréchet) coupling that puts as much mass as possible on the diagonal $\{X=i, Y=i\}$.
+
+(b) Construct the **counter-monotone** (lower Fréchet) coupling that puts as much mass as possible on the anti-diagonal.
+
+(c) Construct the **independent** coupling $f^{\perp}_{ij} = \mu_i \nu_j$.
+
+(d) Verify that all three have the correct marginals.
+
+(e) For each coupling compute $\text{Cor}(X,Y)$. Which maximises / minimises the correlation?
+```
+
+```{solution-start} prob_matrix_ex5
+:class: dropdown
+```
+
+```{code-cell} ipython3
+import numpy as np
+
+xs = np.array([0, 1])
+ys = np.array([0, 1])
+mu = np.array([0.5, 0.5])
+nu = np.array([0.4, 0.6])
+
+# (a) upper Fréchet: maximise P(X=i, Y=i)
+F_upper = np.array([[0.4, 0.1],
+                    [0.0, 0.5]])
+
+# (b) lower Fréchet: maximise P(X=i, Y=1-i)
+F_lower = np.array([[0.0, 0.5],
+                    [0.4, 0.1]])
+
+# (c) independent
+F_indep = np.outer(mu, nu)
+
+# (d) check marginals
+for F, name in [(F_upper, "Upper Fréchet"),
+                (F_lower, "Lower Fréchet"),
+                (F_indep, "Independent  ")]:
+    print(f"{name}: row sums = {F.sum(axis=1)}, col sums = {F.sum(axis=0)}")
+
+# (e) correlations
+def correlation(F, xs, ys):
+    mu_x  = F.sum(axis=1)
+    nu_y  = F.sum(axis=0)
+    E_X   = xs @ mu_x
+    E_Y   = ys @ nu_y
+    E_XY  = sum(xs[i]*ys[j]*F[i,j] for i in range(2) for j in range(2))
+    cov   = E_XY - E_X * E_Y
+    sig_X = np.sqrt(((xs - E_X)**2) @ mu_x)
+    sig_Y = np.sqrt(((ys - E_Y)**2) @ nu_y)
+    return cov / (sig_X * sig_Y)
+
+print(f"\nCor upper Fréchet = {correlation(F_upper, xs, ys):.4f}  (maximum)")
+print(f"Cor lower Fréchet = {correlation(F_lower, xs, ys):.4f}  (minimum)")
+print(f"Cor independent   = {correlation(F_indep, xs, ys):.4f}")
+```
+
+```{solution-end}
+```
+
+```{exercise}
+:label: prob_matrix_ex6
+
+**Bayes' Law with a Discrete Prior**
+
+A coin has unknown bias $\theta \in \{0.2,\, 0.5,\, 0.8\}$ with prior $\pi = [0.25,\, 0.50,\, 0.25]$.
+
+(a) After observing $k = 7$ heads in $n = 10$ flips, compute the likelihood
+
+$$
+\mathcal{L}(\theta \mid \text{data}) = \binom{10}{7}\,\theta^7\,(1-\theta)^3
+$$
+
+for each $\theta$.
+
+(b) Apply equation {eq}`eq:condprobbayes` to compute the posterior $\pi(\theta \mid \text{data})$.
+
+(c) Plot the prior and posterior side by side.
+
+(d) Repeat for $k = 3$ heads and describe how the posterior shifts.
+```
+
+```{solution-start} prob_matrix_ex6
+:class: dropdown
+```
+
+```{code-cell} ipython3
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.special import comb
+
+thetas = np.array([0.2, 0.5, 0.8])
+prior  = np.array([0.25, 0.50, 0.25])
+
+def compute_posterior(k, n, thetas, prior):
+    likelihood = comb(n, k) * thetas**k * (1 - thetas)**(n - k)
+    unnorm = likelihood * prior
+    return unnorm / unnorm.sum(), likelihood
+
+post7, lik7 = compute_posterior(7, 10, thetas, prior)
+post3, lik3 = compute_posterior(3, 10, thetas, prior)
+
+print("k=7:  likelihood =", lik7.round(4), " posterior =", post7.round(4))
+print("k=3:  likelihood =", lik3.round(4), " posterior =", post3.round(4))
+
+x = np.arange(len(thetas))
+w = 0.3
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+for ax, post, title in zip(axes, [post7, post3], ['k=7 heads', 'k=3 heads']):
+    ax.bar(x - w/2, prior, w, label='Prior',     alpha=0.7)
+    ax.bar(x + w/2, post,  w, label='Posterior', alpha=0.7)
+    ax.set_xticks(x)
+    ax.set_xticklabels([f'θ={t}' for t in thetas])
+    ax.set_ylabel('Probability')
+    ax.set_title(title)
+    ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+```{solution-end}
+```
