@@ -2346,7 +2346,7 @@ import numpy as np
 mn = MultivariateNormal(μ, Σ)
 mn.partition(1)
 μ1_hat, Σ11_hat = mn.cond_dist(0, np.array([2.]))
-print(f"Analytical  μ̂₁ = {μ1_hat[0]:.4f},  Σ̂₁₁ = {Σ11_hat[0,0]:.4f}")
+print(f"Analytical  μ1_hat = {μ1_hat[0]:.4f},  Σ11_hat = {Σ11_hat[0,0]:.4f}")
 
 n = 1_000_000
 data = np.random.multivariate_normal(μ, Σ, size=n)
@@ -2355,7 +2355,7 @@ z1_all, z2_all = data[:, 0], data[:, 1]
 mask = np.abs(z2_all - 2.) < 0.05
 z1_cond = z1_all[mask]
 print(f"Sample size in band: {mask.sum()}")
-print(f"Sample      μ̂₁ = {np.mean(z1_cond):.4f},  Σ̂₁₁ = {np.var(z1_cond, ddof=1):.4f}")
+print(f"Sample      μ1_hat = {np.mean(z1_cond):.4f},  Σ11_hat = {np.var(z1_cond, ddof=1):.4f}")
 ```
 
 ```{solution-end}
@@ -2398,7 +2398,7 @@ for ρ in [0.2, 0.5, 0.9]:
     mn = MultivariateNormal(np.zeros(2), Σ)
     mn.partition(1)
     product = float(mn.βs[0]) * float(mn.βs[1])
-    print(f"ρ={ρ:.1f}:  b1*b2 = {product:.4f},  ρ² = {ρ**2:.4f},  match: {np.isclose(product, ρ**2)}")
+    print(f"ρ={ρ:.1f}:  b1*b2 = {product:.4f},  ρ^2 = {ρ**2:.4f},  match: {np.isclose(product, ρ**2)}")
 ```
 
 ```{solution-end}
@@ -2504,15 +2504,15 @@ for σθ_val in σθ_vals:
 
 fig, ax = plt.subplots()
 ax.semilogx(σθ_vals, μθ_hat_vals, 'o-', label=r'$\hat{\mu}_\theta$')
-ax.axhline(y_bar,  ls='--', color='r', label=f'sample mean ȳ = {y_bar:.1f}')
+ax.axhline(y_bar,  ls='--', color='r', label=f'sample mean y_bar = {y_bar:.1f}')
 ax.axhline(μθ_val, ls=':',  color='g', label=f'prior mean μθ = {μθ_val:.0f}')
 ax.set_xlabel(r'$\sigma_\theta$')
 ax.set_ylabel(r'posterior mean $\hat{\mu}_\theta$')
 ax.legend()
 plt.show()
 
-print(f"ȳ = {y_bar:.4f}")
-print(f"Large σθ posterior mean ≈ {μθ_hat_vals[-1]:.4f}")
+print(f"y_bar = {y_bar:.4f}")
+print(f"Large σθ posterior mean approx {μθ_hat_vals[-1]:.4f}")
 ```
 
 ```{solution-end}
