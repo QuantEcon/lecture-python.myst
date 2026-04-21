@@ -17,7 +17,7 @@ kernelspec:
 
 This lecture uses matrix algebra to illustrate some basic ideas about probability theory.
 
-After introducing  underlying objects, we'll use matrices and vectors to describe probability distributions.
+After introducing underlying objects, we'll use matrices and vectors to describe probability distributions.
 
 Among concepts that we'll be studying include
 
@@ -29,13 +29,13 @@ Among concepts that we'll be studying include
     - couplings
     - copulas
 - the probability distribution of a sum of two independent random variables
-    - convolution of  marginal distributions
+    - convolution of marginal distributions
 - parameters that define a probability distribution
 - sufficient statistics as data summaries
 
 We'll use a matrix to represent a bivariate or multivariate probability distribution and a vector to represent a univariate probability distribution
 
-This {doc}`companion lecture <stats_examples>` describes some popular probability distributions and describes how to  use Python to sample from them. 
+This {doc}`companion lecture <stats_examples>` describes some popular probability distributions and describes how to use Python to sample from them.
 
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
@@ -59,14 +59,14 @@ set_matplotlib_formats('retina')
 ```
 
 
-## Sketch of Basic Concepts
+## Sketch of basic concepts
 
 We'll briefly define what we mean by a **probability space**, a **probability measure**, and a **random variable**.
 
 For most of this lecture, we sweep these objects into the background
  
 ```{note}
-Nevertheless, they'll be lurking beneath  **induced distributions** of random variables that  we'll  focus on here. These deeper objects are essential for defining  and analysing  the concepts of stationarity and ergodicity that underly laws of large numbers.  For a relatively
+Nevertheless, they'll be lurking beneath **induced distributions** of random variables that we'll focus on here. These deeper objects are essential for defining and analysing the concepts of stationarity and ergodicity that underly laws of large numbers. For a relatively
 nontechnical presentation of some of these results see this chapter from Lars Peter Hansen and Thomas J. Sargent's online monograph titled "Risk, Uncertainty, and Values":<https://lphansen.github.io/QuantMFR/book/1_stochastic_processes.html>.
 ``` 
   
@@ -76,18 +76,18 @@ Let $\Omega$ be a set of possible underlying outcomes and let $\omega \in \Omega
 
 Let $\mathcal{G} \subset \Omega$ be a subset of $\Omega$.
 
-Let $\mathcal{F}$ be a collection of such subsets  $\mathcal{G} \subset \Omega$.
+Let $\mathcal{F}$ be a collection of such subsets $\mathcal{G} \subset \Omega$.
 
-The pair $\Omega,\mathcal{F}$  forms our **probability space** on which we want to put a probability measure.
+The pair $\Omega,\mathcal{F}$ forms our **probability space** on which we want to put a probability measure.
 
-A **probability measure** $\mu$ maps a set of possible underlying outcomes  $\mathcal{G} \in \mathcal{F}$  into a scalar number between $0$ and $1$
+A **probability measure** $\mu$ maps a set of possible underlying outcomes $\mathcal{G} \in \mathcal{F}$ into a scalar number between $0$ and $1$
 
 - this is the "probability" that $X$ belongs to $A$, denoted by $ \textrm{Prob}\{X\in A\}$.
 
 A **random variable** $X(\omega)$ is a function of the underlying outcome $\omega \in \Omega$.
 
 
-The random variable $X(\omega)$  has a **probability distribution** that is induced by the underlying probability measure $\mu$ and the function
+The random variable $X(\omega)$ has a **probability distribution** that is induced by the underlying probability measure $\mu$ and the function
 $X(\omega)$:
 
 $$
@@ -98,34 +98,34 @@ where ${\mathcal G}$ is the subset of $\Omega$ for which $X(\omega) \in A$.
 
 We call this the induced probability distribution of random variable $X$.
 
-Instead of working explicitly with an underlying probability space $\Omega,\mathcal{F}$  and probability measure $\mu$,
-applied statisticians often proceed simply by specifying a form for an induced distribution for a random variable $X$. 
+Instead of working explicitly with an underlying probability space $\Omega,\mathcal{F}$ and probability measure $\mu$,
+applied statisticians often proceed simply by specifying a form for an induced distribution for a random variable $X$.
 
-That is how we'll proceed in this lecture and in many subsequent lectures. 
+That is how we'll proceed in this lecture and in many subsequent lectures.
 
 
-## What Does Probability Mean?
+## What does probability mean?
 
 Before diving in, we'll say a few words about what probability theory means and how it connects to statistics.
 
-We  also touch  on these topics in the quantecon lectures  <https://python.quantecon.org/prob_meaning.html> and <https://python.quantecon.org/navy_captain.html>.
+We also touch on these topics in {doc}`prob_meaning` and {doc}`navy_captain`.
 
-For much of this lecture we'll be discussing  fixed "population" probabilities.
+For much of this lecture we'll be discussing fixed "population" probabilities.
 
 These are purely mathematical objects.
 
 To appreciate how statisticians connect probabilities to data, the key is to understand the following concepts:
 
 * A single draw from a probability distribution
-* Repeated independently  and identically distributed (i.i.d.)  draws of "samples" or "realizations" from the same probability distribution
-* A **statistic** defined as a  function of a sequence of samples
-* An **empirical distribution** or **histogram** (a binned empirical distribution) that records observed  **relative frequencies**
-* The idea that a  population probability  distribution is  what we anticipate **relative frequencies** will be in a long sequence of i.i.d. draws. Here the following mathematical machinery makes precise what is meant by **anticipated relative frequencies**
+* Repeated independently and identically distributed (i.i.d.) draws of "samples" or "realizations" from the same probability distribution
+* A **statistic** defined as a function of a sequence of samples
+* An **empirical distribution** or **histogram** (a binned empirical distribution) that records observed **relative frequencies**
+* The idea that a population probability distribution is what we anticipate **relative frequencies** will be in a long sequence of i.i.d. draws. Here the following mathematical machinery makes precise what is meant by **anticipated relative frequencies**
      - **Law of Large Numbers (LLN)**
-     -  **Central Limit Theorem (CLT)**
+     - **Central Limit Theorem (CLT)**
 
 
-**Scalar example**
+#### Scalar example
 
 Let $X$ be a scalar random variable that takes on the $I$ possible values
 $0, 1, 2, \ldots, I-1$ with probabilities
@@ -147,12 +147,12 @@ $$
 
 as a short-hand way of saying that the random variable $X$ is described by the probability distribution $ \{{f_i}\}_{i=0}^{I-1}$.
 
-Consider drawing a  sample $x_0, x_1, \dots , x_{N-1}$ of  $N$ independent and identically distributoed  draws of $X$. 
+Consider drawing a sample $x_0, x_1, \dots , x_{N-1}$ of $N$ independent and identically distributed draws of $X$.
 
-What do the "identical" and "independent" mean in   IID or iid ("identically and independently distributed")?
+What do "identical" and "independent" mean in IID or iid ("identically and independently distributed")?
 
 - "identical" means that each draw is from the same distribution.
-- "independent" means that  joint distribution  equal  products of marginal distributions, i.e.,
+- "independent" means that the joint distribution equals the product of marginal distributions, i.e.,
 
 $$
 \begin{aligned}
@@ -161,9 +161,9 @@ $$
 \end{aligned}
 $$
 
-We define an  **empirical distribution** as follows.
+We define an **empirical distribution** as follows.
 
-For each $i  = 0,\dots,I-1$, let 
+For each $i = 0,\dots,I-1$, let
 
 $$
 \begin{aligned}
@@ -174,35 +174,30 @@ N & = \sum^{I-1}_{i=0} N_i \quad \text{total number of draws},\\
 $$
 
 
-Key concepts that connect probability theory with statistics are laws of large numbers and central limit theorems
+Key concepts that connect probability theory with statistics are laws of large numbers and central limit theorems.
 
-**LLN:**
+A Law of Large Numbers (LLN) states that $\tilde {f_i} \to f_i$ as $N \to \infty$.
 
-- A Law of Large Numbers (LLN) states that $\tilde {f_i} \to f_i \text{ as } N \to \infty$
+A Central Limit Theorem (CLT) describes a **rate** at which $\tilde {f_i} \to f_i$.
 
-**CLT:**
+See {doc}`lln_clt` for a detailed treatment of both results.
 
-- A Central Limit Theorem (CLT) describes a  **rate** at which $\tilde {f_i} \to f_i$
+For "frequentist" statisticians, **anticipated relative frequency** is **all** that a probability distribution means.
 
+But for a Bayesian it means something else -- something partly subjective and purely personal.
 
-**Remarks**
-
-- For "frequentist" statisticians, **anticipated relative frequency**  is **all** that a probability distribution means.
-
-- But for a Bayesian it means something else -- something partly  subjective and purely personal.
-     
-     * we say "partly" because a Bayesian also pays attention to relative frequencies 
+We say "partly" because a Bayesian also pays attention to relative frequencies.
 
 
-## Representing  Probability Distributions
+## Representing probability distributions
 
-A  probability distribution $\textrm{Prob} (X \in A)$ can  be described by its **cumulative distribution function (CDF)**
+A probability distribution $\textrm{Prob} (X \in A)$ can be described by its **cumulative distribution function (CDF)**
 
 $$
 F_{X}(x) = \textrm{Prob}\{X\leq x\}.
 $$
 
-Sometimes, but not always, a random variable can also be described by  **density function** $f(x)$
+Sometimes, but not always, a random variable can also be described by a **density function** $f(x)$
 that is related to its CDF by
 
 $$
@@ -215,7 +210,7 @@ $$
 
 Here $B$ is a set of possible $X$'s whose probability of occurring we want to compute.
 
-When a probability density exists, a probability distribution can be characterized either by its CDF or by its  density.
+When a probability density exists, a probability distribution can be characterized either by its CDF or by its density.
 
 For a **discrete-valued** random variable
 
@@ -231,7 +226,7 @@ Doing this enables us to confine our tool set basically to linear algebra.
 Later we'll briefly discuss how to approximate a continuous random variable with a discrete random variable.
 
 
-## Univariate Probability Distributions
+## Univariate probability distributions
 
 We'll devote most of this lecture to discrete-valued random variables, but we'll say a few things
 about continuous-valued random variables.
@@ -281,15 +276,19 @@ $$
 where $\theta $ is a vector of parameters that is of much smaller dimension than $I$.
 
 
-**Remarks:**
+A **statistical model** is a joint probability distribution characterized by a list of **parameters**.
 
-- A **statistical model** is a joint probability distribution characterized by a list of **parameters** 
-- The concept of  **parameter** is intimately related to the notion of  **sufficient statistic**.
-- A **statistic** is a   nonlinear function of a data set.
-- **Sufficient statistics**  summarize all  **information** that a  data set contains  about  parameters of statistical model.
-   * Note that a sufficient statistic corresponds to a particular statistical model. 
-   * Sufficient statistics are key  tools that AI uses to summarize or compress  a **big data** set.
--  R. A. Fisher provided a rigorous definition of **information** -- see <https://en.wikipedia.org/wiki/Fisher_information>
+The concept of **parameter** is intimately related to the notion of **sufficient statistic**.
+
+A **statistic** is a nonlinear function of a data set.
+
+**Sufficient statistics** summarize all **information** that a data set contains about parameters of a statistical model.
+
+Note that a sufficient statistic corresponds to a particular statistical model.
+
+Sufficient statistics are key tools that AI uses to summarize or compress a **big data** set.
+
+R. A. Fisher provided a rigorous definition of **information** -- see <https://en.wikipedia.org/wiki/Fisher_information>.
 
 
 
@@ -323,7 +322,7 @@ $$
 \textrm{Prob}\{X\in \tilde{X}\} =1
 $$
 
-## Bivariate Probability Distributions
+## Bivariate probability distributions
 
 We'll now discuss a bivariate **joint distribution**.
 
@@ -357,7 +356,7 @@ $$
 \sum_{i}\sum_{j}f_{ij}=1
 $$
 
-## Marginal Probability Distributions
+## Marginal probability distributions
 
 The joint distribution induce marginal distributions
 
@@ -391,7 +390,7 @@ $$
 \end{aligned}
 $$
 
-**Digression:** If two random variables $X,Y$ are continuous and have joint density $f(x,y)$, then marginal distributions can be computed by
+As a digression, if two random variables $X,Y$ are continuous and have joint density $f(x,y)$, then marginal distributions can be computed by
 
 $$
 \begin{aligned}
@@ -400,7 +399,7 @@ f(y)& = \int_{\mathbb{R}} f(x,y) dx
 \end{aligned}
 $$
 
-## Conditional Probability  Distributions
+## Conditional probability distributions
 
 Conditional probabilities are defined according to
 
@@ -426,7 +425,7 @@ $$
 =\frac{ \sum_{i}f_{ij} }{ \sum_{i}f_{ij}}=1
 $$
 
-**Remark:** The mathematics  of conditional probability  implies:
+The mathematics of conditional probability implies:
 
 $$
 \textrm{Prob}\{X=i|Y=j\}	=\frac{\textrm{Prob}\{X=i,Y=j\}}{\textrm{Prob}\{Y=j\}}=\frac{\textrm{Prob}\{Y=j|X=i\}\textrm{Prob}\{X=i\}}{\textrm{Prob}\{Y=j\}}
@@ -446,7 +445,7 @@ $$
 $$
 
 
-## Transition Probability Matrix
+## Transition probability matrix
 
 Consider the following joint probability distribution of  two random variables.
 
@@ -495,7 +494,7 @@ Note that
 
 
 
-## Application: Forecasting a Time Series
+## Application: forecasting a time series
 
 Suppose that there are two time periods.
 
@@ -519,11 +518,10 @@ A conditional distribution is
 
 $$\text{Prob} \{X(1)=j|X(0)=i\}= \frac{f_{ij}}{ \sum_{j}f_{ij}}$$
 
-**Remark:**
-- This formula is a workhorse for applied economic forecasters.
+This formula is a workhorse for applied economic forecasters.
 
 
-## Statistical Independence
+## Statistical independence
 
 Random variables X and Y are statistically **independent** if
 
@@ -550,7 +548,7 @@ $$
 $$
 
 
-## Means and Variances
+## Means and variances
 
 The  mean and variance of a discrete random variable $X$  are
 
@@ -571,7 +569,7 @@ $$
 \end{aligned}
 $$
 
-## Matrix Representations of Some Bivariate Distributions
+## Matrix representations of some bivariate distributions
 
 Let's use matrices to represent a joint distribution, conditional distribution, marginal distribution, and the mean and variance of a  bivariate random variable.
 
@@ -590,12 +588,9 @@ $$ \textrm{Prob}(X=i)=\sum_j{f_{ij}}=u_i  $$
 $$ \textrm{Prob}(Y=j)=\sum_i{f_{ij}}=v_j $$
 
 
-**Sampling:**
+Let's write some Python code that lets us draw some long samples and compute relative frequencies.
 
-Let's write some Python code that let's us  draw some long samples and compute relative frequencies.
-
-The code will let us  check whether  the "sampling" distribution agrees   with the "population" distribution - confirming that
-the population distribution correctly tells us the relative frequencies that we should expect in a large sample. 
+The code lets us check whether the "sampling" distribution agrees with the "population" distribution -- confirming that the population distribution correctly tells us the relative frequencies that we should expect in a large sample.
 
 
 
@@ -844,7 +839,7 @@ class discrete_bijoint:
 
 Let's apply our code to some examples.
 
-**Example 1**
+#### Example 1
 
 ```{code-cell} ipython3
 # joint
@@ -863,7 +858,7 @@ d.marg_dist()
 d.cond_dist()
 ```
 
-**Example 2**
+#### Example 2
 
 ```{code-cell} ipython3
 xs_new = np.array([10, 20, 30])
@@ -882,7 +877,7 @@ d_new.marg_dist()
 d_new.cond_dist()
 ```
 
-## A Continuous Bivariate Random Vector
+## A continuous bivariate random vector
 
 
 A two-dimensional Gaussian distribution has  joint density
@@ -929,9 +924,9 @@ y = np.linspace(-10, 10, 1_000)
 x_mesh, y_mesh = np.meshgrid(x, y, indexing="ij")
 ```
 
-**Joint Distribution**
+#### Joint distribution
 
-Let's  plot the **population** joint density.
+Let's plot the **population** joint density.
 
 ```{code-cell} ipython3
 # %matplotlib notebook
@@ -967,7 +962,7 @@ x = data[:, 0]
 y = data[:, 1]
 ```
 
-**Marginal distribution**
+#### Marginal distribution
 
 ```{code-cell} ipython3
 plt.hist(x, bins=1_000, alpha=0.6)
@@ -987,7 +982,7 @@ plt.hist(y_sim, bins=1_000, density=True, alpha=0.4, histtype="step")
 plt.show()
 ```
 
-**Conditional distribution**
+#### Conditional distribution
 
 For a bivariate normal population distribution, the conditional distributions are also normal:
 
@@ -1074,7 +1069,7 @@ print(μy, σy)
 print(μ2 + ρ * σ2 * (1 - μ1) / σ1, np.sqrt(σ2**2 * (1 - ρ**2)))
 ```
 
-## Sum of Two Independently Distributed Random Variables
+## Sum of two independently distributed random variables
 
 Let $X, Y$ be two independent discrete random variables that take values in $\bar{X}, \bar{Y}$, respectively.
 
@@ -1159,8 +1154,6 @@ $$
 
 Given two marginal distribution, $\mu$ for $X$ and $\nu$ for $Y$, a joint distribution $f_{ij}$ is said to be a **coupling** of $\mu$ and $\nu$.
 
-**Example:**
-
 Consider the following bivariate example.
 
 $$
@@ -1229,10 +1222,9 @@ But the joint distributions differ.
 
 Thus, multiple  joint distributions $[f_{ij}]$ can have  the same marginals.
 
-**Remark:**
-- Couplings  are important in optimal transport problems and in Markov processes. Please see this {doc}`lecture about optimal transport <opt_transport>`
+Couplings are important in optimal transport problems and in Markov processes. Please see this {doc}`lecture about optimal transport <opt_transport>`.
 
-## Copula Functions
+## Copula functions
 
 Suppose that $X_1, X_2, \dots, X_n$ are $N$ random variables  and that
 
@@ -1260,9 +1252,9 @@ Thus, for given marginal distributions, we can use  a copula function to determi
 
 Copula functions are often used to characterize **dependence** of  random variables.
 
-**Discrete marginal distribution**
+#### Discrete marginal distribution
 
-As mentioned above,  for two given marginal distributions there can be more than one coupling.
+As mentioned above, for two given marginal distributions there can be more than one coupling.
 
 For example, consider two  random variables $X, Y$ with distributions
 
@@ -1484,7 +1476,7 @@ We have verified that both joint distributions, $c_1$ and $c_2$, have identical 
 
 So they are both couplings of $X$ and $Y$.
 
-**Gaussian Copula Example**
+### Gaussian copula example
 
 A **Gaussian copula** uses the bivariate normal distribution to induce dependence between
 arbitrary marginal distributions.
@@ -1498,6 +1490,12 @@ The construction has three steps:
 The following code illustrates this with exponential marginals.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: gaussian copula with exponential marginals
+    name: fig-gaussian-copula
+---
 from scipy import stats
 
 # Gaussian copula parameters
@@ -1521,11 +1519,9 @@ fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 axes[0].scatter(u1[:3000], u2[:3000], alpha=0.2, s=2)
 axes[0].set_xlabel('$u_1$')
 axes[0].set_ylabel('$u_2$')
-axes[0].set_title(f'Copula (uniform marginals, ρ={rho_cop})')
 axes[1].scatter(x1[:3000], x2[:3000], alpha=0.2, s=2)
 axes[1].set_xlabel('$x_1$ (Exp, mean=1)')
 axes[1].set_ylabel('$x_2$ (Exp, mean=0.5)')
-axes[1].set_title('Exponential marginals via Gaussian copula')
 plt.tight_layout()
 plt.show()
 
@@ -1533,8 +1529,10 @@ print(f"Sample correlation of (x1, x2): {np.corrcoef(x1, x2)[0, 1]:.3f}")
 print(f"Sample correlation of (u1, u2): {np.corrcoef(u1, u2)[0, 1]:.3f}")
 ```
 
-The left panel shows the copula itself — the dependence structure in uniform coordinates.
+The left panel shows the copula itself -- the dependence structure in uniform coordinates, drawn from a bivariate normal with correlation $\rho = 0.8$.
+
 The right panel shows the same dependence translated to exponential marginals.
+
 Changing $\rho$ controls the strength of dependence while the marginals remain unchanged.
 
 ## Exercises
@@ -1552,13 +1550,13 @@ $$
 
 where $X \in \{0,1\}$ and $Y \in \{10, 20\}$.
 
-(a) Compute the marginal distributions $\mu_i = \text{Prob}\{X=i\}$ and $\nu_j = \text{Prob}\{Y=j\}$.
+1. Compute the marginal distributions $\mu_i = \text{Prob}\{X=i\}$ and $\nu_j = \text{Prob}\{Y=j\}$.
 
-(b) Form the independence matrix $f^{\perp}_{ij} = \mu_i \nu_j$ (the outer product of the two marginal vectors).
+1. Form the independence matrix $f^{\perp}_{ij} = \mu_i \nu_j$ (the outer product of the two marginal vectors).
 
-(c) Compare $F$ with $f^{\perp}$ and determine whether $X$ and $Y$ are independent.
+1. Compare $F$ with $f^{\perp}$ and determine whether $X$ and $Y$ are independent.
 
-(d) Verify your conclusion by computing $\text{Prob}\{X=0|Y=10\}$ and checking whether it equals $\text{Prob}\{X=0\}$.
+1. Verify your conclusion by computing $\text{Prob}\{X=0|Y=10\}$ and checking whether it equals $\text{Prob}\{X=0\}$.
 ```
 
 ```{solution-start} prob_matrix_ex1
@@ -1601,13 +1599,13 @@ print(f"Prob(X=0)         = {mu[0]:.4f}")
 
 Using the same joint distribution $F$ and values $X \in \{0,1\}$, $Y \in \{10, 20\}$ as in Exercise 1:
 
-(a) Compute $\mathbb{E}[X]$, $\mathbb{E}[Y]$, and $\mathbb{E}[XY] = \sum_i \sum_j x_i y_j f_{ij}$.
+1. Compute $\mathbb{E}[X]$, $\mathbb{E}[Y]$, and $\mathbb{E}[XY] = \sum_i \sum_j x_i y_j f_{ij}$.
 
-(b) Compute $\text{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]$.
+1. Compute $\text{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y]$.
 
-(c) Compute $\text{Cor}(X,Y) = \text{Cov}(X,Y) / (\sigma_X \sigma_Y)$.
+1. Compute $\text{Cor}(X,Y) = \text{Cov}(X,Y) / (\sigma_X \sigma_Y)$.
 
-(d) Show analytically that $X \perp Y$ implies $\text{Cov}(X,Y) = 0$.
+1. Show analytically that $X \perp Y$ implies $\text{Cov}(X,Y) = 0$.
 ```
 
 ```{solution-start} prob_matrix_ex2
@@ -1642,7 +1640,7 @@ cor_XY = cov_XY / np.sqrt(var_X * var_Y)
 print(f"Cor(X,Y) = {cor_XY:.4f}")
 ```
 
-For part (d): if $X \perp Y$ then $f_{ij} = \mu_i \nu_j$, so
+For part 4: if $X \perp Y$ then $f_{ij} = \mu_i \nu_j$, so
 
 $$
 \mathbb{E}[XY] = \sum_i \sum_j x_i y_j \mu_i \nu_j
@@ -1662,13 +1660,13 @@ and therefore $\text{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y] = 0
 
 Let $X$ and $Y$ each be uniformly distributed on $\{1,2,3,4,5,6\}$, and let $Z = X + Y$.
 
-(a) Use the convolution formula $h_k = \sum_i f_i g_{k-i}$ to compute the distribution of $Z$.
+1. Use the convolution formula $h_k = \sum_i f_i g_{k-i}$ to compute the distribution of $Z$.
 
-(b) Plot the theoretical distribution.
+1. Plot the theoretical distribution.
 
-(c) Simulate $10^6$ rolls and overlay the empirical histogram on the plot.
+1. Simulate $10^6$ rolls and overlay the empirical histogram on the plot.
 
-(d) Compute $\mathbb{E}[Z]$ and $\text{Var}(Z)$ both from the theoretical distribution and from the simulation.
+1. Compute $\mathbb{E}[Z]$ and $\text{Var}(Z)$ both from the theoretical distribution and from the simulation.
 ```
 
 ```{solution-start} prob_matrix_ex3
@@ -1720,11 +1718,11 @@ $$
 
 where $p_{ij} = \text{Prob}\{X(t+1)=j \mid X(t)=i\}$.
 
-(a) Starting from $\psi_0 = [1, 0]$, compute $\psi_n = \psi_0 P^n$ for $n = 1, 5, 20, 100$.
+1. Starting from $\psi_0 = [1, 0]$, compute $\psi_n = \psi_0 P^n$ for $n = 1, 5, 20, 100$.
 
-(b) Find the stationary distribution $\psi^*$ satisfying $\psi^* P = \psi^*$ and $\sum_i \psi^*_i = 1$.
+1. Find the stationary distribution $\psi^*$ satisfying $\psi^* P = \psi^*$ and $\sum_i \psi^*_i = 1$.
 
-(c) Verify numerically that $\psi_n \to \psi^*$ as $n$ grows.
+1. Verify numerically that $\psi_n \to \psi^*$ as $n$ grows.
 ```
 
 ```{solution-start} prob_matrix_ex4
@@ -1763,15 +1761,15 @@ print(f"psi_100 close to stationary? {np.allclose(psi_100, psi_star, atol=1e-6)}
 
 Let $X \in \{0,1\}$ and $Y \in \{0,1\}$ with marginals $\mu = [0.5,\, 0.5]$ and $\nu = [0.4,\, 0.6]$.
 
-(a) Construct the **comonotone** (upper Fréchet) coupling that puts as much mass as possible on the diagonal $\{X=i, Y=i\}$.
+1. Construct the **comonotone** (upper Fréchet) coupling that puts as much mass as possible on the diagonal $\{X=i, Y=i\}$.
 
-(b) Construct the **counter-monotone** (lower Fréchet) coupling that puts as much mass as possible on the anti-diagonal.
+1. Construct the **counter-monotone** (lower Fréchet) coupling that puts as much mass as possible on the anti-diagonal.
 
-(c) Construct the **independent** coupling $f^{\perp}_{ij} = \mu_i \nu_j$.
+1. Construct the **independent** coupling $f^{\perp}_{ij} = \mu_i \nu_j$.
 
-(d) Verify that all three have the correct marginals.
+1. Verify that all three have the correct marginals.
 
-(e) For each coupling compute $\text{Cor}(X,Y)$. Which maximises / minimises the correlation?
+1. For each coupling compute $\text{Cor}(X,Y)$. Which maximises / minimises the correlation?
 ```
 
 ```{solution-start} prob_matrix_ex5
@@ -1830,7 +1828,7 @@ print(f"Cor independent   = {correlation(F_indep, xs, ys):.4f}")
 
 A coin has unknown bias $\theta \in \{0.2,\, 0.5,\, 0.8\}$ with prior $\pi = [0.25,\, 0.50,\, 0.25]$.
 
-(a) After observing $k = 7$ heads in $n = 10$ flips, compute the likelihood
+1. After observing $k = 7$ heads in $n = 10$ flips, compute the likelihood
 
 $$
 \mathcal{L}(\theta \mid \text{data}) = \binom{10}{7}\,\theta^7\,(1-\theta)^3
@@ -1838,11 +1836,11 @@ $$
 
 for each $\theta$.
 
-(b) Apply equation {eq}`eq:condprobbayes` to compute the posterior $\pi(\theta \mid \text{data})$.
+1. Apply equation {eq}`eq:condprobbayes` to compute the posterior $\pi(\theta \mid \text{data})$.
 
-(c) Plot the prior and posterior side by side.
+1. Plot the prior and posterior side by side.
 
-(d) Repeat for $k = 3$ heads and describe how the posterior shifts.
+1. Repeat for $k = 3$ heads and describe how the posterior shifts.
 ```
 
 ```{solution-start} prob_matrix_ex6

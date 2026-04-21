@@ -28,42 +28,51 @@ kernelspec:
 
 ## Overview
 
-This lecture studies two questions about the **informational role of prices**  posed and
+This lecture studies two questions about the **informational role of prices** posed and
 answered by {cite:t}`kihlstrom_mirman1975`.
 
-1. **When do prices transmit inside information?**  An informed insider observes a private
+1. *When do prices transmit inside information?*   
+   - An informed insider observes a private
    signal correlated with an unknown state of the world and adjusts demand accordingly.
-   Equilibrium prices shift.  Under what conditions can an outside observer *infer* the
+   - Equilibrium prices shift. 
+   - Under what conditions can an outside observer *infer* the
    insider's private signal from the equilibrium price?
 
-2. **Do Bayesian price expectations converge?**  In a stationary stochastic exchange
-   economy, an uninformed observer uses the history of market prices and Bayes' Law  to form
-    expectations about the economy's structure.  Do those expectations eventually
-   agree with those  of a fully informed observer?
+2. *Do Bayesian price expectations converge?*  
+   - In a stationary stochastic exchange
+   economy, an uninformed observer uses the history of market prices and Bayes' Law to form
+   expectations about the economy's structure.  
+   - Do those expectations eventually
+   agree with those of a fully informed observer?
 
 Kihlstrom and Mirman's answers rely on two classical ideas from statistics:
 
-- **Blackwell sufficiency**: a random variable $\tilde{y}$ is said to be  *sufficient* for a random variable
+- **Blackwell sufficiency**: a random variable $\tilde{y}$ is said to be *sufficient* for a random variable
   $\tilde{y}'$ with respect to an unknown state if knowing $\tilde{y}$ gives all the
   information about the state that $\tilde{y}'$ contains.
 - **Bayesian consistency**: as the sample grows, a Bayesian statistician's posterior probability distribution concentrates on the true
-  parameter value *even when the underlying economic structure is not globally identified from prices alone*.
+  parameter value, even when the underlying economic structure is not globally identified from prices alone.
 
 Important findings of {cite:t}`kihlstrom_mirman1975` are:
 
-- Equilibrium prices transmit inside information **if and only if** the map from the
+- Equilibrium prices transmit inside information *if and only if* the map from the
   insider's posterior distribution to the equilibrium price vector is invertible
   (one-to-one).
 - For a two-state pure exchange economy with CES preferences, invertibility holds whenever the
-  elasticity of substitution $\sigma \neq 1$.  With Cobb-Douglas preferences ($\sigma = 1$)
+  elasticity of substitution $\sigma \neq 1$.  
+  - With Cobb-Douglas preferences ($\sigma = 1$)
   the equilibrium price is independent of the insider's posterior, so information is never
   transmitted.
-- In the dynamic economy, as information accumulates, Bayesian price expectations converge to **rational expectations**, even when the deep structure of the economy is not  identified.
+- In the dynamic economy, as information accumulates, Bayesian price expectations converge to **rational expectations**, even when the deep structure of the economy is not identified.
 
 ```{note}
-{cite:t}`kihlstrom_mirman1975` use the terms ''reduced form'' and ''structural'' models in a
-way that careful econometricians do.  Reduced-form  and structural models  come in pairs. To each structure or structural model
-there is a reduced form, or collection of reduced forms, underlying  different possible regressions.
+{cite:t}`kihlstrom_mirman1975` use the terms "reduced form" and "structural" models in a
+way that careful econometricians do. 
+
+Reduced-form and structural models come in pairs. 
+
+To each structure or structural model
+there is a reduced form, or collection of reduced forms, underlying different possible regressions.
 ```
 
 The lecture is organized as follows.
@@ -71,7 +80,7 @@ The lecture is organized as follows.
 1. Set up the static two-commodity model and define equilibrium.
 2. State the price-revelation theorem (Theorem 1 of the paper) and the invertibility
    conditions (Theorem 2).
-3. Illustrate invertibility — and its failure — with numerical examples using CES and
+3. Illustrate invertibility and its failure with numerical examples using CES and
    Cobb-Douglas preferences.
 4. Introduce the dynamic stochastic economy and derive the Bayesian convergence result.
 5. Simulate Bayesian learning from price observations.
@@ -87,9 +96,9 @@ from scipy.optimize import brentq
 from scipy.stats import norm
 ```
 
-## A Two-Commodity Economy with an Informed Insider
+## A two-commodity economy with an informed insider
 
-### Preferences, Endowments, and the Unknown State
+### Preferences, endowments, and the unknown state
 
 The economy has two goods. 
 
@@ -115,7 +124,7 @@ representative firm.
 The firm's profit $\pi$ is determined by profit maximization.
 
 Agent
-$i$'s **budget constraint** is
+$i$'s budget constraint is
 
 $$
 p x_1^i + x_2^i = w^i + \theta^i \pi.
@@ -126,7 +135,7 @@ Agents maximize expected utility subject to their budget constraints.
 A **competitive
 equilibrium** is a price $\hat{p}$ that clears both markets simultaneously.
 
-### The Informed Agent's Problem
+### The informed agent's problem
 
 Suppose **agent 1** (the insider) observes a private signal $\tilde{y}$ correlated with
 $\bar{a}$ before trading.
@@ -151,9 +160,9 @@ This is possible when the map $\mu \mapsto p(\mu)$
 is **invertible** on the relevant domain.
 
 (price_revelation_theorem)=
-## Price Revelation: Theorem 1
+## Price revelation
 
-### Blackwell Sufficiency
+### Blackwell sufficiency
 
 The price variable $p(\mu_{\tilde{y}})$ *accurately transmits* the insider's private
 information if observing the equilibrium price is just as informative about $\bar{a}$ as
@@ -162,9 +171,12 @@ observing the signal $\tilde{y}$ directly.
 In Blackwell's language ({cite}`blackwell1951` and {cite}`blackwell1953`), this means
 $p(\mu_{\tilde{y}})$ is **sufficient** for $\tilde{y}$.
 
-**Definition.**  A random variable $\tilde{y}$ is *sufficient* for $\tilde{y}'$ (with
+```{prf:definition} Sufficiency
+:label: ime_def_sufficiency
+
+A random variable $\tilde{y}$ is *sufficient* for $\tilde{y}'$ (with
 respect to $\bar{a}$) if there exists a conditional distribution $PR(y' \mid y)$,
-**independent of**$\bar{a}$, such that
+**independent of** $\bar{a}$, such that
 
 $$
 \phi'_a(y') = \sum_{y \in Y} PR(y' \mid y)\, \phi_a(y)
@@ -175,11 +187,17 @@ where $\phi_a(y) = PR(\tilde{y} = y \mid \bar{a} = a)$.
 
 Thus, once $\tilde{y}$ is known, $\tilde{y}'$ provides no additional information
 about $\bar{a}$.
+```
 
-**Lemma 1** ({cite:t}`kihlstrom_mirman1975`).  The posterior distribution $\mu_{\tilde{y}}$
-is  sufficient  for $\tilde{y}$.
+```{prf:lemma} Posterior Sufficiency
+:label: ime_lemma_posterior_sufficiency
 
-*Proof sketch.*  The posterior $\mu_{\tilde{y}}$ satisfies
+({cite:t}`kihlstrom_mirman1975`) The posterior distribution $\mu_{\tilde{y}}$
+is sufficient for $\tilde{y}$.
+```
+
+```{prf:proof} (Sketch)
+The posterior $\mu_{\tilde{y}}$ satisfies
 
 $$
 PR(\bar{a} = a_s \mid \mu_{\tilde{y}} = \mu_y,\; \tilde{y} = y) = \mu_{ys}
@@ -187,9 +205,13 @@ PR(\bar{a} = a_s \mid \mu_{\tilde{y}} = \mu_y,\; \tilde{y} = y) = \mu_{ys}
 $$
 
 Because the posterior itself *encodes* what $\tilde{y}$ says about $\bar{a}$, observing
-$\tilde{y}$ directly would add no information. $\square$
+$\tilde{y}$ directly would add no information.
+```
 
-**Theorem 1** ({cite:t}`kihlstrom_mirman1975`).  In the economy described above, the price
+```{prf:theorem} Price Revelation
+:label: ime_theorem_price_revelation
+
+In the economy described above, the price
 random variable $p(\mu_{\tilde{y}})$ is sufficient for $\tilde{y}$ **if and only if** the
 function $p(PR^1)$ is **invertible** on the set
 
@@ -197,25 +219,34 @@ $$
 P \equiv \bigl\{\, p(\mu_y) : y \in Y,\;
   PR(\tilde{y} = y) = \sum_{a \in A} \phi_a(y)\,\mu(a) > 0 \bigr\}.
 $$
+```
 
 The "only if" direction follows because if $p$ were not one-to-one, two different posteriors
 would generate the same price; an observer could not distinguish them, so the price would
-not transmit all information that resides in  the signal.
+not transmit all information that resides in the signal.
 
-### Two Interpretations
+### Two interpretations
 
-**Insider trading in a stock market.**  Good 1 is a risky asset with random return $\bar{a}$;
-good 2 is ''money''.  An insider's demand reveals private information about the return.
+#### Insider trading in a stock market
+
+Good 1 is a risky asset with random return $\bar{a}$; good 2 is "money".
+
+An insider's demand reveals private information about the return.
+
 If the invertibility condition holds, outside observers can read the insider's signal from
 the equilibrium stock price.
 
-**Price as a quality signal.**  Good 1 has uncertain quality $\bar{a}$.  Experienced
-consumers (who have sampled the good) observe a signal correlated with quality and buy
-accordingly.  Uninformed consumers can infer quality from the market price, provided
-invertibility holds.
+#### Price as a quality signal
+
+Good 1 has uncertain quality $\bar{a}$.
+
+Experienced consumers (who have sampled the good) observe a signal correlated with quality
+and buy accordingly.
+
+Uninformed consumers can infer quality from the market price, provided invertibility holds.
 
 (invertibility_conditions)=
-## Invertibility and the Elasticity of Substitution (Theorem 2)
+## Invertibility and the elasticity of substitution
 
 When does $p(PR^1)$ fail to be invertible?
 
@@ -223,7 +254,7 @@ Theorem 2 of {cite:t}`kihlstrom_mirman1975`
 shows that for a two-state economy ($S = 2$), the answer turns on the **elasticity of
 substitution** $\sigma$ of agent 1's utility function.
 
-### The Two-State First-Order Condition
+### The two-state first-order condition
 
 With $S = 2$ and $\mu = (q,\, 1-q)$, the first-order condition for agent 1's demand
 (equation (12a) in the paper) reduces to
@@ -242,21 +273,25 @@ $$
 The equilibrium consumption $(x_1, x_2)$ itself depends on $p$, so this is an implicit
 equation in $p$.
 
-**Theorem 2** ({cite:t}`kihlstrom_mirman1975`).  Assume $u^1$ is quasi-concave and
-homothetic with continuous first partials.  Assume agent 1 always consumes positive
-quantities of both goods.  For $S = 2$:
+```{prf:theorem} Invertibility Conditions
+:label: ime_theorem_invertibility_conditions
+
+Assume $u^1$ is quasi-concave and
+homothetic with continuous first partials. Assume agent 1 always consumes positive
+quantities of both goods. For $S = 2$:
 
 - If $\sigma < 1$ for all feasible allocations, $p(PR^1)$ is **invertible** on $P$.
 - If $\sigma > 1$ for all feasible allocations, $p(PR^1)$ is **invertible** on $P$.
 - If $u^1$ is **Cobb-Douglas** ($\sigma = 1$), $p(PR^1)$ is **constant** on $P$
   (no information is transmitted).
+```
 
 Thus, when $\sigma = 1$ the income and substitution effects exactly cancel,
 making agent 1's demand for good 1 independent of information about $\bar{a}$.
 
 So the market price cannot reveal that information.
 
-### CES Utility
+### CES utility
 
 For concreteness we work with the **constant-elasticity-of-substitution** (CES) utility
 function
@@ -278,10 +313,10 @@ u_1(c_1,c_2) = \bigl(c_1^\rho + c_2^\rho\bigr)^{1/\rho - 1}\, c_1^{\rho-1}, \qqu
 u_2(c_1,c_2) = \bigl(c_1^\rho + c_2^\rho\bigr)^{1/\rho - 1}\, c_2^{\rho-1}.
 $$
 
-### Equilibrium Price as a Function of the Posterior
+### Equilibrium price as a function of the posterior
 
 We focus on agent 1 as the *only* informed trader who absorbs one unit of good 1 at
-equilibrium (i.e.~$x_1 = 1$).
+equilibrium (i.e., $x_1 = 1$).
 
 Agent 1's budget constraint then reduces to
 $x_2 = W^1 - p$, and the equilibrium price is the unique $p \in (0, W^1)$ satisfying
@@ -292,11 +327,11 @@ p \bigl[q\, u_2(a_1,\, W^1-p) + (1-q)\, u_2(a_2,\, W^1-p)\bigr]
 = q\, a_1\, u_1(a_1,\, W^1-p) + (1-q)\, a_2\, u_1(a_2,\, W^1-p).
 $$
 
-For Cobb-Douglas utility ($\sigma = 1$), first-order-necessary conditions  (FOC) become $p = W^1 - p$,
+For Cobb-Douglas utility ($\sigma = 1$), the first-order condition becomes $p = W^1 - p$,
 giving $p^* = W^1/2$ regardless of the posterior $q$—confirming that no information
 is transmitted through the price in the Cobb-Douglas case.
 
-We compute first-order-necessary conditions numerically below.
+We compute first-order conditions numerically below.
 
 ```{code-cell} ipython3
 def ces_derivatives(c1, c2, rho):
@@ -351,6 +386,12 @@ def eq_price(q, a1, a2, W1, rho):
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: equilibrium price vs posterior
+    name: fig-eq-price-posterior
+---
 # ── Economy parameters ──────────────────────────────────────────────────────
 a1, a2 = 2.0, 0.5     # state values (a1 > a2)
 W1     = 4.0           # informed agent's wealth; equilibrium x2 = W1 - p
@@ -371,17 +412,15 @@ for rho, label, color in zip(rho_values, rho_labels, colors):
     prices = [eq_price(q, a1, a2, W1, rho) for q in q_grid]
     ax.plot(q_grid, prices, label=label, color=color, lw=2)
 
-ax.set_xlabel(r"Posterior probability $q = \Pr(\bar{a} = a_1)$", fontsize=12)
-ax.set_ylabel("Equilibrium price $p^*(q)$", fontsize=12)
-ax.set_title("Equilibrium price as a function of the informed agent's posterior",
-             fontsize=12)
+ax.set_xlabel(r"posterior probability $q = \Pr(\bar{a} = a_1)$", fontsize=12)
+ax.set_ylabel("equilibrium price $p^*(q)$", fontsize=12)
 ax.legend(fontsize=10)
 ax.grid(alpha=0.3)
 plt.tight_layout()
 plt.show()
 ```
 
-The plot confirms Theorem 2.
+The plot confirms {prf:ref}`ime_theorem_invertibility_conditions`.
 
 - **CES with $\sigma \neq 1$**: the equilibrium price is **strictly monotone** in $q$.
   An outside observer who knows the equilibrium map $p^*(\cdot)$ can uniquely invert the
@@ -390,7 +429,7 @@ The plot confirms Theorem 2.
   transmitted through the market.
 
 ```{code-cell} ipython3
-# ── Verify that rho=0 (exact Cobb-Douglas) gives a flat line ─────────────────
+# Verify that rho=0 (exact Cobb-Douglas) gives a flat line
 p_cd = [eq_price(q, a1, a2, W1, rho=0.0) for q in q_grid]
 
 print(f"Cobb-Douglas (rho=0): min p* = {min(p_cd):.6f}, "
@@ -403,7 +442,7 @@ Every entry equals $W^1/2 = 2.0$ exactly, confirming analytically that the Cobb-
 equilibrium price is independent of $q$ and of the state values $a_1, a_2$.
 
 (price_monotonicity)=
-### Why Monotonicity Depends on $\sigma$
+### Why monotonicity depends on $\sigma$
 
 The derivative $\partial p / \partial q$ has the sign of $\alpha_1 \beta_2 - \alpha_2 \beta_1$
 (from differentiating the FOC formula).
@@ -435,6 +474,12 @@ Let us visualize the ratio $\alpha_s / \beta_s$ as a function of $a_s$ for diffe
 values of $\sigma$:
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: marginal rate of substitution
+    name: fig-mrs-alpha-beta
+---
 a_vals = np.linspace(0.3, 3.0, 300)
 x1_fix, x2_fix = 1.0, 1.0   # fix consumption bundle for illustration
 
@@ -448,9 +493,8 @@ for rho, color in zip([-0.5, -1e-6, 0.5], ["steelblue", "crimson", "forestgreen"
     ax.plot(a_vals, ratios,
             label=rf"$\sigma = {sigma:.2f}$", color=color, lw=2)
 
-ax.set_xlabel(r"State value $a_s$", fontsize=12)
+ax.set_xlabel(r"state value $a_s$", fontsize=12)
 ax.set_ylabel(r"$\alpha_s / \beta_s = a_s u_1 / u_2$", fontsize=12)
-ax.set_title(r"Marginal rate of substitution $\alpha_s/\beta_s$ vs.\ $a_s$", fontsize=12)
 ax.axhline(y=1.0, color="black", lw=0.8, ls="--")
 ax.legend(fontsize=10)
 ax.grid(alpha=0.3)
@@ -466,13 +510,15 @@ ratio is decreasing in $a_s$, and for $\sigma > 1$ it is increasing, making the
 equilibrium price strictly monotone in the posterior $q$ in both cases.
 
 (bayesian_price_expectations)=
-## Bayesian Price Expectations in a Dynamic Economy
+## Bayesian price expectations in a dynamic economy
 
 We now turn to a question addressed in Section 3 of {cite:t}`kihlstrom_mirman1975`.
 
-### A Stochastic Exchange Economy
+### A stochastic exchange economy
 
-Time is discrete: $t = 1, 2, \ldots$  In each period $t$:
+Time is discrete: $t = 1, 2, \ldots$
+
+In each period $t$:
 
 1. Consumer $i$ receives a random endowment $\omega_i^t$.
 2. Markets open; competitive prices $p^t = p(\omega^t)$ clear all markets.
@@ -493,7 +539,7 @@ $$
 Following econometric convention, {cite:t}`kihlstrom_mirman1975` call $g(p \mid \lambda)$
 the **reduced form** and $f(\omega \mid \lambda)$ the **structure**.
 
-### The Identification Problem
+### The identification problem
 
 Because the map $\omega \mapsto p(\omega)$ is many-to-one, observing prices loses
 information relative to observing endowments.
@@ -511,9 +557,10 @@ form** (with respect to data on prices).
 An observer who knows the infinite price history learns
 $\mu$ but not necessarily $\lambda$.
 
-### Bayesian Updating
+### Bayesian updating
 
 An uninformed observer begins with a prior $h(\lambda)$ over $\lambda \in \Lambda$.
+
 After observing the price sequence $(p^1, \ldots, p^t)$, the observer's Bayesian
 posterior is
 
@@ -532,45 +579,57 @@ g(p^{t+1} \mid p^1, \ldots, p^t)
     h(\lambda \mid p^1, \ldots, p^t).
 $$
 
-### The Convergence Theorem
+### The convergence theorem
 
-**Theorem** ({cite:t}`kihlstrom_mirman1975`, Section 3).  Let $\bar\lambda$ be the true
-structural parameter and $\bar\mu$ the reduced form that contains $\bar\lambda$.  Then:
+```{prf:theorem} Bayesian Convergence
+:label: ime_theorem_bayesian_convergence
+
+Let $\bar\lambda$ be the true
+structural parameter and $\bar\mu$ the reduced form that contains $\bar\lambda$.
+
+Then
 
 $$
 \lim_{t \to \infty} h(\mu \mid p^1, \ldots, p^t)
   = \begin{cases} 1 & \text{if } \mu = \bar\mu, \\ 0 & \text{otherwise,} \end{cases}
 $$
 
-with probability one.  Consequently,
+with probability one.
+
+Consequently,
 
 $$
 \lim_{t \to \infty} g(p^{t+1} \mid p^1, \ldots, p^t) = g(p \mid \bar\mu),
 $$
 
 which equals the rational-expectations price distribution for a fully informed observer.
+```
 
-Establishing convergence relies on appealing to  the **Bayesian consistency** result of {cite:t}`degroot1962`: as
+Establishing convergence relies on appealing to the **Bayesian consistency** result of {cite:t}`degroot1962`: as
 long as $g(\cdot \mid \mu)$ and $g(\cdot \mid \mu')$ generate mutually singular measures
 (which holds here generically), the posterior concentrates on the true reduced form.
 
-**Key insight.**  Price observers converge to **rational expectations** even if they
-never identify the underlying structure $\bar\lambda$.  The reduced form
-$g(p \mid \bar\mu)$ statistical model is used to form equilibrium price expectations, and the Bayesian
-observer learns the reduced form from prices alone.
+Price observers converge to **rational expectations** even if they never identify the
+underlying structure $\bar\lambda$.
+
+The reduced form $g(p \mid \bar\mu)$ statistical model is used to form equilibrium price
+expectations, and the Bayesian observer learns the reduced form from prices alone.
 
 (bayesian_simulation)=
-## Simulating Bayesian Learning from Prices
+## Simulating Bayesian learning from prices
 
 We illustrate the theorem with a two-state example.
 
-**Setup.**  Two possible reduced forms $\mu_1$ and $\mu_2$ generate prices
-$p^t \sim N(\bar{p}_i, \sigma_p^2)$ for $i = 1, 2$ respectively.  The observer knows
-the two possible price distributions (the reduced forms) but not which one governs the
-data.
+Two possible reduced forms $\mu_1$ and $\mu_2$ generate prices
+$p^t \sim N(\bar{p}_i, \sigma_p^2)$ for $i = 1, 2$ respectively.
 
-This is a standard **Bayesian model selection** problem.  With a prior $h_0$ on $\mu_1$
-and the observed price $p^t$, the posterior weight on $\mu_1$ after period $t$ is
+The observer knows the two possible price distributions (the reduced forms) but not which
+one governs the data.
+
+This is a standard **Bayesian model selection** problem.
+
+With a prior $h_0$ on $\mu_1$ and the observed price $p^t$, the posterior weight on $\mu_1$
+after period $t$ is
 
 $$
 h_t = \frac{h_{t-1}\, g(p^t \mid \mu_1)}{h_{t-1}\, g(p^t \mid \mu_1)
@@ -623,22 +682,23 @@ def plot_bayesian_learning(h_paths, p_bar_true, p_bar_alt, ax):
         ax.plot(t_grid, path, alpha=0.25, lw=0.8, color="steelblue")
 
     median_path = np.median(h_paths, axis=0)
-    ax.plot(t_grid, median_path, color="navy", lw=2.5, label="Median posterior")
+    ax.plot(t_grid, median_path, color="navy", lw=2, label="median posterior")
 
-    ax.axhline(y=1.0, color="black", ls="--", lw=1.2, label="True model weight = 1")
-    ax.set_xlabel("Period $t$", fontsize=12)
+    ax.axhline(y=1.0, color="black", ls="--", lw=1.2, label="true model weight = 1")
+    ax.set_xlabel("period $t$", fontsize=12)
     ax.set_ylabel(r"$h_t$ = posterior weight on true model", fontsize=12)
-    ax.set_title(
-        rf"Bayesian learning: $\bar p_{{\\rm true}}={p_bar_true:.1f}$, "
-        rf"$\bar p_{{\\rm alt}}={p_bar_alt:.1f}$, $\sigma_p={sigma_p:.2f}$",
-        fontsize=11,
-    )
     ax.legend(fontsize=10)
     ax.set_ylim(-0.05, 1.08)
     ax.grid(alpha=0.3)
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: bayesian learning across paths
+    name: fig-bayesian-learning
+---
 T       = 300
 h0      = 0.5     # diffuse prior
 n_paths = 40
@@ -650,13 +710,11 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 p_bar_true, p_bar_alt = 2.0, 1.2
 h_paths = simulate_bayesian_learning(p_bar_true, p_bar_alt, sigma_p, T, h0, n_paths)
 plot_bayesian_learning(h_paths, p_bar_true, p_bar_alt, axes[0])
-axes[0].set_title("Easy case: means far apart", fontsize=12)
 
 # Case 2: similar reduced forms (harder to learn)
 p_bar_true, p_bar_alt = 2.0, 1.8
 h_paths_hard = simulate_bayesian_learning(p_bar_true, p_bar_alt, sigma_p, T, h0, n_paths)
 plot_bayesian_learning(h_paths_hard, p_bar_true, p_bar_alt, axes[1])
-axes[1].set_title("Hard case: means close together", fontsize=12)
 
 plt.tight_layout()
 plt.show()
@@ -665,12 +723,18 @@ plt.show()
 In both panels the posterior weight on the true model converges to 1 with probability one,
 though convergence is slower when the two price distributions are similar (right panel).
 
-### Price Expectations vs. Rational Expectations
+### Price expectations vs. rational expectations
 
 We now verify that the observer's price expectations converge to the rational-expectations
 distribution $g(p \mid \bar\mu)$.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: price distribution convergence
+    name: fig-price-convergence
+---
 def price_expectation(h_t, p_bar_true, p_bar_alt, p_grid):
     """
     Compute the observer's predictive price density at posterior weight h_t.
@@ -701,11 +765,10 @@ for t_snap, col in zip(snapshots, palette):
     ax.plot(p_grid, dens, color=col, lw=2,
             label=rf"$t = {t_snap}$, $h_t = {h_t:.3f}$")
 
-ax.plot(p_grid, re_density, "k--", lw=2.5,
-        label=r"Rational expectations $g(p \mid \bar\mu)$")
-ax.set_xlabel("Price $p$", fontsize=12)
-ax.set_ylabel("Density", fontsize=12)
-ax.set_title("Observer's price distribution converges to rational expectations", fontsize=12)
+ax.plot(p_grid, re_density, "k--", lw=2,
+        label=r"rational expectations $g(p \mid \bar\mu)$")
+ax.set_xlabel("price $p$", fontsize=12)
+ax.set_ylabel("density", fontsize=12)
 ax.legend(fontsize=9)
 ax.grid(alpha=0.3)
 plt.tight_layout()
@@ -715,11 +778,10 @@ plt.show()
 The sequence of predictive densities (shades of blue) converges to the rational-expectations
 density (dashed black line) as experience accumulates.
 
-This illustrates the main theorem of
-Section 3 of {cite:t}`kihlstrom_mirman1975`.
+This illustrates {prf:ref}`ime_theorem_bayesian_convergence`.
 
 (km_extension_nonidentification)=
-### Learning the Reduced Form without Identifying the Structure
+### Learning the reduced form without identifying the structure
 
 The convergence result is particularly striking because the observer converges to
 *rational expectations* even when the underlying **structure** $\lambda$ is
@@ -731,6 +793,12 @@ $\mu_1 = \{\lambda^{(1)}, \lambda^{(2)}\}$ and $\mu_2 = \{\lambda^{(3)}\}$
 (because $\lambda^{(1)}$ and $\lambda^{(2)}$ generate the same price distribution).
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: learning with non-identification
+    name: fig-nonidentification
+---
 def simulate_learning_3struct(T, h0_vec, p_bar_vec, sigma_p, true_idx, n_paths, seed=0):
     """
     Bayesian learning with 3 structures, 2 reduced forms.
@@ -775,18 +843,12 @@ for k, (ax, label) in enumerate(zip(axes, struct_labels)):
     for path in h_paths_3:
         ax.plot(t_grid, path[:, k], alpha=0.25, lw=0.8, color="steelblue")
     ax.plot(t_grid, np.median(h_paths_3[:, :, k], axis=0),
-            color="navy", lw=2.5, label="Median")
-    ax.set_title(f"Structure {label}", fontsize=10)
-    ax.set_xlabel("Period $t$", fontsize=11)
+            color="navy", lw=2, label=f"median weight on {label}")
+    ax.set_xlabel("period $t$", fontsize=11)
     ax.grid(alpha=0.3)
     ax.legend(fontsize=9)
 
-axes[0].set_ylabel("Posterior weight", fontsize=11)
-fig.suptitle(
-    r"Non-identification: weights on $\lambda^{(1)}$ and $\lambda^{(2)}$ stabilize at "
-    r"non-degenerate values; $\lambda^{(3)}$ is eliminated",
-    fontsize=10, y=1.02
-)
+axes[0].set_ylabel("posterior weight", fontsize=11)
 plt.tight_layout()
 plt.show()
 ```
@@ -819,13 +881,13 @@ $$
 
 subject to the budget constraint $p\,x_1 + x_2 = w$.  Total supply of good 1 is $X_1 = 1$.
 
-(a) Derive the first-order condition for the informed agent's optimal $x_1$.
+1. Derive the first-order condition for the informed agent's optimal $x_1$.
 
-(b) Use the market-clearing condition $x_1 = 1$ (the informed agent absorbs the entire
+1. Use the market-clearing condition $x_1 = 1$ (the informed agent absorbs the entire
 supply) to obtain an implicit equation for the equilibrium price $p^*(q)$.  Solve it
 numerically for $q \in (0,1)$ and several values of $\gamma$.
 
-(c) Show numerically that $p^*(q)$ is monotone in $q$, so the invertibility condition
+1. Show numerically that $p^*(q)$ is monotone in $q$, so the invertibility condition
 holds.  Explain intuitively why CARA preferences always lead to an invertible price map
 (the elasticity of substitution of portfolio utility is $\sigma = \infty$).
 ```
@@ -834,7 +896,7 @@ holds.  Explain intuitively why CARA preferences always lead to an invertible pr
 :class: dropdown
 ```
 
-**(a) First-order condition.**
+**1. First-order condition.**
 
 Define $W_s = w + (a_s - p)\,x_1$ for $s=1,2$.  The FOC is
 
@@ -847,17 +909,17 @@ or equivalently (dividing by $\gamma$ and rearranging)
 
 $$
 q\,(a_1 - p)\, e^{-\gamma(a_1-p) x_1}
-  = (1-q)\,(p - a_2)\, e^{-\gamma(p-a_2) x_1}.
+  = (1-q)\,(p - a_2)\, e^{\gamma(p-a_2) x_1}.
 $$
 
-**(b) Market-clearing equilibrium price.**
+**2. Market-clearing equilibrium price.**
 
 Setting $x_1 = 1$ (all supply absorbed by informed agent), the equation becomes
 a scalar root-finding problem in $p$:
 
 $$
 F(p;\,q,\gamma) \equiv
-  q\,(a_1-p)\,e^{-\gamma(a_1-p)} - (1-q)\,(p-a_2)\,e^{-\gamma(p-a_2)} = 0.
+  q\,(a_1-p)\,e^{-\gamma(a_1-p)} - (1-q)\,(p-a_2)\,e^{\gamma(p-a_2)} = 0.
 $$
 
 ```{code-cell} ipython3
@@ -866,7 +928,7 @@ from scipy.optimize import brentq
 def F_cara(p, q, a1, a2, gamma, x1=1.0):
     """Residual of CARA market-clearing condition."""
     return (q * (a1-p) * np.exp(-gamma*(a1-p)*x1)
-            - (1-q) * (p-a2) * np.exp(-gamma*(p-a2)*x1))
+            - (1-q) * (p-a2) * np.exp(gamma*(p-a2)*x1))
 
 a1, a2  = 2.0, 0.5
 q_grid  = np.linspace(0.05, 0.95, 200)
@@ -875,14 +937,14 @@ colors_sol = plt.cm.plasma(np.linspace(0.15, 0.85, len(gammas)))
 
 fig, ax = plt.subplots(figsize=(8, 5))
 for gamma, color in zip(gammas, colors_sol):
-    p_eq = [brentq(F_cara, a2+1e-4, a1-1e-4,
+    p_eq = [brentq(F_cara, a2, a1,
                    args=(q, a1, a2, gamma))
             for q in q_grid]
     ax.plot(q_grid, p_eq, lw=2, color=color,
             label=rf"$\gamma = {gamma}$")
 
-ax.set_xlabel(r"Posterior $q = \Pr(\bar a = a_1)$", fontsize=12)
-ax.set_ylabel("Equilibrium price $p^*(q)$", fontsize=12)
+ax.set_xlabel(r"posterior $q = \Pr(\bar a = a_1)$", fontsize=12)
+ax.set_ylabel("equilibrium price $p^*(q)$", fontsize=12)
 ax.set_title("CARA preferences: equilibrium prices", fontsize=12)
 ax.legend(fontsize=10)
 ax.grid(alpha=0.3)
@@ -890,12 +952,12 @@ plt.tight_layout()
 plt.show()
 ```
 
-**(c) Invertibility for CARA.**
+**3. Invertibility for CARA.**
 
 The price is strictly increasing in $q$ for every $\gamma > 0$.  Intuitively, portfolio
 utility $u(x_2 + \bar{a}\,x_1)$ treats the two goods as **perfect substitutes** in
-creating wealth, giving an elasticity of substitution $\sigma = \infty \neq 1$.  By
-Theorem 2 of {cite:t}`kihlstrom_mirman1975`, the price map is therefore always invertible.
+creating wealth, giving an elasticity of substitution $\sigma = \infty \neq 1$. By
+{prf:ref}`ime_theorem_invertibility_conditions`, the price map is therefore always invertible.
 
 ```{solution-end}
 ```
@@ -903,7 +965,7 @@ Theorem 2 of {cite:t}`kihlstrom_mirman1975`, the price map is therefore always i
 ```{exercise}
 :label: km_ex2
 
-**Convergence rate and KL divergence.**  In the Bayesian learning simulation, the speed of
+In the Bayesian learning simulation, the speed of
 convergence to rational expectations is determined by the **Kullback-Leibler divergence**
 between the two reduced forms.
 
@@ -914,14 +976,14 @@ $$
 D_{KL}(\mu_1 \| \mu_2) = \frac{(\bar{p}_1 - \bar{p}_2)^2}{2\sigma_p^2}.
 $$
 
-(a) For the "easy" case ($\bar{p}_1 = 2.0$, $\bar{p}_2 = 1.2$) and the "hard" case
+1. For the "easy" case ($\bar{p}_1 = 2.0$, $\bar{p}_2 = 1.2$) and the "hard" case
 ($\bar{p}_1 = 2.0$, $\bar{p}_2 = 1.8$), compute $D_{KL}$ for $\sigma_p = 0.4$.
 
-(b) Re-run the simulations from the lecture for both cases with $n=100$ paths.  For each
+1. Re-run the simulations from the lecture for both cases with $n=100$ paths.  For each
 path compute the first period $T_{0.99}$ at which $h_t \geq 0.99$.  Plot histograms of
 $T_{0.99}$ for both cases.
 
-(c) How does the median $T_{0.99}$ scale with $D_{KL}$?  Verify numerically that
+1. How does the median $T_{0.99}$ scale with $D_{KL}$?  Verify numerically that
 roughly $T_{0.99} \approx C / D_{KL}$ for some constant $C$.
 ```
 
@@ -964,7 +1026,7 @@ for ax, (name, p1, p2) in zip(axes, cases):
         fontsize=11
     )
     ax.set_xlabel(r"$T_{0.99}$", fontsize=12)
-    ax.set_ylabel("Count", fontsize=11)
+    ax.set_ylabel("count", fontsize=11)
     ax.legend(fontsize=10)
     ax.grid(alpha=0.3)
 
@@ -997,24 +1059,24 @@ $$
 
 where $\beta_s = u^{1\prime}(a_s x_1 + x_2)$.
 
-(a) For the parameterization used by {cite:t}`kihlstrom_mirman1975`—let
+1. For the parameterization used by {cite:t}`kihlstrom_mirman1975`—let
 $\mu(a_3) = q$, $\mu(a_2) = r$, $\mu(a_1) = 1-r-q$—write $m$ as a function of $(q, r)$.
 Compute $\partial m / \partial r$ and show that its sign depends on
 $\beta_1\beta_2(a_1-a_2)$ and $\beta_2\beta_3(a_2-a_3)$.
 
-(b) Choose $a_1 = 3$, $a_2 = 2$, $a_3 = 0.5$ and $u'(c) = c^{-\gamma}$ (CRRA with risk
+1. Choose $a_1 = 3$, $a_2 = 2$, $a_3 = 0.5$ and $u'(c) = c^{-\gamma}$ (CRRA with risk
 aversion $\gamma$).  Fix $x_1 = 1$, $x_2 = 0.5$.  For $\gamma = 2$, verify numerically
 that $\partial m/\partial r$ changes sign (i.e., $m$ is *not* globally monotone in $r$),
 giving a counterexample to invertibility.
 
-(c) Explain why this non-monotonicity does *not* arise in the two-state case $S = 2$.
+1. Explain why this non-monotonicity does *not* arise in the two-state case $S = 2$.
 ```
 
 ```{solution-start} km_ex3
 :class: dropdown
 ```
 
-**(a)** Rewrite the MRS with $\mu_1 = 1-r-q$:
+**1.** Rewrite the MRS with $\mu_1 = 1-r-q$:
 
 $$
 m(q,r) = \frac{a_1\beta_1(1-r-q) + a_2\beta_2 r + a_3\beta_3 q}
@@ -1032,7 +1094,7 @@ After simplification this reduces to a signed combination of
 $\beta_1\beta_2(a_1-a_2)({\cdot})$ and $\beta_2\beta_3(a_2-a_3)({\cdot})$ terms
 whose sign is parameter-dependent.
 
-**(b) Numerical verification.**
+**2. Numerical verification.**
 
 ```{code-cell} ipython3
 def mrs_3state(q, r, a1, a2, a3, x1, x2, gamma):
@@ -1080,7 +1142,7 @@ print("Sign changes in dm/dr:",
 The derivative $\partial m / \partial r$ changes sign, confirming that the MRS (and hence
 the equilibrium price) is **not** monotone in $r$ for $S = 3$.
 
-**(c)** In the two-state case $S = 2$, the prior is parameterized by a single scalar $q$
+**3.** In the two-state case $S = 2$, the prior is parameterized by a single scalar $q$
 and the MRS is a function of $q$ alone.  One can show directly that $\partial m / \partial q$
 has a definite sign determined entirely by whether $a_1 > a_2$ and whether
 $\sigma > 1$ or $\sigma < 1$ hold—there is no room for sign changes.  With three states,
@@ -1093,20 +1155,23 @@ can reverse the sign of the derivative.
 ```{exercise}
 :label: km_ex4
 
-**Bayesian learning with misspecified models.**  The convergence theorem assumes the true
+{prf:ref}`ime_theorem_bayesian_convergence`
+assumes the true
 distribution $g(\cdot \mid \bar\lambda)$ is in the support of the prior (i.e.,
 $h(\bar\lambda) > 0$).  Investigate what happens when the true model is **not** in the
 prior support.
 
-(a) Simulate $T = 1,000$ periods of prices from $N(2.0, 0.4^2)$ but use a prior that
+1. Simulate $T = 1,000$ periods of prices from $N(2.0, 0.4^2)$ but use a prior that
     places equal weight on two *wrong* models: $N(1.5, 0.4^2)$ and $N(2.5, 0.4^2)$.
-    Plot the posterior weight on each model over time.
 
-(b) Show that the **predictive** (mixture) price distribution converges to the *closest*
+    - Plot the posterior weight on each model over time.
+
+2. Show that the **predictive** (mixture) price distribution converges to the *closest*
     model in KL divergence terms—which by symmetry is the equal mixture, with mean 2.0.
-    Verify this numerically by computing the predictive mean over time.
 
-(c) Relate this finding to the Bayesian consistency literature: when is the limit
+    - Verify this numerically by computing the predictive mean over time.
+
+3. Relate this finding to the Bayesian consistency literature: when is the limit
     distribution a good approximation to the true distribution even under misspecification?
 ```
 
@@ -1153,11 +1218,11 @@ for ax, k, label in zip(axes, [0, 1], [r"$N(1.5, \sigma^2)$", r"$N(2.5, \sigma^2
     for path in h_misspec:
         ax.plot(t_grid, path[:, k], alpha=0.2, lw=0.8, color="steelblue")
     ax.plot(t_grid, np.median(h_misspec[:, :, k], axis=0),
-            color="navy", lw=2.5, label="Median")
+            color="navy", lw=2, label="median")
     ax.axhline(0.5, color="crimson", lw=1.5, ls="--", label="0.5 (symmetric limit)")
     ax.set_title(f"Posterior weight on {label}", fontsize=11)
-    ax.set_xlabel("Period $t$", fontsize=11)
-    ax.set_ylabel("Posterior weight", fontsize=11)
+    ax.set_xlabel("period $t$", fontsize=11)
+    ax.set_ylabel("posterior weight", fontsize=11)
     ax.legend(fontsize=9)
     ax.grid(alpha=0.3)
 
@@ -1174,12 +1239,15 @@ print("(Symmetry implies equal weight on 1.5 and 2.5 → predictive mean = 2.0)"
 ```
 
 By symmetry, the two wrong models are equidistant from the true distribution in KL
-divergence. The posterior therefore converges to the 50-50 mixture, and the predictive mean
+divergence. 
+
+The posterior therefore converges to the 50-50 mixture, and the predictive mean
 converges to $0.5 \times 1.5 + 0.5 \times 2.5 = 2.0$—coinciding with the true mean
-despite misspecification.  This is an instance of the general result that under
+despite misspecification. 
+
+This is an instance of the general result that under
 misspecification, Bayesian posteriors converge to the distribution in the model class that
 minimizes KL divergence from the model actually generating the data.
 
 ```{solution-end}
 ```
-
