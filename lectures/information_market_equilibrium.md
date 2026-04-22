@@ -71,11 +71,9 @@ Important findings of {cite:t}`kihlstrom_mirman1975` are:
   insider's posterior distribution to the equilibrium price is one-to-one on
   the set of
   posteriors that can actually arise from the signal.
-- In the paper's two-state theorem, invertibility holds when the informed
-  agent's utility is homothetic and the elasticity of substitution is everywhere
-  either below one or above one, with CES preferences providing a convenient
-  illustration and Cobb-Douglas preferences ($\sigma = 1$) giving the opposite
-  case in which the equilibrium price is independent of the insider's posterior.
+  - Invertibility holds when the informed
+    agent's utility is homothetic and the elasticity of substitution is everywhere
+    either below one or above one.
 - In the dynamic economy, as information accumulates, Bayesian price
   expectations converge to **rational expectations**, even when the deep
   structure is not identified from prices alone.
@@ -230,8 +228,8 @@ $p(\mu_{\tilde{y}})$ is **sufficient** for $\tilde{y}$.
 ```{prf:definition} Sufficiency
 :label: ime_def_sufficiency
 
-A random variable $\tilde{y}$ is *sufficient* for $\tilde{y}'$ (with
-respect to $\bar{a}$) if there exists a conditional distribution $P(y' \mid y)$,
+A random variable $\tilde{y}$ is *sufficient* for $\tilde{y}'$ with
+respect to $\bar{a}$ if there exists a conditional distribution $P(y' \mid y)$,
 **independent of** $\bar{a}$, such that
 
 $$
@@ -285,7 +283,7 @@ equivalently if its
 inverse is well defined on the price set
 
 $$
-P \equiv \bigl\{\, p(\mu_y) : y \in Y,\;
+\mathcal{P} \equiv \bigl\{\, p(\mu_y) : y \in Y,\;
   P(\tilde{y} = y) = \sum_{a \in A} \phi_a(y)\,\mu_0(a) > 0 \bigr\}.
 $$
 ```
@@ -360,7 +358,7 @@ when is the belief-to-price map actually one-to-one?
 
 When does the belief-to-price map fail to be invertible?
 
-Theorem {prf:ref}`ime_theorem_invertibility_conditions`
+{prf:ref}`ime_theorem_invertibility_conditions`
 shows that for a two-state economy ($S = 2$), the answer depends on the
 **elasticity of
 substitution** $\sigma$ of agent 1's utility function.
@@ -372,25 +370,21 @@ argument.
 ```{prf:lemma} Same Price Implies Same Allocation
 :label: ime_lemma_same_price_same_allocation
 
-Fix the beliefs of all agents except agent 1.
+Assume that $u^i$ has continuous first partial derivatives
+and that $u^i$ is quasi-concave. Let $p\in\mathcal{P}$. If there exist two measures $\mu^*$ and $\mu'$ in $M$ such that $p(\mu*, P^2, . . . ,P^n), = p(\mu',P^2, ... ,P^n)=p$, then
+
+$$
+x^i(\mu^*, P^2, \dots, P^n) = x^i(\mu', P^2, \dots, P^n), \quad 
+i = 1, \dots, n
+$$
+```
+
+This lemma says that fix the beliefs of all agents except agent 1.
 
 If two posterior beliefs $\mu$ and $\mu'$
 both generate the same equilibrium price $p$, then they generate the same
 equilibrium
 allocation for every trader.
-```
-
-```{prf:proof} (Sketch)
-All uninformed agents face the same price $p$ and keep the same beliefs, so
-their demands
-are unchanged.
-
-The firm's supply is also unchanged because it depends only on $p$.
-
-Market clearing then pins down agent 1's demand as the residual, so agent 1 must
-consume the
-same bundle under $\mu$ and $\mu'$ as well.
-```
 
 This lemma lets us define the informed agent's equilibrium bundle as a function
 of price
@@ -421,7 +415,7 @@ solution
 $\mu \in M$, then the price map is invertible on $P$.
 ```
 
-This is Lemma 3 in the paper: if two different posteriors gave the same price,
+If two different posteriors gave the same price,
 then by
 {prf:ref}`ime_lemma_same_price_same_allocation` they would share the same bundle
 $x(p)$,
@@ -476,9 +470,6 @@ making agent 1's demand for good 1 independent of information about $\bar{a}$.
 
 So the market price cannot reveal that information.
 
-The general theorem is abstract, so we now specialize to CES utility to make the
-mechanism concrete.
-
 ### CES utility
 
 For concreteness we work with the **constant-elasticity-of-substitution** (CES)
@@ -528,7 +519,7 @@ $$
 
 For Cobb-Douglas utility ($\sigma = 1$), the first-order condition becomes $p =
 W^1 - p$,
-giving $p^* = W^1/2$ regardless of the posterior $q$—confirming that no
+giving $p^* = W^1/2$ regardless of the posterior $q$, confirming that no
 information
 is transmitted through the price in the Cobb-Douglas case.
 
@@ -601,13 +592,13 @@ plt.show()
 
 The plot confirms {prf:ref}`ime_theorem_invertibility_conditions`.
 
-- *CES with $\sigma \neq 1$*: the equilibrium price is **strictly monotone** in
+- *CES with $\sigma \neq 1$*: the equilibrium price is *strictly monotone* in
   $q$.
 
   - An outside observer who knows the equilibrium map $p^*(\cdot)$ can uniquely
     invert the
-  price to recover $q$—inside information is fully transmitted.
-- *Cobb-Douglas ($\sigma = 1$)*: the price is *flat* in $q$—information is never
+  price to recover $q$, that is, inside information is fully transmitted.
+- *Cobb-Douglas ($\sigma = 1$)*: the price is *flat* in $q$, that is, information is never
   transmitted through the market.
 
 ```{code-cell} ipython3
@@ -714,7 +705,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-When $\sigma = 1$ the ratio is constant across all $a_s$ values—information
+When $\sigma = 1$ the ratio is constant across all $a_s$ values, information
 about the state has no effect on the marginal rate of substitution.
 
 For $\sigma < 1$ the
@@ -842,9 +833,6 @@ g(p^{t+1} \mid p^1, \ldots, p^t)
   = \sum_{\lambda \in \Lambda} g(p^{t+1} \mid \lambda)\,
     h(\lambda \mid p^1, \ldots, p^t).
 $$
-
-With the posterior and predictive density defined, we can state the paper's
-convergence result.
 
 ### The convergence theorem
 
@@ -1141,7 +1129,7 @@ t_grid = np.arange(T + 1)
 fig, axes = plt.subplots(1, 3, figsize=(13, 4), sharey=True)
 struct_labels = [
     r"$\lambda^{(1)}$",
-    r"$\lambda^{(2)}$ (same reduced form as $\lambda^{(1)}$)",
+    r"$\lambda^{(2)}$",
     r"$\lambda^{(3)}$",
 ]
 
@@ -1377,166 +1365,25 @@ $D_{KL}$).
 ```{exercise}
 :label: km_ex3
 
-The paper constructs a
-counterexample showing that for $S = 3$ states, even if the elasticity of
-substitution
-of $u^1$ is everywhere greater than one, the price map need **not** be
-invertible.
-
-Consider the marginal rate of substitution for the portfolio utility
-$u^1(a_s x_1 + x_2)$ (infinite elasticity of substitution) and three states
-$a_1 > a_2 > a_3$.
-
-The MRS is
-
-$$
-m(\mu)
-= \frac{a_1\beta_1\mu(a_1) + a_2\beta_2\mu(a_2) + a_3\beta_3\mu(a_3)}
-       {\beta_1\mu(a_1) + \beta_2\mu(a_2) + \beta_3\mu(a_3)},
-$$
-
-where $\beta_s = u^{1\prime}(a_s x_1 + x_2)$.
-
-1. For the parameterization used by {cite:t}`kihlstrom_mirman1975`—let
-$\mu(a_3) = q$, $\mu(a_2) = r$, $\mu(a_1) = 1-r-q$—write $m$ as a function of
-$(q, r)$.
-Compute $\partial m / \partial r$ and show that its sign depends on
-$\beta_1\beta_2(a_1-a_2)$ and $\beta_2\beta_3(a_2-a_3)$.
-
-1. Choose $a_1 = 3$, $a_2 = 2$, $a_3 = 0.5$ and $u'(c) = c^{-\gamma}$ (CRRA with
-   risk
-aversion $\gamma$).  Fix $x_1 = 1$, $x_2 = 0.5$.  For $\gamma = 2$, verify
-numerically
-that $\partial m/\partial r$ changes sign (i.e., $m$ is *not* globally monotone
-in $r$),
-giving a counterexample to invertibility.
-
-1. Explain why this non-monotonicity does *not* arise in the two-state case $S =
-   2$.
-```
-
-```{solution-start} km_ex3
-:class: dropdown
-```
-
-**1.** Rewrite the MRS with $\mu_1 = 1-r-q$:
-
-$$
-m(q,r) = \frac{a_1\beta_1(1-r-q) + a_2\beta_2 r + a_3\beta_3 q}
-               {\beta_1(1-r-q) + \beta_2 r + \beta_3 q}.
-$$
-
-Differentiating using the quotient rule (denominator $D$):
-
-$$
-\frac{\partial m}{\partial r}
-= \frac{(a_2\beta_2 - a_1\beta_1)D - (a_1\beta_1(1-r-q)+a_2\beta_2 r+a_3\beta_3
-q)(\beta_2-\beta_1)}{D^2}.
-$$
-
-After simplification this reduces to a signed combination of
-$\beta_1\beta_2(a_1-a_2)({\cdot})$ and $\beta_2\beta_3(a_2-a_3)({\cdot})$ terms
-whose sign is parameter-dependent.
-
-**2. Numerical verification.**
-
-```{code-cell} ipython3
-def mrs_3state(q, r, a1, a2, a3, x1, x2, γ):
-    """Return the three-state MRS at (q, r)."""
-    μ1, μ2, μ3 = 1 - r - q, r, q
-    β1 = (a1 * x1 + x2)**(-γ)
-    β2 = (a2 * x1 + x2)**(-γ)
-    β3 = (a3 * x1 + x2)**(-γ)
-    num = a1 * β1 * μ1 + a2 * β2 * μ2 + a3 * β3 * μ3
-    den = β1 * μ1 + β2 * μ2 + β3 * μ3
-    return num / den
-
-a1, a2, a3 = 3.0, 2.0, 0.5
-x1, x2 = 1.0, 0.5
-γ = 2.0
-q_fix = 0.1
-r_grid = np.linspace(0.05, 0.80, 200)
-
-# Valid region: q + r <= 1.
-r_valid = r_grid[r_grid + q_fix <= 0.95]
-m_vals = [mrs_3state(q_fix, r, a1, a2, a3, x1, x2, γ) for r in r_valid]
-dm_dr = np.gradient(m_vals, r_valid)
-
-fig, axes = plt.subplots(1, 2, figsize=(11, 4))
-axes[0].plot(r_valid, m_vals, color="steelblue", lw=2)
-axes[0].set_xlabel(r"$r = \mu(a_2)$", fontsize=12)
-axes[0].set_ylabel("MRS m(q, r)", fontsize=12)
-axes[0].set_title(f"MRS is non-monotone in r (CRRA gamma={γ})", fontsize=12)
-
-axes[1].plot(r_valid, dm_dr, color="crimson", lw=2)
-axes[1].axhline(0, color="black", lw=1, ls="--")
-axes[1].set_xlabel(r"$r = \mu(a_2)$", fontsize=12)
-axes[1].set_ylabel(r"$\partial m / \partial r$", fontsize=12)
-axes[1].set_title(
-    "Derivative changes sign - non-invertibility for $S=3$",
-    fontsize=12,
-)
-
-plt.tight_layout()
-plt.show()
-
-print("Sign changes in dm/dr:",
-      np.sum(np.diff(np.sign(dm_dr)) != 0))
-```
-
-The derivative $\partial m / \partial r$ changes sign, confirming that the MRS
-(and hence
-the equilibrium price) is **not** monotone in $r$ for $S = 3$.
-
-**3.** In the two-state case $S = 2$, the prior is parameterized by a single
-scalar $q$ and the MRS is a function of $q$ alone.
-
-One can show directly that $\partial m / \partial q$ has a definite sign
-determined entirely by whether $a_1 > a_2$ and whether $\sigma > 1$ or $\sigma <
-1$ hold, so there is no room for sign changes.
-
-With three states, the two-dimensional prior $(q, r)$ allows richer interactions
-between $\beta_s$ values that can reverse the sign of the derivative.
-
-```{solution-end}
-```
-
-```{exercise}
-:label: km_ex4
-
 {prf:ref}`ime_theorem_bayesian_convergence`
 assumes the true
 distribution $g(\cdot \mid \bar\lambda)$ is in the support of the prior (i.e.,
 $h(\bar\lambda) > 0$).
 
-Investigate what happens when the true model is **not** in the
+Investigate what happens when the true model is *not* in the
 prior support.
 
-1. Simulate $T = 1,000$ periods of prices from $N(2.0, 0.4^2)$ but use a prior
+Simulate $T = 1,000$ periods of prices from $N(2.0, 0.4^2)$ but use a prior
    that
     places equal weight on two *wrong* models: $N(1.5, 0.4^2)$ and $N(2.3,
     0.4^2)$.
 
-    - Plot the posterior weight on each model over time.
+Plot the posterior weight on each model over time.
 
-2. Show that the **predictive** (mixture) price distribution converges to the
-   *closest*
-    model in KL divergence terms.
-
-    - Compute the KL divergence from the true model to each wrong model.
-    - Verify numerically that the posterior concentrates on the closer wrong
-      model and that
-      the predictive mean converges to that model's mean.
-
-3. Relate this finding to the Bayesian consistency literature: when is the limit
-    distribution a good approximation to the true distribution even under
-    misspecification?
-    Why is the symmetric pair $N(1.5, 0.4^2)$ and $N(2.5, 0.4^2)$ a
-    knife-edge case rather
-    than a setting with a deterministic 50-50 posterior limit?
+Discuss your findings.
 ```
 
-```{solution-start} km_ex4
+```{solution-start} km_ex3
 :class: dropdown
 ```
 
@@ -1599,7 +1446,7 @@ for ax, k, label in zip(axes, [0, 1], labels):
 plt.tight_layout()
 plt.show()
 
-# Predictive density and mean along the median posterior path.
+# Predictive density and mean along the median posterior path
 median_path = np.median(h_misspec, axis=0)
 p_grid = np.linspace(0.0, 3.5, 300)
 closer_idx = np.argmin(kl_vals)
@@ -1639,16 +1486,10 @@ D_{KL}\bigl(N(2.0, 0.4^2)\,\|\,N(2.3, 0.4^2)\bigr)
 D_{KL}\bigl(N(2.0, 0.4^2)\,\|\,N(1.5, 0.4^2)\bigr),
 $$
 
-so the model with mean $2.3$ is the unique KL-best approximation among the two
-wrong models, and in the simulation posterior weight concentrates on that model
-while the predictive mean converges to $2.3$, not to the true mean $2.0$.
+so the model with mean $2.3$ is the KL-best approximation among the two
+wrong models, and in the simulation posterior weight concentrates on that model.
 
-This is an instance of the general result that under
-misspecification, Bayesian posteriors converge to the distribution in the model
-class that
-minimizes KL divergence from the model actually generating the data.
-
-The connection is that posterior odds are cumulative likelihood ratios.
+Since posterior odds are cumulative {doc}`likelihood ratios<likelihood_bayes>`.
 
 If we compare the two wrong Gaussian models $f$ and $g$, then under the true
 distribution $h$ the average log likelihood ratio satisfies
@@ -1659,18 +1500,6 @@ $$
 
 So if $f$ is KL-closer to $h$ than $g$ is, $\log L_t$ has positive drift and
 posterior odds tilt toward $f$.
-
-That is exactly the mechanism emphasized in {doc}`Likelihood Ratio Processes
-<likelihood_ratio_process>`.
-
-The lecture {doc}`likelihood_bayes` gives the Bayesian version of the same
-argument by showing how the posterior is a monotone transform of the likelihood
-ratio process.
-
-The symmetric pair $N(1.5, 0.4^2)$ and $N(2.5, 0.4^2)$ is different because both
-wrong models are equally far from the truth in KL terms, so there is no unique
-pseudo-true model and that knife-edge symmetry does **not** imply a
-deterministic 50-50 posterior limit.
 
 ```{solution-end}
 ```
