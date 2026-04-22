@@ -29,15 +29,21 @@ kernelspec:
 ## Overview
 
 From option prices we can extract risk-neutral (martingale) probabilities of
-future outcomes.  But risk-neutral probabilities blend two things: the market's
-*actual* probability beliefs and investors' *risk aversion*.  Disentangling the
-two has long seemed impossible without imposing parametric assumptions on
-preferences.
+future outcomes.
 
-{cite}`Ross2015` showed that under a key assumption — the **transition
+But risk-neutral probabilities blend two things: the market's
+*actual* probability beliefs and investors' *risk aversion*.
+
+Disentangling the
+two seems to require imposing  parametric assumptions on
+preferences of a representative investor.
+
+Nevertheless, {cite}`Ross2015` showed that under a key assumption — the **transition
 independence** of the pricing kernel — the natural (real-world) probability
 distribution and the pricing kernel can be uniquely recovered from state prices
-alone, without historical return data or parametric utility functions.  This
+alone, without historical return data or parametric utility functions.
+
+This
 result is called the **Recovery Theorem**.
 
 The theorem has several important implications.
@@ -46,13 +52,13 @@ The theorem has several important implications.
   distribution from option prices.
 * It provides model-free tests of the efficient market hypothesis.
 * It sheds light on the "dark matter" of finance: the probability of rare
-  catastrophic events embedded in market prices.
+  catastrophic events allegedly embedded in market prices.
 
 This lecture covers
 
 * The basic Arrow–Debreu framework linking state prices, the pricing kernel,
   and natural probabilities.
-* The Recovery Theorem and its proof via the Perron–Frobenius theorem.
+* Ross's Recovery Theorem and its proof via the Perron–Frobenius theorem.
 * A computational implementation that recovers the natural distribution from a
   simulated state-price matrix.
 * Comparisons between risk-neutral and recovered natural densities.
@@ -75,14 +81,20 @@ plt.rcParams['grid.alpha'] = 0.3
 
 ### Arrow–Debreu State Prices
 
-Consider a discrete-time, discrete-state economy.  At each date the economy
-occupies one of $m$ states $\theta_1, \ldots, \theta_m$.  An **Arrow–Debreu
+Consider a discrete-time, discrete-state economy.
+
+At each date the economy
+occupies one of $m$ states $\theta_1, \ldots, \theta_m$.
+
+An **Arrow–Debreu
 security** pays \$1 if the economy is in state $\theta_j$ next period and
 nothing otherwise.
 
 Denote by $p(\theta_i, \theta_j)$ the price today, when the current state is
 $\theta_i$, of the Arrow–Debreu security paying in state $\theta_j$ next
-period.  Collect these into an $m \times m$ **state price transition matrix**
+period.
+
+Collect these into an $m \times m$ **state price transition matrix**
 
 $$
 P = [p(\theta_i, \theta_j)]_{i,j=1}^m.
@@ -115,7 +127,7 @@ The key structural property this implies is **transition independence**.
 
 ### Transition Independence
 
-```{note}
+
 **Definition.** A pricing kernel is *transition independent* if there exists a
 positive function $h$ on the state space and a positive scalar $\delta$ such
 that for every transition from state $\theta_i$ to $\theta_j$,
@@ -123,10 +135,12 @@ that for every transition from state $\theta_i$ to $\theta_j$,
 $$
 \phi(\theta_i, \theta_j) = \delta \, \frac{h(\theta_j)}{h(\theta_i)}.
 $$
-```
+
 
 Transition independence says the kernel depends on the *ending* state and
-normalizes by the *beginning* state.  It holds for any agent with
+normalizes by the *beginning* state.
+
+It holds for any agent with
 intertemporally additive separable utility (where $h = U'$) and also for
 Epstein–Zin recursive preferences {cite}`Epstein_Zin1989`.
 
@@ -151,10 +165,12 @@ $$
 
 ## The Recovery Theorem
 
-### Reducing to an Eigenvalue Problem
+### Reduction to an Eigenvalue Problem
 
 Since $F$ is a stochastic matrix, its rows sum to one: $F e = e$ where $e$
-is the vector of ones.  Substituting the expression for $F$:
+is the vector of ones.
+
+Substituting the expression for $F$:
 
 $$
 \frac{1}{\delta} D P D^{-1} e = e
@@ -168,22 +184,23 @@ $\delta$ satisfying $Pz = \delta z$.
 The Perron–Frobenius theorem guarantees exactly one such solution when $P$ is
 nonnegative and irreducible.
 
-```{note}
 **Theorem (Perron–Frobenius).** Every nonnegative irreducible matrix has a
 unique positive eigenvector (up to scaling) and a unique largest positive
 eigenvalue.
-```
 
-### Statement and Proof Sketch
+Section 1.2.3 of {cite}`Sargent_Stachurski_2024` provides a proof  of this theorem as well as a discussion of its applications to economic networks.
 
-```{note}
-**Theorem 1 (Recovery Theorem, {cite}`Ross2015`).** Suppose there is no
-arbitrage, the state price transition matrix $P$ is irreducible, and the
+
+### Ross's Recovery Theorem
+
+
+**Theorem 1 (Recovery Theorem, {cite}`Ross2015`).** Suppose prices provide  no
+arbitrage opportunities, that the state price transition matrix $P$ is irreducible, and that the
 pricing kernel is transition independent.  Then there exists a *unique*
 positive solution $(\delta, z, F)$ to the recovery problem.  That is, for any
 set of state prices there is a unique compatible natural probability transition
 matrix and a unique pricing kernel.
-```
+
 
 *Proof sketch.*  Because $P$ is nonnegative and irreducible, the
 Perron–Frobenius theorem gives a unique positive eigenvector $z > 0$ with
@@ -219,12 +236,12 @@ states being "good times."
 
 ### Corollary: Risk-Neutral Pricing When Rates Are State-Independent
 
-```{note}
+
 **Theorem 2 ({cite}`Ross2015`).** If the riskless rate is the same in all
 states ($Pe = \gamma e$ for some scalar $\gamma$), then the unique natural
 distribution consistent with recovery is the risk-neutral (martingale)
 distribution itself: $F = (1/\gamma) P$.
-```
+
 
 This remarkable result says that with a constant interest rate and a bounded
 irreducible state space, recovery forces risk-neutrality — a non-trivial
@@ -385,8 +402,10 @@ print(np.round(F.sum(axis=1), 6))
 ### Visualizing Natural vs. Risk-Neutral Distributions
 
 A key insight of {cite}`Ross2015` is that the natural distribution systematically
-differs from the risk-neutral one.  In particular, the natural distribution
-stochastically dominates the risk-neutral distribution (Theorem 3 in the paper).
+differs from the risk-neutral one.
+
+In particular, the natural distribution
+stochastically dominates the risk-neutral distribution (Theorem 3 in {cite}`Ross2015`).
 
 ```{code-cell} ipython3
 def get_marginal(transition_matrix, initial_row, n_periods, states_exp):
@@ -473,7 +492,7 @@ Theorem 3 of {cite}`Ross2015` shows that the natural marginal density
 **first-order stochastically dominates** the risk-neutral density: the CDF of
 the natural distribution lies *below* that of the risk-neutral distribution.
 
-Intuitively, because the pricing kernel is declining (investors fear bad
+Because the pricing kernel is declining (investors fear bad
 outcomes), risk-neutral probabilities overweight bad states and underweight
 good states relative to the natural measure.
 
@@ -500,8 +519,9 @@ print(f"Natural CDF ≤ Risk-neutral CDF at all states: "
 
 ## Extracting the Pricing Kernel and Risk Premium
 
-The pricing kernel recovered from $P$ via the Perron–Frobenius theorem has an
-intuitive interpretation.  In the CRRA model the kernel is proportional to
+The pricing kernel recovered from $P$ via the Perron–Frobenius theorem has the following interpretation.
+
+In the CRRA model the kernel is proportional to
 $\exp(-\gamma \cdot \text{log-return})$, so it is decreasing in the return.
 
 The **equity risk premium** can be computed as the difference between the
@@ -664,10 +684,13 @@ to separate the market's genuine fear of catastrophes from the risk premium
 attached to them.
 
 {cite}`barro2006rare` and {cite}`MehraPrescott1985` discuss how rare disasters
-might explain the equity premium puzzle.  The risk-neutral probability of a
+might explain the equity premium puzzle.  
+
+The risk-neutral probability of a
 large decline is elevated both because (a) the market assigns a high natural
 probability to such events and (b) the pricing kernel upweights bad outcomes.
-Recovery lets us decompose these two forces.
+
+Ross's Recovery Machinery lets us decompose these two forces.
 
 ```{code-cell} ipython3
 # Compare left-tail probabilities: P(R < threshold) under each measure
@@ -712,7 +735,9 @@ for thresh, label in [(-0.25, '25% decline'), (-0.30, '30% decline'),
 ```
 
 The risk-neutral density assigns higher probability to large drops than the
-recovered natural density.  The ratio captures the additional weight from risk
+recovered natural density.
+
+The ratio captures the additional weight from risk
 aversion — the premium investors demand to bear tail risk.
 
 ## Testing Efficient Markets
@@ -724,7 +749,9 @@ $$
 \sigma(\phi) \geq e^{-rT} \frac{|\mu_\text{excess}|}{\sigma_\text{asset}},
 $$
 
-where $\sigma(\phi)$ is the standard deviation of the pricing kernel.  This
+where $\sigma(\phi)$ is the standard deviation of the pricing kernel.
+
+This
 follows from the Hansen–Jagannathan bound {cite}`Hansen_Jagannathan_1991`.
 
 Equivalently, the $R^2$ of any return-forecasting regression using publicly
@@ -1023,8 +1050,3 @@ probability of a catastrophe.
 ```{solution-end}
 ```
 
-## References
-
-```{bibliography}
-:filter: docname in docnames
-```
