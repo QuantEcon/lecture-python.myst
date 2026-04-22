@@ -29,14 +29,20 @@ kernelspec:
 ## Overview
 
 Asset prices are forward-looking: they encode investors' expectations about future economic
-states and their valuations of different risks.  A long-standing question in finance is
-whether we can *recover* the probability distribution used by investors — their subjective
+states and their valuations of different risks.  
+
+A long-standing question in finance is
+whether one can *recover* the probability distribution used by investors — their subjective
 beliefs — from observed asset prices alone.
 
 {cite}`BorovickaHansenScheinkman2016` study the challenge of separating investors'
-beliefs from their risk preferences using **Perron–Frobenius theory**.  The key finding
+beliefs from their risk preferences using **Perron–Frobenius theory**. 
+
+Their key finding
 is that Perron–Frobenius theory applied to Arrow prices recovers a **long-term risk-neutral
-measure** that absorbs all long-horizon risk adjustments.  This recovered measure coincides
+measure** that absorbs all long-horizon risk adjustments.  
+
+This recovered measure coincides
 with investors' subjective beliefs only under a stringent — and often empirically
 implausible — restriction on the stochastic discount factor.
 
@@ -84,30 +90,41 @@ plt.rcParams.update({
 ### Arrow prices and stochastic discount factors
 
 Consider a discrete-time economy with an $n$-state Markov chain $\{X_t\}$ governed
-by transition matrix $\mathbf{P} = [p_{ij}]$.  An **Arrow price** $q_{ij}$ is the
+by transition matrix $\mathbf{P} = [p_{ij}]$.  
+
+An **Arrow price** $q_{ij}$ is the
 date-$t$ price of a claim that pays $\$1$ tomorrow in state $j$ given that the current
-state is $i$.  We collect these prices in a matrix $\mathbf{Q} = [q_{ij}]$.
+state is $i$.  
+
+Collect these prices in a matrix $\mathbf{Q} = [q_{ij}]$.
 
 A **stochastic discount factor** (SDF) $s_{ij}$ prices risk by discounting the payoff
-in state $j$ tomorrow when today's state is $i$.  Arrow prices and the SDF are linked by
+in state $j$ tomorrow when today's state is $i$.  
+
+Arrow prices and the SDF are linked by
 
 $$
 q_{ij} = s_{ij} \, p_{ij}.
 $$
 
 Given $\mathbf{Q}$, any pair $(\mathbf{S}, \mathbf{P})$ satisfying $q_{ij} = s_{ij} p_{ij}$
-for all $(i,j)$ is consistent with the observed prices.  The fundamental identification
+for all $(i,j)$ is consistent with the observed prices.  
+
+The fundamental identification
 problem is that $\mathbf{Q}$ has $n^2$ entries, $\mathbf{P}$ has $n(n-1)$ free entries
 (rows sum to one), and $\mathbf{S}$ has $n^2$ free entries — so there are far more
 unknowns than equations.
 
-To make progress, we can impose restrictions on the SDF.  Two classical restrictions are
+To make progress, we can impose restrictions on the SDF.
+
+Two classical restrictions are
 studied in the sections that follow.
 
 ### A three-state illustration
 
 To build intuition, we work with a three-state Markov chain representing
 **recession**, **normal**, and **expansion** phases of the business cycle.
+
 The physical transition matrix and consumption levels are:
 
 ```{code-cell} ipython3
@@ -148,8 +165,11 @@ $$
 $$
 
 where $\bar{q}_i = \sum_j q_{ij}$ is the price of a one-period discount bond in state $i$.
+
 Under this restriction all future states are discounted equally from state $i$, so risk
-adjustments depend only on the current state.  The resulting risk-neutral probabilities are
+adjustments depend only on the current state.  
+
+The resulting risk-neutral probabilities are
 
 $$
 \bar{p}_{ij} = \frac{q_{ij}}{\bar{q}_i}.
@@ -207,9 +227,12 @@ $$
 $$
 
 This is an **eigenvalue–eigenvector problem** for the Arrow price matrix $\mathbf{Q}$.
+
 By the **Perron–Frobenius theorem**, if $\mathbf{Q}$ has strictly positive entries, the
 dominant eigenvalue is unique, real, and positive, and its eigenvector has strictly
-positive entries.  This gives a unique construction:
+positive entries.  
+
+This gives a unique construction:
 
 1. Solve $\mathbf{Q} \hat{\mathbf{e}} = \exp(\hat{\eta}) \hat{\mathbf{e}}$ for the
    dominant eigenvalue–eigenvector pair.
@@ -342,7 +365,9 @@ for lbl, pi in zip(labels, [pi_phys, pi_bar, pi_hat]):
 
 The long-term risk-neutral measure $\hat{\mathbf{P}}$ assigns **higher weight to bad
 states** (recession) and **lower weight to good states** (expansion) than the physical
-measure $\mathbf{P}$.  This is the risk adjustment for long-run growth uncertainty: a
+measure $\mathbf{P}$.  
+
+This is the risk adjustment for long-run growth uncertainty: a
 risk-averse investor's long-run discount rates embed a premium for permanent income risk.
 
 ## The Martingale Decomposition
@@ -359,7 +384,9 @@ $$
 $$
 
 Because $\sum_j \hat{h}_{ij} p_{ij} = \sum_j \hat{p}_{ij} = 1$, the process $\hat{H}$
-is a martingale under the physical measure $\mathbf{P}$.  The accumulated SDF then admits
+is a martingale under the physical measure $\mathbf{P}$.  
+
+The accumulated SDF then admits
 the **multiplicative decomposition**:
 
 $$
@@ -399,7 +426,9 @@ print(f"\nMartingale property check — E[ĥ | X_t=i] = {mart_check}")
 
 Higher risk aversion amplifies the pessimistic distortion: as $\gamma$ increases, the
 recovered measure assigns growing probability to the recession state.
-(The figures illustrating this appear below, after we define the Epstein–Zin utility
+
+
+(Gigures illustrating this will appear below, after we define the Epstein–Zin utility
 function that is needed to compute them.)
 
 ## When Does Recovery Succeed?
@@ -413,7 +442,9 @@ $$
 $$
 
 for some positive function $m$ and discount rate $\delta$ (Condition 4 in
-{cite}`BorovickaHansenScheinkman2016`).  Under this restriction, the SDF has **no
+{cite}`BorovickaHansenScheinkman2016`).  
+
+Under this restriction, the SDF has **no
 martingale component**: $\hat{H}_t \equiv 1$.
 
 Equivalently, recovery succeeds if and only if the physical stochastic discount factor
@@ -431,7 +462,9 @@ The critical question is: when is the martingale component degenerate?
 ### Power utility with trend-stationary consumption
 
 Consider a power-utility investor with risk aversion $\gamma$ and *trend-stationary*
-consumption $C_t = \exp(g_c t)(c \cdot X_t)$ where $c$ is a positive vector.  The
+consumption $C_t = \exp(g_c t)(c \cdot X_t)$ where $c$ is a positive vector.
+
+The
 one-period SDF is
 
 $$
@@ -439,7 +472,9 @@ s_{ij} = \exp(-\delta - \gamma g_c) \left(\frac{c_j}{c_i}\right)^{-\gamma}.
 $$
 
 This has the exact long-term risk pricing form with $\hat{e}_j = c_j^\gamma$ and
-$\hat{\eta} = -(\delta + \gamma g_c)$.  Therefore $\hat{h}_{ij} \equiv 1$ and **Ross
+$\hat{\eta} = -(\delta + \gamma g_c)$.
+
+Therefore $\hat{h}_{ij} \equiv 1$ and **Ross
 recovery succeeds exactly** when consumption fluctuations around a deterministic trend
 are the only source of risk.
 
@@ -485,7 +520,9 @@ s_{ij} = \exp(-\delta - g_c)\frac{c_i}{c_j}
 $$
 
 where $v^*_i = \exp\!\bigl[(1-\gamma)v_i\bigr]$ and $\mathbf{P}_i$ is the $i$-th row of
-$\mathbf{P}$.  The additional factor $v^*_j/(\mathbf{P}_i v^*)$ introduces a **nontrivial
+$\mathbf{P}$.  
+
+The additional factor $v^*_j/(\mathbf{P}_i v^*)$ introduces a **nontrivial
 martingale component** whenever continuation values vary across states.
 
 ```{code-cell} ipython3
@@ -640,7 +677,9 @@ plt.tight_layout();  plt.show()
 ```
 
 At $\gamma = 1$ (log utility), the continuation value is constant across states and the
-martingale is trivial, so recovery succeeds.  For $\gamma > 1$, continuation values vary
+martingale is trivial, so recovery succeeds.
+
+For $\gamma > 1$, continuation values vary
 with the state, generating a non-degenerate martingale that grows with risk aversion.
 
 ## The Long-Run Risk Model
@@ -660,10 +699,13 @@ dX_{2t} &= \bar{\mu}_{22}(X_{2t} - \iota_2)\,dt + \sqrt{X_{2t}}\,\bar{\sigma}_2 
 \end{aligned}
 $$
 
-where $W_t$ is a three-dimensional Brownian motion.  Here $X_{1t}$ is the
+where $W_t$ is a three-dimensional Brownian motion.
+
+Here $X_{1t}$ is the
 **predictable component of consumption growth** and $X_{2t}$ is **stochastic volatility**.
 
 The representative agent has Epstein–Zin preferences with unit elasticity of substitution.
+
 The stochastic discount factor satisfies
 
 $$
@@ -695,6 +737,7 @@ lrr_params = dict(
 ### Solving the value function
 
 The log continuation value $v(X_t)$ is affine in the state: $v(x) = \bar{v}_0 + \bar{v}_1 x_1 + \bar{v}_2 x_2$.
+
 The coefficients satisfy the algebraic system in Appendix D of {cite}`BorovickaHansenScheinkman2016`.
 
 ```{code-cell} ipython3
@@ -981,7 +1024,9 @@ plt.tight_layout();  plt.show()
 ```
 
 The recovered measure $\hat{P}$ concentrates around **lower mean growth** (more negative
-$X_1$) and **higher conditional volatility** (larger $X_2$).  Forecasts made using
+$X_1$) and **higher conditional volatility** (larger $X_2$).
+
+Forecasts made using
 $\hat{P}$ are systematically pessimistic compared to forecasts based on the true
 distribution $P$.
 
@@ -990,7 +1035,9 @@ distribution $P$.
 ### Entropy bounds
 
 Even without observing the full array of Arrow prices, we can obtain **lower bounds**
-on the size of the martingale component.  For a convex function
+on the size of the martingale component.
+
+For a convex function
 $\phi_\theta(r) = [(r)^{1+\theta} - 1] / [\theta(1+\theta)]$, the discrepancy
 between $\hat{P}$ and $P$ satisfies
 
@@ -999,7 +1046,9 @@ $$
 \geq 0,
 $$
 
-with equality if and only if the martingale is trivial.  Two special cases are:
+with equality if and only if the martingale is trivial.
+
+Two special cases are:
 
 - **$\theta = -1$**: $\phi_{-1}(r) = -\log r$, so $\lambda_{-1} = -E[\log(\hat{H}_{t+1}/\hat{H}_t)]$ is the **expected log-likelihood** (entropy).
 - **$\theta = 1$**: $\lambda_1 = \tfrac{1}{2}\mathrm{Var}[\hat{H}_{t+1}/\hat{H}_t]$.
@@ -1341,8 +1390,3 @@ print("→ Recovery is exact for trend-stationary power utility.")
 ```{solution-end}
 ```
 
-## References
-
-```{bibliography}
-:filter: docname in docnames
-```
