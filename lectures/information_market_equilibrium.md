@@ -88,9 +88,6 @@ Reduced-form and structural models come in pairs.
 To each structure or structural model
 there is a reduced form, or collection of reduced forms, underlying different
 possible regressions.
-
-In this lecture, a **structure** is a parameterization of the underlying
-endowment process.
 ```
 
 The lecture is organized as follows.
