@@ -67,6 +67,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numba import jit
 import statsmodels.api as sm
+
+rng = np.random.default_rng(0)
 ```
 
 Assume that an $N \times 1$ random vector $z$ has a
@@ -474,7 +476,7 @@ of $\epsilon$ will converge to $\hat{\Sigma}_1$.
 n = 1_000_000 # sample size
 
 # simulate multivariate normal random vectors
-data = np.random.multivariate_normal(μ, Σ, size=n)
+data = rng.multivariate_normal(μ, Σ, size=n)
 z1_data = data[:, 0]
 z2_data = data[:, 1]
 
@@ -517,8 +519,8 @@ Let’s apply our code to a trivariate example.
 We’ll specify the mean vector and the covariance matrix as follows.
 
 ```{code-cell} python3
-μ = np.random.random(3)
-C = np.random.random((3, 3))
+μ = rng.random(3)
+C = rng.random((3, 3))
 Σ = C @ C.T # positive semi-definite
 
 multi_normal = MultivariateNormal(μ, Σ)
@@ -545,7 +547,7 @@ z2 = np.array([2., 5.])
 
 ```{code-cell} python3
 n = 1_000_000
-data = np.random.multivariate_normal(μ, Σ, size=n)
+data = rng.multivariate_normal(μ, Σ, size=n)
 z1_data = data[:, :k]
 z2_data = data[:, k:]
 ```
@@ -714,7 +716,7 @@ $\theta$ conditional on our test scores.
 Let’s do that and then print out some pertinent quantities.
 
 ```{code-cell} python3
-x = np.random.multivariate_normal(μ_IQ, Σ_IQ)
+x = rng.multivariate_normal(μ_IQ, Σ_IQ)
 y = x[:-1] # test scores
 θ = x[-1]  # IQ
 ```
@@ -1044,7 +1046,7 @@ n = 2
 
 ```{code-cell} python3
 # take one draw
-x = np.random.multivariate_normal(μ_IQ2d, Σ_IQ2d)
+x = rng.multivariate_normal(μ_IQ2d, Σ_IQ2d)
 y1 = x[:n]
 y2 = x[n:2*n]
 θ = x[2*n]
@@ -1261,7 +1263,7 @@ This is going to be very useful for doing the conditioning to be used in
 the fun exercises below.
 
 ```{code-cell} python3
-z = np.random.multivariate_normal(μz, Σz)
+z = rng.multivariate_normal(μz, Σz)
 
 x = z[:T+1]
 y = z[T+1:]
@@ -1660,7 +1662,7 @@ conditional mean $E \left[p_{t} \mid y_{t-1}, y_{t}\right]$ using
 the `MultivariateNormal` class.
 
 ```{code-cell} python3
-z = np.random.multivariate_normal(μz, Σz)
+z = rng.multivariate_normal(μz, Σz)
 y, p = z[:T], z[T:]
 ```
 
@@ -1979,7 +1981,7 @@ We describe the Kalman filter and some applications of it in {doc}`A First Look 
 
 ## Classic factor analysis model
 
-The factor analysis model widely used in psychology and other fields can
+The factor analysis model can
 be represented as
 
 $$
@@ -1990,11 +1992,11 @@ where
 
 1. $Y$ is $n \times 1$ random vector,
    $E U U^\top = D$ is a diagonal matrix,
-1. $\Lambda$ is $n \times k$ coefficient matrix,
-1. $f$ is $k \times 1$ random vector,
+2. $\Lambda$ is $n \times k$ coefficient matrix,
+3. $f$ is $k \times 1$ random vector,
    $E f f^\top = I$,
-1. $U$ is $n \times 1$ random vector, and $U \perp f$ (i.e., $E U f^\top = 0 $ )
-1. It is presumed that $k$ is small relative to $n$; often
+4. $U$ is $n \times 1$ random vector, and $U \perp f$ (i.e., $E U f^\top = 0 $ )
+5. It is presumed that $k$ is small relative to $n$; often
    $k$ is only $1$ or $2$, as in our IQ examples.
 
 This implies that
@@ -2097,7 +2099,7 @@ $Z$.
 ```
 
 ```{code-cell} python3
-z = np.random.multivariate_normal(μz, Σz)
+z = rng.multivariate_normal(μz, Σz)
 
 f = z[:k]
 y = z[k:]
@@ -2148,8 +2150,9 @@ model.
 
 
 
-Technically, this means that the PCA model is misspecified. (Can you
-explain why?)
+Technically, this means that the PCA model is misspecified.
+
+(Can you explain why?)
 
 Nevertheless, this exercise will let us study how well the first two
 principal components from a PCA can approximate the conditional
@@ -2250,51 +2253,144 @@ Let’s look at them, after which we’ll look at $E f | y = B y$
 B @ y
 ```
 
-The fraction of variance in $y_{t}$ explained by the first two
-principal components can be computed as below.
+```{note}
+The two largest eigenvalues are both $5.25$ in this example. 
+
+
+When an
+eigenvalue is repeated, the associated principal components are not
+individually pinned down: any orthonormal basis for the same
+two-dimensional eigenspace is valid.
+
+For that reason, it is not meaningful to compare $\epsilon_1$ and
+$\epsilon_2$ component-by-component with $E[f \mid Y]$. 
+
+The PC scores
+live in a PCA coordinate system, while $E[f \mid Y]$ lives in factor
+space. 
+
+Even within the common two-dimensional subspace, the PCA basis can
+be rotated or sign-flipped, and its coordinates need not use the same
+scaling as the factor coordinates.
+
+What is uniquely determined is the two-dimensional subspace spanned by
+the first two columns of $P$. 
+
+In this symmetric example, that subspace is
+exactly the column space of $\Lambda$.
+```
+
+The fraction of variance in $y_t$ explained by the first two principal
+components is
 
 ```{code-cell} python3
 𝜆_tilde[:2].sum() / 𝜆_tilde.sum()
 ```
 
-Compute
+To compare PCA with the factor model in observation space, compute
 
 $$
 \hat{Y} = P_{j} \epsilon_{j} + P_{k} \epsilon_{k}
 $$
 
-where $P_{j}$ and $P_{k}$ correspond to the largest two
-eigenvalues.
+where $P_j$ and $P_k$ are the eigenvectors associated with the two
+largest eigenvalues.
 
 ```{code-cell} python3
 y_hat = P[:, :2] @ ε[:2]
 ```
 
-In this example, it turns out that the projection $\hat{Y}$ of
-$Y$ on the first two principal components does a good job of
-approximating $Ef \mid y$.
+$\hat{Y}$ is the rank-2 PCA approximation to $Y$ in observation space,
+so it is a 10-vector rather than a 2-vector. 
 
-We confirm this in the following plot of $f$,
-$E y \mid f$, $E f \mid y$, and $\hat{y}$ against the
-observation index on the horizontal axis.
+The natural observation-space
+counterpart from the factor model is $\Lambda E[f \mid Y]$, which is
+also a 10-vector.
+
+In this symmetric example, both vectors lie in the same two-dimensional
+subspace, namely the column space of $\Lambda$. 
+
+They are therefore close,
+but not identical. 
+
+The PCA reconstruction uses the block means directly,
+while $\Lambda E[f \mid Y]$ shrinks those block means toward zero by the
+factor $5/(5+\sigma_u^2) \approx 0.952$.
+
+The next plot makes this comparison concrete.
+
+The two scatter plots, $E[Y \mid f] = \Lambda f$ and $\hat{Y}$, are both
+10-vectors in observation space, so they can be compared directly.
+
+The horizontal lines show the factor values $f_1$ and $f_2$, together
+with their posterior means $E[f_i \mid Y]$. 
+
+These are 2-dimensional
+factor-space quantities, drawn over the relevant half of the index set to
+match the block structure of $\Lambda$.
+
+This uses the same idea as the earlier formula
+$E[Y \mid f] = \Lambda f$: the matrix $\Lambda$ maps a 2-vector in factor
+space into a 10-vector in observation space. 
+
+In our example,
+
+$$
+\Lambda a
+=
+\begin{bmatrix}
+a_1 \\
+\vdots \\
+a_1 \\
+a_2 \\
+\vdots \\
+a_2
+\end{bmatrix}
+\quad \text{for any } a = \begin{bmatrix} a_1 \\ a_2 \end{bmatrix},
+$$
+
+because the first five rows of $\Lambda$ are $(1,0)$ and the last five
+rows are $(0,1)$.
+
+Therefore, once we observe $Y=y$, the posterior mean
+$E[f \mid Y=y] = \begin{bmatrix} E[f_1 \mid y] \\ E[f_2 \mid y] \end{bmatrix}$
+is converted into the observation-space vector
+
+$$
+\Lambda E[f \mid Y=y]
+=
+\begin{bmatrix}
+E[f_1 \mid y] \\
+\vdots \\
+E[f_1 \mid y] \\
+E[f_2 \mid y] \\
+\vdots \\
+E[f_2 \mid y]
+\end{bmatrix}.
+$$
+
+So the horizontal line at height $E[f_1 \mid y]$ over the first five
+indices, together with the horizontal line at height $E[f_2 \mid y]$
+over the last five indices, is exactly a picture of
+$\Lambda E[f \mid Y=y]$.
 
 ```{code-cell} python3
-plt.scatter(range(N), Λ @ f, label='$Ey|f$')
-plt.scatter(range(N), y_hat, label=r'$\hat{y}$')
+plt.scatter(range(N), Λ @ f, label=r'$E[Y \mid f]$')
+plt.scatter(range(N), y_hat, label=r'$\hat{Y}$')
 plt.hlines(f[0], 0, N//2-1, ls='--', label='$f_{1}$')
 plt.hlines(f[1], N//2, N-1, ls='-.', label='$f_{2}$')
 
 Efy = B @ y
-plt.hlines(Efy[0], 0, N//2-1, ls='--', color='b', label='$Ef_{1}|y$')
-plt.hlines(Efy[1], N//2, N-1, ls='-.', color='b', label='$Ef_{2}|y$')
+plt.hlines(Efy[0], 0, N//2-1, ls='--', color='b', label=r'$E[f_1 \mid y]$')
+plt.hlines(Efy[1], N//2, N-1, ls='-.', color='b', label=r'$E[f_2 \mid y]$')
 plt.legend()
 
 plt.show()
 ```
 
-The covariance matrix of $\hat{Y}$ can be computed by first
-constructing the covariance matrix of $\epsilon$ and then use the
-upper left block for $\epsilon_{1}$ and $\epsilon_{2}$.
+To compute the covariance matrix of $\hat{Y}$, first form the covariance
+matrix of $\epsilon$ and then extract the upper-left block corresponding
+to $\epsilon_1$ and $\epsilon_2$.
 
 ```{code-cell} python3
 Σεjk = (P.T @ Σy @ P)[:2, :2]
@@ -2324,9 +2420,11 @@ fix $z_2 = 2$.
 1. Use `MultivariateNormal` to compute the analytical conditional mean
 $\hat{\mu}_1$ and variance $\hat{\Sigma}_{11}$ of $z_1 \mid z_2 = 2$.
 
-1. Draw $10^6$ samples from the joint distribution. Retain only those
-for which $|z_2 - 2| < 0.05$. Compute the sample mean and variance of
-the retained $z_1$ values.
+1. Draw $10^6$ samples from the joint distribution.
+
+   Retain only those for which $|z_2 - 2| < 0.05$.
+
+   Compute the sample mean and variance of the retained $z_1$ values.
 
 1. Confirm that the sample estimates are close to the analytical values.
 ```
@@ -2335,9 +2433,9 @@ the retained $z_1$ values.
 :class: dropdown
 ```
 
-```{code-cell} python3
-import numpy as np
+Here is one solution:
 
+```{code-cell} python3
 μ = np.array([.5, 1.])
 Σ = np.array([[1., .5], [.5, 1.]])
 
@@ -2347,7 +2445,7 @@ mn.partition(1)
 print(f"Analytical  μ1_hat = {μ1_hat[0]:.4f},  Σ11_hat = {Σ11_hat[0,0]:.4f}")
 
 n = 1_000_000
-data = np.random.multivariate_normal(μ, Σ, size=n)
+data = rng.multivariate_normal(μ, Σ, size=n)
 z1_all, z2_all = data[:, 0], data[:, 1]
 
 mask = np.abs(z2_all - 2.) < 0.05
@@ -2389,14 +2487,13 @@ $$
 so $b_1 b_2 = \rho^2$.
 
 ```{code-cell} python3
-import numpy as np
-
 for ρ in [0.2, 0.5, 0.9]:
     Σ = np.array([[1., ρ], [ρ, 1.]])
     mn = MultivariateNormal(np.zeros(2), Σ)
     mn.partition(1)
-    product = float(mn.βs[0]) * float(mn.βs[1])
-    print(f"ρ={ρ:.1f}:  b1*b2 = {product:.4f},  ρ^2 = {ρ**2:.4f},  match: {np.isclose(product, ρ**2)}")
+    product = mn.βs[0].item() * mn.βs[1].item()
+    print(f"ρ={ρ:.1f}:  b1*b2 = {product:.4f}")
+    print(f"ρ^2 = {ρ**2:.4f},  match: {np.isclose(product, ρ**2)}")
 ```
 
 ```{solution-end}
@@ -2411,11 +2508,12 @@ Using the one-dimensional IQ model with $n = 50$ test scores and
 $\mu_\theta = 100$, $\sigma_\theta = 10$:
 
 1. Vary the test-score noise $\sigma_y \in \{1, 5, 10, 20, 50\}$.
-For each value, plot the posterior standard deviation
+
+- For each value, plot the posterior standard deviation
 $\hat{\sigma}_\theta$ as a function of the number of test scores
 included (from 1 to 50), with all curves on the same axes.
 
-1. Explain intuitively why a larger $\sigma_y$ leads to a slower
+2. Explain intuitively why a larger $\sigma_y$ leads to a slower
 decline of posterior uncertainty.
 ```
 
@@ -2423,10 +2521,9 @@ decline of posterior uncertainty.
 :class: dropdown
 ```
 
-```{code-cell} python3
-import numpy as np
-import matplotlib.pyplot as plt
+Here is one solution:
 
+```{code-cell} python3
 n_max = 50
 μθ_val, σθ_val = 100., 10.
 
@@ -2449,13 +2546,15 @@ plt.show()
 
 When $\sigma_y$ is large each test score is a noisy signal about $\theta$,
 so many more observations are required before the posterior variance falls
-appreciably. In the limit $\sigma_y \to 0$ a single observation pins down
+appreciably. 
+
+In the limit $\sigma_y \to 0$ a single observation pins down
 $\theta$ exactly.
 
 ```{solution-end}
 ```
 
-```{exercise}
+````{exercise}
 :label: mv_normal_ex4
 
 **Prior vs. likelihood in IQ inference**
@@ -2464,30 +2563,41 @@ Using the one-dimensional IQ model with $n = 20$ test scores and
 $\mu_\theta = 100$, $\sigma_y = 10$:
 
 1. Fix $\sigma_y = 10$ and vary the prior spread
-$\sigma_\theta \in \{1, 5, 10, 50, 500\}$. For each value compute the
-posterior mean $\hat{\mu}_\theta$ given the same set of $n = 20$ test
-scores and plot $\hat{\mu}_\theta$ against $\sigma_\theta$.
+$\sigma_\theta \in \{1, 5, 10, 50, 500\}$.
 
-1. Show analytically (or verify numerically) that as $\sigma_\theta \to \infty$
-the posterior mean converges to the sample mean $\bar{y}$, and as
-$\sigma_y \to \infty$ the posterior mean converges to the prior mean
-$\mu_\theta$.
+    - For each value compute the
+    posterior mean $\hat{\mu}_\theta$ given the same set of $n = 20$ test
+    scores and plot $\hat{\mu}_\theta$ against $\sigma_\theta$.
+
+1. Show analytically (or verify numerically) that
+
+   - as $\sigma_\theta \to \infty$ the posterior mean converges to the
+     sample mean $\bar{y}$ (the data dominate the prior), and
+   - as $\sigma_\theta \to 0$ the posterior mean converges to the prior
+     mean $\mu_\theta$ (the prior dominates the data).
+
+```{hint}
+The posterior mean formula is
+$\hat{\mu}_\theta = \bigl(\mu_\theta/\sigma_\theta^2 + n\bar{y}/\sigma_y^2\bigr)
+\big/ \bigl(1/\sigma_\theta^2 + n/\sigma_y^2\bigr)$.
 ```
+
+Examine each limit by letting $\sigma_\theta$ go to $\infty$ or $0$.
+````
 
 ```{solution-start} mv_normal_ex4
 :class: dropdown
 ```
 
-```{code-cell} python3
-import numpy as np
-import matplotlib.pyplot as plt
+Here is one solution:
 
+```{code-cell} python3
 n_scores = 20
 μθ_val, σy_val = 100., 10.
 
-np.random.seed(42)
+rng = np.random.default_rng(42)
 true_θ = 108.
-y_obs = true_θ + σy_val * np.random.randn(n_scores)
+y_obs = true_θ + σy_val * rng.standard_normal(n_scores)
 y_bar = np.mean(y_obs)
 
 σθ_vals = [1., 5., 10., 50., 500.]
@@ -2498,19 +2608,34 @@ for σθ_val in σθ_vals:
     mn_i = MultivariateNormal(μ_i, Σ_i)
     mn_i.partition(n_scores)
     μθ_hat, _ = mn_i.cond_dist(1, y_obs)
-    μθ_hat_vals.append(float(μθ_hat))
+    μθ_hat_vals.append(μθ_hat.item())
+
+def posterior_mean(σθ_val):
+    μ_i, Σ_i, _ = construct_moments_IQ(n_scores, μθ_val, σθ_val, σy_val)
+    mn_i = MultivariateNormal(μ_i, Σ_i)
+    mn_i.partition(n_scores)
+    μθ_hat, _ = mn_i.cond_dist(1, y_obs)
+    return μθ_hat.item()
 
 fig, ax = plt.subplots()
-ax.semilogx(σθ_vals, μθ_hat_vals, 'o-', label=r'$\hat{\mu}_\theta$')
-ax.axhline(y_bar,  ls='--', color='r', label=f'sample mean y_bar = {y_bar:.1f}')
-ax.axhline(μθ_val, ls=':',  color='g', label=f'prior mean μθ = {μθ_val:.0f}')
+ax.semilogx(σθ_vals, μθ_hat_vals, 'o-', 
+            label=r'$\hat{\mu}_\theta$')
+ax.axhline(y_bar,  ls='--', color='r', 
+            label=f'sample mean y_bar = {y_bar:.1f}')
+ax.axhline(μθ_val, ls=':',  color='g', 
+            label=f'prior mean μθ = {μθ_val:.0f}')
 ax.set_xlabel(r'$\sigma_\theta$')
 ax.set_ylabel(r'posterior mean $\hat{\mu}_\theta$')
 ax.legend()
 plt.show()
 
+σθ_small = 1e-2
+σθ_large = 1e4
+
 print(f"y_bar = {y_bar:.4f}")
-print(f"Large σθ posterior mean approx {μθ_hat_vals[-1]:.4f}")
+print(f"Posterior mean with σθ={σθ_large:.0e}: {posterior_mean(σθ_large):.4f}")
+print(f"Posterior mean with σθ={σθ_small:.0e}: {posterior_mean(σθ_small):.4f}")
+print(f"Prior mean μθ = {μθ_val:.4f}")
 ```
 
 ```{solution-end}
@@ -2535,9 +2660,11 @@ and initial conditions $\hat{x}_0 = [0, 0]'$, $\Sigma_0 = I_2$:
 1. Simulate $T = 60$ periods of $\{x_t, y_t\}$ and run the filter.
 
 1. Plot the sequences of conditional variances $\Sigma_t[0,0]$ and
-$\Sigma_t[1,1]$ over time. Verify that they converge to a steady state.
+$\Sigma_t[1,1]$ over time.
 
-1. Plot the filtered state estimates $\hat{x}_t[0]$ together with the
+   Verify that they converge to a steady state.
+
+1. Plot the filtered state estimates $\tilde{x}_t[0]$ together with the
 true $x_t[0]$ and the raw observations $y_t$ on a single figure.
 ```
 
@@ -2545,10 +2672,9 @@ true $x_t[0]$ and the raw observations $y_t$ on a single figure.
 :class: dropdown
 ```
 
-```{code-cell} python3
-import numpy as np
-import matplotlib.pyplot as plt
+Here is one solution:
 
+```{code-cell} python3
 A_ex = np.array([[0.9, 0.], [0., 0.5]])
 C_ex = np.array([[1.], [1.]])
 G_ex = np.array([[1., 0.]])
@@ -2558,26 +2684,44 @@ T_ex = 60
 x0_hat_ex = np.zeros(2)
 Σ0_ex = np.eye(2)
 
-np.random.seed(7)
+rng = np.random.default_rng(7)
 x_true = np.zeros((T_ex + 1, 2))
 y_seq_ex = np.zeros(T_ex)
 for t in range(T_ex):
-    x_true[t + 1] = A_ex @ x_true[t] + C_ex[:, 0] * np.random.randn()
-    y_seq_ex[t] = G_ex @ x_true[t] + np.random.randn()
+    x_true[t + 1] = A_ex @ x_true[t] + C_ex[:, 0] * rng.standard_normal()
+    y_seq_ex[t] = (G_ex @ x_true[t]).item() + rng.standard_normal()
 
-x_hat_seq, Σ_hat_seq = iterate(x0_hat_ex, Σ0_ex, A_ex, C_ex, G_ex, R_ex, y_seq_ex)
+x_hat_seq, Σ_hat_seq = iterate(
+    x0_hat_ex, Σ0_ex, A_ex, C_ex, G_ex, R_ex, y_seq_ex)
 
+# x_hat_seq[t] = E[x_t | y^{t-1}] (one-step-ahead prediction)
+# Σ_hat_seq[t] = corresponding prediction-error covariance
 fig, ax = plt.subplots()
 ax.plot(Σ_hat_seq[:, 0, 0], label=r'$\Sigma_t[0,0]$')
 ax.plot(Σ_hat_seq[:, 1, 1], label=r'$\Sigma_t[1,1]$')
 ax.set_xlabel('t')
-ax.set_ylabel('conditional variance')
+ax.set_ylabel('prediction-error variance')
 ax.legend()
 plt.show()
 
+# The `iterate` function stores one-step-ahead predictions. 
+# We recover the filtered estimates E[x_t | y^t] by re-applying
+# the measurement-update step at each t.
+n_state = 2
+x_filt_seq = np.empty((T_ex, n_state))
+for t in range(T_ex):
+    xt_hat = x_hat_seq[t]
+    Σt     = Σ_hat_seq[t]
+    μ_k = np.hstack([xt_hat, G_ex @ xt_hat])
+    Σ_k = np.block([[Σt,          Σt  @ G_ex.T          ],
+                    [G_ex @ Σt,   G_ex @ Σt @ G_ex.T + R_ex]])
+    mn_k = MultivariateNormal(μ_k, Σ_k)
+    mn_k.partition(n_state)
+    x_filt_seq[t], _ = mn_k.cond_dist(0, y_seq_ex[t:t+1])
+
 fig, ax = plt.subplots()
-ax.plot(x_true[1:, 0], label='true $x_t[0]$', alpha=0.7)
-ax.plot(x_hat_seq[1:, 0], label=r'filtered $\hat{x}_t[0]$', ls='--')
+ax.plot(x_true[:-1, 0], label='true $x_t[0]$', alpha=0.7)
+ax.plot(x_filt_seq[:, 0], label=r'filtered $\tilde{x}_t[0]$', ls='--')
 ax.plot(y_seq_ex, label='observations $y_t$', alpha=0.4, lw=0.8)
 ax.set_xlabel('t')
 ax.legend()
@@ -2595,14 +2739,22 @@ plt.show()
 In the classic factor analysis model at the end of the lecture the true
 covariance is $\Sigma_y = \Lambda \Lambda' + D$.
 
-1. Set $\sigma_u = 2$ (instead of $0.5$). Recompute the fraction of
-variance explained by the first two principal components and compare
-it with the $\sigma_u = 0.5$ result. Explain the change.
+1. Set $\sigma_u = 2$ (instead of $0.5$). 
 
-1. Show that the conditional expectation $E[f \mid Y] = BY$ with
-$B = \Lambda^\top \Sigma_y^{-1}$ is **not** equal to the two-component PCA
-projection $\hat{Y} = P_{:,1:2}\,\epsilon_{1:2}$. Plot both on the same
-axes.
+    - Recompute the fraction of
+    variance explained by the first two principal components and compare
+    it with the $\sigma_u = 0.5$ result. 
+    - Explain the change.
+
+1. Show that the observation-space factor-analytic posterior
+   $\Lambda E[f \mid Y] = \Lambda B Y$ (an $N$-vector) is **not** equal to
+   the two-component PCA reconstruction
+   $\hat{Y} = P_{:,1:2}\,\epsilon_{1:2}$ (also an $N$-vector).
+    - Plot both on the same axes.
+
+   *Note:* $E[f \mid Y] = BY$ is a $k$-vector and $\hat{Y}$ is an
+   $N$-vector, so they cannot be compared directly; the comparison must be
+   made in observation space via $\Lambda E[f \mid Y]$.
 
 1. In one or two sentences, explain why PCA is misspecified for
 factor-analytic data.
@@ -2612,9 +2764,10 @@ factor-analytic data.
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} python3
-import numpy as np
-import matplotlib.pyplot as plt
+rng = np.random.default_rng(42)
 
 N_fa = 10
 k_fa = 2
@@ -2636,40 +2789,50 @@ for σu_val in [0.5, 2.0]:
     print(f"σu={σu_val}: fraction explained by first 2 PCs = {frac:.4f}")
 
 σu_b = 0.5
-D_b  = np.eye(N_fa) * σu_b ** 2
+D_b = np.eye(N_fa) * σu_b ** 2
 Σy_b = Λ_fa @ Λ_fa.T + D_b
 
 μz_b = np.zeros(k_fa + N_fa)
 Σz_b = np.block([[np.eye(k_fa), Λ_fa.T], [Λ_fa, Σy_b]])
-z_b  = np.random.multivariate_normal(μz_b, Σz_b)
-f_b  = z_b[:k_fa]
-y_b  = z_b[k_fa:]
+z_b = rng.multivariate_normal(μz_b, Σz_b)
+f_b = z_b[:k_fa]
+y_b = z_b[k_fa:]
 
-B_b    = Λ_fa.T @ np.linalg.inv(Σy_b)
+B_b = Λ_fa.T @ np.linalg.inv(Σy_b)
 Efy_b  = B_b @ y_b
 
 λ_b, P_b = np.linalg.eigh(Σy_b)
-ind_b    = sorted(range(N_fa), key=lambda x: λ_b[x], reverse=True)
-P_b      = P_b[:, ind_b]
-ε_b      = P_b.T @ y_b
-y_hat_b  = P_b[:, :2] @ ε_b[:2]
+ind_b = sorted(range(N_fa), key=lambda x: λ_b[x], reverse=True)
+P_b = P_b[:, ind_b]
+ε_b = P_b.T @ y_b
+y_hat_b = P_b[:, :2] @ ε_b[:2]
 
 fig, ax = plt.subplots(figsize=(8, 4))
-ax.scatter(range(N_fa), Λ_fa @ Efy_b, label=r'Factor-analytic $\Lambda E[f\mid y]$')
-ax.scatter(range(N_fa), y_hat_b, marker='x', label=r'PCA projection $\hat{y}$')
-ax.scatter(range(N_fa), Λ_fa @ f_b, marker='^', alpha=0.6, label=r'True signal $\Lambda f$')
+ax.scatter(range(N_fa), 
+        Λ_fa @ Efy_b, label=r'Factor-analytic $\Lambda E[f\mid y]$')
+ax.scatter(range(N_fa), 
+        y_hat_b, marker='x', label=r'PCA projection $\hat{y}$')
+ax.scatter(range(N_fa), 
+        Λ_fa @ f_b, marker='^', alpha=0.6, label=r'True signal $\Lambda f$')
 ax.set_xlabel('observation index')
 ax.legend()
 plt.show()
 ```
 
-PCA is misspecified for factor-analytic data because it imposes no
-structure on the residual covariance: it decomposes $\Sigma_y$ into
-eigenvectors that need not align with the factor loadings $\Lambda$.
-The factor model, by contrast, correctly separates the covariance into a
-low-rank systematic part $\Lambda\Lambda'$ and a diagonal idiosyncratic
-part $D$, so its conditional expectation $E[f\mid Y]$ is the minimum-variance
-linear estimator of the factors.
+In this symmetric example, PCA does recover the same two-dimensional
+observation-space subspace as the factor model, namely the column space
+of $\Lambda$. But PCA is still misspecified for factor-analytic data,
+because it treats the covariance matrix as an arbitrary matrix to be
+approximated and does not use the special decomposition
+$\Sigma_y = \Lambda \Lambda^\top + D$ into a common part and an
+idiosyncratic noise part.
+
+So the two methods are solving different problems. PCA forms
+$\hat{Y}$ as the best rank-2 approximation to the observed data vector
+$Y$, which in this example amounts to using the block means. The factor
+model instead computes $\Lambda E[f \mid Y]$, the conditional mean of the
+latent common component $\Lambda f$ given the data, and because it
+accounts for noise it shrinks those block means toward zero.
 
 ```{solution-end}
 ```

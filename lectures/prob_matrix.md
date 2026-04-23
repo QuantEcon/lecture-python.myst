@@ -58,6 +58,8 @@ from scipy.special import comb
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib_inline.backend_inline import set_matplotlib_formats
 set_matplotlib_formats('retina')
+
+rng = np.random.default_rng(0)
 ```
 
 
@@ -620,7 +622,7 @@ f = np.array([[0.3, 0.2], [0.1, 0.4]])
 f_cum = np.cumsum(f)
 
 # draw random numbers
-p = np.random.rand(1_000_000)
+p = rng.random(1_000_000)
 x = np.vstack([xs[1]*np.ones(p.shape), ys[1]*np.ones(p.shape)])
 # map to the bivariate distribution
 
@@ -777,7 +779,7 @@ class discrete_bijoint:
         xs = self.xs
         ys = self.ys
         f_cum = np.cumsum(self.f)
-        p = np.random.rand(n)
+        p = rng.random(n)
         x = np.empty([2, p.shape[0]])
         lf = len(f_cum)
         lx = len(xs)-1
@@ -979,7 +981,7 @@ Next  we can use   a built-in `numpy` function to draw random samples, then calc
 μ= np.array([0, 5])
 σ= np.array([[5, .2], [.2, 1]])
 n = 1_000_000
-data = np.random.multivariate_normal(μ, σ, n)
+data = rng.multivariate_normal(μ, σ, n)
 x = data[:, 0]
 y = data[:, 1]
 ```
@@ -990,7 +992,7 @@ y = data[:, 1]
 plt.hist(x, bins=1_000, alpha=0.6)
 μx_hat, σx_hat = np.mean(x), np.std(x)
 print(μx_hat, σx_hat)
-x_sim = np.random.normal(μx_hat, σx_hat, 1_000_000)
+x_sim = rng.normal(μx_hat, σx_hat, 1_000_000)
 plt.hist(x_sim, bins=1_000, alpha=0.4, histtype="step")
 plt.show()
 ```
@@ -999,7 +1001,7 @@ plt.show()
 plt.hist(y, bins=1_000, density=True, alpha=0.6)
 μy_hat, σy_hat = np.mean(y), np.std(y)
 print(μy_hat, σy_hat)
-y_sim = np.random.normal(μy_hat, σy_hat, 1_000_000)
+y_sim = rng.normal(μy_hat, σy_hat, 1_000_000)
 plt.hist(y_sim, bins=1_000, density=True, alpha=0.4, histtype="step")
 plt.show()
 ```
@@ -1059,7 +1061,7 @@ Let's draw from a normal distribution with above mean and variance and check how
 σx = np.sqrt(np.dot((x - μx)**2, z))
 
 # sample
-zz = np.random.normal(μx, σx, 1_000_000)
+zz = rng.normal(μx, σx, 1_000_000)
 plt.hist(zz, bins=300, density=True, alpha=0.3, range=[-10, 10])
 plt.show()
 ```
@@ -1079,7 +1081,7 @@ plt.show()
 σy = np.sqrt(np.dot((y - μy)**2, z))
 
 # sample
-zz = np.random.normal(μy,σy,1_000_000)
+zz = rng.normal(μy, σy, 1_000_000)
 plt.hist(zz, bins=100, density=True, alpha=0.3)
 plt.show()
 ```
@@ -1187,7 +1189,7 @@ $$
 \text{Prob} \{X=1\}=& q  =\mu_{1}\\
 \text{Prob} \{Y=0\}=& 1-r  =\nu_{0}\\
 \text{Prob} \{Y=1\}= & r  =\nu_{1}\\
-\text{where } 0 \leq q < r \leq 1
+\text{where } 0 \leq q \leq r \leq 1
 \end{aligned}
 $$
 
@@ -1309,16 +1311,17 @@ Let's first generate X and Y.
 # number of draws
 draws = 1_000_000
 
-# generate draws from uniform distribution
-p = np.random.rand(draws)
+# generate independent draws from uniform distribution for X and Y
+p_x = rng.random(draws)
+p_y = rng.random(draws)
 
-# generate draws of X and Y via uniform distribution
+# generate draws of X and Y via independent uniform draws
 x = np.ones(draws)
 y = np.ones(draws)
-x[p <= μ[0]] = 0
-x[p > μ[0]] = 1
-y[p <= ν[0]] = 0
-y[p > ν[0]] = 1
+x[p_x <= μ[0]] = 0
+x[p_x > μ[0]] = 1
+y[p_y <= ν[0]] = 0
+y[p_y > ν[0]] = 1
 ```
 
 ```{code-cell} ipython3
@@ -1370,7 +1373,7 @@ f1_cum = np.cumsum(f1)
 draws1 = 1_000_000
 
 # generate draws from uniform distribution
-p = np.random.rand(draws1)
+p = rng.random(draws1)
 
 # generate draws of first coupling via uniform distribution
 c1 = np.vstack([np.ones(draws1), np.ones(draws1)])
@@ -1445,7 +1448,7 @@ f2_cum = np.cumsum(f2)
 draws2 = 1_000_000
 
 # generate draws from uniform distribution
-p = np.random.rand(draws2)
+p = rng.random(draws2)
 
 # generate draws of second coupling via uniform distribution
 c2 = np.vstack([np.ones(draws2), np.ones(draws2)])
@@ -1533,7 +1536,7 @@ mystnb:
 n_cop = 100_000
 
 # Draw from bivariate standard normal with correlation ρ_cop
-z = np.random.multivariate_normal(
+z = rng.multivariate_normal(
     [0, 0], [[1, ρ_cop], [ρ_cop, 1]], n_cop
 )
 
@@ -1592,6 +1595,8 @@ where $X \in \{0,1\}$ and $Y \in \{10, 20\}$.
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
 F = np.array([[0.3, 0.2],
               [0.1, 0.4]])
@@ -1635,6 +1640,8 @@ Using the same joint distribution $F$ and values $X \in \{0,1\}$, $Y \in \{10, 2
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
 xs = np.array([0, 1])
 ys = np.array([10, 20])
@@ -1676,7 +1683,7 @@ and therefore $\text{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y] = 0
 
 **Sum of Two Dice**
 
-Let $X$ and $Y$ each be uniformly distributed on $\{1,2,3,4,5,6\}$, and let $Z = X + Y$.
+Let $X$ and $Y$ be **independent** random variables, each uniformly distributed on $\{1,2,3,4,5,6\}$, and let $Z = X + Y$.
 
 1. Use the convolution formula $h_k = \sum_i f_i g_{k-i}$ to compute the distribution of $Z$.
 
@@ -1691,6 +1698,8 @@ Let $X$ and $Y$ each be uniformly distributed on $\{1,2,3,4,5,6\}$, and let $Z =
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
 f = np.ones(6) / 6
 g = np.ones(6) / 6
@@ -1703,7 +1712,7 @@ h = [
 z_vals = np.arange(2, 13)
 
 n = 1_000_000
-z_sim = np.random.randint(1, 7, n) + np.random.randint(1, 7, n)
+z_sim = rng.integers(1, 7, n) + rng.integers(1, 7, n)
 counts = np.bincount(z_sim, minlength=13)[2:]
 
 fig, ax = plt.subplots()
@@ -1747,6 +1756,8 @@ where $p_{ij} = \text{Prob}\{X(t+1)=j \mid X(t)=i\}$.
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
 P = np.array([[0.9, 0.1],
               [0.2, 0.8]])
@@ -1774,24 +1785,28 @@ print(f"ψ_100 close to stationary? {np.allclose(ψ_100, ψ_star, atol=1e-6)}")
 
 A coin has unknown bias $\theta \in \{0.2,\, 0.5,\, 0.8\}$ with prior $\pi = [0.25,\, 0.50,\, 0.25]$.
 
+Assume that, conditional on $\theta$, the coin flips are i.i.d. Bernoulli($\theta$).
+
 1. After observing $k = 7$ heads in $n = 10$ flips, compute the likelihood
 
-$$
-\mathcal{L}(\theta \mid \text{data}) = \binom{10}{7}\,\theta^7\,(1-\theta)^3
-$$
+   $$
+   \mathcal{L}(\theta \mid \text{data}) = \binom{10}{7}\,\theta^7\,(1-\theta)^3
+   $$
 
-for each $\theta$.
+   for each $\theta$.
 
-1. Apply equation {eq}`eq:condprobbayes` to compute the posterior $\pi(\theta \mid \text{data})$.
+2. Apply equation {eq}`eq:condprobbayes` to compute the posterior $\pi(\theta \mid \text{data})$.
 
-1. Plot the prior and posterior side by side.
+3. Plot the prior and posterior side by side.
 
-1. Repeat for $k = 3$ heads and describe how the posterior shifts.
+4. Repeat for $k = 3$ heads and describe how the posterior shifts.
 ```
 
 ```{solution-start} prob_matrix_ex5
 :class: dropdown
 ```
+
+Here is one solution:
 
 ```{code-cell} ipython3
 θ_vals = np.array([0.2, 0.5, 0.8])
@@ -1822,7 +1837,6 @@ for ax, post, title in zip(
     ax.set_ylabel('Probability')
     ax.set_title(title)
     ax.legend()
-plt.tight_layout()
 plt.show()
 ```
 

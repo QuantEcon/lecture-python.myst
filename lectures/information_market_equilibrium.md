@@ -71,7 +71,7 @@ Important findings of {cite:t}`kihlstrom_mirman1975` are:
   insider's posterior distribution to the equilibrium price is one-to-one on
   the set of
   posteriors that can actually arise from the signal.
-  - Invertibility holds when the informed
+  - For the two-state case ($S = 2$), invertibility holds when the informed
     agent's utility is homothetic and the elasticity of substitution is everywhere
     either below one or above one.
 - In the dynamic economy, as information accumulates, Bayesian price
@@ -120,8 +120,9 @@ from scipy.stats import norm
 
 The economy has two goods. 
 
-Good 2 is the numeraire (price normalized to 1); good 1 trades
-at price $p > 0$.
+Good 2 is the numeraire (price normalized to 1). 
+
+Good 1 trades at price $p > 0$.
 
 An unknown parameter $\bar{a}$ affects the value of good 1. 
 
@@ -174,7 +175,7 @@ the calculations transparent.
 
 Suppose **agent 1** (the insider) observes a private signal $\tilde{y}$
 correlated with
-$\bar{a}$ before trading.
+$\bar{a}$ before trading, where $\tilde{y}$ takes values in a finite set $Y$.
 
 Before the signal arrives, agent 1 has prior beliefs
 $\mu_0 = P^1$.
@@ -347,9 +348,6 @@ invertibility holds.
 (invertibility_conditions)=
 ## Invertibility and the elasticity of substitution
 
-The price-revelation theorem reduces the economic problem to a narrower one:
-when is the belief-to-price map actually one-to-one?
-
 When does the belief-to-price map fail to be invertible?
 
 {prf:ref}`ime_theorem_invertibility_conditions`
@@ -394,6 +392,9 @@ of price alone:
 $$
 x(p) = (x_1(p), x_2(p)).
 $$
+
+Throughout, $u^i_j$ denotes the partial derivative of $u^i$ with respect to its
+$j$-th argument.
 
 Whenever the informed agent consumes positive amounts of both goods, optimality
 of $x(p)$
@@ -478,7 +479,7 @@ and the price reveals nothing about the insider's signal.
 
 ### CES utility
 
-For concreteness we work with the **constant-elasticity-of-substitution** (CES)
+For concreteness we work with a simplified example with the **constant-elasticity-of-substitution** (CES)
 utility
 function
 
@@ -513,19 +514,22 @@ We focus on agent 1 as the *only* informed trader who absorbs one unit of good 1
 at
 equilibrium (i.e., $x_1 = 1$).
 
+Let $W_1 = w^1 + \theta^1 \pi$ denote agent 1's total wealth (endowment plus
+profit share).
+
 Agent 1's budget constraint then reduces to
-$x_2 = W^1 - p$, and the equilibrium price is the unique $p \in (0, W^1)$
+$x_2 = W_1 - p$, and the equilibrium price is the unique $p \in (0, W_1)$
 satisfying
 the first-order condition
 
 $$
-p \bigl[q\, u_2(a_1,\, W^1-p) + (1-q)\, u_2(a_2,\, W^1-p)\bigr]
-= q\, a_1\, u_1(a_1,\, W^1-p) + (1-q)\, a_2\, u_1(a_2,\, W^1-p).
+p \bigl[q\, u_2(a_1,\, W_1-p) + (1-q)\, u_2(a_2,\, W_1-p)\bigr]
+= q\, a_1\, u_1(a_1,\, W_1-p) + (1-q)\, a_2\, u_1(a_2,\, W_1-p).
 $$
 
 For Cobb-Douglas utility ($\sigma = 1$), the first-order condition becomes $p =
-W^1 - p$,
-giving $p^* = W^1/2$ regardless of the posterior $q$, confirming that no
+W_1 - p$,
+giving $p^* = W_1/2$ regardless of the posterior $q$, confirming that no
 information
 is transmitted through the price in the Cobb-Douglas case.
 
@@ -616,7 +620,7 @@ print(f"Cobb-Douglas (rho=0): min p* = {min(p_cd):.6f}, "
 print(f"Analytical CD price  = W1/2 = {W1/2:.6f}")
 ```
 
-Every entry equals $W^1/2 = 2.0$ exactly, confirming analytically that the
+Every entry equals $W_1/2 = 2.0$ exactly, confirming analytically that the
 Cobb-Douglas
 equilibrium price is independent of $q$ and of the state values $a_1, a_2$.
 
@@ -740,9 +744,9 @@ In each period $t$:
 3. Consumers trade and consume.
 
 The endowment vectors $\{\tilde{\omega}^t\}$ are **i.i.d.** with density
-$f(\omega^t \mid \lambda)$, where $\lambda = (\lambda_1, \ldots, \lambda_n)$ is
+$f(\omega^t \mid \lambda)$, where $\lambda = (\lambda_1, \ldots, \lambda_K)$ is
 a
-**structural parameter vector** that is *fixed but unknown*.
+**structural parameter vector** (of dimension $K$) that is *fixed but unknown*.
 
 The equilibrium price at time $t$ is a deterministic function of $\omega^t$, so
 $\{p^t\}$ is also i.i.d.
@@ -849,9 +853,7 @@ $$
 Let $\bar\lambda$ be the true
 structural parameter and $\bar\mu$ the reduced form that contains $\bar\lambda$.
 
-Assume the prior assigns positive probability to $\bar\lambda$ (equivalently,
-positive
-probability to the class $\bar\mu$).
+Assume the prior assigns positive probability to the reduced-form class $\bar\mu$.
 
 Define the posterior mass on a reduced-form class by
 
@@ -888,6 +890,16 @@ which equals the rational-expectations price distribution for a fully informed
 observer.
 ```
 
+```{note}
+Note that the theorem only requires the prior to assign positive probability to the reduced-form class $\bar\mu$ that contains the true structure $\bar\lambda$.
+
+This is implied by, but weaker than, assigning positive probability to the true
+structural parameter $\bar\lambda$ itself.
+
+A prior could place zero mass on $\bar\lambda$
+while still placing positive mass on other structures inside $\bar\mu$.
+```
+
 The important distinction is that price observers need not learn $\bar \lambda$
 itself.
 
@@ -896,7 +908,7 @@ They only learn which reduced-form class is correct.
 That is enough for forecasting because every $\lambda \in \bar \mu$ generates
 the same price density $g(\cdot \mid \bar \mu)$.
 
-This is exactly the paper's point: rational price expectations emerge from
+Rational price expectations emerge from
 learning the
 reduced form, not from identifying every structural detail of the economy.
 
@@ -905,8 +917,7 @@ for next
 period's price matches the objective price distribution generated by the true
 reduced form.
 
-The theorem is easiest to absorb in a stripped-down example, so we now turn to a
-simple simulation.
+Let's now turn to a simple simulation.
 
 (bayesian_simulation)=
 ## Simulating Bayesian learning from prices
@@ -920,7 +931,7 @@ The observer knows the two possible price distributions (the reduced forms) but
 not which
 one governs the data.
 
-This is a **Bayesian model selection** problem.
+This is a **Bayesian model selection** problem we have seen in {doc}`likelihood_bayes`.
 
 With a prior $h_0$ on $\mu_1$ and the observed price $p^t$, the posterior weight
 on $\mu_1$
@@ -930,6 +941,8 @@ $$
 h_t = \frac{h_{t-1}\, g(p^t \mid \mu_1)}{h_{t-1}\, g(p^t \mid \mu_1)
       + (1-h_{t-1})\, g(p^t \mid \mu_2)}.
 $$
+
+We consider a numerical example with two normal distributions with different means
 
 ```{code-cell} ipython3
 def simulate_bayesian_learning(
@@ -976,6 +989,16 @@ def plot_bayesian_learning(h_paths, p_bar_true, p_bar_alt, ax):
     ax.legend(fontsize=10)
 ```
 
+We consider two cases, one that is easy to learn and another one that is harder to learn,
+using $T = 300$ periods, $n = 40$ simulated paths, a diffuse prior $h_0 = 0.5$, and
+common standard deviation $\sigma_p = 0.4$.
+
+- *Easy case*: true model $N(2.0,\, 0.4^2)$, alternative $N(1.2,\, 0.4^2)$.
+- *Hard case*: true model $N(2.0,\, 0.4^2)$, alternative $N(1.8,\, 0.4^2)$.
+
+Whether easy or hard to learn depends on "how close" the true distribution is compared to the
+alternative hypothesis.
+
 ```{code-cell} ipython3
 ---
 mystnb:
@@ -983,19 +1006,19 @@ mystnb:
     caption: bayesian learning across paths
     name: fig-bayesian-learning
 ---
-T       = 300
-h0      = 0.5     # diffuse prior
+T = 300
+h0 = 0.5     # diffuse prior
 n_paths = 40
 σ_p = 0.4
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-# Distinct reduced forms.
+# Distinct reduced forms
 p_bar_true, p_bar_alt = 2.0, 1.2
 h_paths = simulate_bayesian_learning(p_bar_true, p_bar_alt, σ_p, T, h0, n_paths)
 plot_bayesian_learning(h_paths, p_bar_true, p_bar_alt, axes[0])
 
-# Similar reduced forms.
+# Similar reduced forms
 p_bar_true, p_bar_alt = 2.0, 1.8
 h_paths_hard = simulate_bayesian_learning(
     p_bar_true, p_bar_alt, σ_p, T, h0, n_paths
@@ -1011,14 +1034,15 @@ probability one,
 though convergence is slower when the two price distributions are similar (right
 panel).
 
-This first simulation tracks posterior mass, and the next one tracks the
-predictive density itself.
-
 ### Price expectations vs. rational expectations
 
 We now verify that the observer's price expectations converge to the
 rational-expectations
 distribution $g(p \mid \bar\mu)$.
+
+We continue to use the parameterization of the "easy-to-learn" example above
+($\bar{p}_{\text{true}} = 2.0$, $\bar{p}_{\text{alt}} = 1.2$, $\sigma_p = 0.4$),
+now extending to $T = 1{,}000$ periods with a single simulated path and prior $h_0 = 0.5$
 
 ```{code-cell} ipython3
 ---
@@ -1094,6 +1118,12 @@ $\mu_1 = \{\lambda^{(1)}, \lambda^{(2)}\}$ and $\mu_2 = \{\lambda^{(3)}\}$
 (because $\lambda^{(1)}$ and $\lambda^{(2)}$ generate the same price
 distribution).
 
+The three structures have price means $\bar{p}_1 = \bar{p}_2 = 2.0$ and
+$\bar{p}_3 = 1.2$, with common standard deviation $\sigma_p = 0.4$, a
+uniform prior $h_0 = (1/3, 1/3, 1/3)$, and $T = 400$ periods over $30$ paths.
+
+The true structure is $\lambda^{(1)}$.
+
 ```{code-cell} ipython3
 ---
 mystnb:
@@ -1121,12 +1151,12 @@ def simulate_learning_3struct(
     return h_paths
 
 
-# Structures 0 and 1 share the same reduced form.
+# Structures 0 and 1 share the same reduced form
 p_bar_vec = np.array([2.0, 2.0, 1.2])
 h0_vec = np.array([1 / 3, 1 / 3, 1 / 3])
 σ_p = 0.4
 T = 400
-true_idx = 0     # Structure 0 is observationally equivalent to 1.
+true_idx = 0     # Structure 0 is observationally equivalent to 1
 
 h_paths_3 = simulate_learning_3struct(
     T, h0_vec, p_bar_vec, σ_p, true_idx, n_paths=30
@@ -1314,11 +1344,13 @@ roughly $T_{0.99} \approx C / D_{KL}$ for some constant $C$.
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
 σ_p = 0.4
 
 def kl_normal(p1, p2, σ):
-    """Return the KL divergence for N(p1, sigma^2) and N(p2, sigma^2)."""
+    """Return the KL divergence for N(p1, σ^2) and N(p2, σ^2)."""
     return (p1 - p2)**2 / (2 * σ**2)
 
 cases = [("Easy",  2.0, 1.2), ("Hard", 2.0, 1.8)]
@@ -1333,7 +1365,7 @@ for ax, (name, p1, p2) in zip(axes, cases):
     kl = kl_normal(p1, p2, σ_p)
     paths = simulate_bayesian_learning(p1, p2, σ_p, T=2000,
                                        h0=0.5, n_paths=n_paths, seed=42)
-    # First period with posterior >= 0.99.
+    # First period with posterior >= 0.99
     T99 = []
     for path in paths:
         idx = np.where(path >= 0.99)[0]
@@ -1389,6 +1421,8 @@ Discuss your findings.
 :class: dropdown
 ```
 
+Here is  one solution:
+
 ```{code-cell} ipython3
 def simulate_misspecified(
     T, p_bar_true, p_bar_wrong, σ_p, h0, n_paths, seed=0
@@ -1429,7 +1463,7 @@ h_misspec = simulate_misspecified(T, p_true, p_wrong, σ_p, h0, n_paths)
 
 kl_vals = (p_true - p_wrong)**2 / (2 * σ_p**2)
 for mean, kl in zip(p_wrong, kl_vals):
-    print(f"KL(true || N({mean:.1f}, sigma^2)) = {kl:.4f}")
+    print(f"KL(true || N({mean:.1f}, σ^2)) = {kl:.4f}")
 
 t_grid = np.arange(T + 1)
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
