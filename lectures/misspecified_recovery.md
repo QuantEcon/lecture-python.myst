@@ -85,7 +85,7 @@ plt.rcParams.update({
 })
 ```
 
-## Arrow Prices and the Identification Challenge
+## Arrow prices and the identification challenge
 
 ### Arrow prices and stochastic discount factors
 
@@ -156,7 +156,7 @@ print(np.round(Q_mat, 5))
 print(f"\nSum of each row (= price of risk-free bond): {Q_mat.sum(axis=1).round(5)}")
 ```
 
-## Risk-Neutral Probabilities
+## Risk-neutral probabilities
 
 The **risk-neutral restriction** sets
 
@@ -195,13 +195,16 @@ print(f"\nRow sums: {P_bar.sum(axis=1)}")
 ```
 
 ```{note}
-Risk-neutral probabilities absorb **one-period** (short-run) risk adjustments.  They are
+Risk-neutral probabilities absorb **one-period** (short-run) risk adjustments.
+
+They are
 widely used in financial engineering but are generally *not* equal to investors' beliefs.
+
 When short-term interest rates vary across states, risk-neutral probabilities are
 also horizon-dependent: the $t$-period forward measure differs from $\bar{\mathbf{P}}^t$.
 ```
 
-## Long-Term Risk-Neutral Probabilities: Perron–Frobenius Theory
+## Long-term risk-neutral probabilities: Perron–Frobenius theory
 
 ### The eigenvalue problem
 
@@ -370,11 +373,13 @@ measure $\mathbf{P}$.
 This is the risk adjustment for long-run growth uncertainty: a
 risk-averse investor's long-run discount rates embed a premium for permanent income risk.
 
-## The Martingale Decomposition
+## The martingale decomposition
 
 ### Decomposing the SDF process
 
-Let $\hat{\mathbf{e}}$ and $\hat{\eta}$ solve the Perron–Frobenius problem.  Define the
+Let $\hat{\mathbf{e}}$ and $\hat{\eta}$ solve the Perron–Frobenius problem.
+
+Define the
 process
 
 $$
@@ -431,7 +436,7 @@ recovered measure assigns growing probability to the recession state.
 (Gigures illustrating this will appear below, after we define the Epstein–Zin utility
 function that is needed to compute them.)
 
-## When Does Recovery Succeed?
+## When does recovery succeed?
 
 ### The Ross recovery condition
 
@@ -454,7 +459,9 @@ $$
 s_{ij} = \exp(\hat{\eta}) \frac{\hat{e}_i}{\hat{e}_j}
 $$
 
-with $\hat{h}_{ij} \equiv 1$.  In this case $\hat{\mathbf{P}} = \mathbf{P}$ and the
+with $\hat{h}_{ij} \equiv 1$.
+
+In this case $\hat{\mathbf{P}} = \mathbf{P}$ and the
 Perron–Frobenius procedure recovers the true probabilities.
 
 The critical question is: when is the martingale component degenerate?
@@ -682,7 +689,7 @@ martingale is trivial, so recovery succeeds.
 For $\gamma > 1$, continuation values vary
 with the state, generating a non-degenerate martingale that grows with risk aversion.
 
-## The Long-Run Risk Model
+## The long-run risk model
 
 We now illustrate the results quantitatively using the Bansal–Yaron
 {cite}`Bansal_Yaron_2004` long-run risk model, calibrated to {cite}`BorovickaHansenScheinkman2016`
@@ -1030,7 +1037,7 @@ Forecasts made using
 $\hat{P}$ are systematically pessimistic compared to forecasts based on the true
 distribution $P$.
 
-## Measuring the Martingale Component
+## Measuring the martingale component
 
 ### Entropy bounds
 
@@ -1106,6 +1113,7 @@ plt.tight_layout();  plt.show()
 
 All three discrepancy measures increase with risk aversion, confirming that a higher
 $\gamma$ implies a larger — and more economically significant — martingale component.
+
 {cite}`AlvarezJermann2005` and {cite}`BakshiChabiYo2012` use analogous bounds with
 long-maturity bond returns to find empirically large martingale components in U.S. data.
 
@@ -1335,7 +1343,10 @@ $\hat{h}_{ij} \equiv 1$.
 **Analytical derivation:**
 
 With $s_{ij} = A \cdot (c_j/c_i)^{-\gamma}$ we have $q_{ij} = A(c_j/c_i)^{-\gamma} p_{ij}$.
-Guess $\hat{e}_j = c_j^\gamma$.  Then
+
+Guess $\hat{e}_j = c_j^\gamma$.
+
+Then
 
 $$
 [\mathbf{Q} \hat{\mathbf{e}}]_i

@@ -77,9 +77,9 @@ plt.rcParams['axes.grid'] = True
 plt.rcParams['grid.alpha'] = 0.3
 ```
 
-## Model Setup
+## Model setup
 
-### Arrow–Debreu State Prices
+### Arrow–Debreu state prices
 
 Consider a discrete-time, discrete-state economy.
 
@@ -103,7 +103,7 @@ $$
 The row sums give the state-dependent interest factor: $\sum_j p(\theta_i,
 \theta_j) = e^{-r(\theta_i)}$.
 
-### The Pricing Kernel
+### The pricing kernel
 
 From the Fundamental Theorem of Asset Pricing, the pricing kernel
 $\phi(\theta_i, \theta_j)$ relates state prices to natural probabilities via
@@ -125,7 +125,7 @@ $$
 
 The key structural property this implies is **transition independence**.
 
-### Transition Independence
+### Transition independence
 
 
 **Definition.** A pricing kernel is *transition independent* if there exists a
@@ -163,9 +163,9 @@ $$
 F = \frac{1}{\delta} D P D^{-1}.
 $$
 
-## The Recovery Theorem
+## The recovery theorem
 
-### Reduction to an Eigenvalue Problem
+### Reduction to an eigenvalue problem
 
 Since $F$ is a stochastic matrix, its rows sum to one: $F e = e$ where $e$
 is the vector of ones.
@@ -191,7 +191,7 @@ eigenvalue.
 Section 1.2.3 of {cite}`Sargent_Stachurski_2024` provides a proof  of this theorem as well as a discussion of its applications to economic networks.
 
 
-### Ross's Recovery Theorem
+### Ross's recovery theorem
 
 
 **Theorem 1 (Recovery Theorem, {cite}`Ross2015`).** Suppose prices provide  no
@@ -217,10 +217,12 @@ f_{ij} = \frac{1}{\delta} \frac{z_j}{z_i} \, p_{ij}.
 $$
 
 One can verify that $F$ is indeed a stochastic matrix: all entries are
-positive and each row sums to one.  Uniqueness follows from the uniqueness of
+positive and each row sums to one.
+
+Uniqueness follows from the uniqueness of
 the Perron–Frobenius eigenvector. $\blacksquare$
 
-### Pricing Kernel from the Eigenvector
+### Pricing kernel from the eigenvector
 
 The recovered kernel values are
 
@@ -230,11 +232,12 @@ $$
 $$
 
 so the kernel at state $\theta_i$ (relative to a baseline state) is $1/z_i$.
+
 States with high $z_i$ have **low** kernel values, meaning the market assigns
 relatively less pricing weight per unit of probability — consistent with those
 states being "good times."
 
-### Corollary: Risk-Neutral Pricing When Rates Are State-Independent
+### Corollary: risk-neutral pricing when rates are state-independent
 
 
 **Theorem 2 ({cite}`Ross2015`).** If the riskless rate is the same in all
@@ -247,11 +250,11 @@ This remarkable result says that with a constant interest rate and a bounded
 irreducible state space, recovery forces risk-neutrality — a non-trivial
 restriction of the model.
 
-## Python Implementation
+## Python implementation
 
 We now implement the Recovery Theorem numerically.
 
-### Building a State Price Matrix from a Lognormal Model
+### Building a state price matrix from a lognormal model
 
 Following {cite}`Ross2015` Section IV, suppose the natural distribution of
 log-returns over one period is normal:
@@ -335,7 +338,7 @@ print(np.round(P.sum(axis=1), 4))
 print(f"\nImplied annual interest rate: {-np.log(P[5].sum()):.4f}")
 ```
 
-### Applying the Recovery Theorem
+### Applying the recovery theorem
 
 The Recovery Theorem requires computing the **dominant eigenvector** of $P$.
 
@@ -399,7 +402,7 @@ print(f"\nNatural probability matrix F  (row sums should be 1):")
 print(np.round(F.sum(axis=1), 6))
 ```
 
-### Visualizing Natural vs. Risk-Neutral Distributions
+### Visualizing natural vs. risk-neutral distributions
 
 A key insight of {cite}`Ross2015` is that the natural distribution systematically
 differs from the risk-neutral one.
@@ -486,7 +489,7 @@ print(f"{'Annual risk-free rate':30s} {-np.log(risk_free):>12.4f}")
 print(f"{'Equity risk premium':30s} {E_nat - 1/risk_free:>12.4f}")
 ```
 
-### Stochastic Dominance
+### Stochastic dominance
 
 Theorem 3 of {cite}`Ross2015` shows that the natural marginal density
 **first-order stochastically dominates** the risk-neutral density: the CDF of
@@ -517,7 +520,7 @@ print(f"Natural CDF ≤ Risk-neutral CDF at all states: "
       f"{np.all(cdf_nat <= cdf_rn + 1e-10)}")
 ```
 
-## Extracting the Pricing Kernel and Risk Premium
+## Extracting the pricing kernel and risk premium
 
 The pricing kernel recovered from $P$ via the Perron–Frobenius theorem has the following interpretation.
 
@@ -591,7 +594,7 @@ print(f"  Risk-free rate  ≈ {rf[mid]*100:.2f}% (true: {delta*100:.2f}%)")
 print(f"  Equity premium  ≈ {erp[mid]*100:.2f}% (true: {(mu-delta)*100:.2f}%)")
 ```
 
-## Sensitivity Analysis: Effect of Risk Aversion
+## Sensitivity analysis: effect of risk aversion
 
 The shape of the pricing kernel, and hence the gap between natural and
 risk-neutral probabilities, depends on the coefficient of risk aversion $\gamma$.
@@ -639,9 +642,11 @@ plt.show()
 The plots confirm the single-crossing property from Theorem 3 of
 {cite}`Ross2015`: for returns below some threshold $v$, risk-neutral
 probability exceeds natural probability; above $v$ the natural probability
-dominates.  A higher $\gamma$ amplifies this wedge.
+dominates.
 
-## Recovering the Discount Rate
+A higher $\gamma$ amplifies this wedge.
+
+## Recovering the discount rate
 
 A useful by-product of the Recovery Theorem is the **recovered subjective
 discount rate** $\delta$, which equals the Perron–Frobenius eigenvalue of $P$.
@@ -677,7 +682,7 @@ plt.savefig('ross_recovery_delta.png', dpi=120)
 plt.show()
 ```
 
-## Tail Risk: Natural vs. Risk-Neutral Probabilities of Catastrophe
+## Tail risk: natural vs. risk-neutral probabilities of catastrophe
 
 One of the most striking applications of the Recovery Theorem is its ability
 to separate the market's genuine fear of catastrophes from the risk premium
@@ -740,7 +745,7 @@ recovered natural density.
 The ratio captures the additional weight from risk
 aversion — the premium investors demand to bear tail risk.
 
-## Testing Efficient Markets
+## Testing efficient markets
 
 {cite}`Ross2015` shows that once the pricing kernel is recovered, one obtains
 an **upper bound on the Sharpe ratio** for any investment strategy:
@@ -780,24 +785,32 @@ print(f"\nHansen-Jagannathan bound on Sharpe ratio: {std_phi:.4f}")
 print(f"Upper bound on R² in return forecasting: {var_phi:.4f}")
 ```
 
-## Limitations and Extensions
+## Limitations and extensions
 
 The Recovery Theorem is a remarkable theoretical result, but several caveats
 apply in practice.
 
 **Finite state space.** The theorem requires a bounded, irreducible Markov
-chain.  In continuous, unbounded state spaces (e.g., a lognormal diffusion),
+chain.
+
+In continuous, unbounded state spaces (e.g., a lognormal diffusion),
 uniqueness fails because any exponential $e^{\alpha x}$ satisfies the
-characteristic equation.  {cite}`CarrYu2012` establish recovery with a bounded
+characteristic equation.
+
+{cite}`CarrYu2012` establish recovery with a bounded
 diffusion.
 
 **Transition independence.** If the kernel is not transition independent,
-recovery is not guaranteed.  {cite}`BorovickaHansenScheinkman2016` show that
+recovery is not guaranteed.
+
+{cite}`BorovickaHansenScheinkman2016` show that
 the Ross recovery can confound the long-run risk component of the kernel with
 the natural probability distribution, yielding an incorrect decomposition.
 
 **Empirical estimation.** Extracting reliable state prices from observed option
-prices requires careful interpolation and extrapolation.  The mapping from
+prices requires careful interpolation and extrapolation.
+
+The mapping from
 implied volatilities to state prices via the {cite}`BreedenLitzenberger1978` formula involves second derivatives, which amplify measurement error.
 
 **State dependence.** The state must capture all relevant variables: the level
