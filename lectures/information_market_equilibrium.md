@@ -248,8 +248,8 @@ about $\bar{a}$.
 ```{prf:lemma} Posterior Sufficiency
 :label: ime_lemma_posterior_sufficiency
 
-The posterior distribution $\mu_{\tilde{y}}$
-is sufficient for $\tilde{y}$.
+The posterior distribution $\mu_{\tilde{y}}$ is a sufficient statistic for
+$\tilde{y}$.
 ```
 
 ```{prf:proof} (Sketch)
@@ -275,16 +275,13 @@ belief to price.
 ```{prf:theorem} Price Revelation
 :label: ime_theorem_price_revelation
 
-In the economy described above, the price
-random variable $p(\mu_{\tilde{y}})$ is sufficient for $\tilde{y}$ **if and only
-if** the
-belief-to-price map is one-to-one on the realized posterior set $M$,
-equivalently if its
-inverse is well defined on the price set
+In the model outlined above, the price random variable $p(\mu_{\tilde{y}})$ is
+sufficient for the random variable $\tilde{y}$ if and only if the function
+$p(P^1)$ is invertible on the set of prices
 
 $$
-\mathcal{P} \equiv \bigl\{\, p(\mu_y) : y \in Y,\;
-  P(\tilde{y} = y) = \sum_{a \in A} \phi_a(y)\,\mu_0(a) > 0 \bigr\}.
+\mathcal{P} = \Bigl\{\, p(\mu_y) : y \in Y,\;
+  P(\tilde{y} = y) = \sum_{a \in A} \phi_a(y)\,\mu_0(a) > 0 \Bigr\}.
 $$
 ```
 
@@ -370,25 +367,32 @@ argument.
 ```{prf:lemma} Same Price Implies Same Allocation
 :label: ime_lemma_same_price_same_allocation
 
-Assume that $u^i$ has continuous first partial derivatives
-and that $u^i$ is quasi-concave. Let $p\in\mathcal{P}$. If there exist two measures $\mu^*$ and $\mu'$ in $M$ such that $p(\mu*, P^2, . . . ,P^n), = p(\mu',P^2, ... ,P^n)=p$, then
+Assume that $u^i$ has continuous first partial derivatives and that $u^i$ is
+quasi-concave.
+
+Let $p \in \mathcal{P}$.
+
+If there exist two measures $\mu^*$ and $\mu'$ in $M$ such that
+$p(\mu^*, P^2, \ldots, P^n) = p(\mu', P^2, \ldots, P^n) = p$, then
 
 $$
-x^i(\mu^*, P^2, \dots, P^n) = x^i(\mu', P^2, \dots, P^n), \quad 
-i = 1, \dots, n
+x^i(\mu^*, P^2, \ldots, P^n) = x^i(\mu', P^2, \ldots, P^n), \quad
+i = 1, \ldots, n.
 $$
 ```
 
-This lemma says that fix the beliefs of all agents except agent 1.
+Fix the beliefs of all agents except agent 1.
 
-If two posterior beliefs $\mu$ and $\mu'$
-both generate the same equilibrium price $p$, then they generate the same
-equilibrium
-allocation for every trader.
+The lemma says that if two posterior beliefs $\mu^*$ and $\mu'$ for agent 1
+both support the same equilibrium price $p$, then they support the same
+equilibrium allocation for every trader.
+
+The intuition is that when the price is unchanged, the demands of the
+uninformed traders are unchanged too, so market clearing forces the informed
+agent's bundle to be unchanged as well.
 
 This lemma lets us define the informed agent's equilibrium bundle as a function
-of price
-alone:
+of price alone:
 
 $$
 x(p) = (x_1(p), x_2(p)).
@@ -410,18 +414,24 @@ whether this equation admits a unique posterior $\mu$.
 ```{prf:lemma} Unique Posterior at a Given Price
 :label: ime_lemma_unique_posterior
 
-If, for each price $p \in P$, the first-order condition above has a unique
-solution
-$\mu \in M$, then the price map is invertible on $P$.
+Assume that the first partial derivatives of $u^1$ exist and that $u^1$ is
+quasi-concave.
+
+Also assume that agent 1 always consumes positive quantities of both goods.
+
+Then $p(P^1)$ is invertible on $\mathcal{P}$ if for each $p \in \mathcal{P}$
+there exists a unique probability measure $\mu \in M$ such that
+
+$$
+\frac{\sum_{s=1}^S a_s\, u^1_1(a_s x_1(p), x_2(p))\, \mu(a_s)}
+     {\sum_{s=1}^S u^1_2(a_s x_1(p), x_2(p))\, \mu(a_s)} = p.
+$$
 ```
 
-If two different posteriors gave the same price,
-then by
+If two different posteriors gave the same price, then by
 {prf:ref}`ime_lemma_same_price_same_allocation` they would share the same bundle
-$x(p)$,
-contradicting uniqueness of the posterior that solves the first-order condition
-at that
-price.
+$x(p)$, contradicting uniqueness of the posterior that solves the first-order
+condition at that price.
 
 ### The two-state first-order condition
 
@@ -448,27 +458,26 @@ equation.
 ```{prf:theorem} Invertibility Conditions
 :label: ime_theorem_invertibility_conditions
 
-Assume $u^1$ is quasi-concave and
-homothetic with continuous first partials. 
+Assume that the first partial derivatives of $u^1$ exist and that $u^1$ is
+quasi-concave and homothetic.
 
-Assume agent 1 always consumes positive
-quantities of both goods.
+Also suppose that the informed agent always consumes positive quantities of
+both goods in all equilibrium allocations.
 
-For $S = 2$:
+If $S = 2$ and the elasticity of substitution of $u^1$ is either always less
+than one or always greater than one, then $p(P^1)$ is invertible on
+$\mathcal{P}$.
 
-- If $\sigma < 1$ for all feasible allocations, the price map is **invertible**
-  on $P$.
-- If $\sigma > 1$ for all feasible allocations, the price map is **invertible**
-  on $P$.
-- If $u^1$ is **Cobb-Douglas** ($\sigma = 1$), the price map is **constant** on
-  $P$
-  (no information is transmitted).
+If $u^1$ is Cobb-Douglas (elasticity of substitution constant and equal to
+one), then $p(P^1)$ is constant on $\mathcal{P}$.
 ```
 
-Thus, when $\sigma = 1$ the income and substitution effects exactly cancel,
-making agent 1's demand for good 1 independent of information about $\bar{a}$.
+When $\sigma = 1$ the income and substitution effects exactly cancel, so
+agent 1's demand for good 1 does not respond to changes in beliefs about
+$\bar{a}$.
 
-So the market price cannot reveal that information.
+Because the demand is unchanged, the market-clearing price is unchanged too,
+and the price reveals nothing about the insider's signal.
 
 ### CES utility
 
@@ -592,14 +601,14 @@ plt.show()
 
 The plot confirms {prf:ref}`ime_theorem_invertibility_conditions`.
 
-- *CES with $\sigma \neq 1$*: the equilibrium price is *strictly monotone* in
-  $q$.
+For CES with $\sigma \neq 1$, the equilibrium price is strictly monotone in $q$.
 
-  - An outside observer who knows the equilibrium map $p^*(\cdot)$ can uniquely
-    invert the
-  price to recover $q$, that is, inside information is fully transmitted.
-- *Cobb-Douglas ($\sigma = 1$)*: the price is *flat* in $q$, that is, information is never
-  transmitted through the market.
+An outside observer who knows the equilibrium map $p^*(\cdot)$ can therefore
+invert the price uniquely to recover $q$, so the inside information is fully
+transmitted.
+
+For Cobb-Douglas ($\sigma = 1$), the price is flat in $q$, so information is
+never transmitted through the market.
 
 ```{code-cell} ipython3
 p_cd = [eq_price(q, a1, a2, W1, ρ=0.0) for q in q_grid]
@@ -620,15 +629,16 @@ pattern back to the proof of {prf:ref}`ime_theorem_invertibility_conditions`.
 (price_monotonicity)=
 ### Why monotonicity depends on $\sigma$
 
-The key derivative in the paper fixes a price $p$, treats $\alpha_s(p)$ and
-$\beta_s(p)$ as constants, and then differentiates the right-hand side of
+Fix a price $p$ and treat $\alpha_s(p)$ and $\beta_s(p)$ as constants.
+
+The right-hand side of the two-state first-order condition
 
 $$
 \frac{\alpha_1(p)\, q + \alpha_2(p)\, (1-q)}
      {\beta_1(p)\, q + \beta_2(p)\, (1-q)}
 $$
 
-is a function of $q$ whose derivative is
+is then a function of $q$ alone, with derivative
 
 $$
 \frac{\partial}{\partial q}
@@ -705,12 +715,12 @@ plt.tight_layout()
 plt.show()
 ```
 
-When $\sigma = 1$ the ratio is constant across all $a_s$ values, information
-about the state has no effect on the marginal rate of substitution.
+When $\sigma = 1$ the ratio is constant across all $a_s$ values, so
+information about the state has no effect on the marginal rate of substitution.
 
-For $\sigma < 1$ the
-ratio is decreasing in $a_s$, and for $\sigma > 1$ it is increasing, making the
-equilibrium price strictly monotone in the posterior $q$ in both cases.
+For $\sigma < 1$ the ratio is decreasing in $a_s$, and for $\sigma > 1$ it is
+increasing, making the equilibrium price strictly monotone in the posterior $q$
+in both cases.
 
 The static analysis asks whether a current price reveals current private
 information, whereas the next section asks what a whole history of prices
@@ -1201,11 +1211,10 @@ that theorem.
 :class: dropdown
 ```
 
-**1. First-order condition.**
+For the first-order condition, define $W_s = w + (a_s - p)\,x_1$ for
+$s = 1, 2$.
 
-Define $W_s = w + (a_s - p)\,x_1$ for $s=1,2$.
-
-The FOC is
+Then the FOC is
 
 $$
 q\,(a_1 - p)\,\gamma\, e^{-\gamma W_1}
@@ -1219,11 +1228,8 @@ q\,(a_1 - p)\, e^{-\gamma(a_1-p) x_1}
   = (1-q)\,(p - a_2)\, e^{\gamma(p-a_2) x_1}.
 $$
 
-**2. Market-clearing equilibrium price.**
-
-Setting $x_1 = 1$ (all supply absorbed by informed agent), the equation becomes
-
-a scalar root-finding problem in $p$:
+Setting $x_1 = 1$ (the informed agent absorbs all supply), this becomes a
+scalar root-finding problem in $p$:
 
 $$
 F(p;\,q,\gamma) \equiv
@@ -1259,16 +1265,15 @@ plt.tight_layout()
 plt.show()
 ```
 
-**3. Invertibility for CARA.**
+The price is strictly increasing in $q$ for every $\gamma > 0$.
 
-The price is strictly increasing in $q$ for every $\gamma > 0$, because
-portfolio utility $u(x_2 + \bar{a}\,x_1)$ treats the two goods as **perfect
-substitutes** in creating wealth, so a higher posterior probability of the
-high-return state raises the marginal value of the risky asset and pushes the
-equilibrium price upward.
+The reason is that portfolio utility $u(x_2 + \bar{a}\,x_1)$ treats the two
+goods as perfect substitutes in creating wealth, so a higher posterior
+probability of the high-return state raises the marginal value of the risky
+asset and pushes the equilibrium price upward.
 
 This behavior is similar in spirit to the $\sigma > 1$ case in
-{prf:ref}`ime_theorem_invertibility_conditions`, but it is *not* a direct
+{prf:ref}`ime_theorem_invertibility_conditions`, but it is not a direct
 consequence of that theorem because CARA utility over wealth is not homothetic
 in the two-good representation used in the theorem.
 
@@ -1486,10 +1491,10 @@ D_{KL}\bigl(N(2.0, 0.4^2)\,\|\,N(2.3, 0.4^2)\bigr)
 D_{KL}\bigl(N(2.0, 0.4^2)\,\|\,N(1.5, 0.4^2)\bigr),
 $$
 
-so the model with mean $2.3$ is the KL-best approximation among the two
-wrong models, and in the simulation posterior weight concentrates on that model.
+so the model with mean $2.3$ is the KL-best approximation among the two wrong
+models, and in the simulation posterior weight concentrates on that model.
 
-Since posterior odds are cumulative {doc}`likelihood ratios<likelihood_bayes>`.
+Posterior odds are cumulative {doc}`likelihood ratios<likelihood_bayes>`.
 
 If we compare the two wrong Gaussian models $f$ and $g$, then under the true
 distribution $h$ the average log likelihood ratio satisfies

@@ -53,6 +53,8 @@ As usual, we'll start with some imports
 import numpy as np
 import matplotlib.pyplot as plt
 import prettytable as pt
+from scipy import stats
+from scipy.special import comb
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib_inline.backend_inline import set_matplotlib_formats
 set_matplotlib_formats('retina')
@@ -300,7 +302,7 @@ Note that a sufficient statistic corresponds to a particular statistical model.
 
 Sufficient statistics are key tools that AI uses to summarize or compress a **big data** set.
 
-R. A. Fisher provided a rigorous definition of **information** -- see <https://en.wikipedia.org/wiki/Fisher_information>.
+R. A. Fisher provided a rigorous definition of **information** -- see [Fisher information](https://en.wikipedia.org/wiki/Fisher_information).
 
 
 
@@ -370,7 +372,7 @@ $$
 
 ## Marginal probability distributions
 
-The joint distribution induce marginal distributions
+The joint distribution induces marginal distributions
 
 $$
 \textrm{Prob}\{X=i\}= \sum_{j=0}^{J-1}f_{ij} = \mu_i, \quad i=0,\ldots,I-1
@@ -433,7 +435,7 @@ where $i=0, \ldots,I-1, \quad j=0,\ldots,J-1$.
 Note that
 
 $$
-\sum_{i}\textrm{Prob}\{X_i=i|Y_j=j\}
+\sum_{i}\textrm{Prob}\{X=i|Y=j\}
 =\frac{ \sum_{i}f_{ij} }{ \sum_{i}f_{ij}}=1
 $$
 
@@ -444,7 +446,11 @@ $$
 $$ (eq:condprobbayes)
 
 ```{note}
-Formula {eq}`eq:condprobbayes` is also  what a  Bayesian calls **Bayes' Law**. A Bayesian statistician regards  marginal probability distribution $\textrm{Prob}({X=i}), i = 0,  \ldots, I-1$ as a **prior** distribution that describes his personal subjective beliefs about $X$.
+Formula {eq}`eq:condprobbayes` is also  what a  Bayesian calls **Bayes' Law**. 
+
+A Bayesian statistician regards  marginal probability distribution $\textrm{Prob}({X=i}), i = 0,  \ldots, I-1$ as a **prior** distribution that describes his personal subjective beliefs about $X$.
+
+
 He  then interprets  formula {eq}`eq:condprobbayes` as a procedure for constructing a **posterior** distribution that describes how he would  revise his subjective beliefs after observing that $Y$ equals $j$.  
 ```
 
@@ -491,8 +497,8 @@ where
 $$
 \left[
    \begin{matrix}
-  p_{11} & p_{12}\\
-  p_{21} & p_{22}
+  p_{00} & p_{01}\\
+  p_{10} & p_{11}
   \end{matrix}
 \right]
 $$
@@ -519,7 +525,7 @@ Suppose that
 
 $$
 \begin{aligned}
-\text{Prob} \{X(0)=i,X(1)=j\} &=f_{ij}≥0，i=0,\cdots,I-1\\
+\text{Prob} \{X(0)=i,X(1)=j\} &=f_{ij}\geq 0, \quad i=0,\cdots,I-1, \quad j=0,\cdots,J-1\\
 \sum_{i}\sum_{j}f_{ij}&=1
 \end{aligned}
 $$
@@ -545,8 +551,8 @@ where
 
 $$
 \begin{aligned}
-\textrm{Prob}\{X=i\} &=f_i\ge0， \sum{f_i}=1 \cr
-\textrm{Prob}\{Y=j\} & =g_j\ge0， \sum{g_j}=1
+\textrm{Prob}\{X=i\} &=f_i\ge 0, \quad \sum_{i}{f_i}=1 \cr
+\textrm{Prob}\{Y=j\} & =g_j\ge 0, \quad \sum_{j}{g_j}=1
 \end{aligned}
 $$
 
@@ -572,7 +578,7 @@ $$
 \end{aligned}
 $$
 
-A continuous random variable having  density $f_{X}(x)$) has  mean and variance
+A continuous random variable having  density $f_{X}(x)$ has  mean and variance
 
 $$
 \begin{aligned}
@@ -1136,10 +1142,10 @@ Start with a joint distribution
 $$
 \begin{aligned}
 f_{ij} & =\textrm{Prob}\{X=i,Y=j\}\\
-i& =0, \cdots，I-1\\
-j& =0, \cdots，J-1\\
-& \text{stacked to an }I×J\text{ matrix}\\
-& e.g. \quad I=1, J=1
+i& =0, \cdots, I-1\\
+j& =0, \cdots, J-1\\
+& \text{stacked to an }I\times J\text{ matrix}\\
+& e.g. \quad I=2, J=2
 \end{aligned}
 $$
 
@@ -1148,8 +1154,8 @@ where
 $$
 \left[
    \begin{matrix}
-  f_{11} & f_{12}\\
-  f_{21} & f_{22}
+  f_{00} & f_{01}\\
+  f_{10} & f_{11}
   \end{matrix}
 \right]
 $$
@@ -1158,7 +1164,7 @@ From the joint distribution, we have shown above that we  obtain **unique** marg
 
 Now we'll try to go in a reverse direction.
 
-We'll find that from two marginal distributions, can we usually construct more than one   joint distribution that verifies these marginals.
+We'll find that from two marginal distributions we can usually construct more than one joint distribution that satisfies these marginals.
 
 Each of these joint distributions is called a **coupling** of the two marginal distributions.
 
@@ -1171,7 +1177,7 @@ $$
 \end{aligned}
 $$
 
-Given two marginal distribution, $\mu$ for $X$ and $\nu$ for $Y$, a joint distribution $f_{ij}$ is said to be a **coupling** of $\mu$ and $\nu$.
+Given two marginal distributions, $\mu$ for $X$ and $\nu$ for $Y$, a joint distribution $f_{ij}$ is said to be a **coupling** of $\mu$ and $\nu$.
 
 Consider the following bivariate example.
 
@@ -1187,7 +1193,7 @@ $$
 
 We construct  two couplings.
 
-The first coupling if our two marginal distributions is the joint distribution
+The first coupling of our two marginal distributions is the joint distribution
 
 $$f_{ij}=
 \left[
@@ -1223,7 +1229,7 @@ f_{ij}=
 \right]
 $$
 
-The verify that this is a coupling, note that
+To verify that this is a coupling, note that
 
 $$
 \begin{aligned}
@@ -1258,6 +1264,7 @@ H(x_1,x_2,\dots,x_N) = C(F_1(x_1), F_2(x_2),\dots,F_N(x_N)).
 $$
 
 If the marginal distributions are continuous, then the copula is unique.
+
 In that case, we can recover it from the marginal inverses:
 
 $$
@@ -1365,7 +1372,7 @@ draws1 = 1_000_000
 # generate draws from uniform distribution
 p = np.random.rand(draws1)
 
-# generate draws of first copuling via uniform distribution
+# generate draws of first coupling via uniform distribution
 c1 = np.vstack([np.ones(draws1), np.ones(draws1)])
 # X=0, Y=0
 c1[0, p <= f1_cum[0]] = 0
@@ -1440,7 +1447,7 @@ draws2 = 1_000_000
 # generate draws from uniform distribution
 p = np.random.rand(draws2)
 
-# generate draws of first coupling via uniform distribution
+# generate draws of second coupling via uniform distribution
 c2 = np.vstack([np.ones(draws2), np.ones(draws2)])
 # X=0, Y=0
 c2[0, p <= f2_cum[0]] = 0
@@ -1464,7 +1471,7 @@ f2_10 = sum((c2[0, :] == 1)*(c2[1, :] == 0))/draws2
 f2_11 = sum((c2[0, :] == 1)*(c2[1, :] == 1))/draws2
 
 # print output of second joint distribution
-print("first joint distribution for c2")
+print("second joint distribution for c2")
 c2_mtb = pt.PrettyTable()
 c2_mtb.field_names = ['c2_x_value', 'c2_y_value', 'c2_prob']
 c2_mtb.add_row([0, 0, f2_00])
@@ -1507,7 +1514,8 @@ arbitrary marginal distributions.
 The construction has three steps:
 
 1. Draw $(Z_1, Z_2)$ from a bivariate standard normal with correlation $\rho$.
-2. Apply the standard normal CDF: $U_k = \Phi(Z_k)$. The pair $(U_1, U_2)$ has uniform marginals but retains the dependence structure of $(Z_1, Z_2)$ — this is the copula.
+2. Apply the standard normal CDF: $U_k = \Phi(Z_k)$. 
+   - The pair $(U_1, U_2)$ has uniform marginals but retains the dependence structure of $(Z_1, Z_2)$ --- this is the copula.
 3. Apply the inverse CDF of any desired marginal: $X_k = F_k^{-1}(U_k)$.
 
 The following code illustrates this with exponential marginals.
@@ -1519,22 +1527,21 @@ mystnb:
     caption: gaussian copula with exponential marginals
     name: fig-gaussian-copula
 ---
-from scipy import stats
 
 # Gaussian copula parameters
 ρ_cop = 0.8
 n_cop = 100_000
 
-# Step 1: draw from bivariate standard normal with correlation ρ_cop
+# Draw from bivariate standard normal with correlation ρ_cop
 z = np.random.multivariate_normal(
     [0, 0], [[1, ρ_cop], [ρ_cop, 1]], n_cop
 )
 
-# Step 2: apply normal CDF -> uniform marginals (the copula itself)
+# Apply normal CDF -> uniform marginals (the copula itself)
 u1 = stats.norm.cdf(z[:, 0])
 u2 = stats.norm.cdf(z[:, 1])
 
-# Step 3: apply inverse CDFs of desired marginals (here: Exponential)
+# Apply inverse CDFs of desired marginals (here: Exponential)
 x1 = stats.expon.ppf(u1, scale=1.0)   # Exp with mean 1
 x2 = stats.expon.ppf(u2, scale=0.5)   # Exp with mean 0.5
 
@@ -1545,7 +1552,6 @@ axes[0].set_ylabel('$u_2$')
 axes[1].scatter(x1[:3000], x2[:3000], alpha=0.2, s=2)
 axes[1].set_xlabel('$x_1$ (Exp, mean=1)')
 axes[1].set_ylabel('$x_2$ (Exp, mean=0.5)')
-plt.tight_layout()
 plt.show()
 
 print(f"Sample correlation of (x1, x2): {np.corrcoef(x1, x2)[0, 1]:.3f}")
@@ -1587,8 +1593,6 @@ where $X \in \{0,1\}$ and $Y \in \{10, 20\}$.
 ```
 
 ```{code-cell} ipython3
-import numpy as np
-
 F = np.array([[0.3, 0.2],
               [0.1, 0.4]])
 
@@ -1601,7 +1605,7 @@ F_indep = np.outer(μ, ν)
 print("\nIndependence matrix (outer product):\n", F_indep)
 print("\nActual joint F:\n", F)
 
-print("\nIndependent (F == μ ⊗ ν)?", np.allclose(F, F_indep))
+print("\nIndependent (F == μ times ν)?", np.allclose(F, F_indep))
 
 prob_X0_given_Y10 = F[0, 0] / ν[0]
 print(f"\nProb(X=0 | Y=10) = {prob_X0_given_Y10:.4f}")
@@ -1632,8 +1636,6 @@ Using the same joint distribution $F$ and values $X \in \{0,1\}$, $Y \in \{10, 2
 ```
 
 ```{code-cell} ipython3
-import numpy as np
-
 xs = np.array([0, 1])
 ys = np.array([10, 20])
 F  = np.array([[0.3, 0.2],
@@ -1672,17 +1674,17 @@ and therefore $\text{Cov}(X,Y) = \mathbb{E}[XY] - \mathbb{E}[X]\mathbb{E}[Y] = 0
 ```{exercise}
 :label: prob_matrix_ex3
 
-**Sum of Two Dice (Convolution)**
+**Sum of Two Dice**
 
 Let $X$ and $Y$ each be uniformly distributed on $\{1,2,3,4,5,6\}$, and let $Z = X + Y$.
 
 1. Use the convolution formula $h_k = \sum_i f_i g_{k-i}$ to compute the distribution of $Z$.
 
-1. Plot the theoretical distribution.
+1. Plot the result generated by the formula.
 
 1. Simulate $10^6$ rolls and overlay the empirical histogram on the plot.
 
-1. Compute $\mathbb{E}[Z]$ and $\text{Var}(Z)$ both from the theoretical distribution and from the simulation.
+1. Compute $\mathbb{E}[Z]$ and $\text{Var}(Z)$ from the two calculations
 ```
 
 ```{solution-start} prob_matrix_ex3
@@ -1690,11 +1692,14 @@ Let $X$ and $Y$ each be uniformly distributed on $\{1,2,3,4,5,6\}$, and let $Z =
 ```
 
 ```{code-cell} ipython3
-import numpy as np
-import matplotlib.pyplot as plt
-
 f = np.ones(6) / 6
-h = np.convolve(f, f)
+g = np.ones(6) / 6
+h = [
+    sum(f[i]*g[k-i] for i in range(
+        max(0, k-len(g)+1), # f_i exists 
+        min(len(f), k+1))   # g_{k-i} exists
+        ) 
+        for k in range(len(f) + len(g) - 1)]
 z_vals = np.arange(2, 13)
 
 n = 1_000_000
@@ -1743,10 +1748,8 @@ where $p_{ij} = \text{Prob}\{X(t+1)=j \mid X(t)=i\}$.
 ```
 
 ```{code-cell} ipython3
-import numpy as np
-
-P    = np.array([[0.9, 0.1],
-                 [0.2, 0.8]])
+P = np.array([[0.9, 0.1],
+              [0.2, 0.8]])
 ψ0 = np.array([1.0, 0.0])
 
 for n in [1, 5, 20, 100]:
@@ -1767,68 +1770,6 @@ print(f"ψ_100 close to stationary? {np.allclose(ψ_100, ψ_star, atol=1e-6)}")
 ```{exercise}
 :label: prob_matrix_ex5
 
-**Fréchet–Hoeffding Bounds**
-
-Let $X \in \{0,1\}$ and $Y \in \{0,1\}$ with marginals $\mu = [0.5,\, 0.5]$ and $\nu = [0.4,\, 0.6]$.
-
-1. Construct the **comonotone** (upper Fréchet) coupling that puts as much mass as possible on the diagonal $\{X=i, Y=i\}$.
-
-1. Construct the **counter-monotone** (lower Fréchet) coupling that puts as much mass as possible on the anti-diagonal.
-
-1. Construct the **independent** coupling $f^{\perp}_{ij} = \mu_i \nu_j$.
-
-1. Verify that all three have the correct marginals.
-
-1. For each coupling compute $\text{Cor}(X,Y)$. Which maximises / minimises the correlation?
-```
-
-```{solution-start} prob_matrix_ex5
-:class: dropdown
-```
-
-```{code-cell} ipython3
-import numpy as np
-
-xs = np.array([0, 1])
-ys = np.array([0, 1])
-μ = np.array([0.5, 0.5])
-ν = np.array([0.4, 0.6])
-
-F_upper = np.array([[0.4, 0.1],
-                    [0.0, 0.5]])
-
-F_lower = np.array([[0.0, 0.5],
-                    [0.4, 0.1]])
-
-F_indep = np.outer(μ, ν)
-
-for F, name in [(F_upper, "Upper Fréchet"),
-                (F_lower, "Lower Fréchet"),
-                (F_indep, "Independent  ")]:
-    print(f"{name}: row sums = {F.sum(axis=1)}, col sums = {F.sum(axis=0)}")
-
-def correlation(F, xs, ys):
-    μ_x  = F.sum(axis=1)
-    ν_y  = F.sum(axis=0)
-    E_X  = xs @ μ_x
-    E_Y  = ys @ ν_y
-    E_XY  = sum(xs[i]*ys[j]*F[i,j] for i in range(2) for j in range(2))
-    cov   = E_XY - E_X * E_Y
-    σ_X = np.sqrt(((xs - E_X)**2) @ μ_x)
-    σ_Y = np.sqrt(((ys - E_Y)**2) @ ν_y)
-    return cov / (σ_X * σ_Y)
-
-print(f"\nCor upper Fréchet = {correlation(F_upper, xs, ys):.4f}  (maximum)")
-print(f"Cor lower Fréchet = {correlation(F_lower, xs, ys):.4f}  (minimum)")
-print(f"Cor independent   = {correlation(F_indep, xs, ys):.4f}")
-```
-
-```{solution-end}
-```
-
-```{exercise}
-:label: prob_matrix_ex6
-
 **Bayes' Law with a Discrete Prior**
 
 A coin has unknown bias $\theta \in \{0.2,\, 0.5,\, 0.8\}$ with prior $\pi = [0.25,\, 0.50,\, 0.25]$.
@@ -1848,15 +1789,11 @@ for each $\theta$.
 1. Repeat for $k = 3$ heads and describe how the posterior shifts.
 ```
 
-```{solution-start} prob_matrix_ex6
+```{solution-start} prob_matrix_ex5
 :class: dropdown
 ```
 
 ```{code-cell} ipython3
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.special import comb
-
 θ_vals = np.array([0.2, 0.5, 0.8])
 π = np.array([0.25, 0.50, 0.25])
 
@@ -1868,13 +1805,16 @@ def compute_posterior(k, n, θ_vals, π):
 post7, lik7 = compute_posterior(7, 10, θ_vals, π)
 post3, lik3 = compute_posterior(3, 10, θ_vals, π)
 
-print("k=7:  likelihood =", lik7.round(4), " posterior =", post7.round(4))
-print("k=3:  likelihood =", lik3.round(4), " posterior =", post3.round(4))
+print("k=7:  likelihood =", lik7.round(4), 
+      " posterior =", post7.round(4))
+print("k=3:  likelihood =", lik3.round(4), 
+      " posterior =", post3.round(4))
 
 x = np.arange(len(θ_vals))
 w = 0.3
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
-for ax, post, title in zip(axes, [post7, post3], ['k=7 heads', 'k=3 heads']):
+for ax, post, title in zip(
+    axes, [post7, post3], ['k=7 heads', 'k=3 heads']):
     ax.bar(x - w/2, π, w, label='Prior',     alpha=0.7)
     ax.bar(x + w/2, post,  w, label='Posterior', alpha=0.7)
     ax.set_xticks(x)

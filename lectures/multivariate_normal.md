@@ -1003,7 +1003,7 @@ w_{6}
 $$
 
 where
-$w \begin{bmatrix} w_1 \cr w_2 \cr \vdots \cr w_6 \end{bmatrix}$
+$w = \begin{bmatrix} w_1 \cr w_2 \cr \vdots \cr w_6 \end{bmatrix}$
 is a standard normal random vector.
 
 We construct a Python function `construct_moments_IQ2d` to construct
@@ -1066,7 +1066,7 @@ multi_normal_IQ2d.partition(k)
 multi_normal_IQ2d.cond_dist(1, [*y1, *y2])
 ```
 
-Now let’s compute distributions of $\theta$ and $\mu$
+Now let’s compute distributions of $\theta$ and $\eta$
 separately conditional on various subsets of test scores.
 
 It will be fun to compare outcomes with the help of an auxiliary function
@@ -1423,7 +1423,7 @@ This example is an instance of what is known as a **Wold representation** in tim
 Consider the stochastic second-order linear difference equation
 
 $$
-y_{t} = \alpha_{0} + \alpha_{1} y_{y-1} + \alpha_{2} y_{t-2} + u_{t}
+y_{t} = \alpha_{0} + \alpha_{1} y_{t-1} + \alpha_{2} y_{t-2} + u_{t}
 $$
 
 where $u_{t} \sim N \left(0, \sigma_{u}^{2}\right)$ and
@@ -1518,7 +1518,6 @@ $$
 
 ```{code-cell} python3
 # set parameters
-T = 80
 T = 160
 # coefficients of the second order difference equation
 𝛼0 = 10
@@ -1526,7 +1525,6 @@ T = 160
 𝛼2 = -.9
 
 # variance of u
-σu = 1.
 σu = 10.
 
 # distribution of y_{-1} and y_{0}
@@ -1840,7 +1838,7 @@ of $x_t$ conditional on
 $y_0, y_1, \ldots , y_{t-1} = y^{t-1}$ is
 
 $$
-x_t | y^{t-1} \sim {\mathcal N}(A \tilde x_t , A \tilde \Sigma_t A' + C C' )
+x_t | y^{t-1} \sim {\mathcal N}(A \tilde x_{t-1} , A \tilde \Sigma_{t-1} A' + C C' )
 $$
 
 where $\{\tilde x_t, \tilde \Sigma_t\}_{t=1}^\infty$ can be
@@ -2015,7 +2013,7 @@ $\Lambda \Lambda^\top$ of rank $k$.
 
 This means that all covariances among the $n$ components of the
 $Y$ vector are intermediated by their common dependencies on the
-$k<$ factors.
+$k$ factors.
 
 Form
 
@@ -2277,8 +2275,8 @@ $Y$ on the first two principal components does a good job of
 approximating $Ef \mid y$.
 
 We confirm this in the following plot of $f$,
-$E y \mid f$, $E f \mid y$, and $\hat{y}$ on the
-coordinate axis versus $y$ on the ordinate axis.
+$E y \mid f$, $E f \mid y$, and $\hat{y}$ against the
+observation index on the horizontal axis.
 
 ```{code-cell} python3
 plt.scatter(range(N), Λ @ f, label='$Ey|f$')
