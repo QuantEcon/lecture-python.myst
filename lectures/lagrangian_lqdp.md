@@ -451,11 +451,16 @@ solves. See {cite}`Ljungqvist2012`,  ch 12.
 
 ## Application
 
-Here we demonstrate the computation with an example which is the deterministic version of an example borrowed from this [quantecon lecture](https://python.quantecon.org/lqcontrol.html).
+Here we demonstrate the computation with the deterministic permanent-income example from this [quantecon lecture](https://python.quantecon.org/lqcontrol.html).
+
+Because that model is discounted, we apply the invariant-subspace method to the
+equivalent **undiscounted** system obtained from the transformed matrices
+$\hat A = \beta^{1/2} A$ and $\hat B = \beta^{1/2} B$.
 
 ```{code-cell} ipython3
 # Model parameters
 r = 0.05
+β = 1 / (1 + r)
 c_bar = 2
 μ = 1
 
@@ -468,7 +473,7 @@ B = [[-1],
      [0]]
 
 # Construct an LQ instance
-lq = LQ(Q, R, A, B)
+lq = LQ(Q, R, A, B, beta=β)
 ```
 
 Given matrices $A$, $B$, $Q$, $R$, we can then compute $L$, $N$, and $M=L^{-1}N$.
@@ -476,7 +481,7 @@ Given matrices $A$, $B$, $Q$, $R$, we can then compute $L$, $N$, and $M=L^{-1}N$
 ```{code-cell} ipython3
 def construct_LNM(A, B, Q, R):
 
-    n, k = lq.n, lq.k
+    n = A.shape[0]
 
     # construct L and N
     L = np.zeros((2*n, 2*n))
@@ -496,7 +501,10 @@ def construct_LNM(A, B, Q, R):
 ```
 
 ```{code-cell} ipython3
-L, N, M = construct_LNM(lq.A, lq.B, lq.Q, lq.R)
+A_bar = lq.A * lq.beta ** (1/2)
+B_bar = lq.B * lq.beta ** (1/2)
+
+L, N, M = construct_LNM(A_bar, B_bar, lq.Q, lq.R)
 ```
 
 ```{code-cell} ipython3
@@ -517,7 +525,7 @@ M @ J @ M.T - J
 We can compute the eigenvalues of $M$ using `np.linalg.eigvals`, arranged in ascending order.
 
 ```{code-cell} ipython3
-eigvals = sorted(np.linalg.eigvals(M))
+eigvals = sorted(np.linalg.eigvals(M), key=lambda z: (abs(z), z.real, z.imag))
 eigvals
 ```
 
@@ -529,18 +537,14 @@ When we apply Schur decomposition such that $M=V W V^{-1}$, we want
 To get what we want, let's define a sorting function that tells `scipy.schur` to sort the corresponding eigenvalues with modulus smaller than 1 to the upper left.
 
 ```{code-cell} ipython3
-stable_eigvals = eigvals[:n]
+tol = 1e-10
 
 def sort_fun(x):
-    "Sort the eigenvalues with modules smaller than 1 to the top-left."
+    "Sort the eigenvalues with modulus smaller than 1 to the top-left."
+    return abs(x) < 1 - tol
 
-    if x in stable_eigvals:
-        stable_eigvals.pop(stable_eigvals.index(x))
-        return True
-    else:
-        return False
-
-W, V, _ = schur(M, sort=sort_fun)
+W, V, stable_dim = schur(M, sort=sort_fun)
+stable_dim
 ```
 
 ```{code-cell} ipython3
@@ -584,25 +588,24 @@ def stable_solution(M, verbose=True):
         The matrix represents the linear difference equations system.
     """
     n = M.shape[0] // 2
-    stable_eigvals = list(sorted(np.linalg.eigvals(M))[:n])
+    tol = 1e-10
 
     def sort_fun(x):
-        "Sort the eigenvalues with modules smaller than 1 to the top-left."
+        "Sort the eigenvalues with modulus smaller than 1 to the top-left."
+        return abs(x) < 1 - tol
 
-        if x in stable_eigvals:
-            stable_eigvals.pop(stable_eigvals.index(x))
-            return True
-        else:
-            return False
-
-    W, V, _ = schur(M, sort=sort_fun)
+    W, V, stable_dim = schur(M, sort=sort_fun)
+    if stable_dim != n:
+        raise ValueError(
+    f"Expected {n} stable eigenvalues inside the unit circle, found {stable_dim}."
+    )
     if verbose:
         print('eigenvalues:\n')
         print('    W11: {}'.format(np.diag(W[:n, :n])))
         print('    W22: {}'.format(np.diag(W[n:, n:])))
 
-    # compute V21 V11^{-1}
-    P = V[n:, :n] @ np.linalg.inv(V[:n, :n])
+    # compute V21 V11^{-1} without forming the inverse explicitly
+    P = np.linalg.solve(V[:n, :n].T, V[n:, :n].T).T
 
     return W, V, P
 
@@ -760,11 +763,6 @@ In particular, we can first transform a discounted LQ problem to an undiscounted
 For example, when $\beta=\frac{1}{1+r}$, we can solve for $P$ with $\hat{A}=\beta^{1/2} A$ and $\hat{B}=\beta^{1/2} B$. 
 
 These settings are adopted by default in the function `stationary_P` defined above.
-
-```{code-cell} ipython3
-β = 1 / (1 + r)
-lq.beta = β
-```
 
 ```{code-cell} ipython3
 stationary_P(lq)
