@@ -73,8 +73,6 @@ from scipy.stats import norm
 import matplotlib.cm as cm
 
 plt.rcParams['figure.figsize'] = (10, 6)
-plt.rcParams['axes.grid'] = True
-plt.rcParams['grid.alpha'] = 0.3
 ```
 
 ## Model setup
@@ -277,35 +275,35 @@ density.
 We discretize this onto a grid of $m$ states and build the matrix $P$.
 
 ```{code-cell} ipython3
-def build_state_price_matrix(mu, sigma, gamma, delta, T=1.0, n_states=11, n_sigma=5):
+def build_state_price_matrix(μ, σ, γ, δ, T=1.0, n_states=11, n_σ=5):
     """
     Build an m x m state price transition matrix for the lognormal / CRRA model.
 
     Parameters
     ----------
-    mu     : float  Natural expected log-return (annualised)
-    sigma  : float  Volatility (annualised)
-    gamma  : float  Coefficient of relative risk aversion
-    delta  : float  Subjective discount rate
+    μ      : float  Natural expected log-return (annualised)
+    σ      : float  Volatility (annualised)
+    γ      : float  Coefficient of relative risk aversion
+    δ      : float  Subjective discount rate
     T      : float  Horizon (years) for one period
     n_states : int  Number of discrete states
-    n_sigma  : int  Grid half-width in standard deviations
+    n_σ    : int    Grid half-width in standard deviations
 
     Returns
     -------
     P      : (m, m) array  State price matrix
     states : (m,) array    State values (log-return grid)
     """
-    # Equally-spaced grid from -n_sigma*sigma to +n_sigma*sigma
-    states = np.linspace(-n_sigma * sigma * np.sqrt(T),
-                          n_sigma * sigma * np.sqrt(T),
+    # Equally-spaced grid from -n_σ*σ to +n_σ*σ
+    states = np.linspace(-n_σ * σ * np.sqrt(T),
+                          n_σ * σ * np.sqrt(T),
                           n_states)
     ds = states[1] - states[0]   # grid spacing
 
     m = n_states
     P = np.zeros((m, m))
 
-    drift = (mu - 0.5 * sigma**2) * T
+    drift = (μ - 0.5 * σ**2) * T
 
     for i in range(m):
         s_i = states[i]
@@ -313,9 +311,9 @@ def build_state_price_matrix(mu, sigma, gamma, delta, T=1.0, n_states=11, n_sigm
             s_j = states[j]
             log_return = s_j - s_i
             # Normal density evaluated at s_j given s_i
-            n_val = norm.pdf(log_return, loc=drift, scale=sigma * np.sqrt(T))
+            n_val = norm.pdf(log_return, loc=drift, scale=σ * np.sqrt(T))
             # Pricing kernel
-            kernel = np.exp(-delta * T) * np.exp(-gamma * log_return)
+            kernel = np.exp(-δ * T) * np.exp(-γ * log_return)
             P[i, j] = kernel * n_val * ds
 
     return P, states
@@ -323,14 +321,14 @@ def build_state_price_matrix(mu, sigma, gamma, delta, T=1.0, n_states=11, n_sigm
 
 ```{code-cell} ipython3
 # Parameters matching the numerical example in Ross (2015), Section IV
-mu    = 0.08    # 8% annual expected return
-sigma = 0.20    # 20% annual volatility
-gamma = 3.0     # CRRA coefficient
-delta = 0.02    # 2% annual discount rate
-T     = 1.0     # one-year horizon
+μ = 0.08    # 8% annual expected return
+σ = 0.20    # 20% annual volatility
+γ = 3.0     # CRRA coefficient
+δ = 0.02    # 2% annual discount rate
+T = 1.0     # one-year horizon
 
-P, states = build_state_price_matrix(mu, sigma, gamma, delta, T,
-                                     n_states=11, n_sigma=5)
+P, states = build_state_price_matrix(μ, σ, γ, δ, T,
+                                     n_states=11, n_σ=5)
 
 print("State price matrix P  (rows = current state, cols = future state)")
 print("Row sums (should equal discount factor e^{-r}):")
@@ -351,8 +349,8 @@ def recover_natural_distribution(P):
     -------
     F     : (m, m) array  Recovered natural probability transition matrix
     z     : (m,) array    Dominant eigenvector of P (Perron vector)
-    delta : float         Recovered subjective discount rate
-    phi   : (m,) array    Recovered kernel values (relative to state 0)
+    δ     : float         Recovered subjective discount rate
+    φ     : (m,) array    Recovered kernel values (relative to state 0)
     """
     m = P.shape[0]
 
@@ -365,7 +363,7 @@ def recover_natural_distribution(P):
     real_eigenvectors = eigenvectors[:, real_mask].real
 
     idx = np.argmax(real_eigenvalues)
-    delta_recovered = real_eigenvalues[idx]
+    δ_recovered = real_eigenvalues[idx]
     z = real_eigenvectors[:, idx]
 
     # Ensure z is positive (Perron vector)
@@ -380,24 +378,24 @@ def recover_natural_distribution(P):
     D_inv = np.diag(z)
 
     # Recover natural probability matrix
-    F = (1.0 / delta_recovered) * D @ P @ D_inv
+    F = (1.0 / δ_recovered) * D @ P @ D_inv
 
     # Clip small numerical negatives and renormalize rows
     F = np.clip(F, 0, None)
     F = F / F.sum(axis=1, keepdims=True)
 
     # Pricing kernel relative to middle state
-    phi = 1.0 / z
+    φ = 1.0 / z
 
-    return F, z, delta_recovered, phi
+    return F, z, δ_recovered, φ
 ```
 
 ```{code-cell} ipython3
-F, z, delta_rec, phi = recover_natural_distribution(P)
+F, z, δ_rec, φ = recover_natural_distribution(P)
 
-print(f"Recovered discount rate δ  = {delta_rec:.6f}  (true: {np.exp(-delta):.6f})")
+print(f"Recovered discount rate δ  = {δ_rec:.6f}  (true: {np.exp(-δ):.6f})")
 print(f"\nRecovered kernel φ (monotone decreasing in good states):")
-print(np.round(phi, 4))
+print(np.round(φ, 4))
 print(f"\nNatural probability matrix F  (row sums should be 1):")
 print(np.round(F.sum(axis=1), 6))
 ```
@@ -444,7 +442,7 @@ Q_rn = P / row_sums   # risk-neutral probabilities
 
 # One-period marginals
 f_nat = F[mid, :]              # natural: row of recovered F
-f_rn  = Q_rn[mid, :]          # risk-neutral: row of Q
+f_rn = Q_rn[mid, :]            # risk-neutral: row of Q
 
 # State labels in gross return terms
 gross_returns = np.exp(states)
@@ -452,30 +450,27 @@ gross_returns = np.exp(states)
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 # Panel A: densities
-axes[0].plot(gross_returns, f_nat, 'b-o', ms=5, label='Natural (recovered)', lw=2)
-axes[0].plot(gross_returns, f_rn,  'r--s', ms=5, label='Risk-neutral',       lw=2)
-axes[0].set_xlabel('Gross return $S_T / S_0$')
-axes[0].set_ylabel('Probability')
-axes[0].set_title('One-Period Marginal Distributions')
+axes[0].plot(gross_returns, f_nat, 'b-o', ms=5, label='natural (recovered)', lw=2)
+axes[0].plot(gross_returns, f_rn, 'r--s', ms=5, label='risk-neutral', lw=2)
+axes[0].set_xlabel('gross return $S_T / S_0$')
+axes[0].set_ylabel('probability')
+axes[0].set_title('one-period marginal distributions')
 axes[0].legend()
 
 # Panel B: pricing kernel
-axes[1].plot(gross_returns, phi, 'g-^', ms=5, lw=2)
-axes[1].set_xlabel('Gross return $S_T / S_0$')
-axes[1].set_ylabel('Kernel $\\phi$ (relative)')
-axes[1].set_title('Recovered Pricing Kernel')
-
-plt.tight_layout()
-plt.savefig('ross_recovery_distributions.png', dpi=120)
+axes[1].plot(gross_returns, φ, 'g-^', ms=5, lw=2)
+axes[1].set_xlabel('gross return $S_T / S_0$')
+axes[1].set_ylabel('kernel $\\phi$ (relative)')
+axes[1].set_title('recovered pricing kernel')
 plt.show()
 ```
 
 ```{code-cell} ipython3
 # Compute summary statistics
 E_nat = np.sum(f_nat * gross_returns)
-E_rn  = np.sum(f_rn  * gross_returns)
+E_rn = np.sum(f_rn * gross_returns)
 std_nat = np.sqrt(np.sum(f_nat * (gross_returns - E_nat)**2))
-std_rn  = np.sqrt(np.sum(f_rn  * (gross_returns - E_rn )**2))
+std_rn = np.sqrt(np.sum(f_rn * (gross_returns - E_rn)**2))
 
 risk_free = np.sum(P[mid])   # price of riskless bond from middle state
 
@@ -502,21 +497,19 @@ good states relative to the natural measure.
 ```{code-cell} ipython3
 # CDFs
 cdf_nat = np.cumsum(f_nat)
-cdf_rn  = np.cumsum(f_rn)
+cdf_rn = np.cumsum(f_rn)
 
 fig, ax = plt.subplots(figsize=(9, 5))
-ax.plot(gross_returns, cdf_nat, 'b-o', ms=5, lw=2, label='Natural CDF')
-ax.plot(gross_returns, cdf_rn,  'r--s', ms=5, lw=2, label='Risk-neutral CDF')
-ax.set_xlabel('Gross return $S_T / S_0$')
-ax.set_ylabel('Cumulative probability')
-ax.set_title('Stochastic Dominance: Natural CDF lies below Risk-Neutral CDF')
+ax.plot(gross_returns, cdf_nat, 'b-o', ms=5, lw=2, label='natural cdf')
+ax.plot(gross_returns, cdf_rn, 'r--s', ms=5, lw=2, label='risk-neutral cdf')
+ax.set_xlabel('gross return $S_T / S_0$')
+ax.set_ylabel('cumulative probability')
+ax.set_title('stochastic dominance: natural cdf lies below risk-neutral cdf')
 ax.legend()
-plt.tight_layout()
-plt.savefig('ross_recovery_stochdom.png', dpi=120)
 plt.show()
 
 # Verify dominance: natural CDF should be <= risk-neutral CDF at every point
-print(f"Natural CDF ≤ Risk-neutral CDF at all states: "
+print(f"Natural CDF <= Risk-neutral CDF at all states: "
       f"{np.all(cdf_nat <= cdf_rn + 1e-10)}")
 ```
 
@@ -552,18 +545,18 @@ def compute_risk_premia(P, F, states):
     m = len(states)
     gross_returns = np.exp(states)
 
-    rf  = np.zeros(m)
+    rf = np.zeros(m)
     erp = np.zeros(m)
 
     for i in range(m):
         discount = P[i].sum()          # riskless discount factor
-        rf[i]  = -np.log(discount)     # risk-free rate
+        rf[i] = -np.log(discount)      # risk-free rate
 
         # Expected gross return under natural measure
         # We compute E[S_j/S_i] = sum_j F_ij * exp(s_j - s_i)
         relative_returns = np.exp(states - states[i])
         E_R_nat = np.sum(F[i] * relative_returns)
-        E_R_rn  = np.sum((P[i] / discount) * relative_returns)
+        E_R_rn = np.sum((P[i] / discount) * relative_returns)
 
         erp[i] = np.log(E_R_nat) - rf[i]
 
@@ -575,23 +568,21 @@ erp, rf = compute_risk_premia(P, F, states)
 fig, axes = plt.subplots(1, 2, figsize=(13, 5))
 
 axes[0].plot(np.exp(states), rf * 100, 'b-o', ms=5, lw=2)
-axes[0].set_xlabel('Current state $S / S_0$')
-axes[0].set_ylabel('Annual risk-free rate (%)')
-axes[0].set_title('Risk-Free Rate by State')
+axes[0].set_xlabel('current state $S / S_0$')
+axes[0].set_ylabel('annual risk-free rate (%)')
+axes[0].set_title('risk-free rate by state')
 
 axes[1].plot(np.exp(states), erp * 100, 'r-^', ms=5, lw=2)
-axes[1].set_xlabel('Current state $S / S_0$')
-axes[1].set_ylabel('Equity Risk Premium (%)')
-axes[1].set_title('Recovered Equity Risk Premium by State')
+axes[1].set_xlabel('current state $S / S_0$')
+axes[1].set_ylabel('equity risk premium (%)')
+axes[1].set_title('recovered equity risk premium by state')
 
-plt.tight_layout()
-plt.savefig('ross_recovery_erp.png', dpi=120)
 plt.show()
 
 mid = len(states) // 2
 print(f"At the middle state:")
-print(f"  Risk-free rate  ≈ {rf[mid]*100:.2f}% (true: {delta*100:.2f}%)")
-print(f"  Equity premium  ≈ {erp[mid]*100:.2f}% (true: {(mu-delta)*100:.2f}%)")
+print(f"  Risk-free rate  approx {rf[mid]*100:.2f}% (true: {δ*100:.2f}%)")
+print(f"  Equity premium  approx {erp[mid]*100:.2f}% (true: {(μ-δ)*100:.2f}%)")
 ```
 
 ## Sensitivity analysis: effect of risk aversion
@@ -600,42 +591,40 @@ The shape of the pricing kernel, and hence the gap between natural and
 risk-neutral probabilities, depends on the coefficient of risk aversion $\gamma$.
 
 ```{code-cell} ipython3
-gammas = [1.0, 2.0, 3.0, 5.0, 8.0]
-colors = cm.viridis(np.linspace(0.1, 0.9, len(gammas)))
+γs = [1.0, 2.0, 3.0, 5.0, 8.0]
+colors = cm.viridis(np.linspace(0.1, 0.9, len(γs)))
 
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
-for gamma_val, color in zip(gammas, colors):
-    P_g, states_g = build_state_price_matrix(mu, sigma, gamma_val, delta, T)
-    F_g, z_g, delta_g, phi_g = recover_natural_distribution(P_g)
+for γ_val, color in zip(γs, colors):
+    P_g, states_g = build_state_price_matrix(μ, σ, γ_val, δ, T)
+    F_g, z_g, δ_g, φ_g = recover_natural_distribution(P_g)
     mid_g = len(states_g) // 2
 
     f_nat_g = F_g[mid_g, :]
-    row_sum  = P_g[mid_g].sum()
-    f_rn_g  = P_g[mid_g] / row_sum
+    row_sum = P_g[mid_g].sum()
+    f_rn_g = P_g[mid_g] / row_sum
 
     gross = np.exp(states_g)
     erp_val = (np.sum(f_nat_g * np.exp(states_g - states_g[mid_g]))
-               - np.exp(delta_g)) * 100
+               - np.exp(δ_g)) * 100
 
-    axes[0].plot(gross, phi_g, color=color, lw=2,
-                 label=f'$\\gamma={gamma_val:.0f}$')
+    axes[0].plot(gross, φ_g, color=color, lw=2,
+                 label=f'$\\gamma={γ_val:.0f}$')
     axes[1].plot(gross, f_nat_g - f_rn_g, color=color, lw=2,
-                 label=f'$\\gamma={gamma_val:.0f}$')
+                 label=f'$\\gamma={γ_val:.0f}$')
 
-axes[0].set_xlabel('Gross return')
-axes[0].set_ylabel('Kernel $\\phi$')
-axes[0].set_title('Pricing Kernel vs Risk Aversion')
+axes[0].set_xlabel('gross return')
+axes[0].set_ylabel('kernel $\\phi$')
+axes[0].set_title('pricing kernel vs risk aversion')
 axes[0].legend(fontsize=9)
 
 axes[1].axhline(0, color='k', lw=0.8, ls='--')
-axes[1].set_xlabel('Gross return')
-axes[1].set_ylabel('Natural minus risk-neutral probability')
-axes[1].set_title('Natural minus Risk-Neutral Density')
+axes[1].set_xlabel('gross return')
+axes[1].set_ylabel('natural minus risk-neutral probability')
+axes[1].set_title('natural minus risk-neutral density')
 axes[1].legend(fontsize=9)
 
-plt.tight_layout()
-plt.savefig('ross_recovery_sensitivity.png', dpi=120)
 plt.show()
 ```
 
@@ -660,25 +649,23 @@ $$
 
 ```{code-cell} ipython3
 # Vary the true discount rate and check how well we recover it
-true_deltas = np.linspace(0.00, 0.06, 13)
-recovered_deltas = []
+true_δs = np.linspace(0.00, 0.06, 13)
+recovered_δs = []
 
-for d in true_deltas:
-    P_d, _ = build_state_price_matrix(mu, sigma, gamma=3.0, delta=d, T=1.0)
+for d in true_δs:
+    P_d, _ = build_state_price_matrix(μ, σ, γ=3.0, δ=d, T=1.0)
     _, _, d_rec, _ = recover_natural_distribution(P_d)
-    recovered_deltas.append(d_rec)
+    recovered_δs.append(d_rec)
 
 plt.figure(figsize=(8, 5))
-plt.plot(true_deltas * 100, true_deltas * 100, 'k--', lw=1.5, label='45° line')
-plt.plot(true_deltas * 100,
-         [-np.log(d_r) * 100 for d_r in recovered_deltas],
-         'bo-', ms=6, lw=2, label='Recovered $\\delta$')
-plt.xlabel('True discount rate (%)')
-plt.ylabel('Recovered discount rate (%)')
-plt.title('Accuracy of Recovered Discount Rate')
+plt.plot(true_δs * 100, true_δs * 100, 'k--', lw=1.5, label='45 deg line')
+plt.plot(true_δs * 100,
+         [-np.log(d_r) * 100 for d_r in recovered_δs],
+         'bo-', ms=6, lw=2, label='recovered $\\delta$')
+plt.xlabel('true discount rate (%)')
+plt.ylabel('recovered discount rate (%)')
+plt.title('accuracy of recovered discount rate')
 plt.legend()
-plt.tight_layout()
-plt.savefig('ross_recovery_delta.png', dpi=120)
 plt.show()
 ```
 
@@ -706,35 +693,33 @@ def tail_prob(f_dist, states, threshold):
     return float(np.sum(f_dist[states <= threshold]))
 
 P_base, states_base = build_state_price_matrix(
-    mu, sigma, gamma=3.0, delta=0.02, T=1.0,
-    n_states=41, n_sigma=5)
-F_base, z_base, delta_base, phi_base = recover_natural_distribution(P_base)
+    μ, σ, γ=3.0, δ=0.02, T=1.0,
+    n_states=41, n_σ=5)
+F_base, z_base, δ_base, φ_base = recover_natural_distribution(P_base)
 
 mid_b = len(states_base) // 2
 f_nat_base = F_base[mid_b]
-f_rn_base  = P_base[mid_b] / P_base[mid_b].sum()
+f_rn_base = P_base[mid_b] / P_base[mid_b].sum()
 
 prob_nat = [tail_prob(f_nat_base, states_base, t) for t in thresholds]
-prob_rn  = [tail_prob(f_rn_base,  states_base, t) for t in thresholds]
+prob_rn = [tail_prob(f_rn_base, states_base, t) for t in thresholds]
 
 fig, ax = plt.subplots(figsize=(10, 5))
-ax.plot(np.exp(thresholds), prob_nat, 'b-',  lw=2, label='Natural (recovered)')
-ax.plot(np.exp(thresholds), prob_rn,  'r--', lw=2, label='Risk-neutral')
-ax.set_xlabel('Gross return threshold')
-ax.set_ylabel('Probability of decline below threshold')
-ax.set_title('Tail Probabilities: Natural vs. Risk-Neutral')
+ax.plot(np.exp(thresholds), prob_nat, 'b-', lw=2, label='natural (recovered)')
+ax.plot(np.exp(thresholds), prob_rn, 'r--', lw=2, label='risk-neutral')
+ax.set_xlabel('gross return threshold')
+ax.set_ylabel('probability of decline below threshold')
+ax.set_title('tail probabilities: natural vs. risk-neutral')
 ax.axvline(x=0.75, color='gray', ls=':', lw=1.5, label='25% decline')
 ax.axvline(x=0.70, color='silver', ls=':', lw=1.5, label='30% decline')
 ax.legend()
-plt.tight_layout()
-plt.savefig('ross_recovery_tail.png', dpi=120)
 plt.show()
 
 # Print specific tail probabilities
 for thresh, label in [(-0.25, '25% decline'), (-0.30, '30% decline'),
                        (-0.10, '10% decline')]:
     p_n = tail_prob(f_nat_base, states_base, thresh)
-    p_r = tail_prob(f_rn_base,  states_base, thresh)
+    p_r = tail_prob(f_rn_base, states_base, thresh)
     print(f"P(log-return < {thresh:.0%}):   Natural = {p_n:.4f},   "
           f"Risk-Neutral = {p_r:.4f},   Ratio = {p_r/p_n:.2f}x")
 ```
@@ -767,22 +752,22 @@ R^2 \leq e^{2rT} \, \mathrm{Var}(\phi).
 $$
 
 ```{code-cell} ipython3
-def kernel_variance(phi, f_nat):
+def kernel_variance(φ, f_nat):
     """Variance of the pricing kernel under the natural measure."""
-    E_phi   = np.sum(phi * f_nat)
-    E_phi2  = np.sum(phi**2 * f_nat)
-    return E_phi2 - E_phi**2, E_phi
+    E_φ = np.sum(φ * f_nat)
+    E_φ2 = np.sum(φ**2 * f_nat)
+    return E_φ2 - E_φ**2, E_φ
 
 
-var_phi, E_phi = kernel_variance(phi_base, f_nat_base)
-std_phi = np.sqrt(var_phi)
+var_φ, E_φ = kernel_variance(φ_base, f_nat_base)
+std_φ = np.sqrt(var_φ)
 
 print(f"Pricing kernel statistics (one year):")
-print(f"  E[φ]     = {E_phi:.4f}")
-print(f"  Var(φ)   = {var_phi:.4f}")
-print(f"  Std(φ)   = {std_phi:.4f}")
-print(f"\nHansen-Jagannathan bound on Sharpe ratio: {std_phi:.4f}")
-print(f"Upper bound on R² in return forecasting: {var_phi:.4f}")
+print(f"  E[φ]     = {E_φ:.4f}")
+print(f"  Var(φ)   = {var_φ:.4f}")
+print(f"  Std(φ)   = {std_φ:.4f}")
+print(f"\nHansen-Jagannathan bound on Sharpe ratio: {std_φ:.4f}")
+print(f"Upper bound on R^2 in return forecasting: {var_φ:.4f}")
 ```
 
 ## Limitations and extensions
@@ -866,23 +851,23 @@ P_ex = np.array([
 
 eigenvalues, eigenvectors = eig(P_ex)
 real_mask = np.isreal(eigenvalues)
-real_ev   = eigenvalues[real_mask].real
+real_ev = eigenvalues[real_mask].real
 real_evec = eigenvectors[:, real_mask].real
 
-idx   = np.argmax(real_ev)
-delta_ex = real_ev[idx]
-z_ex  = real_evec[:, idx]
+idx = np.argmax(real_ev)
+δ_ex = real_ev[idx]
+z_ex = real_evec[:, idx]
 if z_ex.min() < 0:
     z_ex = -z_ex
 z_ex = z_ex / z_ex[1]   # normalise to middle state
 
-print(f"(a) Dominant eigenvalue δ = {delta_ex:.6f}")
+print(f"(a) Dominant eigenvalue δ = {δ_ex:.6f}")
 print(f"    Eigenvector z          = {z_ex}")
 
 # (b) Recover F
-D_ex    = np.diag(1.0 / z_ex)
+D_ex = np.diag(1.0 / z_ex)
 D_inv_ex = np.diag(z_ex)
-F_ex    = (1.0 / delta_ex) * D_ex @ P_ex @ D_inv_ex
+F_ex = (1.0 / δ_ex) * D_ex @ P_ex @ D_inv_ex
 
 print(f"\n(b) Recovered natural transition matrix F:")
 print(np.round(F_ex, 4))
@@ -892,9 +877,9 @@ print(f"\n(c) Row sums of F: {np.round(F_ex.sum(axis=1), 8)}")
 print(f"    All non-negative: {(F_ex >= -1e-10).all()}")
 
 # (d) Pricing kernel
-phi_ex = 1.0 / z_ex
-print(f"\n(d) Pricing kernel φ = {np.round(phi_ex, 4)}")
-print(f"    Kernel decreasing state 1→3: {phi_ex[0] > phi_ex[1] > phi_ex[2]}")
+φ_ex = 1.0 / z_ex
+print(f"\n(d) Pricing kernel φ = {np.round(φ_ex, 4)}")
+print(f"    Kernel decreasing state 1->3: {φ_ex[0] > φ_ex[1] > φ_ex[2]}")
 ```
 
 ```{solution-end}
@@ -936,20 +921,20 @@ P_ex = np.array([
 from scipy.linalg import eig
 eigenvalues, eigenvectors = eig(P_ex)
 real_mask = np.isreal(eigenvalues)
-real_ev   = eigenvalues[real_mask].real
+real_ev = eigenvalues[real_mask].real
 real_evec = eigenvectors[:, real_mask].real
-idx   = np.argmax(real_ev)
-delta_ex = real_ev[idx]
-z_ex  = real_evec[:, idx]
+idx = np.argmax(real_ev)
+δ_ex = real_ev[idx]
+z_ex = real_evec[:, idx]
 if z_ex.min() < 0:
     z_ex = -z_ex
 z_ex = z_ex / z_ex[1]
 
-D_ex    = np.diag(1.0 / z_ex)
+D_ex = np.diag(1.0 / z_ex)
 D_inv_ex = np.diag(z_ex)
-F_ex    = (1.0 / delta_ex) * D_ex @ P_ex @ D_inv_ex
-F_ex    = np.clip(F_ex, 0, None)
-F_ex   /= F_ex.sum(axis=1, keepdims=True)
+F_ex = (1.0 / δ_ex) * D_ex @ P_ex @ D_inv_ex
+F_ex = np.clip(F_ex, 0, None)
+F_ex /= F_ex.sum(axis=1, keepdims=True)
 
 # (a) Marginals from state 2 (index 1)
 start = 1
@@ -962,7 +947,7 @@ print(f"    Risk-neutral q = {np.round(q_marg, 4)}")
 
 # (b) CDFs
 cdf_nat = np.cumsum(f_marg)
-cdf_rn  = np.cumsum(q_marg)
+cdf_rn = np.cumsum(q_marg)
 
 print("\n(b) CDFs:")
 for k in range(3):
@@ -970,8 +955,8 @@ for k in range(3):
 
 # (c) Stochastic dominance
 dominates = np.all(cdf_nat <= cdf_rn + 1e-10)
-print(f"\n(c) Natural CDF ≤ Risk-neutral CDF at all states: {dominates}")
-print("    → Natural distribution stochastically dominates risk-neutral distribution ✓")
+print(f"\n(c) Natural CDF <= Risk-neutral CDF at all states: {dominates}")
+print("    -> Natural distribution stochastically dominates risk-neutral distribution")
 ```
 
 ```{solution-end}
@@ -982,7 +967,7 @@ print("    → Natural distribution stochastically dominates risk-neutral distri
 
 **Risk aversion and tail risk.**
 
-Write a function `tail_risk_ratio(gamma, threshold, mu, sigma, delta, T)` that:
+Write a function `tail_risk_ratio(γ, threshold, μ, σ, δ, T)` that:
 
 1. Constructs the state price matrix $P$ using `build_state_price_matrix` with
    the given parameters and `n_states=41`.
@@ -1006,14 +991,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def tail_risk_ratio(gamma, threshold, mu=0.08, sigma=0.20, delta=0.02, T=1.0):
+def tail_risk_ratio(γ, threshold, μ=0.08, σ=0.20, δ=0.02, T=1.0):
     """
     Compute ratio of risk-neutral to natural tail probability P(log-return < threshold).
     """
     P_g, states_g = build_state_price_matrix(
-        mu, sigma, gamma, delta, T, n_states=41, n_sigma=5)
+        μ, σ, γ, δ, T, n_states=41, n_σ=5)
 
-    F_g, z_g, delta_g, phi_g = recover_natural_distribution(P_g)
+    F_g, z_g, δ_g, φ_g = recover_natural_distribution(P_g)
 
     mid_g = len(states_g) // 2
 
@@ -1021,23 +1006,21 @@ def tail_risk_ratio(gamma, threshold, mu=0.08, sigma=0.20, delta=0.02, T=1.0):
     f_rn_g  = P_g[mid_g] / P_g[mid_g].sum()
 
     p_nat = float(np.sum(f_nat_g[states_g <= threshold]))
-    p_rn  = float(np.sum(f_rn_g[states_g  <= threshold]))
+    p_rn = float(np.sum(f_rn_g[states_g  <= threshold]))
 
     if p_nat < 1e-12:
         return np.nan
     return p_rn / p_nat
 
 
-gammas = np.linspace(1.0, 10.0, 20)
-ratios = [tail_risk_ratio(g, -0.30) for g in gammas]
+γs = np.linspace(1.0, 10.0, 20)
+ratios = [tail_risk_ratio(g, -0.30) for g in γs]
 
 plt.figure(figsize=(9, 5))
-plt.plot(gammas, ratios, 'b-o', ms=5, lw=2)
-plt.xlabel('Risk aversion coefficient $\\gamma$')
-plt.ylabel('Risk-neutral / Natural tail probability')
-plt.title('Tail Risk Ratio for a 30% Decline vs Risk Aversion')
-plt.tight_layout()
-plt.savefig('ross_recovery_ex3.png', dpi=120)
+plt.plot(γs, ratios, 'b-o', ms=5, lw=2)
+plt.xlabel('risk aversion coefficient $\\gamma$')
+plt.ylabel('risk-neutral / natural tail probability')
+plt.title('tail risk ratio for a 30% decline vs risk aversion')
 plt.show()
 
 # Economic interpretation

@@ -137,19 +137,19 @@ P_phys = np.array([
 
 # Consumption levels in each state (arbitrary units)
 c_levels = np.array([0.85, 1.00, 1.15])
-state_names = ['Recession', 'Normal', 'Expansion']
+state_names = ['recession', 'normal', 'expansion']
 
 # Preference parameters
-delta  = 0.99    # monthly discount factor
-gamma  = 5.0     # coefficient of relative risk aversion
+δ = 0.99    # monthly discount factor
+γ = 5.0     # coefficient of relative risk aversion
 
 # Arrow price matrix under power utility with rational expectations:
-#   q_ij = delta * (c_j / c_i)^{-gamma} * p_ij
+#   q_ij = δ * (c_j / c_i)^{-γ} * p_ij
 n = len(c_levels)
 Q_mat = np.zeros((n, n))
 for i in range(n):
     for j in range(n):
-        Q_mat[i, j] = delta * (c_levels[j] / c_levels[i])**(-gamma) * P_phys[i, j]
+        Q_mat[i, j] = δ * (c_levels[j] / c_levels[i])**(-γ) * P_phys[i, j]
 
 print("Arrow price matrix Q:")
 print(np.round(Q_mat, 5))
@@ -179,7 +179,7 @@ $$
 def risk_neutral_probs(Q):
     """Compute risk-neutral transition matrix from Arrow price matrix."""
     q_bonds = Q.sum(axis=1)            # one-period bond prices
-    P_bar   = Q / q_bonds[:, np.newaxis]
+    P_bar = Q / q_bonds[:, np.newaxis]
     return P_bar, q_bonds
 
 
@@ -187,9 +187,9 @@ P_bar, q_bonds = risk_neutral_probs(Q_mat)
 
 print("One-period bond prices (risk-free discount factors):")
 for i, (s, qb) in enumerate(zip(state_names, q_bonds)):
-    print(f"  {s:12s}: {qb:.5f}  (annualized yield ≈ {-np.log(qb)*12:.2%})")
+    print(f"  {s:12s}: {qb:.5f}  (annualized yield ~ {-np.log(qb)*12:.2%})")
 
-print("\nRisk-neutral transition matrix P̄:")
+print("\nRisk-neutral transition matrix P_bar:")
 print(np.round(P_bar, 4))
 print(f"\nRow sums: {P_bar.sum(axis=1)}")
 ```
@@ -259,39 +259,39 @@ def perron_frobenius(Q):
 
     Returns
     -------
-    eta_hat   : float   — log of the dominant eigenvalue
-    exp_eta   : float   — dominant eigenvalue exp(η̂)
-    e_hat     : ndarray — dominant eigenvector (positive, normalized to sum=1)
-    P_hat     : ndarray — long-term risk-neutral transition matrix
+    η_hat : float — log of the dominant eigenvalue
+    exp_η : float — dominant eigenvalue exp(η_hat)
+    e_hat : ndarray — dominant eigenvector (positive, normalized to sum=1)
+    P_hat : ndarray — long-term risk-neutral transition matrix
     """
     eigenvalues, eigenvectors = linalg.eig(Q)
 
     # Dominant eigenvalue: largest real part (real & positive by Perron–Frobenius)
-    idx     = np.argmax(eigenvalues.real)
-    exp_eta = eigenvalues[idx].real
-    e_hat   = eigenvectors[:, idx].real
+    idx = np.argmax(eigenvalues.real)
+    exp_η = eigenvalues[idx].real
+    e_hat = eigenvectors[:, idx].real
 
     # Ensure positive entries (PF guarantees existence; numpy may flip sign)
     if e_hat.mean() < 0:
         e_hat = -e_hat
     e_hat = np.abs(e_hat) / np.abs(e_hat).sum()   # normalize to sum = 1
 
-    eta_hat = np.log(exp_eta)
+    η_hat = np.log(exp_η)
 
     # Long-term risk-neutral transition matrix
-    # P_hat[i,j] = exp(-η̂) * Q[i,j] * e_hat[j] / e_hat[i]
-    P_hat = (1.0 / exp_eta) * Q * e_hat[np.newaxis, :] / e_hat[:, np.newaxis]
+    # P_hat[i,j] = exp(-η_hat) * Q[i,j] * e_hat[j] / e_hat[i]
+    P_hat = (1.0 / exp_η) * Q * e_hat[np.newaxis, :] / e_hat[:, np.newaxis]
 
-    return eta_hat, exp_eta, e_hat, P_hat
+    return η_hat, exp_η, e_hat, P_hat
 
 
-eta_hat, exp_eta, e_hat, P_hat = perron_frobenius(Q_mat)
+η_hat, exp_η, e_hat, P_hat = perron_frobenius(Q_mat)
 
-print(f"Dominant eigenvalue  exp(η̂) = {exp_eta:.6f}")
-print(f"Log eigenvalue       η̂      = {eta_hat:.5f}  "
-      f"(annualized ≈ {eta_hat*12:.4f})")
-print(f"\nEigenvector ê = {e_hat.round(5)}")
-print(f"\nLong-term risk-neutral P̂:")
+print(f"Dominant eigenvalue  exp(η_hat) = {exp_η:.6f}")
+print(f"Log eigenvalue       η_hat      = {η_hat:.5f}  "
+      f"(annualized ~ {η_hat*12:.4f})")
+print(f"\nEigenvector e_hat = {e_hat.round(5)}")
+print(f"\nLong-term risk-neutral P_hat:")
 print(np.round(P_hat, 4))
 print(f"\nRow sums: {P_hat.sum(axis=1)}")
 ```
@@ -302,9 +302,9 @@ print(f"\nRow sums: {P_hat.sum(axis=1)}")
 fig, axes = plt.subplots(1, 3, figsize=(15, 4.5))
 
 matrices = [
-    (P_phys, r'Physical  $\mathbf{P}$',            'Blues'),
-    (P_bar,  r'Risk-neutral  $\bar{\mathbf{P}}$',  'Oranges'),
-    (P_hat,  r'Long-term risk-neutral $\hat{\mathbf{P}}$', 'Greens'),
+    (P_phys, r'physical  $\mathbf{P}$', 'Blues'),
+    (P_bar, r'risk-neutral  $\bar{\mathbf{P}}$', 'Oranges'),
+    (P_hat, r'long-term risk-neutral $\hat{\mathbf{P}}$', 'Greens'),
 ]
 
 for ax, (mat, title, cmap) in zip(axes, matrices):
@@ -313,8 +313,8 @@ for ax, (mat, title, cmap) in zip(axes, matrices):
     ax.set_xticks(range(n));  ax.set_yticks(range(n))
     ax.set_xticklabels(state_names, rotation=20, fontsize=9)
     ax.set_yticklabels(state_names, fontsize=9)
-    ax.set_xlabel('Next state', fontsize=9)
-    ax.set_ylabel('Current state', fontsize=9)
+    ax.set_xlabel('next state', fontsize=9)
+    ax.set_ylabel('current state', fontsize=9)
     plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     for i in range(n):
         for j in range(n):
@@ -322,7 +322,7 @@ for ax, (mat, title, cmap) in zip(axes, matrices):
             ax.text(j, i, f'{mat[i,j]:.3f}', ha='center', va='center',
                     fontsize=9, color=clr)
 
-plt.suptitle('Transition Matrices Under Alternative Probability Measures',
+plt.suptitle('transition matrices under alternative probability measures',
              fontsize=13, y=1.02)
 plt.tight_layout()
 plt.show()
@@ -333,37 +333,37 @@ plt.show()
 def stationary_dist(P):
     """Compute stationary distribution of an ergodic transition matrix P."""
     n = P.shape[0]
-    A      = (P.T - np.eye(n))
-    A[-1]  = 1.0
-    b      = np.zeros(n);  b[-1] = 1.0
+    A = (P.T - np.eye(n))
+    A[-1] = 1.0
+    b = np.zeros(n);  b[-1] = 1.0
     return linalg.solve(A, b)
 
-pi_phys = stationary_dist(P_phys)
-pi_bar  = stationary_dist(P_bar)
-pi_hat  = stationary_dist(P_hat)
+π_phys = stationary_dist(P_phys)
+π_bar = stationary_dist(P_bar)
+π_hat = stationary_dist(P_hat)
 
 fig, ax = plt.subplots(figsize=(8, 4))
-x  = np.arange(n)
-w  = 0.25
-labels = [r'Physical $P$', r'Risk-neutral $\bar{P}$',
-          r'Long-term risk-neutral $\hat{P}$']
+x = np.arange(n)
+w = 0.25
+labels = [r'physical $P$', r'risk-neutral $\bar{P}$',
+          r'long-term risk-neutral $\hat{P}$']
 colors = ['steelblue', 'darkorange', 'forestgreen']
-for k, (pi, lbl, col) in enumerate(zip([pi_phys, pi_bar, pi_hat], labels, colors)):
-    bars = ax.bar(x + k*w, pi, width=w, label=lbl, color=col, alpha=0.85,
+for k, (π, lbl, col) in enumerate(zip([π_phys, π_bar, π_hat], labels, colors)):
+    bars = ax.bar(x + k*w, π, width=w, label=lbl, color=col, alpha=0.85,
                   edgecolor='white')
-    for b_, v in zip(bars, pi):
+    for b_, v in zip(bars, π):
         ax.text(b_.get_x() + w/2, v + 0.008, f'{v:.3f}',
                 ha='center', va='bottom', fontsize=9)
 
 ax.set_xticks(x + w);  ax.set_xticklabels(state_names)
-ax.set_ylabel('Stationary probability')
-ax.set_title('Stationary Distributions Under Three Probability Measures')
+ax.set_ylabel('stationary probability')
+ax.set_title('stationary distributions under three probability measures')
 ax.legend(fontsize=9)
 plt.tight_layout();  plt.show()
 
 print("Stationary distributions:")
-for lbl, pi in zip(labels, [pi_phys, pi_bar, pi_hat]):
-    print(f"  {lbl:45s}: {np.round(pi,4)}")
+for lbl, π in zip(labels, [π_phys, π_bar, π_hat]):
+    print(f"  {lbl:45s}: {np.round(π,4)}")
 ```
 
 The long-term risk-neutral measure $\hat{\mathbf{P}}$ assigns **higher weight to bad
@@ -411,22 +411,22 @@ The three components are:
 # SDF matrix: s_ij = q_ij / p_ij
 S_mat = np.where(P_phys > 0, Q_mat / P_phys, 0.0)
 
-# Trend SDF: ŝ_ij = exp(η̂) * e_hat_i / e_hat_j
-S_hat = exp_eta * e_hat[:, np.newaxis] / e_hat[np.newaxis, :]
+# Trend SDF: s_hat_ij = exp(η_hat) * e_hat_i / e_hat_j
+S_hat = exp_η * e_hat[:, np.newaxis] / e_hat[np.newaxis, :]
 
-# Martingale increment: ĥ_ij = P̂_ij / P_ij  (also = S_ij / Ŝ_ij)
+# Martingale increment: h_hat_ij = P_hat_ij / P_ij  (also = S_ij / S_hat_ij)
 H_incr = np.where(P_phys > 0, P_hat / P_phys, 0.0)
 
 print("SDF matrix S = Q/P:")
 print(np.round(S_mat, 4))
-print("\nTrend SDF Ŝ = exp(η̂) × ê_i / ê_j:")
+print("\nTrend SDF S_hat = exp(η_hat) * e_hat_i / e_hat_j:")
 print(np.round(S_hat, 4))
-print("\nMartingale increment ĥ = Ŝ × H̃_incr (= P̂/P):")
+print("\nMartingale increment h_hat = S_hat * H_tilde_incr (= P_hat/P):")
 print(np.round(H_incr, 4))
 
-# Verify martingale property: E[ĥ_{ij} | X_t=i] = sum_j ĥ_ij * p_ij = 1
+# Verify martingale property: E[h_hat_{ij} | X_t=i] = sum_j h_hat_ij * p_ij = 1
 mart_check = (H_incr * P_phys).sum(axis=1)
-print(f"\nMartingale property check — E[ĥ | X_t=i] = {mart_check}")
+print(f"\nMartingale property check — E[h_hat | X_t=i] = {mart_check}")
 ```
 
 Higher risk aversion amplifies the pessimistic distortion: as $\gamma$ increases, the
@@ -486,26 +486,26 @@ recovery succeeds exactly** when consumption fluctuations around a deterministic
 are the only source of risk.
 
 ```{code-cell} ipython3
-# Verify: for trend-stationary power utility, ĥ_ij = 1 identically
+# Verify: for trend-stationary power utility, h_hat_ij = 1 identically
 gc = 0.002   # monthly trend growth
 
 # Trend-stationary: consumption growth ratio depends only on state, not history
-# s_ij = exp(-delta - gamma*gc) * (c_j/c_i)^(-gamma)
+# s_ij = exp(-δ - γ*gc) * (c_j/c_i)^(-γ)
 S_trend = np.zeros((n, n))
 for i in range(n):
     for j in range(n):
-        S_trend[i, j] = np.exp(-delta - gamma*gc) * (c_levels[j]/c_levels[i])**(-gamma)
+        S_trend[i, j] = np.exp(-δ - γ*gc) * (c_levels[j]/c_levels[i])**(-γ)
 
 Q_trend = S_trend * P_phys
 
-_, exp_eta_t, e_hat_t, P_hat_t = perron_frobenius(Q_trend)
+_, exp_η_t, e_hat_t, P_hat_t = perron_frobenius(Q_trend)
 
 H_incr_trend = np.where(P_phys > 0, P_hat_t / P_phys, 0.0)
 
-print("Martingale increment ĥ_ij for trend-stationary power utility:")
+print("Martingale increment h_hat_ij for trend-stationary power utility:")
 print(np.round(H_incr_trend, 6))
 print(f"\nMax deviation from 1: {np.abs(H_incr_trend[P_phys>0] - 1).max():.2e}")
-print("→ Martingale is trivial: Recovery succeeds.")
+print("-> Martingale is trivial: Recovery succeeds.")
 ```
 
 ### Recursive (Epstein–Zin) utility
@@ -533,51 +533,51 @@ The additional factor $v^*_j/(\mathbf{P}_i v^*)$ introduces a **nontrivial
 martingale component** whenever continuation values vary across states.
 
 ```{code-cell} ipython3
-def solve_ez_finite(P, c, delta, gamma, gc, tol=1e-12, max_iter=5000):
+def solve_ez_finite(P, c, δ, γ, gc, tol=1e-12, max_iter=5000):
     """
     Solve for Epstein-Zin continuation values in finite Markov chain.
 
     Solves the fixed-point v_i = (1-β)log(c_i) + β/(1-γ) log(P_i @ exp((1-γ)v))
-    where β = exp(-delta - gc).  The special case γ = 1 (log utility) is handled
+    where β = exp(-δ - gc).  The special case γ = 1 (log utility) is handled
     separately to avoid the 0/0 indeterminate form: the recursion reduces to
     v = (I - β P)^{-1} (1-β) log(c) and the SDF simplifies to
     s_ij = exp(-δ - g_c) c_i / c_j.
 
     Returns
     -------
-    v     : ndarray — continuation values (net of time trend)
+    v : ndarray — continuation values (net of time trend)
     vstar : ndarray — exp((1-γ)v)
-    s     : ndarray — one-period SDF matrix
+    s : ndarray — one-period SDF matrix
     """
-    beta  = np.exp(-delta - gc)
+    β = np.exp(-δ - gc)
     log_c = np.log(c)
-    n     = len(c)
+    n = len(c)
 
-    if abs(gamma - 1.0) < 1e-10:
+    if abs(γ - 1.0) < 1e-10:
         # Log utility: (I - β P) v = (1-β) log c
-        v     = linalg.solve(np.eye(n) - beta * P, (1 - beta) * log_c)
+        v = linalg.solve(np.eye(n) - β * P, (1 - β) * log_c)
         vstar = np.ones(n)     # exp((1-1)*v) = 1
-        Pv    = np.ones(n)     # P @ ones = ones
+        Pv = np.ones(n)        # P @ ones = ones
     else:
         # General recursive utility: fixed-point iteration
         v = log_c.copy()
         for _ in range(max_iter):
-            vstar = np.exp((1 - gamma) * v)
-            Pv    = P @ vstar
-            v_new = ((1 - beta) * log_c
-                     + beta / (1 - gamma) * np.log(Pv))
+            vstar = np.exp((1 - γ) * v)
+            Pv = P @ vstar
+            v_new = ((1 - β) * log_c
+                     + β / (1 - γ) * np.log(Pv))
             if np.max(np.abs(v_new - v)) < tol:
                 v = v_new
                 break
             v = v_new
-        vstar = np.exp((1 - gamma) * v)
-        Pv    = P @ vstar
+        vstar = np.exp((1 - γ) * v)
+        Pv = P @ vstar
 
     # SDF matrix
     s = np.zeros((n, n))
     for i in range(n):
         for j in range(n):
-            s[i, j] = np.exp(-delta - gc) * (c[i] / c[j]) * (vstar[j] / Pv[i])
+            s[i, j] = np.exp(-δ - gc) * (c[i] / c[j]) * (vstar[j] / Pv[i])
 
     return v, vstar, s
 
@@ -585,50 +585,50 @@ def solve_ez_finite(P, c, delta, gamma, gc, tol=1e-12, max_iter=5000):
 # Compare: γ = 1 (log utility, degenerate martingale) vs γ = 5
 gc_ex = 0.001   # monthly consumption trend growth
 
-for gam, label in [(1.0, 'γ = 1  (log utility)'), (5.0, 'γ = 5  (risk aversion)')]:
+for γ_val, label in [(1.0, 'γ = 1  (log utility)'), (5.0, 'γ = 5  (risk aversion)')]:
     v_ez, vstar_ez, S_ez = solve_ez_finite(P_phys, c_levels,
-                                            delta, gam, gc_ex)
-    Q_ez    = S_ez * P_phys
+                                            δ, γ_val, gc_ex)
+    Q_ez = S_ez * P_phys
     _, _, _, P_hat_ez = perron_frobenius(Q_ez)
-    H_ez    = np.where(P_phys > 0, P_hat_ez / P_phys, 0.0)
+    H_ez = np.where(P_phys > 0, P_hat_ez / P_phys, 0.0)
 
-    pi_hat_ez  = stationary_dist(P_hat_ez)
+    π_hat_ez = stationary_dist(P_hat_ez)
     print(f"\n{label}")
     print(f"  Continuation values v = {v_ez.round(4)}")
-    print(f"  Max |ĥ_ij - 1|        = {np.abs(H_ez[P_phys>0] - 1).max():.4f}")
-    print(f"  Stationary P̂         = {pi_hat_ez.round(4)}")
-    print(f"  Stationary P          = {pi_phys.round(4)}")
+    print(f"  Max |h_hat_ij - 1|        = {np.abs(H_ez[P_phys>0] - 1).max():.4f}")
+    print(f"  Stationary P_hat         = {π_hat_ez.round(4)}")
+    print(f"  Stationary P          = {π_phys.round(4)}")
 ```
 
 ```{code-cell} ipython3
 # Show how the martingale depends on γ for recursive utility
-# Start at 1.0: the gamma=1 special case in solve_ez_finite is handled explicitly.
-gammas_ez = np.linspace(1.0, 10.0, 50)
+# Start at 1.0: the γ=1 special case in solve_ez_finite is handled explicitly.
+γs_ez = np.linspace(1.0, 10.0, 50)
 mart_errors = []
-pi_rec_hat  = []
+π_rec_hat = []
 
-for gam in gammas_ez:
-    v_g, _, S_g = solve_ez_finite(P_phys, c_levels, delta, gam, gc_ex)
-    Q_g          = S_g * P_phys
-    _, _, _, Ph  = perron_frobenius(Q_g)
-    H_g          = np.where(P_phys > 0, Ph / P_phys, 0.0)
+for γ_val in γs_ez:
+    v_g, _, S_g = solve_ez_finite(P_phys, c_levels, δ, γ_val, gc_ex)
+    Q_g = S_g * P_phys
+    _, _, _, Ph = perron_frobenius(Q_g)
+    H_g = np.where(P_phys > 0, Ph / P_phys, 0.0)
     mart_errors.append(np.abs(H_g[P_phys > 0] - 1).max())
-    pi_rec_hat.append(stationary_dist(Ph)[0])
+    π_rec_hat.append(stationary_dist(Ph)[0])
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
 
-ax1.plot(gammas_ez, mart_errors, color='firebrick', lw=2.5)
-ax1.set_xlabel('Risk aversion  γ')
+ax1.plot(γs_ez, mart_errors, color='firebrick', lw=2.5)
+ax1.set_xlabel('risk aversion  γ')
 ax1.set_ylabel(r'$\max_{i,j} |\hat{h}_{ij} - 1|$')
-ax1.set_title('Martingale non-degeneracy vs risk aversion\n(Epstein–Zin utility)')
+ax1.set_title('martingale non-degeneracy vs risk aversion\n(Epstein–Zin utility)')
 
-ax2.plot(gammas_ez, pi_rec_hat, color='steelblue', lw=2.5,
-         label=r'Recession weight under $\hat{P}$')
-ax2.axhline(pi_phys[0], ls='--', color='grey', lw=1.5,
-            label=f'Recession weight under $P$  ({pi_phys[0]:.3f})')
-ax2.set_xlabel('Risk aversion  γ')
-ax2.set_ylabel('Stationary probability')
-ax2.set_title('Recovered recession probability vs risk aversion')
+ax2.plot(γs_ez, π_rec_hat, color='steelblue', lw=2.5,
+         label=r'recession weight under $\hat{P}$')
+ax2.axhline(π_phys[0], ls='--', color='grey', lw=1.5,
+            label=f'recession weight under $P$  ({π_phys[0]:.3f})')
+ax2.set_xlabel('risk aversion  γ')
+ax2.set_ylabel('stationary probability')
+ax2.set_title('recovered recession probability vs risk aversion')
 ax2.legend(fontsize=9)
 
 plt.tight_layout();  plt.show()
@@ -636,13 +636,13 @@ plt.tight_layout();  plt.show()
 
 ```{code-cell} ipython3
 # Visualize the martingale increment using Epstein-Zin utility (γ=5).
-# Trend-stationary power utility always yields ĥ_ij = 1 by construction (see Exercise 4),
+# Trend-stationary power utility always yields h_hat_ij = 1 by construction (see Exercise 4),
 # so we use recursive utility here to reveal a genuinely non-trivial martingale.
-gamma_ez_demo = 5.0
-_, _, S_ez_demo = solve_ez_finite(P_phys, c_levels, delta, gamma_ez_demo, gc_ex)
-Q_ez_demo      = S_ez_demo * P_phys
+γ_ez_demo = 5.0
+_, _, S_ez_demo = solve_ez_finite(P_phys, c_levels, δ, γ_ez_demo, gc_ex)
+Q_ez_demo = S_ez_demo * P_phys
 _, _, _, P_hat_ez_demo = perron_frobenius(Q_ez_demo)
-H_incr_ez      = np.where(P_phys > 0, P_hat_ez_demo / P_phys, 1.0)
+H_incr_ez = np.where(P_phys > 0, P_hat_ez_demo / P_phys, 1.0)
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
 
@@ -650,7 +650,7 @@ vmax_h = max(1.5, H_incr_ez.max() * 1.05)
 vmin_h = min(0.5, H_incr_ez.min() * 0.95)
 im0 = axes[0].imshow(H_incr_ez, cmap='RdYlGn', vmin=vmin_h, vmax=vmax_h, aspect='auto')
 axes[0].set_title(
-    r'Martingale increment $\hat{h}_{ij} = \hat{p}_{ij}/p_{ij}$' '\n'
+    r'martingale increment $\hat{h}_{ij} = \hat{p}_{ij}/p_{ij}$' '\n'
     r'(Epstein–Zin utility, $\gamma=5$)',
     fontsize=11)
 for i in range(n):
@@ -660,24 +660,24 @@ for i in range(n):
 axes[0].set_xticks(range(n));  axes[0].set_yticks(range(n))
 axes[0].set_xticklabels(state_names, rotation=20, fontsize=9)
 axes[0].set_yticklabels(state_names, fontsize=9)
-axes[0].set_xlabel('Next state');  axes[0].set_ylabel('Current state')
+axes[0].set_xlabel('next state');  axes[0].set_ylabel('current state')
 plt.colorbar(im0, ax=axes[0], fraction=0.046)
 
 # How risk aversion γ shifts the recovered measure under Epstein-Zin utility.
-gammas_shift = np.linspace(1.0, 12, 60)
-rec_wts_ez   = []
-for g in gammas_shift:
-    _, _, S_g = solve_ez_finite(P_phys, c_levels, delta, g, gc_ex)
-    Q_g       = S_g * P_phys
+γs_shift = np.linspace(1.0, 12, 60)
+rec_wts_ez = []
+for g in γs_shift:
+    _, _, S_g = solve_ez_finite(P_phys, c_levels, δ, g, gc_ex)
+    Q_g = S_g * P_phys
     _, _, _, Ph = perron_frobenius(Q_g)
     rec_wts_ez.append(stationary_dist(Ph)[0])
 
-axes[1].plot(gammas_shift, rec_wts_ez, color='steelblue', lw=2.5)
-axes[1].axhline(pi_phys[0], color='grey', ls='--', lw=1.5,
-                label=fr'Physical recession prob = {pi_phys[0]:.3f}')
-axes[1].set_xlabel('Risk aversion  γ')
-axes[1].set_ylabel(r'Recession weight under $\hat{P}$')
-axes[1].set_title(r'How $\gamma$ shifts the long-term risk-neutral measure'
+axes[1].plot(γs_shift, rec_wts_ez, color='steelblue', lw=2.5)
+axes[1].axhline(π_phys[0], color='grey', ls='--', lw=1.5,
+                label=fr'physical recession prob = {π_phys[0]:.3f}')
+axes[1].set_xlabel('risk aversion  γ')
+axes[1].set_ylabel(r'recession weight under $\hat{P}$')
+axes[1].set_title(r'how $\gamma$ shifts the long-term risk-neutral measure'
                   '\n(Epstein–Zin utility)')
 axes[1].legend(fontsize=9)
 plt.tight_layout();  plt.show()
@@ -725,19 +725,19 @@ where $H^*$ is a martingale determined by the continuation value of the recursiv
 # Model parameters from Borovicka-Hansen-Scheinkman (2016), Figure 1
 # Monthly frequency
 lrr_params = dict(
-    delta    = 0.002,          # subjective discount rate
-    gamma    = 10.0,           # risk aversion
-    mu11     = -0.021,         # mean reversion of X1
-    mu12     = 0.0,            # (under P; becomes non-zero under P̂)
-    mu22     = -0.013,         # mean reversion of X2
-    iota1    = 0.0,            # long-run mean of X1
-    iota2    = 1.0,            # long-run mean of X2 (normalized)
-    sigma1   = np.array([0.0,  0.00034, 0.0  ]),   # diffusion of X1 (1×3)
-    sigma2   = np.array([0.0,  0.0,    -0.038]),    # diffusion of X2 (1×3)
-    beta_c0  = 0.0015,         # consumption drift constant
-    beta_c1  = 1.0,            # loading on X1
-    beta_c2  = 0.0,            # loading on X2
-    alpha_c  = np.array([0.0078, 0.0, 0.0]),        # consumption diffusion (1×3)
+    δ = 0.002,         # subjective discount rate
+    γ = 10.0,          # risk aversion
+    μ11 = -0.021,      # mean reversion of X1
+    μ12 = 0.0,         # (under P; becomes non-zero under P_hat)
+    μ22 = -0.013,      # mean reversion of X2
+    ι1 = 0.0,          # long-run mean of X1
+    ι2 = 1.0,          # long-run mean of X2 (normalized)
+    σ1 = np.array([0.0, 0.00034, 0.0]),   # diffusion of X1 (1*3)
+    σ2 = np.array([0.0, 0.0, -0.038]),    # diffusion of X2 (1*3)
+    β_c0 = 0.0015,     # consumption drift constant
+    β_c1 = 1.0,        # loading on X1
+    β_c2 = 0.0,        # loading on X2
+    α_c = np.array([0.0078, 0.0, 0.0]),   # consumption diffusion (1*3)
 )
 ```
 
@@ -757,41 +757,41 @@ def solve_value_function(p):
 
     Returns v_bar1, v_bar2.
     """
-    delta, gamma     = p['delta'], p['gamma']
-    mu11, mu12, mu22 = p['mu11'],  p['mu12'], p['mu22']
-    sigma1, sigma2   = p['sigma1'], p['sigma2']
-    beta_c1, beta_c2 = p['beta_c1'], p['beta_c2']
-    mu12_p, alpha_c  = p['mu12'], p['alpha_c']
+    δ, γ = p['δ'], p['γ']
+    μ11, μ12, μ22 = p['μ11'], p['μ12'], p['μ22']
+    σ1, σ2 = p['σ1'], p['σ2']
+    β_c1, β_c2 = p['β_c1'], p['β_c2']
+    α_c = p['α_c']
 
-    # Linear equation for v̄₁
-    # δ v̄₁ = β̄c,1 + μ̄₁₁ v̄₁  ⟹  v̄₁ = β̄c,1 / (δ - μ̄₁₁)
-    v1 = beta_c1 / (delta - mu11)
+    # Linear equation for v_bar1
+    # δ v_bar1 = β_c1 + μ_bar11 v_bar1  =>  v_bar1 = β_c1 / (δ - μ_bar11)
+    v1 = β_c1 / (δ - μ11)
 
-    # Quadratic equation for v̄₂
-    # 0 = (μ̄₂₂ - δ)v̄₂ + β̄c,2 + μ̄₁₂v̄₁ + ½(1-γ)|A + B v̄₂|²
-    # where A = ᾱc + σ̄₁ v̄₁,  B = σ̄₂
-    A_vec = alpha_c + sigma1 * v1
-    B_vec = sigma2
+    # Quadratic equation for v_bar2
+    # 0 = (μ_bar22 - δ)v_bar2 + β_c2 + μ_bar12 v_bar1 + (1/2)(1-γ)|A + B v_bar2|^2
+    # where A = α_c_bar + σ_bar1 v_bar1,  B = σ_bar2
+    A_vec = α_c + σ1 * v1
+    B_vec = σ2
 
-    a = 0.5 * (1 - gamma) * np.dot(B_vec, B_vec)
-    b = (mu22 - delta) + (1 - gamma) * np.dot(A_vec, B_vec)
-    c = beta_c2 + mu12 * v1 + 0.5 * (1 - gamma) * np.dot(A_vec, A_vec)
+    a = 0.5 * (1 - γ) * np.dot(B_vec, B_vec)
+    b = (μ22 - δ) + (1 - γ) * np.dot(A_vec, B_vec)
+    c = β_c2 + μ12 * v1 + 0.5 * (1 - γ) * np.dot(A_vec, A_vec)
 
     disc = b**2 - 4*a*c
     if disc < 0:
         raise ValueError("Value function does not exist for these parameters.")
 
-    # "Minus" solution (generates ergodic dynamics under P̂)
+    # "Minus" solution (generates ergodic dynamics under P_hat)
     v2 = (-b - np.sqrt(disc)) / (2 * a)
     return v1, v2, A_vec, B_vec
 
 
 v1, v2, A_vec, B_vec = solve_value_function(lrr_params)
-print(f"Value-function slope on X1:  v̄₁ = {v1:.4f}")
-print(f"Value-function slope on X2:  v̄₂ = {v2:.4f}")
+print(f"Value-function slope on X1:  v_bar1 = {v1:.4f}")
+print(f"Value-function slope on X2:  v_bar2 = {v2:.4f}")
 print(f"\nInterpretation:")
-print(f"  Higher X1 (better expected growth) raises continuation value (v̄₁ > 0)")
-print(f"  Higher X2 (more volatility) lowers continuation value (v̄₂ < 0)")
+print(f"  Higher X1 (better expected growth) raises continuation value (v_bar1 > 0)")
+print(f"  Higher X2 (more volatility) lowers continuation value (v_bar2 < 0)")
 ```
 
 ### Perron–Frobenius and recovered dynamics
@@ -801,120 +801,120 @@ def solve_pf_lrr(p, v1, v2, A_vec):
     """
     Solve the Perron-Frobenius problem for the long-run risk model.
 
-    Eigenfunction guess: ê(x) = exp(ē₁ x₁ + ē₂ x₂).
+    Eigenfunction guess: e_hat(x) = exp(e_bar1 x1 + e_bar2 x2).
 
-    Returns ē₁, ē₂, η̂, and the SDF diffusion vector ᾱs.
+    Returns e_bar1, e_bar2, η_hat, and the SDF diffusion vector α_s.
     """
-    delta, gamma     = p['delta'], p['gamma']
-    mu11, mu12, mu22 = p['mu11'],  p['mu12'], p['mu22']
-    iota1, iota2     = p['iota1'], p['iota2']
-    sigma1, sigma2   = p['sigma1'], p['sigma2']
-    alpha_c          = p['alpha_c']
-    beta_c0          = p['beta_c0']
-    beta_c1, beta_c2 = p['beta_c1'], p['beta_c2']
+    δ, γ = p['δ'], p['γ']
+    μ11, μ12, μ22 = p['μ11'], p['μ12'], p['μ22']
+    ι1, ι2 = p['ι1'], p['ι2']
+    σ1, σ2 = p['σ1'], p['σ2']
+    α_c = p['α_c']
+    β_c0 = p['β_c0']
+    β_c1, β_c2 = p['β_c1'], p['β_c2']
 
-    # SDF diffusion:  ᾱs = −γ ᾱc + (1−γ)(σ̄₁v̄₁ + σ̄₂v̄₂)
-    alpha_s = (-gamma * alpha_c
-               + (1 - gamma) * (sigma1 * v1 + sigma2 * v2))
+    # SDF diffusion:  α_s = -γ α_c + (1-γ)(σ_bar1 v_bar1 + σ_bar2 v_bar2)
+    α_s = (-γ * α_c
+           + (1 - γ) * (σ1 * v1 + σ2 * v2))
 
-    # SDF drift parameters in  βs(x) = β̄s0 + β̄s11(x1−ι1) + β̄s12(x2−ι2)
-    beta_s11 = -beta_c1
-    beta_s12 = -beta_c2 - 0.5 * np.dot(alpha_s, alpha_s)
-    beta_s0  = (-delta - beta_c0
-                - 0.5 * iota2 * np.dot(alpha_s, alpha_s))
+    # SDF drift parameters in  β_s(x) = β_s0 + β_s11(x1-ι1) + β_s12(x2-ι2)
+    β_s11 = -β_c1
+    β_s12 = -β_c2 - 0.5 * np.dot(α_s, α_s)
+    β_s0 = (-δ - β_c0
+            - 0.5 * ι2 * np.dot(α_s, α_s))
 
-    # Equation 0 = β̄s11 + μ̄₁₁ ē₁  ⟹  ē₁ = −β̄s11 / μ̄₁₁
-    e1 = -beta_s11 / mu11
+    # Equation 0 = β_s11 + μ_bar11 e_bar1  =>  e_bar1 = -β_s11 / μ_bar11
+    e1 = -β_s11 / μ11
 
-    # Quadratic for ē₂
-    # 0 = (β̄s12 + ½|ᾱs|²)  +  ē₁(μ̄₁₂ + σ̄₁·ᾱs) + ½ē₁²|σ̄₁|²
-    #     + ē₂(μ̄₂₂ + σ̄₂·ᾱs + ē₁ σ̄₁·σ̄₂') + ½ē₂²|σ̄₂|²
-    const_pf = (beta_s12 + 0.5*np.dot(alpha_s, alpha_s)    # = 0 by construction
-                + e1*(mu12 + np.dot(sigma1, alpha_s))
-                + 0.5*e1**2*np.dot(sigma1, sigma1))
-    lin_pf   = mu22 + np.dot(sigma2, alpha_s) + e1*np.dot(sigma1, sigma2)
-    quad_pf  = 0.5 * np.dot(sigma2, sigma2)
+    # Quadratic for e_bar2
+    # 0 = (β_s12 + (1/2)|α_s|^2)  +  e_bar1(μ_bar12 + σ_bar1*α_s) + (1/2)e_bar1^2|σ_bar1|^2
+    #     + e_bar2(μ_bar22 + σ_bar2*α_s + e_bar1 σ_bar1*σ_bar2') + (1/2)e_bar2^2|σ_bar2|^2
+    const_pf = (β_s12 + 0.5*np.dot(α_s, α_s)    # = 0 by construction
+                + e1*(μ12 + np.dot(σ1, α_s))
+                + 0.5*e1**2*np.dot(σ1, σ1))
+    lin_pf = μ22 + np.dot(σ2, α_s) + e1*np.dot(σ1, σ2)
+    quad_pf = 0.5 * np.dot(σ2, σ2)
 
     disc = lin_pf**2 - 4*quad_pf*const_pf
     e2_m = (-lin_pf - np.sqrt(disc)) / (2*quad_pf)
     e2_p = (-lin_pf + np.sqrt(disc)) / (2*quad_pf)
 
-    # η̂ = β̄s0 - β̄s12·ι₂ - ē₂·μ̄₂₂·ι₂  (ι₁ = 0)
-    eta_m = beta_s0 - beta_s12*iota2 - e2_m*mu22*iota2
-    eta_p = beta_s0 - beta_s12*iota2 - e2_p*mu22*iota2
+    # η_hat = β_s0 - β_s12*ι2 - e_bar2*μ_bar22*ι2  (ι1 = 0)
+    η_m = β_s0 - β_s12*ι2 - e2_m*μ22*ι2
+    η_p = β_s0 - β_s12*ι2 - e2_p*μ22*ι2
 
-    # Choose solution with smaller |η̂| (ergodicity requirement)
-    if abs(eta_m) <= abs(eta_p):
-        e2, eta_hat = e2_m, eta_m
+    # Choose solution with smaller |η_hat| (ergodicity requirement)
+    if abs(η_m) <= abs(η_p):
+        e2, η_hat = e2_m, η_m
     else:
-        e2, eta_hat = e2_p, eta_p
+        e2, η_hat = e2_p, η_p
 
-    return e1, e2, eta_hat, alpha_s
+    return e1, e2, η_hat, α_s
 
 
-e1, e2, eta_hat_lrr, alpha_s = solve_pf_lrr(lrr_params, v1, v2, A_vec)
+e1, e2, η_hat_lrr, α_s = solve_pf_lrr(lrr_params, v1, v2, A_vec)
 
-print(f"PF eigenfunction coefficients:  ē₁ = {e1:.4f},  ē₂ = {e2:.4f}")
-print(f"Log eigenvalue:                 η̂  = {eta_hat_lrr:.6f}  "
-      f"(annualized = {eta_hat_lrr*12:.4f})")
+print(f"PF eigenfunction coefficients:  e_bar1 = {e1:.4f},  e_bar2 = {e2:.4f}")
+print(f"Log eigenvalue:                 η_hat  = {η_hat_lrr:.6f}  "
+      f"(annualized = {η_hat_lrr*12:.4f})")
 print(f"\nInterpretation:")
-print(f"  ē₁ = {e1:.2f}: ê down-weights high-X1 (good growth) states")
-print(f"  ē₂ = {e2:.2f}: ê up-weights high-X2 (high volatility) states")
+print(f"  e_bar1 = {e1:.2f}: e_hat down-weights high-X1 (good growth) states")
+print(f"  e_bar2 = {e2:.2f}: e_hat up-weights high-X2 (high volatility) states")
 ```
 
-### Computing the P̂ dynamics
+### Computing the P_hat dynamics
 
 ```{code-cell} ipython3
-def compute_phat_dynamics(p, e1, e2, alpha_s):
+def compute_phat_dynamics(p, e1, e2, α_s):
     """
-    Compute the drift parameters of X under the recovered measure P̂.
+    Compute the drift parameters of X under the recovered measure P_hat.
 
-    Under P̂, the Brownian motion is
-        dŴ_t = −√X₂_t α̂_h dt + dW_t
-    where α̂_h = ᾱs + σ̄₁ ē₁ + σ̄₂ ē₂.
+    Under P_hat, the Brownian motion is
+        dW_hat_t = -sqrt(X2_t) * α_hat_h dt + dW_t
+    where α_hat_h = α_s + σ_bar1 e_bar1 + σ_bar2 e_bar2.
     """
-    mu11, mu12, mu22 = p['mu11'],  p['mu12'], p['mu22']
-    iota1, iota2     = p['iota1'], p['iota2']
-    sigma1, sigma2   = p['sigma1'], p['sigma2']
+    μ11, μ12, μ22 = p['μ11'], p['μ12'], p['μ22']
+    ι1, ι2 = p['ι1'], p['ι2']
+    σ1, σ2 = p['σ1'], p['σ2']
 
     # Martingale drift correction
-    alpha_h = alpha_s + sigma1 * e1 + sigma2 * e2
+    α_h = α_s + σ1 * e1 + σ2 * e2
 
-    # New drift parameters under P̂
-    mu_hat_11 = mu11
-    mu_hat_12 = mu12 + np.dot(sigma1, alpha_h)
-    mu_hat_22 = mu22 + np.dot(sigma2, alpha_h)
+    # New drift parameters under P_hat
+    μ_hat_11 = μ11
+    μ_hat_12 = μ12 + np.dot(σ1, α_h)
+    μ_hat_22 = μ22 + np.dot(σ2, α_h)
 
     # New long-run means
-    iota_hat_2 = (mu22 / mu_hat_22) * iota2
-    iota_hat_1 = (iota1
-                  + (1.0/mu11) * (mu12*iota2 - mu_hat_12*iota_hat_2))
+    ι_hat_2 = (μ22 / μ_hat_22) * ι2
+    ι_hat_1 = (ι1
+               + (1.0/μ11) * (μ12*ι2 - μ_hat_12*ι_hat_2))
 
     return dict(
-        mu_hat_11  = mu_hat_11,
-        mu_hat_12  = mu_hat_12,
-        mu_hat_22  = mu_hat_22,
-        iota_hat_1 = iota_hat_1,
-        iota_hat_2 = iota_hat_2,
-        alpha_h    = alpha_h,
-        sigma1     = sigma1,
-        sigma2     = sigma2,
+        μ_hat_11 = μ_hat_11,
+        μ_hat_12 = μ_hat_12,
+        μ_hat_22 = μ_hat_22,
+        ι_hat_1 = ι_hat_1,
+        ι_hat_2 = ι_hat_2,
+        α_h = α_h,
+        σ1 = σ1,
+        σ2 = σ2,
     )
 
 
-phat_dyn = compute_phat_dynamics(lrr_params, e1, e2, alpha_s)
+phat_dyn = compute_phat_dynamics(lrr_params, e1, e2, α_s)
 
-print("Dynamics of X under P̂  (vs physical P):")
-print(f"  μ̂₁₁ = {phat_dyn['mu_hat_11']:.4f}  "
-      f"(same as physical μ̄₁₁ = {lrr_params['mu11']:.4f})")
-print(f"  μ̂₁₂ = {phat_dyn['mu_hat_12']:.6f}  "
+print("Dynamics of X under P_hat  (vs physical P):")
+print(f"  μ_hat_11 = {phat_dyn['μ_hat_11']:.4f}  "
+      f"(same as physical μ_bar_11 = {lrr_params['μ11']:.4f})")
+print(f"  μ_hat_12 = {phat_dyn['μ_hat_12']:.6f}  "
       f"(physical = 0 — new coupling created by risk adjustment)")
-print(f"  μ̂₂₂ = {phat_dyn['mu_hat_22']:.5f}  "
-      f"(physical = {lrr_params['mu22']:.4f})")
-print(f"  ι̂₁  = {phat_dyn['iota_hat_1']:.5f}  "
-      f"(physical ι₁ = {lrr_params['iota1']:.4f}  — lower mean growth under P̂)")
-print(f"  ι̂₂  = {phat_dyn['iota_hat_2']:.5f}  "
-      f"(physical ι₂ = {lrr_params['iota2']:.4f}  — higher mean volatility under P̂)")
+print(f"  μ_hat_22 = {phat_dyn['μ_hat_22']:.5f}  "
+      f"(physical = {lrr_params['μ22']:.4f})")
+print(f"  ι_hat_1  = {phat_dyn['ι_hat_1']:.5f}  "
+      f"(physical ι1 = {lrr_params['ι1']:.4f}  — lower mean growth under P_hat)")
+print(f"  ι_hat_2  = {phat_dyn['ι_hat_2']:.5f}  "
+      f"(physical ι2 = {lrr_params['ι2']:.4f}  — higher mean volatility under P_hat)")
 ```
 
 ### Simulating and comparing stationary distributions
@@ -926,7 +926,7 @@ def simulate_lrr(dyn, T=600_000, seed=42):
 
     Parameters
     ----------
-    dyn  : dict with mu11, mu12, mu22, iota1, iota2, sigma1, sigma2
+    dyn  : dict with μ11, μ12, μ22, ι1, ι2, σ1, σ2
     T    : number of monthly steps
     seed : random seed
 
@@ -934,25 +934,25 @@ def simulate_lrr(dyn, T=600_000, seed=42):
     -------
     X1, X2 : ndarray — stationary sample paths (burn-in discarded)
     """
-    rng     = np.random.default_rng(seed)
-    mu11    = dyn.get('mu11',     dyn.get('mu_hat_11'))
-    mu12    = dyn.get('mu12',     dyn.get('mu_hat_12', 0.0))
-    mu22    = dyn.get('mu22',     dyn.get('mu_hat_22'))
-    iota1   = dyn.get('iota1',    dyn.get('iota_hat_1'))
-    iota2   = dyn.get('iota2',    dyn.get('iota_hat_2'))
-    sigma1  = dyn['sigma1']
-    sigma2  = dyn['sigma2']
+    rng = np.random.default_rng(seed)
+    μ11 = dyn.get('μ11', dyn.get('μ_hat_11'))
+    μ12 = dyn.get('μ12', dyn.get('μ_hat_12', 0.0))
+    μ22 = dyn.get('μ22', dyn.get('μ_hat_22'))
+    ι1 = dyn.get('ι1', dyn.get('ι_hat_1'))
+    ι2 = dyn.get('ι2', dyn.get('ι_hat_2'))
+    σ1 = dyn['σ1']
+    σ2 = dyn['σ2']
 
     X1 = np.zeros(T)
-    X2 = np.full(T, iota2)
+    X2 = np.full(T, ι2)
 
     for t in range(1, T):
-        X2t      = max(X2[t-1], 1e-9)
-        sq_X2    = np.sqrt(X2t)
-        dW       = rng.standard_normal(3)          # monthly Δt = 1
+        X2t = max(X2[t-1], 1e-9)
+        sq_X2 = np.sqrt(X2t)
+        dW = rng.standard_normal(3)          # monthly Δt = 1
 
-        X1[t] = X1[t-1] + (mu11*(X1[t-1]-iota1) + mu12*(X2t-iota2)) + sq_X2*np.dot(sigma1, dW)
-        X2[t] = max(X2[t-1] + mu22*(X2t-iota2)   + sq_X2*np.dot(sigma2, dW),  1e-9)
+        X1[t] = X1[t-1] + (μ11*(X1[t-1]-ι1) + μ12*(X2t-ι2)) + sq_X2*np.dot(σ1, dW)
+        X2[t] = max(X2[t-1] + μ22*(X2t-ι2) + sq_X2*np.dot(σ2, dW),  1e-9)
 
     burn = T // 5
     return X1[burn:], X2[burn:]
@@ -961,23 +961,23 @@ def simulate_lrr(dyn, T=600_000, seed=42):
 # Simulation under physical P
 print("Simulating under physical measure P ...")
 X1_P, X2_P = simulate_lrr(
-    dict(mu11=lrr_params['mu11'],  mu12=lrr_params['mu12'],
-         mu22=lrr_params['mu22'],  iota1=lrr_params['iota1'],
-         iota2=lrr_params['iota2'],
-         sigma1=lrr_params['sigma1'], sigma2=lrr_params['sigma2']),
+    dict(μ11=lrr_params['μ11'], μ12=lrr_params['μ12'],
+         μ22=lrr_params['μ22'], ι1=lrr_params['ι1'],
+         ι2=lrr_params['ι2'],
+         σ1=lrr_params['σ1'], σ2=lrr_params['σ2']),
     T=600_000
 )
 
-# Simulation under recovered measure P̂
-print("Simulating under recovered measure P̂ ...")
+# Simulation under recovered measure P_hat
+print("Simulating under recovered measure P_hat ...")
 X1_Ph, X2_Ph = simulate_lrr(
-    dict(mu11    = phat_dyn['mu_hat_11'],
-         mu12    = phat_dyn['mu_hat_12'],
-         mu22    = phat_dyn['mu_hat_22'],
-         iota1   = phat_dyn['iota_hat_1'],
-         iota2   = phat_dyn['iota_hat_2'],
-         sigma1  = lrr_params['sigma1'],
-         sigma2  = lrr_params['sigma2']),
+    dict(μ_hat_11=phat_dyn['μ_hat_11'],
+         μ_hat_12=phat_dyn['μ_hat_12'],
+         μ_hat_22=phat_dyn['μ_hat_22'],
+         ι_hat_1=phat_dyn['ι_hat_1'],
+         ι_hat_2=phat_dyn['ι_hat_2'],
+         σ1=lrr_params['σ1'],
+         σ2=lrr_params['σ2']),
     T=600_000
 )
 print("Done.")
@@ -988,12 +988,12 @@ print("Done.")
 def kde2d_contour(ax, X1, X2, levels=8, color='k', alpha=1.0, lw=1.5,
                   bandwidth=None):
     """Plot contour lines of a 2D kernel density estimate."""
-    xy     = np.vstack([X2, X1])
-    kde    = gaussian_kde(xy, bw_method=bandwidth)
-    x2g    = np.linspace(X2.min()*0.9, X2.max()*1.1, 120)
-    x1g    = np.linspace(X1.min()*0.9, X1.max()*1.1, 120)
+    xy = np.vstack([X2, X1])
+    kde = gaussian_kde(xy, bw_method=bandwidth)
+    x2g = np.linspace(X2.min()*0.9, X2.max()*1.1, 120)
+    x1g = np.linspace(X1.min()*0.9, X1.max()*1.1, 120)
     X2g, X1g = np.meshgrid(x2g, x1g)
-    Z      = kde(np.vstack([X2g.ravel(), X1g.ravel()])).reshape(X2g.shape)
+    Z = kde(np.vstack([X2g.ravel(), X1g.ravel()])).reshape(X2g.shape)
     ax.contour(X2g, X1g, Z, levels=levels, colors=color, alpha=alpha,
                linewidths=lw)
 
@@ -1001,30 +1001,30 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5), sharey=True)
 
 # Left panel: distribution under P
 kde2d_contour(ax1, X1_P, X2_P, color='navy', levels=7)
-ax1.set_xlabel('Conditional volatility  $X_2$', fontsize=11)
-ax1.set_ylabel('Mean growth rate  $X_1$',       fontsize=11)
-ax1.set_title(r'Physical measure  $P$', fontsize=12)
+ax1.set_xlabel('conditional volatility  $X_2$', fontsize=11)
+ax1.set_ylabel('mean growth rate  $X_1$', fontsize=11)
+ax1.set_title(r'physical measure  $P$', fontsize=12)
 
-# Right panel: distribution under P̂, plus outermost contour of P̄ (risk-neutral)
+# Right panel: distribution under P_hat, plus outermost contour of P_bar (risk-neutral)
 kde2d_contour(ax2, X1_Ph, X2_Ph, color='navy', levels=7)
-ax2.set_xlabel('Conditional volatility  $X_2$', fontsize=11)
-ax2.set_title(r'Long-term risk-neutral  $\hat{P}$', fontsize=12)
+ax2.set_xlabel('conditional volatility  $X_2$', fontsize=11)
+ax2.set_title(r'long-term risk-neutral  $\hat{P}$', fontsize=12)
 
 # Annotate distributional shifts
 for ax in (ax1, ax2):
     ax.axhline(0, color='grey', lw=0.8, ls='--')
-    ax.axvline(lrr_params['iota2'], color='grey', lw=0.8, ls='--')
+    ax.axvline(lrr_params['ι2'], color='grey', lw=0.8, ls='--')
 
-ax1.annotate(f"Mean X₁ ≈ {X1_P.mean():.4f}", xy=(0.05, 0.92),
+ax1.annotate(f"mean X1 ~ {X1_P.mean():.4f}", xy=(0.05, 0.92),
              xycoords='axes fraction', fontsize=9, color='navy')
-ax1.annotate(f"Mean X₂ ≈ {X2_P.mean():.4f}", xy=(0.05, 0.85),
+ax1.annotate(f"mean X2 ~ {X2_P.mean():.4f}", xy=(0.05, 0.85),
              xycoords='axes fraction', fontsize=9, color='navy')
-ax2.annotate(f"Mean X₁ ≈ {X1_Ph.mean():.4f}", xy=(0.05, 0.92),
+ax2.annotate(f"mean X1 ~ {X1_Ph.mean():.4f}", xy=(0.05, 0.92),
              xycoords='axes fraction', fontsize=9, color='navy')
-ax2.annotate(f"Mean X₂ ≈ {X2_Ph.mean():.4f}", xy=(0.05, 0.85),
+ax2.annotate(f"mean X2 ~ {X2_Ph.mean():.4f}", xy=(0.05, 0.85),
              xycoords='axes fraction', fontsize=9, color='navy')
 
-plt.suptitle('Stationary Distributions of $(X_1, X_2)$ Under $P$ and $\\hat{P}$\n'
+plt.suptitle('stationary distributions of $(X_1, X_2)$ under $P$ and $\\hat{P}$\n'
              '(reproducing Figure 1 of Borovička, Hansen & Scheinkman 2016)',
              fontsize=12, y=1.02)
 plt.tight_layout();  plt.show()
@@ -1061,52 +1061,52 @@ Two special cases are:
 - **$\theta = 1$**: $\lambda_1 = \tfrac{1}{2}\mathrm{Var}[\hat{H}_{t+1}/\hat{H}_t]$.
 
 ```{code-cell} ipython3
-def phi_theta(r, theta):
+def φ_θ(r, θ):
     """Discrepancy function φ_θ(r) = [(r)^{1+θ} - 1] / [θ(1+θ)]."""
-    if abs(theta) < 1e-10:      # θ → 0: relative entropy r log r
+    if abs(θ) < 1e-10:      # θ -> 0: relative entropy r log r
         return r * np.log(r)
-    if abs(theta + 1) < 1e-10:  # θ → -1: -log r
+    if abs(θ + 1) < 1e-10:  # θ -> -1: -log r
         return -np.log(r)
-    return (r**(1 + theta) - 1) / (theta * (1 + theta))
+    return (r**(1 + θ) - 1) / (θ * (1 + θ))
 
 
-def martingale_entropy(Q, P, theta=-1):
+def martingale_entropy(Q, P, θ=-1):
     """
-    Compute the stationary-average discrepancy E[φ_θ(ĥ)] for the finite-state chain.
+    Compute the stationary-average discrepancy E[φ_θ(h_hat)] for the finite-state chain.
     """
-    _, exp_eta, e_hat, P_hat = perron_frobenius(Q)
-    H_incr   = np.where(P > 0, P_hat / P, 1.0)  # ĥ_ij
-    pi_hat   = stationary_dist(P_hat)
+    _, exp_η, e_hat, P_hat = perron_frobenius(Q)
+    H_incr = np.where(P > 0, P_hat / P, 1.0)  # h_hat_ij
+    π_hat = stationary_dist(P_hat)
 
-    # Stationary-average: Σ_i Σ_j π̂_i ĥ_ij p_ij  φ_θ(ĥ_ij)
+    # Stationary-average: sum_i sum_j π_hat_i h_hat_ij p_ij  φ_θ(h_hat_ij)
     disc = 0.0
     for i in range(P.shape[0]):
         for j in range(P.shape[1]):
             if P[i, j] > 0:
-                disc += pi_hat[i] * P[i, j] * phi_theta(H_incr[i, j], theta)
+                disc += π_hat[i] * P[i, j] * φ_θ(H_incr[i, j], θ)
     return disc
 
 
 # Compute entropy for different γ values
-gammas_ent = np.linspace(1.0, 10.0, 50)  # gamma=1 handled by solve_ez_finite
-entropies  = {'θ=-1 (neg. log)': [], 'θ=0 (rel. entropy)': [], 'θ=1 (variance/2)': []}
+γs_ent = np.linspace(1.0, 10.0, 50)  # γ=1 handled by solve_ez_finite
+entropies = {'θ=-1 (neg. log)': [], 'θ=0 (rel. entropy)': [], 'θ=1 (variance/2)': []}
 
-for gam in gammas_ent:
-    v_g, _, S_g = solve_ez_finite(P_phys, c_levels, delta, gam, gc_ex)
-    Q_g         = S_g * P_phys
-    for theta, key in [(-1, 'θ=-1 (neg. log)'), (0, 'θ=0 (rel. entropy)'),
-                        (1, 'θ=1 (variance/2)')]:
-        entropies[key].append(martingale_entropy(Q_g, P_phys, theta=theta))
+for γ_val in γs_ent:
+    v_g, _, S_g = solve_ez_finite(P_phys, c_levels, δ, γ_val, gc_ex)
+    Q_g = S_g * P_phys
+    for θ, key in [(-1, 'θ=-1 (neg. log)'), (0, 'θ=0 (rel. entropy)'),
+                   (1, 'θ=1 (variance/2)')]:
+        entropies[key].append(martingale_entropy(Q_g, P_phys, θ=θ))
 
 fig, ax = plt.subplots(figsize=(8, 4.5))
 colors_ent = ['firebrick', 'darkorange', 'steelblue']
 for (label, vals), col in zip(entropies.items(), colors_ent):
-    ax.plot(gammas_ent, vals, label=label, color=col, lw=2)
+    ax.plot(γs_ent, vals, label=label, color=col, lw=2)
 
-ax.set_xlabel('Risk aversion  γ')
+ax.set_xlabel('risk aversion  γ')
 ax.set_ylabel(r'$E[\phi_\theta(\hat{H}_{t+1}/\hat{H}_t)]$')
-ax.set_title('Discrepancy Measures for the Martingale Component\n'
-             '(larger values ↔ larger deviation from Ross recovery)')
+ax.set_title('discrepancy measures for the martingale component\n'
+             '(larger values <-> larger deviation from Ross recovery)')
 ax.legend(fontsize=9)
 plt.tight_layout();  plt.show()
 ```
@@ -1155,18 +1155,18 @@ Q2 = np.array([[0.72, 0.15],
 
 P_bar2, q_bonds2 = risk_neutral_probs(Q2)
 
-print("Risk-neutral transition matrix P̄:")
+print("Risk-neutral transition matrix P_bar:")
 print(np.round(P_bar2, 4))
 print(f"\nRow sums: {P_bar2.sum(axis=1)}")
-print(f"\nOne-period bond prices q̄ᵢ: {q_bonds2}")
+print(f"\nOne-period bond prices q_bar_i: {q_bonds2}")
 print(f"Annualized risk-free rates: {(-np.log(q_bonds2)*12).round(4)}")
 
 # Verify SDF independence from j
 S2 = Q2 / P2
 print(f"\nSDF matrix S = Q/P:")
 print(np.round(S2, 4))
-print("Row 0: all entries should equal q̄₀ =", round(q_bonds2[0], 4))
-print("Row 1: all entries should equal q̄₁ =", round(q_bonds2[1], 4))
+print("Row 0: all entries should equal q_bar0 =", round(q_bonds2[0], 4))
+print("Row 1: all entries should equal q_bar1 =", round(q_bonds2[1], 4))
 ```
 
 ```{solution-end}
@@ -1194,45 +1194,45 @@ vector $\hat{\boldsymbol{\pi}}$ depends on the risk aversion parameter $\gamma$.
 
 ```{code-cell} ipython3
 # Exercise 2 solution
-gammas_ex2 = [1, 2, 5, 10, 15]
-all_pi = []
+γs_ex2 = [1, 2, 5, 10, 15]
+all_π = []
 
-for gam in gammas_ex2:
+for γ_val in γs_ex2:
     Q_g = np.zeros((3, 3))
     for i in range(3):
         for j in range(3):
-            Q_g[i, j] = delta * (c_levels[j]/c_levels[i])**(-gam) * P_phys[i, j]
+            Q_g[i, j] = δ * (c_levels[j]/c_levels[i])**(-γ_val) * P_phys[i, j]
     _, _, _, Ph_g = perron_frobenius(Q_g)
-    all_pi.append(stationary_dist(Ph_g))
+    all_π.append(stationary_dist(Ph_g))
 
 fig, ax = plt.subplots(figsize=(10, 4.5))
-x   = np.arange(3)
-w   = 0.13
-colors_g = plt.cm.Blues(np.linspace(0.3, 0.9, len(gammas_ex2)))
+x = np.arange(3)
+w = 0.13
+colors_g = plt.cm.Blues(np.linspace(0.3, 0.9, len(γs_ex2)))
 
 # Physical distribution
-bars = ax.bar(x - 3*w, pi_phys, width=w, color='grey', alpha=0.7, label='Physical P')
-for b_, v in zip(bars, pi_phys):
+bars = ax.bar(x - 3*w, π_phys, width=w, color='grey', alpha=0.7, label='physical P')
+for b_, v in zip(bars, π_phys):
     ax.text(b_.get_x()+w/2, v+0.005, f'{v:.3f}', ha='center', va='bottom', fontsize=7)
 
-for k, (gam, pi_g, col) in enumerate(zip(gammas_ex2, all_pi, colors_g)):
-    bars = ax.bar(x + (k-1.5)*w, pi_g, width=w, color=col,
-                  label=f'γ={gam}')
-    for b_, v in zip(bars, pi_g):
+for k, (γ_val, π_g, col) in enumerate(zip(γs_ex2, all_π, colors_g)):
+    bars = ax.bar(x + (k-1.5)*w, π_g, width=w, color=col,
+                  label=f'γ={γ_val}')
+    for b_, v in zip(bars, π_g):
         ax.text(b_.get_x()+w/2, v+0.005, f'{v:.3f}',
                 ha='center', va='bottom', fontsize=7)
 
 ax.set_xticks(x);  ax.set_xticklabels(state_names)
-ax.set_ylabel('Stationary probability')
-ax.set_title(r'Stationary distribution of $\hat{P}$ for varying risk aversion $\gamma$')
+ax.set_ylabel('stationary probability')
+ax.set_title(r'stationary distribution of $\hat{P}$ for varying risk aversion $\gamma$')
 ax.legend(fontsize=8, loc='upper right')
 plt.tight_layout();  plt.show()
 
-# Part 3: find γ where recession probability under P̂ exceeds 50%
-gammas_fine = np.linspace(1, 30, 200)
+# Part 3: find γ where recession probability under P_hat exceeds 50%
+γs_fine = np.linspace(1, 30, 200)
 rec_probs = []
-for gam in gammas_fine:
-    Q_g = np.array([[delta*(c_levels[j]/c_levels[i])**(-gam)*P_phys[i,j]
+for γ_val in γs_fine:
+    Q_g = np.array([[δ*(c_levels[j]/c_levels[i])**(-γ_val)*P_phys[i,j]
                      for j in range(3)] for i in range(3)])
     _, _, _, Ph_g = perron_frobenius(Q_g)
     rec_probs.append(stationary_dist(Ph_g)[0])
@@ -1240,9 +1240,9 @@ for gam in gammas_fine:
 # Interpolate crossing point
 idx50 = np.where(np.array(rec_probs) > 0.5)[0]
 if len(idx50) > 0:
-    print(f"\nRecession prob under P̂ exceeds 50% at approximately γ ≈ {gammas_fine[idx50[0]]:.1f}")
+    print(f"\nRecession prob under P_hat exceeds 50% at approximately γ ~ {γs_fine[idx50[0]]:.1f}")
 else:
-    print(f"\nRecession prob under P̂ does not exceed 50% for γ ≤ 30")
+    print(f"\nRecession prob under P_hat does not exceed 50% for γ <= 30")
     print(f"  Maximum recession prob = {max(rec_probs):.4f} at γ = 30")
 ```
 
@@ -1269,51 +1269,51 @@ parameters fixed at their calibrated values).
 
 ```{code-cell} ipython3
 # Exercise 3 solution
-gammas_lrr = np.linspace(2.0, 18.0, 40)
-iota_hat_1_vals = []
-iota_hat_2_vals = []
-eta_hat_vals    = []
+γs_lrr = np.linspace(2.0, 18.0, 40)
+ι_hat_1_vals = []
+ι_hat_2_vals = []
+η_hat_vals = []
 
-p_copy = dict(lrr_params)  # copy to modify gamma
+p_copy = dict(lrr_params)  # copy to modify γ
 
-for gam in gammas_lrr:
-    p_copy['gamma'] = gam
+for γ_val in γs_lrr:
+    p_copy['γ'] = γ_val
     try:
         v1g, v2g, A_g, _ = solve_value_function(p_copy)
-        e1g, e2g, eta_g, alpha_sg = solve_pf_lrr(p_copy, v1g, v2g, A_g)
-        dyn_g = compute_phat_dynamics(p_copy, e1g, e2g, alpha_sg)
-        iota_hat_1_vals.append(dyn_g['iota_hat_1'])
-        iota_hat_2_vals.append(dyn_g['iota_hat_2'])
-        eta_hat_vals.append(eta_g)
+        e1g, e2g, η_g, α_sg = solve_pf_lrr(p_copy, v1g, v2g, A_g)
+        dyn_g = compute_phat_dynamics(p_copy, e1g, e2g, α_sg)
+        ι_hat_1_vals.append(dyn_g['ι_hat_1'])
+        ι_hat_2_vals.append(dyn_g['ι_hat_2'])
+        η_hat_vals.append(η_g)
     except Exception:
-        iota_hat_1_vals.append(np.nan)
-        iota_hat_2_vals.append(np.nan)
-        eta_hat_vals.append(np.nan)
+        ι_hat_1_vals.append(np.nan)
+        ι_hat_2_vals.append(np.nan)
+        η_hat_vals.append(np.nan)
 
 fig, axes = plt.subplots(1, 3, figsize=(14, 4))
 
-axes[0].plot(gammas_lrr, iota_hat_1_vals, color='steelblue', lw=2.5)
-axes[0].axhline(lrr_params['iota1'], ls='--', color='grey', lw=1.5,
-                label=f"Physical ι₁ = {lrr_params['iota1']}")
-axes[0].set_xlabel('Risk aversion  γ');  axes[0].set_ylabel(r'$\hat{\iota}_1$')
-axes[0].set_title('Long-run mean of $X_1$ under $\\hat{P}$\n(↓ = lower expected growth)')
+axes[0].plot(γs_lrr, ι_hat_1_vals, color='steelblue', lw=2.5)
+axes[0].axhline(lrr_params['ι1'], ls='--', color='grey', lw=1.5,
+                label=f"physical ι1 = {lrr_params['ι1']}")
+axes[0].set_xlabel('risk aversion  γ');  axes[0].set_ylabel(r'$\hat{\iota}_1$')
+axes[0].set_title('long-run mean of $X_1$ under $\\hat{P}$\n(down = lower expected growth)')
 axes[0].legend(fontsize=9)
 
-axes[1].plot(gammas_lrr, iota_hat_2_vals, color='firebrick', lw=2.5)
-axes[1].axhline(lrr_params['iota2'], ls='--', color='grey', lw=1.5,
-                label=f"Physical ι₂ = {lrr_params['iota2']}")
-axes[1].set_xlabel('Risk aversion  γ');  axes[1].set_ylabel(r'$\hat{\iota}_2$')
-axes[1].set_title('Long-run mean of $X_2$ under $\\hat{P}$\n(↑ = higher expected volatility)')
+axes[1].plot(γs_lrr, ι_hat_2_vals, color='firebrick', lw=2.5)
+axes[1].axhline(lrr_params['ι2'], ls='--', color='grey', lw=1.5,
+                label=f"physical ι2 = {lrr_params['ι2']}")
+axes[1].set_xlabel('risk aversion  γ');  axes[1].set_ylabel(r'$\hat{\iota}_2$')
+axes[1].set_title('long-run mean of $X_2$ under $\\hat{P}$\n(up = higher expected volatility)')
 axes[1].legend(fontsize=9)
 
-axes[2].plot(gammas_lrr, np.array(eta_hat_vals)*12, color='purple', lw=2.5)
-axes[2].set_xlabel('Risk aversion  γ');  axes[2].set_ylabel(r'Annualized $\hat{\eta}$')
-axes[2].set_title('Long-run discount rate $\\hat{\\eta}$\n(more negative = higher long-run yield)')
+axes[2].plot(γs_lrr, np.array(η_hat_vals)*12, color='purple', lw=2.5)
+axes[2].set_xlabel('risk aversion  γ');  axes[2].set_ylabel(r'annualized $\hat{\eta}$')
+axes[2].set_title('long-run discount rate $\\hat{\\eta}$\n(more negative = higher long-run yield)')
 
 plt.tight_layout();  plt.show()
 
-print("Higher γ → more negative ι̂₁ (P̂ expects lower growth than P)")
-print("Higher γ → higher ι̂₂ (P̂ expects higher volatility than P)")
+print("Higher γ -> more negative ι_hat1 (P_hat expects lower growth than P)")
+print("Higher γ -> higher ι_hat2 (P_hat expects higher volatility than P)")
 ```
 
 ```{solution-end}
@@ -1373,29 +1373,29 @@ Hence $\hat{h}_{ij} = \hat{p}_{ij}/p_{ij} = 1$ for all $(i,j)$.
 # Exercise 4 numerical verification
 # Use trend-stationary power utility (Section "When Does Recovery Succeed?")
 gc_ex4 = 0.002
-S_ts   = np.zeros((3, 3))
+S_ts = np.zeros((3, 3))
 for i in range(3):
     for j in range(3):
-        S_ts[i, j] = np.exp(-delta - gamma*gc_ex4) * (c_levels[j]/c_levels[i])**(-gamma)
+        S_ts[i, j] = np.exp(-δ - γ*gc_ex4) * (c_levels[j]/c_levels[i])**(-γ)
 
 Q_ts = S_ts * P_phys
 
 # Perron-Frobenius
-_, exp_eta_ts, e_hat_ts, P_hat_ts = perron_frobenius(Q_ts)
+_, exp_η_ts, e_hat_ts, P_hat_ts = perron_frobenius(Q_ts)
 
-# Check eigenvector is proportional to c^gamma
-e_theory = c_levels**gamma
+# Check eigenvector is proportional to c^γ
+e_theory = c_levels**γ
 e_theory /= e_theory.sum()
 
-print("Computed eigenvector ê:", np.round(e_hat_ts, 6))
-print("Theoretical cʸ / norm: ", np.round(e_theory, 6))
+print("Computed eigenvector e_hat:", np.round(e_hat_ts, 6))
+print("Theoretical c^γ / norm: ", np.round(e_theory, 6))
 print(f"Max discrepancy: {np.abs(e_hat_ts - e_theory).max():.2e}")
 
 H_ts = np.where(P_phys > 0, P_hat_ts / P_phys, 0.0)
-print(f"\nMartingale increment matrix ĥ:")
+print(f"\nMartingale increment matrix h_hat:")
 print(np.round(H_ts, 6))
-print(f"Max |ĥ_ij - 1|: {np.abs(H_ts[P_phys>0] - 1).max():.2e}")
-print("→ Recovery is exact for trend-stationary power utility.")
+print(f"Max |h_hat_ij - 1|: {np.abs(H_ts[P_phys>0] - 1).max():.2e}")
+print("-> Recovery is exact for trend-stationary power utility.")
 ```
 
 ```{solution-end}
