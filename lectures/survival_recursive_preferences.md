@@ -315,7 +315,7 @@ subject to $z^1 + z^2 \leq 1$.
 
 The first line is the flow payoff from the two agents' felicity functions.
 
-The second line multiplies $\tilde{J}(\upsilon)$ by a term that combines the agents' discount rates, belief-weighted endowment drift, and a variance correction — these arise from absorbing the $Y^{1-\gamma}$ factor via Itô's lemma.
+The second line multiplies $\tilde{J}(\upsilon)$ by a term that combines the agents' discount rates, belief-weighted endowment drift, and a variance correction -- these arise from absorbing the $Y^{1-\gamma}$ factor via Itô's lemma.
 
 The third line multiplies $\tilde{J}'(\upsilon)$ by the drift of the Pareto share, which depends on the difference in discount rates and the belief-weighted response to endowment risk.
 
@@ -387,7 +387,7 @@ $$ (eq:wealth_decomp)
 
 The first term measures how much faster agent 1's portfolio grows.
 
-The second measures how much less agent 1 consumes out of wealth — a lower consumption-wealth ratio means more saving and faster wealth accumulation.
+The second measures how much less agent 1 consumes out of wealth -- a lower consumption-wealth ratio means more saving and faster wealth accumulation.
 
 When this total difference is positive, agent 1 survives; when negative, she shrinks toward extinction.
 
@@ -508,7 +508,7 @@ $$
 = \frac{1-\rho}{\rho} \left[(\omega^1 - \omega^2)\sigma_Y + \frac{(\omega^1 - \omega^2)^2}{2\gamma}\right]
 $$ (eq:consumption_rates)
 
-The term in brackets is the difference in *subjective* expected portfolio returns — what agent 1 believes she earns relative to agent 2.
+The term in brackets is the difference in *subjective* expected portfolio returns -- what agent 1 believes she earns relative to agent 2.
 
 The factor $(1-\rho)/\rho$ translates this perceived return advantage into a saving response.
 
@@ -772,8 +772,8 @@ plt.show()
 
 Each panel plots two curves in the $(\gamma, \rho)$ plane for a different value of agent 1's belief distortion $\omega^1$ (agent 2 has correct beliefs, $\omega^2 = 0$).
 
-- The dashed curve (blue) is where the boundary drift at $\upsilon = 0$ equals zero — condition (i) in {prf:ref}`survival_conditions`.
-- The solid curve (red) is where the boundary drift at $\upsilon = 1$ equals zero — condition (ii).
+- The dashed curve (blue) is where the boundary drift at $\upsilon = 0$ equals zero -- condition (i) in {prf:ref}`survival_conditions`.
+- The solid curve (red) is where the boundary drift at $\upsilon = 1$ equals zero -- condition (ii).
 - The shaded region between the two curves is where both agents survive.
 - The dotted diagonal $\gamma = \rho$ is the separable CRRA case, along which the agent with more accurate beliefs always dominates.
 
@@ -937,7 +937,7 @@ This is outcome (d) in {prf:ref}`survival_conditions`: neither boundary is repel
 
 As $\gamma$ increases past roughly 1, the blue curve crosses zero and becomes positive while the red curve stays negative.
 
-Now both boundaries are repelling and we enter the coexistence region — outcome (a).
+Now both boundaries are repelling and we enter the coexistence region -- outcome (a).
 
 ## The separable case
 
@@ -1004,7 +1004,7 @@ This figure simulates 20 sample paths of the Pareto share $\upsilon_t$ under sep
 
 Agent 2 has correct beliefs, so the log-odds drift is negative and all paths trend toward $\upsilon = 0$.
 
-Agent 1 is driven to extinction — the classical market-selection result of {cite:t}`Blume_Easley2006`.
+Agent 1 is driven to extinction -- the classical market-selection result of {cite:t}`Blume_Easley2006`.
 
 ## Asset pricing implications
 
@@ -1227,7 +1227,7 @@ plt.show()
 
 The left panel shows 20 sample paths of the Pareto share $\upsilon_t$ under parameters inside the coexistence region ($\omega^1 = 0.25$, $\omega^2 = 0$, $\gamma = 5$, IES $\approx 1.49$).
 
-Unlike the separable case in {numref}`fig-crra-pareto-paths`, the paths do not drift to zero — they repeatedly visit a wide range of values, bouncing between the two repelling boundaries.
+Unlike the separable case in {numref}`fig-crra-pareto-paths`, the paths do not drift to zero -- they repeatedly visit a wide range of values, bouncing between the two repelling boundaries.
 
 The right panel approximates the stationary density by pooling the second half of longer simulations.
 

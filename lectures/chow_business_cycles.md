@@ -351,9 +351,9 @@ The second equation is the discrete Lyapunov equation for $\Gamma_0$.
 > But in reality the cycles ... are generally not damped.
 > How can the maintenance of the swings be explained?
 > ... One way which I believe is particularly fruitful and promising is to study what would become of the solution of a determinate dynamic system if it were exposed to a stream of erratic shocks ...
-> Thus, by connecting the two ideas: (1) the continuous solution of a determinate dynamic system and (2) the discontinuous shocks intervening and supplying the energy that may maintain the swings—we get a theoretical setup which seems to furnish a rational interpretation of those movements which we have been accustomed to see in our statistical time data.
+> Thus, by connecting the two ideas: (1) the continuous solution of a determinate dynamic system and (2) the discontinuous shocks intervening and supplying the energy that may maintain the swings--we get a theoretical setup which seems to furnish a rational interpretation of those movements which we have been accustomed to see in our statistical time data.
 >
-> — Ragnar Frisch (1933) {cite}`frisch33`
+> -- Ragnar Frisch (1933) {cite}`frisch33`
 
 Chow's main insight is that oscillations in the deterministic system are *neither necessary nor sufficient* for producing "cycles" in the stochastic system.
 
@@ -1408,7 +1408,7 @@ plt.show()
 
 As $v$ increases, eigenvalues approach the unit circle: oscillations become more persistent in the time domain (left), and the spectral peak becomes sharper in the frequency domain (right).
 
-Complex roots produce a pronounced peak at interior frequencies—the spectral signature of business cycles.
+Complex roots produce a pronounced peak at interior frequencies--the spectral signature of business cycles.
 
 ```{solution-end}
 ```

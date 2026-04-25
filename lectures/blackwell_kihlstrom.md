@@ -962,7 +962,7 @@ The Blackwell order says that, absent costs, more information is always better f
 
 With costs, the consumer chooses quality investment $\theta$ to maximize *net value*.
 
-If quality investment translates into experiment accuracy with diminishing returns — say, accuracy $\phi(\theta) = 1 - e^{-a\theta}$ for a rate parameter $a$ — then the marginal value of information eventually decreases in $\theta$.
+If quality investment translates into experiment accuracy with diminishing returns -- say, accuracy $\phi(\theta) = 1 - e^{-a\theta}$ for a rate parameter $a$ -- then the marginal value of information eventually decreases in $\theta$.
 
 With a convex cost $c(\theta) = c \, \theta^2$, the increasing marginal cost eventually overtakes the declining marginal value, producing an interior optimum.
 

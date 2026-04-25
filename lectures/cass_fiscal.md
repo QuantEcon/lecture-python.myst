@@ -1133,7 +1133,7 @@ and capital stock across time:
     - The jump in $\tau_c$ depresses $\bar{R}$ below $1$, causing a *sharp drop in consumption*.
 - After $T = 10$:
     - The effects of anticipated distortion are over, and the economy gradually adjusts to the lower capital stock.
-    - Capital must now rise, requiring *austerity* —consumption plummets after $t = T$,  indicated by  lower levels of consumption.
+    - Capital must now rise, requiring *austerity* --consumption plummets after $t = T$,  indicated by  lower levels of consumption.
     - The interest rate gradually declines, and consumption grows at a diminishing rate along the path to the terminal steady-state.
 
 +++
