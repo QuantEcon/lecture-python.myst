@@ -20,7 +20,7 @@ kernelspec:
 </div>
 ```
 
-# Misspecified Recovery
+# Misspecified recovery
 
 ```{contents} Contents
 :depth: 2
@@ -28,829 +28,694 @@ kernelspec:
 
 ## Overview
 
-Asset prices are forward-looking: they encode investors' expectations about future
-economic states and their valuations of different risks.
+The lecture {doc}`ross_recovery` studies conditions under which recovery is valid.
 
-A long-standing question in finance is whether one can *recover* the probability
-distribution used by investors -- their subjective beliefs -- from observed asset prices
-alone.
+There, **transition independence** lets us use Arrow prices to separate investors'
+beliefs from the pricing kernel.
 
-{cite:t}`BorovickaHansenScheinkman2016` study the challenge of separating investors'
-beliefs from their risk preferences using **Perron–Frobenius theory**.
+This lecture asks what the same Perron--Frobenius calculation delivers when transition
+independence fails.
 
-Their key finding is that Perron–Frobenius theory applied to Arrow prices recovers a
-**long-term risk-neutral measure** that absorbs all long-horizon risk adjustments.
+{cite:t}`BorovickaHansenScheinkman2016` show that the stochastic discount factor can be
+decomposed into three pieces: a deterministic long-run discount component, a
+state-dependent eigenfunction ratio, and a martingale likelihood ratio.
 
-This recovered measure coincides with investors' subjective beliefs only under a
-stringent -- and often empirically implausible -- restriction on the stochastic discount
-factor.
+The first two pieces are exactly what the Perron--Frobenius eigenpair can absorb.
 
-After completing this lecture you will be able to:
+The martingale piece is different: it changes the probability measure.
 
-- Explain why Arrow prices alone cannot identify both transition probabilities and stochastic
-  discount factors without additional restrictions.
-- Construct **risk-neutral** and **long-term risk-neutral** transition matrices from Arrow
-  prices using the Perron–Frobenius eigenvalue–eigenvector decomposition.
-- Decompose any stochastic discount factor process into a trend component, a state-dependent
-  component, and a **martingale component**, and explain what the martingale encodes.
-- Identify the exact condition under which {cite}`Ross2015`'s Recovery Theorem succeeds,
-  and show that this condition fails in empirically relevant models with recursive utility
-  or permanent consumption shocks.
-- Simulate the {cite}`Bansal_Yaron_2004` long-run risk model and compare the stationary
-  distributions under the physical and recovered probability measures.
+In their words, it produces a probability measure that "absorbs long-term risk
+adjustments" {cite}`BorovickaHansenScheinkman2016`.
 
-### Related lectures
+Thus the probabilities recovered from Arrow prices need not be the correctly specified
+transition probabilities for the state process.
 
-- {doc}`affine_risk_prices`: affine models of the stochastic discount factor and term structure.
-- {doc}`markov_asset`: Markov asset pricing and stationary equilibria.
-- {doc}`harrison_kreps`: risk-neutral pricing and the change-of-measure approach.
+Instead, they can already include compensation for long-run risk.
 
-## Setup
+The likelihood ratio between the recovered probabilities and the correctly specified
+probabilities is the martingale component.
+
+If that martingale is constant, Ross recovery returns the correctly specified
+transition probabilities.
+
+If it is not constant, the recovered measure embeds long-horizon risk adjustments.
+
+In the examples below, this typically shifts probability toward adverse long-run-risk
+states, so the recovered measure looks more pessimistic than the correctly specified
+probability law.
+
+We will:
+
+- use results from {doc}`ross_recovery` without re-proving it,
+- diagnose misspecification through the likelihood-ratio martingale,
+- show why recursive utility and permanent shocks break recovery,
+- measure the difference in a long-run risk model.
 
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 from scipy import linalg
+from scipy.integrate import solve_ivp
 from scipy.stats import gaussian_kde
-import warnings
-warnings.filterwarnings('ignore')
-
-plt.rcParams.update({
-    'axes.spines.top': False,
-    'axes.spines.right': False,
-    'font.size': 11,
-    'figure.dpi': 110,
-})
 ```
 
-## Arrow prices and the identification challenge
-
-### Arrow prices and stochastic discount factors
-
-Consider a discrete-time economy with an $n$-state Markov chain $\{X_t\}$ governed by
-transition matrix $\mathbf{P} = [p_{ij}]$.
-
-An **Arrow price** $q_{ij}$ is the date-$t$ price of a claim that pays $\$1$ tomorrow in
-state $j$ given that the current state is $i$.
-
-Collect these prices in a matrix $\mathbf{Q} = [q_{ij}]$.
-
-A **stochastic discount factor** (SDF) $s_{ij}$ prices risk by discounting the payoff in
-state $j$ tomorrow when today's state is $i$.
-
-Arrow prices and the SDF are linked by
-
-$$
-q_{ij} = s_{ij} \, p_{ij}.
-$$
-
-Given $\mathbf{Q}$, any pair $(\mathbf{S}, \mathbf{P})$ satisfying
-$q_{ij} = s_{ij} p_{ij}$ for all $(i,j)$ is consistent with the observed prices.
-
-The fundamental identification problem is that $\mathbf{Q}$ has $n^2$ entries,
-$\mathbf{P}$ has $n(n-1)$ free entries (rows sum to one), and $\mathbf{S}$ has $n^2$
-free entries -- so there are far more unknowns than equations.
-
-To make progress, we can impose restrictions on the SDF.
-
-Two classical restrictions are studied in the sections that follow.
-
-### A three-state illustration
-
-To build intuition, we work with a three-state Markov chain representing **recession**,
-**normal**, and **expansion** phases of the business cycle.
-
-The physical transition matrix and consumption levels are:
+The next cell contains code inherited from the previous lecture: row-normalizing Arrow
+prices, finding a positive Perron pair, and computing stationary distributions.
 
 ```{code-cell} ipython3
-P_phys = np.array([
-    [0.70, 0.25, 0.05],   # from recession
-    [0.15, 0.65, 0.20],   # from normal
-    [0.05, 0.30, 0.65],   # from expansion
-])
+:tags: [hide-input]
 
-c_levels = np.array([0.85, 1.00, 1.15])
-state_names = ['recession', 'normal', 'expansion']
-
-δ = -np.log(0.99)  # monthly subjective discount rate, so exp(-δ) = 0.99
-γ = 5.0     # coefficient of relative risk aversion
-
-n = len(c_levels)
-Q_mat = np.zeros((n, n))
-for i in range(n):
-    for j in range(n):
-        Q_mat[i, j] = np.exp(-δ) * (c_levels[j] / c_levels[i])**(-γ) * P_phys[i, j]
-
-print("Arrow price matrix Q")
-print(np.round(Q_mat, 5))
-print("Risk-free discount factors:", Q_mat.sum(axis=1).round(5))
-```
-
-## Risk-neutral probabilities
-
-The **risk-neutral restriction** sets
-
-$$
-\bar{s}_{i,j} = \bar{q}_i
-$$
-
-where $\bar{q}_i = \sum_j q_{ij}$ is the price of a one-period discount bond in state
-$i$.
-
-Under this restriction all future states are discounted equally from state $i$, so risk
-adjustments depend only on the current state.
-
-The resulting risk-neutral probabilities are
-
-$$
-\bar{p}_{ij} = \frac{q_{ij}}{\bar{q}_i}.
-$$
-
-```{code-cell} ipython3
 def risk_neutral_probs(Q):
     """Normalize Arrow prices by one-period bond prices."""
     q_bonds = Q.sum(axis=1)
-    P_bar = Q / q_bonds[:, np.newaxis]
+    P_bar = Q / q_bonds[:, None]
     return P_bar, q_bonds
 
 
-P_bar, q_bonds = risk_neutral_probs(Q_mat)
-
-print("One-period bond prices:")
-for i, (s, qb) in enumerate(zip(state_names, q_bonds)):
-    print(f"  {s:12s}: {qb:.5f}  (annualized yield ~ {-np.log(qb)*12:.2%})")
-
-print("\nRisk-neutral P_bar:")
-print(np.round(P_bar, 4))
-print("Row sums:", P_bar.sum(axis=1))
-```
-
-```{note}
-Risk-neutral probabilities absorb **one-period** (short-run) risk adjustments.
-
-They are widely used in financial engineering but are generally *not* equal to
-investors' beliefs.
-
-When short-term interest rates vary across states, risk-neutral probabilities are also
-horizon-dependent: the $t$-period forward measure differs from $\bar{\mathbf{P}}^t$.
-```
-
-## Long-term risk-neutral probabilities: Perron–Frobenius theory
-
-### The eigenvalue problem
-
-The long-term behavior of discount factors is governed by a different restriction.
-
-**Long-term risk pricing** sets
-
-$$
-\hat{s}_{ij} = \exp(\hat{\eta}) \frac{\hat{e}_i}{\hat{e}_j}
-$$
-
-for a scalar $\hat{\eta}$ and a vector of positive numbers $\{\hat{e}_i\}$.
-
-Substituting into $q_{ij} = s_{ij} p_{ij}$ gives:
-
-$$
-\hat{p}_{ij} = \exp(-\hat{\eta}) \, q_{ij} \, \frac{\hat{e}_j}{\hat{e}_i}.
-$$
-
-For $\hat{\mathbf{P}}$ to be a valid transition matrix (rows summing to one), we need
-$\sum_j \hat{p}_{ij} = 1$, which requires
-
-$$
-\sum_j q_{ij} \hat{e}_j = \exp(\hat{\eta}) \hat{e}_i, \quad \text{i.e.,} \quad \mathbf{Q} \hat{\mathbf{e}} = \exp(\hat{\eta}) \hat{\mathbf{e}}.
-$$
-
-This is an **eigenvalue–eigenvector problem** for the Arrow price matrix $\mathbf{Q}$.
-
-The next theorem is the mathematical reason this construction is well defined.
-
-It is not yet a theorem about recovering investors' true beliefs.
-
-Instead, it proves that a positive pricing operator has one distinguished positive
-eigenvalue-eigenvector pair.
-
-The proof idea, stated informally, is that a positive matrix maps the positive cone back
-into itself.
-
-Repeatedly applying the matrix and renormalizing pushes all positive vectors toward the
-same ray; the expansion rate along that ray is the Perron root.
-
-In this lecture we use that ray to define the state-dependent component
-$\hat{\mathbf e}$ and use the expansion rate to define the long-run discount rate
-$\hat{\eta}$.
-
-```{prf:theorem} Perron--Frobenius
-:label: thm-pf-mis
-
-If $A$ is a matrix with strictly positive entries, then
-
-1. $A$ has a unique largest positive real eigenvalue $r$ (the Perron root).
-2. There exists a strictly positive eigenvector $e \gg 0$ with $Ae = re$, unique up to scaling.
-```
-
-By {prf:ref}`thm-pf-mis`, the eigenvalue problem for $\mathbf{Q}$ has a unique solution.
-
-What has been proved at this stage is uniqueness of the long-term risk-neutral
-construction, not equality between $\hat{\mathbf P}$ and the physical transition matrix
-$\mathbf P$.
-
-This gives a unique construction:
-
-1. Solve $\mathbf{Q} \hat{\mathbf{e}} = \exp(\hat{\eta}) \hat{\mathbf{e}}$ for the
-   dominant eigenvalue–eigenvector pair.
-2. Set $\hat{p}_{ij} = \exp(-\hat{\eta}) \, q_{ij} \, \hat{e}_j / \hat{e}_i$.
-
-{cite:t}`BorovickaHansenScheinkman2016` call the resulting $\hat{\mathbf{P}}$ the
-**long-term risk-neutral measure** because, under $\hat{\mathbf{P}}$, the long-horizon
-risk premia on stochastically growing cash flows are identically zero.
-
-### Python implementation
-
-```{code-cell} ipython3
 def perron_frobenius(Q):
-    """Return the Perron root, eigenvector, and long-term risk-neutral matrix."""
+    """Positive Perron pair and induced long-term risk-neutral transition matrix."""
     eigenvalues, eigenvectors = linalg.eig(Q)
+    eigenvalues = np.real_if_close(eigenvalues, tol=1000)
+    eigenvectors = np.real_if_close(eigenvectors, tol=1000)
 
-    # Use the positive Perron eigenpair and discard numerical complex roots.
     real_mask = np.isreal(eigenvalues)
-    real_eigenvalues = eigenvalues[real_mask].real
-    real_eigenvectors = eigenvectors[:, real_mask].real
+    vals = np.asarray(eigenvalues[real_mask].real, dtype=float)
+    vecs = np.asarray(eigenvectors[:, real_mask].real, dtype=float)
 
-    idx = np.argmax(real_eigenvalues)
-    exp_η = real_eigenvalues[idx]
-    e_hat = real_eigenvectors[:, idx]
+    for idx in np.argsort(vals)[::-1]:
+        exp_eta = vals[idx]
+        e = vecs[:, idx]
+        if e.sum() < 0:
+            e = -e
+        if exp_eta > 0 and np.all(e > 0):
+            break
+    else:
+        raise ValueError("No strictly positive Perron eigenvector found")
 
-    if e_hat.sum() < 0:
-        e_hat = -e_hat
-    if np.any(e_hat <= 0):
-        raise ValueError("Dominant eigenvector is not strictly positive.")
-    e_hat = e_hat / e_hat.sum()
+    e = e / e.sum()
+    eta = np.log(exp_eta)
+    P_hat = (1 / exp_eta) * Q * e[None, :] / e[:, None]
 
-    η_hat = np.log(exp_η)
+    if np.max(np.abs(P_hat.sum(axis=1) - 1)) > 1e-8:
+        raise ValueError("Recovered transition matrix is not stochastic")
+    if P_hat.min() < -1e-10:
+        raise ValueError("Recovered transition matrix has negative entries")
 
-    # Change measure using the Perron eigenfunction.
-    P_hat = (1.0 / exp_η) * Q * e_hat[np.newaxis, :] / e_hat[:, np.newaxis]
-
-    return η_hat, exp_η, e_hat, P_hat
+    return eta, exp_eta, e, P_hat
 
 
-η_hat, exp_η, e_hat, P_hat = perron_frobenius(Q_mat)
-
-print(f"exp(η_hat) = {exp_η:.6f}")
-print(f"η_hat      = {η_hat:.5f}  (annualized ~ {η_hat*12:.4f})")
-print(f"e_hat      = {e_hat.round(5)}")
-print("\nLong-term risk-neutral P_hat:")
-print(np.round(P_hat, 4))
-print("Row sums:", P_hat.sum(axis=1))
-```
-
-### Comparing the three probability measures
-
-```{code-cell} ipython3
-fig, axes = plt.subplots(1, 3, figsize=(15, 4.5))
-
-matrices = [
-    (P_phys, r'physical  $\mathbf{P}$', 'Blues'),
-    (P_bar, r'risk-neutral  $\bar{\mathbf{P}}$', 'Oranges'),
-    (P_hat, r'long-term risk-neutral $\hat{\mathbf{P}}$', 'Greens'),
-]
-
-for ax, (mat, title, cmap) in zip(axes, matrices):
-    im = ax.imshow(mat, cmap=cmap, vmin=0, vmax=0.85, aspect='auto')
-    ax.set_title(title, fontsize=12, pad=10)
-    ax.set_xticks(range(n));  ax.set_yticks(range(n))
-    ax.set_xticklabels(state_names, rotation=20, fontsize=9)
-    ax.set_yticklabels(state_names, fontsize=9)
-    ax.set_xlabel('next state', fontsize=9)
-    ax.set_ylabel('current state', fontsize=9)
-    plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
-    for i in range(n):
-        for j in range(n):
-            clr = 'white' if mat[i, j] > 0.45 else 'black'
-            ax.text(j, i, f'{mat[i,j]:.3f}', ha='center', va='center',
-                    fontsize=9, color=clr)
-
-plt.suptitle('transition matrices under alternative probability measures',
-             fontsize=13, y=1.02)
-plt.tight_layout()
-plt.show()
-```
-
-```{code-cell} ipython3
 def stationary_dist(P):
     """Stationary distribution of an ergodic transition matrix."""
     n = P.shape[0]
-    A = (P.T - np.eye(n))
-    A[-1] = 1.0
-    b = np.zeros(n);  b[-1] = 1.0
+    A = P.T - np.eye(n)
+    A[-1] = 1
+    b = np.zeros(n)
+    b[-1] = 1
     return linalg.solve(A, b)
 
-π_phys = stationary_dist(P_phys)
-π_bar = stationary_dist(P_bar)
-π_hat = stationary_dist(P_hat)
 
-fig, ax = plt.subplots(figsize=(8, 4))
-x = np.arange(n)
-w = 0.25
-labels = [r'physical $P$', r'risk-neutral $\bar{P}$',
-          r'long-term risk-neutral $\hat{P}$']
-colors = ['steelblue', 'darkorange', 'forestgreen']
-for k, (π, lbl, col) in enumerate(zip([π_phys, π_bar, π_hat], labels, colors)):
-    bars = ax.bar(x + k*w, π, width=w, label=lbl, color=col, alpha=0.85,
-                  edgecolor='white')
-    for b_, v in zip(bars, π):
-        ax.text(b_.get_x() + w/2, v + 0.008, f'{v:.3f}',
-                ha='center', va='bottom', fontsize=9)
-
-ax.set_xticks(x + w);  ax.set_xticklabels(state_names)
-ax.set_ylabel('stationary probability')
-ax.set_title('stationary distributions under three probability measures')
-ax.legend(fontsize=9)
-plt.tight_layout();  plt.show()
-
-print("Stationary distributions")
-for lbl, π in zip(labels, [π_phys, π_bar, π_hat]):
-    print(f"  {lbl:45s}: {np.round(π,4)}")
+def martingale_increment(Q, P):
+    """Likelihood-ratio increment from actual to recovered probabilities."""
+    eta, exp_eta, e, P_hat = perron_frobenius(Q)
+    H = np.ones_like(P)
+    mask = P > 0
+    H[mask] = P_hat[mask] / P[mask]
+    return H, eta, e, P_hat
 ```
 
-In this first trend-stationary power-utility example, the long-term risk-neutral measure
-$\hat{\mathbf{P}}$ coincides with the physical measure $\mathbf{P}$.
+## One-period and long-term risk-neutral matrices
 
-This is the special success case in {cite}`BorovickaHansenScheinkman2016`: the SDF has
-only the Perron--Frobenius trend component and no martingale component.
+Let $\mathbf{P}=[p_{ij}]$ denote the correctly specified transition matrix and
+$\mathbf{Q}=[q_{ij}]$ the Arrow price matrix.
 
-The one-period risk-neutral measure $\bar{\mathbf P}$, by contrast, still absorbs
-short-run risk adjustments and therefore differs from $\mathbf P$.
+Here "correctly specified" means the transition law that actually governs the Markov
+state in the model.
 
-## The martingale decomposition
-
-### Decomposing the SDF process
-
-The decomposition in this section answers a diagnostic question: after we remove the
-long-run discount rate and the state-dependent Perron--Frobenius trend from the SDF, is
-anything left?
-
-If the answer is yes, the leftover term is a martingale that changes probabilities
-between $\mathbf P$ and $\hat{\mathbf P}$.
-
-The proof is obtained by writing the one-period pricing identity in Perron--Frobenius
-form and multiplying those one-period identities over time.
-
-Let $\hat{\mathbf{e}}$ and $\hat{\eta}$ solve the Perron–Frobenius problem.
-
-Define the process
+The one-period stochastic discount factor (SDF) satisfies
 
 $$
-\frac{\hat{H}_{t+1}}{\hat{H}_t} = (X_t)' \hat{\mathbf{H}} X_{t+1},
-\quad \text{where} \quad
-\hat{h}_{ij} = \frac{\hat{p}_{ij}}{p_{ij}}.
+q_{ij} = s_{ij} p_{ij}.
 $$
 
-Because $\sum_j \hat{h}_{ij} p_{ij} = \sum_j \hat{p}_{ij} = 1$, the process $\hat{H}$ is
-a martingale under the physical measure $\mathbf{P}$.
+We will compare $\mathbf{P}$ with two probability matrices constructed from the same
+Arrow price matrix $\mathbf{Q}$.
 
-The accumulated SDF then admits the **multiplicative decomposition**:
-
-$$
-S_t = \exp(\hat{\eta} t) \left(\frac{\hat{e}(X_0)}{\hat{e}(X_t)}\right)
-      \left(\frac{\hat{H}_t}{\hat{H}_0}\right).
-$$
-
-The three components are:
-
-| Component | Interpretation |
-|---|---|
-| $\exp(\hat{\eta} t)$ | Deterministic exponential discounting; $-\hat{\eta}$ is the long-run yield |
-| $\hat{e}(X_0)/\hat{e}(X_t)$ | State-dependent trend; mean-stationary under $\hat{\mathbf{P}}$ |
-| $\hat{H}_t/\hat{H}_0$ | Martingale; encodes long-run risk adjustments |
-
-```{code-cell} ipython3
-# Physical SDF implied by Arrow prices and physical probabilities.
-S_mat = np.where(P_phys > 0, Q_mat / P_phys, 0.0)
-
-# Perron-Frobenius trend component of the SDF.
-S_hat = exp_η * e_hat[:, np.newaxis] / e_hat[np.newaxis, :]
-
-# Martingale likelihood-ratio increment between P_hat and P.
-H_incr = np.where(P_phys > 0, P_hat / P_phys, 0.0)
-
-print("SDF matrix S = Q/P:")
-print(np.round(S_mat, 4))
-print("\nTrend SDF S_hat = exp(η_hat) * e_hat_i / e_hat_j:")
-print(np.round(S_hat, 4))
-print("\nMartingale increment h_hat = P_hat/P:")
-print(np.round(H_incr, 4))
-
-mart_check = (H_incr * P_phys).sum(axis=1)
-print(f"\nE[h_hat | X_t=i] = {mart_check}")
-```
-
-Here $\hat h_{ij}=1$ for every transition, so there is no recovery distortion.
-
-The pessimistic distortion appears below once recursive utility introduces a nontrivial
-continuation-value martingale.
-
-## When does recovery succeed?
-
-### The Ross recovery condition
-
-{cite:t}`Ross2015` proposes to identify investors' subjective beliefs by imposing
+First, the **one-period risk-neutral matrix** divides each row of $\mathbf{Q}$ by the
+price of a one-period discount bond in the current state:
 
 $$
-\widetilde{S}_t = \exp(-\delta t) \frac{m(X_t)}{m(X_0)}
+\bar p_{ij}
+= \frac{q_{ij}}{\sum_k q_{ik}}.
 $$
 
-for some positive function $m$ and discount rate $\delta$ (Condition 4 in
-{cite}`BorovickaHansenScheinkman2016`).
+This matrix absorbs one-period risk adjustments into transition probabilities.
 
-Under this restriction, the SDF has **no martingale component**: $\hat{H}_t \equiv 1$.
+Second, the **long-term risk-neutral matrix** uses the positive Perron eigenpair of
+$\mathbf{Q}$.
 
-The proposition below states the exact object being tested.
-
-It asks whether the Perron--Frobenius transition matrix $\hat{\mathbf P}$ is the same as
-the physical transition matrix $\mathbf P$.
-
-The proof is just an accounting exercise: divide the recovered probabilities by the
-physical probabilities and see whether the resulting likelihood-ratio increment is
-identically one.
-
-```{prf:proposition} Ross Recovery Condition
-:label: prop-ross-recovery-condition
-
-({cite}`BorovickaHansenScheinkman2016`) Recovery succeeds -- i.e.,
-$\hat{\mathbf{P}} = \mathbf{P}$ -- if and only if the physical stochastic discount
-factor takes the long-term risk pricing form
+Let $(\exp(\hat \eta), \hat e)$ solve
 
 $$
-s_{ij} = \exp(\hat{\eta}) \frac{\hat{e}_i}{\hat{e}_j}
+\mathbf{Q}\hat e = \exp(\hat \eta)\hat e.
 $$
 
-with $\hat{h}_{ij} \equiv 1$, so that the SDF has no martingale component.
-```
-
-```{prf:proof}
-Using $q_{ij}=s_{ij}p_{ij}$ and the Perron--Frobenius construction,
-
-$$
-\hat{p}_{ij}
-= \exp(-\hat{\eta})q_{ij}\frac{\hat{e}_j}{\hat{e}_i}
-= \exp(-\hat{\eta})s_{ij}p_{ij}\frac{\hat{e}_j}{\hat{e}_i}.
-$$
-
-Hence the likelihood-ratio increment between the recovered and physical measures is
-
-$$
-\hat{h}_{ij}
-= \frac{\hat{p}_{ij}}{p_{ij}}
-= \exp(-\hat{\eta})s_{ij}\frac{\hat{e}_j}{\hat{e}_i}.
-$$
-
-Thus $\hat{\mathbf P}=\mathbf P$ if and only if $\hat{h}_{ij}=1$ for every feasible
-transition $(i,j)$, which is equivalent to
-
-$$
-s_{ij} = \exp(\hat{\eta})\frac{\hat{e}_i}{\hat{e}_j}.
-$$
-
-This is precisely the case in which the martingale term in the multiplicative
-decomposition is degenerate.
-```
-
-The critical question is: when is the martingale component degenerate?
-
-### Power utility with trend-stationary consumption
-
-Consider a power-utility investor with risk aversion $\gamma$ and *trend-stationary*
-consumption $C_t = \exp(g_c t)(c \cdot X_t)$ where $c$ is a positive vector.
-
-The one-period SDF is
-
-$$
-s_{ij} = \exp(-\delta - \gamma g_c) \left(\frac{c_j}{c_i}\right)^{-\gamma}.
-$$
-
-The corollary shows one important case where the recovery condition is satisfied.
-
-What is being proved is that trend-stationary consumption risk can be absorbed entirely
-into the state-dependent ratio $\hat e_i/\hat e_j$.
-
-The proof works by guessing the Perron--Frobenius eigenvector from marginal utility,
-then checking that the recovered transition probabilities reduce to the original
-physical probabilities.
-
-```{prf:corollary} Recovery under Power Utility
-:label: cor-recovery-power-utility
-
-For a power-utility investor with trend-stationary consumption, the SDF takes the exact
-long-term risk pricing form with $\hat{e}_j = c_j^\gamma$ and
-$\hat{\eta} = -(\delta + \gamma g_c)$.
-
-Therefore $\hat{h}_{ij} \equiv 1$ and Ross recovery succeeds exactly when consumption
-fluctuations around a deterministic trend are the only source of risk.
-```
-
-```{prf:proof}
-Let
-
-$$
-A = \exp(-\delta-\gamma g_c)
-$$
-
-so that
-
-$$
-q_{ij} = A\left(\frac{c_j}{c_i}\right)^{-\gamma}p_{ij}.
-$$
-
-Guess $\hat e_i=c_i^\gamma$.
-
-Then
-
-$$
-[\mathbf Q\hat{\mathbf e}]_i
-= \sum_j A\left(\frac{c_j}{c_i}\right)^{-\gamma}p_{ij}c_j^\gamma
-= A c_i^\gamma \sum_j p_{ij}
-= A\hat e_i.
-$$
-
-Thus $\exp(\hat\eta)=A$ and $\hat{\mathbf e}$ is the Perron--Frobenius eigenvector.
-
-Substituting into the recovered transition probabilities gives
+Then define
 
 $$
 \hat p_{ij}
-= \frac{1}{A}q_{ij}\frac{\hat e_j}{\hat e_i}
-= \frac{1}{A}
-   A\left(\frac{c_j}{c_i}\right)^{-\gamma}p_{ij}
-   \frac{c_j^\gamma}{c_i^\gamma}
-= p_{ij}.
+= \exp(-\hat \eta) q_{ij} \frac{\hat e_j}{\hat e_i}.
 $$
 
-Hence $\hat h_{ij}=\hat p_{ij}/p_{ij}=1$ for all feasible transitions.
+This construction removes the state-dependent Perron eigenfunction from Arrow prices
+and returns a stochastic matrix $\hat{\mathbf{P}}$.
+
+In {doc}`ross_recovery`, transition independence pins down the split between $s_{ij}$
+and $p_{ij}$.
+
+Here we drop transition independence.
+
+The question is whether $\hat{\mathbf{P}}$ still
+equals the correctly specified transition matrix $\mathbf{P}$.
+
+### Where recovery works
+
+We start with a three-state economy: recession, normal, and expansion.
+
+The correctly specified transition matrix is deliberately simple.
+
+For trend-stationary consumption and power utility, the SDF is
+
+$$
+s_{ij}=A\left(\frac{c_j}{c_i}\right)^{-\gamma}.
+$$
+
+This is a case where Ross recovery should return the correctly specified transition
+matrix.
+
+```{code-cell} ipython3
+P_true = np.array([
+    [0.70, 0.25, 0.05],
+    [0.15, 0.65, 0.20],
+    [0.05, 0.30, 0.65],
+])
+
+c_levels = np.array([0.997, 1.000, 1.003])
+state_names = ['recession', 'normal', 'expansion']
+
+δ = -np.log(0.99)   # monthly subjective discount rate
+γ_power = 5.0       # risk aversion
+g_c = 0.002         # monthly trend growth
+
+# Price Arrow claims as actual probabilities times the power-utility SDF
+S_power = (
+    np.exp(-δ - γ_power * g_c)
+    * (c_levels[None, :] / c_levels[:, None])**(-γ_power)
+)
+Q_power = S_power * P_true
+```
+
+We now compute both risk-neutral matrices from the same Arrow price matrix.
+
+```{code-cell} ipython3
+P_bar, q_bonds = risk_neutral_probs(Q_power)
+η_hat, exp_η, e_hat, P_hat = perron_frobenius(Q_power)
+π_true = stationary_dist(P_true)
+π_bar = stationary_dist(P_bar)
+π_hat = stationary_dist(P_hat)
+```
+
+The one-period risk-neutral matrix differs from the correctly specified matrix because
+it includes one-period risk adjustments.
+
+The long-term risk-neutral transition matrix coincides with the correctly specified
+transition matrix because, after the Perron eigenfunction is removed, no
+likelihood-ratio term remains.
+
+Here is the likelihood-ratio term explicitly.
+
+Define
+
+$$
+\hat h_{ij}
+= \frac{\hat p_{ij}}{p_{ij}}
+= \exp(-\hat\eta)s_{ij}\frac{\hat e_j}{\hat e_i}.
+$$
+
+For a path of states, the product
+
+$$
+\hat H_t
+= \prod_{\tau=1}^t \hat h_{X_{\tau-1}, X_\tau}
+$$
+
+is the likelihood-ratio martingale that changes probabilities from the correctly
+specified measure to the recovered measure.
+
+In the power-utility example, write
+
+$$
+A = \exp(-\delta-\gamma g_c),
+\qquad
+s_{ij}=A\left(\frac{c_j}{c_i}\right)^{-\gamma}.
+$$
+
+Taking $\hat e_i=c_i^\gamma$, up to scale, gives
+
+$$
+[\mathbf{Q}\hat e]_i
+= \sum_j A\left(\frac{c_j}{c_i}\right)^{-\gamma}p_{ij}c_j^\gamma
+= A c_i^\gamma
+= A\hat e_i,
+$$
+
+so $\exp(\hat\eta)=A$.
+
+Consequently,
+
+$$
+\hat h_{ij}
+= A^{-1}A\left(\frac{c_j}{c_i}\right)^{-\gamma}
+  \frac{c_j^\gamma}{c_i^\gamma}
+=1.
+$$
+
+```{code-cell} ipython3
+matrices = [
+    ("correctly specified P", P_true),
+    ("one-period risk-neutral P_bar", P_bar),
+    ("long-term risk-neutral P_hat", P_hat),
+]
+
+for label, mat in matrices:
+    print(label)
+    print(np.round(mat, 3))
+    print()
 ```
 
 ```{code-cell} ipython3
-gc = 0.002   # monthly trend growth
+H_power = np.divide(P_hat, P_true, out=np.ones_like(P_true), where=P_true > 0)
+e_theory = c_levels**γ_power
 
-S_trend = np.zeros((n, n))
-for i in range(n):
-    for j in range(n):
-        S_trend[i, j] = np.exp(-δ - γ*gc) * (c_levels[j]/c_levels[i])**(-γ)
+print("Perron eigenfunction: numerical vs c^gamma")
+for name, e_num, e_th in zip(state_names, e_hat / e_hat[1],
+                             e_theory / e_theory[1]):
+    print(f"{name:9s}: {e_num:.6f}  {e_th:.6f}")
 
-Q_trend = S_trend * P_phys
+print("\nlikelihood-ratio increment h_hat = P_hat / P")
+print(np.round(H_power, 6))
 
-_, exp_η_t, e_hat_t, P_hat_t = perron_frobenius(Q_trend)
+print("\nconditional means under P")
+print(np.round((P_true * H_power).sum(axis=1), 6))
 
-H_incr_trend = np.where(P_phys > 0, P_hat_t / P_phys, 0.0)
-
-print("Trend-stationary h_hat:")
-print(np.round(H_incr_trend, 6))
-print(f"Max deviation from 1: {np.abs(H_incr_trend[P_phys>0] - 1).max():.2e}")
+print(f"\nmax |h_hat - 1| = "
+      f"{np.max(np.abs(H_power[P_true > 0] - 1)):.2e}")
 ```
 
-### Recursive (Epstein–Zin) utility
+The output illustrates the difference between short-horizon and long-horizon risk
+adjustments.
 
-The previous corollary is a success case for recovery.
+The one-period risk-neutral matrix $\bar{\mathbf{P}}$ is close to, but not the same as,
+the correctly specified matrix $\mathbf{P}$.
 
-The next calculation is a failure case: it shows exactly where the power-utility proof
-breaks once continuation values enter the SDF.
+It changes the transition probabilities because one-period Arrow prices include
+one-period risk adjustments.
 
-The key step is to identify an extra term that cannot, in general, be written only as a
-ratio of the current and next states.
+By contrast, the long-term risk-neutral matrix $\hat{\mathbf{P}}$ is exactly the same
+as $\mathbf{P}$ in this example.
 
-When the investor has **Epstein–Zin recursive preferences** with risk aversion
-$\gamma \neq 1$, continuation values $V_t$ satisfy the recursion
+The diagnostic confirms why: the likelihood-ratio increment $\hat h_{ij}$ is one for
+every transition, so the martingale $\hat H_t$ is identically one.
+
+This is the condition under which Ross recovery returns the correctly specified
+transition matrix: after the Perron eigenfunction removes the state-dependent part of
+the SDF, no likelihood-ratio martingale remains.
+
+## The martingale diagnostic
+
+Let $(\hat \eta, \hat e)$ be the positive Perron pair of $\mathbf{Q}$:
 
 $$
-V_t = \bigl[1-\exp(-\delta)\bigr] \log C_t
-      + \frac{\exp(-\delta)}{1-\gamma}
-        \log \mathbf{E}_t\bigl[\exp\bigl((1-\gamma)V_{t+1}\bigr)\bigr].
+\mathbf{Q} \hat e = \exp(\hat\eta) \hat e.
 $$
 
-The SDF takes the form (see {cite}`BorovickaHansenScheinkman2016`, Example 2)
+The associated long-term risk-neutral transition matrix is
 
 $$
-s_{ij} = \exp(-\delta - g_c)\frac{c_i}{c_j}
-         \left(\frac{v^*_j}{\mathbf{P}_i v^*}\right),
+\hat p_{ij}
+= \exp(-\hat\eta) q_{ij} \frac{\hat e_j}{\hat e_i}.
 $$
 
-where $v^*_i = \exp\!\bigl[(1-\gamma)v_i\bigr]$ and $\mathbf{P}_i$ is the $i$-th row of
-$\mathbf{P}$.
+Compare $\hat{\mathbf{P}}$ with the correctly specified transition matrix
+$\mathbf{P}$ by defining
 
-The additional factor $v^*_j/(\mathbf{P}_i v^*)$ introduces a **nontrivial martingale
-component** whenever $v^*$ is not constant across states.
+$$
+\hat h_{ij} = \frac{\hat p_{ij}}{p_{ij}}.
+$$
+
+For a fixed current state $i$, the numbers $\hat h_{ij}$ average to one under the
+correctly specified transition probabilities:
+
+$$
+\sum_j \hat h_{ij} p_{ij}=1.
+$$
+
+Thus $\hat h_{ij}$ is a one-period likelihood-ratio increment.
+
+Multiplying these
+increments over time gives a martingale.
+
+The one-period SDF can be written as
+
+$$
+s_{ij}
+= \exp(\hat\eta) \frac{\hat e_i}{\hat e_j} \hat h_{ij}.
+$$
+
+The Perron calculation therefore separates the SDF into:
+
+| Part | Role |
+|---|---|
+| $\exp(\hat\eta)$ | deterministic long-run discounting |
+| $\hat e_i / \hat e_j$ | state-dependent long-run term |
+| $\hat h_{ij}$ | likelihood ratio that changes probabilities |
+
+If $\hat h_{ij}=1$ for every feasible transition, then the recovered transition matrix
+and the correctly specified transition matrix are the same.
+
+This is the condition under which Ross recovery returns the correctly specified
+transition matrix.
+
+```{prf:proposition} Recovery diagnostic
+:label: prop-misspecified-recovery-diagnostic
+
+For a finite-state Markov model with correctly specified transition matrix $\mathbf{P}$ and Arrow
+matrix $\mathbf{Q}$, Perron--Frobenius recovery returns the correctly specified transition matrix
+if and only if $\hat h_{ij}=1$ for every transition with $p_{ij}>0$.
+
+Equivalently, recovery returns the correctly specified transition matrix if and only if
+the SDF has no nonconstant likelihood-ratio martingale:
+
+$$
+s_{ij}=\exp(\hat\eta)\frac{\hat e_i}{\hat e_j}.
+$$
+```
+
+```{prf:proof}
+Using $q_{ij}=s_{ij}p_{ij}$,
+
+$$
+\hat h_{ij}
+=\frac{\hat p_{ij}}{p_{ij}}
+=\exp(-\hat\eta)s_{ij}\frac{\hat e_j}{\hat e_i}.
+$$
+
+Thus $\hat{\mathbf{P}}=\mathbf{P}$ if and only if $\hat h_{ij}=1$ on every feasible
+transition.
+
+This condition is the same as saying that the SDF can be written in the displayed form
+with no extra likelihood-ratio term.
+```
+
+The power-utility calculation above illustrates the proposition: the likelihood-ratio increment $\hat h_{ij}$ is a constant one.
+
+## Recursive utility
+
+The previous example worked because all risk adjustment in the SDF could be written as
+a ratio of a function of today's state to a function of tomorrow's state.
+
+The Perron eigenfunction removes exactly that kind of term.
+
+Recursive utility usually adds something else: a continuation-value term that behaves
+like a likelihood ratio.
+
+For the unit-EIS Epstein--Zin case in {cite:t}`BorovickaHansenScheinkman2016`, with
+$C_t=\exp(g_c t)c(X_t)$, write the translated continuation value as $V_t=g_c t+v(X_t)$,
+and define
+
+$$
+v_i^*=\exp((1-\gamma)v_i).
+$$
+
+The SDF is
+
+$$
+s_{ij}
+= \exp(-\delta-g_c) \frac{c_i}{c_j}
+  \frac{v_j^*}{\sum_k p_{ik}v_k^*}.
+$$
+
+The denominator is the conditional expectation of $v_j^*$ given current state $i$, so
+the last fraction has conditional mean one under $\mathbf{P}$.
+
+It is therefore a likelihood-ratio increment.
+
+When $v^*$ is not constant, that likelihood ratio varies across next-period states.
+
+That variation is why recovery no longer returns the correct transition matrix.
+
+The next cell solves the finite-state continuation-value equation and builds the SDF.
 
 ```{code-cell} ipython3
-def solve_ez_finite(P, c, δ, γ, gc, tol=1e-12, max_iter=5000):
-    """Solve finite-state Epstein-Zin continuation values and SDF."""
+def solve_ez_unit_eis(P, c, δ, γ, g_c, tol=1e-12, max_iter=10_000):
+    """Finite-state unit-EIS Epstein-Zin continuation values and SDF."""
     β = np.exp(-δ)
     log_c = np.log(c)
     n = len(c)
-    flow = (1 - β) * log_c + β * gc
+    flow = (1 - β) * log_c + β * g_c
 
-    if abs(γ - 1.0) < 1e-10:
-        # Log utility avoids the (1-gamma) denominator in the recursion.
+    if abs(γ - 1) < 1e-10:
         v = linalg.solve(np.eye(n) - β * P, flow)
-        vstar = np.ones(n)
-        Pv = np.ones(n)
+        v_star = np.ones(n)
+        Pv_star = np.ones(n)
     else:
-        # Fixed-point iteration for the transformed continuation value term.
         v = log_c.copy()
         for _ in range(max_iter):
-            vstar = np.exp((1 - γ) * v)
-            Pv = P @ vstar
-            v_new = flow + β / (1 - γ) * np.log(Pv)
+            v_star = np.exp((1 - γ) * v)
+            Pv_star = P @ v_star
+            v_new = flow + β / (1 - γ) * np.log(Pv_star)
             if np.max(np.abs(v_new - v)) < tol:
                 v = v_new
                 break
             v = v_new
-        vstar = np.exp((1 - γ) * v)
-        Pv = P @ vstar
+        else:
+            raise ValueError("Epstein-Zin fixed point did not converge.")
 
-    # The SDF includes the continuation-value likelihood-ratio term.
-    s = np.zeros((n, n))
-    for i in range(n):
-        for j in range(n):
-            s[i, j] = np.exp(-δ - gc) * (c[i] / c[j]) * (vstar[j] / Pv[i])
+        v_star = np.exp((1 - γ) * v)
+        Pv_star = P @ v_star
 
-    return v, vstar, s
+    S = (
+        np.exp(-δ - g_c)
+        * (c[:, None] / c[None, :])
+        * (v_star[None, :] / Pv_star[:, None])
+    )
 
-
-gc_ex = 0.001   # monthly consumption trend growth
-
-for γ_val, label in [(1.0, 'γ = 1  (log utility)'), (5.0, 'γ = 5  (risk aversion)')]:
-    v_ez, vstar_ez, S_ez = solve_ez_finite(P_phys, c_levels,
-                                            δ, γ_val, gc_ex)
-    Q_ez = S_ez * P_phys
-    _, _, _, P_hat_ez = perron_frobenius(Q_ez)
-    H_ez = np.where(P_phys > 0, P_hat_ez / P_phys, 0.0)
-
-    π_hat_ez = stationary_dist(P_hat_ez)
-    print(f"\n{label}")
-    print(f"  Max |h_hat_ij - 1|        = {np.abs(H_ez[P_phys>0] - 1).max():.4f}")
-    print(f"  Stationary P_hat         = {π_hat_ez.round(4)}")
-    print(f"  Stationary P             = {π_phys.round(4)}")
+    return v, v_star, S
 ```
 
-```{code-cell} ipython3
-γs_ez = np.linspace(1.0, 10.0, 50)
-mart_errors = []
-π_rec_hat = []
+At log utility, $v^*$ is constant and the martingale disappears.
 
-for γ_val in γs_ez:
-    v_g, _, S_g = solve_ez_finite(P_phys, c_levels, δ, γ_val, gc_ex)
-    Q_g = S_g * P_phys
-    _, _, _, Ph = perron_frobenius(Q_g)
-    H_g = np.where(P_phys > 0, Ph / P_phys, 0.0)
-    mart_errors.append(np.abs(H_g[P_phys > 0] - 1).max())
-    π_rec_hat.append(stationary_dist(Ph)[0])
+As risk aversion rises, continuation values matter more.
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+The recovered probability measure then moves farther away from the correctly specified
+probability measure.
 
-ax1.plot(γs_ez, mart_errors, color='firebrick', lw=2.5)
-ax1.set_xlabel('risk aversion  γ')
-ax1.set_ylabel(r'$\max_{i,j} |\hat{h}_{ij} - 1|$')
-ax1.set_title('martingale non-degeneracy vs risk aversion\n(Epstein–Zin utility)')
+To make the mechanism visible in a small three-state example, the figure below uses
+the more dispersed consumption vector
 
-ax2.plot(γs_ez, π_rec_hat, color='steelblue', lw=2.5,
-         label=r'recession weight under $\hat{P}$')
-ax2.axhline(π_phys[0], ls='--', color='grey', lw=1.5,
-            label=f'recession weight under $P$  ({π_phys[0]:.3f})')
-ax2.set_xlabel('risk aversion  γ')
-ax2.set_ylabel('stationary probability')
-ax2.set_title('recovered recession probability vs risk aversion')
-ax2.legend(fontsize=9)
+$$
+c=(0.85, 1.00, 1.15).
+$$
 
-plt.tight_layout();  plt.show()
-```
+The heatmap reports percentage deviations of the likelihood-ratio increment from one:
+$100(\hat h_{ij}-1)$.
+
+Positive entries are transitions that receive more probability under the recovered
+measure than under the correctly specified probability measure.
+
+The right panel reports the increase in the recovered recession probability, measured
+in percentage points.
 
 ```{code-cell} ipython3
-γ_ez_demo = 5.0
-_, _, S_ez_demo = solve_ez_finite(P_phys, c_levels, δ, γ_ez_demo, gc_ex)
-Q_ez_demo = S_ez_demo * P_phys
-_, _, _, P_hat_ez_demo = perron_frobenius(Q_ez_demo)
-H_incr_ez = np.where(P_phys > 0, P_hat_ez_demo / P_phys, 1.0)
+---
+mystnb:
+  figure:
+    caption: Recursive utility generates a nonconstant likelihood-ratio increment that distorts recovery.
+    name: fig-mr-recursive-martingale
+---
+c_recursive = np.array([0.85, 1.00, 1.15])
+γ_demo = 10.0
+_, _, S_demo = solve_ez_unit_eis(P_true, c_recursive, δ, γ_demo, g_c)
+Q_demo = S_demo * P_true
+H_demo, _, _, P_hat_demo = martingale_increment(Q_demo, P_true)
+H_dev = 100 * (H_demo - 1)
+
+γ_grid = np.linspace(1, 15, 80)
+rec_prob = []
+for γ in γ_grid:
+    _, _, S_g = solve_ez_unit_eis(P_true, c_recursive, δ, γ, g_c)
+    Q_g = S_g * P_true
+    _, _, _, P_hat_g = martingale_increment(Q_g, P_true)
+    rec_prob.append(stationary_dist(P_hat_g)[0])
+rec_prob = np.array(rec_prob)
+rec_prob_gain = 100 * (rec_prob - π_true[0])
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
 
-vmax_h = max(1.5, H_incr_ez.max() * 1.05)
-vmin_h = min(0.5, H_incr_ez.min() * 0.95)
-im0 = axes[0].imshow(H_incr_ez, cmap='RdYlGn', vmin=vmin_h, vmax=vmax_h, aspect='auto')
-axes[0].set_title(
-    r'martingale increment $\hat{h}_{ij} = \hat{p}_{ij}/p_{ij}$' '\n'
-    r'(Epstein–Zin utility, $\gamma=5$)',
-    fontsize=11)
-for i in range(n):
-    for j in range(n):
-        axes[0].text(j, i, f'{H_incr_ez[i,j]:.3f}',
-                     ha='center', va='center', fontsize=10)
-axes[0].set_xticks(range(n));  axes[0].set_yticks(range(n))
-axes[0].set_xticklabels(state_names, rotation=20, fontsize=9)
-axes[0].set_yticklabels(state_names, fontsize=9)
-axes[0].set_xlabel('next state');  axes[0].set_ylabel('current state')
-plt.colorbar(im0, ax=axes[0], fraction=0.046)
+bound = np.max(np.abs(H_dev))
+im = axes[0].imshow(H_dev, cmap='coolwarm', vmin=-bound, vmax=bound, aspect='auto')
+axes[0].set_xticks(range(3))
+axes[0].set_yticks(range(3))
+axes[0].set_xticklabels(state_names, rotation=20)
+axes[0].set_yticklabels(state_names)
+axes[0].set_xlabel('next state')
+axes[0].set_ylabel(r'current state')
+axes[0].set_title(r'likelihood-ratio distortion, $\gamma=10$')
 
-γs_shift = np.linspace(1.0, 12, 60)
-rec_wts_ez = []
-for g in γs_shift:
-    _, _, S_g = solve_ez_finite(P_phys, c_levels, δ, g, gc_ex)
-    Q_g = S_g * P_phys
-    _, _, _, Ph = perron_frobenius(Q_g)
-    rec_wts_ez.append(stationary_dist(Ph)[0])
+for i in range(3):
+    for j in range(3):
+        axes[0].text(j, i, f"{H_dev[i, j]:.1f}",
+                     ha='center', va='center', fontsize=9)
+plt.colorbar(im, ax=axes[0], fraction=0.046, pad=0.04,
+             label=r'$100(\hat h_{ij}-1)$')
 
-axes[1].plot(γs_shift, rec_wts_ez, color='steelblue', lw=2.5)
-axes[1].axhline(π_phys[0], color='grey', ls='--', lw=1.5,
-                label=fr'physical recession prob = {π_phys[0]:.3f}')
-axes[1].set_xlabel('risk aversion  γ')
-axes[1].set_ylabel(r'recession weight under $\hat{P}$')
-axes[1].set_title(r'how $\gamma$ shifts the long-term risk-neutral measure'
-                  '\n(Epstein–Zin utility)')
-axes[1].legend(fontsize=9)
-plt.tight_layout();  plt.show()
+axes[1].plot(γ_grid, rec_prob_gain, lw=2.5)
+axes[1].axhline(0, ls='--', lw=1.5, color='0.5')
+axes[1].set_xlabel(r"risk aversion $\gamma$")
+axes[1].set_ylabel('increase in recession probability\n(percentage points)')
+axes[1].set_title('recession probability distortion')
+axes[1].set_ylim(0, rec_prob_gain.max() * 1.08)
+
+plt.tight_layout()
+plt.show()
 ```
 
-At $\gamma = 1$ (log utility), $v^*=\exp((1-\gamma)v)$ is constant across states, so the
-continuation-value martingale is trivial and recovery succeeds.
+## Permanent shocks
 
-For $\gamma > 1$, the transformed continuation value $v^*$ varies with the state,
-generating a non-degenerate martingale that grows with risk aversion.
+Recursive utility is one way to generate a nonconstant likelihood ratio.
 
-## The long-run risk model
+Permanent shocks provide another.
 
-We now illustrate the results quantitatively using the Bansal–Yaron
-{cite}`Bansal_Yaron_2004` long-run risk model, calibrated to
-{cite}`BorovickaHansenScheinkman2016` (Figure 1).
+Suppose consumption has a permanent multiplicative shock,
 
-### Model setup
+$$
+\log C_{t+1}-\log C_t
+= g + x(X_{t+1})-x(X_t) + \sigma \varepsilon_{t+1},
+$$
 
-The state vector $X_t = (X_{1t}, X_{2t})'$ follows the continuous-time diffusion
+where $\varepsilon_{t+1}$ is independent over time.
+
+With power utility, the SDF contains
+
+$$
+\exp(-\delta-\gamma g)
+\exp\{-\gamma[x(X_{t+1})-x(X_t)]\}
+\exp(-\gamma\sigma\varepsilon_{t+1}).
+$$
+
+The middle term depends only on the current and next Markov states.
+
+It is a ratio of
+state functions, so the Perron eigenfunction can absorb it.
+
+The permanent shock term depends on the new shock $\varepsilon_{t+1}$.
+
+Because that
+shock is not summarized by the finite Markov state in this calculation, it cannot be
+removed by a state eigenfunction.
+
+After dividing by its conditional mean, the shock term becomes a likelihood-ratio
+increment:
+
+$$
+\frac{\exp(-\gamma\sigma\varepsilon_{t+1})}
+     {E[\exp(-\gamma\sigma\varepsilon_{t+1})]}.
+$$
+
+Thus permanent consumption shocks can break belief recovery, even under ordinary power
+utility.
+
+## Long-run risk
+
+We now use the Bansal--Yaron long-run risk model, in the calibration reported by
+{cite:t}`BorovickaHansenScheinkman2016`.
+
+The point is to see how different the recovered measure can look in a standard
+macro-finance model.
+
+The state vector $X_t=(X_{1t},X_{2t})'$ follows
 
 $$
 \begin{aligned}
-dX_{1t} &= \bar{\mu}_{11}(X_{1t} - \iota_1)\,dt + \sqrt{X_{2t}}\,\bar{\sigma}_1 dW_t \\
-dX_{2t} &= \bar{\mu}_{22}(X_{2t} - \iota_2)\,dt + \sqrt{X_{2t}}\,\bar{\sigma}_2 dW_t,
+dX_{1t}
+&= [\mu_{11}(X_{1t}-\iota_1)+\mu_{12}(X_{2t}-\iota_2)]dt
+   + \sqrt{X_{2t}}\sigma_1 dW_t, \\
+dX_{2t}
+&= \mu_{22}(X_{2t}-\iota_2)dt
+   + \sqrt{X_{2t}}\sigma_2 dW_t .
 \end{aligned}
 $$
 
-where $W_t$ is a three-dimensional Brownian motion.
+Here $X_1$ is predictable consumption growth and $X_2$ is stochastic volatility.
 
-Here $X_{1t}$ is the **predictable component of consumption growth** and $X_{2t}$ is
-**stochastic volatility**.
-
-The representative agent has Epstein–Zin preferences with unit elasticity of
+The representative agent has Epstein--Zin utility with unit elasticity of intertemporal
 substitution.
 
-The stochastic discount factor satisfies
+The continuation value introduces a martingale $H^*$ into the SDF:
 
 $$
-d\log S_t = -\delta\,dt - d\log C_t + d\log H^*_t,
+d\log S_t = -\delta dt - d\log C_t + d\log H_t^*.
 $$
 
-where $H^*$ is a martingale determined by the continuation value of the recursive
-utility.
+The next cell sets the calibration.
 
 ```{code-cell} ipython3
 lrr_params = dict(
-    δ = 0.002,         # subjective discount rate
-    γ = 10.0,          # risk aversion
-    μ11 = -0.021,      # mean reversion of X1
-    μ12 = 0.0,         # (under P; becomes non-zero under P_hat)
-    μ22 = -0.013,      # mean reversion of X2
-    ι1 = 0.0,          # long-run mean of X1
-    ι2 = 1.0,          # long-run mean of X2 (normalized)
-    σ1 = np.array([0.0, 0.00034, 0.0]),   # diffusion of X1 (1*3)
-    σ2 = np.array([0.0, 0.0, -0.038]),    # diffusion of X2 (1*3)
-    β_c0 = 0.0015,     # consumption drift constant
-    β_c1 = 1.0,        # loading on X1
-    β_c2 = 0.0,        # loading on X2
-    α_c = np.array([0.0078, 0.0, 0.0]),   # consumption diffusion (1*3)
+    δ=0.002,
+    γ=10.0,
+    μ11=-0.021,
+    μ12=0.0,
+    μ22=-0.013,
+    ι1=0.0,
+    ι2=1.0,
+    σ1=np.array([0.0, 0.00034, 0.0]),
+    σ2=np.array([0.0, 0.0, -0.038]),
+    β_c0=0.0015,
+    β_c1=1.0,
+    β_c2=0.0,
+    α_c=np.array([0.0078, 0.0, 0.0]),
 )
 ```
 
-### Solving the value function
+In this affine model, the continuation value and the Perron eigenfunction have a simple
+exponential-affine form.
 
-The log continuation value $v(X_t)$ is affine in the state:
-$v(x) = \bar{v}_0 + \bar{v}_1 x_1 + \bar{v}_2 x_2$.
+Think of the translated continuation value as having slopes $(v_1, v_2)$ with respect
+to predictable growth and volatility.
 
-The coefficients satisfy the algebraic system in Appendix D of
-{cite}`BorovickaHansenScheinkman2016`.
+The Perron eigenfunction has analogous slopes $(e_1, e_2)$.
+
+Once those slopes are known, changing probabilities is a drift adjustment: the
+instantaneous risk-neutral measure uses the SDF shock exposure, while the long-term
+risk-neutral measure also includes the Perron eigenfunction shock exposure.
+
+The next functions compute these pieces in that order.
+
+This is why the code below is organized as value-function coefficients, Perron
+coefficients, and then the drift of $X$ under the recovered and risk-neutral probability
+measures.
 
 ```{code-cell} ipython3
 def solve_value_function(p):
-    """Solve the affine Epstein-Zin value-function coefficients."""
-    δ, γ = p['δ'], p['γ']
-    μ11, μ12, μ22 = p['μ11'], p['μ12'], p['μ22']
-    σ1, σ2 = p['σ1'], p['σ2']
-    β_c1, β_c2 = p['β_c1'], p['β_c2']
-    α_c = p['α_c']
+    """Slopes of the affine continuation value."""
+    δ, γ = p["δ"], p["γ"]
+    μ11, μ12, μ22 = p["μ11"], p["μ12"], p["μ22"]
+    σ1, σ2 = p["σ1"], p["σ2"]
+    β_c1, β_c2 = p["β_c1"], p["β_c2"]
+    α_c = p["α_c"]
 
-    # The X1 coefficient solves a scalar linear equation.
     v1 = β_c1 / (δ - μ11)
 
-    # The X2 coefficient solves the quadratic equation from the affine recursion.
+    # The volatility slope solves a scalar quadratic.
     A_vec = α_c + σ1 * v1
     B_vec = σ2
 
@@ -858,386 +723,653 @@ def solve_value_function(p):
     b = (μ22 - δ) + (1 - γ) * np.dot(A_vec, B_vec)
     c = β_c2 + μ12 * v1 + 0.5 * (1 - γ) * np.dot(A_vec, A_vec)
 
-    disc = b**2 - 4*a*c
+    disc = b**2 - 4 * a * c
     if disc < 0:
         raise ValueError("Value function does not exist for these parameters.")
 
     v2 = (-b - np.sqrt(disc)) / (2 * a)
-    return v1, v2, A_vec, B_vec
+    return v1, v2
 
 
-v1, v2, A_vec, B_vec = solve_value_function(lrr_params)
-print(f"Value-function slope on X1:  v_bar1 = {v1:.4f}")
-print(f"Value-function slope on X2:  v_bar2 = {v2:.4f}")
-```
+def solve_pf_lrr(p, v1, v2):
+    """Perron eigenfunction slopes and the SDF diffusion loading."""
+    δ, γ = p["δ"], p["γ"]
+    μ11, μ12, μ22 = p["μ11"], p["μ12"], p["μ22"]
+    ι1, ι2 = p["ι1"], p["ι2"]
+    σ1, σ2 = p["σ1"], p["σ2"]
+    α_c = p["α_c"]
+    β_c0, β_c1, β_c2 = p["β_c0"], p["β_c1"], p["β_c2"]
 
-### Perron–Frobenius and recovered dynamics
-
-```{code-cell} ipython3
-def solve_pf_lrr(p, v1, v2, A_vec):
-    """Solve the LRR Perron-Frobenius coefficients."""
-    δ, γ = p['δ'], p['γ']
-    μ11, μ12, μ22 = p['μ11'], p['μ12'], p['μ22']
-    ι1, ι2 = p['ι1'], p['ι2']
-    σ1, σ2 = p['σ1'], p['σ2']
-    α_c = p['α_c']
-    β_c0 = p['β_c0']
-    β_c1, β_c2 = p['β_c1'], p['β_c2']
-
-    # H* is the continuation-value martingale in the recursive utility SDF.
     α_h_star = (1 - γ) * (α_c + σ1 * v1 + σ2 * v2)
-
-    # α_s is the diffusion loading of d log S_t.
     α_s = -α_c + α_h_star
 
-    # The Ito correction uses d log H*, not the total log-SDF diffusion.
     β_s11 = -β_c1
     β_s12 = -β_c2 - 0.5 * np.dot(α_h_star, α_h_star)
-    β_s0 = (-δ - β_c0
-            - 0.5 * ι2 * np.dot(α_h_star, α_h_star))
+    β_s0 = -δ - β_c0 - 0.5 * ι2 * np.dot(α_h_star, α_h_star)
 
-    # The first Perron coefficient solves a scalar linear equation.
     e1 = -β_s11 / μ11
 
-    # The second Perron coefficient solves a quadratic equation.
-    const_pf = (β_s12 + 0.5*np.dot(α_s, α_s)
-                + e1*(μ12 + np.dot(σ1, α_s))
-                + 0.5*e1**2*np.dot(σ1, σ1))
-    lin_pf = μ22 + np.dot(σ2, α_s) + e1*np.dot(σ1, σ2)
-    quad_pf = 0.5 * np.dot(σ2, σ2)
+    const = (β_s12 + 0.5 * np.dot(α_s, α_s)
+             + e1 * (μ12 + np.dot(σ1, α_s))
+             + 0.5 * e1**2 * np.dot(σ1, σ1))
+    lin = μ22 + np.dot(σ2, α_s) + e1 * np.dot(σ1, σ2)
+    quad = 0.5 * np.dot(σ2, σ2)
 
-    disc = lin_pf**2 - 4*quad_pf*const_pf
-    e2_m = (-lin_pf - np.sqrt(disc)) / (2*quad_pf)
-    e2_p = (-lin_pf + np.sqrt(disc)) / (2*quad_pf)
+    disc = lin**2 - 4 * quad * const
+    roots = [(-lin - np.sqrt(disc)) / (2 * quad),
+             (-lin + np.sqrt(disc)) / (2 * quad)]
 
-    η_m = β_s0 - β_s12*ι2 - e2_m*μ22*ι2
-    η_p = β_s0 - β_s12*ι2 - e2_p*μ22*ι2
+    candidates = []
+    for e2 in roots:
+        eta = (β_s0 - β_s11 * ι1 - β_s12 * ι2
+               - e1 * (μ11 * ι1 + μ12 * ι2) - e2 * μ22 * ι2)
+        candidates.append((eta, e2))
 
-    # Select the lower eigenvalue root that generates stationary recovered dynamics.
-    if η_m <= η_p:
-        e2, η_hat = e2_m, η_m
-    else:
-        e2, η_hat = e2_p, η_p
-
-    return e1, e2, η_hat, α_s
+    # Choose the stable Perron root used for the long-term factorization.
+    eta, e2 = min(candidates)
+    return e1, e2, eta, α_s
 
 
-e1, e2, η_hat_lrr, α_s = solve_pf_lrr(lrr_params, v1, v2, A_vec)
+def recovered_lrr_dynamics(p, e1, e2, α_s):
+    """State dynamics under the long-term risk-neutral measure."""
+    μ11, μ12, μ22 = p["μ11"], p["μ12"], p["μ22"]
+    ι1, ι2 = p["ι1"], p["ι2"]
+    σ1, σ2 = p["σ1"], p["σ2"]
 
-print(f"PF eigenfunction coefficients:  e_bar1 = {e1:.4f},  e_bar2 = {e2:.4f}")
-print(f"Log eigenvalue:                 η_hat  = {η_hat_lrr:.6f}  "
-      f"(annualized = {η_hat_lrr*12:.4f})")
-```
-
-### Computing the P_hat dynamics
-
-```{code-cell} ipython3
-def compute_phat_dynamics(p, e1, e2, α_s):
-    """Drift parameters under the recovered measure P_hat."""
-    μ11, μ12, μ22 = p['μ11'], p['μ12'], p['μ22']
-    ι1, ι2 = p['ι1'], p['ι2']
-    σ1, σ2 = p['σ1'], p['σ2']
-
-    # α_h is the likelihood-ratio loading for the recovered measure.
     α_h = α_s + σ1 * e1 + σ2 * e2
 
     μ_hat_11 = μ11
     μ_hat_12 = μ12 + np.dot(σ1, α_h)
     μ_hat_22 = μ22 + np.dot(σ2, α_h)
 
-    # Rewrite the drift in mean-reversion form under P_hat.
     ι_hat_2 = (μ22 / μ_hat_22) * ι2
-    ι_hat_1 = (ι1
-               + (1.0/μ11) * (μ12*ι2 - μ_hat_12*ι_hat_2))
+    ι_hat_1 = ι1 + (μ12 * ι2 - μ_hat_12 * ι_hat_2) / μ11
 
     return dict(
-        μ_hat_11 = μ_hat_11,
-        μ_hat_12 = μ_hat_12,
-        μ_hat_22 = μ_hat_22,
-        ι_hat_1 = ι_hat_1,
-        ι_hat_2 = ι_hat_2,
-        α_h = α_h,
-        σ1 = σ1,
-        σ2 = σ2,
+        μ11=μ_hat_11,
+        μ12=μ_hat_12,
+        μ22=μ_hat_22,
+        ι1=ι_hat_1,
+        ι2=ι_hat_2,
+        σ1=σ1,
+        σ2=σ2,
+        α_h=α_h,
     )
 
 
-phat_dyn = compute_phat_dynamics(lrr_params, e1, e2, α_s)
+def risk_neutral_lrr_dynamics(p, α_s):
+    """State dynamics under the instantaneous risk-neutral measure."""
+    μ11, μ12, μ22 = p["μ11"], p["μ12"], p["μ22"]
+    ι1, ι2 = p["ι1"], p["ι2"]
+    σ1, σ2 = p["σ1"], p["σ2"]
 
-print("P_hat dynamics:")
-print(f"  μ_hat_11 = {phat_dyn['μ_hat_11']:.4f}  "
-      f"(physical {lrr_params['μ11']:.4f})")
-print(f"  μ_hat_12 = {phat_dyn['μ_hat_12']:.6f}  "
-      f"(physical 0)")
-print(f"  μ_hat_22 = {phat_dyn['μ_hat_22']:.5f}  "
-      f"(physical {lrr_params['μ22']:.4f})")
-print(f"  ι_hat_1  = {phat_dyn['ι_hat_1']:.5f}  "
-      f"(physical {lrr_params['ι1']:.4f})")
-print(f"  ι_hat_2  = {phat_dyn['ι_hat_2']:.5f}  "
-      f"(physical {lrr_params['ι2']:.4f})")
-```
+    μ_bar_11 = μ11
+    μ_bar_12 = μ12 + np.dot(σ1, α_s)
+    μ_bar_22 = μ22 + np.dot(σ2, α_s)
 
-For comparison with the paper's Figure 1, we also compute the instantaneous risk-neutral
-dynamics.
-
-This change of measure uses the martingale component of the normalized SDF, whose
-diffusion vector is $\alpha_s$.
-
-```{code-cell} ipython3
-def compute_rn_dynamics(p, α_s):
-    """Drift parameters under the one-period risk-neutral measure."""
-    μ11, μ12, μ22 = p['μ11'], p['μ12'], p['μ22']
-    ι1, ι2 = p['ι1'], p['ι2']
-    σ1, σ2 = p['σ1'], p['σ2']
-
-    # Risk-neutral dynamics use the normalized SDF loading.
-    μ_rn_11 = μ11
-    μ_rn_12 = μ12 + np.dot(σ1, α_s)
-    μ_rn_22 = μ22 + np.dot(σ2, α_s)
-
-    # Rewrite the drift in mean-reversion form under P_bar.
-    ι_rn_2 = (μ22 / μ_rn_22) * ι2
-    ι_rn_1 = (ι1
-              + (1.0/μ11) * (μ12*ι2 - μ_rn_12*ι_rn_2))
+    ι_bar_2 = (μ22 / μ_bar_22) * ι2
+    ι_bar_1 = ι1 + (μ12 * ι2 - μ_bar_12 * ι_bar_2) / μ11
 
     return dict(
-        μ_rn_11 = μ_rn_11,
-        μ_rn_12 = μ_rn_12,
-        μ_rn_22 = μ_rn_22,
-        ι_rn_1 = ι_rn_1,
-        ι_rn_2 = ι_rn_2,
+        μ11=μ_bar_11,
+        μ12=μ_bar_12,
+        μ22=μ_bar_22,
+        ι1=ι_bar_1,
+        ι2=ι_bar_2,
+        σ1=σ1,
+        σ2=σ2,
     )
-
-
-rn_dyn = compute_rn_dynamics(lrr_params, α_s)
-
-print("Dynamics of X under P_bar (risk-neutral):")
-print(f"  μ_rn_12 = {rn_dyn['μ_rn_12']:.6f}")
-print(f"  μ_rn_22 = {rn_dyn['μ_rn_22']:.5f}")
-print(f"  ι_rn_1  = {rn_dyn['ι_rn_1']:.5f}")
-print(f"  ι_rn_2  = {rn_dyn['ι_rn_2']:.5f}")
 ```
 
-### Simulating and comparing stationary distributions
+For the calibration used here, the recovered measure changes the long-run state
+distribution.
+
+It lowers the mean of expected growth and raises the mean of volatility.
 
 ```{code-cell} ipython3
-def simulate_lrr(dyn, T=600_000, seed=42):
-    """Simulate stationary LRR paths by Euler-Maruyama."""
+v1, v2 = solve_value_function(lrr_params)
+e1, e2, η_lrr, α_s = solve_pf_lrr(lrr_params, v1, v2)
+dyn_hat = recovered_lrr_dynamics(lrr_params, e1, e2, α_s)
+dyn_bar = risk_neutral_lrr_dynamics(lrr_params, α_s)
+
+print(f"value slopes:       v1 = {v1:.4f}, v2 = {v2:.4f}")
+print(f"Perron coefficients: e1 = {e1:.4f}, e2 = {e2:.4f}")
+print(f"log eigenvalue:     eta = {η_lrr:.6f}  "
+      f"(annualized {12 * η_lrr:.4f})")
+print()
+print("Long-run means under three measures")
+print("measure        iota_1     iota_2     mu_12      mu_22")
+print("---------   --------   --------   --------   --------")
+print(f"actual      {lrr_params['ι1']:8.5f}   {lrr_params['ι2']:8.5f}"
+      f"   {lrr_params['μ12']:8.5f}   {lrr_params['μ22']:8.5f}")
+print(f"risk-neut.  {dyn_bar['ι1']:8.5f}   {dyn_bar['ι2']:8.5f}"
+      f"   {dyn_bar['μ12']:8.5f}   {dyn_bar['μ22']:8.5f}")
+print(f"long-term   {dyn_hat['ι1']:8.5f}   {dyn_hat['ι2']:8.5f}"
+      f"   {dyn_hat['μ12']:8.5f}   {dyn_hat['μ22']:8.5f}")
+```
+
+These numbers show the mechanism clearly.
+
+The positive value slope $v_1$ says that the continuation value is very sensitive to
+predictable consumption growth.
+
+The volatility slope $v_2$ is negative in this calibration, so higher volatility lowers
+continuation value.
+
+The Perron coefficient $e_1$ has the opposite sign: the long-term change of measure
+loads negatively on predictable growth.
+
+Thus the recovered measure tilts probability toward histories with lower expected
+growth.
+
+The positive $e_2$ works in the other direction for volatility, tilting probability
+toward higher-volatility states.
+
+The table translates those coefficients into state dynamics.
+
+Relative to the correctly specified law, both risk-neutral measures lower the long-run
+mean of predictable growth and raise the long-run mean of volatility.
+
+The long-term risk-neutral measure moves further in that direction than the
+instantaneous risk-neutral measure: $\iota_1$ falls from $0$ to about $-0.0027$, while
+$\iota_2$ rises from $1$ to about $1.13$.
+
+The small negative log eigenvalue means that the Perron discount factor is slightly
+below one; with the usual yield sign convention, $-\eta$ is the corresponding long-run
+discount rate.
+
+### State probabilities
+
+Figure 1 in {cite:t}`BorovickaHansenScheinkman2016` is about forecasting after
+treating the recovered measure as beliefs.
+
+It is the same message as the coefficient table above, but shown as a distribution
+rather than as long-run means.
+
+The table said that the recovered measure lowers the long-run mean of predictable
+growth $X_1$ and raises the long-run mean of volatility $X_2$.
+
+The figure shows the same distortion geometrically: probability mass moves down and to
+the right.
+
+The left panel uses the correctly specified probability measure $\mathbf{P}$.
+
+The right panel uses the probability measure recovered from the Perron--Frobenius
+calculation, $\hat{\mathbf{P}}$.
+
+The main message is not just that the two densities differ.
+
+The recovered measure puts more probability on bad long-run-risk states.
+
+These are states with lower predictable growth $X_1$ and higher volatility $X_2$.
+
+It also makes low growth and high volatility occur together more often.
+
+The dashed contour adds the instantaneous risk-neutral distribution. In this calibration,
+the risk-neutral and recovered stationary distributions are close to each other and both
+are far from the correctly specified distribution.
+
+This means that the martingale likelihood ratio is responsible for much of the risk
+adjustment.
+
+The plot below is drawn in three steps.
+
+First, we simulate the state process under each set of drift parameters: the correctly
+specified dynamics, the recovered long-term risk-neutral dynamics, and the instantaneous
+risk-neutral dynamics.
+
+Second, after discarding an initial burn-in, we estimate the stationary joint density of
+$(X_2, X_1)$ with a two-dimensional kernel density estimator.
+
+Third, we draw density contours on the same axes.
+
+The horizontal line marks $X_1=0$ and the vertical line marks the correctly specified
+mean of volatility, $X_2=\iota_2$.
+
+The code uses the paper's calibration but keeps the simulation and KDE choices simple.
+
+```{code-cell} ipython3
+def simulate_lrr(dyn, T=180_000, seed=123):
+    """Euler simulation of the LRR state process under one probability measure."""
     rng = np.random.default_rng(seed)
-    μ11 = dyn.get('μ11', dyn.get('μ_hat_11'))
-    μ12 = dyn.get('μ12', dyn.get('μ_hat_12', 0.0))
-    μ22 = dyn.get('μ22', dyn.get('μ_hat_22'))
-    ι1 = dyn.get('ι1', dyn.get('ι_hat_1'))
-    ι2 = dyn.get('ι2', dyn.get('ι_hat_2'))
-    σ1 = dyn['σ1']
-    σ2 = dyn['σ2']
-
     X1 = np.zeros(T)
-    X2 = np.full(T, ι2)
+    X2 = np.full(T, dyn["ι2"])
 
+    # Euler step with monthly time increment
     for t in range(1, T):
-        X2t = max(X2[t-1], 1e-9)
-        sq_X2 = np.sqrt(X2t)
-
-        # Monthly Euler step with dt = 1.
+        X2_prev = max(X2[t-1], 1e-9)
         dW = rng.standard_normal(3)
+        sqrt_X2 = np.sqrt(X2_prev)
 
-        X1[t] = X1[t-1] + (μ11*(X1[t-1]-ι1) + μ12*(X2t-ι2)) + sq_X2*np.dot(σ1, dW)
-        X2[t] = max(X2[t-1] + μ22*(X2t-ι2) + sq_X2*np.dot(σ2, dW),  1e-9)
+        X1[t] = (
+            X1[t-1]
+            + dyn["μ11"] * (X1[t-1] - dyn["ι1"])
+            + dyn["μ12"] * (X2_prev - dyn["ι2"])
+            + sqrt_X2 * np.dot(dyn["σ1"], dW)
+        )
+        X2[t] = max(
+            X2_prev
+            + dyn["μ22"] * (X2_prev - dyn["ι2"])
+            + sqrt_X2 * np.dot(dyn["σ2"], dW),
+            1e-9,
+        )
 
     burn = T // 5
     return X1[burn:], X2[burn:]
 
 
-X1_P, X2_P = simulate_lrr(
-    dict(μ11=lrr_params['μ11'], μ12=lrr_params['μ12'],
-         μ22=lrr_params['μ22'], ι1=lrr_params['ι1'],
-         ι2=lrr_params['ι2'],
-         σ1=lrr_params['σ1'], σ2=lrr_params['σ2']),
-    T=600_000
-)
+def kde2d_contour(ax, X1, X2, label, levels=7, fill=True,
+                  linestyle='solid', outer_only=False):
+    """Estimate the stationary density and draw its contours."""
+    m = min(25_000, len(X1))
+    idx = np.linspace(0, len(X1) - 1, m, dtype=int)
+    x1 = X1[idx]
+    x2 = X2[idx]
 
-X1_Ph, X2_Ph = simulate_lrr(
-    dict(μ_hat_11=phat_dyn['μ_hat_11'],
-         μ_hat_12=phat_dyn['μ_hat_12'],
-         μ_hat_22=phat_dyn['μ_hat_22'],
-         ι_hat_1=phat_dyn['ι_hat_1'],
-         ι_hat_2=phat_dyn['ι_hat_2'],
-         σ1=lrr_params['σ1'],
-         σ2=lrr_params['σ2']),
-    T=600_000
-)
-
-X1_RN, X2_RN = simulate_lrr(
-    dict(μ11=rn_dyn['μ_rn_11'],
-         μ12=rn_dyn['μ_rn_12'],
-         μ22=rn_dyn['μ_rn_22'],
-         ι1=rn_dyn['ι_rn_1'],
-         ι2=rn_dyn['ι_rn_2'],
-         σ1=lrr_params['σ1'],
-         σ2=lrr_params['σ2']),
-    T=600_000
-)
-```
-
-```{code-cell} ipython3
-def kde2d_contour(ax, X1, X2, levels=8, color='k', alpha=1.0, lw=1.5,
-                  bandwidth=None, linestyle='solid'):
-    """Add 2D KDE contours to an axis."""
-    xy = np.vstack([X2, X1])
-    kde = gaussian_kde(xy, bw_method=bandwidth)
-    x2g = np.linspace(X2.min()*0.9, X2.max()*1.1, 120)
-    x1g = np.linspace(X1.min()*0.9, X1.max()*1.1, 120)
-    X2g, X1g = np.meshgrid(x2g, x1g)
+    kde = gaussian_kde(np.vstack([x2, x1]))
+    x2_grid = np.linspace(0.6, 1.6, 140)
+    x1_grid = np.linspace(-0.006, 0.006, 140)
+    X2g, X1g = np.meshgrid(x2_grid, x1_grid)
     Z = kde(np.vstack([X2g.ravel(), X1g.ravel()])).reshape(X2g.shape)
-    ax.contour(X2g, X1g, Z, levels=levels, colors=color, alpha=alpha,
-               linewidths=lw, linestyles=linestyle)
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 5), sharey=True)
+    contour_levels = np.linspace(0.12 * Z.max(), 0.9 * Z.max(), levels)
+    if outer_only:
+        contour_levels = contour_levels[:1]
 
-kde2d_contour(ax1, X1_P, X2_P, color='navy', levels=7)
-ax1.set_xlabel('conditional volatility  $X_2$', fontsize=11)
-ax1.set_ylabel('mean growth rate  $X_1$', fontsize=11)
-ax1.set_title(r'physical measure  $P$', fontsize=12)
+    if fill:
+        fill_levels = np.r_[contour_levels, Z.max()]
+        ax.contourf(X2g, X1g, Z, levels=fill_levels, cmap='Greys',
+                    alpha=0.85)
+        ax.contour(X2g, X1g, Z, levels=contour_levels, colors='0.55',
+                   linewidths=0.4)
+        ax.plot([], [], color='0.25', lw=1.5, label=label)
+    else:
+        ax.contour(X2g, X1g, Z, levels=contour_levels, colors='black',
+                   linewidths=1.5, linestyles=linestyle)
+        ax.plot([], [], color='black', lw=1.5, ls=linestyle, label=label)
 
-kde2d_contour(ax2, X1_Ph, X2_Ph, color='navy', levels=7)
-kde2d_contour(ax2, X1_RN, X2_RN, color='black', levels=3,
-              alpha=0.65, lw=1.2, linestyle='--')
-ax2.set_xlabel('conditional volatility  $X_2$', fontsize=11)
-ax2.set_title(r'long-term risk-neutral  $\hat{P}$', fontsize=12)
 
-for ax in (ax1, ax2):
-    ax.axhline(0, color='grey', lw=0.8, ls='--')
-    ax.axvline(lrr_params['ι2'], color='grey', lw=0.8, ls='--')
+dyn_true = dict(
+    μ11=lrr_params["μ11"],
+    μ12=lrr_params["μ12"],
+    μ22=lrr_params["μ22"],
+    ι1=lrr_params["ι1"],
+    ι2=lrr_params["ι2"],
+    σ1=lrr_params["σ1"],
+    σ2=lrr_params["σ2"],
+)
 
-ax1.annotate(f"mean X1 ~ {X1_P.mean():.4f}", xy=(0.05, 0.92),
-             xycoords='axes fraction', fontsize=9, color='navy')
-ax1.annotate(f"mean X2 ~ {X2_P.mean():.4f}", xy=(0.05, 0.85),
-             xycoords='axes fraction', fontsize=9, color='navy')
-ax2.annotate(f"mean X1 ~ {X1_Ph.mean():.4f}", xy=(0.05, 0.92),
-             xycoords='axes fraction', fontsize=9, color='navy')
-ax2.annotate(f"mean X2 ~ {X2_Ph.mean():.4f}", xy=(0.05, 0.85),
-             xycoords='axes fraction', fontsize=9, color='navy')
-ax2.plot([], [], color='navy', lw=1.5, label=r'$\hat{P}$')
-ax2.plot([], [], color='black', lw=1.2, ls='--', label=r'risk-neutral $\bar{P}$')
-ax2.legend(fontsize=9, loc='lower right')
+X1_P, X2_P = simulate_lrr(dyn_true, seed=1)
+X1_H, X2_H = simulate_lrr(dyn_hat, seed=2)
+X1_B, X2_B = simulate_lrr(dyn_bar, seed=3)
 
-plt.suptitle('stationary distributions of $(X_1, X_2)$ under $P$ and $\\hat{P}$\n'
-             '(based on Figure 1 of Borovička, Hansen & Scheinkman 2016)',
-             fontsize=12, y=1.02)
-plt.tight_layout();  plt.show()
+fig, axes = plt.subplots(1, 2, figsize=(12, 4.8), sharex=True, sharey=True)
+kde2d_contour(axes[0], X1_P, X2_P, label=r'correctly specified $\mathbf{P}$')
+kde2d_contour(axes[1], X1_H, X2_H,
+              label=r'long-term risk-neutral $\hat{\mathbf{P}}$')
+kde2d_contour(axes[1], X1_B, X2_B,
+              label=r'risk-neutral $\bar{\mathbf{P}}$',
+              fill=False, linestyle='--', outer_only=True)
+
+for ax in axes:
+    ax.axhline(0, lw=0.8, ls='--')
+    ax.axvline(lrr_params["ι2"], lw=0.8, ls='--')
+    ax.set_xlim(0.6, 1.6)
+    ax.set_ylim(-0.006, 0.006)
+    ax.set_xlabel(r"conditional volatility $X_2$")
+    ax.legend(fontsize=9)
+
+axes[0].set_ylabel(r"mean growth rate $X_1$")
+plt.tight_layout()
+plt.show()
 ```
 
-The recovered measure $\hat{P}$ concentrates around **lower mean growth** (more negative
-$X_1$) and **higher conditional volatility** (larger $X_2$).
+The movement below the horizontal line means lower expected growth, while movement to
+the right of the vertical line means higher volatility.
 
-Forecasts made using $\hat{P}$ are systematically pessimistic compared to forecasts
-based on the true distribution $P$.
+### Yield implications
 
-## Measuring the martingale component
+Figure 2 in {cite:t}`BorovickaHansenScheinkman2016` asks how the probability
+difference affects yields.
 
-### Entropy bounds
-
-Even without observing the full array of Arrow prices, we can obtain **lower bounds** on
-the size of the martingale component.
-
-For a convex function $\phi_\theta(r) = [(r)^{1+\theta} - 1] / [\theta(1+\theta)]$, the
-discrepancy between $\hat{P}$ and $P$ satisfies
+For a cash flow $G_t$, the yield compares a forecast of the payoff with its asset price:
 
 $$
-\lambda_\theta = E\!\left[\phi_\theta\!\left(\frac{\hat{H}_{t+1}}{\hat{H}_t}\right)\right]
-\geq 0,
+y_t[G](x)
+= \frac{1}{t}\log E[G_t \mid X_0=x]
+  - \frac{1}{t}\log E[S_tG_t \mid X_0=x].
 $$
 
-with equality if and only if the martingale is trivial.
+The first term is a forecast of the cash flow.
 
-Two special cases are:
+The second term is its price, written using the stochastic discount factor.
 
-- **$\theta = -1$**: $\phi_{-1}(r) = -\log r$, so $\lambda_{-1} = -E[\log(\hat{H}_{t+1}/\hat{H}_t)]$ is the **expected log-likelihood** (entropy).
-- **$\theta = 1$**: $\lambda_1 = \tfrac{1}{2}\mathrm{Var}[\hat{H}_{t+1}/\hat{H}_t]$.
+If an analyst treats $\hat{\mathbf{P}}$ as investors' beliefs, the forecast term changes
+while the observed price is held fixed.
+
+The left panel applies this comparison to a payoff equal to aggregate consumption at
+maturity.
+
+The recovered measure treats adverse long-run-risk states as more likely.
+
+As a result, it removes much of the long-run risk compensation from aggregate
+consumption cash flows.
+
+The resulting consumption yields are lower than the yields computed with the correctly
+specified probability measure.
+
+The bond panel gives the comparison case: for a zero-coupon payoff, changing the payoff
+forecast does not change the numerator. It isolates the maturity-matched discounting
+against which the aggregate-consumption cash flow is compared.
+
+The calculation below uses the affine formulas implied by the long-run risk model.
+
+If a multiplicative functional $M$ has log drift affine in $X$ and diffusion proportional
+to $\sqrt{X_2}$, then
+
+$$
+E[M_t \mid X_0=x]
+= \exp\{\theta_0(t)+\theta_1(t)x_1+\theta_2(t)x_2\},
+$$
+
+where the coefficients solve Riccati equations.
+
+The code below computes these affine expectations under the correctly specified
+measure, recomputes only the consumption forecast under the recovered measure, and keeps
+asset prices fixed.
+
+It then plots median and interquartile yield bands across the same simulated initial
+states.
 
 ```{code-cell} ipython3
-def φ_θ(r, θ):
-    """Discrepancy function."""
-    if abs(θ) < 1e-10:      # θ -> 0: relative entropy r log r
-        return r * np.log(r)
-    if abs(θ + 1) < 1e-10:  # θ -> -1: -log r
-        return -np.log(r)
-    return (r**(1 + θ) - 1) / (θ * (1 + θ))
+---
+mystnb:
+  figure:
+    caption: >-
+      Yield implications of using recovered probabilities as beliefs. Dashed
+      consumption-yield bands use recovered payoff forecasts with prices fixed; bond
+      yields are unchanged because the zero-coupon payoff has no forecast term.
+    name: fig-mr-lrr-figure-2
+---
+def affine_expectation_coeffs(dyn, β0, β1, β2, α, horizons):
+    """Riccati coefficients for log E[M_t | X_0=x]."""
+    μ11, μ12, μ22 = dyn["μ11"], dyn["μ12"], dyn["μ22"]
+    ι1, ι2 = dyn["ι1"], dyn["ι2"]
+    σ1, σ2 = dyn["σ1"], dyn["σ2"]
+
+    def ode(_, θ):
+        θ0, θ1, θ2 = θ
+        θ0_dot = (β0 - β1 * ι1 - β2 * ι2
+                  - θ1 * (μ11 * ι1 + μ12 * ι2)
+                  - θ2 * μ22 * ι2)
+        θ1_dot = β1 + μ11 * θ1
+        θ2_dot = (β2 + μ12 * θ1 + μ22 * θ2
+                  + 0.5 * np.dot(α, α)
+                  + θ1 * np.dot(σ1, α)
+                  + θ2 * np.dot(σ2, α)
+                  + 0.5 * θ1**2 * np.dot(σ1, σ1)
+                  + θ1 * θ2 * np.dot(σ1, σ2)
+                  + 0.5 * θ2**2 * np.dot(σ2, σ2))
+        return [θ0_dot, θ1_dot, θ2_dot]
+
+    sol = solve_ivp(ode, (0, horizons[-1]), np.zeros(3),
+                    t_eval=horizons, rtol=1e-8, atol=1e-10)
+    if not sol.success:
+        raise ValueError("Riccati equation failed to solve")
+    return sol.y.T
 
 
-def martingale_entropy(Q, P, θ=-1):
-    """Stationary-average discrepancy E[φ_θ(h_hat)]."""
-    _, exp_η, e_hat, P_hat = perron_frobenius(Q)
-    H_incr = np.where(P > 0, P_hat / P, 1.0)
-    π = stationary_dist(P)
-
-    disc = 0.0
-    for i in range(P.shape[0]):
-        for j in range(P.shape[1]):
-            if P[i, j] > 0:
-                disc += π[i] * P[i, j] * φ_θ(H_incr[i, j], θ)
-    return disc
+def log_expectation(θ, X1, X2):
+    """Evaluate log E[M_t | X_0=x] on simulated states."""
+    return θ[:, 0, None] + θ[:, 1, None] * X1[None, :] + θ[:, 2, None] * X2[None, :]
 
 
-γs_ent = np.linspace(1.0, 10.0, 50)
-entropies = {'θ=-1 (neg. log)': [], 'θ=0 (rel. entropy)': [], 'θ=1 (variance/2)': []}
+def yield_quantiles(log_num, log_den, horizons):
+    """Quartiles of annualized yields across initial states."""
+    yields = 12 * (log_num - log_den) / horizons[:, None]
+    return np.quantile(yields, [0.25, 0.5, 0.75], axis=1)
 
-for γ_val in γs_ent:
-    v_g, _, S_g = solve_ez_finite(P_phys, c_levels, δ, γ_val, gc_ex)
-    Q_g = S_g * P_phys
-    for θ, key in [(-1, 'θ=-1 (neg. log)'), (0, 'θ=0 (rel. entropy)'),
-                   (1, 'θ=1 (variance/2)')]:
-        entropies[key].append(martingale_entropy(Q_g, P_phys, θ=θ))
 
-fig, ax = plt.subplots(figsize=(8, 4.5))
-colors_ent = ['firebrick', 'darkorange', 'steelblue']
-for (label, vals), col in zip(entropies.items(), colors_ent):
-    ax.plot(γs_ent, vals, label=label, color=col, lw=2)
+def transform_functional(β0, β1, β2, α, dyn_old, dyn_new, α_h):
+    """Rewrite a multiplicative functional after changing probabilities."""
+    # The drift changes because the recovered likelihood ratio changes the
+    # Brownian shock exposure used to forecast the cash flow.
+    β_level = β0 - β1 * dyn_old["ι1"] - β2 * dyn_old["ι2"]
+    β2_new = β2 + np.dot(α, α_h)
+    β0_new = β_level + β1 * dyn_new["ι1"] + β2_new * dyn_new["ι2"]
+    return β0_new, β1, β2_new, α
 
-ax.set_xlabel('risk aversion  γ')
-ax.set_ylabel(r'$E[\phi_\theta(\hat{H}_{t+1}/\hat{H}_t)]$')
-ax.set_title('discrepancy measures for the martingale component\n'
-             '(larger values <-> larger deviation from Ross recovery)')
-ax.legend(fontsize=9)
-plt.tight_layout();  plt.show()
+
+def sdf_coefficients(p, v1, v2):
+    """SDF coefficients used in the affine expectation calculation."""
+    δ, γ = p["δ"], p["γ"]
+    α_c, σ1, σ2 = p["α_c"], p["σ1"], p["σ2"]
+
+    α_h_star = (1 - γ) * (α_c + σ1 * v1 + σ2 * v2)
+    α_s = -α_c + α_h_star
+
+    β_s1 = -p["β_c1"]
+    β_s2 = -p["β_c2"] - 0.5 * np.dot(α_h_star, α_h_star)
+    β_s0 = -δ - p["β_c0"] - 0.5 * p["ι2"] * np.dot(α_h_star, α_h_star)
+
+    return β_s0, β_s1, β_s2, α_s
+
+
+quarters = np.arange(1, 101)
+horizons = 3 * quarters
+
+β_c0, β_c1, β_c2 = (lrr_params["β_c0"],
+                    lrr_params["β_c1"],
+                    lrr_params["β_c2"])
+α_c = lrr_params["α_c"]
+
+β_s0, β_s1, β_s2, α_s = sdf_coefficients(lrr_params, v1, v2)
+
+# Numerators and denominators for yields under the correctly specified measure
+θ_C_P = affine_expectation_coeffs(dyn_true, β_c0, β_c1, β_c2, α_c, horizons)
+θ_S_P = affine_expectation_coeffs(dyn_true, β_s0, β_s1, β_s2, α_s, horizons)
+θ_SC_P = affine_expectation_coeffs(
+    dyn_true, β_s0 + β_c0, β_s1 + β_c1, β_s2 + β_c2,
+    α_s + α_c, horizons
+)
+
+# Recovered-belief numerator for the aggregate-consumption payoff
+β_Ch0, β_Ch1, β_Ch2, α_Ch = transform_functional(
+    β_c0, β_c1, β_c2, α_c, dyn_true, dyn_hat, dyn_hat["α_h"]
+)
+θ_C_H = affine_expectation_coeffs(dyn_hat, β_Ch0, β_Ch1, β_Ch2,
+                                  α_Ch, horizons)
+
+log_C_P = log_expectation(θ_C_P, X1_P, X2_P)
+log_C_H = log_expectation(θ_C_H, X1_P, X2_P)
+log_S_P = log_expectation(θ_S_P, X1_P, X2_P)
+log_SC_P = log_expectation(θ_SC_P, X1_P, X2_P)
+
+qC_P = yield_quantiles(log_C_P, log_SC_P, horizons)
+qC_H = yield_quantiles(log_C_H, log_SC_P, horizons)
+qB_P = yield_quantiles(np.zeros_like(log_S_P), log_S_P, horizons)
+# A zero-coupon payoff has the same numerator, log E[1] = 0, under either belief.
+qB_H = qB_P.copy()
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4.8), sharex=True)
+
+def plot_yield_band(ax, x, q, color, label, linestyle='solid',
+                    alpha=0.35):
+    """Plot quartile band and quartile lines."""
+    ax.fill_between(x, q[0], q[2], color=color, alpha=alpha, linewidth=0)
+    ax.plot(x, q[1], color=color, lw=2.4, ls=linestyle, label=label)
+    ax.plot(x, q[0], color=color, lw=1.3, ls=linestyle)
+    ax.plot(x, q[2], color=color, lw=1.3, ls=linestyle)
+
+
+plot_yield_band(axes[0], quarters, qC_P, color='0.2',
+                label='correctly specified measure', alpha=0.45)
+plot_yield_band(axes[0], quarters, qC_H, color='0.65',
+                label='recovered measure', linestyle='--', alpha=0.35)
+plot_yield_band(axes[1], quarters, qB_P, color='0.2',
+                label='correctly specified measure', alpha=0.45)
+plot_yield_band(axes[1], quarters, qB_H, color='0.65',
+                label='recovered measure', linestyle='--', alpha=0.25)
+
+axes[0].set_xlabel('maturity (quarters)')
+axes[0].set_ylabel('consumption yield to maturity')
+axes[1].set_xlabel('maturity (quarters)')
+axes[1].set_ylabel('bond yield to maturity')
+
+axes[0].legend(fontsize=9)
+
+plt.tight_layout()
+plt.show()
 ```
 
-All three discrepancy measures increase with risk aversion, confirming that a higher
-$\gamma$ implies a larger -- and more economically significant -- martingale component.
+The left panel is the key one: recovered beliefs put more mass on low-growth,
+high-volatility states, so they forecast lower consumption and imply lower consumption
+yields when prices are held fixed.
 
-{cite:t}`AlvarezJermann2005` and {cite:t}`BakshiChabiYo2012` use analogous bounds with
-long-maturity bond returns to find empirically large martingale components in U.S. data.
+The bond panel is a check.
+
+Since $\log E[1]=0$ under any measure, the solid and dashed
+bond-yield bands coincide.
+
+## Additional state vector
+
+{cite:t}`BorovickaHansenScheinkman2016` then asks whether the recovery
+problem can be fixed by enlarging the state vector.
+
+So far, the Perron eigenfunction has depended only on the Markov state $X_t$.
+
+But many models also contain a growing component $Y_t$, such as log consumption, with
+increments driven by the same shocks:
+
+$$
+X_{t+1}=\phi_x(X_t,W_{t+1}),
+\qquad
+Y_{t+1}-Y_t=\phi_y(X_t,W_{t+1}).
+$$
+
+If we allow the eigenfunction to depend on both $(X_t,Y_t)$, then a natural candidate is
+
+$$
+\varepsilon(x,y)=\exp(\zeta \cdot y)e_\zeta(x).
+$$
+
+This form is natural because $Y$ enters through increments.
+
+Along a path,
+
+$$
+\exp(\zeta \cdot Y_{t+1})
+= \exp(\zeta \cdot Y_t)
+  \exp\{\zeta \cdot (Y_{t+1}-Y_t)\}.
+$$
+
+Since $Y_{t+1}-Y_t$ is a function of $(X_t,W_{t+1})$, the ratio
+$\exp(\zeta \cdot Y_{t+1})/\exp(\zeta \cdot Y_t)$ is a one-period
+multiplicative shock.
+
+Thus multiplying the old eigenfunction by $\exp(\zeta \cdot y)$ does not destroy the
+Perron structure; it simply changes the one-period pricing operator by the extra factor
+$\exp\{\zeta \cdot (Y_{t+1}-Y_t)\}$.
+
+For each choice of $\zeta$, the remaining $x$-dependent part solves a different Perron
+problem:
+
+$$
+E\left[
+    \frac{S_{t+1}}{S_t}
+    \exp\{\zeta \cdot (Y_{t+1}-Y_t)\}
+    e_\zeta(X_{t+1})
+    \mid X_t=x
+\right]
+=\exp(\eta_\zeta)e_\zeta(x).
+$$
+
+Changing $\zeta$ changes how much long-run growth risk is loaded into the eigenfunction.
+
+Thus adding $Y_t$ can make the subjective probability law one possible solution, but it
+also creates a family of possible solutions.
+
+The extra state variable therefore does not remove the identification problem; it
+usually makes the selection problem more explicit.
+
+The paper also points out a related practical issue.
+
+Highly persistent stationary processes can be hard to distinguish from processes with
+stationary increments.
+
+A stationary approximation may have a unique Perron solution for each finite persistence
+level, but as persistence becomes extreme, the limiting problem can have many
+near-solutions.
+
+Numerically, this means recovery can become fragile exactly in the cases where a
+stationary model is being used to approximate stochastic growth.
+
+There is, however, a structured way forward.
+
+If the analyst supplies a reference multiplicative functional $Y^r$ that is known to
+contain the martingale component of the SDF, then one can restrict the enlarged
+eigenfunction to the form
+
+$$
+(Y^r)^{-1}e(x).
+$$
+
+This restriction chooses which long-run martingale component is allowed into the
+eigenfunction.
+
+With this extra structure, Arrow prices can again reveal subjective probabilities.
+
+But the key input is external: the long-run martingale component has been supplied by
+the analyst, not recovered from Arrow prices alone.
+
+## Lessons
+
+The Perron--Frobenius calculation remains useful under misspecification, but it no
+longer solves the belief-recovery problem by itself.
+
+It delivers a probability measure that may include long-horizon risk premia.
+
+That measure equals investors' beliefs only when the likelihood-ratio martingale is
+constant.
+
+Recursive utility, permanent shocks, and long-run risk models give this martingale an
+economically important role, so it should not be overlooked when assessing the
+implications of transition independence for belief recovery.
 
 ## Exercises
 
 ```{exercise}
-:label: ex_risk_neutral
+:label: ex_misspecified_recovery_diagnostic
 
-**Verify risk-neutral probabilities.**
+**A two-state diagnostic.**
 
-Consider a two-state Markov chain with physical transition matrix
-
-$$
-\mathbf{P} = \begin{pmatrix} 0.8 & 0.2 \\ 0.4 & 0.6 \end{pmatrix}
-$$
-
-and Arrow price matrix
+Let
 
 $$
-\mathbf{Q} = \begin{pmatrix} 0.72 & 0.15 \\ 0.36 & 0.42 \end{pmatrix}.
+\mathbf{P} =
+\begin{pmatrix}
+0.8 & 0.2 \\
+0.4 & 0.6
+\end{pmatrix},
+\qquad
+\mathbf{Q} =
+\begin{pmatrix}
+0.72 & 0.15 \\
+0.36 & 0.42
+\end{pmatrix}.
 $$
 
-1. Compute the risk-neutral transition matrix $\bar{\mathbf{P}}$ and verify it is a
-   valid probability matrix.
-2. Compute the one-period discount bond prices and the implied risk-free rates in each
-   state.
-3. Show that the SDF $\bar{s}_{ij} = \bar{q}_i$ is independent of the next state $j$.
+1. Compute the one-period risk-neutral transition matrix $\bar{\mathbf{P}}$.
+2. Compute the recovered transition matrix $\hat{\mathbf{P}}$.
+3. Compute $\hat h_{ij}=\hat p_{ij}/p_{ij}$ and decide whether recovery returns the
+   correctly specified transition matrix.
 ```
 
-```{solution-start} ex_risk_neutral
+```{solution-start} ex_misspecified_recovery_diagnostic
 :class: dropdown
 ```
+
+Here is one solution:
 
 ```{code-cell} ipython3
 P2 = np.array([[0.8, 0.2],
@@ -1245,248 +1377,109 @@ P2 = np.array([[0.8, 0.2],
 Q2 = np.array([[0.72, 0.15],
                [0.36, 0.42]])
 
-P_bar2, q_bonds2 = risk_neutral_probs(Q2)
+Pbar2, qb2 = risk_neutral_probs(Q2)
+H2, eta2, e2, Phat2 = martingale_increment(Q2, P2)
 
-print("Risk-neutral P_bar:")
-print(np.round(P_bar2, 4))
-print(f"\nRow sums: {P_bar2.sum(axis=1)}")
-print(f"\nBond prices q_bar_i: {q_bonds2}")
-print(f"Annualized risk-free rates: {(-np.log(q_bonds2)*12).round(4)}")
-
-S_bar2 = np.repeat(q_bonds2[:, np.newaxis], P_bar2.shape[1], axis=1)
-print(f"\nRisk-neutral SDF matrix S_bar:")
-print(np.round(S_bar2, 4))
-print("Check Q = S_bar * P_bar:", np.allclose(Q2, S_bar2 * P_bar2))
-
-S2 = Q2 / P2
-print(f"\nPhysical SDF matrix S = Q/P:")
-print(np.round(S2, 4))
+print("One-period risk-neutral transition matrix P_bar")
+print(np.round(Pbar2, 4))
+print("\nRecovered transition matrix P_hat")
+print(np.round(Phat2, 4))
+print("\nMartingale increment h_hat")
+print(np.round(H2, 4))
+print("\nRecovery returns P:", np.allclose(H2[P2 > 0], 1))
 ```
 
 ```{solution-end}
 ```
 
 ```{exercise}
-:label: ex_gamma_sensitivity
+:label: ex_power_utility_success
 
-**Risk aversion and recovery distortion under recursive utility.**
+**Power utility benchmark.**
 
-Using the three-state Epstein--Zin example from the lecture (with $\exp(-\delta)=0.99$,
-$g_c=0.001$, and consumption levels $c = [0.85, 1.00, 1.15]$), investigate how the
-recovered probability vector $\hat{\boldsymbol{\pi}}$ depends on the risk aversion
-parameter $\gamma$.
+For trend-stationary consumption and power utility,
 
-1. For each $\gamma \in \{1, 2, 5, 10, 15\}$, compute the long-term risk-neutral
-   stationary distribution $\hat{\boldsymbol{\pi}}$ using the recursive-utility SDF.
-2. Plot all five distributions as grouped bar charts alongside the physical
-   distribution $\boldsymbol{\pi}$.
-3. Does the recession probability under $\hat{\mathbf{P}}$ exceed $50\%$ for
-   $\gamma \leq 30$?
+$$
+s_{ij}=A\left(\frac{c_j}{c_i}\right)^{-\gamma}.
+$$
 
-If not, report the maximum value on that range.
+Show that $\hat e_i=c_i^\gamma$ is the Perron eigenvector and that
+$\hat{\mathbf{P}}=\mathbf{P}$.
+
+Then verify the result numerically using the three-state baseline in the lecture.
 ```
 
-```{solution-start} ex_gamma_sensitivity
+```{solution-start} ex_power_utility_success
 :class: dropdown
 ```
 
+The analytical check is:
+
+$$
+[\mathbf{Q}\hat e]_i
+=\sum_j A\left(\frac{c_j}{c_i}\right)^{-\gamma}p_{ij}c_j^\gamma
+=A c_i^\gamma
+=A\hat e_i.
+$$
+
+Thus $\exp(\hat\eta)=A$ and
+
+$$
+\hat p_{ij}
+=\frac{1}{A}q_{ij}\frac{\hat e_j}{\hat e_i}
+=p_{ij}.
+$$
+
+Below is the numerical check.
+
 ```{code-cell} ipython3
-γs_ex2 = [1, 2, 5, 10, 15]
-all_π = []
+H_power, _, e_power, P_hat_power = martingale_increment(Q_power, P_true)
+e_theory = c_levels**γ_power
+e_theory = e_theory / e_theory.sum()
 
-for γ_val in γs_ex2:
-    _, _, S_g = solve_ez_finite(P_phys, c_levels, δ, γ_val, gc_ex)
-    Q_g = S_g * P_phys
-    _, _, _, Ph_g = perron_frobenius(Q_g)
-    all_π.append(stationary_dist(Ph_g))
-
-fig, ax = plt.subplots(figsize=(10, 4.5))
-x = np.arange(3)
-w = 0.13
-colors_g = plt.cm.Blues(np.linspace(0.3, 0.9, len(γs_ex2)))
-
-bars = ax.bar(x - 3*w, π_phys, width=w, color='grey', alpha=0.7, label='physical P')
-for b_, v in zip(bars, π_phys):
-    ax.text(b_.get_x()+w/2, v+0.005, f'{v:.3f}', ha='center', va='bottom', fontsize=7)
-
-for k, (γ_val, π_g, col) in enumerate(zip(γs_ex2, all_π, colors_g)):
-    bars = ax.bar(x + (k-1.5)*w, π_g, width=w, color=col,
-                  label=f'γ={γ_val}')
-    for b_, v in zip(bars, π_g):
-        ax.text(b_.get_x()+w/2, v+0.005, f'{v:.3f}',
-                ha='center', va='bottom', fontsize=7)
-
-ax.set_xticks(x);  ax.set_xticklabels(state_names)
-ax.set_ylabel('stationary probability')
-ax.set_title(r'stationary distribution of $\hat{P}$ for varying risk aversion $\gamma$')
-ax.legend(fontsize=8, loc='upper right')
-plt.tight_layout();  plt.show()
-
-γs_fine = np.linspace(1, 30, 200)
-rec_probs = []
-for γ_val in γs_fine:
-    _, _, S_g = solve_ez_finite(P_phys, c_levels, δ, γ_val, gc_ex)
-    Q_g = S_g * P_phys
-    _, _, _, Ph_g = perron_frobenius(Q_g)
-    rec_probs.append(stationary_dist(Ph_g)[0])
-
-idx50 = np.where(np.array(rec_probs) > 0.5)[0]
-if len(idx50) > 0:
-    print(f"\nRecession prob under P_hat exceeds 50% at approximately γ ~ {γs_fine[idx50[0]]:.1f}")
-else:
-    print(f"\nRecession prob under P_hat does not exceed 50% for γ <= 30")
-    print(f"  Maximum recession prob = {max(rec_probs):.4f} at γ = 30")
+print("Perron eigenvector")
+print(np.round(e_power, 6))
+print("\nNormalized c^gamma")
+print(np.round(e_theory, 6))
+print("\nmax |P_hat - P|:",
+      np.max(np.abs(P_hat_power - P_true)))
+print("max |h_hat - 1|:",
+      np.max(np.abs(H_power[P_true > 0] - 1)))
 ```
 
 ```{solution-end}
 ```
 
 ```{exercise}
-:label: ex_lrr_gamma
+:label: ex_recursive_utility_distortion
 
-**Effect of risk aversion in the long-run risk model.**
+**Recursive utility and risk aversion.**
 
-Repeat the long-run risk simulation from the lecture for $\gamma \in \{5, 10, 15\}$
-(keeping all other parameters fixed at their calibrated values).
+Using the finite-state Epstein--Zin example with
+$c=(0.85, 1.00, 1.15)$, compute the stationary distribution of
+$\hat{\mathbf{P}}$ for $\gamma \in \{1, 5, 10, 15\}$.
 
-1. For each $\gamma$, compute $(\bar{e}_1, \bar{e}_2)$ and $\hat{\eta}$.
-2. Plot $\hat{\iota}_1$ (long-run mean of $X_1$ under $\hat{P}$) as a function of
-   $\gamma$ and interpret the result in terms of long-run expected consumption growth.
-3. Plot $\hat{\iota}_2$ (long-run mean of $X_2$ under $\hat{P}$) as a function of
-   $\gamma$ and interpret it in terms of long-run volatility.
+Which state receives the largest increase in stationary probability as $\gamma$ rises?
 ```
 
-```{solution-start} ex_lrr_gamma
+```{solution-start} ex_recursive_utility_distortion
 :class: dropdown
 ```
 
-```{code-cell} ipython3
-γs_lrr = np.linspace(2.0, 18.0, 40)
-ι_hat_1_vals = []
-ι_hat_2_vals = []
-η_hat_vals = []
-
-p_copy = dict(lrr_params)
-
-for γ_val in γs_lrr:
-    p_copy['γ'] = γ_val
-    try:
-        v1g, v2g, A_g, _ = solve_value_function(p_copy)
-        e1g, e2g, η_g, α_sg = solve_pf_lrr(p_copy, v1g, v2g, A_g)
-        dyn_g = compute_phat_dynamics(p_copy, e1g, e2g, α_sg)
-        ι_hat_1_vals.append(dyn_g['ι_hat_1'])
-        ι_hat_2_vals.append(dyn_g['ι_hat_2'])
-        η_hat_vals.append(η_g)
-    except Exception:
-        ι_hat_1_vals.append(np.nan)
-        ι_hat_2_vals.append(np.nan)
-        η_hat_vals.append(np.nan)
-
-fig, axes = plt.subplots(1, 3, figsize=(14, 4))
-
-axes[0].plot(γs_lrr, ι_hat_1_vals, color='steelblue', lw=2.5)
-axes[0].axhline(lrr_params['ι1'], ls='--', color='grey', lw=1.5,
-                label=f"physical ι1 = {lrr_params['ι1']}")
-axes[0].set_xlabel('risk aversion  γ');  axes[0].set_ylabel(r'$\hat{\iota}_1$')
-axes[0].set_title('long-run mean of $X_1$ under $\\hat{P}$\n(down = lower expected growth)')
-axes[0].legend(fontsize=9)
-
-axes[1].plot(γs_lrr, ι_hat_2_vals, color='firebrick', lw=2.5)
-axes[1].axhline(lrr_params['ι2'], ls='--', color='grey', lw=1.5,
-                label=f"physical ι2 = {lrr_params['ι2']}")
-axes[1].set_xlabel('risk aversion  γ');  axes[1].set_ylabel(r'$\hat{\iota}_2$')
-axes[1].set_title('long-run mean of $X_2$ under $\\hat{P}$\n(up = higher expected volatility)')
-axes[1].legend(fontsize=9)
-
-axes[2].plot(γs_lrr, np.array(η_hat_vals)*12, color='purple', lw=2.5)
-axes[2].set_xlabel('risk aversion  γ');  axes[2].set_ylabel(r'annualized $\hat{\eta}$')
-axes[2].set_title('long-run discount rate $\\hat{\\eta}$\n(more negative = higher long-run yield)')
-
-plt.tight_layout();  plt.show()
-
-```
-
-```{solution-end}
-```
-
-```{exercise}
-:label: ex_recovery_test
-
-**Testing the Ross recovery condition.**
-
-Show algebraically and numerically that, for any $n$-state power-utility model with
-trend-stationary consumption (as in Example 1 of
-{cite}`BorovickaHansenScheinkman2016`), the martingale increment satisfies
-$\hat{h}_{ij} \equiv 1$.
-
-1. Write the SDF as $s_{ij} = A \cdot (c_j/c_i)^{-\gamma}$ for some constant $A$,
-   show that the Perron-Frobenius eigenvector is $\hat{e}_j = c_j^\gamma$ (up to
-   scale), and find $\hat{\eta}$.
-2. Compute $\hat{p}_{ij} = \exp(-\hat{\eta}) q_{ij} \hat{e}_j / \hat{e}_i$ and verify
-   it equals $p_{ij}$.
-3. Confirm numerically for the three-state example with $\gamma = 5$ and
-   $c = [0.85, 1.00, 1.15]$.
-```
-
-```{solution-start} ex_recovery_test
-:class: dropdown
-```
-
-**Analytical derivation:**
-
-With $s_{ij} = A \cdot (c_j/c_i)^{-\gamma}$ we have
-$q_{ij} = A(c_j/c_i)^{-\gamma} p_{ij}$.
-
-Guess $\hat{e}_j = c_j^\gamma$.
-
-Then
-
-$$
-[\mathbf{Q} \hat{\mathbf{e}}]_i
-= \sum_j q_{ij} \hat{e}_j
-= A \sum_j \frac{c_j^{-\gamma}}{c_i^{-\gamma}} p_{ij} \cdot c_j^\gamma
-= A c_i^\gamma \sum_j p_{ij}
-= A \hat e_i.
-$$
-
-So $\mathbf{Q}\hat{\mathbf{e}} = A \hat{\mathbf{e}}$, confirming
-$\hat{\mathbf{e}} = \{c_j^\gamma\}$ and $\exp(\hat{\eta}) = A$.
-
-Therefore
-
-$$
-\hat{p}_{ij}
-= \frac{1}{A} q_{ij} \frac{\hat{e}_j}{\hat{e}_i}
-= \frac{1}{A} \cdot A \frac{c_j^{-\gamma}}{c_i^{-\gamma}} p_{ij}
-  \cdot \frac{c_j^\gamma}{c_i^\gamma}
-= p_{ij}.
-$$
-
-Hence $\hat{h}_{ij} = \hat{p}_{ij}/p_{ij} = 1$ for all $(i,j)$.
+Here is one solution:
 
 ```{code-cell} ipython3
-gc_ex4 = 0.002
-S_ts = np.zeros((3, 3))
-for i in range(3):
-    for j in range(3):
-        S_ts[i, j] = np.exp(-δ - γ*gc_ex4) * (c_levels[j]/c_levels[i])**(-γ)
+for γ in [1, 5, 10, 15]:
+    _, _, S_g = solve_ez_unit_eis(P_true, c_recursive, δ, γ, g_c)
+    Q_g = S_g * P_true
+    _, _, _, P_hat_g = martingale_increment(Q_g, P_true)
+    π_g = stationary_dist(P_hat_g)
+    print(f"gamma={γ:2.0f}: {np.round(π_g, 4)}")
 
-Q_ts = S_ts * P_phys
-
-_, exp_η_ts, e_hat_ts, P_hat_ts = perron_frobenius(Q_ts)
-
-e_theory = c_levels**γ
-e_theory /= e_theory.sum()
-
-print("e_hat:", np.round(e_hat_ts, 6))
-print("c^γ normalized:", np.round(e_theory, 6))
-print(f"Max discrepancy: {np.abs(e_hat_ts - e_theory).max():.2e}")
-
-H_ts = np.where(P_phys > 0, P_hat_ts / P_phys, 0.0)
-print("\nh_hat:")
-print(np.round(H_ts, 6))
-print(f"Max |h_hat_ij - 1|: {np.abs(H_ts[P_phys>0] - 1).max():.2e}")
+print("\nCorrectly specified:", np.round(π_true, 4))
 ```
+
+The recession state receives the largest increase.
 
 ```{solution-end}
 ```

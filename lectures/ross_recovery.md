@@ -28,8 +28,16 @@ kernelspec:
 
 ## Overview
 
-Option prices reveal **risk-neutral probabilities**, the probabilities implied by asset
-prices once risk adjustments have been folded in.
+Asset prices are forward-looking: they encode investors' expectations about future
+economic states and their valuations of different risks.
+
+A long-standing question in finance is whether one can *recover* the probability
+distribution used by investors -- their subjective beliefs -- from observed asset
+prices alone.
+
+Option prices reveal **state prices**; once these are normalized by the riskless
+discount factor, the resulting probabilities are the **risk-neutral probabilities**
+implied by asset prices after risk adjustments have been folded in.
 
 These are not the **natural probabilities** that investors actually assign to future
 states of the world.
@@ -46,9 +54,10 @@ about the preferences of a representative investor.
 {cite:t}`Ross2015` showed otherwise.
 
 Under a structural restriction on the pricing kernel called **transition independence**,
-the natural probability distribution and the pricing kernel can be uniquely recovered
-from state prices alone with no historical return data and no assumed utility
-function, provided the state-price system is Markov, irreducible, and sufficiently rich.
+together with no-arbitrage and irreducibility of an identified finite-state Markov
+Arrow–Debreu state-price transition matrix, the natural probability transition matrix
+and the transition pricing kernel can be uniquely recovered from state prices alone
+with no historical return data and no assumed utility function.
 
 This is the **Recovery Theorem**.
 
@@ -124,6 +133,27 @@ $$
 $$ (eq:canon_ge)
 
 The key structural property this implies is **transition independence**.
+
+### The identification challenge
+
+Before stating the restriction, it helps to see why one is needed at all.
+
+Given $P$, any pair $(\phi, f)$ satisfying $p_{ij} = \phi_{ij} f_{ij}$ for every
+$(i,j)$ is consistent with observed state prices.
+
+The state-price matrix $P$ supplies $m^2$ equations.
+
+A natural transition matrix $F$
+contributes $m(m-1)$ free entries (rows sum to one), and an arbitrary kernel $\phi$
+contributes another $m^2$ -- a total of $2m^2 - m$ unknowns against only $m^2$
+equations.
+
+The system is under-identified by exactly $m^2 - m$ parameters, so some structural
+restriction on the kernel is needed to pin down $\phi$ and $f$ separately.
+
+Transition independence below is one such restriction: it cuts $\phi$ from $m^2$ free
+entries down to $m$ (a state function $h$ free up to scale plus a discount factor
+$\beta$), closing the identification gap exactly.
 
 ### Transition independence
 
@@ -223,8 +253,9 @@ factor) and the Perron vector $z$ determines $D$ via $D_{ii} = 1/z_i$.
 
 The three assumptions in the theorem each carry a specific role.
 
-No-arbitrage guarantees that $P$ has nonnegative entries and that the state prices
-encode a well-defined pricing measure.
+Assuming the Arrow–Debreu state prices are identified, no-arbitrage guarantees that
+$P$ has nonnegative entries and that the state prices encode a well-defined pricing
+measure.
 
 Irreducibility ensures the economy is not divided into disconnected sub-economies --
 without it, the Perron–Frobenius theorem gives multiple candidate eigenvectors and
@@ -244,10 +275,9 @@ Suppose prices provide no arbitrage opportunities, that the state
 price transition matrix $P$ is irreducible, and that the pricing kernel is transition
 independent.
 
-Then there exists a *unique* positive solution $(\beta, z, F)$ to the recovery problem.
-
-That is, under these assumptions, the state prices imply a unique compatible natural
-probability transition matrix and a unique transition pricing kernel.
+Then there exists a positive solution $(\beta, z, F)$ to the recovery problem in which
+$z$ is unique up to normalization, and the implied natural probability transition
+matrix $F$ and transition pricing kernel are unique.
 ```
 
 ```{prf:proof}
@@ -294,9 +324,13 @@ where $h(\theta_i) = \beta/z_i$ follows from $D_{ii} = h(\theta_i)/\beta = 1/z_i
 Destination states with high $z_j$ have *low* kernel values: for a fixed origin $i$,
 the kernel $\beta z_i/z_j$ is decreasing in $z_j$.
 
-This means the market assigns relatively less pricing weight per unit of probability to
-high-$z_j$ outcomes -- consistent with those states being "good times" that require less
-insurance.
+When $h$ is interpreted as marginal utility and states are ordered by consumption or
+payoff, larger $z_j$ corresponds to lower marginal utility -- "good times" that
+require less insurance and so receive less pricing weight per unit of natural
+probability. 
+
+This monotonic interpretation is not guaranteed for an arbitrary ordering
+of stock-market states.
 
 The same eigenvector argument also clarifies a useful limiting case.
 
@@ -364,11 +398,13 @@ $$
 
 Following Ross's Table I, we represent the distribution on a finite grid of states.
 
-Ross's table uses a fixed future payoff distribution, so its rows of $F$ are
-identical.
+This example is Ross-inspired rather than an exact reproduction of Ross's Table I.
 
-Here we apply the same finite-grid construction to a Markov transition matrix with
-lognormal-shaped rows.
+Ross's Table I uses a fixed future payoff distribution, so its rows of $F$ are
+identical. 
+
+Here the same CRRA/lognormal pricing logic is embedded in a finite Markov
+transition matrix whose rows shift with the current state.
 
 Ross uses states from $-5$ to $+5$ standard deviations; we use
 the same range below.
@@ -811,7 +847,7 @@ where $\sigma(M)$ is the standard deviation of the actual one-period stochastic 
 factor projected on that filtration. Arbitrary orthogonal noise in a candidate kernel
 does not tighten this market-efficiency bound.
 
-This follows from the {doc}`advacned:hansen_jagannathan_1991` {cite}`Hansen_Jagannathan_1991`.
+This follows from the Hansen–Jagannathan bound {cite}`Hansen_Jagannathan_1991`.
 
 Equivalently, under the Recovery Theorem assumptions, the $R^2$ of return-forecasting
 regressions based on that information set is bounded above by the variance of the
@@ -843,7 +879,7 @@ If the kernel is not transition independent, recovery is not guaranteed.
 long-run risk component of the kernel with the natural probability distribution,
 yielding an incorrect decomposition.
 
-*Empirical estimationL*
+*Empirical estimation:*
 
 Extracting reliable state prices from observed option prices requires careful
 interpolation and extrapolation.
@@ -880,8 +916,9 @@ $$
 
 (c) Verify that each row of $F$ sums to one and all entries are positive.
 
-(d) Compute the relative kernel component $1/z_i$ for each state. For a transition from
-state $i$ to state $j$, the full pricing kernel is $\beta z_i/z_j$.
+(d) For destination state $j$, the relative kernel component is $1/z_j$; for a
+transition from state $i$ to state $j$, the full pricing kernel is $\beta z_i/z_j$.
+Compute $1/z_j$ for each state.
 
 Does the kernel decrease as we move from state 1 to state 3 (i.e., from bad to good
 states)?
@@ -1005,7 +1042,7 @@ Write a function `tail_risk_ratio(γ, threshold, μ, σ, ρ, T)` that:
 1. Constructs the state price matrix $P$ using `build_state_price_matrix` with
    the given parameters and `n_states=41`.
 2. Applies `recover_natural_distribution` to obtain $F$.
-3. Computes $P(\text{log-return} < \text{threshold})$ under both the natural
+3. Computes $P(\text{log-return} \leq \text{threshold})$ under both the natural
    and risk-neutral distributions starting from the middle state.
 4. Returns the ratio $p_\text{risk-neutral} / p_\text{natural}$.
 
