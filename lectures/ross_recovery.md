@@ -40,17 +40,6 @@ the market's true beliefs about the future, and investors' aversion to risk.
 The link between them is the **pricing kernel**, which reweights natural probabilities
 to deliver state prices.
 
-For example, using the Arrow-security language from {doc}`ge_arrow`, suppose tomorrow
-has two states, recession and boom, with natural probabilities $(0.5, 0.5)$ and pricing
-kernels $(1.2, 0.7)$.
-
-The Arrow prices are then $(0.6, 0.35)$, so the riskless discount factor is the row sum
-$0.95$.
-
-Normalizing the Arrow prices by this row sum gives risk-neutral probabilities
-$(0.6/0.95, 0.35/0.95) \approx (0.63, 0.37)$, which overweight the recession state even
-though the natural probability of recession is only $0.5$.
-
 Separating beliefs from risk aversion has traditionally required parametric assumptions
 about the preferences of a representative investor.
 
@@ -59,15 +48,15 @@ about the preferences of a representative investor.
 Under a structural restriction on the pricing kernel called **transition independence**,
 the natural probability distribution and the pricing kernel can be uniquely recovered
 from state prices alone with no historical return data and no assumed utility
-function.
+function, provided the state-price system is Markov, irreducible, and sufficiently rich.
 
 This is the **Recovery Theorem**.
 
 It has several important implications:
 
-* It enables model-free extraction of the market's forward-looking probability
-  distribution from option prices.
-* It provides model-free tests of the efficient market hypothesis.
+* It shows how state-price transition data can identify the market's forward-looking
+  natural distribution when the assumption holds
+* It provides tests of the efficient market hypothesis.
 * It sheds light on the "dark matter" of finance: the probability of rare
   catastrophic events embedded in market prices.
 
@@ -127,11 +116,11 @@ where $f(\theta_i, \theta_j)$ is the natural (conditional) probability of transi
 from state $\theta_i$ to $\theta_j$.
 
 As in the representative-agent equilibrium calculation in {doc}`ge_arrow`, the
-canonical additively separable model with discount factor $\delta$ gives
+canonical additively separable model with discount factor $\beta$ gives
 
 $$
 \phi(\theta_i, \theta_j) = \frac{p(\theta_i, \theta_j)}{f(\theta_i, \theta_j)}
-    = \frac{\delta U'(c(\theta_j))}{U'(c(\theta_i))}.
+    = \frac{\beta U'(c(\theta_j))}{U'(c(\theta_i))}.
 $$ (eq:canon_ge)
 
 The key structural property this implies is **transition independence**.
@@ -143,11 +132,11 @@ The key structural property this implies is **transition independence**.
 :label: def-transition-independence
 
 A pricing kernel is **transition independent** if there exists a positive function $h$ on
-the state space and a positive scalar $\delta$ such that for every transition from state
+the state space and a positive scalar $\beta$ such that for every transition from state
 $\theta_i$ to $\theta_j$,
 
 $$
-\phi(\theta_i, \theta_j) = \delta \, \frac{h(\theta_j)}{h(\theta_i)}.
+\phi(\theta_i, \theta_j) = \beta \, \frac{h(\theta_j)}{h(\theta_i)}.
 $$
 ```
 
@@ -155,7 +144,8 @@ $$
 Transition independence says the kernel depends on the *ending* state and normalizes by
 the *beginning* state.
 
-It holds for any agent with intertemporally additive separable utility (where $h = U'$).
+In the representative-agent complete-markets environment above, it holds under
+intertemporally additive separable utility (where $h = U'$).
 
 In particular, this holds for {eq}`eq:canon_ge`.
 
@@ -167,20 +157,20 @@ Ross restriction.
 Under transition independence, the state-price equation becomes
 
 $$
-p(\theta_i, \theta_j) = \delta \, \frac{h(\theta_j)}{h(\theta_i)} \,
+p(\theta_i, \theta_j) = \beta \, \frac{h(\theta_j)}{h(\theta_i)} \,
     f(\theta_i, \theta_j).
 $$
 
-In matrix notation, defining the diagonal matrix $D$ with $D_{ii} = h(\theta_i)/\delta$,
+In matrix notation, defining the diagonal matrix $D$ with $D_{ii} = h(\theta_i)/\beta$,
 
 $$
-DP = \delta F D,
+DP = \beta F D,
 $$
 
 or equivalently,
 
 $$
-F = \frac{1}{\delta} D P D^{-1}.
+F = \frac{1}{\beta} D P D^{-1}.
 $$
 
 ## The recovery theorem
@@ -193,13 +183,13 @@ of ones.
 Substituting the expression for $F$:
 
 $$
-\frac{1}{\delta} D P D^{-1} e = e
+\frac{1}{\beta} D P D^{-1} e = e
 \quad \Longrightarrow \quad
-P z = \delta z, \quad z \equiv D^{-1} e.
+P z = \beta z, \quad z \equiv D^{-1} e.
 $$
 
-This is an **eigenvalue problem**: we seek a positive vector $z$ and scalar $\delta$
-satisfying $Pz = \delta z$.
+This is an **eigenvalue problem** where we seek a positive vector $z$ and scalar $\beta$
+satisfying $Pz = \beta z$.
 
 In principle every eigenvalue-eigenvector pair of $P$ is a formal solution, but only the
 one with a strictly positive eigenvector is economically valid: $D_{ii} = 1/z_i$ must be
@@ -212,19 +202,21 @@ The theorem below guarantees that exactly one such pair exists.
 
 If $A$ is a nonnegative irreducible matrix, then
 
-1. $A$ has a unique largest positive real eigenvalue $r$ (the Perron root).
+1. $A$ has a positive real eigenvalue $r$ equal to its spectral radius (the Perron root).
 2. There exists a strictly positive eigenvector $z \gg 0$ with $Az = rz$,
    unique up to scaling.
+3. No other eigenvector is strictly positive.
 ```
 
-The proof uses the invariance of the positive cone and irreducibility to isolate the
-unique positive ray associated with the Perron root.
+Other eigenvalues can have the same modulus when the matrix is imprimitive, but the
+strictly positive eigenvector is unique up to scale.
 
 See Section 1.2.3 of {cite}`Sargent_Stachurski_2024` for details.
 
-Applied to the recovery problem: the Perron root is $\delta$ (the subjective discount
-factor) and the Perron vector $z$ determines $D$ via $D_{ii} = 1/z_i$, closing the
-system uniquely.
+See also the full statement in {doc}`intro:eigen_II`.
+
+Applied to the recovery problem: the Perron root is $\beta$ (the subjective discount
+factor) and the Perron vector $z$ determines $D$ via $D_{ii} = 1/z_i$.
 
 
 ### Ross's recovery theorem
@@ -238,8 +230,10 @@ Irreducibility ensures the economy is not divided into disconnected sub-economie
 without it, the Perron–Frobenius theorem gives multiple candidate eigenvectors and
 recovery breaks down.
 
-Transition independence is the key economic restriction: it says the pricing kernel
-factors as $\delta h(\theta_j)/h(\theta_i)$, so the entire kernel is pinned down by a
+Transition independence is the key economic restriction.
+
+It says the pricing kernel
+factors as $\beta h(\theta_j)/h(\theta_i)$, so the entire kernel is pinned down by a
 single vector $h$ (or equivalently $z$).
 
 
@@ -250,10 +244,10 @@ Suppose prices provide no arbitrage opportunities, that the state
 price transition matrix $P$ is irreducible, and that the pricing kernel is transition
 independent.
 
-Then there exists a *unique* positive solution $(\delta, z, F)$ to the recovery problem.
+Then there exists a *unique* positive solution $(\beta, z, F)$ to the recovery problem.
 
-That is, for any set of state prices there is a unique compatible natural probability
-transition matrix and a unique pricing kernel.
+That is, under these assumptions, the state prices imply a unique compatible natural
+probability transition matrix and a unique transition pricing kernel.
 ```
 
 ```{prf:proof}
@@ -264,13 +258,13 @@ $Pz = \lambda z$.
 Setting
 
 $$
-\delta = \lambda, \qquad D_{ii} = \frac{1}{z_i},
+\beta = \lambda, \qquad D_{ii} = \frac{1}{z_i},
 $$
 
 the natural probability transition matrix is uniquely recovered as
 
 $$
-f_{ij} = \frac{1}{\delta} \frac{z_j}{z_i} \, p_{ij}.
+f_{ij} = \frac{1}{\beta} \frac{z_j}{z_i} \, p_{ij}.
 $$
 
 To confirm $F$ is stochastic, note that all entries are nonnegative (since
@@ -278,9 +272,9 @@ $p_{ij} \geq 0$ and $z_i, z_j > 0$) and
 
 $$
 \sum_j f_{ij}
-= \frac{1}{\delta z_i} \sum_j z_j \, p_{ij}
-= \frac{[Pz]_i}{\delta z_i}
-= \frac{\delta z_i}{\delta z_i} = 1.
+= \frac{1}{\beta z_i} \sum_j z_j \, p_{ij}
+= \frac{[Pz]_i}{\beta z_i}
+= \frac{\beta z_i}{\beta z_i} = 1.
 $$
 
 Uniqueness follows from the uniqueness of the Perron--Frobenius eigenvector.
@@ -288,81 +282,120 @@ Uniqueness follows from the uniqueness of the Perron--Frobenius eigenvector.
 
 ### Pricing kernel from the eigenvector
 
-The recovered kernel values are
+The recovered transition-kernel values are
 
 $$
-\phi(\theta_i, \theta_j) = \delta \frac{z_i}{z_j},
-\qquad h(\theta_i) = \frac{\delta}{z_i},
+\phi(\theta_i, \theta_j) = \beta \frac{z_i}{z_j},
+\qquad h(\theta_i) = \frac{\beta}{z_i},
 $$
 
-where $h(\theta_i) = \delta/z_i$ follows from $D_{ii} = h(\theta_i)/\delta = 1/z_i$.
+where $h(\theta_i) = \beta/z_i$ follows from $D_{ii} = h(\theta_i)/\beta = 1/z_i$.
 
-Destination states with high $z_j$ have **low** kernel values: for a fixed origin $i$,
-the kernel $\delta z_i/z_j$ is decreasing in $z_j$.
+Destination states with high $z_j$ have *low* kernel values: for a fixed origin $i$,
+the kernel $\beta z_i/z_j$ is decreasing in $z_j$.
 
 This means the market assigns relatively less pricing weight per unit of probability to
 high-$z_j$ outcomes -- consistent with those states being "good times" that require less
 insurance.
 
-### Corollary: risk-neutral pricing when rates are state-independent
+The same eigenvector argument also clarifies a useful limiting case.
+
+If the one-period
+bond price is identical in every current state, then the vector of ones is already the
+Perron vector, so recovery has no state-dependent change of measure left to perform.
 
 
 ```{prf:corollary}
 :label: cor-risk-neutral-recovery
 
-If the riskless rate is the same in all states ($Pe = \gamma e$ for
-some scalar $\gamma$), then the unique natural distribution consistent with recovery is
-the risk-neutral (martingale) distribution itself: $F = (1/\gamma) P$.
+If the riskless rate is the same in all states ($Pe = b e$ for
+some scalar $b$), then the unique natural distribution consistent with recovery is
+the risk-neutral (martingale) distribution itself: $F = (1/b) P$.
 ```
 
 ```{prf:proof}
-When $Pe = \gamma e$, the vector of ones $e$ is the Perron eigenvector with eigenvalue
-$\gamma$.
+When $Pe = b e$, the vector of ones $e$ is the Perron eigenvector with eigenvalue
+$b$.
 
 By the uniqueness part of the Perron--Frobenius theorem, $z = e$ (up to scaling) and
-$\delta = \gamma$.
+$\beta = b$.
 
-Setting $z = e$ gives $D = I$ (the identity matrix), so
+Setting $z = e$ gives $D = I$, so
 
 $$
-F = \frac{1}{\delta} D P D^{-1} = \frac{1}{\gamma} P. \qquad \square
+F = \frac{1}{\beta} D P D^{-1} = \frac{1}{b} P. \qquad \square
 $$
 ```
 
-This remarkable result says that with a constant interest rate and a bounded irreducible
-state space, recovery forces risk-neutrality -- a non-trivial restriction of the model.
+## Numerical example
 
-## Python implementation
+We now demonstrate the Recovery Theorem numerically.
 
-We now implement the Recovery Theorem numerically.
+### Building a finite-state example
 
-### Building a state price matrix from a lognormal model
+We build the economy directly
+on a finite grid of log payoff states $s_1, \ldots, s_m$.
 
-Following {cite}`Ross2015` Section IV, suppose the natural distribution of log-returns
-over one period is normal:
+On this grid we choose three primitives:
+
+1. a row-stochastic natural transition matrix $F$,
+2. a subjective discount factor $\beta = e^{-\rho T}$, and
+3. a CRRA transition pricing kernel
+   $\phi_{ij} = \beta e^{-\gamma(s_j-s_i)}$.
+
+The state-price matrix is then constructed from
+
+$$
+p_{ij} = \phi_{ij} f_{ij}.
+$$
+
+This means the Recovery Theorem assumptions hold by construction: $P$ is nonnegative,
+$F$ is a Markov transition matrix, and the kernel is transition independent with
+$z_i \propto e^{\gamma s_i}$. This benchmark therefore provides a strict test of
+whether the eigenvector recovery calculation returns the objects used to construct
+prices.
+
+To keep the example close to Ross's Section IV, we choose $F$ to have lognormal-shaped
+rows. In the unbounded continuous model one would write
 
 $$
 \log(S_T/S_0) \sim \mathcal{N}\!\left((\mu - \tfrac{1}{2}\sigma^2)T, \sigma^2 T\right).
 $$
 
-With a CRRA pricing kernel $\phi(S_0, S_T) = e^{-\delta T}(S_T/S_0)^{-\gamma}$, the
-state price density is
+Following Ross's Table I, we represent the distribution on a finite grid of states.
+
+Ross's table uses a fixed future payoff distribution, so its rows of $F$ are
+identical.
+
+Here we apply the same finite-grid construction to a Markov transition matrix with
+lognormal-shaped rows.
+
+Ross uses states from $-5$ to $+5$ standard deviations; we use
+the same range below.
+
+The truncation is an essential part of the finite-state model, not a cosmetic
+detail: it is what brings the example into the Perron--Frobenius setting.
+
+In the
+unbounded continuous lognormal growth model, Ross shows that recovery is not unique.
+
+On the finite grid, the natural transition probabilities and state prices are
 
 $$
 f_{ij} \propto
     n\!\left(\frac{s_j - s_i - (\mu - \frac{1}{2}\sigma^2)T}{\sigma\sqrt{T}}\right)
     \Delta s,
 \qquad
-p_{ij} = e^{-\delta T} e^{-\gamma(s_j - s_i)} f_{ij},
+p_{ij} = e^{-\rho T} e^{-\gamma(s_j - s_i)} f_{ij},
 $$
 
 where $s_i = \ln S_i$, $s_j = \ln S_j$, $n(\cdot)$ is the standard normal density, and
 the discretized probabilities $f_{ij}$ are normalized row by row.
 
-We discretize this onto a grid of $m$ states and build the matrix $P$.
+The next cell constructs this finite grid and builds $P$.
 
 ```{code-cell} ipython3
-def build_state_price_matrix(μ, σ, γ, δ, T=1.0, n_states=11, n_σ=5):
+def build_state_price_matrix(μ, σ, γ, ρ, T=1.0, n_states=11, n_σ=5):
     """Build a discretized lognormal/CRRA state-price matrix."""
     states = np.linspace(-n_σ * σ * np.sqrt(T),
                           n_σ * σ * np.sqrt(T),
@@ -375,7 +408,7 @@ def build_state_price_matrix(μ, σ, γ, δ, T=1.0, n_states=11, n_σ=5):
 
     drift = (μ - 0.5 * σ**2) * T
 
-    # First build a row-stochastic natural transition matrix on the bounded grid.
+    # First build a row-stochastic natural transition matrix on the bounded grid
     for i in range(m):
         s_i = states[i]
         for j in range(m):
@@ -386,23 +419,25 @@ def build_state_price_matrix(μ, σ, γ, δ, T=1.0, n_states=11, n_σ=5):
 
         F[i] = F[i] / F[i].sum()
 
-        # Price each Arrow claim as natural probability times the CRRA kernel.
+        # Price each Arrow claim as natural probability times the CRRA kernel
         for j in range(m):
             log_return = states[j] - s_i
-            kernel = np.exp(-δ * T) * np.exp(-γ * log_return)
+            kernel = np.exp(-ρ * T) * np.exp(-γ * log_return)
             P[i, j] = kernel * F[i, j]
 
     return P, states
 ```
 
+Now choose a calibration and build the state-price matrix.
+
 ```{code-cell} ipython3
 μ = 0.08    # 8% annual expected return
 σ = 0.20    # 20% annual volatility
 γ = 3.0     # CRRA coefficient
-δ = 0.02    # 2% annual discount rate
+ρ = 0.02    # 2% annual continuous discount rate
 T = 1.0     # one-year horizon
 
-P, states = build_state_price_matrix(μ, σ, γ, δ, T,
+P, states = build_state_price_matrix(μ, σ, γ, ρ, T,
                                      n_states=11, n_σ=5)
 
 print("State-price row sums:")
@@ -410,71 +445,163 @@ print(np.round(P.sum(axis=1), 4))
 print(f"Middle-state risk-free rate: {-np.log(P[5].sum()):.4f}")
 ```
 
+The row sums are the model-implied one-period bond prices in each current state. They
+vary near the boundaries because the finite grid truncates and renormalizes the
+conditional transition probabilities.
+
 ### Applying the recovery theorem
 
-The Recovery Theorem requires computing the **dominant eigenvector** of $P$.
+The Recovery Theorem requires computing the **Perron eigenvector** of $P$.
 
 ```{code-cell} ipython3
-def recover_natural_distribution(P):
-    """Recover natural probabilities and the pricing kernel from state prices."""
+def recover_natural_distribution(P, tol=1e-10):
+    """
+    Recover natural probabilities and the relative pricing kernel
+    from state prices.
+    """
+
     m = P.shape[0]
 
     eigenvalues, eigenvectors = eig(P)
+    eigenvalues = np.real_if_close(eigenvalues, tol=1000)
+    eigenvectors = np.real_if_close(eigenvectors, tol=1000)
 
-    # Ross recovery uses the Perron root and its strictly positive eigenvector.
+    # Ross recovery uses the Perron root and its strictly positive eigenvector
     real_mask = np.isreal(eigenvalues)
-    real_eigenvalues = eigenvalues[real_mask].real
-    real_eigenvectors = eigenvectors[:, real_mask].real
+    real_eigenvalues = np.asarray(
+        eigenvalues[real_mask].real, dtype=float)
+    real_eigenvectors = np.asarray(
+        eigenvectors[:, real_mask].real, dtype=float)
 
-    idx = np.argmax(real_eigenvalues)
-    δ_recovered = real_eigenvalues[idx]
-    z = real_eigenvectors[:, idx]
+    order = np.argsort(real_eigenvalues)[::-1]
 
-    if np.mean(z) < 0:
-        z = -z
+    for idx in order:
+        β_candidate = real_eigenvalues[idx]
+        z_candidate = real_eigenvectors[:, idx]
+
+        if np.mean(z_candidate) < 0:
+            z_candidate = -z_candidate
+
+        if β_candidate > 0 and np.all(z_candidate > tol):
+            β_recovered = β_candidate
+            z = z_candidate
+            break
+    else:
+        raise ValueError("No strictly positive real eigenvector found")
 
     z = z / z[m // 2]
 
     D = np.diag(1.0 / z)
     D_inv = np.diag(z)
 
-    # The diagonal similarity transform converts state prices into probabilities.
-    F = (1.0 / δ_recovered) * D @ P @ D_inv
+    # Converts state prices into probabilities
+    F = (1.0 / β_recovered) * D @ P @ D_inv
 
-    F = np.clip(F, 0, None)
-    F = F / F.sum(axis=1, keepdims=True)
+    min_entry = F.min()
+    row_sum_error = np.max(np.abs(F.sum(axis=1) - 1.0))
 
-    # The kernel is reported relative to the middle state normalization.
-    φ = 1.0 / z
+    if min_entry < -tol:
+        raise ValueError(f"Recovered F has negative entries: min={min_entry}")
 
-    return F, z, δ_recovered, φ
+    if row_sum_error > 1e-8:
+        raise ValueError(
+            f"Recovered F row sums are not one: max error={row_sum_error}"
+        )
+
+    # The kernel relative to the middle state normalization
+    φ_relative = 1.0 / z
+
+    return F, z, β_recovered, φ_relative
 ```
+
+There are two normalizations to keep separate.
+
+Ross's Table I reports the kernel shape
+with the middle state normalized to one, which is $1/z_j$ under our normalization
+$z_{\text{mid}}=1$.
+
+The actual one-period stochastic discount factor for a transition
+from the middle state to state $j$ is $\beta/z_j$.
 
 ```{code-cell} ipython3
-F, z, δ_rec, φ = recover_natural_distribution(P)
+F, z, β_rec, φ_relative = recover_natural_distribution(P)
+ρ_rec = -np.log(β_rec)
+φ_middle = β_rec * φ_relative
 
-print(f"Recovered discount factor δ = {δ_rec:.6f}  (true: {np.exp(-δ):.6f})")
-print(f"Recovered discount rate     = {-np.log(δ_rec):.6f}  (true: {δ:.6f})")
-print("Recovered kernel φ:")
-print(np.round(φ, 4))
-print("Row sums of recovered F:")
-print(np.round(F.sum(axis=1), 6))
+print(f"Recovered discount factor β = {β_rec:.6f}  (true: {np.exp(-ρ):.6f})")
+print(f"Recovered discount rate ρ = {ρ_rec:.6f}  (true: {ρ:.6f})")
+print("Ross-normalized kernel 1/z (middle state = 1):")
+print(np.round(φ_relative, 4))
+print("Actual one-period kernel from the middle state β × (1/z):")
+print(np.round(φ_middle, 4))
 ```
 
-### Visualizing natural vs. risk-neutral distributions
+Because we know the data-generating natural transition matrix and pricing kernel
+used to construct $P$, we can use them to verify that recovery works in this
+simulation.
 
-A key insight of {cite}`Ross2015` is that the natural distribution systematically
-differs from the risk-neutral one.
+In real data the natural transition matrix is unobserved, so these checks become
+internal diagnostics combined with an assessment of the recovery assumptions.
 
-In particular, the natural distribution stochastically dominates the risk-neutral
-distribution (Theorem 3 in {cite}`Ross2015`).
+
+```{code-cell} ipython3
+def true_lognormal_transition_matrix(states, μ, σ, T):
+    """
+    Construct the bounded-grid natural transition matrix used in the simulation.
+    """
+    m = len(states)
+    ds = states[1] - states[0]
+    drift = (μ - 0.5 * σ**2) * T
+    F_true = np.zeros((m, m))
+
+    for i in range(m):
+        log_returns = states - states[i]
+        F_true[i] = norm.pdf(log_returns, loc=drift,
+                             scale=σ * np.sqrt(T)) * ds
+        F_true[i] = F_true[i] / F_true[i].sum()
+
+    return F_true
+
+
+mid = len(states) // 2
+F_true = true_lognormal_transition_matrix(states, μ, σ, T)
+φ_middle_true = np.exp(-ρ * T) * np.exp(-γ * (states - states[mid]))
+P_reconstructed = β_rec * (z[:, None] / z[None, :]) * F
+
+print("Recovery diagnostics")
+print(f"max |β_rec - exp(-ρT)| = {abs(β_rec - np.exp(-ρ * T)):.2e}")
+print(f"max |φ_middle - true kernel| = "
+      f"{np.max(np.abs(φ_middle - φ_middle_true)):.2e}")
+print(f"max |F - true F| = {np.max(np.abs(F - F_true)):.2e}")
+print(f"max |P - recovered kernel times F| = "
+      f"{np.max(np.abs(P - P_reconstructed)):.2e}")
+```
+
+Indeed, the discrepancies are at the level of numerical roundoff.
+
+## Natural vs. risk-neutral distributions
+
+A key insight of {cite:t}`Ross2015` is that the natural distribution can differ
+systematically from the risk-neutral one.
+
+In this CRRA example, where states are ordered from low to high payoff, Theorem 3 of
+{cite:t}`Ross2015` implies that the natural marginal density **first-order
+stochastically dominates** the risk-neutral density: the CDF of the natural distribution
+lies *below* that of the risk-neutral distribution.
+
+Because the pricing kernel is declining (investors fear bad outcomes), risk-neutral
+probabilities overweight bad states and underweight good states relative to the natural
+measure.
+
+We first plot the natural distribution against the risk-neutral one and the recovered
+relative pricing kernel
 
 ```{code-cell} ipython3
 mid = len(states) // 2
 
 row_sums = P.sum(axis=1, keepdims=True)
 
-# Normalize Arrow prices by the one-period riskless bond price in each state.
+# Normalize Arrow prices by the one-period riskless bond price in each state
 Q_rn = P / row_sums
 
 f_nat = F[mid, :]
@@ -484,59 +611,31 @@ gross_returns = np.exp(states)
 
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
-axes[0].plot(gross_returns, f_nat, 'b-o', ms=5, label='natural (recovered)', lw=2)
-axes[0].plot(gross_returns, f_rn, 'r--s', ms=5, label='risk-neutral', lw=2)
+axes[0].plot(gross_returns, f_nat, label='natural (recovered)', lw=2)
+axes[0].plot(gross_returns, f_rn, label='risk-neutral', lw=2)
 axes[0].set_xlabel('gross return $S_T / S_0$')
 axes[0].set_ylabel('probability')
 axes[0].set_title('one-period marginal distributions')
 axes[0].legend()
 
-axes[1].plot(gross_returns, φ, 'g-^', ms=5, lw=2)
+axes[1].plot(gross_returns, φ_relative, 'g-^', lw=2)
 axes[1].set_xlabel('gross return $S_T / S_0$')
-axes[1].set_ylabel('kernel $\\phi$ (relative)')
-axes[1].set_title('recovered pricing kernel')
+axes[1].set_ylabel('relative kernel $1/z$')
+axes[1].set_title('recovered relative pricing kernel')
 plt.show()
 ```
 
-```{code-cell} ipython3
-E_nat = np.sum(f_nat * gross_returns)
-E_rn = np.sum(f_rn * gross_returns)
-std_nat = np.sqrt(np.sum(f_nat * (gross_returns - E_nat)**2))
-std_rn = np.sqrt(np.sum(f_rn * (gross_returns - E_rn)**2))
-
-# The row sum is the price of a sure one-dollar payoff next period.
-risk_free = np.sum(P[mid])
-
-print("One-period summary")
-print(f"{'':30s} {'Natural':>12s}   {'Risk-Neutral':>12s}")
-print("-" * 57)
-print(f"{'Expected gross return':30s} {E_nat:>12.4f}   {E_rn:>12.4f}")
-print(f"{'Std dev':30s} {std_nat:>12.4f}   {std_rn:>12.4f}")
-print(f"{'Risk-free discount factor':30s} {risk_free:>12.4f}")
-print(f"{'Annual risk-free rate':30s} {-np.log(risk_free):>12.4f}")
-print(f"{'Arithmetic equity premium':30s} {E_nat - 1/risk_free:>12.4f}")
-```
-
-### Stochastic dominance
-
-Theorem 3 of {cite}`Ross2015` shows that the natural marginal density **first-order
-stochastically dominates** the risk-neutral density: the CDF of the natural distribution
-lies *below* that of the risk-neutral distribution.
-
-Because the pricing kernel is declining (investors fear bad outcomes), risk-neutral
-probabilities overweight bad states and underweight good states relative to the natural
-measure.
+The CDF clearly shows the first-order stochastic dominance
 
 ```{code-cell} ipython3
 cdf_nat = np.cumsum(f_nat)
 cdf_rn = np.cumsum(f_rn)
 
 fig, ax = plt.subplots(figsize=(9, 5))
-ax.plot(gross_returns, cdf_nat, 'b-o', ms=5, lw=2, label='natural cdf')
-ax.plot(gross_returns, cdf_rn, 'r--s', ms=5, lw=2, label='risk-neutral cdf')
+ax.plot(gross_returns, cdf_nat, lw=2, label='natural cdf')
+ax.plot(gross_returns, cdf_rn, lw=2, label='risk-neutral cdf')
 ax.set_xlabel('gross return $S_T / S_0$')
 ax.set_ylabel('cumulative probability')
-ax.set_title('stochastic dominance: natural cdf lies below risk-neutral cdf')
 ax.legend()
 plt.show()
 
@@ -544,74 +643,21 @@ print(f"Natural CDF <= Risk-neutral CDF at all states: "
       f"{np.all(cdf_nat <= cdf_rn + 1e-10)}")
 ```
 
-## Extracting the pricing kernel and risk premium
+The gap between the two CDFs is generated by the slope of the pricing kernel. 
 
-The pricing kernel recovered from $P$ via the Perron–Frobenius theorem has the following
-interpretation.
+In the
+CRRA benchmark, this slope is controlled by the risk-aversion coefficient $\gamma$.
 
-In the CRRA model the kernel is proportional to $\exp(-\gamma \cdot \text{log-return})$,
-so it is decreasing in the return.
+We next vary $\gamma$ to see how the recovered kernel and the natural/risk-neutral
+wedge change.
 
-The **log equity risk premium** computed below is the log expected gross return under
-the natural measure minus the continuously compounded risk-free rate:
-
-$$
-\text{log ERP}_i
-= \log\left(\sum_j f_{ij}\frac{S_j}{S_i}\right) - r_{f,i},
-\qquad
-r_{f,i} = -\log\left(\sum_j p_{ij}\right).
-$$
-
-```{code-cell} ipython3
-def compute_risk_premia(P, F, states):
-    """Compute log equity premia and risk-free rates by starting state."""
-    m = len(states)
-    gross_returns = np.exp(states)
-
-    rf = np.zeros(m)
-    erp = np.zeros(m)
-
-    for i in range(m):
-        discount = P[i].sum()
-        rf[i] = -np.log(discount)
-
-        # Gross return from current state i to future state j.
-        relative_returns = np.exp(states - states[i])
-        E_R_nat = np.sum(F[i] * relative_returns)
-
-        erp[i] = np.log(E_R_nat) - rf[i]
-
-    return erp, rf
-
-
-erp, rf = compute_risk_premia(P, F, states)
-
-fig, axes = plt.subplots(1, 2, figsize=(13, 5))
-
-axes[0].plot(np.exp(states), rf * 100, 'b-o', ms=5, lw=2)
-axes[0].set_xlabel('current state $S / S_0$')
-axes[0].set_ylabel('annual risk-free rate (%)')
-axes[0].set_title('risk-free rate by state')
-
-axes[1].plot(np.exp(states), erp * 100, 'r-^', ms=5, lw=2)
-axes[1].set_xlabel('current state $S / S_0$')
-axes[1].set_ylabel('log equity risk premium (%)')
-axes[1].set_title('recovered log equity risk premium by state')
-
-plt.show()
-
-mid = len(states) // 2
-print("Middle state:")
-print(f"  Risk-free rate       approx {rf[mid]*100:.2f}% "
-      f"(calibration: {δ*100:.2f}%)")
-print(f"  Log equity premium  approx {erp[mid]*100:.2f}% "
-      f"(calibration: {(μ-δ)*100:.2f}%)")
-```
-
-## Sensitivity analysis: effect of risk aversion
+## Effect of risk aversion
 
 The shape of the pricing kernel, and hence the gap between natural and risk-neutral
 probabilities, depends on the coefficient of risk aversion $\gamma$.
+
+We illustrate this by plotting the relative pricing kernel $1/z$ and the gap between
+the natural and risk-neutral densities for a range of values of $\gamma$.
 
 ```{code-cell} ipython3
 γs = [1.0, 2.0, 3.0, 5.0, 8.0]
@@ -620,8 +666,8 @@ colors = cm.viridis(np.linspace(0.1, 0.9, len(γs)))
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 for γ_val, color in zip(γs, colors):
-    P_g, states_g = build_state_price_matrix(μ, σ, γ_val, δ, T)
-    F_g, z_g, δ_g, φ_g = recover_natural_distribution(P_g)
+    P_g, states_g = build_state_price_matrix(μ, σ, γ_val, ρ, T)
+    F_g, z_g, β_g, φ_relative_g = recover_natural_distribution(P_g)
     mid_g = len(states_g) // 2
 
     f_nat_g = F_g[mid_g, :]
@@ -630,14 +676,14 @@ for γ_val, color in zip(γs, colors):
 
     gross = np.exp(states_g)
 
-    axes[0].plot(gross, φ_g, color=color, lw=2,
+    axes[0].plot(gross, φ_relative_g, color=color, lw=2,
                  label=f'$\\gamma={γ_val:.0f}$')
     axes[1].plot(gross, f_nat_g - f_rn_g, color=color, lw=2,
                  label=f'$\\gamma={γ_val:.0f}$')
 
 axes[0].set_xlabel('gross return')
-axes[0].set_ylabel('kernel $\\phi$')
-axes[0].set_title('pricing kernel vs risk aversion')
+axes[0].set_ylabel('relative kernel $1/z$')
+axes[0].set_title('relative pricing kernel vs risk aversion')
 axes[0].legend(fontsize=9)
 
 axes[1].axhline(0, color='k', lw=0.8, ls='--')
@@ -649,51 +695,49 @@ axes[1].legend(fontsize=9)
 plt.show()
 ```
 
-The plots confirm the single-crossing property from Theorem 3 of {cite}`Ross2015`: for
-returns below some threshold $v$, risk-neutral probability exceeds natural probability;
-above $v$ the natural probability dominates.
+Because the states are ordered from low to high payoff, the plots show the
+single-crossing property from Theorem 3 of {cite}`Ross2015`: for returns below some
+threshold $v$, risk-neutral probability exceeds natural probability; above $v$ the
+natural probability dominates.
 
 A higher $\gamma$ amplifies this wedge.
 
 ## Recovering the discount rate
 
-A useful by-product of the Recovery Theorem is the **recovered subjective discount
-factor** $\delta$, which equals the Perron–Frobenius eigenvalue of $P$.
+A useful by-product of the Recovery Theorem is the *recovered subjective discount
+factor* $\beta$, which equals the Perron–Frobenius eigenvalue of $P$.
 
-The corresponding continuously compounded discount rate is $-\log \delta$.
+The corresponding continuously compounded discount rate is $\rho = -\log \beta$.
 
-Corollary 1 of {cite}`Ross2015` states that $\delta$ is bounded above by the largest
-observed interest factor (i.e., the maximum row sum of $P$):
+Corollary 1 of {cite:t}`Ross2015` states that $\beta$ is bounded above by the largest
+state-dependent one-period discount factor — equivalently, the maximum row sum of $P$:
 
 $$
-\delta \leq \max_i \sum_j p(\theta_i, \theta_j).
+\beta \leq \max_i \sum_j p(\theta_i, \theta_j).
 $$
+
+Sweeping the true $\rho$ over a grid and reporting the recovered values alongside the
+recovery error confirms that the eigenvalue calculation pins down $\beta$ accurately:
 
 ```{code-cell} ipython3
-true_δs = np.linspace(0.00, 0.06, 13)
-recovered_δs = []
+true_ρs = np.linspace(0.00, 0.06, 13)
+recovered_ρs = np.empty_like(true_ρs)
 
-for d in true_δs:
-    P_d, _ = build_state_price_matrix(μ, σ, γ=3.0, δ=d, T=1.0)
-    _, _, d_rec, _ = recover_natural_distribution(P_d)
-    recovered_δs.append(d_rec)
+for k, rho in enumerate(true_ρs):
+    P_d, _ = build_state_price_matrix(μ, σ, γ=3.0, ρ=rho, T=1.0)
+    _, _, β_d, _ = recover_natural_distribution(P_d)
+    recovered_ρs[k] = -np.log(β_d)
 
-plt.figure(figsize=(8, 5))
-plt.plot(true_δs * 100, true_δs * 100, 'k--', lw=1.5, label='45 deg line')
-plt.plot(true_δs * 100,
-         [-np.log(d_r) * 100 for d_r in recovered_δs],
-         'bo-', ms=6, lw=2, label='recovered $\\delta$')
-plt.xlabel('true discount rate (%)')
-plt.ylabel('recovered discount rate (%)')
-plt.title('accuracy of recovered discount rate')
-plt.legend()
-plt.show()
+print(
+    f"max |true ρ - recovered ρ| = {np.max(np.abs(true_ρs - recovered_ρs)):.2e}")
+np.column_stack([true_ρs, recovered_ρs])
 ```
 
 ## Tail risk: natural vs. risk-neutral probabilities of catastrophe
 
 One of the most striking applications of the Recovery Theorem is its ability to separate
-the market's genuine fear of catastrophes from the risk premium attached to them.
+the market's recovered natural probability of catastrophes from the risk premium
+attached to them.
 
 {cite:t}`barro2006rare` and {cite:t}`MehraPrescott1985` discuss how rare disasters might
 explain the equity premium puzzle.
@@ -702,9 +746,19 @@ The risk-neutral probability of a large decline is elevated both because (a) the
 assigns a high natural probability to such events and (b) the pricing kernel upweights
 bad outcomes.
 
-Ross's Recovery Machinery lets us decompose these two forces.
+Ross's recovery machinery lets us decompose these two forces.
+
+The next cell plots left-tail probabilities under the recovered natural and the
+risk-neutral measures from the middle state, so the gap between the curves isolates
+the pricing-kernel contribution to crash probabilities.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Tail probabilities under the recovered natural and risk-neutral measures
+    name: fig-tail-probs
+---
 thresholds = np.linspace(-0.40, 0.10, 200)
 
 def tail_prob(f_dist, states, threshold):
@@ -712,9 +766,9 @@ def tail_prob(f_dist, states, threshold):
     return float(np.sum(f_dist[states <= threshold]))
 
 P_base, states_base = build_state_price_matrix(
-    μ, σ, γ=3.0, δ=0.02, T=1.0,
+    μ, σ, γ=3.0, ρ=0.02, T=1.0,
     n_states=41, n_σ=5)
-F_base, z_base, δ_base, φ_base = recover_natural_distribution(P_base)
+F_base, z_base, β_base, φ_relative_base = recover_natural_distribution(P_base)
 
 mid_b = len(states_base) // 2
 f_nat_base = F_base[mid_b]
@@ -724,75 +778,55 @@ prob_nat = [tail_prob(f_nat_base, states_base, t) for t in thresholds]
 prob_rn = [tail_prob(f_rn_base, states_base, t) for t in thresholds]
 
 fig, ax = plt.subplots(figsize=(10, 5))
-ax.plot(np.exp(thresholds), prob_nat, 'b-', lw=2, label='natural (recovered)')
-ax.plot(np.exp(thresholds), prob_rn, 'r--', lw=2, label='risk-neutral')
+ax.plot(np.exp(thresholds), prob_nat, lw=2, label='natural (recovered)')
+ax.plot(np.exp(thresholds), prob_rn, lw=2, label='risk-neutral')
 ax.set_xlabel('gross return threshold')
 ax.set_ylabel('probability of decline below threshold')
-ax.set_title('tail probabilities: natural vs. risk-neutral')
 ax.axvline(x=0.75, color='gray', ls=':', lw=1.5, label='25% decline')
 ax.axvline(x=0.70, color='silver', ls=':', lw=1.5, label='30% decline')
 ax.legend()
 plt.show()
-
-for thresh, label in [(-0.25, '25% decline'), (-0.30, '30% decline'),
-                       (-0.10, '10% decline')]:
-    p_n = tail_prob(f_nat_base, states_base, thresh)
-    p_r = tail_prob(f_rn_base, states_base, thresh)
-    print(f"P(log-return < {thresh:.0%}):   Natural = {p_n:.4f},   "
-          f"Risk-Neutral = {p_r:.4f},   Ratio = {p_r/p_n:.2f}x")
 ```
 
 The risk-neutral density assigns higher probability to large drops than the recovered
 natural density.
 
-The ratio captures the additional weight from risk aversion -- the premium investors
-demand to bear tail risk.
+In this CRRA
+simulation, increasing risk aversion makes the risk-neutral crash probability rise
+faster than the recovered natural crash probability.
+
+We will say more in {ref}`rt_ex3`.
 
 ## Testing efficient markets
 
-{cite:t}`Ross2015` shows that once the pricing kernel is recovered, one obtains an **upper
-bound on the Sharpe ratio** for any investment strategy:
+{cite:t}`Ross2015` shows that once the pricing kernel is recovered, one obtains an *upper
+bound on the Sharpe ratio* for strategies based on the stock-market filtration used in
+recovery:
 
 $$
-\sigma(\phi) \geq e^{-rT} \frac{|\mu_\text{excess}|}{\sigma_\text{asset}},
+\frac{|\mu_\text{excess}|}{\sigma_\text{asset}} \leq e^{rT}\, \sigma(M),
 $$
 
-where $\sigma(\phi)$ is the standard deviation of the pricing kernel.
+where $\sigma(M)$ is the standard deviation of the actual one-period stochastic discount
+factor projected on that filtration. Arbitrary orthogonal noise in a candidate kernel
+does not tighten this market-efficiency bound.
 
-This follows from the Hansen–Jagannathan bound {cite}`Hansen_Jagannathan_1991`.
+This follows from the {doc}`advacned:hansen_jagannathan_1991` {cite}`Hansen_Jagannathan_1991`.
 
-Equivalently, the $R^2$ of any return-forecasting regression using publicly available
-information is bounded above by the variance of the pricing kernel:
+Equivalently, under the Recovery Theorem assumptions, the $R^2$ of return-forecasting
+regressions based on that information set is bounded above by the variance of the
+pricing kernel:
 
 $$
-R^2 \leq e^{2rT} \, \mathrm{Var}(\phi).
+R^2 \leq e^{2rT} \, \mathrm{Var}(M).
 $$
-
-```{code-cell} ipython3
-def kernel_variance(φ, f_nat):
-    """Return Var(φ) and E[φ]."""
-    E_φ = np.sum(φ * f_nat)
-    E_φ2 = np.sum(φ**2 * f_nat)
-    return E_φ2 - E_φ**2, E_φ
-
-
-var_φ, E_φ = kernel_variance(φ_base, f_nat_base)
-std_φ = np.sqrt(var_φ)
-
-print("Pricing kernel statistics:")
-print(f"  E[φ]     = {E_φ:.4f}")
-print(f"  Var(φ)   = {var_φ:.4f}")
-print(f"  Std(φ)   = {std_φ:.4f}")
-print(f"\nHansen-Jagannathan bound on Sharpe ratio: {std_φ:.4f}")
-print(f"Upper bound on R^2 in return forecasting: {var_φ:.4f}")
-```
 
 ## Limitations and extensions
 
 The Recovery Theorem is a remarkable theoretical result, but several caveats apply in
 practice.
 
-**Finite state space.**
+*Finite state space:*
 
 The theorem requires a bounded, irreducible Markov chain.
 
@@ -801,7 +835,7 @@ because any exponential $e^{\alpha x}$ satisfies the characteristic equation.
 
 {cite:t}`CarrYu2012` establish recovery with a bounded diffusion.
 
-**Transition independence.**
+*Transition independence:*
 
 If the kernel is not transition independent, recovery is not guaranteed.
 
@@ -809,19 +843,14 @@ If the kernel is not transition independent, recovery is not guaranteed.
 long-run risk component of the kernel with the natural probability distribution,
 yielding an incorrect decomposition.
 
-**Empirical estimation.**
+*Empirical estimationL*
 
 Extracting reliable state prices from observed option prices requires careful
 interpolation and extrapolation.
 
 The mapping from implied volatilities to state prices via the
-{cite}`BreedenLitzenberger1978` formula involves second derivatives, which amplify
+{cite:t}`BreedenLitzenberger1978` formula involves second derivatives, which amplify
 measurement error.
-
-**State dependence.**
-
-The state must capture all relevant variables: the level of volatility, not just the
-current index level, is an important state variable for equity options.
 
 ## Exercises
 
@@ -835,23 +864,24 @@ Consider the $3 \times 3$ state price matrix
 $$
 P = \begin{pmatrix}
 0.5950 & 0.1700 & 0.0272 \\
-0.1594 & 0.5525 & 0.1360 \\
-0.0664 & 0.3188 & 0.5525
+0.159375 & 0.5525 & 0.1360 \\
+0.06640625 & 0.31875 & 0.5525
 \end{pmatrix}.
 $$
 
-(a) Compute the dominant eigenvalue $\delta$ and the corresponding eigenvector $z$ of
+(a) Compute the Perron eigenvalue $\beta$ and the corresponding eigenvector $z$ of
 $P$.
 
 (b) Use $z$ to recover the natural probability transition matrix $F$ via
 
 $$
-f_{ij} = \frac{1}{\delta} \frac{z_j}{z_i} p_{ij}.
+f_{ij} = \frac{1}{\beta} \frac{z_j}{z_i} p_{ij}.
 $$
 
 (c) Verify that each row of $F$ sums to one and all entries are positive.
 
-(d) Compute the pricing kernel $\phi_i = 1/z_i$ for each state.
+(d) Compute the relative kernel component $1/z_i$ for each state. For a transition from
+state $i$ to state $j$, the full pricing kernel is $\beta z_i/z_j$.
 
 Does the kernel decrease as we move from state 1 to state 3 (i.e., from bad to good
 states)?
@@ -861,10 +891,9 @@ states)?
 :class: dropdown
 ```
 
-```{code-cell} ipython3
-import numpy as np
-from scipy.linalg import eig
+Here is one solution:
 
+```{code-cell} ipython3
 P_ex = np.array([
     [0.5950, 0.1700, 0.0272],
     [0.159375, 0.5525, 0.1360],
@@ -877,18 +906,18 @@ real_ev = eigenvalues[real_mask].real
 real_evec = eigenvectors[:, real_mask].real
 
 idx = np.argmax(real_ev)
-δ_ex = real_ev[idx]
+β_ex = real_ev[idx]
 z_ex = real_evec[:, idx]
 if z_ex.min() < 0:
     z_ex = -z_ex
 z_ex = z_ex / z_ex[1]
 
-print(f"δ = {δ_ex:.6f}")
+print(f"β = {β_ex:.6f}")
 print(f"z = {z_ex}")
 
 D_ex = np.diag(1.0 / z_ex)
 D_inv_ex = np.diag(z_ex)
-F_ex = (1.0 / δ_ex) * D_ex @ P_ex @ D_inv_ex
+F_ex = (1.0 / β_ex) * D_ex @ P_ex @ D_inv_ex
 
 print("\nRecovered F:")
 print(np.round(F_ex, 4))
@@ -896,9 +925,9 @@ print(np.round(F_ex, 4))
 print(f"\nRow sums: {np.round(F_ex.sum(axis=1), 8)}")
 print(f"Nonnegative: {(F_ex >= -1e-10).all()}")
 
-φ_ex = 1.0 / z_ex
-print(f"\nφ = {np.round(φ_ex, 4)}")
-print(f"Decreasing: {φ_ex[0] > φ_ex[1] > φ_ex[2]}")
+φ_relative_ex = 1.0 / z_ex
+print(f"\nrelative kernel 1/z = {np.round(φ_relative_ex, 4)}")
+print(f"Decreasing: {φ_relative_ex[0] > φ_relative_ex[1] > φ_relative_ex[2]}")
 ```
 
 ```{solution-end}
@@ -918,31 +947,23 @@ starting from state 2 (index 1 in Python).
 (b) Compute the CDFs $\hat F_k = \sum_{j \leq k} f_j$ and
 $\hat Q_k = \sum_{j \leq k} q_j$ for each state.
 
-(c) Verify numerically that $\hat F_k \leq \hat Q_k$ for every $k$, confirming that the
-natural distribution stochastically dominates the risk-neutral distribution (Theorem 3
-of {cite}`Ross2015`).
+(c) Verify numerically that $\hat F_k \leq \hat Q_k$ for every $k$, confirming stochastic
+dominance in this ordered three-state example.
 ```
 
 ```{solution-start} rt_ex2
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
-import numpy as np
-
-P_ex = np.array([
-    [0.5950, 0.1700, 0.0272],
-    [0.159375, 0.5525, 0.1360],
-    [0.06640625, 0.31875, 0.5525]
-])
-
-from scipy.linalg import eig
 eigenvalues, eigenvectors = eig(P_ex)
 real_mask = np.isreal(eigenvalues)
 real_ev = eigenvalues[real_mask].real
 real_evec = eigenvectors[:, real_mask].real
 idx = np.argmax(real_ev)
-δ_ex = real_ev[idx]
+β_ex = real_ev[idx]
 z_ex = real_evec[:, idx]
 if z_ex.min() < 0:
     z_ex = -z_ex
@@ -950,9 +971,7 @@ z_ex = z_ex / z_ex[1]
 
 D_ex = np.diag(1.0 / z_ex)
 D_inv_ex = np.diag(z_ex)
-F_ex = (1.0 / δ_ex) * D_ex @ P_ex @ D_inv_ex
-F_ex = np.clip(F_ex, 0, None)
-F_ex /= F_ex.sum(axis=1, keepdims=True)
+F_ex = (1.0 / β_ex) * D_ex @ P_ex @ D_inv_ex
 
 start = 1
 f_marg = F_ex[start]
@@ -981,7 +1000,7 @@ print(f"\nNatural CDF <= risk-neutral CDF: {dominates}")
 
 **Risk aversion and tail risk.**
 
-Write a function `tail_risk_ratio(γ, threshold, μ, σ, δ, T)` that:
+Write a function `tail_risk_ratio(γ, threshold, μ, σ, ρ, T)` that:
 
 1. Constructs the state price matrix $P$ using `build_state_price_matrix` with
    the given parameters and `n_states=41`.
@@ -991,7 +1010,7 @@ Write a function `tail_risk_ratio(γ, threshold, μ, σ, δ, T)` that:
 4. Returns the ratio $p_\text{risk-neutral} / p_\text{natural}$.
 
 Using this function, plot the ratio as a function of $\gamma \in [1, 10]$ for a
-threshold of $-30\%$ (i.e., `threshold = -0.30`).
+30 percent simple decline, i.e. `threshold = np.log(0.70)`.
 
 Explain the economic interpretation: why does a higher $\gamma$ raise the ratio?
 ```
@@ -1000,25 +1019,23 @@ Explain the economic interpretation: why does a higher $\gamma$ raise the ratio?
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
-import numpy as np
-import matplotlib.pyplot as plt
-
-
-def tail_risk_ratio(γ, threshold, μ=0.08, σ=0.20, δ=0.02, T=1.0):
+def tail_risk_ratio(γ, threshold, μ=0.08, σ=0.20, ρ=0.02, T=1.0):
     """Risk-neutral / natural left-tail probability."""
     P_g, states_g = build_state_price_matrix(
-        μ, σ, γ, δ, T, n_states=41, n_σ=5)
+        μ, σ, γ, ρ, T, n_states=41, n_σ=5)
 
     F_g, _, _, _ = recover_natural_distribution(P_g)
 
     mid_g = len(states_g) // 2
 
     f_nat_g = F_g[mid_g]
-    f_rn_g  = P_g[mid_g] / P_g[mid_g].sum()
+    f_rn_g = P_g[mid_g] / P_g[mid_g].sum()
 
     p_nat = float(np.sum(f_nat_g[states_g <= threshold]))
-    p_rn = float(np.sum(f_rn_g[states_g  <= threshold]))
+    p_rn = float(np.sum(f_rn_g[states_g <= threshold]))
 
     if p_nat < 1e-12:
         return np.nan
@@ -1026,31 +1043,26 @@ def tail_risk_ratio(γ, threshold, μ=0.08, σ=0.20, δ=0.02, T=1.0):
 
 
 γs = np.linspace(1.0, 10.0, 20)
-ratios = [tail_risk_ratio(g, -0.30) for g in γs]
+threshold_30 = np.log(0.70)
+ratios = [tail_risk_ratio(g, threshold_30) for g in γs]
 
 plt.figure(figsize=(9, 5))
-plt.plot(γs, ratios, 'b-o', ms=5, lw=2)
+plt.plot(γs, ratios, '-o', ms=5, lw=2)
 plt.xlabel('risk aversion coefficient $\\gamma$')
 plt.ylabel('risk-neutral / natural tail probability')
 plt.title('tail risk ratio for a 30% decline vs risk aversion')
 plt.show()
-
-print(f"Ratio at γ=1.0: {tail_risk_ratio(1.0, -0.30):.2f}")
-print(f"Ratio at γ=5.0: {tail_risk_ratio(5.0, -0.30):.2f}")
-print(f"Ratio at γ=10.0: {tail_risk_ratio(10.0, -0.30):.2f}")
 ```
-
-**Economic interpretation.**
 
 A higher coefficient of risk aversion $\gamma$ makes the pricing kernel steeper: the
 market assigns a larger premium per unit of probability to bad-state payoffs.
 
-Risk-neutral probabilities, which incorporate this premium, overstate the natural
-probability of a crash by a factor that grows rapidly with $\gamma$.
+Risk-neutral probabilities incorporate this premium, so in this CRRA simulation the
+risk-neutral crash probability rises faster with $\gamma$ than the recovered natural
+crash probability.
 
-This is the "dark matter" of finance: the high risk-neutral probability of a crash seen
-in option prices can be attributed mostly to risk aversion rather than a genuinely
-elevated natural probability of a catastrophe.
+Recovery separates the market's estimated natural crash probability from the
+pricing-kernel premium attached to crash states.
 
 ```{solution-end}
 ```
