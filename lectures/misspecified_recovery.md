@@ -33,100 +33,54 @@ The lecture {doc}`ross_recovery` studies the case in which recovery is valid.
 There, **transition independence** lets us use Arrow prices to separate investors'
 beliefs from the pricing kernel.
 
-This lecture asks what the same Perron--Frobenius calculation delivers when that
-restriction fails.
+This lecture asks what the same Perron--Frobenius approach delivers when that
+restriction is not imposed.
 
-We will keep three probability laws separate.
+We will keep three probability measures separate.
 
-The first is the correctly specified transition law, which is the law that actually
-governs the Markov state in the model.
+The first is the correctly specified probability measure, which governs the Markov
+state in the model.
 
-In the paper, this can be interpreted as the actual law under rational expectations.
+In the paper, this can be interpreted as the actual probability measure under rational
+expectations.
 
 Interpreting it as investors' subjective beliefs requires additional assumptions.
 
-The second is the one-period risk-neutral law, which comes from normalizing one-period
-Arrow prices by bond prices.
+The second is the one-period risk-neutral probability measure, which comes from
+normalizing one-period Arrow prices by bond prices.
 
-The third is the Perron, or recovered, law, which is the probability law produced by the
-same eigenvector calculation used in Ross recovery.
+The third is the probability measure recovered by Perron--Frobenius Theory, also called
+the long-term risk-neutral measure.
 
-The central question is whether the recovered law equals the correctly specified law.
+The central question is whether the recovered probability measure equals the correctly
+specified probability measure.
 
 {cite:t}`BorovickaHansenScheinkman2016` show that, in general, the answer is no.
 
-A likelihood ratio is just a ratio of probabilities under two probability laws.
+The paper studies the ratio of the recovered probability measure to the correctly
+specified probability measure.
 
-The reason is that the stochastic discount factor can contain a likelihood-ratio term
+The reason is that the stochastic discount factor can contain a martingale component
 that changes the probability measure.
 
-If that likelihood-ratio term is constant, Ross recovery returns the correctly specified
-transition probabilities.
+If that martingale component is identically one, Ross recovery returns the correctly
+specified transition probabilities.
 
-If it is not constant, the recovered law includes risk adjustments that matter for
-long-horizon claims, because likelihood-ratio increments compound along histories.
+If it is not identically one, the recovered probability measure absorbs long-term risk
+adjustments, because martingale increments compound along histories.
 
-In the examples below, this typically shifts probability toward adverse long-run-risk
-states, so the recovered law looks more pessimistic than the correctly specified law.
+In the examples below, the recovered probability measure assigns more probability to
+adverse long-run-risk states than the correctly specified probability measure.
 
 We will:
 
 - use results from {doc}`ross_recovery` without re-proving it,
-- diagnose misspecification through a likelihood-ratio term,
-- show why recursive utility and permanent shocks break recovery,
+- study misspecification through the martingale component,
+- show why recursive utility and permanent shocks make the recovered probability
+  measure differ from the correctly specified probability measure,
 - measure the difference in a long-run risk model.
 
-### The broader framework
-
-The paper's framework is more general than the finite-state matrices used first in this
-lecture.
-
-It starts with a Markov state $X_t$ and, when needed, an auxiliary process $Y_t$ with
-stationary increments.
-
-The auxiliary process lets the model record shocks or growth components that are not
-fully summarized by $X_t$ alone.
-
-The basic objects are **multiplicative functionals**.
-
-A positive process $M_t$ is a multiplicative functional when its log increments depend
-on the current state and the next shock.
-
-Stochastic discount factors, cash-flow growth processes, and likelihood-ratio
-martingales are all treated this way.
-
-In the paper, a stochastic discount factor $S_t$ prices bounded claims by
-
-$$
-\Pi_{\tau,t}(\Phi_t)
-= E\left[\frac{S_t}{S_\tau}\Phi_t \mid \mathcal F_\tau\right].
-$$
-
-For a payoff $f(X_t)$, this defines a pricing operator
-
-$$
-[Q_t f](x)
-= E[S_t f(X_t) \mid X_0=x].
-$$
-
-The Perron--Frobenius problem is therefore an operator problem:
-
-$$
-[Q_t \hat e](x) = \exp(\hat\eta t)\hat e(x).
-$$
-
-The associated likelihood-ratio martingale is
-
-$$
-\frac{\hat H_t}{\hat H_0}
-= \exp(-\hat\eta t) S_t
-  \frac{\hat e(X_t)}{\hat e(X_0)}.
-$$
-
-In a finite-state one-period model, $Q_t$ becomes a matrix power and $\hat e$ becomes a
-positive eigenvector.
-
-That is the special case we use below to make the mechanics transparent.
+We will use the following imports.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -138,8 +92,8 @@ from scipy.stats import gaussian_kde
 
 The next cell contains code inherited from the previous lecture.
 
-It row-normalizes Arrow prices, finds the positive Perron eigenpair, and computes
-stationary distributions.
+It row-normalizes Arrow prices, finds the Perron--Frobenius eigenvalue and positive
+right eigenvector, and computes stationary distributions.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -152,7 +106,7 @@ def risk_neutral_probs(Q):
 
 
 def perron_frobenius(Q):
-    """Positive Perron pair and induced recovered transition matrix."""
+    """Perron-Frobenius eigenpair and associated transition matrix."""
     eigenvalues, eigenvectors = linalg.eig(Q)
     eigenvalues = np.real_if_close(eigenvalues, tol=1000)
     eigenvectors = np.real_if_close(eigenvectors, tol=1000)
@@ -169,7 +123,7 @@ def perron_frobenius(Q):
         if exp_eta > 0 and np.all(e > 0):
             break
     else:
-        raise ValueError("No strictly positive Perron eigenvector found")
+        raise ValueError("No strictly positive Perron-Frobenius eigenvector found")
 
     e = e / e.sum()
     eta = np.log(exp_eta)
@@ -194,7 +148,7 @@ def stationary_dist(P):
 
 
 def martingale_increment(Q, P):
-    """Likelihood-ratio increment from actual to recovered probabilities."""
+    """Martingale increment for the recovered probability measure."""
     eta, exp_eta, e, P_hat = perron_frobenius(Q)
     H = np.ones_like(P)
     mask = P > 0
@@ -207,14 +161,16 @@ def martingale_increment(Q, P):
 Let $\mathbf{P}=[p_{ij}]$ denote the correctly specified transition matrix and
 $\mathbf{Q}=[q_{ij}]$ the Arrow price matrix.
 
-Here "correctly specified" means that $\mathbf{P}$ is the transition law that actually
+Here "correctly specified" means that $\mathbf{P}$ is the transition matrix that
 governs the Markov state in the model.
 
 The one-period stochastic discount factor (SDF) satisfies
 
-$$
+```{math}
+:label: eq-mr-arrow-price-finite
+
 q_{ij} = s_{ij} p_{ij}.
-$$
+```
 
 We will compare $\mathbf{P}$ with two probability matrices constructed from
 $\mathbf{Q}$.
@@ -231,57 +187,71 @@ $$
 
 This matrix absorbs one-period risk adjustments into transition probabilities.
 
-The second one is the **Perron recovered matrix**.
+The second one is the transition matrix associated with the **long-term risk-neutral
+probability**.
 
-It starts from the positive Perron eigenpair of $\mathbf{Q}$.
+It starts from the Perron--Frobenius eigenvalue and positive right eigenvector of
+$\mathbf{Q}$.
 
 Let $(\exp(\hat \eta), \hat e)$ solve
 
-$$
+```{math}
+:label: eq-mr-pf-finite
+
 \mathbf{Q}\hat e = \exp(\hat \eta)\hat e.
-$$
+```
 
 Then define
 
-$$
+```{math}
+:label: eq-mr-phat-finite
+
 \hat p_{ij}
 = \exp(-\hat \eta) q_{ij} \frac{\hat e_j}{\hat e_i}.
-$$
+```
 
 The factor $\hat e_j/\hat e_i$ is chosen to cancel any SDF component of the form
 $\exp(\hat \eta)\hat e_i/\hat e_j$.
 
 The result is a stochastic matrix $\hat{\mathbf{P}}$.
 
-This construction assumes that the relevant Arrow-price matrix has a positive Perron
-pair that is unique up to scale.
+This construction assumes that $\mathbf{Q}$ has a unique positive right eigenvector up
+to scale.
 
-In the finite-state examples below this condition is satisfied, while in more general
-state spaces the paper imposes additional stability and ergodicity conditions.
+For a finite irreducible non-negative matrix, the Perron--Frobenius theorem guarantees
+this uniqueness directly.
 
-In particular, positive eigenfunctions need not be unique in continuous state spaces.
+In general state spaces this guarantee does not carry over: multiple positive
+eigenfunctions may exist, and an additional selection condition is needed to pin down
+the long-term risk-neutral measure.
 
-The paper's uniqueness result selects the Perron solution whose likelihood-ratio
-martingale makes $X_t$ stationary and ergodic under the recovered probability measure.
+The general framework in the next section makes that selection condition explicit.
 
 Following {cite:t}`BorovickaHansenScheinkman2016`, $\hat{\mathbf{P}}$ is called a
 **long-term risk-neutral** transition matrix.
 
-The name means that the Perron eigenpair isolates the part of pricing that dominates
-long-maturity Arrow claims.
+The name means that the Perron--Frobenius eigenvalue and eigenvector isolate the part
+of pricing that dominates long-maturity Arrow claims.
 
-It is not the same object as the one-period risk-neutral matrix
+It is not the same transition matrix as the one-period risk-neutral matrix
 $\bar{\mathbf{P}}$.
 
-In {doc}`ross_recovery`, transition independence pins down the split between $s_{ij}$
-and $p_{ij}$.
+In {doc}`ross_recovery`, transition independence restricts the SDF to
 
-Here we drop transition independence.
+$$
+s_{ij}=\exp(-\delta)\frac{m_j}{m_i}
+$$
 
-The question is whether the Perron recovered matrix $\hat{\mathbf{P}}$ still equals the
-correctly specified matrix $\mathbf{P}$.
+for a positive vector $m$ and scalar $\delta$, which pins down the split between
+$s_{ij}$ and $p_{ij}$.
 
-### Where recovery works
+Here we drop that restriction.
+
+The question is whether the transition matrix associated with the long-term
+risk-neutral probability, $\hat{\mathbf{P}}$, still equals the correctly specified
+matrix $\mathbf{P}$.
+
+### Degenerate Martingale Component
 
 We start with a three-state economy: recession, normal, and expansion.
 
@@ -318,8 +288,8 @@ S_power = (
 Q_power = S_power * P_true
 ```
 
-We now compute the one-period risk-neutral matrix and the Perron recovered matrix from
-the same Arrow price matrix.
+We now compute the one-period risk-neutral matrix and the transition matrix associated
+with the long-term risk-neutral probability from the same Arrow price matrix.
 
 ```{code-cell} ipython3
 P_bar, q_bonds = risk_neutral_probs(Q_power)
@@ -335,12 +305,12 @@ The row-normalized matrix $\bar{\mathbf{P}}$ is a short-horizon risk-neutral cha
 measure: it folds the one-period SDF into transition probabilities, so it generally
 differs from the correctly specified matrix $\mathbf{P}$.
 
-The logic comes from the recovery formula in {doc}`ross_recovery`.
+The logic comes from the Perron--Frobenius construction in {doc}`ross_recovery`.
 
 In the transition-independent case, the pricing kernel has the form
 $s_{ij}=\exp(\hat\eta)\hat e_i/\hat e_j$.
 
-Substituting this into the Perron formula gives
+Substituting this into the Perron--Frobenius transition formula gives
 
 $$
 \hat p_{ij}
@@ -351,17 +321,17 @@ $$
 =p_{ij}.
 $$
 
-Thus the Perron matrix $\hat{\mathbf{P}}$ cancels the transition-independent part of
-the SDF.
+Thus the transition matrix $\hat{\mathbf{P}}$ associated with the long-term
+risk-neutral probability cancels the transition-independent part of the SDF.
 
 In this power-utility benchmark, the whole SDF has exactly that form, so the remaining
-likelihood-ratio term should be one and $\hat{\mathbf{P}}$ should coincide with
+martingale increment should be one and $\hat{\mathbf{P}}$ should coincide with
 $\mathbf{P}$.
 
-The next calculation checks this by comparing the Perron eigenfunction with
+The next calculation checks this by comparing the Perron--Frobenius eigenfunction with
 $c_i^\gamma$ and then computing the ratio $\hat{\mathbf{P}}/\mathbf{P}$.
 
-Define the diagnostic ratio
+Define the one-period martingale increment
 
 $$
 \hat h_{ij}
@@ -369,10 +339,10 @@ $$
 = \exp(-\hat\eta)s_{ij}\frac{\hat e_j}{\hat e_i}.
 $$
 
-When $\hat h_{ij}=1$ for every transition, the recovered matrix and the correctly
-specified matrix are the same.
+When $\hat h_{ij}=1$ for every transition, $\hat{\mathbf P}$ and $\mathbf P$ are the
+same.
 
-The next section explains why this ratio is also called a likelihood-ratio increment.
+The next section explains why this ratio is the one-period martingale increment.
 
 In the power-utility example, write
 
@@ -406,12 +376,12 @@ $$
 H_power = np.divide(P_hat, P_true, out=np.ones_like(P_true), where=P_true > 0)
 e_theory = c_levels**γ_power
 
-print("Perron eigenfunction: numerical vs c^gamma")
+print("Perron-Frobenius eigenfunction: numerical vs c^gamma")
 for name, e_num, e_th in zip(state_names, e_hat / e_hat[1],
                              e_theory / e_theory[1]):
     print(f"{name:9s}: {e_num:.6f}  {e_th:.6f}")
 
-print("\nlikelihood-ratio increment h_hat = P_hat / P")
+print("\nmartingale increment h_hat = P_hat / P")
 print(np.round(H_power, 6))
 
 print("\nconditional means under P")
@@ -421,8 +391,8 @@ print(f"\nmax |h_hat - 1| = "
       f"{np.max(np.abs(H_power[P_true > 0] - 1)):.2e}")
 ```
 
-The output separates a short-horizon risk adjustment from the Perron recovery
-calculation.
+The output separates a short-horizon risk adjustment from the Perron--Frobenius
+approach.
 
 The one-period risk-neutral matrix $\bar{\mathbf{P}}$ is close to, but not the same as,
 the correctly specified matrix $\mathbf{P}$.
@@ -433,18 +403,19 @@ one-period risk adjustments.
 By contrast, the long-term risk-neutral matrix $\hat{\mathbf{P}}$ is exactly the same
 as $\mathbf{P}$ in this example.
 
-The diagnostic confirms why: the likelihood-ratio increment $\hat h_{ij}$ is one for
-every transition.
+The calculation confirms why: the martingale increment $\hat h_{ij}$ is one for every
+transition.
 
 This is the condition under which Ross recovery returns the correctly specified
 transition matrix.
 
-In this example, that cancellation exhausts the SDF, so no additional probability
-distortion remains.
+In this example, that cancellation exhausts the SDF, so the martingale component is
+degenerate.
 
-## The likelihood-ratio diagnostic
+## Martingale Component
 
-Let $(\hat \eta, \hat e)$ be the positive Perron pair of $\mathbf{Q}$:
+Let $(\hat \eta, \hat e)$ be the Perron--Frobenius eigenvalue exponent and positive
+right eigenvector of $\mathbf{Q}$:
 
 $$
 \mathbf{Q} \hat e = \exp(\hat\eta) \hat e.
@@ -457,19 +428,20 @@ $$
 = \exp(-\hat\eta) q_{ij} \frac{\hat e_j}{\hat e_i}.
 $$
 
-To see whether recovery has changed the probability law, compare each recovered
+To see whether recovery has changed the probability measure, compare each recovered
 transition probability with the corresponding correctly specified transition
 probability.
 
-For feasible transitions with $p_{ij}>0$, define the one-period likelihood-ratio
-increment
+For feasible transitions with $p_{ij}>0$, define the one-period martingale increment
 
-$$
+```{math}
+:label: eq-mr-hhat-finite
+
 \hat h_{ij} = \frac{\hat p_{ij}}{p_{ij}}.
-$$
+```
 
-If $\hat h_{ij}>1$, the recovered law assigns more probability to transition $(i,j)$
-than the correctly specified law.
+If $\hat h_{ij}>1$, the recovered probability measure assigns more probability to
+transition $(i,j)$ than the correctly specified probability measure.
 
 If $\hat h_{ij}<1$, it assigns less probability to that transition.
 
@@ -480,45 +452,52 @@ $$
 \sum_j \hat h_{ij} p_{ij}=1.
 $$
 
-Thus $\hat h_{ij}$ is a one-period likelihood-ratio increment.
+Thus $\hat h_{ij}$ is a one-period martingale increment.
 
-Multiplying these increments along a history of states gives the likelihood ratio for
-the whole history.
+Multiplying these increments along a history of states gives the ratio of the recovered
+probability measure to the correctly specified probability measure for the whole
+history.
 
-That likelihood-ratio process is a martingale, which is why the last term in the
-decomposition below is called a martingale component.
+That ratio process is a martingale, which is why the last term in
+{eq}`eq-mr-finite-sdf-decomposition` is called a martingale component.
 
-The one-period SDF can be written as
+Using {eq}`eq-mr-arrow-price-finite`, {eq}`eq-mr-phat-finite`, and
+{eq}`eq-mr-hhat-finite`, the one-period SDF can be written as
 
-$$
+```{math}
+:label: eq-mr-finite-sdf-decomposition
+
 s_{ij}
 = \exp(\hat\eta) \frac{\hat e_i}{\hat e_j} \hat h_{ij}.
-$$
+```
 
-The Perron calculation therefore separates the SDF into:
+The Perron--Frobenius approach therefore separates the SDF into:
 
 | Part | Role |
 |---|---|
 | $\exp(\hat\eta)$ | deterministic long-run discounting |
 | $\hat e_i / \hat e_j$ | state-dependent long-run term |
-| $\hat h_{ij}$ | likelihood ratio that changes probabilities |
+| $\hat h_{ij}$ | martingale increment that changes probabilities |
 
-If $\hat h_{ij}=1$ for every feasible transition, then the recovered transition matrix
-and the correctly specified transition matrix are the same.
+If $\hat h_{ij}=1$ for every feasible transition, then the transition matrix associated
+with the recovered probability measure and the correctly specified transition matrix
+are the same.
 
 This is the condition under which Ross recovery returns the correctly specified
 transition matrix.
 
-```{prf:proposition} Recovery diagnostic
-:label: prop-misspecified-recovery-diagnostic
+```{prf:proposition} Finite-state martingale component
+:label: prop-misspecified-recovery-martingale-component
 
 Under the finite-state assumptions used in this lecture, for a Markov model with
 correctly specified transition matrix $\mathbf{P}$ and Arrow matrix $\mathbf{Q}$,
-Perron--Frobenius recovery returns the correctly specified transition matrix if and only
-if $\hat h_{ij}=1$ for every transition with $p_{ij}>0$.
+the probability measure recovered by Perron--Frobenius Theory returns the correctly
+specified transition matrix if and only if $\hat h_{ij}=1$ for every transition with
+$p_{ij}>0$.
 
 Equivalently, recovery returns the correctly specified transition matrix if and only if
-the SDF has no nonconstant likelihood-ratio martingale:
+the SDF in {eq}`eq-mr-finite-sdf-decomposition` has no nonconstant martingale
+component:
 
 $$
 s_{ij}=\exp(\hat\eta)\frac{\hat e_i}{\hat e_j}.
@@ -537,11 +516,11 @@ $$
 Thus $\hat{\mathbf{P}}=\mathbf{P}$ if and only if $\hat h_{ij}=1$ on every feasible
 transition.
 
-This condition is the same as saying that the SDF can be written in the displayed form
-with no extra likelihood-ratio term.
+This condition is the same as saying that the SDF can be written as
+{eq}`eq-mr-finite-sdf-decomposition` with no extra martingale increment.
 ```
 
-This finite-state diagnostic is a special case of the paper's general identification
+This finite-state implication is a special case of the paper's general identification
 result.
 
 If a pair $(S,P)$ explains asset prices and $H$ is any positive martingale, then the
@@ -564,23 +543,535 @@ $$
 
 which rules out a nontrivial martingale component.
 
-The power-utility calculation above illustrates the proposition.
+The power-utility example above illustrates the proposition.
 
-In that benchmark, the likelihood-ratio increment $\hat h_{ij}$ is a constant one.
+In that benchmark, the martingale increment $\hat h_{ij}$ is identically one.
 
-## Recursive utility
+## From matrices to the general framework
 
-We now use the diagnostic to see how recovery can fail.
+The finite-state calculation has three objects:
 
-The previous example worked because all risk adjustment in the SDF could be written as
-a ratio of a function of today's state to a function of tomorrow's state.
+1. the correctly specified transition probabilities $p_{ij}$,
+2. the SDF increments $s_{ij}$,
+3. the Arrow prices $q_{ij}=s_{ij}p_{ij}$.
 
-The Perron formula cancels exactly that kind of term.
+It also has one diagnostic object:
 
-Recursive utility usually adds something else.
+$$
+\hat h_{ij}
+= \frac{\hat p_{ij}}{p_{ij}}
+= \exp(-\hat\eta)s_{ij}\frac{\hat e_j}{\hat e_i}.
+$$
 
-The extra object is a continuation-value term, and the key point is that it behaves like
-the likelihood-ratio increment defined above.
+The numbers $\hat h_{ij}$ are one-period martingale increments.
+
+They change the probability of a one-period transition from $p_{ij}$ to
+$\hat p_{ij}=\hat h_{ij}p_{ij}$.
+
+The general framework in {cite:t}`BorovickaHansenScheinkman2016` does the same thing
+without assuming that states are finite.
+
+The transition matrix becomes a Markov probability measure, the Arrow price matrix
+becomes a family of pricing operators, and the one-period ratios $\hat h_{ij}$ become
+a positive martingale process.
+
+The point of this section is to build that dictionary.
+
+### Probability space and state
+
+Start with a probability space $(\Omega,\mathcal F,P)$.
+
+Here $P$ is the correctly specified probability measure.
+
+In the rational-expectations interpretation of the paper, this is the actual, or
+original, probability measure governing the state.
+
+In the finite-state section, $P$ was represented by the transition matrix
+$\mathbf P=[p_{ij}]$.
+
+The index set is either discrete time, $\mathbb T=\{0,1,2,\ldots\}$, or continuous
+time, $\mathbb T=\mathbb R_+$.
+
+The main state process is $X=\{X_t:t\in\mathbb T\}$, which is stationary and Markov
+under $P$.
+
+A second process $W=\{W_t:t\in\mathbb T\}$ records shocks that drive $X$ and other
+economic quantities.
+
+In discrete time, the shock increment between dates $t$ and $t+1$ is
+
+$$
+\Delta W_{t+1}=W_{t+1}-W_t.
+$$
+
+The known function $\phi_x$ maps today's state and the next shock increment into
+tomorrow's state.
+
+The discrete-time state evolution is
+
+$$
+X_{t+1}=\phi_x(X_t,\Delta W_{t+1}).
+$$
+
+The conditional law generated by this equation is the general-state replacement for
+row $i$ of the finite matrix $\mathbf P$.
+
+````{prf:assumption} Markov state and shock increments
+:label: assumption-mr-markov-shocks
+
+The process $X$ is ergodic under $P$.
+
+The conditional distribution of $\Delta W_{t+1}$ given $X_t$ is time invariant and
+independent of past shock histories conditioned on $X_t$.
+````
+
+The filtration $\{\mathcal F_t\}$ is generated by the initial condition $X_0$ and by
+the history of shocks through date $t$.
+
+### Information and $Y$
+
+The Markov state and the information that reveals shocks need not coincide.
+
+The state $X_t$ is observed at date $t$.
+
+The next shock $\Delta W_{t+1}$ need not be directly observed from the pair
+$(X_t,X_{t+1})$.
+
+If $(X_t,X_{t+1})$ does reveal $\Delta W_{t+1}$, then $X$ alone carries the relevant
+shock information.
+
+If it does not, introduce an auxiliary process $Y=\{Y_t\}$ with stationary increments.
+
+The known function $\phi_y$ maps today's state and the next shock increment into the
+increment of $Y$.
+
+The discrete-time evolution for the auxiliary increment is
+
+$$
+Y_{t+1}-Y_t=\phi_y(X_t,\Delta W_{t+1}).
+$$
+
+The pair $(X_{t+1},Y_{t+1}-Y_t)$ is then rich enough, together with $X_t$, to recover
+the shock increment $\Delta W_{t+1}$.
+
+This device lets the model handle shocks or growth components that affect payoffs and
+SDFs but are not fully summarized by the next Markov state alone.
+
+Write the enlarged process as $Z=(X,Y)$.
+
+The process $Z$ is Markov with a triangular structure: the conditional distribution of
+$(X_{t+1},Y_{t+1}-Y_t)$ depends on the past only through $X_t$.
+
+This is why the next Perron--Frobenius problem can first be posed with eigenfunctions
+of $X$ alone.
+
+The section {ref}`mr_additional_state` later returns to what changes when the
+eigenfunction is allowed to depend on $Y$ as well.
+
+### Multiplicative functionals
+
+The general framework needs a way to describe objects that compound over time.
+
+This is the role of a positive multiplicative functional $M=\{M_t\}$.
+
+Its log increment is a function of today's state and the next shock increment:
+
+$$
+\log \frac{M_{t+1}}{M_t}
+= \kappa(X_t,\Delta W_{t+1}).
+$$
+
+Equivalently,
+
+$$
+\frac{M_{t+1}}{M_t}
+= \exp\{\kappa(X_t,\Delta W_{t+1})\}.
+$$
+
+Thus $M_t/M_0$ is a product of positive one-period increments.
+
+Under {prf:ref}`assumption-mr-markov-shocks`, the logarithm of $M$ has stationary
+increments.
+
+Products and reciprocals of positive multiplicative functionals are again positive
+multiplicative functionals.
+
+Exponential functions of linear combinations of the components of $Y$ are examples.
+
+Stochastic discount factors, stochastic growth factors, and positive multiplicative
+martingales are all modeled this way.
+
+In the finite-state model, the SDF increment $s_{ij}$ is one example of a
+multiplicative-functional increment.
+
+The ratio $h_{ij}$ that changes probabilities is another.
+
+### Stochastic discount factors and pricing operators
+
+A stochastic discount factor $S=\{S_t\}$ is a positive multiplicative functional with
+$S_0=1$ and finite first moments conditional on $X_0$.
+
+Let $\Phi_t$ be a bounded payoff measurable with respect to the date-$t$ information.
+
+The date-$\tau$ price of $\Phi_t$ is
+
+$$
+\Pi_{\tau,t}(\Phi_t)
+= E\left[\frac{S_t}{S_\tau}\Phi_t\mid\mathcal F_\tau\right].
+$$
+
+The ratio $S_t/S_\tau$ is the stochastic discount factor from date $t$ back to date
+$\tau$.
+
+If the payoff is a bounded function $f(X_t)$ of the future Markov state, this pricing
+formula defines a horizon-$t$ operator $Q_t$ by
+
+$$
+[Q_t f](x)
+= E[S_t f(X_t)\mid X_0=x].
+$$
+
+This operator is the general-state analogue of multiplying a payoff vector by the
+Arrow-price matrix $\mathbf Q$.
+
+To see the connection, suppose again that the state space is finite and $t=1$.
+
+Then
+
+$$
+[Q_1 f]_i
+= \sum_j s_{ij}p_{ij}f_j
+= \sum_j q_{ij}f_j.
+$$
+
+Thus $Q_1$ is exactly the matrix $\mathbf Q$.
+
+In discrete time, the multiplicative property of $S$ implies that $Q_t$ is obtained
+by applying the one-period operator $Q_1$ repeatedly.
+
+In continuous time, the family $\{Q_t:t\geq0\}$ is a semigroup of pricing operators.
+
+### Martingales and equivalent probability measures
+
+Different stochastic discount factor / probability pairs can produce the same pricing
+operators, and that flexibility is the source of the identification problem.
+
+Let $H=\{H_t\}$ be a strictly positive martingale with $E[H_0]=1$ under $P$.
+
+For an event $A$ observable by date $\tau$, the changed probability measure $P^H$ is
+defined by
+
+$$
+P^H(A)=E[1_A H_\tau].
+$$
+
+The law of iterated expectations makes this definition consistent across dates.
+
+When $H$ is also a multiplicative functional, making it a multiplicative martingale,
+the change of probability preserves the Markov structure of $Z$.
+
+The SDF that represents the same prices under $P^H$ is
+
+$$
+S_t^H=S_t\frac{H_0}{H_t}.
+$$
+
+Thus the same pricing operators can be represented by the pair $(S,P)$ or by the
+pair $(S^H,P^H)$.
+
+In the finite-state model, this is just
+
+$$
+p^H_{ij}=h_{ij}p_{ij},
+\qquad
+s^H_{ij}=\frac{s_{ij}}{h_{ij}},
+$$
+
+so that
+
+$$
+s^H_{ij}p^H_{ij}=s_{ij}p_{ij}=q_{ij}.
+$$
+
+The same Arrow prices can therefore be explained by changing the probability measure
+and offsetting that change in the SDF.
+
+This is also the precise sense in which Arrow prices alone do not identify beliefs.
+
+### What Perron--Frobenius recovers
+
+Now return to the Perron--Frobenius step.
+
+The finite-state equation was {eq}`eq-mr-pf-finite`.
+
+The general-state replacement is an eigenfunction problem for the pricing operators:
+find a scalar $\hat\eta$ and a positive function $\hat e$ such that, for every horizon
+$t$,
+
+```{math}
+:label: eq-mr-pf-general
+
+[Q_t\hat e](x)
+=\exp(\hat\eta t)\hat e(x).
+```
+
+The positive function $\hat e$ is the general-state counterpart of the
+Perron--Frobenius eigenvector.
+
+The scalar $\hat\eta$ is the log eigenvalue.
+
+In finite states, $\hat e$ is just a positive vector with one entry for each state.
+
+In general state spaces, $\hat e(x)$ is a positive function of the current state.
+
+Its job is to record the state-dependent part of long-horizon valuation.
+
+Equation {eq}`eq-mr-pf-general` says that a future payoff equal to $\hat e(X_t)$ has
+date-0 price $\exp(\hat\eta t)\hat e(X_0)$.
+
+Thus $\hat\eta$ gives the common growth or discount rate, while $\hat e$ gives the
+state-dependent scaling.
+
+Since eigenfunctions are defined only up to scale, uniqueness always means uniqueness
+up to multiplication by a positive constant.
+
+The eigenfunction equation implies the conditional moment restriction
+
+$$
+E[S_t\hat e(X_t)\mid\mathcal F_\tau]
+=\exp((t-\tau)\hat\eta)S_\tau\hat e(X_\tau),
+\qquad t\geq \tau.
+$$
+
+Use this restriction to define
+
+```{math}
+:label: eq-mr-hhat-process
+
+\frac{\hat H_t}{\hat H_0}
+=\exp(-\hat\eta t)S_t
+  \frac{\hat e(X_t)}{\hat e(X_0)}.
+```
+
+This process is a martingale because, for $t\geq \tau$,
+
+$$
+\begin{aligned}
+E\left[\frac{\hat H_t}{\hat H_0}\mid\mathcal F_\tau\right]
+&=
+\frac{\exp(-\hat\eta t)}{\hat e(X_0)}
+E[S_t\hat e(X_t)\mid\mathcal F_\tau] \\
+&=
+\frac{\exp(-\hat\eta t)}{\hat e(X_0)}
+\exp((t-\tau)\hat\eta)S_\tau\hat e(X_\tau) \\
+&=
+\exp(-\hat\eta \tau)S_\tau
+\frac{\hat e(X_\tau)}{\hat e(X_0)}
+=\frac{\hat H_\tau}{\hat H_0}.
+\end{aligned}
+$$
+
+The process is positive because $S$ and $\hat e$ are positive.
+
+Its one-period increment is
+
+```{math}
+:label: eq-mr-hhat-increment-general
+
+\frac{\hat H_{t+1}}{\hat H_t}
+= \exp(-\hat\eta)\frac{S_{t+1}}{S_t}
+  \frac{\hat e(X_{t+1})}{\hat e(X_t)}.
+```
+
+In the finite-state model, when $X_t=i$ and $X_{t+1}=j$,
+{eq}`eq-mr-hhat-increment-general` becomes
+
+$$
+\frac{\hat H_{t+1}}{\hat H_t}
+= \exp(-\hat\eta)s_{ij}\frac{\hat e_j}{\hat e_i}
+= \hat h_{ij}
+= \frac{\hat p_{ij}}{p_{ij}}.
+$$
+
+This is the same three-component decomposition as
+{eq}`eq-mr-finite-sdf-decomposition`.
+
+In finite states, {eq}`eq-mr-finite-sdf-decomposition` is equivalent to
+
+$$
+\frac{S_{t+1}}{S_t}
+= \exp(\hat\eta)
+  \frac{\hat e(X_t)}{\hat e(X_{t+1})}
+  \frac{\hat H_{t+1}}{\hat H_t}.
+$$
+
+The only change is notation: $\hat h_{ij}$ is the one-period density ratio in a finite
+Markov chain, while $\hat H_{t+1}/\hat H_t$ is the corresponding one-period density
+ratio in the general Markov setting.
+
+Therefore $\hat H_t/\hat H_0$ is the density of the recovered probability measure
+relative to the correctly specified probability measure through date $t$.
+
+If $\hat H_{t+1}/\hat H_t$ is not identically one, the recovered probability measure differs
+from the correctly specified probability measure.
+
+We show the restriction that rules out this difference in the next section.
+
+### Selection and recovery
+
+In finite irreducible matrix problems, Perron--Frobenius theory gives a unique positive
+eigenvector up to scale, so the recovered transition matrix is pinned down by
+$\mathbf Q$.
+
+In general state spaces, multiple positive eigenfunctions may solve the same pricing
+operator problem.
+
+The paper therefore imposes a selection condition on the probability measure induced by
+the candidate eigenfunction.
+
+````{prf:assumption} Ergodicity of the recovered measure
+:label: assumption-mr-ergodicity
+
+The process $X$ is stationary and ergodic under $P^{\hat H}$, the probability measure
+induced by the multiplicative martingale $\hat H$ defined in the previous section.
+````
+
+````{prf:proposition} Uniqueness of the Perron--Frobenius solution
+:label: prop-mr-uniqueness
+
+There is at most one solution $(\hat e, \hat\eta)$ to the Perron--Frobenius problem
+such that $X$ is stationary and ergodic under the induced probability measure
+$P^{\hat H}$.
+````
+
+This selected solution, when it exists, identifies the long-term risk-neutral measure.
+
+It does not by itself identify subjective beliefs.
+
+To make recovery identify beliefs, an additional restriction is needed on the SDF.
+
+The restriction used by Ross recovery is the paper's Condition 4:
+
+````{prf:assumption}
+:label: assumption-mr-condition-4
+
+Let
+
+$$
+S_t=\exp(-\delta t)\frac{m(X_t)}{m(X_0)}
+$$
+
+for some positive function $m$ and real number $\delta$.
+````
+
+This is the transition-independence restriction from {doc}`ross_recovery`.
+
+Under this restriction, setting $\hat e=1/m$ and $\hat\eta=-\delta$ gives
+
+$$
+\frac{\hat H_t}{\hat H_0}
+= \exp(\delta t)
+  \left[\exp(-\delta t)\frac{m(X_t)}{m(X_0)}\right]
+  \frac{1/m(X_t)}{1/m(X_0)}
+=1.
+$$
+
+Thus the martingale component is identically one after normalization.
+
+This is the general-state version of the finite-state condition
+$\hat h_{ij}=1$ for every feasible transition.
+
+If this martingale is not identically one, the recovered probability measure absorbs it
+and generally differs from the correctly specified probability measure.
+
+We will see a few important examples of this in the next section.
+
+The section {ref}`mr_additional_state` returns to what happens when the eigenfunction
+is allowed to depend on the auxiliary process $Y$.
+
+### Continuous-time version
+
+Let's briefly introduce the model in continuous time before discussing examples where recovery fails.
+
+We introduce the diffusion notation because the long-run risk example below is
+written in continuous time.
+
+The objects are the same as before:
+
+- $X$ is the Markov state,
+- $Y$ records additional growing or shock-revealing components,
+- $M$ is a positive multiplicative functional, such as an SDF, a cash-flow growth
+  process, or a martingale used to change probabilities.
+
+In the continuous-time version, $W$ is a Brownian motion.
+
+The state, auxiliary process, and multiplicative functional satisfy
+
+$$
+\begin{aligned}
+dX_t &= \mu_x(X_t)dt+\sigma_x(X_t)dW_t,\\
+dY_t &= \mu_y(X_t)dt+\sigma_y(X_t)dW_t,\\
+d\log M_t &= \beta(X_t)dt+\alpha(X_t)\cdot dW_t.
+\end{aligned}
+$$
+
+Here $\mu_x$ and $\mu_y$ are drift functions, while $\sigma_x$ and $\sigma_y$ are
+shock-exposure matrices.
+
+The function $\beta$ is the drift of $\log M$, and $\alpha$ is the Brownian shock
+exposure of $\log M$.
+
+The invertibility assumption on the stacked shock-exposure matrix is the continuous-time
+counterpart of the discrete-time condition that $(X_{t+1},Y_{t+1}-Y_t)$ reveals the
+shock increment.
+
+It lets the history of $Z=(X,Y)$ reveal the Brownian information.
+
+For $M$ to be a local martingale, its drift must satisfy
+
+$$
+\beta(x)=-\frac{1}{2}\alpha(x)\cdot\alpha(x).
+$$
+
+This follows from Ito's formula:
+
+$$
+\frac{dM_t}{M_t}
+= \left(\beta(X_t)+\frac{1}{2}\alpha(X_t)\cdot\alpha(X_t)\right)dt
+  + \alpha(X_t)\cdot dW_t.
+$$
+
+A local martingale has zero drift in $dM_t/M_t$, which gives the displayed restriction.
+
+Additional integrability conditions then ensure that this local martingale is a true
+martingale.
+
+Under the probability change induced by such a martingale, Brownian drifts shift.
+
+This is the continuous-time analogue of replacing $p_{ij}$ by $h_{ij}p_{ij}$ in the
+finite-state model.
+
+The Markov and triangular structure of $Z$ is preserved, which is why the same
+Perron--Frobenius decomposition can be applied.
+
+
+## When the recovery fails
+
+Now let's discuss a few examples where the recovered probability measure differs from the correctly specified probability measure.
+
+### Recursive utility
+
+We now use the martingale component to see when the recovered probability measure
+differs from the correctly specified probability measure.
+
+In the previous example, all risk adjustment in the SDF could be written as a ratio of
+a function of today's state to a function of tomorrow's state.
+
+The Perron--Frobenius transition formula cancels exactly that kind of term.
+
+Recursive utility adds a continuation-value term.
+
+The key point is that this term behaves like the martingale increment defined above.
 
 For the unit-EIS Epstein--Zin case in {cite:t}`BorovickaHansenScheinkman2016`, with
 $C_t=\exp(g_c t)c(X_t)$, write the translated continuation value as $V_t=g_c t+v(X_t)$,
@@ -598,10 +1089,10 @@ s_{ij}
   \frac{v_j^*}{\sum_k p_{ik}v_k^*}.
 $$
 
-In this unit-EIS example, the Perron eigenfunction is $\hat e_j=c_j$ and
+In this unit-EIS example, the Perron--Frobenius eigenfunction is $\hat e_j=c_j$ and
 $\hat\eta=-(\delta+g_c)$.
 
-Applying the Perron formula therefore leaves
+Applying the Perron--Frobenius transition formula therefore leaves
 
 $$
 \hat p_{ij}
@@ -612,11 +1103,12 @@ The denominator is the conditional expectation of $v_j^*$ given current state $i
 
 Therefore the last fraction has conditional mean one under $\mathbf{P}$.
 
-It is therefore a likelihood-ratio increment.
+It is therefore a martingale increment.
 
-When $v^*$ is not constant, that likelihood ratio varies across next-period states.
+When $v^*$ is not constant, that ratio varies across next-period states.
 
-That variation is why recovery no longer returns the correct transition matrix.
+That variation is why the probability measure recovered by Perron--Frobenius Theory no
+longer gives the correctly specified transition matrix.
 
 The next cell solves the finite-state continuation-value equation and builds the SDF.
 
@@ -657,11 +1149,11 @@ def solve_ez_unit_eis(P, c, δ, γ, g_c, tol=1e-12, max_iter=10_000):
     return v, v_star, S
 ```
 
-At log utility, $v^*$ is constant and the likelihood-ratio term disappears.
+At log utility, $v^*$ is constant and the martingale increment is one.
 
 As risk aversion rises, continuation values matter more.
 
-The recovered probability measure then moves farther away from the correctly specified
+The recovered probability measure then differs more from the correctly specified
 probability measure.
 
 To make the mechanism visible in a small three-state example, the figure below uses
@@ -671,11 +1163,11 @@ $$
 c=(0.85, 1.00, 1.15).
 $$
 
-The heatmap reports percentage deviations of the likelihood-ratio increment from one:
+The heatmap reports percentage deviations of the martingale increment from one:
 $100(\hat h_{ij}-1)$.
 
 Positive entries are transitions that receive more probability under the recovered
-measure than under the correctly specified probability measure.
+probability measure than under the correctly specified probability measure.
 
 The right panel reports the increase in the recovered recession probability, measured
 in percentage points.
@@ -684,7 +1176,7 @@ in percentage points.
 ---
 mystnb:
   figure:
-    caption: Recursive utility generates a nonconstant likelihood-ratio increment that distorts recovery.
+    caption: Recursive utility generates a nonconstant martingale increment.
     name: fig-mr-recursive-martingale
 ---
 c_recursive = np.array([0.85, 1.00, 1.15])
@@ -714,7 +1206,7 @@ axes[0].set_xticklabels(state_names, rotation=20)
 axes[0].set_yticklabels(state_names)
 axes[0].set_xlabel('next state')
 axes[0].set_ylabel(r'current state')
-axes[0].set_title(r'likelihood-ratio distortion, $\gamma=10$')
+axes[0].set_title(r'martingale increment, $\gamma=10$')
 
 for i in range(3):
     for j in range(3):
@@ -727,32 +1219,33 @@ axes[1].plot(γ_grid, rec_prob_gain, lw=2.5)
 axes[1].axhline(0, ls='--', lw=1.5, color='0.5')
 axes[1].set_xlabel(r"risk aversion $\gamma$")
 axes[1].set_ylabel('increase in recession probability\n(percentage points)')
-axes[1].set_title('recession probability distortion')
+axes[1].set_title('recovered recession probability')
 axes[1].set_ylim(0, rec_prob_gain.max() * 1.08)
 
 plt.tight_layout()
 plt.show()
 ```
 
-It is clear that recursive utility tilts the recovered law toward worse future
-states.
+Recursive utility makes the recovered probability measure assign more probability to
+recession transitions.
 
 At $\gamma=10$, transitions into recession receive more probability under the recovered
-law, while transitions into expansion receive less.
+probability measure, while transitions into expansion receive less.
 
-As risk aversion rises, this distortion becomes stronger and the stationary recession
-probability under the recovered law moves further above its correctly specified value.
+As risk aversion rises, the stationary recession probability under the recovered
+probability measure moves further above its correctly specified value.
 
-Thus, as the continuation-value term creates a nonconstant $\hat h_{ij}$, the Perron
-recovered matrix no longer equals the correctly specified transition matrix.
+Thus, as the continuation-value term creates a nonconstant $\hat h_{ij}$, the transition
+matrix associated with the long-term risk-neutral probability no longer equals the
+correctly specified transition matrix.
 
-## Permanent shocks
+### Permanent Shocks
 
-Recursive utility is one way to generate a nonconstant likelihood ratio.
+Recursive utility gives one nonconstant martingale component.
 
 Permanent shocks provide another.
 
-Suppose consumption has a permanent multiplicative shock,
+Suppose consumption has a permanent shock,
 
 $$
 \log C_{t+1}-\log C_t
@@ -771,30 +1264,31 @@ $$
 
 The middle term depends only on the current and next Markov states.
 
-It is a ratio of state functions, so the Perron formula can cancel it.
+It is a ratio of state functions, so the Perron--Frobenius transition formula can cancel
+it.
 
 The permanent shock term depends on the new shock $\varepsilon_{t+1}$.
 
-Because that shock is not summarized by the finite Markov state in this calculation,
+Because that shock is not summarized by the finite Markov state in this construction,
 there is no state function whose ratio can cancel it.
 
-After dividing by its conditional mean, the shock term becomes a likelihood-ratio
-increment:
+After dividing by its conditional mean, the shock term becomes a martingale increment:
 
 $$
 \frac{\exp(-\gamma\sigma\varepsilon_{t+1})}
      {E[\exp(-\gamma\sigma\varepsilon_{t+1})]}.
 $$
 
-Thus permanent consumption shocks can break belief recovery, even under ordinary power
-utility.
+Thus permanent consumption shocks can make the recovered probability measure differ
+from investors' beliefs, even under ordinary power utility.
 
-This statement is relative to the Markov state used in the recovery calculation.
+This statement is relative to the Markov state used in the recovery procedure.
 
 Enlarging the state or information structure to account for the shock can accommodate
-it, but doing so creates the identification problem discussed in {ref}`mr_additional_state`.
+it, but doing so leads to the identification problem discussed in
+{ref}`mr_additional_state`.
 
-## Long-run risk
+### Long-run risk
 
 We now move from small finite-state examples to a standard continuous-time
 macro-finance model.
@@ -802,13 +1296,13 @@ macro-finance model.
 The model is the Bansal--Yaron long-run risk model, using the calibration reported by
 {cite:t}`BorovickaHansenScheinkman2016`.
 
-The point is to see how different the recovered measure can look in a standard
-macro-finance model.
+The point is to compare the recovered probability measure with the correctly specified
+probability measure in a standard macro-finance model.
 
-The calculation has the same structure as before.
+The construction has the same structure as before.
 
-We first write the correctly specified state dynamics, then compute the probability law
-implied by the Perron recovery calculation.
+We first write the correctly specified state dynamics, then compute the probability
+measure implied by the Perron--Frobenius approach.
 
 The state vector $X_t=(X_{1t},X_{2t})'$ follows
 
@@ -828,8 +1322,8 @@ Here $X_1$ is predictable consumption growth and $X_2$ is stochastic volatility.
 The representative agent has Epstein--Zin utility with unit elasticity of intertemporal
 substitution.
 
-The continuation value introduces the continuous-time analogue of the likelihood-ratio
-process above.
+The continuation value introduces the continuous-time analogue of the martingale
+component above.
 
 We denote that process by $H^*$, and the SDF satisfies
 
@@ -839,8 +1333,8 @@ $$
 
 Here $H^*$ is the continuation-value martingale entering the Epstein--Zin SDF.
 
-The Perron--Frobenius likelihood-ratio martingale $\hat H$ is obtained only after also
-incorporating the Perron eigenfunction.
+The multiplicative martingale $\hat H$ associated with the Perron--Frobenius problem is
+obtained only after also incorporating the Perron--Frobenius eigenfunction.
 
 In models with martingale components in consumption growth, $H^*$ and $\hat H$ need not
 coincide.
@@ -868,7 +1362,7 @@ lrr_params = dict(
 The next code block computes how the different probability measures change the drift of
 the state vector.
 
-The first object is the continuation value.
+The first quantity is the continuation value.
 
 In this affine model, the translated continuation value is linear in the state:
 
@@ -898,7 +1392,7 @@ $$
 
 This vector $\alpha_S$ drives the one-period risk-neutral change of measure.
 
-The second object is the Perron eigenfunction.
+The second quantity is the Perron--Frobenius eigenfunction.
 
 It is exponential-affine:
 
@@ -908,15 +1402,15 @@ $$
 
 Thus $e_1$ and $e_2$ are slopes of the log eigenfunction.
 
-Because $X_1$ and $X_2$ have shock loadings $\sigma_1$ and $\sigma_2$, the Perron
-eigenfunction contributes the additional shock exposure
+Because $X_1$ and $X_2$ have shock loadings $\sigma_1$ and $\sigma_2$, the
+Perron--Frobenius eigenfunction contributes the additional shock exposure
 
 $$
 \sigma_1 e_1 + \sigma_2 e_2.
 $$
 
-Therefore the one-period risk-neutral dynamics use only $\alpha_S$, while the Perron
-recovered dynamics use
+Therefore the one-period risk-neutral dynamics use only $\alpha_S$, while the dynamics
+under the long-term risk-neutral measure use
 
 $$
 \alpha_S + \sigma_1 e_1 + \sigma_2 e_2.
@@ -955,7 +1449,7 @@ def solve_value_function(p):
 
 
 def solve_pf_lrr(p, v1, v2):
-    """Perron eigenfunction slopes and the SDF diffusion loading."""
+    """Perron-Frobenius eigenfunction slopes and the SDF diffusion loading."""
     δ, γ = p["δ"], p["γ"]
     μ11, μ12, μ22 = p["μ11"], p["μ12"], p["μ22"]
     ι1, ι2 = p["ι1"], p["ι2"]
@@ -967,7 +1461,7 @@ def solve_pf_lrr(p, v1, v2):
     α_h_star = (1 - γ) * (α_c + σ1 * v1 + σ2 * v2)
     α_s = -α_c + α_h_star
 
-    # Drift coefficients of log S before the Perron factorization.
+    # Drift coefficients of log S before the Perron-Frobenius decomposition.
     β_s11 = -β_c1
     β_s12 = -β_c2 - 0.5 * np.dot(α_h_star, α_h_star)
     β_s0 = -δ - β_c0 - 0.5 * ι2 * np.dot(α_h_star, α_h_star)
@@ -975,7 +1469,7 @@ def solve_pf_lrr(p, v1, v2):
     # e1 and e2 are coefficients in log e(x) = e0 + e1 x1 + e2 x2.
     e1 = -β_s11 / μ11
 
-    # e2 solves the remaining quadratic from the Perron eigenvalue equation.
+    # e2 solves the remaining quadratic from the Perron-Frobenius eigenvalue equation.
     const = (β_s12 + 0.5 * np.dot(α_s, α_s)
              + e1 * (μ12 + np.dot(σ1, α_s))
              + 0.5 * e1**2 * np.dot(σ1, σ1))
@@ -992,7 +1486,7 @@ def solve_pf_lrr(p, v1, v2):
                - e1 * (μ11 * ι1 + μ12 * ι2) - e2 * μ22 * ι2)
         candidates.append((eta, e2))
 
-    # Choose the stable Perron root used for the long-term factorization.
+    # Choose the solution that gives the smaller eigenvalue exponent.
     eta, e2 = min(candidates)
     return e1, e2, eta, α_s
 
@@ -1003,7 +1497,7 @@ def recovered_lrr_dynamics(p, e1, e2, α_s):
     ι1, ι2 = p["ι1"], p["ι2"]
     σ1, σ2 = p["σ1"], p["σ2"]
 
-    # The recovered measure uses the SDF exposure plus the Perron exposure.
+    # The long-term risk-neutral measure uses the SDF exposure plus the eigenfunction exposure.
     α_h = α_s + σ1 * e1 + σ2 * e2
 
     # A diffusion change of measure shifts each drift by sigma_i dot alpha_h.
@@ -1028,7 +1522,7 @@ def recovered_lrr_dynamics(p, e1, e2, α_s):
 
 
 def risk_neutral_lrr_dynamics(p, α_s):
-    """State dynamics under the instantaneous risk-neutral measure."""
+    """State dynamics under the one-period risk-neutral measure."""
     μ11, μ12, μ22 = p["μ11"], p["μ12"], p["μ22"]
     ι1, ι2 = p["ι1"], p["ι2"]
     σ1, σ2 = p["σ1"], p["σ2"]
@@ -1053,8 +1547,8 @@ def risk_neutral_lrr_dynamics(p, α_s):
     )
 ```
 
-For the calibration used here, the recovered measure changes the long-run state
-distribution.
+For the calibration used here, the recovered probability measure changes the long-run
+state distribution.
 
 It lowers the mean of expected growth and raises the mean of volatility.
 
@@ -1065,7 +1559,7 @@ dyn_hat = recovered_lrr_dynamics(lrr_params, e1, e2, α_s)
 dyn_bar = risk_neutral_lrr_dynamics(lrr_params, α_s)
 
 print(f"value slopes:       v1 = {v1:.4f}, v2 = {v2:.4f}")
-print(f"Perron coefficients: e1 = {e1:.4f}, e2 = {e2:.4f}")
+print(f"eigenfunction coefficients: e1 = {e1:.4f}, e2 = {e2:.4f}")
 print(f"log eigenvalue:     eta = {η_lrr:.6f}  "
       f"(annualized {12 * η_lrr:.4f})")
 print()
@@ -1074,7 +1568,7 @@ print("measure        iota_1     iota_2     mu_12      mu_22")
 print("---------   --------   --------   --------   --------")
 print(f"actual      {lrr_params['ι1']:8.5f}   {lrr_params['ι2']:8.5f}"
       f"   {lrr_params['μ12']:8.5f}   {lrr_params['μ22']:8.5f}")
-print(f"risk-neut.  {dyn_bar['ι1']:8.5f}   {dyn_bar['ι2']:8.5f}"
+print(f"one-period  {dyn_bar['ι1']:8.5f}   {dyn_bar['ι2']:8.5f}"
       f"   {dyn_bar['μ12']:8.5f}   {dyn_bar['μ22']:8.5f}")
 print(f"long-term   {dyn_hat['ι1']:8.5f}   {dyn_hat['ι2']:8.5f}"
       f"   {dyn_hat['μ12']:8.5f}   {dyn_hat['μ22']:8.5f}")
@@ -1088,55 +1582,56 @@ predictable consumption growth.
 The volatility slope $v_2$ is negative in this calibration, so higher volatility lowers
 continuation value.
 
-The Perron coefficient $e_1$ has the opposite sign: the long-term change of measure
-loads negatively on predictable growth.
+The eigenfunction coefficient $e_1$ has the opposite sign: the long-term change of
+measure loads negatively on predictable growth.
 
-Thus the recovered measure tilts probability toward histories with lower expected
-growth.
+Thus the recovered probability measure assigns more probability to histories with lower
+expected growth.
 
-The positive $e_2$ works in the other direction for volatility, tilting probability
-toward higher-volatility states.
+The positive $e_2$ has the opposite implication for volatility, assigning more
+probability to higher-volatility states.
 
 The table translates those coefficients into state dynamics.
 
-Relative to the correctly specified law, both risk-neutral measures lower the long-run
-mean of predictable growth and raise the long-run mean of volatility.
+Relative to the correctly specified probability measure, both risk-neutral measures
+lower the long-run mean of predictable growth and raise the long-run mean of
+volatility.
 
-The long-term risk-neutral measure moves further in that direction than the
-instantaneous risk-neutral measure: $\iota_1$ falls from $0$ to about $-0.0027$, while
-$\iota_2$ rises from $1$ to about $1.13$.
+The long-term risk-neutral measure moves further in that direction than the one-period
+risk-neutral measure: $\iota_1$ falls from $0$ to about $-0.0027$, while $\iota_2$
+rises from $1$ to about $1.13$.
 
-The small negative log eigenvalue means that the Perron discount factor is slightly
-below one; with the usual yield sign convention, $-\eta$ is the corresponding long-run
-discount rate.
+The small negative log eigenvalue means that $\exp(\eta)$ is slightly below one; with
+the usual yield sign convention, $-\eta$ is the corresponding long-run discount rate.
 
-### State probabilities
+#### Stationary Densities
 
-The coefficient table gives one summary of the distortion created by recovery.
+The coefficient table gives one summary of the difference between probability measures.
 
-A probability plot gives another.
+A stationary-density plot gives another.
 
 It shows not only that the means of $X_1$ and $X_2$ move, but also which combinations of
 growth and volatility become more likely.
 
-This matters because treating the recovered law as beliefs changes the whole forecast
-distribution, not just a pair of long-run averages.
+This matters because treating the recovered probability measure as beliefs changes the
+whole forecast distribution, not just a pair of long-run averages.
 
-Under the recovered law, probability mass shifts toward bad long-run-risk states.
+Under the recovered probability measure, probability mass shifts toward adverse
+long-run-risk states.
 
 These are states with lower predictable growth $X_1$ and higher volatility $X_2$.
 
-The dashed contour adds the one-period risk-neutral law.
+The dashed contour adds the one-period risk-neutral probability measure.
 
-In this calibration, the one-period risk-neutral and Perron recovered stationary
+In this calibration, the one-period risk-neutral and long-term risk-neutral stationary
 distributions are close to each other, and both are far from the correctly specified
 distribution.
 
-Thus the likelihood-ratio component accounts for much of the risk adjustment in the
+Thus the martingale component accounts for much of the risk adjustment in the
 state dynamics.
 
-The plot below simulates the state process under each probability law and estimates the
-stationary joint density of $(X_2, X_1)$.
+The plot below simulates the state process under each probability measure and estimates
+the stationary joint density of $(X_2, X_1)$.
 
 The horizontal line marks $X_1=0$ and the vertical line marks the correctly specified
 mean of volatility, $X_2=\iota_2$.
@@ -1242,40 +1737,54 @@ plt.show()
 The movement below the horizontal line means lower expected growth, while movement to
 the right of the vertical line means higher volatility.
 
-### Yield implications
+#### Yield implications
 
-The probability distortion matters for asset-pricing interpretation because yields mix
-two objects: a payoff forecast and an asset price.
+The difference between probability measures matters for asset-pricing interpretation
+because yields mix two quantities: a payoff forecast and an asset price.
 
-The recovered measure is called long-term risk-neutral because it absorbs
+The recovered probability measure is called long-term risk-neutral because it absorbs
 the martingale component that prices long-horizon risk.
 
-For stochastically growing cash flows, long-term risk premia vanish when yields are
-computed under this recovered measure.
+For stochastically growing cash flows, the paper's long-horizon result is that risk
+premia relative to maturity-matched bonds vanish under the recovered probability
+measure, subject to the stability and moment conditions used for the limit.
 
-Under the correctly specified law, those same long-term risk premia need not vanish.
+Under the correctly specified probability measure, those same long-term risk premia need
+not vanish.
 
-For a cash flow $G_t$, the yield compares a forecast of the payoff with its asset price:
+For a cash flow $G_t$, write expectations under the correctly specified probability
+measure as $E_P$ and expectations under the recovered probability measure as
+$E_{\hat P}$.
+
+The yield computed under the correctly specified probability measure is
 
 $$
-y_t[G](x)
-= \frac{1}{t}\log E[G_t \mid X_0=x]
-  - \frac{1}{t}\log E[S_tG_t \mid X_0=x].
+y_t^P[G](x)
+= \frac{1}{t}\log E_P[G_t \mid X_0=x]
+  - \frac{1}{t}\log E_P[S_tG_t \mid X_0=x].
 $$
 
-The first term is a forecast of the cash flow.
+The first term is the payoff forecast.
 
-The second term is its price, written using the stochastic discount factor.
+The second term is the asset price, written using the original SDF representation.
 
 Arrow prices determine the second term.
 
 The question here is what happens to the first term if an analyst treats the recovered
-law $\hat{\mathbf{P}}$ as investors' beliefs.
+probability measure $\hat{\mathbf{P}}$ as investors' beliefs.
+
+In that comparison, prices are held fixed and only the forecast term is recomputed:
+
+$$
+y_t^{\hat P}[G](x)
+= \frac{1}{t}\log E_{\hat P}[G_t \mid X_0=x]
+  - \frac{1}{t}\log E_P[S_tG_t \mid X_0=x].
+$$
 
 For an aggregate-consumption payoff, the answer is substantial.
 
-The recovered law assigns more probability to low-growth, high-volatility states, so it
-forecasts lower future consumption.
+The recovered probability measure assigns more probability to low-growth,
+high-volatility states, so it forecasts lower future consumption.
 
 Holding prices fixed, that lower forecast translates into lower consumption yields.
 
@@ -1285,7 +1794,8 @@ Its payoff is one, so the forecast term is always $\log E[1]=0$.
 
 Changing beliefs therefore does not move the bond-yield panel.
 
-The same Perron object also appears in long-bond and forward-measure limits.
+The same solution to the Perron--Frobenius problem also appears in long-bond and
+forward-measure limits.
 
 The limiting one-period return on a very long bond is
 
@@ -1302,7 +1812,7 @@ $$
 $$
 
 Thus the limiting one-period transition from forward measures coincides with the
-Perron recovered transition.
+transition associated with the long-term risk-neutral probability.
 
 The calculation below uses the affine formulas implied by the long-run risk model.
 
@@ -1317,8 +1827,8 @@ $$
 where the coefficients solve Riccati equations.
 
 The code below computes these affine expectations under the correctly specified
-measure, recomputes only the consumption forecast under the recovered measure, and keeps
-asset prices fixed.
+measure, recomputes only the consumption forecast under the recovered probability
+measure, and keeps asset prices fixed.
 
 It then plots median and interquartile yield bands across the same simulated initial
 states.
@@ -1328,9 +1838,10 @@ states.
 mystnb:
   figure:
     caption: >-
-      Yield implications of using recovered probabilities as beliefs. Dashed
-      consumption-yield bands use recovered payoff forecasts with prices fixed; bond
-      yields are unchanged because the zero-coupon payoff has no forecast term.
+      Yield implications of using the recovered probability measure as beliefs.
+      Dashed consumption-yield bands use payoff forecasts under the recovered
+      probability measure with prices fixed; bond yields are unchanged because the
+      zero-coupon payoff has no forecast term.
     name: fig-mr-lrr-figure-2
 ---
 def affine_expectation_coeffs(dyn, β0, β1, β2, α, horizons):
@@ -1374,7 +1885,7 @@ def yield_quantiles(log_num, log_den, horizons):
 
 def transform_functional(β0, β1, β2, α, dyn_old, dyn_new, α_h):
     """Rewrite a multiplicative functional after changing probabilities."""
-    # The drift changes because the recovered likelihood ratio changes the
+    # The drift changes because the martingale component changes the
     # Brownian shock exposure used to forecast the cash flow.
     β_level = β0 - β1 * dyn_old["ι1"] - β2 * dyn_old["ι2"]
     β2_new = β2 + np.dot(α, α_h)
@@ -1415,7 +1926,7 @@ horizons = 3 * quarters
     α_s + α_c, horizons
 )
 
-# Recovered-belief numerator for the aggregate-consumption payoff
+# Numerator for the aggregate-consumption payoff under the recovered probability measure
 β_Ch0, β_Ch1, β_Ch2, α_Ch = transform_functional(
     β_c0, β_c1, β_c2, α_c, dyn_true, dyn_hat, dyn_hat["α_h"]
 )
@@ -1447,11 +1958,11 @@ def plot_yield_band(ax, x, q, color, label, linestyle='solid',
 plot_yield_band(axes[0], quarters, qC_P, color='0.2',
                 label='correctly specified measure', alpha=0.45)
 plot_yield_band(axes[0], quarters, qC_H, color='0.65',
-                label='recovered measure', linestyle='--', alpha=0.35)
+                label='recovered probability measure', linestyle='--', alpha=0.35)
 plot_yield_band(axes[1], quarters, qB_P, color='0.2',
                 label='correctly specified measure', alpha=0.45)
 plot_yield_band(axes[1], quarters, qB_H, color='0.65',
-                label='recovered measure', linestyle='--', alpha=0.25)
+                label='recovered probability measure', linestyle='--', alpha=0.25)
 
 axes[0].set_xlabel('maturity (quarters)')
 axes[0].set_ylabel('consumption yield to maturity')
@@ -1464,11 +1975,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-The left panel is the key one: recovered beliefs put more mass on low-growth,
-high-volatility states, so they forecast lower consumption and imply lower consumption
-yields when prices are held fixed.
+The left panel is the key one: treating the recovered probability measure as beliefs
+assigns more probability to low-growth, high-volatility states, so the implied forecast
+for consumption is lower and consumption yields fall when prices are held fixed.
 
-The bond panel is a check.
+The bond panel verifies the zero-coupon comparison.
 
 Since $\log E[1]=0$ under any measure, the solid and dashed
 bond-yield bands coincide.
@@ -1476,21 +1987,36 @@ bond-yield bands coincide.
 (mr_additional_state)=
 ## Additional state vector
 
-{cite:t}`BorovickaHansenScheinkman2016` then asks whether the recovery
-problem can be fixed by enlarging the state vector.
+{cite:t}`BorovickaHansenScheinkman2016` then asks whether enlarging the state vector
+changes the recovery problem.
 
-So far, the Perron eigenfunction has depended only on the Markov state $X_t$.
+So far, the Perron--Frobenius eigenfunction has depended only on the Markov state
+$X_t$.
 
 But many models also contain a growing component $Y_t$, such as log consumption, with
-increments driven by the same shocks:
+increments driven by the same shock increments.
+
+Here $\Delta W_{t+1}$ denotes the shock increment between dates $t$ and $t+1$.
+
+The map $\phi_x$ sends today's state and the next shock increment into tomorrow's
+state.
+
+The map $\phi_y$ sends today's state and the next shock increment into the increment
+of $Y$.
 
 $$
-X_{t+1}=\phi_x(X_t,W_{t+1}),
+X_{t+1}=\phi_x(X_t,\Delta W_{t+1}),
 \qquad
-Y_{t+1}-Y_t=\phi_y(X_t,W_{t+1}).
+Y_{t+1}-Y_t=\phi_y(X_t,\Delta W_{t+1}).
 $$
 
-If we allow the eigenfunction to depend on both $(X_t,Y_t)$, then a natural candidate is
+Let $\varepsilon$ denote an eigenfunction candidate that is allowed to depend on both
+the stationary state $X_t$ and the growing component $Y_t$.
+
+Let $\zeta$ be a vector of loadings on $Y$, and let $e_\zeta$ be a positive function
+of $X$.
+
+Then a natural candidate is
 
 $$
 \varepsilon(x,y)=\exp(\zeta \cdot y)e_\zeta(x).
@@ -1506,16 +2032,17 @@ $$
   \exp\{\zeta \cdot (Y_{t+1}-Y_t)\}.
 $$
 
-Since $Y_{t+1}-Y_t$ is a function of $(X_t,W_{t+1})$, the ratio
-$\exp(\zeta \cdot Y_{t+1})/\exp(\zeta \cdot Y_t)$ is a one-period
-multiplicative shock.
+Since $Y_{t+1}-Y_t$ is a function of $(X_t,\Delta W_{t+1})$, the ratio
+$\exp(\zeta \cdot Y_{t+1})/\exp(\zeta \cdot Y_t)$ is a one-period positive
+multiplicative functional increment.
 
-Thus multiplying the old eigenfunction by $\exp(\zeta \cdot y)$ does not destroy the
-Perron structure; it simply changes the one-period pricing operator by the extra factor
+For a fixed $\zeta$, this factor tilts the one-period pricing operator by
 $\exp\{\zeta \cdot (Y_{t+1}-Y_t)\}$.
 
-For each choice of $\zeta$, the remaining $x$-dependent part solves a different Perron
-problem:
+The $x$-dependent term is therefore not simply the earlier eigenfunction reused.
+
+For each choice of $\zeta$, the remaining $x$-dependent part solves a different
+Perron--Frobenius problem:
 
 $$
 E\left[
@@ -1529,8 +2056,8 @@ $$
 
 Changing $\zeta$ changes how much long-run growth risk is loaded into the eigenfunction.
 
-Thus adding $Y_t$ can make the subjective probability law one possible solution, but it
-also creates a family of possible solutions.
+Thus adding $Y_t$ can make the subjective probability measure one possible solution, but
+it also creates a family of possible solutions.
 
 The extra state variable therefore does not remove the identification problem; it
 usually makes the selection problem more explicit.
@@ -1540,12 +2067,13 @@ The paper also points out a related practical issue.
 Highly persistent stationary processes can be hard to distinguish from processes with
 stationary increments.
 
-A stationary approximation may have a unique Perron solution for each finite persistence
-level, but as persistence becomes extreme, the limiting problem can have many
-near-solutions.
+A stationary approximation may have a unique solution to the Perron--Frobenius problem
+for each finite persistence level, but as persistence becomes extreme, the limiting
+problem can have many approximate solutions.
 
-Numerically, this means recovery can become fragile exactly in the cases where a
-stationary model is being used to approximate stochastic growth.
+Numerically, this means the solution to the Perron--Frobenius problem can be sensitive
+exactly in the cases where a stationary model is being used to approximate stochastic
+growth.
 
 There is, however, a structured way forward.
 
@@ -1569,9 +2097,16 @@ the analyst, not recovered from Arrow prices alone.
 
 The paper also asks how large the martingale component is in asset-market data.
 
-This matters because a small martingale component would make the recovered law close to
-beliefs, while a large one would make the recovered law mainly a long-term
-risk-neutral object.
+Under rational expectations, this measures how important long-term risk adjustments are
+for valuation.
+
+Under a subjective-beliefs interpretation, it measures the discrepancy between
+subjective beliefs and the correctly specified probability measure only after imposing
+that the subjective SDF itself has no martingale component.
+
+With that extra restriction in place, a small martingale component would make the
+recovered probability measure close to beliefs, while a large one would make long-term
+risk adjustments more important for the recovered probability measure.
 
 One family of measures applies a convex function to the martingale increment
 $\hat H_{t+1}/\hat H_t$.
@@ -1598,13 +2133,13 @@ without requiring a full set of Arrow prices.
 
 ## Lessons
 
-The Perron--Frobenius calculation remains useful under misspecification, but it no
+The Perron--Frobenius approach remains useful under misspecification, but it no
 longer solves the belief-recovery problem by itself.
 
 It delivers a probability measure that may include long-horizon risk premia.
 
-That measure equals investors' beliefs only when the likelihood-ratio martingale is
-constant.
+That measure equals investors' beliefs only when the martingale component is
+identically one.
 
 Recursive utility, permanent shocks, and long-run risk models give this martingale an
 economically important role, so it should not be overlooked when assessing the
@@ -1613,9 +2148,9 @@ implications of transition independence for belief recovery.
 ## Exercises
 
 ```{exercise}
-:label: ex_misspecified_recovery_diagnostic
+:label: ex_misspecified_recovery_martingale_component
 
-**A two-state diagnostic.**
+**A two-state martingale component.**
 
 Let
 
@@ -1634,12 +2169,13 @@ $$
 $$
 
 1. Compute the one-period risk-neutral transition matrix $\bar{\mathbf{P}}$.
-2. Compute the recovered transition matrix $\hat{\mathbf{P}}$.
+2. Compute the transition matrix $\hat{\mathbf{P}}$ associated with the recovered
+   probability measure.
 3. Compute $\hat h_{ij}=\hat p_{ij}/p_{ij}$ and decide whether recovery returns the
    correctly specified transition matrix.
 ```
 
-```{solution-start} ex_misspecified_recovery_diagnostic
+```{solution-start} ex_misspecified_recovery_martingale_component
 :class: dropdown
 ```
 
@@ -1656,7 +2192,7 @@ H2, eta2, e2, Phat2 = martingale_increment(Q2, P2)
 
 print("One-period risk-neutral transition matrix P_bar")
 print(np.round(Pbar2, 4))
-print("\nRecovered transition matrix P_hat")
+print("\nTransition matrix P_hat associated with the recovered probability measure")
 print(np.round(Phat2, 4))
 print("\nMartingale increment h_hat")
 print(np.round(H2, 4))
@@ -1677,7 +2213,7 @@ $$
 s_{ij}=A\left(\frac{c_j}{c_i}\right)^{-\gamma}.
 $$
 
-Show that $\hat e_i=c_i^\gamma$ is the Perron eigenvector and that
+Show that $\hat e_i=c_i^\gamma$ is the Perron--Frobenius eigenvector and that
 $\hat{\mathbf{P}}=\mathbf{P}$.
 
 Then verify the result numerically using the three-state baseline in the lecture.
@@ -1711,7 +2247,7 @@ H_power, _, e_power, P_hat_power = martingale_increment(Q_power, P_true)
 e_theory = c_levels**γ_power
 e_theory = e_theory / e_theory.sum()
 
-print("Perron eigenvector")
+print("Perron-Frobenius eigenvector")
 print(np.round(e_power, 6))
 print("\nNormalized c^gamma")
 print(np.round(e_theory, 6))
@@ -1725,7 +2261,7 @@ print("max |h_hat - 1|:",
 ```
 
 ```{exercise}
-:label: ex_recursive_utility_distortion
+:label: ex_recursive_utility_martingale_component
 
 **Recursive utility and risk aversion.**
 
@@ -1736,7 +2272,7 @@ $\hat{\mathbf{P}}$ for $\gamma \in \{1, 5, 10, 15\}$.
 Which state receives the largest increase in stationary probability as $\gamma$ rises?
 ```
 
-```{solution-start} ex_recursive_utility_distortion
+```{solution-start} ex_recursive_utility_martingale_component
 :class: dropdown
 ```
 
