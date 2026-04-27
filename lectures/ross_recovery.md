@@ -77,11 +77,13 @@ It has several important implications:
 
 This lecture covers
 
-* the Arrow–Debreu framework linking state prices, the pricing kernel, and natural
-  probabilities,
+* the Arrow–Debreu framework linking state prices, risk-neutral probabilities,
+  the pricing kernel, and natural probabilities,
 * Ross's Recovery Theorem and its proof via the Perron–Frobenius theorem,
 * an implementation that recovers the natural distribution from a
   simulated state-price matrix, and
+* how option prices and forward equations can be used to estimate transition
+  state prices,
 * comparisons between risk-neutral and recovered natural densities.
 
 Let's import the packages we'll need.
@@ -116,6 +118,62 @@ $$
 
 As in {doc}`ge_arrow`, the row sums give the state-dependent riskless discount factor:
 $\sum_j p(\theta_i, \theta_j) = e^{-r(\theta_i)}$.
+
+Here $r(\theta_i)$ is the one-period continuously compounded riskless rate in
+current state $\theta_i$.
+
+More generally, if an asset pays $g(\theta_j)$ next period, then its price in
+state $\theta_i$ is
+
+$$
+p_g(\theta_i)
+    = \sum_j p(\theta_i, \theta_j) g(\theta_j).
+$$
+
+Let
+
+$$
+b(\theta_i) \equiv \sum_j p(\theta_i, \theta_j) = e^{-r(\theta_i)}
+$$
+
+be the price of a one-period riskless bond in state $\theta_i$.
+
+Normalizing Arrow prices by this bond price gives the **risk-neutral transition
+probabilities**
+
+$$
+q^*(\theta_i, \theta_j)
+    = \frac{p(\theta_i, \theta_j)}{b(\theta_i)}
+    = e^{r(\theta_i)} p(\theta_i, \theta_j).
+$$
+
+Thus the same asset price can be written as
+
+$$
+p_g(\theta_i)
+    = b(\theta_i) \sum_j q^*(\theta_i, \theta_j) g(\theta_j)
+    = e^{-r(\theta_i)} E_i^*[g(\theta_{t+1})].
+$$
+
+Here $E_i^*$ denotes conditional expectation under
+$q^*(\theta_i,\cdot)$.
+
+The asterisk marks the risk-neutral, or martingale, probability measure.
+
+It is useful to separate this one-period normalization from the dynamic
+transition structure.
+
+If $Q(\theta_i,\theta_j,T)$ denotes the risk-neutral probability of moving from
+$\theta_i$ to $\theta_j$ over $T$ periods, and $0<t<T$ is an intermediate
+horizon, then the Markov forward equation is
+
+$$
+Q(\theta_i,\theta_j,T)
+    = \sum_k Q(\theta_i,\theta_k,t) Q(\theta_k,\theta_j,T-t).
+$$
+
+In matrix notation, multiperiod risk-neutral transition matrices compose by
+matrix multiplication.
 
 ### The pricing kernel
 
@@ -370,6 +428,60 @@ F = \frac{1}{\beta} D P D^{-1} = \frac{1}{b} P. \qquad \square
 $$
 ```
 
+(ross-recovery-single-crossing)=
+### Single crossing and the risk premium
+
+Ross also uses the representative-agent formula to compare the natural and
+risk-neutral densities directly.
+
+For a fixed current state $\theta_i$,
+
+$$
+\frac{q^*(\theta_i,\theta_j)}{f(\theta_i,\theta_j)}
+    = e^{r(\theta_i)} \phi(\theta_i,\theta_j)
+    = e^{r(\theta_i)} \beta
+      \frac{U'(c(\theta_j))}{U'(c(\theta_i))}.
+$$ (eq:rn-natural-ratio)
+
+If $U'$ is decreasing in consumption, then the ratio in
+{eq}`eq:rn-natural-ratio` is decreasing in next-period consumption
+$c(\theta_j)$.
+
+Since both $q^*(\theta_i,\cdot)$ and $f(\theta_i,\cdot)$ integrate to one, there
+is a crossing point $v$ defined by
+
+$$
+e^{r(\theta_i)} \beta U'(v) = U'(c(\theta_i)).
+$$
+
+Below $v$, risk-neutral probability exceeds natural probability; above $v$, the
+natural probability exceeds the risk-neutral probability.
+
+Hence the natural consumption distribution first-order stochastically dominates
+the risk-neutral one.
+
+In a one-period model where terminal consumption is the market payoff, this
+also gives a positive market risk premium.
+
+Let $R$ denote the market return under the natural
+law, let $R^*$ denote the same return under the risk-neutral law, and let
+$R_f$ denote the riskless return in the same one-period units.
+
+The stochastic-dominance result can be represented as
+
+$$
+R^* \sim R - Z + \epsilon,
+$$
+
+where $Z \geq 0$ captures the downward shift induced by risk adjustment and
+$\epsilon$ is a residual satisfying $E[\epsilon \mid R-Z]=0$.
+
+Taking expectations gives
+
+$$
+E[R] = R_f + E[Z] > R_f.
+$$
+
 ## Numerical example
 
 We now demonstrate the Recovery Theorem numerically.
@@ -399,7 +511,43 @@ $z_i \propto e^{\gamma s_i}$.
 To keep the example close to Ross's Section IV, we choose $F$ to have lognormal-shaped
 rows.
 
-In the unbounded continuous model one would write
+The continuous benchmark is a lognormal payoff with CRRA utility:
+
+$$
+U(S_T) = \frac{S_T^{1-\gamma}}{1-\gamma},
+\qquad
+S_T = S_0
+      \exp\!\left((\mu-\tfrac{1}{2}\sigma^2)T
+                 + \sigma \sqrt{T} \xi\right),
+$$
+
+where $\xi \sim N(0,1)$, $\mu$ is the expected growth-rate parameter,
+$\sigma$ is volatility, $T$ is the horizon, $\gamma$ is the CRRA coefficient,
+and $\rho$ is the continuously compounded subjective discount rate.
+
+The $T$-period pricing kernel is
+
+$$
+\phi_T
+    = e^{-\rho T}\left(\frac{S_T}{S_0}\right)^{-\gamma}.
+$$
+
+Equivalently, if $s=\log S_0$ and $s_T=\log S_T$, then the state-price density
+with respect to the future log state $s_T$ is
+
+$$
+p_T(s,s_T)
+    = e^{-\rho T} e^{-\gamma(s_T-s)}
+      \frac{1}{\sigma \sqrt{T}}
+      n\!\left(
+        \frac{s_T-s-(\mu-\frac{1}{2}\sigma^2)T}
+             {\sigma \sqrt{T}}
+      \right),
+$$
+
+where $n$ is the standard normal density.
+
+Thus the natural log return satisfies
 
 $$
 \log(S_T/S_0) \sim \mathcal{N}\!\left((\mu - \tfrac{1}{2}\sigma^2)T, \sigma^2 T\right).
@@ -597,7 +745,7 @@ def true_lognormal_transition_matrix(states, μ, σ, T):
 F_true = true_lognormal_transition_matrix(states, μ, σ, T)
 P_reconstructed = β_rec * (z[:, None] / z[None, :]) * F
 
-print("Recovery diagnostics")
+print("Recovery numerical checks")
 print(f"max |F - true F| = {np.max(np.abs(F - F_true)):.2e}")
 print(f"max |P - recovered kernel times F| = "
       f"{np.max(np.abs(P - P_reconstructed)):.2e}")
@@ -610,10 +758,11 @@ Indeed, the discrepancies are at the level of numerical roundoff.
 A key insight of {cite:t}`Ross2015` is that the natural distribution can differ
 systematically from the risk-neutral one.
 
-In this CRRA example, where states are ordered from low to high payoff, Theorem 3 of
-{cite:t}`Ross2015` implies that the natural marginal density **first-order
-stochastically dominates** the risk-neutral density: the CDF of the natural distribution
-lies *below* that of the risk-neutral distribution.
+In this CRRA example, where states are ordered from low to high payoff, the
+single-crossing argument in {ref}`ross-recovery-single-crossing` implies that
+the natural marginal density **first-order stochastically dominates** the
+risk-neutral density: the CDF of the natural distribution lies *below* that of
+the risk-neutral distribution.
 
 Because the pricing kernel is declining (investors fear bad outcomes), risk-neutral
 probabilities overweight bad states and underweight good states relative to the natural
@@ -722,9 +871,9 @@ plt.show()
 ```
 
 Because the states are ordered from low to high payoff, the plots show the
-single-crossing property from Theorem 3 of {cite:t}`Ross2015`: for returns below some
-threshold $v$, risk-neutral probability exceeds natural probability; above $v$ the
-natural probability dominates.
+single-crossing property discussed in {ref}`ross-recovery-single-crossing`: for
+returns below some threshold $v$, risk-neutral probability exceeds natural
+probability; above $v$ the natural probability dominates.
 
 A higher $\gamma$ amplifies this wedge.
 
@@ -823,6 +972,66 @@ faster than the recovered natural crash probability.
 
 We will say more in {ref}`rt_ex3`.
 
+## From option prices to transition prices
+
+The numerical example above starts from a known state-price transition matrix
+$P$.
+
+Empirically, Ross starts one step earlier: option prices reveal state-price
+densities at different maturities from the current state, and the transition
+matrix must be inferred from those maturity-by-maturity state prices.
+
+Let $C(K,T)$ be the price of a call option with strike $K$ and maturity $T$.
+
+If $p(S,T)$ is the state-price density for terminal index level $S$, then
+
+$$
+C(K,T)
+    = \int_K^\infty (S-K) p(S,T) \, dS.
+$$
+
+Differentiating twice with respect to the strike gives the
+{cite:t}`BreedenLitzenberger1978` formula
+
+$$
+p(K,T) = \frac{\partial^2 C(K,T)}{\partial K^2}.
+$$
+
+After discretizing strikes and maturities, let
+
+$$
+p_t(c) = \big(p_t(c,1), \ldots, p_t(c,m)\big)
+$$
+
+be the vector of state prices at horizon $t$ observed from today's state $c$.
+
+Here $c$ indexes the current state and $t$ counts discrete maturity steps.
+
+The first one-period vector $p_1(c)$ is the row of $P$ corresponding to the
+current state.
+
+If the one-period state-price transition matrix $P$ is time homogeneous, these
+vectors satisfy the forward recursion
+
+$$
+p_{t+1}(c) = p_t(c) P,
+\qquad t=1,\ldots,m-1.
+$$
+
+Componentwise,
+
+$$
+p_{t+1}(c,j) = \sum_k p_t(c,k) p(k,j).
+$$
+
+Thus $m$ maturity vectors supply the $m^2$ equations needed to estimate the
+$m^2$ transition prices $p(k,j)$.
+
+In practice this step is numerically delicate because the second derivative in
+the option-price formula amplifies measurement error, and because additional
+shape restrictions such as positivity or unimodality may be needed to obtain a
+reasonable transition matrix.
+
 ## Testing efficient markets
 
 The recovered pricing kernel can also be used to test market efficiency.
@@ -837,7 +1046,8 @@ $$
 \frac{|\mu_\text{excess}|}{\sigma_\text{asset}} \leq e^{rT}\, \sigma(M),
 $$
 
-where $M$ is the one-period stochastic discount factor.
+where $M$ is the one-period stochastic discount factor and $r$ is the
+continuously compounded riskless rate over horizon $T$.
 
 Ross's point is that recovery gives an estimate of the relevant volatility
 $\sigma(M)$.
@@ -884,6 +1094,37 @@ The theorem requires a bounded, irreducible Markov chain.
 In continuous, unbounded state spaces (e.g., a lognormal diffusion), uniqueness fails
 because any exponential $e^{\alpha x}$ satisfies the characteristic equation.
 
+To see the issue, consider the continuous lognormal growth state-price density
+above.
+
+The natural continuous-space analogue of the Perron--Frobenius problem is
+
+$$
+\int p_T(s,y) v(y) \, dy = \lambda v(s).
+$$
+
+Here $y$ is a possible future log state, $v$ is a candidate positive
+eigenfunction, and $\lambda$ is its eigenvalue.
+
+For every real $\alpha$, the exponential function $v_\alpha(s)=e^{\alpha s}$
+solves this equation with eigenvalue
+
+$$
+\lambda(\alpha)
+    =
+    \exp\!\left(
+        -\rho T
+        +(\alpha-\gamma)(\mu-\tfrac{1}{2}\sigma^2)T
+        +\tfrac{1}{2}\sigma^2T(\alpha-\gamma)^2
+    \right).
+$$
+
+The positive eigenfunction is therefore not unique.
+
+This is why truncation or boundedness assumptions matter: they turn the
+continuous operator problem back into a Perron--Frobenius problem with a
+unique positive eigenvector.
+
 {cite:t}`CarrYu2012` establish recovery with a bounded diffusion.
 
 *Transition independence:*
@@ -894,7 +1135,7 @@ If the kernel is not transition independent, recovery is not guaranteed.
 long-run risk component of the kernel with the natural probability distribution,
 yielding an incorrect decomposition.
 
-We will discuss this later in a sequal to this lecture {doc}`misspecified_recovery`.
+We discuss this in the sequel lecture {doc}`misspecified_recovery`.
 
 *Empirical estimation:*
 
