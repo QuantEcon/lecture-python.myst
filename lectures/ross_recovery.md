@@ -53,11 +53,17 @@ about the preferences of a representative investor.
 
 {cite:t}`Ross2015` showed otherwise.
 
-Under a structural restriction on the pricing kernel called **transition independence**,
-together with no-arbitrage and irreducibility of an identified finite-state Markov
-Arrow–Debreu state-price transition matrix, the natural probability transition matrix
-and the transition pricing kernel can be uniquely recovered from state prices alone
-with no historical return data and no assumed utility function.
+Ross's theorem says that, in a finite-state Markov economy, state prices can be
+enough.
+
+Suppose the Arrow–Debreu state-price transition matrix is arbitrage-free and
+irreducible.
+
+If the pricing kernel also satisfies a structural restriction called **transition
+independence**, then state prices uniquely determine both the natural probability
+transition matrix and the transition pricing kernel.
+
+No historical return data or assumed utility function is needed.
 
 This is the **Recovery Theorem**.
 
@@ -132,7 +138,12 @@ $$
     = \frac{\beta U'(c(\theta_j))}{U'(c(\theta_i))}.
 $$ (eq:canon_ge)
 
-The key structural property this implies is **transition independence**.
+This formula has a special structure: the kernel can be written as a ratio of two
+state-specific terms.
+
+Ross calls this property **transition independence**.
+
+We will say more about it soon.
 
 ### The identification challenge
 
@@ -148,12 +159,10 @@ contributes $m(m-1)$ free entries (rows sum to one), and an arbitrary kernel $\p
 contributes another $m^2$ -- a total of $2m^2 - m$ unknowns against only $m^2$
 equations.
 
-The system is under-identified by exactly $m^2 - m$ parameters, so some structural
+The system is under-identified by $m^2 - m$ parameters, so some structural
 restriction on the kernel is needed to pin down $\phi$ and $f$ separately.
 
-Transition independence below is one such restriction: it cuts $\phi$ from $m^2$ free
-entries down to $m$ (a state function $h$ free up to scale plus a discount factor
-$\beta$), closing the identification gap exactly.
+Transition independence restriction does the job, as we will see in the next section.
 
 ### Transition independence
 
@@ -179,10 +188,11 @@ intertemporally additive separable utility (where $h = U'$).
 
 In particular, this holds for {eq}`eq:canon_ge`.
 
-Ross also notes that some Epstein--Zin specifications can produce transition-independent
-kernels {cite}`Epstein_Zin1989`, although {doc}`misspecified_recovery` shows that
-recursive utility with nontrivial continuation-value martingales need not satisfy the
-Ross restriction.
+Transition independence helps because it ties all $m^2$ entries of $\phi$ together:
+once the $m$ state-specific values are known, the whole kernel is pinned down.
+
+It therefore cuts $\phi$ from $m^2$ free entries down to $m$, so the system becomes
+exactly identified.
 
 Under transition independence, the state-price equation becomes
 
@@ -225,7 +235,7 @@ In principle every eigenvalue-eigenvector pair of $P$ is a formal solution, but 
 one with a strictly positive eigenvector is economically valid: $D_{ii} = 1/z_i$ must be
 positive (so $z_i > 0$), and $F$ must have nonnegative entries.
 
-The theorem below guarantees that exactly one such pair exists.
+The Perron–Frobenius theorem guarantees that exactly one such pair exists.
 
 ```{prf:theorem} Perron--Frobenius
 :label: thm-perron-frobenius
@@ -241,7 +251,7 @@ If $A$ is a nonnegative irreducible matrix, then
 Other eigenvalues can have the same modulus when the matrix is imprimitive, but the
 strictly positive eigenvector is unique up to scale.
 
-See Section 1.2.3 of {cite}`Sargent_Stachurski_2024` for details.
+See Section 1.2.3 of {cite:t}`Sargent_Stachurski_2024` for details.
 
 See also the full statement in {doc}`intro:eigen_II`.
 
@@ -266,6 +276,8 @@ Transition independence is the key economic restriction.
 It says the pricing kernel
 factors as $\beta h(\theta_j)/h(\theta_i)$, so the entire kernel is pinned down by a
 single vector $h$ (or equivalently $z$).
+
+With these in mind, the Recovery Theorem follows from the Perron–Frobenius theorem.
 
 
 ```{prf:theorem} Recovery Theorem
@@ -324,15 +336,12 @@ where $h(\theta_i) = \beta/z_i$ follows from $D_{ii} = h(\theta_i)/\beta = 1/z_i
 Destination states with high $z_j$ have *low* kernel values: for a fixed origin $i$,
 the kernel $\beta z_i/z_j$ is decreasing in $z_j$.
 
-When $h$ is interpreted as marginal utility and states are ordered by consumption or
+When $h$ represents marginal utility and states are ordered by consumption or
 payoff, larger $z_j$ corresponds to lower marginal utility -- "good times" that
 require less insurance and so receive less pricing weight per unit of natural
 probability. 
 
-This monotonic interpretation is not guaranteed for an arbitrary ordering
-of stock-market states.
-
-The same eigenvector argument also clarifies a useful limiting case.
+The same eigenvector argument also yields a useful limiting case.
 
 If the one-period
 bond price is identical in every current state, then the vector of ones is already the
@@ -372,7 +381,7 @@ on a finite grid of log payoff states $s_1, \ldots, s_m$.
 
 On this grid we choose three primitives:
 
-1. a row-stochastic natural transition matrix $F$,
+1. a row-stochastic irreducible natural transition matrix $F$,
 2. a subjective discount factor $\beta = e^{-\rho T}$, and
 3. a CRRA transition pricing kernel
    $\phi_{ij} = \beta e^{-\gamma(s_j-s_i)}$.
@@ -385,12 +394,12 @@ $$
 
 This means the Recovery Theorem assumptions hold by construction: $P$ is nonnegative,
 $F$ is a Markov transition matrix, and the kernel is transition independent with
-$z_i \propto e^{\gamma s_i}$. This benchmark therefore provides a strict test of
-whether the eigenvector recovery calculation returns the objects used to construct
-prices.
+$z_i \propto e^{\gamma s_i}$.
 
 To keep the example close to Ross's Section IV, we choose $F$ to have lognormal-shaped
-rows. In the unbounded continuous model one would write
+rows.
+
+In the unbounded continuous model one would write
 
 $$
 \log(S_T/S_0) \sim \mathcal{N}\!\left((\mu - \tfrac{1}{2}\sigma^2)T, \sigma^2 T\right).
@@ -409,8 +418,7 @@ transition matrix whose rows shift with the current state.
 Ross uses states from $-5$ to $+5$ standard deviations; we use
 the same range below.
 
-The truncation is an essential part of the finite-state model, not a cosmetic
-detail: it is what brings the example into the Perron--Frobenius setting.
+The truncation is an essential part of the finite-state model: it is what brings the example into the Perron--Frobenius setting.
 
 In the
 unbounded continuous lognormal growth model, Ross shows that recovery is not unique.
@@ -481,7 +489,9 @@ print(np.round(P.sum(axis=1), 4))
 print(f"Middle-state risk-free rate: {-np.log(P[5].sum()):.4f}")
 ```
 
-The row sums are the model-implied one-period bond prices in each current state. They
+The row sums are the model-implied one-period bond prices in each current state.
+
+They
 vary near the boundaries because the finite grid truncates and renormalizes the
 conditional transition probabilities.
 
@@ -550,35 +560,20 @@ def recover_natural_distribution(P, tol=1e-10):
     return F, z, β_recovered, φ_relative
 ```
 
-There are two normalizations to keep separate.
+The Perron vector also recovers the shape of the pricing kernel.
 
-Ross's Table I reports the kernel shape
-with the middle state normalized to one, which is $1/z_j$ under our normalization
-$z_{\text{mid}}=1$.
-
-The actual one-period stochastic discount factor for a transition
-from the middle state to state $j$ is $\beta/z_j$.
+Ross's Table I reports this shape with the middle state normalized to one, which is
+$1/z_j$ under our normalization $z_{\text{mid}}=1$.
 
 ```{code-cell} ipython3
 F, z, β_rec, φ_relative = recover_natural_distribution(P)
-ρ_rec = -np.log(β_rec)
-φ_middle = β_rec * φ_relative
 
-print(f"Recovered discount factor β = {β_rec:.6f}  (true: {np.exp(-ρ):.6f})")
-print(f"Recovered discount rate ρ = {ρ_rec:.6f}  (true: {ρ:.6f})")
 print("Ross-normalized kernel 1/z (middle state = 1):")
 print(np.round(φ_relative, 4))
-print("Actual one-period kernel from the middle state β × (1/z):")
-print(np.round(φ_middle, 4))
 ```
 
-Because we know the data-generating natural transition matrix and pricing kernel
-used to construct $P$, we can use them to verify that recovery works in this
-simulation.
-
-In real data the natural transition matrix is unobserved, so these checks become
-internal diagnostics combined with an assessment of the recovery assumptions.
-
+Because we know the data-generating natural transition matrix used to construct
+$P$, we can verify that recovery works in this simulation.
 
 ```{code-cell} ipython3
 def true_lognormal_transition_matrix(states, μ, σ, T):
@@ -599,15 +594,10 @@ def true_lognormal_transition_matrix(states, μ, σ, T):
     return F_true
 
 
-mid = len(states) // 2
 F_true = true_lognormal_transition_matrix(states, μ, σ, T)
-φ_middle_true = np.exp(-ρ * T) * np.exp(-γ * (states - states[mid]))
 P_reconstructed = β_rec * (z[:, None] / z[None, :]) * F
 
 print("Recovery diagnostics")
-print(f"max |β_rec - exp(-ρT)| = {abs(β_rec - np.exp(-ρ * T)):.2e}")
-print(f"max |φ_middle - true kernel| = "
-      f"{np.max(np.abs(φ_middle - φ_middle_true)):.2e}")
 print(f"max |F - true F| = {np.max(np.abs(F - F_true)):.2e}")
 print(f"max |P - recovered kernel times F| = "
       f"{np.max(np.abs(P - P_reconstructed)):.2e}")
@@ -732,7 +722,7 @@ plt.show()
 ```
 
 Because the states are ordered from low to high payoff, the plots show the
-single-crossing property from Theorem 3 of {cite}`Ross2015`: for returns below some
+single-crossing property from Theorem 3 of {cite:t}`Ross2015`: for returns below some
 threshold $v$, risk-neutral probability exceeds natural probability; above $v$ the
 natural probability dominates.
 
@@ -835,27 +825,52 @@ We will say more in {ref}`rt_ex3`.
 
 ## Testing efficient markets
 
-{cite:t}`Ross2015` shows that once the pricing kernel is recovered, one obtains an *upper
-bound on the Sharpe ratio* for strategies based on the stock-market filtration used in
-recovery:
+The recovered pricing kernel can also be used to test market efficiency.
+
+If a trading strategy has a very high Sharpe ratio, then some pricing kernel must be
+volatile enough to price that payoff.
+
+The Hansen--Jagannathan bound {cite}`Hansen_Jagannathan_1991` says that, for any excess
+return with mean $\mu_\text{excess}$ and standard deviation $\sigma_\text{asset}$,
 
 $$
 \frac{|\mu_\text{excess}|}{\sigma_\text{asset}} \leq e^{rT}\, \sigma(M),
 $$
 
-where $\sigma(M)$ is the standard deviation of the actual one-period stochastic discount
-factor projected on that filtration. Arbitrary orthogonal noise in a candidate kernel
-does not tighten this market-efficiency bound.
+where $M$ is the one-period stochastic discount factor.
 
-This follows from the Hansen–Jagannathan bound {cite}`Hansen_Jagannathan_1991`.
+Ross's point is that recovery gives an estimate of the relevant volatility
+$\sigma(M)$.
 
-Equivalently, under the Recovery Theorem assumptions, the $R^2$ of return-forecasting
-regressions based on that information set is bounded above by the variance of the
-pricing kernel:
+Hence it gives an upper bound on the Sharpe ratio of any strategy based on the same
+stock-market information used in recovery.
+
+If such a strategy has a Sharpe ratio above the bound, then it is too profitable to be
+consistent with efficiency, under the assumptions of the Recovery
+Theorem.
+
+The same logic gives a bound on return predictability.
+
+Suppose excess returns are decomposed as
 
 $$
-R^2 \leq e^{2rT} \, \mathrm{Var}(M).
+x_{t+1} = \mu(I_t) + \epsilon_{t+1},
 $$
+
+where $I_t$ is the stock-market information set and $\epsilon_{t+1}$ is unpredictable
+from $I_t$.
+
+Then the $R^2$ of a forecasting regression based on $I_t$ is bounded above by the
+variance of the recovered kernel:
+
+$$
+R^2 \leq e^{2rT} \, \sigma^2(M).
+$$
+
+Only the component of the kernel projected on this information set is relevant.
+
+Adding unrelated noise to a candidate pricing kernel would raise its variance, but it
+would not justify stronger return predictability from stock-market information.
 
 ## Limitations and extensions
 
@@ -878,6 +893,8 @@ If the kernel is not transition independent, recovery is not guaranteed.
 {cite:t}`BorovickaHansenScheinkman2016` show that the Ross recovery can confound the
 long-run risk component of the kernel with the natural probability distribution,
 yielding an incorrect decomposition.
+
+We will discuss this later in a sequal to this lecture {doc}`misspecified_recovery`.
 
 *Empirical estimation:*
 
@@ -905,18 +922,18 @@ P = \begin{pmatrix}
 \end{pmatrix}.
 $$
 
-(a) Compute the Perron eigenvalue $\beta$ and the corresponding eigenvector $z$ of
+1. Compute the Perron eigenvalue $\beta$ and the corresponding eigenvector $z$ of
 $P$.
 
-(b) Use $z$ to recover the natural probability transition matrix $F$ via
+2. Use $z$ to recover the natural probability transition matrix $F$ via
 
 $$
 f_{ij} = \frac{1}{\beta} \frac{z_j}{z_i} p_{ij}.
 $$
 
-(c) Verify that each row of $F$ sums to one and all entries are positive.
+3. Verify that each row of $F$ sums to one and all entries are positive.
 
-(d) For destination state $j$, the relative kernel component is $1/z_j$; for a
+4. For destination state $j$, the relative kernel component is $1/z_j$; for a
 transition from state $i$ to state $j$, the full pricing kernel is $\beta z_i/z_j$.
 Compute $1/z_j$ for each state.
 
@@ -978,13 +995,13 @@ print(f"Decreasing: {φ_relative_ex[0] > φ_relative_ex[1] > φ_relative_ex[2]}"
 Using the recovered $F$ and the normalised risk-neutral matrix $Q = P / \text{row sums}$
 from the exercise above:
 
-(a) Compute the one-step marginal distributions $f_j = F_{2,j}$ and $q_j = Q_{2,j}$
+1. Compute the one-step marginal distributions $f_j = F_{2,j}$ and $q_j = Q_{2,j}$
 starting from state 2 (index 1 in Python).
 
-(b) Compute the CDFs $\hat F_k = \sum_{j \leq k} f_j$ and
+2. Compute the CDFs $\hat F_k = \sum_{j \leq k} f_j$ and
 $\hat Q_k = \sum_{j \leq k} q_j$ for each state.
 
-(c) Verify numerically that $\hat F_k \leq \hat Q_k$ for every $k$, confirming stochastic
+3. Verify numerically that $\hat F_k \leq \hat Q_k$ for every $k$, confirming stochastic
 dominance in this ordered three-state example.
 ```
 
