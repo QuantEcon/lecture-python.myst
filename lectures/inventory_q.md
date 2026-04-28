@@ -35,7 +35,7 @@ A firm must decide how much stock to order each period, facing uncertain demand 
 We approach the problem in two ways.
 
 First, we solve it exactly using dynamic programming, assuming full knowledge of
-the model — the demand distribution, cost parameters, and transition dynamics.
+the model -- the demand distribution, cost parameters, and transition dynamics.
 
 Second, we show how a manager can learn the optimal policy from experience alone, using [Q-learning](https://en.wikipedia.org/wiki/Q-learning).
 
@@ -475,7 +475,7 @@ All the manager needs to observe at each step is:
 4. the discount factor $\beta$, which is determined by the interest rate, and
 5. the next inventory level $X_{t+1}$ (which they can read off the warehouse).
 
-These are all directly observable quantities — no model knowledge is required.
+These are all directly observable quantities -- no model knowledge is required.
 
 
 ### The Q-table and the role of the max
@@ -483,7 +483,7 @@ These are all directly observable quantities — no model knowledge is required.
 It is important to understand how the update rule relates to the manager's
 actions.
 
-The manager maintains a **Q-table** — a lookup table storing an estimate $q_t(x,
+The manager maintains a **Q-table** -- a lookup table storing an estimate $q_t(x,
 a)$ for every state-action pair $(x, a)$.
 
 At each step, the manager is in some state $x$ and must choose a specific action
@@ -492,7 +492,7 @@ and next state $X_{t+1}$, and updates *that one entry* $q_t(x, a)$ of the
 table using the rule above.
 
 It is tempting to read the $\max_{a'}$ in the update rule as prescribing the
-manager's next action — that is, to interpret the update as saying "move to
+manager's next action -- that is, to interpret the update as saying "move to
 state $X_{t+1}$ and take an action in $\argmax_{a'} q_t(X_{t+1}, a')$."
 
 But the $\max$ plays a different role.  
@@ -512,7 +512,7 @@ The rule governing how the manager chooses actions is called the **behavior poli
 
 Because the $\max$ in the update target always points toward $q^*$
 regardless of how the manager selects actions, the behavior policy affects only
-which $(x, a)$ entries get visited — and hence updated — over time.
+which $(x, a)$ entries get visited -- and hence updated -- over time.
 
 In the reinforcement learning literature, this property is called **off-policy**
 learning: the convergence target ($q^*$) does not depend on the behavior policy.
@@ -521,8 +521,8 @@ As long as every $(x, a)$ pair is visited infinitely often (so that every entry
 of the Q-table receives infinitely many updates) and the learning rates satisfy
 standard conditions (see below), the Q-table converges to $q^*$.
 
-The behavior policy affects the *speed* of convergence — visiting important
-state-action pairs more frequently leads to faster learning — but not the
+The behavior policy affects the *speed* of convergence -- visiting important
+state-action pairs more frequently leads to faster learning -- but not the
 *limit*.
 
 In practice, we want the manager to mostly take good actions (to earn reasonable
@@ -555,11 +555,11 @@ The stochastic demand shocks naturally drive the manager across different invent
 
 A simple but powerful technique for accelerating learning is **optimistic initialization**: instead of starting the Q-table at zero, we initialize every entry to a value above the true optimum.
 
-Because every untried action looks optimistically good, the agent is "disappointed" whenever it tries one — the update pulls that entry down toward reality. This drives the agent to try other actions (which still look optimistically high), producing broad exploration of the state-action space early in training.
+Because every untried action looks optimistically good, the agent is "disappointed" whenever it tries one -- the update pulls that entry down toward reality. This drives the agent to try other actions (which still look optimistically high), producing broad exploration of the state-action space early in training.
 
 This idea is sometimes called **optimism in the face of uncertainty** and is widely used in both bandit and reinforcement learning settings.
 
-In our problem, the value function $v^*$ ranges from about 13 to 18. We initialize the Q-table at 20 — modestly above the true maximum — to ensure optimistic exploration without being so extreme as to distort learning.
+In our problem, the value function $v^*$ ranges from about 13 to 18. We initialize the Q-table at 20 -- modestly above the true maximum -- to ensure optimistic exploration without being so extreme as to distort learning.
 
 ### Implementation
 
@@ -581,7 +581,7 @@ def greedy_policy_from_q(q, K):
     return σ
 ```
 
-The Q-learning loop runs for `n_steps` total steps in a single continuous trajectory — just as a real manager would learn from the ongoing stream of data.
+The Q-learning loop runs for `n_steps` total steps in a single continuous trajectory -- just as a real manager would learn from the ongoing stream of data.
 
 At specified step counts (given by `snapshot_steps`), we record the current greedy policy.
 
