@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>98. Affine Models of Asset Prices &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>99. Affine Models of Asset Prices &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="99. Pandas for Panel Data" href="pandas_panel.html" />
-    <link rel="prev" title="97. Speculative Behavior with Bayesian Learning" href="morris_learn.html" />
+    <link rel="next" title="100. The Recovery Theorem" href="ross_recovery.html" />
+    <link rel="prev" title="98. Speculative Behavior with Bayesian Learning" href="morris_learn.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -207,39 +207,39 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">98.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">98.2. The model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-dynamics-and-short-rate">98.2.1. State dynamics and short rate</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-the-sdf">98.2.2. Properties of the SDF</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">99.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">99.2. The model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state-dynamics-and-short-rate">99.2.1. State dynamics and short rate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-the-sdf">99.2.2. Properties of the SDF</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pricing-risky-assets">98.3. Pricing risky assets</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lognormal-returns">98.3.1. Lognormal returns</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-excess-returns">98.3.2. Expected excess returns</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pricing-risky-assets">99.3. Pricing risky assets</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lognormal-returns">99.3.1. Lognormal returns</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-excess-returns">99.3.2. Expected excess returns</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#affine-term-structure-of-yields">98.4. Affine term structure of yields</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bond-prices">98.4.1. Bond prices</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exponential-affine-prices">98.4.2. Exponential affine prices</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yields">98.4.3. Yields</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-one-factor-gaussian-example">98.4.4. A one-factor Gaussian example</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yield-curve-shapes">98.4.5. Yield curve shapes</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-two-factor-model">98.4.6. A two-factor model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#affine-term-structure-of-yields">99.4. Affine term structure of yields</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bond-prices">99.4.1. Bond prices</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exponential-affine-prices">99.4.2. Exponential affine prices</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yields">99.4.3. Yields</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-one-factor-gaussian-example">99.4.4. A one-factor Gaussian example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yield-curve-shapes">99.4.5. Yield curve shapes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-two-factor-model">99.4.6. A two-factor model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-premiums">98.5. Risk premiums</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-neutral-probabilities">98.6. Risk-neutral probabilities</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#change-of-measure">98.6.1. Change of measure</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asset-pricing-in-a-nutshell">98.6.2. Asset pricing in a nutshell</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verification-via-risk-neutral-pricing">98.6.3. Verification via risk-neutral pricing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-premiums">99.5. Risk premiums</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-neutral-probabilities">99.6. Risk-neutral probabilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#change-of-measure">99.6.1. Change of measure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asset-pricing-in-a-nutshell">99.6.2. Asset pricing in a nutshell</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verification-via-risk-neutral-pricing">99.6.3. Verification via risk-neutral pricing</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distorted-beliefs">98.7. Distorted beliefs</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-subjective-measure">98.7.1. The subjective measure</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pricing-under-distorted-beliefs">98.7.2. Pricing under distorted beliefs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distorted-beliefs">99.7. Distorted beliefs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-subjective-measure">99.7.1. The subjective measure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pricing-under-distorted-beliefs">99.7.2. Pricing under distorted beliefs</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">98.8. Concluding remarks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concluding-remarks">99.8. Concluding remarks</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -307,7 +307,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/d1a3cccb8" class="changelog-hash">d1a3cccb8</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">18 minutes ago</span>
+                                <span class="changelog-time">2 weeks ago</span>
                                 <span class="changelog-message">Migrating Two Asset Pricing Lectures to Advanced Series (#851)</span>
                             </li>
                             
@@ -316,7 +316,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a8966965b" class="changelog-hash">a8966965b</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">1 week ago</span>
+                                <span class="changelog-time">3 weeks ago</span>
                                 <span class="changelog-message">Update lectures on Blackwell's theorem and survival topics (#844)</span>
                             </li>
                             
@@ -325,7 +325,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/de6af5ed6" class="changelog-hash">de6af5ed6</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">3 weeks ago</span>
+                                <span class="changelog-time">1 month ago</span>
                                 <span class="changelog-message">Update two lectures on affine asset pricing models (#834)</span>
                             </li>
                             
@@ -355,14 +355,14 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="affine-models-of-asset-prices">
-<h1><span class="section-number">98. </span>Affine Models of Asset Prices<a class="headerlink" href="#affine-models-of-asset-prices" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">99. </span>Affine Models of Asset Prices<a class="headerlink" href="#affine-models-of-asset-prices" title="Link to this heading">#</a></h1>
 <section id="overview">
-<h2><span class="section-number">98.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">99.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture describes a class of <strong>affine</strong> or <strong>exponential quadratic</strong> models of the
 stochastic discount factor that have become widely used in empirical finance.</p>
-<p>These models are presented in chapter 15 of <span id="id1">Ljungqvist and Sargent [<a class="reference internal" href="zreferences.html#id268" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">2018</a>]</span>.</p>
+<p>These models are presented in chapter 15 of <span id="id1">Ljungqvist and Sargent [<a class="reference internal" href="zreferences.html#id284" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">2018</a>]</span>.</p>
 <p>The models discussed here take a different approach from the time-separable CRRA
-stochastic discount factor of <span id="id2">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id308" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span>, studied in our
+stochastic discount factor of <span id="id2">Hansen and Singleton [<a class="reference internal" href="zreferences.html#id324" title="Lars Peter Hansen and Kenneth J Singleton. Stochastic consumption, risk aversion, and the temporal behavior of asset returns. Journal of political economy, 91(2):249–265, 1983.">1983</a>]</span>, studied in our
 <a class="reference internal" href="hansen_singleton_1983.html"><span class="doc">companion lecture</span></a>.</p>
 <p>The CRRA stochastic discount factor is</p>
 <div class="math notranslate nohighlight">
@@ -388,17 +388,17 @@ assets to let the data reveal risks and their prices.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Researchers including <span id="id3">[<a class="reference internal" href="zreferences.html#id295" title="Ravi Bansal and Amir Yaron. Risks for the Long Run: A Potential Resolution of Asset Pricing Puzzles. Journal of Finance, 59(4):1481-1509, 08 2004. URL: https://ideas.repec.org/a/bla/jfinan/v59y2004i4p1481-1509.html, doi:.">Bansal and Yaron, 2004</a>]</span> and <span id="id4">[<a class="reference internal" href="zreferences.html#id296" title="Lars Peter Hansen, John C Heaton, and Nan Li. Consumption strikes back? measuring long-run risk. Journal of Political economy, 116(2):260–302, 2008.">Hansen <em>et al.</em>, 2008</a>]</span> have been less willing
+<p>Researchers including <span id="id3">[<a class="reference internal" href="zreferences.html#id311" title="Ravi Bansal and Amir Yaron. Risks for the Long Run: A Potential Resolution of Asset Pricing Puzzles. Journal of Finance, 59(4):1481-1509, 08 2004. URL: https://ideas.repec.org/a/bla/jfinan/v59y2004i4p1481-1509.html, doi:.">Bansal and Yaron, 2004</a>]</span> and <span id="id4">[<a class="reference internal" href="zreferences.html#id312" title="Lars Peter Hansen, John C Heaton, and Nan Li. Consumption strikes back? measuring long-run risk. Journal of Political economy, 116(2):260–302, 2008.">Hansen <em>et al.</em>, 2008</a>]</span> have been less willing
 to give up on consumption-based models of the stochastic discount factor.</p>
 </div>
 <p>Key applications we study include:</p>
 <ol class="arabic simple">
 <li><p><em>Pricing risky assets</em>: how risk prices and exposures determine excess returns.</p></li>
 <li><p><em>Affine term structure models</em>: bond yields as affine functions of a state vector
-(<span id="id5">Ang and Piazzesi [<a class="reference internal" href="zreferences.html#id360" title="Andrew Ang and Monika Piazzesi. A no-arbitrage vector autoregression of term structure dynamics with macroeconomic and latent variables. Journal of Monetary Economics, 50(4):745–787, 2003.">2003</a>]</span>).</p></li>
+(<span id="id5">Ang and Piazzesi [<a class="reference internal" href="zreferences.html#id376" title="Andrew Ang and Monika Piazzesi. A no-arbitrage vector autoregression of term structure dynamics with macroeconomic and latent variables. Journal of Monetary Economics, 50(4):745–787, 2003.">2003</a>]</span>).</p></li>
 <li><p><em>Risk-neutral probabilities</em>: a change-of-measure representation of the pricing equation.</p></li>
 <li><p><em>Distorted beliefs</em>: reinterpreting risk price estimates when agents hold systematically
-biased forecasts (<span id="id6">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id358" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span>); see also <a class="reference external" href="https://python-advanced.quantecon.org/risk_aversion_or_mistaken_beliefs.html" title="(in Project name not set)"><span>Risk Aversion or Mistaken Beliefs?</span></a>.</p></li>
+biased forecasts (<span id="id6">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id374" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span>); see also <a class="reference external" href="https://python-advanced.quantecon.org/risk_aversion_or_mistaken_beliefs.html" title="(in Project name not set)"><span>Risk Aversion or Mistaken Beliefs?</span></a>.</p></li>
 </ol>
 <p>We start with the following imports:</p>
 <div class="cell docutils container">
@@ -413,16 +413,16 @@ biased forecasts (<span id="id6">Piazzesi <em>et al.</em> [<a class="reference i
 </div>
 </section>
 <section id="the-model">
-<h2><span class="section-number">98.2. </span>The model<a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">99.2. </span>The model<a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
 <section id="state-dynamics-and-short-rate">
-<h3><span class="section-number">98.2.1. </span>State dynamics and short rate<a class="headerlink" href="#state-dynamics-and-short-rate" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.2.1. </span>State dynamics and short rate<a class="headerlink" href="#state-dynamics-and-short-rate" title="Link to this heading">#</a></h3>
 <p>The model has two components.</p>
 <p><em>Component 1</em> is a vector autoregression that describes the state of the economy
 and the evolution of the short rate:</p>
 <div class="math notranslate nohighlight" id="equation-eq-var">
-<span class="eqno">(98.1)<a class="headerlink" href="#equation-eq-var" title="Link to this equation">#</a></span>\[z_{t+1} = \mu + \phi z_t + C\varepsilon_{t+1}\]</div>
+<span class="eqno">(99.1)<a class="headerlink" href="#equation-eq-var" title="Link to this equation">#</a></span>\[z_{t+1} = \mu + \phi z_t + C\varepsilon_{t+1}\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-shortrate">
-<span class="eqno">(98.2)<a class="headerlink" href="#equation-eq-shortrate" title="Link to this equation">#</a></span>\[r_t = \delta_0 + \delta_1^\top z_t\]</div>
+<span class="eqno">(99.2)<a class="headerlink" href="#equation-eq-shortrate" title="Link to this equation">#</a></span>\[r_t = \delta_0 + \delta_1^\top z_t\]</div>
 <p>Here</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(\phi\)</span> is a stable <span class="math notranslate nohighlight">\(m \times m\)</span> matrix,</p></li>
@@ -430,14 +430,14 @@ and the evolution of the short rate:</p>
 <li><p><span class="math notranslate nohighlight">\(\varepsilon_{t+1} \sim \mathcal{N}(0, I)\)</span> is an i.i.d. <span class="math notranslate nohighlight">\(m \times 1\)</span> random vector,</p></li>
 <li><p><span class="math notranslate nohighlight">\(z_t\)</span> is an <span class="math notranslate nohighlight">\(m \times 1\)</span> state vector.</p></li>
 </ul>
-<p>Equation <a class="reference internal" href="#equation-eq-shortrate">(98.2)</a> says that the <strong>short rate</strong> <span class="math notranslate nohighlight">\(r_t\)</span>, the net yield on a
+<p>Equation <a class="reference internal" href="#equation-eq-shortrate">(99.2)</a> says that the <strong>short rate</strong> <span class="math notranslate nohighlight">\(r_t\)</span>, the net yield on a
 one-period risk-free claim, is an affine function of the state <span class="math notranslate nohighlight">\(z_t\)</span>.</p>
 <p><em>Component 2</em> is a vector of <strong>risk prices</strong> <span class="math notranslate nohighlight">\(\lambda_t\)</span> and an associated stochastic
 discount factor <span class="math notranslate nohighlight">\(m_{t+1}\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-eq-riskprices">
-<span class="eqno">(98.3)<a class="headerlink" href="#equation-eq-riskprices" title="Link to this equation">#</a></span>\[\lambda_t = \lambda_0 + \lambda_z z_t\]</div>
+<span class="eqno">(99.3)<a class="headerlink" href="#equation-eq-riskprices" title="Link to this equation">#</a></span>\[\lambda_t = \lambda_0 + \lambda_z z_t\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-sdf">
-<span class="eqno">(98.4)<a class="headerlink" href="#equation-eq-sdf" title="Link to this equation">#</a></span>\[\log(m_{t+1}) = -r_t - \frac{1}{2}\lambda_t^\top\lambda_t - \lambda_t^\top\varepsilon_{t+1}\]</div>
+<span class="eqno">(99.4)<a class="headerlink" href="#equation-eq-sdf" title="Link to this equation">#</a></span>\[\log(m_{t+1}) = -r_t - \frac{1}{2}\lambda_t^\top\lambda_t - \lambda_t^\top\varepsilon_{t+1}\]</div>
 <p>Here <span class="math notranslate nohighlight">\(\lambda_0\)</span> is <span class="math notranslate nohighlight">\(m \times 1\)</span> and <span class="math notranslate nohighlight">\(\lambda_z\)</span> is <span class="math notranslate nohighlight">\(m \times m\)</span>.</p>
 <p>The entries of <span class="math notranslate nohighlight">\(\lambda_t\)</span> that multiply corresponding entries of the risks
 <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span> are called <strong>risk prices</strong> because they determine how exposures
@@ -485,7 +485,7 @@ to each risk component affect expected returns (as we show below).</p>
 </div>
 </section>
 <section id="properties-of-the-sdf">
-<h3><span class="section-number">98.2.2. </span>Properties of the SDF<a class="headerlink" href="#properties-of-the-sdf" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.2.2. </span>Properties of the SDF<a class="headerlink" href="#properties-of-the-sdf" title="Link to this heading">#</a></h3>
 <p>Since <span class="math notranslate nohighlight">\(\lambda_t^\top\varepsilon_{t+1}\)</span> is conditionally normal, it follows that</p>
 <div class="math notranslate nohighlight">
 \[
@@ -498,9 +498,9 @@ to each risk component affect expected returns (as we show below).</p>
 \]</div>
 <div class="exercise admonition" id="arp_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 98.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 99.1 </span></p>
 <section id="exercise-content">
-<p>Show that the SDF defined in <a class="reference internal" href="#equation-eq-sdf">(98.4)</a> satisfies</p>
+<p>Show that the SDF defined in <a class="reference internal" href="#equation-eq-sdf">(99.4)</a> satisfies</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbb{E}_t(m_{t+1}) = \exp(-r_t)
@@ -518,7 +518,7 @@ to each risk component affect expected returns (as we show below).</p>
 
 <p class="admonition-title">Solution</p>
 <section id="solution-content">
-<p>From <a class="reference internal" href="#equation-eq-sdf">(98.4)</a>, we have</p>
+<p>From <a class="reference internal" href="#equation-eq-sdf">(99.4)</a>, we have</p>
 <div class="math notranslate nohighlight">
 \[
 m_{t+1} = \exp\left(-r_t - \frac{1}{2}\lambda_t^\top\lambda_t - \lambda_t^\top\varepsilon_{t+1}\right)
@@ -561,32 +561,32 @@ is approximately the magnitude of the vector of risk prices, a measure of overal
 </section>
 </section>
 <section id="pricing-risky-assets">
-<h2><span class="section-number">98.3. </span>Pricing risky assets<a class="headerlink" href="#pricing-risky-assets" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">99.3. </span>Pricing risky assets<a class="headerlink" href="#pricing-risky-assets" title="Link to this heading">#</a></h2>
 <section id="lognormal-returns">
-<h3><span class="section-number">98.3.1. </span>Lognormal returns<a class="headerlink" href="#lognormal-returns" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.3.1. </span>Lognormal returns<a class="headerlink" href="#lognormal-returns" title="Link to this heading">#</a></h3>
 <p>Consider a risky asset <span class="math notranslate nohighlight">\(j\)</span> whose gross return has a lognormal conditional distribution:</p>
 <div class="math notranslate nohighlight" id="equation-eq-return">
-<span class="eqno">(98.5)<a class="headerlink" href="#equation-eq-return" title="Link to this equation">#</a></span>\[R_{j,t+1} = \exp\left(\nu_t(j) - \frac{1}{2}\alpha_t(j)^\top\alpha_t(j) + \alpha_t(j)^\top\varepsilon_{t+1}\right)\]</div>
+<span class="eqno">(99.5)<a class="headerlink" href="#equation-eq-return" title="Link to this equation">#</a></span>\[R_{j,t+1} = \exp\left(\nu_t(j) - \frac{1}{2}\alpha_t(j)^\top\alpha_t(j) + \alpha_t(j)^\top\varepsilon_{t+1}\right)\]</div>
 <p>where the <strong>exposure vector</strong></p>
 <div class="math notranslate nohighlight" id="equation-eq-exposure">
-<span class="eqno">(98.6)<a class="headerlink" href="#equation-eq-exposure" title="Link to this equation">#</a></span>\[\alpha_t(j) = \alpha_0(j) + \alpha_z(j)\, z_t\]</div>
+<span class="eqno">(99.6)<a class="headerlink" href="#equation-eq-exposure" title="Link to this equation">#</a></span>\[\alpha_t(j) = \alpha_0(j) + \alpha_z(j)\, z_t\]</div>
 <p>Here <span class="math notranslate nohighlight">\(\alpha_0(j)\)</span> is <span class="math notranslate nohighlight">\(m \times 1\)</span> and <span class="math notranslate nohighlight">\(\alpha_z(j)\)</span> is <span class="math notranslate nohighlight">\(m \times m\)</span>.</p>
 <p>The components of <span class="math notranslate nohighlight">\(\alpha_t(j)\)</span> express the <strong>exposures</strong> of <span class="math notranslate nohighlight">\(\log R_{j,t+1}\)</span> to
 corresponding components of the risk vector <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span>.</p>
-<p>The specification <a class="reference internal" href="#equation-eq-return">(98.5)</a> implies <span class="math notranslate nohighlight">\(\mathbb{E}_t R_{j,t+1} = \exp(\nu_t(j))\)</span>,
+<p>The specification <a class="reference internal" href="#equation-eq-return">(99.5)</a> implies <span class="math notranslate nohighlight">\(\mathbb{E}_t R_{j,t+1} = \exp(\nu_t(j))\)</span>,
 so <span class="math notranslate nohighlight">\(\nu_t(j)\)</span> is the log of the expected gross return.</p>
 </section>
 <section id="expected-excess-returns">
-<h3><span class="section-number">98.3.2. </span>Expected excess returns<a class="headerlink" href="#expected-excess-returns" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.3.2. </span>Expected excess returns<a class="headerlink" href="#expected-excess-returns" title="Link to this heading">#</a></h3>
 <p>Applying the pricing equation <span class="math notranslate nohighlight">\(\mathbb{E}_t(m_{t+1}R_{j,t+1}) = 1\)</span> together with the
 formula for the mean of a lognormal random variable gives</p>
 <div class="math notranslate nohighlight" id="equation-eq-excess">
-<span class="eqno">(98.7)<a class="headerlink" href="#equation-eq-excess" title="Link to this equation">#</a></span>\[\nu_t(j) = r_t + \alpha_t(j)^\top\lambda_t\]</div>
+<span class="eqno">(99.7)<a class="headerlink" href="#equation-eq-excess" title="Link to this equation">#</a></span>\[\nu_t(j) = r_t + \alpha_t(j)^\top\lambda_t\]</div>
 <div class="exercise admonition" id="arp_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 98.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 99.2 </span></p>
 <section id="exercise-content">
-<p>Using the SDF <a class="reference internal" href="#equation-eq-sdf">(98.4)</a> and the return specification <a class="reference internal" href="#equation-eq-return">(98.5)</a>, derive the expected excess return formula <a class="reference internal" href="#equation-eq-excess">(98.7)</a>:</p>
+<p>Using the SDF <a class="reference internal" href="#equation-eq-sdf">(99.4)</a> and the return specification <a class="reference internal" href="#equation-eq-return">(99.5)</a>, derive the expected excess return formula <a class="reference internal" href="#equation-eq-excess">(99.7)</a>:</p>
 <div class="math notranslate nohighlight">
 \[
 \nu_t(j) = r_t + \alpha_t(j)^\top\lambda_t
@@ -598,7 +598,7 @@ formula for the mean of a lognormal random variable gives</p>
 
 <p class="admonition-title">Solution</p>
 <section id="solution-content">
-<p>Combining <a class="reference internal" href="#equation-eq-sdf">(98.4)</a> and <a class="reference internal" href="#equation-eq-return">(98.5)</a>, we get</p>
+<p>Combining <a class="reference internal" href="#equation-eq-sdf">(99.4)</a> and <a class="reference internal" href="#equation-eq-return">(99.5)</a>, we get</p>
 <div class="math notranslate nohighlight">
 \[
 \log(m_{t+1} R_{j,t+1}) = -r_t + \nu_t(j) - \frac{1}{2}\lambda_t^\top\lambda_t - \frac{1}{2}\alpha_t(j)^\top\alpha_t(j) + (\alpha_t(j) - \lambda_t)^\top\varepsilon_{t+1}
@@ -610,7 +610,7 @@ formula for the mean of a lognormal random variable gives</p>
 \[
 -r_t + \nu_t(j) - \alpha_t(j)^\top\lambda_t = 0
 \]</div>
-<p>which gives <a class="reference internal" href="#equation-eq-excess">(98.7)</a>.</p>
+<p>which gives <a class="reference internal" href="#equation-eq-excess">(99.7)</a>.</p>
 </section>
 </div>
 <p>This is a central result.</p>
@@ -625,11 +625,11 @@ correspondingly high expected return.</p>
 </section>
 </section>
 <section id="affine-term-structure-of-yields">
-<h2><span class="section-number">98.4. </span>Affine term structure of yields<a class="headerlink" href="#affine-term-structure-of-yields" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">99.4. </span>Affine term structure of yields<a class="headerlink" href="#affine-term-structure-of-yields" title="Link to this heading">#</a></h2>
 <p>One of the most important applications is the <strong>affine term structure model</strong> studied
-by <span id="id7">Ang and Piazzesi [<a class="reference internal" href="zreferences.html#id360" title="Andrew Ang and Monika Piazzesi. A no-arbitrage vector autoregression of term structure dynamics with macroeconomic and latent variables. Journal of Monetary Economics, 50(4):745–787, 2003.">2003</a>]</span>.</p>
+by <span id="id7">Ang and Piazzesi [<a class="reference internal" href="zreferences.html#id376" title="Andrew Ang and Monika Piazzesi. A no-arbitrage vector autoregression of term structure dynamics with macroeconomic and latent variables. Journal of Monetary Economics, 50(4):745–787, 2003.">2003</a>]</span>.</p>
 <section id="bond-prices">
-<h3><span class="section-number">98.4.1. </span>Bond prices<a class="headerlink" href="#bond-prices" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.4.1. </span>Bond prices<a class="headerlink" href="#bond-prices" title="Link to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(p_t(n)\)</span> be the price at time <span class="math notranslate nohighlight">\(t\)</span> of a risk-free pure discount bond maturing at
 <span class="math notranslate nohighlight">\(t + n\)</span> (paying one unit of consumption).</p>
 <p>The one-period gross return on holding an <span class="math notranslate nohighlight">\((n+1)\)</span>-period bond from <span class="math notranslate nohighlight">\(t\)</span> to <span class="math notranslate nohighlight">\(t+1\)</span> is</p>
@@ -639,7 +639,7 @@ R_{t+1} = \frac{p_{t+1}(n)}{p_t(n+1)}
 \]</div>
 <p>The pricing equation <span class="math notranslate nohighlight">\(\mathbb{E}_t(m_{t+1}R_{t+1}) = 1\)</span> implies</p>
 <div class="math notranslate nohighlight" id="equation-eq-bondrecur">
-<span class="eqno">(98.8)<a class="headerlink" href="#equation-eq-bondrecur" title="Link to this equation">#</a></span>\[p_t(n+1) = \mathbb{E}_t\bigl(m_{t+1}\,p_{t+1}(n)\bigr)\]</div>
+<span class="eqno">(99.8)<a class="headerlink" href="#equation-eq-bondrecur" title="Link to this equation">#</a></span>\[p_t(n+1) = \mathbb{E}_t\bigl(m_{t+1}\,p_{t+1}(n)\bigr)\]</div>
 <p>with the initial condition</p>
 <div class="math notranslate nohighlight">
 \[
@@ -647,28 +647,28 @@ p_t(1) = \mathbb{E}_t(m_{t+1}) = \exp(-r_t) = \exp(-\delta_0 - \delta_1^\top z_t
 \]</div>
 </section>
 <section id="exponential-affine-prices">
-<h3><span class="section-number">98.4.2. </span>Exponential affine prices<a class="headerlink" href="#exponential-affine-prices" title="Link to this heading">#</a></h3>
-<p>The recursion <a class="reference internal" href="#equation-eq-bondrecur">(98.8)</a> has an <strong>exponential affine</strong> solution:</p>
+<h3><span class="section-number">99.4.2. </span>Exponential affine prices<a class="headerlink" href="#exponential-affine-prices" title="Link to this heading">#</a></h3>
+<p>The recursion <a class="reference internal" href="#equation-eq-bondrecur">(99.8)</a> has an <strong>exponential affine</strong> solution:</p>
 <div class="math notranslate nohighlight" id="equation-eq-bondprice">
-<span class="eqno">(98.9)<a class="headerlink" href="#equation-eq-bondprice" title="Link to this equation">#</a></span>\[p_t(n) = \exp \bigl(\bar A_n + \bar B_n^\top z_t\bigr)\]</div>
+<span class="eqno">(99.9)<a class="headerlink" href="#equation-eq-bondprice" title="Link to this equation">#</a></span>\[p_t(n) = \exp \bigl(\bar A_n + \bar B_n^\top z_t\bigr)\]</div>
 <p>where the scalar <span class="math notranslate nohighlight">\(\bar A_n\)</span> and the <span class="math notranslate nohighlight">\(m \times 1\)</span> vector <span class="math notranslate nohighlight">\(\bar B_n\)</span> satisfy the
 <strong>Riccati difference equations</strong></p>
 <div class="math notranslate nohighlight" id="equation-eq-riccati-a">
-<span class="eqno">(98.10)<a class="headerlink" href="#equation-eq-riccati-a" title="Link to this equation">#</a></span>\[\bar A_{n+1} = \bar A_n + \bar B_n^\top(\mu - C\lambda_0) + \frac{1}{2}\bar B_n^\top CC^\top\bar B_n - \delta_0\]</div>
+<span class="eqno">(99.10)<a class="headerlink" href="#equation-eq-riccati-a" title="Link to this equation">#</a></span>\[\bar A_{n+1} = \bar A_n + \bar B_n^\top(\mu - C\lambda_0) + \frac{1}{2}\bar B_n^\top CC^\top\bar B_n - \delta_0\]</div>
 <div class="math notranslate nohighlight" id="equation-eq-riccati-b">
-<span class="eqno">(98.11)<a class="headerlink" href="#equation-eq-riccati-b" title="Link to this equation">#</a></span>\[\bar B_{n+1}^\top = \bar B_n^\top(\phi - C\lambda_z) - \delta_1^\top\]</div>
+<span class="eqno">(99.11)<a class="headerlink" href="#equation-eq-riccati-b" title="Link to this equation">#</a></span>\[\bar B_{n+1}^\top = \bar B_n^\top(\phi - C\lambda_z) - \delta_1^\top\]</div>
 <p>with initial conditions <span class="math notranslate nohighlight">\(\bar A_1 = -\delta_0\)</span> and <span class="math notranslate nohighlight">\(\bar B_1 = -\delta_1\)</span>.</p>
 <div class="exercise admonition" id="arp_ex3">
 
-<p class="admonition-title"><span class="caption-number">Exercise 98.3 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 99.3 </span></p>
 <section id="exercise-content">
-<p>Derive the Riccati difference equations <a class="reference internal" href="#equation-eq-riccati-a">(98.10)</a> and <a class="reference internal" href="#equation-eq-riccati-b">(98.11)</a>
-by substituting the conjectured bond price <a class="reference internal" href="#equation-eq-bondprice">(98.9)</a> into the pricing
-recursion <a class="reference internal" href="#equation-eq-bondrecur">(98.8)</a> and matching coefficients.</p>
+<p>Derive the Riccati difference equations <a class="reference internal" href="#equation-eq-riccati-a">(99.10)</a> and <a class="reference internal" href="#equation-eq-riccati-b">(99.11)</a>
+by substituting the conjectured bond price <a class="reference internal" href="#equation-eq-bondprice">(99.9)</a> into the pricing
+recursion <a class="reference internal" href="#equation-eq-bondrecur">(99.8)</a> and matching coefficients.</p>
 <p><em>Hint:</em> Substitute <span class="math notranslate nohighlight">\(p_{t+1}(n) = \exp(\bar A_n + \bar B_n^\top z_{t+1})\)</span> and
-<span class="math notranslate nohighlight">\(\log m_{t+1}\)</span> from <a class="reference internal" href="#equation-eq-sdf">(98.4)</a> into <a class="reference internal" href="#equation-eq-bondrecur">(98.8)</a>.</p>
+<span class="math notranslate nohighlight">\(\log m_{t+1}\)</span> from <a class="reference internal" href="#equation-eq-sdf">(99.4)</a> into <a class="reference internal" href="#equation-eq-bondrecur">(99.8)</a>.</p>
 <p>Use the state
-dynamics <a class="reference internal" href="#equation-eq-var">(98.1)</a> to express <span class="math notranslate nohighlight">\(z_{t+1}\)</span> in terms of <span class="math notranslate nohighlight">\(z_t\)</span> and
+dynamics <a class="reference internal" href="#equation-eq-var">(99.1)</a> to express <span class="math notranslate nohighlight">\(z_{t+1}\)</span> in terms of <span class="math notranslate nohighlight">\(z_t\)</span> and
 <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span>, then evaluate the conditional expectation using the
 lognormal moment generating function.</p>
 </section>
@@ -680,15 +680,15 @@ lognormal moment generating function.</p>
 <p>We want to show that if <span class="math notranslate nohighlight">\(p_t(n) = \exp(\bar A_n + \bar B_n^\top z_t)\)</span>,
 then the recursion <span class="math notranslate nohighlight">\(p_t(n+1) = \mathbb{E}_t(m_{t+1}\, p_{t+1}(n))\)</span> yields
 <span class="math notranslate nohighlight">\(p_t(n+1) = \exp(\bar A_{n+1} + \bar B_{n+1}^\top z_t)\)</span> with
-<span class="math notranslate nohighlight">\(\bar A_{n+1}\)</span> and <span class="math notranslate nohighlight">\(\bar B_{n+1}\)</span> given by <a class="reference internal" href="#equation-eq-riccati-a">(98.10)</a> and
-<a class="reference internal" href="#equation-eq-riccati-b">(98.11)</a>.</p>
-<p>From <a class="reference internal" href="#equation-eq-sdf">(98.4)</a> and <a class="reference internal" href="#equation-eq-bondprice">(98.9)</a>,</p>
+<span class="math notranslate nohighlight">\(\bar A_{n+1}\)</span> and <span class="math notranslate nohighlight">\(\bar B_{n+1}\)</span> given by <a class="reference internal" href="#equation-eq-riccati-a">(99.10)</a> and
+<a class="reference internal" href="#equation-eq-riccati-b">(99.11)</a>.</p>
+<p>From <a class="reference internal" href="#equation-eq-sdf">(99.4)</a> and <a class="reference internal" href="#equation-eq-bondprice">(99.9)</a>,</p>
 <div class="math notranslate nohighlight">
 \[
 \log(m_{t+1}\, p_{t+1}(n)) = -r_t - \frac{1}{2}\lambda_t^\top\lambda_t - \lambda_t^\top\varepsilon_{t+1} + \bar A_n + \bar B_n^\top z_{t+1}
 \]</div>
-<p>Substituting <span class="math notranslate nohighlight">\(z_{t+1} = \mu + \phi z_t + C\varepsilon_{t+1}\)</span> from <a class="reference internal" href="#equation-eq-var">(98.1)</a>
-and <span class="math notranslate nohighlight">\(r_t = \delta_0 + \delta_1^\top z_t\)</span> from <a class="reference internal" href="#equation-eq-shortrate">(98.2)</a> gives</p>
+<p>Substituting <span class="math notranslate nohighlight">\(z_{t+1} = \mu + \phi z_t + C\varepsilon_{t+1}\)</span> from <a class="reference internal" href="#equation-eq-var">(99.1)</a>
+and <span class="math notranslate nohighlight">\(r_t = \delta_0 + \delta_1^\top z_t\)</span> from <a class="reference internal" href="#equation-eq-shortrate">(99.2)</a> gives</p>
 <div class="math notranslate nohighlight">
 \[
 \log(m_{t+1}\, p_{t+1}(n)) = \bar A_n + \bar B_n^\top\mu - \delta_0 + (\bar B_n^\top\phi - \delta_1^\top) z_t - \frac{1}{2}\lambda_t^\top\lambda_t + (\bar B_n^\top C - \lambda_t^\top)\varepsilon_{t+1}
@@ -710,13 +710,13 @@ and <span class="math notranslate nohighlight">\(r_t = \delta_0 + \delta_1^\top 
 \log p_t(n+1) = \underbrace{\bar A_n + \bar B_n^\top(\mu - C\lambda_0) + \frac{1}{2}\bar B_n^\top CC^\top \bar B_n - \delta_0}_{\bar A_{n+1}} + \underbrace{(\bar B_n^\top(\phi - C\lambda_z) - \delta_1^\top)}_{\bar B_{n+1}^\top} z_t
 \]</div>
 <p>Matching the constant and the coefficient on <span class="math notranslate nohighlight">\(z_t\)</span> gives the Riccati
-equations <a class="reference internal" href="#equation-eq-riccati-a">(98.10)</a> and <a class="reference internal" href="#equation-eq-riccati-b">(98.11)</a>.</p>
+equations <a class="reference internal" href="#equation-eq-riccati-a">(99.10)</a> and <a class="reference internal" href="#equation-eq-riccati-b">(99.11)</a>.</p>
 <p>Setting <span class="math notranslate nohighlight">\(n = 0\)</span> with <span class="math notranslate nohighlight">\(p_t(1) = \exp(-r_t) = \exp(-\delta_0 - \delta_1^\top z_t)\)</span> gives <span class="math notranslate nohighlight">\(\bar A_1 = -\delta_0\)</span> and <span class="math notranslate nohighlight">\(\bar B_1 = -\delta_1\)</span>.</p>
 </section>
 </div>
 </section>
 <section id="yields">
-<h3><span class="section-number">98.4.3. </span>Yields<a class="headerlink" href="#yields" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.4.3. </span>Yields<a class="headerlink" href="#yields" title="Link to this heading">#</a></h3>
 <p>The <strong>yield to maturity</strong> on an <span class="math notranslate nohighlight">\(n\)</span>-period bond is the constant rate <span class="math notranslate nohighlight">\(y\)</span>
 at which one would discount the face value to obtain the observed price,
 i.e., <span class="math notranslate nohighlight">\(p_t(n) = e^{-n\,y}\)</span>.</p>
@@ -725,14 +725,14 @@ i.e., <span class="math notranslate nohighlight">\(p_t(n) = e^{-n\,y}\)</span>.<
 \[
 y_t(n) = -\frac{\log p_t(n)}{n}
 \]</div>
-<p>Substituting <a class="reference internal" href="#equation-eq-bondprice">(98.9)</a> gives</p>
+<p>Substituting <a class="reference internal" href="#equation-eq-bondprice">(99.9)</a> gives</p>
 <div class="math notranslate nohighlight" id="equation-eq-yield">
-<span class="eqno">(98.12)<a class="headerlink" href="#equation-eq-yield" title="Link to this equation">#</a></span>\[y_t(n) = A_n + B_n^\top z_t\]</div>
+<span class="eqno">(99.12)<a class="headerlink" href="#equation-eq-yield" title="Link to this equation">#</a></span>\[y_t(n) = A_n + B_n^\top z_t\]</div>
 <p>where <span class="math notranslate nohighlight">\(A_n = -\bar A_n / n\)</span> and <span class="math notranslate nohighlight">\(B_n = -\bar B_n / n\)</span>.</p>
 <p><em>Yields are affine functions of the state vector <span class="math notranslate nohighlight">\(z_t\)</span>.</em></p>
 <p>This is the defining property of affine term structure models.</p>
-<p>We now implement the bond pricing formulas <a class="reference internal" href="#equation-eq-riccati-a">(98.10)</a>, <a class="reference internal" href="#equation-eq-riccati-b">(98.11)</a>,
-and <a class="reference internal" href="#equation-eq-yield">(98.12)</a>.</p>
+<p>We now implement the bond pricing formulas <a class="reference internal" href="#equation-eq-riccati-a">(99.10)</a>, <a class="reference internal" href="#equation-eq-riccati-b">(99.11)</a>,
+and <a class="reference internal" href="#equation-eq-yield">(99.12)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">bond_coefficients</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">n_max</span><span class="p">):</span>
@@ -766,7 +766,7 @@ and <a class="reference internal" href="#equation-eq-yield">(98.12)</a>.</p>
 </div>
 </section>
 <section id="a-one-factor-gaussian-example">
-<h3><span class="section-number">98.4.4. </span>A one-factor Gaussian example<a class="headerlink" href="#a-one-factor-gaussian-example" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.4.4. </span>A one-factor Gaussian example<a class="headerlink" href="#a-one-factor-gaussian-example" title="Link to this heading">#</a></h3>
 <p>To build intuition, we start with a single-factor (<span class="math notranslate nohighlight">\(m=1\)</span>) Gaussian model.</p>
 <p>With <span class="math notranslate nohighlight">\(m = 1\)</span>, the state <span class="math notranslate nohighlight">\(z_t\)</span> follows an AR(1) process
 <span class="math notranslate nohighlight">\(z_{t+1} = \mu + \phi z_t + C\varepsilon_{t+1}\)</span>.</p>
@@ -791,7 +791,7 @@ the range of short rates the model generates via <span class="math notranslate n
 </div>
 </section>
 <section id="yield-curve-shapes">
-<h3><span class="section-number">98.4.5. </span>Yield curve shapes<a class="headerlink" href="#yield-curve-shapes" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.4.5. </span>Yield curve shapes<a class="headerlink" href="#yield-curve-shapes" title="Link to this heading">#</a></h3>
 <p>We compute yield curves <span class="math notranslate nohighlight">\(y_t(n)\)</span> across a range of short-rate states <span class="math notranslate nohighlight">\(z_t\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -852,7 +852,7 @@ the range of short rates the model generates via <span class="math notranslate n
 <figure class="align-default" id="fig-yield-curves-1f">
 <img alt="_images/a5a9fa829f538b21a1eccbdb9078f33bb0b0b84274c99240420e874d57ab23a5.png" src="_images/a5a9fa829f538b21a1eccbdb9078f33bb0b0b84274c99240420e874d57ab23a5.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 98.1 </span><span class="caption-text">Yield curves under the one-factor affine model</span><a class="headerlink" href="#fig-yield-curves-1f" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 99.1 </span><span class="caption-text">Yield curves under the one-factor affine model</span><a class="headerlink" href="#fig-yield-curves-1f" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -864,19 +864,19 @@ maturities, and the long-run yield lies above the mean short rate
 <span class="math notranslate nohighlight">\(\delta_0\)</span>.</p>
 <div class="exercise admonition" id="arp_ex4">
 
-<p class="admonition-title"><span class="caption-number">Exercise 98.4 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 99.4 </span></p>
 <section id="exercise-content">
 <p>Show that the long-run yield satisfies</p>
 <div class="math notranslate nohighlight" id="equation-eq-y-inf">
-<span class="eqno">(98.13)<a class="headerlink" href="#equation-eq-y-inf" title="Link to this equation">#</a></span>\[y_\infty
+<span class="eqno">(99.13)<a class="headerlink" href="#equation-eq-y-inf" title="Link to this equation">#</a></span>\[y_\infty
   = \delta_0
   - \bar B_\infty^\top(\mu - C\lambda_0)
   - \tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty\]</div>
 <p>where <span class="math notranslate nohighlight">\(\bar B_\infty = -(I - (\phi - C\lambda_z)^\top)^{-1} \delta_1\)</span>
-is the fixed point of the recursion <a class="reference internal" href="#equation-eq-riccati-b">(98.11)</a>.</p>
+is the fixed point of the recursion <a class="reference internal" href="#equation-eq-riccati-b">(99.11)</a>.</p>
 <p>Then explain why <span class="math notranslate nohighlight">\(y_\infty &gt; \delta_0\)</span> under this parameterization.</p>
-<p><em>Hint:</em> Use <a class="reference internal" href="#equation-eq-yield">(98.12)</a> and the Riccati equations
-<a class="reference internal" href="#equation-eq-riccati-a">(98.10)</a>–<a class="reference internal" href="#equation-eq-riccati-b">(98.11)</a>.  For the inequality, consider
+<p><em>Hint:</em> Use <a class="reference internal" href="#equation-eq-yield">(99.12)</a> and the Riccati equations
+<a class="reference internal" href="#equation-eq-riccati-a">(99.10)</a>–<a class="reference internal" href="#equation-eq-riccati-b">(99.11)</a>.  For the inequality, consider
 each subtracted term separately.</p>
 </section>
 </div>
@@ -884,13 +884,13 @@ each subtracted term separately.</p>
 
 <p class="admonition-title">Solution</p>
 <section id="solution-content">
-<p>The recursion <a class="reference internal" href="#equation-eq-riccati-b">(98.11)</a> is a linear difference equation <span class="math notranslate nohighlight">\(\bar B_{n+1} = (\phi - C\lambda_z)^\top \bar B_n - \delta_1\)</span>.</p>
+<p>The recursion <a class="reference internal" href="#equation-eq-riccati-b">(99.11)</a> is a linear difference equation <span class="math notranslate nohighlight">\(\bar B_{n+1} = (\phi - C\lambda_z)^\top \bar B_n - \delta_1\)</span>.</p>
 <p>When <span class="math notranslate nohighlight">\(\phi - C\lambda_z\)</span> has eigenvalues inside the unit circle, <span class="math notranslate nohighlight">\(\bar B_n\)</span> converges to <span class="math notranslate nohighlight">\(\bar B_\infty = -(I - (\phi - C\lambda_z)^\top)^{-1} \delta_1\)</span>.</p>
-<p>Since <span class="math notranslate nohighlight">\(\bar B_\infty\)</span> is finite, <span class="math notranslate nohighlight">\(\bar B_n^\top z_t / n \to 0\)</span> in <a class="reference internal" href="#equation-eq-yield">(98.12)</a>, so <span class="math notranslate nohighlight">\(y_t(n) \to \lim_{n\to\infty} -\bar A_n / n\)</span> regardless of <span class="math notranslate nohighlight">\(z_t\)</span>.</p>
+<p>Since <span class="math notranslate nohighlight">\(\bar B_\infty\)</span> is finite, <span class="math notranslate nohighlight">\(\bar B_n^\top z_t / n \to 0\)</span> in <a class="reference internal" href="#equation-eq-yield">(99.12)</a>, so <span class="math notranslate nohighlight">\(y_t(n) \to \lim_{n\to\infty} -\bar A_n / n\)</span> regardless of <span class="math notranslate nohighlight">\(z_t\)</span>.</p>
 <p>To find this limit, write <span class="math notranslate nohighlight">\(\bar A_n = \bar A_1 + \sum_{k=1}^{n-1}(\bar A_{k+1} - \bar A_k)\)</span>.</p>
-<p>By <a class="reference internal" href="#equation-eq-riccati-a">(98.10)</a>, each increment depends on <span class="math notranslate nohighlight">\(\bar B_k\)</span>, which converges to <span class="math notranslate nohighlight">\(\bar B_\infty\)</span>, so the increment converges to <span class="math notranslate nohighlight">\(L \equiv \bar B_\infty^\top(\mu - C\lambda_0) + \tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty - \delta_0\)</span>.</p>
-<p>Therefore <span class="math notranslate nohighlight">\(\bar A_n / n \to L\)</span> and <span class="math notranslate nohighlight">\(y_\infty = -L\)</span>, giving <a class="reference internal" href="#equation-eq-y-inf">(98.13)</a>.</p>
-<p>To see why <span class="math notranslate nohighlight">\(y_\infty &gt; \delta_0\)</span>, note that the two subtracted terms in <a class="reference internal" href="#equation-eq-y-inf">(98.13)</a> have opposite signs under this parameterization.</p>
+<p>By <a class="reference internal" href="#equation-eq-riccati-a">(99.10)</a>, each increment depends on <span class="math notranslate nohighlight">\(\bar B_k\)</span>, which converges to <span class="math notranslate nohighlight">\(\bar B_\infty\)</span>, so the increment converges to <span class="math notranslate nohighlight">\(L \equiv \bar B_\infty^\top(\mu - C\lambda_0) + \tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty - \delta_0\)</span>.</p>
+<p>Therefore <span class="math notranslate nohighlight">\(\bar A_n / n \to L\)</span> and <span class="math notranslate nohighlight">\(y_\infty = -L\)</span>, giving <a class="reference internal" href="#equation-eq-y-inf">(99.13)</a>.</p>
+<p>To see why <span class="math notranslate nohighlight">\(y_\infty &gt; \delta_0\)</span>, note that the two subtracted terms in <a class="reference internal" href="#equation-eq-y-inf">(99.13)</a> have opposite signs under this parameterization.</p>
 <p>The quadratic term <span class="math notranslate nohighlight">\(\tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty = \tfrac{1}{2}\|C^\top \bar B_\infty\|^2 \geq 0\)</span> always.</p>
 <p>This is a <strong>convexity effect</strong> from Jensen’s inequality that pushes <span class="math notranslate nohighlight">\(y_\infty\)</span> below <span class="math notranslate nohighlight">\(\delta_0\)</span>.</p>
 <p>The linear term <span class="math notranslate nohighlight">\(\bar B_\infty^\top(\mu - C\lambda_0)\)</span> is negative because <span class="math notranslate nohighlight">\(\bar B_\infty &lt; 0\)</span> (since <span class="math notranslate nohighlight">\(\delta_1 &gt; 0\)</span>) while <span class="math notranslate nohighlight">\(\mu - C\lambda_0 &gt; 0\)</span> (since <span class="math notranslate nohighlight">\(\lambda_0 &lt; 0\)</span>).  Subtracting this negative quantity raises <span class="math notranslate nohighlight">\(y_\infty\)</span> above <span class="math notranslate nohighlight">\(\delta_0\)</span>.</p>
@@ -927,14 +927,14 @@ each subtracted term separately.</p>
 <figure class="align-default" id="fig-simulated-short-rate">
 <img alt="_images/984b023842c34ef9760472e3091656d01545d1439fb22e549ccd9cc0dea0f818.png" src="_images/984b023842c34ef9760472e3091656d01545d1439fb22e549ccd9cc0dea0f818.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 98.2 </span><span class="caption-text">Simulated short rate path</span><a class="headerlink" href="#fig-simulated-short-rate" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 99.2 </span><span class="caption-text">Simulated short rate path</span><a class="headerlink" href="#fig-simulated-short-rate" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
 </div>
 </section>
 <section id="a-two-factor-model">
-<h3><span class="section-number">98.4.6. </span>A two-factor model<a class="headerlink" href="#a-two-factor-model" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.4.6. </span>A two-factor model<a class="headerlink" href="#a-two-factor-model" title="Link to this heading">#</a></h3>
 <p>To match richer yield-curve dynamics, practitioners routinely use <span class="math notranslate nohighlight">\(m \geq 2\)</span>
 factors.</p>
 <p>We now introduce a two-factor specification with state
@@ -1049,7 +1049,7 @@ Eigenvalues of φ - Cλ_z: [0.975 0.903]
 <figure class="align-default" id="fig-yield-curves-2f">
 <img alt="_images/d279b621cb0b395893fb5a8f6d481b11bab4e4be11526214e087c0ca92081409.png" src="_images/d279b621cb0b395893fb5a8f6d481b11bab4e4be11526214e087c0ca92081409.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 98.3 </span><span class="caption-text">Yield curves and factor loadings under the two-factor model</span><a class="headerlink" href="#fig-yield-curves-2f" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 99.3 </span><span class="caption-text">Yield curves and factor loadings under the two-factor model</span><a class="headerlink" href="#fig-yield-curves-2f" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -1058,11 +1058,11 @@ Eigenvalues of φ - Cλ_z: [0.975 0.903]
 </section>
 </section>
 <section id="risk-premiums">
-<h2><span class="section-number">98.5. </span>Risk premiums<a class="headerlink" href="#risk-premiums" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">99.5. </span>Risk premiums<a class="headerlink" href="#risk-premiums" title="Link to this heading">#</a></h2>
 <p>A key object in the affine term structure model is the <strong>term premium</strong>, the
 expected excess return on a long-term bond relative to rolling over short-term bonds.</p>
 <p>For an <span class="math notranslate nohighlight">\((n+1)\)</span>-period bond held for one period, the shock loading is
-<span class="math notranslate nohighlight">\(\alpha_n = C^\top \bar B_n\)</span>, so <a class="reference internal" href="#equation-eq-excess">(98.7)</a> gives</p>
+<span class="math notranslate nohighlight">\(\alpha_n = C^\top \bar B_n\)</span>, so <a class="reference internal" href="#equation-eq-excess">(99.7)</a> gives</p>
 <div class="math notranslate nohighlight">
 \[
 \log \mathbb{E}_t R_{t+1}^{(n+1)} - r_t \;=\; \bar B_n^\top C \lambda_t
@@ -1090,14 +1090,14 @@ calibration), and long-bond term premiums can become negative at
 longer maturities.</p>
 <div class="exercise admonition" id="arp_ex5">
 
-<p class="admonition-title"><span class="caption-number">Exercise 98.5 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 99.5 </span></p>
 <section id="exercise-content">
 <p>Derive the term premium formula above by computing the one-period holding
 return on an <span class="math notranslate nohighlight">\((n+1)\)</span>-period bond and identifying its shock loading.</p>
 <p><em>Hint:</em> Use <span class="math notranslate nohighlight">\(R_{t+1}^{(n+1)} = p_{t+1}(n)/p_t(n+1)\)</span> with
 <span class="math notranslate nohighlight">\(\log p_t(n) = \bar A_n + \bar B_n^\top z_t\)</span>, substitute the state
-dynamics <a class="reference internal" href="#equation-eq-var">(98.1)</a>, and apply the Riccati equations
-<a class="reference internal" href="#equation-eq-riccati-a">(98.10)</a>–<a class="reference internal" href="#equation-eq-riccati-b">(98.11)</a> to simplify.</p>
+dynamics <a class="reference internal" href="#equation-eq-var">(99.1)</a>, and apply the Riccati equations
+<a class="reference internal" href="#equation-eq-riccati-a">(99.10)</a>–<a class="reference internal" href="#equation-eq-riccati-b">(99.11)</a> to simplify.</p>
 </section>
 </div>
 <div class="solution dropdown admonition" id="affine_risk_prices-solution-9">
@@ -1110,7 +1110,7 @@ dynamics <a class="reference internal" href="#equation-eq-var">(98.1)</a>, and a
 \[
 \log R_{t+1}^{(n+1)} = \bar A_n + \bar B_n^\top z_{t+1} - \bar A_{n+1} - \bar B_{n+1}^\top z_t
 \]</div>
-<p>Substituting <span class="math notranslate nohighlight">\(z_{t+1} = \mu + \phi z_t + C\varepsilon_{t+1}\)</span> from <a class="reference internal" href="#equation-eq-var">(98.1)</a>:</p>
+<p>Substituting <span class="math notranslate nohighlight">\(z_{t+1} = \mu + \phi z_t + C\varepsilon_{t+1}\)</span> from <a class="reference internal" href="#equation-eq-var">(99.1)</a>:</p>
 <div class="math notranslate nohighlight">
 \[
 = \underbrace{(\bar A_n + \bar B_n^\top \mu - \bar A_{n+1})}_{\text{constant}}
@@ -1118,14 +1118,14 @@ dynamics <a class="reference internal" href="#equation-eq-var">(98.1)</a>, and a
   + \underbrace{\bar B_n^\top C}_{\text{shock loading}}\, \varepsilon_{t+1}
 \]</div>
 <p>We now use the Riccati equations to simplify each piece.</p>
-<p>For the constant piece, <a class="reference internal" href="#equation-eq-riccati-a">(98.10)</a> gives
+<p>For the constant piece, <a class="reference internal" href="#equation-eq-riccati-a">(99.10)</a> gives
 <span class="math notranslate nohighlight">\(\bar A_{n+1} = \bar A_n + \bar B_n^\top(\mu - C\lambda_0) + \tfrac{1}{2}\bar B_n^\top CC^\top \bar B_n - \delta_0\)</span>, so</p>
 <div class="math notranslate nohighlight">
 \[
 \bar A_n + \bar B_n^\top \mu - \bar A_{n+1}
   = \bar B_n^\top C\lambda_0 - \tfrac{1}{2}\bar B_n^\top CC^\top \bar B_n + \delta_0
 \]</div>
-<p>For the <span class="math notranslate nohighlight">\(z_t\)</span> coefficient, <a class="reference internal" href="#equation-eq-riccati-b">(98.11)</a> gives
+<p>For the <span class="math notranslate nohighlight">\(z_t\)</span> coefficient, <a class="reference internal" href="#equation-eq-riccati-b">(99.11)</a> gives
 <span class="math notranslate nohighlight">\(\bar B_{n+1}^\top = \bar B_n^\top(\phi - C\lambda_z) - \delta_1^\top\)</span>, so</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1140,7 +1140,7 @@ dynamics <a class="reference internal" href="#equation-eq-var">(98.1)</a>, and a
   - \tfrac{1}{2}\bar B_n^\top CC^\top \bar B_n
   + \bar B_n^\top C\,\varepsilon_{t+1}
 \]</div>
-<p>Writing <span class="math notranslate nohighlight">\(\alpha_n = C^\top \bar B_n\)</span>, this takes the generic return form <a class="reference internal" href="#equation-eq-return">(98.5)</a>:</p>
+<p>Writing <span class="math notranslate nohighlight">\(\alpha_n = C^\top \bar B_n\)</span>, this takes the generic return form <a class="reference internal" href="#equation-eq-return">(99.5)</a>:</p>
 <div class="math notranslate nohighlight">
 \[
 \log R_{t+1}^{(n+1)}
@@ -1227,7 +1227,7 @@ dynamics <a class="reference internal" href="#equation-eq-var">(98.1)</a>, and a
 <figure class="align-default" id="fig-term-premiums-2f">
 <img alt="_images/342a835d8f20df2e67c7c250d46ebb9b3e17ce5e5f54032b7a01a5037717550c.png" src="_images/342a835d8f20df2e67c7c250d46ebb9b3e17ce5e5f54032b7a01a5037717550c.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 98.4 </span><span class="caption-text">Term premiums and factor decomposition under the two-factor model</span><a class="headerlink" href="#fig-term-premiums-2f" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 99.4 </span><span class="caption-text">Term premiums and factor decomposition under the two-factor model</span><a class="headerlink" href="#fig-term-premiums-2f" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -1235,9 +1235,9 @@ dynamics <a class="reference internal" href="#equation-eq-var">(98.1)</a>, and a
 <p>We see that the term premium is positive at all maturities in the low-rate state, but becomes negative at longer maturities in the high-rate state.</p>
 </section>
 <section id="risk-neutral-probabilities">
-<h2><span class="section-number">98.6. </span>Risk-neutral probabilities<a class="headerlink" href="#risk-neutral-probabilities" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">99.6. </span>Risk-neutral probabilities<a class="headerlink" href="#risk-neutral-probabilities" title="Link to this heading">#</a></h2>
 <p>We return to the VAR and short-rate equations
-<a class="reference internal" href="#equation-eq-var">(98.1)</a>–<a class="reference internal" href="#equation-eq-shortrate">(98.2)</a>, which for convenience we repeat here:</p>
+<a class="reference internal" href="#equation-eq-var">(99.1)</a>–<a class="reference internal" href="#equation-eq-shortrate">(99.2)</a>, which for convenience we repeat here:</p>
 <div class="math notranslate nohighlight">
 \[
 z_{t+1} = \mu + \phi z_t + C\varepsilon_{t+1}, \qquad
@@ -1250,11 +1250,11 @@ from the <strong>risk-neutral measure</strong> <span class="math notranslate noh
 <p>Under the physical measure, the conditional distribution of <span class="math notranslate nohighlight">\(z_{t+1}\)</span> given
 <span class="math notranslate nohighlight">\(z_t\)</span> is <span class="math notranslate nohighlight">\(\mathcal{N}(\mu + \phi z_t,\; CC^\top)\)</span>.</p>
 <section id="change-of-measure">
-<h3><span class="section-number">98.6.1. </span>Change of measure<a class="headerlink" href="#change-of-measure" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.6.1. </span>Change of measure<a class="headerlink" href="#change-of-measure" title="Link to this heading">#</a></h3>
 <p>With the risk-price vector <span class="math notranslate nohighlight">\(\lambda_t = \lambda_0 + \lambda_z z_t\)</span> from
-<a class="reference internal" href="#equation-eq-riskprices">(98.3)</a>, define the non-negative random variable</p>
+<a class="reference internal" href="#equation-eq-riskprices">(99.3)</a>, define the non-negative random variable</p>
 <div class="math notranslate nohighlight" id="equation-eq-rn-ratio">
-<span class="eqno">(98.14)<a class="headerlink" href="#equation-eq-rn-ratio" title="Link to this equation">#</a></span>\[\frac{\xi^Q_{t+1}}{\xi^Q_t}
+<span class="eqno">(99.14)<a class="headerlink" href="#equation-eq-rn-ratio" title="Link to this equation">#</a></span>\[\frac{\xi^Q_{t+1}}{\xi^Q_t}
   = \exp\!\left(-\tfrac{1}{2}\lambda_t^\top\lambda_t
                 - \lambda_t^\top\varepsilon_{t+1}\right)\]</div>
 <p>This is a log-normal random variable with mean 1, so it is a valid
@@ -1282,12 +1282,12 @@ z_{t+1} = (\mu - C\lambda_0) + (\phi - C\lambda_z)\,z_t
 exposure to the risks <span class="math notranslate nohighlight">\(\varepsilon_{t+1}\)</span>.</p>
 </section>
 <section id="asset-pricing-in-a-nutshell">
-<h3><span class="section-number">98.6.2. </span>Asset pricing in a nutshell<a class="headerlink" href="#asset-pricing-in-a-nutshell" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.6.2. </span>Asset pricing in a nutshell<a class="headerlink" href="#asset-pricing-in-a-nutshell" title="Link to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(\mathbb{E}^P\)</span> denote an expectation under the physical measure that
 nature uses to generate the data.</p>
 <p>Our key asset pricing equation is
 <span class="math notranslate nohighlight">\(\mathbb{E}^P_t m_{t+1} R_{j,t+1} = 1\)</span> for all returns <span class="math notranslate nohighlight">\(R_{j,t+1}\)</span>.</p>
-<p>Using <a class="reference internal" href="#equation-eq-rn-ratio">(98.14)</a>, we can express the SDF <a class="reference internal" href="#equation-eq-sdf">(98.4)</a> as</p>
+<p>Using <a class="reference internal" href="#equation-eq-rn-ratio">(99.14)</a>, we can express the SDF <a class="reference internal" href="#equation-eq-sdf">(99.4)</a> as</p>
 <div class="math notranslate nohighlight">
 \[
 m_{t+1} = \frac{\xi^Q_{t+1}}{\xi^Q_t}\,\exp(-r_t)
@@ -1297,18 +1297,18 @@ m_{t+1} = \frac{\xi^Q_{t+1}}{\xi^Q_t}\,\exp(-r_t)
 \tfrac{\xi^Q_{t+1}}{\xi^Q_t}\, R_{j,t+1}\bigr) = 1\)</span>
 is equivalent to</p>
 <div class="math notranslate nohighlight" id="equation-eq-qpricing">
-<span class="eqno">(98.15)<a class="headerlink" href="#equation-eq-qpricing" title="Link to this equation">#</a></span>\[\mathbb{E}^Q_t R_{j,t+1} = \exp(r_t)\]</div>
+<span class="eqno">(99.15)<a class="headerlink" href="#equation-eq-qpricing" title="Link to this equation">#</a></span>\[\mathbb{E}^Q_t R_{j,t+1} = \exp(r_t)\]</div>
 <p><em>Under the risk-neutral measure, expected returns on all assets equal
 the risk-free return.</em></p>
 </section>
 <section id="verification-via-risk-neutral-pricing">
-<h3><span class="section-number">98.6.3. </span>Verification via risk-neutral pricing<a class="headerlink" href="#verification-via-risk-neutral-pricing" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.6.3. </span>Verification via risk-neutral pricing<a class="headerlink" href="#verification-via-risk-neutral-pricing" title="Link to this heading">#</a></h3>
 <p>Bond prices can be computed by discounting at <span class="math notranslate nohighlight">\(r_t\)</span> under <span class="math notranslate nohighlight">\(Q\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
 p_t(n) = \mathbb{E}^Q_t  \left[\exp \left(-\sum_{s=0}^{n-1}r_{t+s}\right)\right]
 \]</div>
-<p>We can verify that this agrees with <a class="reference internal" href="#equation-eq-bondprice">(98.9)</a> by iterating the affine
+<p>We can verify that this agrees with <a class="reference internal" href="#equation-eq-bondprice">(99.9)</a> by iterating the affine
 recursion under the risk-neutral VAR.</p>
 <p>Below we confirm this numerically</p>
 <div class="cell docutils container">
@@ -1357,15 +1357,15 @@ recursion under the risk-neutral VAR.</p>
 </div>
 </div>
 <p>The analytical and Monte Carlo bond prices agree closely, validating the
-Riccati recursion <a class="reference internal" href="#equation-eq-riccati-a">(98.10)</a>–<a class="reference internal" href="#equation-eq-riccati-b">(98.11)</a>.</p>
+Riccati recursion <a class="reference internal" href="#equation-eq-riccati-a">(99.10)</a>–<a class="reference internal" href="#equation-eq-riccati-b">(99.11)</a>.</p>
 </section>
 </section>
 <section id="distorted-beliefs">
-<h2><span class="section-number">98.7. </span>Distorted beliefs<a class="headerlink" href="#distorted-beliefs" title="Link to this heading">#</a></h2>
-<p><span id="id8">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id358" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span> assemble survey evidence suggesting that economic
+<h2><span class="section-number">99.7. </span>Distorted beliefs<a class="headerlink" href="#distorted-beliefs" title="Link to this heading">#</a></h2>
+<p><span id="id8">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id374" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span> assemble survey evidence suggesting that economic
 experts’ forecasts are systematically biased relative to the physical measure.</p>
 <section id="the-subjective-measure">
-<h3><span class="section-number">98.7.1. </span>The subjective measure<a class="headerlink" href="#the-subjective-measure" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">99.7.1. </span>The subjective measure<a class="headerlink" href="#the-subjective-measure" title="Link to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(\{z_t\}_{t=1}^T\)</span> be a record of observations on the state and let
 <span class="math notranslate nohighlight">\(\{\check z_{t+1}\}_{t=1}^T\)</span> be a record of one-period-ahead expert forecasts.</p>
 <p>Let <span class="math notranslate nohighlight">\(\check\mu, \check\phi\)</span> be the regression coefficients in</p>
@@ -1375,13 +1375,13 @@ experts’ forecasts are systematically biased relative to the physical measure.
 \]</div>
 <p>where the residual <span class="math notranslate nohighlight">\(e_{t+1}\)</span> has mean zero, is orthogonal to <span class="math notranslate nohighlight">\(z_t\)</span>, and
 satisfies <span class="math notranslate nohighlight">\(\mathbb{E}\,e_{t+1} e_{t+1}^\top = CC^\top\)</span>.</p>
-<p>By comparing estimates of <span class="math notranslate nohighlight">\(\mu, \phi\)</span> from <a class="reference internal" href="#equation-eq-var">(98.1)</a> with estimates of
-<span class="math notranslate nohighlight">\(\check\mu, \check\phi\)</span> from the experts’ forecasts, <span id="id9">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id358" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span>
+<p>By comparing estimates of <span class="math notranslate nohighlight">\(\mu, \phi\)</span> from <a class="reference internal" href="#equation-eq-var">(99.1)</a> with estimates of
+<span class="math notranslate nohighlight">\(\check\mu, \check\phi\)</span> from the experts’ forecasts, <span id="id9">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id374" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span>
 deduce that the experts’ beliefs are systematically distorted.</p>
 <p>To organize this evidence, let <span class="math notranslate nohighlight">\(\kappa_t = \kappa_0 + \kappa_z z_t\)</span> and define
 the likelihood ratio</p>
 <div class="math notranslate nohighlight" id="equation-eq-srat">
-<span class="eqno">(98.16)<a class="headerlink" href="#equation-eq-srat" title="Link to this equation">#</a></span>\[\frac{\xi^S_{t+1}}{\xi^S_t}
+<span class="eqno">(99.16)<a class="headerlink" href="#equation-eq-srat" title="Link to this equation">#</a></span>\[\frac{\xi^S_{t+1}}{\xi^S_t}
   = \exp\!\left(-\tfrac{1}{2}\kappa_t^\top\kappa_t
                 - \kappa_t^\top\varepsilon_{t+1}\right)\]</div>
 <p>This is log-normal with mean 1, so it is a valid likelihood ratio.</p>
@@ -1395,13 +1395,13 @@ z_{t+1} \mid z_t \;\overset{S}{\sim}\;
 \]</div>
 <p>In the experts’ forecast regression, <span class="math notranslate nohighlight">\(\check\mu\)</span> estimates
 <span class="math notranslate nohighlight">\(\mu - C\kappa_0\)</span> and <span class="math notranslate nohighlight">\(\check\phi\)</span> estimates <span class="math notranslate nohighlight">\(\phi - C\kappa_z\)</span>.</p>
-<p><span id="id10">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id358" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span> find that the experts behave as if the level and
+<p><span id="id10">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id374" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span> find that the experts behave as if the level and
 slope of the yield curve are more persistent than under the physical measure:
 <span class="math notranslate nohighlight">\(\check\phi\)</span> has larger eigenvalues than <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
 </section>
 <section id="pricing-under-distorted-beliefs">
-<h3><span class="section-number">98.7.2. </span>Pricing under distorted beliefs<a class="headerlink" href="#pricing-under-distorted-beliefs" title="Link to this heading">#</a></h3>
-<p><span id="id11">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id358" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span> explore the hypothesis that a representative
+<h3><span class="section-number">99.7.2. </span>Pricing under distorted beliefs<a class="headerlink" href="#pricing-under-distorted-beliefs" title="Link to this heading">#</a></h3>
+<p><span id="id11">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id374" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span> explore the hypothesis that a representative
 agent with these distorted beliefs prices assets and makes returns satisfy</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1418,7 +1418,7 @@ m^\star_{t+1} = \exp\!\left(-r^\star_t
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(r^\star_t\)</span> is the short rate and <span class="math notranslate nohighlight">\(\lambda^\star_t\)</span> is the agent’s
 vector of risk prices.</p>
-<p>Using <a class="reference internal" href="#equation-eq-srat">(98.16)</a> to convert to the physical measure, the subjective
+<p>Using <a class="reference internal" href="#equation-eq-srat">(99.16)</a> to convert to the physical measure, the subjective
 pricing equation becomes</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1464,7 +1464,7 @@ agent’s true risk prices <span class="math notranslate nohighlight">\(\lambda^
 <p>Below we construct a numerical example to illustrate this point.</p>
 <p>We keep the same physical state dynamics and short-rate specification as above, but choose a separate true risk-price process <span class="math notranslate nohighlight">\((\lambda_t^\star)\)</span> and a distorted-belief econometrician process <span class="math notranslate nohighlight">\((\hat\lambda_t)\)</span> to illustrate the decomposition.</p>
 <p>We then set the subjective parameters <span class="math notranslate nohighlight">\(\check\mu, \check\phi\)</span> to match the evidence in
-<span id="id12">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id358" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span> that experts behave as if the level and slope of the yield curve are more persistent than under the physical measure.</p>
+<span id="id12">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id374" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span> that experts behave as if the level and slope of the yield curve are more persistent than under the physical measure.</p>
 <p>In particular, we use</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -1549,7 +1549,7 @@ agent’s true risk prices <span class="math notranslate nohighlight">\(\lambda^
 <figure class="align-default" id="fig-distorted-beliefs">
 <img alt="_images/2a27f7aea992b09a6a0c0770cbc73f43adf743588ef763db9c352614620455af.png" src="_images/2a27f7aea992b09a6a0c0770cbc73f43adf743588ef763db9c352614620455af.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 98.5 </span><span class="caption-text">True vs. distorted-belief term premiums and overstatement ratio</span><a class="headerlink" href="#fig-distorted-beliefs" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 99.5 </span><span class="caption-text">True vs. distorted-belief term premiums and overstatement ratio</span><a class="headerlink" href="#fig-distorted-beliefs" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -1559,13 +1559,13 @@ than <span class="math notranslate nohighlight">\(\phi\)</span>), the rational-e
 the observed risk premium to risk aversion.</p>
 <p>Disentangling belief distortions from genuine risk prices requires additional
 data, for example, the survey forecasts used by
-<span id="id13">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id358" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span>.</p>
+<span id="id13">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id374" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span>.</p>
 <p>Our <a class="reference external" href="https://python-advanced.quantecon.org/risk_aversion_or_mistaken_beliefs.html" title="(in Project name not set)"><span>Risk Aversion or Mistaken Beliefs?</span></a> lecture
 explores this confounding in greater depth.</p>
 </section>
 </section>
 <section id="concluding-remarks">
-<h2><span class="section-number">98.8. </span>Concluding remarks<a class="headerlink" href="#concluding-remarks" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">99.8. </span>Concluding remarks<a class="headerlink" href="#concluding-remarks" title="Link to this heading">#</a></h2>
 <p>The affine model of the stochastic discount factor provides a flexible and tractable
 framework for studying asset prices.</p>
 <p>Key features are:</p>
@@ -1579,12 +1579,12 @@ the relevant methods) without imposing restrictions from a full general equilibr
 policy, real activity, volatility, etc.).</p></li>
 <li><p><strong>Belief distortions:</strong> The framework naturally accommodates non-rational beliefs via
 likelihood-ratio twists of the physical measure, as in
-<span id="id14">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id358" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span>.</p></li>
+<span id="id14">Piazzesi <em>et al.</em> [<a class="reference internal" href="zreferences.html#id374" title="Monika Piazzesi, Juliana Salomao, and Martin Schneider. Trend and Cycle in Bond Premia. Working Paper, Stanford University, 2015.">2015</a>]</span>.</p></li>
 </ol>
 <p>The model also connects directly to the Hansen–Jagannathan bounds studied in
 <a class="reference external" href="https://python-advanced.quantecon.org/doubts_or_variability.html" title="(in Project name not set)"><span>Doubts or Variability?</span></a> and to robust
 control interpretations of the stochastic discount factor described in other
-chapters of <span id="id15">Ljungqvist and Sargent [<a class="reference internal" href="zreferences.html#id268" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">2018</a>]</span>.</p>
+chapters of <span id="id15">Ljungqvist and Sargent [<a class="reference internal" href="zreferences.html#id284" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">2018</a>]</span>.</p>
 <p>For finite-state approaches to asset pricing that complement the continuous-state
 framework here, see <a class="reference internal" href="markov_asset.html"><span class="doc">Asset Pricing: Finite State Models</span></a>.</p>
 </section>
@@ -1819,23 +1819,28 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="information_market_equilibrium.html">
+   31. Information and Market Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   31. Incorrect Models
+   32. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   32. Bayesian versus Frequentist Decision Rules
+   33. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="merging_of_opinions.html">
-   33. Merging of Opinions: The Blackwell–Dubins Theorem
+   34. Merging of Opinions: The Blackwell–Dubins Theorem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="survival_recursive_preferences.html">
-   34. Survival and Long-Run Dynamics under Recursive Preferences
+   35. Survival and Long-Run Dynamics under Recursive Preferences
   </a>
  </li>
 </ul>
@@ -1847,12 +1852,12 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   35. Optimal Transport
+   36. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   36. Von Neumann Growth Model (and a Generalization)
+   37. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1864,57 +1869,57 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   37. Finite Markov Chains
+   38. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   38. Inventory Dynamics
+   39. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   39. Linear State Space Models
+   40. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   40. Samuelson Multiplier-Accelerator
+   41. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chow_business_cycles.html">
-   41. The Acceleration Principle and the Nature of Business Cycles
+   42. The Acceleration Principle and the Nature of Business Cycles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   42. Kesten Processes and Firm Dynamics
+   43. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   43. Wealth Distribution Dynamics
+   44. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   44. A First Look at the Kalman Filter
+   45. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   45. Another Look at the Kalman Filter
+   46. Another Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="organization_capital.html">
-   46. Organization Capital
+   47. Organization Capital
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="measurement_models.html">
-   47. Two Models of Measurements and the Investment Accelerator
+   48. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1926,42 +1931,42 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   48. Job Search I: The McCall Search Model
+   49. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   49. Job Search II: Search and Separation
+   50. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   50. Job Search III: Search with Separation and Markov Wages
+   51. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   51. Job Search IV: Fitted Value Function Iteration
+   52. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   52. Job Search V: Persistent and Transitory Wage Shocks
+   53. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   53. Job Search VI: Modeling Career Choice
+   54. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   54. Job Search VII: On-the-Job Search
+   55. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   55. Job Search VIII: Search with Learning
+   56. Job Search VIII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1973,17 +1978,17 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_q.html">
-   56. Inventory Management via Q-Learning
+   57. Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rs_inventory_q.html">
-   57. Risk-Sensitive Inventory Management via Q-Learning
+   58. Risk-Sensitive Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   58. Job Search IX: Search with Q-Learning
+   59. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1995,32 +2000,32 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   59. Optimal Savings I: Cake Eating
+   60. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   60. Optimal Savings II: Numerical Cake Eating
+   61. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   61. Optimal Savings III: Stochastic Returns
+   62. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   62. Optimal Savings IV: Time Iteration
+   63. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   63. Optimal Savings V: The Endogenous Grid Method
+   64. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   64. Optimal Savings VI: EGM with JAX
+   65. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -2032,27 +2037,27 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   65. The Income Fluctuation Problem I: Discretization and VFI
+   66. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   66. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   67. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   67. The Income Fluctuation Problem III: The Endogenous Grid Method
+   68. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   68. The Income Fluctuation Problem IV: Transient Income Shocks
+   69. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   69. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   70. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -2064,42 +2069,42 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   70. LQ Control: Foundations
+   71. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   71. Lagrangian for LQ Control
+   72. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   72. Eliminating Cross Products
+   73. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   73. The Permanent Income Model
+   74. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   74. Permanent Income II: LQ Techniques
+   75. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_1.html">
-   75. Certainty Equivalence
+   76. Certainty Equivalence
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_2.html">
-   76. Certainty Equivalence and Model Uncertainty
+   77. Certainty Equivalence and Model Uncertainty
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   77. Production Smoothing via Inventories
+   78. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -2111,22 +2116,22 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   78. Cass-Koopmans Model
+   79. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   79. Cass-Koopmans Competitive Equilibrium
+   80. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   80. Cass-Koopmans Model with Distorting Taxes
+   81. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   81. Two-Country Model with Distorting Taxes
+   82. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -2138,52 +2143,52 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   82. A Lake Model of Employment and Unemployment
+   83. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   83. Lake Model with an Endogenous Job Finding Rate
+   84. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   84. Rational Expectations Equilibrium
+   85. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   85. Stability in Linear Rational Expectations Models
+   86. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   86. Markov Perfect Equilibrium
+   87. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   87. Uncertainty Traps
+   88. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   88. The Aiyagari Model
+   89. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   89. Transitions in an Overlapping Generations Model
+   90. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   90. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   91. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   91. Two Computations to Fund Social Security
+   92. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -2195,37 +2200,47 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   92. Asset Pricing: Finite State Models
+   93. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   94. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   94. Estimating Euler Equations by Generalized Method of Moments
+   95. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   95. Competitive Equilibria with Arrow Securities
+   96. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   96. Heterogeneous Beliefs and Bubbles
+   97. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   97. Speculative Behavior with Bayesian Learning
+   98. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   98. Affine Models of Asset Prices
+   99. Affine Models of Asset Prices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ross_recovery.html">
+   100. The Recovery Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="misspecified_recovery.html">
+   101. Misspecified recovery
   </a>
  </li>
 </ul>
@@ -2237,17 +2252,17 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   99. Pandas for Panel Data
+   102. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   100. Linear Regression in Python
+   103. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   101. Maximum Likelihood Estimation
+   104. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2259,12 +2274,12 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   102. First-Price and Second-Price Auctions
+   105. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   103. Multiple Good Allocation Mechanisms
+   106. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2276,17 +2291,17 @@ framework here, see <a class="reference internal" href="markov_asset.html"><span
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   104. Troubleshooting
+   107. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   105. References
+   108. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   106. Execution Statistics
+   109. Execution Statistics
   </a>
  </li>
 </ul>

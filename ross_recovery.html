@@ -1,0 +1,2524 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>100. The Recovery Theorem &#8212; Intermediate Quantitative Economics with Python</title>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=3a5ece24" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-J0SMYR4SG3"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-J0SMYR4SG3');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": ["\\operatorname*{argmax}", 0], "argmin": ["\\operatorname*{argmin}", 0], "EE": "\\mathbb{E}"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ross_recovery';</script>
+    <link rel="canonical" href="https://python.quantecon.org/ross_recovery.html" />
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="101. Misspecified recovery" href="misspecified_recovery.html" />
+    <link rel="prev" title="99. Affine Models of Asset Prices" href="affine_risk_prices.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="The Recovery Theorem"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="The Recovery Theorem" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://python.quantecon.org/ross_recovery.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Intermediate Quantitative Economics with Python" />
+<meta name="theme-color" content="#ffffff" />
+
+
+
+
+  </head>
+<body>
+
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
+<!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=ross_recovery>
+
+                <div class="qe-page__toc">
+
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">100.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">100.2. Model setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arrowdebreu-state-prices">100.2.1. Arrow–Debreu state prices</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pricing-kernel">100.2.2. The pricing kernel</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-identification-challenge">100.2.3. The identification challenge</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transition-independence">100.2.4. Transition independence</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">100.3. The recovery theorem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reduction-to-an-eigenvalue-problem">100.3.1. Reduction to an eigenvalue problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rosss-recovery-theorem">100.3.2. Ross’s recovery theorem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pricing-kernel-from-the-eigenvector">100.3.3. Pricing kernel from the eigenvector</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-crossing-and-the-risk-premium">100.3.4. Single crossing and the risk premium</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-example">100.4. Numerical example</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-a-finite-state-example">100.4.1. Building a finite-state example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-recovery-theorem">100.4.2. Applying the recovery theorem</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#natural-vs-risk-neutral-distributions">100.5. Natural vs. risk-neutral distributions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-risk-aversion">100.6. Effect of risk aversion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recovering-the-discount-rate">100.7. Recovering the discount rate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tail-risk-natural-vs-risk-neutral-probabilities-of-catastrophe">100.8. Tail risk: natural vs. risk-neutral probabilities of catastrophe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-option-prices-to-transition-prices">100.9. From option prices to transition prices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-efficient-markets">100.10. Testing efficient markets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-and-extensions">100.11. Limitations and extensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">100.12. Exercises</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            
+                            
+                            
+                        </div>
+
+                    </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Intermediate Quantitative Economics with Python</a></p>
+
+                    </div>
+
+                    <!-- Authors section -->
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
+
+                    <!-- Last modified / Changelog dropdown -->
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: Apr 28, 2026
+                            <span class="changelog-icon">▼</span>
+                        </button>
+
+                    <!-- Changelog dropdown content -->
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/ross_recovery.md">full history</a>)</h4>
+                        <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/78030a3a2" class="changelog-hash">78030a3a2</a>
+                                
+                                <span class="changelog-author">Humphrey Yang</span>
+                                <span class="changelog-time">41 minutes ago</span>
+                                <span class="changelog-message">Add lectures on Kihlstrom's paper, Ross Recovery Theorem and update lectures in probability theory (#859)</span>
+                            </li>
+                            
+                        </ul>
+                    </div>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="the-recovery-theorem">
+<h1><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">100. </span>The Recovery Theorem</a><a class="headerlink" href="#the-recovery-theorem" title="Link to this heading">#</a></h1>
+<nav class="contents" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#the-recovery-theorem" id="id13">The Recovery Theorem</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id14">Overview</a></p></li>
+<li><p><a class="reference internal" href="#model-setup" id="id15">Model setup</a></p></li>
+<li><p><a class="reference internal" href="#id2" id="id16">The recovery theorem</a></p></li>
+<li><p><a class="reference internal" href="#numerical-example" id="id17">Numerical example</a></p></li>
+<li><p><a class="reference internal" href="#natural-vs-risk-neutral-distributions" id="id18">Natural vs. risk-neutral distributions</a></p></li>
+<li><p><a class="reference internal" href="#effect-of-risk-aversion" id="id19">Effect of risk aversion</a></p></li>
+<li><p><a class="reference internal" href="#recovering-the-discount-rate" id="id20">Recovering the discount rate</a></p></li>
+<li><p><a class="reference internal" href="#tail-risk-natural-vs-risk-neutral-probabilities-of-catastrophe" id="id21">Tail risk: natural vs. risk-neutral probabilities of catastrophe</a></p></li>
+<li><p><a class="reference internal" href="#from-option-prices-to-transition-prices" id="id22">From option prices to transition prices</a></p></li>
+<li><p><a class="reference internal" href="#testing-efficient-markets" id="id23">Testing efficient markets</a></p></li>
+<li><p><a class="reference internal" href="#limitations-and-extensions" id="id24">Limitations and extensions</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id25">Exercises</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<section id="overview">
+<h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">100.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>Asset prices are forward-looking: they encode investors’ expectations about future
+economic states and their valuations of different risks.</p>
+<p>A long-standing question in finance is whether one can <em>recover</em> the probability
+distribution used by investors – their subjective beliefs – from observed asset
+prices alone.</p>
+<p>Option prices reveal <strong>state prices</strong>; once these are normalized by the riskless
+discount factor, the resulting probabilities are the <strong>risk-neutral probabilities</strong>
+implied by asset prices after risk adjustments have been folded in.</p>
+<p>These are not the <strong>natural probabilities</strong> that investors actually assign to future
+states of the world.</p>
+<p>The two differ because risk-neutral probabilities blend together two distinct objects:
+the market’s true beliefs about the future, and investors’ aversion to risk.</p>
+<p>The link between them is the <strong>pricing kernel</strong>, which reweights natural probabilities
+to deliver state prices.</p>
+<p>Separating beliefs from risk aversion has traditionally required parametric assumptions
+about the preferences of a representative investor.</p>
+<p><span id="id1">Ross [<a class="reference internal" href="zreferences.html#id11" title="Stephen A. Ross. The recovery theorem. Journal of Finance, 70(2):615–648, 2015. doi:10.1111/jofi.12092.">2015</a>]</span> showed otherwise.</p>
+<p>Ross’s theorem says that, in a finite-state Markov economy, state prices can be
+enough.</p>
+<p>Suppose the Arrow–Debreu state-price transition matrix is arbitrage-free and
+irreducible.</p>
+<p>If the pricing kernel also satisfies a structural restriction called <strong>transition
+independence</strong>, then state prices uniquely determine both the natural probability
+transition matrix and the transition pricing kernel.</p>
+<p>No historical return data or assumed utility function is needed if some assumptions
+about the structure of the pricing kernel hold.</p>
+<p>This is the <strong>Recovery Theorem</strong>.</p>
+<p>It has several important implications:</p>
+<ul class="simple">
+<li><p>It shows how state-price transition data can identify the market’s forward-looking
+natural distribution when the assumption holds</p></li>
+<li><p>It provides tests of the efficient market hypothesis.</p></li>
+<li><p>It sheds light on the “dark matter” of finance: the probability of rare
+catastrophic events embedded in market prices.</p></li>
+</ul>
+<p>This lecture covers</p>
+<ul class="simple">
+<li><p>the Arrow–Debreu framework linking state prices, risk-neutral probabilities,
+the pricing kernel, and natural probabilities,</p></li>
+<li><p>Ross’s Recovery Theorem and its proof via the Perron–Frobenius theorem,</p></li>
+<li><p>an implementation that recovers the natural distribution from a
+simulated state-price matrix, and</p></li>
+<li><p>how option prices and forward equations can be used to estimate transition
+state prices,</p></li>
+<li><p>comparisons between risk-neutral and recovered natural densities.</p></li>
+</ul>
+<p>Let’s import the packages we’ll need.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.linalg</span><span class="w"> </span><span class="kn">import</span> <span class="n">eig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.cm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cm</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="model-setup">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">100.2. </span>Model setup</a><a class="headerlink" href="#model-setup" title="Link to this heading">#</a></h2>
+<section id="arrowdebreu-state-prices">
+<h3><span class="section-number">100.2.1. </span>Arrow–Debreu state prices<a class="headerlink" href="#arrowdebreu-state-prices" title="Link to this heading">#</a></h3>
+<p>Consider a discrete-time, discrete-state economy.</p>
+<p>At each date the economy occupies one of <span class="math notranslate nohighlight">\(m\)</span> states <span class="math notranslate nohighlight">\(\theta_1, \ldots, \theta_m\)</span>.</p>
+<p>An <strong>Arrow–Debreu security</strong> pays $1 if the economy is in state <span class="math notranslate nohighlight">\(\theta_j\)</span> next period
+and nothing otherwise.</p>
+<p>Denote by <span class="math notranslate nohighlight">\(p(\theta_i, \theta_j)\)</span> the price today, when the current state is <span class="math notranslate nohighlight">\(\theta_i\)</span>,
+of the Arrow–Debreu security paying in state <span class="math notranslate nohighlight">\(\theta_j\)</span> next period.</p>
+<p>Collect these into an <span class="math notranslate nohighlight">\(m \times m\)</span> <strong>state price transition matrix</strong></p>
+<div class="math notranslate nohighlight">
+\[
+P = [p(\theta_i, \theta_j)]_{i,j=1}^m.
+\]</div>
+<p>As in <a class="reference internal" href="ge_arrow.html"><span class="doc">Competitive Equilibria with Arrow Securities</span></a>, the row sums give the state-dependent riskless discount factor:
+<span class="math notranslate nohighlight">\(\sum_j p(\theta_i, \theta_j) = e^{-r(\theta_i)}\)</span>.</p>
+<p>Here <span class="math notranslate nohighlight">\(r(\theta_i)\)</span> is the one-period continuously compounded riskless rate in
+current state <span class="math notranslate nohighlight">\(\theta_i\)</span>.</p>
+<p>More generally, if an asset pays <span class="math notranslate nohighlight">\(g(\theta_j)\)</span> next period, then its price in
+state <span class="math notranslate nohighlight">\(\theta_i\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+p_g(\theta_i)
+    = \sum_j p(\theta_i, \theta_j) g(\theta_j).
+\]</div>
+<p>Let</p>
+<div class="math notranslate nohighlight">
+\[
+b(\theta_i) \equiv \sum_j p(\theta_i, \theta_j) = e^{-r(\theta_i)}
+\]</div>
+<p>be the price of a one-period riskless bond in state <span class="math notranslate nohighlight">\(\theta_i\)</span>.</p>
+<p>Normalizing Arrow prices by this bond price gives the <strong>risk-neutral transition
+probabilities</strong></p>
+<div class="math notranslate nohighlight">
+\[
+q^*(\theta_i, \theta_j)
+    = \frac{p(\theta_i, \theta_j)}{b(\theta_i)}
+    = e^{r(\theta_i)} p(\theta_i, \theta_j).
+\]</div>
+<p>Thus the same asset price can be written as</p>
+<div class="math notranslate nohighlight">
+\[
+p_g(\theta_i)
+    = b(\theta_i) \sum_j q^*(\theta_i, \theta_j) g(\theta_j)
+    = e^{-r(\theta_i)} E_i^*[g(\theta_{t+1})].
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(E_i^*\)</span> denotes conditional expectation under
+<span class="math notranslate nohighlight">\(q^*(\theta_i,\cdot)\)</span>.</p>
+<p>The asterisk marks the risk-neutral, or martingale, probability measure.</p>
+<p>It is useful to separate this one-period normalization from the dynamic
+transition structure.</p>
+<p>If <span class="math notranslate nohighlight">\(Q(\theta_i,\theta_j,T)\)</span> denotes the risk-neutral probability of moving from
+<span class="math notranslate nohighlight">\(\theta_i\)</span> to <span class="math notranslate nohighlight">\(\theta_j\)</span> over <span class="math notranslate nohighlight">\(T\)</span> periods, and <span class="math notranslate nohighlight">\(0&lt;t&lt;T\)</span> is an intermediate
+horizon, then the Markov forward equation is</p>
+<div class="math notranslate nohighlight">
+\[
+Q(\theta_i,\theta_j,T)
+    = \sum_k Q(\theta_i,\theta_k,t) Q(\theta_k,\theta_j,T-t).
+\]</div>
+<p>In matrix notation, multiperiod risk-neutral transition matrices compose by
+matrix multiplication.</p>
+</section>
+<section id="the-pricing-kernel">
+<h3><span class="section-number">100.2.2. </span>The pricing kernel<a class="headerlink" href="#the-pricing-kernel" title="Link to this heading">#</a></h3>
+<p>Using the stochastic-discount-factor notation studied in <a class="reference internal" href="markov_asset.html"><span class="doc">Asset Pricing: Finite State Models</span></a> and the
+Arrow-security notation used in <a class="reference internal" href="ge_arrow.html"><span class="doc">Competitive Equilibria with Arrow Securities</span></a>, the pricing kernel <span class="math notranslate nohighlight">\(\phi(\theta_i,
+\theta_j)\)</span> relates state prices to natural probabilities via</p>
+<div class="math notranslate nohighlight">
+\[
+p(\theta_i, \theta_j) = \phi(\theta_i, \theta_j) \, f(\theta_i, \theta_j),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(f(\theta_i, \theta_j)\)</span> is the natural (conditional) probability of transitioning
+from state <span class="math notranslate nohighlight">\(\theta_i\)</span> to <span class="math notranslate nohighlight">\(\theta_j\)</span>.</p>
+<p>As in the representative-agent equilibrium calculation in <a class="reference internal" href="ge_arrow.html"><span class="doc">Competitive Equilibria with Arrow Securities</span></a>, the
+canonical additively separable model with discount factor <span class="math notranslate nohighlight">\(\beta\)</span> gives</p>
+<div class="math notranslate nohighlight" id="equation-eq-canon-ge">
+<span class="eqno">(100.1)<a class="headerlink" href="#equation-eq-canon-ge" title="Link to this equation">#</a></span>\[
+\phi(\theta_i, \theta_j) = \frac{p(\theta_i, \theta_j)}{f(\theta_i, \theta_j)}
+    = \frac{\beta U'(c(\theta_j))}{U'(c(\theta_i))}.
+\]</div>
+<p>This formula has a special structure: the kernel can be written as a ratio of two
+state-specific terms.</p>
+<p>Ross calls this property <strong>transition independence</strong>.</p>
+<p>We will say more about it soon.</p>
+</section>
+<section id="the-identification-challenge">
+<h3><span class="section-number">100.2.3. </span>The identification challenge<a class="headerlink" href="#the-identification-challenge" title="Link to this heading">#</a></h3>
+<p>Before stating the restriction, it helps to see why one is needed at all.</p>
+<p>Given <span class="math notranslate nohighlight">\(P\)</span>, any pair <span class="math notranslate nohighlight">\((\phi, f)\)</span> satisfying <span class="math notranslate nohighlight">\(p_{ij} = \phi_{ij} f_{ij}\)</span> for every
+<span class="math notranslate nohighlight">\((i,j)\)</span> is consistent with observed state prices.</p>
+<p>The state-price matrix <span class="math notranslate nohighlight">\(P\)</span> supplies <span class="math notranslate nohighlight">\(m^2\)</span> equations.</p>
+<p>A natural transition matrix <span class="math notranslate nohighlight">\(F\)</span>
+contributes <span class="math notranslate nohighlight">\(m(m-1)\)</span> free entries (rows sum to one), and an arbitrary kernel <span class="math notranslate nohighlight">\(\phi\)</span>
+contributes another <span class="math notranslate nohighlight">\(m^2\)</span> – a total of <span class="math notranslate nohighlight">\(2m^2 - m\)</span> unknowns against only <span class="math notranslate nohighlight">\(m^2\)</span>
+equations.</p>
+<p>The system is under-identified by <span class="math notranslate nohighlight">\(m^2 - m\)</span> parameters, so some structural
+restriction on the kernel is needed to pin down <span class="math notranslate nohighlight">\(\phi\)</span> and <span class="math notranslate nohighlight">\(f\)</span> separately.</p>
+<p>Transition independence restriction does the job, as we will see in the next section.</p>
+</section>
+<section id="transition-independence">
+<h3><span class="section-number">100.2.4. </span>Transition independence<a class="headerlink" href="#transition-independence" title="Link to this heading">#</a></h3>
+<div class="proof definition admonition" id="def-transition-independence">
+<p class="admonition-title"><span class="caption-number">Definition 100.1 </span> (Transition Independence)</p>
+<section class="definition-content" id="proof-content">
+<p>A pricing kernel is <strong>transition independent</strong> if there exists a positive function <span class="math notranslate nohighlight">\(h\)</span> on
+the state space and a positive scalar <span class="math notranslate nohighlight">\(\beta\)</span> such that for every transition from state
+<span class="math notranslate nohighlight">\(\theta_i\)</span> to <span class="math notranslate nohighlight">\(\theta_j\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\phi(\theta_i, \theta_j) = \beta \, \frac{h(\theta_j)}{h(\theta_i)}.
+\]</div>
+</section>
+</div><p>Transition independence says the kernel depends on the <em>ending</em> state and normalizes by
+the <em>beginning</em> state.</p>
+<p>In the representative-agent complete-markets environment above, it holds under
+intertemporally additive separable utility (where <span class="math notranslate nohighlight">\(h = U'\)</span>).</p>
+<p>In particular, this holds for <a class="reference internal" href="#equation-eq-canon-ge">(100.1)</a>.</p>
+<p>Transition independence helps because it ties all <span class="math notranslate nohighlight">\(m^2\)</span> entries of <span class="math notranslate nohighlight">\(\phi\)</span> together:
+once the <span class="math notranslate nohighlight">\(m\)</span> state-specific values are known, the whole kernel is pinned down.</p>
+<p>It therefore cuts <span class="math notranslate nohighlight">\(\phi\)</span> from <span class="math notranslate nohighlight">\(m^2\)</span> free entries down to <span class="math notranslate nohighlight">\(m\)</span>, so the system becomes
+exactly identified.</p>
+<p>Under transition independence, the state-price equation becomes</p>
+<div class="math notranslate nohighlight">
+\[
+p(\theta_i, \theta_j) = \beta \, \frac{h(\theta_j)}{h(\theta_i)} \,
+    f(\theta_i, \theta_j).
+\]</div>
+<p>In matrix notation, defining the diagonal matrix <span class="math notranslate nohighlight">\(D\)</span> with <span class="math notranslate nohighlight">\(D_{ii} = h(\theta_i)/\beta\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+DP = \beta F D,
+\]</div>
+<p>or equivalently,</p>
+<div class="math notranslate nohighlight">
+\[
+F = \frac{1}{\beta} D P D^{-1}.
+\]</div>
+</section>
+</section>
+<section id="id2">
+<h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">100.3. </span>The recovery theorem</a><a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="reduction-to-an-eigenvalue-problem">
+<h3><span class="section-number">100.3.1. </span>Reduction to an eigenvalue problem<a class="headerlink" href="#reduction-to-an-eigenvalue-problem" title="Link to this heading">#</a></h3>
+<p>Since <span class="math notranslate nohighlight">\(F\)</span> is a stochastic matrix, its rows sum to one: <span class="math notranslate nohighlight">\(F e = e\)</span> where <span class="math notranslate nohighlight">\(e\)</span> is the vector
+of ones.</p>
+<p>Substituting the expression for <span class="math notranslate nohighlight">\(F\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{1}{\beta} D P D^{-1} e = e
+\quad \Longrightarrow \quad
+P z = \beta z, \quad z \equiv D^{-1} e.
+\]</div>
+<p>This is an <strong>eigenvalue problem</strong> where we seek a positive vector <span class="math notranslate nohighlight">\(z\)</span> and scalar <span class="math notranslate nohighlight">\(\beta\)</span>
+satisfying <span class="math notranslate nohighlight">\(Pz = \beta z\)</span>.</p>
+<p>In principle every eigenvalue-eigenvector pair of <span class="math notranslate nohighlight">\(P\)</span> is a formal solution, but only the
+one with a strictly positive eigenvector is economically valid: <span class="math notranslate nohighlight">\(D_{ii} = 1/z_i\)</span> must be
+positive (so <span class="math notranslate nohighlight">\(z_i &gt; 0\)</span>), and <span class="math notranslate nohighlight">\(F\)</span> must have nonnegative entries.</p>
+<p>The Perron–Frobenius theorem guarantees that exactly one such pair exists.</p>
+<div class="proof theorem admonition" id="thm-perron-frobenius">
+<p class="admonition-title"><span class="caption-number">Theorem 100.1 </span> (Perron–Frobenius)</p>
+<section class="theorem-content" id="proof-content">
+<p>If <span class="math notranslate nohighlight">\(A\)</span> is a nonnegative irreducible matrix, then</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(A\)</span> has a positive real eigenvalue <span class="math notranslate nohighlight">\(r\)</span> equal to its spectral radius (the Perron root).</p></li>
+<li><p>There exists a strictly positive eigenvector <span class="math notranslate nohighlight">\(z \gg 0\)</span> with <span class="math notranslate nohighlight">\(Az = rz\)</span>,
+unique up to scaling.</p></li>
+<li><p>No other eigenvector is strictly positive.</p></li>
+</ol>
+</section>
+</div><p>Other eigenvalues can have the same modulus when the matrix is imprimitive, but the
+strictly positive eigenvector is unique up to scale.</p>
+<p>See Section 1.2.3 of <span id="id3">Sargent and Stachurski [<a class="reference internal" href="zreferences.html#id77" title="Thomas J. Sargent and John Stachurski. Economic Networks: Theory and Computation. Structural Analysis in the Social Sciences. Cambridge University Press, 2024.">2024</a>]</span> for details.</p>
+<p>See also the full statement in <a class="reference external" href="https://intro.quantecon.org/eigen_II.html" title="(in Project name not set)"><span>The Perron-Frobenius Theorem</span></a>.</p>
+<p>Applied to the recovery problem: the Perron root is <span class="math notranslate nohighlight">\(\beta\)</span> (the subjective discount
+factor) and the Perron vector <span class="math notranslate nohighlight">\(z\)</span> determines <span class="math notranslate nohighlight">\(D\)</span> via <span class="math notranslate nohighlight">\(D_{ii} = 1/z_i\)</span>.</p>
+</section>
+<section id="rosss-recovery-theorem">
+<h3><span class="section-number">100.3.2. </span>Ross’s recovery theorem<a class="headerlink" href="#rosss-recovery-theorem" title="Link to this heading">#</a></h3>
+<p>The three assumptions in the theorem each carry a specific role.</p>
+<p>Assuming the Arrow–Debreu state prices are identified, no-arbitrage guarantees that
+<span class="math notranslate nohighlight">\(P\)</span> has nonnegative entries and that the state prices encode a well-defined pricing
+measure.</p>
+<p>Irreducibility ensures the economy is not divided into disconnected sub-economies –
+without it, the Perron–Frobenius theorem gives multiple candidate eigenvectors and
+recovery breaks down.</p>
+<p>Transition independence is the key economic restriction.</p>
+<p>It says the pricing kernel
+factors as <span class="math notranslate nohighlight">\(\beta h(\theta_j)/h(\theta_i)\)</span>, so the entire kernel is pinned down by a
+single vector <span class="math notranslate nohighlight">\(h\)</span> (or equivalently <span class="math notranslate nohighlight">\(z\)</span>).</p>
+<p>With these in mind, the Recovery Theorem follows from the Perron–Frobenius theorem.</p>
+<div class="proof theorem admonition" id="thm-ross-recovery">
+<p class="admonition-title"><span class="caption-number">Theorem 100.2 </span> (Recovery Theorem)</p>
+<section class="theorem-content" id="proof-content">
+<p>Suppose prices provide no arbitrage opportunities, that the state
+price transition matrix <span class="math notranslate nohighlight">\(P\)</span> is irreducible, and that the pricing kernel is transition
+independent.</p>
+<p>Then there exists a positive solution <span class="math notranslate nohighlight">\((\beta, z, F)\)</span> to the recovery problem in which
+<span class="math notranslate nohighlight">\(z\)</span> is unique up to normalization, and the implied natural probability transition
+matrix <span class="math notranslate nohighlight">\(F\)</span> and transition pricing kernel are unique.</p>
+</section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. Because <span class="math notranslate nohighlight">\(P\)</span> is nonnegative and irreducible, the Perron–Frobenius theorem gives a unique
+positive eigenvector <span class="math notranslate nohighlight">\(z \gg 0\)</span> with positive eigenvalue <span class="math notranslate nohighlight">\(\lambda &gt; 0\)</span> satisfying
+<span class="math notranslate nohighlight">\(Pz = \lambda z\)</span>.</p>
+<p>Setting</p>
+<div class="math notranslate nohighlight">
+\[
+\beta = \lambda, \qquad D_{ii} = \frac{1}{z_i},
+\]</div>
+<p>the natural probability transition matrix is uniquely recovered as</p>
+<div class="math notranslate nohighlight">
+\[
+f_{ij} = \frac{1}{\beta} \frac{z_j}{z_i} \, p_{ij}.
+\]</div>
+<p>To confirm <span class="math notranslate nohighlight">\(F\)</span> is stochastic, note that all entries are nonnegative (since
+<span class="math notranslate nohighlight">\(p_{ij} \geq 0\)</span> and <span class="math notranslate nohighlight">\(z_i, z_j &gt; 0\)</span>) and</p>
+<div class="math notranslate nohighlight">
+\[
+\sum_j f_{ij}
+= \frac{1}{\beta z_i} \sum_j z_j \, p_{ij}
+= \frac{[Pz]_i}{\beta z_i}
+= \frac{\beta z_i}{\beta z_i} = 1.
+\]</div>
+<p>Uniqueness follows from the uniqueness of the Perron–Frobenius eigenvector.</p>
+</div>
+</section>
+<section id="pricing-kernel-from-the-eigenvector">
+<h3><span class="section-number">100.3.3. </span>Pricing kernel from the eigenvector<a class="headerlink" href="#pricing-kernel-from-the-eigenvector" title="Link to this heading">#</a></h3>
+<p>The recovered transition-kernel values are</p>
+<div class="math notranslate nohighlight">
+\[
+\phi(\theta_i, \theta_j) = \beta \frac{z_i}{z_j},
+\qquad h(\theta_i) = \frac{\beta}{z_i},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(h(\theta_i) = \beta/z_i\)</span> follows from <span class="math notranslate nohighlight">\(D_{ii} = h(\theta_i)/\beta = 1/z_i\)</span>.</p>
+<p>It is useful to distinguish the <strong>full transition kernel</strong> <span class="math notranslate nohighlight">\(\phi_{ij} = \beta z_i/z_j\)</span>,
+which depends on both origin and destination states, from the <strong>relative kernel
+component</strong> <span class="math notranslate nohighlight">\(1/z_j\)</span>, which depends only on the destination state.</p>
+<p>Ross’s Table I reports the destination-state shape <span class="math notranslate nohighlight">\(1/z_j\)</span>, normalized so that the
+middle state equals one.</p>
+<p>Destination states with high <span class="math notranslate nohighlight">\(z_j\)</span> have <em>low</em> kernel values: for a fixed origin <span class="math notranslate nohighlight">\(i\)</span>,
+the kernel <span class="math notranslate nohighlight">\(\beta z_i/z_j\)</span> is decreasing in <span class="math notranslate nohighlight">\(z_j\)</span>.</p>
+<p>When <span class="math notranslate nohighlight">\(h\)</span> represents marginal utility and states are ordered by consumption or
+payoff, larger <span class="math notranslate nohighlight">\(z_j\)</span> corresponds to lower marginal utility – “good times” that
+require less insurance and so receive less pricing weight per unit of natural
+probability.</p>
+<p>The same eigenvector argument also yields a useful limiting case.</p>
+<p>If the one-period
+bond price is identical in every current state, then the vector of ones is already the
+Perron vector, so recovery has no state-dependent change of measure left to perform.</p>
+<div class="proof corollary admonition" id="cor-risk-neutral-recovery">
+<p class="admonition-title"><span class="caption-number">Corollary 100.1 </span></p>
+<section class="corollary-content" id="proof-content">
+<p>If the riskless rate is the same in all states (<span class="math notranslate nohighlight">\(Pe = b e\)</span> for
+some scalar <span class="math notranslate nohighlight">\(b\)</span>), then the unique natural distribution consistent with recovery is
+the risk-neutral (martingale) distribution itself: <span class="math notranslate nohighlight">\(F = (1/b) P\)</span>.</p>
+</section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. When <span class="math notranslate nohighlight">\(Pe = b e\)</span>, the vector of ones <span class="math notranslate nohighlight">\(e\)</span> is the Perron eigenvector with eigenvalue
+<span class="math notranslate nohighlight">\(b\)</span>.</p>
+<p>By the uniqueness part of the Perron–Frobenius theorem, <span class="math notranslate nohighlight">\(z = e\)</span> (up to scaling) and
+<span class="math notranslate nohighlight">\(\beta = b\)</span>.</p>
+<p>Setting <span class="math notranslate nohighlight">\(z = e\)</span> gives <span class="math notranslate nohighlight">\(D = I\)</span>, so</p>
+<div class="math notranslate nohighlight">
+\[
+F = \frac{1}{\beta} D P D^{-1} = \frac{1}{b} P. \qquad \square
+\]</div>
+</div>
+</section>
+<section id="single-crossing-and-the-risk-premium">
+<span id="ross-recovery-single-crossing"></span><h3><span class="section-number">100.3.4. </span>Single crossing and the risk premium<a class="headerlink" href="#single-crossing-and-the-risk-premium" title="Link to this heading">#</a></h3>
+<p>Ross also uses the representative-agent formula to compare the natural and
+risk-neutral densities directly.</p>
+<p>For a fixed current state <span class="math notranslate nohighlight">\(\theta_i\)</span>,</p>
+<div class="math notranslate nohighlight" id="equation-eq-rn-natural-ratio">
+<span class="eqno">(100.2)<a class="headerlink" href="#equation-eq-rn-natural-ratio" title="Link to this equation">#</a></span>\[
+\frac{q^*(\theta_i,\theta_j)}{f(\theta_i,\theta_j)}
+    = e^{r(\theta_i)} \phi(\theta_i,\theta_j)
+    = e^{r(\theta_i)} \beta
+      \frac{U'(c(\theta_j))}{U'(c(\theta_i))}.
+\]</div>
+<p>If <span class="math notranslate nohighlight">\(U'\)</span> is decreasing in consumption, then the ratio in
+<a class="reference internal" href="#equation-eq-rn-natural-ratio">(100.2)</a> is decreasing in next-period consumption
+<span class="math notranslate nohighlight">\(c(\theta_j)\)</span>.</p>
+<p>Since both <span class="math notranslate nohighlight">\(q^*(\theta_i,\cdot)\)</span> and <span class="math notranslate nohighlight">\(f(\theta_i,\cdot)\)</span> integrate to one, there
+is a crossing point <span class="math notranslate nohighlight">\(v\)</span> defined by</p>
+<div class="math notranslate nohighlight">
+\[
+e^{r(\theta_i)} \beta U'(v) = U'(c(\theta_i)).
+\]</div>
+<p>Below <span class="math notranslate nohighlight">\(v\)</span>, risk-neutral probability exceeds natural probability; above <span class="math notranslate nohighlight">\(v\)</span>, the
+natural probability exceeds the risk-neutral probability.</p>
+<p>Hence the natural consumption distribution first-order stochastically dominates
+the risk-neutral one.</p>
+<p>In a one-period model where terminal consumption is the market payoff, this
+also gives a positive market risk premium.</p>
+<p>Let <span class="math notranslate nohighlight">\(R\)</span> denote the market return under the natural
+law, let <span class="math notranslate nohighlight">\(R^*\)</span> denote the same return under the risk-neutral law, and let
+<span class="math notranslate nohighlight">\(R_f\)</span> denote the riskless return in the same one-period units.</p>
+<p>The stochastic-dominance result can be represented as</p>
+<div class="math notranslate nohighlight">
+\[
+R^* \sim R - Z + \epsilon,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(Z \geq 0\)</span> captures the downward shift induced by risk adjustment and
+<span class="math notranslate nohighlight">\(\epsilon\)</span> is a residual satisfying <span class="math notranslate nohighlight">\(E[\epsilon \mid R-Z]=0\)</span>.</p>
+<p>Taking expectations gives</p>
+<div class="math notranslate nohighlight">
+\[
+E[R] = R_f + E[Z] &gt; R_f.
+\]</div>
+</section>
+</section>
+<section id="numerical-example">
+<h2><a class="toc-backref" href="#id17" role="doc-backlink"><span class="section-number">100.4. </span>Numerical example</a><a class="headerlink" href="#numerical-example" title="Link to this heading">#</a></h2>
+<p>We now demonstrate the Recovery Theorem numerically.</p>
+<section id="building-a-finite-state-example">
+<h3><span class="section-number">100.4.1. </span>Building a finite-state example<a class="headerlink" href="#building-a-finite-state-example" title="Link to this heading">#</a></h3>
+<p>We build the economy directly
+on a finite grid of log payoff states <span class="math notranslate nohighlight">\(s_1, \ldots, s_m\)</span>.</p>
+<p>On this grid we choose three primitives:</p>
+<ol class="arabic simple">
+<li><p>a row-stochastic irreducible natural transition matrix <span class="math notranslate nohighlight">\(F\)</span>,</p></li>
+<li><p>a subjective discount factor <span class="math notranslate nohighlight">\(\beta = e^{-\rho T}\)</span>, and</p></li>
+<li><p>a CRRA transition pricing kernel
+<span class="math notranslate nohighlight">\(\phi_{ij} = \beta e^{-\gamma(s_j-s_i)}\)</span>.</p></li>
+</ol>
+<p>The state-price matrix is then constructed from</p>
+<div class="math notranslate nohighlight">
+\[
+p_{ij} = \phi_{ij} f_{ij}.
+\]</div>
+<p>This means the Recovery Theorem assumptions hold by construction: <span class="math notranslate nohighlight">\(P\)</span> is nonnegative,
+<span class="math notranslate nohighlight">\(F\)</span> is a Markov transition matrix, and the kernel is transition independent with
+<span class="math notranslate nohighlight">\(z_i \propto e^{\gamma s_i}\)</span>.</p>
+<p>To keep the example close to Ross’s Section IV, we choose <span class="math notranslate nohighlight">\(F\)</span> to have lognormal-shaped
+rows.</p>
+<p>The continuous benchmark is a lognormal payoff with CRRA utility:</p>
+<div class="math notranslate nohighlight">
+\[
+U(S_T) = \frac{S_T^{1-\gamma}}{1-\gamma},
+\qquad
+S_T = S_0
+      \exp\!\left((\mu-\tfrac{1}{2}\sigma^2)T
+                 + \sigma \sqrt{T} \xi\right),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\xi \sim N(0,1)\)</span>, <span class="math notranslate nohighlight">\(\mu\)</span> is the expected growth-rate parameter,
+<span class="math notranslate nohighlight">\(\sigma\)</span> is volatility, <span class="math notranslate nohighlight">\(T\)</span> is the horizon, <span class="math notranslate nohighlight">\(\gamma\)</span> is the CRRA coefficient,
+and <span class="math notranslate nohighlight">\(\rho\)</span> is the continuously compounded subjective discount rate.</p>
+<p>The <span class="math notranslate nohighlight">\(T\)</span>-period pricing kernel is</p>
+<div class="math notranslate nohighlight">
+\[
+\phi_T
+    = e^{-\rho T}\left(\frac{S_T}{S_0}\right)^{-\gamma}.
+\]</div>
+<p>Equivalently, if <span class="math notranslate nohighlight">\(s=\log S_0\)</span> and <span class="math notranslate nohighlight">\(s_T=\log S_T\)</span>, then the state-price density
+with respect to the future log state <span class="math notranslate nohighlight">\(s_T\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[
+p_T(s,s_T)
+    = e^{-\rho T} e^{-\gamma(s_T-s)}
+      \frac{1}{\sigma \sqrt{T}}
+      n\!\left(
+        \frac{s_T-s-(\mu-\frac{1}{2}\sigma^2)T}
+             {\sigma \sqrt{T}}
+      \right),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(n\)</span> is the standard normal density.</p>
+<p>Thus the natural log return satisfies</p>
+<div class="math notranslate nohighlight">
+\[
+\log(S_T/S_0) \sim \mathcal{N}\!\left((\mu - \tfrac{1}{2}\sigma^2)T, \sigma^2 T\right).
+\]</div>
+<p>Following Ross’s Table I, we represent the distribution on a finite grid of states.</p>
+<p>This example is Ross-inspired rather than an exact reproduction of Ross’s Table I.</p>
+<p>Ross’s Table I uses a fixed future payoff distribution, so its rows of <span class="math notranslate nohighlight">\(F\)</span> are
+identical.</p>
+<p>Here the same CRRA/lognormal pricing logic is embedded in a finite Markov
+transition matrix whose rows shift with the current state.</p>
+<p>Ross uses states from <span class="math notranslate nohighlight">\(-5\)</span> to <span class="math notranslate nohighlight">\(+5\)</span> standard deviations; we use
+the same range below.</p>
+<p>The truncation is an essential part of the finite-state model: it is what brings the example into the Perron–Frobenius setting.</p>
+<p>In the
+unbounded continuous lognormal growth model, Ross shows that recovery is not unique.</p>
+<p>On the finite grid, the natural transition probabilities and state prices are</p>
+<div class="math notranslate nohighlight">
+\[
+f_{ij} \propto
+    n\!\left(\frac{s_j - s_i - (\mu - \frac{1}{2}\sigma^2)T}{\sigma\sqrt{T}}\right)
+    \Delta s,
+\qquad
+p_{ij} = e^{-\rho T} e^{-\gamma(s_j - s_i)} f_{ij},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(s_i = \ln S_i\)</span>, <span class="math notranslate nohighlight">\(s_j = \ln S_j\)</span>, <span class="math notranslate nohighlight">\(n(\cdot)\)</span> is the standard normal density, and
+the discretized probabilities <span class="math notranslate nohighlight">\(f_{ij}\)</span> are normalized row by row.</p>
+<p>The next cell constructs this finite grid and builds <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_state_price_matrix</span><span class="p">(</span><span class="n">μ</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">n_states</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">n_σ</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a discretized lognormal/CRRA state-price matrix.&quot;&quot;&quot;</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">n_σ</span> <span class="o">*</span> <span class="n">σ</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">T</span><span class="p">),</span>
+                          <span class="n">n_σ</span> <span class="o">*</span> <span class="n">σ</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">T</span><span class="p">),</span>
+                          <span class="n">n_states</span><span class="p">)</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">states</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">n_states</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+
+    <span class="n">drift</span> <span class="o">=</span> <span class="p">(</span><span class="n">μ</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">σ</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">T</span>
+
+    <span class="c1"># First build a row-stochastic natural transition matrix on the bounded grid</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="n">s_i</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">s_j</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">log_return</span> <span class="o">=</span> <span class="n">s_j</span> <span class="o">-</span> <span class="n">s_i</span>
+            <span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">log_return</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">drift</span><span class="p">,</span>
+                               <span class="n">scale</span><span class="o">=</span><span class="n">σ</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">T</span><span class="p">))</span> <span class="o">*</span> <span class="n">ds</span>
+
+        <span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># Price each Arrow claim as natural probability times the CRRA kernel</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">log_return</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">s_i</span>
+            <span class="n">kernel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">ρ</span> <span class="o">*</span> <span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">γ</span> <span class="o">*</span> <span class="n">log_return</span><span class="p">)</span>
+            <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel</span> <span class="o">*</span> <span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">P</span><span class="p">,</span> <span class="n">states</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now choose a calibration and build the state-price matrix.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">μ</span> <span class="o">=</span> <span class="mf">0.08</span>    <span class="c1"># 8% annual expected return</span>
+<span class="n">σ</span> <span class="o">=</span> <span class="mf">0.20</span>    <span class="c1"># 20% annual volatility</span>
+<span class="n">γ</span> <span class="o">=</span> <span class="mf">3.0</span>     <span class="c1"># CRRA coefficient</span>
+<span class="n">ρ</span> <span class="o">=</span> <span class="mf">0.02</span>    <span class="c1"># 2% annual continuous discount rate</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mf">1.0</span>     <span class="c1"># one-year horizon</span>
+
+<span class="n">P</span><span class="p">,</span> <span class="n">states</span> <span class="o">=</span> <span class="n">build_state_price_matrix</span><span class="p">(</span><span class="n">μ</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span>
+                                     <span class="n">n_states</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">n_σ</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;State-price row sums:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Middle-state risk-free rate: </span><span class="si">{</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">P</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>State-price row sums:
+[0.7154 0.9046 0.9713 0.9798 0.9802 0.9802 0.9802 0.9806 0.9892 1.0621
+ 1.3429]
+Middle-state risk-free rate: 0.0200
+</pre></div>
+</div>
+</div>
+</div>
+<p>The row sums are the model-implied one-period bond prices in each current state.</p>
+<p>They
+vary near the boundaries because the finite grid truncates and renormalizes the
+conditional transition probabilities.</p>
+</section>
+<section id="applying-the-recovery-theorem">
+<h3><span class="section-number">100.4.2. </span>Applying the recovery theorem<a class="headerlink" href="#applying-the-recovery-theorem" title="Link to this heading">#</a></h3>
+<p>The Recovery Theorem requires computing the <strong>Perron eigenvector</strong> of <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">recover_natural_distribution</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Recover natural probabilities and the relative pricing kernel</span>
+<span class="sd">    from state prices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">eigenvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real_if_close</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">real_if_close</span><span class="p">(</span><span class="n">eigenvectors</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+
+    <span class="c1"># Ross recovery uses the Perron root and its strictly positive eigenvector</span>
+    <span class="n">real_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">)</span>
+    <span class="n">real_eigenvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+        <span class="n">eigenvalues</span><span class="p">[</span><span class="n">real_mask</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">real_eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+        <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">real_mask</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">real_eigenvalues</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
+        <span class="n">β_candidate</span> <span class="o">=</span> <span class="n">real_eigenvalues</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">z_candidate</span> <span class="o">=</span> <span class="n">real_eigenvectors</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">z_candidate</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">z_candidate</span> <span class="o">=</span> <span class="o">-</span><span class="n">z_candidate</span>
+
+        <span class="k">if</span> <span class="n">β_candidate</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">z_candidate</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">):</span>
+            <span class="n">β_recovered</span> <span class="o">=</span> <span class="n">β_candidate</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">z_candidate</span>
+            <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No strictly positive real eigenvector found&quot;</span><span class="p">)</span>
+
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">/</span> <span class="n">z</span><span class="p">[</span><span class="n">m</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">z</span><span class="p">)</span>
+    <span class="n">D_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="c1"># Converts state prices into probabilities</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">β_recovered</span><span class="p">)</span> <span class="o">*</span> <span class="n">D</span> <span class="o">@</span> <span class="n">P</span> <span class="o">@</span> <span class="n">D_inv</span>
+
+    <span class="n">min_entry</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+    <span class="n">row_sum_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">min_entry</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">tol</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Recovered F has negative entries: min=</span><span class="si">{</span><span class="n">min_entry</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">row_sum_error</span> <span class="o">&gt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Recovered F row sums are not one: max error=</span><span class="si">{</span><span class="n">row_sum_error</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># The kernel relative to the middle state normalization</span>
+    <span class="n">φ_relative</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">z</span>
+
+    <span class="k">return</span> <span class="n">F</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">β_recovered</span><span class="p">,</span> <span class="n">φ_relative</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The Perron vector also recovers the shape of the pricing kernel.</p>
+<p>Ross’s Table I reports this shape with the middle state normalized to one, which is
+<span class="math notranslate nohighlight">\(1/z_j\)</span> under our normalization <span class="math notranslate nohighlight">\(z_{\text{mid}}=1\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">β_rec</span><span class="p">,</span> <span class="n">φ_relative</span> <span class="o">=</span> <span class="n">recover_natural_distribution</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ross-normalized kernel 1/z (middle state = 1):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">φ_relative</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Ross-normalized kernel 1/z (middle state = 1):
+[20.0855 11.0232  6.0496  3.3201  1.8221  1.      0.5488  0.3012  0.1653
+  0.0907  0.0498]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Because we know the data-generating natural transition matrix used to construct
+<span class="math notranslate nohighlight">\(P\)</span>, we can verify that recovery works in this simulation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">true_lognormal_transition_matrix</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Construct the bounded-grid natural transition matrix used in the simulation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">states</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">states</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">drift</span> <span class="o">=</span> <span class="p">(</span><span class="n">μ</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">σ</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">T</span>
+    <span class="n">F_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="n">log_returns</span> <span class="o">=</span> <span class="n">states</span> <span class="o">-</span> <span class="n">states</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">F_true</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">log_returns</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">drift</span><span class="p">,</span>
+                             <span class="n">scale</span><span class="o">=</span><span class="n">σ</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">T</span><span class="p">))</span> <span class="o">*</span> <span class="n">ds</span>
+        <span class="n">F_true</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">F_true</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">F_true</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">F_true</span>
+
+
+<span class="n">F_true</span> <span class="o">=</span> <span class="n">true_lognormal_transition_matrix</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="n">P_reconstructed</span> <span class="o">=</span> <span class="n">β_rec</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">/</span> <span class="n">z</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">*</span> <span class="n">F</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Recovery numerical checks&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;max |F - true F| = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">F</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">F_true</span><span class="p">))</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;max |P - recovered kernel times F| = &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">P</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">P_reconstructed</span><span class="p">))</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Recovery numerical checks
+max |F - true F| = 3.46e-14
+max |P - recovered kernel times F| = 1.11e-16
+</pre></div>
+</div>
+</div>
+</div>
+<p>Indeed, the discrepancies are at the level of numerical roundoff.</p>
+</section>
+</section>
+<section id="natural-vs-risk-neutral-distributions">
+<h2><a class="toc-backref" href="#id18" role="doc-backlink"><span class="section-number">100.5. </span>Natural vs. risk-neutral distributions</a><a class="headerlink" href="#natural-vs-risk-neutral-distributions" title="Link to this heading">#</a></h2>
+<p>A key insight of <span id="id4">Ross [<a class="reference internal" href="zreferences.html#id11" title="Stephen A. Ross. The recovery theorem. Journal of Finance, 70(2):615–648, 2015. doi:10.1111/jofi.12092.">2015</a>]</span> is that the natural distribution can differ
+systematically from the risk-neutral one.</p>
+<p>In this CRRA example, where states are ordered from low to high payoff, the
+single-crossing argument in <a class="reference internal" href="#ross-recovery-single-crossing"><span class="std std-ref">Single crossing and the risk premium</span></a> implies that
+the natural marginal density <strong>first-order stochastically dominates</strong> the
+risk-neutral density: the CDF of the natural distribution lies <em>below</em> that of
+the risk-neutral distribution.</p>
+<p>Because the pricing kernel is declining (investors fear bad outcomes), risk-neutral
+probabilities overweight bad states and underweight good states relative to the natural
+measure.</p>
+<p>We first plot the natural distribution against the risk-neutral one and the recovered
+relative pricing kernel</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mid</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">states</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+<span class="n">row_sums</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Normalize Arrow prices by the one-period riskless bond price in each state</span>
+<span class="n">Q_rn</span> <span class="o">=</span> <span class="n">P</span> <span class="o">/</span> <span class="n">row_sums</span>
+
+<span class="n">f_nat</span> <span class="o">=</span> <span class="n">F</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">f_rn</span> <span class="o">=</span> <span class="n">Q_rn</span><span class="p">[</span><span class="n">mid</span><span class="p">,</span> <span class="p">:]</span>
+
+<span class="n">gross_returns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gross_returns</span><span class="p">,</span> <span class="n">f_nat</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;natural (recovered)&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gross_returns</span><span class="p">,</span> <span class="n">f_rn</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;risk-neutral&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;gross return $S_T / S_0$&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probability&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;one-period marginal distributions&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gross_returns</span><span class="p">,</span> <span class="n">φ_relative</span><span class="p">,</span> <span class="s1">&#39;g-^&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;gross return $S_T / S_0$&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;relative kernel $1/z$&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;recovered relative pricing kernel&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/1b7b607882acbd463e13466286ee8eda53e35d979a617ce02f634deb4a0c8ef7.png" src="_images/1b7b607882acbd463e13466286ee8eda53e35d979a617ce02f634deb4a0c8ef7.png" />
+</div>
+</div>
+<p>The CDF clearly shows the first-order stochastic dominance</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cdf_nat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">f_nat</span><span class="p">)</span>
+<span class="n">cdf_rn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">f_rn</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gross_returns</span><span class="p">,</span> <span class="n">cdf_nat</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;natural cdf&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gross_returns</span><span class="p">,</span> <span class="n">cdf_rn</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;risk-neutral cdf&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;gross return $S_T / S_0$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;cumulative probability&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Natural CDF &lt;= Risk-neutral CDF at all states: &quot;</span>
+      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">cdf_nat</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cdf_rn</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1e-10</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/1294dc256b2c7d6b7b1006f7123fbd6cbbc05105834b0ef3568354eb8201408a.png" src="_images/1294dc256b2c7d6b7b1006f7123fbd6cbbc05105834b0ef3568354eb8201408a.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Natural CDF &lt;= Risk-neutral CDF at all states: True
+</pre></div>
+</div>
+</div>
+</div>
+<p>The gap between the two CDFs is generated by the slope of the pricing kernel.</p>
+<p>In the
+CRRA benchmark, this slope is controlled by the risk-aversion coefficient <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
+<p>We next vary <span class="math notranslate nohighlight">\(\gamma\)</span> to see how the recovered kernel and the natural/risk-neutral
+wedge change.</p>
+</section>
+<section id="effect-of-risk-aversion">
+<h2><a class="toc-backref" href="#id19" role="doc-backlink"><span class="section-number">100.6. </span>Effect of risk aversion</a><a class="headerlink" href="#effect-of-risk-aversion" title="Link to this heading">#</a></h2>
+<p>The shape of the pricing kernel, and hence the gap between natural and risk-neutral
+probabilities, depends on the coefficient of risk aversion <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
+<p>We illustrate this by plotting the relative pricing kernel <span class="math notranslate nohighlight">\(1/z\)</span> and the gap between
+the natural and risk-neutral densities for a range of values of <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">γs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">γs</span><span class="p">)))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">γ_val</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">γs</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+    <span class="n">P_g</span><span class="p">,</span> <span class="n">states_g</span> <span class="o">=</span> <span class="n">build_state_price_matrix</span><span class="p">(</span><span class="n">μ</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">γ_val</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+    <span class="n">F_g</span><span class="p">,</span> <span class="n">z_g</span><span class="p">,</span> <span class="n">β_g</span><span class="p">,</span> <span class="n">φ_relative_g</span> <span class="o">=</span> <span class="n">recover_natural_distribution</span><span class="p">(</span><span class="n">P_g</span><span class="p">)</span>
+    <span class="n">mid_g</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">states_g</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="n">f_nat_g</span> <span class="o">=</span> <span class="n">F_g</span><span class="p">[</span><span class="n">mid_g</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">row_sum</span> <span class="o">=</span> <span class="n">P_g</span><span class="p">[</span><span class="n">mid_g</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">f_rn_g</span> <span class="o">=</span> <span class="n">P_g</span><span class="p">[</span><span class="n">mid_g</span><span class="p">]</span> <span class="o">/</span> <span class="n">row_sum</span>
+
+    <span class="n">gross</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">states_g</span><span class="p">)</span>
+
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gross</span><span class="p">,</span> <span class="n">φ_relative_g</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                 <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">gamma=</span><span class="si">{</span><span class="n">γ_val</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gross</span><span class="p">,</span> <span class="n">f_nat_g</span> <span class="o">-</span> <span class="n">f_rn_g</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                 <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;$</span><span class="se">\\</span><span class="s1">gamma=</span><span class="si">{</span><span class="n">γ_val</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;gross return&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;relative kernel $1/z$&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;relative pricing kernel vs risk aversion&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;gross return&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;natural minus risk-neutral probability&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;natural minus risk-neutral density&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/85817b5534557806142a84982c0e684d09ba80bb49497762a1fb385a095468d6.png" src="_images/85817b5534557806142a84982c0e684d09ba80bb49497762a1fb385a095468d6.png" />
+</div>
+</div>
+<p>Because the states are ordered from low to high payoff, the plots show the
+single-crossing property discussed in <a class="reference internal" href="#ross-recovery-single-crossing"><span class="std std-ref">Single crossing and the risk premium</span></a>: for
+returns below some threshold <span class="math notranslate nohighlight">\(v\)</span>, risk-neutral probability exceeds natural
+probability; above <span class="math notranslate nohighlight">\(v\)</span> the natural probability dominates.</p>
+<p>A higher <span class="math notranslate nohighlight">\(\gamma\)</span> amplifies this wedge.</p>
+</section>
+<section id="recovering-the-discount-rate">
+<h2><a class="toc-backref" href="#id20" role="doc-backlink"><span class="section-number">100.7. </span>Recovering the discount rate</a><a class="headerlink" href="#recovering-the-discount-rate" title="Link to this heading">#</a></h2>
+<p>A useful by-product of the Recovery Theorem is the <em>recovered subjective discount
+factor</em> <span class="math notranslate nohighlight">\(\beta\)</span>, which equals the Perron–Frobenius eigenvalue of <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p>If the horizon is <span class="math notranslate nohighlight">\(T\)</span>, the corresponding continuously compounded subjective discount
+rate is</p>
+<div class="math notranslate nohighlight">
+\[
+\rho = -\frac{\log \beta}{T}.
+\]</div>
+<p>In the numerical examples below, <span class="math notranslate nohighlight">\(T=1\)</span>, so this reduces to <span class="math notranslate nohighlight">\(\rho = -\log \beta\)</span>.</p>
+<p>Corollary 1 of <span id="id5">Ross [<a class="reference internal" href="zreferences.html#id11" title="Stephen A. Ross. The recovery theorem. Journal of Finance, 70(2):615–648, 2015. doi:10.1111/jofi.12092.">2015</a>]</span> states that <span class="math notranslate nohighlight">\(\beta\)</span> is bounded above by the largest
+state-dependent one-period discount factor — equivalently, the maximum row sum of <span class="math notranslate nohighlight">\(P\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\beta \leq \max_i \sum_j p(\theta_i, \theta_j).
+\]</div>
+<p>Sweeping the true <span class="math notranslate nohighlight">\(\rho\)</span> over a grid and reporting the recovered values alongside the
+recovery error confirms that the eigenvalue calculation pins down <span class="math notranslate nohighlight">\(\beta\)</span> accurately:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">true_ρs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.00</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
+<span class="n">recovered_ρs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">true_ρs</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">rho</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">true_ρs</span><span class="p">):</span>
+    <span class="n">P_d</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">build_state_price_matrix</span><span class="p">(</span><span class="n">μ</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">ρ</span><span class="o">=</span><span class="n">rho</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">β_d</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">recover_natural_distribution</span><span class="p">(</span><span class="n">P_d</span><span class="p">)</span>
+    <span class="n">recovered_ρs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">β_d</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;max |true ρ - recovered ρ| = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">true_ρs</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">recovered_ρs</span><span class="p">))</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">true_ρs</span><span class="p">,</span> <span class="n">recovered_ρs</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>max |true ρ - recovered ρ| = 2.11e-15
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0.0000000e+00, -4.4408921e-16],
+       [ 5.0000000e-03,  5.0000000e-03],
+       [ 1.0000000e-02,  1.0000000e-02],
+       [ 1.5000000e-02,  1.5000000e-02],
+       [ 2.0000000e-02,  2.0000000e-02],
+       [ 2.5000000e-02,  2.5000000e-02],
+       [ 3.0000000e-02,  3.0000000e-02],
+       [ 3.5000000e-02,  3.5000000e-02],
+       [ 4.0000000e-02,  4.0000000e-02],
+       [ 4.5000000e-02,  4.5000000e-02],
+       [ 5.0000000e-02,  5.0000000e-02],
+       [ 5.5000000e-02,  5.5000000e-02],
+       [ 6.0000000e-02,  6.0000000e-02]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tail-risk-natural-vs-risk-neutral-probabilities-of-catastrophe">
+<h2><a class="toc-backref" href="#id21" role="doc-backlink"><span class="section-number">100.8. </span>Tail risk: natural vs. risk-neutral probabilities of catastrophe</a><a class="headerlink" href="#tail-risk-natural-vs-risk-neutral-probabilities-of-catastrophe" title="Link to this heading">#</a></h2>
+<p>One of the most striking applications of the Recovery Theorem is its ability to separate
+the market’s recovered natural probability of catastrophes from the risk premium
+attached to them.</p>
+<p><span id="id6">Barro [<a class="reference internal" href="zreferences.html#id328" title="Robert J Barro. Rare disasters and asset markets in the twentieth century. The Quarterly Journal of Economics, 121(3):823–866, 2006.">2006</a>]</span> and <span id="id7">Mehra and Prescott [<a class="reference internal" href="zreferences.html#id292" title="Rajnish Mehra and Edward C Prescott. The equity premium: A puzzle. Journal of Monetary Economics, 15(2):145–161, 1985.">1985</a>]</span> discuss how rare disasters might
+explain the equity premium puzzle.</p>
+<p>The risk-neutral probability of a large decline is elevated both because (a) the market
+assigns a high natural probability to such events and (b) the pricing kernel upweights
+bad outcomes.</p>
+<p>Ross’s recovery machinery lets us decompose these two forces.</p>
+<p>The next cell plots left-tail probabilities under the recovered natural and the
+risk-neutral measures from the middle state, so the gap between the curves isolates
+the pricing-kernel contribution to crash probabilities.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">thresholds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.40</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">tail_prob</span><span class="p">(</span><span class="n">f_dist</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Left-tail probability for log returns.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f_dist</span><span class="p">[</span><span class="n">states</span> <span class="o">&lt;=</span> <span class="n">threshold</span><span class="p">]))</span>
+
+<span class="n">P_base</span><span class="p">,</span> <span class="n">states_base</span> <span class="o">=</span> <span class="n">build_state_price_matrix</span><span class="p">(</span>
+    <span class="n">μ</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">ρ</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">n_states</span><span class="o">=</span><span class="mi">41</span><span class="p">,</span> <span class="n">n_σ</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">F_base</span><span class="p">,</span> <span class="n">z_base</span><span class="p">,</span> <span class="n">β_base</span><span class="p">,</span> <span class="n">φ_relative_base</span> <span class="o">=</span> <span class="n">recover_natural_distribution</span><span class="p">(</span><span class="n">P_base</span><span class="p">)</span>
+
+<span class="n">mid_b</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">states_base</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">f_nat_base</span> <span class="o">=</span> <span class="n">F_base</span><span class="p">[</span><span class="n">mid_b</span><span class="p">]</span>
+<span class="n">f_rn_base</span> <span class="o">=</span> <span class="n">P_base</span><span class="p">[</span><span class="n">mid_b</span><span class="p">]</span> <span class="o">/</span> <span class="n">P_base</span><span class="p">[</span><span class="n">mid_b</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="n">prob_nat</span> <span class="o">=</span> <span class="p">[</span><span class="n">tail_prob</span><span class="p">(</span><span class="n">f_nat_base</span><span class="p">,</span> <span class="n">states_base</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">]</span>
+<span class="n">prob_rn</span> <span class="o">=</span> <span class="p">[</span><span class="n">tail_prob</span><span class="p">(</span><span class="n">f_rn_base</span><span class="p">,</span> <span class="n">states_base</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">thresholds</span><span class="p">),</span> <span class="n">prob_nat</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;natural (recovered)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">thresholds</span><span class="p">),</span> <span class="n">prob_rn</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;risk-neutral&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;gross return threshold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probability of decline below threshold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;25</span><span class="si">% d</span><span class="s1">ecline&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.70</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;silver&#39;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;30</span><span class="si">% d</span><span class="s1">ecline&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<figure class="align-default" id="fig-tail-probs">
+<img alt="_images/0287ca46847a0c04f5e6846de01b28077f6be2e9d1d29c02f44463568c491e0e.png" src="_images/0287ca46847a0c04f5e6846de01b28077f6be2e9d1d29c02f44463568c491e0e.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 100.1 </span><span class="caption-text">Tail probabilities under the recovered natural and risk-neutral measures</span><a class="headerlink" href="#fig-tail-probs" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+<p>This is a simulation illustrating Ross’s decomposition.</p>
+<p>The risk-neutral density assigns higher probability to large drops than the recovered
+natural density.</p>
+<p>In this CRRA
+simulation, increasing risk aversion makes the risk-neutral crash probability rise
+faster than the recovered natural crash probability.</p>
+<p>We will say more in <a class="reference internal" href="#rt_ex3"><span class="std std-numref">Exercise 100.3</span></a>.</p>
+</section>
+<section id="from-option-prices-to-transition-prices">
+<h2><a class="toc-backref" href="#id22" role="doc-backlink"><span class="section-number">100.9. </span>From option prices to transition prices</a><a class="headerlink" href="#from-option-prices-to-transition-prices" title="Link to this heading">#</a></h2>
+<p>The numerical example above starts from a known state-price transition matrix
+<span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p>Empirically, Ross starts one step earlier: option prices reveal state-price
+densities at different maturities from the current state, and the transition
+matrix must be inferred from those maturity-by-maturity state prices.</p>
+<p>Let <span class="math notranslate nohighlight">\(C(K,T)\)</span> be the price of a call option with strike <span class="math notranslate nohighlight">\(K\)</span> and maturity <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>If <span class="math notranslate nohighlight">\(p(S,T)\)</span> is the state-price density for terminal index level <span class="math notranslate nohighlight">\(S\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[
+C(K,T)
+    = \int_K^\infty (S-K) p(S,T) \, dS.
+\]</div>
+<p>Differentiating twice with respect to the strike gives the
+<span id="id8">Breeden and Litzenberger [<a class="reference internal" href="zreferences.html#id3" title="Douglas T. Breeden and Robert H. Litzenberger. Prices of state-contingent claims implicit in option prices. Journal of Business, 51(4):621–651, 1978. doi:10.1086/296025.">1978</a>]</span> formula</p>
+<div class="math notranslate nohighlight">
+\[
+p(K,T) = \frac{\partial^2 C(K,T)}{\partial K^2}.
+\]</div>
+<p>After discretizing strikes and maturities, let</p>
+<div class="math notranslate nohighlight">
+\[
+p_t(c) = \big(p_t(c,1), \ldots, p_t(c,m)\big)
+\]</div>
+<p>be the vector of state prices at horizon <span class="math notranslate nohighlight">\(t\)</span> observed from today’s state <span class="math notranslate nohighlight">\(c\)</span>.</p>
+<p>Here <span class="math notranslate nohighlight">\(c\)</span> indexes the current state and <span class="math notranslate nohighlight">\(t\)</span> counts discrete maturity steps.</p>
+<p>The first one-period vector <span class="math notranslate nohighlight">\(p_1(c)\)</span> identifies the row of <span class="math notranslate nohighlight">\(P\)</span> corresponding to
+the current state <span class="math notranslate nohighlight">\(c\)</span>, supplying <span class="math notranslate nohighlight">\(m\)</span> equations.</p>
+<p>If the one-period state-price transition matrix <span class="math notranslate nohighlight">\(P\)</span> is time homogeneous, these
+vectors satisfy the forward recursion</p>
+<div class="math notranslate nohighlight">
+\[
+p_{t+1}(c) = p_t(c) P,
+\qquad t=1,\ldots,m-1.
+\]</div>
+<p>Componentwise,</p>
+<div class="math notranslate nohighlight">
+\[
+p_{t+1}(c,j) = \sum_k p_t(c,k) p(k,j).
+\]</div>
+<p>The remaining <span class="math notranslate nohighlight">\(m-1\)</span> forward equations <span class="math notranslate nohighlight">\(p_{t+1}(c)=p_t(c)P\)</span>, each with <span class="math notranslate nohighlight">\(m\)</span>
+components, supply the remaining <span class="math notranslate nohighlight">\(m(m-1)\)</span> equations.</p>
+<p>Together these give <span class="math notranslate nohighlight">\(m^2\)</span> equations for the <span class="math notranslate nohighlight">\(m^2\)</span> transition prices <span class="math notranslate nohighlight">\(p(k,j)\)</span>.</p>
+<p>In practice this step is numerically delicate because the second derivative in
+the option-price formula amplifies measurement error, and because additional
+shape restrictions such as positivity or unimodality may be needed to obtain a
+reasonable transition matrix.</p>
+</section>
+<section id="testing-efficient-markets">
+<h2><a class="toc-backref" href="#id23" role="doc-backlink"><span class="section-number">100.10. </span>Testing efficient markets</a><a class="headerlink" href="#testing-efficient-markets" title="Link to this heading">#</a></h2>
+<p>The recovered pricing kernel can also be used to test market efficiency, under the assumptions of the Recovery Theorem.</p>
+<p>If a trading strategy has a very high Sharpe ratio, then some pricing kernel must be
+volatile enough to price that payoff.</p>
+<p>The Hansen–Jagannathan bound <span id="id9">[<a class="reference internal" href="zreferences.html#id209" title="Lars Peter Hansen and Ravi Jagannathan. Implications of security market data for models of dynamic economies. Journal of Political Economy, 99(2):225–262, 1991. doi:10.1086/261750.">Hansen and Jagannathan, 1991</a>]</span> says that, for any excess
+return with mean <span class="math notranslate nohighlight">\(\mu_\text{excess}\)</span> and standard deviation <span class="math notranslate nohighlight">\(\sigma_\text{asset}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[
+\frac{|\mu_\text{excess}|}{\sigma_\text{asset}} \leq e^{rT}\, \sigma(M),
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(M\)</span> is the one-period stochastic discount factor and <span class="math notranslate nohighlight">\(r\)</span> is the
+continuously compounded riskless rate over horizon <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>Ross’s point is that recovery gives an estimate of the relevant volatility
+<span class="math notranslate nohighlight">\(\sigma(M)\)</span>.</p>
+<p>Hence it gives an upper bound on the Sharpe ratio of any strategy based on the same
+stock-market information used in recovery.</p>
+<p>If such a strategy has a Sharpe ratio above the bound, then it is too profitable to be
+consistent with efficiency, under the assumptions of the Recovery
+Theorem.</p>
+<p>The same logic gives a bound on return predictability.</p>
+<p>Suppose excess returns are decomposed as</p>
+<div class="math notranslate nohighlight">
+\[
+x_{t+1} = \mu(I_t) + \epsilon_{t+1},
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(I_t\)</span> is the stock-market information set and <span class="math notranslate nohighlight">\(\epsilon_{t+1}\)</span> is unpredictable
+from <span class="math notranslate nohighlight">\(I_t\)</span>.</p>
+<p>Then the <span class="math notranslate nohighlight">\(R^2\)</span> of a forecasting regression based on <span class="math notranslate nohighlight">\(I_t\)</span> is bounded above by the
+variance of the recovered kernel:</p>
+<div class="math notranslate nohighlight">
+\[
+R^2 \leq e^{2rT} \, \sigma^2(M).
+\]</div>
+<p>Only the component of the kernel projected on this information set is relevant.</p>
+<p>Adding unrelated noise to a candidate pricing kernel would raise its variance, but it
+would not justify stronger return predictability from stock-market information.</p>
+</section>
+<section id="limitations-and-extensions">
+<h2><a class="toc-backref" href="#id24" role="doc-backlink"><span class="section-number">100.11. </span>Limitations and extensions</a><a class="headerlink" href="#limitations-and-extensions" title="Link to this heading">#</a></h2>
+<p>The Recovery Theorem is a remarkable theoretical result, but several caveats apply in
+practice.</p>
+<p><em>Finite state space:</em></p>
+<p>Ross’s theorem is proved for a finite-state irreducible Markov chain; bounded
+continuous-state recovery requires additional results in <a class="reference internal" href="misspecified_recovery.html"><span class="doc">Misspecified recovery</span></a>.</p>
+<p>In continuous, unbounded state spaces (e.g., a lognormal diffusion), uniqueness fails
+because any exponential <span class="math notranslate nohighlight">\(e^{\alpha x}\)</span> satisfies the characteristic equation.</p>
+<p>To see the issue, consider the continuous lognormal growth state-price density
+above.</p>
+<p>The natural continuous-space analogue of the Perron–Frobenius problem is</p>
+<div class="math notranslate nohighlight">
+\[
+\int p_T(s,y) v(y) \, dy = \lambda v(s).
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(y\)</span> is a possible future log state, <span class="math notranslate nohighlight">\(v\)</span> is a candidate positive
+eigenfunction, and <span class="math notranslate nohighlight">\(\lambda\)</span> is its eigenvalue.</p>
+<p>For every real <span class="math notranslate nohighlight">\(\alpha\)</span>, the exponential function <span class="math notranslate nohighlight">\(v_\alpha(s)=e^{\alpha s}\)</span>
+solves this equation with eigenvalue</p>
+<div class="math notranslate nohighlight">
+\[
+\lambda(\alpha)
+    =
+    \exp\!\left(
+        -\rho T
+        +(\alpha-\gamma)(\mu-\tfrac{1}{2}\sigma^2)T
+        +\tfrac{1}{2}\sigma^2T(\alpha-\gamma)^2
+    \right).
+\]</div>
+<p>The positive eigenfunction is therefore not unique.</p>
+<p>This is why truncation or boundedness assumptions matter: they turn the
+continuous operator problem back into a Perron–Frobenius problem with a
+unique positive eigenvector.</p>
+<p><span id="id10">Carr and Yu [<a class="reference internal" href="zreferences.html#id4" title="Peter Carr and Jiming Yu. Risk, return, and Ross recovery. Journal of Derivatives, 20(1):38–59, 2012. doi:10.3905/jod.2012.20.1.038.">2012</a>]</span> establish recovery with a bounded diffusion.</p>
+<p><em>Transition independence:</em></p>
+<p>If the kernel is not transition independent, recovery is not guaranteed.</p>
+<p><span id="id11">Borovička <em>et al.</em> [<a class="reference internal" href="zreferences.html#id10" title="Jaroslav Borovička, Lars Peter Hansen, and José A. Scheinkman. Misspecified recovery. Journal of Finance, 71(6):2493–2544, 2016. doi:10.1111/jofi.12404.">2016</a>]</span> show that the Ross recovery can confound the
+long-run risk component of the kernel with the natural probability distribution,
+yielding an incorrect decomposition.</p>
+<p>We discuss this in the sequel lecture <a class="reference internal" href="misspecified_recovery.html"><span class="doc">Misspecified recovery</span></a>.</p>
+<p><em>Empirical estimation:</em></p>
+<p>Extracting reliable state prices from observed option prices requires careful
+interpolation and extrapolation.</p>
+<p>The mapping from implied volatilities to state prices via the
+<span id="id12">Breeden and Litzenberger [<a class="reference internal" href="zreferences.html#id3" title="Douglas T. Breeden and Robert H. Litzenberger. Prices of state-contingent claims implicit in option prices. Journal of Business, 51(4):621–651, 1978. doi:10.1086/296025.">1978</a>]</span> formula involves second derivatives, which amplify
+measurement error.</p>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id25" role="doc-backlink"><span class="section-number">100.12. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<div class="exercise admonition" id="rt_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 100.1 </span></p>
+<section id="exercise-content">
+<p><strong>The Perron–Frobenius vector and the pricing kernel.</strong></p>
+<p>Consider the <span class="math notranslate nohighlight">\(3 \times 3\)</span> state price matrix</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+P = \begin{pmatrix}
+0.5950 &amp; 0.1700 &amp; 0.0272 \\
+0.159375 &amp; 0.5525 &amp; 0.1360 \\
+0.06640625 &amp; 0.31875 &amp; 0.5525
+\end{pmatrix}.
+\end{split}\]</div>
+<ol class="arabic simple">
+<li><p>Compute the Perron eigenvalue <span class="math notranslate nohighlight">\(\beta\)</span> and the corresponding eigenvector <span class="math notranslate nohighlight">\(z\)</span> of
+<span class="math notranslate nohighlight">\(P\)</span>.</p></li>
+<li><p>Use <span class="math notranslate nohighlight">\(z\)</span> to recover the natural probability transition matrix <span class="math notranslate nohighlight">\(F\)</span> via</p></li>
+</ol>
+<div class="math notranslate nohighlight">
+\[
+f_{ij} = \frac{1}{\beta} \frac{z_j}{z_i} p_{ij}.
+\]</div>
+<ol class="arabic simple" start="3">
+<li><p>Verify that each row of <span class="math notranslate nohighlight">\(F\)</span> sums to one and all entries are positive.</p></li>
+<li><p>For destination state <span class="math notranslate nohighlight">\(j\)</span>, the relative kernel component is <span class="math notranslate nohighlight">\(1/z_j\)</span>; for a
+transition from state <span class="math notranslate nohighlight">\(i\)</span> to state <span class="math notranslate nohighlight">\(j\)</span>, the full pricing kernel is <span class="math notranslate nohighlight">\(\beta z_i/z_j\)</span>.
+Compute <span class="math notranslate nohighlight">\(1/z_j\)</span> for each state.</p></li>
+</ol>
+<p>Does the kernel decrease as we move from state 1 to state 3 (i.e., from bad to good
+states)?</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="ross_recovery-solution-5">
+
+<p class="admonition-title">Solution</p>
+<section id="solution-content">
+<p>Here is one solution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P_ex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mf">0.5950</span><span class="p">,</span> <span class="mf">0.1700</span><span class="p">,</span> <span class="mf">0.0272</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">0.159375</span><span class="p">,</span> <span class="mf">0.5525</span><span class="p">,</span> <span class="mf">0.1360</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">0.06640625</span><span class="p">,</span> <span class="mf">0.31875</span><span class="p">,</span> <span class="mf">0.5525</span><span class="p">]</span>
+<span class="p">])</span>
+
+<span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">P_ex</span><span class="p">)</span>
+<span class="n">real_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">)</span>
+<span class="n">real_ev</span> <span class="o">=</span> <span class="n">eigenvalues</span><span class="p">[</span><span class="n">real_mask</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
+<span class="n">real_evec</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">real_mask</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
+
+<span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">real_ev</span><span class="p">)</span>
+<span class="n">β_ex</span> <span class="o">=</span> <span class="n">real_ev</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="n">z_ex</span> <span class="o">=</span> <span class="n">real_evec</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">z_ex</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">z_ex</span> <span class="o">=</span> <span class="o">-</span><span class="n">z_ex</span>
+<span class="n">z_ex</span> <span class="o">=</span> <span class="n">z_ex</span> <span class="o">/</span> <span class="n">z_ex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;β = </span><span class="si">{</span><span class="n">β_ex</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;z = </span><span class="si">{</span><span class="n">z_ex</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">D_ex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">z_ex</span><span class="p">)</span>
+<span class="n">D_inv_ex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">z_ex</span><span class="p">)</span>
+<span class="n">F_ex</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">β_ex</span><span class="p">)</span> <span class="o">*</span> <span class="n">D_ex</span> <span class="o">@</span> <span class="n">P_ex</span> <span class="o">@</span> <span class="n">D_inv_ex</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Recovered F:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">F_ex</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Row sums: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">F_ex</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nonnegative: </span><span class="si">{</span><span class="p">(</span><span class="n">F_ex</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">-</span><span class="mf">1e-10</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">φ_relative_ex</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">z_ex</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">relative kernel 1/z = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">φ_relative_ex</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Decreasing: </span><span class="si">{</span><span class="n">φ_relative_ex</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">φ_relative_ex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">φ_relative_ex</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>β = 0.850000
+z = [0.8  1.   1.25]
+
+Recovered F:
+[[0.7  0.25 0.05]
+ [0.15 0.65 0.2 ]
+ [0.05 0.3  0.65]]
+
+Row sums: [1. 1. 1.]
+Nonnegative: True
+
+relative kernel 1/z = [1.25 1.   0.8 ]
+Decreasing: True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="exercise admonition" id="rt_ex2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 100.2 </span></p>
+<section id="exercise-content">
+<p><strong>Stochastic dominance.</strong></p>
+<p>Using the recovered <span class="math notranslate nohighlight">\(F\)</span> and the normalised risk-neutral matrix <span class="math notranslate nohighlight">\(Q = P / \text{row sums}\)</span>
+from the exercise above:</p>
+<ol class="arabic simple">
+<li><p>Compute the one-step marginal distributions <span class="math notranslate nohighlight">\(f_j = F_{2,j}\)</span> and <span class="math notranslate nohighlight">\(q_j = Q_{2,j}\)</span>
+starting from state 2 (index 1 in Python).</p></li>
+<li><p>Compute the CDFs <span class="math notranslate nohighlight">\(\hat F_k = \sum_{j \leq k} f_j\)</span> and
+<span class="math notranslate nohighlight">\(\hat Q_k = \sum_{j \leq k} q_j\)</span> for each state.</p></li>
+<li><p>Verify numerically that <span class="math notranslate nohighlight">\(\hat F_k \leq \hat Q_k\)</span> for every <span class="math notranslate nohighlight">\(k\)</span>, confirming stochastic
+dominance in this ordered three-state example.</p></li>
+</ol>
+</section>
+</div>
+<div class="solution dropdown admonition" id="ross_recovery-solution-7">
+
+<p class="admonition-title">Solution</p>
+<section id="solution-content">
+<p>Here is one solution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">eig</span><span class="p">(</span><span class="n">P_ex</span><span class="p">)</span>
+<span class="n">real_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isreal</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">)</span>
+<span class="n">real_ev</span> <span class="o">=</span> <span class="n">eigenvalues</span><span class="p">[</span><span class="n">real_mask</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
+<span class="n">real_evec</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">real_mask</span><span class="p">]</span><span class="o">.</span><span class="n">real</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">real_ev</span><span class="p">)</span>
+<span class="n">β_ex</span> <span class="o">=</span> <span class="n">real_ev</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="n">z_ex</span> <span class="o">=</span> <span class="n">real_evec</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">z_ex</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">z_ex</span> <span class="o">=</span> <span class="o">-</span><span class="n">z_ex</span>
+<span class="n">z_ex</span> <span class="o">=</span> <span class="n">z_ex</span> <span class="o">/</span> <span class="n">z_ex</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">D_ex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">z_ex</span><span class="p">)</span>
+<span class="n">D_inv_ex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">z_ex</span><span class="p">)</span>
+<span class="n">F_ex</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">β_ex</span><span class="p">)</span> <span class="o">*</span> <span class="n">D_ex</span> <span class="o">@</span> <span class="n">P_ex</span> <span class="o">@</span> <span class="n">D_inv_ex</span>
+
+<span class="n">start</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">f_marg</span> <span class="o">=</span> <span class="n">F_ex</span><span class="p">[</span><span class="n">start</span><span class="p">]</span>
+<span class="n">q_marg</span> <span class="o">=</span> <span class="n">P_ex</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">/</span> <span class="n">P_ex</span><span class="p">[</span><span class="n">start</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;One-step marginals from state 2:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;natural     = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">f_marg</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;risk-neutral = </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">q_marg</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">cdf_nat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">f_marg</span><span class="p">)</span>
+<span class="n">cdf_rn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">q_marg</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">CDFs:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;state </span><span class="si">{</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: natural = </span><span class="si">{</span><span class="n">cdf_nat</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, risk-neutral = </span><span class="si">{</span><span class="n">cdf_rn</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">dominates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">cdf_nat</span> <span class="o">&lt;=</span> <span class="n">cdf_rn</span> <span class="o">+</span> <span class="mf">1e-10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Natural CDF &lt;= risk-neutral CDF: </span><span class="si">{</span><span class="n">dominates</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>One-step marginals from state 2:
+natural     = [0.15 0.65 0.2 ]
+risk-neutral = [0.188  0.6516 0.1604]
+
+CDFs:
+state 1: natural = 0.1500, risk-neutral = 0.1880
+state 2: natural = 0.8000, risk-neutral = 0.8396
+state 3: natural = 1.0000, risk-neutral = 1.0000
+
+Natural CDF &lt;= risk-neutral CDF: True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="exercise admonition" id="rt_ex3">
+
+<p class="admonition-title"><span class="caption-number">Exercise 100.3 </span></p>
+<section id="exercise-content">
+<p><strong>Risk aversion and tail risk.</strong></p>
+<p>Write a function <code class="docutils literal notranslate"><span class="pre">tail_risk_ratio(γ,</span> <span class="pre">threshold,</span> <span class="pre">μ,</span> <span class="pre">σ,</span> <span class="pre">ρ,</span> <span class="pre">T)</span></code> that:</p>
+<ol class="arabic simple">
+<li><p>Constructs the state price matrix <span class="math notranslate nohighlight">\(P\)</span> using <code class="docutils literal notranslate"><span class="pre">build_state_price_matrix</span></code> with
+the given parameters and <code class="docutils literal notranslate"><span class="pre">n_states=41</span></code>.</p></li>
+<li><p>Applies <code class="docutils literal notranslate"><span class="pre">recover_natural_distribution</span></code> to obtain <span class="math notranslate nohighlight">\(F\)</span>.</p></li>
+<li><p>Computes <span class="math notranslate nohighlight">\(P(\text{log-return} \leq \text{threshold})\)</span> under both the natural
+and risk-neutral distributions starting from the middle state.</p></li>
+<li><p>Returns the ratio <span class="math notranslate nohighlight">\(p_\text{risk-neutral} / p_\text{natural}\)</span>.</p></li>
+</ol>
+<p>Using this function, plot the ratio as a function of <span class="math notranslate nohighlight">\(\gamma \in [1, 10]\)</span> for a
+30 percent simple decline, i.e. <code class="docutils literal notranslate"><span class="pre">threshold</span> <span class="pre">=</span> <span class="pre">np.log(0.70)</span></code>.</p>
+<p>Explain the economic interpretation: why does a higher <span class="math notranslate nohighlight">\(\gamma\)</span> raise the ratio?</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="ross_recovery-solution-9">
+
+<p class="admonition-title">Solution</p>
+<section id="solution-content">
+<p>Here is one solution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">tail_risk_ratio</span><span class="p">(</span><span class="n">γ</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">μ</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">σ</span><span class="o">=</span><span class="mf">0.20</span><span class="p">,</span> <span class="n">ρ</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Risk-neutral / natural left-tail probability.&quot;&quot;&quot;</span>
+    <span class="n">P_g</span><span class="p">,</span> <span class="n">states_g</span> <span class="o">=</span> <span class="n">build_state_price_matrix</span><span class="p">(</span>
+        <span class="n">μ</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">n_states</span><span class="o">=</span><span class="mi">41</span><span class="p">,</span> <span class="n">n_σ</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+    <span class="n">F_g</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">recover_natural_distribution</span><span class="p">(</span><span class="n">P_g</span><span class="p">)</span>
+
+    <span class="n">mid_g</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">states_g</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="n">f_nat_g</span> <span class="o">=</span> <span class="n">F_g</span><span class="p">[</span><span class="n">mid_g</span><span class="p">]</span>
+    <span class="n">f_rn_g</span> <span class="o">=</span> <span class="n">P_g</span><span class="p">[</span><span class="n">mid_g</span><span class="p">]</span> <span class="o">/</span> <span class="n">P_g</span><span class="p">[</span><span class="n">mid_g</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="n">p_nat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f_nat_g</span><span class="p">[</span><span class="n">states_g</span> <span class="o">&lt;=</span> <span class="n">threshold</span><span class="p">]))</span>
+    <span class="n">p_rn</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f_rn_g</span><span class="p">[</span><span class="n">states_g</span> <span class="o">&lt;=</span> <span class="n">threshold</span><span class="p">]))</span>
+
+    <span class="k">if</span> <span class="n">p_nat</span> <span class="o">&lt;</span> <span class="mf">1e-12</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="k">return</span> <span class="n">p_rn</span> <span class="o">/</span> <span class="n">p_nat</span>
+
+
+<span class="n">γs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">threshold_30</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.70</span><span class="p">)</span>
+<span class="n">ratios</span> <span class="o">=</span> <span class="p">[</span><span class="n">tail_risk_ratio</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">threshold_30</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">γs</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">γs</span><span class="p">,</span> <span class="n">ratios</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;risk aversion coefficient $</span><span class="se">\\</span><span class="s1">gamma$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;risk-neutral / natural tail probability&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;tail risk ratio for a 30</span><span class="si">% d</span><span class="s1">ecline vs risk aversion&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5d9173206d2da63329cbfe7b24081d66c4ec8bb6b70ac7d9ccd53d32b56b73df.png" src="_images/5d9173206d2da63329cbfe7b24081d66c4ec8bb6b70ac7d9ccd53d32b56b73df.png" />
+</div>
+</div>
+<p>A higher coefficient of risk aversion <span class="math notranslate nohighlight">\(\gamma\)</span> makes the pricing kernel steeper: the
+market assigns a larger premium per unit of probability to bad-state payoffs.</p>
+<p>Risk-neutral probabilities incorporate this premium, so in this CRRA simulation the
+risk-neutral crash probability rises faster with <span class="math notranslate nohighlight">\(\gamma\)</span> than the recovered natural
+crash probability.</p>
+<p>Recovery separates the market’s estimated natural crash probability from the
+pricing-kernel premium attached to crash states.</p>
+</section>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Tools and Techniques
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="sir_model.html">
+   1. Modeling COVID 19
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_algebra.html">
+   2. Linear Algebra
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="qr_decomp.html">
+   3. QR Decomposition
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eig_circulant.html">
+   4. Circulant Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="svd_intro.html">
+   5. Singular Value Decomposition (SVD)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="var_dmd.html">
+   6. VARs and DMDs
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newton_method.html">
+   7. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Elementary Statistics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_matrix.html">
+   8. Elementary Probability with Matrices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="stats_examples.html">
+   9. Some Probability Distributions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lln_clt.html">
+   10. LLN and CLT
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="prob_meaning.html">
+   11. Two Meanings of Probability
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multi_hyper.html">
+   12. Multivariate Hypergeometric Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="multivariate_normal.html">
+   13. Multivariate Normal Distribution
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hoist_failure.html">
+   14. Fault Tree Uncertainties
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="back_prop.html">
+   15. Introduction to Artificial Neural Networks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rand_resp.html">
+   16. Randomized Response Surveys
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="util_rand_resp.html">
+   17. Expected Utilities of Random Responses
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Bayes Law
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="bayes_nonconj.html">
+   18. Non-Conjugate Priors
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_bayes.html">
+   19. Posterior Distributions for  AR(1) Parameters
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ar1_turningpts.html">
+   20. Forecasting  an AR(1) Process
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Statistics and Information
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="divergence_measures.html">
+   21. Statistical Divergence Measures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process.html">
+   22. Likelihood Ratio Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_ratio_process_2.html">
+   23. Heterogeneous Beliefs and Financial Markets
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_var.html">
+   24. Likelihood Processes For VAR Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="imp_sample.html">
+   25. Mean of a Likelihood Ratio Process
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman.html">
+   26. A Problem that Stumped Milton Friedman
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wald_friedman_2.html">
+   27. A Bayesian Formulation of Friedman and Wald’s Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="exchangeable.html">
+   28. Exchangeability and Bayesian Updating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="likelihood_bayes.html">
+   29. Likelihood Ratio Processes and Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="blackwell_kihlstrom.html">
+   30. Blackwell’s Theorem on Comparing Experiments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="information_market_equilibrium.html">
+   31. Information and Market Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mix_model.html">
+   32. Incorrect Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="navy_captain.html">
+   33. Bayesian versus Frequentist Decision Rules
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="merging_of_opinions.html">
+   34. Merging of Opinions: The Blackwell–Dubins Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="survival_recursive_preferences.html">
+   35. Survival and Long-Run Dynamics under Recursive Preferences
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Linear Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_transport.html">
+   36. Optimal Transport
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="von_neumann_model.html">
+   37. Von Neumann Growth Model (and a Generalization)
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Dynamics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="finite_markov.html">
+   38. Finite Markov Chains
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   39. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="linear_models.html">
+   40. Linear State Space Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="samuelson.html">
+   41. Samuelson Multiplier-Accelerator
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="chow_business_cycles.html">
+   42. The Acceleration Principle and the Nature of Business Cycles
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   43. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   44. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman.html">
+   45. A First Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kalman_2.html">
+   46. Another Look at the Kalman Filter
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="organization_capital.html">
+   47. Organization Capital
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="measurement_models.html">
+   48. Two Models of Measurements and the Investment Accelerator
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Search
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model.html">
+   49. Job Search I: The McCall Search Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_separation.html">
+   50. Job Search II: Search and Separation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_model_with_sep_markov.html">
+   51. Job Search III: Search with Separation and Markov Wages
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_fitted_vfi.html">
+   52. Job Search IV: Fitted Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_persist_trans.html">
+   53. Job Search V: Persistent and Transitory Wage Shocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="career.html">
+   54. Job Search VI: Modeling Career Choice
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jv.html">
+   55. Job Search VII: On-the-Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="odu.html">
+   56. Job Search VIII: Search with Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Reinforcement Learning
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_q.html">
+   57. Inventory Management via Q-Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rs_inventory_q.html">
+   58. Risk-Sensitive Inventory Management via Q-Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mccall_q.html">
+   59. Job Search IX: Search with Q-Learning
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction to Optimal Savings
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="os.html">
+   60. Optimal Savings I: Cake Eating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_numerical.html">
+   61. Optimal Savings II: Numerical Cake Eating
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_stochastic.html">
+   62. Optimal Savings III: Stochastic Returns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_time_iter.html">
+   63. Optimal Savings IV: Time Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_egm.html">
+   64. Optimal Savings V: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="os_egm_jax.html">
+   65. Optimal Savings VI: EGM with JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Household Problems
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_discrete.html">
+   66. The Income Fluctuation Problem I: Discretization and VFI
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_opi.html">
+   67. The Income Fluctuation Problem II: Optimistic Policy Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm.html">
+   68. The Income Fluctuation Problem III: The Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm_transient_shocks.html">
+   69. The Income Fluctuation Problem IV: Transient Income Shocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_advanced.html">
+   70. The Income Fluctuation Problem V: Stochastic Returns on Assets
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  LQ Control
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lqcontrol.html">
+   71. LQ Control: Foundations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lagrangian_lqdp.html">
+   72. Lagrangian for LQ Control
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cross_product_trick.html">
+   73. Eliminating Cross Products
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income.html">
+   74. The Permanent Income Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="perm_income_cons.html">
+   75. Permanent Income II: LQ Techniques
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="theil_1.html">
+   76. Certainty Equivalence
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="theil_2.html">
+   77. Certainty Equivalence and Model Uncertainty
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="lq_inventories.html">
+   78. Production Smoothing via Inventories
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Optimal Growth
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_1.html">
+   79. Cass-Koopmans Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_koopmans_2.html">
+   80. Cass-Koopmans Competitive Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal.html">
+   81. Cass-Koopmans Model with Distorting Taxes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cass_fiscal_2.html">
+   82. Two-Country Model with Distorting Taxes
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Multiple Agent Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lake_model.html">
+   83. A Lake Model of Employment and Unemployment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="endogenous_lake.html">
+   84. Lake Model with an Endogenous Job Finding Rate
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="rational_expectations.html">
+   85. Rational Expectations Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="re_with_feedback.html">
+   86. Stability in Linear Rational Expectations Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_perf.html">
+   87. Markov Perfect Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="uncertainty_traps.html">
+   88. Uncertainty Traps
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari.html">
+   89. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak2.html">
+   90. Transitions in an Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ak_aiyagari.html">
+   91. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_computation.html">
+   92. Two Computations to Fund Social Security
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing and Finance
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   93. Asset Pricing: Finite State Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hansen_singleton_1983.html">
+   94. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hansen_singleton_1982.html">
+   95. Estimating Euler Equations by Generalized Method of Moments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ge_arrow.html">
+   96. Competitive Equilibria with Arrow Securities
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="harrison_kreps.html">
+   97. Heterogeneous Beliefs and Bubbles
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="morris_learn.html">
+   98. Speculative Behavior with Bayesian Learning
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="affine_risk_prices.html">
+   99. Affine Models of Asset Prices
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   100. The Recovery Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="misspecified_recovery.html">
+   101. Misspecified recovery
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="pandas_panel.html">
+   102. Pandas for Panel Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ols.html">
+   103. Linear Regression in Python
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   104. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Auctions
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="two_auctions.html">
+   105. First-Price and Second-Price Auctions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="house_auction.html">
+   106. Multiple Good Allocation Mechanisms
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   107. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   108. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   109. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/ross_recovery.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/ross_recovery.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-python.myst" download><i data-feather="github"></i></a></li>
+                    
+                    
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-python.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/ross_recovery.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-python.notebooks" data-urlpath="tree/lecture-python.notebooks/ross_recovery.ipynb" data-branch=main>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-python.notebooks/blob/main/ross_recovery.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "ross_recovery";
+                const repoURL = "https://github.com/QuantEcon/lecture-python.notebooks";
+                const urlPath = "tree/lecture-python.notebooks/ross_recovery.ipynb";
+                const branch = "main"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>

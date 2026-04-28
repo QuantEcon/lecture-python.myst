@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>71. Lagrangian for LQ Control &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>72. Lagrangian for LQ Control &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="72. Eliminating Cross Products" href="cross_product_trick.html" />
-    <link rel="prev" title="70. LQ Control: Foundations" href="lqcontrol.html" />
+    <link rel="next" title="73. Eliminating Cross Products" href="cross_product_trick.html" />
+    <link rel="prev" title="71. LQ Control: Foundations" href="lqcontrol.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -207,17 +207,17 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">71.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#undiscounted-lq-dp-problem">71.2. Undiscounted LQ DP Problem</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lagrangian">71.3. Lagrangian</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#state-costate-dynamics">71.4. State-Costate Dynamics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reciprocal-pairs-property">71.5. Reciprocal Pairs Property</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schur-decomposition">71.6. Schur decomposition</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application">71.7. Application</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-applications">71.8. Other Applications</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discounted-problems">71.9. Discounted Problems</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transforming-states-and-controls-to-eliminate-discounting">71.9.1. Transforming States and Controls to Eliminate Discounting</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lagrangian-for-discounted-problem">71.9.2. Lagrangian for Discounted Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">72.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#undiscounted-lq-dp-problem">72.2. Undiscounted LQ DP Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lagrangian">72.3. Lagrangian</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#state-costate-dynamics">72.4. State-Costate Dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reciprocal-pairs-property">72.5. Reciprocal Pairs Property</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schur-decomposition">72.6. Schur decomposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#application">72.7. Application</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-applications">72.8. Other Applications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discounted-problems">72.9. Discounted Problems</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transforming-states-and-controls-to-eliminate-discounting">72.9.1. Transforming States and Controls to Eliminate Discounting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lagrangian-for-discounted-problem">72.9.2. Lagrangian for Discounted Problem</a></li>
 </ul>
 </li>
 </ul>
@@ -273,7 +273,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Aug 14, 2025
+                            Last changed: Apr 28, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -281,6 +281,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/lagrangian_lqdp.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/78030a3a2" class="changelog-hash">78030a3a2</a>
+                                
+                                <span class="changelog-author">Humphrey Yang</span>
+                                <span class="changelog-time">40 minutes ago</span>
+                                <span class="changelog-message">Add lectures on Kihlstrom's paper, Ross Recovery Theorem and update lectures in probability theory (#859)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -367,7 +376,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="lagrangian-for-lq-control">
-<h1><span class="section-number">71. </span>Lagrangian for LQ Control<a class="headerlink" href="#lagrangian-for-lq-control" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">72. </span>Lagrangian for LQ Control<a class="headerlink" href="#lagrangian-for-lq-control" title="Link to this heading">#</a></h1>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon
@@ -380,7 +389,8 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.11.2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+  Downloading quantecon-0.11.2-py3-none-any.whl.metadata (5.3 kB)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
@@ -392,6 +402,9 @@ Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/env
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.5.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.11.12)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Downloading quantecon-0.11.2-py3-none-any.whl (330 kB)
+Installing collected packages: quantecon
+Successfully installed quantecon-0.11.2
 </pre></div>
 </div>
 </div>
@@ -407,7 +420,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <section id="overview">
-<h2><span class="section-number">71.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">72.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This is a sequel to this lecture <a class="reference internal" href="lqcontrol.html"><span class="doc">linear quadratic dynamic programming</span></a></p>
 <p>It can also be regarded as presenting <strong>invariant subspace</strong> techniques that extend ones that
 we encountered earlier in this lecture <a class="reference internal" href="re_with_feedback.html"><span class="doc">stability in linear rational expectations models</span></a></p>
@@ -433,7 +446,7 @@ equations describing the <strong>states</strong> and <strong>costates</strong> t
 <a class="reference external" href="https://python-advanced.quantecon.org/dyn_stack.html">this lecture</a>.</p>
 </section>
 <section id="undiscounted-lq-dp-problem">
-<h2><span class="section-number">71.2. </span>Undiscounted LQ DP Problem<a class="headerlink" href="#undiscounted-lq-dp-problem" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">72.2. </span>Undiscounted LQ DP Problem<a class="headerlink" href="#undiscounted-lq-dp-problem" title="Link to this heading">#</a></h2>
 <p>The problem is to choose a sequence of controls  <span class="math notranslate nohighlight">\(\{u_t\}_{t=0}^\infty\)</span> to maximize the criterion</p>
 <div class="math notranslate nohighlight">
 \[ 
@@ -450,11 +463,11 @@ semidefinite symmetric matrix.</p>
 <p>Using the transition law to eliminate next period’s state, the Bellman
 equation becomes</p>
 <div class="math notranslate nohighlight" id="equation-bellman0">
-<span class="eqno">(71.1)<a class="headerlink" href="#equation-bellman0" title="Link to this equation">#</a></span>\[ 
+<span class="eqno">(72.1)<a class="headerlink" href="#equation-bellman0" title="Link to this equation">#</a></span>\[ 
 - x'Px=\max_u \{- x' Rx-u'Qu-(Ax+Bu)' P(Ax+Bu)\}
 \]</div>
 <p>The first-order necessary conditions for the maximum problem on the
-right side of equation <a class="reference internal" href="#equation-bellman0">(71.1)</a> are</p>
+right side of equation <a class="reference internal" href="#equation-bellman0">(72.1)</a> are</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>We use the following rules for differentiating quadratic and bilinear matrix forms:
@@ -481,66 +494,66 @@ u=-Fx,
 F=(Q+B'PB)^{-1}B'PA.
 \]</div>
 <p>Substituting <span class="math notranslate nohighlight">\(u = - (Q+B'PB)^{-1}B'PAx\)</span>  into
-the right side of equation <a class="reference internal" href="#equation-bellman0">(71.1)</a> and rearranging gives</p>
+the right side of equation <a class="reference internal" href="#equation-bellman0">(72.1)</a> and rearranging gives</p>
 <div class="math notranslate nohighlight" id="equation-riccati">
-<span class="eqno">(71.2)<a class="headerlink" href="#equation-riccati" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.2)<a class="headerlink" href="#equation-riccati" title="Link to this equation">#</a></span>\[
 P=R+A'PA-A'PB(Q+B'PB)^{-1} B'PA.
 \]</div>
-<p>Equation <a class="reference internal" href="#equation-riccati">(71.2)</a> is called an <strong>algebraic matrix Riccati</strong> equation.</p>
-<p>There are multiple solutions of equation <a class="reference internal" href="#equation-riccati">(71.2)</a>.</p>
+<p>Equation <a class="reference internal" href="#equation-riccati">(72.2)</a> is called an <strong>algebraic matrix Riccati</strong> equation.</p>
+<p>There are multiple solutions of equation <a class="reference internal" href="#equation-riccati">(72.2)</a>.</p>
 <p>But only one of them is positive definite.</p>
 <p>The positive define solution is associated with the maximum of our problem.</p>
 <p>It expresses the matrix <span class="math notranslate nohighlight">\(P\)</span> as an implicit function of the matrices
 <span class="math notranslate nohighlight">\(R,Q,A,B\)</span>.</p>
 <p>Notice that the <strong>gradient of the value function</strong> is</p>
 <div class="math notranslate nohighlight" id="equation-eqn-valgrad">
-<span class="eqno">(71.3)<a class="headerlink" href="#equation-eqn-valgrad" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.3)<a class="headerlink" href="#equation-eqn-valgrad" title="Link to this equation">#</a></span>\[
 \frac{\partial V(x)}{\partial x} = - 2 P x 
 \]</div>
-<p>We shall use fact <a class="reference internal" href="#equation-eqn-valgrad">(71.3)</a> later.</p>
+<p>We shall use fact <a class="reference internal" href="#equation-eqn-valgrad">(72.3)</a> later.</p>
 </section>
 <section id="lagrangian">
-<h2><span class="section-number">71.3. </span>Lagrangian<a class="headerlink" href="#lagrangian" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">72.3. </span>Lagrangian<a class="headerlink" href="#lagrangian" title="Link to this heading">#</a></h2>
 <p>For the undiscounted optimal linear regulator problem, form the Lagrangian</p>
 <div class="math notranslate nohighlight" id="equation-lag-lqdp-eq1">
-<span class="eqno">(71.4)<a class="headerlink" href="#equation-lag-lqdp-eq1" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.4)<a class="headerlink" href="#equation-lag-lqdp-eq1" title="Link to this equation">#</a></span>\[
 {\cal L} = - \sum^\infty_{t=0} \biggl\{ x^\prime_t R x_t + u_t^\prime Q u_t +
                                  2 \mu^\prime_{t+1} [A x_t + B u_t - x_{t+1}]\biggr\}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(2 \mu_{t+1}\)</span> is a vector of Lagrange multipliers on the time <span class="math notranslate nohighlight">\(t\)</span> transition law <span class="math notranslate nohighlight">\(x_{t+1} = A x_t + B u_t\)</span>.</p>
-<p>(We put the <span class="math notranslate nohighlight">\(2\)</span> in front of <span class="math notranslate nohighlight">\(\mu_{t+1}\)</span> to make things match up nicely with equation <a class="reference internal" href="#equation-eqn-valgrad">(71.3)</a>.)</p>
+<p>(We put the <span class="math notranslate nohighlight">\(2\)</span> in front of <span class="math notranslate nohighlight">\(\mu_{t+1}\)</span> to make things match up nicely with equation <a class="reference internal" href="#equation-eqn-valgrad">(72.3)</a>.)</p>
 <p>First-order conditions for maximization with respect to <span class="math notranslate nohighlight">\(\{u_t,x_{t+1}\}_{t=0}^\infty\)</span> are</p>
 <div class="math notranslate nohighlight" id="equation-lag-lqdp-eq2">
-<span class="eqno">(71.5)<a class="headerlink" href="#equation-lag-lqdp-eq2" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.5)<a class="headerlink" href="#equation-lag-lqdp-eq2" title="Link to this equation">#</a></span>\[
 \begin{aligned}
 2 Q u_t &amp;+ 2B^\prime \mu_{t+1} = 0 \ ,\ t \geq 0 \cr \mu_t &amp;= R x_t + A^\prime \mu_{t+1}\ ,\ t\geq 1.\cr
 \end{aligned}
 \]</div>
-<p>Define <span class="math notranslate nohighlight">\(\mu_0\)</span> to be  a vector of shadow prices of <span class="math notranslate nohighlight">\(x_0\)</span> and apply an envelope condition to <a class="reference internal" href="#equation-lag-lqdp-eq1">(71.4)</a>
+<p>Define <span class="math notranslate nohighlight">\(\mu_0\)</span> to be  a vector of shadow prices of <span class="math notranslate nohighlight">\(x_0\)</span> and apply an envelope condition to <a class="reference internal" href="#equation-lag-lqdp-eq1">(72.4)</a>
 to deduce that</p>
 <div class="math notranslate nohighlight">
 \[
 \mu_0 = R x_0 + A' \mu_1,
 \]</div>
-<p>which is a time <span class="math notranslate nohighlight">\(t=0 \)</span> counterpart to the second equation of system <a class="reference internal" href="#equation-lag-lqdp-eq2">(71.5)</a>.</p>
+<p>which is a time <span class="math notranslate nohighlight">\(t=0 \)</span> counterpart to the second equation of system <a class="reference internal" href="#equation-lag-lqdp-eq2">(72.5)</a>.</p>
 <p>An important fact is  that</p>
 <div class="math notranslate nohighlight" id="equation-eqn-mupx">
-<span class="eqno">(71.6)<a class="headerlink" href="#equation-eqn-mupx" title="Link to this equation">#</a></span>\[ 
+<span class="eqno">(72.6)<a class="headerlink" href="#equation-eqn-mupx" title="Link to this equation">#</a></span>\[ 
 \mu_{t+1} = P x_{t+1}
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(P\)</span> is a positive define  matrix that solves  the algebraic Riccati equation <a class="reference internal" href="#equation-riccati">(71.2)</a>.</p>
-<p>Thus, from equations <a class="reference internal" href="#equation-eqn-valgrad">(71.3)</a> and  <a class="reference internal" href="#equation-eqn-mupx">(71.6)</a>,  <span class="math notranslate nohighlight">\(- 2 \mu_{t}\)</span> is
+<p>where <span class="math notranslate nohighlight">\(P\)</span> is a positive define  matrix that solves  the algebraic Riccati equation <a class="reference internal" href="#equation-riccati">(72.2)</a>.</p>
+<p>Thus, from equations <a class="reference internal" href="#equation-eqn-valgrad">(72.3)</a> and  <a class="reference internal" href="#equation-eqn-mupx">(72.6)</a>,  <span class="math notranslate nohighlight">\(- 2 \mu_{t}\)</span> is
 the gradient of the value function with respect to <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
 <p>The Lagrange multiplier vector <span class="math notranslate nohighlight">\(\mu_{t}\)</span> is often called the <strong>costate</strong> vector that
 corresponds to the <strong>state</strong> vector <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
 <p>It is useful to proceed with the following steps:</p>
 <ul class="simple">
-<li><p>solve the first equation of <a class="reference internal" href="#equation-lag-lqdp-eq2">(71.5)</a>  for <span class="math notranslate nohighlight">\(u_t\)</span> in terms of <span class="math notranslate nohighlight">\(\mu_{t+1}\)</span>.</p></li>
+<li><p>solve the first equation of <a class="reference internal" href="#equation-lag-lqdp-eq2">(72.5)</a>  for <span class="math notranslate nohighlight">\(u_t\)</span> in terms of <span class="math notranslate nohighlight">\(\mu_{t+1}\)</span>.</p></li>
 <li><p>substitute the result into the law of motion <span class="math notranslate nohighlight">\(x_{t+1} = A x_t + B u_t\)</span>.</p></li>
-<li><p>arrange the resulting equation and the second equation of <a class="reference internal" href="#equation-lag-lqdp-eq2">(71.5)</a>  into the form</p></li>
+<li><p>arrange the resulting equation and the second equation of <a class="reference internal" href="#equation-lag-lqdp-eq2">(72.5)</a>  into the form</p></li>
 </ul>
 <div class="math notranslate nohighlight" id="equation-eq-systosolve">
-<span class="eqno">(71.7)<a class="headerlink" href="#equation-eq-systosolve" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.7)<a class="headerlink" href="#equation-eq-systosolve" title="Link to this equation">#</a></span>\[
 L\ \begin{bmatrix}x_{t+1}\cr \mu_{t+1}\cr\end{bmatrix}\ = \ N\ \begin{bmatrix}x_t\cr \mu_t\cr\end{bmatrix}\
 ,\ t \geq 0,
 \]</div>
@@ -551,21 +564,21 @@ L = \ \begin{bmatrix}I &amp; BQ^{-1} B^\prime \cr 0 &amp; A^\prime\cr\end{bmatri
 \begin{bmatrix}A &amp; 0\cr -R &amp; I\cr\end{bmatrix}.
 \]</div>
 <p>When <span class="math notranslate nohighlight">\(L\)</span> is of full rank (i.e., when <span class="math notranslate nohighlight">\(A\)</span> is of full rank), we can write
-system <a class="reference internal" href="#equation-eq-systosolve">(71.7)</a> as</p>
+system <a class="reference internal" href="#equation-eq-systosolve">(72.7)</a> as</p>
 <div class="math notranslate nohighlight" id="equation-eq4orig">
-<span class="eqno">(71.8)<a class="headerlink" href="#equation-eq4orig" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.8)<a class="headerlink" href="#equation-eq4orig" title="Link to this equation">#</a></span>\[
 \begin{bmatrix}x_{t+1}\cr \mu_{t+1}\cr\end{bmatrix}\ = M\ \begin{bmatrix}x_t\cr\mu_t\cr\end{bmatrix}
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-mdefn">
-<span class="eqno">(71.9)<a class="headerlink" href="#equation-mdefn" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.9)<a class="headerlink" href="#equation-mdefn" title="Link to this equation">#</a></span>\[
 M\equiv L^{-1} N = \begin{bmatrix}A+B Q^{-1} B^\prime A^{\prime-1}R &amp;
 -B Q^{-1} B^\prime A^{\prime-1}\cr -A^{\prime -1} R &amp; A^{\prime -1}\cr\end{bmatrix}.
 \]</div>
 </section>
 <section id="state-costate-dynamics">
-<h2><span class="section-number">71.4. </span>State-Costate Dynamics<a class="headerlink" href="#state-costate-dynamics" title="Link to this heading">#</a></h2>
-<p>We seek to solve the difference equation system  <a class="reference internal" href="#equation-eq4orig">(71.8)</a> for a sequence <span class="math notranslate nohighlight">\(\{x_t\}_{t=0}^\infty\)</span>
+<h2><span class="section-number">72.4. </span>State-Costate Dynamics<a class="headerlink" href="#state-costate-dynamics" title="Link to this heading">#</a></h2>
+<p>We seek to solve the difference equation system  <a class="reference internal" href="#equation-eq4orig">(72.8)</a> for a sequence <span class="math notranslate nohighlight">\(\{x_t\}_{t=0}^\infty\)</span>
 that satisfies</p>
 <ul class="simple">
 <li><p>an initial condition for <span class="math notranslate nohighlight">\(x_0\)</span></p></li>
@@ -580,8 +593,8 @@ that satisfies</p>
 <p>which requires that <span class="math notranslate nohighlight">\(x_t' R x_t\)</span> converge to zero as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>.</p>
 </section>
 <section id="reciprocal-pairs-property">
-<h2><span class="section-number">71.5. </span>Reciprocal Pairs Property<a class="headerlink" href="#reciprocal-pairs-property" title="Link to this heading">#</a></h2>
-<p>To proceed, we study properties of the <span class="math notranslate nohighlight">\((2n \times 2n)\)</span> matrix <span class="math notranslate nohighlight">\(M\)</span> defined in <a class="reference internal" href="#equation-mdefn">(71.9)</a>.</p>
+<h2><span class="section-number">72.5. </span>Reciprocal Pairs Property<a class="headerlink" href="#reciprocal-pairs-property" title="Link to this heading">#</a></h2>
+<p>To proceed, we study properties of the <span class="math notranslate nohighlight">\((2n \times 2n)\)</span> matrix <span class="math notranslate nohighlight">\(M\)</span> defined in <a class="reference internal" href="#equation-mdefn">(72.9)</a>.</p>
 <p>It helps to introduce a <span class="math notranslate nohighlight">\((2n \times 2n)\)</span> matrix</p>
 <div class="math notranslate nohighlight">
 \[
@@ -590,7 +603,7 @@ J = \begin{bmatrix}0 &amp; -I_n\cr I_n &amp; 0\cr\end{bmatrix}.
 <p>The rank of <span class="math notranslate nohighlight">\(J\)</span> is <span class="math notranslate nohighlight">\(2n\)</span>.</p>
 <p><strong>Definition:</strong>  A matrix <span class="math notranslate nohighlight">\(M\)</span> is called <strong>symplectic</strong> if</p>
 <div class="math notranslate nohighlight" id="equation-lag-lqdp-eq3">
-<span class="eqno">(71.10)<a class="headerlink" href="#equation-lag-lqdp-eq3" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.10)<a class="headerlink" href="#equation-lag-lqdp-eq3" title="Link to this equation">#</a></span>\[
 MJM^\prime = J.
 \]</div>
 <p>Salient properties of symplectic matrices that are readily verified include:</p>
@@ -598,14 +611,14 @@ MJM^\prime = J.
 <li><p>If <span class="math notranslate nohighlight">\(M\)</span> is symplectic, then <span class="math notranslate nohighlight">\(M^2\)</span> is symplectic</p></li>
 <li><p>The determinant of a symplectic, then <span class="math notranslate nohighlight">\(\textrm{det}(M) = 1\)</span></p></li>
 </ul>
-<p>It can be verified directly that <span class="math notranslate nohighlight">\(M\)</span> in equation <a class="reference internal" href="#equation-mdefn">(71.9)</a> is symplectic.</p>
-<p>It follows from equation <a class="reference internal" href="#equation-lag-lqdp-eq3">(71.10)</a> and from the fact <span class="math notranslate nohighlight">\(J^{-1} = J^\prime = -J\)</span> that for any symplectic
+<p>It can be verified directly that <span class="math notranslate nohighlight">\(M\)</span> in equation <a class="reference internal" href="#equation-mdefn">(72.9)</a> is symplectic.</p>
+<p>It follows from equation <a class="reference internal" href="#equation-lag-lqdp-eq3">(72.10)</a> and from the fact <span class="math notranslate nohighlight">\(J^{-1} = J^\prime = -J\)</span> that for any symplectic
 matrix <span class="math notranslate nohighlight">\(M\)</span>,</p>
 <div class="math notranslate nohighlight" id="equation-lag-lqdp-eq4">
-<span class="eqno">(71.11)<a class="headerlink" href="#equation-lag-lqdp-eq4" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.11)<a class="headerlink" href="#equation-lag-lqdp-eq4" title="Link to this equation">#</a></span>\[
 M^\prime = J^{-1} M^{-1} J.
 \]</div>
-<p>Equation <a class="reference internal" href="#equation-lag-lqdp-eq4">(71.11)</a> states that <span class="math notranslate nohighlight">\(M^\prime\)</span> is related to the inverse of <span class="math notranslate nohighlight">\(M\)</span>
+<p>Equation <a class="reference internal" href="#equation-lag-lqdp-eq4">(72.11)</a> states that <span class="math notranslate nohighlight">\(M^\prime\)</span> is related to the inverse of <span class="math notranslate nohighlight">\(M\)</span>
 by a <strong>similarity transformation</strong>.</p>
 <p>For square matrices, recall that</p>
 <ul class="simple">
@@ -613,18 +626,18 @@ by a <strong>similarity transformation</strong>.</p>
 <li><p>eigenvalues of the inverse of a matrix are  inverses of  eigenvalues of the matrix</p></li>
 <li><p>a matrix and its transpose share eigenvalues</p></li>
 </ul>
-<p>It then follows from equation <a class="reference internal" href="#equation-lag-lqdp-eq4">(71.11)</a>  that
+<p>It then follows from equation <a class="reference internal" href="#equation-lag-lqdp-eq4">(72.11)</a>  that
 the eigenvalues of <span class="math notranslate nohighlight">\(M\)</span> occur in reciprocal pairs: if <span class="math notranslate nohighlight">\(\lambda\)</span> is an
 eigenvalue of <span class="math notranslate nohighlight">\(M\)</span>, so is <span class="math notranslate nohighlight">\(\lambda^{-1}\)</span>.</p>
-<p>Write equation <a class="reference internal" href="#equation-eq4orig">(71.8)</a> as</p>
+<p>Write equation <a class="reference internal" href="#equation-eq4orig">(72.8)</a> as</p>
 <div class="math notranslate nohighlight" id="equation-eq658">
-<span class="eqno">(71.12)<a class="headerlink" href="#equation-eq658" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.12)<a class="headerlink" href="#equation-eq658" title="Link to this equation">#</a></span>\[
 y_{t+1} = M y_t
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(y_t = \begin{bmatrix}x_t\cr \mu_t\cr\end{bmatrix}\)</span>.</p>
 <p>Consider a <strong>triangularization</strong> of <span class="math notranslate nohighlight">\(M\)</span></p>
 <div class="math notranslate nohighlight" id="equation-eqn-triangledecomp">
-<span class="eqno">(71.13)<a class="headerlink" href="#equation-eqn-triangledecomp" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.13)<a class="headerlink" href="#equation-eqn-triangledecomp" title="Link to this equation">#</a></span>\[
 V^{-1} M V= \begin{bmatrix}W_{11} &amp; W_{12} \cr 0 &amp; W_{22}\cr\end{bmatrix}
 \]</div>
 <p>where</p>
@@ -636,18 +649,18 @@ V^{-1} M V= \begin{bmatrix}W_{11} &amp; W_{12} \cr 0 &amp; W_{22}\cr\end{bmatrix
 </ul>
 </section>
 <section id="schur-decomposition">
-<h2><span class="section-number">71.6. </span>Schur decomposition<a class="headerlink" href="#schur-decomposition" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">72.6. </span>Schur decomposition<a class="headerlink" href="#schur-decomposition" title="Link to this heading">#</a></h2>
 <p>The <strong>Schur decomposition</strong> and the <strong>eigenvalue decomposition</strong>
-are two  decompositions of the form <a class="reference internal" href="#equation-eqn-triangledecomp">(71.13)</a>.</p>
-<p>Write equation <a class="reference internal" href="#equation-eq658">(71.12)</a>  as</p>
+are two  decompositions of the form <a class="reference internal" href="#equation-eqn-triangledecomp">(72.13)</a>.</p>
+<p>Write equation <a class="reference internal" href="#equation-eq658">(72.12)</a>  as</p>
 <div class="math notranslate nohighlight" id="equation-eq659">
-<span class="eqno">(71.14)<a class="headerlink" href="#equation-eq659" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.14)<a class="headerlink" href="#equation-eq659" title="Link to this equation">#</a></span>\[
 y_{t+1} = V W V^{-1} y_t.
 \]</div>
-<p>A solution of equation <a class="reference internal" href="#equation-eq659">(71.14)</a>  for arbitrary initial condition <span class="math notranslate nohighlight">\(y_0\)</span> is
+<p>A solution of equation <a class="reference internal" href="#equation-eq659">(72.14)</a>  for arbitrary initial condition <span class="math notranslate nohighlight">\(y_0\)</span> is
 evidently</p>
 <div class="math notranslate nohighlight" id="equation-eq6510">
-<span class="eqno">(71.15)<a class="headerlink" href="#equation-eq6510" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.15)<a class="headerlink" href="#equation-eq6510" title="Link to this equation">#</a></span>\[
 y_{t} = V \left[\begin{matrix}W^t_{11} &amp; W_{12,t}\cr 0 &amp; W^t_{22}\cr\end{matrix}\right]
 \ V^{-1} y_0
 \]</div>
@@ -657,7 +670,7 @@ y_{t} = V \left[\begin{matrix}W^t_{11} &amp; W_{12,t}\cr 0 &amp; W^t_{22}\cr\end
 W_{12, t} = W^{t-1}_{11} W_{12,t-1} + W_{12,t-1} W^{t-1}_{22}
 \]</div>
 <p>and where <span class="math notranslate nohighlight">\(W^t_{ii}\)</span> is <span class="math notranslate nohighlight">\(W_{ii}\)</span> raised to the <span class="math notranslate nohighlight">\(t\)</span>th  power.</p>
-<p>Write equation <a class="reference internal" href="#equation-eq6510">(71.15)</a> as</p>
+<p>Write equation <a class="reference internal" href="#equation-eq6510">(72.15)</a> as</p>
 <div class="math notranslate nohighlight">
 \[
 \begin{bmatrix}y^\ast_{1t}\cr y^\ast_{2t}\cr\end{bmatrix}\ =\ \left[\begin{matrix} W^t_{11} &amp;
@@ -666,14 +679,14 @@ y^\ast_{20}\cr\end{bmatrix}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(y^\ast_t = V^{-1} y_t\)</span>, and in particular where</p>
 <div class="math notranslate nohighlight" id="equation-eq6511">
-<span class="eqno">(71.16)<a class="headerlink" href="#equation-eq6511" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.16)<a class="headerlink" href="#equation-eq6511" title="Link to this equation">#</a></span>\[
 y^\ast_{2t} = V^{21} x_t + V^{22} \mu_t,
 \]</div>
 <p>and where <span class="math notranslate nohighlight">\(V^{ij}\)</span> denotes the <span class="math notranslate nohighlight">\((i,j)\)</span> piece of
 the partitioned <span class="math notranslate nohighlight">\(V^{-1}\)</span> matrix.</p>
 <p>Because <span class="math notranslate nohighlight">\(W_{22}\)</span> is an unstable matrix, <span class="math notranslate nohighlight">\(y^\ast_t\)</span> will diverge unless <span class="math notranslate nohighlight">\(y^\ast_{20} = 0\)</span>.</p>
 <p>Let <span class="math notranslate nohighlight">\(V^{ij}\)</span> denote the <span class="math notranslate nohighlight">\((i,j)\)</span> piece of the partitioned <span class="math notranslate nohighlight">\(V^{-1}\)</span> matrix.</p>
-<p>To attain stability, we must impose <span class="math notranslate nohighlight">\(y^\ast_{20} =0\)</span>, which from equation <a class="reference internal" href="#equation-eq6511">(71.16)</a>  implies</p>
+<p>To attain stability, we must impose <span class="math notranslate nohighlight">\(y^\ast_{20} =0\)</span>, which from equation <a class="reference internal" href="#equation-eq6511">(72.16)</a>  implies</p>
 <div class="math notranslate nohighlight">
 \[
 V^{21} x_0 + V^{22} \mu_0 = 0
@@ -719,14 +732,14 @@ V^{21} V_{11} + V^{22} V_{21} = 0.
 where <span class="math notranslate nohighlight">\(P\)</span> occurs in the matrix that solves the Riccati equation.</p>
 <p>Thus, the preceding argument establishes that</p>
 <div class="math notranslate nohighlight" id="equation-eqn-pvaughn">
-<span class="eqno">(71.17)<a class="headerlink" href="#equation-eqn-pvaughn" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.17)<a class="headerlink" href="#equation-eqn-pvaughn" title="Link to this equation">#</a></span>\[
 P = V_{21} V_{11}^{-1}.
 \]</div>
-<p>Remarkably, formula <a class="reference internal" href="#equation-eqn-pvaughn">(71.17)</a> provides us with a computationally
-efficient way of computing the positive definite  matrix <span class="math notranslate nohighlight">\(P\)</span> that solves the algebraic Riccati equation <a class="reference internal" href="#equation-riccati">(71.2)</a> that emerges
+<p>Remarkably, formula <a class="reference internal" href="#equation-eqn-pvaughn">(72.17)</a> provides us with a computationally
+efficient way of computing the positive definite  matrix <span class="math notranslate nohighlight">\(P\)</span> that solves the algebraic Riccati equation <a class="reference internal" href="#equation-riccati">(72.2)</a> that emerges
 from dynamic programming.</p>
 <p>This same method can be applied to compute the solution of
-any system of the form <a class="reference internal" href="#equation-eq4orig">(71.8)</a> if a solution exists, even
+any system of the form <a class="reference internal" href="#equation-eq4orig">(72.8)</a> if a solution exists, even
 if eigenvalues of <span class="math notranslate nohighlight">\(M\)</span> fail to occur in reciprocal pairs.</p>
 <p>The method
 will typically work so long as the eigenvalues of <span class="math notranslate nohighlight">\(M\)</span> split   half
@@ -735,15 +748,19 @@ inside and half outside the unit circle.</p>
 to occur in reciprocal pairs arise when the system being solved
 is an equilibrium of a model in which there are distortions that
 prevent there being any optimum problem that the equilibrium
-solves. See <span id="id1">[<a class="reference internal" href="zreferences.html#id268" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>,  ch 12.</p>
+solves. See <span id="id1">[<a class="reference internal" href="zreferences.html#id284" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>,  ch 12.</p>
 </section>
 <section id="application">
-<h2><span class="section-number">71.7. </span>Application<a class="headerlink" href="#application" title="Link to this heading">#</a></h2>
-<p>Here we demonstrate the computation with an example which is the deterministic version of an example borrowed from this <a class="reference external" href="https://python.quantecon.org/lqcontrol.html">quantecon lecture</a>.</p>
+<h2><span class="section-number">72.7. </span>Application<a class="headerlink" href="#application" title="Link to this heading">#</a></h2>
+<p>Here we demonstrate the computation with the deterministic permanent-income example from this <a class="reference internal" href="lqcontrol.html"><span class="doc">LQ Control: Foundations</span></a>.</p>
+<p>Because that model is discounted, we apply the invariant-subspace method to the
+equivalent <em>undiscounted</em> system obtained from the transformed matrices
+<span class="math notranslate nohighlight">\(\hat A = \beta^{1/2} A\)</span> and <span class="math notranslate nohighlight">\(\hat B = \beta^{1/2} B\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Model parameters</span>
 <span class="n">r</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">β</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span>
 <span class="n">c_bar</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">μ</span> <span class="o">=</span> <span class="mi">1</span>
 
@@ -756,7 +773,7 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
      <span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
 
 <span class="c1"># Construct an LQ instance</span>
-<span class="n">lq</span> <span class="o">=</span> <span class="n">LQ</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
+<span class="n">lq</span> <span class="o">=</span> <span class="n">LQ</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">β</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -766,7 +783,7 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">construct_LNM</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
 
-    <span class="n">n</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">lq</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">lq</span><span class="o">.</span><span class="n">k</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c1"># construct L and N</span>
     <span class="n">L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">))</span>
@@ -789,7 +806,10 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">L</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="n">construct_LNM</span><span class="p">(</span><span class="n">lq</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">lq</span><span class="o">.</span><span class="n">B</span><span class="p">,</span> <span class="n">lq</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="n">lq</span><span class="o">.</span><span class="n">R</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A_bar</span> <span class="o">=</span> <span class="n">lq</span><span class="o">.</span><span class="n">A</span> <span class="o">*</span> <span class="n">lq</span><span class="o">.</span><span class="n">beta</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">B_bar</span> <span class="o">=</span> <span class="n">lq</span><span class="o">.</span><span class="n">B</span> <span class="o">*</span> <span class="n">lq</span><span class="o">.</span><span class="n">beta</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">L</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="n">construct_LNM</span><span class="p">(</span><span class="n">A_bar</span><span class="p">,</span> <span class="n">B_bar</span><span class="p">,</span> <span class="n">lq</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="n">lq</span><span class="o">.</span><span class="n">R</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -801,10 +821,10 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.05      , -1.        , -0.95238095,  0.        ],
-       [ 0.        ,  1.        ,  0.        ,  0.        ],
-       [ 0.        ,  0.        ,  0.95238095,  0.        ],
-       [ 0.        ,  0.        ,  0.95238095,  1.        ]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.02469508, -0.97590007, -0.92942864,  0.        ],
+       [ 0.        ,  0.97590007,  0.        ,  0.        ],
+       [ 0.        ,  0.        ,  0.97590007,  0.        ],
+       [ 0.        ,  0.        ,  0.97590007,  1.02469508]])
 </pre></div>
 </div>
 </div>
@@ -822,13 +842,13 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-1.32169408e-17,  0.00000000e+00,  0.00000000e+00,
-         0.00000000e+00],
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-5.15703240e-17,  0.00000000e+00,  0.00000000e+00,
+         9.31818882e-18],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.11022302e-16],
        [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
          0.00000000e+00],
-       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
-         0.00000000e+00],
-       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+       [-9.31818882e-18, -1.11022302e-16,  0.00000000e+00,
          0.00000000e+00]])
 </pre></div>
 </div>
@@ -837,16 +857,16 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 <p>We can compute the eigenvalues of <span class="math notranslate nohighlight">\(M\)</span> using <code class="docutils literal notranslate"><span class="pre">np.linalg.eigvals</span></code>, arranged in ascending order.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eigvals</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">M</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eigvals</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">M</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">),</span> <span class="n">z</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span><span class="p">))</span>
 <span class="n">eigvals</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[np.float64(0.9523809523809523),
- np.float64(1.0),
- np.float64(1.0),
- np.float64(1.05)]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[np.float64(0.9759000729485331),
+ np.float64(0.9759000729485332),
+ np.float64(1.0246950765959597),
+ np.float64(1.02469507659596)]
 </pre></div>
 </div>
 </div>
@@ -859,18 +879,19 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 <p>To get what we want, let’s define a sorting function that tells <code class="docutils literal notranslate"><span class="pre">scipy.schur</span></code> to sort the corresponding eigenvalues with modulus smaller than 1 to the upper left.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stable_eigvals</span> <span class="o">=</span> <span class="n">eigvals</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-10</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">sort_fun</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="s2">&quot;Sort the eigenvalues with modules smaller than 1 to the top-left.&quot;</span>
+    <span class="s2">&quot;Sort the eigenvalues with modulus smaller than 1 to the top-left.&quot;</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">tol</span>
 
-    <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">stable_eigvals</span><span class="p">:</span>
-        <span class="n">stable_eigvals</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">stable_eigvals</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-        <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-<span class="n">W</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">schur</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="n">sort_fun</span><span class="p">)</span>
+<span class="n">W</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">stable_dim</span> <span class="o">=</span> <span class="n">schur</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="n">sort_fun</span><span class="p">)</span>
+<span class="n">stable_dim</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
 </pre></div>
 </div>
 </div>
@@ -882,10 +903,14 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 1.        ,  0.02316402,  1.00085948, -0.95000594],
-       [ 0.        ,  0.95238095, -0.00237501,  0.95325452],
-       [ 0.        ,  0.        ,  1.05      , -0.02432222],
-       [ 0.        ,  0.        ,  0.        ,  1.        ]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 9.75900073e-01,  1.06779938e-16,  9.77000404e-01,
+        -9.27110864e-01],
+       [ 0.00000000e+00,  9.75900073e-01, -2.31777716e-03,
+         9.77000404e-01],
+       [ 0.00000000e+00,  0.00000000e+00,  1.02469508e+00,
+        -2.12887870e-16],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.02469508e+00]])
 </pre></div>
 </div>
 </div>
@@ -897,10 +922,10 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0.99875234, -0.00121459,  0.04992284,  0.        ],
-       [ 0.04993762,  0.02429188, -0.99845688,  0.        ],
-       [ 0.        , -0.04992284, -0.00121459,  0.99875234],
-       [ 0.        ,  0.99845688,  0.02429188,  0.04993762]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0.99875234, -0.00236938,  0.04988138,  0.        ],
+       [ 0.04993762,  0.0473876 , -0.99762751,  0.        ],
+       [ 0.        , -0.04988138, -0.00236938,  0.99875234],
+       [ 0.        ,  0.99762751,  0.0473876 ,  0.04993762]])
 </pre></div>
 </div>
 </div>
@@ -915,7 +940,7 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1.        , 0.95238095])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.97590007, 0.97590007])
 </pre></div>
 </div>
 </div>
@@ -928,7 +953,7 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1.05, 1.  ])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([1.02469508, 1.02469508])
 </pre></div>
 </div>
 </div>
@@ -952,25 +977,24 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 <span class="sd">        The matrix represents the linear difference equations system.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
-    <span class="n">stable_eigvals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">M</span><span class="p">))[:</span><span class="n">n</span><span class="p">])</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-10</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">sort_fun</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-        <span class="s2">&quot;Sort the eigenvalues with modules smaller than 1 to the top-left.&quot;</span>
+        <span class="s2">&quot;Sort the eigenvalues with modulus smaller than 1 to the top-left.&quot;</span>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">tol</span>
 
-        <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">stable_eigvals</span><span class="p">:</span>
-            <span class="n">stable_eigvals</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">stable_eigvals</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-            <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="n">W</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">schur</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="n">sort_fun</span><span class="p">)</span>
+    <span class="n">W</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">stable_dim</span> <span class="o">=</span> <span class="n">schur</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="n">sort_fun</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">stable_dim</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> stable eigenvalues inside the unit circle, found </span><span class="si">{</span><span class="n">stable_dim</span><span class="si">}</span><span class="s2">.&quot;</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;eigenvalues:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    W11: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">W</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="p">:</span><span class="n">n</span><span class="p">])))</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;    W22: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">n</span><span class="p">:,</span> <span class="n">n</span><span class="p">:])))</span>
 
-    <span class="c1"># compute V21 V11^{-1}</span>
-    <span class="n">P</span> <span class="o">=</span> <span class="n">V</span><span class="p">[</span><span class="n">n</span><span class="p">:,</span> <span class="p">:</span><span class="n">n</span><span class="p">]</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">V</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="p">:</span><span class="n">n</span><span class="p">])</span>
+    <span class="c1"># compute V21 V11^{-1} without forming the inverse explicitly</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">V</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="p">:</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">V</span><span class="p">[</span><span class="n">n</span><span class="p">:,</span> <span class="p">:</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
     <span class="k">return</span> <span class="n">W</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">P</span>
 
@@ -1020,12 +1044,12 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eigenvalues:
 
-    W11: [1.         0.95238095]
-    W22: [1.05 1.  ]
+    W11: [0.97590007 0.97590007]
+    W22: [1.02469508 1.02469508]
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0.1025, -2.05  ],
-       [-2.05  , 41.    ]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ 0.0525, -1.05  ],
+       [-1.05  , 21.    ]])
 </pre></div>
 </div>
 </div>
@@ -1039,10 +1063,10 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.1025, -2.05  ],
-        [-2.05  , 41.01  ]]),
- array([[-0.09761905,  1.95238095]]),
- 0)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([[ 0.0525, -1.05  ],
+        [-1.05  , 21.    ]]),
+ array([[-0.05,  1.  ]]),
+ np.float64(0.0))
 </pre></div>
 </div>
 </div>
@@ -1056,7 +1080,7 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>121 μs ± 151 ns per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>93.1 μs ± 60.3 ns per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
 </pre></div>
 </div>
 </div>
@@ -1069,14 +1093,14 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.8 ms ± 3.91 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.92 ms ± 9.18 μs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="other-applications">
-<h2><span class="section-number">71.8. </span>Other Applications<a class="headerlink" href="#other-applications" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">72.8. </span>Other Applications<a class="headerlink" href="#other-applications" title="Link to this heading">#</a></h2>
 <p>The preceding approach to imposing stability on a system  of potentially unstable linear difference equations is not limited to  linear quadratic dynamic optimization problems.</p>
 <p>For example, the same method is used in our <a class="reference external" href="https://python.quantecon.org/re_with_feedback.html#another-perspective">Stability in Linear Rational Expectations Models</a> lecture.</p>
 <p>Let’s try to solve the model described in that lecture by applying the <code class="docutils literal notranslate"><span class="pre">stable_solution</span></code> function defined in this lecture above.</p>
@@ -1117,9 +1141,9 @@ solves. See <span id="id1">[<a class="reference internal" href="zreferences.html
 </div>
 </section>
 <section id="discounted-problems">
-<h2><span class="section-number">71.9. </span>Discounted Problems<a class="headerlink" href="#discounted-problems" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">72.9. </span>Discounted Problems<a class="headerlink" href="#discounted-problems" title="Link to this heading">#</a></h2>
 <section id="transforming-states-and-controls-to-eliminate-discounting">
-<h3><span class="section-number">71.9.1. </span>Transforming States and Controls to Eliminate Discounting<a class="headerlink" href="#transforming-states-and-controls-to-eliminate-discounting" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">72.9.1. </span>Transforming States and Controls to Eliminate Discounting<a class="headerlink" href="#transforming-states-and-controls-to-eliminate-discounting" title="Link to this heading">#</a></h3>
 <p>A pair of useful transformations allows us to convert a discounted problem into an undiscounted one.</p>
 <p>Thus, suppose that we have a discounted problem with objective</p>
 <div class="math notranslate nohighlight">
@@ -1165,14 +1189,6 @@ the following   equations:</p>
 <p>These settings are adopted by default in the function <code class="docutils literal notranslate"><span class="pre">stationary_P</span></code> defined above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">β</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span>
-<span class="n">lq</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">β</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stationary_P</span><span class="p">(</span><span class="n">lq</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1208,13 +1224,13 @@ the following   equations:</p>
 </div>
 </section>
 <section id="lagrangian-for-discounted-problem">
-<h3><span class="section-number">71.9.2. </span>Lagrangian for Discounted Problem<a class="headerlink" href="#lagrangian-for-discounted-problem" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">72.9.2. </span>Lagrangian for Discounted Problem<a class="headerlink" href="#lagrangian-for-discounted-problem" title="Link to this heading">#</a></h3>
 <p>For several purposes, it is useful  explicitly briefly to describe
 a Lagrangian for a discounted problem.</p>
 <p>Thus, for the discounted optimal linear regulator problem,
 form the Lagrangian</p>
 <div class="math notranslate nohighlight" id="equation-eq661">
-<span class="eqno">(71.18)<a class="headerlink" href="#equation-eq661" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.18)<a class="headerlink" href="#equation-eq661" title="Link to this equation">#</a></span>\[
 {\cal{L}} = - \sum^\infty_{t=0} \beta^t \biggl\{ x^\prime_t R x_t + u_t^\prime Q u_t
 + 2 \beta \mu^\prime_{t+1} [A x_t + B u_t - x_{t+1}]\biggr\}
 \]</div>
@@ -1222,22 +1238,22 @@ form the Lagrangian</p>
 <p>First-order conditions for maximization with respect
 to <span class="math notranslate nohighlight">\(\{u_t,x_{t+1}\}_{t=0}^\infty\)</span> are</p>
 <div class="math notranslate nohighlight" id="equation-eq662">
-<span class="eqno">(71.19)<a class="headerlink" href="#equation-eq662" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.19)<a class="headerlink" href="#equation-eq662" title="Link to this equation">#</a></span>\[
 \begin{aligned}
 2 Q u_t &amp;+ 2  \beta B^\prime \mu_{t+1} = 0 \ ,\ t \geq 0 \cr \mu_t &amp;= R x_t + \beta A^\prime \mu_{t+1}\ ,\ t\geq 1.\cr
 \end{aligned}
 \]</div>
 <p>Define <span class="math notranslate nohighlight">\(2 \mu_0\)</span> to be the vector of shadow prices of <span class="math notranslate nohighlight">\(x_0\)</span> and apply an envelope condition to
-<a class="reference internal" href="#equation-eq661">(71.18)</a> to  deduce that</p>
+<a class="reference internal" href="#equation-eq661">(72.18)</a> to  deduce that</p>
 <div class="math notranslate nohighlight">
 \[
 \mu_0 = R x_0 + \beta A' \mu_1 ,
 \]</div>
-<p>which is a time <span class="math notranslate nohighlight">\(t=0 \)</span> counterpart to the second equation of system <a class="reference internal" href="#equation-eq662">(71.19)</a>.</p>
-<p>Proceeding as we did above with  the undiscounted system  <a class="reference internal" href="#equation-lag-lqdp-eq2">(71.5)</a>, we can rearrange the first-order conditions into the
+<p>which is a time <span class="math notranslate nohighlight">\(t=0 \)</span> counterpart to the second equation of system <a class="reference internal" href="#equation-eq662">(72.19)</a>.</p>
+<p>Proceeding as we did above with  the undiscounted system  <a class="reference internal" href="#equation-lag-lqdp-eq2">(72.5)</a>, we can rearrange the first-order conditions into the
 system</p>
 <div class="math notranslate nohighlight" id="equation-eq663">
-<span class="eqno">(71.20)<a class="headerlink" href="#equation-eq663" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.20)<a class="headerlink" href="#equation-eq663" title="Link to this equation">#</a></span>\[
 \left[\begin{matrix} I &amp; \beta B Q^{-1} B' \cr
              0 &amp; \beta A' \end{matrix}\right]
 \left[\begin{matrix} x_{t+1} \cr \mu_{t+1} \end{matrix}\right] =
@@ -1245,9 +1261,9 @@ system</p>
              - R &amp; I \end{matrix}\right] 
 \left[\begin{matrix} x_t \cr \mu_t \end{matrix}\right]
 \]</div>
-<p>which in the special case that <span class="math notranslate nohighlight">\(\beta = 1\)</span> agrees with equation <a class="reference internal" href="#equation-lag-lqdp-eq2">(71.5)</a>, as expected.</p>
-<p>By staring at system <a class="reference internal" href="#equation-eq663">(71.20)</a>, we can infer  identities that shed light on the structure of optimal linear regulator problems, some of which will be useful in <a class="reference external" href="https://python-advanced.quantecon.org/dyn_stack.html">this lecture</a> when we apply and  extend the methods of this lecture to study Stackelberg and Ramsey problems.</p>
-<p>First, note that the first block of equation system <a class="reference internal" href="#equation-eq663">(71.20)</a> asserts that when  <span class="math notranslate nohighlight">\(\mu_{t+1} = P x_{t+1}\)</span>, then</p>
+<p>which in the special case that <span class="math notranslate nohighlight">\(\beta = 1\)</span> agrees with equation <a class="reference internal" href="#equation-lag-lqdp-eq2">(72.5)</a>, as expected.</p>
+<p>By staring at system <a class="reference internal" href="#equation-eq663">(72.20)</a>, we can infer  identities that shed light on the structure of optimal linear regulator problems, some of which will be useful in <a class="reference external" href="https://python-advanced.quantecon.org/dyn_stack.html">this lecture</a> when we apply and  extend the methods of this lecture to study Stackelberg and Ramsey problems.</p>
+<p>First, note that the first block of equation system <a class="reference internal" href="#equation-eq663">(72.20)</a> asserts that when  <span class="math notranslate nohighlight">\(\mu_{t+1} = P x_{t+1}\)</span>, then</p>
 <div class="math notranslate nohighlight">
 \[ 
 (I + \beta Q^{-1} B' P B P ) x_{t+1} = A x_t, 
@@ -1264,7 +1280,7 @@ x_{t+1} = (A - BF) x_t .
 \]</div>
 <p>But using</p>
 <div class="math notranslate nohighlight" id="equation-eqn-optimalfformula">
-<span class="eqno">(71.21)<a class="headerlink" href="#equation-eqn-optimalfformula" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.21)<a class="headerlink" href="#equation-eqn-optimalfformula" title="Link to this equation">#</a></span>\[
 F=\beta (Q+\beta B'PB)^{-1} B'PA 
 \]</div>
 <p>it follows that</p>
@@ -1275,21 +1291,21 @@ A- B F = (I - \beta B (Q+ \beta B' P B)^{-1} B' P) A .
 <p>Thus, our two expressions for the
 closed loop dynamics  agree if and only if</p>
 <div class="math notranslate nohighlight" id="equation-eqn-twofeedbackloops">
-<span class="eqno">(71.22)<a class="headerlink" href="#equation-eqn-twofeedbackloops" title="Link to this equation">#</a></span>\[ 
+<span class="eqno">(72.22)<a class="headerlink" href="#equation-eqn-twofeedbackloops" title="Link to this equation">#</a></span>\[ 
 (I + \beta B Q^{-1} B' P )^{-1} =    (I - \beta B (Q+\beta  B' P B)^{-1} B' P) .
 \]</div>
-<p>Matrix  equation <a class="reference internal" href="#equation-eqn-twofeedbackloops">(71.22)</a> can be verified by applying a partitioned inverse formula.</p>
+<p>Matrix  equation <a class="reference internal" href="#equation-eqn-twofeedbackloops">(72.22)</a> can be verified by applying a partitioned inverse formula.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Just use the formula <span class="math notranslate nohighlight">\((a - b d^{-1} c)^{-1} = a^{-1} + a^{-1} b (d - c a^{-1} b)^{-1} c a^{-1}\)</span> for appropriate choices of the matrices <span class="math notranslate nohighlight">\(a, b, c, d\)</span>.</p>
 </div>
 <p>Next, note that for <em>any</em>  fixed <span class="math notranslate nohighlight">\(F\)</span> for which eigenvalues of <span class="math notranslate nohighlight">\(A- BF\)</span> are less than <span class="math notranslate nohighlight">\(\frac{1}{\beta}\)</span> in modulus, the value function associated with using this rule forever is <span class="math notranslate nohighlight">\(- x_0 \tilde P x_0\)</span> where  <span class="math notranslate nohighlight">\(\tilde P\)</span> obeys the following  matrix  equation:</p>
 <div class="math notranslate nohighlight" id="equation-eq666">
-<span class="eqno">(71.23)<a class="headerlink" href="#equation-eq666" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.23)<a class="headerlink" href="#equation-eq666" title="Link to this equation">#</a></span>\[
 \tilde P = (R + F' Q F) + \beta (A - B F)' P (A - BF) .
 \]</div>
-<p>Evidently, <span class="math notranslate nohighlight">\(\tilde P = P \)</span> only when <span class="math notranslate nohighlight">\(F \)</span> obeys formula <a class="reference internal" href="#equation-eqn-optimalfformula">(71.21)</a>.</p>
-<p>Next, note that  the second equation of system <a class="reference internal" href="#equation-eq663">(71.20)</a> implies the “forward looking” equation for the Lagrange multiplier</p>
+<p>Evidently, <span class="math notranslate nohighlight">\(\tilde P = P \)</span> only when <span class="math notranslate nohighlight">\(F \)</span> obeys formula <a class="reference internal" href="#equation-eqn-optimalfformula">(72.21)</a>.</p>
+<p>Next, note that  the second equation of system <a class="reference internal" href="#equation-eq663">(72.20)</a> implies the “forward looking” equation for the Lagrange multiplier</p>
 <div class="math notranslate nohighlight">
 \[ 
 \mu_t = R x_t + \beta A' \mu_{t+1}
@@ -1301,11 +1317,11 @@ closed loop dynamics  agree if and only if</p>
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-eq667">
-<span class="eqno">(71.24)<a class="headerlink" href="#equation-eq667" title="Link to this equation">#</a></span>\[
+<span class="eqno">(72.24)<a class="headerlink" href="#equation-eq667" title="Link to this equation">#</a></span>\[
 P = R + \beta A' P (A - BF)  
 \]</div>
-<p>where we must require that <span class="math notranslate nohighlight">\(F\)</span> obeys equation <a class="reference internal" href="#equation-eqn-optimalfformula">(71.21)</a>.</p>
-<p>Equations <a class="reference internal" href="#equation-eq666">(71.23)</a> and <a class="reference internal" href="#equation-eq667">(71.24)</a> provide different perspectives on the optimal value function.</p>
+<p>where we must require that <span class="math notranslate nohighlight">\(F\)</span> obeys equation <a class="reference internal" href="#equation-eqn-optimalfformula">(72.21)</a>.</p>
+<p>Equations <a class="reference internal" href="#equation-eq666">(72.23)</a> and <a class="reference internal" href="#equation-eq667">(72.24)</a> provide different perspectives on the optimal value function.</p>
 </section>
 </section>
 </section>
@@ -1539,23 +1555,28 @@ P = R + \beta A' P (A - BF)
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="information_market_equilibrium.html">
+   31. Information and Market Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   31. Incorrect Models
+   32. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   32. Bayesian versus Frequentist Decision Rules
+   33. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="merging_of_opinions.html">
-   33. Merging of Opinions: The Blackwell–Dubins Theorem
+   34. Merging of Opinions: The Blackwell–Dubins Theorem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="survival_recursive_preferences.html">
-   34. Survival and Long-Run Dynamics under Recursive Preferences
+   35. Survival and Long-Run Dynamics under Recursive Preferences
   </a>
  </li>
 </ul>
@@ -1567,12 +1588,12 @@ P = R + \beta A' P (A - BF)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   35. Optimal Transport
+   36. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   36. Von Neumann Growth Model (and a Generalization)
+   37. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1584,57 +1605,57 @@ P = R + \beta A' P (A - BF)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   37. Finite Markov Chains
+   38. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   38. Inventory Dynamics
+   39. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   39. Linear State Space Models
+   40. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   40. Samuelson Multiplier-Accelerator
+   41. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chow_business_cycles.html">
-   41. The Acceleration Principle and the Nature of Business Cycles
+   42. The Acceleration Principle and the Nature of Business Cycles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   42. Kesten Processes and Firm Dynamics
+   43. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   43. Wealth Distribution Dynamics
+   44. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   44. A First Look at the Kalman Filter
+   45. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   45. Another Look at the Kalman Filter
+   46. Another Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="organization_capital.html">
-   46. Organization Capital
+   47. Organization Capital
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="measurement_models.html">
-   47. Two Models of Measurements and the Investment Accelerator
+   48. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1646,42 +1667,42 @@ P = R + \beta A' P (A - BF)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   48. Job Search I: The McCall Search Model
+   49. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   49. Job Search II: Search and Separation
+   50. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   50. Job Search III: Search with Separation and Markov Wages
+   51. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   51. Job Search IV: Fitted Value Function Iteration
+   52. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   52. Job Search V: Persistent and Transitory Wage Shocks
+   53. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   53. Job Search VI: Modeling Career Choice
+   54. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   54. Job Search VII: On-the-Job Search
+   55. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   55. Job Search VIII: Search with Learning
+   56. Job Search VIII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1693,17 +1714,17 @@ P = R + \beta A' P (A - BF)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_q.html">
-   56. Inventory Management via Q-Learning
+   57. Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rs_inventory_q.html">
-   57. Risk-Sensitive Inventory Management via Q-Learning
+   58. Risk-Sensitive Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   58. Job Search IX: Search with Q-Learning
+   59. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1715,32 +1736,32 @@ P = R + \beta A' P (A - BF)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   59. Optimal Savings I: Cake Eating
+   60. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   60. Optimal Savings II: Numerical Cake Eating
+   61. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   61. Optimal Savings III: Stochastic Returns
+   62. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   62. Optimal Savings IV: Time Iteration
+   63. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   63. Optimal Savings V: The Endogenous Grid Method
+   64. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   64. Optimal Savings VI: EGM with JAX
+   65. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1752,27 +1773,27 @@ P = R + \beta A' P (A - BF)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   65. The Income Fluctuation Problem I: Discretization and VFI
+   66. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   66. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   67. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   67. The Income Fluctuation Problem III: The Endogenous Grid Method
+   68. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   68. The Income Fluctuation Problem IV: Transient Income Shocks
+   69. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   69. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   70. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1784,42 +1805,42 @@ P = R + \beta A' P (A - BF)
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   70. LQ Control: Foundations
+   71. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   71. Lagrangian for LQ Control
+   72. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   72. Eliminating Cross Products
+   73. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   73. The Permanent Income Model
+   74. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   74. Permanent Income II: LQ Techniques
+   75. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_1.html">
-   75. Certainty Equivalence
+   76. Certainty Equivalence
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_2.html">
-   76. Certainty Equivalence and Model Uncertainty
+   77. Certainty Equivalence and Model Uncertainty
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   77. Production Smoothing via Inventories
+   78. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1831,22 +1852,22 @@ P = R + \beta A' P (A - BF)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   78. Cass-Koopmans Model
+   79. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   79. Cass-Koopmans Competitive Equilibrium
+   80. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   80. Cass-Koopmans Model with Distorting Taxes
+   81. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   81. Two-Country Model with Distorting Taxes
+   82. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -1858,52 +1879,52 @@ P = R + \beta A' P (A - BF)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   82. A Lake Model of Employment and Unemployment
+   83. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   83. Lake Model with an Endogenous Job Finding Rate
+   84. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   84. Rational Expectations Equilibrium
+   85. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   85. Stability in Linear Rational Expectations Models
+   86. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   86. Markov Perfect Equilibrium
+   87. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   87. Uncertainty Traps
+   88. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   88. The Aiyagari Model
+   89. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   89. Transitions in an Overlapping Generations Model
+   90. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   90. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   91. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   91. Two Computations to Fund Social Security
+   92. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -1915,37 +1936,47 @@ P = R + \beta A' P (A - BF)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   92. Asset Pricing: Finite State Models
+   93. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   94. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   94. Estimating Euler Equations by Generalized Method of Moments
+   95. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   95. Competitive Equilibria with Arrow Securities
+   96. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   96. Heterogeneous Beliefs and Bubbles
+   97. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   97. Speculative Behavior with Bayesian Learning
+   98. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   98. Affine Models of Asset Prices
+   99. Affine Models of Asset Prices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ross_recovery.html">
+   100. The Recovery Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="misspecified_recovery.html">
+   101. Misspecified recovery
   </a>
  </li>
 </ul>
@@ -1957,17 +1988,17 @@ P = R + \beta A' P (A - BF)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   99. Pandas for Panel Data
+   102. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   100. Linear Regression in Python
+   103. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   101. Maximum Likelihood Estimation
+   104. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1979,12 +2010,12 @@ P = R + \beta A' P (A - BF)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   102. First-Price and Second-Price Auctions
+   105. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   103. Multiple Good Allocation Mechanisms
+   106. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1996,17 +2027,17 @@ P = R + \beta A' P (A - BF)
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   104. Troubleshooting
+   107. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   105. References
+   108. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   106. Execution Statistics
+   109. Execution Statistics
   </a>
  </li>
 </ul>

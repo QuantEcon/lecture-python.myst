@@ -271,7 +271,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Apr 29, 2024
+                            Last changed: Apr 28, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -279,6 +279,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-python.myst/commits/main/lectures/var_dmd.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-python.myst/commit/78030a3a2" class="changelog-hash">78030a3a2</a>
+                                
+                                <span class="changelog-author">Humphrey Yang</span>
+                                <span class="changelog-time">41 minutes ago</span>
+                                <span class="changelog-message">Add lectures on Kihlstrom's paper, Ross Recovery Theorem and update lectures in probability theory (#859)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -294,7 +303,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/0c8dc5e1f" class="changelog-hash">0c8dc5e1f</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">MAINT: remove matplotlib inline (#392)</span>
                             </li>
                             
@@ -515,8 +524,8 @@ X^{+} =  V \Sigma^{-1}  U^\top
 <h2><span class="section-number">6.2. </span>Dynamic Mode Decomposition (DMD)<a class="headerlink" href="#dynamic-mode-decomposition-dmd" title="Link to this heading">#</a></h2>
 <p>We turn to the <span class="math notranslate nohighlight">\( m &gt;&gt;n \)</span> <strong>tall and skinny</strong> case  associated with <strong>Dynamic Mode Decomposition</strong>.</p>
 <p>Here an <span class="math notranslate nohighlight">\( m \times n+1 \)</span>  data matrix <span class="math notranslate nohighlight">\( \tilde X \)</span> contains many more attributes (or variables) <span class="math notranslate nohighlight">\( m \)</span> than time periods  <span class="math notranslate nohighlight">\( n+1 \)</span>.</p>
-<p>Dynamic mode decomposition was introduced by <span id="id1">[<a class="reference internal" href="zreferences.html#id95" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Schmid, 2010</a>]</span>,</p>
-<p>You can read  about Dynamic Mode Decomposition <span id="id2">[<a class="reference internal" href="zreferences.html#id120" title="J. N. Kutz, S. L. Brunton, Brunton B. W, and J. L. Proctor. Dynamic mode decomposition: data-driven modeling of complex systems. SIAM, 2016.">Kutz <em>et al.</em>, 2016</a>]</span> and <span id="id3">[<a class="reference internal" href="zreferences.html#id345" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control. Cambridge University Press, 2019.">Brunton and Kutz, 2019</a>]</span> (section 7.2).</p>
+<p>Dynamic mode decomposition was introduced by <span id="id1">[<a class="reference internal" href="zreferences.html#id111" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Schmid, 2010</a>]</span>,</p>
+<p>You can read  about Dynamic Mode Decomposition <span id="id2">[<a class="reference internal" href="zreferences.html#id136" title="J. Nathan Kutz, Steven L. Brunton, Bingni W. Brunton, and Joshua L. Proctor. Dynamic Mode Decomposition: Data-Driven Modeling of Complex Systems. SIAM, 2016.">Kutz <em>et al.</em>, 2016</a>]</span> and <span id="id3">[<a class="reference internal" href="zreferences.html#id361" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control. Cambridge University Press, 2019.">Brunton and Kutz, 2019</a>]</span> (section 7.2).</p>
 <p><strong>Dynamic Mode Decomposition</strong> (DMD) computes a rank <span class="math notranslate nohighlight">\( r &lt; p  \)</span> approximation to the least squares regression coefficients <span class="math notranslate nohighlight">\( \hat A \)</span>  described by formula <a class="reference internal" href="#equation-eq-ahatsvdformula">(6.11)</a>.</p>
 <p>We’ll  build up gradually  to a formulation that is useful  in applications.</p>
 <p>We’ll do this by describing three  alternative representations of our first-order linear dynamic system, i.e., our vector autoregression.</p>
@@ -573,7 +582,7 @@ X_t = U \tilde b_t
 </section>
 <section id="representation-2">
 <h2><span class="section-number">6.4. </span>Representation 2<a class="headerlink" href="#representation-2" title="Link to this heading">#</a></h2>
-<p>This representation is related to  one originally proposed by  <span id="id4">[<a class="reference internal" href="zreferences.html#id95" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Schmid, 2010</a>]</span>.</p>
+<p>This representation is related to  one originally proposed by  <span id="id4">[<a class="reference internal" href="zreferences.html#id111" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Schmid, 2010</a>]</span>.</p>
 <p>It can be regarded as an intermediate step on the way  to obtaining  a related   representation 3 to be presented later</p>
 <p>As with Representation 1, we continue to</p>
 <ul class="simple">
@@ -631,7 +640,7 @@ X_t = U W \hat b_t
 \overline X_{t+1} = U W \Lambda^t W^{-1} U^\top  X_1 
 \]</div>
 <p>In effect,
-<span id="id5">[<a class="reference internal" href="zreferences.html#id95" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Schmid, 2010</a>]</span> defined an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix <span class="math notranslate nohighlight">\(\Phi_s\)</span> as</p>
+<span id="id5">[<a class="reference internal" href="zreferences.html#id111" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Schmid, 2010</a>]</span> defined an <span class="math notranslate nohighlight">\(m \times m\)</span> matrix <span class="math notranslate nohighlight">\(\Phi_s\)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-eq-phisfull">
 <span class="eqno">(6.18)<a class="headerlink" href="#equation-eq-phisfull" title="Link to this equation">#</a></span>\[ 
 \Phi_s = UW 
@@ -641,7 +650,7 @@ X_t = U W \hat b_t
 <span class="eqno">(6.19)<a class="headerlink" href="#equation-eq-phisfullinv" title="Link to this equation">#</a></span>\[
 \Phi_s^+ = W^{-1}U^\top  
 \]</div>
-<p><span id="id6">[<a class="reference internal" href="zreferences.html#id95" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Schmid, 2010</a>]</span> then  represented equation <a class="reference internal" href="#equation-eq-dssebookrepr">(6.17)</a> as</p>
+<p><span id="id6">[<a class="reference internal" href="zreferences.html#id111" title="Peter J Schmid. Dynamic mode decomposition of numerical and experimental data. Journal of fluid mechanics, 656:5–28, 2010.">Schmid, 2010</a>]</span> then  represented equation <a class="reference internal" href="#equation-eq-dssebookrepr">(6.17)</a> as</p>
 <div class="math notranslate nohighlight" id="equation-eq-schmidrep">
 <span class="eqno">(6.20)<a class="headerlink" href="#equation-eq-schmidrep" title="Link to this equation">#</a></span>\[
 \overline X_{t+1} = \Phi_s \Lambda^t \Phi_s^+ X_1 
@@ -659,7 +668,7 @@ DMD <strong>projected modes</strong>.</p>
 \hat b =  \Phi_s^+ X
 \]</div>
 <p>is a matrix of regression coefficients of the <span class="math notranslate nohighlight">\(m \times n\)</span> matrix <span class="math notranslate nohighlight">\(X\)</span> on the <span class="math notranslate nohighlight">\(m \times p\)</span> matrix <span class="math notranslate nohighlight">\(\Phi_s\)</span>.</p>
-<p>We’ll say more about this interpretation in a related context when we discuss representation 3, which was suggested by  Tu et al. <span id="id7">[<a class="reference internal" href="zreferences.html#id104" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">Tu <em>et al.</em>, 2014</a>]</span>.</p>
+<p>We’ll say more about this interpretation in a related context when we discuss representation 3, which was suggested by  Tu et al. <span id="id7">[<a class="reference internal" href="zreferences.html#id120" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">Tu <em>et al.</em>, 2014</a>]</span>.</p>
 <p>It is more appropriate to use  representation 3  when, as is often the case  in practice, we want to use a reduced SVD.</p>
 </section>
 <section id="representation-3">
@@ -684,7 +693,7 @@ X = \tilde U \tilde \Sigma \tilde V^\top ,
 \tilde A =\tilde  U^\top  \hat A \tilde U 
 \]</div>
 <p><strong>Interpretation as projection coefficients</strong></p>
-<p><span id="id8">[<a class="reference internal" href="zreferences.html#id121" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">Brunton and Kutz, 2022</a>]</span> remark that <span class="math notranslate nohighlight">\(\tilde A\)</span>  can be interpreted in terms of a projection of <span class="math notranslate nohighlight">\(\hat A\)</span> onto the <span class="math notranslate nohighlight">\(p\)</span> modes in <span class="math notranslate nohighlight">\(\tilde U\)</span>.</p>
+<p><span id="id8">[<a class="reference internal" href="zreferences.html#id137" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">Brunton and Kutz, 2022</a>]</span> remark that <span class="math notranslate nohighlight">\(\tilde A\)</span>  can be interpreted in terms of a projection of <span class="math notranslate nohighlight">\(\hat A\)</span> onto the <span class="math notranslate nohighlight">\(p\)</span> modes in <span class="math notranslate nohighlight">\(\tilde U\)</span>.</p>
 <p>To verify this, first note that, because  <span class="math notranslate nohighlight">\( \tilde U^\top  \tilde U = I\)</span>, it follows that</p>
 <div class="math notranslate nohighlight" id="equation-eq-tildeaverify">
 <span class="eqno">(6.23)<a class="headerlink" href="#equation-eq-tildeaverify" title="Link to this equation">#</a></span>\[
@@ -741,9 +750,14 @@ are <strong>not</strong> eigenvectors of <span class="math notranslate nohighlig
 \Phi \equiv \hat A \tilde \Phi_s = X' \tilde V \tilde \Sigma^{-1}  \tilde  W
 \]</div>
 <p>It turns out that columns of <span class="math notranslate nohighlight">\(\Phi\)</span> <strong>are</strong> eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
-<p>This is  a consequence of a  result established by Tu et al. <span id="id9">[<a class="reference internal" href="zreferences.html#id104" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">Tu <em>et al.</em>, 2014</a>]</span> that we now present.</p>
-<p><strong>Proposition</strong> The <span class="math notranslate nohighlight">\(p\)</span> columns of <span class="math notranslate nohighlight">\(\Phi\)</span> are eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
-<p><strong>Proof:</strong> From formula <a class="reference internal" href="#equation-eq-phiformula">(6.26)</a> we have</p>
+<p>This is  a consequence of a  result established by Tu et al. <span id="id9">[<a class="reference internal" href="zreferences.html#id120" title="J. H. Tu, C. W. Rowley, D. M. Luchtenburg, S. L. Brunton, and J. N. Kutz. On dynamic mode decomposition: theory and applications. Journal of Computational Dynamics, 1(2):391–421, 2014.">Tu <em>et al.</em>, 2014</a>]</span> that we now present.</p>
+<div class="proof proposition admonition" id="prop-dmd-eigenvectors">
+<p class="admonition-title"><span class="caption-number">Proposition 6.1 </span></p>
+<section class="proposition-content" id="proof-content">
+<p>The <span class="math notranslate nohighlight">\(p\)</span> columns of <span class="math notranslate nohighlight">\(\Phi\)</span> are eigenvectors of <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
+</section>
+</div><div class="proof admonition" id="proof">
+<p>Proof. From formula <a class="reference internal" href="#equation-eq-phiformula">(6.26)</a> we have</p>
 <div class="math notranslate nohighlight">
 \[  
 \begin{aligned}
@@ -765,8 +779,8 @@ are <strong>not</strong> eigenvectors of <span class="math notranslate nohighlig
 \hat A \phi_i = \lambda_i \phi_i .
 \]</div>
 <p>This equation confirms that  <span class="math notranslate nohighlight">\(\phi_i\)</span> is an eigenvector of <span class="math notranslate nohighlight">\(\hat A\)</span> that corresponds to eigenvalue  <span class="math notranslate nohighlight">\(\lambda_i\)</span> of both  <span class="math notranslate nohighlight">\(\tilde A\)</span> and <span class="math notranslate nohighlight">\(\hat A\)</span>.</p>
-<p>This concludes the proof.</p>
-<p>Also see <span id="id10">[<a class="reference internal" href="zreferences.html#id121" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">Brunton and Kutz, 2022</a>]</span> (p. 238)</p>
+</div>
+<p>Also see <span id="id10">[<a class="reference internal" href="zreferences.html#id137" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">Brunton and Kutz, 2022</a>]</span> (p. 238)</p>
 <section id="decoder-of-check-b-as-a-linear-projection">
 <h3><span class="section-number">6.5.1. </span>Decoder of  <span class="math notranslate nohighlight">\(\check b\)</span> as a linear projection<a class="headerlink" href="#decoder-of-check-b-as-a-linear-projection" title="Link to this heading">#</a></h3>
 <p>From  eigendecomposition <a class="reference internal" href="#equation-eq-aphilambda">(6.27)</a> we can represent <span class="math notranslate nohighlight">\(\hat A\)</span> as</p>
@@ -823,7 +837,7 @@ X = \Phi \check b + \epsilon
 <section id="an-approximation">
 <h3><span class="section-number">6.5.2. </span>An Approximation<a class="headerlink" href="#an-approximation" title="Link to this heading">#</a></h3>
 <p>We now describe a way to approximate  the <span class="math notranslate nohighlight">\(p \times 1\)</span> vector <span class="math notranslate nohighlight">\(\check b_t\)</span> instead of using  formula <a class="reference internal" href="#equation-eq-decoder102">(6.29)</a>.</p>
-<p>In particular, the following argument adapted from <span id="id11">[<a class="reference internal" href="zreferences.html#id121" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">Brunton and Kutz, 2022</a>]</span> (page 240) provides a computationally efficient way to approximate <span class="math notranslate nohighlight">\(\check b_t\)</span>.</p>
+<p>In particular, the following argument adapted from <span id="id11">[<a class="reference internal" href="zreferences.html#id137" title="Steven L. Brunton and J. Nathan Kutz. Data-Driven Science and Engineering, Second Edition. Cambridge University Press, New York, 2022.">Brunton and Kutz, 2022</a>]</span> (page 240) provides a computationally efficient way to approximate <span class="math notranslate nohighlight">\(\check b_t\)</span>.</p>
 <p>For convenience, we’ll apply the method at  time <span class="math notranslate nohighlight">\(t=1\)</span>.</p>
 <p>For <span class="math notranslate nohighlight">\(t=1\)</span>, from equation <a class="reference internal" href="#equation-eq-xbcheck">(6.32)</a> we have</p>
 <div class="math notranslate nohighlight" id="equation-eq-x1proj">
@@ -1133,23 +1147,28 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="information_market_equilibrium.html">
+   31. Information and Market Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   31. Incorrect Models
+   32. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   32. Bayesian versus Frequentist Decision Rules
+   33. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="merging_of_opinions.html">
-   33. Merging of Opinions: The Blackwell–Dubins Theorem
+   34. Merging of Opinions: The Blackwell–Dubins Theorem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="survival_recursive_preferences.html">
-   34. Survival and Long-Run Dynamics under Recursive Preferences
+   35. Survival and Long-Run Dynamics under Recursive Preferences
   </a>
  </li>
 </ul>
@@ -1161,12 +1180,12 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   35. Optimal Transport
+   36. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   36. Von Neumann Growth Model (and a Generalization)
+   37. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1178,57 +1197,57 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   37. Finite Markov Chains
+   38. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   38. Inventory Dynamics
+   39. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   39. Linear State Space Models
+   40. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   40. Samuelson Multiplier-Accelerator
+   41. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chow_business_cycles.html">
-   41. The Acceleration Principle and the Nature of Business Cycles
+   42. The Acceleration Principle and the Nature of Business Cycles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   42. Kesten Processes and Firm Dynamics
+   43. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   43. Wealth Distribution Dynamics
+   44. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   44. A First Look at the Kalman Filter
+   45. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   45. Another Look at the Kalman Filter
+   46. Another Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="organization_capital.html">
-   46. Organization Capital
+   47. Organization Capital
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="measurement_models.html">
-   47. Two Models of Measurements and the Investment Accelerator
+   48. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1240,42 +1259,42 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   48. Job Search I: The McCall Search Model
+   49. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   49. Job Search II: Search and Separation
+   50. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   50. Job Search III: Search with Separation and Markov Wages
+   51. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   51. Job Search IV: Fitted Value Function Iteration
+   52. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   52. Job Search V: Persistent and Transitory Wage Shocks
+   53. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   53. Job Search VI: Modeling Career Choice
+   54. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   54. Job Search VII: On-the-Job Search
+   55. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   55. Job Search VIII: Search with Learning
+   56. Job Search VIII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1287,17 +1306,17 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_q.html">
-   56. Inventory Management via Q-Learning
+   57. Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rs_inventory_q.html">
-   57. Risk-Sensitive Inventory Management via Q-Learning
+   58. Risk-Sensitive Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   58. Job Search IX: Search with Q-Learning
+   59. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1309,32 +1328,32 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   59. Optimal Savings I: Cake Eating
+   60. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   60. Optimal Savings II: Numerical Cake Eating
+   61. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   61. Optimal Savings III: Stochastic Returns
+   62. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   62. Optimal Savings IV: Time Iteration
+   63. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   63. Optimal Savings V: The Endogenous Grid Method
+   64. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   64. Optimal Savings VI: EGM with JAX
+   65. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1346,27 +1365,27 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   65. The Income Fluctuation Problem I: Discretization and VFI
+   66. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   66. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   67. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   67. The Income Fluctuation Problem III: The Endogenous Grid Method
+   68. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   68. The Income Fluctuation Problem IV: Transient Income Shocks
+   69. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   69. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   70. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1378,42 +1397,42 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   70. LQ Control: Foundations
+   71. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   71. Lagrangian for LQ Control
+   72. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   72. Eliminating Cross Products
+   73. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   73. The Permanent Income Model
+   74. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   74. Permanent Income II: LQ Techniques
+   75. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_1.html">
-   75. Certainty Equivalence
+   76. Certainty Equivalence
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_2.html">
-   76. Certainty Equivalence and Model Uncertainty
+   77. Certainty Equivalence and Model Uncertainty
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   77. Production Smoothing via Inventories
+   78. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1425,22 +1444,22 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   78. Cass-Koopmans Model
+   79. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   79. Cass-Koopmans Competitive Equilibrium
+   80. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   80. Cass-Koopmans Model with Distorting Taxes
+   81. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   81. Two-Country Model with Distorting Taxes
+   82. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -1452,52 +1471,52 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   82. A Lake Model of Employment and Unemployment
+   83. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   83. Lake Model with an Endogenous Job Finding Rate
+   84. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   84. Rational Expectations Equilibrium
+   85. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   85. Stability in Linear Rational Expectations Models
+   86. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   86. Markov Perfect Equilibrium
+   87. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   87. Uncertainty Traps
+   88. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   88. The Aiyagari Model
+   89. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   89. Transitions in an Overlapping Generations Model
+   90. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   90. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   91. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   91. Two Computations to Fund Social Security
+   92. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -1509,37 +1528,47 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   92. Asset Pricing: Finite State Models
+   93. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   94. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   94. Estimating Euler Equations by Generalized Method of Moments
+   95. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   95. Competitive Equilibria with Arrow Securities
+   96. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   96. Heterogeneous Beliefs and Bubbles
+   97. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   97. Speculative Behavior with Bayesian Learning
+   98. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   98. Affine Models of Asset Prices
+   99. Affine Models of Asset Prices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ross_recovery.html">
+   100. The Recovery Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="misspecified_recovery.html">
+   101. Misspecified recovery
   </a>
  </li>
 </ul>
@@ -1551,17 +1580,17 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   99. Pandas for Panel Data
+   102. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   100. Linear Regression in Python
+   103. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   101. Maximum Likelihood Estimation
+   104. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1573,12 +1602,12 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   102. First-Price and Second-Price Auctions
+   105. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   103. Multiple Good Allocation Mechanisms
+   106. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1590,17 +1619,17 @@ the <span class="math notranslate nohighlight">\(r &lt; p\)</span> largest singu
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   104. Troubleshooting
+   107. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   105. References
+   108. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   106. Execution Statistics
+   109. Execution Statistics
   </a>
  </li>
 </ul>

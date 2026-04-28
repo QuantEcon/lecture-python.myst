@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>44. A First Look at the Kalman Filter &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>45. A First Look at the Kalman Filter &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="45. Another Look at the Kalman Filter" href="kalman_2.html" />
-    <link rel="prev" title="43. Wealth Distribution Dynamics" href="wealth_dynamics.html" />
+    <link rel="next" title="46. Another Look at the Kalman Filter" href="kalman_2.html" />
+    <link rel="prev" title="44. Wealth Distribution Dynamics" href="wealth_dynamics.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -207,16 +207,16 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">44.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basic-idea">44.2. The Basic Idea</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-filtering-step">44.2.1. The Filtering Step</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-forecast-step">44.2.2. The Forecast Step</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-recursive-procedure">44.2.3. The Recursive Procedure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">45.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-basic-idea">45.2. The Basic Idea</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-filtering-step">45.2.1. The Filtering Step</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-forecast-step">45.2.2. The Forecast Step</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-recursive-procedure">45.2.3. The Recursive Procedure</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence">44.3. Convergence</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">44.4. Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">44.5. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convergence">45.3. Convergence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">45.4. Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">45.5. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -284,7 +284,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/089e35ca2" class="changelog-hash">089e35ca2</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">Fix: Add trailing slash to quantecon-py URLs and upgrade quantecon-book-theme==0.13.2 (jupyterbook link fix) (#743)</span>
                             </li>
                             
@@ -293,7 +293,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/a1cd90c5e" class="changelog-hash">a1cd90c5e</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">STYLE: Fix emphasis vs definitions style guide compliance (Issue #721) (#723)</span>
                             </li>
                             
@@ -302,7 +302,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/1908695ce" class="changelog-hash">1908695ce</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">7 months ago</span>
+                                <span class="changelog-time">8 months ago</span>
                                 <span class="changelog-message">MAINT: upgrade anaconda=2025.06 and python=3.13 (#503)</span>
                             </li>
                             
@@ -329,7 +329,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b7349e484" class="changelog-hash">b7349e484</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">10 months ago</span>
+                                <span class="changelog-time">11 months ago</span>
                                 <span class="changelog-message">FIX: Deprecation and Future Warnings (#444)</span>
                             </li>
                             
@@ -382,7 +382,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="a-first-look-at-the-kalman-filter">
-<h1><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">44. </span>A First Look at the Kalman Filter</a><a class="headerlink" href="#a-first-look-at-the-kalman-filter" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id11" role="doc-backlink"><span class="section-number">45. </span>A First Look at the Kalman Filter</a><a class="headerlink" href="#a-first-look-at-the-kalman-filter" title="Link to this heading">#</a></h1>
 <nav class="contents" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -428,7 +428,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </details>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">44.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id12" role="doc-backlink"><span class="section-number">45.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture provides a simple and intuitive introduction to the Kalman filter, for those who either</p>
 <ul class="simple">
 <li><p>have heard of the Kalman filter but don’t know how it works, or</p></li>
@@ -436,8 +436,8 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </ul>
 <p>For additional (more advanced) reading on the Kalman filter, see</p>
 <ul class="simple">
-<li><p><span id="id1">[<a class="reference internal" href="zreferences.html#id268" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 2.7</p></li>
-<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id225" title="D. B. O. Anderson and J. B. Moore. Optimal Filtering. Dover Publications, 2005.">Anderson and Moore, 2005</a>]</span></p></li>
+<li><p><span id="id1">[<a class="reference internal" href="zreferences.html#id284" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 2.7</p></li>
+<li><p><span id="id2">[<a class="reference internal" href="zreferences.html#id241" title="D. B. O. Anderson and J. B. Moore. Optimal Filtering. Dover Publications, 2005.">Anderson and Moore, 2005</a>]</span></p></li>
 </ul>
 <p>The second reference presents a  comprehensive treatment of the Kalman filter.</p>
 <p>Required knowledge: Familiarity with matrix manipulations, multivariate normal distributions, covariance matrices, etc.</p>
@@ -458,7 +458,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </section>
 <section id="the-basic-idea">
-<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">44.2. </span>The Basic Idea</a><a class="headerlink" href="#the-basic-idea" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id13" role="doc-backlink"><span class="section-number">45.2. </span>The Basic Idea</a><a class="headerlink" href="#the-basic-idea" title="Link to this heading">#</a></h2>
 <p>The Kalman filter has many applications in economics, but for now
 let’s pretend that we are rocket scientists.</p>
 <p>A missile has been launched from country Y and our mission is to track it.</p>
@@ -479,11 +479,11 @@ we do have some beliefs about <span class="math notranslate nohighlight">\(x\)</
 <p>To keep things tractable in our example,  we  assume that our prior is Gaussian.</p>
 <p>In particular, we take</p>
 <div class="math notranslate nohighlight" id="equation-prior">
-<span class="eqno">(44.1)<a class="headerlink" href="#equation-prior" title="Link to this equation">#</a></span>\[p = N(\hat x, \Sigma)\]</div>
+<span class="eqno">(45.1)<a class="headerlink" href="#equation-prior" title="Link to this equation">#</a></span>\[p = N(\hat x, \Sigma)\]</div>
 <p>where <span class="math notranslate nohighlight">\(\hat x\)</span> is the mean of the distribution and <span class="math notranslate nohighlight">\(\Sigma\)</span> is a
 <span class="math notranslate nohighlight">\(2 \times 2\)</span> covariance matrix.  In our simulations, we will suppose that</p>
 <div class="math notranslate nohighlight" id="equation-kalman-dhxs">
-<span class="eqno">(44.2)<a class="headerlink" href="#equation-kalman-dhxs" title="Link to this equation">#</a></span>\[\begin{split}\hat x
+<span class="eqno">(45.2)<a class="headerlink" href="#equation-kalman-dhxs" title="Link to this equation">#</a></span>\[\begin{split}\hat x
 = \left(
 \begin{array}{c}
     0.2 \\
@@ -585,7 +585,7 @@ we do have some beliefs about <span class="math notranslate nohighlight">\(x\)</
 </div>
 </div>
 <section id="the-filtering-step">
-<h3><span class="section-number">44.2.1. </span>The Filtering Step<a class="headerlink" href="#the-filtering-step" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">45.2.1. </span>The Filtering Step<a class="headerlink" href="#the-filtering-step" title="Link to this heading">#</a></h3>
 <p>We are now presented with some good news and some bad news.</p>
 <p>The good news is that the missile has been located by our sensors, which report that the current location is <span class="math notranslate nohighlight">\(y = (2.3, -1.9)\)</span>.</p>
 <p>The next figure shows the original prior <span class="math notranslate nohighlight">\(p(x)\)</span> and the new reported
@@ -613,7 +613,7 @@ location <span class="math notranslate nohighlight">\(y\)</span></p>
 <p>In particular, we should interpret the output of our sensor not as
 <span class="math notranslate nohighlight">\(y=x\)</span>, but rather as</p>
 <div class="math notranslate nohighlight" id="equation-kl-measurement-model">
-<span class="eqno">(44.3)<a class="headerlink" href="#equation-kl-measurement-model" title="Link to this equation">#</a></span>\[y = G x + v, \quad \text{where} \quad v \sim N(0, R)\]</div>
+<span class="eqno">(45.3)<a class="headerlink" href="#equation-kl-measurement-model" title="Link to this equation">#</a></span>\[y = G x + v, \quad \text{where} \quad v \sim N(0, R)\]</div>
 <p>Here <span class="math notranslate nohighlight">\(G\)</span> and <span class="math notranslate nohighlight">\(R\)</span> are <span class="math notranslate nohighlight">\(2 \times 2\)</span> matrices with <span class="math notranslate nohighlight">\(R\)</span>
 positive definite.  Both are assumed known, and the noise term <span class="math notranslate nohighlight">\(v\)</span> is assumed
 to be independent of <span class="math notranslate nohighlight">\(x\)</span>.</p>
@@ -630,7 +630,7 @@ p(x \,|\, y) = \frac{p(y \,|\, x) \, p(x)} {p(y)}
 <p>In solving for <span class="math notranslate nohighlight">\(p(x \,|\, y)\)</span>, we observe that</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(p(x) = N(\hat x, \Sigma)\)</span>.</p></li>
-<li><p>In view of <a class="reference internal" href="#equation-kl-measurement-model">(44.3)</a>, the conditional density <span class="math notranslate nohighlight">\(p(y \,|\, x)\)</span> is <span class="math notranslate nohighlight">\(N(Gx, R)\)</span>.</p></li>
+<li><p>In view of <a class="reference internal" href="#equation-kl-measurement-model">(45.3)</a>, the conditional density <span class="math notranslate nohighlight">\(p(y \,|\, x)\)</span> is <span class="math notranslate nohighlight">\(N(Gx, R)\)</span>.</p></li>
 <li><p><span class="math notranslate nohighlight">\(p(y)\)</span> does not depend on <span class="math notranslate nohighlight">\(x\)</span>, and enters into the calculations only as a normalizing constant.</p></li>
 </ul>
 <p>Because we are in a linear and Gaussian framework, the updated density can be computed by calculating population linear regressions.</p>
@@ -641,7 +641,7 @@ p(x \,|\, y) = N(\hat x^F, \Sigma^F)
 \]</div>
 <p>where</p>
 <div class="math notranslate nohighlight" id="equation-kl-filter-exp">
-<span class="eqno">(44.4)<a class="headerlink" href="#equation-kl-filter-exp" title="Link to this equation">#</a></span>\[\hat x^F := \hat x + \Sigma G' (G \Sigma G' + R)^{-1}(y - G \hat x)
+<span class="eqno">(45.4)<a class="headerlink" href="#equation-kl-filter-exp" title="Link to this equation">#</a></span>\[\hat x^F := \hat x + \Sigma G' (G \Sigma G' + R)^{-1}(y - G \hat x)
 \quad \text{and} \quad
 \Sigma^F := \Sigma - \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma\]</div>
 <p>Here  <span class="math notranslate nohighlight">\(\Sigma G' (G \Sigma G' + R)^{-1}\)</span> is the matrix of population regression coefficients of the hidden object <span class="math notranslate nohighlight">\(x - \hat x\)</span> on the surprise <span class="math notranslate nohighlight">\(y - G \hat x\)</span>.</p>
@@ -674,10 +674,10 @@ p(x \,|\, y) = N(\hat x^F, \Sigma^F)
 </div>
 <p>Our new density twists the prior <span class="math notranslate nohighlight">\(p(x)\)</span> in a direction determined by  the new
 information <span class="math notranslate nohighlight">\(y - G \hat x\)</span>.</p>
-<p>In generating the figure, we set <span class="math notranslate nohighlight">\(G\)</span> to the identity matrix and <span class="math notranslate nohighlight">\(R = 0.5 \Sigma\)</span> for <span class="math notranslate nohighlight">\(\Sigma\)</span> defined in <a class="reference internal" href="#equation-kalman-dhxs">(44.2)</a>.</p>
+<p>In generating the figure, we set <span class="math notranslate nohighlight">\(G\)</span> to the identity matrix and <span class="math notranslate nohighlight">\(R = 0.5 \Sigma\)</span> for <span class="math notranslate nohighlight">\(\Sigma\)</span> defined in <a class="reference internal" href="#equation-kalman-dhxs">(45.2)</a>.</p>
 </section>
 <section id="the-forecast-step">
-<span id="kl-forecase-step"></span><h3><span class="section-number">44.2.2. </span>The Forecast Step<a class="headerlink" href="#the-forecast-step" title="Link to this heading">#</a></h3>
+<span id="kl-forecase-step"></span><h3><span class="section-number">45.2.2. </span>The Forecast Step<a class="headerlink" href="#the-forecast-step" title="Link to this heading">#</a></h3>
 <p>What have we achieved so far?</p>
 <p>We have obtained probabilities for the current location of the state (missile) given prior and current information.</p>
 <p>This is called “filtering” rather than forecasting because we are filtering
@@ -689,11 +689,11 @@ out noise rather than looking into the future.</p>
 <p>To do this we need a model of how the state evolves.</p>
 <p>Let’s suppose that we have one, and that it’s linear and Gaussian. In particular,</p>
 <div class="math notranslate nohighlight" id="equation-kl-xdynam">
-<span class="eqno">(44.5)<a class="headerlink" href="#equation-kl-xdynam" title="Link to this equation">#</a></span>\[x_{t+1} = A x_t + w_{t+1}, \quad \text{where} \quad w_t \sim N(0, Q)\]</div>
+<span class="eqno">(45.5)<a class="headerlink" href="#equation-kl-xdynam" title="Link to this equation">#</a></span>\[x_{t+1} = A x_t + w_{t+1}, \quad \text{where} \quad w_t \sim N(0, Q)\]</div>
 <p>Our aim is to combine this law of motion and our current distribution <span class="math notranslate nohighlight">\(p(x \,|\, y) = N(\hat x^F, \Sigma^F)\)</span> to come up with a new <strong>predictive</strong> distribution for the location in one unit of time.</p>
-<p>In view of <a class="reference internal" href="#equation-kl-xdynam">(44.5)</a>, all we have to do is introduce a random vector <span class="math notranslate nohighlight">\(x^F \sim N(\hat x^F, \Sigma^F)\)</span> and work out the distribution of <span class="math notranslate nohighlight">\(A x^F + w\)</span> where <span class="math notranslate nohighlight">\(w\)</span> is independent of <span class="math notranslate nohighlight">\(x^F\)</span> and has distribution <span class="math notranslate nohighlight">\(N(0, Q)\)</span>.</p>
+<p>In view of <a class="reference internal" href="#equation-kl-xdynam">(45.5)</a>, all we have to do is introduce a random vector <span class="math notranslate nohighlight">\(x^F \sim N(\hat x^F, \Sigma^F)\)</span> and work out the distribution of <span class="math notranslate nohighlight">\(A x^F + w\)</span> where <span class="math notranslate nohighlight">\(w\)</span> is independent of <span class="math notranslate nohighlight">\(x^F\)</span> and has distribution <span class="math notranslate nohighlight">\(N(0, Q)\)</span>.</p>
 <p>Since linear combinations of Gaussians are Gaussian, <span class="math notranslate nohighlight">\(A x^F + w\)</span> is Gaussian.</p>
-<p>Elementary calculations and the expressions in <a class="reference internal" href="#equation-kl-filter-exp">(44.4)</a> tell us that</p>
+<p>Elementary calculations and the expressions in <a class="reference internal" href="#equation-kl-filter-exp">(45.4)</a> tell us that</p>
 <div class="math notranslate nohighlight">
 \[
 \mathbb{E} [A x^F + w]
@@ -717,7 +717,7 @@ out noise rather than looking into the future.</p>
 <p>Using this notation, we can summarize our results as follows.</p>
 <p>Our updated prediction is the density <span class="math notranslate nohighlight">\(N(\hat x_{new}, \Sigma_{new})\)</span> where</p>
 <div class="math notranslate nohighlight" id="equation-kl-mlom0">
-<span class="eqno">(44.6)<a class="headerlink" href="#equation-kl-mlom0" title="Link to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(45.6)<a class="headerlink" href="#equation-kl-mlom0" title="Link to this equation">#</a></span>\[\begin{split}\begin{aligned}
     \hat x_{new} &amp;:= A \hat x + K_{\Sigma} (y - G \hat x) \\
     \Sigma_{new} &amp;:= A \Sigma A' - K_{\Sigma} G \Sigma A' + Q \nonumber
 \end{aligned}\end{split}\]</div>
@@ -775,54 +775,54 @@ Q = 0.3 * \Sigma
 </div>
 </section>
 <section id="the-recursive-procedure">
-<h3><span class="section-number">44.2.3. </span>The Recursive Procedure<a class="headerlink" href="#the-recursive-procedure" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">45.2.3. </span>The Recursive Procedure<a class="headerlink" href="#the-recursive-procedure" title="Link to this heading">#</a></h3>
 <p id="index-1">Let’s look back at what we’ve done.</p>
 <p>We started the current period with a prior <span class="math notranslate nohighlight">\(p(x)\)</span> for the location <span class="math notranslate nohighlight">\(x\)</span> of the missile.</p>
 <p>We then used the current measurement <span class="math notranslate nohighlight">\(y\)</span> to update to <span class="math notranslate nohighlight">\(p(x \,|\, y)\)</span>.</p>
-<p>Finally, we used the law of motion <a class="reference internal" href="#equation-kl-xdynam">(44.5)</a> for <span class="math notranslate nohighlight">\(\{x_t\}\)</span> to update to <span class="math notranslate nohighlight">\(p_{new}(x)\)</span>.</p>
+<p>Finally, we used the law of motion <a class="reference internal" href="#equation-kl-xdynam">(45.5)</a> for <span class="math notranslate nohighlight">\(\{x_t\}\)</span> to update to <span class="math notranslate nohighlight">\(p_{new}(x)\)</span>.</p>
 <p>If we now step into the next period, we are ready to go round again, taking <span class="math notranslate nohighlight">\(p_{new}(x)\)</span>
 as the current prior.</p>
 <p>Swapping notation <span class="math notranslate nohighlight">\(p_t(x)\)</span> for <span class="math notranslate nohighlight">\(p(x)\)</span> and <span class="math notranslate nohighlight">\(p_{t+1}(x)\)</span> for <span class="math notranslate nohighlight">\(p_{new}(x)\)</span>, the full recursive procedure is:</p>
 <ol class="arabic simple">
 <li><p>Start the current period with prior <span class="math notranslate nohighlight">\(p_t(x) = N(\hat x_t, \Sigma_t)\)</span>.</p></li>
 <li><p>Observe current measurement <span class="math notranslate nohighlight">\(y_t\)</span>.</p></li>
-<li><p>Compute the filtering distribution <span class="math notranslate nohighlight">\(p_t(x \,|\, y) = N(\hat x_t^F, \Sigma_t^F)\)</span> from <span class="math notranslate nohighlight">\(p_t(x)\)</span> and <span class="math notranslate nohighlight">\(y_t\)</span>, applying Bayes rule and the conditional distribution <a class="reference internal" href="#equation-kl-measurement-model">(44.3)</a>.</p></li>
-<li><p>Compute the predictive distribution <span class="math notranslate nohighlight">\(p_{t+1}(x) = N(\hat x_{t+1}, \Sigma_{t+1})\)</span> from the filtering distribution and <a class="reference internal" href="#equation-kl-xdynam">(44.5)</a>.</p></li>
+<li><p>Compute the filtering distribution <span class="math notranslate nohighlight">\(p_t(x \,|\, y) = N(\hat x_t^F, \Sigma_t^F)\)</span> from <span class="math notranslate nohighlight">\(p_t(x)\)</span> and <span class="math notranslate nohighlight">\(y_t\)</span>, applying Bayes rule and the conditional distribution <a class="reference internal" href="#equation-kl-measurement-model">(45.3)</a>.</p></li>
+<li><p>Compute the predictive distribution <span class="math notranslate nohighlight">\(p_{t+1}(x) = N(\hat x_{t+1}, \Sigma_{t+1})\)</span> from the filtering distribution and <a class="reference internal" href="#equation-kl-xdynam">(45.5)</a>.</p></li>
 <li><p>Increment <span class="math notranslate nohighlight">\(t\)</span> by one and go to step 1.</p></li>
 </ol>
-<p>Repeating <a class="reference internal" href="#equation-kl-mlom0">(44.6)</a>, the dynamics for <span class="math notranslate nohighlight">\(\hat x_t\)</span> and <span class="math notranslate nohighlight">\(\Sigma_t\)</span> are as follows</p>
+<p>Repeating <a class="reference internal" href="#equation-kl-mlom0">(45.6)</a>, the dynamics for <span class="math notranslate nohighlight">\(\hat x_t\)</span> and <span class="math notranslate nohighlight">\(\Sigma_t\)</span> are as follows</p>
 <div class="math notranslate nohighlight" id="equation-kalman-lom">
-<span class="eqno">(44.7)<a class="headerlink" href="#equation-kalman-lom" title="Link to this equation">#</a></span>\[\begin{split}\begin{aligned}
+<span class="eqno">(45.7)<a class="headerlink" href="#equation-kalman-lom" title="Link to this equation">#</a></span>\[\begin{split}\begin{aligned}
     \hat x_{t+1} &amp;= A \hat x_t + K_{\Sigma_t} (y_t - G \hat x_t) \\
     \Sigma_{t+1} &amp;= A \Sigma_t A' - K_{\Sigma_t} G \Sigma_t A' + Q \nonumber
 \end{aligned}\end{split}\]</div>
-<p>These are the standard dynamic equations for the Kalman filter (see, for example, <span id="id4">[<a class="reference internal" href="zreferences.html#id268" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, page 58).</p>
+<p>These are the standard dynamic equations for the Kalman filter (see, for example, <span id="id4">[<a class="reference internal" href="zreferences.html#id284" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, page 58).</p>
 </section>
 </section>
 <section id="convergence">
-<span id="kalman-convergence"></span><h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">44.3. </span>Convergence</a><a class="headerlink" href="#convergence" title="Link to this heading">#</a></h2>
+<span id="kalman-convergence"></span><h2><a class="toc-backref" href="#id14" role="doc-backlink"><span class="section-number">45.3. </span>Convergence</a><a class="headerlink" href="#convergence" title="Link to this heading">#</a></h2>
 <p>The matrix <span class="math notranslate nohighlight">\(\Sigma_t\)</span> is a measure of the uncertainty of our prediction <span class="math notranslate nohighlight">\(\hat x_t\)</span> of <span class="math notranslate nohighlight">\(x_t\)</span>.</p>
 <p>Apart from special cases, this uncertainty will never be fully resolved, regardless of how much time elapses.</p>
 <p>One reason is that our prediction <span class="math notranslate nohighlight">\(\hat x_t\)</span> is made based on information available at <span class="math notranslate nohighlight">\(t-1\)</span>, not <span class="math notranslate nohighlight">\(t\)</span>.</p>
-<p>Even if we know the precise value of <span class="math notranslate nohighlight">\(x_{t-1}\)</span> (which we don’t), the transition equation <a class="reference internal" href="#equation-kl-xdynam">(44.5)</a> implies that <span class="math notranslate nohighlight">\(x_t = A x_{t-1} + w_t\)</span>.</p>
+<p>Even if we know the precise value of <span class="math notranslate nohighlight">\(x_{t-1}\)</span> (which we don’t), the transition equation <a class="reference internal" href="#equation-kl-xdynam">(45.5)</a> implies that <span class="math notranslate nohighlight">\(x_t = A x_{t-1} + w_t\)</span>.</p>
 <p>Since the shock <span class="math notranslate nohighlight">\(w_t\)</span> is not observable at <span class="math notranslate nohighlight">\(t-1\)</span>, any time <span class="math notranslate nohighlight">\(t-1\)</span> prediction of <span class="math notranslate nohighlight">\(x_t\)</span> will incur some error (unless <span class="math notranslate nohighlight">\(w_t\)</span> is degenerate).</p>
 <p>However, it is certainly possible that <span class="math notranslate nohighlight">\(\Sigma_t\)</span> converges to a constant matrix as <span class="math notranslate nohighlight">\(t \to \infty\)</span>.</p>
-<p>To study this topic, let’s expand the second equation in <a class="reference internal" href="#equation-kalman-lom">(44.7)</a>:</p>
+<p>To study this topic, let’s expand the second equation in <a class="reference internal" href="#equation-kalman-lom">(45.7)</a>:</p>
 <div class="math notranslate nohighlight" id="equation-kalman-sdy">
-<span class="eqno">(44.8)<a class="headerlink" href="#equation-kalman-sdy" title="Link to this equation">#</a></span>\[\Sigma_{t+1} = A \Sigma_t A' -  A \Sigma_t G' (G \Sigma_t G' + R)^{-1} G \Sigma_t A' + Q\]</div>
+<span class="eqno">(45.8)<a class="headerlink" href="#equation-kalman-sdy" title="Link to this equation">#</a></span>\[\Sigma_{t+1} = A \Sigma_t A' -  A \Sigma_t G' (G \Sigma_t G' + R)^{-1} G \Sigma_t A' + Q\]</div>
 <p>This is a nonlinear difference equation in <span class="math notranslate nohighlight">\(\Sigma_t\)</span>.</p>
-<p>A fixed point of <a class="reference internal" href="#equation-kalman-sdy">(44.8)</a> is a constant matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> such that</p>
+<p>A fixed point of <a class="reference internal" href="#equation-kalman-sdy">(45.8)</a> is a constant matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> such that</p>
 <div class="math notranslate nohighlight" id="equation-kalman-dare">
-<span class="eqno">(44.9)<a class="headerlink" href="#equation-kalman-dare" title="Link to this equation">#</a></span>\[\Sigma = A \Sigma A' -  A \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma A' + Q\]</div>
-<p>Equation <a class="reference internal" href="#equation-kalman-sdy">(44.8)</a> is known as a discrete-time Riccati difference equation.</p>
-<p>Equation <a class="reference internal" href="#equation-kalman-dare">(44.9)</a> is known as a <a class="reference external" href="https://en.wikipedia.org/wiki/Algebraic_Riccati_equation">discrete-time algebraic Riccati equation</a>.</p>
-<p>Conditions under which a fixed point exists and the sequence <span class="math notranslate nohighlight">\(\{\Sigma_t\}\)</span> converges to it are discussed in <span id="id5">[<a class="reference internal" href="zreferences.html#id227" title="E. W. Anderson, L. P. Hansen, E. R. McGrattan, and T. J. Sargent. Mechanics of Forming and Estimating Dynamic Linear Economies. In Handbook of Computational Economics. Elsevier, vol 1 edition, 1996.">Anderson <em>et al.</em>, 1996</a>]</span> and <span id="id6">[<a class="reference internal" href="zreferences.html#id225" title="D. B. O. Anderson and J. B. Moore. Optimal Filtering. Dover Publications, 2005.">Anderson and Moore, 2005</a>]</span>, chapter 4.</p>
-<p>A sufficient (but not necessary) condition is that all the eigenvalues <span class="math notranslate nohighlight">\(\lambda_i\)</span> of <span class="math notranslate nohighlight">\(A\)</span> satisfy <span class="math notranslate nohighlight">\(|\lambda_i| &lt; 1\)</span> (cf. e.g., <span id="id7">[<a class="reference internal" href="zreferences.html#id225" title="D. B. O. Anderson and J. B. Moore. Optimal Filtering. Dover Publications, 2005.">Anderson and Moore, 2005</a>]</span>, p. 77).</p>
+<span class="eqno">(45.9)<a class="headerlink" href="#equation-kalman-dare" title="Link to this equation">#</a></span>\[\Sigma = A \Sigma A' -  A \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma A' + Q\]</div>
+<p>Equation <a class="reference internal" href="#equation-kalman-sdy">(45.8)</a> is known as a discrete-time Riccati difference equation.</p>
+<p>Equation <a class="reference internal" href="#equation-kalman-dare">(45.9)</a> is known as a <a class="reference external" href="https://en.wikipedia.org/wiki/Algebraic_Riccati_equation">discrete-time algebraic Riccati equation</a>.</p>
+<p>Conditions under which a fixed point exists and the sequence <span class="math notranslate nohighlight">\(\{\Sigma_t\}\)</span> converges to it are discussed in <span id="id5">[<a class="reference internal" href="zreferences.html#id243" title="E. W. Anderson, L. P. Hansen, E. R. McGrattan, and T. J. Sargent. Mechanics of Forming and Estimating Dynamic Linear Economies. In Handbook of Computational Economics. Elsevier, vol 1 edition, 1996.">Anderson <em>et al.</em>, 1996</a>]</span> and <span id="id6">[<a class="reference internal" href="zreferences.html#id241" title="D. B. O. Anderson and J. B. Moore. Optimal Filtering. Dover Publications, 2005.">Anderson and Moore, 2005</a>]</span>, chapter 4.</p>
+<p>A sufficient (but not necessary) condition is that all the eigenvalues <span class="math notranslate nohighlight">\(\lambda_i\)</span> of <span class="math notranslate nohighlight">\(A\)</span> satisfy <span class="math notranslate nohighlight">\(|\lambda_i| &lt; 1\)</span> (cf. e.g., <span id="id7">[<a class="reference internal" href="zreferences.html#id241" title="D. B. O. Anderson and J. B. Moore. Optimal Filtering. Dover Publications, 2005.">Anderson and Moore, 2005</a>]</span>, p. 77).</p>
 <p>(This strong condition assures that the unconditional  distribution of <span class="math notranslate nohighlight">\(x_t\)</span>  converges as <span class="math notranslate nohighlight">\(t \rightarrow + \infty\)</span>.)</p>
-<p>In this case, for any initial choice of <span class="math notranslate nohighlight">\(\Sigma_0\)</span> that is both non-negative and symmetric, the sequence <span class="math notranslate nohighlight">\(\{\Sigma_t\}\)</span> in <a class="reference internal" href="#equation-kalman-sdy">(44.8)</a> converges to a non-negative symmetric matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> that solves <a class="reference internal" href="#equation-kalman-dare">(44.9)</a>.</p>
+<p>In this case, for any initial choice of <span class="math notranslate nohighlight">\(\Sigma_0\)</span> that is both non-negative and symmetric, the sequence <span class="math notranslate nohighlight">\(\{\Sigma_t\}\)</span> in <a class="reference internal" href="#equation-kalman-sdy">(45.8)</a> converges to a non-negative symmetric matrix <span class="math notranslate nohighlight">\(\Sigma\)</span> that solves <a class="reference internal" href="#equation-kalman-dare">(45.9)</a>.</p>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">44.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id15" role="doc-backlink"><span class="section-number">45.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p id="index-2">The class <code class="docutils literal notranslate"><span class="pre">Kalman</span></code> from the <a class="reference external" href="https://quantecon.org/quantecon-py/">QuantEcon.py</a> package implements the Kalman filter</p>
 <ul class="simple">
 <li><p>Instance data consists of:</p>
@@ -854,29 +854,29 @@ Q := CC' \quad \text{and} \quad R := HH'
 <li><p><code class="docutils literal notranslate"><span class="pre">prior_to_filtered</span></code>, which updates <span class="math notranslate nohighlight">\((\hat x_t, \Sigma_t)\)</span> to <span class="math notranslate nohighlight">\((\hat x_t^F, \Sigma_t^F)\)</span></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">filtered_to_forecast</span></code>, which updates the filtering distribution to the predictive distribution – which becomes the new prior <span class="math notranslate nohighlight">\((\hat x_{t+1}, \Sigma_{t+1})\)</span></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">update</span></code>, which combines the last two methods</p></li>
-<li><p>a <code class="docutils literal notranslate"><span class="pre">stationary_values</span></code>, which computes the solution to <a class="reference internal" href="#equation-kalman-dare">(44.9)</a> and the corresponding (stationary) Kalman gain</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">stationary_values</span></code>, which computes the solution to <a class="reference internal" href="#equation-kalman-dare">(45.9)</a> and the corresponding (stationary) Kalman gain</p></li>
 </ul>
 </li>
 </ul>
 <p>You can view the program <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/kalman.py">on GitHub</a>.</p>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">44.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id16" role="doc-backlink"><span class="section-number">45.5. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="kalman_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 44.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 45.1 </span></p>
 <section id="exercise-content">
 <p>Consider the following simple application of the Kalman filter, loosely based
-on <span id="id8">[<a class="reference internal" href="zreferences.html#id268" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 2.9.2.</p>
+on <span id="id8">[<a class="reference internal" href="zreferences.html#id284" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, section 2.9.2.</p>
 <p>Suppose that</p>
 <ul class="simple">
 <li><p>all variables are scalars</p></li>
 <li><p>the hidden state <span class="math notranslate nohighlight">\(\{x_t\}\)</span> is in fact constant, equal to some <span class="math notranslate nohighlight">\(\theta \in \mathbb{R}\)</span> unknown to the modeler</p></li>
 </ul>
-<p>State dynamics are therefore given by <a class="reference internal" href="#equation-kl-xdynam">(44.5)</a> with <span class="math notranslate nohighlight">\(A=1\)</span>, <span class="math notranslate nohighlight">\(Q=0\)</span> and <span class="math notranslate nohighlight">\(x_0 = \theta\)</span>.</p>
+<p>State dynamics are therefore given by <a class="reference internal" href="#equation-kl-xdynam">(45.5)</a> with <span class="math notranslate nohighlight">\(A=1\)</span>, <span class="math notranslate nohighlight">\(Q=0\)</span> and <span class="math notranslate nohighlight">\(x_0 = \theta\)</span>.</p>
 <p>The measurement equation is <span class="math notranslate nohighlight">\(y_t = \theta + v_t\)</span> where <span class="math notranslate nohighlight">\(v_t\)</span> is <span class="math notranslate nohighlight">\(N(0,1)\)</span> and IID.</p>
 <p>The task of this exercise to simulate the model and, using the code from <code class="docutils literal notranslate"><span class="pre">kalman.py</span></code>, plot the first five predictive densities <span class="math notranslate nohighlight">\(p_t(x) = N(\hat x_t, \Sigma_t)\)</span>.</p>
-<p>As shown in <span id="id9">[<a class="reference internal" href="zreferences.html#id268" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, sections 2.9.1–2.9.2, these distributions asymptotically put all mass on the unknown value <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>As shown in <span id="id9">[<a class="reference internal" href="zreferences.html#id284" title="L Ljungqvist and T J Sargent. Recursive Macroeconomic Theory. MIT Press, 4 edition, 2018.">Ljungqvist and Sargent, 2018</a>]</span>, sections 2.9.1–2.9.2, these distributions asymptotically put all mass on the unknown value <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p>In the simulation, take <span class="math notranslate nohighlight">\(\theta = 10\)</span>, <span class="math notranslate nohighlight">\(\hat x_0 = 8\)</span> and <span class="math notranslate nohighlight">\(\Sigma_0 = 1\)</span>.</p>
 <p>Your figure should – modulo randomness – look something like this</p>
 <img alt="_images/kl_ex1_fig.png" class="align-center" src="_images/kl_ex1_fig.png" />
@@ -927,7 +927,7 @@ on <span id="id8">[<a class="reference internal" href="zreferences.html#id268" t
 </div>
 <div class="exercise admonition" id="kalman_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 44.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 45.2 </span></p>
 <section id="exercise-content">
 <p>The preceding figure gives some support to the idea that probability mass
 converges to <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
@@ -988,7 +988,7 @@ z_t := 1 - \int_{\theta - \epsilon}^{\theta + \epsilon} p_t(x) dx
 </div>
 <div class="exercise admonition" id="kalman_ex3">
 
-<p class="admonition-title"><span class="caption-number">Exercise 44.3 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 45.3 </span></p>
 <section id="exercise-content">
 <p>As discussed <a class="reference internal" href="#kalman-convergence"><span class="std std-ref">above</span></a>, if the shock sequence <span class="math notranslate nohighlight">\(\{w_t\}\)</span> is not degenerate, then it is not in general possible to predict <span class="math notranslate nohighlight">\(x_t\)</span> without error at time <span class="math notranslate nohighlight">\(t-1\)</span> (and this would be the case even if we could observe <span class="math notranslate nohighlight">\(x_{t-1}\)</span>).</p>
 <p>Let’s now compare the prediction <span class="math notranslate nohighlight">\(\hat x_t\)</span> made by the Kalman filter
@@ -1107,10 +1107,10 @@ Stationary prediction error variance:
 </div>
 <div class="exercise admonition" id="kalman_ex4">
 
-<p class="admonition-title"><span class="caption-number">Exercise 44.4 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 45.4 </span></p>
 <section id="exercise-content">
 <p>Try varying the coefficient <span class="math notranslate nohighlight">\(0.3\)</span> in <span class="math notranslate nohighlight">\(Q = 0.3 I\)</span> up and down.</p>
-<p>Observe how the diagonal values in the stationary solution <span class="math notranslate nohighlight">\(\Sigma\)</span> (see <a class="reference internal" href="#equation-kalman-dare">(44.9)</a>) increase and decrease in line with this coefficient.</p>
+<p>Observe how the diagonal values in the stationary solution <span class="math notranslate nohighlight">\(\Sigma\)</span> (see <a class="reference internal" href="#equation-kalman-dare">(45.9)</a>) increase and decrease in line with this coefficient.</p>
 <p>The interpretation is that more randomness in the law of motion for <span class="math notranslate nohighlight">\(x_t\)</span> causes more (permanent) uncertainty in prediction.</p>
 </section>
 </div>
@@ -1118,7 +1118,7 @@ Stationary prediction error variance:
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="f1" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">1</a><span class="fn-bracket">]</span></span>
-<p>See, for example, page 93 of <span id="id10">[<a class="reference internal" href="zreferences.html#id230" title="C. M. Bishop. Pattern Recognition and Machine Learning. Springer, 2006.">Bishop, 2006</a>]</span>. To get from his expressions to the ones used above, you will also need to apply the <a class="reference external" href="https://en.wikipedia.org/wiki/Woodbury_matrix_identity">Woodbury matrix identity</a>.</p>
+<p>See, for example, page 93 of <span id="id10">[<a class="reference internal" href="zreferences.html#id246" title="C. M. Bishop. Pattern Recognition and Machine Learning. Springer, 2006.">Bishop, 2006</a>]</span>. To get from his expressions to the ones used above, you will also need to apply the <a class="reference external" href="https://en.wikipedia.org/wiki/Woodbury_matrix_identity">Woodbury matrix identity</a>.</p>
 </aside>
 </aside>
 </section>
@@ -1353,23 +1353,28 @@ Stationary prediction error variance:
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="information_market_equilibrium.html">
+   31. Information and Market Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   31. Incorrect Models
+   32. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   32. Bayesian versus Frequentist Decision Rules
+   33. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="merging_of_opinions.html">
-   33. Merging of Opinions: The Blackwell–Dubins Theorem
+   34. Merging of Opinions: The Blackwell–Dubins Theorem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="survival_recursive_preferences.html">
-   34. Survival and Long-Run Dynamics under Recursive Preferences
+   35. Survival and Long-Run Dynamics under Recursive Preferences
   </a>
  </li>
 </ul>
@@ -1381,12 +1386,12 @@ Stationary prediction error variance:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   35. Optimal Transport
+   36. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   36. Von Neumann Growth Model (and a Generalization)
+   37. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1398,57 +1403,57 @@ Stationary prediction error variance:
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   37. Finite Markov Chains
+   38. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   38. Inventory Dynamics
+   39. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   39. Linear State Space Models
+   40. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   40. Samuelson Multiplier-Accelerator
+   41. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chow_business_cycles.html">
-   41. The Acceleration Principle and the Nature of Business Cycles
+   42. The Acceleration Principle and the Nature of Business Cycles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   42. Kesten Processes and Firm Dynamics
+   43. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   43. Wealth Distribution Dynamics
+   44. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   44. A First Look at the Kalman Filter
+   45. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   45. Another Look at the Kalman Filter
+   46. Another Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="organization_capital.html">
-   46. Organization Capital
+   47. Organization Capital
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="measurement_models.html">
-   47. Two Models of Measurements and the Investment Accelerator
+   48. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1460,42 +1465,42 @@ Stationary prediction error variance:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   48. Job Search I: The McCall Search Model
+   49. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   49. Job Search II: Search and Separation
+   50. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   50. Job Search III: Search with Separation and Markov Wages
+   51. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   51. Job Search IV: Fitted Value Function Iteration
+   52. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   52. Job Search V: Persistent and Transitory Wage Shocks
+   53. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   53. Job Search VI: Modeling Career Choice
+   54. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   54. Job Search VII: On-the-Job Search
+   55. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   55. Job Search VIII: Search with Learning
+   56. Job Search VIII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1507,17 +1512,17 @@ Stationary prediction error variance:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_q.html">
-   56. Inventory Management via Q-Learning
+   57. Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rs_inventory_q.html">
-   57. Risk-Sensitive Inventory Management via Q-Learning
+   58. Risk-Sensitive Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   58. Job Search IX: Search with Q-Learning
+   59. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1529,32 +1534,32 @@ Stationary prediction error variance:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   59. Optimal Savings I: Cake Eating
+   60. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   60. Optimal Savings II: Numerical Cake Eating
+   61. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   61. Optimal Savings III: Stochastic Returns
+   62. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   62. Optimal Savings IV: Time Iteration
+   63. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   63. Optimal Savings V: The Endogenous Grid Method
+   64. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   64. Optimal Savings VI: EGM with JAX
+   65. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1566,27 +1571,27 @@ Stationary prediction error variance:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   65. The Income Fluctuation Problem I: Discretization and VFI
+   66. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   66. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   67. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   67. The Income Fluctuation Problem III: The Endogenous Grid Method
+   68. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   68. The Income Fluctuation Problem IV: Transient Income Shocks
+   69. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   69. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   70. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1598,42 +1603,42 @@ Stationary prediction error variance:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   70. LQ Control: Foundations
+   71. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   71. Lagrangian for LQ Control
+   72. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   72. Eliminating Cross Products
+   73. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   73. The Permanent Income Model
+   74. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   74. Permanent Income II: LQ Techniques
+   75. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_1.html">
-   75. Certainty Equivalence
+   76. Certainty Equivalence
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_2.html">
-   76. Certainty Equivalence and Model Uncertainty
+   77. Certainty Equivalence and Model Uncertainty
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   77. Production Smoothing via Inventories
+   78. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1645,22 +1650,22 @@ Stationary prediction error variance:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   78. Cass-Koopmans Model
+   79. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   79. Cass-Koopmans Competitive Equilibrium
+   80. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   80. Cass-Koopmans Model with Distorting Taxes
+   81. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   81. Two-Country Model with Distorting Taxes
+   82. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -1672,52 +1677,52 @@ Stationary prediction error variance:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   82. A Lake Model of Employment and Unemployment
+   83. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   83. Lake Model with an Endogenous Job Finding Rate
+   84. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   84. Rational Expectations Equilibrium
+   85. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   85. Stability in Linear Rational Expectations Models
+   86. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   86. Markov Perfect Equilibrium
+   87. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   87. Uncertainty Traps
+   88. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   88. The Aiyagari Model
+   89. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   89. Transitions in an Overlapping Generations Model
+   90. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   90. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   91. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   91. Two Computations to Fund Social Security
+   92. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -1729,37 +1734,47 @@ Stationary prediction error variance:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   92. Asset Pricing: Finite State Models
+   93. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   94. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   94. Estimating Euler Equations by Generalized Method of Moments
+   95. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   95. Competitive Equilibria with Arrow Securities
+   96. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   96. Heterogeneous Beliefs and Bubbles
+   97. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   97. Speculative Behavior with Bayesian Learning
+   98. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   98. Affine Models of Asset Prices
+   99. Affine Models of Asset Prices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ross_recovery.html">
+   100. The Recovery Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="misspecified_recovery.html">
+   101. Misspecified recovery
   </a>
  </li>
 </ul>
@@ -1771,17 +1786,17 @@ Stationary prediction error variance:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   99. Pandas for Panel Data
+   102. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   100. Linear Regression in Python
+   103. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   101. Maximum Likelihood Estimation
+   104. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1793,12 +1808,12 @@ Stationary prediction error variance:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   102. First-Price and Second-Price Auctions
+   105. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   103. Multiple Good Allocation Mechanisms
+   106. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1810,17 +1825,17 @@ Stationary prediction error variance:
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   104. Troubleshooting
+   107. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   105. References
+   108. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   106. Execution Statistics
+   109. Execution Statistics
   </a>
  </li>
 </ul>

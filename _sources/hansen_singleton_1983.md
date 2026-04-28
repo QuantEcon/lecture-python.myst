@@ -36,7 +36,7 @@ kernelspec:
 > rational expectations econometrics. A rational expectations equilibrium is a
 > likelihood function. Maximize it.
 >
-> — An Interview with Thomas J. Sargent {cite}`evans2005interview`
+> -- An Interview with Thomas J. Sargent {cite}`evans2005interview`
 
 ## Overview
 
@@ -1869,7 +1869,7 @@ Our estimates reproduce the pattern that {cite:t}`MehraPrescott1985` later calle
 
 - *Low estimated risk aversion:* The estimated $\hat\alpha$ values (and thus risk aversion $-\hat\alpha$) from the table above are similar to those in {cite:t}`hansen1983stochastic`, who report $\hat\alpha$ between $-0.32$ and $-1.25$.
 
-- *Tiny return predictability:* The unrestricted-VAR $R_R^2$ values are comparable to the 0.02 to 0.06 range in {cite:t}`hansen1983stochastic` — the predictable component of stock returns is small relative to the unpredictable component.
+- *Tiny return predictability:* The unrestricted-VAR $R_R^2$ values are comparable to the 0.02 to 0.06 range in {cite:t}`hansen1983stochastic` -- the predictable component of stock returns is small relative to the unpredictable component.
 
 - *Strong rejection for Treasury bills:* The Euler-equation restrictions are decisively rejected for the nominally risk-free Treasury bill return, just as in Table 4 of {cite:t}`hansen1983stochastic`.
 

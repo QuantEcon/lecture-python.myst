@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>50. Job Search III: Search with Separation and Markov Wages &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>51. Job Search III: Search with Separation and Markov Wages &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="51. Job Search IV: Fitted Value Function Iteration" href="mccall_fitted_vfi.html" />
-    <link rel="prev" title="49. Job Search II: Search and Separation" href="mccall_model_with_separation.html" />
+    <link rel="next" title="52. Job Search IV: Fitted Value Function Iteration" href="mccall_fitted_vfi.html" />
+    <link rel="prev" title="50. Job Search II: Search and Separation" href="mccall_model_with_separation.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -207,26 +207,26 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">50.1. Model setup</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-problem">50.1.1. Decision problem</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-wage-offer-process">50.1.2. The wage offer process</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-functions">50.1.3. Value functions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-policy">50.1.4. Optimal policy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">51.1. Model setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-problem">51.1.1. Decision problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-wage-offer-process">51.1.2. The wage offer process</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-functions">51.1.3. Value functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimal-policy">51.1.4. Optimal policy</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">50.2. Code</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">50.2.1. Set up</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-first-pass">50.2.2. Solution: first pass</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#road-test">50.2.3. Road test</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">51.2. Code</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">51.2.1. Set up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-first-pass">51.2.2. Solution: first pass</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#road-test">51.2.3. Road test</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improving-efficiency">50.3. Improving efficiency</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity-analysis">50.4. Sensitivity analysis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#employment-simulation">50.5. Employment simulation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ergodic-property">50.6. Ergodic property</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-analysis">50.7. Cross-sectional analysis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lower-unemployment-compensation-c-0-5">50.8. Lower unemployment compensation (c=0.5)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">50.9. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improving-efficiency">51.3. Improving efficiency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity-analysis">51.4. Sensitivity analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#employment-simulation">51.5. Employment simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ergodic-property">51.6. Ergodic property</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-analysis">51.7. Cross-sectional analysis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lower-unemployment-compensation-c-0-5">51.8. Lower unemployment compensation (c=0.5)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">51.9. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -303,7 +303,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/2afed3155" class="changelog-hash">2afed3155</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">Refactor cross-section simulation: reverse loop structure for better performance (#734)</span>
                             </li>
                             
@@ -312,7 +312,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/c6cc43cbc" class="changelog-hash">c6cc43cbc</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">Improve key handling and fix parameter consistency in McCall lectures (#715)</span>
                             </li>
                             
@@ -321,7 +321,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/f62707fc0" class="changelog-hash">f62707fc0</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">Fix bugs and improve McCall model lecture (#708)</span>
                             </li>
                             
@@ -330,7 +330,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/ece13f077" class="changelog-hash">ece13f077</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">Standardize notation: Use capitals for random variables in Job Search I-V (#704)</span>
                             </li>
                             
@@ -392,7 +392,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="job-search-iii-search-with-separation-and-markov-wages">
-<h1><a class="toc-backref" href="#id1" role="doc-backlink"><span class="section-number">50. </span>Job Search III: Search with Separation and Markov Wages</a><a class="headerlink" href="#job-search-iii-search-with-separation-and-markov-wages" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id1" role="doc-backlink"><span class="section-number">51. </span>Job Search III: Search with Separation and Markov Wages</a><a class="headerlink" href="#job-search-iii-search-with-separation-and-markov-wages" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with access to a GPU — although it will also run without one.</p>
@@ -480,7 +480,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <section id="model-setup">
-<h2><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">50.1. </span>Model setup</a><a class="headerlink" href="#model-setup" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2" role="doc-backlink"><span class="section-number">51.1. </span>Model setup</a><a class="headerlink" href="#model-setup" title="Link to this heading">#</a></h2>
 <p>The setting is as follows:</p>
 <ul class="simple">
 <li><p>Each unemployed agent receives a wage offer <span class="math notranslate nohighlight">\(w\)</span> from a finite set <span class="math notranslate nohighlight">\(\mathbb W\)</span></p></li>
@@ -490,7 +490,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <li><p>Future payoffs are discounted by factor <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span></p></li>
 </ul>
 <section id="decision-problem">
-<h3><span class="section-number">50.1.1. </span>Decision problem<a class="headerlink" href="#decision-problem" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">51.1.1. </span>Decision problem<a class="headerlink" href="#decision-problem" title="Link to this heading">#</a></h3>
 <p>When unemployed and receiving wage offer <span class="math notranslate nohighlight">\(w\)</span>, the agent chooses between:</p>
 <ol class="arabic simple">
 <li><p>Accept offer <span class="math notranslate nohighlight">\(w\)</span>: Become employed at wage <span class="math notranslate nohighlight">\(w\)</span></p></li>
@@ -503,7 +503,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </ul>
 </section>
 <section id="the-wage-offer-process">
-<h3><span class="section-number">50.1.2. </span>The wage offer process<a class="headerlink" href="#the-wage-offer-process" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">51.1.2. </span>The wage offer process<a class="headerlink" href="#the-wage-offer-process" title="Link to this heading">#</a></h3>
 <p>To construct the wage offer process we start with an AR1 process.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -521,7 +521,7 @@ wage offer, the more likely we are to get a high offer tomorrow.</p>
 </ul>
 </section>
 <section id="value-functions">
-<h3><span class="section-number">50.1.3. </span>Value functions<a class="headerlink" href="#value-functions" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">51.1.3. </span>Value functions<a class="headerlink" href="#value-functions" title="Link to this heading">#</a></h3>
 <p>We let</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(v_u(w)\)</span> be the value of being unemployed when current wage offer is <span class="math notranslate nohighlight">\(w\)</span></p></li>
@@ -568,7 +568,7 @@ wage offer, the more likely we are to get a high offer tomorrow.</p>
 \]</div>
 </section>
 <section id="optimal-policy">
-<h3><span class="section-number">50.1.4. </span>Optimal policy<a class="headerlink" href="#optimal-policy" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">51.1.4. </span>Optimal policy<a class="headerlink" href="#optimal-policy" title="Link to this heading">#</a></h3>
 <p>Once we have the solutions <span class="math notranslate nohighlight">\(v_e\)</span> and <span class="math notranslate nohighlight">\(v_u\)</span> to these Bellman equations, we can compute the optimal policy: accept at current wage offer <span class="math notranslate nohighlight">\(w\)</span> if</p>
 <div class="math notranslate nohighlight">
 \[
@@ -578,10 +578,10 @@ wage offer, the more likely we are to get a high offer tomorrow.</p>
 </section>
 </section>
 <section id="code">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">50.2. </span>Code</a><a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">51.2. </span>Code</a><a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
 <p>Let’s now implement the model.</p>
 <section id="set-up">
-<h3><span class="section-number">50.2.1. </span>Set up<a class="headerlink" href="#set-up" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">51.2.1. </span>Set up<a class="headerlink" href="#set-up" title="Link to this heading">#</a></h3>
 <p>The default utility function is a CRRA utility function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -635,7 +635,7 @@ optimize simulation – the details are explained below.</p>
 </div>
 </section>
 <section id="solution-first-pass">
-<h3><span class="section-number">50.2.2. </span>Solution: first pass<a class="headerlink" href="#solution-first-pass" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">51.2.2. </span>Solution: first pass<a class="headerlink" href="#solution-first-pass" title="Link to this heading">#</a></h3>
 <p>Let’s put together a (not very efficient) routine for calculating the
 reservation wage.</p>
 <p>(We will think carefully about efficiency below.)</p>
@@ -717,7 +717,7 @@ wage.</p>
 </div>
 </section>
 <section id="road-test">
-<h3><span class="section-number">50.2.3. </span>Road test<a class="headerlink" href="#road-test" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">51.2.3. </span>Road test<a class="headerlink" href="#road-test" title="Link to this heading">#</a></h3>
 <p>Let’s solve the model:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -761,7 +761,7 @@ function, which is the value of rejecting.</p>
 </section>
 </section>
 <section id="improving-efficiency">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">50.3. </span>Improving efficiency</a><a class="headerlink" href="#improving-efficiency" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">51.3. </span>Improving efficiency</a><a class="headerlink" href="#improving-efficiency" title="Link to this heading">#</a></h2>
 <p>The solution method described above works fine but we can do much better.</p>
 <p>First, we use the employed worker’s Bellman equation to express
 <span class="math notranslate nohighlight">\(v_e\)</span> in terms of <span class="math notranslate nohighlight">\(Pv_u\)</span></p>
@@ -923,7 +923,7 @@ Difference: 0.00e+00
 our JAX code is more efficient.</p>
 </section>
 <section id="sensitivity-analysis">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">50.4. </span>Sensitivity analysis</a><a class="headerlink" href="#sensitivity-analysis" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">51.4. </span>Sensitivity analysis</a><a class="headerlink" href="#sensitivity-analysis" title="Link to this heading">#</a></h2>
 <p>Let’s examine how reservation wages change with the separation rate.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -954,7 +954,7 @@ our JAX code is more efficient.</p>
 <p>Can you provide an intuitive economic story behind the outcome that you see in this figure?</p>
 </section>
 <section id="employment-simulation">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">50.5. </span>Employment simulation</a><a class="headerlink" href="#employment-simulation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">51.5. </span>Employment simulation</a><a class="headerlink" href="#employment-simulation" title="Link to this heading">#</a></h2>
 <p>Now let’s simulate the employment dynamics of a single agent under the optimal policy.</p>
 <p>Note that, when simulating the Markov chain for wage offers, we need to draw from the distribution in each
 row of <span class="math notranslate nohighlight">\(P\)</span> many times.</p>
@@ -1122,7 +1122,7 @@ via <span class="math notranslate nohighlight">\(P(w, \cdot)\)</span>, and posit
 often leads a high new draw.</p>
 </section>
 <section id="ergodic-property">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">50.6. </span>Ergodic property</a><a class="headerlink" href="#ergodic-property" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">51.6. </span>Ergodic property</a><a class="headerlink" href="#ergodic-property" title="Link to this heading">#</a></h2>
 <p>Below we examine cross-sectional unemployment.</p>
 <p>In particular, we will look at the unemployment rate in a cross-sectional
 simulation and compare it to the time-average unemployment rate, which is the
@@ -1163,7 +1163,7 @@ section in order to remove the influence of that initial condition).</p>
 <p>Often the second approach is better for our purposes, since it’s easier to parallelize.</p>
 </section>
 <section id="cross-sectional-analysis">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">50.7. </span>Cross-sectional analysis</a><a class="headerlink" href="#cross-sectional-analysis" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">51.7. </span>Cross-sectional analysis</a><a class="headerlink" href="#cross-sectional-analysis" title="Link to this heading">#</a></h2>
 <p>Now let’s simulate many agents simultaneously to examine the cross-sectional unemployment rate.</p>
 <p>To do this efficiently, we need a different approach than <code class="docutils literal notranslate"><span class="pre">simulate_employment_path</span></code> defined above.</p>
 <p>The key differences are:</p>
@@ -1346,7 +1346,7 @@ Difference: 0.0056
 </div>
 </section>
 <section id="lower-unemployment-compensation-c-0-5">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">50.8. </span>Lower unemployment compensation (c=0.5)</a><a class="headerlink" href="#lower-unemployment-compensation-c-0-5" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">51.8. </span>Lower unemployment compensation (c=0.5)</a><a class="headerlink" href="#lower-unemployment-compensation-c-0-5" title="Link to this heading">#</a></h2>
 <p>What happens to the cross-sectional unemployment rate with lower unemployment compensation?</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1361,10 +1361,10 @@ Difference: 0.0056
 </div>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">50.9. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink"><span class="section-number">51.9. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="mmwsm_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 50.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 51.1 </span></p>
 <section id="exercise-content">
 <p>Create a plot that investigates more carefully how the steady state cross-sectional unemployment rate
 changes with unemployment compensation.</p>
@@ -1637,23 +1637,28 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="information_market_equilibrium.html">
+   31. Information and Market Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   31. Incorrect Models
+   32. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   32. Bayesian versus Frequentist Decision Rules
+   33. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="merging_of_opinions.html">
-   33. Merging of Opinions: The Blackwell–Dubins Theorem
+   34. Merging of Opinions: The Blackwell–Dubins Theorem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="survival_recursive_preferences.html">
-   34. Survival and Long-Run Dynamics under Recursive Preferences
+   35. Survival and Long-Run Dynamics under Recursive Preferences
   </a>
  </li>
 </ul>
@@ -1665,12 +1670,12 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   35. Optimal Transport
+   36. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   36. Von Neumann Growth Model (and a Generalization)
+   37. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1682,57 +1687,57 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   37. Finite Markov Chains
+   38. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   38. Inventory Dynamics
+   39. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   39. Linear State Space Models
+   40. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   40. Samuelson Multiplier-Accelerator
+   41. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chow_business_cycles.html">
-   41. The Acceleration Principle and the Nature of Business Cycles
+   42. The Acceleration Principle and the Nature of Business Cycles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   42. Kesten Processes and Firm Dynamics
+   43. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   43. Wealth Distribution Dynamics
+   44. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   44. A First Look at the Kalman Filter
+   45. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   45. Another Look at the Kalman Filter
+   46. Another Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="organization_capital.html">
-   46. Organization Capital
+   47. Organization Capital
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="measurement_models.html">
-   47. Two Models of Measurements and the Investment Accelerator
+   48. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1744,42 +1749,42 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   48. Job Search I: The McCall Search Model
+   49. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   49. Job Search II: Search and Separation
+   50. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   50. Job Search III: Search with Separation and Markov Wages
+   51. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   51. Job Search IV: Fitted Value Function Iteration
+   52. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   52. Job Search V: Persistent and Transitory Wage Shocks
+   53. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   53. Job Search VI: Modeling Career Choice
+   54. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   54. Job Search VII: On-the-Job Search
+   55. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   55. Job Search VIII: Search with Learning
+   56. Job Search VIII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1791,17 +1796,17 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_q.html">
-   56. Inventory Management via Q-Learning
+   57. Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rs_inventory_q.html">
-   57. Risk-Sensitive Inventory Management via Q-Learning
+   58. Risk-Sensitive Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   58. Job Search IX: Search with Q-Learning
+   59. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1813,32 +1818,32 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   59. Optimal Savings I: Cake Eating
+   60. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   60. Optimal Savings II: Numerical Cake Eating
+   61. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   61. Optimal Savings III: Stochastic Returns
+   62. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   62. Optimal Savings IV: Time Iteration
+   63. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   63. Optimal Savings V: The Endogenous Grid Method
+   64. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   64. Optimal Savings VI: EGM with JAX
+   65. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1850,27 +1855,27 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   65. The Income Fluctuation Problem I: Discretization and VFI
+   66. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   66. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   67. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   67. The Income Fluctuation Problem III: The Endogenous Grid Method
+   68. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   68. The Income Fluctuation Problem IV: Transient Income Shocks
+   69. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   69. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   70. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1882,42 +1887,42 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   70. LQ Control: Foundations
+   71. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   71. Lagrangian for LQ Control
+   72. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   72. Eliminating Cross Products
+   73. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   73. The Permanent Income Model
+   74. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   74. Permanent Income II: LQ Techniques
+   75. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_1.html">
-   75. Certainty Equivalence
+   76. Certainty Equivalence
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_2.html">
-   76. Certainty Equivalence and Model Uncertainty
+   77. Certainty Equivalence and Model Uncertainty
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   77. Production Smoothing via Inventories
+   78. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1929,22 +1934,22 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   78. Cass-Koopmans Model
+   79. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   79. Cass-Koopmans Competitive Equilibrium
+   80. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   80. Cass-Koopmans Model with Distorting Taxes
+   81. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   81. Two-Country Model with Distorting Taxes
+   82. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -1956,52 +1961,52 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   82. A Lake Model of Employment and Unemployment
+   83. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   83. Lake Model with an Endogenous Job Finding Rate
+   84. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   84. Rational Expectations Equilibrium
+   85. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   85. Stability in Linear Rational Expectations Models
+   86. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   86. Markov Perfect Equilibrium
+   87. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   87. Uncertainty Traps
+   88. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   88. The Aiyagari Model
+   89. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   89. Transitions in an Overlapping Generations Model
+   90. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   90. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   91. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   91. Two Computations to Fund Social Security
+   92. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -2013,37 +2018,47 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   92. Asset Pricing: Finite State Models
+   93. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   94. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   94. Estimating Euler Equations by Generalized Method of Moments
+   95. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   95. Competitive Equilibria with Arrow Securities
+   96. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   96. Heterogeneous Beliefs and Bubbles
+   97. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   97. Speculative Behavior with Bayesian Learning
+   98. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   98. Affine Models of Asset Prices
+   99. Affine Models of Asset Prices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ross_recovery.html">
+   100. The Recovery Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="misspecified_recovery.html">
+   101. Misspecified recovery
   </a>
  </li>
 </ul>
@@ -2055,17 +2070,17 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   99. Pandas for Panel Data
+   102. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   100. Linear Regression in Python
+   103. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   101. Maximum Likelihood Estimation
+   104. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -2077,12 +2092,12 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   102. First-Price and Second-Price Auctions
+   105. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   103. Multiple Good Allocation Mechanisms
+   106. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2094,17 +2109,17 @@ For each value, compute the steady-state cross-sectional unemployment rate and p
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   104. Troubleshooting
+   107. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   105. References
+   108. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   106. Execution Statistics
+   109. Execution Statistics
   </a>
  </li>
 </ul>

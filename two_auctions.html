@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>102. First-Price and Second-Price Auctions &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>105. First-Price and Second-Price Auctions &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="103. Multiple Good Allocation Mechanisms" href="house_auction.html" />
-    <link rel="prev" title="101. Maximum Likelihood Estimation" href="mle.html" />
+    <link rel="next" title="106. Multiple Good Allocation Mechanisms" href="house_auction.html" />
+    <link rel="prev" title="104. Maximum Likelihood Estimation" href="mle.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -207,22 +207,22 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-price-sealed-bid-auction-fpsb">102.1. First-price sealed-bid auction (FPSB)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#characterization-of-fpsb-auction">102.1.1. Characterization of FPSB auction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-price-sealed-bid-auction-fpsb">105.1. First-price sealed-bid auction (FPSB)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#characterization-of-fpsb-auction">105.1.1. Characterization of FPSB auction</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-price-sealed-bid-auction-spsb">102.2. Second-price sealed-bid auction (SPSB)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#characterization-of-spsb-auction">102.3. Characterization of SPSB auction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniform-distribution-of-private-values">102.4. Uniform distribution of private values</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">102.5. Setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-price-sealed-bid-auction">102.6. First price sealed bid auction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-price-sealed-bid-auction">102.7. Second price sealed bid auction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-code">102.8. Python code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#revenue-equivalence-theorem">102.9. Revenue equivalence theorem</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculation-of-bid-price-in-fpsb">102.10. Calculation of  bid price in FPSB</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-2-distribution">102.11. <span class="math notranslate nohighlight">\(\chi^2\)</span> Distribution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-summary">102.12. Code summary</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">102.13. References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-price-sealed-bid-auction-spsb">105.2. Second-price sealed-bid auction (SPSB)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#characterization-of-spsb-auction">105.3. Characterization of SPSB auction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniform-distribution-of-private-values">105.4. Uniform distribution of private values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">105.5. Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-price-sealed-bid-auction">105.6. First price sealed bid auction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-price-sealed-bid-auction">105.7. Second price sealed bid auction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-code">105.8. Python code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#revenue-equivalence-theorem">105.9. Revenue equivalence theorem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculation-of-bid-price-in-fpsb">105.10. Calculation of  bid price in FPSB</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chi-2-distribution">105.11. <span class="math notranslate nohighlight">\(\chi^2\)</span> Distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-summary">105.12. Code summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">105.13. References</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -290,7 +290,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/6e967af48" class="changelog-hash">6e967af48</a>
                                 
                                 <span class="changelog-author">Daisuke Oyama</span>
-                                <span class="changelog-time">5 months ago</span>
+                                <span class="changelog-time">6 months ago</span>
                                 <span class="changelog-message">[two_auctions] Fix conditional expectation simulation (#652)</span>
                             </li>
                             
@@ -299,7 +299,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/be0af2e54" class="changelog-hash">be0af2e54</a>
                                 
                                 <span class="changelog-author">Humphrey Yang</span>
-                                <span class="changelog-time">7 months ago</span>
+                                <span class="changelog-time">8 months ago</span>
                                 <span class="changelog-message">[two_auction] Lecture review with math and warning fixes (#556)</span>
                             </li>
                             
@@ -388,14 +388,14 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="first-price-and-second-price-auctions">
-<h1><span class="section-number">102. </span>First-Price and Second-Price Auctions<a class="headerlink" href="#first-price-and-second-price-auctions" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">105. </span>First-Price and Second-Price Auctions<a class="headerlink" href="#first-price-and-second-price-auctions" title="Link to this heading">#</a></h1>
 <p>This lecture is designed to set the stage for a subsequent lecture about <a class="reference external" href="https://python.quantecon.org/house_auction.html">Multiple Good Allocation Mechanisms</a></p>
 <p>In that lecture, a planner or auctioneer simultaneously allocates several goods to set of people.</p>
 <p>In the present lecture, a single good is allocated to one person within a set of people.</p>
 <p>Here  we’ll learn about and simulate two classic auctions :</p>
 <ul class="simple">
 <li><p>a First-Price Sealed-Bid Auction (FPSB)</p></li>
-<li><p>a Second-Price Sealed-Bid Auction (SPSB) created by William Vickrey <span id="id1">[<a class="reference internal" href="zreferences.html#id101" title="W. Vickrey. Counterspeculation, auctions, and competitive sealed tenders. Journal of Finance, 16:8-37, 1961.">Vickrey, 1961</a>]</span></p></li>
+<li><p>a Second-Price Sealed-Bid Auction (SPSB) created by William Vickrey <span id="id1">[<a class="reference internal" href="zreferences.html#id117" title="W. Vickrey. Counterspeculation, auctions, and competitive sealed tenders. Journal of Finance, 16:8-37, 1961.">Vickrey, 1961</a>]</span></p></li>
 </ul>
 <p>We’ll also learn about and apply a</p>
 <ul class="simple">
@@ -410,7 +410,7 @@
 </iframe></div><p>Anders Munk-Nielsen put his code <a class="reference external" href="https://github.com/GamEconCph/Lectures-2021/tree/main/Bayesian%20Games">on GitHub</a>.</p>
 <p>Much of our  Python code below is based on his.</p>
 <section id="first-price-sealed-bid-auction-fpsb">
-<h2><span class="section-number">102.1. </span>First-price sealed-bid auction (FPSB)<a class="headerlink" href="#first-price-sealed-bid-auction-fpsb" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">105.1. </span>First-price sealed-bid auction (FPSB)<a class="headerlink" href="#first-price-sealed-bid-auction-fpsb" title="Link to this heading">#</a></h2>
 <p><strong>Protocols:</strong></p>
 <ul class="simple">
 <li><p>A single good is auctioned.</p></li>
@@ -443,34 +443,34 @@
 <p>To complete the specification of the situation, we’ll  assume that  prospective buyers’ valuations are independently and identically distributed according to a probability distribution that is known by all bidders.</p>
 <p>Bidder optimally chooses to bid less than <span class="math notranslate nohighlight">\(v_i\)</span>.</p>
 <section id="characterization-of-fpsb-auction">
-<h3><span class="section-number">102.1.1. </span>Characterization of FPSB auction<a class="headerlink" href="#characterization-of-fpsb-auction" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">105.1.1. </span>Characterization of FPSB auction<a class="headerlink" href="#characterization-of-fpsb-auction" title="Link to this heading">#</a></h3>
 <p>A FPSB auction has a unique symmetric Bayesian Nash Equilibrium.</p>
 <p>The optimal  bid of buyer <span class="math notranslate nohighlight">\(i\)</span> is</p>
 <div class="math notranslate nohighlight" id="equation-eq-optbid1">
-<span class="eqno">(102.1)<a class="headerlink" href="#equation-eq-optbid1" title="Link to this equation">#</a></span>\[
+<span class="eqno">(105.1)<a class="headerlink" href="#equation-eq-optbid1" title="Link to this equation">#</a></span>\[
 \mathbf{E}[y_{i} | y_{i} &lt; v_{i}]
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(v_{i}\)</span> is  the valuation of bidder <span class="math notranslate nohighlight">\(i\)</span> and  <span class="math notranslate nohighlight">\(y_{i}\)</span> is the maximum valuation of all other bidders:</p>
 <div class="math notranslate nohighlight" id="equation-eq-optbid2">
-<span class="eqno">(102.2)<a class="headerlink" href="#equation-eq-optbid2" title="Link to this equation">#</a></span>\[
+<span class="eqno">(105.2)<a class="headerlink" href="#equation-eq-optbid2" title="Link to this equation">#</a></span>\[
 y_{i} = \max_{j \neq i} v_{j}
 \]</div>
 <p>A proof for this assertion is available  at the <a class="reference external" href="https://en.wikipedia.org/wiki/Vickrey_auction">Wikipedia page</a> about Vickrey auctions</p>
 </section>
 </section>
 <section id="second-price-sealed-bid-auction-spsb">
-<h2><span class="section-number">102.2. </span>Second-price sealed-bid auction (SPSB)<a class="headerlink" href="#second-price-sealed-bid-auction-spsb" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">105.2. </span>Second-price sealed-bid auction (SPSB)<a class="headerlink" href="#second-price-sealed-bid-auction-spsb" title="Link to this heading">#</a></h2>
 <p><strong>Protocols:</strong> In a  second-price sealed-bid (SPSB) auction,  the winner pays the second-highest bid.</p>
 </section>
 <section id="characterization-of-spsb-auction">
-<h2><span class="section-number">102.3. </span>Characterization of SPSB auction<a class="headerlink" href="#characterization-of-spsb-auction" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">105.3. </span>Characterization of SPSB auction<a class="headerlink" href="#characterization-of-spsb-auction" title="Link to this heading">#</a></h2>
 <p>In a  SPSB auction  bidders optimally choose to bid their  values.</p>
 <p>Formally, a dominant strategy profile in a SPSB auction with a single, indivisible item has each bidder  bidding its  value.</p>
 <p>A proof is provided at <a class="reference external" href="https://en.wikipedia.org/wiki/Vickrey_auction">the Wikipedia
 page</a> about Vickrey auctions</p>
 </section>
 <section id="uniform-distribution-of-private-values">
-<h2><span class="section-number">102.4. </span>Uniform distribution of private values<a class="headerlink" href="#uniform-distribution-of-private-values" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">105.4. </span>Uniform distribution of private values<a class="headerlink" href="#uniform-distribution-of-private-values" title="Link to this heading">#</a></h2>
 <p>We assume valuation <span class="math notranslate nohighlight">\(v_{i}\)</span>  of bidder <span class="math notranslate nohighlight">\(i\)</span> is distributed <span class="math notranslate nohighlight">\(v_{i} \stackrel{\text{i.i.d.}}{\sim} U(0,1)\)</span>.</p>
 <p>Under this assumption, we can analytically compute probability  distributions of  prices bid in both  FPSB and SPSB.</p>
 <p>We’ll  simulate outcomes and, by using  a law of large numbers, verify that the simulated outcomes agree with analytical ones.</p>
@@ -478,13 +478,13 @@ page</a> about Vickrey auctions</p>
 <p>To read about the revenue equivalence theorem, see <a class="reference external" href="https://en.wikipedia.org/wiki/Revenue_equivalence">this Wikepedia page</a></p>
 </section>
 <section id="setup">
-<h2><span class="section-number">102.5. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">105.5. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>There are <span class="math notranslate nohighlight">\(n\)</span> bidders.</p>
 <p>Each bidder knows that there are <span class="math notranslate nohighlight">\(n-1\)</span> other bidders.</p>
 </section>
 <section id="first-price-sealed-bid-auction">
-<h2><span class="section-number">102.6. </span>First price sealed bid auction<a class="headerlink" href="#first-price-sealed-bid-auction" title="Link to this heading">#</a></h2>
-<p>An optimal bid  for bidder <span class="math notranslate nohighlight">\(i\)</span> in a <strong>FPSB</strong>  is described by equations <a class="reference internal" href="#equation-eq-optbid1">(102.1)</a> and <a class="reference internal" href="#equation-eq-optbid2">(102.2)</a>.</p>
+<h2><span class="section-number">105.6. </span>First price sealed bid auction<a class="headerlink" href="#first-price-sealed-bid-auction" title="Link to this heading">#</a></h2>
+<p>An optimal bid  for bidder <span class="math notranslate nohighlight">\(i\)</span> in a <strong>FPSB</strong>  is described by equations <a class="reference internal" href="#equation-eq-optbid1">(105.1)</a> and <a class="reference internal" href="#equation-eq-optbid2">(105.2)</a>.</p>
 <p>When bids are i.i.d. draws from a uniform distribution, the CDF of <span class="math notranslate nohighlight">\(y_{i}\)</span> is</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -507,11 +507,11 @@ page</a> about Vickrey auctions</p>
 \end{split}\]</div>
 </section>
 <section id="second-price-sealed-bid-auction">
-<h2><span class="section-number">102.7. </span>Second price sealed bid auction<a class="headerlink" href="#second-price-sealed-bid-auction" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">105.7. </span>Second price sealed bid auction<a class="headerlink" href="#second-price-sealed-bid-auction" title="Link to this heading">#</a></h2>
 <p>In a  <strong>SPSB</strong>, it is optimal for bidder <span class="math notranslate nohighlight">\(i\)</span> to bid <span class="math notranslate nohighlight">\(v_i\)</span>.</p>
 </section>
 <section id="python-code">
-<h2><span class="section-number">102.8. </span>Python code<a class="headerlink" href="#python-code" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">105.8. </span>Python code<a class="headerlink" href="#python-code" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -608,7 +608,7 @@ page</a> about Vickrey auctions</p>
 </div>
 </section>
 <section id="revenue-equivalence-theorem">
-<h2><span class="section-number">102.9. </span>Revenue equivalence theorem<a class="headerlink" href="#revenue-equivalence-theorem" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">105.9. </span>Revenue equivalence theorem<a class="headerlink" href="#revenue-equivalence-theorem" title="Link to this heading">#</a></h2>
 <p>We now compare  FPSB and a SPSB auctions from the point of view of the  revenues that a seller can expect to acquire.</p>
 <p><strong>Expected Revenue FPSB:</strong></p>
 <p>The winner with valuation <span class="math notranslate nohighlight">\(y\)</span> pays <span class="math notranslate nohighlight">\(\frac{n-1}{n}*y\)</span>, where n is the number of bidders.</p>
@@ -707,8 +707,8 @@ b(v_{i})\mathbf{P}(y_{i} &lt; v_{i}) + 0 * \mathbf{P}(y_{i} \ge v_{i}) = \mathbf
 <p>It follows that an optimal bidding strategy in a FPSB auction is <span class="math notranslate nohighlight">\(b(v_{i}) = \mathbf{E}_{y_{i}}[y_{i} | y_{i} &lt; v_{i}]\)</span>.</p>
 </section>
 <section id="calculation-of-bid-price-in-fpsb">
-<h2><span class="section-number">102.10. </span>Calculation of  bid price in FPSB<a class="headerlink" href="#calculation-of-bid-price-in-fpsb" title="Link to this heading">#</a></h2>
-<p>In equations <a class="reference internal" href="#equation-eq-optbid1">(102.1)</a> and <a class="reference internal" href="#equation-eq-optbid2">(102.2)</a>, we displayed formulas for
+<h2><span class="section-number">105.10. </span>Calculation of  bid price in FPSB<a class="headerlink" href="#calculation-of-bid-price-in-fpsb" title="Link to this heading">#</a></h2>
+<p>In equations <a class="reference internal" href="#equation-eq-optbid1">(105.1)</a> and <a class="reference internal" href="#equation-eq-optbid2">(105.2)</a>, we displayed formulas for
 optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -794,7 +794,7 @@ optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.</p>
 </div>
 </section>
 <section id="chi-2-distribution">
-<h2><span class="section-number">102.11. </span><span class="math notranslate nohighlight">\(\chi^2\)</span> Distribution<a class="headerlink" href="#chi-2-distribution" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">105.11. </span><span class="math notranslate nohighlight">\(\chi^2\)</span> Distribution<a class="headerlink" href="#chi-2-distribution" title="Link to this heading">#</a></h2>
 <p>Let’s try an example in which the distribution of private values is a <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution.</p>
 <p>We’ll start by taking a look at a <span class="math notranslate nohighlight">\(\chi^2\)</span> distribution with the help of the following Python code:</p>
 <div class="cell docutils container">
@@ -915,7 +915,7 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 </div>
 </section>
 <section id="code-summary">
-<h2><span class="section-number">102.12. </span>Code summary<a class="headerlink" href="#code-summary" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">105.12. </span>Code summary<a class="headerlink" href="#code-summary" title="Link to this heading">#</a></h2>
 <p>We assemble the functions that we have used into a Python  class</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1082,7 +1082,7 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 </div>
 </section>
 <section id="references">
-<h2><span class="section-number">102.13. </span>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">105.13. </span>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
 <li><p>Wikipedia for FPSB: <a class="reference external" href="https://en.wikipedia.org/wiki/First-price_sealed-bid_auction">https://en.wikipedia.org/wiki/First-price_sealed-bid_auction</a></p></li>
 <li><p>Wikipedia for SPSB: <a class="reference external" href="https://en.wikipedia.org/wiki/Vickrey_auction">https://en.wikipedia.org/wiki/Vickrey_auction</a></p></li>
@@ -1323,23 +1323,28 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="information_market_equilibrium.html">
+   31. Information and Market Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   31. Incorrect Models
+   32. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   32. Bayesian versus Frequentist Decision Rules
+   33. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="merging_of_opinions.html">
-   33. Merging of Opinions: The Blackwell–Dubins Theorem
+   34. Merging of Opinions: The Blackwell–Dubins Theorem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="survival_recursive_preferences.html">
-   34. Survival and Long-Run Dynamics under Recursive Preferences
+   35. Survival and Long-Run Dynamics under Recursive Preferences
   </a>
  </li>
 </ul>
@@ -1351,12 +1356,12 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   35. Optimal Transport
+   36. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   36. Von Neumann Growth Model (and a Generalization)
+   37. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1368,57 +1373,57 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   37. Finite Markov Chains
+   38. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   38. Inventory Dynamics
+   39. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   39. Linear State Space Models
+   40. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   40. Samuelson Multiplier-Accelerator
+   41. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chow_business_cycles.html">
-   41. The Acceleration Principle and the Nature of Business Cycles
+   42. The Acceleration Principle and the Nature of Business Cycles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   42. Kesten Processes and Firm Dynamics
+   43. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   43. Wealth Distribution Dynamics
+   44. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   44. A First Look at the Kalman Filter
+   45. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   45. Another Look at the Kalman Filter
+   46. Another Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="organization_capital.html">
-   46. Organization Capital
+   47. Organization Capital
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="measurement_models.html">
-   47. Two Models of Measurements and the Investment Accelerator
+   48. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1430,42 +1435,42 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   48. Job Search I: The McCall Search Model
+   49. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   49. Job Search II: Search and Separation
+   50. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   50. Job Search III: Search with Separation and Markov Wages
+   51. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_fitted_vfi.html">
-   51. Job Search IV: Fitted Value Function Iteration
+   52. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   52. Job Search V: Persistent and Transitory Wage Shocks
+   53. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   53. Job Search VI: Modeling Career Choice
+   54. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   54. Job Search VII: On-the-Job Search
+   55. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   55. Job Search VIII: Search with Learning
+   56. Job Search VIII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1477,17 +1482,17 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_q.html">
-   56. Inventory Management via Q-Learning
+   57. Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rs_inventory_q.html">
-   57. Risk-Sensitive Inventory Management via Q-Learning
+   58. Risk-Sensitive Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   58. Job Search IX: Search with Q-Learning
+   59. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1499,32 +1504,32 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   59. Optimal Savings I: Cake Eating
+   60. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   60. Optimal Savings II: Numerical Cake Eating
+   61. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   61. Optimal Savings III: Stochastic Returns
+   62. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   62. Optimal Savings IV: Time Iteration
+   63. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   63. Optimal Savings V: The Endogenous Grid Method
+   64. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   64. Optimal Savings VI: EGM with JAX
+   65. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1536,27 +1541,27 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   65. The Income Fluctuation Problem I: Discretization and VFI
+   66. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   66. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   67. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   67. The Income Fluctuation Problem III: The Endogenous Grid Method
+   68. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   68. The Income Fluctuation Problem IV: Transient Income Shocks
+   69. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   69. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   70. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1568,42 +1573,42 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   70. LQ Control: Foundations
+   71. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   71. Lagrangian for LQ Control
+   72. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   72. Eliminating Cross Products
+   73. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   73. The Permanent Income Model
+   74. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   74. Permanent Income II: LQ Techniques
+   75. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_1.html">
-   75. Certainty Equivalence
+   76. Certainty Equivalence
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_2.html">
-   76. Certainty Equivalence and Model Uncertainty
+   77. Certainty Equivalence and Model Uncertainty
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   77. Production Smoothing via Inventories
+   78. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1615,22 +1620,22 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   78. Cass-Koopmans Model
+   79. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   79. Cass-Koopmans Competitive Equilibrium
+   80. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   80. Cass-Koopmans Model with Distorting Taxes
+   81. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   81. Two-Country Model with Distorting Taxes
+   82. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -1642,52 +1647,52 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   82. A Lake Model of Employment and Unemployment
+   83. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   83. Lake Model with an Endogenous Job Finding Rate
+   84. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   84. Rational Expectations Equilibrium
+   85. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   85. Stability in Linear Rational Expectations Models
+   86. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   86. Markov Perfect Equilibrium
+   87. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   87. Uncertainty Traps
+   88. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   88. The Aiyagari Model
+   89. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   89. Transitions in an Overlapping Generations Model
+   90. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   90. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   91. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   91. Two Computations to Fund Social Security
+   92. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -1699,37 +1704,47 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   92. Asset Pricing: Finite State Models
+   93. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   94. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   94. Estimating Euler Equations by Generalized Method of Moments
+   95. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   95. Competitive Equilibria with Arrow Securities
+   96. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   96. Heterogeneous Beliefs and Bubbles
+   97. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   97. Speculative Behavior with Bayesian Learning
+   98. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   98. Affine Models of Asset Prices
+   99. Affine Models of Asset Prices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ross_recovery.html">
+   100. The Recovery Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="misspecified_recovery.html">
+   101. Misspecified recovery
   </a>
  </li>
 </ul>
@@ -1741,17 +1756,17 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   99. Pandas for Panel Data
+   102. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   100. Linear Regression in Python
+   103. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   101. Maximum Likelihood Estimation
+   104. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1763,12 +1778,12 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   102. First-Price and Second-Price Auctions
+   105. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   103. Multiple Good Allocation Mechanisms
+   106. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -1780,17 +1795,17 @@ The average payment of SPSB: 2.5661. Std.: 1.3580. Median: 2.3180
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   104. Troubleshooting
+   107. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   105. References
+   108. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   106. Execution Statistics
+   109. Execution Statistics
   </a>
  </li>
 </ul>

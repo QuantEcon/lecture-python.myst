@@ -53,7 +53,7 @@ from quantecon import LQ
 Their result justifies a convenient two-step algorithm:
 
 1. **Optimize** under perfect foresight (treat future exogenous variables as known).
-2. **Forecast** — substitute optimal forecasts for the unknown future values.
+2. **Forecast** -- substitute optimal forecasts for the unknown future values.
 
 The striking insight is that these two steps are completely separable.
 
@@ -177,7 +177,7 @@ As part of its computational tractability, this specialization delivers a striki
 
 Under quadratic $V$ and linear $g$, the optimal decision rule $h$ decomposes into two components applied in sequence.
 
-**Step 1 — Forecasting.** Define the infinite sequence of optimal point forecasts of all current and future states of nature:
+**Step 1 -- Forecasting.** Define the infinite sequence of optimal point forecasts of all current and future states of nature:
 
 ```{math}
 :label: eq:forecast_sequence_v3
@@ -195,7 +195,7 @@ The optimal forecast sequence is a (generally nonlinear) function of the current
 
 The function $h_2 : S_1 \to S_1^\infty$ depends entirely on the environment $(f, \Phi)$ and is obtained as the solution to a **pure forecasting problem**, with no reference to preferences or technology.
 
-**Step 2 — Optimization.** Given the forecast sequence $\tilde{z}_t$, the optimal action is a **linear** function of $\tilde{z}_t$ and $x_t$:
+**Step 2 -- Optimization.** Given the forecast sequence $\tilde{z}_t$, the optimal action is a **linear** function of $\tilde{z}_t$ and $x_t$:
 
 ```{math}
 :label: eq:optimization_rule_v3
@@ -226,21 +226,21 @@ The relationship of original interest, $h = T(f)$, then follows directly from {e
 
 ### Certainty equivalence and perfect foresight
 
-The name "certainty equivalence" reflects a further implication of the LQ structure: the function $h_1$ can be derived as if the agent **knew the future path $z_{t+1}, z_{t+2}, \ldots$ with certainty** — i.e., by solving the deterministic problem in which $\tilde{z}_t$ is treated as the realized path rather than a forecast.
+The name "certainty equivalence" reflects a further implication of the LQ structure: the function $h_1$ can be derived as if the agent **knew the future path $z_{t+1}, z_{t+2}, \ldots$ with certainty** -- i.e., by solving the deterministic problem in which $\tilde{z}_t$ is treated as the realized path rather than a forecast.
 
 Randomness of the environment affects actions only through the forecast $\tilde{z}_t$; conditional on $\tilde{z}_t$, the optimization problem is deterministic.
 
 This means the LQ problem decouples into:
 
- *  **Dynamic optimization under perfect foresight** — solve for $h_1$ from $(V, g)$ by treating $\tilde{z}_t$ as known, yielding a standard deterministic LQ regulator problem independent of the environment $(f, \Phi)$.
+ *  **Dynamic optimization under perfect foresight** -- solve for $h_1$ from $(V, g)$ by treating $\tilde{z}_t$ as known, yielding a standard deterministic LQ regulator problem independent of the environment $(f, \Phi)$.
 
- *  **Optimal linear prediction** — solve for $h_2 = S(f)$ from $(f, \Phi)$ using least-squares forecasting theory, which reduces to a standard Kalman/Wiener prediction formula when $f$ is itself linear.
+ *  **Optimal linear prediction** -- solve for $h_2 = S(f)$ from $(f, \Phi)$ using least-squares forecasting theory, which reduces to a standard Kalman/Wiener prediction formula when $f$ is itself linear.
 
 ### Cross-equation restrictions
 
 A hallmark of the rational expectations hypothesis as it appears in this framework is that it ties together what would otherwise be free parameters in different equations.
 
-The requirement that $\tilde{z}_t = h_2(z_t) = S(f)(z_t)$ — i.e., that agents' forecasts be *optimal* with respect to the *actual* law of motion $f$ — imposes **cross-equation restrictions** between the parameters of the forecasting rule $h_2$ and the parameters of the environment $f$.
+The requirement that $\tilde{z}_t = h_2(z_t) = S(f)(z_t)$ -- i.e., that agents' forecasts be *optimal* with respect to the *actual* law of motion $f$ -- imposes **cross-equation restrictions** between the parameters of the forecasting rule $h_2$ and the parameters of the environment $f$.
 
 These restrictions, rather than any conditions on distributed lags within a single equation, are the operative empirical content of rational expectations.
 
@@ -318,7 +318,7 @@ Prior practice, exemplified by the adaptive expectations mechanisms of {cite:t}`
 
 treating the coefficient $\lambda$ as a free parameter to be estimated from data, with no reference to the underlying environment $f$.
 
-The deficiency is not that {eq}`eq:adaptive_expectations_v3` is a distributed lag — linear forecasting rules are perfectly acceptable simplifications.
+The deficiency is not that {eq}`eq:adaptive_expectations_v3` is a distributed lag -- linear forecasting rules are perfectly acceptable simplifications.
 
 The deficiency is that the **coefficients** of the distributed lag are left unrestricted by theory.
 
@@ -381,7 +381,7 @@ print(f"Theoretical slope β/(1-β)*P = {theoretical_slope:.4f}")
 
 The slope is indeed $\tfrac{\beta}{1-\beta} P$, confirming the analytic formula.
 
-The value matrix $P$ is determined entirely by preferences and technology, not by the noise level — a direct consequence of the certainty equivalence principle.
+The value matrix $P$ is determined entirely by preferences and technology, not by the noise level -- a direct consequence of the certainty equivalence principle.
 
 ```{solution-end}
 ```

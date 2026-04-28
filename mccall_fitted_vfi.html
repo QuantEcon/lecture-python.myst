@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>51. Job Search IV: Fitted Value Function Iteration &#8212; Intermediate Quantitative Economics with Python</title>
+    <title>52. Job Search IV: Fitted Value Function Iteration &#8212; Intermediate Quantitative Economics with Python</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -131,8 +131,8 @@
     <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="52. Job Search V: Persistent and Transitory Wage Shocks" href="mccall_persist_trans.html" />
-    <link rel="prev" title="50. Job Search III: Search with Separation and Markov Wages" href="mccall_model_with_sep_markov.html" />
+    <link rel="next" title="53. Job Search V: Persistent and Transitory Wage Shocks" href="mccall_persist_trans.html" />
+    <link rel="prev" title="51. Job Search III: Search with Separation and Markov Wages" href="mccall_model_with_sep_markov.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -207,26 +207,26 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">51.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model">51.2. Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-method">51.3. Solution method</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">51.3.1. Value function iteration</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitting">51.3.2. Fitting</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitted-value-function-iteration">51.3.3. Fitted value function iteration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">52.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model">52.2. Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solution-method">52.3. Solution method</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">52.3.1. Value function iteration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitting">52.3.2. Fitting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fitted-value-function-iteration">52.3.3. Fitted value function iteration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">51.4. Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">51.4.1. Setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iteration">51.4.2. Iteration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">52.4. Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">52.4.1. Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#iteration">52.4.2. Iteration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">51.5. Simulation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-agent-dynamics">51.5.1. Single agent dynamics</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-analysis">51.5.2. Cross-sectional analysis</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">51.5.3. Visualization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">52.5. Simulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#single-agent-dynamics">52.5.1. Single agent dynamics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-analysis">52.5.2. Cross-sectional analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">52.5.3. Visualization</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">51.6. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">52.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -303,7 +303,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/2afed3155" class="changelog-hash">2afed3155</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">Refactor cross-section simulation: reverse loop structure for better performance (#734)</span>
                             </li>
                             
@@ -312,7 +312,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/c6cc43cbc" class="changelog-hash">c6cc43cbc</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">Improve key handling and fix parameter consistency in McCall lectures (#715)</span>
                             </li>
                             
@@ -321,7 +321,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/977a93e4b" class="changelog-hash">977a93e4b</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">Add visualization and convergence demonstration to fitted VFI lecture (#711)</span>
                             </li>
                             
@@ -330,7 +330,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/b37d0cab5" class="changelog-hash">b37d0cab5</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">Extension to basic McCall model -- response to volatility (#707) (#709)</span>
                             </li>
                             
@@ -339,7 +339,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/ece13f077" class="changelog-hash">ece13f077</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">4 months ago</span>
+                                <span class="changelog-time">5 months ago</span>
                                 <span class="changelog-message">Standardize notation: Use capitals for random variables in Job Search I-V (#704)</span>
                             </li>
                             
@@ -375,7 +375,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-python.myst/commit/c6ae61838" class="changelog-hash">c6ae61838</a>
                                 
                                 <span class="changelog-author">Longye Tian</span>
-                                <span class="changelog-time">7 months ago</span>
+                                <span class="changelog-time">8 months ago</span>
                                 <span class="changelog-message">[mccall_fitted_vfi] JAX conversion  (#567)</span>
                             </li>
                             
@@ -392,7 +392,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="job-search-iv-fitted-value-function-iteration">
-<h1><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">51. </span>Job Search IV: Fitted Value Function Iteration</a><a class="headerlink" href="#job-search-iv-fitted-value-function-iteration" title="Link to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id3" role="doc-backlink"><span class="section-number">52. </span>Job Search IV: Fitted Value Function Iteration</a><a class="headerlink" href="#job-search-iv-fitted-value-function-iteration" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with access to a GPU — although it will also run without one.</p>
@@ -420,7 +420,7 @@ that you can access as follows:</p>
 </ul>
 </nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">51.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4" role="doc-backlink"><span class="section-number">52.1. </span>Overview</a><a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture follows on from the job search model with separation presented in
 the <a class="reference internal" href="mccall_model_with_separation.html"><span class="doc">previous lecture</span></a>.</p>
 <p>That lecture combined exogenous job separation events and a Markov wage offer
@@ -497,7 +497,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </section>
 <section id="model">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">51.2. </span>Model</a><a class="headerlink" href="#model" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5" role="doc-backlink"><span class="section-number">52.2. </span>Model</a><a class="headerlink" href="#model" title="Link to this heading">#</a></h2>
 <p>Assuming that readers are familiar with the content of <a class="reference internal" href="mccall_model_with_sep_markov.html"><span class="doc">Job Search III: Search with Separation and Markov Wages</span></a>, the model can be summarized as follows.</p>
 <ul class="simple">
 <li><p>Wage offers follow a continuous Markov process: <span class="math notranslate nohighlight">\(W_t = \exp(X_t)\)</span> where <span class="math notranslate nohighlight">\(X_{t+1} = \rho X_t + \nu Z_{t+1}\)</span></p></li>
@@ -509,14 +509,14 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </ul>
 </section>
 <section id="solution-method">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">51.3. </span>Solution method</a><a class="headerlink" href="#solution-method" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6" role="doc-backlink"><span class="section-number">52.3. </span>Solution method</a><a class="headerlink" href="#solution-method" title="Link to this heading">#</a></h2>
 <p>Let’s discuss how we can solve this model.</p>
 <p>The only real change from <a class="reference internal" href="mccall_model_with_sep_markov.html"><span class="doc">Job Search III: Search with Separation and Markov Wages</span></a> is that we replace sums with integrals.</p>
 <section id="value-function-iteration">
-<h3><span class="section-number">51.3.1. </span>Value function iteration<a class="headerlink" href="#value-function-iteration" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">52.3.1. </span>Value function iteration<a class="headerlink" href="#value-function-iteration" title="Link to this heading">#</a></h3>
 <p>In the <a class="reference internal" href="mccall_model_with_sep_markov.html"><span class="doc">discrete case</span></a>, we ended up iterating on the Bellman operator</p>
 <div class="math notranslate nohighlight" id="equation-bell2mcmc">
-<span class="eqno">(51.1)<a class="headerlink" href="#equation-bell2mcmc" title="Link to this equation">#</a></span>\[    (Tv_u)(w) =
+<span class="eqno">(52.1)<a class="headerlink" href="#equation-bell2mcmc" title="Link to this equation">#</a></span>\[    (Tv_u)(w) =
     \max
     \left\{
         \frac{1}{1-\beta(1-\alpha)} \cdot
@@ -548,7 +548,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 expectation of <span class="math notranslate nohighlight">\(v_u(w^\rho \exp(\nu Z_{t+1}))\)</span>.</p>
 </section>
 <section id="fitting">
-<h3><span class="section-number">51.3.2. </span>Fitting<a class="headerlink" href="#fitting" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">52.3.2. </span>Fitting<a class="headerlink" href="#fitting" title="Link to this heading">#</a></h3>
 <p>In theory, we should now proceed as follows:</p>
 <ol class="arabic simple">
 <li><p>Begin with a guess <span class="math notranslate nohighlight">\(v\)</span></p></li>
@@ -556,12 +556,12 @@ expectation of <span class="math notranslate nohighlight">\(v_u(w^\rho \exp(\nu 
 <li><p>Unless some stopping condition is satisfied, set <span class="math notranslate nohighlight">\(v = v'\)</span> and go to step 2.</p></li>
 </ol>
 <p>However, there is a problem we must confront before we implement this procedure: The iterates of the value function can neither be calculated exactly nor stored on a computer.</p>
-<p>To see the issue, consider <a class="reference internal" href="#equation-bell2mcmc">(51.1)</a>.</p>
+<p>To see the issue, consider <a class="reference internal" href="#equation-bell2mcmc">(52.1)</a>.</p>
 <p>Even if <span class="math notranslate nohighlight">\(v\)</span> is a known function, the only way to store its update <span class="math notranslate nohighlight">\(v'\)</span> is to record its value <span class="math notranslate nohighlight">\(v'(w)\)</span> for every <span class="math notranslate nohighlight">\(w \in \mathbb R_+\)</span>.</p>
 <p>Clearly, this is impossible.</p>
 </section>
 <section id="fitted-value-function-iteration">
-<h3><span class="section-number">51.3.3. </span>Fitted value function iteration<a class="headerlink" href="#fitted-value-function-iteration" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">52.3.3. </span>Fitted value function iteration<a class="headerlink" href="#fitted-value-function-iteration" title="Link to this heading">#</a></h3>
 <p>What we will do instead is use <strong>fitted value function iteration</strong>.</p>
 <p>The procedure is as follows:</p>
 <p>Let a current guess <span class="math notranslate nohighlight">\(v\)</span> be given.</p>
@@ -580,7 +580,7 @@ expectation of <span class="math notranslate nohighlight">\(v_u(w^\rho \exp(\nu 
 <p>This method</p>
 <ol class="arabic simple">
 <li><p>combines well with value function iteration (see, e.g.,
-<span id="id1">[<a class="reference internal" href="zreferences.html#id128" title="Geoffrey J Gordon. Stable function approximation in dynamic programming. In Machine Learning Proceedings 1995, pages 261–268. Elsevier, 1995.">Gordon, 1995</a>]</span> or <span id="id2">[<a class="reference internal" href="zreferences.html#id127" title="John Stachurski. Continuous state dynamic programming via nonexpansive approximation. Computational Economics, 31(2):141–160, 2008.">Stachurski, 2008</a>]</span>) and</p></li>
+<span id="id1">[<a class="reference internal" href="zreferences.html#id144" title="Geoffrey J Gordon. Stable function approximation in dynamic programming. In Machine Learning Proceedings 1995, pages 261–268. Elsevier, 1995.">Gordon, 1995</a>]</span> or <span id="id2">[<a class="reference internal" href="zreferences.html#id143" title="John Stachurski. Continuous state dynamic programming via nonexpansive approximation. Computational Economics, 31(2):141–160, 2008.">Stachurski, 2008</a>]</span>) and</p></li>
 <li><p>preserves useful shape properties such as monotonicity and concavity/convexity.</p></li>
 </ol>
 <p>Linear interpolation will be implemented using JAX’s interpolation function <code class="docutils literal notranslate"><span class="pre">jnp.interp</span></code>.</p>
@@ -617,10 +617,10 @@ expectation of <span class="math notranslate nohighlight">\(v_u(w^\rho \exp(\nu 
 </section>
 </section>
 <section id="implementation">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">51.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink"><span class="section-number">52.4. </span>Implementation</a><a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>Let’s code up and solve the model.</p>
 <section id="setup">
-<h3><span class="section-number">51.4.1. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">52.4.1. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h3>
 <p>The first step is to build a JAX-compatible structure for the McCall model with
 separation and a continuous wage offer distribution.</p>
 <p>The key computational challenge is evaluating the conditional expectation
@@ -685,7 +685,7 @@ separation and a continuous wage offer distribution.</p>
 </div>
 </section>
 <section id="iteration">
-<h3><span class="section-number">51.4.2. </span>Iteration<a class="headerlink" href="#iteration" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">52.4.2. </span>Iteration<a class="headerlink" href="#iteration" title="Link to this heading">#</a></h3>
 <p>Here is the Bellman operator, where we use Monte Carlo integration to evaluate the expectation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -864,10 +864,10 @@ interest: <span class="math notranslate nohighlight">\(v_e\)</span>, and the con
 </section>
 </section>
 <section id="simulation">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">51.5. </span>Simulation</a><a class="headerlink" href="#simulation" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink"><span class="section-number">52.5. </span>Simulation</a><a class="headerlink" href="#simulation" title="Link to this heading">#</a></h2>
 <p>Now we run some simulations with a focus on unemployment rate.</p>
 <section id="single-agent-dynamics">
-<h3><span class="section-number">51.5.1. </span>Single agent dynamics<a class="headerlink" href="#single-agent-dynamics" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">52.5.1. </span>Single agent dynamics<a class="headerlink" href="#single-agent-dynamics" title="Link to this heading">#</a></h3>
 <p>Let’s simulate the employment path of a single agent under the optimal policy.</p>
 <p>We need a function to update the agent’s state by one period.</p>
 <div class="cell docutils container">
@@ -1017,7 +1017,7 @@ interest: <span class="math notranslate nohighlight">\(v_e\)</span>, and the con
 <p>When employed, the agent faces job separation with probability <span class="math notranslate nohighlight">\(\alpha\)</span> each period.</p>
 </section>
 <section id="cross-sectional-analysis">
-<h3><span class="section-number">51.5.2. </span>Cross-sectional analysis<a class="headerlink" href="#cross-sectional-analysis" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">52.5.2. </span>Cross-sectional analysis<a class="headerlink" href="#cross-sectional-analysis" title="Link to this heading">#</a></h3>
 <p>Now let’s simulate many agents simultaneously to examine the cross-sectional unemployment rate.</p>
 <p>To do this efficiently, we need a different approach than <code class="docutils literal notranslate"><span class="pre">simulate_employment_path</span></code> defined above.</p>
 <p>The key differences are:</p>
@@ -1158,7 +1158,7 @@ Difference: 0.0042
 </div>
 </section>
 <section id="visualization">
-<h3><span class="section-number">51.5.3. </span>Visualization<a class="headerlink" href="#visualization" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">52.5.3. </span>Visualization<a class="headerlink" href="#visualization" title="Link to this heading">#</a></h3>
 <p>This function generates a histogram showing the distribution of employment status across many agents:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1227,10 +1227,10 @@ Difference: 0.0042
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">51.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink"><span class="section-number">52.6. </span>Exercises</a><a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="mfv_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 51.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 52.1 </span></p>
 <section id="exercise-content">
 <p>Use the code above to explore what happens to the reservation wage when <span class="math notranslate nohighlight">\(c\)</span> changes.</p>
 </section>
@@ -1268,7 +1268,7 @@ Difference: 0.0042
 </div>
 <div class="exercise admonition" id="mfv_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 51.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 52.2 </span></p>
 <section id="exercise-content">
 <p>Create a plot that shows how the reservation wage changes with the risk aversion parameter <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
 <p>Use <code class="docutils literal notranslate"><span class="pre">γ_vals</span> <span class="pre">=</span> <span class="pre">jnp.linspace(1.2,</span> <span class="pre">2.5,</span> <span class="pre">15)</span></code> and keep all other parameters at their default values.</p>
@@ -1545,23 +1545,28 @@ than continue searching.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="information_market_equilibrium.html">
+   31. Information and Market Equilibrium
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="mix_model.html">
-   31. Incorrect Models
+   32. Incorrect Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="navy_captain.html">
-   32. Bayesian versus Frequentist Decision Rules
+   33. Bayesian versus Frequentist Decision Rules
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="merging_of_opinions.html">
-   33. Merging of Opinions: The Blackwell–Dubins Theorem
+   34. Merging of Opinions: The Blackwell–Dubins Theorem
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="survival_recursive_preferences.html">
-   34. Survival and Long-Run Dynamics under Recursive Preferences
+   35. Survival and Long-Run Dynamics under Recursive Preferences
   </a>
  </li>
 </ul>
@@ -1573,12 +1578,12 @@ than continue searching.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="opt_transport.html">
-   35. Optimal Transport
+   36. Optimal Transport
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="von_neumann_model.html">
-   36. Von Neumann Growth Model (and a Generalization)
+   37. Von Neumann Growth Model (and a Generalization)
   </a>
  </li>
 </ul>
@@ -1590,57 +1595,57 @@ than continue searching.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="finite_markov.html">
-   37. Finite Markov Chains
+   38. Finite Markov Chains
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   38. Inventory Dynamics
+   39. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linear_models.html">
-   39. Linear State Space Models
+   40. Linear State Space Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="samuelson.html">
-   40. Samuelson Multiplier-Accelerator
+   41. Samuelson Multiplier-Accelerator
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="chow_business_cycles.html">
-   41. The Acceleration Principle and the Nature of Business Cycles
+   42. The Acceleration Principle and the Nature of Business Cycles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   42. Kesten Processes and Firm Dynamics
+   43. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   43. Wealth Distribution Dynamics
+   44. Wealth Distribution Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman.html">
-   44. A First Look at the Kalman Filter
+   45. A First Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kalman_2.html">
-   45. Another Look at the Kalman Filter
+   46. Another Look at the Kalman Filter
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="organization_capital.html">
-   46. Organization Capital
+   47. Organization Capital
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="measurement_models.html">
-   47. Two Models of Measurements and the Investment Accelerator
+   48. Two Models of Measurements and the Investment Accelerator
   </a>
  </li>
 </ul>
@@ -1652,42 +1657,42 @@ than continue searching.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model.html">
-   48. Job Search I: The McCall Search Model
+   49. Job Search I: The McCall Search Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_separation.html">
-   49. Job Search II: Search and Separation
+   50. Job Search II: Search and Separation
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_model_with_sep_markov.html">
-   50. Job Search III: Search with Separation and Markov Wages
+   51. Job Search III: Search with Separation and Markov Wages
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   51. Job Search IV: Fitted Value Function Iteration
+   52. Job Search IV: Fitted Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_persist_trans.html">
-   52. Job Search V: Persistent and Transitory Wage Shocks
+   53. Job Search V: Persistent and Transitory Wage Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="career.html">
-   53. Job Search VI: Modeling Career Choice
+   54. Job Search VI: Modeling Career Choice
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jv.html">
-   54. Job Search VII: On-the-Job Search
+   55. Job Search VII: On-the-Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="odu.html">
-   55. Job Search VIII: Search with Learning
+   56. Job Search VIII: Search with Learning
   </a>
  </li>
 </ul>
@@ -1699,17 +1704,17 @@ than continue searching.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_q.html">
-   56. Inventory Management via Q-Learning
+   57. Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rs_inventory_q.html">
-   57. Risk-Sensitive Inventory Management via Q-Learning
+   58. Risk-Sensitive Inventory Management via Q-Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mccall_q.html">
-   58. Job Search IX: Search with Q-Learning
+   59. Job Search IX: Search with Q-Learning
   </a>
  </li>
 </ul>
@@ -1721,32 +1726,32 @@ than continue searching.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="os.html">
-   59. Optimal Savings I: Cake Eating
+   60. Optimal Savings I: Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_numerical.html">
-   60. Optimal Savings II: Numerical Cake Eating
+   61. Optimal Savings II: Numerical Cake Eating
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_stochastic.html">
-   61. Optimal Savings III: Stochastic Returns
+   62. Optimal Savings III: Stochastic Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_time_iter.html">
-   62. Optimal Savings IV: Time Iteration
+   63. Optimal Savings IV: Time Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm.html">
-   63. Optimal Savings V: The Endogenous Grid Method
+   64. Optimal Savings V: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="os_egm_jax.html">
-   64. Optimal Savings VI: EGM with JAX
+   65. Optimal Savings VI: EGM with JAX
   </a>
  </li>
 </ul>
@@ -1758,27 +1763,27 @@ than continue searching.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_discrete.html">
-   65. The Income Fluctuation Problem I: Discretization and VFI
+   66. The Income Fluctuation Problem I: Discretization and VFI
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_opi.html">
-   66. The Income Fluctuation Problem II: Optimistic Policy Iteration
+   67. The Income Fluctuation Problem II: Optimistic Policy Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   67. The Income Fluctuation Problem III: The Endogenous Grid Method
+   68. The Income Fluctuation Problem III: The Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm_transient_shocks.html">
-   68. The Income Fluctuation Problem IV: Transient Income Shocks
+   69. The Income Fluctuation Problem IV: Transient Income Shocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_advanced.html">
-   69. The Income Fluctuation Problem V: Stochastic Returns on Assets
+   70. The Income Fluctuation Problem V: Stochastic Returns on Assets
   </a>
  </li>
 </ul>
@@ -1790,42 +1795,42 @@ than continue searching.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lqcontrol.html">
-   70. LQ Control: Foundations
+   71. LQ Control: Foundations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lagrangian_lqdp.html">
-   71. Lagrangian for LQ Control
+   72. Lagrangian for LQ Control
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cross_product_trick.html">
-   72. Eliminating Cross Products
+   73. Eliminating Cross Products
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income.html">
-   73. The Permanent Income Model
+   74. The Permanent Income Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="perm_income_cons.html">
-   74. Permanent Income II: LQ Techniques
+   75. Permanent Income II: LQ Techniques
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_1.html">
-   75. Certainty Equivalence
+   76. Certainty Equivalence
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="theil_2.html">
-   76. Certainty Equivalence and Model Uncertainty
+   77. Certainty Equivalence and Model Uncertainty
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="lq_inventories.html">
-   77. Production Smoothing via Inventories
+   78. Production Smoothing via Inventories
   </a>
  </li>
 </ul>
@@ -1837,22 +1842,22 @@ than continue searching.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_1.html">
-   78. Cass-Koopmans Model
+   79. Cass-Koopmans Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_koopmans_2.html">
-   79. Cass-Koopmans Competitive Equilibrium
+   80. Cass-Koopmans Competitive Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal.html">
-   80. Cass-Koopmans Model with Distorting Taxes
+   81. Cass-Koopmans Model with Distorting Taxes
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cass_fiscal_2.html">
-   81. Two-Country Model with Distorting Taxes
+   82. Two-Country Model with Distorting Taxes
   </a>
  </li>
 </ul>
@@ -1864,52 +1869,52 @@ than continue searching.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lake_model.html">
-   82. A Lake Model of Employment and Unemployment
+   83. A Lake Model of Employment and Unemployment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="endogenous_lake.html">
-   83. Lake Model with an Endogenous Job Finding Rate
+   84. Lake Model with an Endogenous Job Finding Rate
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="rational_expectations.html">
-   84. Rational Expectations Equilibrium
+   85. Rational Expectations Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="re_with_feedback.html">
-   85. Stability in Linear Rational Expectations Models
+   86. Stability in Linear Rational Expectations Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_perf.html">
-   86. Markov Perfect Equilibrium
+   87. Markov Perfect Equilibrium
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="uncertainty_traps.html">
-   87. Uncertainty Traps
+   88. Uncertainty Traps
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari.html">
-   88. The Aiyagari Model
+   89. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak2.html">
-   89. Transitions in an Overlapping Generations Model
+   90. Transitions in an Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ak_aiyagari.html">
-   90. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
+   91. A Long-Lived, Heterogeneous Agents, Overlapping Generations Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="two_computation.html">
-   91. Two Computations to Fund Social Security
+   92. Two Computations to Fund Social Security
   </a>
  </li>
 </ul>
@@ -1921,37 +1926,47 @@ than continue searching.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   92. Asset Pricing: Finite State Models
+   93. Asset Pricing: Finite State Models
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1983.html">
-   93. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
+   94. Stochastic Consumption, Risk Aversion, and the Temporal Behavior of Asset Returns
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hansen_singleton_1982.html">
-   94. Estimating Euler Equations by Generalized Method of Moments
+   95. Estimating Euler Equations by Generalized Method of Moments
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ge_arrow.html">
-   95. Competitive Equilibria with Arrow Securities
+   96. Competitive Equilibria with Arrow Securities
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="harrison_kreps.html">
-   96. Heterogeneous Beliefs and Bubbles
+   97. Heterogeneous Beliefs and Bubbles
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="morris_learn.html">
-   97. Speculative Behavior with Bayesian Learning
+   98. Speculative Behavior with Bayesian Learning
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="affine_risk_prices.html">
-   98. Affine Models of Asset Prices
+   99. Affine Models of Asset Prices
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ross_recovery.html">
+   100. The Recovery Theorem
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="misspecified_recovery.html">
+   101. Misspecified recovery
   </a>
  </li>
 </ul>
@@ -1963,17 +1978,17 @@ than continue searching.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="pandas_panel.html">
-   99. Pandas for Panel Data
+   102. Pandas for Panel Data
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ols.html">
-   100. Linear Regression in Python
+   103. Linear Regression in Python
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   101. Maximum Likelihood Estimation
+   104. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1985,12 +2000,12 @@ than continue searching.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="two_auctions.html">
-   102. First-Price and Second-Price Auctions
+   105. First-Price and Second-Price Auctions
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="house_auction.html">
-   103. Multiple Good Allocation Mechanisms
+   106. Multiple Good Allocation Mechanisms
   </a>
  </li>
 </ul>
@@ -2002,17 +2017,17 @@ than continue searching.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   104. Troubleshooting
+   107. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   105. References
+   108. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   106. Execution Statistics
+   109. Execution Statistics
   </a>
  </li>
 </ul>
