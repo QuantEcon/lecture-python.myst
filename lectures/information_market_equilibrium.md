@@ -40,8 +40,8 @@ answered by {cite:t}`kihlstrom_mirman1975`.
    signal correlated with an unknown state of the world and adjusts demand
    accordingly.
    - Equilibrium prices shift. 
-   - Under what conditions can an outside observer *infer* the
-   insider's private signal from the equilibrium price?
+   - Under what conditions can an outside observer *infer* the insider's
+   posterior distribution from the equilibrium price?
 
 2. *Do Bayesian price expectations converge?*  
    - In a stationary stochastic exchange
@@ -165,6 +165,11 @@ Agents maximize expected utility subject to their budget constraints.
 
 A **competitive
 equilibrium** is a price $\hat{p}$ that clears both markets simultaneously.
+
+Under the maintained convexity assumptions equilibrium exists, and following
+{cite:t}`kihlstrom_mirman1975` we assume the equilibrium price is unique, so
+that we can write $\hat p = p(\mu)$ as a well-defined function of the informed
+agent's posterior.
 
 For most of what follows, the production side matters only through the induced
 equilibrium price map, so when we turn to numerical illustrations we will
@@ -331,8 +336,8 @@ Good 1 is a risky asset with random return $\bar{a}$; good 2 is "money".
 An insider's demand reveals private information about the return.
 
 If the invertibility condition holds, outside observers can read the insider's
-signal from
-the equilibrium stock price.
+posterior distribution -- the useful information the insider's signal carries
+about $\bar a$ -- from the equilibrium stock price.
 
 #### Price as a quality signal
 
@@ -745,8 +750,8 @@ In each period $t$:
 
 The endowment vectors $\{\tilde{\omega}^t\}$ are **i.i.d.** with density
 $f(\omega^t \mid \lambda)$, where $\lambda = (\lambda_1, \ldots, \lambda_K)$ is
-a
-**structural parameter vector** (of dimension $K$) that is *fixed but unknown*.
+a **structural parameter vector** (of dimension $K$) that is *fixed but
+unknown*.
 
 The equilibrium price at time $t$ is a deterministic function of $\omega^t$, so
 $\{p^t\}$ is also i.i.d.
@@ -775,12 +780,13 @@ structure from price data alone.
 
 ### The identification problem
 
-Because the map $\omega \mapsto p(\omega)$ is many-to-one, observing prices
-loses
-information relative to observing endowments.
+Because price observations identify only the induced price density
+$g(\cdot \mid \lambda)$, and because the structural-to-reduced-form map
+$\lambda \mapsto g(\cdot \mid \lambda)$ may be many-to-one, price data may
+identify only a reduced-form class rather than the exact structure.
 
-In particular, it may be impossible to
-recover $\lambda$ from $g(p \mid \lambda)$ even with infinite price data.
+In particular, it may be impossible to recover $\lambda$ from
+$g(p \mid \lambda)$ even with infinite price data.
 
 To handle this, partition $\Lambda$ into equivalence classes $\mu$ such that
 $\lambda \in \mu$ and $\lambda' \in \mu$ whenever $g(p \mid \lambda) = g(p \mid
@@ -1040,9 +1046,9 @@ We now verify that the observer's price expectations converge to the
 rational-expectations
 distribution $g(p \mid \bar\mu)$.
 
-We continue to use the parameterization of the "easy-to-learn" example above
-($\bar{p}_{\text{true}} = 2.0$, $\bar{p}_{\text{alt}} = 1.2$, $\sigma_p = 0.4$),
-now extending to $T = 1{,}000$ periods with a single simulated path and prior $h_0 = 0.5$
+We use the parameterization of the "hard-to-learn" example above
+($\bar{p}_{\text{true}} = 2.0$, $\bar{p}_{\text{alt}} = 1.8$, $\sigma_p = 0.4$),
+extending to $T = 1{,}000$ periods with a single simulated path and prior $h_0 = 0.5$
 
 ```{code-cell} ipython3
 ---
@@ -1059,7 +1065,7 @@ def price_expectation(h_t, p_bar_true, p_bar_alt, σ_p, p_grid):
     )
 
 
-p_bar_true, p_bar_alt = 2.0, 1.2
+p_bar_true, p_bar_alt = 2.0, 1.8
 σ_p = 0.4
 n_paths = 1
 T_long = 1000
@@ -1072,7 +1078,7 @@ p_grid = np.linspace(0.0, 3.5, 300)
 re_density = norm.pdf(p_grid, loc=p_bar_true, scale=σ_p)
 
 fig, ax = plt.subplots(figsize=(8, 5))
-snapshots = [0, 1, 3, 5, 10]
+snapshots = [0, 25, 100, 300, 1000]
 palette   = plt.cm.Blues(np.linspace(0.3, 1.0, len(snapshots)))
 
 for t_snap, col in zip(snapshots, palette):
@@ -1118,9 +1124,10 @@ $\mu_1 = \{\lambda^{(1)}, \lambda^{(2)}\}$ and $\mu_2 = \{\lambda^{(3)}\}$
 (because $\lambda^{(1)}$ and $\lambda^{(2)}$ generate the same price
 distribution).
 
-The three structures have price means $\bar{p}_1 = \bar{p}_2 = 2.0$ and
-$\bar{p}_3 = 1.2$, with common standard deviation $\sigma_p = 0.4$, a
-uniform prior $h_0 = (1/3, 1/3, 1/3)$, and $T = 400$ periods over $30$ paths.
+We continue with the hard-to-learn parameterization, so the three structures
+have price means $\bar{p}_1 = \bar{p}_2 = 2.0$ and $\bar{p}_3 = 1.8$, with
+common standard deviation $\sigma_p = 0.4$, a uniform prior
+$h_0 = (1/3, 1/3, 1/3)$, and $T = 400$ periods over $30$ paths.
 
 The true structure is $\lambda^{(1)}$.
 
@@ -1152,7 +1159,7 @@ def simulate_learning_3struct(
 
 
 # Structures 0 and 1 share the same reduced form
-p_bar_vec = np.array([2.0, 2.0, 1.2])
+p_bar_vec = np.array([2.0, 2.0, 1.8])
 h0_vec = np.array([1 / 3, 1 / 3, 1 / 3])
 σ_p = 0.4
 T = 400
@@ -1199,10 +1206,10 @@ $\bar\mu$.
 ```{exercise}
 :label: km_ex1
 
-Consider a two-state economy ($a_1 = 2$,
-$a_2 = 0.5$) where the informed agent has **CARA** (constant absolute risk
-aversion)
-preferences over portfolio wealth:
+**CARA portfolio utility and the stock-market interpretation.**
+
+Consider a two-state economy ($a_1 = 2$, $a_2 = 0.5$) where the informed agent has
+**CARA** (constant absolute risk aversion) preferences over portfolio wealth:
 
 $$
 u(W) = -e^{-\gamma W}, \quad W = x_2 + \bar{a}\, x_1.
@@ -1221,17 +1228,18 @@ Total supply of good 1 is $X_1 = 1$.
 1. Derive the first-order condition for the informed agent's optimal $x_1$.
 
 1. Use the market-clearing condition $x_1 = 1$ (the informed agent absorbs the
-   entire
-supply) to obtain an implicit equation for the equilibrium price $p^*(q)$.
-Solve it
-numerically for $q \in (0,1)$ and several values of $\gamma$.
+   entire supply) to obtain an implicit equation for the equilibrium price
+   $p^*(q)$, and solve it numerically for $q \in (0,1)$ and several values of
+   $\gamma$.
 
-1. Show numerically that $p^*(q)$ is monotone in $q$, so the invertibility
-   condition
-holds in this example. Explain why this is economically similar to the $\sigma >
-1$ case in
-{prf:ref}`ime_theorem_invertibility_conditions`, but not a direct application of
-that theorem.
+1. Show *analytically* that $p^*(q)$ admits the closed form
+
+   $$
+   p^*(q) = \frac{a_2 + R(q,\gamma)\, a_1}{1 + R(q,\gamma)},
+   \qquad R(q,\gamma) = \frac{q}{1-q}\, e^{-\gamma(a_1-a_2)},
+   $$
+
+   and verify that $p^*(q)$ is strictly increasing in $q$.
 ```
 
 ```{solution-start} km_ex1
@@ -1294,17 +1302,41 @@ plt.show()
 
 The price is strictly increasing in $q$ for every $\gamma > 0$.
 
-The reason is that portfolio utility $u(x_2 + \bar{a}\,x_1)$ treats the two
-goods as perfect substitutes in creating wealth, so a higher posterior
-probability of the high-return state raises the marginal value of the risky
-asset and pushes the equilibrium price upward.
+For the closed form, start from the FOC at $x_1 = 1$, divide both sides by
+$(a_1 - p)(p - a_2)$, and combine the exponentials:
 
-This behavior is similar in spirit to the $\sigma > 1$ case in
-{prf:ref}`ime_theorem_invertibility_conditions`, but it is not a direct
-consequence of that theorem because CARA utility over wealth is not homothetic
-in the two-good representation used in the theorem.
+$$
+\frac{q\,(a_1 - p)}{(1-q)\,(p - a_2)} = e^{\gamma(a_1 - a_2)}.
+$$
 
-Here monotonicity is verified directly from the specific first-order condition.
+Rearranging gives
+
+$$
+\frac{p - a_2}{a_1 - p} = \frac{q}{1-q}\, e^{-\gamma(a_1 - a_2)}
+\equiv R(q,\gamma),
+$$
+
+and solving the resulting linear equation in $p$ yields
+
+$$
+p^*(q) = \frac{a_2 + R(q,\gamma)\, a_1}{1 + R(q,\gamma)}.
+$$
+
+Since $R(q,\gamma)$ is strictly increasing in $q$ and
+$dp^*/dR = (a_1 - a_2)/(1 + R)^2 > 0$, the equilibrium price $p^*(q)$ is
+strictly increasing in $q$.
+
+This exercise uses the stock-market interpretation emphasized by
+{cite:t}`kihlstrom_mirman1975`.
+
+Portfolio wealth is $W = x_2 + \bar{a}\, x_1$, so $a x_1$ and $x_2$ are perfect
+substitutes in each state.
+
+Hence the elasticity of substitution between the two arguments of
+$u(a x_1, x_2)$ is infinite, corresponding to the $\sigma > 1$ side of
+{prf:ref}`ime_theorem_invertibility_conditions`.
+
+The difference is that this example is not the full equilibrium model the theorem analyzes, but rather a partial equilibrium model with a single informed agent and a fixed supply of the risky asset.
 
 ```{solution-end}
 ```
@@ -1317,14 +1349,15 @@ convergence to rational expectations is determined by the **Kullback-Leibler
 divergence**
 between the two reduced forms.
 
-The KL divergence from $g(\cdot \mid \mu_2)$ to $g(\cdot \mid \mu_1)$, for two
-normal
-distributions with means $\bar{p}_1$ and $\bar{p}_2$ and common variance
-$\sigma_p^2$, is
+The KL divergence $D_{KL}(\mu_1 \| \mu_2)$ from $g(\cdot \mid \mu_1)$ to
+$g(\cdot \mid \mu_2)$, for two normal distributions with means $\bar{p}_1$ and
+$\bar{p}_2$ and common variance $\sigma_p^2$, is
 
 $$
-D_{KL}(\mu_1 \| \mu_2) = \frac{(\bar{p}_1 - \bar{p}_2)^2}{2\sigma_p^2}.
+D_{KL}(\mu_1 \| \mu_2) = \frac{(\bar{p}_1 - \bar{p}_2)^2}{2\sigma_p^2},
 $$
+
+which is symmetric in the two means under equal variances.
 
 1. For the "easy" case ($\bar{p}_1 = 2.0$, $\bar{p}_2 = 1.2$) and the "hard"
    case
@@ -1377,8 +1410,8 @@ for ax, (name, p1, p2) in zip(axes, cases):
                label=fr"Median $T_{{0.99}} = {median_T:.0f}$")
     ax.set_title(
         f"{name}: $D_{{KL}} = {kl:.4f}$,  "
-        fr"$C/D_{{KL}} \approx {median_T*kl:.1f}$",
-        fontsize=11
+        fr"$\widehat C = T_{{0.99}} D_{{KL}} \approx {median_T * kl:.1f}$",
+        fontsize=11 
     )
     ax.set_xlabel(r"$T_{0.99}$", fontsize=12)
     ax.set_ylabel("count", fontsize=11)
@@ -1399,18 +1432,18 @@ $D_{KL}$).
 ```{exercise}
 :label: km_ex3
 
-{prf:ref}`ime_theorem_bayesian_convergence`
-assumes the true
-distribution $g(\cdot \mid \bar\lambda)$ is in the support of the prior (i.e.,
-$h(\bar\lambda) > 0$).
+{prf:ref}`ime_theorem_bayesian_convergence` requires the prior to assign
+positive probability to the true reduced-form class $\bar\mu$, equivalently to
+some structure that generates the true price distribution
+$g(\cdot \mid \bar\mu)$.
 
-Investigate what happens when the true model is *not* in the
-prior support.
+In this exercise the true reduced form itself is excluded from the prior
+support, so we investigate what happens when no model in the prior generates the
+true price distribution.
 
 Simulate $T = 1,000$ periods of prices from $N(2.0, 0.4^2)$ but use a prior
-   that
-    places equal weight on two *wrong* models: $N(1.5, 0.4^2)$ and $N(2.3,
-    0.4^2)$.
+that places equal weight on two *wrong* models: $N(1.5, 0.4^2)$ and
+$N(2.3, 0.4^2)$.
 
 Plot the posterior weight on each model over time.
 

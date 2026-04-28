@@ -63,7 +63,11 @@ If the pricing kernel also satisfies a structural restriction called **transitio
 independence**, then state prices uniquely determine both the natural probability
 transition matrix and the transition pricing kernel.
 
-No historical return data or assumed utility function is needed.
+No historical return data or assumed utility function is needed -- but this
+identification is conditional on the maintained assumptions of the Recovery
+Theorem: no arbitrage, a finite/discretized irreducible Markov state space,
+transition independence of the pricing kernel, and accurate recovery of state
+prices.
 
 This is the **Recovery Theorem**.
 
@@ -390,6 +394,13 @@ $$
 $$
 
 where $h(\theta_i) = \beta/z_i$ follows from $D_{ii} = h(\theta_i)/\beta = 1/z_i$.
+
+It is useful to distinguish the **full transition kernel** $\phi_{ij} = \beta z_i/z_j$,
+which depends on both origin and destination states, from the **relative kernel
+component** $1/z_j$, which depends only on the destination state.
+
+Ross's Table I reports the destination-state shape $1/z_j$, normalized so that the
+middle state equals one.
 
 Destination states with high $z_j$ have *low* kernel values: for a fixed origin $i$,
 the kernel $\beta z_i/z_j$ is decreasing in $z_j$.
@@ -882,7 +893,14 @@ A higher $\gamma$ amplifies this wedge.
 A useful by-product of the Recovery Theorem is the *recovered subjective discount
 factor* $\beta$, which equals the Perron–Frobenius eigenvalue of $P$.
 
-The corresponding continuously compounded discount rate is $\rho = -\log \beta$.
+If the horizon is $T$, the corresponding continuously compounded subjective discount
+rate is
+
+$$
+\rho = -\frac{\log \beta}{T}.
+$$
+
+In the numerical examples below, $T=1$, so this reduces to $\rho = -\log \beta$.
 
 Corollary 1 of {cite:t}`Ross2015` states that $\beta$ is bounded above by the largest
 state-dependent one-period discount factor — equivalently, the maximum row sum of $P$:
@@ -970,6 +988,9 @@ In this CRRA
 simulation, increasing risk aversion makes the risk-neutral crash probability rise
 faster than the recovered natural crash probability.
 
+This is a simulation illustrating Ross's decomposition, not a replication of
+Ross's S&P 500 empirical Table V.
+
 We will say more in {ref}`rt_ex3`.
 
 ## From option prices to transition prices
@@ -1007,8 +1028,8 @@ be the vector of state prices at horizon $t$ observed from today's state $c$.
 
 Here $c$ indexes the current state and $t$ counts discrete maturity steps.
 
-The first one-period vector $p_1(c)$ is the row of $P$ corresponding to the
-current state.
+The first one-period vector $p_1(c)$ identifies the row of $P$ corresponding to
+the current state $c$, supplying $m$ equations.
 
 If the one-period state-price transition matrix $P$ is time homogeneous, these
 vectors satisfy the forward recursion
@@ -1024,8 +1045,10 @@ $$
 p_{t+1}(c,j) = \sum_k p_t(c,k) p(k,j).
 $$
 
-Thus $m$ maturity vectors supply the $m^2$ equations needed to estimate the
-$m^2$ transition prices $p(k,j)$.
+The remaining $m-1$ forward equations $p_{t+1}(c)=p_t(c)P$, each with $m$
+components, supply the remaining $m(m-1)$ equations.
+
+Together these give $m^2$ equations for the $m^2$ transition prices $p(k,j)$.
 
 In practice this step is numerically delicate because the second derivative in
 the option-price formula amplifies measurement error, and because additional
@@ -1034,7 +1057,8 @@ reasonable transition matrix.
 
 ## Testing efficient markets
 
-The recovered pricing kernel can also be used to test market efficiency.
+The recovered pricing kernel can also be used to test market efficiency, under the
+maintained assumptions of the Recovery Theorem.
 
 If a trading strategy has a very high Sharpe ratio, then some pricing kernel must be
 volatile enough to price that payoff.
@@ -1089,7 +1113,8 @@ practice.
 
 *Finite state space:*
 
-The theorem requires a bounded, irreducible Markov chain.
+Ross's theorem is proved for a finite-state irreducible Markov chain; bounded
+continuous-state recovery requires additional results.
 
 In continuous, unbounded state spaces (e.g., a lognormal diffusion), uniqueness fails
 because any exponential $e^{\alpha x}$ satisfies the characteristic equation.
