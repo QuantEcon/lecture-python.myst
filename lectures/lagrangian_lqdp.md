@@ -451,10 +451,10 @@ solves. See {cite}`Ljungqvist2012`,  ch 12.
 
 ## Application
 
-Here we demonstrate the computation with the deterministic permanent-income example from this [quantecon lecture](https://python.quantecon.org/lqcontrol.html).
+Here we demonstrate the computation with the deterministic permanent-income example from this {doc}`lqcontrol`.
 
 Because that model is discounted, we apply the invariant-subspace method to the
-equivalent **undiscounted** system obtained from the transformed matrices
+equivalent *undiscounted* system obtained from the transformed matrices
 $\hat A = \beta^{1/2} A$ and $\hat B = \beta^{1/2} B$.
 
 ```{code-cell} ipython3

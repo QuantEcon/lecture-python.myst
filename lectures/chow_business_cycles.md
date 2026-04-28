@@ -844,7 +844,7 @@ The peak appears at $\omega/\pi \approx 0.10$, which corresponds to a cycle leng
 
 ### The Slutsky connection
 
-Chow connects this result to Slutsky's {cite}`slutsky:1927`  finding that  moving averages of a random series have recurrent cycles.
+Chow connects this result to Slutsky's {cite}`slutsky1937`  finding that  moving averages of a random series have recurrent cycles.
 
 The VAR(1) model can be written as an infinite moving average:
 
