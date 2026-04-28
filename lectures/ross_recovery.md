@@ -63,11 +63,8 @@ If the pricing kernel also satisfies a structural restriction called **transitio
 independence**, then state prices uniquely determine both the natural probability
 transition matrix and the transition pricing kernel.
 
-No historical return data or assumed utility function is needed -- but this
-identification is conditional on the maintained assumptions of the Recovery
-Theorem: no arbitrage, a finite/discretized irreducible Markov state space,
-transition independence of the pricing kernel, and accurate recovery of state
-prices.
+No historical return data or assumed utility function is needed if some assumptions 
+about the structure of the pricing kernel hold.
 
 This is the **Recovery Theorem**.
 
@@ -981,15 +978,14 @@ ax.legend()
 plt.show()
 ```
 
+This is a simulation illustrating Ross's decomposition.
+
 The risk-neutral density assigns higher probability to large drops than the recovered
 natural density.
 
 In this CRRA
 simulation, increasing risk aversion makes the risk-neutral crash probability rise
 faster than the recovered natural crash probability.
-
-This is a simulation illustrating Ross's decomposition, not a replication of
-Ross's S&P 500 empirical Table V.
 
 We will say more in {ref}`rt_ex3`.
 
@@ -1057,8 +1053,7 @@ reasonable transition matrix.
 
 ## Testing efficient markets
 
-The recovered pricing kernel can also be used to test market efficiency, under the
-maintained assumptions of the Recovery Theorem.
+The recovered pricing kernel can also be used to test market efficiency, under the assumptions of the Recovery Theorem.
 
 If a trading strategy has a very high Sharpe ratio, then some pricing kernel must be
 volatile enough to price that payoff.
@@ -1114,7 +1109,7 @@ practice.
 *Finite state space:*
 
 Ross's theorem is proved for a finite-state irreducible Markov chain; bounded
-continuous-state recovery requires additional results.
+continuous-state recovery requires additional results in {doc}`misspecified_recovery`.
 
 In continuous, unbounded state spaces (e.g., a lognormal diffusion), uniqueness fails
 because any exponential $e^{\alpha x}$ satisfies the characteristic equation.
