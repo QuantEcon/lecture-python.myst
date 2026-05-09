@@ -264,13 +264,12 @@ We next study the bias and efficiency of the Monte Carlo and importance sampling
 The code  below produces distributions of estimates using both Monte Carlo and importance sampling methods.
 
 ```{code-cell} ipython3
-@jit(parallel=True)
 def simulate(p_a, p_b, q_a, q_b, N_simu, T=1):
 
     μ_L_p = np.empty(N_simu)
     μ_L_q = np.empty(N_simu)
 
-    for i in prange(N_simu):
+    for i in range(N_simu):
         μ_L_p[i] = estimate(p_a, p_b, p_a, p_b, T=T)
         μ_L_q[i] = estimate(p_a, p_b, q_a, q_b, T=T)
 

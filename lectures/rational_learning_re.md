@@ -33,9 +33,10 @@ This lecture explores a classic question in economic theory: can agents **learn*
 {cite}`BrayKreps1987` examine this question in a rigorously specified model.
 
 In a rational expectations equilibrium, agents use market prices to make inferences about other agents' private information.
+
 Each agent knows the **statistical relationship** between prices and the underlying payoff-relevant variables — and that relationship is **correct** given the equilibrium.
 
-But this raises a deep question: where does that knowledge come from?
+But this raises a  question: where does that knowledge come from?
 
 The **rational learning** approach studied by Bray and Kreps asks whether agents who start with uncertainty about the equilibrium price function can, over time, learn it from observations of past prices.
 
@@ -47,9 +48,9 @@ The key findings are:
 
 This lecture presents the Bray–Kreps framework, works through their benchmark example in detail, and provides Python code to simulate Bayesian learning dynamics.
 
-```{note}
-This lecture draws on {cite}`BrayKreps1987`, Chapter 19 in *Advances in Economic Theory* (1987), which synthesizes earlier work by {cite}`Bray1982`, {cite}`BraySavin1984`, and the rational expectations literature of {cite}`Radner1979`, {cite}`grossman1976`, and {cite}`Jordan1982`.
-```
+
+This lecture describes  {cite}`BrayKreps1987`, Chapter 19 in *Advances in Economic Theory* (1987), which synthesizes earlier work by {cite}`Bray1982`, {cite}`BraySavin1984`, and the rational expectations literature of {cite}`Radner1979`, {cite}`grossman1976`, and {cite}`Jordan1982`.
+
 
 Let's start with the necessary imports.
 
@@ -158,6 +159,7 @@ So $U$'s task is to learn the single parameter $b$ from observations of prices a
 ### Observing the Signal
 
 At date $t$, agent $U$ observes $p_t$.
+
 The signal $U$ extracts is the return implied by the price:
 
 $$
@@ -183,6 +185,7 @@ b \mid \text{data} \sim \mathcal{N}(\mu_t, v_t)
 $$
 
 The posterior is updated using Bayes' rule.
+
 Since $p_t = b \cdot r_t$ (with $a = 0$), each pair $(r_s, p_s)$ provides the observation $p_s = b \cdot r_s$, i.e., a noisy linear measurement of $b$.
 
 For a Gaussian prior and Gaussian likelihood, the posterior updates as:
@@ -195,10 +198,11 @@ $$
 \mu_t = v_t \left( v_0^{-1} \mu_0 + \frac{1}{\sigma^2} \sum_{s=1}^{t} r_s p_s \right)
 $$ (eq:posterior_mean)
 
-```{note}
+
 Equations {eq}`eq:posterior_precision` and {eq}`eq:posterior_mean` follow from the standard Gaussian linear regression posterior.
+
 Each observation $(r_s, p_s)$ with $p_s = b r_s + 0$ is treated as a noisy signal of $b$ with signal-to-noise ratio $r_s^2 / \sigma^2$.
-```
+
 
 ### The Key Convergence Result
 
@@ -348,6 +352,7 @@ plt.show()
 ```
 
 The left panel shows that regardless of the (misspecified) prior mean, agent $U$'s posterior mean converges to the true equilibrium value $b^* = 2$.
+
 The right panel confirms that the posterior variance vanishes at rate $1/t$, consistent with the formula in {eq}`eq:posterior_precision`.
 
 ## The Demand and Equilibrium
@@ -477,6 +482,7 @@ The more subtle failure mode — identified by Bray and Kreps — arises when ag
 
 In the fully general setting, the price at date $t$ depends on $U$'s current beliefs $\mu_t$.
 But $\mu_t$ is updated based on past prices.
+
 This creates a **self-referential** system: beliefs drive prices, and prices update beliefs.
 
 {cite}`BrayKreps1987` show (their Proposition 2 and Section 5) that this feedback can lead to **non-stationary** dynamics and that convergence to the rational expectations equilibrium requires additional conditions — essentially that the economy "settles down" to a stationary relationship before agents learn the parameters of that relationship.
@@ -590,6 +596,7 @@ The main result (Proposition 3) states that even in large general-equilibrium ec
 The formal statement requires some notation.
 
 Let $\theta$ be the vector of unknown parameters of the economy (e.g., preferences, endowments), and let $\phi$ be the state space.
+
 Denote by $F_t(\cdot; \theta)$ the agents' conditional distribution function for $\theta$ at date $t$.
 
 **Theorem (Convergence to REE):**
@@ -611,12 +618,15 @@ While the positive convergence results are elegant, {cite}`BrayKreps1987` are ca
 When the economy admits multiple rational expectations equilibria, agents learning within one equilibrium may receive price signals that are informative about the *current* equilibrium but not necessarily about which equilibrium will prevail in the long run.
 
 A concrete example: suppose there are two spot market equilibria for some payoff-relevant variable $\theta$: one equilibrium at $\theta_1$ and another at $\theta_2$.
+
 The informed agents choose randomly among these each period (since they are indifferent).
+
 The uninformed agent's posterior mean can never converge to a single value — it will bounce between neighborhoods of $\theta_1$ and $\theta_2$.
 
 ### Obstacle 2: Non-Stationarity of Beliefs
 
 Even if the economy has a unique REE, if agents' beliefs are updating over time, the **realized** price process is non-stationary.
+
 In that case, past data provides **biased** information about the future.
 
 This is a **philosophical problem** with the idea of learning in equilibrium: one cannot use data generated by a learning process (in which prices depend on beliefs that are changing) to learn the *stationary* equilibrium relationship.
@@ -626,6 +636,130 @@ This is a **philosophical problem** with the idea of learning in equilibrium: on
 If $U$'s prior assigns zero probability to $b^*$ — that is, if $U$'s model is misspecified — then convergence to $b^*$ is impossible by Bayesian consistency.
 
 {cite}`BrayKreps1987` note (p. 622) that this is a subtle but important caveat: convergence is guaranteed only when the "true $\theta$ may lie outside the set of states $\Omega$" to which the agent's prior assigns positive probability is not the case.
+
+## Learning *Within* versus Learning *About* a Rational Expectations Equilibrium
+
+One of the deepest conceptual contributions of {cite}`BrayKreps1987` is a distinction they draw in their concluding section between two fundamentally different notions of learning in a rational expectations context.
+
+### The Distinction
+
+**Learning *within* a rational expectations equilibrium** is the subject of this lecture.
+The phrase refers to Bayesian inference that takes place *inside* a correctly specified model of the economy.
+
+The uninformed agent knows the true structural form of the price function (that it is linear, that $a = 0$), knows the true distribution of fundamentals, and entertains uncertainty only about the single unknown parameter $b^*$.
+
+Because the true $b^*$ lies in the support of agent $U$'s prior, the agent's model is **correctly specified**.
+
+The Bayesian updating rule — standard Gaussian conjugate updating — is therefore fully rationalized: it is exactly what a rational agent with a correct model would do.
+
+Convergence of beliefs to $b^*$ then follows from the standard Bayesian consistency theorem (Proposition 2 of {cite}`BrayKreps1987`).
+
+**Learning *about* a rational expectations equilibrium** is a quite different enterprise.
+Here the agent does not know the statistical relationship between prices and fundamentals, and that relationship is itself an *endogenous* object — it is determined in equilibrium by the very beliefs the agent is trying to learn.
+
+As Bray and Kreps put it (p. 601):
+
+> *"The question is whether this sequence of stationary relationships, and the equilibrium it engenders, will converge to some stationary relationship, and then agents can learn that stationary relationship long enough to hold on to their initial beliefs."*
+
+The difficulty is that during the learning phase, agents' beliefs are changing, which changes the equilibrium price function, which changes the data used to update beliefs.
+
+The learning process and the equilibrium are **simultaneously evolving**, so the data are generated by a **non-stationary** process that is itself a function of beliefs.
+
+### Why Learning *About* an REE Requires Non-Bayesian Updating
+
+This simultaneity creates a fundamental obstacle to fully rational Bayesian learning.
+
+To see why, suppose agent $U$ attempts to learn $b^*$ by treating the problem as Bayesian inference in a fixed, correctly specified model.
+
+For that to be valid, the agent would need to know:
+
+1. The true structural form of the price function (which depends on the equilibrium).
+2. The distribution of prices conditional on the unknown parameter (which also depends on the equilibrium).
+
+But both of these are themselves functions of the equilibrium that agent $U$ is trying to learn.
+
+If $U$'s beliefs at date $t$ are $\mu_t \neq b^*$, then $U$'s model of the price process is **misspecified** — the prices generated in the economy reflect other agents' optimization given the *actual* (possibly non-stationary) beliefs of $U$, not the stationary REE price function that $U$ is treating as fixed.
+
+Thus, the agent's model can be correctly specified *only if* the economy is already at the rational expectations equilibrium.
+
+But if the economy were already there, there would be nothing to learn.
+
+Bray and Kreps make this point sharply at the end of Section 5 (p. 620):
+
+> *"Note that it is unnecessary to tell U about the allocation contained in previous and current equilibria information, all the information that U could exceed the amount of information in equilibrium prices* [because] *information contained in those equilibrium prices could reflect more information than all agents put together possess.*"
+
+And in their concluding section they observe that the rational-learning model is:
+
+> *"...concerned with learning* within *and learning* about *an equilibrium, and then the sense of* rational learning *within* ... is equivalent to* rational learning about *in some sense other than as formally equivalent to* rational expectations equilibrium."*
+
+The distinction is that learning *within* an REE — our Bayesian model above — is consistent with full rationality because the agent's model is correct.
+
+Learning *about* an REE, by contrast, requires the agent to use data generated by a **non-stationary** process as if it were generated by a stationary REE, which is a form of model misspecification that cannot be rationalized as Bayesian updating with a correct prior.
+
+### The Role of "Irrational" Learning Algorithms
+
+This explains why the literature on learning *about* rational expectations equilibria — going back to {cite}`Bray1982` and {cite}`BraySavin1984`, and extended in the influential work of {cite}`MarcetSargent1989` — tends to rely on **ordinary least squares (OLS)** or other adaptive algorithms rather than Bayes' rule.
+
+```{note}
+{cite}`MarcetSargent1989` use some theorems about stochastic approximation to extend some of Bray and 
+Savin's results to other settings.
+```
+
+In those models, agent $U$ runs a regression of observed prices on observed fundamentals, updating the estimated coefficient as new data arrive.
+
+OLS is consistent and computationally tractable, but it is *not* the optimal rule for an agent who knows the true data-generating process.
+
+It is, as Bray and Kreps call it, a form of **"irrational" learning** — rational in the limited sense of using past data intelligently, but not derivable from Bayes' theorem applied to a correctly specified model.
+
+An OLS learner implicitly assumes the data-generating process is stationary — that the relationship between prices and fundamentals is the same in every period.
+
+But during the learning transition, it is not: the price function shifts as beliefs shift.
+
+OLS ignores this, treating past and present observations as exchangeable draws from a fixed distribution.
+
+This is a misspecification, and the resulting estimates are biased in finite samples, even if they converge in the long run.
+
+Bray and Kreps note (pp. 598–599) that in the models studied by {cite}`Bray1982` and {cite}`BraySavin1984`:
+
+> *"Agents are doing Bayesian updating, but their model is, almost by construction, wrong — they are learning as if the environment were stationary when it is not."*
+
+There is a fundamental **epistemic tension** at the heart of learning about rational expectations equilibria:
+
+* A fully rational (Bayesian, correctly specified) learner can only apply Bayes' rule to a model whose structure is *already known* — but the structure of the REE is exactly what the agent is trying to learn.
+* A learner who uses an adaptive algorithm (OLS, least-mean-squares, etc.) can potentially converge to the REE, but only by using a rule that cannot be derived from Bayesian rationality applied to a correctly specified model.
+
+The benchmark model in this lecture avoids this tension by assumption: agent $U$ knows the structural form of the price function and needs only to learn one parameter.
+
+That is learning *within* an REE — a clean, tractable, and fully rational exercise — but it is also a special case that sidesteps the deeper difficulty of learning *about* an REE from scratch.
+
+
+## Summary
+
+This lecture has discussed  ideas from {cite}`BrayKreps1987`:
+
+1. **Rational expectations equilibria** require agents to know the statistical relationship between prices and fundamentals — but this knowledge is typically assumed, not derived.
+
+2. **Rational learning** asks whether Bayesian agents can *learn* the REE from data.
+   In a benchmark linear model, the answer is yes: the uninformed agent's posterior on the slope parameter $b^*$ converges almost surely to the truth.
+
+3. The convergence relies on **Bayesian consistency** — the uninformed agent accumulates sufficient information to identify $b^*$ from observed prices and returns.
+
+4. Convergence can **fail** when:
+   - There are **multiple equilibria** and agents' learning rules interact with equilibrium selection.
+   - The agent's **model is misspecified** (prior assigns zero weight to the truth).
+   - The learning process generates **non-stationary** prices that contaminate inference.
+
+5. A **general convergence theorem** guarantees that under correct specification and unique equilibria, Bayesian posteriors converge weakly to a point mass at the truth.
+
+6. **Learning *within* versus *about* an REE** is a crucial distinction.
+   The benchmark model in this lecture exemplifies learning *within* an REE: agent $U$ knows the structural form of the price function and uses a correctly specified Bayesian model.
+
+   Learning *about* an REE — where the equilibrium price function is itself the unknown object — is fundamentally harder, because the data-generating process shifts as beliefs shift.
+
+   This non-stationarity means that learning *about* an REE cannot in general be rationalized as Bayes' rule applied to a correctly specified model, which is why the literature on this topic relies on adaptive algorithms such as OLS rather than fully Bayesian updating.
+
+The broader message of Bray and Kreps is that while the mathematics of Bayesian learning is powerful, its application to learning *about* rational expectations equilibria is subtle — and the conditions under which learning succeeds are more restrictive than they might appear.
+
 
 ## Exercises
 
@@ -893,23 +1027,3 @@ print("mixture, leading to noisier information accumulation.")
 
 ```{solution-end}
 ```
-
-## Summary
-
-This lecture has covered the following key ideas from {cite}`BrayKreps1987`:
-
-1. **Rational expectations equilibria** require agents to know the statistical relationship between prices and fundamentals — but this knowledge is typically assumed, not derived.
-
-2. **Rational learning** asks whether Bayesian agents can *learn* the REE from data.
-   In a benchmark linear model, the answer is yes: the uninformed agent's posterior on the slope parameter $b^*$ converges almost surely to the truth.
-
-3. The convergence relies on **Bayesian consistency** — the uninformed agent accumulates sufficient information to identify $b^*$ from observed prices and returns.
-
-4. Convergence can **fail** when:
-   - There are **multiple equilibria** and agents' learning rules interact with equilibrium selection.
-   - The agent's **model is misspecified** (prior assigns zero weight to the truth).
-   - The learning process generates **non-stationary** prices that contaminate inference.
-
-5. A **general convergence theorem** guarantees that under correct specification and unique equilibria, Bayesian posteriors converge weakly to a point mass at the truth.
-
-The broader message of Bray and Kreps is that while the mathematics of Bayesian learning is powerful, its application to learning *about* rational expectations equilibria is subtle — and the conditions under which learning succeeds are more restrictive than they might appear.
