@@ -378,7 +378,7 @@ The key is to identify where the randomness in profits actually comes from.
 Recall that per-period profit is $\pi(x, a, d) = \min(x, d) - ca - \kappa
 \mathbf{1}\{a > 0\}$.
 
-The ordering cost $ca + \kappa \mathbf{1}\{a > 0\}$ is **deterministic** — it
+The ordering cost $ca + \kappa \mathbf{1}\{a > 0\}$ is **deterministic** -- it
 is chosen before the demand shock is realized.
 
 So higher ordering shifts the level of profits down but does not affect their
@@ -387,9 +387,9 @@ variance.
 The variance comes from **revenue**: $\min(x, D)$.
 
 When inventory $x$ is high, $\min(x, D) \approx D$ for most demand
-realizations — revenue inherits the full variance of demand.
+realizations -- revenue inherits the full variance of demand.
 
-When inventory $x$ is low, $\min(x, D) \approx x$ for most realizations —
+When inventory $x$ is low, $\min(x, D) \approx x$ for most realizations --
 revenue is nearly deterministic, capped at the inventory level.
 
 A risk-sensitive agent therefore prefers lower inventory because it **caps the
@@ -484,7 +484,7 @@ $$
     \right].
 $$
 
-This is a fixed point equation in $q$ alone — $v^*$ has been eliminated.
+This is a fixed point equation in $q$ alone -- $v^*$ has been eliminated.
 
 ### The Q-learning update rule
 
@@ -515,7 +515,7 @@ standard Q-learning.
 Notice several differences from the risk-neutral case:
 
 - The Q-values are **positive** (expectations of exponentials) rather than signed.
-- The optimal policy is $\sigma(x) = \argmin_a q(x, a)$ — we **minimize**
+- The optimal policy is $\sigma(x) = \argmin_a q(x, a)$ -- we **minimize**
   rather than maximize, because $\psi^{-1}$ is decreasing.
 - The observed profit enters through $\exp(-\gamma R_{t+1})$ rather than
   additively.
@@ -523,7 +523,7 @@ Notice several differences from the risk-neutral case:
   than a scaled sum $\beta \cdot \max_{a'} q_t$.
 
 As before, the agent needs only to observe $x$, $a$, $R_{t+1}$, and
-$X_{t+1}$ — no model knowledge is required.
+$X_{t+1}$ -- no model knowledge is required.
 
 ### Implementation plan
 
@@ -552,7 +552,7 @@ Our implementation follows the same structure as the risk-neutral Q-learning in
 
 As in {doc}`inventory_q`, we use optimistic initialization to accelerate learning.
 
-The logic is the same — initialize the Q-table so that every untried action looks attractive, driving the agent to explore broadly — but the direction is reversed.
+The logic is the same -- initialize the Q-table so that every untried action looks attractive, driving the agent to explore broadly -- but the direction is reversed.
 
 Since the optimal policy *minimizes* $q$, "optimistic" means initializing the Q-table *below* the true values.  When the agent tries an action, the update pushes $q$ upward toward reality, making that entry look worse and prompting the agent to try other actions that still appear optimistically good.
 

@@ -41,7 +41,7 @@ problems.
 The property justifies a two-step algorithm for computing optimal decision rules:
 
 1. *Optimize* under perfect foresight (treat future exogenous variables as known).
-2. *Forecast* — substitute optimal forecasts for the unknown future values.
+2. *Forecast* -- substitute optimal forecasts for the unknown future values.
 
 This lecture extends the certainty equivalence property in two directions motivated by
 {cite}`hansen2004certainty`:
@@ -58,8 +58,8 @@ This lecture extends the certainty equivalence property in two directions motiva
   parameter $\theta$ and the risk-sensitivity parameter $\sigma$ are linked by
   $\theta = -\sigma^{-1}$.
 
-We illustrate all three settings — ordinary CE, robust CE, and the permanent income
-application — with Python code using `quantecon`.
+We illustrate all three settings -- ordinary CE, robust CE, and the permanent income
+application -- with Python code using `quantecon`.
 
 ### Model features
 
@@ -138,7 +138,7 @@ gain $F$ is invariant to the noise level $\sigma$ while $d$ grows with it.
 ---
 mystnb:
   figure:
-    caption: CE principle — policy vs. value
+    caption: CE principle -- policy vs. value
     name: fig-ce-policy-value
 ---
 a, b_coeff = 0.9, 1.0
@@ -180,7 +180,7 @@ plt.show()
 
 ### Setup and the multiplier problem
 
-The decision maker in Simon and Theil's setting knows his model exactly — he has
+The decision maker in Simon and Theil's setting knows his model exactly -- he has
 no doubt about the transition law {eq}`eq:z_transition_o`.
 
 Now suppose he suspects that the true
@@ -207,7 +207,7 @@ where $\eta_0$ parametrises the tolerated misspecification budget and $\hat{\mat
 is the expectation under the distorted law {eq}`eq:distorted_law`.
 
 To construct a *robust* decision rule the decision maker solves the
-**multiplier problem** — a two-player zero-sum dynamic game:
+**multiplier problem** -- a two-player zero-sum dynamic game:
 
 ```{math}
 :label: eq:multiplier
@@ -555,7 +555,7 @@ equation is
 
 With $\beta R = 1$ (Hall's case), this is
 $\mathbb{E}_t[\mu_{c,t+1}] = \mu_{ct}$, i.e., the **marginal utility of
-consumption is a martingale** — equivalently, consumption follows a random walk.
+consumption is a martingale** -- equivalently, consumption follows a random walk.
 
 The optimal policy is $\mu_{ct} = -F y_t$ where, from the solved-forward
 Euler equation, $F = [(R-1),\ (R-1)/(R - \rho)]$.
@@ -594,7 +594,7 @@ The consumption rule takes the certainty-equivalent form
         \sum_{j=0}^{\infty} R^{-j}(z_{t+j} - b)\right]\right)
 ```
 
-where $h_1$ — the first step of the CE algorithm — is *identical* to the
+where $h_1$ -- the first step of the CE algorithm -- is *identical* to the
 non-robust case.
 
 Only the expectations operator changes.
@@ -607,7 +607,7 @@ The resulting AR(1) dynamics for $\mu_{ct}$ become:
 ```
 
 with $\tilde{\varphi} < 1$, implying $\mathbb{E}_t[c_{t+1}] > c_t$ under the
-approximating model — a form of **precautionary saving**.
+approximating model -- a form of **precautionary saving**.
 
 The observational equivalence formula {eq}`eq:oe_locus` (derived below) immediately
 gives the robust AR(1) coefficient: $\tilde{\varphi} = 1/(\tilde{\beta} R)$
@@ -722,8 +722,8 @@ plt.show()
 ```
 
 The plot confirms the paper's key finding: *activating a preference for
-robustness is observationally equivalent — for consumption and saving behaviour
-— to increasing the discount factor*.
+robustness is observationally equivalent -- for consumption and saving behaviour
+-- to increasing the discount factor*.
 
 However, {cite:t}`HST_1999` show that the two
 parametrisations do *not* imply the same asset prices.

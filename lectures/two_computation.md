@@ -2078,7 +2078,7 @@ The declining profile among retirees reflects the actuarial calculation: older r
 We now plot the aggregate transition paths for the labor tax, government debt, capital, and consumption under both schemes.
 
 ```{code-cell} ipython3
-# hh, tech, ss0, ss1 already in scope — just alias from dict for readability
+# hh, tech, ss0, ss1 already in scope -- just alias from dict for readability
 ss0_exp1 = exp1_exo['ss0']
 ss1_exp1 = exp1_exo['ss1']
 

@@ -225,7 +225,7 @@ The vector $z_t$ plays the role of **instruments**.
 
 The conditional Euler equation $E_t[M_{t+1}R_{t+1}^i - 1] = 0$ says that the pricing error is unpredictable given *everything* in the agent's time-$t$ information set.
 
-That is a very strong restriction — it says the pricing error is orthogonal to every time-$t$ measurable random variable.
+That is a very strong restriction -- it says the pricing error is orthogonal to every time-$t$ measurable random variable.
 
 We cannot use the entire information set in practice, but we can pick any finite collection of time-$t$ observable variables $z_t$ and the orthogonality must still hold.
 
