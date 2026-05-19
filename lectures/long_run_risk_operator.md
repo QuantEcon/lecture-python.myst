@@ -20,7 +20,7 @@ kernelspec:
 </div>
 ```
 
-# Long-Run Risk: An Operator Approach
+# Long-Term Risk: An Operator Approach
 
 ```{contents} Contents
 :depth: 2
@@ -28,1022 +28,1214 @@ kernelspec:
 
 ## Overview
 
-This lecture presents key ideas from {cite}`HansenScheinkman2009`, which develops
-an analytical structure that reveals the long-run risk-return relationship for
-nonlinear continuous-time Markov environments.
+This lecture studies the operator approach to long-term risk developed by
+{cite:t}`HansenScheinkman2009`.
 
-The core insight is that to understand how risky assets are priced over *long*
-horizons — not just instantaneously — we need tools that reach beyond local
-stochastic calculus.
+The paper asks how asset-pricing risk adjustments behave when the payoff
+horizon becomes large.
 
-The paper's main device is a **multiplicative
-decomposition** of a positive stochastic process $\{M_t\}$ into three
-components:
+Local continuous-time asset pricing tells us how expected returns compensate
+investors for instantaneous exposure to Brownian and jump shocks.
+
+Hansen and Scheinkman instead focus on valuation operators indexed by the
+time between the valuation date and the payoff date.
+
+These operators form a *semigroup*.
+
+The central object is a positive multiplicative functional $\{M_t\}_{t \geq 0}$,
+such as a stochastic discount factor, a cumulated return, a stochastic growth
+functional, or a product of discounting and growth.
+
+Under suitable conditions, $M$ admits the factorization
 
 $$
-M_t = e^{\rho t} \hat{M}_t \frac{\phi(X_0)}{\phi(X_t)}
-$$
+    M_t
+    =
+    \exp(\rho t) \hat M_t
+    \frac{\phi(X_0)}{\phi(X_t)} ,
+$$ (eq:hs-factorization)
 
 where
 
-- $e^{\rho t}$ is a deterministic exponential trend governed by an **eigenvalue** $\rho$,
-- $\hat{M}_t$ is a **martingale** that encodes a change of probability measure, and
-- $\phi(X_0)/\phi(X_t)$ is a **transient** (stationary) component built from
-  the **principal eigenfunction** $\phi$ of an operator associated with $M$.
+* $\rho$ is a principal eigenvalue,
+* $\phi$ is a strictly positive principal eigenfunction,
+* $\hat M$ is a martingale used to change probability measure, and
+* $\phi(X_0)/\phi(X_t)$ is a transient state-dependent component.
 
-This factorization is the continuous-time, nonlinear Markov generalization of
-the Perron–Frobenius theorem for positive matrices, and it plays the same role
-that the dominant eigenvalue plays in linear systems: it governs long-run
-growth rates.
+This is the Hansen-Scheinkman factorization.
 
-**What you will learn:**
+It generalizes the Perron-Frobenius decomposition of a positive matrix to
+continuous-time Markov valuation problems.
 
-- What a *multiplicative functional* is and why semigroups arise naturally in
-  asset pricing.
-- How to find the *principal eigenfunction* $\phi$ and eigenvalue $\rho$ for
-  a given semigroup.
-- How the eigenvalue $\rho$ encodes long-run risk-adjusted discount rates.
-- How to compute these objects numerically for a finite-state Markov chain and
-  for a continuous diffusion.
-- How the long-run risk-return trade-off differs from its familiar short-run
-  (local) counterpart.
+For long horizons, the scalar $\rho$ controls the exponential growth or decay
+rate of the relevant valuation semigroup, while $\phi$ controls the limiting
+dependence on the current Markov state.
 
-```{note}
-This lecture focuses on discrete-state and affine (Gaussian / square-root)
-continuous-state examples that admit closed-form or easily-computed
-eigenfunctions. 
+{cite:t}`AlvarezJermann2005` used a related permanent-transitory decomposition
+for stochastic discount factors.
 
-The general theory in {cite}`HansenScheinkman2009` handles
-far more general nonlinear Markov environments.
-```
+{cite:t}`HansenScheinkman2009` link this decomposition to principal
+eigenfunctions and use it to characterize long-run risk-return trade-offs.
 
-Let's start by importing the Python tools we will use.
+This lecture covers
+
+* multiplicative functionals and valuation semigroups,
+* the extended generator associated with a multiplicative functional,
+* principal eigenfunctions and the Hansen-Scheinkman factorization,
+* a finite-state example where the analysis reduces to Perron-Frobenius theory,
+* the affine diffusion example from the paper, and
+* long-run risk prices for persistent growth shocks.
+
+We start with imports.
 
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.linalg import eig, expm
-from scipy.optimize import fsolve
-import warnings
-warnings.filterwarnings('ignore')
 
-plt.rcParams.update({'figure.figsize': (10, 6), 'font.size': 12})
+plt.rcParams.update({
+    "figure.figsize": (10, 6),
+    "font.size": 12
+})
 ```
 
-## Multiplicative Functionals and Semigroups
+## Multiplicative Functionals
 
-### The Asset-Pricing Setup
+Let $\{X_t : t \geq 0\}$ be a continuous-time Markov process with state space
+$\mathcal D_0$.
 
-Fix a continuous-time Markov process $\{X_t : t \ge 0\}$ on a state space
-$\mathcal{D}_0 \subset \mathbb{R}^n$.  A **stochastic discount factor (SDF)**
-process $\{S_t : t \ge 0\}$ prices all assets: the date-$0$ price of a
-payoff $\Pi_t$ at date $t$ is
+Let $\mathcal F_t$ be the filtration generated by the history of $X$.
 
-$$
-E[S_t \Pi_t \mid \mathcal{F}_0].
-$$
-
-The key structural property of $S$ is **temporal consistency**: if we may
-trade at an intermediate date $\tau \le t$, the date-$\tau$ price of the
-payoff $\Pi_t$ must equal
+An adapted functional $\{M_t\}$ is **multiplicative** if $M_0 = 1$ and
 
 $$
-E\!\left[\frac{S_t}{S_\tau} \Pi_t \;\Big|\; \mathcal{F}_\tau\right].
-$$
+    M_{t+u} = M_u(\theta_t) M_t ,
+    \qquad t, u \geq 0,
+$$ (eq:multiplicative)
 
-When prices depend only on the current Markov state, this temporal
-consistency forces $S$ to satisfy a **multiplicative property**.
+where $\theta_t$ shifts the underlying Markov path forward by $t$ units.
 
-### Multiplicative Functionals
+For example, if $S_t$ is a stochastic discount factor, then
+$S_{t+u}/S_t$ is the date-$t$ discount factor for payoffs at date $t+u$.
 
-```{admonition} Definition (Multiplicative Functional)
-A functional $\{M_t : t \ge 0\}$ adapted to the filtration generated by $X$
-is **multiplicative** if $M_0 = 1$ and
+The Markov version of this intertemporal consistency condition is exactly
+{eq}`eq:multiplicative`.
 
-$$
-M_{t+u} = M_u(\theta_t) \cdot M_t \qquad \forall\, t, u \ge 0,
-$$
+When $M_t > 0$, we can write $M_t = \exp(A_t)$.
 
-where $\theta_t$ is the shift operator on the Markov process.
-```
-
-Equivalently, if $A_t = \log M_t$ then $A$ is **additive**:
-$A_0 = 0$ and $A_{t+u} = A_u(\theta_t) + A_t$.
-
-For a diffusion with Brownian motion $B$ and jump compensator $\eta$, the
-general additive functional takes the form
+Then $A$ is additive:
 
 $$
-A_t = \int_0^t \beta(X_u)\,du + \int_0^t \gamma(X_{u-})'\,dB_u
-      + \sum_{0 \le u \le t} \kappa(X_u, X_{u-}),
+    A_{t+u} = A_u(\theta_t) + A_t .
 $$
 
-so $M_t = e^{A_t}$ is parameterized by the triple $(\beta, \gamma, \kappa)$.
-
-### The Semigroup
-
-Given a multiplicative functional $M$, the family of operators
+For the jump-diffusion setting in {cite:t}`HansenScheinkman2009`, a useful
+parameterization is
 
 $$
-\mathbb{M}_t \psi(x) = E[M_t \psi(X_t) \mid X_0 = x]
-$$
+\begin{aligned}
+    A_t
+    &=
+    \int_0^t \beta(X_s) ds
+    + \int_0^t \gamma(X_{s-})^\top dB_s
+    + \sum_{0 \leq s \leq t} \kappa(X_s, X_{s-}) .
+\end{aligned}
+$$ (eq:additive-functional)
 
-forms a **semigroup**: $\mathbb{M}_0 = \mathbb{I}$ and
-$\mathbb{M}_{t+u} = \mathbb{M}_t \mathbb{M}_u$.
+The functions $(\beta, \gamma, \kappa)$ control drift, Brownian exposure, and
+jump scaling.
 
-The semigroup property manifests itself here as  the **iterated-values property** in
-asset pricing — it holds because of frictionless trading at intermediate
-dates.
+In this notation, $\beta$ is allowed to be positive or negative.
 
-Table I of {cite}`HansenScheinkman2009` lists four important semigroups:
+For instance, a pure discount factor with short rate $r(X_t)$ has
+$\beta(x) = -r(x)$.
 
-| Object | Multiplicative Functional | Semigroup |
-|---|---|---|
-| Stochastic discount factor | $S$ | $\{\mathbb{S}_t\}$ |
-| Cumulated return | $V$ | $\{\mathbb{V}_t\}$ |
-| Stochastic growth | $G$ | $\{\mathbb{G}_t\}$ |
-| Valuation with growth | $Q = GS$ | $\{\mathbb{Q}_t\}$ |
+## Semigroups
 
-## The Generator and Its Eigenvalue Problem
-
-### The Extended Generator
-
-The **extended generator** $\mathbb{A}$ of $M$ is defined by: a Borel
-function $\psi$ belongs to the domain of $\mathbb{A}$ if there exists a
-Borel function $\chi$ such that
+A multiplicative functional defines a family of linear operators
 
 $$
-N_t = M_t \psi(X_t) - \psi(X_0) - \int_0^t M_s \chi(X_s)\,ds
-$$
+    \mathbb M_t \psi(x)
+    =
+    E\left[M_t \psi(X_t) \mid X_0 = x\right].
+$$ (eq:m-semigroup)
 
-is a local martingale.  We then write $\chi = \mathbb{A}\psi$.
-
-For a diffusion parameterized by $(\eta, \xi, \Gamma)$ and a multiplicative
-functional $M$ parameterized by $(\beta, \gamma, \kappa)$, the generator
-takes the form
+These operators form a semigroup:
 
 $$
-\mathbb{A}\phi(x)
-= \underbrace{\left[\xi(x) + \Gamma(x)\gamma(x)\right] \cdot
-              \frac{\partial \phi(x)}{\partial x}}_{\text{drift (twisted)}}
-+ \underbrace{\frac{1}{2}
-  \operatorname{tr}\!\left[\Sigma(x)\frac{\partial^2\phi(x)}{\partial x \partial x'}\right]}_{\text{diffusion}}
-+ \underbrace{\int [\phi(y) - \phi(x)]\,
-              e^{\kappa(y,x)}\eta(dy \mid x)}_{\text{jumps}}
-+ \underbrace{\left[\beta(x) + \frac{|\gamma(x)|^2}{2}
-  + \int (e^{\kappa(y,x)} - 1)\,\eta(dy\mid x)\right]\phi(x)}_{\text{level}}
+    \mathbb M_0 = I,
+    \qquad
+    \mathbb M_{t+u} = \mathbb M_t \mathbb M_u .
 $$
 
-where $\Sigma = \Gamma\Gamma'$.
+The proof is just iterated expectations plus the multiplicative property of
+$M$.
 
-### The Principal Eigenvalue Problem
+The paper uses several multiplicative functionals, summarized as follows.
 
-```{admonition} Definition (Principal Eigenfunction)
-A strictly positive Borel function $\phi$ is a **principal eigenfunction**
-of $\mathbb{A}$ with **eigenvalue** $\rho$ if
+| Object | Multiplicative functional | Semigroup |
+|---|---:|---:|
+| stochastic discount factor | $S$ | $\{\mathbb S_t\}$ |
+| cumulated return | $V$ | $\{\mathbb V_t\}$ |
+| stochastic growth | $G$ | $\{\mathbb G_t\}$ |
+| valuation with stochastic growth | $Q = GS$ | $\{\mathbb Q_t\}$ |
 
-$$
-\mathbb{A}\phi = \rho\,\phi.
-$$
-```
+The last case is central for long-run cash-flow pricing.
 
-This is a key equation.
-
-Equivalently (and more computationally useful),
-$\phi$ solves the **principal eigenvalue problem** for the semigroup:
+If a cash flow is
 
 $$
-\mathbb{M}_t \phi = e^{\rho t} \phi \qquad \forall\, t \ge 0.
+    D_t = D_0 G_t \psi(X_t),
 $$
 
-### The Multiplicative Decomposition
-
-Once we have a principal eigenfunction $\phi$ with eigenvalue $\rho$, we
-obtain the **multiplicative factorization** {cite}`HansenScheinkman2009`:
+then its date-$0$ value is
 
 $$
-M_t = e^{\rho t} \,\hat{M}_t\, \frac{\phi(X_0)}{\phi(X_t)},
+    D_0 \mathbb Q_t \psi(X_0),
+    \qquad
+    \mathbb Q_t \psi(x)
+    =
+    E\left[G_t S_t \psi(X_t) \mid X_0=x\right].
 $$
 
-where the **martingale component** is
+The long-horizon behavior of $\mathbb Q_t$ tells us how current prices value
+cash-flow growth risk that materializes far in the future.
+
+## The Generator
+
+The **extended generator** associated with $M$ is the local object that
+corresponds to the semigroup $\{\mathbb M_t\}$.
+
+A Borel function $\psi$ belongs to the domain of the generator $\mathbb A$ if
+there is a Borel function $\chi$ such that
 
 $$
-\hat{M}_t = e^{-\rho t} M_t \frac{\phi(X_t)}{\phi(X_0)}.
+    N_t
+    =
+    M_t \psi(X_t)
+    - \psi(X_0)
+    - \int_0^t M_s \chi(X_s) ds
 $$
+
+is a local martingale.
+
+We then write $\mathbb A \psi = \chi$.
+
+Suppose the Markov state satisfies
+
+$$
+    dX_t^c = \xi(X_t)dt + \Gamma(X_t)dB_t
+$$
+
+between jumps, let $\Sigma = \Gamma \Gamma^\top$, and let
+$\eta(dy \mid x)$ denote the jump compensator.
+
+If $M=\exp(A)$ is parameterized by $(\beta,\gamma,\kappa)$ as in
+{eq}`eq:additive-functional`, then, for smooth $\phi$,
+
+$$
+\begin{aligned}
+\mathbb A \phi(x)
+&=
+\left[\xi(x)+\Gamma(x)\gamma(x)\right]^\top
+    \frac{\partial \phi(x)}{\partial x}
+\\
+&\quad
++ \frac{1}{2}
+  \operatorname{trace}\left[
+    \Sigma(x)
+    \frac{\partial^2\phi(x)}{\partial x \partial x^\top}
+  \right]
+\\
+&\quad
++ \int
+    [\phi(y)-\phi(x)]
+    \exp[\kappa(y,x)] \eta(dy \mid x)
+\\
+&\quad
++ \left[
+    \beta(x)
+    + \frac{\gamma(x)^\top \gamma(x)}{2}
+    + \int
+        \left(\exp[\kappa(y,x)]-1\right)\eta(dy \mid x)
+  \right]\phi(x).
+\end{aligned}
+$$ (eq:extended-generator)
+
+This formula is useful because it converts a long-horizon pricing problem into
+an eigenvalue problem for a local generator.
 
 ```{note}
-{cite}`AlvarezJermann2005` proposed a multiplicative decomposition of the SDF into a permanent martingale component and a transitory component. 
-{cite}`HansenScheinkman2009` established the connection to principal
-eigenfunctions and proved existence and uniqueness results.
+When $M \equiv 1$, {eq}`eq:extended-generator` reduces to the generator of
+the Markov process $X$.
+
+When $M=S$ is a stochastic discount factor, the extra terms encode local
+prices of Brownian and jump risk.
 ```
 
-### Long-Run Dominance
+## Principal Eigenfunctions
 
-Proposition 7.1 of {cite}`HansenScheinkman2009` establishes that, under
-appropriate stability conditions,
-
-$$
-\lim_{t\to\infty} e^{-\rho t} \mathbb{M}_t \psi
-= \phi \int \frac{\psi}{\phi}\,d\hat{\varsigma},
-$$
-
-where $\hat{\varsigma}$ is the stationary distribution of the **twisted**
-(i.e., $\hat{M}$-distorted) Markov process.
-
-This is the long-run counterpart of the Perron–Frobenius theorem: $\rho$
-governs the exponential growth (or decay) rate of the semigroup, and $\phi$
-determines the limiting state dependence.
-
-## Finite-State Markov Chain: The Matrix Case
-
-The continuous-time theory is cleanest when the state space is finite.
-This section works through the finite-state case in detail — it is exactly
-the Perron–Frobenius theorem for non-negative matrices.
-
-### Intensity Matrix and Multiplicative Functional
-
-Let $X$ be a continuous-time Markov chain with $N$ states
-$\{x_1, \ldots, x_N\}$ and **intensity matrix** $\mathbb{U}$
-(with $u_{ij} \ge 0$ for $i \ne j$ and $u_{ii} = -\sum_{j \ne i} u_{ij}$).
-
-A multiplicative functional is parameterized by
-
-- a decay rate $\beta_i \ge 0$ in state $x_i$, and
-- a jump scaling $e^{\kappa(x_j, x_i)}$ when jumping from $x_i$ to $x_j$.
-
-The **generator matrix** $\mathbb{A}$ for the multiplicative semigroup has
-entries
+A Borel function $\phi$ is an eigenfunction of $\mathbb A$ with eigenvalue
+$\rho$ if
 
 $$
-a_{ij} = \begin{cases}
-u_{ii} - \beta_i & \text{if } i = j, \\
-u_{ij}\, e^{\kappa(x_j,\, x_i)} & \text{if } i \ne j.
-\end{cases}
+    \mathbb A \phi = \rho \phi .
+$$ (eq:generator-eigen)
+
+A **principal eigenfunction** is an eigenfunction that is strictly positive.
+
+If $\phi > 0$ solves {eq}`eq:generator-eigen`, then
+
+$$
+    \hat M_t
+    =
+    \exp(-\rho t) M_t
+    \frac{\phi(X_t)}{\phi(X_0)}
+$$ (eq:mhat)
+
+is a local martingale.
+
+When $\hat M$ is a martingale, it defines a new probability measure and gives
+the factorization {eq}`eq:hs-factorization`.
+
+It also gives the semigroup eigenvalue equation
+
+$$
+    \mathbb M_t \phi = \exp(\rho t)\phi,
+    \qquad t \geq 0.
+$$ (eq:semigroup-eigen)
+
+Under stochastic stability restrictions under the $\hat M$-twisted measure,
+Proposition 7.1 of {cite:t}`HansenScheinkman2009` gives the long-run
+approximation
+
+$$
+    \lim_{t \to \infty}
+    \exp(-\rho t)\mathbb M_t \psi
+    =
+    \phi
+    \int \frac{\psi}{\phi} d\hat\varsigma ,
+$$ (eq:long-run-limit)
+
+where $\hat\varsigma$ is the stationary distribution of the twisted Markov
+process.
+
+This is the formal sense in which $\rho$ is the long-run growth rate and
+$\phi$ is the long-run state dependence.
+
+```{note}
+Positive eigenfunctions need not be unique in general state spaces.
+
+The eigenfunction used for long-run approximation must generate a martingale
+and a stochastically stable twisted process.
+
+Proposition 7.2 of {cite:t}`HansenScheinkman2009` shows that these stability
+requirements select the relevant eigenfunction up to scale.
+```
+
+## A Finite-State Markov Chain
+
+We first study a finite-state chain, where the analysis is exactly
+Perron-Frobenius theory.
+
+Let $X$ take values in $\{x_1,\ldots,x_N\}$ and let $U$ be its intensity
+matrix.
+
+Thus $u_{ij} \geq 0$ for $i \neq j$ and each row of $U$ sums to zero.
+
+Let the multiplicative functional have
+
+* a discount or decay rate $r_i$ in state $i$, and
+* a jump multiplier $\exp[\kappa(x_j,x_i)]$ when the state jumps from $i$ to
+  $j$.
+
+The generator matrix $A$ for the multiplicative semigroup is
+
+$$
+    a_{ij}
+    =
+    \begin{cases}
+        u_{ii} - r_i, & i=j, \\
+        u_{ij}\exp[\kappa(x_j,x_i)], & i \neq j .
+    \end{cases}
+$$ (eq:finite-a)
+
+The semigroup is
+
+$$
+    \mathbb M_t = \exp(tA).
 $$
 
-The semigroup is $\mathbb{M}_t = e^{t\mathbb{A}}$ (matrix exponential).
+For an irreducible chain with strictly positive jump multipliers, the
+principal eigenvalue is the real eigenvalue of $A$ with largest real part.
 
-### Finding the Principal Eigenvalue
-
-The principal eigenvalue $\rho$ is the **largest real eigenvalue** of
-$\mathbb{A}$, and the principal eigenfunction $\phi$ is the corresponding
-strictly positive (Perron) eigenvector.
+The associated right eigenvector is strictly positive.
 
 ```{code-cell} ipython3
-def build_generator(U, beta, kappa_mat):
+def build_generator(U, r, kappa):
     """
-    Build the generator matrix A for the multiplicative semigroup.
+    Build the generator matrix for a finite-state multiplicative semigroup.
 
     Parameters
     ----------
-    U : (N, N) array — intensity matrix of X
-    beta : (N,) array — discount rates in each state
-    kappa_mat : (N, N) array — kappa[j, i] = kappa(x_j, x_i)
+    U : array_like, shape (N, N)
+        Intensity matrix of the Markov chain.
+    r : array_like, shape (N,)
+        State-dependent decay rates.
+    kappa : array_like, shape (N, N)
+        kappa[j, i] is the log jump multiplier for a transition i -> j.
 
     Returns
     -------
-    A : (N, N) generator matrix
+    A : ndarray, shape (N, N)
+        Generator of the multiplicative semigroup.
     """
+    U = np.asarray(U, dtype=float)
+    r = np.asarray(r, dtype=float)
+    kappa = np.asarray(kappa, dtype=float)
+
     N = U.shape[0]
-    A = np.zeros((N, N))
+    A = np.empty_like(U)
+
     for i in range(N):
         for j in range(N):
             if i == j:
-                A[i, i] = U[i, i] - beta[i]
+                A[i, i] = U[i, i] - r[i]
             else:
-                A[i, j] = U[i, j] * np.exp(kappa_mat[j, i])
+                A[i, j] = U[i, j] * np.exp(kappa[j, i])
+
     return A
 
 
-def principal_eigen(A):
+def principal_eigenpair(A):
     """
-    Return the largest real eigenvalue and corresponding positive eigenvector.
-
-    Parameters
-    ----------
-    A : (N, N) array
-
-    Returns
-    -------
-    rho : float — principal eigenvalue
-    phi : (N,) array — principal eigenfunction (positive, normalized)
+    Compute the Perron eigenvalue and positive right eigenvector.
     """
-    eigenvalues, eigenvectors = eig(A)
-    # Keep only real eigenvalues
-    real_mask = np.abs(eigenvalues.imag) < 1e-10
-    real_eigs = eigenvalues[real_mask].real
-    real_vecs = eigenvectors[:, real_mask].real
+    vals, vecs = eig(A)
+    idx = np.argmax(vals.real)
 
-    # Largest real eigenvalue
-    idx = np.argmax(real_eigs)
-    rho = real_eigs[idx]
-    phi = real_vecs[:, idx]
+    rho = vals[idx].real
+    phi = vecs[:, idx].real
 
-    # Make positive and normalize
-    if phi.min() < 0:
+    if phi.sum() < 0:
         phi = -phi
-    phi = phi / phi.max()
+
+    # Remove tiny numerical sign errors.
+    if np.any(phi <= 0):
+        phi = np.abs(phi)
+
+    phi = phi / phi.mean()
     return rho, phi
+
+
+def twisted_generator(A, rho, phi):
+    """
+    Generator of the Markov process under the twisted measure.
+    """
+    D = np.diag(phi)
+    D_inv = np.diag(1 / phi)
+    return D_inv @ A @ D - rho * np.eye(len(phi))
+
+
+def stationary_distribution(Q):
+    """
+    Stationary distribution pi for a finite-state intensity matrix Q.
+    """
+    vals, vecs = eig(Q.T)
+    idx = np.argmin(np.abs(vals))
+    pi = vecs[:, idx].real
+
+    if pi.sum() < 0:
+        pi = -pi
+
+    pi = np.maximum(pi, 0)
+    return pi / pi.sum()
 ```
 
-### A Two-State Example: Boom and Recession
+### Two States
 
-Consider an economy that alternates between a **boom** state ($x_1$) and a
-**recession** state ($x_2$).
+Consider a boom-recession economy.
+
+The boom state switches to recession at rate $\lambda_1$, while recession
+switches to boom at rate $\lambda_2$.
 
 ```{code-cell} ipython3
-# Intensity matrix: boom <-> recession
-# Expected duration of boom = 1/lambda_1, recession = 1/lambda_2
-lambda_1 = 0.3   # rate of leaving boom
-lambda_2 = 0.5   # rate of leaving recession
+lambda_1 = 0.30
+lambda_2 = 0.50
 
 U = np.array([[-lambda_1,  lambda_1],
               [ lambda_2, -lambda_2]])
 
-# Stochastic discount factor parameters
-# Higher discount rate in boom (asset prices high, SDF low)
-beta = np.array([0.05, 0.02])   # per-unit-time decay
+r = np.array([0.05, 0.02])
+kappa = np.zeros((2, 2))
 
-# No jump scaling in this example
-kappa_mat = np.zeros((2, 2))
+A = build_generator(U, r, kappa)
+rho, phi = principal_eigenpair(A)
 
-A = build_generator(U, beta, kappa_mat)
-rho, phi = principal_eigen(A)
-
-print("Generator matrix A:")
+print("A =")
 print(np.round(A, 4))
-print(f"\nPrincipal eigenvalue ρ = {rho:.6f}")
-print(f"Principal eigenfunction φ = {phi}")
-print(f"\nInterpretation: long-run SDF decay rate = {rho:.4f} per unit time")
+print(f"\nrho = {rho:.6f}")
+print(f"phi = {phi}")
+print(f"long-run zero-coupon yield = {-rho:.4f}")
 ```
 
+We can verify the eigenvalue equation
+$\mathbb M_t \phi = \exp(\rho t)\phi$.
+
 ```{code-cell} ipython3
-# Verify: M_t φ = exp(ρt) φ  for t = 1, 2, 5
-for t in [1.0, 2.0, 5.0]:
-    Mt = expm(t * A)     # semigroup at time t
-    lhs = Mt @ phi
+for t in [1.0, 5.0, 25.0]:
+    lhs = expm(t * A) @ phi
     rhs = np.exp(rho * t) * phi
-    print(f"t={t}: max |M_t φ - exp(ρt)φ| = {np.max(np.abs(lhs - rhs)):.2e}")
+    err = np.max(np.abs(lhs - rhs))
+    print(f"t = {t:4.1f}, error = {err:.2e}")
 ```
 
+Next we compute the twisted generator and the stationary distribution
+$\hat\varsigma$ under the twisted probability measure.
+
 ```{code-cell} ipython3
-# Show long-run dominance: exp(-ρt) M_t ψ → φ ∫(ψ/φ) dς̂
-# for any ψ
+A_hat = twisted_generator(A, rho, phi)
+varsigma_hat = stationary_distribution(A_hat)
 
-# Compute twisted stationary distribution ς̂ via M̂_t = exp(-ρt) M_t φ(X_t)/φ(X_0)
-# The generator of M̂ is: Â_ij = (1/φ_i) A_ij φ_j  (similarity transform)
-phi_diag_inv = np.diag(1.0 / phi)
-phi_diag     = np.diag(phi)
-A_hat = phi_diag_inv @ A @ phi_diag - rho * np.eye(2)
+print("twisted generator row sums:")
+print(np.round(A_hat.sum(axis=1), 12))
 
-# Stationary distribution of Â: solve π A_hat = 0, sum π = 1
-# (left eigenvector corresponding to eigenvalue 0)
-evals, evecs = eig(A_hat.T)
-idx0 = np.argmin(np.abs(evals.real))
-varsigma_hat = evecs[:, idx0].real
-varsigma_hat = np.abs(varsigma_hat) / np.abs(varsigma_hat).sum()
+print("\ntwisted stationary distribution:")
+print(f"  boom      {varsigma_hat[0]:.4f}")
+print(f"  recession {varsigma_hat[1]:.4f}")
+```
 
-print("Twisted stationary distribution ς̂:")
-print(f"  Boom:      {varsigma_hat[0]:.4f}")
-print(f"  Recession: {varsigma_hat[1]:.4f}")
+For any payoff function $\psi$, the limit in {eq}`eq:long-run-limit` is
 
-# Test convergence for ψ = [1, 2]
+$$
+    \phi
+    \sum_i \frac{\psi_i}{\phi_i}\hat\varsigma_i .
+$$
+
+```{code-cell} ipython3
 psi = np.array([1.0, 2.0])
-limit_theoretical = phi * np.sum((psi / phi) * varsigma_hat)
+limit = phi * np.sum((psi / phi) * varsigma_hat)
 
-for t in [5, 20, 50, 100]:
-    Mt = expm(t * A)
-    approx = np.exp(-rho * t) * Mt @ psi
-    print(f"t={t:3d}: exp(-ρt)M_t ψ = {approx}, theoretical limit = {limit_theoretical}")
+for t in [1, 5, 20, 80]:
+    approx = np.exp(-rho * t) * expm(t * A) @ psi
+    print(f"t = {t:2d}, normalized value = {approx}")
+
+print("\nlimit =", limit)
 ```
 
-### Impact of Jump Scaling
+### Jump Scaling
 
-Now introduce jump scaling: the SDF **jumps up** (positive surprise) when
-transitioning from recession to boom, and jumps down otherwise.
+Now let the multiplicative functional jump when the Markov state changes.
+
+The matrix `kappa_jump` below says that the functional jumps up on a
+recession-to-boom transition and down on a boom-to-recession transition.
 
 ```{code-cell} ipython3
-# kappa_mat[j, i] = kappa(x_j, x_i): jump when going from state i to state j
-kappa_mat2 = np.array([[0.0,  0.3],   # boom <- recession: positive jump
-                        [-0.2, 0.0]]) # recession <- boom: negative jump
+kappa_jump = np.array([[0.0,  0.30],
+                       [-0.20, 0.0]])
 
-A2 = build_generator(U, beta, kappa_mat2)
-rho2, phi2 = principal_eigen(A2)
+A_jump = build_generator(U, r, kappa_jump)
+rho_jump, phi_jump = principal_eigenpair(A_jump)
 
-print(f"Without jumps: ρ = {rho:.6f}")
-print(f"With jumps:    ρ = {rho2:.6f}")
-print(f"\nPrincipal eigenfunctions:")
-print(f"  φ (no jumps):   {phi}")
-print(f"  φ (with jumps): {phi2}")
+print(f"rho without jump scaling = {rho:.6f}")
+print(f"rho with jump scaling    = {rho_jump:.6f}")
+print("\nphi with jump scaling:")
+print(phi_jump)
 ```
 
 ```{code-cell} ipython3
-# Plot how ρ varies with jump size κ_21 (recession -> boom jump)
-kappa_values = np.linspace(-0.5, 0.5, 100)
-rho_values = []
+kappa_grid = np.linspace(-0.5, 0.5, 100)
+rho_grid = np.empty_like(kappa_grid)
 
-for kappa_21 in kappa_values:
-    kmat = np.array([[0.0, kappa_21],
-                     [-0.2, 0.0]])
-    Ak = build_generator(U, beta, kmat)
-    rk, _ = principal_eigen(Ak)
-    rho_values.append(rk)
+for n, k in enumerate(kappa_grid):
+    kappa_temp = np.array([[0.0, k],
+                           [-0.2, 0.0]])
+    A_temp = build_generator(U, r, kappa_temp)
+    rho_grid[n], _ = principal_eigenpair(A_temp)
 
 fig, ax = plt.subplots()
-ax.plot(kappa_values, rho_values, 'b-', lw=2)
-ax.axhline(rho, color='r', ls='--', label=f'ρ (no jumps) = {rho:.4f}')
-ax.axvline(0, color='k', ls=':', lw=0.8)
-ax.set_xlabel('Jump size κ (recession → boom)')
-ax.set_ylabel('Principal eigenvalue ρ')
-ax.set_title('Long-run growth rate as a function of jump scaling')
-ax.legend()
-plt.tight_layout()
+ax.plot(kappa_grid, rho_grid, lw=2)
+ax.axhline(rho, color="black", ls="--", lw=1)
+ax.axvline(0, color="black", ls=":", lw=1)
+ax.set_xlabel("jump log multiplier for recession to boom")
+ax.set_ylabel("principal eigenvalue")
+ax.set_title("Jump Scaling and the Long-Run Growth Rate")
 plt.show()
 ```
 
-## Continuous-State Affine Example
+## The Affine Diffusion Example
 
-{cite}`HansenScheinkman2009` present a Markov diffusion with two components:
-a **Feller square-root process** $X^f$ (stochastic volatility) and an
-**Ornstein–Uhlenbeck process** $X^o$ (predictable growth).
+We now turn to the continuous-state example in {cite:t}`HansenScheinkman2009`.
 
-### State Dynamics
+The state has two independent components.
 
-$$
-dX^f_t = \xi_f(\bar{x}_f - X^f_t)\,dt + \sqrt{X^f_t}\,\sigma_f\,dB^f_t,
-\qquad dX^o_t = \xi_o(\bar{x}_o - X^o_t)\,dt + \sigma_o\,dB^o_t.
-$$
+The first is a Feller square-root process $X^f$, used to model stochastic
+volatility.
 
-Parameter restrictions: $\xi_f, \bar{x}_f > 0$, $2\xi_f \bar{x}_f \ge \sigma_f^2$.
-
-### Multiplicative Functional
-
-Consider a multiplicative functional $M = e^A$ with additive functional
+The second is an Ornstein-Uhlenbeck process $X^o$, used to model predictable
+growth.
 
 $$
-A_t = \bar{\beta} t
-     + \int_0^t \beta_f X^f_s\,ds
-     + \int_0^t \beta_o X^o_s\,ds
-     + \int_0^t \sqrt{X^f_s}\,\gamma_f\,dB^f_s
-     + \int_0^t \gamma_o\,dB^o_s.
-$$
+\begin{aligned}
+dX_t^f
+&=
+\xi_f(\bar x_f - X_t^f)dt
++ \sqrt{X_t^f}\sigma_f dB_t^f,
+\\
+dX_t^o
+&=
+\xi_o(\bar x_o - X_t^o)dt
++ \sigma_o dB_t^o.
+\end{aligned}
+$$ (eq:affine-state)
 
-### Affine Eigenfunction
+The paper normalizes $\sigma_o > 0$ and $\sigma_f < 0$.
 
-Guess an eigenfunction of the form $\phi(x^f, x^o) = e^{c_f x^f + c_o x^o}$.
+The sign of $\sigma_f$ is a convention that makes a positive $B^f$ shock
+reduce volatility.
 
-Substituting into the eigenvalue equation $\mathbb{A}\phi = \rho\phi$ and
-collecting coefficients yields two equations:
-
-**Coefficient of $x^f$:**
-
-$$
-0 = \beta_f + \frac{\gamma_f^2}{2} + c_f(\gamma_f \sigma_f - \xi_f)
-    + c_f^2 \frac{\sigma_f^2}{2}
-$$
-
-This is a **quadratic** in $c_f$:
+Consider a multiplicative functional $M=\exp(A)$ with
 
 $$
-c_f = \frac{(\xi_f - \gamma_f\sigma_f) \pm
-\sqrt{(\xi_f - \gamma_f\sigma_f)^2 - \sigma_f^2(2\beta_f + \gamma_f^2)}}{\sigma_f^2}
+\begin{aligned}
+A_t
+&=
+\bar\beta t
++ \int_0^t \beta_f X_s^f ds
++ \int_0^t \beta_o X_s^o ds
+\\
+&\quad
++ \int_0^t \sqrt{X_s^f}\gamma_f dB_s^f
++ \int_0^t \gamma_o dB_s^o .
+\end{aligned}
+$$ (eq:affine-additive)
+
+Guess an exponential-affine eigenfunction
+
+$$
+    \phi(x^f,x^o) = \exp(c_f x^f + c_o x^o).
 $$
 
-**Coefficient of $x^o$:**
+Substitution into $\mathbb A\phi=\rho\phi$ gives
 
 $$
-0 = \beta_o - c_o \xi_o \implies c_o = \frac{\beta_o}{\xi_o}
+0
+=
+\beta_f
++ \frac{\gamma_f^2}{2}
++ c_f(\gamma_f\sigma_f-\xi_f)
++ c_f^2\frac{\sigma_f^2}{2},
+$$ (eq:cf-eq)
+
+and
+
+$$
+    c_o = \frac{\beta_o}{\xi_o}.
+$$ (eq:co-eq)
+
+The two candidate values for $c_f$ are
+
+$$
+c_f
+=
+\frac{
+    \xi_f-\gamma_f\sigma_f
+    \pm
+    \sqrt{
+        (\xi_f-\gamma_f\sigma_f)^2
+        - \sigma_f^2(2\beta_f+\gamma_f^2)
+    }
+}{\sigma_f^2}.
+$$ (eq:cf-roots)
+
+The eigenvalue is
+
+$$
+\rho
+=
+\bar\beta
++ \frac{\gamma_o^2}{2}
++ c_f \xi_f \bar x_f
++ c_o(\xi_o\bar x_o+\gamma_o\sigma_o)
++ c_o^2 \frac{\sigma_o^2}{2}.
+$$ (eq:affine-rho)
+
+The relevant root is the one that keeps the twisted $X^f$ process mean
+reverting.
+
+Under the twisted measure, the drift of $X^f$ is
+
+$$
+    \xi_f(\bar x_f - x^f)
+    + x^f\sigma_f(\gamma_f+c_f\sigma_f).
 $$
 
-**Eigenvalue:**
+Hence the mean-reversion coefficient is
 
 $$
-\rho = \bar{\beta} + \frac{\gamma_o^2}{2} + c_f \xi_f \bar{x}_f
-       + c_o(\xi_o \bar{x}_o + \gamma_o\sigma_o) + c_o^2\frac{\sigma_o^2}{2}
+    \xi_f - \sigma_f(\gamma_f+c_f\sigma_f),
 $$
 
-The **correct** root for $c_f$ is the one that implies mean reversion in the
-twisted process (so the distorted $X^f$ remains stationary).
+which must be positive.
 
 ```{code-cell} ipython3
 def solve_affine_eigenfunction(params):
     """
-    Solve for the affine eigenfunction of the Hansen-Scheinkman
-    diffusion example.
-
-    Parameters
-    ----------
-    params : dict with keys
-        xi_f, xbar_f, sigma_f : square-root process parameters
-        xi_o, xbar_o, sigma_o : OU process parameters
-        beta_bar, beta_f, beta_o : drift loadings
-        gamma_f, gamma_o : diffusion loadings
-
-    Returns
-    -------
-    cf, co, rho : eigenfunction coefficients and eigenvalue
-    rho_check : sign of drift coefficient in twisted X^f (must be negative)
+    Solve the affine eigenvalue problem from Hansen and Scheinkman.
     """
-    xi_f   = params['xi_f']
-    xbar_f = params['xbar_f']
-    sigma_f = params['sigma_f']
-    xi_o   = params['xi_o']
-    xbar_o = params['xbar_o']
-    sigma_o = params['sigma_o']
-    beta_bar = params['beta_bar']
-    beta_f  = params['beta_f']
-    beta_o  = params['beta_o']
-    gamma_f = params['gamma_f']
-    gamma_o = params['gamma_o']
+    xi_f = params["xi_f"]
+    xbar_f = params["xbar_f"]
+    sigma_f = params["sigma_f"]
+    xi_o = params["xi_o"]
+    xbar_o = params["xbar_o"]
+    sigma_o = params["sigma_o"]
+    beta_bar = params["beta_bar"]
+    beta_f = params["beta_f"]
+    beta_o = params["beta_o"]
+    gamma_f = params["gamma_f"]
+    gamma_o = params["gamma_o"]
 
-    # co from linear equation
     co = beta_o / xi_o
 
-    # cf from quadratic equation
-    discriminant = (xi_f - gamma_f * sigma_f)**2 - sigma_f**2 * (2*beta_f + gamma_f**2)
-    if discriminant < 0:
-        raise ValueError("No real solution for c_f; check parameters.")
+    disc = ((xi_f - gamma_f * sigma_f) ** 2
+            - sigma_f ** 2 * (2 * beta_f + gamma_f ** 2))
 
-    cf_plus  = ((xi_f - gamma_f*sigma_f) + np.sqrt(discriminant)) / sigma_f**2
-    cf_minus = ((xi_f - gamma_f*sigma_f) - np.sqrt(discriminant)) / sigma_f**2
+    if disc < 0:
+        raise ValueError("No real affine eigenfunction for these parameters.")
 
-    # Select root giving mean reversion in twisted X^f
-    # Twisted drift coefficient on x^f: xi_f - sigma_f^2 * cf
-    # (must be negative for stationarity)
-    def twisted_drift_coef(cf):
-        return -(xi_f - sigma_f * (gamma_f + cf * sigma_f))
+    root = np.sqrt(disc)
+    cf_plus = ((xi_f - gamma_f * sigma_f) + root) / sigma_f ** 2
+    cf_minus = ((xi_f - gamma_f * sigma_f) - root) / sigma_f ** 2
 
-    drift_plus  = twisted_drift_coef(cf_plus)
-    drift_minus = twisted_drift_coef(cf_minus)
+    def mean_reversion(cf):
+        return xi_f - sigma_f * (gamma_f + cf * sigma_f)
 
-    # Choose cf so that twisted process is mean reverting (drift_coef < 0)
-    if drift_minus < 0:
-        cf = cf_minus
-    elif drift_plus < 0:
-        cf = cf_plus
-    else:
-        # Pick the one with smaller |cf|
-        cf = cf_minus if abs(cf_minus) < abs(cf_plus) else cf_plus
+    candidates = [(cf_minus, mean_reversion(cf_minus)),
+                  (cf_plus, mean_reversion(cf_plus))]
 
-    # Eigenvalue
+    stationary = [(cf, mr) for cf, mr in candidates if mr > 0]
+
+    if not stationary:
+        raise ValueError("Neither root gives a stationary twisted process.")
+
+    cf, mr = stationary[0]
+
     rho = (beta_bar
-           + gamma_o**2 / 2
+           + gamma_o ** 2 / 2
            + cf * xi_f * xbar_f
            + co * (xi_o * xbar_o + gamma_o * sigma_o)
-           + co**2 * sigma_o**2 / 2)
+           + co ** 2 * sigma_o ** 2 / 2)
 
-    return cf, co, rho
+    return cf, co, rho, mr
 ```
 
+### A Breeden SDF
+
+{cite:t}`Breeden1979` studies a consumption-based continuous-time asset
+pricing model.
+
+In the present state specification, suppose log consumption satisfies
+
+$$
+    dc_t
+    =
+    X_t^o dt
+    + \sqrt{X_t^f}\vartheta_f dB_t^f
+    + \vartheta_o dB_t^o .
+$$
+
+With time-separable CRRA utility and subjective discount rate $b$, the
+stochastic discount factor is
+
+$$
+    S_t
+    =
+    \exp(-bt-a(c_t-c_0)).
+$$
+
+Thus it has the affine parameters
+
+$$
+    \bar\beta^s = -b,
+    \qquad
+    \beta_f^s = 0,
+    \qquad
+    \beta_o^s = -a,
+    \qquad
+    \gamma_f^s = -a\vartheta_f,
+    \qquad
+    \gamma_o^s = -a\vartheta_o .
+$$ (eq:breeden-sdf-params)
+
+Recursive preferences of {cite:t}`Kreps_Porteus1978` and
+{cite:t}`Epstein_Zin1989`, used in long-run risk models such as
+{cite:t}`Bansal_Yaron_2004`, add forward-looking terms to the SDF.
+
+The operator calculations below are the same once the parameters
+$(\bar\beta,\beta_f,\beta_o,\gamma_f,\gamma_o)$ are specified.
+
 ```{code-cell} ipython3
-# Breeden (1979) consumption-based model parameters
-# (Section 3.3 and 8.1 of Hansen-Scheinkman 2009)
-params_breeden = {
-    'xi_f'  : 2.5,    # mean reversion speed of X^f
-    'xbar_f': 0.04,   # long-run mean of X^f (average variance)
-    'sigma_f': -0.1,  # volatility of X^f (negative by convention)
-    'xi_o'  : 0.1,    # mean reversion speed of X^o
-    'xbar_o': 0.02,   # long-run mean of X^o (average growth)
-    'sigma_o': 0.02,  # volatility of X^o
-    # Stochastic discount factor loadings (Breeden CRRA with risk aversion a)
-    'a'     : 5.0,    # risk aversion
-    'theta_f': 1.0,   # consumption-volatility loading
-    'theta_o': 1.0,   # consumption-growth loading
+params_state = {
+    "xi_f": 0.70,
+    "xbar_f": 0.04,
+    "sigma_f": -0.20,
+    "xi_o": 0.50,
+    "xbar_o": 0.02,
+    "sigma_o": 0.01,
 }
 
-a  = params_breeden['a']
-theta_f = params_breeden['theta_f']
-theta_o = params_breeden['theta_o']
-sigma_f = params_breeden['sigma_f']
-sigma_o = params_breeden['sigma_o']
-xi_f    = params_breeden['xi_f']
-xi_o    = params_breeden['xi_o']
-
-# For the Breeden SDF: S_t = exp(A^s_t) where
-#   beta_bar = -b (subjective discount rate)
-#   beta_f   = -a * beta_o_in_sdf (risk aversion x volatility loading)
-#   gamma_f  = -a * sqrt(x^f) * theta_f  => loading
-#   gamma_o  = -a * theta_o
-b = 0.03   # subjective discount rate
+a = 4.0
+b = 0.03
+theta_f = 0.06
+theta_o = 0.02
 
 params_sdf = {
-    'xi_f'   : xi_f,
-    'xbar_f' : params_breeden['xbar_f'],
-    'sigma_f': sigma_f,
-    'xi_o'   : xi_o,
-    'xbar_o' : params_breeden['xbar_o'],
-    'sigma_o': sigma_o,
-    'beta_bar': -b,
-    'beta_f'  : 0.0,       # no x^f level loading in SDF
-    'beta_o'  : -a * params_breeden['xbar_o'],   # approximate
-    'gamma_f' : -a * theta_f,
-    'gamma_o' : -a * theta_o,
+    **params_state,
+    "beta_bar": -b,
+    "beta_f": 0.0,
+    "beta_o": -a,
+    "gamma_f": -a * theta_f,
+    "gamma_o": -a * theta_o,
 }
 
-cf, co, rho = solve_affine_eigenfunction(params_sdf)
+cf_s, co_s, rho_s, mr_s = solve_affine_eigenfunction(params_sdf)
 
-print("Affine eigenfunction φ(x^f, x^o) = exp(c_f x^f + c_o x^o)")
-print(f"  c_f = {cf:.6f}")
-print(f"  c_o = {co:.6f}")
-print(f"\nPrincipal eigenvalue ρ = {rho:.6f}")
-print(f"\nInterpretation:")
-print(f"  Long-run SDF growth rate = {rho:.4f}")
-print(f"  Long-run risk-free rate ≈ {-rho:.4f}")
+print("principal eigenfunction phi(xf, xo) = exp(cf xf + co xo)")
+print(f"cf = {cf_s:.6f}")
+print(f"co = {co_s:.6f}")
+print(f"rho = {rho_s:.6f}")
+print(f"twisted mean-reversion coefficient for Xf = {mr_s:.6f}")
+print(f"long-run zero-coupon yield = {-rho_s:.4f}")
 ```
 
-### Sensitivity to Risk Aversion
-
-A key result of {cite}`HansenScheinkman2009` is that the eigenvalue $\rho$
-encodes the long-run risk adjustment.
-
-We can trace out a **long-run
-risk-return frontier** by varying risk exposure.
+The rejected root for $c_f$ would make the twisted volatility process
+explosive rather than stationary.
 
 ```{code-cell} ipython3
-# Vary risk aversion and trace the long-run eigenvalue
-a_values = np.linspace(0.5, 10.0, 50)
-rho_values = []
+xi_f = params_sdf["xi_f"]
+sigma_f = params_sdf["sigma_f"]
+gamma_f = params_sdf["gamma_f"]
+beta_f = params_sdf["beta_f"]
 
-for a_val in a_values:
-    p = dict(params_sdf)   # copy
-    p['beta_o']  = -a_val * params_breeden['xbar_o']
-    p['gamma_f'] = -a_val * theta_f
-    p['gamma_o'] = -a_val * theta_o
-    try:
-        _, _, rho_val = solve_affine_eigenfunction(p)
-        rho_values.append(rho_val)
-    except ValueError:
-        rho_values.append(np.nan)
+disc = ((xi_f - gamma_f * sigma_f) ** 2
+        - sigma_f ** 2 * (2 * beta_f + gamma_f ** 2))
+root = np.sqrt(disc)
 
-fig, ax = plt.subplots()
-ax.plot(a_values, rho_values, 'b-', lw=2)
-ax.set_xlabel('Risk aversion $a$')
-ax.set_ylabel('Principal eigenvalue $\\rho$')
-ax.set_title('Long-run decay rate of SDF vs. risk aversion')
-ax.axhline(0, color='k', ls=':', lw=0.8)
-plt.tight_layout()
-plt.show()
+cf_candidates = np.array([
+    ((xi_f - gamma_f * sigma_f) - root) / sigma_f ** 2,
+    ((xi_f - gamma_f * sigma_f) + root) / sigma_f ** 2
+])
+
+for cf in cf_candidates:
+    mr = xi_f - sigma_f * (gamma_f + cf * sigma_f)
+    print(f"cf = {cf:8.4f}, twisted mean reversion = {mr:8.4f}")
 ```
 
-## The Multiplicative Decomposition in the Diffusion Example
+### The Martingale Component
 
-Given the affine eigenfunction, we can explicitly construct the martingale
-component $\hat{M}$ and illustrate the decomposition.
-
-The martingale $\hat{M}_t = e^{\hat{A}_t}$ where
+For the affine example, the martingale component has log
 
 $$
-\hat{A}_t = \int_0^t \sqrt{X^f_s}(\gamma_f + c_f\sigma_f)\,dB^f_s
-           + \int_0^t (\gamma_o + c_o\sigma_o)\,dB^o_s
-           - \frac{(\gamma_f + c_f\sigma_f)^2}{2}\int_0^t X^f_s\,ds
-           - \frac{(\gamma_o + c_o\sigma_o)^2}{2} t.
+\begin{aligned}
+\hat A_t
+&=
+\int_0^t
+    \sqrt{X_s^f}(\gamma_f+c_f\sigma_f)dB_s^f
++ \int_0^t
+    (\gamma_o+c_o\sigma_o)dB_s^o
+\\
+&\quad
+- \frac{1}{2}
+  \int_0^t
+    X_s^f(\gamma_f+c_f\sigma_f)^2 ds
+- \frac{1}{2}
+  \int_0^t
+    (\gamma_o+c_o\sigma_o)^2 ds .
+\end{aligned}
 $$
 
-The **twisted drift** for $X^f$ under the $\hat{M}$-measure is
+The corresponding drift distortions are
 
 $$
-\xi_f(\bar{x}_f - x^f) + x^f \sigma_f(\gamma_f + c_f\sigma_f),
+\begin{aligned}
+dX_t^f:
+\quad&
+\xi_f(\bar x_f-X_t^f)
++ X_t^f\sigma_f(\gamma_f+c_f\sigma_f),
+\\
+dX_t^o:
+\quad&
+\xi_o(\bar x_o-X_t^o)
++ \sigma_o(\gamma_o+c_o\sigma_o).
+\end{aligned}
 $$
 
-and for $X^o$:
-
-$$
-\xi_o(\bar{x}_o - x^o) + \sigma_o(\gamma_o + c_o\sigma_o).
-$$
+The code below simulates the state and constructs the three factors in
+{eq}`eq:hs-factorization`.
 
 ```{code-cell} ipython3
-def simulate_diffusion(params_sdf, T=50.0, dt=0.01, seed=42):
+def simulate_states(params, T=40.0, dt=0.01, seed=1234):
     """
-    Simulate the Hansen-Scheinkman affine diffusion and
-    the multiplicative decomposition M_t = exp(ρt) M̂_t φ(X0)/φ(X_t).
-
-    Returns
-    -------
-    times : array of time points
-    Xf, Xo : state paths
-    Mt : M_t path
-    Mt_hat : M̂_t path (martingale component)
-    phi_ratio : φ(X0)/φ(X_t) path (transient component)
-    rho : eigenvalue
+    Euler simulation of the affine state process.
     """
     rng = np.random.default_rng(seed)
-    cf, co, rho = solve_affine_eigenfunction(params_sdf)
 
-    xi_f   = params_sdf['xi_f']
-    xbar_f = params_sdf['xbar_f']
-    sigma_f = params_sdf['sigma_f']
-    xi_o   = params_sdf['xi_o']
-    xbar_o = params_sdf['xbar_o']
-    sigma_o = params_sdf['sigma_o']
-    beta_bar = params_sdf['beta_bar']
-    beta_f   = params_sdf['beta_f']
-    beta_o   = params_sdf['beta_o']
-    gamma_f  = params_sdf['gamma_f']
-    gamma_o  = params_sdf['gamma_o']
+    n = int(T / dt)
+    t = np.linspace(0, T, n + 1)
+    Xf = np.empty(n + 1)
+    Xo = np.empty(n + 1)
 
-    n_steps = int(T / dt)
-    times = np.linspace(0, T, n_steps + 1)
+    Xf[0] = params["xbar_f"]
+    Xo[0] = params["xbar_o"]
 
-    # Initialize at long-run means
-    Xf = np.zeros(n_steps + 1)
-    Xo = np.zeros(n_steps + 1)
-    Xf[0] = xbar_f
-    Xo[0] = xbar_o
+    for k in range(n):
+        xf = max(Xf[k], 1e-10)
+        xo = Xo[k]
 
-    # Additive functional A_t (log M_t)
-    A = np.zeros(n_steps + 1)
-    A_hat = np.zeros(n_steps + 1)  # log M̂_t
+        dBf = rng.normal() * np.sqrt(dt)
+        dBo = rng.normal() * np.sqrt(dt)
 
-    for i in range(n_steps):
-        xf = max(Xf[i], 1e-8)
-        xo = Xo[i]
+        Xf[k + 1] = (xf
+                     + params["xi_f"] * (params["xbar_f"] - xf) * dt
+                     + np.sqrt(xf) * params["sigma_f"] * dBf)
+        Xf[k + 1] = max(Xf[k + 1], 1e-10)
 
-        dBf = rng.standard_normal() * np.sqrt(dt)
-        dBo = rng.standard_normal() * np.sqrt(dt)
+        Xo[k + 1] = (xo
+                     + params["xi_o"] * (params["xbar_o"] - xo) * dt
+                     + params["sigma_o"] * dBo)
 
-        # State evolution
-        Xf[i+1] = max(xf + xi_f * (xbar_f - xf) * dt
-                      + np.sqrt(xf) * sigma_f * dBf, 1e-8)
-        Xo[i+1] = xo + xi_o * (xbar_o - xo) * dt + sigma_o * dBo
-
-        # Additive functional increment
-        dA = (beta_bar + beta_f * xf + beta_o * xo) * dt \
-             + np.sqrt(xf) * gamma_f * dBf \
-             + gamma_o * dBo \
-             + 0.5 * (gamma_f**2 * xf + gamma_o**2) * dt  # Ito correction
-
-        A[i+1] = A[i] + dA
-
-        # Martingale component increment
-        dA_hat = (np.sqrt(xf) * (gamma_f + cf * sigma_f) * dBf
-                  + (gamma_o + co * sigma_o) * dBo
-                  - 0.5 * ((gamma_f + cf * sigma_f)**2 * xf
-                           + (gamma_o + co * sigma_o)**2) * dt)
-
-        A_hat[i+1] = A_hat[i] + dA_hat
-
-    phi0 = np.exp(cf * Xf[0] + co * Xo[0])
-    phi_t = np.exp(cf * Xf + co * Xo)
-
-    Mt     = np.exp(A)
-    Mt_hat = np.exp(A_hat)
-    phi_ratio = phi0 / phi_t
-
-    return times, Xf, Xo, Mt, Mt_hat, phi_ratio, rho, cf, co
+    return t, Xf, Xo
 
 
-times, Xf, Xo, Mt, Mt_hat, phi_ratio, rho, cf, co = simulate_diffusion(
-    params_sdf, T=30.0, dt=0.01
-)
+def additive_log_M(params, t, Xf, Xo, seed=1234):
+    """
+    Recompute the Brownian increments used in simulate_states and construct A_t.
+    """
+    rng = np.random.default_rng(seed)
+    dt = t[1] - t[0]
+    A = np.zeros_like(t)
 
-print(f"ρ = {rho:.6f},  c_f = {cf:.4f},  c_o = {co:.4f}")
+    for k in range(len(t) - 1):
+        xf = max(Xf[k], 1e-10)
+        xo = Xo[k]
+
+        dBf = rng.normal() * np.sqrt(dt)
+        dBo = rng.normal() * np.sqrt(dt)
+
+        drift = (params["beta_bar"]
+                 + params["beta_f"] * xf
+                 + params["beta_o"] * xo)
+
+        shock = (np.sqrt(xf) * params["gamma_f"] * dBf
+                 + params["gamma_o"] * dBo)
+
+        A[k + 1] = A[k] + drift * dt + shock
+
+    return A
+
+
+t, Xf, Xo = simulate_states(params_sdf)
+A_log = additive_log_M(params_sdf, t, Xf, Xo)
+
+phi0 = np.exp(cf_s * Xf[0] + co_s * Xo[0])
+phit = np.exp(cf_s * Xf + co_s * Xo)
+
+M = np.exp(A_log)
+M_hat = np.exp(-rho_s * t) * M * phit / phi0
+transient = phi0 / phit
+
+identity_error = np.max(np.abs(M - np.exp(rho_s * t) * M_hat * transient))
+print(f"maximum factorization error = {identity_error:.2e}")
 ```
 
 ```{code-cell} ipython3
-# Plot the three components of the decomposition
 fig, axes = plt.subplots(2, 2, figsize=(12, 8))
 
-ax = axes[0, 0]
-ax.plot(times, Xf, 'b-', lw=1)
-ax.set_title('$X^f_t$ (stochastic volatility)')
-ax.set_xlabel('$t$')
+axes[0, 0].plot(t, Xf)
+axes[0, 0].set_title("$X_t^f$")
+axes[0, 0].set_xlabel("$t$")
 
-ax = axes[0, 1]
-ax.plot(times, Xo, 'g-', lw=1)
-ax.set_title('$X^o_t$ (predictable growth)')
-ax.set_xlabel('$t$')
+axes[0, 1].plot(t, Xo)
+axes[0, 1].set_title("$X_t^o$")
+axes[0, 1].set_xlabel("$t$")
 
-ax = axes[1, 0]
-ax.plot(times, Mt, 'b-', lw=1.5, label='$M_t$')
-ax.plot(times, np.exp(rho * times) * Mt_hat * phi_ratio, 'r--',
-        lw=1, label='$e^{\\rho t}\\hat{M}_t\\phi(X_0)/\\phi(X_t)$')
-ax.set_title('Decomposition check: $M_t = e^{\\rho t}\\hat{M}_t \\phi(X_0)/\\phi(X_t)$')
-ax.set_xlabel('$t$')
-ax.legend(fontsize=9)
+axes[1, 0].plot(t, M, label="$M_t$")
+axes[1, 0].plot(t, np.exp(rho_s * t) * M_hat * transient,
+                "--", label="factorization")
+axes[1, 0].set_title("Multiplicative Factorization")
+axes[1, 0].set_xlabel("$t$")
+axes[1, 0].legend()
 
-ax = axes[1, 1]
-ax.plot(times, np.exp(rho * times), 'k-', lw=1.5, label=f'$e^{{\\rho t}}$, ρ={rho:.4f}')
-ax.plot(times, Mt_hat, 'b-', lw=1, alpha=0.7, label='$\\hat{M}_t$ (martingale)')
-ax.plot(times, phi_ratio, 'r-', lw=1, alpha=0.7, label='$\\phi(X_0)/\\phi(X_t)$ (transient)')
-ax.set_title('Three components of $M_t$')
-ax.set_xlabel('$t$')
-ax.legend(fontsize=9)
+axes[1, 1].plot(t, np.exp(rho_s * t), label="$\\exp(\\rho t)$")
+axes[1, 1].plot(t, M_hat, label="$\\hat M_t$", alpha=0.8)
+axes[1, 1].plot(t, transient, label="$\\phi(X_0)/\\phi(X_t)$", alpha=0.8)
+axes[1, 1].set_title("Three Components")
+axes[1, 1].set_xlabel("$t$")
+axes[1, 1].legend()
 
-plt.suptitle('Multiplicative Decomposition of SDF', fontsize=13, y=1.01)
 plt.tight_layout()
 plt.show()
 ```
 
-## Long-Run Risk-Return Trade-offs
+## Long-Run Risk Prices
 
-### The Short-Run (Local) Trade-off
+Local continuous-time pricing is expressed through instantaneous risk prices.
 
-From Corollary 3.1 of {cite}`HansenScheinkman2009`, the instantaneous
-required expected rate of return for a portfolio with Brownian exposure
-$\gamma_v$ to the SDF with Brownian component $\gamma_s$ is
+Suppose the SDF has Brownian loading $\gamma^s$.
 
-$$
-\varepsilon_v = -\beta_s - \gamma_v \cdot \gamma_s - \frac{|\gamma_s|^2}{2}.
-$$
-
-The vector $-\gamma_s$ contains the **local (instantaneous) risk prices**.
-
-### The Long-Run Trade-off via Changing Cash Flows
-
-For a cash flow $D_t = G_t \psi(X_t) D_0$ with growth functional $G =
-e^{A^g}$, the **long-run risk-adjusted return** is $-\rho + \delta$, where:
-
-- $\delta$ is the expected growth rate of $G$, and
-- $\rho$ is the principal eigenvalue of the semigroup built from $M = GS$.
-
-```{admonition} Long-Run Risk Price Formula
-For the affine diffusion with an Ornstein–Uhlenbeck growth predictor $X^o$,
-the long-run risk price for exposure $\gamma^g_o$ to the $B^o$ shock is
+For a valuation functional with Brownian exposure $\gamma^v$, Corollary 3.1 of
+{cite:t}`HansenScheinkman2009` gives the Brownian part of the local required
+expected return as
 
 $$
-\frac{d\rho}{d\gamma^g_o} = -\gamma^s_o - \frac{\beta^s_o}{\xi_o}\,\sigma_o.
+    -\gamma^v \cdot \gamma^s .
 $$
 
-The term $\beta^s_o / \xi_o$ captures the **persistence effect**: a shock to
-$X^o$ reverberates over a horizon of order $1/\xi_o$.
+Thus the local price of exposure to a Brownian shock is $-\gamma^s$.
 
-The more persistent
-the growth process, the larger the long-run risk price relative to the
-local risk price $-\gamma^s_o$.
-```
+Long-run prices differ because a shock can move persistent state variables
+that influence future cash-flow growth or future discounting.
+
+In the affine model, the local price of exposure to $B^o$ is
+
+$$
+    -\gamma_o^s .
+$$
+
+The long-run price of exposure to $B^o$ in the cash-flow valuation problem is
+
+$$
+    -\gamma_o^s
+    - \frac{\beta_o^s}{\xi_o}\sigma_o .
+$$ (eq:long-run-price-o)
+
+The second term is the persistence adjustment.
+
+A shock to $B^o$ moves the persistent growth predictor $X^o$.
+
+Because $X^o$ mean reverts at rate $\xi_o$, the cumulative effect of the shock
+is larger when $\xi_o$ is smaller.
 
 ```{code-cell} ipython3
-def long_run_risk_return(gamma_g_o_values, params_sdf):
-    """
-    Compute the long-run risk-adjusted return -ρ+δ for varying
-    cash-flow exposure γ^g_o to the B^o shock.
+gamma_s_o = params_sdf["gamma_o"]
+beta_s_o = params_sdf["beta_o"]
+xi_o = params_sdf["xi_o"]
+sigma_o = params_sdf["sigma_o"]
 
-    The combined multiplicative functional M = GS has loadings:
-        gamma_o = gamma_g_o + gamma_s_o
-        beta_o  = beta_s_o  (unchanged, since G is a martingale)
-    """
-    _, _, rho_s = solve_affine_eigenfunction(params_sdf)
-    gamma_s_o = params_sdf['gamma_o']
-    delta = 0.02   # assumed cash-flow growth rate
+local_price_o = -gamma_s_o
+long_run_price_o = -gamma_s_o - (beta_s_o / xi_o) * sigma_o
 
-    rho_vals = []
-    for gamma_g_o in gamma_g_o_values:
-        p = dict(params_sdf)
-        p['gamma_o'] = gamma_s_o + gamma_g_o   # combined loading
-        # beta_bar includes growth correction: delta - (gamma_g_o)^2/2
-        p['beta_bar'] = params_sdf['beta_bar'] + delta - 0.5 * gamma_g_o**2
-        try:
-            _, _, rho_val = solve_affine_eigenfunction(p)
-            rho_vals.append(-rho_val + delta)
-        except ValueError:
-            rho_vals.append(np.nan)
-    return np.array(rho_vals)
+print(f"local price of B^o exposure    = {local_price_o:.4f}")
+print(f"long-run price of B^o exposure = {long_run_price_o:.4f}")
+```
 
+The next cell illustrates how persistence changes the wedge between local and
+long-run prices.
 
-gamma_g_o_vals = np.linspace(-0.5, 0.5, 100)
-ret_vals = long_run_risk_return(gamma_g_o_vals, params_sdf)
-
-# Local risk price: ∂ε_v/∂γ_v = -γ_s_o (constant)
-gamma_s_o = params_sdf['gamma_o']
-local_slope = -gamma_s_o
-local_return = -params_sdf['beta_bar'] + local_slope * gamma_g_o_vals
+```{code-cell} ipython3
+xi_o_grid = np.array([0.10, 0.20, 0.50, 1.00, 2.00, 5.00])
+local_grid = np.full_like(xi_o_grid, local_price_o)
+long_grid = -gamma_s_o - (beta_s_o / xi_o_grid) * sigma_o
 
 fig, ax = plt.subplots()
-ax.plot(gamma_g_o_vals, ret_vals, 'b-', lw=2, label='Long-run return $-\\rho+\\delta$')
-ax.plot(gamma_g_o_vals, local_return, 'r--', lw=2, label='Local return approximation')
-ax.set_xlabel('Cash-flow risk exposure $\\gamma^g_o$')
-ax.set_ylabel('Required rate of return')
-ax.set_title('Long-Run vs. Local Risk-Return Trade-off ($B^o$ exposure)')
+ax.plot(xi_o_grid, local_grid, "--", lw=2, label="local")
+ax.plot(xi_o_grid, long_grid, "o-", lw=2, label="long-run")
+ax.set_xscale("log")
+ax.set_xlabel("mean-reversion speed $\\xi_o$")
+ax.set_ylabel("risk price")
+ax.set_title("Persistence and Long-Run Risk Prices")
 ax.legend()
-plt.tight_layout()
 plt.show()
 ```
 
+### Changing Cash-Flow Risk
+
+Let a cash-flow growth functional be
+
+$$
+\begin{aligned}
+A_t^g
+&=
+\delta t
++ \int_0^t \sqrt{X_s^f}\gamma_f^g dB_s^f
++ \int_0^t \gamma_o^g dB_s^o
+\\
+&\quad
+- \frac{1}{2}
+  \int_0^t
+    \left[
+        X_s^f(\gamma_f^g)^2 + (\gamma_o^g)^2
+    \right] ds .
+\end{aligned}
+$$ (eq:growth-functional)
+
+The last line makes $\exp(A_t^g-\delta t)$ a martingale.
+
+To price the cash flow $D_t=D_0G_t\psi(X_t)$, use the semigroup generated by
+$M=GS$.
+
+The combined affine parameters are
+
+$$
+\begin{aligned}
+\bar\beta &= \bar\beta^s+\delta-\frac{(\gamma_o^g)^2}{2},\\
+\beta_f &= \beta_f^s-\frac{(\gamma_f^g)^2}{2},\\
+\beta_o &= \beta_o^s,\\
+\gamma_f &= \gamma_f^s+\gamma_f^g,\\
+\gamma_o &= \gamma_o^s+\gamma_o^g.
+\end{aligned}
+$$
+
+Let $\rho$ be the principal eigenvalue of this $GS$ semigroup.
+
+Then $-\rho$ is the long-run decay rate in value, and
+
+$$
+    R_\infty = -\rho + \delta
+$$
+
+is the asymptotic required return net of the cash-flow growth rate.
+
 ```{code-cell} ipython3
-# Quantify the long-run risk price vs local risk price
-xi_o    = params_sdf['xi_o']
-sigma_o = params_sdf['sigma_o']
-beta_s_o = params_sdf['beta_o']
+def required_return_for_growth_exposure(gamma_g_o, gamma_g_f=0.0, delta=0.02):
+    """
+    Long-run required return -rho + delta for a cash-flow growth exposure.
+    """
+    p = dict(params_sdf)
+    p["beta_bar"] = params_sdf["beta_bar"] + delta - 0.5 * gamma_g_o ** 2
+    p["beta_f"] = params_sdf["beta_f"] - 0.5 * gamma_g_f ** 2
+    p["beta_o"] = params_sdf["beta_o"]
+    p["gamma_f"] = params_sdf["gamma_f"] + gamma_g_f
+    p["gamma_o"] = params_sdf["gamma_o"] + gamma_g_o
 
-local_price   = -gamma_s_o
-lr_price      = -gamma_s_o - (beta_s_o / xi_o) * sigma_o
+    _, _, rho, _ = solve_affine_eigenfunction(p)
+    return -rho + delta
 
-print("Risk prices for B^o exposure:")
-print(f"  Local (instantaneous) risk price: {local_price:.4f}")
-print(f"  Long-run risk price:              {lr_price:.4f}")
-print(f"  Persistence amplification factor: {(beta_s_o/xi_o)*sigma_o:.4f}")
-print(f"  (= β^s_o/ξ_o × σ_o, captures reverberation over horizon 1/ξ_o={1/xi_o:.1f})")
+
+gamma_g_o_grid = np.linspace(-0.5, 0.5, 101)
+required_returns = np.array([
+    required_return_for_growth_exposure(g) for g in gamma_g_o_grid
+])
+
+local_line = (-params_sdf["beta_bar"]
+              + local_price_o * gamma_g_o_grid)
+
+fig, ax = plt.subplots()
+ax.plot(gamma_g_o_grid, required_returns, lw=2,
+        label="long-run required return")
+ax.plot(gamma_g_o_grid, local_line, "--", lw=2,
+        label="local slope")
+ax.set_xlabel("cash-flow exposure $\\gamma_o^g$")
+ax.set_ylabel("rate of return")
+ax.set_title("Local and Long-Run Pricing of Persistent Growth Risk")
+ax.legend()
+plt.show()
 ```
 
-## Perron–Frobenius Theory and the Finite-State Case
-
-The long-run dominance result (Proposition 7.1 of {cite}`HansenScheinkman2009`)
-is the continuous-time, general Markov generalization of classical
-Perron–Frobenius theory.
-
-Let us illustrate this with a
-three-state Markov chain.
+The slope of the long-run line is the risk price in {eq}`eq:long-run-price-o`.
 
 ```{code-cell} ipython3
-# Three-state example: expansion, normal, contraction
-N = 3
-state_names = ['Expansion', 'Normal', 'Contraction']
+finite_difference = (
+    required_return_for_growth_exposure(0.001)
+    - required_return_for_growth_exposure(-0.001)
+) / 0.002
 
-# Intensity matrix
-U3 = np.array([[-0.4,  0.3,  0.1],
-               [ 0.2, -0.5,  0.3],
-               [ 0.1,  0.2, -0.3]])
+print(f"finite-difference slope = {finite_difference:.6f}")
+print(f"formula                 = {long_run_price_o:.6f}")
+```
 
-# Discount rates (higher in expansion = rich economy)
-beta3 = np.array([0.06, 0.04, 0.01])
+## Perron-Frobenius Dominance
 
-# No jumps
+The finite-state examples make the limiting argument transparent.
+
+Let us repeat the calculation for a three-state chain.
+
+```{code-cell} ipython3
+state_names = ["expansion", "normal", "contraction"]
+
+U3 = np.array([[-0.40,  0.30,  0.10],
+               [ 0.20, -0.50,  0.30],
+               [ 0.10,  0.20, -0.30]])
+
+r3 = np.array([0.06, 0.04, 0.01])
 kappa3 = np.zeros((3, 3))
-A3 = build_generator(U3, beta3, kappa3)
-rho3, phi3 = principal_eigen(A3)
 
-print("Three-state Markov chain")
-print(f"\nGenerator matrix A:")
-print(np.round(A3, 3))
-print(f"\nPrincipal eigenvalue ρ = {rho3:.6f}")
-print(f"Principal eigenfunction φ = {phi3}")
+A3 = build_generator(U3, r3, kappa3)
+rho3, phi3 = principal_eigenpair(A3)
+A3_hat = twisted_generator(A3, rho3, phi3)
+varsigma3 = stationary_distribution(A3_hat)
 
-# Verify Perron-Frobenius dominance
-eigenvalues, _ = eig(A3)
-real_eigs = sorted(eigenvalues.real, reverse=True)
-print(f"\nAll eigenvalues (real parts): {[f'{e:.4f}' for e in real_eigs]}")
-print("ρ is strictly largest: confirms long-run dominance")
+print(f"rho = {rho3:.6f}")
+print(f"phi = {phi3}")
+print(f"varsigma_hat = {varsigma3}")
+
+eigs3 = np.sort(eig(A3, right=False).real)[::-1]
+print("eigenvalues by real part:")
+print(np.round(eigs3, 6))
 ```
 
 ```{code-cell} ipython3
-# Demonstrate long-run dominance: exp(-ρt) M_t ψ → φ ∫(ψ/φ) dς̂
-# for three different initial functions ψ
-
-# Compute twisted stationary distribution
-phi3_diag_inv = np.diag(1.0 / phi3)
-phi3_diag     = np.diag(phi3)
-A3_hat = phi3_diag_inv @ A3 @ phi3_diag - rho3 * np.eye(3)
-
-evals3, evecs3 = eig(A3_hat.T)
-idx0 = np.argmin(np.abs(evals3.real))
-varsigma3 = evecs3[:, idx0].real
-varsigma3 = np.abs(varsigma3) / np.abs(varsigma3).sum()
-
-psi_functions = {
-    'ψ = [1, 0, 0]': np.array([1.0, 0.0, 0.0]),
-    'ψ = [0, 1, 0]': np.array([0.0, 1.0, 0.0]),
-    'ψ = [1, 2, 3]': np.array([1.0, 2.0, 3.0]),
+psi_list = {
+    "$\\psi=(1,0,0)$": np.array([1.0, 0.0, 0.0]),
+    "$\\psi=(0,1,0)$": np.array([0.0, 1.0, 0.0]),
+    "$\\psi=(1,2,3)$": np.array([1.0, 2.0, 3.0]),
 }
 
-t_grid = np.linspace(0, 30, 200)
+t_grid = np.linspace(0, 35, 220)
+colors = ["C0", "C1", "C2"]
+
 fig, axes = plt.subplots(1, 3, figsize=(14, 4))
 
-for ax, (label, psi) in zip(axes, psi_functions.items()):
+for ax, (label, psi) in zip(axes, psi_list.items()):
     limit = phi3 * np.sum((psi / phi3) * varsigma3)
 
-    for state_idx, color in enumerate(['b', 'g', 'r']):
-        vals = []
-        for t in t_grid:
-            Mt = expm(t * A3)
-            approx = np.exp(-rho3 * t) * (Mt @ psi)
-            vals.append(approx[state_idx])
-        ax.plot(t_grid, vals, color=color, lw=1.5, alpha=0.7,
-                label=f'State {state_idx+1}')
-        ax.axhline(limit[state_idx], color=color, ls='--', lw=0.8)
+    for i, color in enumerate(colors):
+        path = []
+        for t_val in t_grid:
+            value = np.exp(-rho3 * t_val) * expm(t_val * A3) @ psi
+            path.append(value[i])
+
+        ax.plot(t_grid, path, color=color, lw=1.5,
+                label=state_names[i])
+        ax.axhline(limit[i], color=color, ls="--", lw=1)
 
     ax.set_title(label)
-    ax.set_xlabel('$t$')
-    ax.set_ylabel('$e^{-\\rho t}\\mathbb{M}_t\\psi$')
+    ax.set_xlabel("$t$")
+    ax.set_ylabel("$\\exp(-\\rho t)\\mathbb{M}_t\\psi$")
 
-axes[0].legend(fontsize=9)
-fig.suptitle('Long-Run Dominance: $e^{-\\rho t}\\mathbb{M}_t\\psi \\to \\phi\\int(\\psi/\\phi)\\,d\\hat{\\varsigma}$\n'
-             '(dashed lines = theoretical limits)', fontsize=11)
+axes[0].legend()
 plt.tight_layout()
 plt.show()
 ```
 
 ## Summary
 
-This lecture has illustrated the main ideas of {cite}`HansenScheinkman2009`:
+The Hansen-Scheinkman approach studies long-run risk by studying
+positive eigenfunctions of valuation semigroups.
 
-1. **Multiplicative functionals** and their associated semigroups are the
-   natural language for intertemporal asset pricing.
+The main steps are:
 
-2. The **principal eigenvalue** $\rho$ and **eigenfunction** $\phi$ of the
-   semigroup generator provide the long-run risk-return relationship:
-   $\rho$ is the asymptotic growth (or decay) rate and $\phi$ determines
-   the limiting state dependence.
+1. Model discounting, growth, or cumulated returns by a positive
+   multiplicative functional $M$.
+2. Build the semigroup
+   $\mathbb M_t\psi(x)=E[M_t\psi(X_t)\mid X_0=x]$.
+3. Solve the principal eigenvalue problem
+   $\mathbb A\phi=\rho\phi$.
+4. Use the factorization
+   $M_t=\exp(\rho t)\hat M_t\phi(X_0)/\phi(X_t)$.
+5. Under the twisted probability measure induced by $\hat M$, use stability
+   to obtain long-run approximations of the form {eq}`eq:long-run-limit`.
 
-3. The **multiplicative decomposition**
-   $M_t = e^{\rho t}\hat{M}_t(\phi(X_0)/\phi(X_t))$
-   separates permanent ($e^{\rho t}\hat{M}_t$) from transient
-   ($\phi(X_0)/\phi(X_t)$) components.
+In finite-state problems, this is Perron-Frobenius theory.
 
-4. In finite-state chains, this is exactly **Perron–Frobenius theory**.
+In affine diffusion problems, exponential-affine eigenfunctions often produce
+closed-form formulas.
 
-5. For the affine diffusion example, the eigenfunction is exponential in
-   the state, and the eigenvalue formula reveals how **persistence**
-   amplifies long-run risk prices beyond their local counterparts.
+The long-run risk prices that emerge can differ sharply from local risk prices
+when shocks move persistent state variables.
+
+This persistence effect is the economic channel emphasized in long-run risk
+asset-pricing models and in the empirical work of {cite:t}`hansen2008consumption`.
 
 ## Exercises
 
@@ -1053,91 +1245,96 @@ This lecture has illustrated the main ideas of {cite}`HansenScheinkman2009`:
 Consider a two-state Markov chain with intensity matrix
 
 $$
-\mathbb{U} = \begin{pmatrix} -\lambda & \lambda \\ \mu & -\mu \end{pmatrix}
+U =
+\begin{pmatrix}
+    -\lambda & \lambda \\
+    \mu & -\mu
+\end{pmatrix}.
 $$
 
-and a multiplicative functional with decay rates $\beta_1 > 0$ in state 1
-and $\beta_2 = 0$ in state 2, and no jump scaling.
+Let the multiplicative functional have decay rate $r_1>0$ in state 1, decay
+rate $r_2=0$ in state 2, and no jump scaling.
 
-(a) Write down the generator matrix $\mathbb{A}$.
+(a) Write down the generator matrix $A$.
 
-(b) Find the principal eigenvalue $\rho$ in terms of $\lambda$, $\mu$,
-    and $\beta_1$.
+(b) Find the principal eigenvalue $\rho$ in terms of $\lambda$, $\mu$, and
+$r_1$.
 
-(c) Verify numerically with $\lambda = 0.4$, $\mu = 0.6$, $\beta_1 = 0.05$
-    that your formula matches the output of `principal_eigen`.
+(c) Verify numerically with $\lambda=0.4$, $\mu=0.6$, and $r_1=0.05$.
 
-(d) Show that $\rho$ lies strictly between $-\beta_1$ and $0$.
+(d) Show that $-r_1 < \rho < 0$.
 ```
 
 ```{solution-start} lrr_ex1
 :class: dropdown
 ```
 
-**(a)** The generator matrix is
+*(a)* The generator is
 
 $$
-\mathbb{A} = \begin{pmatrix} -\lambda - \beta_1 & \lambda \\ \mu & -\mu \end{pmatrix}
+A =
+\begin{pmatrix}
+    -\lambda-r_1 & \lambda \\
+    \mu & -\mu
+\end{pmatrix}.
 $$
 
-**(b)** The eigenvalues solve $\det(\mathbb{A} - \rho I) = 0$:
+*(b)* The characteristic equation is
 
 $$
-(-\lambda - \beta_1 - \rho)(-\mu - \rho) - \lambda\mu = 0
+    \rho^2 + (\lambda+\mu+r_1)\rho + \mu r_1 = 0.
 $$
 
-Expanding:
+Hence the principal eigenvalue is the larger root
 
 $$
-\rho^2 + (\lambda + \mu + \beta_1)\rho + \mu\beta_1 = 0
+\rho
+=
+\frac{
+    -(\lambda+\mu+r_1)
+    + \sqrt{(\lambda+\mu+r_1)^2 - 4\mu r_1}
+}{2}.
 $$
 
-The principal eigenvalue is the larger root:
-
-$$
-\rho = \frac{-(\lambda + \mu + \beta_1) + \sqrt{(\lambda + \mu + \beta_1)^2 - 4\mu\beta_1}}{2}
-$$
-
-**(c)** Numerical verification:
+*(c)* Numerical verification:
 
 ```{code-cell} ipython3
-lam, mu_val, b1 = 0.4, 0.6, 0.05
+lam, mu, r1 = 0.4, 0.6, 0.05
 
-# Analytical formula
-disc = (lam + mu_val + b1)**2 - 4 * mu_val * b1
-rho_analytical = (-( lam + mu_val + b1) + np.sqrt(disc)) / 2
+disc = (lam + mu + r1) ** 2 - 4 * mu * r1
+rho_formula = (-(lam + mu + r1) + np.sqrt(disc)) / 2
 
-# Numerical
-U_ex = np.array([[-lam, lam], [mu_val, -mu_val]])
-beta_ex = np.array([b1, 0.0])
+U_ex = np.array([[-lam, lam],
+                 [mu, -mu]])
+r_ex = np.array([r1, 0.0])
 kappa_ex = np.zeros((2, 2))
-A_ex = build_generator(U_ex, beta_ex, kappa_ex)
-rho_numerical, phi_ex = principal_eigen(A_ex)
 
-print(f"Analytical ρ = {rho_analytical:.8f}")
-print(f"Numerical  ρ = {rho_numerical:.8f}")
-print(f"Difference   = {abs(rho_analytical - rho_numerical):.2e}")
+A_ex = build_generator(U_ex, r_ex, kappa_ex)
+rho_numeric, phi_numeric = principal_eigenpair(A_ex)
+
+print(f"formula  rho = {rho_formula:.8f}")
+print(f"numeric  rho = {rho_numeric:.8f}")
+print(f"difference   = {abs(rho_formula-rho_numeric):.2e}")
 ```
 
-**(d)** From the quadratic $\rho^2 + (\lambda+\mu+\beta_1)\rho + \mu\beta_1 = 0$:
+*(d)* Let
 
-- At $\rho = 0$: LHS $= \mu\beta_1 > 0$.
-- At $\rho = -\beta_1$: LHS $= \beta_1^2 - \lambda\beta_1 = \beta_1(\beta_1 - \lambda)$,
-  which can be positive or negative.
-- At $\rho = -(\lambda+\mu+\beta_1)$: LHS $= \mu\beta_1 > 0$.
+$$
+q(x)=x^2+(\lambda+\mu+r_1)x+\mu r_1.
+$$
 
-Since the parabola opens upward and has two real roots summing to $-(\lambda+\mu+\beta_1) < 0$
-with product $\mu\beta_1 > 0$, both roots are negative.  The larger root $\rho$ satisfies
-$-\beta_1 < \rho < 0$ because:
-- $\rho > -(\lambda+\mu+\beta_1) > -\beta_1 - (\lambda+\mu)$, so clearly $\rho > -\infty$.
-- Evaluating the quadratic at $\rho = 0$ gives $\mu\beta_1 > 0$, so 0 is above the right root.
+Then $q(0)=\mu r_1>0$ and
 
-```{code-cell} ipython3
-print(f"ρ = {rho_numerical:.6f}")
-print(f"-β₁ = {-b1:.6f}")
-print(f"0 = 0")
-print(f"Is -β₁ < ρ < 0? {-b1 < rho_numerical < 0}")
-```
+$$
+q(-r_1)
+=
+-\lambda r_1
+<0.
+$$
+
+Since the parabola opens upward, one root lies in $(-r_1,0)$.
+
+The principal eigenvalue is the larger root, so $-r_1<\rho<0$.
 
 ```{solution-end}
 ```
@@ -1145,23 +1342,29 @@ print(f"Is -β₁ < ρ < 0? {-b1 < rho_numerical < 0}")
 ```{exercise}
 :label: lrr_ex2
 
-**Long-run vs. short-run risk prices in the affine model.**
+In the affine model, compute the local and long-run prices of exposure to
+$B^o$ for
 
-Using the `solve_affine_eigenfunction` function, compute both local and
-long-run risk prices for varying levels of the mean-reversion parameter
-$\xi_o$ of the Ornstein–Uhlenbeck predictor $X^o$.
+$$
+    \xi_o \in \{0.1, 0.2, 0.5, 1, 2, 5\}.
+$$
 
-Specifically, set $\xi_o \in \{0.05, 0.1, 0.2, 0.5, 1.0, 5.0\}$ and for
-each value:
+Use the formulas
 
-(a) Compute the local risk price for $B^o$ exposure: $-\gamma^s_o$.
+$$
+    \text{local price} = -\gamma_o^s
+$$
 
-(b) Compute the long-run risk price formula:
-    $-\gamma^s_o - (\beta^s_o/\xi_o)\sigma_o$.
+and
 
-(c) Plot both as functions of $\xi_o$ on the same axes.
+$$
+    \text{long-run price}
+    =
+    -\gamma_o^s
+    - \frac{\beta_o^s}{\xi_o}\sigma_o .
+$$
 
-(d) Explain intuitively why the two prices converge as $\xi_o \to \infty$.
+Explain why the two prices converge as $\xi_o \to \infty$.
 ```
 
 ```{solution-start} lrr_ex2
@@ -1169,41 +1372,30 @@ each value:
 ```
 
 ```{code-cell} ipython3
-xi_o_values = np.array([0.05, 0.1, 0.2, 0.5, 1.0, 5.0])
+xi_vals = np.array([0.1, 0.2, 0.5, 1.0, 2.0, 5.0])
+local_vals = np.full_like(xi_vals, -params_sdf["gamma_o"])
+long_vals = (-params_sdf["gamma_o"]
+             - (params_sdf["beta_o"] / xi_vals) * params_sdf["sigma_o"])
 
-gamma_s_o  = params_sdf['gamma_o']
-beta_s_o   = params_sdf['beta_o']
-sigma_o_val = params_sdf['sigma_o']
-
-local_price_val = -gamma_s_o   # constant, independent of ξ_o
-
-lr_prices = []
-for xi_o_val in xi_o_values:
-    lr_price_val = -gamma_s_o - (beta_s_o / xi_o_val) * sigma_o_val
-    lr_prices.append(lr_price_val)
+for xi, lp, lrp in zip(xi_vals, local_vals, long_vals):
+    print(f"xi_o = {xi:3.1f}: local = {lp:.4f}, long-run = {lrp:.4f}")
 
 fig, ax = plt.subplots()
-ax.axhline(local_price_val, color='r', ls='--', lw=2, label='Local risk price $-\\gamma^s_o$')
-ax.plot(xi_o_values, lr_prices, 'bo-', lw=2, ms=8, label='Long-run risk price')
-ax.set_xlabel('Mean-reversion speed $\\xi_o$')
-ax.set_ylabel('Risk price')
-ax.set_title('Local vs. Long-Run Risk Prices for $B^o$ Exposure')
+ax.plot(xi_vals, local_vals, "--", lw=2, label="local")
+ax.plot(xi_vals, long_vals, "o-", lw=2, label="long-run")
+ax.set_xscale("log")
+ax.set_xlabel("$\\xi_o$")
+ax.set_ylabel("risk price")
 ax.legend()
-ax.set_xscale('log')
-plt.tight_layout()
 plt.show()
-
-print(f"Local risk price (all ξ_o): {local_price_val:.4f}")
-print("\nξ_o  |  Long-run risk price")
-for xi_o_val, lr in zip(xi_o_values, lr_prices):
-    print(f"{xi_o_val:.2f}  |  {lr:.4f}")
 ```
 
-**(d)** As $\xi_o \to \infty$, shocks to $X^o$ dissipate extremely quickly
-(the process reverts to its mean almost instantaneously).  A shock today
-has no lasting effect, so there is no "reverberation" to price.  The
-persistence amplification term $\beta^s_o \sigma_o / \xi_o \to 0$, and the
-long-run price converges to the local price $-\gamma^s_o$.
+As $\xi_o$ increases, $X^o$ mean reverts faster.
+
+A shock to $B^o$ then has a shorter-lived effect on future expected growth.
+
+The persistence term $(\beta_o^s/\xi_o)\sigma_o$ converges to zero, so the
+long-run price converges to the local price.
 
 ```{solution-end}
 ```
@@ -1211,29 +1403,29 @@ long-run price converges to the local price $-\gamma^s_o$.
 ```{exercise}
 :label: lrr_ex3
 
-**Numerically illustrate long-run dominance for the three-state chain.**
+Using the three-state example, let $\psi=(3,1,2)$.
 
-Using the three-state example from the lecture (stored in `U3`, `beta3`,
-`A3`, `rho3`, `phi3`, `varsigma3`):
+(a) Compute the theoretical limit
 
-(a) For a generic initial function $\psi = [3, 1, 2]$, compute the
-    theoretical long-run limit $\phi \int (\psi/\phi)\,d\hat{\varsigma}$
-    and the path $t \mapsto e^{-\rho t}\mathbb{M}_t\psi$ for each state.
+$$
+    \phi \sum_i \frac{\psi_i}{\phi_i}\hat\varsigma_i .
+$$
 
-(b) Plot the convergence speed: compute
+(b) Plot
 
-    $$
-    \text{error}(t) = \max_i \left|e^{-\rho_3 t}(\mathbb{M}_t \psi)_i
-                            - \phi_i \int \frac{\psi}{\phi}\,d\hat{\varsigma}\right|
-    $$
+$$
+    \max_i
+    \left|
+        \exp(-\rho t)(\mathbb M_t\psi)_i
+        -
+        \phi_i \sum_j \frac{\psi_j}{\phi_j}\hat\varsigma_j
+    \right|
+$$
 
-    and plot $\log(\text{error}(t))$ vs $t$.  What is the approximate
-    rate of convergence?  Compare to the **spectral gap**
-    $\rho_3 - \rho_2$ where $\rho_2$ is the second-largest real eigenvalue.
+on a logarithmic scale.
 
-(c) How does the convergence rate change if you make the chain more
-    "sluggish" by scaling the intensity matrix as
-    $\mathbb{U} \leftarrow 0.1 \times \mathbb{U}_3$?
+(c) Compare the convergence rate to the spectral gap between the largest and
+second-largest real parts of the eigenvalues of $A$.
 ```
 
 ```{solution-start} lrr_ex3
@@ -1241,76 +1433,39 @@ Using the three-state example from the lecture (stored in `U3`, `beta3`,
 ```
 
 ```{code-cell} ipython3
-# (a) Theoretical limit and convergence
-psi_ex3 = np.array([3.0, 1.0, 2.0])
-limit_ex3 = phi3 * np.sum((psi_ex3 / phi3) * varsigma3)
+psi = np.array([3.0, 1.0, 2.0])
+limit = phi3 * np.sum((psi / phi3) * varsigma3)
 
-print("Theoretical long-run limit φ ∫(ψ/φ) dς̂:")
-for i, (s, lim) in enumerate(zip(state_names, limit_ex3)):
-    print(f"  {s}: {lim:.6f}")
+print("limit:")
+for name, value in zip(state_names, limit):
+    print(f"  {name:11s} {value:.6f}")
 
-# (b) Convergence speed
-t_fine = np.linspace(0.01, 40, 300)
-errors = []
+t_vals = np.linspace(0.1, 40, 300)
+errors = np.empty_like(t_vals)
 
-for t in t_fine:
-    Mt = expm(t * A3)
-    approx = np.exp(-rho3 * t) * (Mt @ psi_ex3)
-    errors.append(np.max(np.abs(approx - limit_ex3)))
+for n, t_val in enumerate(t_vals):
+    approx = np.exp(-rho3 * t_val) * expm(t_val * A3) @ psi
+    errors[n] = np.max(np.abs(approx - limit))
 
-# Spectral gap
-evals_A3 = sorted(np.linalg.eigvals(A3).real, reverse=True)
-spectral_gap = evals_A3[0] - evals_A3[1]
-print(f"\nSpectral gap ρ₁ - ρ₂ = {spectral_gap:.4f}")
-print(f"Expected convergence rate ≈ {spectral_gap:.4f}")
+eigenvalues = eig(A3, right=False)
+real_parts = np.sort(eigenvalues.real)[::-1]
+gap = real_parts[0] - real_parts[1]
 
-fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-
-axes[0].semilogy(t_fine, errors, 'b-', lw=2)
-axes[0].set_xlabel('$t$')
-axes[0].set_ylabel('$\\log(\\text{error})$')
-axes[0].set_title('Convergence of $e^{-\\rho t}\\mathbb{M}_t\\psi$ to limit')
-
-# Overlay fitted exponential decay
-t_fit = t_fine[t_fine > 2]
-err_fit = [errors[i] for i, t in enumerate(t_fine) if t > 2]
-log_err = np.log(np.maximum(err_fit, 1e-15))
-t_fit_arr = np.array(t_fit)
-slope = np.polyfit(t_fit_arr, log_err, 1)[0]
-axes[0].plot(t_fine, np.exp(np.log(errors[0]) + slope * t_fine), 'r--',
-             label=f'Fitted rate ≈ {abs(slope):.4f}')
-axes[0].axhline(1e-10, color='k', ls=':', lw=0.8)
-axes[0].legend()
-
-# (c) Sluggish chain
-U3_slow = 0.1 * U3
-A3_slow = build_generator(U3_slow, beta3, kappa3)
-rho3_slow, phi3_slow = principal_eigen(A3_slow)
-
-evals_slow = sorted(np.linalg.eigvals(A3_slow).real, reverse=True)
-gap_slow = evals_slow[0] - evals_slow[1]
-
-errors_slow = []
-for t in t_fine:
-    Mt = expm(t * A3_slow)
-    limit_slow = phi3_slow * np.sum((psi_ex3 / phi3_slow) * varsigma3)
-    approx = np.exp(-rho3_slow * t) * (Mt @ psi_ex3)
-    errors_slow.append(np.max(np.abs(approx - limit_slow)))
-
-axes[1].semilogy(t_fine, errors, 'b-', lw=2, label=f'Original (gap={spectral_gap:.3f})')
-axes[1].semilogy(t_fine, errors_slow, 'r-', lw=2, label=f'Sluggish (gap={gap_slow:.3f})')
-axes[1].set_xlabel('$t$')
-axes[1].set_ylabel('$\\log(\\text{error})$')
-axes[1].set_title('Effect of chain speed on convergence')
-axes[1].legend()
-
-plt.tight_layout()
+fig, ax = plt.subplots()
+ax.semilogy(t_vals, errors, lw=2)
+ax.set_xlabel("$t$")
+ax.set_ylabel("error")
+ax.set_title(f"Convergence to the Principal Eigenfunction, gap = {gap:.4f}")
 plt.show()
 
-print(f"\nOriginal chain:  spectral gap = {spectral_gap:.4f}, fitted rate = {abs(slope):.4f}")
-print(f"Sluggish chain:  spectral gap = {gap_slow:.4f}")
-print("Convergence is slower when the chain is sluggish (smaller spectral gap)")
+print(f"spectral gap = {gap:.6f}")
 ```
+
+The normalized semigroup converges at an exponential rate governed by the
+separation between the dominant eigenvalue and the remaining eigenvalues.
+
+In this finite-state example, that separation is the spectral gap computed
+above.
 
 ```{solution-end}
 ```
