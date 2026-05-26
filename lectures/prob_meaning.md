@@ -406,7 +406,7 @@ $$
 \textrm{Prob}(\theta | Y) \sim \textrm{Beta}(\alpha + Y, \beta + (1-Y))
 $$
 
-**c)** Now pretend that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters  with $\beta = \alpha = .5$. Please write a Python class to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
+**c)**
 
 ```{code-cell} ipython3
 class Bayesian:
@@ -445,7 +445,7 @@ class Bayesian:
             )
 ```
 
-**d)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows from $1, 2, \ldots$.
+**d)**
 
 ```{code-cell} ipython3
 rng = np.random.default_rng(567)
@@ -480,7 +480,7 @@ ax.legend(fontsize=11)
 plt.show()
 ```
 
-**e)** For various $n$'s, please describe and compute  $.05$ and $.95$ quantiles for  posterior probabilities.
+**e)**
 
 ```{code-cell} ipython3
 lower_bound = [post.ppf(0.05) for post in bayes.posterior_list[:10]]
@@ -496,9 +496,7 @@ interval_df
 
 As $n$ increases, we can see that Bayesian coverage intervals narrow and move toward $0.4$.
 
-**f)** Please tell what question a Bayesian coverage interval answers.
-
-The Bayesian coverage interval tells the range of $\theta$ that corresponds to the [$p_1$, $p_2$] quantiles of the cumulative probability distribution (CDF)  of the posterior distribution.
+**f)** The Bayesian coverage interval tells the range of $\theta$ that corresponds to the [$p_1$, $p_2$] quantiles of the cumulative probability distribution (CDF)  of the posterior distribution.
 
 To construct the coverage interval we first compute a posterior distribution of the unknown parameter $\theta$.
 
@@ -508,7 +506,7 @@ $$
 F(a)=p_1,F(b)=p_2
 $$
 
-**g)** Please compute the Posterior probability that $\theta \in [.45, .55]$ for various values of sample size $n$.
+**g)**
 
 ```{code-cell} ipython3
 left_value, right_value = 0.45, 0.55
@@ -548,9 +546,7 @@ When the number of observations becomes large enough, our Bayesian becomes so co
 
 That is why we see a nearly horizontal line when the number of observations exceeds 500.
 
-**h)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
-
-Using the Python class we made above, we can see the evolution of posterior distributions as $n$ approaches infinity.
+**h)** Using the Python class we made above, we can see the evolution of posterior distributions as $n$ approaches infinity.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
