@@ -49,19 +49,11 @@ We provide our own answers as the lecture unfolds, but you'll learn more if you 
 **Code for answering questions:**
 
 
-In addition to what’s in Anaconda, this lecture will deploy the following library:
-
-```{code-cell} ipython3
-:tags: [hide-output]
-pip install prettytable
-```
-
-To answer our coding questions, we'll start with some imports
+To answer our coding questions, we’ll start with some imports
 
 ```{code-cell} ipython3
 import numpy as np
 import pandas as pd
-import prettytable as pt
 import matplotlib.pyplot as plt
 from scipy.stats import binom
 import scipy.stats as st
@@ -161,15 +153,15 @@ class Frequentist:
 
     def compare(self):
         '''Compute and print the comparison.'''
-        n = self.n
-        table = pt.PrettyTable()
-        table.field_names = ['k', 'Theoretical', 'Frequentist']
         self.draw()
-        for i in range(n+1):
-            self.binomial(i)
-            self.compute_fk(i)
-            table.add_row([i, self.P, self.f_kI])
-        print(table)
+        rows = []
+        for k in range(self.n + 1):
+            self.binomial(k)
+            self.compute_fk(k)
+            rows.append([k, self.P, self.f_kI])
+        return pd.DataFrame(
+            rows, columns=['k', 'Theoretical', 'Frequentist']
+        ).set_index('k')
 ```
 
 ```{code-cell} ipython3
