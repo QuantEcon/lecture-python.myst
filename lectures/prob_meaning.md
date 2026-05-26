@@ -327,14 +327,14 @@ Instead, the probability distribution of $\theta$ is now a summary of our views 
   * **before** we have seen **any** data at all, or
   * **before** we have seen **more** data, after we have seen **some** data
 
-Thus, suppose that, before seeing any data, you have a personal prior probability distribution saying that
+Thus, suppose that, before seeing any data, you have a personal prior probability distribution with density
 
 $$
-P(\theta) = \frac{\theta^{\alpha-1}(1-\theta)^{\beta -1}}{B(\alpha, \beta)}
+p(\theta) = \frac{\theta^{\alpha-1}(1-\theta)^{\beta -1}}{B(\alpha, \beta)}
 $$
 
-where $B(\alpha, \beta)$ is a  **beta function** , so that $P(\theta)$ is
-a **beta distribution** with parameters $\alpha, \beta$.
+where $B(\alpha, \beta)$ is a  **beta function** , so that $p(\theta)$ is
+the density of a **beta distribution** with parameters $\alpha, \beta$.
 
 We can update this prior after observing data using Bayes' Law (see {doc}`Probability with Matrices <prob_matrix>` for an introduction).
 
@@ -344,10 +344,10 @@ $$
 L(k | \theta) = {n \choose k} \theta^k (1-\theta)^{n-k}
 $$
 
-Applying Bayes' Law with our beta prior, the **posterior distribution** is
+Applying Bayes' Law with our beta prior, the **posterior density** is
 
 $$
-\textrm{Prob}(\theta | k) = \frac{L(k | \theta) \cdot P(\theta)}{\int_0^1 L(k | \theta) \cdot P(\theta) \, d\theta} = \textrm{Beta}(\alpha + k, \, \beta + n - k)
+p(\theta | k) = \frac{L(k | \theta) \cdot p(\theta)}{\int_0^1 L(k | \theta) \cdot p(\theta) \, d\theta} = \textrm{Beta}(\alpha + k, \, \beta + n - k)
 $$
 
 So the posterior is also a beta distribution — a consequence of the beta prior being **conjugate** to the binomial likelihood.
@@ -383,27 +383,28 @@ $$
 L(Y|\theta) = \theta^Y (1-\theta)^{1-Y}
 $$
 
-**b)** The **posterior** distribution for $\theta$ after observing that single flip:
-
-The prior distribution is
+**b)** By Bayes' Law, the posterior density for $\theta$ after observing a single flip $Y$ is
 
 $$
-\textrm{Prob}(\theta) = \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)}
+p(\theta | Y) = \frac{L(Y | \theta) \cdot p(\theta)}{\int_{0}^{1} L(Y | \theta) \cdot p(\theta) \, d\theta}
 $$
 
-We can derive the posterior distribution for $\theta$ via
+Substituting the likelihood from (a) and the beta prior density, this becomes
 
-\begin{align*}
-  \textrm{Prob}(\theta | Y) &= \frac{\textrm{Prob}(Y | \theta) \textrm{Prob}(\theta)}{\textrm{Prob}(Y)} \\
-  &=\frac{\textrm{Prob}(Y | \theta) \textrm{Prob}(\theta)}{\int_{0}^{1} \textrm{Prob}(Y | \theta) \textrm{Prob}(\theta) d \theta }\\
-  &= \frac{\theta^Y (1-\theta)^{1-Y}\frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)}}{\int_{0}^{1}\theta^Y (1-\theta)^{1-Y}\frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} d \theta } \\
-  &= \frac{ \theta^{Y+\alpha - 1} (1 - \theta)^{1-Y+\beta - 1}}{\int_{0}^{1}\theta^{Y+\alpha - 1} (1 - \theta)^{1-Y+\beta - 1} d \theta}
-\end{align*}
+$$
+p(\theta | Y) = \frac{\theta^Y (1-\theta)^{1-Y} \cdot \theta^{\alpha - 1} (1 - \theta)^{\beta - 1} / B(\alpha, \beta)}{\int_{0}^{1} \theta^Y (1-\theta)^{1-Y} \cdot \theta^{\alpha - 1} (1 - \theta)^{\beta - 1} / B(\alpha, \beta) \, d\theta}
+$$
+
+Collecting powers of $\theta$ and $(1-\theta)$, we recognize the kernel of a beta density:
+
+$$
+p(\theta | Y) = \frac{\theta^{Y+\alpha - 1} (1 - \theta)^{1-Y+\beta - 1}}{\int_{0}^{1} \theta^{Y+\alpha - 1} (1 - \theta)^{1-Y+\beta - 1} \, d\theta}
+$$
 
 which means that
 
 $$
-\textrm{Prob}(\theta | Y) \sim \textrm{Beta}(\alpha + Y, \beta + (1-Y))
+\theta | Y \sim \textrm{Beta}(\alpha + Y, \, \beta + (1-Y))
 $$
 
 **c)**
