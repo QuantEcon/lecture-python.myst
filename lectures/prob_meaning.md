@@ -138,68 +138,44 @@ As usual, a law of large numbers justifies this answer.
 Here is one solution:
 
 ```{code-cell} ipython3
-class frequentist:
+class Frequentist:
 
     def __init__(self, θ, n, I):
-
-        '''
-        initialization
-        -----------------
-        parameters:
-        θ : probability that one toss of a coin will be a head with Y = 1
-        n : number of independent flips in each independent sequence of draws
-        I : number of independent sequence of draws
-
-        '''
-
         self.θ, self.n, self.I = θ, n, I
 
     def binomial(self, k):
-
-        '''compute the theoretical probability for specific input k'''
-
-        θ, n = self.θ, self.n
+        '''Compute the theoretical probability.'''
         self.k = k
-        self.P = binom.pmf(k, n, θ)
+        self.P = binom.pmf(k, self.n, self.θ)
 
     def draw(self):
-
-        '''draw n independent flips for I independent sequences'''
-
+        '''Draw n independent flips for I sequences.'''
         θ, n, I = self.θ, self.n, self.I
         sample = np.random.rand(I, n)
-        Y = (sample <= θ) * 1
-        self.Y = Y
+        self.Y = (sample <= θ).astype(int)
 
-    def compute_fk(self, kk):
-
-        '''compute f_{k}^I for specific input k'''
-
-        Y, I = self.Y, self.I
-        K = np.sum(Y, 1)
-        f_kI = np.sum(K == kk) / I
-        self.f_kI = f_kI
-        self.kk = kk
+    def compute_fk(self, k):
+        '''Compute f_k^I for a given k.'''
+        head_counts = np.sum(self.Y, axis=1)
+        self.f_kI = np.sum(head_counts == k) / self.I
 
     def compare(self):
-
-        '''compute and print the comparison'''
-
+        '''Compute and print the comparison.'''
         n = self.n
-        comp = pt.PrettyTable()
-        comp.field_names = ['k', 'Theoretical', 'Frequentist']
+        table = pt.PrettyTable()
+        table.field_names = ['k', 'Theoretical', 'Frequentist']
         self.draw()
         for i in range(n+1):
             self.binomial(i)
             self.compute_fk(i)
-            comp.add_row([i, self.P, self.f_kI])
-        print(comp)
+            table.add_row([i, self.P, self.f_kI])
+        print(table)
 ```
 
 ```{code-cell} ipython3
 θ, n, k, I = 0.7, 20, 10, 1_000_000
 
-freq = frequentist(θ, n, I)
+freq = Frequentist(θ, n, I)
 
 freq.compare()
 ```
@@ -222,12 +198,12 @@ $$
 We'll vary $\theta$ from $0.01$ to $0.99$ and plot outcomes against $\theta$.
 
 ```{code-cell} ipython3
-θ_low, θ_high, npt = 0.01, 0.99, 50
-thetas = np.linspace(θ_low, θ_high, npt)
+θ_low, θ_high, n_thetas = 0.01, 0.99, 50
+thetas = np.linspace(θ_low, θ_high, n_thetas)
 P = []
 f_kI = []
-for i in range(npt):
-    freq = frequentist(thetas[i], n, I)
+for i in range(n_thetas):
+    freq = Frequentist(thetas[i], n, I)
     freq.binomial(k)
     freq.draw()
     freq.compute_fk(k)
@@ -255,12 +231,12 @@ Now we fix $\theta=0.7, k=10, I=1,000,000$ and vary $n$ from $1$ to $100$.
 Then we'll plot outcomes.
 
 ```{code-cell} ipython3
-n_low, n_high, nn = 1, 100, 50
-ns = np.linspace(n_low, n_high, nn, dtype='int')
+n_low, n_high, n_ns = 1, 100, 50
+ns = np.linspace(n_low, n_high, n_ns, dtype='int')
 P = []
 f_kI = []
-for i in range(nn):
-    freq = frequentist(θ, ns[i], I)
+for i in range(n_ns):
+    freq = Frequentist(θ, ns[i], I)
     freq.binomial(k)
     freq.draw()
     freq.compute_fk(k)
@@ -286,13 +262,13 @@ plt.show()
 Now we fix $\theta=0.7, n=20, k=10$ and vary $\log(I)$ from $2$ to $6$.
 
 ```{code-cell} ipython3
-I_log_low, I_log_high, nI = 2, 6, 200
-log_Is = np.linspace(I_log_low, I_log_high, nI)
+I_log_low, I_log_high, n_Is = 2, 6, 200
+log_Is = np.linspace(I_log_low, I_log_high, n_Is)
 Is = np.power(10, log_Is).astype(int)
 P = []
 f_kI = []
-for i in range(nI):
-    freq = frequentist(θ, n, Is[i])
+for i in range(n_Is):
+    freq = Frequentist(θ, n, Is[i])
     freq.binomial(k)
     freq.draw()
     freq.compute_fk(k)
@@ -430,85 +406,64 @@ Now please pretend that the true value of $\theta = .4$ and that someone who doe
 class Bayesian:
 
     def __init__(self, θ=0.4, n=1_000_000, α=0.5, β=0.5):
-        """
-        Parameters:
+        '''
+        Parameters
         ----------
-        θ : float, ranging from [0,1].
-           probability that one toss of a coin will be a head with Y = 1
-
-        n : int.
-           number of independent flips in an independent sequence of draws
-
-        α&β : int or float.
-             parameters of the prior distribution on θ
-
-        """
+        θ : Probability of heads on each flip.
+        n : Number of flips in the sequence.
+        α, β : Parameters of the beta prior on θ.
+        '''
         self.θ, self.n, self.α, self.β = θ, n, α, β
         self.prior = st.beta(α, β)
 
     def draw(self):
-        """
-        simulate a single sequence of draws of length n, given probability θ
-
-        """
+        '''Simulate a sequence of n coin flips.'''
         array = np.random.rand(self.n)
         self.draws = (array < self.θ).astype(int)
 
-    def form_single_posterior(self, step_num):
-        """
-        form a posterior distribution after observing the first step_num elements of the draws
+    def form_single_posterior(self, n_obs):
+        '''Return the posterior after the first n_obs flips.'''
+        heads = self.draws[:n_obs].sum()
+        tails = n_obs - heads
+        return st.beta(self.α + heads, self.β + tails)
 
-        Parameters
-        ----------
-        step_num: int.
-               number of steps observed to form a posterior distribution
-
-        Returns
-        ------
-        the posterior distribution for sake of plotting in the subsequent steps
-
-        """
-        heads_num = self.draws[:step_num].sum()
-        tails_num = step_num - heads_num
-
-        return st.beta(self.α+heads_num, self.β+tails_num)
-
-    def form_posterior_series(self,num_obs_list):
-        """
-        form a series of posterior distributions that form after observing different number of draws.
-
-        Parameters
-        ----------
-        num_obs_list: a list of int.
-               a list of the number of observations used to form a series of posterior distributions.
-
-        """
+    def form_posterior_series(self, n_obs_list):
+        '''Form posteriors for each sample size in n_obs_list.'''
         self.posterior_list = []
-        for num in num_obs_list:
-            self.posterior_list.append(self.form_single_posterior(num))
+        for n_obs in n_obs_list:
+            self.posterior_list.append(
+                self.form_single_posterior(n_obs)
+            )
 ```
 
 **d)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows from $1, 2, \ldots$.
 
 ```{code-cell} ipython3
-Bay_stat = Bayesian()
-Bay_stat.draw()
+bayes = Bayesian()
+bayes.draw()
 
-num_list = [1, 2, 3, 4, 5, 10, 20, 30, 50, 70, 100, 300, 500, 1000, # this line for finite n
-            5000, 10_000, 50_000, 100_000, 200_000, 300_000]  # this line for approximately infinite n
+n_obs_list = [1, 2, 3, 4, 5, 10, 20, 30, 50, 70,
+              100, 300, 500, 1000,
+              5000, 10_000, 50_000, 100_000,
+              200_000, 300_000]
 
-Bay_stat.form_posterior_series(num_list)
+bayes.form_posterior_series(n_obs_list)
 
-θ_values = np.linspace(0.01, 1, 100)
+θ_values = np.linspace(0.01, 1, 1000)
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
-ax.plot(θ_values, Bay_stat.prior.pdf(θ_values), label='Prior Distribution', color='k', linestyle='--')
+ax.plot(θ_values, bayes.prior.pdf(θ_values),
+        label='Prior Distribution', color='k',
+        linestyle='--')
 
-for ii, num in enumerate(num_list[:14]):
-    ax.plot(θ_values, Bay_stat.posterior_list[ii].pdf(θ_values), label='Posterior with n = %d' % num)
+for i, n_obs in enumerate(n_obs_list[:14]):
+    posterior = bayes.posterior_list[i]
+    ax.plot(θ_values, posterior.pdf(θ_values),
+            label=f'Posterior with n = {n_obs}')
 
-ax.set_title('P.D.F of Posterior Distributions', fontsize=15)
+ax.set_title('P.D.F of Posterior Distributions',
+             fontsize=15)
 ax.set_xlabel(r"$\theta$", fontsize=15)
 
 ax.legend(fontsize=11)
@@ -518,13 +473,13 @@ plt.show()
 **e)** For various $n$'s, please describe and compute  $.05$ and $.95$ quantiles for  posterior probabilities.
 
 ```{code-cell} ipython3
-lower_bound = [ii.ppf(0.05) for ii in Bay_stat.posterior_list[:14]]
-upper_bound = [ii.ppf(0.95) for ii in Bay_stat.posterior_list[:14]]
+lower_bound = [post.ppf(0.05) for post in bayes.posterior_list[:14]]
+upper_bound = [post.ppf(0.95) for post in bayes.posterior_list[:14]]
 
 interval_df = pd.DataFrame()
 interval_df['upper'] = upper_bound
 interval_df['lower'] = lower_bound
-interval_df.index = num_list[:14]
+interval_df.index = n_obs_list[:14]
 interval_df = interval_df.T
 interval_df
 ```
@@ -548,14 +503,20 @@ $$
 ```{code-cell} ipython3
 left_value, right_value = 0.45, 0.55
 
-posterior_prob_list=[ii.cdf(right_value)-ii.cdf(left_value) for ii in Bay_stat.posterior_list]
+posterior_prob_list = [
+    post.cdf(right_value) - post.cdf(left_value)
+    for post in bayes.posterior_list
+]
 
 fig, ax = plt.subplots(figsize=(8, 5))
 ax.plot(posterior_prob_list)
-ax.set_title('Posterior Probabililty that '+ r"$\theta$" +' Ranges from %.2f to %.2f'%(left_value, right_value),
-             fontsize=13)
+ax.set_title(
+    r'Posterior Probability that $\theta$'
+    f' Ranges from {left_value:.2f}'
+    f' to {right_value:.2f}',
+    fontsize=13)
 ax.set_xticks(np.arange(0, len(posterior_prob_list), 3))
-ax.set_xticklabels(num_list[::3])
+ax.set_xticklabels(n_obs_list[::3])
 ax.set_xlabel('Number of Observations', fontsize=11)
 
 plt.show()
@@ -584,10 +545,10 @@ Using the Python class we made above, we can see the evolution of posterior dist
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
 
-for ii, num in enumerate(num_list[14:]):
-    ii += 14
-    ax.plot(θ_values, Bay_stat.posterior_list[ii].pdf(θ_values),
-            label='Posterior with n=%d thousand' % (num/1000))
+for i, n_obs in enumerate(n_obs_list[14:]):
+    posterior = bayes.posterior_list[i + 14]
+    ax.plot(θ_values, posterior.pdf(θ_values),
+            label=f'Posterior with n = {n_obs:,}')
 
 ax.set_title('P.D.F of Posterior Distributions', fontsize=15)
 ax.set_xlabel(r"$\theta$", fontsize=15)
@@ -604,21 +565,23 @@ Here the  posterior mean  converges to $0.4$ while the posterior standard deviat
 To show this, we compute the means and variances statistics of the posterior distributions.
 
 ```{code-cell} ipython3
-mean_list = [ii.mean() for ii in Bay_stat.posterior_list]
-std_list = [ii.std() for ii in Bay_stat.posterior_list]
+mean_list = [post.mean() for post in bayes.posterior_list]
+std_list = [post.std() for post in bayes.posterior_list]
 
 fig, ax = plt.subplots(1, 2, figsize=(14, 5))
 
 ax[0].plot(mean_list)
-ax[0].set_title('Mean Values of Posterior Distribution', fontsize=13)
+ax[0].set_title('Mean of Posterior Distribution',
+                fontsize=13)
 ax[0].set_xticks(np.arange(0, len(mean_list), 3))
-ax[0].set_xticklabels(num_list[::3])
+ax[0].set_xticklabels(n_obs_list[::3])
 ax[0].set_xlabel('Number of Observations', fontsize=11)
 
 ax[1].plot(std_list)
-ax[1].set_title('Standard Deviations of Posterior Distribution', fontsize=13)
+ax[1].set_title('Std Dev of Posterior Distribution',
+                fontsize=13)
 ax[1].set_xticks(np.arange(0, len(std_list), 3))
-ax[1].set_xticklabels(num_list[::3])
+ax[1].set_xticklabels(n_obs_list[::3])
 ax[1].set_xlabel('Number of Observations', fontsize=11)
 
 plt.show()
@@ -669,17 +632,20 @@ According to the Law of Large Numbers, for a large number of observations, obser
 Consequently, the  mean of the posterior distribution converges to $0.4$ and the variance withers to zero.
 
 ```{code-cell} ipython3
-upper_bound = [ii.ppf(0.95) for ii in Bay_stat.posterior_list]
-lower_bound = [ii.ppf(0.05) for ii in Bay_stat.posterior_list]
+upper_bound = [post.ppf(0.95) for post in bayes.posterior_list]
+lower_bound = [post.ppf(0.05) for post in bayes.posterior_list]
 
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.scatter(np.arange(len(upper_bound)), upper_bound, label='95 th Quantile')
-ax.scatter(np.arange(len(lower_bound)), lower_bound, label='05 th Quantile')
+ax.scatter(np.arange(len(upper_bound)),
+           upper_bound, label='95th Quantile')
+ax.scatter(np.arange(len(lower_bound)),
+           lower_bound, label='5th Quantile')
 
 ax.set_xticks(np.arange(0, len(upper_bound), 2))
-ax.set_xticklabels(num_list[::2])
+ax.set_xticklabels(n_obs_list[::2])
 ax.set_xlabel('Number of Observations', fontsize=12)
-ax.set_title('Bayesian Coverage Intervals of Posterior Distributions', fontsize=15)
+ax.set_title('Bayesian Coverage Intervals of '
+             'Posterior Distributions', fontsize=15)
 
 ax.legend(fontsize=11)
 plt.show()
