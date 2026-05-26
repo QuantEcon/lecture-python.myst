@@ -132,8 +132,9 @@ Here is one solution:
 ```{code-cell} ipython3
 class Frequentist:
 
-    def __init__(self, θ, n, I):
+    def __init__(self, θ, n, I, rng=None):
         self.θ, self.n, self.I = θ, n, I
+        self.rng = rng or np.random.default_rng()
 
     def binomial(self, k):
         '''Compute the theoretical probability.'''
@@ -143,7 +144,7 @@ class Frequentist:
     def draw(self):
         '''Draw n independent flips for I sequences.'''
         θ, n, I = self.θ, self.n, self.I
-        sample = np.random.rand(I, n)
+        sample = self.rng.random((I, n))
         self.Y = (sample <= θ).astype(int)
 
     def compute_fk(self, k):
@@ -165,9 +166,10 @@ class Frequentist:
 ```
 
 ```{code-cell} ipython3
+rng = np.random.default_rng(123)
 θ, n, k, I = 0.7, 20, 10, 1_000_000
 
-freq = Frequentist(θ, n, I)
+freq = Frequentist(θ, n, I, rng=rng)
 
 freq.compare()
 ```
@@ -190,12 +192,13 @@ $$
 We'll vary $\theta$ from $0.01$ to $0.99$ and plot outcomes against $\theta$.
 
 ```{code-cell} ipython3
+rng = np.random.default_rng(234)
 θ_low, θ_high, n_thetas = 0.01, 0.99, 50
 thetas = np.linspace(θ_low, θ_high, n_thetas)
 P = []
 f_kI = []
 for i in range(n_thetas):
-    freq = Frequentist(thetas[i], n, I)
+    freq = Frequentist(thetas[i], n, I, rng=rng)
     freq.binomial(k)
     freq.draw()
     freq.compute_fk(k)
@@ -223,12 +226,13 @@ Now we fix $\theta=0.7, k=10, I=1,000,000$ and vary $n$ from $1$ to $100$.
 Then we'll plot outcomes.
 
 ```{code-cell} ipython3
+rng = np.random.default_rng(345)
 n_low, n_high, n_ns = 1, 100, 50
 ns = np.linspace(n_low, n_high, n_ns, dtype='int')
 P = []
 f_kI = []
 for i in range(n_ns):
-    freq = Frequentist(θ, ns[i], I)
+    freq = Frequentist(θ, ns[i], I, rng=rng)
     freq.binomial(k)
     freq.draw()
     freq.compute_fk(k)
@@ -254,13 +258,14 @@ plt.show()
 Now we fix $\theta=0.7, n=20, k=10$ and vary $\log(I)$ from $2$ to $6$.
 
 ```{code-cell} ipython3
+rng = np.random.default_rng(456)
 I_log_low, I_log_high, n_Is = 2, 6, 200
 log_Is = np.linspace(I_log_low, I_log_high, n_Is)
 Is = np.power(10, log_Is).astype(int)
 P = []
 f_kI = []
 for i in range(n_Is):
-    freq = Frequentist(θ, n, Is[i])
+    freq = Frequentist(θ, n, Is[i], rng=rng)
     freq.binomial(k)
     freq.draw()
     freq.compute_fk(k)
@@ -406,20 +411,23 @@ $$
 ```{code-cell} ipython3
 class Bayesian:
 
-    def __init__(self, θ=0.4, n=1_000_000, α=0.5, β=0.5):
+    def __init__(self, θ=0.4, n=1_000_000, α=0.5, β=0.5,
+                 rng=None):
         '''
         Parameters
         ----------
         θ : Probability of heads on each flip.
         n : Number of flips in the sequence.
         α, β : Parameters of the beta prior on θ.
+        rng : NumPy random generator.
         '''
         self.θ, self.n, self.α, self.β = θ, n, α, β
+        self.rng = rng or np.random.default_rng()
         self.prior = st.beta(α, β)
 
     def draw(self):
         '''Simulate a sequence of n coin flips.'''
-        array = np.random.rand(self.n)
+        array = self.rng.random(self.n)
         self.draws = (array < self.θ).astype(int)
 
     def form_single_posterior(self, n_obs):
@@ -440,7 +448,8 @@ class Bayesian:
 **d)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows from $1, 2, \ldots$.
 
 ```{code-cell} ipython3
-bayes = Bayesian()
+rng = np.random.default_rng(567)
+bayes = Bayesian(rng=rng)
 bayes.draw()
 
 n_obs_list = [1, 2, 3, 4, 5, 10, 20, 30, 50, 70,
@@ -523,7 +532,7 @@ ax.set_xlabel('Number of Observations', fontsize=11)
 plt.show()
 ```
 
-Notice that in the graph above the posterior probability that $\theta \in [.45, .55]$ typically exhibits a hump shape as $n$ increases.
+Notice that in the graph above the posterior probability that $\theta \in [.45, .55]$ exhibits a hump shape as $n$ increases.
 
 Two opposing forces are at work.
 
