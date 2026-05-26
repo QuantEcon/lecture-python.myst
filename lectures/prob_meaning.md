@@ -339,6 +339,22 @@ $$
 where $B(\alpha, \beta)$ is a  **beta function** , so that $P(\theta)$ is
 a **beta distribution** with parameters $\alpha, \beta$.
 
+We can update this prior after observing data using Bayes' Law (see {doc}`Probability with Matrices <prob_matrix>` for an introduction).
+
+For a sample of $n$ coin flips that yields $k$ heads, the **likelihood function** is the binomial probability
+
+$$
+L(k | \theta) = {n \choose k} \theta^k (1-\theta)^{n-k}
+$$
+
+Applying Bayes' Law with our beta prior, the **posterior distribution** is
+
+$$
+\textrm{Prob}(\theta | k) = \frac{L(k | \theta) \cdot P(\theta)}{\int_0^1 L(k | \theta) \cdot P(\theta) \, d\theta} = \textrm{Beta}(\alpha + k, \, \beta + n - k)
+$$
+
+So the posterior is also a beta distribution — a consequence of the beta prior being **conjugate** to the binomial likelihood.
+
 ```{exercise}
 :label: pm_ex2
 
@@ -397,8 +413,6 @@ which means that
 $$
 \textrm{Prob}(\theta | Y) \sim \textrm{Beta}(\alpha + Y, \beta + (1-Y))
 $$
-
-Now please pretend that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior with $\beta = \alpha = .5$.
 
 **c)** Now pretend that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters  with $\beta = \alpha = .5$. Please write a Python class to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
 
@@ -592,44 +606,21 @@ plt.show()
 
 How shall we interpret the patterns above?
 
-The answer is encoded in the  Bayesian updating formulas.
+The answer is encoded in the Bayesian updating formula derived above.
 
-It is natural to extend the one-step Bayesian update to an $n$-step Bayesian update.
+Recall that after observing $k$ heads in $N$ flips, the posterior is $\textrm{Beta}(\alpha + k, \, \beta + N - k)$.
 
+A beta distribution with parameters $\alpha$ and $\beta$ has
 
-$$
-\textrm{Prob}(\theta|k) = \frac{\textrm{Prob}(\theta,k)}{\textrm{Prob}(k)}=\frac{\textrm{Prob}(k|\theta) \cdot \textrm{Prob}(\theta)}{\textrm{Prob}(k)}=\frac{\textrm{Prob}(k|\theta) \cdot \textrm{Prob}(\theta)}{\int_0^1 \textrm{Prob}(k|\theta) \cdot \textrm{Prob}(\theta) d\theta}
-$$
+* mean $\frac{\alpha}{\alpha + \beta}$
 
-$$
-=\frac{{N \choose k} (1 - \theta)^{N-k} \theta^k \cdot \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)}}{\int_0^1 {N \choose k} (1 - \theta)^{N-k} \theta^k \cdot \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} d\theta}
-$$
+* variance $\frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}$
 
-$$
-=\frac{(1 -\theta)^{\beta+N-k-1} \cdot \theta^{\alpha+k-1}}{\int_0^1 (1 - \theta)^{\beta+N-k-1} \cdot \theta^{\alpha+k-1} d\theta}
-$$
+Here $\alpha + k$ can be viewed as the number of successes (prior pseudo-count plus observed heads) and $\beta + N - k$ as the number of failures.
 
-$$
-={Beta}(\alpha + k, \beta+N-k)
-$$
+Since the data are generated with $\theta = 0.4$, the Law of Large Numbers tells us that, as $N$ grows, $k/N \to 0.4$ (see {ref}`pm_ex1`).
 
-A beta distribution with $\alpha$ and $\beta$ has the following mean and variance.
-
-The mean is $\frac{\alpha}{\alpha + \beta}$
-
-The variance is $\frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}$
-
-* $\alpha$ can be viewed as the number of successes
-
-* $\beta$ can be viewed as the number of failures
-
-The random variables $k$ and $N-k$ are governed by Binomial Distribution with $\theta=0.4$.
-
-Call this the true data generating process.
-
-According to the Law of Large Numbers, for a large number of observations, observed frequencies of $k$ and $N-k$ will be described by the true data generating process, i.e., the population probability distribution that we assumed when generating the observations on the computer. (See {ref}`pm_ex1`).
-
-Consequently, the  mean of the posterior distribution converges to $0.4$ and the variance withers to zero.
+Consequently, the posterior mean converges to $0.4$ and the posterior variance shrinks to zero.
 
 ```{code-cell} ipython3
 upper_bound = [post.ppf(0.95) for post in bayes.posterior_list]
@@ -682,7 +673,7 @@ To be argumentative, one could ask, why should the form of the likelihood functi
 
 A dignified response to that question is, well, it shouldn't, but if you want to compute a posterior easily you'll just be happier if your prior is conjugate to your likelihood.
 
-Otherwise, your posterior won't have a convenient analytical form and you'll be in the situation of wanting to apply the Markov chain Monte Carlo techniques deployed in {doc}`this quantecon lecture <bayes_nonconj>`.
+Otherwise, your posterior won't have a convenient analytical form and you'll be in the situation of wanting to apply the Markov chain Monte Carlo techniques deployed in {doc}`Non-Conjugate Priors <bayes_nonconj>`.
 
 We also apply these powerful methods to approximating Bayesian posteriors for non-conjugate priors in
-{doc}`this quantecon lecture <ar1_bayes>` and {doc}`this quantecon lecture <ar1_turningpts>`
+{doc}`Posterior Distributions for AR(1) Parameters <ar1_bayes>` and {doc}`Forecasting an AR(1) Process <ar1_turningpts>`.
