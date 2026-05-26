@@ -33,7 +33,7 @@ After you watch that video, please watch the following video on the Bayesian app
 ```{youtube} Pahyv9i_X2k
 ```
 
-After you are familiar with the material in these videos, this lecture uses the Socratic method to  to help consolidate your understanding of the different questions that are answered by
+After you are familiar with the material in these videos, this lecture uses the Socratic method to help consolidate your understanding of the different questions that are answered by
 
  * a frequentist confidence interval
 
@@ -73,7 +73,7 @@ Empowered with these Python tools, we'll now  explore the two meanings described
 
 Consider the following classic example.
 
-The random variable  $X $ takes on possible values $k = 0, 1, 2, \ldots, n$  with probabilties
+The random variable  $X $ takes on possible values $k = 0, 1, 2, \ldots, n$  with probabilities
 
 $$
 \textrm{Prob}(X =  k | \theta) =
@@ -128,7 +128,7 @@ As usual, a law of large numbers justifies this answer.
 2. Please use your code to compute $f_k^I, k = 0, \ldots , n$ and compare them to
   $\textrm{Prob}(X =  k | \theta)$ for various values of $\theta, n$ and $I$
 
-3. With the Law of Large numbers in mind, use your code to say something
+3. With the Law of Large Numbers in mind, use your code to describe the relationship between $f_k^I$ and $\textrm{Prob}(X = k | \theta)$ as $I$ grows
 ```
 
 ```{solution-start} pm_ex1
@@ -189,10 +189,10 @@ class frequentist:
         comp = pt.PrettyTable()
         comp.field_names = ['k', 'Theoretical', 'Frequentist']
         self.draw()
-        for i in range(n):
-            self.binomial(i+1)
-            self.compute_fk(i+1)
-            comp.add_row([i+1, self.P, self.f_kI])
+        for i in range(n+1):
+            self.binomial(i)
+            self.compute_fk(i)
+            comp.add_row([i, self.P, self.f_kI])
         print(comp)
 ```
 
@@ -283,7 +283,7 @@ plt.show()
 
 **Comparison with different $I$**
 
-Now we fix $\theta=0.7, n=20, k=10$ and vary $\log(I)$ from $2$ to $7$.
+Now we fix $\theta=0.7, n=20, k=10$ and vary $\log(I)$ from $2$ to $6$.
 
 ```{code-cell} ipython3
 I_log_low, I_log_high, nI = 2, 6, 200
@@ -318,17 +318,17 @@ From the above graphs, we can see that **$I$, the number of independent sequence
 When $I$ becomes larger, the difference between theoretical probability and frequentist estimate becomes smaller.
 
 Also, as long as $I$ is large enough, changing $\theta$ or $n$ does not substantially change the accuracy of the observed fraction
-as an approximation of $\theta$.
+as an approximation of $\textrm{Prob}(X = k | \theta)$.
 
 The Law of Large Numbers is at work here.
 
 For each draw of an independent sequence, $\textrm{Prob}(X_i =  k | \theta)$  is the same, so aggregating all draws forms an i.i.d sequence of a binary random variable $\rho_{k,i},i=1,2,...I$, with a mean of $\textrm{Prob}(X =  k | \theta)$ and a variance of
 
 $$
-n \cdot \textrm{Prob}(X =  k | \theta) \cdot (1-\textrm{Prob}(X =  k | \theta)).
+\textrm{Prob}(X =  k | \theta) \cdot (1-\textrm{Prob}(X =  k | \theta)).
 $$
 
-So, by the LLN, the average of $P_{k,i}$ converges to:
+So, by the LLN, the average of $\rho_{k,i}$ converges to:
 
 $$
 E[\rho_{k,i}] = \textrm{Prob}(X =  k | \theta) = \left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
@@ -378,7 +378,7 @@ a **beta distribution** with parameters $\alpha, \beta$.
 
 **f)** Please tell what question a Bayesian coverage interval answers.
 
-**g)** Please compute the Posterior probabililty that $\theta \in [.45, .55]$ for various values of sample size $n$.
+**g)** Please compute the Posterior probability that $\theta \in [.45, .55]$ for various values of sample size $n$.
 
 **h)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
 ```
@@ -518,8 +518,8 @@ plt.show()
 **e)** For various $n$'s, please describe and compute  $.05$ and $.95$ quantiles for  posterior probabilities.
 
 ```{code-cell} ipython3
-upper_bound = [ii.ppf(0.05) for ii in Bay_stat.posterior_list[:14]]
-lower_bound = [ii.ppf(0.95) for ii in Bay_stat.posterior_list[:14]]
+lower_bound = [ii.ppf(0.05) for ii in Bay_stat.posterior_list[:14]]
+upper_bound = [ii.ppf(0.95) for ii in Bay_stat.posterior_list[:14]]
 
 interval_df = pd.DataFrame()
 interval_df['upper'] = upper_bound
@@ -543,7 +543,7 @@ $$
 F(a)=p_1,F(b)=p_2
 $$
 
-**g)** Please compute the Posterior probabililty that $\theta \in [.45, .55]$ for various values of sample size $n$.
+**g)** Please compute the Posterior probability that $\theta \in [.45, .55]$ for various values of sample size $n$.
 
 ```{code-cell} ipython3
 left_value, right_value = 0.45, 0.55
@@ -561,15 +561,15 @@ ax.set_xlabel('Number of Observations', fontsize=11)
 plt.show()
 ```
 
-Notice that in the graph above the posterior probabililty that $\theta \in [.45, .55]$ typically exhibits a hump shape as $n$ increases.
+Notice that in the graph above the posterior probability that $\theta \in [.45, .55]$ typically exhibits a hump shape as $n$ increases.
 
 Two opposing forces are at work.
 
-The first force is that the individual  adjusts his belief as he observes new outcomes, so his posterior probability distribution  becomes more and more realistic, which explains the rise of the posterior probabililty.
+The first force is that the individual  adjusts his belief as he observes new outcomes, so his posterior probability distribution  becomes more and more realistic, which explains the rise of the posterior probability.
 
 However, $[.45, .55]$ actually excludes the true $\theta =.4 $ that generates the data.
 
-As a result, the posterior probabililty drops as larger and larger samples refine his  posterior probability distribution of $\theta$.
+As a result, the posterior probability drops as larger and larger samples refine his  posterior probability distribution of $\theta$.
 
 The descent seems precipitous only because of the scale of the graph  that has the number of observations increasing disproportionately.
 
@@ -599,7 +599,7 @@ plt.show()
 
 As $n$ increases, we can see that the probability density functions _concentrate_ on $0.4$, the true value of $\theta$.
 
-Here the  posterior means  converges to $0.4$ while the posterior standard deviations converges to $0$ from above.
+Here the  posterior mean  converges to $0.4$ while the posterior standard deviation converges to $0$ from above.
 
 To show this, we compute the means and variances statistics of the posterior distributions.
 
@@ -635,15 +635,15 @@ It is natural to extend the one-step Bayesian update to an $n$-step Bayesian upd
 
 
 $$
-\textrm{Prob}(\theta|k) = \frac{\textrm{Prob}(\theta,k)}{\textrm{Prob}(k)}=\frac{\textrm{Prob}(k|\theta)*\textrm{Prob}(\theta)}{\textrm{Prob}(k)}=\frac{\textrm{Prob}(k|\theta)*\textrm{Prob}(\theta)}{\int_0^1 \textrm{Prob}(k|\theta)*\textrm{Prob}(\theta) d\theta}
+\textrm{Prob}(\theta|k) = \frac{\textrm{Prob}(\theta,k)}{\textrm{Prob}(k)}=\frac{\textrm{Prob}(k|\theta) \cdot \textrm{Prob}(\theta)}{\textrm{Prob}(k)}=\frac{\textrm{Prob}(k|\theta) \cdot \textrm{Prob}(\theta)}{\int_0^1 \textrm{Prob}(k|\theta) \cdot \textrm{Prob}(\theta) d\theta}
 $$
 
 $$
-=\frac{{N \choose k} (1 - \theta)^{N-k} \theta^k*\frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)}}{\int_0^1 {N \choose k} (1 - \theta)^{N-k} \theta^k*\frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} d\theta}
+=\frac{{N \choose k} (1 - \theta)^{N-k} \theta^k \cdot \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)}}{\int_0^1 {N \choose k} (1 - \theta)^{N-k} \theta^k \cdot \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} d\theta}
 $$
 
 $$
-=\frac{(1 -\theta)^{\beta+N-k-1}* \theta^{\alpha+k-1}}{\int_0^1 (1 - \theta)^{\beta+N-k-1}* \theta^{\alpha+k-1} d\theta}
+=\frac{(1 -\theta)^{\beta+N-k-1} \cdot \theta^{\alpha+k-1}}{\int_0^1 (1 - \theta)^{\beta+N-k-1} \cdot \theta^{\alpha+k-1} d\theta}
 $$
 
 $$
@@ -687,7 +687,7 @@ plt.show()
 
 After observing a large number of outcomes, the  posterior distribution collapses around $0.4$.
 
-Thus, the Bayesian statististian  comes to believe that $\theta$ is near $.4$.
+Thus, the Bayesian statistician  comes to believe that $\theta$ is near $.4$.
 
 As shown in the figure above, as the number of observations grows, the Bayesian coverage intervals (BCIs) become narrower and narrower   around  $0.4$.
 
