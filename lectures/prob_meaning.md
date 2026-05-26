@@ -19,7 +19,7 @@ kernelspec:
 
 This lecture  illustrates two distinct interpretations of a  **probability distribution**
 
- * A frequentist interpretation as **relative frequencies** anticipated to occur in a large i.i.d. sample
+ * A frequentist interpretation as **relative frequencies** anticipated to occur in a large IID. sample
 
  * A Bayesian interpretation as a **personal opinion** (about a parameter or list of parameters) after seeing a collection of observations
 
@@ -74,7 +74,7 @@ $$
 
 where the fixed parameter $\theta \in (0,1)$.
 
-This is called   the __binomial distribution__.
+This is called the **binomial distribution**.
 
 Here
 
@@ -138,7 +138,6 @@ class Frequentist:
 
     def binomial(self, k):
         '''Compute the theoretical probability.'''
-        self.k = k
         self.P = binom.pmf(k, self.n, self.θ)
 
     def draw(self):
@@ -211,11 +210,12 @@ fig, ax = plt.subplots(figsize=(8, 6))
 ax.grid()
 ax.plot(thetas, P, 'k-.', label='Theoretical')
 ax.plot(thetas, f_kI, 'r--', label='Fraction')
-plt.title(r'Comparison with different $\theta$', fontsize=16)
-plt.xlabel(r'$\theta$', fontsize=15)
-plt.ylabel('Fraction', fontsize=15)
-plt.tick_params(labelsize=13)
-plt.legend()
+ax.set_title(r'Comparison with different $\theta$',
+             fontsize=16)
+ax.set_xlabel(r'$\theta$', fontsize=15)
+ax.set_ylabel('Fraction', fontsize=15)
+ax.tick_params(labelsize=13)
+ax.legend()
 plt.show()
 ```
 
@@ -245,11 +245,12 @@ fig, ax = plt.subplots(figsize=(8, 6))
 ax.grid()
 ax.plot(ns, P, 'k-.', label='Theoretical')
 ax.plot(ns, f_kI, 'r--', label='Frequentist')
-plt.title(r'Comparison with different $n$', fontsize=16)
-plt.xlabel(r'$n$', fontsize=15)
-plt.ylabel('Fraction', fontsize=15)
-plt.tick_params(labelsize=13)
-plt.legend()
+ax.set_title(r'Comparison with different $n$',
+             fontsize=16)
+ax.set_xlabel(r'$n$', fontsize=15)
+ax.set_ylabel('Fraction', fontsize=15)
+ax.tick_params(labelsize=13)
+ax.legend()
 plt.show()
 ```
 
@@ -278,11 +279,12 @@ fig, ax = plt.subplots(figsize=(8, 6))
 ax.grid()
 ax.plot(Is, P, 'k-.', label='Theoretical')
 ax.plot(Is, f_kI, 'r--', label='Fraction')
-plt.title(r'Comparison with different $I$', fontsize=16)
-plt.xlabel(r'$I$', fontsize=15)
-plt.ylabel('Fraction', fontsize=15)
-plt.tick_params(labelsize=13)
-plt.legend()
+ax.set_title(r'Comparison with different $I$',
+             fontsize=16)
+ax.set_xlabel(r'$I$', fontsize=15)
+ax.set_ylabel('Fraction', fontsize=15)
+ax.tick_params(labelsize=13)
+ax.legend()
 plt.show()
 ```
 
@@ -295,7 +297,7 @@ as an approximation of $\textrm{Prob}(X = k | \theta)$.
 
 The Law of Large Numbers is at work here.
 
-For each draw of an independent sequence, $\textrm{Prob}(X_i =  k | \theta)$  is the same, so aggregating all draws forms an i.i.d sequence of a binary random variable $\rho_{k,i},i=1,2,...I$, with a mean of $\textrm{Prob}(X =  k | \theta)$ and a variance of
+For each draw of an independent sequence, $\textrm{Prob}(X_i =  k | \theta)$  is the same, so aggregating all draws forms an IID sequence of a binary random variable $\rho_{k,i},i=1,2,...I$, with a mean of $\textrm{Prob}(X =  k | \theta)$ and a variance of
 
 $$
 \textrm{Prob}(X =  k | \theta) \cdot (1-\textrm{Prob}(X =  k | \theta)).
@@ -320,7 +322,7 @@ Instead, we think of it as a **random variable**.
 
 $\theta$ is described by a probability distribution.
 
-But now this probability distribution means something different than a relative frequency that we can anticipate to occur in a large i.i.d. sample.
+But now this probability distribution means something different than a relative frequency that we can anticipate to occur in a large IID. sample.
 
 Instead, the probability distribution of $\theta$ is now a summary of our views about  likely values of $\theta$ either
 
@@ -359,7 +361,7 @@ So the posterior is also a beta distribution — a consequence of the beta prior
 
 **b)** Please write down the **posterior** distribution for $\theta$ after observing that single flip.
 
-**c)** Now pretend that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters  with $\beta = \alpha = .5$. Please write a Python class to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
+**c)** Now pretend that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters $\beta = \alpha = .5$. Please write a Python class to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
 
 **d)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows as $1, 2, \ldots$.
 
@@ -497,14 +499,14 @@ interval_df
 
 As $n$ increases, we can see that Bayesian coverage intervals narrow and move toward $0.4$.
 
-**f)** The Bayesian coverage interval tells the range of $\theta$ that corresponds to the [$p_1$, $p_2$] quantiles of the cumulative probability distribution (CDF)  of the posterior distribution.
+**f)** The Bayesian coverage interval tells the range of $\theta$ that corresponds to the [$q_1$, $q_2$] quantiles of the cumulative distribution function (CDF) of the posterior distribution.
 
 To construct the coverage interval we first compute a posterior distribution of the unknown parameter $\theta$.
 
-If the CDF is $F(\theta)$, then the Bayesian coverage interval $[a,b]$ for the interval $[p_1,p_2]$ is described by
+If the CDF is $F(\theta)$, then the Bayesian coverage interval $[a,b]$ for the interval $[q_1,q_2]$ is described by
 
 $$
-F(a)=p_1,F(b)=p_2
+F(a)=q_1,F(b)=q_2
 $$
 
 **g)**
@@ -545,7 +547,7 @@ The descent seems precipitous only because of the scale of the graph  that has t
 
 When the number of observations becomes large enough, our Bayesian becomes so confident about $\theta$ that he considers $\theta \in [.45, .55]$ very unlikely.
 
-That is why we see a nearly horizontal line when the number of observations exceeds 500.
+That is why we see a nearly horizontal line when the number of observations exceeds 1000.
 
 **h)** Using the Python class we made above, we can see the evolution of posterior distributions as $n$ approaches infinity.
 
@@ -569,7 +571,7 @@ As $n$ increases, we can see that the probability density functions _concentrate
 
 Here the  posterior mean  converges to $0.4$ while the posterior standard deviation converges to $0$ from above.
 
-To show this, we compute the means and variances statistics of the posterior distributions.
+To show this, we compute the mean and standard deviation of the posterior distributions.
 
 ```{code-cell} ipython3
 mean_list = [post.mean() for post in bayes.posterior_list]
@@ -601,7 +603,7 @@ How shall we interpret the patterns above?
 
 The answer is encoded in the Bayesian updating formula derived above.
 
-Recall that after observing $k$ heads in $N$ flips, the posterior is $\textrm{Beta}(\alpha + k, \, \beta + N - k)$.
+Recall that after observing $k$ heads in $n$ flips, the posterior is $\textrm{Beta}(\alpha + k, \, \beta + n - k)$.
 
 A beta distribution with parameters $\alpha$ and $\beta$ has
 
@@ -609,9 +611,9 @@ A beta distribution with parameters $\alpha$ and $\beta$ has
 
 * variance $\frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}$
 
-Here $\alpha + k$ can be viewed as the number of successes (prior pseudo-count plus observed heads) and $\beta + N - k$ as the number of failures.
+Here $\alpha + k$ can be viewed as the number of successes (prior pseudo-count plus observed heads) and $\beta + n - k$ as the number of failures.
 
-Since the data are generated with $\theta = 0.4$, the Law of Large Numbers tells us that, as $N$ grows, $k/N \to 0.4$ (see {ref}`pm_ex1`).
+Since the data are generated with $\theta = 0.4$, the Law of Large Numbers tells us that, as $n$ grows, $k/n \to 0.4$ (see {ref}`pm_ex1`).
 
 Consequently, the posterior mean converges to $0.4$ and the posterior variance shrinks to zero.
 
