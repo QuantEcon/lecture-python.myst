@@ -452,8 +452,8 @@ rng = np.random.default_rng(567)
 bayes = Bayesian(rng=rng)
 bayes.draw()
 
-n_obs_list = [1, 2, 3, 4, 5, 10, 20, 30, 50, 70,
-              100, 300, 500, 1000,
+n_obs_list = [1, 2, 3, 4, 5, 10, 20, 50,
+              100, 1000,
               5000, 10_000, 50_000, 100_000,
               200_000, 300_000]
 
@@ -464,15 +464,15 @@ bayes.form_posterior_series(n_obs_list)
 fig, ax = plt.subplots(figsize=(10, 6))
 
 ax.plot(θ_values, bayes.prior.pdf(θ_values),
-        label='Prior Distribution', color='k',
+        label='n = 0 (prior)', color='k',
         linestyle='--')
 
-for i, n_obs in enumerate(n_obs_list[:14]):
+for i, n_obs in enumerate(n_obs_list[:10]):
     posterior = bayes.posterior_list[i]
     ax.plot(θ_values, posterior.pdf(θ_values),
-            label=f'Posterior with n = {n_obs}')
+            label=f'n = {n_obs}')
 
-ax.set_title('P.D.F of Posterior Distributions',
+ax.set_title('PDF of Posterior Distributions',
              fontsize=15)
 ax.set_xlabel(r"$\theta$", fontsize=15)
 
@@ -483,13 +483,13 @@ plt.show()
 **e)** For various $n$'s, please describe and compute  $.05$ and $.95$ quantiles for  posterior probabilities.
 
 ```{code-cell} ipython3
-lower_bound = [post.ppf(0.05) for post in bayes.posterior_list[:14]]
-upper_bound = [post.ppf(0.95) for post in bayes.posterior_list[:14]]
+lower_bound = [post.ppf(0.05) for post in bayes.posterior_list[:10]]
+upper_bound = [post.ppf(0.95) for post in bayes.posterior_list[:10]]
 
 interval_df = pd.DataFrame()
 interval_df['upper'] = upper_bound
 interval_df['lower'] = lower_bound
-interval_df.index = n_obs_list[:14]
+interval_df.index = n_obs_list[:10]
 interval_df = interval_df.T
 interval_df
 ```
@@ -555,12 +555,12 @@ Using the Python class we made above, we can see the evolution of posterior dist
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
 
-for i, n_obs in enumerate(n_obs_list[14:]):
-    posterior = bayes.posterior_list[i + 14]
+for i, n_obs in enumerate(n_obs_list[10:]):
+    posterior = bayes.posterior_list[i + 10]
     ax.plot(θ_values, posterior.pdf(θ_values),
-            label=f'Posterior with n = {n_obs:,}')
+            label=f'n = {n_obs:,}')
 
-ax.set_title('P.D.F of Posterior Distributions', fontsize=15)
+ax.set_title('PDF of Posterior Distributions', fontsize=15)
 ax.set_xlabel(r"$\theta$", fontsize=15)
 ax.set_xlim(0.3, 0.5)
 
