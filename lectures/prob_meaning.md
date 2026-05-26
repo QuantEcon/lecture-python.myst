@@ -350,9 +350,9 @@ So the posterior is also a beta distribution — a consequence of the beta prior
 ```{exercise}
 :label: pm_ex2
 
-**a)**  Please write down the **likelihood function** for a sample of length $n$ from a binomial distribution with parameter $\theta$.
+**a)**  Please write down the **likelihood function** for a single coin flip with outcome $Y \in \{0, 1\}$.
 
-**b)** Please write down the **posterior** distribution for $\theta$ after observing  one flip of the coin.
+**b)** Please write down the **posterior** distribution for $\theta$ after observing that single flip.
 
 **c)** Now pretend that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters  with $\beta = \alpha = .5$. Please write a Python class to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
 
@@ -372,18 +372,13 @@ So the posterior is also a beta distribution — a consequence of the beta prior
 :class: dropdown
 ```
 
-**a)** Please write down the **likelihood function** and the **posterior** distribution for $\theta$ after observing  one flip of our coin.
-
-Suppose the outcome is __Y__.
-
-The likelihood function is:
+**a)** The **likelihood function** for a single coin flip with outcome $Y \in \{0, 1\}$ is
 
 $$
-L(Y|\theta)= \textrm{Prob}(X =  Y | \theta) =
-\theta^Y (1-\theta)^{1-Y}
+L(Y|\theta) = \theta^Y (1-\theta)^{1-Y}
 $$
 
-**b)** Please write the **posterior** distribution for $\theta$ after observing  one flip of our coin.
+**b)** The **posterior** distribution for $\theta$ after observing that single flip:
 
 The prior distribution is
 
