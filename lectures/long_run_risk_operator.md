@@ -477,7 +477,7 @@ ideas, see {doc}`advanced:asset_pricing_lph`; for an estimation perspective
 on Euler-equation-based asset pricing, see {doc}`hansen_singleton_1982`.
 
 The key starting point is that a valuation functional $V$ must satisfy the
-no-arbitrage requirement that $VS$ is a martingale (Definition
+no-arbitrage requirement that $VS$ is a martingale (
 {prf:ref}`lrr-def-valuation-functional`).
 
 We parameterize the stochastic discount factor $S$ and valuation functional
@@ -485,22 +485,39 @@ $V$ as additive functionals with coefficients $(\beta^s,\gamma^s,\kappa^s)$
 and $(\beta^v,\gamma^v,\kappa^v)$ respectively, in the notation of
 {eq}`eq:additive-functional`.
 
-For a generic positive multiplicative functional with parameters
-$(\beta,\gamma,\kappa)$, applying Itô's formula and zeroing out the drift
-gives the **local martingale restriction**
+For a generic positive multiplicative functional $M = \exp(A)$ with
+parameters $(\beta,\gamma,\kappa)$, applying Itô's formula to
+$\exp(A_t)$ and requiring the drift of $dM_t/M_{t-}$ to vanish gives the
+**local martingale restriction**:
 
 $$
-    \beta
-    + \frac{\gamma^\top\gamma}{2}
-    + \int \left(\exp[\kappa(y,\cdot)]-1\right)\eta(dy \mid \cdot)
-    = 0.
+    \beta(x)
+    + \frac{\gamma(x)^\top\gamma(x)}{2}
+    + \int \big(\exp[\kappa(y,x)] - 1\big)\, \eta(dy \mid x)
+    = 0 .
 $$ (eq:local-martingale-restriction)
 
-(The drift coefficient $\beta$, the Itô correction $\gamma^\top \gamma/2$,
-and the jump compensator sum to zero.)
+The three terms correspond to:
 
-Applying this to $VS$ --- whose parameters add: $(\beta^v + \beta^s,
-\gamma^v + \gamma^s, \kappa^v + \kappa^s)$ --- gives the **local pricing
+* the drift of $A$ itself,
+* the Itô correction from the Brownian part (because $M = e^A$ picks up a
+  quadratic-variation contribution), and
+* the compensated jumps of $M$ at the multiplier $\exp[\kappa(y,x)]$.
+
+The full derivation is the content of Exercise {ref}`lrr_ex_local_mg`.
+
+```{note}
+An equivalent way to see {eq}`eq:local-martingale-restriction`: $M$ is a
+martingale iff $E[M_t \mid X_0 = x] = 1$ for all $t$, i.e. the constant
+function $\psi \equiv 1$ is an eigenfunction of the semigroup with
+eigenvalue $0$. Applying the generator formula
+{eq}`eq:extended-generator` (introduced below) to $\phi \equiv 1$ kills
+all the derivative terms and leaves exactly the left-hand side of
+{eq}`eq:local-martingale-restriction`.
+```
+
+Applying this to $VS$, whose parameters add: $(\beta^v + \beta^s,
+\gamma^v + \gamma^s, \kappa^v + \kappa^s)$, gives the **local pricing
 restriction**
 
 $$
@@ -1278,6 +1295,17 @@ print("\nlimit =", limit)
 The rescaled value converges to the same limiting vector regardless of the
 starting state --- exactly what {eq}`eq:long-run-limit` predicts.
 
+```{note}
+The *rate* of convergence is the **spectral gap** of $A$: the difference
+between $\rho$ (the dominant real eigenvalue) and the next-largest real
+part of the spectrum.
+
+This is the operator generalisation of the gap between the leading and
+sub-leading eigenvalues that controls mixing of a stationary Markov chain.
+Exercise {ref}`lrr_ex3` works through a three-state example where the gap
+can be read off directly.
+```
+
 ### Adding jumps
 
 State transitions in this chain are discontinuous, so it is natural to allow
@@ -1608,7 +1636,9 @@ preferences in a different setting is
 {doc}`survival_recursive_preferences`.
 
 The block below derives the SDF coefficients for the unit-elasticity
-recursive specification. You can skip on a first read and come back later
+recursive specification. 
+
+You can skip on a first read and come back later
 --- the numerical example uses the simpler Breeden parameters above.
 
 For the unit-elasticity recursive specification, conjecture a continuation
@@ -2369,123 +2399,6 @@ print(f"finite-difference slope = {finite_difference:.6f}")
 print(f"formula                 = {long_run_price_o:.6f}")
 ```
 
-### Limiting holding-period return
-
-The same machinery gives the limiting one-period holding-period return on a
-claim to far-future cash flows.
-
-This is the *gross return* on holding an asset for a single period when its
-cash flow lies far in the future.
-
-For $D_t=D_0\, G_t\, \psi(X_t)$ and $M=GS$, the principal eigenpair
-$(\rho,\phi)$ implies
-
-$$
-    \lim_{t\to\infty}
-    \frac{E[S_t D_t / S_1 \mid \mathcal F_1]}
-         {E[S_t D_t \mid \mathcal F_0]}
-    =
-    \exp(-\rho)\, G_1\, \frac{\phi(X_1)}{\phi(X_0)} .
-$$ (eq:limiting-holding-period-return)
-
-The limit has three factors:
-
-* a **cash-flow growth** component $G_1$,
-* a **discount** component $\exp(-\rho)$ governed by the principal
-  eigenvalue, and
-* a **state-dependent** component $\phi(X_1)/\phi(X_0)$ governed by the
-  eigenfunction.
-
-A striking feature: the transient payoff shape $\psi$ drops out of the
-limiting return, so the long-run holding-period return on *every* claim to
-a far-future cash flow looks the same up to the cash-flow growth factor.
-
-## Perron-Frobenius dominance
-
-In the finite-state chain, the long-run limit {eq}`eq:long-run-limit` is
-exactly Perron-Frobenius theory in action.
-
-The positive semigroup generated by $A$ in {eq}`eq:finite-a` has a unique
-dominant real eigenvalue, and contributions from the remaining eigenvalues
-decay at an exponential rate equal to the **spectral gap** --- the
-difference between $\rho$ and the next-largest real part.
-
-The rate at which $\exp(-\rho t)\mathbb M_t\psi$ converges to its long-run
-limit is exactly this spectral gap.
-
-```{note}
-In general state spaces, the same intuition holds but the argument is
-substantially more subtle: the martingale component $\hat M$ changes
-probability measure, and *stability* of the twisted process is what
-selects the eigenfunction governing the long-run approximation. The
-finite-state case is a window onto the general theory.
-```
-
-We illustrate the connection on a three-state chain: compute the spectral
-gap directly, then show convergence happens at that rate.
-
-```{code-cell} ipython3
-state_names = ["expansion", "normal", "contraction"]
-
-U3 = np.array([[-0.40,  0.30,  0.10],
-               [ 0.20, -0.50,  0.30],
-               [ 0.10,  0.20, -0.30]])
-
-r3 = np.array([0.06, 0.04, 0.01])
-κ3 = np.zeros((3, 3))
-
-A3 = build_generator(U3, r3, κ3)
-ρ3, φ3 = principal_eigenpair(A3)
-A3_hat = twisted_generator(A3, ρ3, φ3)
-ς3 = stationary_distribution(A3_hat)
-
-print(f"ρ = {ρ3:.6f}")
-print(f"φ = {φ3}")
-print(f"ς_hat = {ς3}")
-
-eigs3 = np.sort(eig(A3, right=False).real)[::-1]
-print("eigenvalues by real part:")
-print(np.round(eigs3, 6))
-```
-
-```{code-cell} ipython3
-ψ_list = {
-    "$\\psi=(1,0,0)$": np.array([1.0, 0.0, 0.0]),
-    "$\\psi=(0,1,0)$": np.array([0.0, 1.0, 0.0]),
-    "$\\psi=(1,2,3)$": np.array([1.0, 2.0, 3.0]),
-}
-
-t_grid = np.linspace(0, 35, 220)
-colors = ["C0", "C1", "C2"]
-
-fig, axes = plt.subplots(1, 3, figsize=(14, 4))
-
-for ax, (label, ψ) in zip(axes, ψ_list.items()):
-    limit = φ3 * np.sum((ψ / φ3) * ς3)
-    values = np.array([
-        np.exp(-ρ3 * t_val) * expm(t_val * A3) @ ψ
-        for t_val in t_grid
-    ])
-
-    for i, color in enumerate(colors):
-        ax.plot(t_grid, values[:, i], color=color, lw=1.5,
-                label=state_names[i])
-        ax.axhline(limit[i], color=color, ls="--", lw=1)
-
-    ax.set_title(label)
-    ax.set_xlabel("$t$")
-    ax.set_ylabel("$\\exp(-\\rho t)\\mathbb{M}_t\\psi$")
-
-axes[0].legend()
-plt.tight_layout()
-plt.show()
-```
-
-For each choice of $\psi$ and each initial state, the rescaled value
-$\exp(-\rho t)\mathbb M_t \psi$ converges to the dashed horizontal line --- the
-long-run limit $\phi \int (\psi/\phi)\, d\hat\varsigma$ --- at a rate
-controlled by the spectral gap.
-
 ## Assumptions behind the scenes
 
 The examples above make the eigenfunction calculation look mechanical.
@@ -2799,9 +2712,23 @@ long-run price converges to the local price.
 ```{exercise}
 :label: lrr_ex3
 
-Using the three-state example, let $\psi=(3,1,2)$.
+Consider a three-state chain with states {expansion, normal, contraction},
+intensity matrix
 
-a. Compute the theoretical limit
+$$
+U =
+\begin{pmatrix}
+    -0.40 &  0.30 &  0.10 \\
+     0.20 & -0.50 &  0.30 \\
+     0.10 &  0.20 & -0.30
+\end{pmatrix},
+$$
+
+decay-rate vector $r = (0.06, 0.04, 0.01)$, and no jumps in the
+multiplicative functional. Let $\psi=(3,1,2)$.
+
+a. Compute the principal eigenpair $(\rho,\phi)$ and twisted stationary
+distribution $\hat\varsigma$, and report the theoretical limit
 
 $$
     \phi \sum_i \frac{\psi_i}{\phi_i}\hat\varsigma_i .
@@ -2831,6 +2758,20 @@ second-largest real parts of the eigenvalues of $A$.
 Here is one solution:
 
 ```{code-cell} ipython3
+state_names = ["expansion", "normal", "contraction"]
+
+U3 = np.array([[-0.40,  0.30,  0.10],
+               [ 0.20, -0.50,  0.30],
+               [ 0.10,  0.20, -0.30]])
+
+r3 = np.array([0.06, 0.04, 0.01])
+κ3 = np.zeros((3, 3))
+
+A3 = build_generator(U3, r3, κ3)
+ρ3, φ3 = principal_eigenpair(A3)
+A3_hat = twisted_generator(A3, ρ3, φ3)
+ς3 = stationary_distribution(A3_hat)
+
 ψ = np.array([3.0, 1.0, 2.0])
 limit = φ3 * np.sum((ψ / φ3) * ς3)
 
@@ -2863,6 +2804,118 @@ separation between the dominant eigenvalue and the remaining eigenvalues.
 
 In this finite-state example, that separation is the spectral gap computed
 above.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lrr_ex_local_mg
+
+Derive the local martingale restriction
+{eq}`eq:local-martingale-restriction` from Itô's formula.
+
+Let $M = \exp(A)$ for the additive functional $A$ in
+{eq}`eq:additive-functional`, with parameters $(\beta,\gamma,\kappa)$.
+
+a. Decompose $A_t = A_t^c + A_t^j$ into its continuous and pure-jump parts
+and write down $dA_t^c$ and the jump magnitudes $\Delta A_t$.
+
+b. Apply Itô's formula for semimartingales to $f(a) = e^a$ to show that
+
+$$
+    dM_t
+    =
+    M_{t-}\, dA_t^c
+    + \tfrac{1}{2}\, M_{t-}\, d\langle A^c, A^c\rangle_t
+    + M_{t-}\big(\exp[\Delta A_t] - 1\big)\quad\text{at jumps}.
+$$
+
+c. Use $d\langle A^c, A^c\rangle_t = \gamma^\top\gamma\, dt$ and rewrite the
+jump term as an integral against the random counting measure $\zeta$.
+
+d. Split $\zeta$ into its compensator $\eta(dy \mid X_{t-})\, dt$ and the
+compensated martingale measure
+$\tilde\zeta = \zeta - \eta(dy\mid X_{t-})\, dt$.
+
+e. Collect drift (predictable) and martingale terms and conclude that $M$ is
+a local martingale iff the drift vanishes at every state, which gives
+{eq}`eq:local-martingale-restriction`.
+```
+
+```{solution-start} lrr_ex_local_mg
+:class: dropdown
+```
+
+Here is one solution.
+
+*a.* From the parameterization {eq}`eq:additive-functional`,
+
+$$
+    dA_t^c = \beta(X_t)\, dt + \gamma(X_{t-})^\top\, dB_t,
+    \qquad
+    \Delta A_t = \kappa(X_t, X_{t-}) \text{ at a jump time}.
+$$
+
+*b.* For $f(a) = e^a$ we have $f'(a) = f''(a) = e^a$, so $f'(A_{t-}) =
+f''(A_{t-}) = M_{t-}$. Itô's formula for a semimartingale gives
+
+$$
+    dM_t
+    =
+    f'(A_{t-})\, dA_t^c
+    + \tfrac{1}{2}\, f''(A_{t-})\, d\langle A^c, A^c\rangle_t
+    + \big[f(A_t) - f(A_{t-})\big] .
+$$
+
+Since $A_t = A_{t-} + \Delta A_t$ at a jump, $f(A_t) - f(A_{t-}) =
+M_{t-}\big(\exp[\Delta A_t] - 1\big)$, which is the stated expression.
+
+*c.* Substituting $d\langle A^c, A^c\rangle_t = \gamma(X_{t-})^\top
+\gamma(X_{t-})\, dt$ and rewriting the jump contribution as an integral
+against the random counting measure $\zeta$ of $(X, A)$ gives
+
+$$
+\begin{aligned}
+\frac{dM_t}{M_{t-}}
+&=
+\beta(X_t)\, dt
++ \gamma(X_{t-})^\top dB_t
++ \tfrac{1}{2}\,\gamma(X_{t-})^\top\gamma(X_{t-})\, dt
+\\
+&\quad
++ \int \big(\exp[\kappa(y, X_{t-})] - 1\big)\, \zeta(dy, dt) .
+\end{aligned}
+$$
+
+*d.* Writing $\zeta = \tilde\zeta + \eta(dy\mid X_{t-})\, dt$ separates the
+jump integral into a martingale and a predictable drift contribution:
+
+$$
+\int \big(\exp[\kappa(y,X_{t-})] - 1\big)\zeta(dy,dt)
+=
+\int\big(\exp[\kappa(y,X_{t-})] - 1\big)\tilde\zeta(dy,dt)
++ \int\big(\exp[\kappa(y,X_{t-})] - 1\big)\eta(dy\mid X_{t-})\, dt .
+$$
+
+*e.* Collecting drift and martingale terms,
+
+$$
+\begin{aligned}
+\frac{dM_t}{M_{t-}}
+&=
+\bigg[\beta(X_t)
++ \tfrac{1}{2}\gamma^\top\gamma
++ \int\big(\exp[\kappa(y,X_{t-})] - 1\big)\,\eta(dy\mid X_{t-})\bigg] dt
+\\
+&\quad
++ \gamma^\top dB_t
++ \int\big(\exp[\kappa(y,X_{t-})] - 1\big)\,\tilde\zeta(dy,dt) .
+\end{aligned}
+$$
+
+The Brownian and compensated-jump terms are local martingales, so $M$ is a
+local martingale iff the bracketed drift vanishes for every state $x$,
+giving {eq}`eq:local-martingale-restriction`.
 
 ```{solution-end}
 ```
