@@ -68,7 +68,7 @@ Consider the following classic example.
 The random variable  $X $ takes on possible values $k = 0, 1, 2, \ldots, n$  with probabilities
 
 $$
-\textrm{Prob}(X =  k | \theta) =
+\mathbb{P}\{X = k \mid \theta\} =
 \left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
 $$
 
@@ -106,7 +106,7 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
     I}
 $$
 
-The probability  $\textrm{Prob}(X =  k | \theta)$ answers the following question:
+The probability  $\mathbb{P}\{X = k \mid \theta\}$ answers the following question:
 
 * As $I$ becomes large, in what   fraction of  $I$ independent  draws of  $n$ coin flips should we anticipate  $k$ heads to occur?
 
@@ -118,9 +118,9 @@ As usual, a law of large numbers justifies this answer.
 1. Please write a Python class to compute $f_k^I$
 
 2. Please use your code to compute $f_k^I, k = 0, \ldots , n$ and compare them to
-  $\textrm{Prob}(X =  k | \theta)$ for various values of $\theta, n$ and $I$
+  $\mathbb{P}\{X = k \mid \theta\}$ for various values of $\theta, n$ and $I$
 
-3. With the Law of Large Numbers in mind, use your code to describe the relationship between $f_k^I$ and $\textrm{Prob}(X = k | \theta)$ as $I$ grows
+3. With the Law of Large Numbers in mind, use your code to describe the relationship between $f_k^I$ and $\mathbb{P}\{X = k \mid \theta\}$ as $I$ grows
 ```
 
 ```{solution-start} pm_ex1
@@ -293,20 +293,20 @@ From the above graphs, we can see that **$I$, the number of independent sequence
 When $I$ becomes larger, the difference between theoretical probability and frequentist estimate becomes smaller.
 
 Also, as long as $I$ is large enough, changing $\theta$ or $n$ does not substantially change the accuracy of the observed fraction
-as an approximation of $\textrm{Prob}(X = k | \theta)$.
+as an approximation of $\mathbb{P}\{X = k \mid \theta\}$.
 
 The Law of Large Numbers is at work here.
 
-For each draw of an independent sequence, $\textrm{Prob}(X_i =  k | \theta)$  is the same, so aggregating all draws forms an IID sequence of a binary random variable $\rho_{k,i},i=1,2,...I$, with a mean of $\textrm{Prob}(X =  k | \theta)$ and a variance of
+For each draw of an independent sequence, $\mathbb{P}\{X_i = k \mid \theta\}$  is the same, so aggregating all draws forms an IID sequence of a binary random variable $\rho_{k,i},i=1,2,...I$, with a mean of $\mathbb{P}\{X = k \mid \theta\}$ and a variance of
 
 $$
-\textrm{Prob}(X =  k | \theta) \cdot (1-\textrm{Prob}(X =  k | \theta)).
+\mathbb{P}\{X = k \mid \theta\} \cdot (1-\mathbb{P}\{X = k \mid \theta\}).
 $$
 
 So, by the LLN, the average of $\rho_{k,i}$ converges to:
 
 $$
-E[\rho_{k,i}] = \textrm{Prob}(X =  k | \theta) = \left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
+\mathbb{E}[\rho_{k,i}] = \mathbb{P}\{X = k \mid \theta\} = \left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
 $$
 
 as $I$ goes to infinity.
@@ -343,13 +343,13 @@ We can update this prior after observing data using Bayes' Law (see {doc}`Probab
 For a sample of $n$ coin flips that yields $k$ heads, the **likelihood function** is the binomial probability
 
 $$
-L(k | \theta) = {n \choose k} \theta^k (1-\theta)^{n-k}
+L(k \mid \theta) = {n \choose k} \theta^k (1-\theta)^{n-k}
 $$
 
 Applying Bayes' Law with our beta prior, the **posterior density** is
 
 $$
-p(\theta | k) = \frac{L(k | \theta) \cdot p(\theta)}{\int_0^1 L(k | \theta) \cdot p(\theta) \, d\theta} = \textrm{Beta}(\alpha + k, \, \beta + n - k)
+p(\theta \mid k) = \frac{L(k \mid \theta) \cdot p(\theta)}{\int_0^1 L(k \mid \theta) \cdot p(\theta) \, d\theta} = \textrm{Beta}(\alpha + k, \, \beta + n - k)
 $$
 
 So the posterior is also a beta distribution — a consequence of the beta prior being **conjugate** to the binomial likelihood.
@@ -388,25 +388,25 @@ $$
 **b)** By Bayes' Law, the posterior density for $\theta$ after observing a single flip $Y$ is
 
 $$
-p(\theta | Y) = \frac{L(Y | \theta) \cdot p(\theta)}{\int_{0}^{1} L(Y | \theta) \cdot p(\theta) \, d\theta}
+p(\theta \mid Y) = \frac{L(Y \mid \theta) \cdot p(\theta)}{\int_{0}^{1} L(Y \mid \theta) \cdot p(\theta) \, d\theta}
 $$
 
 Substituting the likelihood from (a) and the beta prior density, this becomes
 
 $$
-p(\theta | Y) = \frac{\theta^Y (1-\theta)^{1-Y} \cdot \theta^{\alpha - 1} (1 - \theta)^{\beta - 1} / B(\alpha, \beta)}{\int_{0}^{1} \theta^Y (1-\theta)^{1-Y} \cdot \theta^{\alpha - 1} (1 - \theta)^{\beta - 1} / B(\alpha, \beta) \, d\theta}
+p(\theta \mid Y) = \frac{\theta^Y (1-\theta)^{1-Y} \cdot \theta^{\alpha - 1} (1 - \theta)^{\beta - 1} / B(\alpha, \beta)}{\int_{0}^{1} \theta^Y (1-\theta)^{1-Y} \cdot \theta^{\alpha - 1} (1 - \theta)^{\beta - 1} / B(\alpha, \beta) \, d\theta}
 $$
 
 Collecting powers of $\theta$ and $(1-\theta)$, we recognize the kernel of a beta density:
 
 $$
-p(\theta | Y) = \frac{\theta^{Y+\alpha - 1} (1 - \theta)^{1-Y+\beta - 1}}{\int_{0}^{1} \theta^{Y+\alpha - 1} (1 - \theta)^{1-Y+\beta - 1} \, d\theta}
+p(\theta \mid Y) = \frac{\theta^{Y+\alpha - 1} (1 - \theta)^{1-Y+\beta - 1}}{\int_{0}^{1} \theta^{Y+\alpha - 1} (1 - \theta)^{1-Y+\beta - 1} \, d\theta}
 $$
 
 which means that
 
 $$
-\theta | Y \sim \textrm{Beta}(\alpha + Y, \, \beta + (1-Y))
+\theta \mid Y \sim \textrm{Beta}(\alpha + Y, \, \beta + (1-Y))
 $$
 
 **c)**
@@ -656,7 +656,7 @@ So posterior and prior are both beta distributions, albeit ones with different p
 
 When a likelihood function and prior fit together like hand and glove in this way, we can  say that the  prior and posterior are **conjugate distributions**.
 
-In this situation, we also sometimes  say that we have **conjugate prior** for the likelihood function $\textrm{Prob}(X | \theta)$.
+In this situation, we also sometimes  say that we have **conjugate prior** for the likelihood function $\mathbb{P}\{X \mid \theta\}$.
 
 Typically, the functional form of the likelihood function determines the functional form of a **conjugate prior**.
 
