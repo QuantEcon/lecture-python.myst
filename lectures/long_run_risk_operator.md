@@ -20,7 +20,7 @@ kernelspec:
 </div>
 ```
 
-# Long-Term Risk: An Operator Approach
+# Long-term risk: an operator approach
 
 ```{contents} Contents
 :depth: 2
@@ -40,7 +40,7 @@ describes only the *short end* of the term structure of risk prices.
 Hansen and Scheinkman instead study the *long end*: what happens as the time
 between valuation and payoff grows large.
 
-The two ends are complementary — together they pin down the slope of the term
+The two ends are complementary --- together they pin down the slope of the term
 structure of risk prices, and economic restrictions are often more reliable
 over long horizons than over instantaneous ones.
 
@@ -93,7 +93,7 @@ This lecture covers
 * the extended generator associated with a multiplicative functional,
 * principal eigenfunctions and the Hansen-Scheinkman factorization,
 * a finite-state example where the analysis reduces to Perron-Frobenius theory,
-* the affine diffusion example from the paper, and
+* an affine diffusion example, and
 * long-run risk prices for persistent growth shocks.
 
 We start with imports.
@@ -104,7 +104,7 @@ import matplotlib.pyplot as plt
 from scipy.linalg import eig, expm
 ```
 
-## Multiplicative Functionals
+## Multiplicative functionals
 
 Let $\{X_t : t \geq 0\}$ be a continuous-time Markov process with state space
 $\mathcal D_0$.
@@ -119,8 +119,33 @@ constructed from the history of $X$, so that $M_t$ is
 $\mathcal F_t$-measurable for each $t$.
 ```
 
-The paper assumes that functionals have versions with right-continuous sample
-paths and left limits.
+We assume that functionals have versions with right-continuous sample
+paths and left limits, the **càdlàg** property.
+
+Concretely, for almost every $\omega$, the path $t \mapsto M_t(\omega)$ satisfies
+
+$$
+    \lim_{s \downarrow t} M_s(\omega) = M_t(\omega)
+    \quad \text{for all } t \geq 0,
+$$
+
+and the left limit
+
+$$
+    M_{t-}(\omega) := \lim_{s \uparrow t} M_s(\omega)
+$$
+
+exists and is finite for all $t > 0$.
+
+Paths may jump, but each jump is resolved at the jump time:
+$M_t = M_{t-} + \Delta M_t$ with $\Delta M_t := M_t - M_{t-}$.
+
+The word *version* means we are free to replace $M_t$ by any process
+$\tilde M_t$ with $\mathbb P(M_t = \tilde M_t) = 1$ for each $t$.
+
+Càdlàg paths give the joint measurability in $(\omega, t)$ that we need to
+integrate functionals against time, apply optional stopping, and pass to
+limits such as $\lim_{t \to \infty} t^{-1} \log M_t$ that appear later.
 
 ```{prf:definition} Multiplicative Functional
 :label: lrr-def-multiplicative-functional
@@ -157,8 +182,7 @@ $$
 
 Exponentials of additive functionals are strictly positive multiplicative functionals.
 
-For the jump-diffusion setting in {cite:t}`HansenScheinkman2009`, a useful
-parameterization is
+In a jump-diffusion setting, a useful parameterization is
 
 $$
 \begin{aligned}
@@ -180,7 +204,16 @@ $\beta(x) = -r(x)$.
 
 ## Semigroups
 
-The operator objects are formalized by the following semigroup definition.
+A multiplicative functional $M$ together with the Markov process $X$
+defines, for each horizon $t$, the valuation operator
+
+$$
+    \mathbb M_t \psi(x) = E\left[M_t \psi(X_t) \mid X_0 = x\right] .
+$$
+
+These operators inherit a clean composition rule from the multiplicative
+property of $M$, which makes the family $\{\mathbb M_t\}_{t \geq 0}$ a
+*semigroup*.
 
 ```{prf:definition} One-Parameter Semigroup
 :label: lrr-def-one-parameter-semigroup
@@ -217,18 +250,29 @@ $$
 $$
 ```
 
-The proof is just iterated expectations plus the multiplicative property of
-$M$.
+The semigroup property follows from iterated expectations and the
+multiplicative property of $M$.
 
-Economically, the semigroup property is the Markov version of the law of
-iterated values: the date-$0$ price of a date-$(t+u)$ payoff equals the
-date-$0$ price of holding the date-$t$ price of that payoff.
+Economically, it is the Markov law of iterated values: the date-$0$ price of
+a date-$(t+u)$ payoff equals the date-$0$ price of holding the date-$t$
+price of that payoff.
 
-Multiplicativity of $M$ and the semigroup property of $\{\mathbb M_t\}$ are
-the same condition, expressed at the path level and the operator level
-respectively.
+Multiplicativity of $M$ (at the path level) and the semigroup property of
+$\{\mathbb M_t\}$ (at the operator level) are the same condition.
 
-We will see several multiplicative functionals, summarized as follows.
+### Functionals we will use
+
+We work with four positive multiplicative functionals throughout the lecture.
+
+| Object | Multiplicative functional | Semigroup |
+|---|---:|---:|
+| stochastic discount factor | $S$ | $\{\mathbb S_t\}$ |
+| cumulated return | $V$ | $\{\mathbb V_t\}$ |
+| stochastic growth | $G$ | $\{\mathbb G_t\}$ |
+| valuation with stochastic growth | $Q = GS$ | $\{\mathbb Q_t\}$ |
+
+The first three are primitives; the last one combines them to value cash
+flows that both grow and require discounting.
 
 ```{prf:definition} Stochastic Discount Factor
 :label: lrr-def-stochastic-discount-factor
@@ -245,15 +289,6 @@ Given a stochastic discount factor $S$, a **valuation functional** $V$ is a
 multiplicative functional such that $\{V_tS_t : t \geq 0\}$ is a martingale.
 ```
 
-| Object | Multiplicative functional | Semigroup |
-|---|---:|---:|
-| stochastic discount factor | $S$ | $\{\mathbb S_t\}$ |
-| cumulated return | $V$ | $\{\mathbb V_t\}$ |
-| stochastic growth | $G$ | $\{\mathbb G_t\}$ |
-| valuation with stochastic growth | $Q = GS$ | $\{\mathbb Q_t\}$ |
-
-The last case is central for long-run cash-flow pricing.
-
 ```{prf:definition} Stochastic Growth Functional
 :label: lrr-def-stochastic-growth-functional
 
@@ -261,13 +296,8 @@ A **stochastic growth functional** $G$ is a positive multiplicative functional
 that scales a cash flow between dates.
 ```
 
-If a cash flow is
-
-$$
-    D_t = D_0 G_t \psi(X_t),
-$$
-
-then its date-$0$ value is
+To price a cash flow $D_t = D_0 G_t \psi(X_t)$, we discount with $S$ and grow
+with $G$, so its date-$0$ value is
 
 $$
     D_0 \mathbb Q_t \psi(X_0),
@@ -285,34 +315,34 @@ generated by $Q=GS$, where $G$ is stochastic growth and $S$ is the stochastic
 discount factor.
 ```
 
-The long-horizon behavior of $\mathbb Q_t$ tells us how current prices value
-cash-flow growth risk that materializes far in the future.
+The long-horizon behaviour of $\mathbb Q_t$ is the central object of the
+lecture: it tells us how current prices value cash-flow growth risk that
+materializes far in the future.
 
-## The Generator
+## The generator
 
-The semigroup $\{\mathbb M_t\}_{t \geq 0}$ is a global object.
+So far we have a family of operators $\{\mathbb M_t\}_{t \geq 0}$, one for each
+horizon $t$.
 
-For a fixed horizon $t$, the value
+That is more information than we can analyze directly --- and what we really
+want is the behaviour of $\mathbb M_t \psi$ as $t \to \infty$.
 
-$$
-    \mathbb M_t \psi(x)
-    =
-    E\left[M_t \psi(X_t) \mid X_0=x\right]
-$$
+The **generator** $\mathbb A$ compresses the entire semigroup into one
+time-independent operator on the state space.
 
-averages over all paths from $0$ to $t$.
+It records the *instantaneous* rate of change of $M_t \psi(X_t)$, and its
+eigenvalues drive the long-run growth rate of $\mathbb M_t$.
 
-But the long-horizon question asks what happens to this whole family of
-operators as $t$ becomes large.
+That is what lets us turn an asymptotic question about a family of operators
+into a single eigenvalue problem.
 
-The role of the generator is to replace this horizon-indexed family by a
-single local object on the state space.
+### Discrete-time intuition
 
-The idea is easiest to see in discrete time.
+The role of the generator is easiest to see when time is discrete, so we
+build the picture there once and then carry it over.
 
-Suppose $X_n$ is Markov and $M_n$ is a multiplicative functional.
-
-Let the one-period valuation operator be
+Let $X_n$ be Markov and $M_n$ a multiplicative functional, and define the
+one-period valuation operator
 
 $$
     K\psi(x)
@@ -320,121 +350,83 @@ $$
     E\left[M_1 \psi(X_1) \mid X_0=x\right].
 $$
 
-Then the $n$-period valuation operator is just $K^n$.
+Iterating gives the $n$-period operator $K^n$ --- exactly the logic by which a
+transition matrix $P$ produces $n$-step probabilities through $P^n$, except
+that $K$ also carries the payoff weight $M_1$.
 
-This is the same one-step-to-many-step logic used in the finite Markov chains
-lecture, where a transition matrix $P$ determines $n$-step probabilities
-through $P^n$.
+So one local object, $K$, controls the entire horizon-indexed family.
 
-Here $K$ plays the role of the one-step matrix, except that it also includes
-the multiplicative payoff weight $M_1$.
-
-Thus a long-horizon problem is controlled by a single one-step object.
-
-If $K\phi = \lambda \phi$, then
+It also controls long-run growth: if $K\phi = \lambda \phi$, then
 
 $$
-    K^n \phi = \lambda^n \phi,
+    K^n \phi = \lambda^n \phi ,
 $$
 
-so the eigenvalue $\lambda$ gives the long-run geometric growth or decay rate,
-while $\phi$ describes the long-run dependence on the current state.
+so $\lambda$ is the long-run geometric growth (or decay) rate and $\phi$ is
+the long-run dependence on the current state.
 
-The same one-step operator also tells us the predictable change in a weighted
+The same operator gives the predictable rate of change of the weighted
 payoff.
 
 By multiplicativity,
 
 $$
-\begin{aligned}
     E\left[
         M_{n+1}\psi(X_{n+1}) - M_n \psi(X_n)
         \mid \mathcal F_n
     \right]
-    &=
-    M_n\left(K\psi(X_n)-\psi(X_n)\right).
-\end{aligned}
+    =
+    M_n (K\psi - \psi)(X_n) ,
 $$
 
-Hence $K\psi-\psi$ is the predictable one-period rate of change of the
-weighted payoff, expressed as a function of the current state.
-
-Subtracting these predictable changes from the total change leaves a
-martingale:
+so subtracting the cumulative predictable change from the total change leaves
+a martingale:
 
 $$
     M_n\psi(X_n)
-    -
-    \psi(X_0)
-    -
-    \sum_{j=0}^{n-1}
-        M_j\left(K\psi(X_j)-\psi(X_j)\right).
+    - \psi(X_0)
+    - \sum_{j=0}^{n-1} M_j (K\psi - \psi)(X_j) .
 $$
 
-So in discrete time the operator $K-I$ does two things at once.
+Two roles, one operator: $K-I$ is the *local* rate of change of
+$M_n \psi(X_n)$, and through $K^n$ it also controls long-run growth.
 
-It gives the predictable drift of $M_n\psi(X_n)$, and its eigenvalue problem
+### From discrete to continuous time
 
-$$
-    (K-I)\phi = (\lambda-1)\phi
-$$
+Continuous time keeps the same logic.
 
-is equivalent to the long-horizon eigenvalue problem for $K^n$.
-
-Continuous time keeps the same logic, but there is no distinguished
-one-period step.
-
-For a small interval $h$,
-
-$$
-    \mathbb M_h\psi(x) - \psi(x)
-$$
-
-is the short-horizon predictable change in the weighted payoff starting from
-state $x$.
-
-The continuous-time analogue of $K-I$ is therefore the derivative of the
-semigroup at zero:
+The natural replacement for $K-I$ is the derivative of the semigroup at zero:
 
 $$
     \mathbb M_h \psi(x)
     \approx
-    \psi(x) + h \mathbb A\psi(x).
+    \psi(x) + h \mathbb A \psi(x)
+    \quad \text{for small } h > 0.
 $$
 
-When this derivative can be represented by a function of the current state, we
-call that function $\mathbb A\psi$.
+The operator $\mathbb A$ is *local* in the sense that $\mathbb A\psi(x)$
+depends only on what happens in an infinitesimal neighbourhood of $x$, not on
+a path integral over $[0,t]$.
 
-It is local because it records the instantaneous rate of change at $x$, rather
-than the value of an entire finite-horizon path integral.
-
-If $\mathbb A\phi=\rho\phi$, then
-$\mathbb M_t\phi=\exp(\rho t)\phi$, the continuous-time counterpart of
-$K^n\phi=\lambda^n\phi$.
-
-This is why the generator matters for long-run valuation: it converts the
-asymptotic study of $\mathbb M_t$ into an eigenvalue problem for a local
-operator.
-
-The derivative notation above is heuristic.
-
-For the Markov processes used by {cite:t}`HansenScheinkman2009`, it is more
-convenient to define the generator through the associated martingale
-decomposition, mirroring the discrete-time formula.
-
-We look for a function $\chi$ such that $M_t \chi(X_t)$ is the instantaneous
-predictable rate of change of $M_t \psi(X_t)$.
-
-In informal differential form,
+If $\mathbb A\phi = \rho \phi$, then
 
 $$
-    E\bigl[ d\bigl(M_t \psi(X_t)\bigr) \,\bigm|\, \mathcal F_t \bigr]
-    \;=\;
-    M_t \chi(X_t)\, dt .
+    \mathbb M_t \phi = \exp(\rho t)\phi ,
 $$
 
-The formal definition says that, after integrating this predictable rate along
-the path, the remaining part is martingale noise.
+the continuous-time analogue of $K^n \phi = \lambda^n \phi$.
+
+So the long-run behaviour of $\mathbb M_t$ is encoded in an eigenvalue problem
+for the local operator $\mathbb A$.
+
+### Extended generator
+
+For the Markov processes we use, the derivative form above is heuristic --- it
+may not be well-defined for every $\psi$ of interest.
+
+We instead define $\mathbb A$ through the *martingale decomposition*, which
+mirrors the discrete-time identity in which $K-I$ is the predictable rate of
+change of $M_n\psi(X_n)$.
 
 ```{prf:definition} Extended Generator
 :label: lrr-def-extended-generator
@@ -457,26 +449,27 @@ In this case, the extended generator assigns $\chi$ to $\psi$, and we write
 $\mathbb A \psi = \chi$.
 ```
 
-The three terms have the same roles as in the discrete-time decomposition:
+The three terms play the same roles as in discrete time:
 
 * $M_t \psi(X_t) - \psi(X_0)$ is the total change in the weighted payoff over
-  $[0, t]$.
+  $[0, t]$,
 * $\int_0^t M_s \chi(X_s)\, ds$ accumulates the expected rate of change along
-  the path.
-* $N_t$ is the residual — mean-zero noise — and the martingale condition is
-  what forces $\chi$ to be the right rate.
+  the path,
+* $N_t$ is the residual.
 
-So $\mathbb A \psi(x) = \chi(x)$ is the instantaneous expected rate of change
-of $M_t \psi(X_t)$ when the current state is $x$.
+Requiring $N_t$ to be a local martingale pins down $\chi = \mathbb A\psi$ as
+the instantaneous expected rate of change of $M_t \psi(X_t)$ at the current
+state.
 
-Two sanity checks connect this definition to familiar objects.
+* When $M \equiv 1$, the definition reduces to Dynkin's formula for the
+  standard Markov generator
+  $\mathcal L \psi(x)
+  = \lim_{t \downarrow 0} t^{-1}\bigl[E\psi(X_t) - \psi(x)\bigr]$.
 
-When $M \equiv 1$, the condition reduces to Dynkin's formula for the standard
-Markov generator
-$\mathcal L \psi(x) = \lim_{t \downarrow 0} t^{-1}\bigl[E\psi(X_t) - \psi(x)\bigr]$.
+* When $X$ is a jump diffusion, Itô's formula applied to $M_t\psi(X_t)$
+  produces the closed-form expression for $\mathbb A\psi$ below.
 
-When $X$ is a jump diffusion, applying Itô's formula to $M_t \psi(X_t)$ produces
-a closed-form expression for $\mathbb A \psi$ given below.
+### A closed form for jump diffusions
 
 Suppose the Markov state satisfies
 
@@ -524,7 +517,9 @@ When $M=S$ is a stochastic discount factor, the extra terms multiplying
 $\phi(x)$ encode local prices of Brownian and jump risk.
 ```
 
-## Principal Eigenfunctions
+We will apply this formula directly in the affine-diffusion example below.
+
+## Principal eigenfunctions
 
 With the local operator $\mathbb A$ in hand, the long-run question becomes:
 which positive payoffs grow at a constant proportional rate under the
@@ -547,16 +542,62 @@ $$ (eq:generator-eigen)
 A **principal eigenfunction** is an eigenfunction that is strictly positive on the state space.
 ```
 
-If $\phi > 0$ solves {eq}`eq:generator-eigen`, then
+To see why this expression is the natural object built from the eigenpair,
+recall the discrete-time picture from the generator section.
+
+There, if $K\phi = \lambda\phi$, then the process
+
+$$
+    \lambda^{-n} M_n \frac{\phi(X_n)}{\phi(X_0)}
+$$
+
+is a martingale: $K\phi = \lambda\phi$ exactly cancels the one-step drift of
+$M_n\phi(X_n)$ after we divide by $\lambda^n$.
+
+In continuous time, $\lambda^n$ is replaced by $\exp(\rho t)$, and the
+analogous candidate martingale is
 
 $$
     \hat M_t
     =
     \exp(-\rho t) M_t
-    \frac{\phi(X_t)}{\phi(X_0)}
+    \frac{\phi(X_t)}{\phi(X_0)} .
 $$ (eq:mhat)
 
+The eigenfunction equation $\mathbb A\phi = \rho\phi$ is what we need to make
+this candidate work, just as $K\phi = \lambda\phi$ did in discrete time.
+
+To verify, apply the definition of the extended generator to $M_t\phi(X_t)$:
+
+$$
+    M_t \phi(X_t) - \phi(X_0) - \int_0^t M_s\, \mathbb A\phi(X_s)\, ds
+$$
+
 is a local martingale.
+
+Substituting $\mathbb A\phi = \rho \phi$ reduces this to
+
+$$
+    M_t \phi(X_t) - \phi(X_0) - \rho \int_0^t M_s \phi(X_s)\, ds,
+$$
+
+so the predictable drift of $M_t\phi(X_t)$ is $\rho M_t \phi(X_t)\, dt$.
+
+For $Z_t := M_t \phi(X_t)$, integration by parts gives
+
+$$
+    d\bigl(\exp(-\rho t) Z_t\bigr)
+    = -\rho \exp(-\rho t) Z_t\, dt + \exp(-\rho t)\, dZ_t ,
+$$
+
+and the drift term in $dZ_t$ is exactly $\rho Z_t\, dt$, so the two drift
+contributions cancel.
+
+Hence $\hat M_t$ has zero drift and is a local martingale.
+
+Rearranging {eq}`eq:mhat` for $M_t$ gives the factorization
+{eq}`eq:hs-factorization` from the overview, with $\hat M$ playing the role
+of the promised martingale component.
 
 ```{prf:definition} Martingale Component and Twisted Measure
 :label: lrr-def-martingale-component
@@ -574,14 +615,24 @@ $$
 $$
 ```
 
-The martingale component also gives the factorization {eq}`eq:hs-factorization`.
-
-It also gives the semigroup eigenvalue equation
+Rearranging {eq}`eq:mhat` gives the multiplicative factorization
+{eq}`eq:hs-factorization`, and taking expectations gives the semigroup
+eigenvalue equation
 
 $$
     \mathbb M_t \phi = \exp(\rho t)\phi,
     \qquad t \geq 0.
 $$ (eq:semigroup-eigen)
+
+### Stability of the twisted process
+
+The eigenpair $(\rho, \phi)$ controls *long-run* behaviour of $\mathbb M_t$
+only if the twisted process settles into a stationary regime.
+
+We need three notions: a stationary distribution, recurrence (the process
+revisits every set of interest), and irreducibility of a discretely sampled
+skeleton (so the recurrence is not an artefact of the continuous-time
+sampling).
 
 ```{prf:definition} Harris Recurrence
 :label: lrr-def-harris-recurrence
@@ -608,19 +659,19 @@ $\hat\varsigma$ measure is reached with positive probability from every
 initial state.
 ```
 
-Under these stability restrictions, Proposition 7.1 of
-{cite:t}`HansenScheinkman2009` gives the long-run approximation
+When the twisted process is stochastically stable with an irreducible
+skeleton, the long-run approximation
 
 $$
     \lim_{t \to \infty}
     \exp(-\rho t)\mathbb M_t \psi
     =
     \phi
-    \int \frac{\psi}{\phi} d\hat\varsigma ,
+    \int \frac{\psi}{\phi} d\hat\varsigma
 $$ (eq:long-run-limit)
 
-where $\hat\varsigma$ is the stationary distribution of the twisted Markov
-process.
+holds, where $\hat\varsigma$ is the stationary distribution of the twisted
+Markov process.
 
 This is the formal sense in which $\rho$ is the long-run growth rate and
 $\phi$ is the long-run state dependence.
@@ -628,14 +679,12 @@ $\phi$ is the long-run state dependence.
 ```{note}
 Positive eigenfunctions need not be unique in general state spaces.
 
-The eigenfunction used for long-run approximation must generate a martingale
-and a stochastically stable twisted process.
-
-Proposition 7.2 of {cite:t}`HansenScheinkman2009` shows that these stability
-requirements select the relevant eigenfunction up to scale.
+The stability requirements above select the relevant eigenfunction up to
+scale --- they pick out the eigenpair whose twisted process is ergodic, and so
+the one that governs the long-run limit.
 ```
 
-## A Finite-State Markov Chain
+## A finite-state Markov chain
 
 We first study a finite-state chain, where the analysis is exactly
 Perron-Frobenius theory.
@@ -760,7 +809,7 @@ def stationary_distribution(Q):
     return pi / pi.sum()
 ```
 
-### Two States
+### Two states
 
 Consider a boom-recession economy.
 
@@ -831,11 +880,15 @@ for t in [1, 5, 20, 80]:
 print("\nlimit =", limit)
 ```
 
-### Adding Jumps
+### Adding jumps
 
-Now let the multiplicative functional jump when the Markov state changes.
+State transitions in this model are discontinuous, so the multiplicative
+functional should be allowed to jump at the transition times.
 
-The matrix `kappa_jump` below says that the functional jumps up on a
+A natural case is a stochastic discount factor that pays out more when the
+economy switches into a boom and less when it switches into a recession.
+
+The matrix `kappa_jump` below encodes this: the functional jumps up on a
 recession-to-boom transition and down on a boom-to-recession transition.
 
 ```{code-cell} ipython3
@@ -850,6 +903,10 @@ print(f"rho with jumps    = {rho_jump:.6f}")
 print("\nphi with jumps:")
 print(phi_jump)
 ```
+
+To see how the long-run rate $\rho$ responds to jump risk, we hold the
+boom-to-recession multiplier fixed and trace out $\rho$ as the
+recession-to-boom multiplier varies.
 
 ```{code-cell} ipython3
 kappa_grid = np.linspace(-0.5, 0.5, 100)
@@ -871,9 +928,14 @@ ax.set_title("Jumps and the Long-Run Growth Rate")
 plt.show()
 ```
 
-## The Affine Diffusion Example
+Larger upward jumps on the recession-to-boom transition raise $\rho$,
+because they make the functional grow more on transitions out of the
+high-decay state.
 
-We now turn to the continuous-state example in {cite:t}`HansenScheinkman2009`.
+## The affine diffusion example
+
+We now apply the operator approach to a continuous-state model that is
+tractable enough to solve in closed form.
 
 The state has two independent components.
 
@@ -897,7 +959,7 @@ dX_t^o
 \end{aligned}
 $$ (eq:affine-state)
 
-The paper normalizes $\sigma_o > 0$ and $\sigma_f < 0$.
+We normalize $\sigma_o > 0$ and $\sigma_f < 0$.
 
 The sign of $\sigma_f$ is a convention that makes a positive $B^f$ shock
 reduce volatility.
@@ -918,11 +980,11 @@ A_t
 \end{aligned}
 $$ (eq:affine-additive)
 
-Guess an exponential-affine eigenfunction
-
-$$
-    \phi(x^f,x^o) = \exp(c_f x^f + c_o x^o).
-$$
+Because the state dynamics and the drift of $A$ are both affine in $(x^f,
+x^o)$, an exponential-affine eigenfunction closes the eigenvalue problem:
+applying the generator to $\phi(x^f,x^o) = \exp(c_f x^f + c_o x^o)$ produces
+another exponential-affine function, so $\mathbb A\phi = \rho\phi$ reduces to
+algebraic conditions on $(c_f, c_o, \rho)$.
 
 ```{prf:definition} Exponential-Affine Eigenfunction
 :label: lrr-def-exponential-affine-eigenfunction
@@ -931,7 +993,14 @@ An **exponential-affine eigenfunction** is a positive eigenfunction whose
 logarithm is affine in the state variables.
 ```
 
-Substitution into $\mathbb A\phi=\rho\phi$ gives
+Substituting
+
+$$
+    \phi(x^f,x^o) = \exp(c_f x^f + c_o x^o)
+$$
+
+into the generator formula {eq}`eq:extended-generator` and matching
+coefficients of $x^f$, $x^o$, and the constant term gives
 
 $$
 0
@@ -996,7 +1065,7 @@ which must be positive.
 ```{code-cell} ipython3
 def solve_affine_eigenfunction(params):
     """
-    Solve the affine eigenvalue problem from Hansen and Scheinkman.
+    Solve the exponential-affine eigenvalue problem.
     """
     xi_f = params["xi_f"]
     xbar_f = params["xbar_f"]
@@ -1082,12 +1151,11 @@ $$
     \gamma_o^s = -a\vartheta_o .
 $$ (eq:breeden-sdf-params)
 
-Recursive preferences of {cite:t}`Kreps_Porteus1978` and
+The recursive preferences of {cite:t}`Kreps_Porteus1978` and
 {cite:t}`Epstein_Zin1989`, used in long-run risk models such as
-{cite:t}`Bansal_Yaron_2004`, add forward-looking terms to the SDF.
-
-The operator calculations below are the same once the parameters
-$(\bar\beta,\beta_f,\beta_o,\gamma_f,\gamma_o)$ are specified.
+{cite:t}`Bansal_Yaron_2004`, change these parameters by adding
+forward-looking terms --- but the operator calculations below are identical
+once $(\bar\beta,\beta_f,\beta_o,\gamma_f,\gamma_o)$ are specified.
 
 ```{code-cell} ipython3
 params_state = {
@@ -1146,9 +1214,12 @@ for cf in cf_candidates:
     print(f"cf = {cf:8.4f}, twisted mean reversion = {mr:8.4f}")
 ```
 
-### The Martingale Component
+### The martingale component
 
-For the affine example, the martingale component has log
+Having solved for the eigenpair $(\rho,\phi)$, we can now assemble the
+multiplicative factorization {eq}`eq:hs-factorization` explicitly.
+
+The martingale component $\hat M$ defined in {eq}`eq:mhat` has log
 
 $$
 \begin{aligned}
@@ -1292,11 +1363,17 @@ plt.tight_layout()
 plt.show()
 ```
 
-## Long-Run Risk Prices
+## Long-run risk prices
 
-Local continuous-time pricing is expressed through instantaneous risk prices.
+The eigenpair $(\rho, \phi)$ from the cash-flow valuation problem also lets
+us define a *long-run* analogue of the instantaneous risk prices used in
+local continuous-time asset pricing.
 
-Suppose the SDF has Brownian loading $\gamma^s$.
+The two prices need not agree: a shock that moves a persistent state variable
+has a small immediate effect on the cash flow but a large cumulative effect
+on future growth and discounting.
+
+Our aim is to compare the two.
 
 ```{prf:definition} Local Brownian Risk Price
 :label: lrr-def-local-brownian-risk-price
@@ -1304,32 +1381,6 @@ Suppose the SDF has Brownian loading $\gamma^s$.
 The **local price** of exposure to a Brownian shock with SDF loading
 $\gamma_i^s$ is $-\gamma_i^s$.
 ```
-
-For a valuation functional with Brownian exposure $\gamma^v$, Corollary 3.1 of
-{cite:t}`HansenScheinkman2009` gives the Brownian part of the local required
-expected return as
-
-$$
-    -\gamma^v \cdot \gamma^s .
-$$
-
-Thus the local price of exposure to a Brownian shock is $-\gamma^s$.
-
-Long-run prices differ because a shock can move persistent state variables
-that influence future cash-flow growth or future discounting.
-
-In the affine model, the local price of exposure to $B^o$ is
-
-$$
-    -\gamma_o^s .
-$$
-
-The long-run price of exposure to $B^o$ in the cash-flow valuation problem is
-
-$$
-    -\gamma_o^s
-    - \frac{\beta_o^s}{\xi_o}\sigma_o .
-$$ (eq:long-run-price-o)
 
 ```{prf:definition} Long-Run Risk Price
 :label: lrr-def-long-run-risk-price
@@ -1340,12 +1391,34 @@ $\partial R_\infty / \partial \gamma_i^g$ in the asymptotic required return
 $R_\infty=-\rho+\delta$.
 ```
 
-The second term is the persistence adjustment.
+The local Brownian price is read off the SDF directly: for a valuation
+functional with Brownian exposure $\gamma^v$, the Brownian part of the local
+required expected return is $-\gamma^v \cdot \gamma^s$, so a unit of
+$\gamma^v_i$ exposure is priced at $-\gamma^s_i$.
 
-A shock to $B^o$ moves the persistent growth predictor $X^o$.
+The long-run price requires solving the principal eigenvalue problem for the
+$GS$ semigroup, since it depends on how a shock propagates through the
+persistent state.
 
-Because $X^o$ mean reverts at rate $\xi_o$, the cumulative effect of the shock
-is larger when $\xi_o$ is smaller.
+### Comparison in the affine model
+
+In the affine model, the local price of exposure to $B^o$ is
+
+$$
+    -\gamma_o^s ,
+$$
+
+while the long-run price is
+
+$$
+    -\gamma_o^s
+    - \frac{\beta_o^s}{\xi_o}\sigma_o .
+$$ (eq:long-run-price-o)
+
+The second term is the **persistence adjustment**: a shock to $B^o$ moves
+the persistent growth predictor $X^o$, and because $X^o$ mean reverts at rate
+$\xi_o$, the cumulative effect of the shock is larger when $\xi_o$ is
+smaller.
 
 ```{code-cell} ipython3
 gamma_s_o = params_sdf["gamma_o"]
@@ -1379,7 +1452,7 @@ ax.legend()
 plt.show()
 ```
 
-### Changing Cash-Flow Risk
+### Changing cash-flow risk
 
 Let a cash-flow growth functional be
 
@@ -1475,11 +1548,20 @@ print(f"finite-difference slope = {finite_difference:.6f}")
 print(f"formula                 = {long_run_price_o:.6f}")
 ```
 
-## Perron-Frobenius Dominance
+## Perron-Frobenius dominance
 
-The finite-state examples make the limiting argument transparent.
+The long-run limit {eq}`eq:long-run-limit` works because the principal
+eigenvalue $\rho$ strictly dominates the real part of every other eigenvalue
+of $\mathbb A$.
 
-Let us repeat the calculation for a three-state chain.
+In a finite-state chain this is just the Perron-Frobenius theorem: the
+positive generator $A$ in {eq}`eq:finite-a` has a unique largest real
+eigenvalue, and contributions from the remaining eigenvalues decay at an
+exponential rate equal to the gap between $\rho$ and the next-largest real
+part.
+
+We illustrate this on a three-state chain and read off the spectral gap
+directly.
 
 ```{code-cell} ipython3
 state_names = ["expansion", "normal", "contraction"]
@@ -1538,6 +1620,11 @@ axes[0].legend()
 plt.tight_layout()
 plt.show()
 ```
+
+For each choice of $\psi$ and each initial state, the rescaled value
+$\exp(-\rho t)\mathbb M_t \psi$ converges to the dashed horizontal line --- the
+long-run limit $\phi \int (\psi/\phi)\, d\hat\varsigma$ --- at a rate
+controlled by the spectral gap.
 
 ## Summary
 
@@ -1797,6 +1884,175 @@ separation between the dominant eigenvalue and the remaining eigenvalues.
 
 In this finite-state example, that separation is the spectral gap computed
 above.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lrr_ex4
+
+Derive the closed-form expression for the extended generator in
+{eq}`eq:extended-generator`.
+
+Take the jump-diffusion setting in which the Markov state satisfies
+
+$$
+    dX_t^c = \xi(X_t)dt + \Gamma(X_t)dB_t
+$$
+
+between jumps, with $\Sigma = \Gamma\Gamma^\top$ and jump compensator
+$\eta(dy \mid x)$.
+
+Let $M = \exp(A)$ for the additive functional $A$ in
+{eq}`eq:additive-functional` and let $\phi$ be a smooth, strictly positive
+function.
+
+Recall from {prf:ref}`lrr-def-extended-generator` that
+$\mathbb A\phi = \chi$ if
+
+$$
+    N_t = M_t\phi(X_t) - \phi(X_0) - \int_0^t M_s \chi(X_s)\, ds
+$$
+
+is a local martingale, so the task is to identify the predictable drift of
+$M_t\phi(X_t)$ and read off $\chi$.
+
+(a) Apply Itô's formula to $Y_t = \exp(A_t)\phi(X_t)$ between jumps and
+show that the continuous part of $dY_t$ has drift
+
+$$
+    M_t
+    \left[
+        (\xi + \Gamma\gamma)^\top
+            \frac{\partial \phi}{\partial x}
+        + \frac{1}{2}
+          \operatorname{trace}\!\left(
+              \Sigma \frac{\partial^2 \phi}{\partial x \partial x^\top}
+          \right)
+        + \left(\beta + \frac{\gamma^\top \gamma}{2}\right)\phi
+    \right] dt .
+$$
+
+(b) Show that at a jump time $t$ with $X_{t-}=x$ and $X_t=y$,
+
+$$
+    \Delta Y_t = M_{t-}\big[\exp[\kappa(y,x)]\phi(y) - \phi(x)\big] ,
+$$
+
+and conclude that the predictable jump compensator contributes drift
+
+$$
+    M_{t-}
+    \int
+        \big\{
+            \exp[\kappa(y,x)]\phi(y) - \phi(x)
+        \big\}
+        \eta(dy \mid x)\, dt .
+$$
+
+(c) Decompose
+
+$$
+    \exp[\kappa(y,x)]\phi(y) - \phi(x)
+    =
+    \exp[\kappa(y,x)]
+        \big[\phi(y) - \phi(x)\big]
+    + \big[\exp[\kappa(y,x)] - 1\big]\phi(x),
+$$
+
+combine the result with part (a), and read off $\mathbb A \phi$ to recover
+{eq}`eq:extended-generator`.
+```
+
+```{solution-start} lrr_ex4
+:class: dropdown
+```
+
+*(a)* Set $g(a, x) = e^a \phi(x)$, so that $Y_t = g(A_t, X_t)$.
+
+Between jumps, the continuous parts of $A$ and $X$ are
+
+$$
+    dA_t^c = \beta(X_t)\, dt + \gamma(X_t)^\top dB_t,
+    \qquad
+    dX_t^c = \xi(X_t)\, dt + \Gamma(X_t)\, dB_t ,
+$$
+
+with quadratic covariations
+
+$$
+    d\langle A^c, A^c\rangle_t = \gamma^\top \gamma\, dt,
+    \qquad
+    d\langle X^c, X^c\rangle_t = \Sigma\, dt,
+    \qquad
+    d\langle A^c, X^c\rangle_t = \Gamma\gamma\, dt .
+$$
+
+The partial derivatives of $g$ satisfy
+
+$$
+    \partial_a g = g,
+    \quad
+    \partial_{aa} g = g,
+    \quad
+    \partial_x g = e^a \frac{\partial \phi}{\partial x},
+    \quad
+    \partial_{ax} g = e^a \frac{\partial \phi}{\partial x},
+    \quad
+    \partial_{xx} g = e^a \frac{\partial^2 \phi}{\partial x \partial x^\top} .
+$$
+
+Itô's formula yields a continuous martingale part plus the drift
+
+$$
+\begin{aligned}
+    M_t \Big[
+        \beta \phi
+        + \tfrac{1}{2}\gamma^\top \gamma\, \phi
+        + \xi^\top \tfrac{\partial \phi}{\partial x}
+        + \tfrac{1}{2}\operatorname{trace}\!\big(\Sigma\, \tfrac{\partial^2 \phi}{\partial x \partial x^\top}\big)
+        + (\Gamma\gamma)^\top \tfrac{\partial \phi}{\partial x}
+    \Big]\, dt .
+\end{aligned}
+$$
+
+Grouping the gradient terms gives the expression in the question.
+
+*(b)* At a jump time $t$,
+$\Delta A_t = \kappa(X_t, X_{t-}) = \kappa(y, x)$, so
+$M_t = M_{t-}\exp[\kappa(y,x)]$ and
+
+$$
+    \Delta Y_t
+    = M_t \phi(X_t) - M_{t-}\phi(X_{t-})
+    = M_{t-}\big[\exp[\kappa(y,x)]\phi(y) - \phi(x)\big] .
+$$
+
+Compensating these jumps against the predictable intensity $\eta(dy \mid x)$
+gives the stated predictable drift.
+
+*(c)* Adding the jump drift from (b) to the continuous drift from (a), the
+predictable drift of $Y_t = M_t \phi(X_t)$ at state $x$ is $M_t\, \chi(x)\, dt$
+with
+
+$$
+\begin{aligned}
+    \chi(x)
+    &=
+    (\xi + \Gamma\gamma)^\top \frac{\partial \phi}{\partial x}
+    + \frac{1}{2}\operatorname{trace}\!\left(
+        \Sigma \frac{\partial^2 \phi}{\partial x \partial x^\top}
+      \right)
+    + \left(\beta + \frac{\gamma^\top \gamma}{2}\right)\phi(x)
+    \\
+    &\quad
+    + \int \exp[\kappa(y,x)]\big[\phi(y) - \phi(x)\big]\, \eta(dy \mid x)
+    + \phi(x)\int \big[\exp[\kappa(y,x)] - 1\big]\, \eta(dy \mid x) .
+\end{aligned}
+$$
+
+Collecting the terms multiplying $\phi(x)$ recovers
+{eq}`eq:extended-generator`, so $\chi = \mathbb A \phi$.
 
 ```{solution-end}
 ```
