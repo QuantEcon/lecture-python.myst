@@ -20,7 +20,7 @@ kernelspec:
 </div>
 ```
 
-# Long-term risk: an operator approach
+# Long-term Risk: An Operator Approach
 
 ```{contents} Contents
 :depth: 2
