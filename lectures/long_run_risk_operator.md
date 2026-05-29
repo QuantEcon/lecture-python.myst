@@ -160,12 +160,18 @@ $$
 and the pure-jump component as
 
 $$
-    dX_t^j = \int y\, \zeta(dy, dt),
+    dX_t^j = \int \bigl(y - X_{t-}\bigr)\, \zeta(dy, dt),
 $$
 
-where $\zeta$ is the random counting measure of jumps and
-$\eta(dy \mid X_{t-})\, dt$ is its compensator, the rate at which $X$
-jumps from $X_{t-}$ to a region $dy$.
+where $\zeta$ is the random counting measure of jumps indexed by the
+*post-jump state* $y$, so that $\zeta(B, [0,t])$ counts the number of
+jumps in $[0,t]$ landing in the Borel set $B$.
+
+Its compensator is $\eta(dy \mid X_{t-})\, dt$, the rate at which $X$
+jumps from $X_{t-}$ into a region $dy$.
+
+We will use this "$y$ = post-jump state" convention throughout, matching
+the form $\phi(y) - \phi(x)$ that appears in the generator below.
 
 We also impose two simplifying assumptions:
 
@@ -683,19 +689,30 @@ That is exactly what we will see when we write down its closed form in
 {eq}`eq:extended-generator` below.
 ```
 
-Why is this the right object? 
+Why is this the right object?
 
-Because if $\mathbb A\phi = \rho \phi$, then
-iterating gives
+If $\mathbb A\phi = \rho\phi$, then the candidate
 
 $$
-    \mathbb M_t \phi = \exp(\rho t)\, \phi ,
+    \hat M_t := \exp(-\rho t)\, M_t\, \frac{\phi(X_t)}{\phi(X_0)}
 $$
 
-the continuous-time analogue of $K^n \phi = \lambda^n \phi$.
+is automatically a *local* martingale.
+
+When $\hat M$ is in fact a martingale (the content of Assumption 6.1 in
+{cite:t}`HansenScheinkman2009`), taking expectations gives the
+continuous-time analogue of $K^n\phi = \lambda^n\phi$:
+
+$$
+    \mathbb M_t \phi = \exp(\rho t)\, \phi .
+$$
+
+Without that upgrade we get only the supermartingale inequality $\mathbb
+M_t \phi \le \exp(\rho t)\, \phi$, which we will revisit below.
 
 So the long-run behaviour of $\mathbb M_t$ is encoded in an eigenvalue
-problem for the local operator $\mathbb A$.
+problem for the local operator $\mathbb A$, together with the
+martingale property of $\hat M$.
 
 ### Extended generator
 
@@ -834,9 +851,17 @@ The four terms have transparent interpretations:
    compensated jumps.
 
 ```{note}
-When $M=S$ is a stochastic discount factor, the term multiplying $\phi(x)$
-in the fourth line encodes local prices of Brownian and jump risk, the
-short-end of the term structure we will revisit later.
+When $M=S$ is a stochastic discount factor, the local risk prices are
+spread across the four pieces of the generator rather than concentrated in
+the level term.
+
+* Brownian factor prices enter through the drift modification
+  $\xi \to \xi + \Gamma\gamma$ in the first line.
+* Jump-risk prices enter through the tilted jump measure
+  $\eta \to \exp[\kappa]\,\eta$ in the third line.
+* The level term in the fourth line contains the instantaneous risk-free
+  rate component (the *short end* of the term structure) plus the
+  jump-compensator contribution $\int(\exp[\kappa]-1)\,\eta$.
 
 We ask readers to verify the derivation of {eq}`eq:extended-generator` in
 {ref}`lrr_ex4`.
@@ -1092,23 +1117,47 @@ Read this as follows:
   of the payoff $\psi$, weighted by $1/\phi$ and averaged against the
   twisted stationary distribution.
 
-The mode of convergence depends on how nice $\psi$ is:
+The two precise cases of Proposition 7.1 of
+{cite:t}`HansenScheinkman2009` are:
 
-* **Almost-everywhere along a sampling grid.** For any fixed $\Delta>0$,
-  convergence along $t=\Delta j$ holds for almost every initial state when
-  $\int |\psi|/\phi\, d\hat\varsigma < \infty$.
-* **Pointwise for all continuous $t$.** Stronger but needs $\psi/\phi$
-  bounded.
+* **Sampled grid, $\hat\varsigma$-almost every starting state.** Fix any
+  $\Delta>0$ and assume $\int |\psi|/\phi\, d\hat\varsigma < \infty$;
+  then the limit holds along $t = \Delta j$ for $\hat\varsigma$-almost
+  every $x \in \mathcal D_0$.
+* **Continuous $t$, every starting state.** If $\psi/\phi$ is bounded
+  then the limit holds for every $x \in \mathcal D_0$ and every
+  $t \to \infty$, with no continuity assumption on $\psi$.
 
 ```{note}
-As we noted before, there can be more than one positive eigenfunction yielding a true
-martingale $\hat M$.
+There can be more than one positive eigenfunction of $\mathbb A$ for which
+the associated $\hat M$ is a martingale, possibly with different
+eigenvalues.
 
-Stochastic stability selects the one that matters for long-run behaviour, and rules out any other positive eigenfunction with the same eigenvalue that fails to be
-proportional to $\phi$ $\hat\varsigma$-a.s.
+Stochastic stability selects a particular one.
 
-This is the analogue of "the Perron-Frobenius eigenvector is unique up to
-scaling" in finite dimensions.
+By Proposition 7.2 of {cite:t}`HansenScheinkman2009`, the stable
+eigenfunction's eigenvalue $\rho$ is the **smallest** among all
+eigenvalues of $\mathbb A$ that admit a strictly positive eigenfunction
+satisfying the maintained conditions.
+
+Any other positive eigenfunction sharing this $\rho$ is proportional to
+$\phi$ $\hat\varsigma$-almost surely.
+
+The finite-state section below states the same selection in the more
+familiar Perron-Frobenius language, calling $\rho$ the eigenvalue with the
+*largest* real part among all eigenvalues of $A$.
+
+These two descriptions identify the same eigenvalue because in the
+irreducible finite-state case only one eigenvalue of $A$ admits a
+strictly positive eigenvector.
+
+In the affine example below the two sets pull apart, since the quadratic
+{eq}`eq:cf-roots` has two roots $c_f$ that both give strictly positive
+exponential-affine eigenfunctions with distinct eigenvalues.
+
+Stochastic
+stability picks the smaller $\rho$ by rejecting the root that produces an
+explosive twisted process.
 ```
 
 ## A finite-state Markov chain
@@ -1265,11 +1314,11 @@ def stationary_distribution(Q):
 
 Consider a boom-recession economy.
 
-State 1 is a *boom* (low short rate $r_1=0.05$, switching to recession at
-rate $\lambda_1 = 0.30$).
+State 1 is a *boom* (higher short rate $r_1=0.05$, switching to recession
+at rate $\lambda_1 = 0.30$).
 
-State 2 is a *recession* (lower short rate $r_2=0.02$, switching to boom at
-rate $\lambda_2 = 0.50$).
+State 2 is a *recession* (lower short rate $r_2=0.02$, switching to boom
+at rate $\lambda_2 = 0.50$).
 
 For now we set the jump multipliers to zero, so the SDF only changes
 continuously through the in-state decay rates.
@@ -1385,13 +1434,15 @@ Both curves settle onto their predicted limits, confirming that the
 long-run behaviour depends on the starting state only through $\phi$.
 
 ```{note}
-The *rate* of convergence is the **spectral gap** of $A$.
+The asymptotic exponential rate of convergence is governed by the gap
+between the *real part* of the leading eigenvalue $\rho$ and the largest
+real part among the remaining eigenvalues of $A$.
 
-This is the operator generalisation of the gap between the leading and
-sub-leading eigenvalues that controls mixing of a stationary Markov chain. 
+For an irreducible Metzler matrix the leading eigenvalue is real and its
+real part is strictly larger than the others, so this gap is well defined.
 
-{ref}`lrr_ex3` works through a three-state example where the gap
-can be checked directly.
+{ref}`lrr_ex3` works through a three-state example where the gap can be
+checked directly.
 ```
 
 ### Adding jumps
@@ -1404,14 +1455,19 @@ jumps are the analogue of the $\kappa$ function in the jump-diffusion
 parameterization.
 
 A natural example arises with a stochastic discount factor that jumps
-*up* when the economy moves from recession into boom (good news, marginal
-utility falls) and *down* on the reverse transition.
+*down* when the economy moves from recession into boom and *up* on the reverse transition.
 
-The matrix `κ_jump` below encodes this.
+The matrix `κ_jump` below encodes this. 
+
+We use the convention
+`κ[j, i]` = log jump multiplier of $M$ for the transition $i \to j$, with
+state index 0 = boom and state index 1 = recession.
 
 ```{code-cell} ipython3
-κ_jump = np.array([[0.0,  0.30],
-                   [-0.20, 0.0]])
+# recession (1) -> boom (0): SDF jumps down on good news (exp(-0.20))
+# boom (0) -> recession (1): SDF jumps up on bad news (exp(+0.30))
+κ_jump = np.array([[ 0.0, -0.20],
+                   [ 0.30,  0.0]])
 
 A_jump = build_generator(U, r, κ_jump)
 ρ_jump, φ_jump = principal_eigenpair(A_jump)
@@ -1432,7 +1488,7 @@ recession-to-boom multiplier varies.
 
 for n, k in enumerate(κ_grid):
     κ_temp = np.array([[0.0, k],
-                           [-0.2, 0.0]])
+                       [0.30, 0.0]])
     A_temp = build_generator(U, r, κ_temp)
     ρ_grid[n], _ = principal_eigenpair(A_temp)
 
@@ -1446,8 +1502,12 @@ ax.set_title("Jumps and the Long-Run Growth Rate")
 plt.show()
 ```
 
-Larger upward jumps on recession-to-boom transitions raise $\rho$ because the
-functional jumps up on those transitions.
+The principal eigenvalue is monotonically increasing in the recession-to-boom
+log multiplier: as that multiplier rises, $M$ jumps less downward (or more
+upward) on good news, which mechanically pushes $\rho$ up.
+
+The economically sensible SDF region is to the left of zero, where the
+multiplier is negative.
 
 ## The affine diffusion example
 
@@ -1839,9 +1899,10 @@ same operator calculation applies once the SDF parameters are replaced by
 
 Let's set up parameters and solve for the principal eigenpair.
 
-We use plausible monthly-frequency parameters: a mean-reverting volatility
-factor $X^f$ with mean $0.04$, a slower-moving predictable-growth factor
-$X^o$ with mean $0.02$, risk aversion $a=4$, time discount rate $b=0.03$.
+We use parameters in the standard long-run-risk neighbourhood: a
+mean-reverting volatility factor $X^f$ with mean $0.04$, a slower-moving
+predictable-growth factor $X^o$ with mean $0.02$, risk aversion $a=4$, and
+a time discount rate $b=0.03$.
 
 ```{code-cell} ipython3
 params_state = {
@@ -1948,7 +2009,16 @@ $$
 The drift distortions are exactly the Girsanov shifts induced by the
 Brownian loadings of $\hat M$.
 
-Let's now simulate the state and verify the factorization holds.
+Let's now simulate the state and check the factorization numerically.
+
+The first check is the *algebraic identity*: once we define $\hat M$
+through {eq}`eq:mhat`, the equation $M_t = \exp(\rho t)\hat M_t
+\phi(X_0)/\phi(X_t)$ is automatic for any choice of $(\rho,\phi)$, and the
+error below is just floating-point round-off.
+
+The second, substantive, check is whether the eigenpair $(\rho,\phi)$ we
+solved for really makes $\hat M$ a martingale, which we approximate by
+computing $E[\hat M_t]$ across many simulated paths.
 
 ```{code-cell} ipython3
 def brownian_increments(n, dt, seed=1234):
@@ -2017,7 +2087,49 @@ M_hat = np.exp(-ρ_s * t) * M * φ_t / φ_0
 transient = φ_0 / φ_t
 
 identity_error = np.max(np.abs(M - np.exp(ρ_s * t) * M_hat * transient))
-print(f"maximum factorization error = {identity_error:.2e}")
+print(f"algebraic identity error = {identity_error:.2e}")
+```
+
+The error above is up to machine precision, as expected.
+
+Next we estimate $E[\hat M_t \mid X_0 = \bar x]$ over a Monte Carlo sample
+of paths.
+
+If $\hat M$ is a martingale, the population mean is exactly $1$ at every
+$t$, and the sample mean should lie within a few standard errors of $1$.
+
+```{code-cell} ipython3
+def simulate_M_hat(params, ρ, cf, co, n_paths=2000, T=20.0, dt=0.01, seed=2024):
+    """Monte Carlo paths of hat M_t along an ensemble of trajectories."""
+    rng = np.random.default_rng(seed)
+    n = int(T / dt)
+    t = np.linspace(0, T, n + 1)
+    M_hat_paths = np.empty((n_paths, n + 1))
+
+    for k in range(n_paths):
+        seed_k = rng.integers(1, 10**9)
+        t_k, Xf_k, Xo_k, dBf_k, dBo_k = simulate_states(
+            params, T=T, dt=dt, seed=int(seed_k)
+        )
+        A_k = additive_log_M(params, t_k, Xf_k, Xo_k, dBf_k, dBo_k)
+        φ_t_k = np.exp(cf * Xf_k + co * Xo_k)
+        φ_0_k = np.exp(cf * Xf_k[0] + co * Xo_k[0])
+        M_hat_paths[k] = np.exp(-ρ * t_k) * np.exp(A_k) * φ_t_k / φ_0_k
+
+    return t, M_hat_paths
+
+
+t_mc, M_hat_paths = simulate_M_hat(params_sdf, ρ_s, cf_s, co_s)
+M_hat_mean = M_hat_paths.mean(axis=0)
+M_hat_se = M_hat_paths.std(axis=0, ddof=1) / np.sqrt(M_hat_paths.shape[0])
+
+print("   t      mean       se      (mean - 1) / se")
+for t_check in [1.0, 5.0, 10.0, 20.0]:
+    idx = np.argmin(np.abs(t_mc - t_check))
+    mean = M_hat_mean[idx]
+    se = M_hat_se[idx]
+    z = (mean - 1.0) / se
+    print(f"{t_mc[idx]:5.2f}   {mean:7.4f}  {se:7.4f}   {z:+6.2f}")
 ```
 
 ```{code-cell} ipython3
@@ -2049,7 +2161,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-Indeed the factorization holds up to numerical noise, and we can see how the three components evolve over time.
+We can see how the three components evolve over time.
 
 ## Long-run risk prices
 
@@ -2405,18 +2517,27 @@ A_t^g
 \end{aligned}
 $$ (eq:growth-functional)
 
-The last line makes $\exp(A_t^g-\delta t) = \hat G_t$ a martingale, with
-$\delta$ the constant trend growth rate.
+The last line is the Itô compensator that makes
+$\exp(A_t^g-\delta t) = \hat G_t$ a *local* martingale, with $\delta$ the
+constant trend growth rate.
 
-For the cash-flow exposure to $B^f$ we also need the Feller-type restriction
+Stochastic stability of the growth-twisted process needs three conditions.
+
+The **Feller-type nonattainment** inequality
 
 $$
-    2(\xi_f+\sigma_f\gamma_f^g)\bar x_f \geq \sigma_f^2 ,
+    2(\xi_f+\sigma_f\gamma_f^g)\bar x_f \geq \sigma_f^2
 $$
 
-which keeps the growth-twisted square-root volatility process from hitting
-zero, so stochastic stability is preserved under the growth-twisted
-measure.
+keeps the twisted $X^f$ from hitting zero.
+
+*Mean reversion* of the twisted $X^f$ is picked by the same root-selection
+argument we used for the SDF in {eq}`eq:cf-roots`.
+
+$\hat G$ itself must be a martingale, the Assumption-6.1 analogue for the
+growth twist.
+
+The Feller inequality is necessary but not sufficient on its own.
 
 ```{note}
 This Feller restriction is a concrete instance of a general point we
@@ -2471,7 +2592,7 @@ required_returns = np.array([
     required_return_for_growth_exposure(g) for g in γ_g_o_grid
 ])
 
-local_line = (-params_sdf["β_bar"]
+local_line = (required_return_for_growth_exposure(0.0)
               + local_price_o * γ_g_o_grid)
 
 fig, ax = plt.subplots()
@@ -2486,7 +2607,14 @@ ax.legend()
 plt.show()
 ```
 
-The slope of the long-run line is the risk price in {eq}`eq:long-run-price-o`.
+The slope of the long-run line is the risk price in
+{eq}`eq:long-run-price-o`, and the dashed line shares the same value at
+$\gamma_o^g = 0$ but with slope equal to the local Brownian risk price
+$-\gamma_o^s$.
+
+The gap between the two slopes is the *persistence correction*; the
+dashed line is a slope comparator, not the actual Breeden local
+expected-return frontier (which is state dependent in $X^f$ and $X^o$).
 
 ```{code-cell} ipython3
 finite_difference = (
@@ -2577,11 +2705,16 @@ The existence proof then proceeds in three steps:
    whenever $\nu(\Lambda) > 0$, so the resolvent doesn't "miss" any
    region of state space.
 
-2. **Nummelin minorization.** Irreducibility yields a lower bound
-   $F_\alpha \psi \geq s\int \psi\, d\nu$ for nonnegative $\psi$. 
-   - This is a
-   classical tool from general-state-space Markov-chain theory; the
-   constant $s>0$ is the *minorization strength*.
+2. **Nummelin minorization.** Irreducibility yields a *bounded nonnegative
+   function* $s$ on the state space, with $\int s\, d\nu > 0$, such that
+   for every nonnegative $\psi$,
+
+   $$
+       F_\alpha \psi(x)\, \geq\, s(x) \int \psi\, d\nu .
+   $$
+
+   The function $s$ (often called the *minorization function*) measures
+   how strongly the resolvent dominates a fixed reference measure $\nu$.
 
 3. **Eigenfunction extraction.** The minorization, combined with additional
    boundedness or strengthened drift assumptions, identifies a critical
@@ -2591,7 +2724,7 @@ The existence proof then proceeds in three steps:
    - Inverting the resolvent transform produces a positive
    eigenfunction for the original semigroup.
 
-These steps are all nontrivial and is out of the scope of this lecture. 
+These steps are all nontrivial and are out of scope for this lecture. 
 
 The details are in Section 9 of {cite:t}`HansenScheinkman2009`.
 
@@ -2625,8 +2758,10 @@ The main steps are:
 2. Build the semigroup
    $\mathbb M_t\psi(x)=E[M_t\psi(X_t)\mid X_0=x]$.
 
-3. Solve the local pricing restriction when $M$ is a valuation or
-   cash-flow valuation object.
+3. When $M = VS$ is the product of a valuation functional and an SDF,
+   impose the local pricing restriction that $VS$ is a martingale; for
+   cash-flow valuation semigroups $\mathbb Q_t = GS$, the pricing
+   restriction is on $S$ alone, and $G$ enters only as a growth twist.
 
 4. Solve the principal eigenvalue problem
    $\mathbb A\phi=\rho\phi$.
