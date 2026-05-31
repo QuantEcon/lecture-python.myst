@@ -28,33 +28,30 @@ kernelspec:
 
 ## Overview
 
-How should we value a cash flow that pays off thirty years from now?
-
 Standard short-horizon asset pricing tells us how investors are compensated
 for tiny, instantaneous exposures to shocks, the *short end* of the term
 structure of risk prices.
 
-But many of the most interesting asset-pricing questions, the equity
+But many of the most interesting  topics about asset pricing questions -- e.g.,  the equity
 premium puzzle, the slope of the yield curve, the prices of long-dated
-options, depend on what happens at the *long end* instead.
+options -- are about the  *long end* of the term structure of risk prices.
 
 This lecture studies the long end using the operator approach of
 {cite:t}`HansenScheinkman2009`.
 
-At the center of the play is a stochastic discount factor or a return is
-multiplicative across time, so its expectation defines a *semigroup* of
+At  center stage will be  a stochastic discount factor process and a  return process that are
+multiplicative across time in the sense that conditional expectations define a *semigroup* of
 valuation operators indexed by horizon $t$.
 
 Long-horizon behaviour of the semigroup is controlled by a single eigenvalue
 problem on the state space.
 
-When we solve that eigenvalue problem and pick the right eigenfunction, the
-multiplicative functional $M_t$ factors into three economically meaningful
-pieces: a deterministic exponential trend, a martingale that changes
+By solving that eigenvalue problem and selecting an appropriate eigenfunction, we can factor the
+multiplicative functional $M_t$  into three economically meaningful
+pieces: a deterministic exponential trend, a non-negative martingale that changes
 probability measure, and a transient state-dependent component.
 
-We will derive this factorization carefully, but here is the headline result
-to keep in mind:
+In particular, the factorization takes the form
 
 $$
     M_t
@@ -75,7 +72,7 @@ where
   twisted process settles into its stationary distribution.
 
 In finite-state problems this is exactly the Perron-Frobenius decomposition of
-a positive matrix; in general state spaces it is a continuous-state analogue.
+a positive matrix; in general state spaces it is a continuous-state counterpart.
 
 We will refer to {eq}`eq:hs-factorization` as the **multiplicative
 factorization** associated with $(\rho,\phi,\hat M)$.
@@ -92,19 +89,19 @@ This lecture is closely related to the advanced lecture
 permanent-transitory decomposition for additive and multiplicative
 functionals in a discrete-time linear-Gaussian setting.
 
-Reading the two together is a good way to see the same long-run risk ideas
+Reading these two lextures together is a good way to learn about representations of long-run risks
 in both continuous and discrete time.
 ```
 
 We will build up to {eq}`eq:hs-factorization` and use it to compute
 long-run risk prices in concrete models.
 
-The plan is:
+The plan of this lecture is to:
 
 1. Set up positive multiplicative functionals $M$ (discount factors, returns,
    stochastic growth) and the valuation semigroups they generate.
 
-2. Introduce the **generator** of a semigroup, the local operator whose
+2. Introduce the **generator** of a semigroup, a local operator whose
    eigenvalue problem controls long-run behaviour.
 
 3. Find the principal eigenfunction $\phi$ and derive the factorization.
@@ -114,14 +111,13 @@ The plan is:
    the eigenfunction is exponential-affine and we get closed-form formulas).
 
 5. Use the factorization to compute long-run risk prices and compare them to
-   the local risk prices that would be reported by short-horizon asset
+   the local risk prices appropriate for short-horizon asset
    pricing.
 
-A recurring theme will be that local and long-run risk prices can differ
-sharply when shocks move persistent state variables.
+A recurring theme will be that when shocks move persistent state variables,  local and long-run risk prices can differ markedly.
 
-That is the key
-mechanism that makes long-run risk models like {cite:t}`Bansal_Yaron_2004`
+That diifference underlies the
+mechanism that lets long-run risk models like {cite:t}`Bansal_Yaron_2004`
 generate large equity premia.
 
 We start with the following imports
@@ -143,8 +139,8 @@ history.
 We will work with a strong Markov process whose sample paths are càdlàg
 (defined below).
 
-For the explicit formulas later we will specialize to a semimartingale,
-which decomposes into a continuous component $X^c$ and a pure-jump
+For the explicit formulas later we will specialize to a semimartingale that 
+ decomposes into a continuous component $X^c$ and a pure-jump
 component $X^j$:
 
 $$
@@ -176,18 +172,18 @@ the form $\phi(y) - \phi(x)$ that appears in the generator below.
 We also impose two simplifying assumptions:
 
 * **Finite jumps** on finite time intervals: only finitely many jumps
-  occur on any bounded interval, which keeps integrals against the jump
+  occur on any bounded interval; this keeps integrals against the jump
   measure well-defined and finite.
 * **Sufficient rank in $\Gamma$** so that the Brownian shocks relevant for
-  pricing can be recovered from the state history, which is what makes the
-  Markov state $X$ "rich enough" to be a sufficient statistic for valuation.
+  pricing can be recovered from the state history; this  makes the
+  Markov state $X$ "rich enough" to describe valuation.
 
-They let us write the generator
+These assumptions let us write the generator
 in closed form and use martingale-based changes of measure freely.
 
 ### Functionals and càdlàg paths
 
-We need a name for "any process that records something about the history of
+We need a name for "a process that records something about the history of
 $X$".
 
 This includes, for example, a stochastic discount factor or a cumulated return.
@@ -213,7 +209,7 @@ $$
 and the left limit $M_{t-}(\omega) := \lim_{s \uparrow t} M_s(\omega)$ exists
 and is finite for all $t > 0$.
 
-In words: paths may jump, but each jump $\Delta M_t := M_t - M_{t-}$ resolves
+Thus,  paths can jump, but each jump $\Delta M_t := M_t - M_{t-}$ occurs
 instantaneously.
 
 At the jump time $t$, the value is the post-jump value,
@@ -248,7 +244,7 @@ $$ (eq:multiplicative)
 where $\theta_t$ shifts the underlying Markov path forward by $t$ units.
 ```
 
-Why is this the natural condition?
+Why is this a useful  condition to require?
 
 Think of $M_t = S_t$, a stochastic discount factor.
 
@@ -263,7 +259,9 @@ $$
 
 For the price to depend only on the current Markov state $X_\tau$ (and not on
 the entire history up to $\tau$), the ratio $S_t/S_\tau$ must be a function
-only of the Markov path *after* $\tau$. That is,
+only of the Markov path *after* $\tau$. 
+
+Thus,
 $S_{\tau+u}/S_\tau = S_u(\theta_\tau)$, which is exactly
 {eq}`eq:multiplicative`.
 
@@ -384,7 +382,7 @@ The semigroup identity says these two procedures give the same answer.
 This is the operator-level version of the intertemporal consistency that
 rules out arbitrage across horizons.
 
-Four positive multiplicative functionals will appear throughout.
+Four positive multiplicative functionals will appear often below.
 
 | Symbol | Object | Semigroup |
 |:---|:---|:---:|
@@ -463,7 +461,7 @@ $$
 so a transient state-dependent factor can be shuffled between $G$ and $\psi$
 without changing $D_t$.
 
-We resolve this by normalizing the growth component so its permanent part is
+We resolve this indeterminacy by normalizing the growth component so that its permanent part is
 a martingale: $G_t = \exp(\delta t)\hat G_t$, with $\hat G$ a martingale and
 $\delta$ a constant trend.
 
@@ -478,7 +476,7 @@ like at the *short* end.
 
 That is the standard instantaneous risk-return relation.
 
-This will give us a benchmark to compare long-run risk prices against later.
+This will give us a benchmark against which to compare long-run risk prices.
 
 For a textbook discrete-time treatment of the same SDF-based asset-pricing
 ideas, see {doc}`advanced:asset_pricing_lph`. 
@@ -569,7 +567,7 @@ $$
 \end{aligned}
 $$ (eq:local-risk-return)
 
-Thus the Brownian local risk-price vector is $-\gamma^s(x)$, expressed in
+Thus, the Brownian local risk-price vector is $-\gamma^s(x)$, expressed in
 the same exposure units as $\gamma^v(x)$.
 
 Jump risk is priced through the function $\kappa^s$.
@@ -583,8 +581,10 @@ The eigenvalue calculations below describe the other end.
 So far we have a family of operators $\{\mathbb M_t\}_{t \geq 0}$, one for each
 horizon $t$.
 
-That is more information than we can analyze directly and what we really
-want is the behaviour of $\mathbb M_t \psi$ as $t \to \infty$.
+That is more information than we can analyze directly.
+
+Actually,  what we really
+care about is the behaviour of $\mathbb M_t \psi$ as $t \to \infty$.
 
 The **generator** $\mathbb A$ compresses the entire semigroup into one
 time-independent operator on the state space.
@@ -592,7 +592,7 @@ time-independent operator on the state space.
 It records the *instantaneous* rate of change of $M_t \psi(X_t)$, and its
 eigenvalues drive the long-run growth rate of $\mathbb M_t$.
 
-That is what lets us turn an asymptotic question about a family of operators
+This lets us turn an asymptotic question about a family of operators
 into a single eigenvalue problem.
 
 ### Discrete-time intuition
@@ -656,7 +656,7 @@ $M_n \psi(X_n)$, and through $K^n$ it also controls long-run growth.
 
 Continuous time keeps the same logic.
 
-The natural replacement for $K-I$ is the **infinitesimal generator** of the
+The natural counterpart $K-I$ is the **infinitesimal generator** of the
 semigroup $\{\mathbb M_t\}$, the time derivative at zero:
 
 $$
@@ -716,7 +716,7 @@ martingale property of $\hat M$.
 
 ### Extended generator
 
-There is a catch with the limit definition above.
+There is a qualification to  the limit definition above.
 
 To make the limit $h \downarrow 0$ rigorous, the textbook definition
 requires $(\mathbb M_h\psi - \psi)/h$ to converge to $\mathbb A\psi$ in a
@@ -735,7 +735,7 @@ limit need not converge for them.
 through a *Doob-Meyer style* semimartingale decomposition of
 $M_t \psi(X_t)$, a pathwise condition that does not require any norm.
 
-This is the continuous-time analogue of writing $K - I$ as the predictable
+This is the continuous-time counterpart to writing $K - I$ as the predictable
 rate of change of $M_n\psi(X_n)$ in discrete time.
 
 The resulting **extended generator** admits unbounded $\psi$, has a
@@ -749,7 +749,7 @@ Concretely:
 
 Fix a Borel function $\psi$, and look for a second Borel function $\chi$ that
 will play the role of "the instantaneous rate of change of $M_t \psi(X_t)$
-at the current state". Precisely, we ask whether there exists $\chi$ such
+at the current state". We ask whether there exists $\chi$ such
 that
 
 $$
@@ -962,7 +962,7 @@ $$
 $$
 ```
 
-The verification only showed that $\hat M$ is a *local* martingale, but
+The verification establishes only  that $\hat M$ is a *local* martingale, but
 the definition above (and the change-of-measure interpretation of
 $\hat M$) both require it to be a martingale.
 
@@ -989,7 +989,7 @@ so $\rho$ is at least an upper bound on the long-run growth rate of
 $\mathbb M_t \phi$.
 
 When $\hat M$ is in fact a martingale, $E\hat M_t = 1$, the inequality
-becomes equality, and the local condition $\mathbb A\phi = \rho\phi$ lifts
+becomes an equality, and the local condition $\mathbb A\phi = \rho\phi$ lifts
 to the semigroup eigenvalue equation
 
 $$
@@ -1002,7 +1002,7 @@ $$ (eq:semigroup-eigen)
 We now have a factorization {eq}`eq:hs-factorization` for *any* principal
 eigenfunction.
 
-But for $(\rho,\phi)$ to actually describe **long-run** behaviour of
+But for $(\rho,\phi)$ to  describe **long-run** behaviour of
 $\mathbb M_t$  the twisted
 process must settle into a stationary regime as $t \to \infty$.
 
@@ -1076,12 +1076,14 @@ $$
 $$
 ```
 
-Reachability (Condition 2) is not enough. A region
+Reachability (Condition 2) is not enough.
+
+A region
 might be reachable but visited only with small probability, so time averages
 fail to converge to $\hat\varsigma$-averages. 
 
 Harris recurrence is the
-continuous-state replacement for "recurrent state" in a finite chain.
+continuous-state counterpart to a "recurrent state" in a finite chain.
 
 Bundling these together:
 
