@@ -18,7 +18,7 @@ kernelspec:
 </div>
 ```
 
-# Job Search VII: Search with Learning
+# Job Search VIII: Search with Learning
 
 ```{contents} Contents
 :depth: 2
@@ -111,7 +111,7 @@ v(w)
 ```
 
 The optimal policy has the form $\mathbf{1}\{w \geq \bar w\}$, where
-$\bar w$ is a constant called the *reservation wage*.
+$\bar w$ is a constant called the **reservation wage**.
 
 ### Offer Distribution Unknown
 
@@ -245,12 +245,12 @@ What kind of optimal policy might result from
 {eq}`odu_mvf` and the parameterization specified above?
 
 Intuitively, if we accept at $w_a$ and $w_a\leq w_b$,
-then — all other things being given — we should also accept at $w_b$.
+then -- all other things being given -- we should also accept at $w_b$.
 
 This suggests a policy of accepting whenever $w$ exceeds some
 threshold value $\bar w$.
 
-But $\bar w$ should depend on $\pi$ — in
+But $\bar w$ should depend on $\pi$ -- in
 fact, it should be decreasing in $\pi$ because
 
 - $f$ is a less attractive offer distribution than $g$
@@ -545,7 +545,7 @@ and using $\circ$ for composition of functions yields
 
 Equation {eq}`odu_mvf4` can be understood as a functional equation, where $\bar w$ is the unknown function.
 
-* Let's call it the *reservation wage functional equation* (RWFE).
+* Let's call it the **reservation wage functional equation** (RWFE).
 * The solution $\bar w$ to the RWFE is the object that we wish to compute.
 
 ## Solving the RWFE

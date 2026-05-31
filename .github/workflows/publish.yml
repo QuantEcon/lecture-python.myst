@@ -9,7 +9,9 @@ jobs:
     runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/disk=large"
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v3
         with:
@@ -19,12 +21,11 @@ jobs:
           python-version: "3.13"
           environment-file: environment.yml
           activate-environment: quantecon
-      - name: Install JAX, Numpyro, PyTorch
+      - name: Install JAX and Numpyro
         shell: bash -l {0}
         run: |
-          pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
-          pip install --upgrade "jax[cuda12-local]==0.6.2"
-          pip install numpyro  
+          pip install -U "jax[cuda13]"
+          pip install numpyro
           python scripts/test-jax-install.py
       - name: Check nvidia drivers
         shell: bash -l {0}
@@ -38,7 +39,7 @@ jobs:
         run: pip list
       # Download Build Cache from cache.yml
       - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v11
+        uses: dawidd6/action-download-artifact@v20
         with:
           workflow: cache.yml
           branch: main
@@ -49,6 +50,12 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --builder pdflatex --path-output ./ -n -W --keep-going
+      - name: Upload Execution Reports (LaTeX)
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: execution-reports-latex
+          path: _build/latex/reports
       - name: Copy LaTeX PDF for GH-PAGES
         shell: bash -l {0}
         run: |
@@ -59,7 +66,13 @@ jobs:
         run: |
           jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -n -W --keep-going
           zip -r download-notebooks.zip _build/jupyter
-      - uses: actions/upload-artifact@v5
+      - name: Upload Execution Reports (Download Notebooks)
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: execution-reports-notebooks
+          path: _build/jupyter/reports
+      - uses: actions/upload-artifact@v7
         with:
           name: download-notebooks
           path: download-notebooks.zip
@@ -73,6 +86,12 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
+      - name: Upload Execution Reports (HTML)
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: execution-reports-html
+          path: _build/html/reports
       # Create HTML archive for release assets
       - name: Create HTML archive
         shell: bash -l {0}

@@ -601,9 +601,14 @@ This is  a consequence of a  result established by Tu et al. {cite}`tu_Rowley` t
 
 
   
-**Proposition** The $p$ columns of $\Phi$ are eigenvectors of $\hat A$.
+```{prf:proposition}
+:label: prop-dmd-eigenvectors
 
-**Proof:** From formula {eq}`eq:Phiformula` we have
+The $p$ columns of $\Phi$ are eigenvectors of $\hat A$.
+```
+
+```{prf:proof}
+From formula {eq}`eq:Phiformula` we have
 
 $$  
 \begin{aligned}
@@ -620,20 +625,16 @@ $$
 \hat A \Phi = \Phi \Lambda .
 $$ (eq:APhiLambda)
 
-  
-
 Let $\phi_i$ be the $i$th  column of $\Phi$ and $\lambda_i$ be the corresponding $i$ eigenvalue of $\tilde A$ from decomposition {eq}`eq:tildeAeigenred`. 
 
 Equating the $m \times 1$ vectors that appear on the two  sides of  equation {eq}`eq:APhiLambda`  gives
-
 
 $$
 \hat A \phi_i = \lambda_i \phi_i .
 $$
 
 This equation confirms that  $\phi_i$ is an eigenvector of $\hat A$ that corresponds to eigenvalue  $\lambda_i$ of both  $\tilde A$ and $\hat A$.
-
-This concludes the proof. 
+```
 
 Also see {cite}`DDSE_book` (p. 238)
 

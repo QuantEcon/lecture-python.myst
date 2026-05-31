@@ -209,7 +209,7 @@ Units of the rental rates are:
 * for $r_t$,  output at time $t$  per unit of capital at time $t$ 
 
 
-We take output at time $t$ as *numeraire*, so the price of output at time $t$ is one.
+We take output at time $t$ as **numeraire**, so the price of output at time $t$ is one.
 
 The firm's profits at time $t$ are 
 
