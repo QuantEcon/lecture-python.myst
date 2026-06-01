@@ -30,7 +30,7 @@ kernelspec:
 
 This lecture explores a classic question in economic theory: can agents *learn* their way to a rational expectations equilibrium?
 
-{cite:t}`BrayKreps1987` examine this question in a rigorously specified model.
+The starting point is {cite:t}`BrayKreps1987`, which gives a rigorous model of Bayesian learning inside a rational expectations equilibrium.
 
 In a rational expectations equilibrium, agents use market prices to make inferences about other agents' private information.
 
@@ -38,18 +38,18 @@ Each agent knows the *statistical relationship* between prices and the underlyin
 
 But this raises a question: where does that knowledge come from?
 
-The **rational learning** approach studied by Bray and Kreps asks whether agents who start with uncertainty about the equilibrium price function can, over time, learn it from observations of past prices.
+The **rational learning** approach asks whether agents who start with uncertainty about the equilibrium price function can, over time, learn it from observations of past prices.
 
 The key findings are:
 
 * In every rational learning model, posterior assessments converge because they are bounded martingales.
-* In the paper's benchmark example, the uninformed agent learns the informed agent's risk tolerance.
+* In the benchmark example, the uninformed agent learns the informed agent's risk tolerance.
 * Correct learning requires identification, smooth equilibrium price maps, and positive prior probability for the true model.
 
-This lecture presents the Bray–Kreps framework, explains their benchmark example, and provides Python code for a simplified Bayesian learning illustration.
+This lecture presents the framework, explains the benchmark example, and provides Python code that solves the full equilibrium with rational learning.
 
 
-We focus on {cite:t}`BrayKreps1987`, published in *Arrow and the Ascent of Modern Economic Theory*, which synthesizes earlier work by {cite:t}`Bray1982`, {cite:t}`BraySavin1984`, and the rational expectations literature of {cite:t}`Radner1979`, {cite:t}`grossman1976`, and {cite:t}`Jordan1982`.
+The discussion also connects to earlier work by {cite:t}`Bray1982`, {cite:t}`BraySavin1984`, and the rational expectations literature of {cite:t}`Radner1979`, {cite:t}`grossman1976`, and {cite:t}`Jordan1982`.
 
 Let's start with the following imports
 
@@ -62,7 +62,7 @@ import matplotlib.pyplot as plt
 
 ### Agents and assets
 
-The paper's example is an infinitely repeated version of the information model in {cite:t}`GrossmanStiglitz1980`.
+The benchmark example is an infinitely repeated version of the information model in {cite:t}`GrossmanStiglitz1980`.
 
 Each date is economically disconnected from the others, so agents start each period afresh.
 
@@ -136,9 +136,9 @@ $$ (eq:bk-full-communication-price)
 
 Thus if $\sum_n \theta^n$ is known, the price fully reveals $s_t$.
 
-Following {cite:t}`Radner1979`, Bray and Kreps call this a full communication rational expectations equilibrium.
+Following {cite:t}`Radner1979`, this is called a full communication rational expectations equilibrium.
 
-The paper's learning problem starts when $\theta^I$ is unknown to agent $U$.
+Suppose that $\theta^I$ is unknown to agent $U$.
 
 Agent $U$ knows $\sigma^2$ and $\theta^U$, and starts with a prior density over $\theta^I$ on an interval $[a,b] \subset (0,\infty)$.
 
@@ -158,423 +158,349 @@ After trading, agent $U$ observes $r_t$.
 
 Bayes' rule then updates the posterior over $\theta^I$ using the normal density of the signal implied by {eq}`eq:bk-signal-implied` conditional on the realized return.
 
-This is the main object learned in Bray and Kreps' benchmark example.
+This is the main object learned in the benchmark example.
 
-They emphasize that the equilibrium can be defined recursively, but closed-form prices are "out of the question" even in this simple case.
+Even in this simple case, the equilibrium can be defined recursively but closed-form prices are unavailable.
 
-## A simplified Gaussian illustration
+## The rational learning equilibrium
 
-The code below is a pedagogical simplification of the Bayesian consistency logic.
+The model has two pieces that interact at each date.
 
-Instead of solving the full Bray--Kreps equilibrium with a posterior over risk tolerance, it studies a linear observation model
+The first is the within-period equilibrium given the uninformed agent's current posterior on $\theta^I$.
 
-$$
-p_t = b r_t,
-$$
+The second is the Bayesian update of that posterior after the period closes.
 
-where the single unknown coefficient $b$ plays the role of an identifiable structural parameter.
+### Uninformed demand given beliefs
 
-The point is to illustrate how Bayesian posteriors concentrate when the likelihood is correctly specified and the true parameter is identified by observations.
+Suppose at date $t$ agent $U$ has posterior density $f_t$ on $\theta^I$ supported on $[a, b]$.
 
-## The simplified learning model
+Suppose the equilibrium informed trade and price are $X^I$ and $p$.
 
-### Setup
+From {eq}`eq:bk-signal-implied`, conditional on $\theta^I$, agent $U$ infers $s_t = \sigma^2 X^I/\theta^I + p$.
 
-Agent $U$ *does not know* the equilibrium price function.
+Marginalising over $\theta^I \sim f_t$ and combining with $r_t = s_t + \epsilon_t$ where $\epsilon_t \sim \mathcal N(0,\sigma^2)$ gives the implied conditional distribution of $r_t$.
 
-Specifically, $U$ does not know $b^*$.
-
-However, $U$ does know:
-* The distribution of $r_t$: $r_t \sim \mathcal{N}(0, \sigma^2)$ IID.
-* That the price function is *linear*: $p_t = a + b r_t$ for some unknown $b$.
-* The value of $a = 0$.
-
-So $U$'s task is to learn the single parameter $b$ from observations of prices and (eventually) returns.
-
-### Observing the signal
-
-At date $t$, agent $U$ observes $p_t$.
-
-The signal $U$ extracts is the return implied by the price:
+Because CARA preferences have no wealth effects, agent $U$'s problem reduces to
 
 $$
-\hat{r}_t = \frac{p_t}{b_{t-1}}
+\max_{x^U}\,
+E\!\left[-\exp\!\left(-\tfrac{x^U(r_t - p)}{\theta^U}\right)\right],
 $$
 
-where $b_{t-1}$ is $U$'s current estimate of $b^*$.
+where the expectation integrates over $\theta^I \sim f_t$ and $\epsilon_t$.
 
-After date $t$ trading and before date $t+1$, $U$ observes $r_t$ (the actual return is revealed, say through dividend payments).
-
-### Bayesian updating
-
-Agent $U$ begins with a **prior** distribution on $b$:
+Integrating out $\epsilon_t$ first and then $\theta^I$ yields
 
 $$
-b \sim \mathcal{N}(\mu_0, v_0)
+E[u^U]
+=
+-\exp\!\left(\frac{(x^U)^2 \sigma^2}{2(\theta^U)^2}\right)
+\int_a^b f_t(\theta)\,
+\exp\!\left(-\frac{x^U \sigma^2 X^I}{\theta\,\theta^U}\right)
+d\theta.
 $$
 
-Given past data $(r_1, p_1), \ldots, (r_{t-1}, p_{t-1})$, agent $U$'s posterior on $b$ at date $t$ is
+The first-order condition rearranges to
 
 $$
-b \mid \text{data} \sim \mathcal{N}(\mu_t, v_t)
-$$
+\frac{x^U}{\theta^U}
+=
+X^I \;
+\frac{\int_a^b \theta^{-1} f_t(\theta)\,\exp\!\big(-x^U \sigma^2 X^I/(\theta\theta^U)\big)\,d\theta}
+     {\int_a^b f_t(\theta)\,\exp\!\big(-x^U \sigma^2 X^I/(\theta\theta^U)\big)\,d\theta}.
+$$ (eq:bk-foc)
 
-The posterior is updated using Bayes' rule.
+The right-hand side is $X^I$ multiplied by a tilted expectation of $1/\theta^I$ under a weighting that depends on $x^U$ itself.
 
-Since $p_t = b \cdot r_t$ (with $a = 0$), each pair $(r_s, p_s)$ provides the observation $p_s = b \cdot r_s$, i.e., a noisy linear measurement of $b$.
+Equation {eq}`eq:bk-foc` implicitly defines $x^U(X^I; f_t)$, the uninformed agent's optimal demand at conjectured informed trade $X^I$ and posterior $f_t$.
 
-For a Gaussian prior and Gaussian likelihood, the posterior updates as:
+The optimum does not depend separately on $p$, because the distribution of $r_t - p$ implied by the posterior depends only on $X^I$.
 
-$$
-v_t^{-1} = v_0^{-1} + \frac{1}{\sigma^2} \sum_{s=1}^{t} r_s^2
-$$ (eq:posterior_precision)
+### Market clearing
 
-$$
-\mu_t = v_t \left( v_0^{-1} \mu_0 + \frac{1}{\sigma^2} \sum_{s=1}^{t} r_s p_s \right)
-$$ (eq:posterior_mean)
+Market clearing $X^I + x^U(X^I; f_t) = 2$ pins down the equilibrium informed trade $X^I_t$ as a function of beliefs alone.
 
-
-Equations {eq}`eq:posterior_precision` and {eq}`eq:posterior_mean` follow from the standard Gaussian linear regression posterior.
-
-Each observation $(r_s, p_s)$ with $p_s = b r_s + 0$ is treated as a noisy signal of $b$ with signal-to-noise ratio $r_s^2 / \sigma^2$.
-
-
-### The simplified convergence result
-
-For the simplified Gaussian model, standard Bayesian linear regression implies the following result.
-
-```{prf:proposition}
-:label: prop-rle-gaussian-convergence
-
-For any prior $(\mu_0, v_0)$ with $v_0 < \infty$, as $t \to \infty$,
+Plugging $X^I_t$ into {eq}`eq:bk-informed-demand` recovers the equilibrium price
 
 $$
-\mu_t \xrightarrow{a.s.} b^*,
+p_t = s_t - \frac{\sigma^2 X^I_t}{\theta^I}.
+$$ (eq:bk-price)
+
+When $f_t$ collapses to a point mass at the true $\theta^I$, equation {eq}`eq:bk-foc` simplifies to $x^U/\theta^U = X^I/\theta^I$, and market clearing gives the full-communication allocation
+
+$$
+X^I_t = \frac{2\theta^I}{\theta^I + \theta^U},
 \qquad
-v_t \xrightarrow{a.s.} 0.
-$$
+x^U_t = \frac{2\theta^U}{\theta^I + \theta^U}.
+$$ (eq:bk-full-info-trade)
 
-That is, agent $U$'s posterior distribution on $b$ converges almost surely to a point mass at the true equilibrium value $b^*$.
-```
+This is the CARA-Normal benchmark we will use to check the simulation.
 
-This statement is included to make the simulation transparent.
+### Bayesian update
 
-The more general martingale convergence results for posterior assessments due to {cite:t}`BrayKreps1987` are discussed below.
+After trading, agent $U$ observes $(p_t, x^U_t, r_t)$.
 
-The intuition is straightforward:
+Market clearing gives $X^I_t = 2 - x^U_t$, and equation {eq}`eq:bk-signal-implied` assigns a candidate $s_t(\theta) = \sigma^2 X^I_t/\theta + p_t$ to each $\theta$.
 
-* Each period adds a new observation $(r_t, p_t)$ with information content proportional to $r_t^2$.
-* Since $r_t$ is IID with $E[r_t^2] = \sigma^2 > 0$, the cumulative information $\sum_{s=1}^t r_s^2 \to \infty$ by the law of large numbers.
-* Therefore the posterior precision $v_t^{-1} \to \infty$, which means $v_t \to 0$.
-* Since the observations are generated by the true $b^*$, the posterior mean $\mu_t$ converges to $b^*$.
-
-The proof follows from standard results on Bayesian consistency for correctly specified Gaussian linear models.
-
-## Simulating Bayesian learning
-
-We now implement the Bayesian learning dynamics and verify convergence numerically.
-
-### Parameters
-
-```{code-cell} ipython3
-b_true = 2.0
-σ2 = 1.0
-μ_0 = 0.5
-v_0 = 2.0
-T = 300
-N = 200
-
-np.random.seed(42)
-```
-
-### Bayesian updating function
-
-```{code-cell} ipython3
-def simulate_bayesian_learning(b_true, σ2, μ_0, v_0, T, N):
-    """Simulate Bayesian learning of the REE slope parameter b*."""
-    r = np.random.normal(0, np.sqrt(σ2), size=(N, T))
-    p = b_true * r
-
-    μ_paths = np.empty((N, T))
-    v_paths = np.empty((N, T))
-
-    for i in range(N):
-        precision = 1.0 / v_0
-        weighted_sum = μ_0 / v_0
-
-        for t in range(T):
-            precision += r[i, t]**2 / σ2
-            weighted_sum += r[i, t] * p[i, t] / σ2
-
-            v_t = 1.0 / precision
-            μ_t = v_t * weighted_sum
-
-            μ_paths[i, t] = μ_t
-            v_paths[i, t] = v_t
-
-    return μ_paths, v_paths
-```
-
-### Running the simulation
-
-```{code-cell} ipython3
-μ_paths, v_paths = simulate_bayesian_learning(
-    b_true, σ2, μ_0, v_0, T, N
-)
-```
-
-### Plotting results
-
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: posterior learning paths
-    name: fig-rle-posterior-learning
-  image:
-    alt: Posterior mean and posterior variance paths over time
----
-fig, axes = plt.subplots(1, 2, figsize=(13, 5))
-
-t_range = np.arange(1, T + 1)
-
-ax = axes[0]
-for i in range(min(30, N)):
-    ax.plot(t_range, μ_paths[i, :], color='steelblue', alpha=0.2, lw=2)
-
-ax.plot(t_range, np.mean(μ_paths, axis=0), color='navy', lw=2,
-        label='cross-path average')
-ax.axhline(b_true, color='red', ls='--', lw=2, label=f'$b^* = {b_true}$')
-ax.axhline(μ_0, color='gray', ls=':', lw=2, label=f'prior mean $= {μ_0}$')
-ax.set_xlabel('$t$')
-ax.set_ylabel('posterior mean $\\mu_t$')
-ax.legend()
-
-ax = axes[1]
-for i in range(min(30, N)):
-    ax.plot(t_range, v_paths[i, :], color='darkorange', alpha=0.2, lw=2)
-
-ax.plot(t_range, np.mean(v_paths, axis=0), color='saddlebrown', lw=2,
-        label='cross-path average')
-
-ax.plot(t_range, 1.0 / t_range, color='black', ls='--', lw=2,
-        label='$1/t$ (theory)')
-ax.set_xlabel('$t$')
-ax.set_ylabel('posterior variance $v_t$')
-ax.legend()
-
-plt.tight_layout()
-plt.show()
-```
-
-The left panel shows that regardless of the (misspecified) prior mean, agent $U$'s posterior mean converges to the true equilibrium value $b^* = 2$.
-
-The right panel confirms that the posterior variance vanishes at rate $1/t$, consistent with the formula in {eq}`eq:posterior_precision`.
-
-## Demand and equilibrium
-
-To connect the learning story to market equilibrium, we can track how agent $U$'s **equilibrium demand** for the risky asset evolves.
-
-Given $U$'s current beliefs about $b$ (summarized by $\mu_t$), $U$ estimates $r_t \approx p_t / \mu_t$ and formulates demand:
+Since $s_t \sim \mathcal N(\mu_s, \tau^2)$ independently of $\epsilon_t \sim \mathcal N(0,\sigma^2)$, the conditional density of $s_t$ given $r_t$ is Gaussian:
 
 $$
-x^U_t(\mu_t) = \frac{\theta^U}{\sigma^2} \cdot \left(\frac{p_t}{\mu_t} - p_t\right)
+g(s\mid r)
+=
+\phi\!\left(s;\, \frac{\sigma^2 \mu_s + \tau^2 r}{\sigma^2 + \tau^2},\,
+                  \frac{\sigma^2 \tau^2}{\sigma^2 + \tau^2}\right),
 $$
 
-As $\mu_t \to b^*$, this demand function converges to the demand implied by the rational expectations equilibrium.
+where $\phi(\cdot; m, v)$ denotes the Normal density with mean $m$ and variance $v$.
 
-The following code computes the demand trajectories.
+Bayes' rule then produces the posterior update
+
+$$
+f_{t+1}(\theta)
+\propto
+f_t(\theta)\;
+g\!\left(\frac{\sigma^2 X^I_t}{\theta} + p_t \,\Big|\, r_t\right).
+$$ (eq:bk-bayes)
+
+This is the rule we simulate below.
+
+## Computing the equilibrium
+
+We discretise the support $[a,b]$ of $\theta^I$ on a fine grid and represent $f_t$ as a vector of density values.
+
+There are three computational primitives.
+
+* `uninformed_demand` solves the FOC in {eq}`eq:bk-foc` for $x^U(X^I; f)$ by root-finding.
+* `equilibrium_XI` solves market clearing $X^I + x^U(X^I; f) = 2$ for $X^I_t$.
+* `bayes_update` applies {eq}`eq:bk-bayes` and renormalises.
 
 ```{code-cell} ipython3
-def compute_demand(μ_t, p_t, σ2=1.0, θ_U=0.5):
-    """Agent U's demand x^U = (θ_U / σ2) * (p_t / μ_t - p_t)."""
-    r_hat = p_t / μ_t
-    return (θ_U / σ2) * (r_hat - p_t)
-
-i_rep = 0
-r_rep = np.random.normal(0, np.sqrt(σ2), T)
-p_rep = b_true * r_rep
-
-demand_path = np.array([
-    compute_demand(μ_paths[i_rep, t], p_rep[t])
-    for t in range(T)
-])
-
-demand_ree = np.array([
-    compute_demand(b_true, p_rep[t])
-    for t in range(T)
-])
-
+from scipy.optimize import brentq
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: demand convergence
-    name: fig-rle-demand-convergence
-  image:
-    alt: Learning demand and rational expectations demand over time
----
-fig, ax = plt.subplots(figsize=(10, 5))
-ax.plot(t_range, demand_path, color='steelblue', alpha=0.7,
-        lw=2, label="$x^U_t$ (learning)")
-ax.plot(t_range, demand_ree, color='red', ls='--', lw=2,
-        label="$x^U_t$ (REE)")
-ax.set_xlabel('$t$')
-ax.set_ylabel("agent $U$'s demand $x^U_t$")
-ax.legend()
-plt.tight_layout()
-plt.show()
+def uninformed_demand(XI, f, θ_grid, θ_U, σ2):
+    """
+    Solve the FOC for the uninformed agent's demand x^U, given
+    a conjectured informed trade XI and posterior density f.
+    """
+    with np.errstate(divide='ignore'):
+        log_f = np.log(f)            # -inf where f == 0 is fine
+
+    def foc(xU):
+        z = xU * σ2 * XI / (θ_grid * θ_U)
+        log_w = log_f - z
+        M = log_w.max()
+        w = np.exp(log_w - M)        # bounded in [0, 1], max value = 1
+        num = np.sum(w / θ_grid)
+        den = np.sum(w)
+        return xU / θ_U - XI * num / den
+
+    return brentq(foc, -20.0, 20.0, xtol=1e-10)
 ```
 
-## Two toy extensions
+```{code-cell} ipython3
+def equilibrium_XI(f, θ_grid, θ_U, σ2):
+    """
+    Solve market clearing X^I + x^U(X^I; f) = 2 for the
+    equilibrium informed trade.
+    """
+    def mc(XI):
+        return XI + uninformed_demand(XI, f, θ_grid, θ_U, σ2) - 2.0
 
-The next two simulations are not in Bray and Kreps.
-
-They are included as small numerical illustrations of themes that appear in the paper: identification and feedback from beliefs to prices.
-
-### 1. Two possible parameters
-
-First suppose the simplified linear model can be generated by one of two possible values of $b^*$.
-
-If the data identify which value is operating, Bayesian learning separates the two cases.
-
-The following code illustrates this point with a mixture prior.
+    return brentq(mc, 1e-4, 4.0, xtol=1e-10)
+```
 
 ```{code-cell} ipython3
-def simulate_two_parameters(b_values, σ2, T, N, seed=0):
-    """Simulate learning when nature draws b* from b_values."""
+def bayes_update(f, θ_grid, p_t, xU_t, r_t, σ2, τ2, μ_s):
+    """
+    Bayesian update of the posterior on θ^I given date-t observations.
+    """
+    XI = 2.0 - xU_t
+    s_mean = (σ2 * μ_s + τ2 * r_t) / (σ2 + τ2)
+    s_var  = σ2 * τ2 / (σ2 + τ2)
+    s_implied = σ2 * XI / θ_grid + p_t
+
+    log_like = -0.5 * (s_implied - s_mean)**2 / s_var
+    log_like -= log_like.max()           # log-shift for stability
+    f_new = f * np.exp(log_like)
+    dθ = θ_grid[1] - θ_grid[0]
+    f_new /= np.sum(f_new) * dθ
+    return f_new
+```
+
+The simulation loop chains $(s_t, \epsilon_t)$ shocks through these three functions.
+
+```{code-cell} ipython3
+def simulate(θ_I_true, θ_U, σ2, μ_s, τ2,
+             a, b, n_grid, T, prior=None, seed=42):
+    """
+    Simulate T periods of the Bray-Kreps rational-learning equilibrium.
+    """
     rng = np.random.default_rng(seed)
-    b_true_draw = rng.choice(b_values, size=N)
+    θ_grid = np.linspace(a, b, n_grid)
+    dθ = θ_grid[1] - θ_grid[0]
 
-    μ_paths_all = np.empty((N, T))
+    if prior is None:
+        f = np.ones(n_grid) / (b - a)
+    else:
+        f = prior(θ_grid)
+        f /= np.sum(f) * dθ
 
-    for i in range(N):
-        b_i = b_true_draw[i]
-        r = rng.normal(0, np.sqrt(σ2), T)
-        p = b_i * r
+    s_seq   = rng.normal(μ_s, np.sqrt(τ2), T)
+    eps_seq = rng.normal(0.0, np.sqrt(σ2), T)
 
-        μ_prior = np.mean(b_values)
-        prec_prior = 1.0 / 4.0
-        w_sum = μ_prior * prec_prior
-        prec = prec_prior
+    XI_path   = np.empty(T)
+    p_path    = np.empty(T)
+    r_path    = np.empty(T)
+    post_mean = np.empty(T + 1)
+    post_var  = np.empty(T + 1)
+    post_mean[0] = np.sum(θ_grid * f) * dθ
+    post_var[0]  = np.sum((θ_grid - post_mean[0])**2 * f) * dθ
 
-        for t in range(T):
-            prec += r[t]**2 / σ2
-            w_sum += r[t] * p[t] / σ2
-            μ_paths_all[i, t] = w_sum / prec
+    snap_times = {0, 5, 20, 50, 100, T}
+    snapshots = {0: f.copy()}
 
-    return μ_paths_all, b_true_draw
+    for t in range(T):
+        XI  = equilibrium_XI(f, θ_grid, θ_U, σ2)
+        xU  = 2.0 - XI
+        p_t = s_seq[t] - σ2 * XI / θ_I_true
+        r_t = s_seq[t] + eps_seq[t]
+        f   = bayes_update(f, θ_grid, p_t, xU, r_t, σ2, τ2, μ_s)
 
-b_values = [1.0, 3.0]
-μ_two, b_drawn = simulate_two_parameters(b_values, σ2=1.0, T=200, N=300)
+        XI_path[t]   = XI
+        p_path[t]    = p_t
+        r_path[t]    = r_t
+        post_mean[t + 1] = np.sum(θ_grid * f) * dθ
+        post_var[t + 1]  = np.sum(
+            (θ_grid - post_mean[t + 1])**2 * f
+        ) * dθ
+        if (t + 1) in snap_times:
+            snapshots[t + 1] = f.copy()
+
+    return dict(
+        θ_grid=θ_grid,
+        snapshots=snapshots,
+        XI_path=XI_path,
+        p_path=p_path,
+        r_path=r_path,
+        post_mean=post_mean,
+        post_var=post_var,
+    )
 ```
+
+## Posterior concentration
+
+We run the simulation with a uniform prior on $[0.5, 4]$ and true $\theta^I = 2$.
+
+```{code-cell} ipython3
+params = dict(
+    θ_I_true=2.0,
+    θ_U=1.0,
+    σ2=1.0,
+    μ_s=1.0,
+    τ2=1.0,
+    a=0.5,
+    b=4.0,
+    n_grid=300,
+    T=200,
+    seed=42,
+)
+
+res = simulate(**params)
+```
+
+The first picture shows snapshots of the posterior density at selected dates.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: two-parameter learning
-    name: fig-rle-two-parameters
+    caption: posterior density over $\theta^I$ at selected dates
+    name: fig-rle-posterior-density
   image:
-    alt: Posterior mean paths converging to two possible parameter values
+    alt: Posterior density on theta^I concentrating around the true value
 ---
 fig, ax = plt.subplots(figsize=(10, 5))
-
-colors = {b_values[0]: 'steelblue', b_values[1]: 'darkorange'}
-for i in range(len(b_drawn)):
-    c = colors[b_drawn[i]]
-    ax.plot(np.arange(1, 201), μ_two[i, :], color=c, alpha=0.1, lw=2)
-
-for bv, c in colors.items():
-    ax.axhline(bv, color=c, ls='--', lw=2, label=f'$b^* = {bv}$')
-
-ax.set_xlabel('$t$')
-ax.set_ylabel('posterior mean $\\mu_t$')
+for t, ft in sorted(res['snapshots'].items()):
+    ax.plot(res['θ_grid'], ft, lw=2, label=f't = {t}')
+ax.axvline(params['θ_I_true'], color='black', ls='--', lw=1.5,
+           label=r'$\theta^I_{\rm true}$')
+ax.set_xlabel(r'$\theta^I$')
+ax.set_ylabel('posterior density')
 ax.legend()
 plt.tight_layout()
 plt.show()
 ```
 
-As expected, agent $U$ learns the *correct* equilibrium as long as the model is correctly specified and the true equilibrium generates the data.
+The posterior tightens around $\theta^I_{\rm true} = 2$ as price and return data accumulate.
 
-The paper's non-identification example is different: with two informed agents, prices can reveal only the sum of their risk tolerances.
-
-### 2. A self-referential price rule
-
-The next toy model lets the price at date $t$ depend directly on agent $U$'s current belief $\mu_t$.
-
-But $\mu_t$ is updated based on past prices.
-
-This creates a **self-referential** system: beliefs drive prices, and prices update beliefs.
-
-This is a deliberately simple stand-in for the paper's warning that learning changes behavior, which changes the data that agents observe.
-
-The formal Bray--Kreps model handles this by making the whole price process part of a grand rational expectations equilibrium over an expanded state space.
-
-```{code-cell} ipython3
-def simulate_self_referential(b_true, σ2, μ_0, v_0, T, N,
-                              α_demand=0.5):
-    """
-    Simulate the self-referential price rule
-    p_t = b_true * r_t + α_demand * (μ_t - b_true) * r_t.
-    """
-    rng = np.random.default_rng(10)
-    r_all = rng.normal(0, np.sqrt(σ2), (N, T))
-
-    μ_paths_sr = np.empty((N, T))
-    p_paths_sr = np.empty((N, T))
-
-    for i in range(N):
-        prec = 1.0 / v_0
-        w_sum = μ_0 / v_0
-        μ_t = μ_0
-
-        for t in range(T):
-            r_t = r_all[i, t]
-            p_t = b_true * r_t + α_demand * (μ_t - b_true) * r_t
-
-            prec += r_t**2 / σ2
-            w_sum += r_t * p_t / σ2
-            μ_t = w_sum / prec
-
-            μ_paths_sr[i, t] = μ_t
-            p_paths_sr[i, t] = p_t
-
-    return μ_paths_sr, p_paths_sr
-
-μ_sr, p_sr = simulate_self_referential(
-    b_true, σ2, μ_0, v_0, T=200, N=100, α_demand=0.3
-)
-```
+The next picture tracks the posterior mean and variance.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: self-referential learning
-    name: fig-rle-self-referential
+    caption: posterior mean and variance over time
+    name: fig-rle-posterior-moments
   image:
-    alt: Self-referential posterior means and price paths over time
+    alt: Posterior mean of theta^I converging to the true value and posterior variance vanishing
 ---
 fig, axes = plt.subplots(1, 2, figsize=(13, 5))
 
 ax = axes[0]
-for i in range(30):
-    ax.plot(np.arange(1, 201), μ_sr[i, :], color='steelblue', alpha=0.2, lw=2)
-ax.plot(np.arange(1, 201), np.mean(μ_sr, axis=0), color='navy', lw=2,
-        label='average $\\mu_t$')
-ax.axhline(b_true, color='red', ls='--', lw=2, label=f'$b^* = {b_true}$')
+ax.plot(np.arange(params['T'] + 1), res['post_mean'], lw=2)
+ax.axhline(params['θ_I_true'], color='red', ls='--', lw=2,
+           label=r'$\theta^I_{\rm true}$')
 ax.set_xlabel('$t$')
-ax.set_ylabel('$\\mu_t$')
+ax.set_ylabel(r'$E_t[\theta^I]$')
 ax.legend()
 
 ax = axes[1]
-for i in range(30):
-    ax.plot(np.arange(1, 201), p_sr[i, :], color='darkorange', alpha=0.15, lw=2)
-ax.plot(np.arange(1, 201), np.mean(np.abs(p_sr), axis=0), color='saddlebrown', lw=2,
-        label='average $|p_t|$')
+ax.plot(np.arange(params['T'] + 1), res['post_var'], lw=2)
+ax.set_xlabel('$t$')
+ax.set_ylabel(r'${\rm Var}_t[\theta^I]$')
+
+plt.tight_layout()
+plt.show()
+```
+
+The posterior mean converges to the truth and the posterior variance vanishes.
+
+This is the concrete manifestation of weak convergence of posteriors to a point mass at $\theta^I_{\rm true}$, which we describe in general terms below.
+
+## Equilibrium trades and prices
+
+The equilibrium informed trade $X^I_t$ depends only on $f_t$, not directly on $s_t$ or $\theta^I$.
+
+As $f_t$ tightens around $\theta^I_{\rm true}$, $X^I_t$ approaches the full-information benchmark in {eq}`eq:bk-full-info-trade`.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: equilibrium trade and prices over time
+    name: fig-rle-trade-price
+  image:
+    alt: Equilibrium informed trade X^I_t and price p_t over time
+---
+XI_full = 2 * params['θ_I_true'] / (params['θ_I_true'] + params['θ_U'])
+p_mean_full = params['μ_s'] - params['σ2'] * XI_full / params['θ_I_true']
+
+fig, axes = plt.subplots(1, 2, figsize=(13, 5))
+
+ax = axes[0]
+ax.plot(res['XI_path'], lw=2, label='$X^I_t$ (learning)')
+ax.axhline(XI_full, color='red', ls='--', lw=2,
+           label='$X^I$ (full info)')
+ax.set_xlabel('$t$')
+ax.set_ylabel('$X^I_t$')
+ax.legend()
+
+ax = axes[1]
+ax.plot(res['p_path'], lw=1.5, alpha=0.7, label='$p_t$ (learning)')
+ax.axhline(p_mean_full, color='red', ls='--', lw=2,
+           label='$E[p_t]$ (full info)')
 ax.set_xlabel('$t$')
 ax.set_ylabel('$p_t$')
 ax.legend()
@@ -583,9 +509,14 @@ plt.tight_layout()
 plt.show()
 ```
 
+The left panel shows $X^I_t$ approaching the full-information allocation as beliefs concentrate.
+
+The right panel shows the price path, which fluctuates because $p_t$ inherits the variation in $s_t$.
+
+
 ## Convergence of posterior assessments
 
-{cite:t}`BrayKreps1987` prove two general convergence results.
+The general theory in {cite:t}`BrayKreps1987` gives two convergence results.
 
 Let $\Omega$ be the underlying state space, and let $H_t^n(p)$ be the information generated for agent $n$ by private information and observed equilibrium prices up to date $t$.
 
@@ -634,7 +565,7 @@ Let $F_t$ be agent $U$'s posterior distribution over $\theta^I$ after observing 
 
 By weak convergence of posteriors, $F_t$ converges almost surely to a limiting distribution $F_\infty$.
 
-Bray and Kreps then show why this limiting posterior must be a point mass at the true $\theta^I$ in their example.
+In the benchmark two-agent example, this limiting posterior must be a point mass at the true $\theta^I$.
 
 The argument has three parts.
 
@@ -650,19 +581,19 @@ Third, in this example that limiting price distribution is stochastically decrea
 
 Therefore the long-run distribution of prices identifies the true value of $\theta^I$.
 
-This is the paper's concrete route from convergence of posterior assessments to convergence to the "correct beliefs".
+This is the concrete route from convergence of posterior assessments to convergence to the "correct beliefs".
 
 It relies on smoothness, ergodicity, and identification, rather than on martingale convergence alone.
 
 ## Obstacles to convergence
 
-While the positive convergence results are elegant, {cite:t}`BrayKreps1987` are careful to document when learning *fails* to produce convergence to REE.
+While the positive convergence results are elegant, the same framework also shows when learning can *fail* to produce convergence to REE.
 
 ### Obstacle 1: price maps might not settle down
 
 The step from weak convergence of posteriors to convergence of prices requires smoothness of the equilibrium price functional.
 
-Bray and Kreps stress that this can be hard, because small changes in a price function can produce large changes in the information communicated by prices.
+This can be hard, because small changes in a price function can produce large changes in the information communicated by prices.
 
 Thus martingale convergence of beliefs does not by itself guarantee that the economy settles into a stationary price relation.
 
@@ -670,7 +601,7 @@ Thus martingale convergence of beliefs does not by itself guarantee that the eco
 
 Even if prices settle down, the long-run distribution of prices need not identify every structural parameter.
 
-The paper gives a simple variant with two informed agents whose risk tolerances $\theta^{I1}$ and $\theta^{I2}$ are both unknown to the uninformed agent.
+A simple variant has two informed agents whose risk tolerances $\theta^{I1}$ and $\theta^{I2}$ are both unknown to the uninformed agent.
 
 In that case, prices reveal only the sum $\theta^{I1}+\theta^{I2}$.
 
@@ -680,17 +611,17 @@ For decisions in that example, learning the sum is enough, but it is not learnin
 
 ### Obstacle 3: the truth might be outside the model
 
-Bray and Kreps compare their rational-learning model with an example of {cite:t}`BlumeEasley1982`.
+An example of {cite:t}`BlumeEasley1982` illustrates a related misspecification problem.
 
 In that example, agents can converge to an incorrect model because the true stable price relation has zero prior probability under the models they entertain.
 
-Bray and Kreps argue that this cannot occur in their rational-learning formulation except on a prior-null event.
+In the rational-learning formulation, this kind of failure can occur only on a prior-null event.
 
 The reason is that rational learning puts the possible price relations generated by the expanded state space inside the Bayesian model from the start.
 
 ## Learning *within* versus learning *about* a rational expectations equilibrium
 
-One of the deepest conceptual contributions of {cite:t}`BrayKreps1987` is a distinction they draw in their concluding section between two fundamentally different notions of learning in a rational expectations context.
+One of the deepest conceptual points in {cite:t}`BrayKreps1987` is a distinction between two fundamentally different notions of learning in a rational expectations context.
 
 ### The distinction
 
@@ -698,11 +629,11 @@ One of the deepest conceptual contributions of {cite:t}`BrayKreps1987` is a dist
 
 The phrase refers to Bayesian inference that takes place *inside* a correctly specified model of the economy.
 
-In Bray and Kreps' rational-learning formulation, agents are uncertain about parameters such as other agents' risk tolerances.
+In the rational-learning formulation, agents are uncertain about parameters such as other agents' risk tolerances.
 
 But for every possible parameter realization, they are assumed to know the equilibrium price and allocation maps.
 
-Their Bayesian learning model is therefore a large rational expectations equilibrium over an expanded state space.
+The Bayesian learning model is therefore a large rational expectations equilibrium over an expanded state space.
 
 This is why the martingale convergence theorem can be applied so cleanly.
 
@@ -712,21 +643,21 @@ Here agents do not begin with the equilibrium map already embedded in their mode
 
 Instead, they try to infer the price-state relation from data generated while beliefs and behavior are changing.
 
-This is the original problem mentioned at the start of the paper: learning changes behavior, and behavior changes the price-state relation being learned.
+This is the original problem that motivated the analysis: learning changes behavior, and behavior changes the price-state relation being learned.
 
 ### Why rational learning has limited value
 
-Bray and Kreps call the expanded-state-space formulation natural but also identify its main flaw.
+The expanded-state-space formulation is natural, but it has a main flaw.
 
 It avoids the question of how agents learn the relation between prices and states by assuming that agents already know the equilibrium for every possible economy in the state space.
 
-In their conclusion, they say that their results do not satisfactorily answer the question "How does a rational expectations equilibrium come about?"
+It does not satisfactorily answer the question "How does a rational expectations equilibrium come about?"
 
 The reason is not that Bayesian convergence is false.
 
 The reason is that the Bayesian agents must have extraordinary insight into the structure of the economy and the implied probabilities of events.
 
-This is why the paper is useful both as a benchmark and as a warning.
+This is why the framework is useful both as a benchmark and as a warning.
 
 It gives sharp restrictions on what rational learning can imply, but it does not provide a plausible behavioral story for attaining rational expectations.
 
@@ -742,7 +673,7 @@ In those models, agents estimate perceived laws of motion from observed data and
 
 Such rules are computationally tractable and can converge in important examples.
 
-But they are *"irrational"* in Bray and Kreps' specific sense.
+But they are *"irrational"* in the specific sense used here.
 
 An agent who already understood the full equilibrium model would not generally use those rules as the Bayesian optimum.
 
@@ -750,27 +681,27 @@ The attraction of these rules is precisely that they ask a different question.
 
 They ask whether agents using standard statistical procedures on the data generated by the model could eventually learn to form rational expectations.
 
-Bray and Kreps are skeptical that rational Bayesian learning is behaviorally plausible, but they also use it to discipline adaptive learning stories.
+Rational Bayesian learning is demanding as a behavioral assumption, but it also disciplines adaptive learning stories.
 
-Their proposed discipline is that a stationary limiting equilibrium should not leave agents' beliefs systematically contradicted by observations.
+The proposed discipline is that a stationary limiting equilibrium should not leave agents' beliefs systematically contradicted by observations.
 
-In the long run, they argue, equilibrium expectations must either keep changing or become rational.
+In the long run, equilibrium expectations must either keep changing or become rational.
 
 There is a fundamental tension at the heart of learning about rational expectations equilibria:
 
 * A fully rational (Bayesian, correctly specified) learner can only apply Bayes' rule to a model whose structure is *already known*, but the structure of the REE is exactly what the agent is trying to learn.
 * A learner who uses an adaptive algorithm (OLS, least-mean-squares, etc.) can potentially converge to the REE, but only by using a rule that cannot be derived from Bayesian rationality applied to a correctly specified model.
 
-The Bray–Kreps rational-learning formulation avoids this tension by assumption: agent $U$ knows how each possible risk tolerance would map histories into equilibrium prices and trades.
+The rational-learning formulation avoids this tension by assumption: agent $U$ knows how each possible risk tolerance would map histories into equilibrium prices and trades.
 
-The simplified Gaussian code example avoids it even more directly by replacing the equilibrium calculation with a fixed linear observation equation.
+The full equilibrium simulation above embeds exactly that knowledge, since `equilibrium_XI` is recomputed from $f_t$ at every date.
 
-Both devices make Bayesian consistency transparent, but both sidestep the deeper difficulty of learning *about* an REE from scratch.
+The device makes Bayesian consistency transparent, but it still sidesteps the deeper difficulty of learning *about* an REE from scratch.
 
 
 ## Summary
 
-This lecture has discussed ideas from {cite:t}`BrayKreps1987`:
+This lecture has discussed rational learning in the sense of {cite:t}`BrayKreps1987`:
 
 1. **Rational learning** is modeled by expanding the state space to include unknown structural parameters such as risk tolerances.
 
@@ -780,15 +711,15 @@ This lecture has discussed ideas from {cite:t}`BrayKreps1987`:
 
 4. **Correct learning** requires more than martingale convergence, because the limiting price distribution must identify the true parameter.
 
-5. **In the paper's two-agent example**, the uninformed agent learns the informed agent's risk tolerance because the limiting price distribution is monotone in that parameter.
+5. **In the two-agent example**, the uninformed agent learns the informed agent's risk tolerance because the limiting price distribution is monotone in that parameter.
 
 6. **Identification can fail** when prices reveal only a composite parameter, such as the sum of two informed agents' risk tolerances.
 
 7. **Misspecification matters** because a stable price relation outside the learner's prior support cannot be learned by Bayes' rule.
 
-8. **The simplified Gaussian simulation** illustrates posterior concentration in a fixed correctly specified model, not the full Bray--Kreps equilibrium calculation.
+8. **The full simulation** above solves the within-period equilibrium from the posterior at every date and shows the posterior on $\theta^I$ collapsing to a point mass at $\theta^I_{\rm true}$.
 
-The broader message of Bray and Kreps is that while the mathematics of Bayesian learning is powerful, its application to learning *about* rational expectations equilibria is subtle and the conditions under which learning succeeds are more restrictive than they might appear.
+The broader message is that while the mathematics of Bayesian learning is powerful, its application to learning *about* rational expectations equilibria is subtle and the conditions under which learning succeeds are more restrictive than they might appear.
 
 
 ## Exercises
@@ -796,84 +727,49 @@ The broader message of Bray and Kreps is that while the mathematics of Bayesian 
 ```{exercise}
 :label: rle_ex1
 
-**Posterior Precision Growth**
+**Off-centre prior**
 
-In the Bayesian learning model above, the posterior precision is
+The baseline simulation uses a uniform prior on $\theta^I \in [0.5, 4]$.
 
-$$
-v_t^{-1} = v_0^{-1} + \frac{1}{\sigma^2} \sum_{s=1}^{t} r_s^2
-$$
+(a) Re-run the simulation with a prior whose mass sits *above* the true value, for example
 
-(a) Show that $v_t \to 0$ almost surely as $t \to \infty$, using the law of large numbers.
+```
+prior = lambda θ: (θ - 0.5)**3 * (4 - θ)
+```
 
-(b) What is the approximate rate of decay of $v_t$? That is, what does $t \cdot v_t$ converge to?
+which peaks near $\theta = 3.1$.
 
-(c) Write Python code to verify your answer for $\sigma^2 = 1$ and a single simulated path of $T = 500$ periods.
+(b) Plot the posterior mean over time alongside the uniform-prior baseline.
+
+(c) Does the posterior eventually concentrate on $\theta^I_{\rm true}$, and how does the speed compare?
 ```
 
 ```{solution-start} rle_ex1
 :class: dropdown
 ```
 
-**(a)** By the strong law of large numbers, since $r_s \sim \mathcal{N}(0, \sigma^2)$ IID with $E[r_s^2] = \sigma^2$:
-
-$$
-\frac{1}{t} \sum_{s=1}^t r_s^2 \xrightarrow{a.s.} \sigma^2 > 0
-$$
-
-Therefore
-
-$$
-\frac{1}{t} v_t^{-1} = \frac{v_0^{-1}}{t} + \frac{1}{\sigma^2} \cdot \frac{1}{t} \sum_{s=1}^t r_s^2 \xrightarrow{a.s.} \sigma^2 / \sigma^2 = 1
-$$
-
-So $v_t^{-1} \sim t$ and $v_t \to 0$ almost surely.
-
-**(b)** From the above, $t \cdot v_t^{-1} \to 1$ implies $t \cdot v_t \to 1 / 1 = 1 / \sigma^2 \cdot \sigma^2 = 1$ when $\sigma^2 = 1$.
-
-More precisely, $t \cdot v_t \to \sigma^2 / \sigma^2 = 1$ (since $v_t \approx \sigma^2 / (t \sigma^2) = 1/t$ for large $t$ when $\sigma^2 = 1$).
-
-So $t \cdot v_t \to 1$ (when $\sigma^2 = 1$).
-
-**(c)**
-
 ```{code-cell} ipython3
-σ2_ex = 1.0
-T_ex = 500
-v0_ex = 2.0
+res_uniform = simulate(**params)
 
-np.random.seed(7)
-r_ex = np.random.normal(0, np.sqrt(σ2_ex), T_ex)
+params_biased = dict(params)
+params_biased['prior'] = lambda θ: (θ - 0.5)**3 * (4 - θ)
+res_biased = simulate(**params_biased)
 
-precisions = np.empty(T_ex)
-prec = 1.0 / v0_ex
-for t in range(T_ex):
-    prec += r_ex[t]**2 / σ2_ex
-    precisions[t] = prec
-
-v_t_ex = 1.0 / precisions
-
-fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-
-axes[0].plot(np.arange(1, T_ex + 1), v_t_ex, lw=2, label='$v_t$')
-axes[0].plot(np.arange(1, T_ex + 1), 1.0 / np.arange(1, T_ex + 1),
-             '--', lw=2, label='$1/t$')
-axes[0].set_xlabel('$t$')
-axes[0].set_ylabel('$v_t$')
-axes[0].set_title('Posterior Variance Decay')
-axes[0].legend()
-
-axes[1].plot(np.arange(1, T_ex + 1),
-             np.arange(1, T_ex + 1) * v_t_ex, lw=2, label='$t \\cdot v_t$')
-axes[1].axhline(1.0, color='red', ls='--', lw=2, label='limit = 1')
-axes[1].set_xlabel('$t$')
-axes[1].set_ylabel('$t \\cdot v_t$')
-axes[1].set_title('Normalized Variance Converges to 1')
-axes[1].legend()
-
+fig, ax = plt.subplots(figsize=(10, 5))
+ax.plot(res_uniform['post_mean'], lw=2, label='uniform prior')
+ax.plot(res_biased['post_mean'], lw=2, label='off-centre prior')
+ax.axhline(params['θ_I_true'], color='black', ls='--',
+           label=r'$\theta^I_{\rm true}$')
+ax.set_xlabel('$t$')
+ax.set_ylabel(r'$E_t[\theta^I]$')
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
+
+The off-centre prior starts the posterior mean well above $\theta^I_{\rm true} = 2$, but Bayesian updating drives it down to the truth.
+
+This is the rational-learning convergence result in action: any prior that puts positive density on $\theta^I_{\rm true}$ eventually concentrates around it.
 
 ```{solution-end}
 ```
@@ -881,15 +777,21 @@ plt.show()
 ```{exercise}
 :label: rle_ex2
 
-**Effect of Prior Misspecification**
+**Speed of learning across $\theta^I$**
 
-Suppose agent $U$ starts with a prior mean $\mu_0$ far from the true value $b^* = 2$.
+Information from one period about $\theta^I$ comes through the implied signal
 
-(a) Simulate 100 paths of $T = 400$ periods for each of $\mu_0 \in \{-3, 0, 1, 3, 5\}$ and plot the average posterior mean across paths for each $\mu_0$.
+$$
+s_t(\theta) = \frac{\sigma^2 X^I_t}{\theta} + p_t.
+$$
 
-(b) Does the prior mean affect the *rate* at which the posterior mean converges to $b^*$?
+The sensitivity $|\partial s_t/\partial \theta| = \sigma^2 X^I_t/\theta^2$ depends on the level of $\theta^I_{\rm true}$ through $X^I_t$ and $\theta^{-2}$.
 
-(c) Does the prior *variance* $v_0$ affect the rate? Verify by comparing $v_0 \in \{0.1, 1.0, 10.0\}$ with fixed $\mu_0 = 0$.
+(a) Run the simulation for $\theta^I_{\rm true} \in \{0.8, 2.0, 3.5\}$, holding everything else at the baseline.
+
+(b) Plot the posterior variance on a log scale for each case.
+
+(c) Which value of $\theta^I_{\rm true}$ yields the fastest concentration, and does the result match the sensitivity formula above?
 ```
 
 ```{solution-start} rle_ex2
@@ -897,53 +799,25 @@ Suppose agent $U$ starts with a prior mean $\mu_0$ far from the true value $b^* 
 ```
 
 ```{code-cell} ipython3
-b_true_ex = 2.0
-σ2_ex = 1.0
-T_ex = 400
-N_ex = 100
-t_range_ex = np.arange(1, T_ex + 1)
-
-fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-
-ax = axes[0]
-for μ0 in [-3, 0, 1, 3, 5]:
-    μ_p, _ = simulate_bayesian_learning(
-        b_true_ex, σ2_ex, μ0, v_0=1.0, T=T_ex, N=N_ex
-    )
-    ax.plot(t_range_ex, np.mean(μ_p, axis=0), lw=2,
-            label=f'$\\mu_0 = {μ0}$')
-
-ax.axhline(b_true_ex, color='black', ls='--', lw=2,
-           label=f'$b^* = {b_true_ex}$')
+fig, ax = plt.subplots(figsize=(10, 5))
+for θ_val in [0.8, 2.0, 3.5]:
+    params_θ = dict(params)
+    params_θ['θ_I_true'] = θ_val
+    res_θ = simulate(**params_θ)
+    ax.semilogy(res_θ['post_var'], lw=2,
+                label=fr'$\theta^I_{{\rm true}} = {θ_val}$')
 ax.set_xlabel('$t$')
-ax.set_ylabel('$E[\\mu_t]$')
-ax.set_title('Effect of Prior Mean on Convergence')
-ax.legend(fontsize=8)
-
-ax = axes[1]
-for v0 in [0.1, 1.0, 10.0]:
-    μ_p, _ = simulate_bayesian_learning(
-        b_true_ex, σ2_ex, μ_0=0.0, v_0=v0, T=T_ex, N=N_ex
-    )
-    ax.plot(t_range_ex, np.mean(μ_p, axis=0), lw=2,
-            label=f'$v_0 = {v0}$')
-
-ax.axhline(b_true_ex, color='black', ls='--', lw=2,
-           label=f'$b^* = {b_true_ex}$')
-ax.set_xlabel('$t$')
-ax.set_ylabel('$E[\\mu_t]$')
-ax.set_title('Effect of Prior Variance on Convergence')
+ax.set_ylabel(r'${\rm Var}_t[\theta^I]$ (log scale)')
 ax.legend()
-
 plt.tight_layout()
 plt.show()
-
-print("Observations:")
-print("(b) Prior mean affects the initial level but not the long-run rate.")
-print("    All paths converge to b* = 2 at the same asymptotic rate.")
-print("(c) A tighter prior (small v_0) slows initial adaptation but all")
-print("    converge; a diffuse prior adapts quickly early on.")
 ```
+
+The smallest $\theta^I_{\rm true}$ produces the steepest decline in posterior variance.
+
+The reason is that the sensitivity $\sigma^2 X^I_t/\theta^2$ scales as $\theta^{-2}$ for fixed $X^I_t$, so the same noise level conveys much more information about $\theta^I$ when $\theta^I$ is small.
+
+The asymmetry is a feature of the geometry of the equilibrium map, not of the learning rule itself.
 
 ```{solution-end}
 ```
@@ -951,114 +825,43 @@ print("    converge; a diffuse prior adapts quickly early on.")
 ```{exercise}
 :label: rle_ex3
 
-**Convergence with Non-Standard Fundamentals**
+**Effect of return noise**
 
-The convergence proof relies on $E[r_t^2] = \sigma^2 > 0$.
+Larger $\sigma^2$ widens the conditional density of $s_t$ given $r_t$, which one might guess slows learning.
 
-(a) Suppose $r_t$ follows a **mixture distribution**: with probability $0.5$ it equals $0$, and with probability $0.5$ it is drawn from $\mathcal{N}(0, 2\sigma^2)$.
-Show that $E[r_t^2] = \sigma^2 > 0$ still holds, so convergence is guaranteed.
+But $\sigma^2$ also scales the price intercept in {eq}`eq:bk-price`, so price dispersion across candidate $\theta$ grows with $\sigma^2$.
 
-(b) Simulate $T = 500$ periods with $\sigma^2 = 1$ and $b^* = 2$ using this mixture distribution for $r_t$.
-Plot the posterior mean and variance over time for 50 paths.
+(a) Run the simulation with $\sigma^2 \in \{0.25, 1.0, 4.0\}$, keeping $\tau^2 = 1$ fixed.
 
-(c) Compare the speed of convergence to the Gaussian case.
-Why does the mixture distribution slow convergence even though $E[r_t^2]$ is the same?
+(b) Plot the posterior variance on a log scale for each $\sigma^2$.
+
+(c) Which effect dominates? Explain in terms of the signal-to-noise ratio for inferring $\theta^I$ from the price.
 ```
 
 ```{solution-start} rle_ex3
 :class: dropdown
 ```
 
-**(a)** Let $Z \sim \mathcal{N}(0, 2\sigma^2)$.
-Then
-
-$$
-E[r_t^2] = 0.5 \cdot 0^2 + 0.5 \cdot E[Z^2] = 0.5 \cdot 2\sigma^2 = \sigma^2
-$$
-
-So $E[r_t^2] = \sigma^2 > 0$ and the strong law of large numbers guarantees $\sum_{s=1}^t r_s^2 / t \to \sigma^2$, ensuring convergence.
-
-**(b) and (c)**
-
 ```{code-cell} ipython3
-def simulate_learning_mixture(b_true, σ2, μ_0, v_0, T, N):
-    """
-    Bayesian learning with mixture fundamentals:
-    r_t = 0 with prob 0.5, else N(0, 2*σ2) with prob 0.5.
-    """
-    rng = np.random.default_rng(42)
-
-    μ_paths = np.empty((N, T))
-    v_paths = np.empty((N, T))
-
-    for i in range(N):
-        prec = 1.0 / v_0
-        w_sum = μ_0 / v_0
-
-        for t in range(T):
-            if rng.random() < 0.5:
-                r_t = 0.0
-            else:
-                r_t = rng.normal(0, np.sqrt(2 * σ2))
-
-            p_t = b_true * r_t
-
-            prec += r_t**2 / σ2
-            w_sum += r_t * p_t / σ2
-
-            v_t = 1.0 / prec
-            μ_t = v_t * w_sum
-
-            μ_paths[i, t] = μ_t
-            v_paths[i, t] = v_t
-
-    return μ_paths, v_paths
-
-σ2_ex = 1.0
-T_ex = 500
-N_ex = 50
-
-μ_gauss, v_gauss = simulate_bayesian_learning(
-    b_true=2.0, σ2=σ2_ex, μ_0=0.5, v_0=2.0, T=T_ex, N=N_ex
-)
-
-μ_mix, v_mix = simulate_learning_mixture(
-    b_true=2.0, σ2=σ2_ex, μ_0=0.5, v_0=2.0, T=T_ex, N=N_ex
-)
-
-t_range_ex = np.arange(1, T_ex + 1)
-
-fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-
-ax = axes[0]
-ax.plot(t_range_ex, np.mean(μ_gauss, axis=0), label='Gaussian $r_t$',
-        color='steelblue', lw=2)
-ax.plot(t_range_ex, np.mean(μ_mix, axis=0), label='Mixture $r_t$',
-        color='darkorange', lw=2)
-ax.axhline(2.0, color='red', ls='--', lw=2, label='$b^* = 2$')
+fig, ax = plt.subplots(figsize=(10, 5))
+for σ2_val in [0.25, 1.0, 4.0]:
+    params_σ = dict(params)
+    params_σ['σ2'] = σ2_val
+    res_σ = simulate(**params_σ)
+    ax.semilogy(res_σ['post_var'], lw=2,
+                label=fr'$\sigma^2 = {σ2_val}$')
 ax.set_xlabel('$t$')
-ax.set_ylabel('$E[\\mu_t]$')
-ax.set_title('Posterior Mean: Gaussian vs Mixture')
+ax.set_ylabel(r'${\rm Var}_t[\theta^I]$ (log scale)')
 ax.legend()
-
-ax = axes[1]
-ax.plot(t_range_ex, np.mean(v_gauss, axis=0), label='Gaussian $r_t$',
-        color='steelblue', lw=2)
-ax.plot(t_range_ex, np.mean(v_mix, axis=0), label='Mixture $r_t$',
-        color='darkorange', lw=2)
-ax.set_xlabel('$t$')
-ax.set_ylabel('$E[v_t]$')
-ax.set_title('Posterior Variance: Gaussian vs Mixture')
-ax.legend()
-
 plt.tight_layout()
 plt.show()
-
-print("The mixture distribution slows convergence because periods with r_t = 0")
-print("provide NO information about b* (the observation p_t = 0 is uninformative).")
-print("Even though E[r_t^2] = sigma^2, the variance of r_t^2 is larger under the")
-print("mixture, leading to noisier information accumulation.")
 ```
+
+The posterior variance falls *faster* for larger $\sigma^2$.
+
+The reason is visible in the price equation $p_t = s_t - \sigma^2 X^I_t/\theta^I$: the price gap between two candidate $\theta$ values grows linearly with $\sigma^2$, while the conditional variance of the implied signal $g(s\mid r)$ is bounded above by $\tau^2$.
+
+The Grossman-Stiglitz-style trade thus becomes more revealing about $\theta^I$ as the return shock $\epsilon_t$ becomes more volatile, even though each return is individually noisier.
 
 ```{solution-end}
 ```
