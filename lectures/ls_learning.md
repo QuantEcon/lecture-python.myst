@@ -54,8 +54,8 @@ will they converge to the REE?
 technique from systems-control engineering: the differential equation
 approach of {cite:t}`Ljung1977`.
 
-The key insight is that the stochastic
-difference equation describing how beliefs evolve can be approximated, in the
+They applied stochastic
+difference equation to describe how beliefs evolve can be approximated, in the
 limit, by a deterministic ordinary differential equation (ODE).
 
 Almost-sure
@@ -71,13 +71,15 @@ whose data-generating process shifts with beliefs) discussed in
 
 
 
-Let's begin with the imports we'll use throughout.
+Let's begin with the imports we'll use throughout
 
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.integrate import solve_ivp
 from matplotlib.gridspec import GridSpec
+from numpy import linalg as la
+from scipy.integrate import solve_ivp
+from scipy.optimize import fsolve
 
 np.random.seed(42)
 ```
@@ -575,7 +577,12 @@ def simulate_rls_with_projection(T_map, σ_u, β0, K_proj,
 
 
 a_bray_pf, b_bray_pf, σ_pf = 1.0, 0.6, 1.5
-T_bray_pf = lambda β: a_bray_pf + b_bray_pf * β
+
+
+def T_bray_pf(β):
+    return a_bray_pf + b_bray_pf * β
+
+
 β_f_pf = a_bray_pf / (1 - b_bray_pf)
 β0_far = 8.0
 K_pf = 5.0
@@ -599,17 +606,27 @@ for i in range(min(30, N_pf_sim)):
 ax1.plot(np.mean(paths_pf, axis=0), color='navy', lw=2, label='average')
 ax1.axhline(β_f_pf, color='red', ls='--', lw=2,
             label=f'$\\beta_f={β_f_pf:.1f}$')
-ax1.axhline(K_pf, color='gray', ls=':', lw=2, label=f'$D_1$ boundary ($K={K_pf}$)')
+ax1.axhline(
+    K_pf, color='gray', ls=':', lw=2,
+    label=f'$D_1$ boundary ($K={K_pf}$)'
+)
 ax1.axhline(-K_pf, color='gray', ls=':', lw=2)
-ax1.set_xlabel('$t$'); ax1.set_ylabel('$\\beta_t$'); ax1.legend(fontsize=8)
+ax1.set_xlabel('$t$')
+ax1.set_ylabel('$\\beta_t$')
+ax1.legend(fontsize=8)
 
 ax2 = fig.add_subplot(gs[0, 1])
 for i in range(min(30, N_pf_sim)):
     ax2.plot(paths_no_pf[i], color='darkorange', alpha=0.25, lw=2)
-ax2.plot(np.mean(paths_no_pf, axis=0), color='saddlebrown', lw=2, label='average')
+ax2.plot(
+    np.mean(paths_no_pf, axis=0), color='saddlebrown', lw=2,
+    label='average'
+)
 ax2.axhline(β_f_pf, color='red', ls='--', lw=2,
             label=f'$\\beta_f={β_f_pf:.1f}$')
-ax2.set_xlabel('$t$'); ax2.set_ylabel('$\\beta_t$'); ax2.legend(fontsize=8)
+ax2.set_xlabel('$t$')
+ax2.set_ylabel('$\\beta_t$')
+ax2.legend(fontsize=8)
 
 ax3 = fig.add_subplot(gs[1, 0])
 ax3.hist(n_proj, bins=range(0, int(n_proj.max()) + 2),
@@ -629,7 +646,10 @@ plt.show()
 print(f"Paths with at least one projection: {(n_proj > 0).sum()} / {N_pf_sim}")
 print(f"Mean number of projections per path: {n_proj.mean():.2f}")
 print(f"Max number of projections:           {n_proj.max()}")
-print(f"Mean last-projection period:         {first_free[n_proj>0].mean():.1f}")
+print(
+    "Mean last-projection period:         "
+    f"{first_free[n_proj > 0].mean():.1f}"
+)
 ```
 
 The simulation illustrates the key theoretical point from
@@ -789,7 +809,12 @@ mystnb:
     name: fig-bray-learning-dynamics
 ---
 a_bray, b_bray, σ_bray = 1.0, 0.6, 1.0
-T_bray = lambda β: a_bray + b_bray * β
+
+
+def T_bray(β):
+    return a_bray + b_bray * β
+
+
 β_f_bray = a_bray / (1 - b_bray)
 
 β0_bray = 0.0
@@ -799,7 +824,10 @@ N_sim = 80
 β_paths_bray = simulate_rls_scalar(T_bray, σ_bray, β0_bray,
                                       T_periods=T_sim, N_paths=N_sim)
 
-ode_bray = lambda β: a_bray + b_bray * β - β
+def ode_bray(β):
+    return a_bray + b_bray * β - β
+
+
 t_ode, sol_low = solve_ode(ode_bray, 0.0)
 _, sol_high = solve_ode(ode_bray, 4.5)
 
@@ -817,8 +845,14 @@ ax.set_ylabel('$\\beta_t$')
 ax.legend()
 
 ax = axes[1]
-ax.plot(t_ode, sol_low,  color='steelblue', lw=2, label='ODE from $\\beta_0=0$')
-ax.plot(t_ode, sol_high, color='darkorange', lw=2, label='ODE from $\\beta_0=4.5$')
+ax.plot(
+    t_ode, sol_low, color='steelblue', lw=2,
+    label='ODE from $\\beta_0=0$'
+)
+ax.plot(
+    t_ode, sol_high, color='darkorange', lw=2,
+    label='ODE from $\\beta_0=4.5$'
+)
 ax.axhline(β_f_bray, color='red', ls='--', lw=2,
            label=f'$\\beta_f = {β_f_bray:.2f}$')
 ax.set_xlabel('$t$')
@@ -841,13 +875,21 @@ mystnb:
     name: fig-bray-savin-learning-dynamics
 ---
 m_bs, a_bs, σ_bs = 0.5, 0.7, 1.0
-T_bs = lambda β: m_bs + a_bs * β
+
+
+def T_bs(β):
+    return m_bs + a_bs * β
+
+
 β_f_bs = m_bs / (1 - a_bs)
 
 β_paths_bs = simulate_rls_scalar(T_bs, σ_bs, 0.0,
                                     T_periods=T_sim, N_paths=N_sim)
 
-ode_bs = lambda β: T_bs(β) - β
+def ode_bs(β):
+    return T_bs(β) - β
+
+
 t_ode_bs, sol_bs_low = solve_ode(ode_bs, 0.0)
 _, sol_bs_high = solve_ode(ode_bs, 4.0)
 
@@ -860,15 +902,23 @@ ax.plot(np.mean(β_paths_bs, axis=0), color='saddlebrown', lw=2,
         label='cross-path average')
 ax.axhline(β_f_bs, color='red', ls='--', lw=2,
            label=f'$\\beta_f = {β_f_bs:.2f}$')
-ax.set_xlabel('$t$'); ax.set_ylabel('$\\beta_t$')
+ax.set_xlabel('$t$')
+ax.set_ylabel('$\\beta_t$')
 ax.legend()
 
 ax = axes[1]
-ax.plot(t_ode_bs, sol_bs_low,  color='darkorange', lw=2, label='ODE from $\\beta_0=0$')
-ax.plot(t_ode_bs, sol_bs_high, color='steelblue',  lw=2, label='ODE from $\\beta_0=4$')
+ax.plot(
+    t_ode_bs, sol_bs_low, color='darkorange', lw=2,
+    label='ODE from $\\beta_0=0$'
+)
+ax.plot(
+    t_ode_bs, sol_bs_high, color='steelblue', lw=2,
+    label='ODE from $\\beta_0=4$'
+)
 ax.axhline(β_f_bs, color='red', ls='--', lw=2,
            label=f'$\\beta_f = {β_f_bs:.2f}$')
-ax.set_xlabel('$t$'); ax.set_ylabel('$\\beta(t)$')
+ax.set_xlabel('$t$')
+ax.set_ylabel('$\\beta(t)$')
 ax.legend()
 
 plt.tight_layout()
@@ -887,13 +937,21 @@ mystnb:
     name: fig-present-value-learning-dynamics
 ---
 λ, ρ_pv, σ_pv = 0.8, 0.9, 1.0
-T_pv = lambda β: (λ * β + 1) * ρ_pv
+
+
+def T_pv(β):
+    return (λ * β + 1) * ρ_pv
+
+
 β_f_pv = ρ_pv / (1 - λ * ρ_pv)
 
 β_paths_pv = simulate_rls_scalar(T_pv, σ_pv, 0.0,
                                     T_periods=T_sim, N_paths=N_sim)
 
-ode_pv = lambda β: T_pv(β) - β
+def ode_pv(β):
+    return T_pv(β) - β
+
+
 t_ode_pv, sol_pv_low = solve_ode(ode_pv, 0.0, t_span=(0, 50))
 _, sol_pv_high = solve_ode(ode_pv, 10.0, t_span=(0, 50))
 
@@ -906,15 +964,23 @@ ax.plot(np.mean(β_paths_pv, axis=0), color='darkgreen', lw=2,
         label='cross-path average')
 ax.axhline(β_f_pv, color='red', ls='--', lw=2,
            label=f'$\\beta_f = {β_f_pv:.2f}$')
-ax.set_xlabel('$t$'); ax.set_ylabel('$\\beta_t$')
+ax.set_xlabel('$t$')
+ax.set_ylabel('$\\beta_t$')
 ax.legend()
 
 ax = axes[1]
-ax.plot(t_ode_pv, sol_pv_low,  color='seagreen',  lw=2, label='ODE from $\\beta_0=0$')
-ax.plot(t_ode_pv, sol_pv_high, color='steelblue', lw=2, label='ODE from $\\beta_0=10$')
+ax.plot(
+    t_ode_pv, sol_pv_low, color='seagreen', lw=2,
+    label='ODE from $\\beta_0=0$'
+)
+ax.plot(
+    t_ode_pv, sol_pv_high, color='steelblue', lw=2,
+    label='ODE from $\\beta_0=10$'
+)
 ax.axhline(β_f_pv, color='red', ls='--', lw=2,
            label=f'$\\beta_f = {β_f_pv:.2f}$')
-ax.set_xlabel('$t$'); ax.set_ylabel('$\\beta(t)$')
+ax.set_xlabel('$t$')
+ax.set_ylabel('$\\beta(t)$')
 ax.legend()
 
 plt.tight_layout()
@@ -935,14 +1001,22 @@ mystnb:
     name: fig-unstable-bray-dynamics
 ---
 b_unstable = 1.4
-T_unstable = lambda β: a_bray + b_unstable * β
+
+
+def T_unstable(β):
+    return a_bray + b_unstable * β
+
+
 β_f_unstable = a_bray / (1 - b_unstable)
 
 β_paths_unstable = simulate_rls_scalar(
     T_unstable, σ_bray, β0=0.0,
     T_periods=200, N_paths=50)
 
-ode_unstable = lambda β: T_unstable(β) - β
+def ode_unstable(β):
+    return T_unstable(β) - β
+
+
 
 β_grid = np.linspace(-5, 5, 300)
 drift = np.array([ode_unstable(b) for b in β_grid])
@@ -954,7 +1028,8 @@ for i in range(min(30, 50)):
     ax.plot(β_paths_unstable[i], color='crimson', alpha=0.3, lw=2)
 ax.axhline(β_f_unstable, color='black', ls='--', lw=2,
            label=f'$\\beta_f = {β_f_unstable:.2f}$ (unstable)')
-ax.set_xlabel('$t$'); ax.set_ylabel('$\\beta_t$')
+ax.set_xlabel('$t$')
+ax.set_ylabel('$\\beta_t$')
 ax.legend()
 
 ax = axes[1]
@@ -966,7 +1041,8 @@ ax.fill_between(β_grid, drift, 0,
                 where=(drift > 0), color='crimson', alpha=0.15)
 ax.fill_between(β_grid, drift, 0,
                 where=(drift < 0), color='steelblue', alpha=0.15)
-ax.set_xlabel('$\\beta$'); ax.set_ylabel('$T(\\beta) - \\beta$')
+ax.set_xlabel('$\\beta$')
+ax.set_ylabel('$T(\\beta) - \\beta$')
 ax.legend()
 
 plt.tight_layout()
@@ -997,9 +1073,24 @@ mystnb:
 β_vec = np.linspace(-1.0, 5.5, 400)
 
 models = [
-    ("Bray ($b=0.6$)",       lambda b: a_bray + 0.6*b - b,   a_bray/(1-0.6),   'steelblue'),
-    ("Bray–Savin ($a=0.7$)", lambda b: m_bs + 0.7*b - b,     m_bs/(1-0.7),     'darkorange'),
-    ("Present-value",        lambda b: T_pv(b) - b,           β_f_pv,        'seagreen'),
+    (
+        "Bray ($b=0.6$)",
+        lambda b: a_bray + 0.6 * b - b,
+        a_bray / (1 - 0.6),
+        'steelblue'
+    ),
+    (
+        "Bray–Savin ($a=0.7$)",
+        lambda b: m_bs + 0.7 * b - b,
+        m_bs / (1 - 0.7),
+        'darkorange'
+    ),
+    (
+        "Present-value",
+        lambda b: T_pv(b) - b,
+        β_f_pv,
+        'seagreen'
+    ),
 ]
 
 fig, axes = plt.subplots(1, 3, figsize=(15, 5))
@@ -1015,9 +1106,11 @@ for ax, (name, ode_fn, bf, color) in zip(axes, models):
                     color=color, alpha=0.12)
     for bv in np.linspace(β_vec[20], β_vec[-20], 7):
         d = ode_fn(bv)
-        ax.annotate('', xy=(bv + 0.3*np.sign(d), 0),
-                    xytext=(bv, 0),
-                    arrowprops=dict(arrowstyle='->', color=color, lw=2))
+        ax.annotate(
+            '', xy=(bv + 0.3 * np.sign(d), 0),
+            xytext=(bv, 0),
+            arrowprops=dict(arrowstyle='->', color=color, lw=2)
+        )
     ax.set_xlabel('$\\beta$')
     ax.set_ylabel('$T(\\beta) - \\beta$')
     ax.legend(fontsize=9)
@@ -1042,10 +1135,10 @@ mystnb:
 def T_invest(β, b=0.95, d=1.0, f=1.0, A1=1.0, N=1.0, ρ_w=0.5):
     """Mapping T for the investment model with β = [β1, β2]."""
     b1, b2 = β
-    denom1 = 1 - b1*b + (1/d)*f**2*A1*N
-    T1 = (1 - b1*b) / denom1
-    numer2 = (1 - b1*b + f**2*A1*b2*b*ρ_w)
-    T2 = (-N / (d*(1 - ρ_w*b))) * (numer2 / denom1) * ρ_w
+    denom1 = 1 - b1 * b + (1 / d) * f**2 * A1 * N
+    T1 = (1 - b1 * b) / denom1
+    numer2 = 1 - b1 * b + f**2 * A1 * b2 * b * ρ_w
+    T2 = (-N / (d * (1 - ρ_w * b))) * (numer2 / denom1) * ρ_w
     return np.array([T1, T2])
 
 
@@ -1054,20 +1147,19 @@ def ode_invest(t, β, **kwargs):
     return Tb - β
 
 
-from scipy.optimize import fsolve
-
 params = dict(b=0.95, d=1.0, f=1.0, A1=1.0, N=1.0, ρ_w=0.5)
 β_f_inv = fsolve(lambda b: T_invest(b, **params) - b, [0.5, 0.1])
 print(f"REE: β_f = {β_f_inv}")
 
-from numpy import linalg as la
-
 eps = 1e-6
 J = np.zeros((2, 2))
 for j in range(2):
-    e = np.zeros(2); e[j] = eps
-    J[:, j] = (T_invest(β_f_inv + e, **params) -
-               T_invest(β_f_inv - e, **params)) / (2*eps)
+    e = np.zeros(2)
+    e[j] = eps
+    J[:, j] = (
+        T_invest(β_f_inv + e, **params)
+        - T_invest(β_f_inv - e, **params)
+    ) / (2 * eps)
 M = J - np.eye(2)
 eigs = la.eigvals(M)
 print(f"Jacobian M eigenvalues: {eigs}")
@@ -1078,12 +1170,14 @@ fig, ax = plt.subplots(figsize=(8, 6))
 b1_grid = np.linspace(-0.1, 1.2, 20)
 b2_grid = np.linspace(-0.8, 0.5, 20)
 B1, B2 = np.meshgrid(b1_grid, b2_grid)
-U = np.zeros_like(B1); V_field = np.zeros_like(B2)
+U = np.zeros_like(B1)
+V_field = np.zeros_like(B2)
 for i in range(B1.shape[0]):
     for j in range(B1.shape[1]):
-        β_ij = np.array([B1[i,j], B2[i,j]])
+        β_ij = np.array([B1[i, j], B2[i, j]])
         drift = T_invest(β_ij, **params) - β_ij
-        U[i,j] = drift[0]; V_field[i,j] = drift[1]
+        U[i, j] = drift[0]
+        V_field[i, j] = drift[1]
 
 speed = np.sqrt(U**2 + V_field**2)
 speed[speed == 0] = 1e-8
@@ -1100,7 +1194,7 @@ for (b10, b20), col in zip(starts, colors_traj):
     ax.plot(sol.y[0], sol.y[1], color=col, lw=2)
     ax.plot(b10, b20, 'o', color=col, ms=7)
 
-ax.plot(*β_f_inv, 'k*', ms=14, label=f'REE $\\beta_f$')
+ax.plot(*β_f_inv, 'k*', ms=14, label='REE $\\beta_f$')
 ax.set_xlabel('$\\beta_1$', fontsize=12)
 ax.set_ylabel('$\\beta_2$', fontsize=12)
 ax.legend()
@@ -1139,7 +1233,8 @@ ax.axhline(β_f_bray, color='red', ls='--', lw=2,
            label=f'REE $\\beta_f = {β_f_bray:.2f}$')
 ax.axhline(β_false_rest, color='gray', ls=':', lw=2,
            label=f'False start $\\beta_0 = {β_false_rest}$')
-ax.set_xlabel('$t$'); ax.set_ylabel('$\\beta_t$')
+ax.set_xlabel('$t$')
+ax.set_ylabel('$\\beta_t$')
 ax.legend()
 plt.tight_layout()
 plt.show()
@@ -1271,7 +1366,9 @@ colors_ex = ['steelblue', 'darkorange', 'seagreen', 'purple']
 
 fig, ax = plt.subplots(figsize=(11, 5))
 for b_val, col in zip(b_values, colors_ex):
-    T_fn = lambda β, bv=b_val: a_ex + bv * β
+    def T_fn(β, b_val=b_val):
+        return a_ex + b_val * β
+
     paths = simulate_rls_scalar(T_fn, σ_u=1.0, β0=0.0,
                                 T_periods=T_ex, N_paths=N_ex, seed=0)
     bf = a_ex / (1 - b_val)
@@ -1326,7 +1423,10 @@ the paths diverge.
 ```{code-cell} ipython3
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
-T_st = lambda β: 1.0 + 0.6*β
+def T_st(β):
+    return 1.0 + 0.6 * β
+
+
 paths_far = simulate_rls_scalar(T_st, 1.0, β0=6.0,
                                 T_periods=600, N_paths=100, seed=1)
 ax = axes[0]
@@ -1335,9 +1435,14 @@ for i in range(40):
 ax.plot(np.mean(paths_far, axis=0), color='navy', lw=2, label='average')
 ax.axhline(2.5, color='red', ls='--', lw=2, label='$\\beta_f = 2.5$')
 ax.set_title('Stable ($b=0.6$): far start still converges')
-ax.set_xlabel('$t$'); ax.set_ylabel('$\\beta_t$'); ax.legend()
+ax.set_xlabel('$t$')
+ax.set_ylabel('$\\beta_t$')
+ax.legend()
 
-T_un = lambda β: 1.0 + 1.5*β
+def T_un(β):
+    return 1.0 + 1.5 * β
+
+
 β_f_un = 1.0 / (1 - 1.5)
 paths_un = simulate_rls_scalar(T_un, 1.0, β0=0.1,
                                T_periods=200, N_paths=50, seed=2)
@@ -1347,7 +1452,9 @@ for i in range(50):
 ax.axhline(β_f_un, color='black', ls='--', lw=2,
            label=f'$\\beta_f = {β_f_un}$ (unstable)')
 ax.set_title('Unstable ($b=1.5$): diverges even near REE')
-ax.set_xlabel('$t$'); ax.set_ylabel('$\\beta_t$'); ax.legend()
+ax.set_xlabel('$t$')
+ax.set_ylabel('$\\beta_t$')
+ax.legend()
 
 plt.tight_layout()
 plt.show()
@@ -1357,7 +1464,7 @@ plt.show()
 
 ```{code-cell} ipython3
 β_g = np.linspace(-8, 6, 400)
-drift_un = np.array([1.0 + 1.5*b - b for b in β_g])
+drift_un = np.array([1.0 + 1.5 * b - b for b in β_g])
 
 fig, ax = plt.subplots(figsize=(8, 4))
 ax.plot(β_g, drift_un, color='crimson', lw=2)
@@ -1368,7 +1475,8 @@ ax.fill_between(β_g, drift_un, 0, where=(drift_un > 0),
                 color='crimson', alpha=0.15)
 ax.fill_between(β_g, drift_un, 0, where=(drift_un < 0),
                 color='steelblue', alpha=0.15)
-ax.set_xlabel('$\\beta$'); ax.set_ylabel('$T(\\beta) - \\beta$')
+ax.set_xlabel('$\\beta$')
+ax.set_ylabel('$T(\\beta) - \\beta$')
 ax.set_title('Phase Diagram: Unstable REE ($b=1.5$)\n'
              'Drift points away from $\\beta_f$ everywhere')
 ax.legend()
@@ -1432,8 +1540,12 @@ fig, axes = plt.subplots(2, 2, figsize=(14, 10))
 colors_λ = ['steelblue', 'darkorange', 'seagreen', 'purple']
 
 for ax, lv, col in zip(axes.flat, λ_values, colors_λ):
-    T_fn = lambda β, l=lv: (l * β + 1) * ρ_ex
-    ode_fn = lambda β, l=lv: T_fn(β, l) - β
+    def T_fn(β, λ_val=lv):
+        return (λ_val * β + 1) * ρ_ex
+
+    def ode_fn(β, λ_val=lv):
+        return (λ_val * β + 1) * ρ_ex - β
+
     bf = ρ_ex / (1 - lv * ρ_ex) if abs(lv * ρ_ex) < 1 else None
 
     paths_λ = simulate_rls_scalar(T_fn, 1.0, β0=0.0,
@@ -1450,7 +1562,8 @@ for ax, lv, col in zip(axes.flat, λ_values, colors_λ):
 
     M_jac = lv * ρ_ex - 1
     ax.set_title(f'$\\lambda={lv}$,  $\\mathcal{{M}}={M_jac:.3f}$')
-    ax.set_xlabel('$t$'); ax.set_ylabel('$\\beta_t$')
+    ax.set_xlabel('$t$')
+    ax.set_ylabel('$\\beta_t$')
     ax.legend(fontsize=8)
 
 plt.tight_layout()
