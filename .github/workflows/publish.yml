@@ -13,7 +13,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup Anaconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           auto-update-conda: true
           auto-activate-base: true
@@ -39,7 +39,7 @@ jobs:
         run: pip list
       # Download Build Cache from cache.yml
       - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v20
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: cache.yml
           branch: main
@@ -110,7 +110,7 @@ jobs:
           }
           EOF
       - name: Upload archives to release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             lecture-python-html-${{ github.ref_name }}.tar.gz
