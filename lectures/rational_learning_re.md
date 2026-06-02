@@ -28,9 +28,9 @@ kernelspec:
 
 ## Overview
 
-This lecture explores an important question in economic theory: can agents *learn* their way to a rational expectations equilibrium?
+This lecture explores an important question in economic theory: what can agents learn inside a rational expectations equilibrium?
 
-If they can, then the rational expectations equilibrium can be justified as a dynamic attractor for learning processes.
+This question is related to, but distinct from, the adaptive-learning question of whether a rational expectations equilibrium can be justified as a dynamic attractor.
 
 The starting point is {cite:t}`BrayKreps1987`, which gives a rigorous model of Bayesian learning inside a rational expectations equilibrium.
 
@@ -40,12 +40,15 @@ Each agent knows the *statistical relationship* between prices and the underlyin
 
 But this raises a question: where does that knowledge come from?
 
-The **rational learning** approach asks whether agents who start with uncertainty about the equilibrium price function can, over time, learn it from observations of past prices.
+Their **rational learning** approach answers a narrower question.
 
-This lecture develops that idea through an asset-market model.
+Agents are uncertain about structural parameters, but the state space is enlarged so that, for each possible parameter value, the associated equilibrium price and allocation maps are already part of the model.
 
-The aim is to see what rational learning can explain, and where its limits
-appear, before turning to the computational illustration.
+Agents then use Bayes' rule to update over those possibilities as prices and returns are observed.
+
+This lecture develops that Bayesian formulation through an asset-market model.
+
+The aim is to see what rational learning can explain, and where its limits appear, before turning to the computational illustration.
 
 The discussion also connects to earlier work by {cite:t}`Bray1982`, {cite:t}`BraySavin1984`, and the rational expectations literature of {cite:t}`Radner1979`, {cite:t}`grossman1976`, and {cite:t}`Jordan1982`.
 
@@ -690,7 +693,7 @@ Write $F_t$ for the CDF of agent $U$'s posterior on $\theta^I$ at date $t$ after
 
 {prf:ref}`prop-bk-measure-convergence` yields a random CDF $F_\infty$ such that $F_t$ converges weakly to $F_\infty$, $P^U$-a.s.
 
-Three hypotheses sharpen this to concentration on the truth, corresponding to the three steps in {cite:t}`BrayKreps1987`.
+Three ingredients sharpen this to concentration on the truth, corresponding to the three steps in {cite:t}`BrayKreps1987`.
 
 ```{prf:assumption}
 :label: assum-bk-continuity
@@ -701,12 +704,24 @@ The equilibrium uninformed demand $x^U(p, F)$ is continuous in $F$ with respect 
 ```{prf:assumption}
 :label: assum-bk-identification
 
-For fixed $\theta^U$ and limiting posterior $F_\infty$, the marginal distribution of the limiting price functional $p_\infty(\,\cdot\,; F_\infty, \theta^I, \theta^U)$ is strictly monotone in $\theta^I$ in the first-order-stochastic-dominance order.
+For fixed $\theta^U$ and limiting posterior $F_\infty$, the map
 
-That is, $\theta^I \neq \theta^{I\,\prime}$ implies $p_\infty(s; F_\infty, \theta^I, \theta^U)$ and $p_\infty(s; F_\infty, \theta^{I\,\prime}, \theta^U)$ have distinct CDFs when $s$ is drawn from its marginal distribution.
+$$
+\theta^I
+\mapsto
+\mathcal L\{p_\infty(s; F_\infty, \theta^I, \theta^U)\}
+$$
+
+is injective, where $s$ is drawn from its marginal distribution.
+
+A sufficient condition is strict stochastic monotonicity of this marginal price distribution in $\theta^I$.
 ```
 
-In the lecture's CARA-Normal setup, {prf:ref}`assum-bk-continuity` holds because the FOC {eq}`eq:bk-foc` defines $x^U$ as a continuous functional of $F$ under weak convergence through bounded integrals, and {prf:ref}`assum-bk-identification` holds because the equilibrium price has the form $p_t = s_t - \sigma^2 X^I_t / \theta^I$ with $X^I_t > 0$ on a full-measure set.
+In the lecture's CARA-Normal setup, these assumptions are plausible under the maintained uniqueness and regularity of the implicit demand and price equations.
+
+Continuity requires continuous dependence of the FOC root in {eq}`eq:bk-foc` on $F$, not just pointwise continuity of the integrals.
+
+Identification also uses the full equilibrium map: the equation $p_t = s_t - \sigma^2 X^I_t / \theta^I$ is informative, but $X^I_t$ itself depends on $\theta^I$, $F_t$, and the equilibrium fixed point.
 
 The IID assumption on $\{s_t\}$, already part of the model, supplies the ergodicity used in step 2 below.
 
@@ -743,7 +758,7 @@ The latter equals the distribution of $p_\infty(s; F_\infty, \theta^I, \theta^U)
 
 *Step 3: identification.*
 
-{prf:ref}`assum-bk-identification` makes the marginal distribution of $p_\infty$ a strictly monotone function of $\theta^I$ given $(F_\infty, \theta^U)$.
+{prf:ref}`assum-bk-identification` makes the marginal distribution of $p_\infty$ identify $\theta^I$ given $(F_\infty, \theta^U)$.
 
 Combined with step 2, this means $\theta^I$ is itself $H_\infty^U(p)$-measurable, so for any subinterval $[c,d] \subseteq [a,b]$ the limiting posterior satisfies $P_\infty^U(\theta^I \in [c,d]) = \mathbf 1_{\{\theta^I_{\rm true} \in [c,d]\}}$.
 
@@ -767,7 +782,9 @@ When the equilibrium price functional is discontinuous in $F$, small changes in 
 
 {cite:t}`BrayKreps1987` flag this as the most delicate step in their argument.
 
-Continuity of $x^U(p, F)$ in $F$ is automatic in this lecture because the FOC integrates a bounded continuous function against $F$, but verifying it in richer market structures often requires non-trivial regularity arguments.
+Continuity of $x^U(p, F)$ in $F$ is plausible in this lecture's regular CARA-Normal case, but it also requires uniqueness of the FOC solution and continuous dependence of that solution on $F$.
+
+Verifying the same property in richer market structures often requires non-trivial regularity arguments.
 
 ### Obstacle 2: failure of identification
 
@@ -803,11 +820,13 @@ A separate obstacle arises if the true pricing relation lies outside the agent's
 
 {cite:t}`BlumeEasley1982` give a stylised version of this obstacle, and {doc}`likelihood_ratio_process_2` develops the Blume-Easley heterogeneous-beliefs model in this lecture series.
 
-Each agent entertains two competing models $\psi_n^0$ and $\psi_n^1$ over $(I_t, p_t)$, and an equilibrium can exist in which agents assign asymptotic probability one to a model that places zero probability on the actually-observed price relation.
+Each agent entertains competing conditional likelihoods for other agents' information given his own information and the price.
 
-In strict rational learning the agent's prior must be supported on Bayesian-consistent models in the expanded state space, so this failure can occur only on a $P^U$-null event.
+An equilibrium can exist in which agents assign asymptotic probability one to an incorrect model that gives the observed events positive likelihood, while the true stable price relation receives zero posterior probability because that relation was absent from the prior model class.
 
-Rational learning embeds every candidate pricing relation in the prior from date zero, so any candidate with positive prior weight cannot be dominated by one with zero prior weight no matter what the data say.
+In strict rational learning the agent's prior is supported on Bayesian-consistent models in the expanded state space, and the truth is assumed to have positive prior support.
+
+Bayes' rule can only reweight that initial model class: a pricing relation assigned zero prior probability remains impossible after any history.
 
 ## Learning within versus learning about a rational expectations equilibrium
 
@@ -843,7 +862,7 @@ The literature on learning *about* rational expectations equilibria, beginning w
 
 The companion lecture {doc}`ls_learning` develops this least-squares-learning framework in self-referential models and traces the resulting dynamics through the associated ordinary differential equation.
 
-Those rules are computationally tractable and converge in important examples, but they are *not* Bayesian-optimal under any correctly specified prior.
+Those rules are computationally tractable and converge in important examples, but they are not the Bayesian update implied by the fully specified rational-learning equilibrium prior.
 
 ## Summary
 
@@ -853,7 +872,7 @@ Posterior assessments converge by bounded martingale convergence ({prf:ref}`prop
 
 Concentration on the truth additionally requires continuity ({prf:ref}`assum-bk-continuity`), ergodicity, and identification ({prf:ref}`assum-bk-identification`); each obstacle above is a failure of one of these.
 
-The simulation confirms both conclusions: the posterior on $\theta^I$ collapses to $\theta^I_{\rm true}$ and the equilibrium informed trade reaches its full-information value.
+The simulation illustrates both conclusions: the posterior on $\theta^I$ collapses toward $\theta^I_{\rm true}$ and the equilibrium informed trade approaches its full-information value.
 
 Rational learning describes the limits of Bayesian inference *given* the equilibrium structure; adaptive learning, in {doc}`ls_learning`, describes how that structure can be learned in the first place.
 
@@ -883,6 +902,8 @@ which peaks near $\theta = 3.1$.
 ```{solution-start} rle_ex1
 :class: dropdown
 ```
+
+Here is one solution:
 
 ```{code-cell} ipython3
 res_uniform = simulate(**params)
@@ -934,6 +955,8 @@ The sensitivity $|\partial s_t/\partial \theta| = \sigma^2 X^I_t/\theta^2$ depen
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 5))
 for θ_val in [0.8, 2.0, 3.5]:
@@ -969,12 +992,14 @@ But $\sigma^2$ also scales the price intercept in {eq}`eq:bk-price`, so price di
 
 2. Plot the posterior variance on a log scale for each $\sigma^2$.
 
-3. Which effect dominates? Explain in terms of the signal-to-noise ratio for inferring $\theta^I$ from the price.
+3. Explain which effect dominates in terms of the signal-to-noise ratio for inferring $\theta^I$ from the price.
 ```
 
 ```{solution-start} rle_ex3
 :class: dropdown
 ```
+
+Here is one solution:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 5))
@@ -993,9 +1018,37 @@ plt.show()
 
 The posterior variance falls *faster* for larger $\sigma^2$.
 
-The reason is visible in the price equation $p_t = s_t - \sigma^2 X^I_t/\theta^I$: the price gap between two candidate $\theta$ values grows linearly with $\sigma^2$, while the conditional variance of the implied signal $g(s\mid r)$ is bounded above by $\tau^2$.
+To see why, write $\nu=\sigma^2$ and hold the realized trade $X^I_t$ fixed.
 
-The Grossman-Stiglitz-style trade thus becomes more revealing about $\theta^I$ as the return shock $\epsilon_t$ becomes more volatile, even though each return is individually noisier.
+Two nearby values of $\theta$ imply signals separated by approximately
+
+$$
+\left|\frac{\partial s_t(\theta)}{\partial \theta}\right|
+=
+\frac{\nu |X^I_t|}{\theta^2}.
+$$
+
+The likelihood compares these implied signals using $g(s\mid r_t)$, whose conditional variance is
+
+$$
+\operatorname{Var}(s_t\mid r_t)
+=
+\frac{\nu \tau^2}{\nu+\tau^2}.
+$$
+
+Thus the local signal-to-noise ratio for distinguishing nearby $\theta$ values is proportional to
+
+$$
+\frac{\nu |X^I_t|/\theta^2}
+     {\sqrt{\nu\tau^2/(\nu+\tau^2)}}
+=
+\frac{|X^I_t|}{\theta^2}
+\sqrt{\frac{\nu(\nu+\tau^2)}{\tau^2}},
+$$
+
+This ratio rises with $\nu$ when $\tau^2$ is fixed.
+
+The price-revelation effect therefore dominates the extra return noise in this experiment.
 
 ```{solution-end}
 ```

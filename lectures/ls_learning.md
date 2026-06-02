@@ -29,7 +29,7 @@ kernelspec:
 ## Overview
 
 This lecture is a companion to {doc}`rational_learning_re`, which presents the
-Bray–Kreps perspective on rational learning.
+Bray-Kreps perspective on rational learning.
 
 We examine the related but distinct question of whether *least squares* learning
 converges to a rational expectations equilibrium in self-referential models.
@@ -152,7 +152,7 @@ where $\{\alpha_t\}$ is a positive, non-decreasing sequence with $\alpha_t \to 1
 as $t \to \infty$.
 
 When $\alpha_t = 1$ for all $t$, equations
-{eq}`eq:rls_beta`–{eq}`eq:rls_R` reduce to **ordinary least squares** updated
+{eq}`eq:rls_beta`-{eq}`eq:rls_R` reduce to **ordinary least squares** updated
 recursively.
 
 ### Lagged and contemporaneous data
@@ -169,8 +169,9 @@ same estimate $\beta_t$ that is being updated from $z_t$.
 An extra requirement is that the date-$t$ system must have a unique solution
 $(\beta_t, R_t, z_t)$ for each history.
 
-Under that uniqueness condition, the same full ODE {eq}`eq:full_ode` and small ODE {eq}`eq:small_ode`
-govern convergence.
+If this uniqueness condition holds, and if the regularity and boundedness
+conditions used below also hold, convergence is still governed by the same full
+ODE {eq}`eq:full_ode` and small ODE {eq}`eq:small_ode`.
 
 ```{note}
 As {cite:t}`BraySavin1984` and {cite:t}`BrayKreps1987` emphasize, the RLS algorithm
@@ -183,9 +184,12 @@ The algorithm is
 when it is not.
 ```
 
+Thus, any state variable that matters for the actual law of motion must appear
+among the regressors in the perceived law.
+
 ## Why a differential equation governs the limit
 
-The RLS recursion {eq}`eq:rls_beta`–{eq}`eq:rls_R` is a *stochastic difference equation* with two key features.
+The RLS recursion {eq}`eq:rls_beta`-{eq}`eq:rls_R` is a *stochastic difference equation* with two key features.
 
 First, the *step size* in front of each update is $\alpha_t / t$, which shrinks to zero as $t$ grows.
 
@@ -201,10 +205,9 @@ $$
 \frac{d\beta}{dt} = T(\beta) - \beta .
 $$ (eq:small_ode)
 
-The ODE clock is cumulative gain time, not calendar time.
+To compare the ODE with RLS after $t$ observations, evaluate the ODE at $\tau_t = \sum_{s=1}^t \alpha_s/s$, the total step size accumulated by the learning algorithm.
 
-When $\alpha_t=1$, calendar period $t$ corresponds approximately to ODE time
-$\sum_{s=1}^t 1/s \approx \log t$.
+When $\alpha_t=1$, this accumulated step size is $\tau_t = \sum_{s=1}^t 1/s \approx \log t$.
 
 This idea, due to {cite:t}`Ljung1977`, is what lets {cite:t}`MarcetSargent1989jet` reduce the analysis of a noisy adaptive learning rule to the much easier study of a deterministic ODE.
 
@@ -304,11 +307,18 @@ for all $\omega \in \Omega_0$ and all $k = 1, 2, \ldots$.
 ```{prf:assumption} Sample path stays in a workable domain
 :label: ass-ms-a7
 
-Either of the following holds:
+Either the compact-state version or the projection-set version holds.
 
-- *Compact-state version.* $D_1 = D_2 = \mathbb{R}^{n_1 \times (n_2)^3}$ and there exists a compact $D' \subset D_s$ that contains $\beta_{t_k}(\omega)$ for all $k$ and all $\omega \in \Omega_0$, with trajectories of {eq}`eq:full_ode` originating in $D'$ never leaving a closed subset of $D_s$.
+- *Compact-state version.*
+  - $D_1 = D_2 = \mathbb{R}^{n_1 \times (n_2)^3}$.
+  - There exists a compact $D' \subset D_s$ that contains $\beta_{t_k}(\omega)$ for all $k$ and all $\omega \in \Omega_0$.
+  - For every initial condition $(\beta(0), R(0))$ with $\beta(0) \in D'$ and $R(0)$ bounded as in {prf:ref}`ass-ms-a6`, the $\beta$-component of the trajectory of {eq}`eq:full_ode` remains in a closed subset of $D_s$.
 
-- *Projection-set version.* $D_2$ is closed, $D_1$ is open and bounded, $\beta \in D_s$ for every $(\beta, R) \in D_1$, and trajectories of {eq}`eq:full_ode` with initial conditions in $D_2$ never leave a closed subset of $D_1$.
+- *Projection-set version.*
+  - $D_2$ is closed.
+  - $D_1$ is open and bounded.
+  - $\beta \in D_s$ for every $(\beta, R) \in D_1$.
+  - Trajectories of {eq}`eq:full_ode` with initial conditions in $D_2$ never leave a closed subset of $D_1$.
 ```
 
 {prf:ref}`ass-ms-a6` is automatic when the regressors $z_{2t}$ are *exogenous* and ergodic, but it can be delicate when $z_{2t}$ contains endogenous variables.
@@ -324,7 +334,9 @@ Let $D_A$ denote the domain of attraction of the unique equilibrium $(\beta_f, R
 
 Assume {prf:ref}`ass-ms-a1`, {prf:ref}`ass-ms-a2`,
 {prf:ref}`ass-ms-a3`, {prf:ref}`ass-ms-a4`, {prf:ref}`ass-ms-a5`,
-and {prf:ref}`ass-ms-a6`. If either
+and {prf:ref}`ass-ms-a6`.
+
+If either
 
 - the compact-state version of {prf:ref}`ass-ms-a7` is satisfied and
   $D' \subset D_A$, or
@@ -378,7 +390,9 @@ Assume {prf:ref}`ass-ms-a1`, {prf:ref}`ass-ms-a2`,
 {prf:ref}`ass-ms-a3`, {prf:ref}`ass-ms-a4`, and {prf:ref}`ass-ms-a5`.
 
 1. Let $\hat\beta \neq \beta_f$ and suppose $M_{z_2}(\hat\beta)$ is positive
-   definite and $\hat\beta \in \mathrm{int}(D_2)$. Then $P(\beta_t \to \hat\beta) = 0$.
+   definite and $\hat\beta \in \mathrm{int}(D_2)$.
+
+   Then $P(\beta_t \to \hat\beta) = 0$.
 
 2. If $h(\beta_f, R_f)$ has at least one eigenvalue with strictly positive real
    part, then $P(\beta_t \to \beta_f) = 0$.
@@ -404,7 +418,16 @@ it tells us when the learning process can find its way to the equilibrium.
 
 ### The projection facility
 
-E-stability is necessary but not quite sufficient for almost-sure convergence.
+E-stability is the local condition that makes the REE attractive for the
+learning ODE.
+
+By itself, it is not an almost-sure convergence theorem.
+
+The stochastic recursion must also remain in a bounded region where the ODE
+approximation is valid.
+
+Conversely, a strictly positive eigenvalue rules out convergence to the REE,
+while boundary cases with zero real parts are not covered by the theorem.
 
 Ljung's theorem requires the learning process and the relevant regressors to
 return to bounded regions with probability one.
@@ -458,8 +481,11 @@ interior at the boundary $\partial D_1$.
 
 Assume {prf:ref}`ass-ms-a1`, {prf:ref}`ass-ms-a2`,
 {prf:ref}`ass-ms-a3`, {prf:ref}`ass-ms-a4`, {prf:ref}`ass-ms-a5`,
-and {prf:ref}`ass-ms-a6`. Suppose also that $(\beta, R) \in D_1$ implies
-$\beta \in D_s$, and that $D_1$ is open and bounded with $D_1 \subset D_A$.
+and {prf:ref}`ass-ms-a6`.
+
+Suppose also that $(\beta, R) \in D_1$ implies $\beta \in D_s$, and that $D_1$
+is open and bounded with $D_1 \subset D_A$.
+
 Then for some subsequence $\{t_k(\omega)\}$,
 
 $$
@@ -490,8 +516,10 @@ $$ (eq:corollary2_cond)
 ```{prf:corollary}
 :label: cor-ms-exogenous
 
-Consider the algorithm defined by {eq}`eq:rls_beta`–{eq}`eq:rls_R` with
-projection rule {eq}`eq:projection`. Choose $0 < K' < K < \infty$ and assume
+Consider the algorithm defined by {eq}`eq:rls_beta`-{eq}`eq:rls_R` with
+projection rule {eq}`eq:projection`.
+
+Choose $0 < K' < K < \infty$ and assume
 
 1. {prf:ref}`ass-ms-a1`, {prf:ref}`ass-ms-a2`, {prf:ref}`ass-ms-a3`,
    {prf:ref}`ass-ms-a4`, and {prf:ref}`ass-ms-a5` hold;
@@ -508,7 +536,8 @@ projection rule {eq}`eq:projection`. Choose $0 < K' < K < \infty$ and assume
 Take
 $D_1 = \{(\beta, R) : |\beta - \beta_f| < K\}$ and
 $D_2 = \{(\beta, R) : |\beta - \beta_f| \leq K'\}$, and let the projection
-rule retract to any value with $|\beta - \beta_f| \leq K'$.
+rule retract $\beta_t$ to any value with $|\beta - \beta_f| \leq K'$, while
+leaving $R_t = \tilde R_t$.
 
 Then $\beta_t \to \beta_f$ almost surely.
 ```
@@ -516,34 +545,120 @@ Then $\beta_t \to \beta_f$ almost surely.
 For the scalar linear examples below, condition (4) reduces to checking that
 the feedback slope of $T$ is not too strong.
 
-For the first four examples below, $T$ is linear and $M_{z_2}$ is independent
-of $\beta$, so {prf:ref}`cor-ms-exogenous` reduces the problem to the scalar
-ODE stability checks shown in the examples.
+For the first four examples below, $T$ is linear and $M_{z_2}$ is independent of $\beta$, so {prf:ref}`cor-ms-exogenous` uses $D_1$ and $D_2$ only to justify the projection argument and leaves the examples with the scalar ODE stability checks.
 
-```{note}
-In Bray's model, the state $z_{2t}=1$ is a constant regressor.
+$D_1$ and $D_2$ are therefore not economic primitives in the examples below.
 
-In the Bray-Savin and present-value examples, $z_{2t}$ is stochastic but
-exogenous, so $M_{z_2}$ is still independent of beliefs.
+They are proof devices for the projected learning algorithm: $D_1$ is the outer admissible region where the model and ODE remain well defined, and $D_2$ is the smaller region used to reset the estimates if an update tries to leave $D_1$.
 
-For the investment model with endogenous regressors, verifying the
-boundary condition on $D_1$ is much harder and may require numerical solution of
-the ODE on a grid of boundary points.
-```
+Once the corollary says suitable sets can be chosen, the examples no longer need to display them and can focus on $T$, $\beta_f$, and the local stability slope.
 
-## Computational helpers
+## Five examples
 
 We now work through five examples from {cite:t}`MarcetSargent1989jet`.
 
-Before we start, we define helper functions for the scalar simulations.
+Each substantive learning example follows the same template.
 
-The first covers Bray's constant-regressor model.
+1. Write down the economic equations that determine the equilibrium.
+2. Substitute the perceived law of motion for any expectational variables to obtain the actual law of motion as a function of $\beta$.
+3. Read off the operator $T$ and the REE $\beta_f = T(\beta_f)$.
+4. Check E-stability by computing $\mathcal M = dT/d\beta - I$ at $\beta_f$.
+5. Plot the RLS paths, the small ODE evaluated at cumulative-gain time, and the drift $T(\beta)-\beta$.
 
-The next two simulate the actual exogenous-regressor structures in the
-Bray-Savin and present-value examples.
+In each case, $\beta_t$ is the law of motion agents currently use when making decisions, while $T(\beta_t)$ is the law of motion their decisions actually produce.
 
-The final helper evaluates the small ODE {eq}`eq:small_ode` on the
-cumulative-gain time scale of RLS.
+Least-squares learning asks whether repeated observations move $\beta_t$ toward a fixed point of this map.
+
+The first example is the control case with no self-referential feedback.
+
+For the remaining scalar examples, the simulation figure appears immediately
+after the model description.
+
+## Example 1: Ordinary linear stochastic difference equations
+
+The first example has no self-referential component.
+
+Let the actual law of motion be fixed, with $T(\beta)=\Gamma$ for a stable
+matrix $\Gamma$ and with $V(\beta)=I$.
+
+Economically, this is the control case.
+
+Agents are simply estimating a stable data-generating process that is already
+there.
+
+Their beliefs do not feed back into prices, quantities, or future data.
+
+The REE is $\beta_f=\Gamma$.
+
+Since $T$ is constant, $H(\beta)=0$ in {eq}`eq:corollary2_cond`.
+
+The small-ODE Jacobian is $\mathcal{M}=-I$, so the small ODE is globally
+stable.
+
+{prf:ref}`cor-ms-exogenous` then implies that recursive least squares converges almost surely
+to the true law of motion.
+
+In this no-feedback benchmark, the Marcet-Sargent result reduces to the
+standard consistency of least squares for stable linear stochastic difference equations.
+
+## Example 2: Bray's cobweb model
+
+{cite:t}`Bray1982` studied a simple cobweb economy in which the equilibrium price
+satisfies
+
+$$
+p_t = a + b \beta_t + \tilde{u}_t ,
+$$ (eq:bray_price)
+
+where $\beta_t$ is agents' OLS estimate of the price (their point forecast of
+$p_t$), and $\tilde{u}_t$ is i.i.d. noise with mean zero and variance
+$\sigma_u^2$.
+
+Here the forecast itself is a state variable for the economy.
+
+If producers expect a high price, their current supply decisions alter the
+market-clearing price.
+
+The parameter $b$ measures the strength of this expectational feedback.
+
+When $b < 1$, the actual price response is weaker than the forecast error, so
+least squares has a force pushing beliefs back toward the fixed point.
+
+When $b > 1$, the feedback is too strong and the same learning rule moves
+beliefs away from the REE.
+
+The mapping $T$ is simply $T(\beta) = a + b\beta$.
+
+The REE is
+
+$$
+\beta_f = \frac{a}{1 - b} , \quad b \neq 1 .
+$$ (eq:bray_ree)
+
+The small ODE is
+
+$$
+\dot\beta = T(\beta) - \beta = a + b\beta - \beta = a - (1-b)\beta ,
+$$ (eq:bray_ode)
+
+which has the unique fixed point $\beta_f = a/(1-b)$.
+
+Its Jacobian is
+$\mathcal{M} = b - 1 < 0$ when $b < 1$.
+
+Under the boundedness and domain conditions above, RLS then converges almost
+surely.
+
+When $b > 1$, $\mathcal{M} > 0$ and convergence fails.
+
+The code below sets $a=1$ and $b=0.6$.
+
+The rational expectations price forecast is then $\beta_f=2.5$.
+
+The three panels show the noisy RLS paths, the small-ODE approximation, and
+the learning drift $T(\beta)-\beta$.
+
+The next cell sets up the simulator and plotting helpers used in the Bray figures.
 
 ```{code-cell} ipython3
 def simulate_rls_scalar(T_map, σ_u, β0, T_periods=500, N_paths=100,
@@ -568,68 +683,12 @@ def simulate_rls_scalar(T_map, σ_u, β0, T_periods=500, N_paths=100,
             u_t = rng.normal(0, σ_u)
             z1 = T_map(β) * z2 + u_t
 
+            R_old = max(R, 1e-8)
+            β = β + (α_t / (t + 1)) / R_old * z2 * (z1 - β * z2)
             R = R + (α_t / (t + 1)) * (z2**2 - R / α_t)
             R = max(R, 1e-8)
-            β = β + (α_t / (t + 1)) / R * z2 * (z1 - β * z2)
 
             β_paths[i, t] = β
-
-    return β_paths
-
-
-def simulate_bray_savin(m, a, σ_x, σ_u, β0, T_periods=500,
-                        N_paths=100, seed=0):
-    """
-    Simulate RLS for p_t = x_t (m + a β_t) + u_t.
-    Agents regress p_t on x_t.
-    """
-    rng = np.random.default_rng(seed)
-    β_paths = np.empty((N_paths, T_periods))
-
-    for i in range(N_paths):
-        β = β0
-        R = 1.0
-
-        for t in range(T_periods):
-            x_t = rng.normal(0.0, σ_x)
-            u_t = rng.normal(0.0, σ_u)
-            p_t = x_t * (m + a * β) + u_t
-            step = 1.0 / (t + 1)
-
-            R = R + step * (x_t**2 - R)
-            R = max(R, 1e-8)
-            β = β + step / R * x_t * (p_t - β * x_t)
-            β_paths[i, t] = β
-
-    return β_paths
-
-
-def simulate_present_value_rls(λ, ρ, σ_ε, β0, T_periods=500,
-                               N_paths=100, seed=0):
-    """
-    Simulate RLS for y_t = (λ β_t + 1) x_t,
-    x_t = ρ x_{t-1} + ε_t, with regression of y_t on x_{t-1}.
-    """
-    rng = np.random.default_rng(seed)
-    β_paths = np.empty((N_paths, T_periods))
-    σ_x = σ_ε / np.sqrt(1 - ρ**2)
-
-    for i in range(N_paths):
-        β = β0
-        R = 1.0
-        x_lag = rng.normal(0.0, σ_x)
-
-        for t in range(T_periods):
-            ε_t = rng.normal(0.0, σ_ε)
-            x_t = ρ * x_lag + ε_t
-            y_t = (λ * β + 1.0) * x_t
-            step = 1.0 / (t + 1)
-
-            R = R + step * (x_lag**2 - R)
-            R = max(R, 1e-8)
-            β = β + step / R * x_lag * (y_t - β * x_lag)
-            β_paths[i, t] = β
-            x_lag = x_t
 
     return β_paths
 
@@ -683,105 +742,6 @@ def plot_scalar_drift(ax, β_grid, drift, β_f, color):
 T_sim = 400
 N_sim = 80
 ```
-
-Each substantive learning example follows the same template.
-
-1. Write down the economic equations that determine the equilibrium.
-2. Substitute the perceived law of motion for any expectational variables to obtain the actual law of motion as a function of $\beta$.
-3. Read off the operator $T$ and the REE $\beta_f = T(\beta_f)$.
-4. Check E-stability by computing $\mathcal M = dT/d\beta - I$ at $\beta_f$.
-5. Plot the RLS paths, the small ODE evaluated at cumulative-gain time, and the drift $T(\beta)-\beta$.
-
-In each case, $\beta_t$ is the law of motion agents currently use when making decisions, while $T(\beta_t)$ is the law of motion their decisions actually produce.
-
-Least-squares learning asks whether repeated observations move $\beta_t$ toward a fixed point of this map.
-
-The first example is the control case with no self-referential feedback.
-
-For the remaining scalar examples, the simulation figure appears immediately
-after the model description.
-
-## Example 1: Ordinary linear stochastic difference equations
-
-The first example has no self-referential component.
-
-Let the actual law of motion be fixed, with $T(\beta)=\Gamma$ for a stable
-matrix $\Gamma$ and with $V(\beta)=I$.
-
-Economically, this is the control case.
-
-Agents are simply estimating a stable data-generating process that is already
-there.
-
-Their beliefs do not feed back into prices, quantities, or future data.
-
-The REE is $\beta_f=\Gamma$.
-
-Since $T$ is constant, $H(\beta)=0$ in {eq}`eq:corollary2_cond`.
-
-The small-ODE Jacobian is $\mathcal{M}=-I$, so the small ODE is globally
-stable.
-
-{prf:ref}`cor-ms-exogenous` then implies that recursive least squares converges almost surely
-to the true law of motion.
-
-This case shows that the Marcet-Sargent machinery nests ordinary strong
-consistency of least squares for stable linear stochastic difference equations.
-
-## Example 2: Bray's cobweb model
-
-{cite:t}`Bray1982` studied a simple cobweb economy in which the equilibrium price
-satisfies
-
-$$
-p_t = a + b \beta_t + \tilde{u}_t ,
-$$ (eq:bray_price)
-
-where $\beta_t$ is agents' OLS estimate of the price (their point forecast of
-$p_t$), and $\tilde{u}_t$ is i.i.d. noise with mean zero and variance
-$\sigma_u^2$.
-
-Here the forecast itself is a state variable for the economy.
-
-If producers expect a high price, their current supply decisions alter the
-market-clearing price.
-
-The parameter $b$ measures the strength of this expectational feedback.
-
-When $b < 1$, the actual price response is weaker than the forecast error, so
-least squares has a force pushing beliefs back toward the fixed point.
-
-When $b > 1$, the feedback is too strong and the same learning rule moves
-beliefs away from the REE.
-
-The mapping $T$ is simply $T(\beta) = a + b\beta$.  The REE is
-
-$$
-\beta_f = \frac{a}{1 - b} , \quad b \neq 1 .
-$$ (eq:bray_ree)
-
-The small ODE is
-
-$$
-\dot\beta = T(\beta) - \beta = a + b\beta - \beta = a - (1-b)\beta ,
-$$ (eq:bray_ode)
-
-which has the unique fixed point $\beta_f = a/(1-b)$.
-
-Its Jacobian is
-$\mathcal{M} = b - 1 < 0$ when $b < 1$.
-
-Under the boundedness and domain conditions above, RLS then converges almost
-surely.
-
-When $b > 1$, $\mathcal{M} > 0$ and convergence fails.
-
-The code below sets $a=1$ and $b=0.6$.
-
-The rational expectations price forecast is then $\beta_f=2.5$.
-
-The three panels show the noisy RLS paths, the small-ODE approximation, and
-the learning drift $T(\beta)-\beta$.
 
 ```{code-cell} ipython3
 ---
@@ -984,6 +944,37 @@ It uses $a=0.7$.
 The drift panel shows that mistaken slopes are pushed back toward the REE
 slope rather than amplified.
 
+The next cell adapts the RLS simulator to the supply-shifter regression.
+
+```{code-cell} ipython3
+def simulate_bray_savin(m, a, σ_x, σ_u, β0, T_periods=500,
+                        N_paths=100, seed=0):
+    """
+    Simulate RLS for p_t = x_t (m + a β_t) + u_t.
+    Agents regress p_t on x_t.
+    """
+    rng = np.random.default_rng(seed)
+    β_paths = np.empty((N_paths, T_periods))
+
+    for i in range(N_paths):
+        β = β0
+        R = 1.0
+
+        for t in range(T_periods):
+            x_t = rng.normal(0.0, σ_x)
+            u_t = rng.normal(0.0, σ_u)
+            p_t = x_t * (m + a * β) + u_t
+            step = 1.0 / (t + 1)
+
+            R_old = max(R, 1e-8)
+            β = β + step / R_old * x_t * (p_t - β * x_t)
+            R = R + step * (x_t**2 - R)
+            R = max(R, 1e-8)
+            β_paths[i, t] = β
+
+    return β_paths
+```
+
 ```{code-cell} ipython3
 ---
 mystnb:
@@ -1111,8 +1102,47 @@ The simulation uses $\lambda=0.8$ and $\rho=0.9$, so $\lambda\rho=0.72$.
 This means the feedback from expectations is strong enough to matter but still
 less than one.
 
+The ODE panel below uses $\tau$ itself on the horizontal axis, where $\tau$ is the total step size accumulated by least squares.
+
 The code simulates the autoregressive fundamental $x_t$ and updates an OLS
 regression of $y_t$ on $x_{t-1}$.
+
+The next cell simulates the autoregressive fundamental and the matching RLS update.
+
+It keeps the covariance estimate $R_t$ bounded away from zero, mirroring the projection idea above and avoiding misleading early-sample explosions.
+
+```{code-cell} ipython3
+def simulate_present_value_rls(λ, ρ, σ_ε, β0, T_periods=500,
+                               N_paths=100, seed=0):
+    """
+    Simulate RLS for y_t = (λ β_t + 1) x_t,
+    x_t = ρ x_{t-1} + ε_t, with regression of y_t on x_{t-1}.
+    """
+    rng = np.random.default_rng(seed)
+    β_paths = np.empty((N_paths, T_periods))
+    σ_x = σ_ε / np.sqrt(1 - ρ**2)
+    R_min = 0.05 * σ_x**2
+
+    for i in range(N_paths):
+        β = β0
+        R = σ_x**2
+        x_lag = rng.normal(0.0, σ_x)
+
+        for t in range(T_periods):
+            ε_t = rng.normal(0.0, σ_ε)
+            x_t = ρ * x_lag + ε_t
+            y_t = (λ * β + 1.0) * x_t
+            step = 1.0 / (t + 1)
+
+            R_old = max(R, R_min)
+            β = β + step / R_old * x_lag * (y_t - β * x_lag)
+            R = R + step * (x_lag**2 - R)
+            R = max(R, R_min)
+            β_paths[i, t] = β
+            x_lag = x_t
+
+    return β_paths
+```
 
 ```{code-cell} ipython3
 ---
@@ -1122,6 +1152,8 @@ mystnb:
     name: fig-present-value-learning-dynamics
 ---
 λ, ρ_pv, σ_pv = 0.8, 0.9, 1.0
+T_pv_sim = T_sim
+N_pv_sim = N_sim
 
 
 def T_pv(β):
@@ -1132,7 +1164,7 @@ def T_pv(β):
 
 β_paths_pv = simulate_present_value_rls(
     λ, ρ_pv, σ_pv, 0.0,
-    T_periods=T_sim, N_paths=N_sim
+    T_periods=T_pv_sim, N_paths=N_pv_sim
 )
 
 
@@ -1140,8 +1172,21 @@ def ode_pv(β):
     return T_pv(β) - β
 
 
-t_ode_pv, sol_pv_low = solve_ode_calendar(ode_pv, 0.0, T_sim)
-_, sol_pv_high = solve_ode_calendar(ode_pv, 10.0, T_sim)
+τ_grid_pv = np.linspace(0.0, 30.0, 300)
+sol_pv_low = solve_ivp(
+    lambda τ, y: [ode_pv(y[0])],
+    (0.0, τ_grid_pv[-1]),
+    [0.0],
+    t_eval=τ_grid_pv,
+    max_step=0.05
+).y[0]
+sol_pv_high = solve_ivp(
+    lambda τ, y: [ode_pv(y[0])],
+    (0.0, τ_grid_pv[-1]),
+    [10.0],
+    t_eval=τ_grid_pv,
+    max_step=0.05
+).y[0]
 
 β_grid_pv = np.linspace(-1.0, 7.0, 300)
 drift_pv = np.array([ode_pv(b) for b in β_grid_pv])
@@ -1149,7 +1194,7 @@ drift_pv = np.array([ode_pv(b) for b in β_grid_pv])
 fig, axes = plt.subplots(1, 3, figsize=(15, 4.8))
 
 ax = axes[0]
-for i in range(min(30, N_sim)):
+for i in range(min(30, N_pv_sim)):
     ax.plot(β_paths_pv[i], color='seagreen', alpha=0.25, lw=2)
 ax.plot(np.mean(β_paths_pv, axis=0), color='darkgreen', lw=2,
         label='cross-path average')
@@ -1161,17 +1206,17 @@ ax.legend()
 
 ax = axes[1]
 ax.plot(
-    t_ode_pv, sol_pv_low, color='seagreen', lw=2,
-    label='ODE at $\\tau_t$, $\\beta_0=0$'
+    τ_grid_pv, sol_pv_low, color='seagreen', lw=2,
+    label='ODE, $\\beta_0=0$'
 )
 ax.plot(
-    t_ode_pv, sol_pv_high, color='steelblue', lw=2,
-    label='ODE at $\\tau_t$, $\\beta_0=10$'
+    τ_grid_pv, sol_pv_high, color='steelblue', lw=2,
+    label='ODE, $\\beta_0=10$'
 )
 ax.axhline(β_f_pv, color='red', ls='--', lw=2,
            label=f'$\\beta_f = {β_f_pv:.2f}$')
-ax.set_xlabel('$t$')
-ax.set_ylabel('$\\beta(\\tau_t)$')
+ax.set_xlabel('Accumulated step size $\\tau$')
+ax.set_ylabel('$\\beta(\\tau)$')
 ax.legend()
 
 plot_scalar_drift(
@@ -1193,7 +1238,7 @@ feeding back explosively.
 
 ## Example 5: Investment under uncertainty
 
-Let's now consider a version of the Lucas–Prescott investment model where agents learn about the
+Let's now consider a version of the Lucas-Prescott investment model where agents learn about the
 aggregate capital stock $K_t$ by regressing on $(K_{t-1}, w_{t-1})$ where $w_t$
 is an exogenous cost shock.
 
@@ -1345,14 +1390,14 @@ The framework of {cite:t}`MarcetSargent1989jet` belongs to the program of learni
 *about* a rational expectations equilibrium, as distinct from learning *within*
 one --- a distinction emphasized by {cite:t}`BrayKreps1987`.
 
-**Learning *within* an REE** (the subject of the companion lecture
+*Learning *within* an REE* (the subject of the companion lecture
 [](rational_learning_re)) refers to Bayesian inference inside a correctly
 specified model.
 
 In that setting the data-generating process is stationary from
 the agent's perspective, and Bayes' rule is fully rationalized.
 
-**Learning *about* an REE** --- the present lecture's topic --- involves an agent who
+**Learning *about* an REE** involves an agent who
 does not know the equilibrium price function.
 
 Because the agent's beliefs shift
@@ -1365,9 +1410,11 @@ As {cite:t}`MarcetSargent1989jet` put it,
 > because agents operate under the continually falsified assumption that the law of
 > motion is time invariant and known for sure.
 
-It is nonetheless a compelling learning rule because it is consistent,
-computationally tractable, and --- when E-stability holds --- converges to the
-REE despite the misspecification.
+It is nonetheless a compelling learning rule.
+
+It is consistent and computationally tractable, and it converges to the REE
+despite the misspecification when E-stability is combined with the required
+boundedness and domain-of-attraction conditions.
 
 It does not require the strong assumptions on agents' prior beliefs about the
 statistical structure of the economy that are needed for Bayesian learning.
@@ -1410,6 +1457,8 @@ Plot the cross-path average of $\beta_t$ for each $b$ value on the same figure a
 ```{solution-start} ls_ex1
 :class: dropdown
 ```
+
+Here is one solution:
 
 *Part 1.* The REE satisfies $\beta_f = T(\beta_f) = a + b\beta_f$, so
 
@@ -1469,6 +1518,8 @@ Convergence still occurs, but it takes longer.
 :class: dropdown
 ```
 
+Here is one solution:
+
 *Parts 1 and 2.*
 
 ```{code-cell} ipython3
@@ -1526,22 +1577,26 @@ The present-value model: effect of $\lambda$ on E-stability
 
 In the present-value model {eq}`eq:pv_model`, $T(\beta) = (\lambda\beta + 1)\rho$ and the Jacobian is $\mathcal{M} = \lambda\rho - 1$.
 
-1. For $\rho = 0.9$ and each of $\lambda \in \{0.5, 0.8, 0.95, 1.0\}$, compute $\beta_f$ and $\mathcal{M}$ and determine whether the REE is E-stable.
+1. For $\rho = 0.9$ and each of $\lambda \in \{0.5, 0.8, 0.95, 0.99\}$, compute $\beta_f$ and $\mathcal{M}$ and determine whether the REE is E-stable.
 
-2. For the E-stable cases, simulate 100 paths of length $T=400$ and plot the cross-path average against the ODE solution evaluated at cumulative-gain time.
+2. For the E-stable cases, simulate 100 paths of length $T=400$ and plot representative noisy paths in calendar time, then plot the limiting ODE paths in accumulated-gain time.
 
-3. At $\lambda = 1$, $\mathcal{M} = \rho - 1 < 0$ (still E-stable when $|\rho| < 1$). Simulate paths for this case and compare the convergence speed with the $\lambda = 0.5$ case, providing an intuitive explanation.
+3. At $\lambda = 0.99$, $\mathcal{M} = 0.99\rho - 1 < 0$.
+
+   Simulate paths for this near-boundary case and compare the convergence speed with the $\lambda = 0.5$ case, providing an intuitive explanation.
 ```
 
 ```{solution-start} ls_ex3
 :class: dropdown
 ```
 
+Here is one solution:
+
 *Part 1.*
 
 ```{code-cell} ipython3
 ρ_ex = 0.9
-λ_values = [0.5, 0.8, 0.95, 1.0]
+λ_values = [0.5, 0.8, 0.95, 0.99]
 
 print(f"{'lambda':>8}  {'β_f':>10}  {'M = λ*ρ-1':>15}  {'E-stable':>10}")
 print("-" * 50)
@@ -1555,44 +1610,66 @@ for lv in λ_values:
 *Parts 2 and 3.*
 
 ```{code-cell} ipython3
-fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+fig, axes = plt.subplots(len(λ_values), 2, figsize=(13, 14))
 colors_λ = ['steelblue', 'darkorange', 'seagreen', 'purple']
 
-for ax, lv, col in zip(axes.flat, λ_values, colors_λ):
+for row, (lv, col) in enumerate(zip(λ_values, colors_λ)):
     def ode_fn(β, λ_val=lv):
         return (λ_val * β + 1) * ρ_ex - β
 
-    bf = ρ_ex / (1 - lv * ρ_ex) if abs(lv * ρ_ex) < 1 else None
+    bf = ρ_ex / (1 - lv * ρ_ex)
 
     paths_λ = simulate_present_value_rls(
         lv, ρ_ex, 1.0, β0=0.0,
         T_periods=400, N_paths=100, seed=3
     )
+
+    ax = axes[row, 0]
     for i in range(20):
         ax.plot(paths_λ[i], color=col, alpha=0.2, lw=2)
-    ax.plot(np.mean(paths_λ, axis=0), color=col, lw=2, label='RLS average')
-
-    if bf is not None:
-        t_o, sol_o = solve_ode_calendar(ode_fn, 0.0, 400)
-        ax.plot(t_o, sol_o, color='black', ls='--', lw=2,
-                label='ODE at $\\tau_t$')
-        ax.axhline(bf, color='red', ls=':', lw=2,
-                   label=f'$\\beta_f={bf:.2f}$')
-
-    M_jac = lv * ρ_ex - 1
-    ax.set_title(f'$\\lambda={lv}$,  $\\mathcal{{M}}={M_jac:.3f}$')
+    ax.axhline(bf, color='red', ls=':', lw=2,
+               label=f'$\\beta_f={bf:.2f}$')
+    ax.set_title(f'RLS paths, $\\lambda={lv}$')
     ax.set_xlabel('$t$')
     ax.set_ylabel('$\\beta_t$')
+    ax.legend(fontsize=8)
+
+    τ_grid = np.linspace(0.0, 30.0, 300)
+    sol_low = solve_ivp(
+        lambda τ, y: [ode_fn(y[0])],
+        (0.0, τ_grid[-1]),
+        [0.0],
+        t_eval=τ_grid,
+        max_step=0.05
+    ).y[0]
+    sol_high = solve_ivp(
+        lambda τ, y: [ode_fn(y[0])],
+        (0.0, τ_grid[-1]),
+        [1.5 * bf],
+        t_eval=τ_grid,
+        max_step=0.05
+    ).y[0]
+
+    ax = axes[row, 1]
+    ax.plot(τ_grid, sol_low, color=col, lw=2,
+            label='ODE, $\\beta_0=0$')
+    ax.plot(τ_grid, sol_high, color='black', ls='--', lw=2,
+            label='ODE, high start')
+    ax.axhline(bf, color='red', ls=':', lw=2,
+               label=f'$\\beta_f={bf:.2f}$')
+    M_jac = lv * ρ_ex - 1
+    ax.set_title(f'ODE, $\\mathcal{{M}}={M_jac:.3f}$')
+    ax.set_xlabel('Accumulated step size $\\tau$')
+    ax.set_ylabel('$\\beta(\\tau)$')
     ax.legend(fontsize=8)
 
 plt.tight_layout()
 plt.show()
 ```
 
-The dashed ODE curves use $\tau_t = \sum_{s=1}^t 1/s$, so they are on the same
-learning-time scale as RLS.
+In each row, the left panel shows finite-sample RLS paths in calendar time and the right panel shows deterministic ODE paths in accumulated-gain time.
 
-When $\lambda=1$, $\mathcal M = \rho-1 \approx -0.1$ is small in absolute
+When $\lambda=0.99$, $\mathcal M = 0.99\rho-1 \approx -0.109$ is small in absolute
 value.
 
 The ODE is nearly flat near $\beta_f$, so the restoring force is weak and
