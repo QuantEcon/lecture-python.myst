@@ -19,7 +19,7 @@ kernelspec:
 
 This lecture  illustrates two distinct interpretations of a  **probability distribution**
 
- * A frequentist interpretation as **relative frequencies** anticipated to occur in a large IID. sample
+ * A frequentist interpretation as **relative frequencies** anticipated to occur in a large IID sample
 
  * A Bayesian interpretation as a **personal opinion** (about a parameter or list of parameters) after seeing a collection of observations
 
@@ -68,7 +68,7 @@ Consider the following classic example.
 The random variable  $X $ takes on possible values $k = 0, 1, 2, \ldots, n$  with probabilities
 
 $$
-\mathbb{P}\{X = k \mid \theta\} =
+p(k \mid \theta) := \mathbb{P}\{X = k \mid \theta\} =
 \left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
 $$
 
@@ -106,7 +106,7 @@ f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h
     I}
 $$
 
-The probability  $\mathbb{P}\{X = k \mid \theta\}$ answers the following question:
+The probability  $p(k \mid \theta)$ answers the following question:
 
 * As $I$ becomes large, in what   fraction of  $I$ independent  draws of  $n$ coin flips should we anticipate  $k$ heads to occur?
 
@@ -118,9 +118,9 @@ As usual, a law of large numbers justifies this answer.
 1. Please write a Python class to compute $f_k^I$
 
 2. Please use your code to compute $f_k^I, k = 0, \ldots , n$ and compare them to
-  $\mathbb{P}\{X = k \mid \theta\}$ for various values of $\theta, n$ and $I$
+  $p(k \mid \theta)$ for various values of $\theta, n$ and $I$
 
-3. With the Law of Large Numbers in mind, use your code to describe the relationship between $f_k^I$ and $\mathbb{P}\{X = k \mid \theta\}$ as $I$ grows
+3. With the Law of Large Numbers in mind, use your code to describe the relationship between $f_k^I$ and $p(k \mid \theta)$ as $I$ grows
 ```
 
 ```{solution-start} pm_ex1
@@ -208,12 +208,12 @@ for i in range(n_thetas):
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(8, 6))
 ax.grid()
-ax.plot(thetas, P, 'k-.', label='Theoretical')
-ax.plot(thetas, f_kI, 'r--', label='Fraction')
-ax.set_title(r'Comparison with different $\theta$',
+ax.plot(thetas, P, '-.', label='theoretical')
+ax.plot(thetas, f_kI, '--', label='fraction')
+ax.set_title(r'comparison with different $\theta$',
              fontsize=16)
 ax.set_xlabel(r'$\theta$', fontsize=15)
-ax.set_ylabel('Fraction', fontsize=15)
+ax.set_ylabel('fraction', fontsize=15)
 ax.tick_params(labelsize=13)
 ax.legend()
 plt.show()
@@ -243,12 +243,12 @@ for i in range(n_ns):
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(8, 6))
 ax.grid()
-ax.plot(ns, P, 'k-.', label='Theoretical')
-ax.plot(ns, f_kI, 'r--', label='Frequentist')
-ax.set_title(r'Comparison with different $n$',
+ax.plot(ns, P, '-.', label='theoretical')
+ax.plot(ns, f_kI, '--', label='fraction')
+ax.set_title(r'comparison with different $n$',
              fontsize=16)
 ax.set_xlabel(r'$n$', fontsize=15)
-ax.set_ylabel('Fraction', fontsize=15)
+ax.set_ylabel('fraction', fontsize=15)
 ax.tick_params(labelsize=13)
 ax.legend()
 plt.show()
@@ -277,12 +277,12 @@ for i in range(n_Is):
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(8, 6))
 ax.grid()
-ax.plot(Is, P, 'k-.', label='Theoretical')
-ax.plot(Is, f_kI, 'r--', label='Fraction')
-ax.set_title(r'Comparison with different $I$',
+ax.plot(Is, P, '-.', label='theoretical')
+ax.plot(Is, f_kI, '--', label='fraction')
+ax.set_title(r'comparison with different $I$',
              fontsize=16)
 ax.set_xlabel(r'$I$', fontsize=15)
-ax.set_ylabel('Fraction', fontsize=15)
+ax.set_ylabel('fraction', fontsize=15)
 ax.tick_params(labelsize=13)
 ax.legend()
 plt.show()
@@ -293,20 +293,22 @@ From the above graphs, we can see that **$I$, the number of independent sequence
 When $I$ becomes larger, the difference between theoretical probability and frequentist estimate becomes smaller.
 
 Also, as long as $I$ is large enough, changing $\theta$ or $n$ does not substantially change the accuracy of the observed fraction
-as an approximation of $\mathbb{P}\{X = k \mid \theta\}$.
+as an approximation of $p(k \mid \theta)$.
 
 The Law of Large Numbers is at work here.
 
-For each draw of an independent sequence, $\mathbb{P}\{X_i = k \mid \theta\}$  is the same, so aggregating all draws forms an IID sequence of a binary random variable $\rho_{k,i},i=1,2,...I$, with a mean of $\mathbb{P}\{X = k \mid \theta\}$ and a variance of
+For each independent sequence $i$, define the indicator $\rho_{k,i} = \mathbb{1}\{X_i = k\}$ — that is, $\rho_{k,i}$ equals 1 if the $i$-th sequence produces exactly $k$ heads and 0 otherwise.
+
+The $\rho_{k,i}$ are IID across $i$, each with mean $p(k \mid \theta)$ and variance
 
 $$
-\mathbb{P}\{X = k \mid \theta\} \cdot (1-\mathbb{P}\{X = k \mid \theta\}).
+p(k \mid \theta) \cdot (1-p(k \mid \theta)).
 $$
 
 So, by the LLN, the average of $\rho_{k,i}$ converges to:
 
 $$
-\mathbb{E}[\rho_{k,i}] = \mathbb{P}\{X = k \mid \theta\} = \left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
+\mathbb{E}[\rho_{k,i}] = p(k \mid \theta) = \left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
 $$
 
 as $I$ goes to infinity.
@@ -314,15 +316,11 @@ as $I$ goes to infinity.
 
 ## Bayesian Interpretation
 
-We again use a binomial distribution.
+The likelihood remains binomial, but now we treat $\theta$ as a **random variable** rather than a fixed parameter.
 
-But now we don't regard  $\theta$ as being a fixed number.
+So $\theta$ is described by a probability distribution.
 
-Instead, we think of it as a **random variable**.
-
-$\theta$ is described by a probability distribution.
-
-But now this probability distribution means something different than a relative frequency that we can anticipate to occur in a large IID. sample.
+But now this probability distribution means something different than a relative frequency that we can anticipate to occur in a large IID sample.
 
 Instead, the probability distribution of $\theta$ is now a summary of our views about  likely values of $\theta$ either
 
@@ -340,19 +338,15 @@ the density of a **beta distribution** with parameters $\alpha, \beta$.
 
 We can update this prior after observing data using Bayes' Law (see {doc}`Probability with Matrices <prob_matrix>` for an introduction).
 
-For a sample of $n$ coin flips that yields $k$ heads, the **likelihood function** is the binomial probability
-
-$$
-L(k \mid \theta) = {n \choose k} \theta^k (1-\theta)^{n-k}
-$$
+For a sample of $n$ coin flips that yields $k$ heads, the **likelihood function** is the binomial PMF $p(k \mid \theta)$ introduced above.
 
 Applying Bayes' Law with our beta prior, the **posterior density** is
 
 $$
-p(\theta \mid k) = \frac{L(k \mid \theta) \cdot p(\theta)}{\int_0^1 L(k \mid \theta) \cdot p(\theta) \, d\theta} = \textrm{Beta}(\alpha + k, \, \beta + n - k)
+p(\theta \mid k) = \frac{p(k \mid \theta) \cdot p(\theta)}{\int_0^1 p(k \mid \theta) \cdot p(\theta) \, d\theta}
 $$
 
-So the posterior is also a beta distribution — a consequence of the beta prior being **conjugate** to the binomial likelihood.
+The exercise below derives a closed form for the posterior.
 
 ```{exercise}
 :label: pm_ex2
@@ -369,7 +363,7 @@ So the posterior is also a beta distribution — a consequence of the beta prior
 
 **f)** Please tell what question a Bayesian coverage interval answers.
 
-**g)** Please compute the Posterior probability that $\theta \in [.45, .55]$ for various values of sample size $n$.
+**g)** Please compute the posterior probability that $\theta \in [.45, .55]$ for various values of sample size $n$.
 
 **h)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
 ```
@@ -382,13 +376,13 @@ So the posterior is also a beta distribution — a consequence of the beta prior
 **a)** The **likelihood function** for a single coin flip with outcome $Y \in \{0, 1\}$ is
 
 $$
-L(Y|\theta) = \theta^Y (1-\theta)^{1-Y}
+p(Y \mid \theta) = \theta^Y (1-\theta)^{1-Y}
 $$
 
 **b)** By Bayes' Law, the posterior density for $\theta$ after observing a single flip $Y$ is
 
 $$
-p(\theta \mid Y) = \frac{L(Y \mid \theta) \cdot p(\theta)}{\int_{0}^{1} L(Y \mid \theta) \cdot p(\theta) \, d\theta}
+p(\theta \mid Y) = \frac{p(Y \mid \theta) \cdot p(\theta)}{\int_{0}^{1} p(Y \mid \theta) \cdot p(\theta) \, d\theta}
 $$
 
 Substituting the likelihood from (a) and the beta prior density, this becomes
@@ -408,6 +402,14 @@ which means that
 $$
 \theta \mid Y \sim \textrm{Beta}(\alpha + Y, \, \beta + (1-Y))
 $$
+
+The same calculation with the binomial likelihood in place of the Bernoulli likelihood generalizes this result to $n$ flips with $k$ heads:
+
+$$
+\theta \mid k \sim \textrm{Beta}(\alpha + k, \, \beta + n - k)
+$$
+
+This is the formula we use in the remaining parts of the exercise.
 
 **c)**
 
@@ -467,15 +469,14 @@ bayes.form_posterior_series(n_obs_list)
 fig, ax = plt.subplots(figsize=(10, 6))
 
 ax.plot(θ_values, bayes.prior.pdf(θ_values),
-        label='n = 0 (prior)', color='k',
-        linestyle='--')
+        label='n = 0 (prior)', linestyle='--')
 
 for i, n_obs in enumerate(n_obs_list[:10]):
     posterior = bayes.posterior_list[i]
     ax.plot(θ_values, posterior.pdf(θ_values),
             label=f'n = {n_obs}')
 
-ax.set_title('PDF of Posterior Distributions',
+ax.set_title('PDF of posterior distributions',
              fontsize=15)
 ax.set_xlabel(r"$\theta$", fontsize=15)
 
@@ -522,13 +523,13 @@ posterior_prob_list = [
 fig, ax = plt.subplots(figsize=(8, 5))
 ax.plot(posterior_prob_list)
 ax.set_title(
-    r'Posterior Probability that $\theta$'
-    f' Ranges from {left_value:.2f}'
+    r'posterior probability that $\theta$'
+    f' ranges from {left_value:.2f}'
     f' to {right_value:.2f}',
     fontsize=13)
 ax.set_xticks(np.arange(0, len(posterior_prob_list), 3))
 ax.set_xticklabels(n_obs_list[::3])
-ax.set_xlabel('Number of Observations', fontsize=11)
+ax.set_xlabel('number of observations', fontsize=11)
 
 plt.show()
 ```
@@ -559,7 +560,7 @@ for i, n_obs in enumerate(n_obs_list[10:]):
     ax.plot(θ_values, posterior.pdf(θ_values),
             label=f'n = {n_obs:,}')
 
-ax.set_title('PDF of Posterior Distributions', fontsize=15)
+ax.set_title('PDF of posterior distributions', fontsize=15)
 ax.set_xlabel(r"$\theta$", fontsize=15)
 ax.set_xlim(0.3, 0.5)
 
@@ -580,18 +581,18 @@ std_list = [post.std() for post in bayes.posterior_list]
 fig, ax = plt.subplots(1, 2, figsize=(14, 5))
 
 ax[0].plot(mean_list)
-ax[0].set_title('Mean of Posterior Distribution',
+ax[0].set_title('mean of posterior distribution',
                 fontsize=13)
 ax[0].set_xticks(np.arange(0, len(mean_list), 3))
 ax[0].set_xticklabels(n_obs_list[::3])
-ax[0].set_xlabel('Number of Observations', fontsize=11)
+ax[0].set_xlabel('number of observations', fontsize=11)
 
 ax[1].plot(std_list)
-ax[1].set_title('Std Dev of Posterior Distribution',
+ax[1].set_title('std dev of posterior distribution',
                 fontsize=13)
 ax[1].set_xticks(np.arange(0, len(std_list), 3))
 ax[1].set_xticklabels(n_obs_list[::3])
-ax[1].set_xlabel('Number of Observations', fontsize=11)
+ax[1].set_xlabel('number of observations', fontsize=11)
 
 plt.show()
 ```
@@ -623,15 +624,15 @@ lower_bound = [post.ppf(0.05) for post in bayes.posterior_list]
 
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.scatter(np.arange(len(upper_bound)),
-           upper_bound, label='95th Quantile')
+           upper_bound, label='95th quantile')
 ax.scatter(np.arange(len(lower_bound)),
-           lower_bound, label='5th Quantile')
+           lower_bound, label='5th quantile')
 
 ax.set_xticks(np.arange(0, len(upper_bound), 2))
 ax.set_xticklabels(n_obs_list[::2])
-ax.set_xlabel('Number of Observations', fontsize=12)
-ax.set_title('Bayesian Coverage Intervals of '
-             'Posterior Distributions', fontsize=15)
+ax.set_xlabel('number of observations', fontsize=12)
+ax.set_title('Bayesian coverage intervals of '
+             'posterior distributions', fontsize=15)
 
 ax.legend(fontsize=11)
 plt.show()
@@ -656,7 +657,7 @@ So posterior and prior are both beta distributions, albeit ones with different p
 
 When a likelihood function and prior fit together like hand and glove in this way, we can  say that the  prior and posterior are **conjugate distributions**.
 
-In this situation, we also sometimes  say that we have **conjugate prior** for the likelihood function $\mathbb{P}\{X \mid \theta\}$.
+In this situation, we also sometimes  say that we have **conjugate prior** for the likelihood function $p(k \mid \theta)$.
 
 Typically, the functional form of the likelihood function determines the functional form of a **conjugate prior**.
 
