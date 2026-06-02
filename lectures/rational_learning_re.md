@@ -30,7 +30,7 @@ kernelspec:
 
 This lecture explores an important question in economic theory: can agents *learn* their way to a rational expectations equilibrium?
 
-If they can, then the rational expectations equilibrium can be justiﬁed as a dynamic attractor for learning processes.
+If they can, then the rational expectations equilibrium can be justified as a dynamic attractor for learning processes.
 
 The starting point is {cite:t}`BrayKreps1987`, which gives a rigorous model of Bayesian learning inside a rational expectations equilibrium.
 
@@ -80,10 +80,14 @@ An informed signal $s_t$ satisfies
 $$
 r_t = s_t + \epsilon_t,
 \qquad
+s_t \sim \mathcal N(\mu_s, \tau^2),
+\qquad
 \epsilon_t \sim \mathcal N(0,\sigma^2),
 $$
 
 where $\{s_t\}$ and $\{\epsilon_t\}$ are IID normal sequences and are mutually independent.
+
+Common knowledge of the prior moments $(\mu_s, \tau^2)$ is what makes the price observation informative about $\theta^I$, as we will see.
 
 There are two representative agents:
 
@@ -180,21 +184,32 @@ The second is the Bayesian update of that posterior after the period closes.
 
 ### Uninformed demand given beliefs
 
-Suppose at date $t$ agent $U$ has posterior density $f_t$ on $\theta^I$ supported on $[a, b]$.
+Suppose at date $t$ agent $U$ has posterior density $f_t$ on $\theta^I$, supported on $[a, b]$.
 
-Suppose the equilibrium informed trade and price are $X^I$ and $p$.
+Suppose the equilibrium price is $p$ and the equilibrium informed trade $X^I = 2 - x^U$ has been inferred from market clearing.
 
-From {eq}`eq:bk-signal-implied`, conditional on $\theta^I$, agent $U$ infers $s_t = \sigma^2 X^I/\theta^I + p$.
+Conditional on $\theta$, equation {eq}`eq:bk-signal-implied` pins down the signal as $s_t(\theta) = \sigma^2 X^I/\theta + p$.
 
-Marginalising over $\theta^I \sim f_t$ and combining with $r_t = s_t + \epsilon_t$ where $\epsilon_t \sim \mathcal N(0,\sigma^2)$ gives the implied conditional distribution of $r_t$.
+Two sources of information about $\theta$ are therefore present at the start of date $t$ trading: the carried-over posterior $f_t(\theta)$ and the Gaussian prior $\phi_s(\cdot;\mu_s,\tau^2)$ on $s_t$ that values some implied signals as more plausible than others.
 
-Equivalently, conditional on a candidate value $\theta$, the excess payoff on
-one unit of the risky asset is
+Bayes' rule combines them into the *intra-period* posterior
+
+$$
+f_t^{(p, X^I)}(\theta)
+\propto
+f_t(\theta)\,
+\phi_s\!\left(\frac{\sigma^2 X^I}{\theta} + p\, ;\, \mu_s, \tau^2\right),
+$$ (eq:bk-intra-posterior)
+
+which is the posterior on $\theta^I$ that the agent actually uses to forecast $r_t$ before $r_t$ is observed.
+
+Conditional on a candidate value $\theta$, the excess payoff on one unit of the risky asset is
 
 $$
 r_t - p
 =
-\frac{\sigma^2 X^I}{\theta} + \epsilon_t.
+\frac{\sigma^2 X^I}{\theta} + \epsilon_t,
+\qquad \epsilon_t \sim \mathcal N(0,\sigma^2).
 $$
 
 Because CARA preferences have no wealth effects, agent $U$'s problem reduces to
@@ -208,86 +223,64 @@ u^U(x^U, r_t, p)
 -\exp\!\left(-\frac{x^U(r_t-p)}{\theta^U}\right),
 $$
 
-where the expectation integrates over $\theta^I \sim f_t$ and $\epsilon_t$.
+where the expectation integrates over $\theta^I \sim f_t^{(p, X^I)}$ and $\epsilon_t$.
 
-To derive the expected utility formula, substitute the conditional excess
-payoff above:
-
-$$
-E[u^U]
-=
--\int_a^b f_t(\theta)
-E_\epsilon
-\left[
-\exp\!\left(
--\frac{x^U}{\theta^U}
-\left(\frac{\sigma^2 X^I}{\theta}+\epsilon_t\right)
-\right)
-\right]
-d\theta.
-$$
-
-Using the normal moment-generating formula
-
-$$
-E_\epsilon\!\left[\exp(c\epsilon_t)\right]
-=
-\exp\!\left(\frac{c^2\sigma^2}{2}\right)
-$$
-
-with $c=-x^U/\theta^U$, this becomes
+Substituting the conditional excess payoff and using the normal moment-generating formula gives
 
 $$
 E[u^U]
 =
 -\exp\!\left(\frac{(x^U)^2 \sigma^2}{2(\theta^U)^2}\right)
-\int_a^b f_t(\theta)\,
-\exp\!\left(-\frac{x^U \sigma^2 X^I}{\theta\,\theta^U}\right)
-d\theta.
+\int_a^b
+f_t(\theta)\,
+\phi_s\!\left(\tfrac{\sigma^2 X^I}{\theta} + p; \mu_s, \tau^2\right)
+\exp\!\left(-\tfrac{x^U \sigma^2 X^I}{\theta\,\theta^U}\right)
+d\theta,
 $$
 
-To get the first-order condition, define
+up to a $\theta$-independent constant absorbed in normalisation.
+
+Define the tilted weight
 
 $$
-I(x^U)
+w(\theta;\, p, X^I, x^U)
 =
-\int_a^b f_t(\theta)\,
-\exp\!\left(-\frac{x^U \sigma^2 X^I}{\theta\,\theta^U}\right)
-d\theta.
-$$
+f_t(\theta)\,
+\phi_s\!\left(\tfrac{\sigma^2 X^I}{\theta} + p; \mu_s, \tau^2\right)
+\exp\!\left(-\tfrac{x^U \sigma^2 X^I}{\theta\,\theta^U}\right).
+$$ (eq:bk-weight)
 
-Hence the first-order condition is
-
-$$
-\frac{d}{dx^U}
-\left[
-\frac{(x^U)^2\sigma^2}{2(\theta^U)^2}
-+ \log I(x^U)
-\right]
-=0.
-$$
-
-Rearranging gives
+The first-order condition rearranges to
 
 $$
 \frac{x^U}{\theta^U}
 =
 X^I \;
-\frac{\int_a^b \theta^{-1} f_t(\theta)\,\exp\!\big(-x^U \sigma^2 X^I/(\theta\theta^U)\big)\,d\theta}
-     {\int_a^b f_t(\theta)\,\exp\!\big(-x^U \sigma^2 X^I/(\theta\theta^U)\big)\,d\theta}.
+\frac{\int_a^b \theta^{-1}\, w(\theta;\, p, X^I, x^U)\, d\theta}
+     {\int_a^b w(\theta;\, p, X^I, x^U)\, d\theta}.
 $$ (eq:bk-foc)
 
-The right-hand side is $X^I$ multiplied by a tilted expectation of $1/\theta^I$ under a weighting that depends on $x^U$ itself.
+The right-hand side is $X^I$ multiplied by a tilted expectation of $1/\theta^I$ under the weighting in {eq}`eq:bk-weight`.
 
-Equation {eq}`eq:bk-foc` implicitly defines $x^U(X^I; f_t)$, the uninformed agent's optimal demand at conjectured informed trade $X^I$ and posterior $f_t$.
+Equation {eq}`eq:bk-foc` implicitly defines $x^U(p, X^I; f_t)$, the uninformed agent's optimal demand at observed price $p$, conjectured informed trade $X^I$, and prior posterior $f_t$.
 
-The optimum does not depend separately on $p$, because the distribution of $r_t - p$ implied by the posterior depends only on $X^I$.
+Dependence on $p$ enters through the prior weight $\phi_s$: at higher prices, candidate values of $\theta$ that imply $s_t$ above the prior mean become less plausible, so the agent's demand schedule slopes downward in $p$ as expected.
 
 ### Market clearing
 
-Market clearing $X^I + x^U(X^I; f_t) = 2$ pins down the equilibrium informed trade $X^I_t$ as a function of beliefs alone.
+Equilibrium requires that the informed and uninformed demands sum to the total endowment.
 
-Plugging $X^I_t$ into {eq}`eq:bk-informed-demand` recovers the equilibrium price
+Substituting {eq}`eq:bk-informed-demand` and the implicit function $x^U(p, X^I; f_t)$, the equilibrium $(p_t, X^I_t)$ satisfies the two equations
+
+$$
+X^I_t = \frac{\theta^I}{\sigma^2}(s_t - p_t),
+\qquad
+X^I_t + x^U(p_t, X^I_t; f_t) = 2.
+$$ (eq:bk-mc)
+
+Eliminating $X^I_t$ between the two leaves a single root-finding problem for $p_t$.
+
+Combining the two equations, the equilibrium price has the form
 
 $$
 p_t = s_t - \frac{\sigma^2 X^I_t}{\theta^I}.
@@ -335,49 +328,56 @@ This is the rule we simulate below.
 
 We discretise the support $[a,b]$ of $\theta^I$ on a fine grid and represent $f_t$ as a vector of density values.
 
-There are three computational primitives.
+The three computational primitives are:
 
-* `uninformed_demand` solves the FOC in {eq}`eq:bk-foc` for $x^U(X^I; f)$ by root-finding.
-* `equilibrium_XI` solves market clearing $X^I + x^U(X^I; f) = 2$ for $X^I_t$.
+* `uninformed_demand` solves the FOC in {eq}`eq:bk-foc` for $x^U(p, X^I; f)$ by root-finding.
+* `equilibrium_price` solves the market-clearing system {eq}`eq:bk-mc` for $p_t$.
 * `bayes_update` applies {eq}`eq:bk-bayes` and renormalises.
 
 ```{code-cell} ipython3
-def uninformed_demand(XI, f, θ_grid, θ_U, σ2):
+def uninformed_demand(p, XI, f, θ_grid, θ_U, σ2, μ_s, τ2):
     """
-    Solve the FOC for the uninformed agent's demand x^U, given
-    a conjectured informed trade XI and posterior density f.
+    Solve the FOC for x^U(p, X^I; f), the uninformed
+    agent's optimal demand given observed price p, conjectured
+    informed trade XI, and carried-over posterior density f.
     """
     with np.errstate(divide='ignore'):
         log_f = np.log(f)
+    s_implied = σ2 * XI / θ_grid + p
+    log_phi_s = -0.5 * (s_implied - μ_s)**2 / τ2  # prior weight on s_t
 
     def foc(xU):
         z = xU * σ2 * XI / (θ_grid * θ_U)
-        log_w = log_f - z
+        log_w = log_f + log_phi_s - z
         M = log_w.max()
         w = np.exp(log_w - M)
         num = np.sum(w / θ_grid)
         den = np.sum(w)
         return xU / θ_U - XI * num / den
 
-    return brentq(foc, -20.0, 20.0, xtol=1e-10)
+    return brentq(foc, -50.0, 50.0, xtol=1e-10)
 ```
 
 ```{code-cell} ipython3
-def equilibrium_XI(f, θ_grid, θ_U, σ2):
+def equilibrium_price(s_t, θ_I_true, f, θ_grid, θ_U, σ2, μ_s, τ2):
     """
-    Solve market clearing X^I + x^U(X^I; f) = 2 for the
-    equilibrium informed trade.
+    Solve the market-clearing system for the equilibrium
+    price p_t given signal s_t, true informed risk tolerance
+    θ_I_true, and posterior f.
     """
-    def mc(XI):
-        return XI + uninformed_demand(XI, f, θ_grid, θ_U, σ2) - 2.0
+    def mc_residual(p):
+        XI = θ_I_true * (s_t - p) / σ2
+        xU = uninformed_demand(p, XI, f, θ_grid, θ_U, σ2, μ_s, τ2)
+        return XI + xU - 2.0
 
-    return brentq(mc, 1e-4, 4.0, xtol=1e-10)
+    return brentq(mc_residual, s_t - 10.0, s_t, xtol=1e-8)
 ```
 
 ```{code-cell} ipython3
 def bayes_update(f, θ_grid, p_t, xU_t, r_t, σ2, τ2, μ_s):
     """
-    Bayesian update of the posterior on θ^I given date-t observations.
+    Bayesian update of the posterior on θ^I given the date-t
+    observations (p_t, x^U_t, r_t).
     """
     XI = 2.0 - xU_t
     s_mean = (σ2 * μ_s + τ2 * r_t) / (σ2 + τ2)
@@ -425,9 +425,11 @@ def simulate(θ_I_true, θ_U, σ2, μ_s, τ2,
     snapshots = {0: f.copy()}
 
     for t in range(T):
-        XI = equilibrium_XI(f, θ_grid, θ_U, σ2)
+        p_t = equilibrium_price(
+            s_seq[t], θ_I_true, f, θ_grid, θ_U, σ2, μ_s, τ2
+        )
+        XI = θ_I_true * (s_seq[t] - p_t) / σ2
         xU = 2.0 - XI
-        p_t = s_seq[t] - σ2 * XI / θ_I_true
         r_t = s_seq[t] + eps_seq[t]
         f = bayes_update(f, θ_grid, p_t, xU, r_t, σ2, τ2, μ_s)
 
@@ -534,9 +536,9 @@ This is the concrete manifestation of weak convergence of posteriors to a point 
 
 ## Equilibrium trades and prices
 
-The equilibrium informed trade $X^I_t$ depends only on $f_t$, not directly on $s_t$ or $\theta^I$.
+The equilibrium informed trade $X^I_t$ depends on the current signal $s_t$, on $\theta^I_{\rm true}$, and on the carried-over posterior $f_t$, all through the market-clearing system {eq}`eq:bk-mc`.
 
-As $f_t$ tightens around $\theta^I_{\rm true}$, $X^I_t$ approaches the full-communication allocation in {eq}`eq:bk-full-info-trade`.
+As $f_t$ tightens around $\theta^I_{\rm true}$, the average $X^I_t$ approaches the full-communication allocation in {eq}`eq:bk-full-info-trade`.
 
 ```{code-cell} ipython3
 ---
@@ -582,7 +584,7 @@ The posterior density on $\theta^I$ concentrates around the true value, the post
 
 The next sections ask what general theorems guarantee these outcomes and which assumptions they rely on.
 
-The plan is to first state the two convergence theorems of {cite:t}`BrayKreps1987` for the abstract rational-learning model, then specialise to the two-agent example to identify the hypotheses that imply concentration on the true $\theta^I$, and finally explain when those hypotheses can fail.
+The plan is to first state the two convergence theorems of {cite:t}`BrayKreps1987` for the abstract rational-learning model, then specialize to the two-agent example to identify the hypotheses that imply concentration on the true $\theta^I$, and finally explain when those hypotheses can fail.
 
 ## Convergence of posterior assessments
 
@@ -699,7 +701,9 @@ The equilibrium uninformed demand $x^U(p, F)$ is continuous in $F$ with respect 
 ```{prf:assumption}
 :label: assum-bk-identification
 
-For fixed $\theta^U$ and limiting posterior $F_\infty$, the limiting price functional $p_\infty(\,\cdot\,; F_\infty, \theta^I, \theta^U)$ is stochastically monotone in $\theta^I$, in the sense that $\theta^I < \theta^{I\,\prime}$ implies $p_\infty(s; F_\infty, \theta^I, \theta^U)$ first-order stochastically dominates $p_\infty(s; F_\infty, \theta^{I\,\prime}, \theta^U)$ when $s$ is drawn from its marginal distribution.
+For fixed $\theta^U$ and limiting posterior $F_\infty$, the marginal distribution of the limiting price functional $p_\infty(\,\cdot\,; F_\infty, \theta^I, \theta^U)$ is strictly monotone in $\theta^I$ in the first-order-stochastic-dominance order.
+
+That is, $\theta^I \neq \theta^{I\,\prime}$ implies $p_\infty(s; F_\infty, \theta^I, \theta^U)$ and $p_\infty(s; F_\infty, \theta^{I\,\prime}, \theta^U)$ have distinct CDFs when $s$ is drawn from its marginal distribution.
 ```
 
 In the lecture's CARA-Normal setup, {prf:ref}`assum-bk-continuity` holds because the FOC {eq}`eq:bk-foc` defines $x^U$ as a continuous functional of $F$ under weak convergence through bounded integrals, and {prf:ref}`assum-bk-identification` holds because the equilibrium price has the form $p_t = s_t - \sigma^2 X^I_t / \theta^I$ with $X^I_t > 0$ on a full-measure set.
@@ -710,6 +714,8 @@ Under these three assumptions and the IID signal sequence, the limiting posterio
 
 ```{prf:proposition}
 :label: prop-bk-sharpening
+
+Suppose $\theta^I_{\rm true} \in [a,b]$ and the prior $f_0$ puts positive density in every neighbourhood of $\theta^I_{\rm true}$.
 
 Under {prf:ref}`assum-bk-borel`, {prf:ref}`assum-bk-continuity`, and {prf:ref}`assum-bk-identification`, and given the IID signal sequence $\{s_t\}$, the limiting posterior on $\theta^I$ satisfies
 
@@ -727,13 +733,13 @@ The proof has three steps.
 
 {prf:ref}`assum-bk-continuity` and the weak convergence $F_t \Rightarrow F_\infty$ from {prf:ref}`prop-bk-measure-convergence` imply that equilibrium demands $x^U(p, F_t)$ converge to $x^U(p, F_\infty)$.
 
-Combining with market clearing and the price equation {eq}`eq:bk-price` gives $p_t \to p_\infty(s_t; F_\infty, \theta^I, \theta^U)$ on a $P^U$-full-measure set.
+Combining with market clearing and the price equation {eq}`eq:bk-price` gives $p_t - p_\infty(s_t; F_\infty, \theta^I, \theta^U) \to 0$ on a $P^U$-full-measure set.
 
 *Step 2: the limit price distribution is observable.*
 
-Since $\{s_t\}$ is IID, the empirical distribution of $\{p_t\}_{t \le T}$ converges almost surely to the distribution of $p_\infty(s_t; F_\infty, \theta^I, \theta^U)$ by the Glivenko-Cantelli theorem.
+Since the deviation $p_t - p_\infty(s_t; F_\infty, \theta^I, \theta^U) \to 0$ almost surely and $\{s_t\}$ is IID, the empirical distribution of observed prices has the same limit as the empirical distribution of the limiting price functional.
 
-The empirical distribution function is $H_\infty^U(p)$-measurable, and so therefore is its limit.
+The latter equals the distribution of $p_\infty(s; F_\infty, \theta^I, \theta^U)$ for $s \sim \mathcal N(\mu_s, \tau^2)$, and that limit is $H_\infty^U(p)$-measurable as a long-run frequency of an observable sequence.
 
 *Step 3: identification.*
 
@@ -769,22 +775,22 @@ If {prf:ref}`assum-bk-identification` fails, step 3 breaks even when steps 1 and
 
 Consider a variant with two informed agents and risk tolerances $\theta^{I1}, \theta^{I2}$ both unknown to the uninformed agent.
 
-The CARA-Normal full-communication price has the form
+With three agents each endowed with one unit of the risky asset, the full-communication formula {eq}`eq:bk-full-communication-price` gives
 
 $$
 p_t
 =
 s_t
 -
-\frac{2\sigma^2}{\theta^{I1} + \theta^{I2} + \theta^U},
+\frac{3\sigma^2}{\theta^{I1} + \theta^{I2} + \theta^U},
 $$
 
 which depends on $(\theta^{I1}, \theta^{I2})$ only through the sum $\theta^{I1}+\theta^{I2}$.
 
-{prf:ref}`prop-bk-measure-convergence` still applies, but $F_\infty$ is supported on the diagonal
+{prf:ref}`prop-bk-measure-convergence` still applies, but $F_\infty$ is supported on the level set
 
 $$
-\{(\theta_1, \theta_2): \theta_1 + \theta_2 = \theta^{I1}_{\rm true} + \theta^{I2}_{\rm true}\},
+\{(\theta_1, \theta_2) \in [a,b]^2 : \theta_1 + \theta_2 = \theta^{I1}_{\rm true} + \theta^{I2}_{\rm true}\},
 $$
 
 not on the singleton $\{(\theta^{I1}_{\rm true},\theta^{I2}_{\rm true})\}$.
@@ -831,7 +837,7 @@ A correctly-specified Bayesian learner enjoys the convergence guarantees in {prf
 
 An adaptive learner who treats the price-state relation as something to be estimated can hope to discover it from data, but the estimator he uses cannot be derived from Bayes' rule applied to a correctly specified model.
 
-No learning algorithm delivers both Bayesian rationality and discovery of the equilibrium structure at the same time.
+Bayesian rational learning can update among equilibrium maps already included in the agent's prior, but it does not explain how agents come to obtain those maps in the first place.
 
 The literature on learning *about* rational expectations equilibria, beginning with {cite:t}`Bray1982` and {cite:t}`BraySavin1984` and extended by {cite:t}`MarcetSargent1989jet`, takes the second side of the trade-off and replaces Bayes' rule with **ordinary least squares** or related recursive estimators.
 
@@ -857,7 +863,7 @@ Rational learning describes the limits of Bayesian inference *given* the equilib
 ````{exercise}
 :label: rle_ex1
 
-**Off-centre prior**
+*Off-center prior*
 
 The baseline simulation uses a uniform prior on $\theta^I \in [0.5, 4]$.
 
@@ -887,7 +893,7 @@ res_biased = simulate(**params_biased)
 
 fig, ax = plt.subplots(figsize=(10, 5))
 ax.plot(res_uniform['post_mean'], lw=2, label='uniform prior')
-ax.plot(res_biased['post_mean'], lw=2, label='off-centre prior')
+ax.plot(res_biased['post_mean'], lw=2, label='off-center prior')
 ax.axhline(params['θ_I_true'], color='black', ls='--',
            label=r'$\theta^I_{\rm true}$')
 ax.set_xlabel('$t$')
@@ -897,7 +903,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-The off-centre prior starts the posterior mean well above $\theta^I_{\rm true} = 2$, but Bayesian updating drives it down to the truth.
+The off-center prior starts the posterior mean well above $\theta^I_{\rm true} = 2$, but Bayesian updating drives it down to the truth.
 
 This is the rational-learning convergence result in action: any prior that puts positive density on $\theta^I_{\rm true}$ eventually concentrates around it.
 
@@ -907,7 +913,7 @@ This is the rational-learning convergence result in action: any prior that puts 
 ```{exercise}
 :label: rle_ex2
 
-**Speed of learning across $\theta^I$**
+*Speed of learning across $\theta^I$*
 
 Information from one period about $\theta^I$ comes through the implied signal
 
@@ -953,7 +959,7 @@ The reason is that the sensitivity $\sigma^2 X^I_t/\theta^2$ scales as $\theta^{
 ```{exercise}
 :label: rle_ex3
 
-**Effect of return noise**
+*Effect of return noise*
 
 Larger $\sigma^2$ widens the conditional density of $s_t$ given $r_t$, which one might guess slows learning.
 
