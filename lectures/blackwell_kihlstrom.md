@@ -82,7 +82,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 
-np.random.seed(0)
+rng = np.random.default_rng(0)
 ```
 
 ## Experiments and stochastic transformations
@@ -627,15 +627,15 @@ mystnb:
     caption: Sampled posterior points on the 2-simplex
     name: fig-blackwell-simplex-clouds
 ---
-def sample_posteriors(μ_matrix, prior, n_draws=3000):
+def sample_posteriors(μ_matrix, prior, n_draws=3000, rng=rng):
     """
     Simulate n_draws observations from the experiment and compute
     the resulting posterior beliefs.
     Returns array of shape (n_draws, N).
     """
     N, M = μ_matrix.shape
-    states = np.random.choice(N, size=n_draws, p=prior)
-    signals = np.array([np.random.choice(M, p=μ_matrix[s]) for s in states])
+    states = rng.choice(N, size=n_draws, p=prior)
+    signals = np.array([rng.choice(M, p=μ_matrix[s]) for s in states])
     posteriors, _ = compute_posteriors(μ_matrix, prior)
     return posteriors[signals]
 
