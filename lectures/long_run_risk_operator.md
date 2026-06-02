@@ -32,9 +32,9 @@ Standard short-horizon asset pricing tells us how investors are compensated
 for tiny, instantaneous exposures to shocks, the *short end* of the term
 structure of risk prices.
 
-But many of the most interesting  topics about asset pricing questions -- e.g.,  the equity
+But many of the most interesting asset pricing questions (e.g., the equity
 premium puzzle, the slope of the yield curve, the prices of long-dated
-options -- are about the  *long end* of the term structure of risk prices.
+options) concern the *long end* of the term structure of risk prices.
 
 This lecture studies the long end using the operator approach of
 {cite:t}`HansenScheinkman2009`.
@@ -89,7 +89,7 @@ This lecture is closely related to the advanced lecture
 permanent-transitory decomposition for additive and multiplicative
 functionals in a discrete-time linear-Gaussian setting.
 
-Reading these two lextures together is a good way to learn about representations of long-run risks
+Reading these two lectures together is a good way to learn about representations of long-run risks
 in both continuous and discrete time.
 ```
 
@@ -114,10 +114,9 @@ The plan of this lecture is to:
    the local risk prices appropriate for short-horizon asset
    pricing.
 
-A recurring theme will be that when shocks move persistent state variables,  local and long-run risk prices can differ markedly.
+A recurring theme is that shocks to persistent state variables drive a wedge between local and long-run risk prices.
 
-That diifference underlies the
-mechanism that lets long-run risk models like {cite:t}`Bansal_Yaron_2004`
+That wedge is the mechanism by which long-run risk models like {cite:t}`Bansal_Yaron_2004`
 generate large equity premia.
 
 We start with the following imports
@@ -248,13 +247,13 @@ Why is this a useful  condition to require?
 
 Think of $M_t = S_t$, a stochastic discount factor.
 
-The date-$0$ value of a date-$t$ payoff $\Pi_t$ is $E[S_t\Pi_t \mid \mathcal F_0]$.
+The date-$0$ value of a date-$t$ payoff $\Pi_t$ is $\mathbb{E}[S_t\Pi_t \mid \mathcal F_0]$.
 
 If we instead buy this payoff at intermediate date $\tau$, its date-$\tau$
 price must be
 
 $$
-    E\left[\frac{S_t}{S_\tau}\Pi_t \,\Big|\, \mathcal F_\tau\right].
+    \mathbb{E}\left[\frac{S_t}{S_\tau}\Pi_t \,\Big|\, \mathcal F_\tau\right].
 $$
 
 For the price to depend only on the current Markov state $X_\tau$ (and not on
@@ -289,7 +288,7 @@ $$
 ```
 
 So exponentials of additive functionals are exactly the strictly positive
-multiplicative functionals 
+multiplicative functionals.
 
 In our jump-diffusion setting, a useful parameterization is
 
@@ -335,7 +334,7 @@ A multiplicative functional $M$ together with the Markov process $X$ defines
 a **valuation operator** for each horizon $t$:
 
 $$
-    \mathbb M_t \psi(x) = E\left[M_t \psi(X_t) \mid X_0 = x\right] .
+    \mathbb M_t \psi(x) = \mathbb{E}\left[M_t \psi(X_t) \mid X_0 = x\right] .
 $$
 
 You should read $\mathbb M_t \psi(x)$ as "the date-$0$ value, starting from
@@ -362,7 +361,7 @@ semigroup** is the family of operators
 $$
     \mathbb M_t \psi(x)
     =
-    E\left[M_t \psi(X_t) \mid X_0 = x\right].
+    \mathbb{E}\left[M_t \psi(X_t) \mid X_0 = x\right].
 $$ (eq:m-semigroup)
 ```
 
@@ -400,7 +399,7 @@ value cash flows that grow stochastically over time.
 :label: lrr-def-stochastic-discount-factor
 
 A **stochastic discount factor** $S$ is a positive multiplicative functional
-for which $E[S_t Z_t \mid X_0=x]$ is the date-$0$ value of an
+for which $\mathbb{E}[S_t Z_t \mid X_0=x]$ is the date-$0$ value of an
 $\mathcal F_t$-measurable payoff $Z_t$.
 ```
 
@@ -430,7 +429,7 @@ $$
     \qquad
     \mathbb Q_t \psi(x)
     =
-    E\left[G_t S_t \psi(X_t) \mid X_0=x\right].
+    \mathbb{E}\left[G_t S_t \psi(X_t) \mid X_0=x\right].
 $$
 
 ```{prf:definition} Cash-Flow Valuation Semigroup
@@ -581,10 +580,9 @@ The eigenvalue calculations below describe the other end.
 So far we have a family of operators $\{\mathbb M_t\}_{t \geq 0}$, one for each
 horizon $t$.
 
-That is more information than we can analyze directly.
+That is more information than we can use directly.
 
-Actually,  what we really
-care about is the behaviour of $\mathbb M_t \psi$ as $t \to \infty$.
+What we care about is the long-run behaviour: how $\mathbb M_t \psi$ grows as $t \to \infty$.
 
 The **generator** $\mathbb A$ compresses the entire semigroup into one
 time-independent operator on the state space.
@@ -606,14 +604,12 @@ one-period valuation operator
 $$
     K\psi(x)
     =
-    E\left[M_1 \psi(X_1) \mid X_0=x\right].
+    \mathbb{E}\left[M_1 \psi(X_1) \mid X_0=x\right].
 $$
 
-Iterating gives the $n$-period operator $K^n$ 
+Iterating gives the $n$-period operator $K^n$.
 
-This is exactly the logic by which a
-transition matrix $P$ produces $n$-step probabilities through $P^n$, except
-that $K$ also carries the payoff weight $M_1$.
+This parallels the logic of a transition matrix: just as $P^n$ gives $n$-step probabilities, $K^n$ weights $n$-period payoffs, with $M_1$ folded in at each step.
 
 So one local object, $K$, controls the entire horizon-indexed family.
 
@@ -632,7 +628,7 @@ payoff.
 By multiplicativity,
 
 $$
-    E\left[
+    \mathbb{E}\left[
         M_{n+1}\psi(X_{n+1}) - M_n \psi(X_n)
         \mid \mathcal F_n
     \right]
@@ -677,7 +673,7 @@ $$
 ```{note}
 When $M \equiv 1$, the
 multiplicative semigroup reduces to the standard Markov transition semigroup
-$\mathbb M_t \psi(x) = E[\psi(X_t) \mid X_0=x]$, and $\mathbb A$ becomes the
+$\mathbb M_t \psi(x) = \mathbb{E}[\psi(X_t) \mid X_0=x]$, and $\mathbb A$ becomes the
 familiar infinitesimal generator $\mathcal L$ of $X$ from textbook stochastic
 calculus.
 
@@ -716,7 +712,7 @@ martingale property of $\hat M$.
 
 ### Extended generator
 
-There is a qualification to  the limit definition above.
+The limit definition above needs a qualification.
 
 To make the limit $h \downarrow 0$ rigorous, the textbook definition
 requires $(\mathbb M_h\psi - \psi)/h$ to converge to $\mathbb A\psi$ in a
@@ -787,7 +783,7 @@ state.
 * When $M \equiv 1$, the definition reduces to Dynkin's formula for the
   standard Markov generator
   $\mathcal L \psi(x)
-  = \lim_{t \downarrow 0} t^{-1}\bigl[E\psi(X_t) - \psi(x)\bigr]$.
+  = \lim_{t \downarrow 0} t^{-1}\bigl[\mathbb{E}\psi(X_t) - \psi(x)\bigr]$.
 
 * When $X$ is a jump diffusion, Itô's formula applied to $M_t\psi(X_t)$
   produces the closed-form expression for $\mathbb A\psi$ in {eq}`eq:extended-generator` below.
@@ -957,7 +953,7 @@ $\hat M_t$:
 $$
     \widehat{\Pr}(F \mid X_0=x)
     =
-    E[\hat M_t \mathbf 1_F \mid X_0=x],
+    \mathbb{E}[\hat M_t \mathbf 1_F \mid X_0=x],
     \qquad F \in \mathcal F_t.
 $$
 ```
@@ -970,14 +966,14 @@ We close this gap by adopting Assumption 6.1 of
 {cite:t}`HansenScheinkman2009`:
 
 > The local martingale $\hat M$ defined in {eq}`eq:mhat` is a martingale,
-> i.e. $E[\hat M_t \mid X_0 = x] = 1$ for every $t \geq 0$ and $x$.
+> i.e. $\mathbb{E}[\hat M_t \mid X_0 = x] = 1$ for every $t \geq 0$ and $x$.
 
 We carry this assumption from here on.
 
 Even without closing the gap we still get one-sided control.
 
 Since $\hat M$ is nonnegative with $\hat M_0 = 1$, it is a supermartingale,
-so $E[\hat M_t \mid X_0=x] \leq 1$.
+so $\mathbb{E}[\hat M_t \mid X_0=x] \leq 1$.
 
 Taking expectations in {eq}`eq:mhat`,
 
@@ -988,7 +984,7 @@ $$
 so $\rho$ is at least an upper bound on the long-run growth rate of
 $\mathbb M_t \phi$.
 
-When $\hat M$ is in fact a martingale, $E\hat M_t = 1$, the inequality
+When $\hat M$ is in fact a martingale, $\mathbb{E}[\hat M_t] = 1$, the inequality
 becomes an equality, and the local condition $\mathbb A\phi = \rho\phi$ lifts
 to the semigroup eigenvalue equation
 
@@ -1032,9 +1028,7 @@ for every $\psi$ in the $L^\infty$ domain of $\hat{\mathbb A}$.
 
 $\hat\varsigma$ is the candidate long-run distribution.
 
-If
-it doesn't exist, the twisted process has no steady state for $X_t$ to settle
-into, and the long-run limit cannot be expressed as a state-space integral.
+Without it, the twisted process has no steady state, and the long-run limit cannot be expressed as a state-space integral.
 
 *Condition 2: every important region is reachable.*
 
@@ -1078,14 +1072,12 @@ $$
 
 Reachability (Condition 2) is not enough.
 
-A region
-might be reachable but visited only with small probability, so time averages
-fail to converge to $\hat\varsigma$-averages. 
+A set may be reachable but visited with vanishingly small probability, so time averages fail to converge to $\hat\varsigma$-averages.
 
 Harris recurrence is the
 continuous-state counterpart to a "recurrent state" in a finite chain.
 
-Bundling these together:
+Collecting the three conditions:
 
 ```{prf:definition} Stochastically Stable Twisted Process
 :label: lrr-def-stochastic-stability
@@ -1111,9 +1103,7 @@ $$ (eq:long-run-limit)
 
 Read this as follows:
 
-* The factor $\exp(\rho t)$ captures the exponential growth or decay of the
-  semigroup. 
-  - After we divide it, what remains has a finite limit.
+* The factor $\exp(\rho t)$ captures the exponential growth or decay of the semigroup; once we divide it out, what remains has a finite limit.
 * The state dependence in that limit is *entirely* captured by $\phi(x)$.
 * The scalar $\int (\psi/\phi)\, d\hat\varsigma$ is the **long-run intensity**
   of the payoff $\psi$, weighted by $1/\phi$ and averaged against the
@@ -1164,10 +1154,9 @@ explosive twisted process.
 
 ## A finite-state Markov chain
 
-Now we are all set to apply the framework to a concrete example!
+We now apply the framework to a concrete example.
 
-We start with the simplest possible
-case: a finite-state Markov chain.
+We start with the simplest case: a finite-state Markov chain.
 
 For background on finite Markov chains in discrete time, see
 {doc}`finite_markov`. 
@@ -1413,6 +1402,12 @@ The numerical values converge to the limit; the next plot shows the same
 convergence pictorially.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Convergence of the rescaled semigroup to its long-run limit
+    name: fig-lrr-semigroup-convergence
+---
 t_grid = np.linspace(0.01, 80, 400)
 rescaled = np.array([np.exp(-ρ * t) * expm(t * A) @ ψ for t in t_grid])
 
@@ -1423,7 +1418,6 @@ ax.axhline(limit[0], color="C0", ls="--", lw=1, alpha=0.7)
 ax.axhline(limit[1], color="C1", ls="--", lw=1, alpha=0.7)
 ax.set_xlabel("$t$")
 ax.set_ylabel(r"$e^{-\rho t}\,(\mathbb{M}_t \psi)(x)$")
-ax.set_title("Convergence of the rescaled semigroup to its long-run limit")
 ax.legend()
 plt.show()
 ```
@@ -1485,6 +1479,12 @@ boom-to-recession multiplier fixed and trace out $\rho$ as the
 recession-to-boom multiplier varies.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Jumps and the long-run growth rate
+    name: fig-lrr-jumps-eigenvalue
+---
 κ_grid = np.linspace(-0.5, 0.5, 100)
 ρ_grid = np.empty_like(κ_grid)
 
@@ -1500,7 +1500,6 @@ ax.axhline(ρ, color="black", ls="--", lw=1)
 ax.axvline(0, color="black", ls=":", lw=1)
 ax.set_xlabel("jump log multiplier for recession to boom")
 ax.set_ylabel("principal eigenvalue")
-ax.set_title("Jumps and the Long-Run Growth Rate")
 plt.show()
 ```
 
@@ -1941,7 +1940,7 @@ print(f"long-run zero-coupon yield = {-ρ_s:.4f}")
 ```
 
 The long-run zero-coupon yield $-\rho_s$ represents the asymptotic decay
-rate in the SDF expectation $E[S_t]$.
+rate in the SDF expectation $\mathbb{E}[S_t]$.
 
 We can also check that the rejected root for $c_f$ would have produced a
 non-stationary twisted process, a clear example of stochastic stability
@@ -2020,7 +2019,7 @@ error below is just floating-point round-off.
 
 The second, substantive, check is whether the eigenpair $(\rho,\phi)$ we
 solved for really makes $\hat M$ a martingale, which we approximate by
-computing $E[\hat M_t]$ across many simulated paths.
+computing $\mathbb{E}[\hat M_t]$ across many simulated paths.
 
 ```{code-cell} ipython3
 def brownian_increments(n, dt, seed=1234):
@@ -2094,7 +2093,7 @@ print(f"algebraic identity error = {identity_error:.2e}")
 
 The error above is up to machine precision, as expected.
 
-Next we estimate $E[\hat M_t \mid X_0 = \bar x]$ over a Monte Carlo sample
+Next we estimate $\mathbb{E}[\hat M_t \mid X_0 = \bar x]$ over a Monte Carlo sample
 of paths.
 
 If $\hat M$ is a martingale, the population mean is exactly $1$ at every
@@ -2135,27 +2134,33 @@ for t_check in [1.0, 5.0, 10.0, 20.0]:
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Affine state paths and multiplicative factorization
+    name: fig-lrr-factorization-paths
+---
 fig, axes = plt.subplots(2, 2, figsize=(12, 8))
 
 axes[0, 0].plot(t, Xf)
-axes[0, 0].set_title("$X_t^f$")
+axes[0, 0].set_ylabel("$X_t^f$")
 axes[0, 0].set_xlabel("$t$")
 
 axes[0, 1].plot(t, Xo)
-axes[0, 1].set_title("$X_t^o$")
+axes[0, 1].set_ylabel("$X_t^o$")
 axes[0, 1].set_xlabel("$t$")
 
 axes[1, 0].plot(t, M, label="$M_t$")
 axes[1, 0].plot(t, np.exp(ρ_s * t) * M_hat * transient,
                 "--", label="factorization")
-axes[1, 0].set_title("Multiplicative Factorization")
+axes[1, 0].set_ylabel("multiplicative factorization")
 axes[1, 0].set_xlabel("$t$")
 axes[1, 0].legend()
 
 axes[1, 1].plot(t, np.exp(ρ_s * t), label="$\\exp(\\rho t)$")
 axes[1, 1].plot(t, M_hat, label="$\\hat M_t$", alpha=0.8)
 axes[1, 1].plot(t, transient, label="$\\phi(X_0)/\\phi(X_t)$", alpha=0.8)
-axes[1, 1].set_title("Three Components")
+axes[1, 1].set_ylabel("three components")
 axes[1, 1].set_xlabel("$t$")
 axes[1, 1].legend()
 
@@ -2163,19 +2168,19 @@ plt.tight_layout()
 plt.show()
 ```
 
-We can see how the three components evolve over time.
+The figure shows how the three components evolve over time.
 
 ## Long-run risk prices
 
 We can now use the factorization to compute long-run analogues of the
-instantaneous risk prices that come out of standard continuous-time asset
+instantaneous risk prices that arise in standard continuous-time asset
 pricing.
 
 We can ask:
 
 > If an investor takes on a small exposure to a shock today, how much extra
-> expected return do they need, as compensation, when we measure that
-> compensation as a long-horizon rate rather than as an instantaneous one?
+> expected return do they need when that return is measured as a long-horizon
+> rate rather than an instantaneous one?
 
 The two answers, local and long-run, need not agree.
 
@@ -2276,7 +2281,7 @@ assumed away.
 For a long zero-coupon bond,
 
 $$
-    \exp(-\rho t)\, E[S_t \mid X_0=x]
+    \exp(-\rho t)\, \mathbb{E}[S_t \mid X_0=x]
     \to
     \phi(x)
     \int \frac{1}{\phi}\, d\hat\varsigma ,
@@ -2339,6 +2344,12 @@ The next cell illustrates how persistence changes the wedge between local and
 long-run prices.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Persistence and long-run risk prices
+    name: fig-lrr-persistence-risk-prices
+---
 ξ_o_grid = np.array([0.10, 0.20, 0.50, 1.00, 2.00, 5.00])
 local_grid = np.full_like(ξ_o_grid, local_price_o)
 long_grid = -γ_s_o - (β_s_o / ξ_o_grid) * σ_o
@@ -2349,7 +2360,6 @@ ax.plot(ξ_o_grid, long_grid, "o-", lw=2, label="long-run")
 ax.set_xscale("log")
 ax.set_xlabel("mean-reversion speed $\\xi_o$")
 ax.set_ylabel("risk price")
-ax.set_title("Persistence and Long-Run Risk Prices")
 ax.legend()
 plt.show()
 ```
@@ -2469,8 +2479,15 @@ def valuation_eigenvalue_for_exposure(γ_v_o, γ_v_f=0.0):
     p = valuation_params_from_exposure(γ_v_o, γ_v_f)
     _, _, ρ, _ = solve_affine_eigenfunction(p)
     return ρ
+```
 
-
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Changing valuation functionals
+    name: fig-lrr-valuation-frontier
+---
 γ_v_o_grid = np.linspace(-0.5, 0.5, 101)
 ρ_v_grid = np.array([
     valuation_eigenvalue_for_exposure(g) for g in γ_v_o_grid
@@ -2480,7 +2497,6 @@ fig, ax = plt.subplots()
 ax.plot(γ_v_o_grid, ρ_v_grid, lw=2)
 ax.set_xlabel("valuation exposure $\\gamma_o^v$")
 ax.set_ylabel("principal eigenvalue $\\rho^v$")
-ax.set_title("Changing Valuation Functionals")
 plt.show()
 ```
 
@@ -2587,8 +2603,15 @@ def required_return_for_growth_exposure(γ_g_o, γ_g_f=0.0, δ=0.02):
 
     _, _, ρ, _ = solve_affine_eigenfunction(p)
     return -ρ + δ
+```
 
-
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Local and long-run pricing of persistent growth risk
+    name: fig-lrr-cashflow-frontier
+---
 γ_g_o_grid = np.linspace(-0.5, 0.5, 101)
 required_returns = np.array([
     required_return_for_growth_exposure(g) for g in γ_g_o_grid
@@ -2604,7 +2627,6 @@ ax.plot(γ_g_o_grid, local_line, "--", lw=2,
         label="local slope")
 ax.set_xlabel("cash-flow exposure $\\gamma_o^g$")
 ax.set_ylabel("rate of return")
-ax.set_title("Local and Long-Run Pricing of Persistent Growth Risk")
 ax.legend()
 plt.show()
 ```
@@ -2630,15 +2652,13 @@ print(f"formula                 = {long_run_price_o:.6f}")
 
 ## Assumptions behind the scenes
 
-The examples above make the eigenfunction calculation look mechanical.
+The examples above make the eigenfunction calculation look routine.
 
-For finite-state chains and the affine model, it really is mechanical;
-Perron-Frobenius theory and closed-form algebra handle every requirement.
+For finite-state chains and the affine model, it really is; Perron-Frobenius theory and closed-form algebra handle every requirement.
 
-But in a general state space, three things can go wrong, and each
-corresponds to one of the assumptions we have been carrying along.
+But in a general state space, three things can go wrong, each corresponding to one of the assumptions we have been carrying.
 
-This section walks through what they are and why they matter.
+The rest of this section examines each in turn.
 
 ### Issue 1: $\hat M$ might fail to be a martingale
 
@@ -2647,7 +2667,7 @@ from {eq}`eq:mhat`, but $\hat M$ is only a nonnegative
 local martingale, hence a supermartingale.
 
 A supermartingale is not enough to define a probability measure: we need
-$E\hat M_t = 1$, i.e. a genuine martingale, the content of Assumption 6.1
+$\mathbb{E}[\hat M_t] = 1$, i.e. a genuine martingale, the content of Assumption 6.1
 in {cite:t}`HansenScheinkman2009`.
 
 A standard way to verify this is a two-sided **Girsanov construction**:
@@ -2691,7 +2711,7 @@ $$
     =
     \int_0^\infty
     \exp(-\alpha t)\,
-    E\!\left[
+    \mathbb{E}\!\left[
         M_t\, \frac{V(X_t)}{V(x)}\, \psi(X_t)
         \,\Big|\, X_0=x
     \right] dt .
@@ -2758,7 +2778,7 @@ The main steps are:
    multiplicative functional $M$.
 
 2. Build the semigroup
-   $\mathbb M_t\psi(x)=E[M_t\psi(X_t)\mid X_0=x]$.
+   $\mathbb M_t\psi(x)=\mathbb{E}[M_t\psi(X_t)\mid X_0=x]$.
 
 3. When $M = VS$ is the product of a valuation functional and an SDF,
    impose the local pricing restriction that $VS$ is a martingale; for
@@ -2794,10 +2814,10 @@ Consider a two-state Markov chain with intensity matrix
 
 $$
 U =
-\begin{pmatrix}
+\begin{bmatrix}
     -\lambda & \lambda \\
     \mu & -\mu
-\end{pmatrix}.
+\end{bmatrix}.
 $$
 
 Let the multiplicative functional have decay rate $r_1>0$ in state 1, decay
@@ -2823,10 +2843,10 @@ Here is one solution:
 
 $$
 A =
-\begin{pmatrix}
+\begin{bmatrix}
     -\lambda-r_1 & \lambda \\
     \mu & -\mu
-\end{pmatrix}.
+\end{bmatrix}.
 $$
 
 *2.* The characteristic equation is
@@ -2960,11 +2980,11 @@ intensity matrix
 
 $$
 U =
-\begin{pmatrix}
+\begin{bmatrix}
     -0.40 &  0.30 &  0.10 \\
      0.20 & -0.50 &  0.30 \\
      0.10 &  0.20 & -0.30
-\end{pmatrix},
+\end{bmatrix},
 $$
 
 decay-rate vector $r = (0.06, 0.04, 0.01)$, and no jumps in the
@@ -3036,7 +3056,6 @@ fig, ax = plt.subplots()
 ax.semilogy(t_vals, errors, lw=2)
 ax.set_xlabel("$t$")
 ax.set_ylabel("error")
-ax.set_title(f"Convergence to the Principal Eigenfunction, gap = {gap:.4f}")
 plt.show()
 
 print(f"spectral gap = {gap:.6f}")

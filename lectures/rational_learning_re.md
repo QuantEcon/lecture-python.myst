@@ -42,7 +42,7 @@ But this raises a question: where does that knowledge come from?
 
 Their **rational learning** approach answers a narrower question.
 
-Agents are uncertain about structural parameters, but the state space is enlarged so that, for each possible parameter value, the associated equilibrium price and allocation maps are already part of the model.
+Agents are uncertain about structural parameters, and the state space is enlarged to include, for each candidate value, the associated equilibrium price and allocation maps.
 
 Agents then use Bayes' rule to update over those possibilities as prices and returns are observed.
 
@@ -50,7 +50,7 @@ This lecture develops that Bayesian formulation through an asset-market model.
 
 The aim is to see what rational learning can explain, and where its limits appear, before turning to the computational illustration.
 
-The discussion also connects to earlier work by {cite:t}`Bray1982`, {cite:t}`BraySavin1984`, and the rational expectations literature of {cite:t}`Radner1979`, {cite:t}`grossman1976`, and {cite:t}`Jordan1982`.
+The discussion also connects to earlier work by {cite:t}`Bray1982`, {cite:t}`BraySavin1986`, and the rational expectations literature of {cite:t}`Radner1979`, {cite:t}`grossman1976`, and {cite:t}`Jordan1982`.
 
 Let's start with the following imports
 
@@ -62,9 +62,7 @@ from scipy.optimize import brentq
 
 ## The economy
 
-Let's start with a simple asset-market model that captures the key features of rational learning.
-
-The example is an infinitely repeated version of the information model in {cite:t}`GrossmanStiglitz1980`.
+The model is a simple asset market built around the recurring information model of {cite:t}`GrossmanStiglitz1980`, repeated across infinitely many dates.
 
 
 ### Agents and assets
@@ -83,9 +81,9 @@ An informed signal $s_t$ satisfies
 $$
 r_t = s_t + \epsilon_t,
 \qquad
-s_t \sim \mathcal N(\mu_s, \tau^2),
+s_t \sim N(\mu_s, \tau^2),
 \qquad
-\epsilon_t \sim \mathcal N(0,\sigma^2),
+\epsilon_t \sim N(0,\sigma^2),
 $$
 
 where $\{s_t\}$ and $\{\epsilon_t\}$ are IID normal sequences and are mutually independent.
@@ -212,14 +210,14 @@ $$
 r_t - p
 =
 \frac{\sigma^2 X^I}{\theta} + \epsilon_t,
-\qquad \epsilon_t \sim \mathcal N(0,\sigma^2).
+\qquad \epsilon_t \sim N(0,\sigma^2).
 $$
 
 Because CARA preferences have no wealth effects, agent $U$'s problem reduces to
 
 $$
 \max_{x^U}\,
-E[u^U(x^U, r_t, p)],
+\mathbb{E}[u^U(x^U, r_t, p)],
 \qquad
 u^U(x^U, r_t, p)
 =
@@ -231,7 +229,7 @@ where the expectation integrates over $\theta^I \sim f_t^{(p, X^I)}$ and $\epsil
 Substituting the conditional excess payoff and using the normal moment-generating formula gives
 
 $$
-E[u^U]
+\mathbb{E}[u^U]
 =
 -\exp\!\left(\frac{(x^U)^2 \sigma^2}{2(\theta^U)^2}\right)
 \int_a^b
@@ -305,7 +303,7 @@ After trading, agent $U$ observes $(p_t, x^U_t, r_t)$.
 
 Market clearing gives $X^I_t = 2 - x^U_t$, and equation {eq}`eq:bk-signal-implied` assigns a candidate $s_t(\theta) = \sigma^2 X^I_t/\theta + p_t$ to each $\theta$.
 
-Since $s_t \sim \mathcal N(\mu_s, \tau^2)$ independently of $\epsilon_t \sim \mathcal N(0,\sigma^2)$, the conditional density of $s_t$ given $r_t$ is Gaussian:
+Since $s_t \sim N(\mu_s, \tau^2)$ independently of $\epsilon_t \sim N(0,\sigma^2)$, the conditional density of $s_t$ given $r_t$ is Gaussian:
 
 $$
 g(s\mid r)
@@ -581,13 +579,13 @@ The left panel shows $X^I_t$ approaching the full-information allocation as beli
 
 The right panel shows the price path, which fluctuates because $p_t$ inherits the variation in $s_t$.
 
-The simulation suggests three empirical facts about this equilibrium.
+The simulation illustrates three features of this equilibrium.
 
 The posterior density on $\theta^I$ concentrates around the true value, the posterior variance vanishes, and the equilibrium informed trade $X^I_t$ converges to its full-information benchmark.
 
-The next sections ask what general theorems guarantee these outcomes and which assumptions they rely on.
+The next sections identify the theorems behind these outcomes and the assumptions they require.
 
-The plan is to first state the two convergence theorems of {cite:t}`BrayKreps1987` for the abstract rational-learning model, then specialize to the two-agent example to identify the hypotheses that imply concentration on the true $\theta^I$, and finally explain when those hypotheses can fail.
+We first state the two convergence results of {cite:t}`BrayKreps1987` for the abstract model, then specialize to the two-agent example to pin down the hypotheses that drive concentration on the true $\theta^I$, and finally explain when those hypotheses can fail.
 
 ## Convergence of posterior assessments
 
@@ -622,13 +620,13 @@ The first result, due to {cite:t}`BrayKreps1987`, states that the conditional pr
 
 Fix an agent $n$ and an event $A \in \mathcal F$.
 
-The process $M_t = E^n[\mathbf 1_A \mid H_t^n(p)]$ is a $P^n$-bounded martingale with respect to $(H_t^n(p))_{t \ge 0}$, and
+The process $M_t = \mathbb{E}^n[\mathbf 1_A \mid H_t^n(p)]$ is a $P^n$-bounded martingale with respect to $(H_t^n(p))_{t \ge 0}$, and
 
 $$
 \lim_{t\to\infty}
-E^n[\mathbf 1_A \mid H_t^n(p)]
+\mathbb{E}^n[\mathbf 1_A \mid H_t^n(p)]
 =
-E^n[\mathbf 1_A \mid H_\infty^n(p)],
+\mathbb{E}^n[\mathbf 1_A \mid H_\infty^n(p)],
 \qquad P^n\text{-a.s.}
 $$
 ```
@@ -661,7 +659,7 @@ P_t^n: \Omega \to \mathcal P(\Theta),
 \omega \mapsto P_t^n(\omega),
 $$
 
-such that for each measurable $A \subseteq \Theta$, $\omega \mapsto P_t^n(\omega)(A)$ is a version of $E^n[\mathbf 1_{A \times \Phi^\infty} \mid H_t^n(p)](\omega)$, and $P_t^n(\omega) \in \mathcal P(\Theta)$ is a probability measure $P^n$-a.s.
+such that for each measurable $A \subseteq \Theta$, $\omega \mapsto P_t^n(\omega)(A)$ is a version of $\mathbb{E}^n[\mathbf 1_{A \times \Phi^\infty} \mid H_t^n(p)](\omega)$, and $P_t^n(\omega) \in \mathcal P(\Theta)$ is a probability measure $P^n$-a.s.
 
 The sharpened convergence result says these regular versions converge weakly almost surely.
 
@@ -754,7 +752,7 @@ Combining with market clearing and the price equation {eq}`eq:bk-price` gives $p
 
 Since the deviation $p_t - p_\infty(s_t; F_\infty, \theta^I, \theta^U) \to 0$ almost surely and $\{s_t\}$ is IID, the empirical distribution of observed prices has the same limit as the empirical distribution of the limiting price functional.
 
-The latter equals the distribution of $p_\infty(s; F_\infty, \theta^I, \theta^U)$ for $s \sim \mathcal N(\mu_s, \tau^2)$, and that limit is $H_\infty^U(p)$-measurable as a long-run frequency of an observable sequence.
+The latter equals the distribution of $p_\infty(s; F_\infty, \theta^I, \theta^U)$ for $s \sim N(\mu_s, \tau^2)$, and that limit is $H_\infty^U(p)$-measurable as a long-run frequency of an observable sequence.
 
 *Step 3: identification.*
 
@@ -824,9 +822,9 @@ Each agent entertains competing conditional likelihoods for other agents' inform
 
 An equilibrium can exist in which agents assign asymptotic probability one to an incorrect model that gives the observed events positive likelihood, while the true stable price relation receives zero posterior probability because that relation was absent from the prior model class.
 
-In strict rational learning the agent's prior is supported on Bayesian-consistent models in the expanded state space, and the truth is assumed to have positive prior support.
+In strict rational learning the prior already covers the truth: it is supported on Bayesian-consistent models in the expanded state space, and positive weight is placed on the true parameter.
 
-Bayes' rule can only reweight that initial model class: a pricing relation assigned zero prior probability remains impossible after any history.
+Bayes' rule can only reweight that initial model class, so a pricing relation with zero prior probability stays at zero no matter what data accumulate.
 
 ## Learning within versus learning about a rational expectations equilibrium
 
@@ -858,7 +856,7 @@ An adaptive learner who treats the price-state relation as something to be estim
 
 Bayesian rational learning can update among equilibrium maps already included in the agent's prior, but it does not explain how agents come to obtain those maps in the first place.
 
-The literature on learning *about* rational expectations equilibria, beginning with {cite:t}`Bray1982` and {cite:t}`BraySavin1984` and extended by {cite:t}`MarcetSargent1989jet`, takes the second side of the trade-off and replaces Bayes' rule with **ordinary least squares** or related recursive estimators.
+The literature on learning *about* rational expectations equilibria, beginning with {cite:t}`Bray1982` and {cite:t}`BraySavin1986` and extended by {cite:t}`MarcetSargent1989jet`, takes the second side of the trade-off and replaces Bayes' rule with **ordinary least squares** or related recursive estimators.
 
 The companion lecture {doc}`ls_learning` develops this least-squares-learning framework in self-referential models and traces the resulting dynamics through the associated ordinary differential equation.
 

@@ -62,7 +62,7 @@ global almost-sure convergence also requires boundedness and
 domain-of-attraction conditions.
 
 The framework unifies and extends earlier work by {cite:t}`Bray1982` and
-{cite:t}`BraySavin1984` and connects naturally to the distinction between learning
+{cite:t}`BraySavin1986` and connects naturally to the distinction between learning
 *within* a rational expectations equilibrium (Bayesian updating inside a
 correctly specified model) and learning *about* one (adapting an OLS estimator
 whose data-generating process shifts with beliefs) discussed in
@@ -116,7 +116,7 @@ z_t = \begin{bmatrix}
     + \begin{bmatrix} V(\beta_t) \\ B(\beta_t) \end{bmatrix} u_t ,
 $$ (eq:actual_lom)
 
-where $u_t$ is i.i.d. white noise with covariance $\Sigma$.
+where $u_t$ is IID white noise with covariance $\Sigma$.
 
 The mapping $T$ is the key object, as it maps the *perceived* coefficient $\beta$
 to the coefficient that *actually* governs $z_{1t}$ in equilibrium.
@@ -174,7 +174,7 @@ conditions used below also hold, convergence is still governed by the same full
 ODE {eq}`eq:full_ode` and small ODE {eq}`eq:small_ode`.
 
 ```{note}
-As {cite:t}`BraySavin1984` and {cite:t}`BrayKreps1987` emphasize, the RLS algorithm
+As {cite:t}`BraySavin1986` and {cite:t}`BrayKreps1987` emphasize, the RLS algorithm
 cannot be derived from Bayes' rule applied to a correctly specified model, because
 during the learning transition the data-generating process is non-stationary ---
 beliefs shift the equilibrium, which shifts the data.
@@ -228,7 +228,7 @@ $$
 = \begin{bmatrix} R^{-1} M_{z_2}(\beta)\,[T(\beta) - \beta]^\top \\ M_{z_2}(\beta) - R \end{bmatrix} ,
 $$ (eq:full_ode)
 
-where $M_{z_2}(\beta) = E z_{2t}z_{2t}^\top$ is computed at the stationary distribution of $z_{2t}$ that prevails when agents believe the perceived law has constant parameter $\beta$.
+where $M_{z_2}(\beta) = \mathbb{E}[z_{2t}z_{2t}^\top]$ is computed at the stationary distribution of $z_{2t}$ that prevails when agents believe the perceived law has constant parameter $\beta$.
 
 The fixed point of {eq}`eq:full_ode` is $(\beta_f, R_f)$ with $R_f = M_{z_2}(\beta_f)$ — the same $\beta_f$ as the small ODE, paired with the second-moment matrix consistent with it.
 
@@ -295,7 +295,7 @@ estimate $R_t$.
 ```{prf:assumption} Boundedness along a subsequence
 :label: ass-ms-a6
 
-There exist a set $\Omega_0$ with $P(\Omega_0) = 1$, random variables $C_1(\omega)$ and $C_2(\omega)$, and a subsequence $\{t_k(\omega)\}$ such that
+There exist a set $\Omega_0$ with $\mathbb{P}(\Omega_0) = 1$, random variables $C_1(\omega)$ and $C_2(\omega)$, and a subsequence $\{t_k(\omega)\}$ such that
 
 $$
 |z_{2t_k}(\omega)| < C_1(\omega) \quad\text{and}\quad |R_{t_k}(\omega)| < C_2(\omega)
@@ -357,7 +357,7 @@ Let $\mathcal{M}$ be the Jacobian matrix of $T(\beta) - \beta$ evaluated at the
 REE $\beta_f$:
 
 $$
-\mathcal{M} = \frac{d\,\text{col}(T(\beta) - \beta)}{d\,\text{col}(\beta)^\top}\Bigg|_{\beta=\beta_f} ,
+\mathcal{M} = \frac{d\,\operatorname{col}(T(\beta) - \beta)}{d\,\operatorname{col}(\beta)^\top}\Bigg|_{\beta=\beta_f} ,
 $$ (eq:jacobian)
 
 and let $h(\beta, R)$ denote the Jacobian of the right-hand side of the full
@@ -392,10 +392,10 @@ Assume {prf:ref}`ass-ms-a1`, {prf:ref}`ass-ms-a2`,
 1. Let $\hat\beta \neq \beta_f$ and suppose $M_{z_2}(\hat\beta)$ is positive
    definite and $\hat\beta \in \mathrm{int}(D_2)$.
 
-   Then $P(\beta_t \to \hat\beta) = 0$.
+   Then $\mathbb{P}(\beta_t \to \hat\beta) = 0$.
 
 2. If $h(\beta_f, R_f)$ has at least one eigenvalue with strictly positive real
-   part, then $P(\beta_t \to \beta_f) = 0$.
+   part, then $\mathbb{P}(\beta_t \to \beta_f) = 0$.
 ```
 
 The first part says that recursive least squares cannot settle on a
@@ -489,7 +489,7 @@ is open and bounded with $D_1 \subset D_A$.
 Then for some subsequence $\{t_k(\omega)\}$,
 
 $$
-P(\beta_t \to \beta_f) + P\bigl(\beta_{t_k} \to (D_1 \setminus D_2)\bigr) = 1.
+\mathbb{P}(\beta_t \to \beta_f) + \mathbb{P}\bigl(\beta_{t_k} \to (D_1 \setminus D_2)\bigr) = 1.
 $$
 ```
 
@@ -583,8 +583,7 @@ matrix $\Gamma$ and with $V(\beta)=I$.
 
 Economically, this is the control case.
 
-Agents are simply estimating a stable data-generating process that is already
-there.
+Agents are estimating a stable, exogenous data-generating process.
 
 Their beliefs do not feed back into prices, quantities, or future data.
 
@@ -611,7 +610,7 @@ p_t = a + b \beta_t + \tilde{u}_t ,
 $$ (eq:bray_price)
 
 where $\beta_t$ is agents' OLS estimate of the price (their point forecast of
-$p_t$), and $\tilde{u}_t$ is i.i.d. noise with mean zero and variance
+$p_t$), and $\tilde{u}_t$ is IID noise with mean zero and variance
 $\sigma_u^2$.
 
 Here the forecast itself is a state variable for the economy.
@@ -906,7 +905,7 @@ print(f"Jacobian M = b - 1 = {b_unstable - 1:.2f}  (> 0: NOT E-stable)")
 
 ## Example 3: Bray-Savin supply-shifter model
 
-{cite:t}`BraySavin1984` studied a model where
+{cite:t}`BraySavin1986` studied a model where
 
 $$
 p_t = x_t^\top(m + a\beta_{t-1}) + \tilde{u}_t , \quad p_t^e = x_t^\top\beta_{t-1} ,
@@ -1056,12 +1055,12 @@ exogenous variable, not just learning an unconditional mean.
 Consider the present-value asset pricing model
 
 $$
-y_t = \lambda E_t y_{t+1} + x_t , \quad x_t = \rho x_{t-1} + \varepsilon_t ,
+y_t = \lambda \mathbb{E}_t y_{t+1} + x_t , \quad x_t = \rho x_{t-1} + \varepsilon_t ,
 $$ (eq:pv_model)
 
 where $|\lambda| < 1$, $|\rho| < 1$, and agents perceive $y_t = \beta_t x_{t-1}+ v_t$.
 
-Under the perceived law, $E_t y_{t+1} = \beta_t x_t$, so {eq}`eq:pv_model` becomes
+Under the perceived law, $\mathbb{E}_t y_{t+1} = \beta_t x_t$, so {eq}`eq:pv_model` becomes
 
 $$
 y_t = (\lambda \beta_t + 1) x_t = (\lambda \beta_t + 1)\rho x_{t-1} + (\lambda \beta_t + 1)\varepsilon_t.
@@ -1390,7 +1389,7 @@ The framework of {cite:t}`MarcetSargent1989jet` belongs to the program of learni
 *about* a rational expectations equilibrium, as distinct from learning *within*
 one --- a distinction emphasized by {cite:t}`BrayKreps1987`.
 
-*Learning *within* an REE* (the subject of the companion lecture
+Learning *within* an REE (the subject of the companion lecture
 [](rational_learning_re)) refers to Bayesian inference inside a correctly
 specified model.
 
@@ -1410,14 +1409,11 @@ As {cite:t}`MarcetSargent1989jet` put it,
 > because agents operate under the continually falsified assumption that the law of
 > motion is time invariant and known for sure.
 
-It is nonetheless a compelling learning rule.
+Yet it is a compelling rule.
 
-It is consistent and computationally tractable, and it converges to the REE
-despite the misspecification when E-stability is combined with the required
-boundedness and domain-of-attraction conditions.
+Convergence holds despite the misspecification whenever E-stability combines with the required boundedness and domain-of-attraction conditions.
 
-It does not require the strong assumptions on agents' prior beliefs about the
-statistical structure of the economy that are needed for Bayesian learning.
+Unlike Bayesian learning, it does not require strong prior assumptions about the statistical structure of the economy.
 
 
 ## Summary
@@ -1507,7 +1503,7 @@ Convergence still occurs, but it takes longer.
 ```{exercise}
 :label: ls_ex2
 
-{prf:ref}`prop-ms-necessity` states that $P(\beta_t \to \hat\beta) = 0$ for any $\hat\beta \neq \beta_f$ in the interior.
+{prf:ref}`prop-ms-necessity` states that $\mathbb{P}(\beta_t \to \hat\beta) = 0$ for any $\hat\beta \neq \beta_f$ in the interior.
 
 1. Using the Bray model with $a=1$, $b=0.6$, simulate 100 paths of length $T = 600$ starting from $\beta_0 = 6$ (far from $\beta_f = 2.5$) and show that paths still converge to $\beta_f$.
 
