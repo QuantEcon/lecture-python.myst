@@ -1074,22 +1074,21 @@ Let's run through each initial guess and check the output
 ```{code-cell} ipython3
 :tags: [raises-exception]
 
-attempt = 1
-for init in initLs:
+for attempt, init in enumerate(initLs, start=1):
     print(f"Attempt {attempt}: Starting value is {init} \n")
     %time p = newton(lambda p: e(p, A, b, c), init, tol=1e-15, max_iter=15)
     print("-" * 64)
-    attempt += 1
 ```
 
 We can see that Newton's method may fail for some starting values.
 
 Sometimes it may take a few initial guesses to achieve convergence.
 
-Substitute the result back to the formula to check our result
+Substitute the result back to the formula to check our result using the second initial guess which converges
 
 ```{code-cell} ipython3
-e(p, A, b, c)
+p_solution = newton(lambda p: e(p, A, b, c), initLs[1], tol=1e-15, max_iter=15)
+e(p_solution, A, b, c)
 ```
 
 We can see the result is very accurate.

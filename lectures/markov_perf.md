@@ -140,7 +140,10 @@ v_i(q_i, q_{-i}) = \max_{\hat q_i}
    \left\{\pi_i (q_i, q_{-i}, \hat q_i) + \beta v_i(\hat q_i, f_{-i}(q_{-i}, q_i)) \right\}
 ```
 
-**Definition**  A **Markov perfect equilibrium** of the duopoly model is a pair of value functions $(v_1, v_2)$ and a pair of policy functions $(f_1, f_2)$ such that, for each $i \in \{1, 2\}$ and each possible state,
+```{prf:definition} Markov Perfect Equilibrium
+:label: def-markov-perfect-equilibrium
+
+A **Markov perfect equilibrium** of the duopoly model is a pair of value functions $(v_1, v_2)$ and a pair of policy functions $(f_1, f_2)$ such that, for each $i \in \{1, 2\}$ and each possible state,
 
 * The value function $v_i$ satisfies  Bellman equation {eq}`game4`.
 * The maximizer on the right side of {eq}`game4`  equals $f_i(q_i, q_{-i})$.
@@ -150,6 +153,7 @@ The adjective "Markov" denotes that the equilibrium decision rules depend only o
 "Perfect" means complete, in the sense that the equilibrium is constructed by backward induction and hence builds in optimizing behavior for each firm at all possible future states.
 
 * These include many states that will not be reached when we iterate forward on the pair of equilibrium strategies $f_i$ starting from a given initial state.
+```
 
 ### Computation
 
