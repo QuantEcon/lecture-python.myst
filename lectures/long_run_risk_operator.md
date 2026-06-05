@@ -28,8 +28,10 @@ kernelspec:
 
 ## Overview
 
-Standard short-horizon asset pricing tells us how investors are compensated
-for tiny, instantaneous exposures to shocks, the *short end* of the term
+Standard short-horizon asset pricing tells us how equilibrium prices compensate investors
+for tiny, instantaneous exposures to shocks.
+
+That is, they tell us about  the *short end* of the term
 structure of risk prices.
 
 But many of the most interesting asset pricing questions (e.g., the equity
@@ -77,14 +79,14 @@ a positive matrix; in general state spaces it is a continuous-state counterpart.
 We will refer to {eq}`eq:hs-factorization` as the **multiplicative
 factorization** associated with $(\rho,\phi,\hat M)$.
 
-{cite:t}`AlvarezJermann2005` introduced a related permanent-transitory
-decomposition for stochastic discount factors. 
+{cite:t}`AlvarezJermann2005` applied a related permanent-transitory
+decomposition to stochastic discount factors. 
 
 The operator approach links
 that decomposition to an explicit eigenvalue problem.
 
 ```{seealso}
-This lecture is closely related to the advanced lecture
+This lecture is closely related to the lecture
 {doc}`advanced:additive_functionals`, which studies the same kind of
 permanent-transitory decomposition for additive and multiplicative
 functionals in a discrete-time linear-Gaussian setting.
@@ -116,7 +118,7 @@ The plan of this lecture is to:
 
 A recurring theme is that shocks to persistent state variables drive a wedge between local and long-run risk prices.
 
-That wedge is the mechanism by which long-run risk models like {cite:t}`Bansal_Yaron_2004`
+Generating that  wedge is the mechanism through which long-run risk models like {cite:t}`Bansal_Yaron_2004`
 generate large equity premia.
 
 We start with the following imports
@@ -138,7 +140,7 @@ history.
 We will work with a strong Markov process whose sample paths are càdlàg
 (defined below).
 
-For the explicit formulas later we will specialize to a semimartingale that 
+To arrive at  the explicit formulas presented later we will specialize to a semimartingale that 
  decomposes into a continuous component $X^c$ and a pure-jump
 component $X^j$:
 
@@ -470,8 +472,7 @@ pick.
 
 ### Local pricing restriction
 
-Before tackling long horizons, it is worth knowing what valuation looks
-like at the *short* end.
+Before tackling long horizons, it is good to understand valuation at the *short* end.
 
 That is the standard instantaneous risk-return relation.
 
@@ -960,7 +961,7 @@ $$
 
 The verification establishes only  that $\hat M$ is a *local* martingale, but
 the definition above (and the change-of-measure interpretation of
-$\hat M$) both require it to be a martingale.
+$\hat M$) require it to be a martingale.
 
 We close this gap by adopting Assumption 6.1 of
 {cite:t}`HansenScheinkman2009`:
@@ -2242,10 +2243,11 @@ slightly different long-run risk price:
    - Set $M = GS$ and compute
    the principal eigenvalue $\rho$ of the cash-flow valuation semigroup.
 
-These two frontiers coincide in simple log-normal examples, but they can
-differ with stochastic volatility, nonlinear dynamics, or jump risk.
+In simple log-normal examples, these two frontiers coincide.
 
-We will work out both in the affine model below.
+But they can differ with stochastic volatility, nonlinear dynamics, or jump risk.
+
+We will work out both types of examples in the affine model below.
 
 ### Stochastic discount factor decomposition
 
@@ -2263,7 +2265,7 @@ $$
 $$
 
 This is the **permanent-transitory decomposition** of
-{cite:t}`AlvarezJermann2005`, now linked to a concrete eigenfunction
+{cite:t}`AlvarezJermann2005`, linked now  to a concrete eigenfunction
 construction.
 
 The factor $\exp(\rho t)$ is the deterministic trend in the SDF and the
@@ -2688,7 +2690,7 @@ The affine example illustrates this concretely, since we *rejected* one
 of the two algebraically valid eigenfunctions because it implied an
 explosive twisted square-root process.
 
-### Issue 3: a principal eigenfunction might not exist at all
+### Issue 3: a principal eigenfunction might not exist
 
 In a general state space, even *existence* of a strictly positive
 eigenfunction is not automatic.
