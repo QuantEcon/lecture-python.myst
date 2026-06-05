@@ -173,7 +173,7 @@ No short sales are allowed.
 This matters because it limits how  pessimists can express their opinions.
 
 * They *can* express themselves by selling their shares.
-* They *cannot* express themsevles  more loudly by artificially "manufacturing shares" -- that is, they cannot borrow shares from more optimistic investors and then immediately sell them.
+* They *cannot* express themselves  more loudly by artificially "manufacturing shares" -- that is, they cannot borrow shares from more optimistic investors and then immediately sell them.
 
 ### Optimism and pessimism
 
@@ -182,7 +182,7 @@ The above specifications of the perceived transition matrices $P_a$ and $P_b$, t
 Remember that state $1$ is the high dividend state.
 
 * In state $0$, a type $a$ agent is more optimistic about next period's dividend than a type $b$ agent.
-* In state $1$, a type $b$ agent is more optimistic about next period's dividend than a type $a$ agnet is.
+* In state $1$, a type $b$ agent is more optimistic about next period's dividend than a type $a$ agent is.
 
 However, the stationary distributions $\pi_a = \begin{bmatrix} .57 & .43 \end{bmatrix}$ and $\pi_b = \begin{bmatrix} .43 & .57 \end{bmatrix}$ tell us that a type $b$ person is more optimistic about the dividend process in the long run than is a type $a$ person.
 
