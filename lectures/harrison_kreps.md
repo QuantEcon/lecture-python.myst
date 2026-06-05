@@ -52,8 +52,9 @@ The model features
 Let's start with some standard imports:
 
 ```{code-cell} ipython
+import numpy as np
 import quantecon as qe
-import jax.numpy as jnp
+import scipy.linalg as la
 ```
 
 ### References
@@ -131,8 +132,8 @@ But in state $1$,  a type $a$ investor is more pessimistic  about next period's 
 The stationary (i.e., invariant) distributions of these two matrices can be calculated as follows:
 
 ```{code-cell} ipython3
-qa = jnp.array([[1/2, 1/2], [2/3, 1/3]])
-qb = jnp.array([[2/3, 1/3], [1/4, 3/4]])
+qa = np.array([[1/2, 1/2], [2/3, 1/3]])
+qb = np.array([[2/3, 1/3], [1/4, 3/4]])
 mca = qe.MarkovChain(qa)
 mcb = qe.MarkovChain(qb)
 mca.stationary_distributions
@@ -275,9 +276,7 @@ def price_single_beliefs(transition, dividend_payoff, β=.75):
     Function to Solve Single Beliefs
     """
     # First compute inverse piece
-    imbq_inv = jnp.linalg.inv(
-        jnp.eye(transition.shape[0]) - β * transition
-        )
+    imbq_inv = la.inv(np.eye(transition.shape[0]) - β * transition)
 
     # Next compute prices
     prices = β * imbq_inv @ transition @ dividend_payoff
@@ -407,26 +406,26 @@ def price_optimistic_beliefs(transitions, dividend_payoff, β=.75,
     Function to Solve Optimistic Beliefs
     """
     # We will guess an initial price vector of [0, 0]
-    p_new = jnp.array([[0], [0]])
-    p_old = jnp.array([[10.], [10.]])
+    p_new = np.array([[0], [0]])
+    p_old = np.array([[10.], [10.]])
 
     # We know this is a contraction mapping, so we can iterate to conv
     for i in range(max_iter):
         p_old = p_new
-        p_new = β * jnp.max(jnp.stack([q @ p_old
-                            + q @ dividend_payoff for q in transitions]),
-                            1)
+        p_new = β * np.max([q @ p_old
+                            + q @ dividend_payoff for q in transitions],
+                            axis=0)
 
         # If we succeed in converging, break out of for loop
-        if jnp.max(jnp.sqrt((p_new - p_old)**2)) < tol:
+        if np.max(np.sqrt((p_new - p_old)**2)) < tol:
             break
 
-    ptwiddle = β * jnp.min(jnp.stack([q @ p_old
-                          + q @ dividend_payoff for q in transitions]),
+    ptwiddle = β * np.min([q @ p_old
+                          + q @ dividend_payoff for q in transitions],
                           axis=0)
 
-    phat_a = jnp.array([p_new[0], ptwiddle[1]])
-    phat_b = jnp.array([ptwiddle[0], p_new[1]])
+    phat_a = np.array([p_new[0], ptwiddle[1]])
+    phat_b = np.array([ptwiddle[0], p_new[1]])
 
     return p_new, phat_a, phat_b
 ```
@@ -475,18 +474,18 @@ def price_pessimistic_beliefs(transitions, dividend_payoff, β=.75,
     Function to Solve Pessimistic Beliefs
     """
     # We will guess an initial price vector of [0, 0]
-    p_new = jnp.array([[0], [0]])
-    p_old = jnp.array([[10.], [10.]])
+    p_new = np.array([[0], [0]])
+    p_old = np.array([[10.], [10.]])
 
     # We know this is a contraction mapping, so we can iterate to conv
     for i in range(max_iter):
         p_old = p_new
-        p_new = β * jnp.min(jnp.stack([q @ p_old
-                            + q @ dividend_payoff for q in transitions]),
-                            axis=0)
+        p_new = β * np.min([q @ p_old
+                            + q @ dividend_payoff for q in transitions],
+                           axis=0)
 
         # If we succeed in converging, break out of for loop
-        if jnp.max(jnp.sqrt((p_new - p_old)**2)) < tol:
+        if np.max(np.sqrt((p_new - p_old)**2)) < tol:
             break
 
     return p_new
@@ -572,14 +571,14 @@ First, we will obtain equilibrium price vectors with homogeneous beliefs, includ
 investors are optimistic or pessimistic.
 
 ```{code-cell} ipython3
-qa = jnp.array([[1/2, 1/2], [2/3, 1/3]])    # Type a transition matrix
-qb = jnp.array([[2/3, 1/3], [1/4, 3/4]])    # Type b transition matrix
+qa = np.array([[1/2, 1/2], [2/3, 1/3]])    # Type a transition matrix
+qb = np.array([[2/3, 1/3], [1/4, 3/4]])    # Type b transition matrix
 # Optimistic investor transition matrix
-qopt = jnp.array([[1/2, 1/2], [1/4, 3/4]])
+qopt = np.array([[1/2, 1/2], [1/4, 3/4]])
 # Pessimistic investor transition matrix
-qpess = jnp.array([[2/3, 1/3], [2/3, 1/3]])
+qpess = np.array([[2/3, 1/3], [2/3, 1/3]])
 
-dividendreturn = jnp.array([[0], [1]])
+dividendreturn = np.array([[0], [1]])
 
 transitions = [qa, qb, qopt, qpess]
 labels = ['p_a', 'p_b', 'p_optimistic', 'p_pessimistic']
@@ -587,9 +586,7 @@ labels = ['p_a', 'p_b', 'p_optimistic', 'p_pessimistic']
 for transition, label in zip(transitions, labels):
     print(label)
     print("=" * 20)
-    s0, s1 = jnp.round(
-        price_single_beliefs(transition, dividendreturn), 2
-        )
+    s0, s1 = np.round(price_single_beliefs(transition, dividendreturn), 2)
     print(f"State 0: {s0}")
     print(f"State 1: {s1}")
     print("-" * 20)
@@ -605,7 +602,7 @@ labels = ['p_optimistic', 'p_hat_a', 'p_hat_b']
 for p, label in zip(opt_beliefs, labels):
     print(label)
     print("=" * 20)
-    s0, s1 = jnp.round(p, 2)
+    s0, s1 = np.round(p, 2)
     print(f"State 0: {s0}")
     print(f"State 1: {s1}")
     print("-" * 20)
