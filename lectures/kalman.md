@@ -130,7 +130,7 @@ This density $p(x)$ is shown below as a contour map, with the center of the red 
 Σ = [[0.4, 0.3], [0.3, 0.45]]
 Σ = np.matrix(Σ)
 x_hat = np.matrix([0.2, -0.2]).T
-# Define the matrices G and R from the equation y = G x + N(0, R)
+# Define the matrices G and R from the measurement equation Y = G X + v
 G = [[1, 0], [0, 1]]
 G = np.matrix(G)
 R = 0.5 * Σ
@@ -285,7 +285,11 @@ where
 \Sigma^F := \Sigma - \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma
 ```
 
-Here  $\Sigma G' (G \Sigma G' + R)^{-1}$ is the matrix of population regression coefficients of the hidden object $x - \hat x$ on the surprise $y - G \hat x$.
+Here $\Sigma G' (G \Sigma G' + R)^{-1}$ is the matrix of population
+regression coefficients of the hidden state deviation $X - \hat x$ on the
+signal surprise $Y - G \hat x$.
+
+After observing $Y=y$, the realized surprise is $y - G \hat x$.
 
 This new density $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ is shown in the next figure via contour lines and the color map.
 
@@ -469,15 +473,17 @@ These are the standard dynamic equations for the Kalman filter (see, for example
 (kalman_convergence)=
 ## Convergence
 
-The matrix $\Sigma_t$ is a measure of the uncertainty of our prediction $\hat x_t$ of $x_t$.
+The matrix $\Sigma_t$ is a measure of the uncertainty of our prediction $\hat x_t$ of $X_t$.
 
 Apart from special cases, this uncertainty will never be fully resolved, regardless of how much time elapses.
 
 One reason is that our prediction $\hat x_t$ is made based on information available at $t-1$, not $t$.
 
-Even if we know the precise value of $x_{t-1}$ (which we don't), the transition equation {eq}`kl_xdynam` implies that $x_t = A x_{t-1} + w_t$.
+Even if we knew the precise realized value $X_{t-1}=x_{t-1}$ (which we
+don't), the transition equation {eq}`kl_xdynam` implies that
+$X_t = A x_{t-1} + w_t$.
 
-Since the shock $w_t$ is not observable at $t-1$, any time $t-1$ prediction of $x_t$ will incur some error (unless $w_t$ is degenerate).
+Since the shock $w_t$ is not observable at $t-1$, any time $t-1$ prediction of $X_t$ will incur some error (unless $w_t$ is degenerate).
 
 However, it is certainly possible that $\Sigma_t$ converges to a constant matrix as $t \to \infty$.
 
@@ -507,7 +513,7 @@ Conditions under which a fixed point exists and the sequence $\{\Sigma_t\}$ conv
 
 A sufficient (but not necessary) condition is that all the eigenvalues $\lambda_i$ of $A$ satisfy $|\lambda_i| < 1$ (cf. e.g., {cite}`AndersonMoore2005`, p. 77).
 
-(This strong condition assures that the unconditional  distribution of $x_t$  converges as $t \rightarrow + \infty$.)
+(This strong condition assures that the unconditional  distribution of $X_t$  converges as $t \rightarrow + \infty$.)
 
 In this case, for any initial choice of $\Sigma_0$ that is both non-negative and symmetric, the sequence $\{\Sigma_t\}$ in {eq}`kalman_sdy` converges to a non-negative symmetric matrix $\Sigma$ that solves {eq}`kalman_dare`.
 
