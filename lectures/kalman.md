@@ -211,7 +211,7 @@ We are now presented with some good news and some bad news.
 The good news is that the missile has been located by our sensors, which report that the current location is $y = (2.3, -1.9)$.
 
 The next figure shows the original prior $p(x)$ and the new reported
-location $y$
+signal $y$
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 8))
@@ -228,21 +228,25 @@ plt.show()
 
 The bad news is that our sensors are imprecise.
 
+The sensor report is not the true location itself.
+
+It is a noisy signal generated from the hidden location, distorted by measurement error.
+
 In particular, we should interpret the output of our sensor not as
-$y=x$, but rather as
+$Y=X$, but rather as
 
 ```{math}
 :label: kl_measurement_model
 
-y = G x + v, \quad \text{where} \quad v \sim N(0, R)
+Y = G X + v, \quad \text{where} \quad v \sim N(0, R)
 ```
 
 Here $G$ and $R$ are $2 \times 2$ matrices with $R$
 positive definite.  Both are assumed known, and the noise term $v$ is assumed
-to be independent of $x$.
+to be independent of $X$.
 
-How then should we combine our prior $p(x) = N(\hat x, \Sigma)$ and this
-new information $y$ to improve our understanding of the location of the
+How then should we combine our prior $X \sim N(\hat x, \Sigma)$ and this
+new information $Y=y$ to improve our understanding of the location of the
 missile?
 
 As you may have guessed, the answer is to use Bayes' theorem, which tells
