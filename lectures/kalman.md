@@ -648,7 +648,7 @@ $$
 
 for $t = 0, 1, 2, \ldots, T$.
 
-Plot $z_t$ against $T$, setting $\epsilon = 0.1$ and $T = 600$.
+Plot $z_t$ against $t$, setting $\epsilon = 0.1$ and $T = 600$.
 
 Your figure should show error erratically declining something like this
 
@@ -721,7 +721,7 @@ behaves optimally in terms of minimizing squared error.
 
 Our horse race will be assessed in terms of squared error.
 
-In particular, your task is to generate a graph plotting observations of both $\| x_t - A x_{t-1} \|^2$ and $\| x_t - \hat x_t \|^2$ against $t$ for $t = 1, \ldots, 50$.
+In particular, your task is to generate a graph plotting observations of both $\| x_t - A x_{t-1} \|^2$ and $\| x_t - \hat x_t \|^2$ against $t$ for $t = 1, \ldots, 49$.
 
 For the parameters, set $G = I, R = 0.5 I$ and $Q = 0.3 I$, where $I$ is
 the $2 \times 2$ identity.
