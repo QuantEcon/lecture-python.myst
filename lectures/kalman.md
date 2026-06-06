@@ -66,7 +66,7 @@ from scipy.integrate import quad
 from scipy.linalg import eigvals
 ```
 
-## The Basic Idea
+## The basic idea
 
 The Kalman filter has many applications in economics, but for now
 let's pretend that we are rocket scientists.
@@ -206,7 +206,7 @@ ax.clabel(cs, inline=1, fontsize=10)
 plt.show()
 ```
 
-### The Filtering Step
+### The filtering step
 
 We are now presented with some good news and some bad news.
 
@@ -328,7 +328,7 @@ information $y - G \hat x$.
 In generating the figure, we set $G$ to the identity matrix and $R = 0.5 \Sigma$ for $\Sigma$ defined in {eq}`kalman_dhxs`.
 
 (kl_forecase_step)=
-### The Forecast Step
+### The forecast step
 
 What have we achieved so far?
 
@@ -443,7 +443,7 @@ ax.text(y_1 + 0.1, y_2 + 0.1, "$y$", fontsize=20, color="black")
 plt.show()
 ```
 
-### The Recursive Procedure
+### The recursive procedure
 
 ```{index} single: Kalman Filter; Recursive Procedure
 ```
