@@ -325,7 +325,7 @@ We have obtained probabilities for the current location of the state (missile) g
 This is called "filtering" rather than forecasting because we are filtering
 out noise rather than looking into the future.
 
-* $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ is called the **filtering distribution**
+* $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ is called the **filtering distribution** for $X$ after observing $Y=y$
 
 But now let's suppose that we are given another task: to predict the location of the missile after one unit of time (whatever that may be) has elapsed.
 
@@ -336,20 +336,20 @@ Let's suppose that we have one, and that it's linear and Gaussian. In particular
 ```{math}
 :label: kl_xdynam
 
-x_{t+1} = A x_t + w_{t+1}, \quad \text{where} \quad w_t \sim N(0, Q)
+X_{t+1} = A X_t + w_{t+1}, \quad \text{where} \quad w_t \sim N(0, Q)
 ```
 
-Our aim is to combine this law of motion and our current distribution $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ to come up with a new **predictive** distribution for the location in one unit of time.
+Our aim is to combine this law of motion and our current filtering distribution $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ to come up with a new **predictive** distribution for the location in one unit of time.
 
-In view of {eq}`kl_xdynam`, all we have to do is introduce a random vector $x^F \sim N(\hat x^F, \Sigma^F)$ and work out the distribution of $A x^F + w$ where $w$ is independent of $x^F$ and has distribution $N(0, Q)$.
+In view of {eq}`kl_xdynam`, all we have to do is introduce a random vector $X^F \sim N(\hat x^F, \Sigma^F)$ and work out the distribution of $A X^F + w$ where $w$ is independent of $X^F$ and has distribution $N(0, Q)$.
 
-Since linear combinations of Gaussians are Gaussian, $A x^F + w$ is Gaussian.
+Since linear combinations of Gaussians are Gaussian, $A X^F + w$ is Gaussian.
 
 Elementary calculations and the expressions in {eq}`kl_filter_exp` tell us that
 
 $$
-\mathbb{E} [A x^F + w]
-= A \mathbb{E} x^F + \mathbb{E} w
+\mathbb{E} [A X^F + w]
+= A \mathbb{E} X^F + \mathbb{E} w
 = A \hat x^F
 = A \hat x + A \Sigma G' (G \Sigma G' + R)^{-1}(y - G \hat x)
 $$
@@ -357,8 +357,8 @@ $$
 and
 
 $$
-\operatorname{Var} [A x^F + w]
-= A \operatorname{Var}[x^F] A' + Q
+\operatorname{Var} [A X^F + w]
+= A \operatorname{Var}[X^F] A' + Q
 = A \Sigma^F A' + Q
 = A \Sigma A' - A \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma A' + Q
 $$
