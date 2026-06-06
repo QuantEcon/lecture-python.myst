@@ -221,7 +221,9 @@ Z = gen_gaussian_plot_vals(x_hat, Σ)
 ax.contourf(X, Y, Z, 6, alpha=0.6, cmap=cm.jet)
 cs = ax.contour(X, Y, Z, 6, colors="black")
 ax.clabel(cs, inline=1, fontsize=10)
-ax.text(float(y[0].item()), float(y[1].item()), "$y$", fontsize=20, color="black")
+y_1, y_2 = float(y[0].item()), float(y[1].item())
+ax.scatter(y_1, y_2, marker="o", s=50, color="black", zorder=3)
+ax.text(y_1 + 0.1, y_2 + 0.1, "$y$", fontsize=20, color="black")
 
 plt.show()
 ```
@@ -309,7 +311,9 @@ new_Z = gen_gaussian_plot_vals(x_hat_F, Σ_F)
 cs2 = ax.contour(X, Y, new_Z, 6, colors="black")
 ax.clabel(cs2, inline=1, fontsize=10)
 ax.contourf(X, Y, new_Z, 6, alpha=0.6, cmap=cm.jet)
-ax.text(float(y[0].item()), float(y[1].item()), "$y$", fontsize=20, color="black")
+y_1, y_2 = float(y[0].item()), float(y[1].item())
+ax.scatter(y_1, y_2, marker="o", s=50, color="black", zorder=3)
+ax.text(y_1 + 0.1, y_2 + 0.1, "$y$", fontsize=20, color="black")
 
 plt.show()
 ```
@@ -426,7 +430,9 @@ new_Z = gen_gaussian_plot_vals(new_x_hat, new_Σ)
 cs3 = ax.contour(X, Y, new_Z, 6, colors="black")
 ax.clabel(cs3, inline=1, fontsize=10)
 ax.contourf(X, Y, new_Z, 6, alpha=0.6, cmap=cm.jet)
-ax.text(float(y[0].item()), float(y[1].item()), "$y$", fontsize=20, color="black")
+y_1, y_2 = float(y[0].item()), float(y[1].item())
+ax.scatter(y_1, y_2, marker="o", s=50, color="black", zorder=3)
+ax.text(y_1 + 0.1, y_2 + 0.1, "$y$", fontsize=20, color="black")
 
 plt.show()
 ```
