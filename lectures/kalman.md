@@ -99,7 +99,9 @@ X \sim N(\hat x, \Sigma)
 ```
 
 where $\hat x$ is the mean of the distribution and $\Sigma$ is a
-$2 \times 2$ covariance matrix.  In our simulations, we will suppose that
+$2 \times 2$ covariance matrix.
+
+In our simulations, we will suppose that
 
 ```{math}
 :label: kalman_dhxs
@@ -244,7 +246,9 @@ Y = G X + v, \quad \text{where} \quad v \sim N(0, R)
 ```
 
 Here $G$ and $R$ are $2 \times 2$ matrices with $R$
-positive definite.  Both are assumed known, and the noise term $v$ is assumed
+positive definite.
+
+Both are assumed known, and the noise term $v$ is assumed
 to be independent of $X$.
 
 How then should we combine our prior $X \sim N(\hat x, \Sigma)$ and this
@@ -339,7 +343,9 @@ But now let's suppose that we are given another task: to predict the location of
 
 To do this we need a model of how the state evolves.
 
-Let's suppose that we have one, and that it's linear and Gaussian. In particular,
+Let's suppose that we have one, and that it's linear and Gaussian.
+
+In particular,
 
 ```{math}
 :label: kl_xdynam
