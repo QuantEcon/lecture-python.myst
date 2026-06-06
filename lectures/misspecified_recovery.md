@@ -20,7 +20,7 @@ kernelspec:
 </div>
 ```
 
-# Misspecified recovery
+# Misspecified Recovery
 
 ```{contents} Contents
 :depth: 2
