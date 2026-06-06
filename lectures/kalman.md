@@ -286,12 +286,12 @@ where
 ```{math}
 :label: kl_filter_exp
 
-\hat x^F := \hat x + \Sigma G' (G \Sigma G' + R)^{-1}(y - G \hat x)
+\hat x^F := \hat x + \Sigma G^\top (G \Sigma G^\top + R)^{-1}(y - G \hat x)
 \quad \text{and} \quad
-\Sigma^F := \Sigma - \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma
+\Sigma^F := \Sigma - \Sigma G^\top (G \Sigma G^\top + R)^{-1} G \Sigma
 ```
 
-Here $\Sigma G' (G \Sigma G' + R)^{-1}$ is the matrix of population
+Here $\Sigma G^\top (G \Sigma G^\top + R)^{-1}$ is the matrix of population
 regression coefficients of the hidden state deviation $X - \hat x$ on the
 signal surprise $Y - G \hat x$.
 
@@ -365,19 +365,19 @@ $$
 \mathbb{E} [A X^F + w]
 = A \mathbb{E} X^F + \mathbb{E} w
 = A \hat x^F
-= A \hat x + A \Sigma G' (G \Sigma G' + R)^{-1}(y - G \hat x)
+= A \hat x + A \Sigma G^\top (G \Sigma G^\top + R)^{-1}(y - G \hat x)
 $$
 
 and
 
 $$
 \operatorname{Var} [A X^F + w]
-= A \operatorname{Var}[X^F] A' + Q
-= A \Sigma^F A' + Q
-= A \Sigma A' - A \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma A' + Q
+= A \operatorname{Var}[X^F] A^\top + Q
+= A \Sigma^F A^\top + Q
+= A \Sigma A^\top - A \Sigma G^\top (G \Sigma G^\top + R)^{-1} G \Sigma A^\top + Q
 $$
 
-The matrix $A \Sigma G' (G \Sigma G' + R)^{-1}$ is often written as
+The matrix $A \Sigma G^\top (G \Sigma G^\top + R)^{-1}$ is often written as
 $K_{\Sigma}$ and called the **Kalman gain**.
 
 * The subscript $\Sigma$ has been added to remind us that  $K_{\Sigma}$ depends on $\Sigma$, but not $y$ or $\hat x$.
@@ -391,7 +391,7 @@ Our updated prediction is the density $N(\hat x_{new}, \Sigma_{new})$ where
 
 \begin{aligned}
     \hat x_{new} &:= A \hat x + K_{\Sigma} (y - G \hat x) \\
-    \Sigma_{new} &:= A \Sigma A' - K_{\Sigma} G \Sigma A' + Q \nonumber
+    \Sigma_{new} &:= A \Sigma A^\top - K_{\Sigma} G \Sigma A^\top + Q \nonumber
 \end{aligned}
 ```
 
@@ -476,7 +476,7 @@ Repeating {eq}`kl_mlom0`, the dynamics for $\hat x_t$ and $\Sigma_t$ are as foll
 
 \begin{aligned}
     \hat x_{t+1} &= A \hat x_t + K_{\Sigma_t} (y_t - G \hat x_t) \\
-    \Sigma_{t+1} &= A \Sigma_t A' - K_{\Sigma_t} G \Sigma_t A' + Q \nonumber
+    \Sigma_{t+1} &= A \Sigma_t A^\top - K_{\Sigma_t} G \Sigma_t A^\top + Q \nonumber
 \end{aligned}
 ```
 
@@ -504,7 +504,7 @@ To study this topic, let's expand the second equation in {eq}`kalman_lom`:
 ```{math}
 :label: kalman_sdy
 
-\Sigma_{t+1} = A \Sigma_t A' -  A \Sigma_t G' (G \Sigma_t G' + R)^{-1} G \Sigma_t A' + Q
+\Sigma_{t+1} = A \Sigma_t A^\top -  A \Sigma_t G^\top (G \Sigma_t G^\top + R)^{-1} G \Sigma_t A^\top + Q
 ```
 
 This is a nonlinear difference equation in $\Sigma_t$.
@@ -514,7 +514,7 @@ A fixed point of {eq}`kalman_sdy` is a constant matrix $\Sigma$ such that
 ```{math}
 :label: kalman_dare
 
-\Sigma = A \Sigma A' -  A \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma A' + Q
+\Sigma = A \Sigma A^\top -  A \Sigma G^\top (G \Sigma G^\top + R)^{-1} G \Sigma A^\top + Q
 ```
 
 Equation {eq}`kalman_sdy` is known as a discrete-time Riccati difference equation.
@@ -555,7 +555,7 @@ where the shocks $w_t$ and $v_t$ are IID standard normals.
 To connect this with the notation of this lecture we set
 
 $$
-Q := CC' \quad \text{and} \quad R := HH'
+Q := C C^\top \quad \text{and} \quad R := H H^\top
 $$
 
 * The class `Kalman` from the [QuantEcon.py](https://quantecon.org/quantecon-py/) package has a number of methods, some that we will wait to use until we study more advanced applications in subsequent lectures.
