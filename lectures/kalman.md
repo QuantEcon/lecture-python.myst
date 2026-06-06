@@ -785,7 +785,7 @@ e1 = np.empty(T-1)
 e2 = np.empty(T-1)
 
 for t in range(1, T):
-    kn.update(y[:,t])
+    kn.update(y[:, t-1])
     diff1 = x[:, t] - kn.x_hat.flatten()
     diff2 = x[:, t] - A @ x[:, t-1]
     e1[t-1] = diff1 @ diff1
