@@ -434,21 +434,23 @@ plt.show()
 
 Let's look back at what we've done.
 
-We started the current period with a prior $p(x)$ for the location $x$ of the missile.
+We started the current period with a prior density $p_t(x)$ for the hidden state $X_t$.
 
-We then used the current measurement $y$ to update to $p(x \,|\, y)$.
+We then observed the signal $Y_t = y_t$ and updated the prior density to the
+filtering density $p_t(x \,|\, y_t)$.
 
-Finally, we used the law of motion {eq}`kl_xdynam` for $\{x_t\}$ to update to $p_{new}(x)$.
+Finally, we used the law of motion {eq}`kl_xdynam` for $\{X_t\}$ to update
+to the predictive density $p_{t+1}(x)$ for $X_{t+1}$.
 
-If we now step into the next period, we are ready to go round again, taking $p_{new}(x)$
-as the current prior.
+If we now step into the next period, we are ready to go round again, taking
+$p_{t+1}(x)$ as the current prior density.
 
-Swapping notation $p_t(x)$ for $p(x)$ and $p_{t+1}(x)$ for $p_{new}(x)$, the full recursive procedure is:
+Using this time-indexed notation, the full recursive procedure is:
 
-1. Start the current period with prior $p_t(x) = N(\hat x_t, \Sigma_t)$.
-1. Observe current measurement $y_t$.
-1. Compute the filtering distribution $p_t(x \,|\, y) = N(\hat x_t^F, \Sigma_t^F)$ from $p_t(x)$ and $y_t$, applying Bayes rule and the conditional distribution {eq}`kl_measurement_model`.
-1. Compute the predictive distribution $p_{t+1}(x) = N(\hat x_{t+1}, \Sigma_{t+1})$ from the filtering distribution and {eq}`kl_xdynam`.
+1. Start the current period with prior density $p_t(x) = N(\hat x_t, \Sigma_t)$ for $X_t$.
+1. Observe current signal $Y_t = y_t$.
+1. Compute the filtering density $p_t(x \,|\, y_t) = N(\hat x_t^F, \Sigma_t^F)$ from $p_t(x)$ and $y_t$, applying Bayes rule and the conditional distribution {eq}`kl_measurement_model`.
+1. Compute the predictive density $p_{t+1}(x) = N(\hat x_{t+1}, \Sigma_{t+1})$ for $X_{t+1}$ from the filtering density and {eq}`kl_xdynam`.
 1. Increment $t$ by one and go to step 1.
 
 Repeating {eq}`kl_mlom0`, the dynamics for $\hat x_t$ and $\Sigma_t$ are as follows
