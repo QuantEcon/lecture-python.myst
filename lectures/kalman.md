@@ -73,19 +73,20 @@ let's pretend that we are rocket scientists.
 
 A missile has been launched from country Y and our mission is to track it.
 
-Let $x  \in \mathbb{R}^2$ denote the current location of the missile---a
-pair indicating latitude-longitude coordinates on a map.
+Let $X  \in \mathbb{R}^2$ denote the current location of the missile---a
+pair indicating latitude-longitude coordinates on a map---and let $x$ denote
+a possible realization of $X$.
 
-At the present moment in time, the precise location $x$ is unknown, but
-we do have some beliefs about $x$.
+At the present moment in time, the precise realization of $X$ is unknown, but
+we do have some beliefs about $X$.
 
 One way to summarize our knowledge is a point prediction $\hat x$
 
 * But what if the President wants to know the probability that the missile is currently over the Sea of Japan?
 * Then it is better to summarize our initial beliefs with a bivariate probability density $p$
-  * $\int_E p(x)dx$ indicates the probability that we attach to the missile being in region $E$.
+  * $\int_E p(x)dx$ indicates the probability that we attach to $X$ being in region $E$.
 
-The density $p$ is called our **prior** for the random variable $x$.
+The density $p$ is called our **prior** for the random variable $X$.
 
 To keep things tractable in our example,  we  assume that our prior is Gaussian.
 
@@ -94,7 +95,7 @@ In particular, we take
 ```{math}
 :label: prior
 
-p = N(\hat x, \Sigma)
+X \sim N(\hat x, \Sigma)
 ```
 
 where $\hat x$ is the mean of the distribution and $\Sigma$ is a
