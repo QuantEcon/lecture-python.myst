@@ -249,8 +249,10 @@ How then should we combine our prior $X \sim N(\hat x, \Sigma)$ and this
 new information $Y=y$ to improve our understanding of the location of the
 missile?
 
-As you may have guessed, the answer is to use Bayes' theorem, which tells
-us to  update our prior $p(x)$ to $p(x \,|\, y)$ via
+As you may have guessed, the answer is to use Bayes' theorem.
+
+It tells us how to update the prior density $p(x)$ for $X$ to the
+posterior density $p(x \,|\, y)$ after observing $Y=y$:
 
 $$
 p(x \,|\, y) = \frac{p(y \,|\, x) \, p(x)} {p(y)}
@@ -260,8 +262,9 @@ where $p(y) = \int p(y \,|\, x) \, p(x) dx$.
 
 In solving for $p(x \,|\, y)$, we observe that
 
-* $p(x) = N(\hat x, \Sigma)$.
-* In view of {eq}`kl_measurement_model`, the conditional density $p(y \,|\, x)$ is $N(Gx, R)$.
+* $p(x)$ is the prior density of $X$, which is $N(\hat x, \Sigma)$.
+* $p(y \,|\, x)$ is the conditional density of $Y$ evaluated at the observed signal $y$, given $X=x$.
+* In view of {eq}`kl_measurement_model`, this conditional density is $N(Gx, R)$.
 * $p(y)$ does not depend on $x$, and enters into the calculations only as a normalizing constant.
 
 Because we are in a linear and Gaussian framework, the updated density can be computed by calculating population linear regressions.
