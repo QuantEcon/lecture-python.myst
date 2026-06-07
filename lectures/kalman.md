@@ -409,7 +409,7 @@ A
 \end{array}
   \right),
   \qquad
-Q = 0.3 * \Sigma
+  Q = 0.3 \Sigma
 $$
 
 ```{code-cell} ipython3
