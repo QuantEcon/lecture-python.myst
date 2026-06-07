@@ -129,19 +129,21 @@ This density $p(x)$ is shown below as a contour map, with the center of the red 
 :tags: [output_scroll]
 
 # Set up the Gaussian prior density p
-Σ = [[0.4, 0.3], [0.3, 0.45]]
-Σ = np.matrix(Σ)
-x_hat = np.matrix([0.2, -0.2]).T
+Σ = np.array([[0.4, 0.3],
+              [0.3, 0.45]])
+x_hat = np.array([[0.2],
+                  [-0.2]])
 # Define the matrices G and R from the measurement equation Y = G X + v
-G = [[1, 0], [0, 1]]
-G = np.matrix(G)
+G = np.array([[1, 0],
+              [0, 1]])
 R = 0.5 * Σ
 # The matrices A and Q
-A = [[1.2, 0], [0, -0.2]]
-A = np.matrix(A)
+A = np.array([[1.2, 0],
+              [0, -0.2]])
 Q = 0.3 * Σ
 # The observed value of y
-y = np.matrix([2.3, -1.9]).T
+y = np.array([[2.3],
+              [-1.9]])
 
 # Set up grid for plotting
 x_grid = np.linspace(-1.5, 2.9, 100)
@@ -308,9 +310,9 @@ ax.grid()
 Z = gen_gaussian_plot_vals(x_hat, Σ)
 cs1 = ax.contour(X, Y, Z, 6, colors="black")
 ax.clabel(cs1, inline=1, fontsize=10)
-M = Σ * G.T * linalg.inv(G * Σ * G.T + R)
-x_hat_F = x_hat + M * (y - G * x_hat)
-Σ_F = Σ - M * G * Σ
+M = Σ @ G.T @ linalg.inv(G @ Σ @ G.T + R)
+x_hat_F = x_hat + M @ (y - G @ x_hat)
+Σ_F = Σ - M @ G @ Σ
 new_Z = gen_gaussian_plot_vals(x_hat_F, Σ_F)
 cs2 = ax.contour(X, Y, new_Z, 6, colors="black")
 ax.clabel(cs2, inline=1, fontsize=10)
@@ -422,16 +424,16 @@ cs1 = ax.contour(X, Y, Z, 6, colors="black")
 ax.clabel(cs1, inline=1, fontsize=10)
 
 # Density 2
-M = Σ * G.T * linalg.inv(G * Σ * G.T + R)
-x_hat_F = x_hat + M * (y - G * x_hat)
-Σ_F = Σ - M * G * Σ
+M = Σ @ G.T @ linalg.inv(G @ Σ @ G.T + R)
+x_hat_F = x_hat + M @ (y - G @ x_hat)
+Σ_F = Σ - M @ G @ Σ
 Z_F = gen_gaussian_plot_vals(x_hat_F, Σ_F)
 cs2 = ax.contour(X, Y, Z_F, 6, colors="black")
 ax.clabel(cs2, inline=1, fontsize=10)
 
 # Density 3
-new_x_hat = A * x_hat_F
-new_Σ = A * Σ_F * A.T + Q
+new_x_hat = A @ x_hat_F
+new_Σ = A @ Σ_F @ A.T + Q
 new_Z = gen_gaussian_plot_vals(new_x_hat, new_Σ)
 cs3 = ax.contour(X, Y, new_Z, 6, colors="black")
 ax.clabel(cs3, inline=1, fontsize=10)
