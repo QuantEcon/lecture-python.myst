@@ -609,7 +609,7 @@ Your figure should -- modulo randomness -- look something like this
 
 ```{code-cell} ipython3
 # Parameters
-θ = 10  # Constant value of state x_t
+θ = 10  # Constant value of state X_t
 A, C, G, H = 1, 0, 1, 1
 ss = LinearStateSpace(A, C, G, H, mu_0=θ)
 
@@ -674,7 +674,7 @@ Your figure should show error erratically declining something like this
 
 ```{code-cell} ipython3
 ϵ = 0.1
-θ = 10  # Constant value of state x_t
+θ = 10  # Constant value of state X_t
 A, C, G, H = 1, 0, 1, 1
 ss = LinearStateSpace(A, C, G, H, mu_0=θ)
 
