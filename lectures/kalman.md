@@ -546,13 +546,13 @@ The latter represents a linear state space model of the form
 
 $$
 \begin{aligned}
-    x_{t+1} & = A x_t + C w_{t+1}
+    X_{t+1} & = A X_t + C w_{t+1}
     \\
-    y_t & = G x_t + H v_t
+    Y_t & = G X_t + H v_t
 \end{aligned}
 $$
 
-where the shocks $w_t$ and $v_t$ are IID standard normals.
+where $X_t$ and $Y_t$ denote random variables, and the shocks $w_t$ and $v_t$ are IID standard normals.
 
 To connect this with the notation of this lecture we set
 
@@ -581,13 +581,13 @@ on {cite}`Ljungqvist2012`, section 2.9.2.
 Suppose that
 
 * all variables are scalars
-* the hidden state $\{x_t\}$ is in fact constant, equal to some $\theta \in \mathbb{R}$ unknown to the modeler
+* the hidden state $\{X_t\}$ is in fact constant, equal to some $\theta \in \mathbb{R}$ unknown to the modeler
 
-State dynamics are therefore given by {eq}`kl_xdynam` with $A=1$, $Q=0$ and $x_0 = \theta$.
+State dynamics are therefore given by {eq}`kl_xdynam` with $A=1$, $Q=0$ and $X_0 = \theta$.
 
-The measurement equation is $y_t = \theta + v_t$ where $v_t$ is $N(0,1)$ and IID.
+The measurement equation is $Y_t = \theta + v_t$ where $v_t$ is $N(0,1)$ and IID.
 
-The task of this exercise to simulate the model and, using the code from `kalman.py`, plot the first five predictive densities $p_t(x) = N(\hat x_t, \Sigma_t)$.
+The task of this exercise to simulate the model and, using the code from `kalman.py`, plot the first five predictive densities $p_t(x) = N(\hat x_t, \Sigma_t)$ for $X_t$.
 
 As shown in {cite}`Ljungqvist2012`, sections 2.9.1--2.9.2, these distributions asymptotically put all mass on the unknown value $\theta$.
 
@@ -711,25 +711,27 @@ plt.show()
 :label: kalman_ex3
 ```
 
-As discussed {ref}`above <kalman_convergence>`, if the shock sequence $\{w_t\}$ is not degenerate, then it is not in general possible to predict $x_t$ without error at time $t-1$ (and this would be the case even if we could observe $x_{t-1}$).
+As discussed {ref}`above <kalman_convergence>`, if the shock sequence $\{w_t\}$ is not degenerate, then it is not in general possible to predict $X_t$ without error at time $t-1$ (and this would be the case even if we could observe $X_{t-1}$).
 
 Let's now compare the prediction $\hat x_t$ made by the Kalman filter
-against a competitor who **is** allowed to observe $x_{t-1}$.
+against a competitor who **is** allowed to observe $X_{t-1}$.
 
-This competitor will use the conditional expectation $\mathbb E[ x_t
-\,|\, x_{t-1}]$, which in this case is $A x_{t-1}$.
+This competitor will use the conditional expectation $\mathbb E[ X_t
+\,|\, X_{t-1}]$, which in this case is $A X_{t-1}$.
 
 The conditional expectation is known to be the optimal prediction method in terms of minimizing mean squared error.
 
-(More precisely, the minimizer of $\mathbb E \, \| x_t - g(x_{t-1}) \|^2$ with respect to $g$ is $g^*(x_{t-1}) := \mathbb E[ x_t \,|\, x_{t-1}]$)
+(More precisely, the minimizer of $\mathbb E \, \| X_t - g(X_{t-1}) \|^2$ with respect to $g$ is $g^*(X_{t-1}) := \mathbb E[ X_t \,|\, X_{t-1}]$)
 
 Thus we are comparing the Kalman filter against a competitor who has more
 information (in the sense of being able to observe the latent state) and
 behaves optimally in terms of minimizing squared error.
 
-Our horse race will be assessed in terms of squared error.
+Our horse race will be assessed in terms of realized squared error.
 
-In particular, your task is to generate a graph plotting observations of both $\| x_t - A x_{t-1} \|^2$ and $\| x_t - \hat x_t \|^2$ against $t$ for $t = 1, \ldots, 49$.
+In particular, your task is to generate a graph plotting simulated realizations of both $\| X_t - A X_{t-1} \|^2$ and $\| X_t - \hat x_t \|^2$ against $t$ for $t = 1, \ldots, 49$.
+
+In the code below, `x[:, t]` is the realized value of $X_t$ along the simulated path.
 
 For the parameters, set $G = I, R = 0.5 I$ and $Q = 0.3 I$, where $I$ is
 the $2 \times 2$ identity.
@@ -760,7 +762,7 @@ $$
 
 and $\hat x_0 = (8, 8)$.
 
-Finally, set $x_0 = (0, 0)$.
+Finally, set the realized initial state to $x_0 = (0, 0)$.
 
 You should end up with a figure similar to the following (modulo randomness)
 
@@ -840,7 +842,7 @@ Try varying the coefficient $0.3$ in $Q = 0.3 I$ up and down.
 
 Observe how the diagonal values in the stationary solution $\Sigma$ (see {eq}`kalman_dare`) increase and decrease in line with this coefficient.
 
-The interpretation is that more randomness in the law of motion for $x_t$ causes more (permanent) uncertainty in prediction.
+The interpretation is that more randomness in the law of motion for $X_t$ causes more (permanent) uncertainty in prediction.
 ```
 
 [^f1]: See, for example, page 93 of {cite}`Bishop2006`. To get from his expressions to the ones used above, you will also need to apply the [Woodbury matrix identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity).
