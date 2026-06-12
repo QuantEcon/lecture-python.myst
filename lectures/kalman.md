@@ -587,7 +587,7 @@ State dynamics are therefore given by {eq}`kl_xdynam` with $A=1$, $Q=0$ and $X_0
 
 The measurement equation is $Y_t = \theta + v_t$ where $v_t$ is $N(0,1)$ and IID.
 
-The task of this exercise to simulate the model and, using the code from `kalman.py`, plot the first five predictive densities $p_t(x) = N(\hat x_t, \Sigma_t)$ for $X_t$.
+The task of this exercise is to simulate the model and, using the code from `kalman.py`, plot the first five predictive densities $p_t(x) = N(\hat x_t, \Sigma_t)$ for $X_t$.
 
 As shown in {cite}`Ljungqvist2012`, sections 2.9.1--2.9.2, these distributions asymptotically put all mass on the unknown value $\theta$.
 
