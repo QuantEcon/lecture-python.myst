@@ -29,7 +29,7 @@ kernelspec:
 :depth: 2
 ```
 
-In this quantecon lecture {doc}`A First Look at the Kalman filter <kalman>`, we used
+In this QuantEcon lecture {doc}`kalman`, we used
 a Kalman filter to estimate  locations of a rocket. 
 
 In this lecture,  we'll use the Kalman filter to 
@@ -38,7 +38,7 @@ human capital, neither of which the firm observes directly.
 
 The firm learns about those things only by observing a history of the output that the worker generates for the firm, and from understanding how that output depends on the worker's human capital and how human capital evolves as a function of the worker's effort. 
 
-We'll posit a rule that expresses how the much  firm pays the worker each period  as a function of the firm's information each period.
+We'll posit a rule that expresses how much the firm pays the worker each period as a function of the firm's information each period.
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
@@ -48,7 +48,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install quantecon
 ```
 
-To conduct simulations, we bring in these imports, as in {doc}`A First Look at the Kalman filter <kalman>`.
+To conduct simulations, we bring in these imports, as in {doc}`kalman`.
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
@@ -58,22 +58,22 @@ from collections import namedtuple
 from scipy.stats import multivariate_normal
 import matplotlib as mpl
 mpl.rcParams['text.usetex'] = True
-mpl.rcParams['text.latex.preamble'] = r'\usepackage{{amsmath}}'
+mpl.rcParams['text.latex.preamble'] = r'\usepackage{amsmath,amsfonts}'
 ```
 
 ## A worker's output 
 
 A representative worker is permanently employed at a firm.
 
-The workers'  output  is  described by the following dynamic process:
+A worker's output is described by the following dynamic process:
 
 ```{math}
 :label: worker_model
 
 \begin{aligned}
-h_{t+1} &= \alpha h_t + \beta u_t + c w_{t+1}, \quad c_{t+1} \sim {\mathcal N}(0,1) \\
+h_{t+1} &= \alpha h_t + \beta u_t + c \epsilon_{t+1}, \quad \epsilon_{t+1} \sim N(0,1) \\
 u_{t+1} & = u_t \\
-y_t & = g h_t + v_t , \quad v_t \sim {\mathcal N} (0, R)
+y_t & = g h_t + v_t , \quad v_t \sim N(0, R)
 \end{aligned}
 ```
 
@@ -82,10 +82,11 @@ Here
 * $h_t$ is the logarithm of human capital at time $t$
 * $u_t$ is the logarithm of the worker's effort at accumulating human capital at $t$ 
 * $y_t$ is the logarithm of the worker's output at time $t$
-* $h_0 \sim {\mathcal N}(\hat h_0, \sigma_{h,0})$
-* $u_0 \sim {\mathcal N}(\hat u_0, \sigma_{u,0})$
+* $\epsilon_{t+1}$ is an IID standard normal shock to human capital
+* $h_0 \sim N(\hat h_0, \sigma_{h,0})$
+* $u_0 \sim N(\hat u_0, \sigma_{u,0})$
 
-Parameters of the model are $\alpha, \beta, c, R, g, \hat h_0, \hat u_0, \sigma_h, \sigma_u$.
+Parameters of the model are $\alpha, \beta, c, R, g, \hat h_0, \hat u_0, \sigma_{h,0}, \sigma_{u,0}$.
 
 At time $0$, a firm has hired the worker.
 
@@ -93,11 +94,11 @@ The worker is permanently attached to the firm and so works for the same  firm a
 
 At the beginning of time $0$, the firm observes neither the worker's innate initial human capital $h_0$ nor its hard-wired permanent effort level $u_0$.
 
-The firm believes that $u_0$ for a particular worker is drawn from a Gaussian probability distribution, and so is  described by $u_0 \sim {\mathcal N}(\hat u_0, \sigma_{u,0})$.
+The firm believes that $u_0$ for a particular worker is drawn from a Gaussian probability distribution, and so is  described by $u_0 \sim N(\hat u_0, \sigma_{u,0})$.
 
-The $h_t$ part of a worker's "type" moves over time, but the effort component of the worker's  type is  $u_t = u_0$.
+The $h_t$ part of a worker's "type" moves over time, while the equation $u_{t+1} = u_t$ implies $u_t = u_0$ for all $t$.
 
-This means that  from the firm's point of view, the worker's effort is  effectively an unknown  fixed  "parameter".
+Thus, from the firm's point of view, effort is a fixed, unobserved component of the worker's type that must be inferred from output observations.
 
 At time $t\geq 1$, for a particular worker the  firm  observed  $y^{t-1} = [y_{t-1}, y_{t-2}, \ldots, y_0]$.
 
@@ -107,10 +108,10 @@ But the firm  does observe the worker's  output $y_t$ at time $t$ and remembers 
 
 ## A firm's wage-setting policy
 
-Based on information about the worker that the firm has at time $t \geq 1$, the firm pays the worker log wage  
+At time $t \geq 1$, before observing current output $y_t$, the firm sets the worker's log wage using the past output history $y^{t-1}$:
 
 $$
-w_t = g  E [ h_t | y^{t-1} ], \quad t \geq 1
+w_t = g \mathbb{E}[h_t | y^{t-1}], \quad t \geq 1
 $$
 
 and at time $0$ pays the  worker a log wage equal to  the unconditional mean of $y_0$:
@@ -129,7 +130,7 @@ Write system [](worker_model) in the state-space form
 
 ```{math}
 \begin{aligned}
-\begin{bmatrix} h_{t+1} \cr u_{t+1} \end{bmatrix} &= \begin{bmatrix} \alpha & \beta \cr 0 & 1 \end{bmatrix}\begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} + \begin{bmatrix} c \cr 0 \end{bmatrix} w_{t+1} \cr
+\begin{bmatrix} h_{t+1} \cr u_{t+1} \end{bmatrix} &= \begin{bmatrix} \alpha & \beta \cr 0 & 1 \end{bmatrix}\begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} + \begin{bmatrix} c \cr 0 \end{bmatrix} \epsilon_{t+1} \cr
 y_t & = \begin{bmatrix} g & 0 \end{bmatrix} \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} + v_t
 \end{aligned}
 ```
@@ -139,9 +140,9 @@ which is equivalent with
 ```{math}
 :label: ssrepresent
 \begin{aligned} 
-x_{t+1} & = A x_t + C w_{t+1} \cr
+x_{t+1} & = A x_t + C \epsilon_{t+1} \cr
 y_t & = G x_t + v_t \cr
-x_0 & \sim {\mathcal N}(\hat x_0, \Sigma_0) 
+x_0 & \sim N(\hat x_0, \Sigma_0) 
 \end{aligned}
 ```
 
@@ -204,7 +205,7 @@ h_0, u_0 = x[0, 0], x[1, 0]
 ```
 
 Next, to  compute the firm's policy for setting the log wage based on the information it has about the worker,
-we  use the Kalman filter described in this quantecon lecture {doc}`A First Look at the Kalman filter <kalman>`.
+we  use the Kalman filter described in this QuantEcon lecture {doc}`kalman`.
 
 In particular, we want to compute all of the objects in an "innovation representation".
 
@@ -246,26 +247,26 @@ x_hat_t = np.concatenate((x[:, 1][:, np.newaxis],
 u_hat_t = x_hat_t[1, :]
 ```
 
-For a draw of $h_0, u_0$,  we plot $E y_t = G \hat x_t $ where $\hat x_t = E [x_t | y^{t-1}]$.
+For a draw of $h_0, u_0$,  we plot $\mathbb{E}[y_t | y^{t-1}] = G \hat x_t$ where $\hat x_t = \mathbb{E}[x_t | y^{t-1}]$.
 
-We also plot $E [u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
+We also plot $\mathbb{E}[u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
 
-We can  watch as the  firm's inference  $E [u_0 | y^{t-1}]$ of the worker's work ethic converges toward the hidden   $u_0$, which is not directly observed by the firm.
+We can  watch as the  firm's inference  $\mathbb{E}[u_0 | y^{t-1}]$ of the worker's work ethic converges toward the hidden   $u_0$, which is not directly observed by the firm.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(1, 2)
 
-ax[0].plot(y_hat_t, label=r'$E[y_t| y^{t-1}]$')
+ax[0].plot(y_hat_t, label=r'$\mathbb{E}[y_t| y^{t-1}]$')
 ax[0].set_xlabel('Time')
-ax[0].set_ylabel(r'$E[y_t]$')
-ax[0].set_title(r'$E[y_t]$ over time')
+ax[0].set_ylabel(r'$\mathbb{E}[y_t]$')
+ax[0].set_title(r'$\mathbb{E}[y_t]$ over time')
 ax[0].legend()
 
-ax[1].plot(u_hat_t, label=r'$E[u_t|y^{t-1}]$')
+ax[1].plot(u_hat_t, label=r'$\mathbb{E}[u_t|y^{t-1}]$')
 ax[1].axhline(y=u_0, color='grey', 
             linestyle='dashed', label=fr'$u_0={u_0:.2f}$')
 ax[1].set_xlabel('Time')
-ax[1].set_ylabel(r'$E[u_t|y^{t-1}]$')
+ax[1].set_ylabel(r'$\mathbb{E}[u_t|y^{t-1}]$')
 ax[1].set_title('Inferred work ethic over time')
 ax[1].legend()
 
@@ -287,7 +288,7 @@ print(Σ_t[:, :, -1])
 
 Evidently,  entries in the conditional covariance matrix become smaller over time.
 
-It is enlightening to  portray how  conditional covariance matrices $\Sigma_t$ evolve by plotting confidence ellipsoides around $E [x_t |y^{t-1}] $ at various $t$'s.
+It is enlightening to  portray how  conditional covariance matrices $\Sigma_t$ evolve by plotting confidence ellipsoides around $\mathbb{E}[x_t | y^{t-1}]$ at various $t$'s.
 
 ```{code-cell} ipython3
 # Create a grid of points for contour plotting
@@ -402,17 +403,17 @@ for t in range(1, T):
 # Generate plots for y_hat_t and u_hat_t
 fig, ax = plt.subplots(1, 2)
 
-ax[0].plot(y_hat_t, label=r'$E[y_t| y^{t-1}]$')
+ax[0].plot(y_hat_t, label=r'$\mathbb{E}[y_t| y^{t-1}]$')
 ax[0].set_xlabel('Time')
-ax[0].set_ylabel(r'$E[y_t]$')
-ax[0].set_title(r'$E[y_t]$ over time')
+ax[0].set_ylabel(r'$\mathbb{E}[y_t]$')
+ax[0].set_title(r'$\mathbb{E}[y_t]$ over time')
 ax[0].legend()
 
-ax[1].plot(u_hat_t, label=r'$E[u_t|y^{t-1}]$')
+ax[1].plot(u_hat_t, label=r'$\mathbb{E}[u_t|y^{t-1}]$')
 ax[1].axhline(y=u_0, color='grey', 
             linestyle='dashed', label=fr'$u_0={u_0:.2f}$')
 ax[1].set_xlabel('Time')
-ax[1].set_ylabel(r'$E[u_t|y^{t-1}]$')
+ax[1].set_ylabel(r'$\mathbb{E}[u_t|y^{t-1}]$')
 ax[1].set_title('Inferred work ethic over time')
 ax[1].legend()
 
@@ -481,11 +482,11 @@ def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None,
         ax.plot(u_hat_t - u_0, alpha=.5)
         ax.axhline(y=0, color='grey', linestyle='dashed')
         ax.set_xlabel('Time')
-        ax.set_ylabel(r'$E[u_t|y^{t-1}] - u_0$')
+        ax.set_ylabel(r'$\mathbb{E}[u_t|y^{t-1}] - u_0$')
         ax.set_title(title)
         
     else:
-        label_line = (r'$E[u_t|y^{t-1}]$' if name is None 
+        label_line = (r'$\mathbb{E}[u_t|y^{t-1}]$' if name is None 
                       else name)
         title = ('Inferred work ethic over time' 
                 if title is None else title)
@@ -494,7 +495,7 @@ def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None,
         ax.axhline(y=u_0, color=u_hat_plot[0].get_color(), 
                     linestyle='dashed', alpha=0.5)
         ax.set_xlabel('Time')
-        ax.set_ylabel(r'$E[u_t|y^{t-1}]$')
+        ax.set_ylabel(r'$\mathbb{E}[u_t|y^{t-1}]$')
         ax.set_title(title)
 ```
 
