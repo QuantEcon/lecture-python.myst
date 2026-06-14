@@ -58,7 +58,7 @@ from collections import namedtuple
 from scipy.stats import multivariate_normal
 import matplotlib as mpl
 mpl.rcParams['text.usetex'] = True
-mpl.rcParams['text.latex.preamble'] = r'\usepackage{{amsmath}}'
+mpl.rcParams['text.latex.preamble'] = r'\usepackage{amsmath,amsfonts}'
 ```
 
 ## A worker's output 
@@ -108,10 +108,10 @@ But the firm  does observe the worker's  output $y_t$ at time $t$ and remembers 
 
 ## A firm's wage-setting policy
 
-Based on information about the worker that the firm has at time $t \geq 1$, the firm pays the worker log wage  
+At time $t \geq 1$, before observing current output $y_t$, the firm sets the worker's log wage using the past output history $y^{t-1}$:
 
 $$
-w_t = g  E [ h_t | y^{t-1} ], \quad t \geq 1
+w_t = g \mathbb{E}[h_t | y^{t-1}], \quad t \geq 1
 $$
 
 and at time $0$ pays the  worker a log wage equal to  the unconditional mean of $y_0$:
@@ -247,26 +247,26 @@ x_hat_t = np.concatenate((x[:, 1][:, np.newaxis],
 u_hat_t = x_hat_t[1, :]
 ```
 
-For a draw of $h_0, u_0$,  we plot $E y_t = G \hat x_t $ where $\hat x_t = E [x_t | y^{t-1}]$.
+For a draw of $h_0, u_0$,  we plot $\mathbb{E}[y_t | y^{t-1}] = G \hat x_t$ where $\hat x_t = \mathbb{E}[x_t | y^{t-1}]$.
 
-We also plot $E [u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
+We also plot $\mathbb{E}[u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
 
-We can  watch as the  firm's inference  $E [u_0 | y^{t-1}]$ of the worker's work ethic converges toward the hidden   $u_0$, which is not directly observed by the firm.
+We can  watch as the  firm's inference  $\mathbb{E}[u_0 | y^{t-1}]$ of the worker's work ethic converges toward the hidden   $u_0$, which is not directly observed by the firm.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(1, 2)
 
-ax[0].plot(y_hat_t, label=r'$E[y_t| y^{t-1}]$')
+ax[0].plot(y_hat_t, label=r'$\mathbb{E}[y_t| y^{t-1}]$')
 ax[0].set_xlabel('Time')
-ax[0].set_ylabel(r'$E[y_t]$')
-ax[0].set_title(r'$E[y_t]$ over time')
+ax[0].set_ylabel(r'$\mathbb{E}[y_t]$')
+ax[0].set_title(r'$\mathbb{E}[y_t]$ over time')
 ax[0].legend()
 
-ax[1].plot(u_hat_t, label=r'$E[u_t|y^{t-1}]$')
+ax[1].plot(u_hat_t, label=r'$\mathbb{E}[u_t|y^{t-1}]$')
 ax[1].axhline(y=u_0, color='grey', 
             linestyle='dashed', label=fr'$u_0={u_0:.2f}$')
 ax[1].set_xlabel('Time')
-ax[1].set_ylabel(r'$E[u_t|y^{t-1}]$')
+ax[1].set_ylabel(r'$\mathbb{E}[u_t|y^{t-1}]$')
 ax[1].set_title('Inferred work ethic over time')
 ax[1].legend()
 
@@ -288,7 +288,7 @@ print(Σ_t[:, :, -1])
 
 Evidently,  entries in the conditional covariance matrix become smaller over time.
 
-It is enlightening to  portray how  conditional covariance matrices $\Sigma_t$ evolve by plotting confidence ellipsoides around $E [x_t |y^{t-1}] $ at various $t$'s.
+It is enlightening to  portray how  conditional covariance matrices $\Sigma_t$ evolve by plotting confidence ellipsoides around $\mathbb{E}[x_t | y^{t-1}]$ at various $t$'s.
 
 ```{code-cell} ipython3
 # Create a grid of points for contour plotting
@@ -403,17 +403,17 @@ for t in range(1, T):
 # Generate plots for y_hat_t and u_hat_t
 fig, ax = plt.subplots(1, 2)
 
-ax[0].plot(y_hat_t, label=r'$E[y_t| y^{t-1}]$')
+ax[0].plot(y_hat_t, label=r'$\mathbb{E}[y_t| y^{t-1}]$')
 ax[0].set_xlabel('Time')
-ax[0].set_ylabel(r'$E[y_t]$')
-ax[0].set_title(r'$E[y_t]$ over time')
+ax[0].set_ylabel(r'$\mathbb{E}[y_t]$')
+ax[0].set_title(r'$\mathbb{E}[y_t]$ over time')
 ax[0].legend()
 
-ax[1].plot(u_hat_t, label=r'$E[u_t|y^{t-1}]$')
+ax[1].plot(u_hat_t, label=r'$\mathbb{E}[u_t|y^{t-1}]$')
 ax[1].axhline(y=u_0, color='grey', 
             linestyle='dashed', label=fr'$u_0={u_0:.2f}$')
 ax[1].set_xlabel('Time')
-ax[1].set_ylabel(r'$E[u_t|y^{t-1}]$')
+ax[1].set_ylabel(r'$\mathbb{E}[u_t|y^{t-1}]$')
 ax[1].set_title('Inferred work ethic over time')
 ax[1].legend()
 
@@ -482,11 +482,11 @@ def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None,
         ax.plot(u_hat_t - u_0, alpha=.5)
         ax.axhline(y=0, color='grey', linestyle='dashed')
         ax.set_xlabel('Time')
-        ax.set_ylabel(r'$E[u_t|y^{t-1}] - u_0$')
+        ax.set_ylabel(r'$\mathbb{E}[u_t|y^{t-1}] - u_0$')
         ax.set_title(title)
         
     else:
-        label_line = (r'$E[u_t|y^{t-1}]$' if name is None 
+        label_line = (r'$\mathbb{E}[u_t|y^{t-1}]$' if name is None 
                       else name)
         title = ('Inferred work ethic over time' 
                 if title is None else title)
@@ -495,7 +495,7 @@ def simulate_workers(worker, T, ax, mu_0=None, Sigma_0=None,
         ax.axhline(y=u_0, color=u_hat_plot[0].get_color(), 
                     linestyle='dashed', alpha=0.5)
         ax.set_xlabel('Time')
-        ax.set_ylabel(r'$E[u_t|y^{t-1}]$')
+        ax.set_ylabel(r'$\mathbb{E}[u_t|y^{t-1}]$')
         ax.set_title(title)
 ```
 
