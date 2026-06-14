@@ -65,15 +65,15 @@ mpl.rcParams['text.latex.preamble'] = r'\usepackage{{amsmath}}'
 
 A representative worker is permanently employed at a firm.
 
-The workers'  output  is  described by the following dynamic process:
+A worker's output is described by the following dynamic process:
 
 ```{math}
 :label: worker_model
 
 \begin{aligned}
-h_{t+1} &= \alpha h_t + \beta u_t + c w_{t+1}, \quad c_{t+1} \sim {\mathcal N}(0,1) \\
+h_{t+1} &= \alpha h_t + \beta u_t + c \epsilon_{t+1}, \quad \epsilon_{t+1} \sim N(0,1) \\
 u_{t+1} & = u_t \\
-y_t & = g h_t + v_t , \quad v_t \sim {\mathcal N} (0, R)
+y_t & = g h_t + v_t , \quad v_t \sim N(0, R)
 \end{aligned}
 ```
 
@@ -82,10 +82,11 @@ Here
 * $h_t$ is the logarithm of human capital at time $t$
 * $u_t$ is the logarithm of the worker's effort at accumulating human capital at $t$ 
 * $y_t$ is the logarithm of the worker's output at time $t$
-* $h_0 \sim {\mathcal N}(\hat h_0, \sigma_{h,0})$
-* $u_0 \sim {\mathcal N}(\hat u_0, \sigma_{u,0})$
+* $\epsilon_{t+1}$ is an IID standard normal shock to human capital
+* $h_0 \sim N(\hat h_0, \sigma_{h,0})$
+* $u_0 \sim N(\hat u_0, \sigma_{u,0})$
 
-Parameters of the model are $\alpha, \beta, c, R, g, \hat h_0, \hat u_0, \sigma_h, \sigma_u$.
+Parameters of the model are $\alpha, \beta, c, R, g, \hat h_0, \hat u_0, \sigma_{h,0}, \sigma_{u,0}$.
 
 At time $0$, a firm has hired the worker.
 
@@ -93,11 +94,11 @@ The worker is permanently attached to the firm and so works for the same  firm a
 
 At the beginning of time $0$, the firm observes neither the worker's innate initial human capital $h_0$ nor its hard-wired permanent effort level $u_0$.
 
-The firm believes that $u_0$ for a particular worker is drawn from a Gaussian probability distribution, and so is  described by $u_0 \sim {\mathcal N}(\hat u_0, \sigma_{u,0})$.
+The firm believes that $u_0$ for a particular worker is drawn from a Gaussian probability distribution, and so is  described by $u_0 \sim N(\hat u_0, \sigma_{u,0})$.
 
-The $h_t$ part of a worker's "type" moves over time, but the effort component of the worker's  type is  $u_t = u_0$.
+The $h_t$ part of a worker's "type" moves over time, while the equation $u_{t+1} = u_t$ implies $u_t = u_0$ for all $t$.
 
-This means that  from the firm's point of view, the worker's effort is  effectively an unknown  fixed  "parameter".
+Thus, from the firm's point of view, effort is a fixed, unobserved component of the worker's type that must be inferred from output observations.
 
 At time $t\geq 1$, for a particular worker the  firm  observed  $y^{t-1} = [y_{t-1}, y_{t-2}, \ldots, y_0]$.
 
@@ -129,7 +130,7 @@ Write system [](worker_model) in the state-space form
 
 ```{math}
 \begin{aligned}
-\begin{bmatrix} h_{t+1} \cr u_{t+1} \end{bmatrix} &= \begin{bmatrix} \alpha & \beta \cr 0 & 1 \end{bmatrix}\begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} + \begin{bmatrix} c \cr 0 \end{bmatrix} w_{t+1} \cr
+\begin{bmatrix} h_{t+1} \cr u_{t+1} \end{bmatrix} &= \begin{bmatrix} \alpha & \beta \cr 0 & 1 \end{bmatrix}\begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} + \begin{bmatrix} c \cr 0 \end{bmatrix} \epsilon_{t+1} \cr
 y_t & = \begin{bmatrix} g & 0 \end{bmatrix} \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} + v_t
 \end{aligned}
 ```
@@ -139,9 +140,9 @@ which is equivalent with
 ```{math}
 :label: ssrepresent
 \begin{aligned} 
-x_{t+1} & = A x_t + C w_{t+1} \cr
+x_{t+1} & = A x_t + C \epsilon_{t+1} \cr
 y_t & = G x_t + v_t \cr
-x_0 & \sim {\mathcal N}(\hat x_0, \Sigma_0) 
+x_0 & \sim N(\hat x_0, \Sigma_0) 
 \end{aligned}
 ```
 
