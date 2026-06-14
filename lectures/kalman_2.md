@@ -29,7 +29,7 @@ kernelspec:
 :depth: 2
 ```
 
-In this QuantEcon lecture {doc}`A First Look at the Kalman filter <kalman>`, we used
+In this QuantEcon lecture {doc}`kalman`, we used
 a Kalman filter to estimate  locations of a rocket. 
 
 In this lecture,  we'll use the Kalman filter to 
@@ -48,7 +48,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install quantecon
 ```
 
-To conduct simulations, we bring in these imports, as in {doc}`A First Look at the Kalman filter <kalman>`.
+To conduct simulations, we bring in these imports, as in {doc}`kalman`.
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
@@ -205,7 +205,7 @@ h_0, u_0 = x[0, 0], x[1, 0]
 ```
 
 Next, to  compute the firm's policy for setting the log wage based on the information it has about the worker,
-we  use the Kalman filter described in this quantecon lecture {doc}`A First Look at the Kalman filter <kalman>`.
+we  use the Kalman filter described in this QuantEcon lecture {doc}`kalman`.
 
 In particular, we want to compute all of the objects in an "innovation representation".
 
