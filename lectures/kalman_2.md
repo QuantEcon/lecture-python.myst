@@ -29,7 +29,7 @@ kernelspec:
 :depth: 2
 ```
 
-In this quantecon lecture {doc}`A First Look at the Kalman filter <kalman>`, we used
+In this QuantEcon lecture {doc}`A First Look at the Kalman filter <kalman>`, we used
 a Kalman filter to estimate  locations of a rocket. 
 
 In this lecture,  we'll use the Kalman filter to 
@@ -38,7 +38,7 @@ human capital, neither of which the firm observes directly.
 
 The firm learns about those things only by observing a history of the output that the worker generates for the firm, and from understanding how that output depends on the worker's human capital and how human capital evolves as a function of the worker's effort. 
 
-We'll posit a rule that expresses how the much  firm pays the worker each period  as a function of the firm's information each period.
+We'll posit a rule that expresses how much the firm pays the worker each period as a function of the firm's information each period.
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
