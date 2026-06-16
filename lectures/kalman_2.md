@@ -468,7 +468,7 @@ Here is an example.
 
 ```{code-cell} ipython3
 # We can set these parameters when creating a worker -- just like classes!
-hard_working_worker =  create_worker(α=.4, β=.8, 
+hard_working_worker = create_worker(α=.4, β=.8, 
                         hhat_0=7.0, uhat_0=100, σ_h=2.5, σ_u=3.2)
 
 print(hard_working_worker)
@@ -578,7 +578,7 @@ fig, ax = plt.subplots(figsize=(7, 7))
 
 uhat_0s = [2, -2, 1]
 αs = [0.2, 0.3, 0.5]
-βs = [0.1, 0.9, 0.3]
+βs = [0.2, 0.9, 0.3]
 
 for i, (uhat_0, α, β) in enumerate(zip(uhat_0s, αs, βs)):
     worker = create_worker(uhat_0=uhat_0, α=α, β=β)
@@ -592,7 +592,7 @@ plt.show()
 
 These three workers differ in $\alpha$ and $\beta$ as well as in $\hat u_0$, and the speed of learning differs sharply across them.
 
-The worker with the largest $\beta$, here $u_{1,0}$ with $\beta = 0.9$, settles onto its dashed true value almost immediately, while the worker with the smallest $\beta$, here $u_{0,0}$ with $\beta = 0.1$, is still wandering at $t = 100$.
+The worker with the largest $\beta$, here $u_{1,0}$ with $\beta = 0.9$, settles onto its dashed true value almost immediately, while the worker with the smallest $\beta$, here $u_{0,0}$ with $\beta = 0.2$, converges slower.
 
 The reason is that effort affects output only through human capital, so in these stable examples with $|\alpha| < 1$ its steady-state effect on output is governed by $g \beta / (1 - \alpha)$, and a small $\beta$ leaves the firm with too little signal to pin down $u_0$ over this horizon.
 
@@ -615,7 +615,7 @@ fig, ax = plt.subplots(figsize=(7, 7))
 
 uhat_0s = [2, -2, 1]
 αs = [0.2, 0.3, 0.5]
-βs = [0.1, 0.9, 0.3]
+βs = [0.2, 0.9, 0.3]
 
 for i, (uhat_0, α, β) in enumerate(zip(uhat_0s, αs, βs)):
     worker = create_worker(uhat_0=uhat_0, α=α, β=β)
