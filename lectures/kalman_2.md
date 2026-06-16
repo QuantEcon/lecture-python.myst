@@ -598,7 +598,7 @@ The reason is that effort affects output only through human capital, so in these
 
 The speed of learning also reflects the measurement noise $R$, the shock scale $c$, and the firm's prior variances.
 
-We can also give every worker the same true initial state, here $h_0=2$ and $u_0=1$, by passing a fixed `μ_0` and a zero `Σ_0` to `simulate_workers`.
+We can also give every worker the same true initial state, here $h_0=2$ and $u_0=1$, by passing a fixed `μ_sim_0` and a zero `Σ_sim_0` to `simulate_workers`.
 
 ```{code-cell} ipython3
 ---
