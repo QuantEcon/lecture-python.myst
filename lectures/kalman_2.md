@@ -29,7 +29,7 @@ kernelspec:
 :depth: 2
 ```
 
-In this QuantEcon lecture {doc}`kalman`, we used
+In {doc}`kalman`, we used
 a Kalman filter to estimate  locations of a rocket. 
 
 In this lecture,  we'll use the Kalman filter to 
