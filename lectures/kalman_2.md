@@ -88,6 +88,8 @@ Here
 
 Parameters of the model are $\alpha, \beta, c, R, g, \hat h_0, \hat u_0, \sigma_{h,0}, \sigma_{u,0}$ where $\sigma_{h,0}$ and $\sigma_{u,0}$ are standard deviations of the firm's initial beliefs about $h_0$ and $u_0$.
 
+We assume that $h_0$, $u_0$, $\{\epsilon_t\}$, and $\{v_t\}$ are mutually independent.
+
 At time $0$, a firm has hired the worker.
 
 The worker is permanently attached to the firm and so works for the same  firm at all  dates $t =0, 1, 2, \ldots$.
@@ -215,7 +217,7 @@ In particular, we want to compute all of the objects in an "innovation represent
 ## An innovations representation
 
 We have all the objects in hand required to form an innovations representation for the output
-process $\{y_t\}_{t=0}^T$ for a worker.
+process $\{y_t\}_{t=0}^{T-1}$ for a worker.
 
 Let's code that up now.
 
@@ -264,7 +266,7 @@ For this fixed worker initial state, we plot $\mathbb{E}[y_t | y^{t-1}] = G \hat
 
 We also plot $\mathbb{E}[u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
 
-We can  watch as the  firm's inference  $\mathbb{E}[u_0 | y^{t-1}]$ of the worker's work ethic converges toward the hidden   $u_0$, which is not directly observed by the firm.
+We can watch how the firm updates its inference $\mathbb{E}[u_0 | y^{t-1}]$ about the worker's work ethic as more output observations arrive.
 
 ```{code-cell} ipython3
 ---
@@ -343,9 +345,10 @@ for i, t in enumerate(np.linspace(0, T-1, 3, dtype=int)):
     axs[i].set_xlabel(r'$h_{{{}}}$'.format(str(t)))
     axs[i].set_ylabel(r'$u_{{{}}}$'.format(str(t)))
     
-    cov_latex = r'$\Sigma_{{{}}}= \begin{{bmatrix}} {:.2f} & {:.2f} \\ {:.2f} & {:.2f} \end{{bmatrix}}$'.format(
-        t, cov[0, 0], cov[0, 1], cov[1, 0], cov[1, 1]
-    )
+    cov_latex = (
+        r'$\Sigma_{{{}}}= \begin{{bmatrix}} {:.2f} & {:.2f} \\ '
+        r'{:.2f} & {:.2f} \end{{bmatrix}}$'
+    ).format(t, cov[0, 0], cov[0, 1], cov[1, 0], cov[1, 1])
     axs[i].text(0.33, -0.15, cov_latex, transform=axs[i].transAxes)
 
     
@@ -387,13 +390,14 @@ Another way to accomplish the same goal is to use the following code.
 
 ```{code-cell} ipython3
 # If we want to set the initial 
-# h_0 = hhat_0 = 0 and u_0 = uhhat_0 = 4.0:
-worker = create_worker(hhat_0=0.0, uhat_0=4.0)
+# h_0 = hhat_0 = 0.0 and u_0 = uhat_0 = 4.0:
+worker_example = create_worker(hhat_0=0.0, uhat_0=4.0)
 
+# The firm's prior stays at the original xhat_0 and Σ_0
 ss_example = LinearStateSpace(A, C, G, np.sqrt(R), 
-                              # This line takes h_0=hhat_0 and u_0=uhhat_0
-                              mu_0=worker.xhat_0,
-                              # This line forces exact h_0=hhat_0 and u_0=uhhat_0
+                              # This line takes h_0=hhat_0 and u_0=uhat_0
+                              mu_0=worker_example.xhat_0,
+                              # This line forces exact h_0=hhat_0 and u_0=uhat_0
                               Sigma_0=np.zeros((2, 2))
                              )
 
@@ -401,7 +405,7 @@ T = 100
 x, y = ss_example.simulate(T)
 y = y.flatten()
 
-# Now h_0 and u_0 will be exactly hhat_0
+# Now h_0 and u_0 will be exactly hhat_0 and uhat_0
 h_0, u_0 = x[0, 0], x[1, 0]
 print('h_0 =', h_0)
 print('u_0 =', u_0)
@@ -429,7 +433,7 @@ for t in range(T):
     # Record the firm's belief about x_t given y^{t-1}, before seeing y_t
     x_hat, Σ = kalman.x_hat, kalman.Sigma
     Σ_t.append(Σ)
-    y_hat_t[t] = (worker.G @ x_hat).item()
+    y_hat_t[t] = (G @ x_hat).item()
     u_hat_t[t] = x_hat[1].item()
 
     # Then incorporate the observation y_t and advance the filter to t+1
@@ -481,22 +485,22 @@ This shows that, under these observability conditions, the filter gradually teac
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-def simulate_workers(worker, T, ax, μ_0=None, Σ_0=None, 
-                    diff=True, name=None):
+def simulate_workers(worker, T, ax, μ_sim_0=None, Σ_sim_0=None, 
+                    diff=True, name=None, random_state=None):
     A, C, G, R = worker.A, worker.C, worker.G, worker.R
     xhat_0, Σ_prior = worker.xhat_0, worker.Σ_0
     
-    # μ_0 and Σ_0 set the simulated worker's initial state, while
+    # μ_sim_0 and Σ_sim_0 set the simulated worker's initial state, while
     # xhat_0 and Σ_prior are the firm's prior beliefs in the filter
-    if μ_0 is None:
-        μ_0 = xhat_0
-    if Σ_0 is None:
-        Σ_0 = Σ_prior
+    if μ_sim_0 is None:
+        μ_sim_0 = xhat_0
+    if Σ_sim_0 is None:
+        Σ_sim_0 = Σ_prior
         
     ss = LinearStateSpace(A, C, G, np.sqrt(R), 
-                        mu_0=μ_0, Sigma_0=Σ_0)
+                        mu_0=μ_sim_0, Sigma_0=Σ_sim_0)
 
-    x, y = ss.simulate(T)
+    x, y = ss.simulate(T, random_state=random_state)
     y = y.flatten()
 
     u_0 = x[1, 0]
@@ -550,13 +554,16 @@ fig, ax = plt.subplots(figsize=(7, 7))
 
 for i in range(num_workers):
     worker = create_worker(uhat_0=4+2*i)
-    simulate_workers(worker, T, ax, name=fr'$\hat u_0 = {4+2*i}$')
+    simulate_workers(worker, T, ax, name=fr'$\hat u_0 = {4+2*i}$',
+                     random_state=2 + i)
 ax.set_ylim(ymin=-2, ymax=2)
 ax.legend()
 plt.show()
 ```
 
-For every worker the gap collapses toward zero, so the firm eventually recovers the true work ethic from the output history alone.
+In this simulation the firm's inferred work ethic moves toward the true $u_0$.
+
+Under the correctly specified observable linear-Gaussian model, the posterior mean of $u_0$ is consistent, so this gap shrinks as the output history grows.
 
 By setting `diff=False`, we instead plot the level of each worker's inferred work ethic $\mathbb{E}[u_0|y^{t-1}]$, shown together with a dashed line marking the true $u_0$.
 
@@ -576,7 +583,8 @@ uhat_0s = [2, -2, 1]
 for i, (uhat_0, α, β) in enumerate(zip(uhat_0s, αs, βs)):
     worker = create_worker(uhat_0=uhat_0, α=α, β=β)
     simulate_workers(worker, T, ax, diff=False, 
-                     name=r'$u_{{{}, 0}}$'.format(i))
+                     name=r'$u_{{{}, 0}}$'.format(i),
+                     random_state=3 + i)
 
 ax.legend(bbox_to_anchor=(1, 0.5))
 plt.show()
@@ -586,7 +594,9 @@ These three workers differ in $\alpha$ and $\beta$ as well as in $\hat u_0$, and
 
 The worker with the largest $\beta$, here $u_{1,0}$ with $\beta = 0.9$, settles onto its dashed true value almost immediately, while the worker with the smallest $\beta$, here $u_{0,0}$ with $\beta = 0.1$, is still wandering at $t = 100$.
 
-The reason is that effort affects output only through human capital, so its long-run influence is governed by $g \beta / (1 - \alpha)$, and a small $\beta$ leaves the firm with too little signal to pin down $u_0$ over this horizon.
+The reason is that effort affects output only through human capital, so in these stable examples with $|\alpha| < 1$ its steady-state effect on output is governed by $g \beta / (1 - \alpha)$, and a small $\beta$ leaves the firm with too little signal to pin down $u_0$ over this horizon.
+
+The speed of learning also reflects the measurement noise $R$, the shock scale $c$, and the firm's prior variances.
 
 We can also give every worker the same true initial state, here $h_0=2$ and $u_0=1$, by passing a fixed `μ_0` and a zero `Σ_0` to `simulate_workers`.
 
@@ -599,9 +609,9 @@ mystnb:
 ---
 fig, ax = plt.subplots(figsize=(7, 7))
 
-μ_0 = np.array([[2.0],
-                [1.0]])
-Σ_0 = np.zeros((2,2))
+μ_sim_0 = np.array([[2.0],
+                    [1.0]])
+Σ_sim_0 = np.zeros((2,2))
 
 uhat_0s = [2, -2, 1]
 αs = [0.2, 0.3, 0.5]
@@ -609,7 +619,7 @@ uhat_0s = [2, -2, 1]
 
 for i, (uhat_0, α, β) in enumerate(zip(uhat_0s, αs, βs)):
     worker = create_worker(uhat_0=uhat_0, α=α, β=β)
-    simulate_workers(worker, T, ax, μ_0=μ_0, Σ_0=Σ_0, 
+    simulate_workers(worker, T, ax, μ_sim_0=μ_sim_0, Σ_sim_0=Σ_sim_0, 
                      diff=False, name=r'$u_{{{}, 0}}$'.format(i))
     
 # This controls the boundary of plots
@@ -632,22 +642,22 @@ mystnb:
 T = 50
 fig, ax = plt.subplots(figsize=(7, 7))
 
-μ_0_1 = np.array([[1],
-                  [100]])
-μ_0_2 = np.array([[1],
-                  [30]])
-Σ_0 = np.zeros((2,2))
+μ_sim_0_1 = np.array([[1],
+                      [100]])
+μ_sim_0_2 = np.array([[1],
+                      [30]])
+Σ_sim_0 = np.zeros((2, 2))
 
 worker = create_worker(uhat_0=1, α=0.5, β=0.3)
-simulate_workers(worker, T, ax, μ_0=μ_0_1, Σ_0=Σ_0, 
+simulate_workers(worker, T, ax, μ_sim_0=μ_sim_0_1, Σ_sim_0=Σ_sim_0, 
                  diff=False, name=r'Hard-working worker')
-simulate_workers(worker, T, ax, μ_0=μ_0_2, Σ_0=Σ_0, 
+simulate_workers(worker, T, ax, μ_sim_0=μ_sim_0_2, Σ_sim_0=Σ_sim_0, 
                  diff=False, name=r'Normal worker')
 ax.legend(bbox_to_anchor=(1, 0.5))
 plt.show()
 ```
 
-Both inferred paths start from the firm's common prior $\hat u_0 = 1$ and climb toward their very different true values, showing that the filter corrects even a large gap between prior and truth as evidence accumulates.
+Both inferred paths start from the firm's common prior $\hat u_0 = 1$ and climb toward their different true values, showing that the filter corrects the gap between prior and truth as evidence accumulates.
 
 ## Future extensions
 
