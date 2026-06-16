@@ -163,14 +163,12 @@ def gen_gaussian_plot_vals(μ, C):
 
 # Plot the figure
 
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots()
 ax.grid()
-
 Z = gen_gaussian_plot_vals(μ, Σ)
 ax.contourf(X, Y, Z, 6, alpha=0.6, cmap="viridis")
 cs = ax.contour(X, Y, Z, 6, colors="black")
 ax.clabel(cs, inline=1, fontsize=10)
-
 plt.show()
 ```
 
@@ -183,9 +181,8 @@ The good news is that the missile has been located by our sensors, which report 
 The next figure shows the original prior $p$ and the new reported signal $Y_t$
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots()
 ax.grid()
-
 Z = gen_gaussian_plot_vals(μ, Σ)
 ax.contourf(X, Y, Z, 6, alpha=0.6, cmap="viridis")
 cs = ax.contour(X, Y, Z, 6, colors="black")
@@ -193,7 +190,6 @@ ax.clabel(cs, inline=1, fontsize=10)
 y_1, y_2 = y[0].item(), y[1].item()
 ax.scatter(y_1, y_2, marker="o", s=50, color="black", zorder=3)
 ax.text(y_1 + 0.1, y_2 + 0.1, "$Y_t$", fontsize=20, color="black")
-
 plt.show()
 ```
 
@@ -274,7 +270,7 @@ This new density $p(x \,|\, Y_t) = N(\mu^F, \Sigma^F)$ is shown in the next figu
 The original density is left in as contour lines for comparison
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots()
 ax.grid()
 
 Z = gen_gaussian_plot_vals(μ, Σ)
@@ -290,7 +286,6 @@ ax.contourf(X, Y, new_Z, 6, alpha=0.6, cmap="viridis")
 y_1, y_2 = y[0].item(), y[1].item()
 ax.scatter(y_1, y_2, marker="o", s=50, color="black", zorder=3)
 ax.text(y_1 + 0.1, y_2 + 0.1, "$Y_t$", fontsize=20, color="black")
-
 plt.show()
 ```
 
@@ -391,7 +386,7 @@ A
 $$
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots()
 ax.grid()
 
 # Density 1
@@ -604,7 +599,7 @@ x, y = ss.simulate(N)
 y = y.flatten()
 
 # Set up plot
-fig, ax = plt.subplots(figsize=(10,8))
+fig, ax = plt.subplots()
 xgrid = np.linspace(θ - 5, θ + 2, 200)
 
 for i in range(N):
@@ -629,7 +624,7 @@ plt.show()
 The preceding figure gives some support to the idea that probability mass
 converges to $\theta$.
 
-To get a better idea, choose a small $\epsilon > 0$ and calculate
+To get a better idea, choose a small $\epsilon > 0$ and calculate the error
 
 $$
 z_t := 1 - \int_{\theta - \epsilon}^{\theta + \epsilon} p_t(x) dx
@@ -639,11 +634,6 @@ for $t = 0, 1, 2, \ldots, T$.
 
 Plot $z_t$ against $t$, setting $\epsilon = 0.1$ and $T = 600$.
 
-Your figure should show error erratically declining something like this
-
-```{image} /_static/lecture_specific/kalman/kl_ex2_fig.png
-:align: center
-```
 
 ```{exercise-end}
 ```
@@ -677,7 +667,7 @@ for t in range(T):
 
     kalman.update(y[t])
 
-fig, ax = plt.subplots(figsize=(9, 7))
+fig, ax = plt.subplots()
 ax.set_ylim(0, 1)
 ax.set_xlim(0, T)
 ax.plot(range(T), z)
@@ -692,7 +682,7 @@ plt.show()
 :label: kalman_ex3
 ```
 
-As discussed {ref}`above <kalman_convergence>`, if the shock sequence $\{w_t\}$ is not degenerate, then it is not in general possible to predict $x_t$ without error at time $t-1$ (and this would be the case even if we could observe $x_{t-1}$).
+As discussed {ref}`above <kalman_convergence>`, if the shock sequence $\{W_t\}$ is not degenerate, then it is not in general possible to predict $x_t$ without error at time $t-1$ (and this would be the case even if we could observe $x_{t-1}$).
 
 Let's now compare the prediction $\mu_t$ made by the Kalman filter
 against a competitor who **is** allowed to observe $x_{t-1}$.
@@ -743,13 +733,6 @@ and $\mu_0 = (8, 8)$.
 
 Finally, set $x_0 = (0, 0)$.
 
-You should end up with a figure similar to the following (modulo randomness)
-
-```{image} /_static/lecture_specific/kalman/kalman_ex3.png
-:align: center
-```
-
-Observe how, after an initial learning period, the Kalman filter performs quite well, even relative to the competitor who predicts optimally with knowledge of the latent state.
 
 ```{exercise-end}
 ```
@@ -802,7 +785,7 @@ for t in range(1, T):
     e1[t-1] = diff1 @ diff1
     e2[t-1] = diff2 @ diff2
 
-fig, ax = plt.subplots(figsize=(9,6))
+fig, ax = plt.subplots()
 ax.plot(range(1, T), e1, 'k-', lw=2, alpha=0.6,
         label='Kalman filter error')
 ax.plot(range(1, T), e2, 'g-', lw=2, alpha=0.6,
@@ -810,6 +793,8 @@ ax.plot(range(1, T), e2, 'g-', lw=2, alpha=0.6,
 ax.legend()
 plt.show()
 ```
+
+Observe how, after an initial learning period, the Kalman filter performs quite well, even relative to the competitor who predicts optimally with knowledge of the latent state.
 
 ```{solution-end}
 ```
