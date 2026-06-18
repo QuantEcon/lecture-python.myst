@@ -128,17 +128,17 @@ We simulate the coin flips with one function and assemble the comparison table
 with another.
 
 ```{code-cell} ipython3
-def simulate_head_counts(θ, n, I, rng=None):
+def simulate_head_counts(θ, n, I, seed=1234):
     "Simulate I sequences of n coin flips; return the heads count of each sequence."
-    rng = rng or np.random.default_rng()
+    rng = np.random.default_rng(seed)
     Y = (rng.random((I, n)) <= θ).astype(int)
     return Y.sum(axis=1)
 ```
 
 ```{code-cell} ipython3
-def compare_frequencies(θ, n, I, rng=None):
+def compare_frequencies(θ, n, I, seed=1234):
     "Tabulate theoretical binomial probabilities against simulated frequencies."
-    head_counts = simulate_head_counts(θ, n, I, rng)
+    head_counts = simulate_head_counts(θ, n, I, seed)
     rows = [
         (k, binom.pmf(k, n, θ), np.mean(head_counts == k))
         for k in range(n + 1)
@@ -149,10 +149,9 @@ def compare_frequencies(θ, n, I, rng=None):
 ```
 
 ```{code-cell} ipython3
-rng = np.random.default_rng(123)
 θ, n, k, I = 0.7, 20, 10, 1_000_000
 
-compare_frequencies(θ, n, I, rng=rng)
+compare_frequencies(θ, n, I)
 ```
 
 From the table above, can you see the law of large numbers at work?
@@ -173,14 +172,13 @@ $$
 We'll vary $\theta$ from $0.01$ to $0.99$ and plot outcomes against $\theta$.
 
 ```{code-cell} ipython3
-rng = np.random.default_rng(234)
 θ_low, θ_high, n_thetas = 0.01, 0.99, 50
 thetas = np.linspace(θ_low, θ_high, n_thetas)
 P = []
 f_kI = []
 for i in range(n_thetas):
     P.append(binom.pmf(k, n, thetas[i]))
-    head_counts = simulate_head_counts(thetas[i], n, I, rng=rng)
+    head_counts = simulate_head_counts(thetas[i], n, I, seed=i)
     f_kI.append(np.mean(head_counts == k))
 ```
 
@@ -205,14 +203,13 @@ Now we fix $\theta=0.7, k=10, I=1,000,000$ and vary $n$ from $1$ to $100$.
 Then we'll plot outcomes.
 
 ```{code-cell} ipython3
-rng = np.random.default_rng(345)
 n_low, n_high, n_ns = 1, 100, 50
 ns = np.linspace(n_low, n_high, n_ns, dtype='int')
 P = []
 f_kI = []
 for i in range(n_ns):
     P.append(binom.pmf(k, ns[i], θ))
-    head_counts = simulate_head_counts(θ, ns[i], I, rng=rng)
+    head_counts = simulate_head_counts(θ, ns[i], I, seed=i)
     f_kI.append(np.mean(head_counts == k))
 ```
 
@@ -235,7 +232,6 @@ plt.show()
 Now we fix $\theta=0.7, n=20, k=10$ and vary $\log(I)$ from $2$ to $6$.
 
 ```{code-cell} ipython3
-rng = np.random.default_rng(456)
 I_log_low, I_log_high, n_Is = 2, 6, 200
 log_Is = np.linspace(I_log_low, I_log_high, n_Is)
 Is = np.power(10, log_Is).astype(int)
@@ -243,7 +239,7 @@ P = []
 f_kI = []
 for i in range(n_Is):
     P.append(binom.pmf(k, n, θ))
-    head_counts = simulate_head_counts(θ, n, Is[i], rng=rng)
+    head_counts = simulate_head_counts(θ, n, Is[i], seed=i)
     f_kI.append(np.mean(head_counts == k))
 ```
 
@@ -396,9 +392,9 @@ We use one function to simulate a sequence of coin flips and another to form the
 Beta posterior from the first `n_obs` of those flips.
 
 ```{code-cell} ipython3
-def simulate_flips(θ=0.4, n=1_000_000, rng=None):
+def simulate_flips(θ=0.4, n=1_000_000, seed=1234):
     "Simulate n coin flips, each landing heads (1) with probability θ."
-    rng = rng or np.random.default_rng()
+    rng = np.random.default_rng(seed)
     return (rng.random(n) < θ).astype(int)
 ```
 
@@ -412,8 +408,7 @@ def form_posterior(draws, n_obs, α=0.5, β=0.5):
 **d)**
 
 ```{code-cell} ipython3
-rng = np.random.default_rng(567)
-draws = simulate_flips(rng=rng)
+draws = simulate_flips()
 
 n_obs_list = [1, 2, 3, 4, 5, 10, 20, 50,
               100, 1000,
