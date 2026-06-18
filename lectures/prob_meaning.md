@@ -361,7 +361,7 @@ The exercise below asks you to derive this closed form.
 
 **b)** Please write down the **posterior** distribution for $\theta$ after observing that single flip.
 
-**c)** Now pretend that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters $\beta = \alpha = .5$. Please write a Python class to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
+**c)** Now pretend that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters $\beta = \alpha = .5$. Please write Python code to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
 
 **d)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows as $1, 2, \ldots$.
 
@@ -419,66 +419,46 @@ This is the formula we use in the remaining parts of the exercise.
 
 **c)**
 
+We use one function to simulate a sequence of coin flips and another to form the
+Beta posterior from the first `n_obs` of those flips.
+
 ```{code-cell} ipython3
-class Bayesian:
+def simulate_flips(θ=0.4, n=1_000_000, rng=None):
+    "Simulate n coin flips, each landing heads (1) with probability θ."
+    rng = rng or np.random.default_rng()
+    return (rng.random(n) < θ).astype(int)
+```
 
-    def __init__(self, θ=0.4, n=1_000_000, α=0.5, β=0.5,
-                 rng=None):
-        '''
-        Parameters
-        ----------
-        θ : Probability of heads on each flip.
-        n : Number of flips in the sequence.
-        α, β : Parameters of the beta prior on θ.
-        rng : NumPy random generator.
-        '''
-        self.θ, self.n, self.α, self.β = θ, n, α, β
-        self.rng = rng or np.random.default_rng()
-        self.prior = st.beta(α, β)
-
-    def draw(self):
-        '''Simulate a sequence of n coin flips.'''
-        array = self.rng.random(self.n)
-        self.draws = (array < self.θ).astype(int)
-
-    def form_single_posterior(self, n_obs):
-        '''Return the posterior after the first n_obs flips.'''
-        heads = self.draws[:n_obs].sum()
-        tails = n_obs - heads
-        return st.beta(self.α + heads, self.β + tails)
-
-    def form_posterior_series(self, n_obs_list):
-        '''Form posteriors for each sample size in n_obs_list.'''
-        self.posterior_list = []
-        for n_obs in n_obs_list:
-            self.posterior_list.append(
-                self.form_single_posterior(n_obs)
-            )
+```{code-cell} ipython3
+def form_posterior(draws, n_obs, α=0.5, β=0.5):
+    "Beta posterior for θ from the first n_obs flips, given a Beta(α, β) prior."
+    heads = draws[:n_obs].sum()
+    return st.beta(α + heads, β + n_obs - heads)
 ```
 
 **d)**
 
 ```{code-cell} ipython3
 rng = np.random.default_rng(567)
-bayes = Bayesian(rng=rng)
-bayes.draw()
+draws = simulate_flips(rng=rng)
 
 n_obs_list = [1, 2, 3, 4, 5, 10, 20, 50,
               100, 1000,
               5000, 10_000, 50_000, 100_000,
               200_000, 300_000]
 
-bayes.form_posterior_series(n_obs_list)
+posterior_list = [form_posterior(draws, n_obs) for n_obs in n_obs_list]
 
 θ_values = np.linspace(0.01, 1, 1000)
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
-ax.plot(θ_values, bayes.prior.pdf(θ_values),
+prior = st.beta(0.5, 0.5)
+ax.plot(θ_values, prior.pdf(θ_values),
         label='n = 0 (prior)', linestyle='--')
 
 for i, n_obs in enumerate(n_obs_list[:10]):
-    posterior = bayes.posterior_list[i]
+    posterior = posterior_list[i]
     ax.plot(θ_values, posterior.pdf(θ_values),
             label=f'n = {n_obs}')
 
@@ -493,8 +473,8 @@ plt.show()
 **e)**
 
 ```{code-cell} ipython3
-lower_bound = [post.ppf(0.05) for post in bayes.posterior_list[:10]]
-upper_bound = [post.ppf(0.95) for post in bayes.posterior_list[:10]]
+lower_bound = [post.ppf(0.05) for post in posterior_list[:10]]
+upper_bound = [post.ppf(0.95) for post in posterior_list[:10]]
 
 interval_df = pd.DataFrame()
 interval_df['upper'] = upper_bound
@@ -523,7 +503,7 @@ left_value, right_value = 0.45, 0.55
 
 posterior_prob_list = [
     post.cdf(right_value) - post.cdf(left_value)
-    for post in bayes.posterior_list
+    for post in posterior_list
 ]
 
 fig, ax = plt.subplots(figsize=(8, 5))
@@ -562,7 +542,7 @@ That is why we see a nearly horizontal line when the number of observations exce
 fig, ax = plt.subplots(figsize=(10, 6))
 
 for i, n_obs in enumerate(n_obs_list[10:]):
-    posterior = bayes.posterior_list[i + 10]
+    posterior = posterior_list[i + 10]
     ax.plot(θ_values, posterior.pdf(θ_values),
             label=f'n = {n_obs:,}')
 
@@ -581,8 +561,8 @@ Here the  posterior mean  converges to $0.4$ while the posterior standard deviat
 To show this, we compute the mean and standard deviation of the posterior distributions.
 
 ```{code-cell} ipython3
-mean_list = [post.mean() for post in bayes.posterior_list]
-std_list = [post.std() for post in bayes.posterior_list]
+mean_list = [post.mean() for post in posterior_list]
+std_list = [post.std() for post in posterior_list]
 
 fig, ax = plt.subplots(1, 2, figsize=(14, 5))
 
@@ -625,8 +605,8 @@ Since the data are generated with $\theta = 0.4$, the Law of Large Numbers tells
 Consequently, the posterior mean converges to $0.4$ and the posterior variance shrinks to zero.
 
 ```{code-cell} ipython3
-upper_bound = [post.ppf(0.95) for post in bayes.posterior_list]
-lower_bound = [post.ppf(0.05) for post in bayes.posterior_list]
+upper_bound = [post.ppf(0.95) for post in posterior_list]
+lower_bound = [post.ppf(0.05) for post in posterior_list]
 
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.scatter(np.arange(len(upper_bound)),
