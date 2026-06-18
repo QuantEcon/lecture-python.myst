@@ -156,11 +156,11 @@ def run_nuts(prior, k, n, seed=0, num_warmup=1000, num_samples=4000, num_chains=
         chain_method="vectorized",
         progress_bar=False,
     )
-    mcmc.run(random.PRNGKey(seed), prior, k, n)
+    mcmc.run(random.key(seed), prior, k, n)
     return mcmc
 ```
 
-NumPyro is built on [JAX](https://docs.jax.dev), which treats randomness explicitly: rather than relying on a global random state, each run needs its own **PRNG key**, created here with `random.PRNGKey(seed)`.
+NumPyro is built on [JAX](https://docs.jax.dev), which treats randomness explicitly: rather than relying on a global random state, each run needs its own **PRNG key**, created here with `random.key(seed)`.
 
 (This is why we used NumPy's generator to make the data above but JAX keys here.)
 
@@ -418,7 +418,7 @@ guide = AutoNormal(binomial_model)
 optimizer = Adam(step_size=0.01)
 svi = SVI(binomial_model, guide, optimizer, loss=Trace_ELBO())
 
-svi_result = svi.run(random.PRNGKey(0), 5000, prior_ln, k, n, progress_bar=False)
+svi_result = svi.run(random.key(0), 5000, prior_ln, k, n, progress_bar=False)
 ```
 
 SVI maximizes the ELBO; equivalently, it minimizes its negative, which is the reported loss.
@@ -440,7 +440,7 @@ To assess the approximation, we draw samples from the fitted guide and compare t
 
 ```{code-cell} ipython3
 vi_samples = guide.sample_posterior(
-    random.PRNGKey(1), svi_result.params, sample_shape=(4000,)
+    random.key(1), svi_result.params, sample_shape=(4000,)
 )["θ"]
 nuts_samples = mcmc_ln.get_samples()["θ"]
 
