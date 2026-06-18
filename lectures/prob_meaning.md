@@ -42,7 +42,7 @@ proceeding to read the rest of the lecture.
 
 We provide our own answers as the lecture unfolds, but you'll learn more if you try writing your own code before reading and running ours.
 
-**Code for answering questions:**
+### Code for answering questions
 
 
 To answer our coding questions, we’ll start with some imports
@@ -162,7 +162,7 @@ From the table above, can you see the law of large numbers at work?
 
 Let's do some more calculations.
 
-**Comparison with different $\theta$**
+### Comparison with different $\theta$
 
 Now we fix
 
@@ -198,7 +198,7 @@ ax.legend()
 plt.show()
 ```
 
-**Comparison with different $n$**
+### Comparison with different $n$
 
 Now we fix $\theta=0.7, k=10, I=1,000,000$ and vary $n$ from $1$ to $100$.
 
@@ -230,7 +230,7 @@ ax.legend()
 plt.show()
 ```
 
-**Comparison with different $I$**
+### Comparison with different $I$
 
 Now we fix $\theta=0.7, n=20, k=10$ and vary $\log(I)$ from $2$ to $6$.
 
