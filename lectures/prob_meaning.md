@@ -335,17 +335,17 @@ The exercise below asks you to derive this closed form.
 
 **b)** Please write down the **posterior** distribution for $\theta$ after observing that single flip.
 
-**c)** Now pretend that the true value of $\theta = .4$ and that someone who doesn't know this has a beta prior distribution with parameters $\beta = \alpha = .5$. Please write Python code to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
+**c)** Now pretend that the true value of $\theta = 0.4$ and that someone who doesn't know this has a beta prior distribution with parameters $\beta = \alpha = 0.5$. Please write Python code to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
 
 **d)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows as $1, 2, \ldots$.
 
-**e)** For various $n$'s, please describe and compute  a Bayesian coverage interval for the interval $[.45, .55]$.
+**e)** For various $n$'s, please describe and compute  a Bayesian coverage interval for the interval $[0.45, 0.55]$.
 
 **f)** Please tell what question a Bayesian coverage interval answers.
 
-**g)** Please compute the posterior probability that $\theta \in [.45, .55]$ for various values of sample size $n$.
+**g)** Please compute the posterior probability that $\theta \in [0.45, 0.55]$ for various values of sample size $n$.
 
-**h)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = .4$, though it is unknown to the person doing the updating via Bayes' Law.
+**h)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = 0.4$, though it is unknown to the person doing the updating via Bayes' Law.
 ```
 
 
@@ -494,19 +494,19 @@ ax.set_xlabel('number of observations', fontsize=11)
 plt.show()
 ```
 
-Notice that in the graph above the posterior probability that $\theta \in [.45, .55]$ exhibits a hump shape as $n$ increases.
+Notice that in the graph above the posterior probability that $\theta \in [0.45, 0.55]$ exhibits a hump shape as $n$ increases.
 
 Two opposing forces are at work.
 
 The first force is that the individual  adjusts his belief as he observes new outcomes, so his posterior probability distribution  becomes more and more realistic, which explains the rise of the posterior probability.
 
-However, $[.45, .55]$ actually excludes the true $\theta =.4 $ that generates the data.
+However, $[0.45, 0.55]$ actually excludes the true $\theta = 0.4$ that generates the data.
 
 As a result, the posterior probability drops as larger and larger samples refine his  posterior probability distribution of $\theta$.
 
 The descent seems precipitous only because of the scale of the graph  that has the number of observations increasing disproportionately.
 
-When the number of observations becomes large enough, our Bayesian becomes so confident about $\theta$ that he considers $\theta \in [.45, .55]$ very unlikely.
+When the number of observations becomes large enough, our Bayesian becomes so confident about $\theta$ that he considers $\theta \in [0.45, 0.55]$ very unlikely.
 
 That is why we see a nearly horizontal line when the number of observations exceeds 1000.
 
@@ -600,7 +600,7 @@ plt.show()
 
 After observing a large number of outcomes, the  posterior distribution collapses around $0.4$.
 
-Thus, the Bayesian statistician  comes to believe that $\theta$ is near $.4$.
+Thus, the Bayesian statistician  comes to believe that $\theta$ is near $0.4$.
 
 As shown in the figure above, as the number of observations grows, the Bayesian coverage intervals (BCIs) become narrower and narrower   around  $0.4$.
 
