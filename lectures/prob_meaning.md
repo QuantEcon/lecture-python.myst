@@ -321,7 +321,7 @@ $$
 \theta \mid k \sim \textrm{Beta}(\alpha + k, \, \beta + n - k)
 $$ (eq:beta_posterior)
 
-The exercise below asks you to derive this closed form.
+The first exercise below asks you to derive this closed form.
 
 ```{exercise}
 :label: pm_ex2
@@ -330,17 +330,7 @@ The exercise below asks you to derive this closed form.
 
 **b)** Write down the **posterior** distribution for $\theta$ after observing that single flip.
 
-**c)** Now pretend that the true value of $\theta = 0.4$ and that someone who doesn't know this has a beta prior distribution with parameters $\beta = \alpha = 0.5$. Write Python code to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
-
-**d)** Plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows as $1, 2, \ldots$.
-
-**e)** For various $n$'s, describe and compute  a Bayesian coverage interval for the interval $[0.45, 0.55]$.
-
-**f)** Tell what question a Bayesian coverage interval answers.
-
-**g)** Compute the posterior probability that $\theta \in [0.45, 0.55]$ for various values of sample size $n$.
-
-**h)** Use your Python code to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = 0.4$, though it is unknown to the person doing the updating via Bayes' Law.
+**c)** Derive the closed-form posterior {eq}`eq:beta_posterior` for a sample of $n$ flips that yields $k$ heads.
 ```
 
 
@@ -378,15 +368,48 @@ $$
 \theta \mid Y \sim \textrm{Beta}(\alpha + Y, \, \beta + (1-Y))
 $$
 
-The same calculation with the binomial likelihood in place of the Bernoulli likelihood generalizes this result to $n$ flips with $k$ heads:
+**c)** The same calculation, with the binomial likelihood in place of the Bernoulli likelihood, generalizes the result to a sample of $n$ flips that yields $k$ heads.
+
+The beta prior contributes the factor $\theta^{\alpha-1}(1-\theta)^{\beta-1}$, and the binomial likelihood contributes $\theta^{k}(1-\theta)^{n-k}$, so the posterior is proportional to
 
 $$
-\theta \mid k \sim \textrm{Beta}(\alpha + k, \, \beta + n - k)
+\theta^{\alpha + k - 1} (1-\theta)^{\beta + n - k - 1},
 $$
 
-This is the formula we use in the remaining parts of the exercise.
+which is the kernel of a beta density. Hence
 
-**c)**
+$$
+\theta \mid k \sim \textrm{Beta}(\alpha + k, \, \beta + n - k),
+$$
+
+as stated in {eq}`eq:beta_posterior`.
+
+```{solution-end}
+```
+
+The next exercise puts this posterior to work.
+
+```{exercise}
+:label: pm_ex3
+
+**a)** Now pretend that the true value of $\theta = 0.4$ and that someone who doesn't know this has a beta prior distribution with parameters $\beta = \alpha = 0.5$. Write Python code to simulate this person's personal posterior distribution for $\theta$ for a _single_ sequence of $n$ draws.
+
+**b)** Plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows as $1, 2, \ldots$.
+
+**c)** For various $n$'s, describe and compute a Bayesian coverage interval for the interval $[0.45, 0.55]$.
+
+**d)** Tell what question a Bayesian coverage interval answers.
+
+**e)** Compute the posterior probability that $\theta \in [0.45, 0.55]$ for various values of sample size $n$.
+
+**f)** Use your Python code to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = 0.4$, though it is unknown to the person doing the updating via Bayes' Law.
+```
+
+```{solution-start} pm_ex3
+:class: dropdown
+```
+
+**a)**
 
 We use one function to simulate a sequence of coin flips and another to form the
 Beta posterior from the first `n_obs` of those flips.
@@ -405,7 +428,7 @@ def form_posterior(draws, n_obs, α=0.5, β=0.5):
     return st.beta(α + heads, β + n_obs - heads)
 ```
 
-**d)**
+**b)**
 
 ```{code-cell} ipython3
 draws = simulate_flips()
@@ -438,7 +461,7 @@ ax.legend(fontsize=11)
 plt.show()
 ```
 
-**e)**
+**c)**
 
 ```{code-cell} ipython3
 lower_bound = [post.ppf(0.05) for post in posterior_list[:10]]
@@ -454,7 +477,7 @@ interval_df
 
 As $n$ increases, we can see that Bayesian coverage intervals narrow and move toward $0.4$.
 
-**f)** The Bayesian coverage interval tells the range of $\theta$ that corresponds to the [$q_1$, $q_2$] quantiles of the cumulative distribution function (CDF) of the posterior distribution.
+**d)** The Bayesian coverage interval tells the range of $\theta$ that corresponds to the [$q_1$, $q_2$] quantiles of the cumulative distribution function (CDF) of the posterior distribution.
 
 To construct the coverage interval we first compute a posterior distribution of the unknown parameter $\theta$.
 
@@ -464,7 +487,7 @@ $$
 F(a)=q_1,F(b)=q_2
 $$
 
-**g)**
+**e)**
 
 ```{code-cell} ipython3
 left_value, right_value = 0.45, 0.55
@@ -504,7 +527,7 @@ When the number of observations becomes large enough, our Bayesian becomes so co
 
 That is why we see a nearly horizontal line when the number of observations exceeds 1000.
 
-**h)** Using the functions we wrote above, we can see the evolution of posterior distributions as $n$ approaches infinity.
+**f)** Using the functions we wrote above, we can see the evolution of posterior distributions as $n$ approaches infinity.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
