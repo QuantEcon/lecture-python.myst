@@ -29,11 +29,9 @@ We recommend watching the following two videos before proceeding:
 
 * [The Bayesian approach to constructing coverage intervals](https://www.youtube.com/watch?v=Pahyv9i_X2k)
 
-After you are familiar with the material in these videos, this lecture uses the Socratic method to help consolidate your understanding of the different questions that are answered by
+After you are familiar with the material in these videos, this lecture uses the Socratic method to help consolidate your understanding of these two meanings of probability.
 
- * a frequentist confidence interval
-
- * a Bayesian coverage interval
+Along the way we construct a **Bayesian coverage interval** and contrast the question it answers with the frequentist relative-frequency reasoning that opens the lecture.
 
 We do this  by inviting you to  write some  Python code.
 
@@ -227,6 +225,8 @@ ax.legend()
 plt.show()
 ```
 
+Because $k=10$ is held fixed, $p(k \mid \theta)$ is zero whenever $n < 10$ — we cannot obtain $10$ heads in fewer than $10$ flips — and it is largest near $n \approx 14$, where the expected number of heads $n\theta$ is closest to $k$. The simulated fraction tracks this shape.
+
 ### Comparison with different $I$
 
 Now we fix $\theta=0.7, n=20, k=10$ and vary $\log(I)$ from $2$ to $6$.
@@ -295,6 +295,8 @@ Instead, the probability distribution of $\theta$ is now a summary of our views 
 
   * **before** we have seen **any** data at all, or
   * **before** we have seen **more** data, after we have seen **some** data
+
+### The beta prior and its posterior
 
 Thus, suppose that, before seeing any data, you have a personal prior probability distribution with density
 
@@ -386,6 +388,8 @@ as stated in {eq}`eq:beta_posterior`.
 
 ```{solution-end}
 ```
+
+### Exploring the posterior numerically
 
 The next exercise puts this posterior to work.
 
@@ -577,6 +581,8 @@ plt.show()
 ```{solution-end}
 ```
 
+### Why the posterior concentrates
+
 How shall we interpret the patterns above?
 
 The answer is encoded in the Bayesian updating formula derived above.
@@ -623,6 +629,16 @@ As shown in the figure above, as the number of observations grows, the Bayesian 
 
 However, if you take a closer look, you will find that the centers of  the BCIs are not exactly $0.4$, due to the persistent influence of the prior distribution and the randomness of the simulation path.
 
+
+## Comparing the two interpretations
+
+We can now place the two meanings of probability side by side.
+
+In the frequentist calculations, $\theta$ was a *fixed* number and a probability was a *relative frequency*: $p(k \mid \theta)$ is the fraction of a large number of independent length-$n$ sequences in which exactly $k$ heads occur, and we confirmed by simulation that $f_k^I \to p(k \mid \theta)$ as $I \to \infty$.
+
+In the Bayesian calculations, $\theta$ was itself a *random variable* describing our beliefs, and a probability was a *degree of belief*. The Bayesian coverage interval summarizes the posterior $p(\theta \mid k)$: it reports the range of $\theta$ lying between two posterior quantiles, and so answers the question "given the data I have seen and my prior, where do I now believe $\theta$ lies?"
+
+These are genuinely different questions, even though both rest on the same binomial likelihood. The frequentist statement describes the data-generating mechanism for a fixed $\theta$; the Bayesian statement describes our uncertainty about $\theta$ given the particular data we happened to observe.
 
 ## Role of a Conjugate Prior
 
