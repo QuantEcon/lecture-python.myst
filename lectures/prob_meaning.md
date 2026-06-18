@@ -551,9 +551,48 @@ plt.show()
 
 As $n$ increases, we can see that the probability density functions _concentrate_ on $0.4$, the true value of $\theta$.
 
-Here the  posterior mean  converges to $0.4$ while the posterior standard deviation converges to $0$ from above.
+```{solution-end}
+```
 
-To show this, we compute the mean and standard deviation of the posterior distributions.
+### Why the posterior concentrates
+
+Why does the posterior pile up ever more tightly around the true value $\theta = 0.4$ as the sample grows?
+
+The answer is encoded in the posterior we derived.
+
+Recall that after observing $k$ heads in $n$ flips, the posterior is $\textrm{Beta}(\alpha + k, \, \beta + n - k)$.
+
+A beta distribution with parameters $a$ and $b$ has
+
+* mean $\dfrac{a}{a + b}$,
+
+* variance $\dfrac{a\, b}{(a + b)^2\, (a + b + 1)}$.
+
+Substituting the *posterior* parameters $a = \alpha + k$ and $b = \beta + n - k$, so that $a + b = \alpha + \beta + n$, gives
+
+$$
+\mathbb{E}[\theta \mid k] = \frac{\alpha + k}{\alpha + \beta + n},
+\qquad
+\operatorname{Var}[\theta \mid k] = \frac{(\alpha + k)(\beta + n - k)}{(\alpha + \beta + n)^2\, (\alpha + \beta + n + 1)} .
+$$
+
+As $n$ grows, the fixed prior counts $\alpha$ and $\beta$ become negligible beside the data.
+
+Since the data are generated with $\theta = 0.4$, the Law of Large Numbers gives $k/n \to 0.4$ (see {ref}`pm_ex1`), so the posterior mean
+
+$$
+\frac{\alpha + k}{\alpha + \beta + n} \;\approx\; \frac{k}{n} \;\to\; 0.4 .
+$$
+
+In the variance, the numerator grows like $n^2$ while the denominator grows like $n^3$, so
+
+$$
+\operatorname{Var}[\theta \mid k] \;\approx\; \frac{\theta(1 - \theta)}{n} \;\longrightarrow\; 0 .
+$$
+
+The posterior mean therefore homes in on the truth while its spread vanishes at rate $1/n$.
+
+The next figure confirms both claims: the posterior mean settles on $0.4$ and the standard deviation decays toward zero.
 
 ```{code-cell} ipython3
 mean_list = [post.mean() for post in posterior_list]
@@ -577,29 +616,6 @@ ax[1].set_xlabel('number of observations', fontsize=11)
 
 plt.show()
 ```
-
-```{solution-end}
-```
-
-### Why the posterior concentrates
-
-How shall we interpret the patterns above?
-
-The answer is encoded in the Bayesian updating formula derived above.
-
-Recall that after observing $k$ heads in $n$ flips, the posterior is $\textrm{Beta}(\alpha + k, \, \beta + n - k)$.
-
-A beta distribution with parameters $\alpha$ and $\beta$ has
-
-* mean $\frac{\alpha}{\alpha + \beta}$
-
-* variance $\frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}$
-
-Here $\alpha + k$ can be viewed as the number of successes (prior pseudo-count plus observed heads) and $\beta + n - k$ as the number of failures.
-
-Since the data are generated with $\theta = 0.4$, the Law of Large Numbers tells us that, as $n$ grows, $k/n \to 0.4$ (see {ref}`pm_ex1`).
-
-Consequently, the posterior mean converges to $0.4$ and the posterior variance shrinks to zero.
 
 ```{code-cell} ipython3
 upper_bound = [post.ppf(0.95) for post in posterior_list]
