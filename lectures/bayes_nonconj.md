@@ -356,6 +356,24 @@ MCMC approximates the posterior by *sampling* from it.
 
 We restrict attention to a tractable family of densities $q_\phi(\theta)$ — the **guide** — indexed by parameters $\phi$, and we search for the member of that family closest to the posterior.
 
+### Why variational inference?
+
+If NUTS already returns accurate posteriors, why introduce another method?
+
+The answer is **scale**.
+
+MCMC evaluates the likelihood over the entire dataset at every step, and the number of steps it needs tends to grow with the dimension of the parameter.
+
+For large datasets or high-dimensional models — for instance the hierarchical models and neural networks common in machine learning — this can become too slow to be practical.
+
+Variational inference scales much better, because the objective (the ELBO, introduced below) can be maximized with *stochastic* gradients computed on small random subsets of the data — the same machinery that trains deep learning models.
+
+It also yields a compact parametric approximation that is cheap to store and to draw from afterwards.
+
+The price is accuracy: VI returns only the best fit *within the guide family*, and it can understate uncertainty.
+
+As a rule of thumb, prefer MCMC when you need an accurate posterior and the problem is small enough to afford it, and VI when the model is too large for MCMC or a fast, approximate answer is good enough.
+
 ### The evidence lower bound
 
 Let the prior be $p(\theta)$ and the likelihood be $p(Y \mid \theta)$, where $Y$ denotes the observed data (here the head count $k$).
