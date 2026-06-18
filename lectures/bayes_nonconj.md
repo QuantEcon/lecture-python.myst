@@ -193,24 +193,44 @@ We take $\alpha_0 = \beta_0 = 2$ and sample the posterior with NUTS.
 mcmc = run_nuts(binomial_model, dist.Beta(α0, β0), k, n)
 ```
 
-Before looking at the posterior we check that the sampler converged.
+Before looking at the posterior we should check that the sampler has done its job.
 
-ArviZ reads NumPyro's output directly and reports standard diagnostics.
+Unlike the independent draws we are used to, MCMC returns a *dependent* sequence — a Markov chain — whose early draws still remember where the chain started.
+
+We can trust the output only once the chain has "forgotten" its starting point and settled into its stationary distribution, which by construction is the posterior we want.
+
+As a safeguard we ran **four** chains from different random starting points (`num_chains=4` in `run_nuts`) and now check that they agree with one another.
+
+[ArviZ](https://www.arviz.org/) is a companion library for examining the output of Bayesian samplers.
+
+The function `az.from_numpyro` repackages our NumPyro results into ArviZ's standard data structure, and `az.summary` prints a table of per-parameter summaries and convergence diagnostics.
 
 ```{code-cell} ipython3
 idata = az.from_numpyro(mcmc)
 az.summary(idata, var_names=["θ"])
 ```
 
-The potential scale reduction factor `r_hat` is essentially $1.0$ and the effective sample sizes are large, both signs that the chains have mixed well.
+Two columns of this table are convergence diagnostics worth understanding.
 
-The trace plot tells the same story: the four chains overlap and look like stationary noise.
+* **`r_hat`** (the Gelman–Rubin statistic) compares the spread of the draws *within* each chain to the spread *between* chains. If the chains have all converged to the same distribution these two match and `r_hat` is close to $1.0$; values above roughly $1.01$ warn that the chains disagree and the draws cannot yet be trusted.
+
+* **`ess_bulk`** and **`ess_tail`** report the *effective sample size*. Because consecutive MCMC draws are correlated, a chain of length $N$ carries less information than $N$ independent draws would; the effective sample size estimates how many independent draws it is worth (in the bulk and in the tails of the distribution respectively). Larger is better.
+
+Here `r_hat` is essentially $1.0$ and the effective sample sizes run into the thousands, so the chains have mixed well.
+
+A **trace plot** gives a visual check of the same thing.
+
+ArviZ's `plot_trace` draws two panels for each parameter: on the right, the sampled value against the iteration number (one coloured line per chain); on the left, a density estimate of the draws from each chain.
+
+Well-mixed chains look like stationary noise on the right — a fuzzy, flat band, with the chains overlapping rather than drifting or wandering — and their densities on the left lie almost on top of one another.
 
 ```{code-cell} ipython3
 az.plot_trace(idata, var_names=["θ"])
 plt.tight_layout()
 plt.show()
 ```
+
+Our chains pass both checks, so we can trust the draws and turn to the posterior itself.
 
 Now we compare the MCMC posterior with the analytical beta posterior.
 
