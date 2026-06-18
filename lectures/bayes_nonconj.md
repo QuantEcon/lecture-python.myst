@@ -240,7 +240,10 @@ The following helper draws a prior density and the posterior samples on the same
 def plot_prior_posterior(prior, samples, title=""):
     "Overlay a prior density and posterior MCMC draws for θ on [0, 1]."
     grid = jnp.linspace(0.001, 0.999, 500)
-    prior_pdf = np.exp(np.asarray(prior.log_prob(grid)))
+    # mask the density to the prior's support: dist.Uniform.log_prob
+    # returns its constant value even outside [low, high]
+    in_support = np.asarray(prior.support(grid))
+    prior_pdf = np.where(in_support, np.exp(np.asarray(prior.log_prob(grid))), 0.0)
 
     fig, ax = plt.subplots()
     ax.hist(np.asarray(samples), bins=50, density=True, alpha=0.4,
