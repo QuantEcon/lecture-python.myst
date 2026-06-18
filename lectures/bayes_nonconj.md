@@ -108,13 +108,27 @@ With a large sample the likelihood dominates and almost any reasonable prior lea
 
 A modest $n$ keeps the influence of the prior visible, which is what we want to study here.
 
-### One model, many priors
+### Specifying the model in NumPyro
 
-In NumPyro a model is an ordinary Python function that uses `numpyro.sample` to declare random variables.
+For most readers this will be a first encounter with NumPyro, whose style takes some getting used to.
 
-We write a *single* model that takes the prior distribution as an argument.
+To use it we describe our probability model as a Python function — which, a little confusingly, NumPyro calls a **model**.
 
-This lets us reuse it unchanged for every prior we consider — conjugate or not.
+Such a function does not *compute* anything when called, and it does not return the posterior.
+
+Instead it is a *declaration* of the generative story for the data: which quantities are random, how they are distributed, and how the data depend on them.
+
+An inference algorithm — such as the NUTS sampler below — then *reads* this declaration and works out the posterior for us.
+
+Inside a model, every random quantity is introduced by a call to `numpyro.sample`, and the keyword `obs` decides its role:
+
+* `numpyro.sample("θ", prior)` introduces a **latent** (unobserved) variable named `"θ"`, drawn from `prior` — a quantity we wish to infer.
+
+* `numpyro.sample("k", dist.Binomial(n, θ), obs=k)` introduces an **observed** variable: the keyword `obs=k` pins it to the data, which is how the likelihood $p(k \mid \theta)$ enters.
+
+The string names (`"θ"` and `"k"`) are the labels NumPyro uses to keep track of the variables; we will use them later to pull the posterior draws back out.
+
+We write a *single* model that takes the prior distribution as an argument, so we can reuse it unchanged for every prior we consider — conjugate or not.
 
 ```{code-cell} ipython3
 def binomial_model(prior, k, n):
@@ -123,7 +137,9 @@ def binomial_model(prior, k, n):
     numpyro.sample("k", dist.Binomial(n, θ), obs=k)
 ```
 
-The first `sample` statement draws $\theta$ from the prior; the second ties the observed count `k` to the binomial likelihood through `obs=k`.
+Notice that `binomial_model` returns nothing, and that we never call it ourselves.
+
+Instead we hand it to an inference algorithm, which supplies the arguments and traces the two `sample` statements to assemble the posterior.
 
 We also write a small helper that runs NUTS and returns the fitted sampler.
 
@@ -143,6 +159,12 @@ def run_nuts(prior, k, n, seed=0, num_warmup=1000, num_samples=4000, num_chains=
     mcmc.run(random.PRNGKey(seed), prior, k, n)
     return mcmc
 ```
+
+NumPyro is built on [JAX](https://docs.jax.dev), which treats randomness explicitly: rather than relying on a global random state, each run needs its own **PRNG key**, created here with `random.PRNGKey(seed)`.
+
+(This is why we used NumPy's generator to make the data above but JAX keys here.)
+
+The remaining arguments to `mcmc.run` — `prior`, `k`, `n` — are simply forwarded to our model.
 
 ## MCMC reproduces the conjugate posterior
 
