@@ -551,9 +551,50 @@ plt.show()
 
 As $n$ increases, we can see that the probability density functions _concentrate_ on $0.4$, the true value of $\theta$.
 
-Here the  posterior mean  converges to $0.4$ while the posterior standard deviation converges to $0$ from above.
+The next section explains *why* this concentration occurs and how fast it happens.
 
-To show this, we compute the mean and standard deviation of the posterior distributions.
+```{solution-end}
+```
+
+### Why the posterior concentrates
+
+In the solution to {ref}`pm_ex3` we watched the posterior distribution concentrate ever more tightly around the true value $\theta = 0.4$ as the sample grew. Why does this happen?
+
+The answer is encoded in the posterior we derived.
+
+Recall that after observing $k$ heads in $n$ flips, the posterior is $\textrm{Beta}(\alpha + k, \, \beta + n - k)$.
+
+A beta distribution with parameters $a$ and $b$ has
+
+* mean $\dfrac{a}{a + b}$,
+
+* variance $\dfrac{a\, b}{(a + b)^2\, (a + b + 1)}$.
+
+Substituting the *posterior* parameters $a = \alpha + k$ and $b = \beta + n - k$, so that $a + b = \alpha + \beta + n$, gives
+
+$$
+\mathbb{E}[\theta \mid k] = \frac{\alpha + k}{\alpha + \beta + n},
+\qquad
+\operatorname{Var}[\theta \mid k] = \frac{(\alpha + k)(\beta + n - k)}{(\alpha + \beta + n)^2\, (\alpha + \beta + n + 1)} .
+$$
+
+As $n$ grows, the fixed prior counts $\alpha$ and $\beta$ become negligible beside the data.
+
+Since the data are generated with $\theta = 0.4$, the Law of Large Numbers gives $k/n \to 0.4$ (see {ref}`pm_ex1`), so the posterior mean
+
+$$
+\frac{\alpha + k}{\alpha + \beta + n} \;\approx\; \frac{k}{n} \;\to\; 0.4 .
+$$
+
+In the variance, the numerator grows like $n^2$ while the denominator grows like $n^3$, so
+
+$$
+\operatorname{Var}[\theta \mid k] \;\approx\; \frac{\theta(1 - \theta)}{n} \;\longrightarrow\; 0 .
+$$
+
+The posterior mean therefore homes in on the truth while its spread vanishes at rate $1/n$.
+
+The next figure confirms both claims: the posterior mean settles on $0.4$ and the standard deviation decays toward zero.
 
 ```{code-cell} ipython3
 mean_list = [post.mean() for post in posterior_list]
@@ -578,45 +619,26 @@ ax[1].set_xlabel('number of observations', fontsize=11)
 plt.show()
 ```
 
-```{solution-end}
-```
+We can also display the Bayesian coverage intervals directly.
 
-### Why the posterior concentrates
-
-How shall we interpret the patterns above?
-
-The answer is encoded in the Bayesian updating formula derived above.
-
-Recall that after observing $k$ heads in $n$ flips, the posterior is $\textrm{Beta}(\alpha + k, \, \beta + n - k)$.
-
-A beta distribution with parameters $\alpha$ and $\beta$ has
-
-* mean $\frac{\alpha}{\alpha + \beta}$
-
-* variance $\frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}$
-
-Here $\alpha + k$ can be viewed as the number of successes (prior pseudo-count plus observed heads) and $\beta + n - k$ as the number of failures.
-
-Since the data are generated with $\theta = 0.4$, the Law of Large Numbers tells us that, as $n$ grows, $k/n \to 0.4$ (see {ref}`pm_ex1`).
-
-Consequently, the posterior mean converges to $0.4$ and the posterior variance shrinks to zero.
+The box-and-whisker plot below summarizes each posterior by its median (central line), interquartile range (box), and $5$th–$95$th percentile range (whiskers), with the true value $\theta = 0.4$ marked.
 
 ```{code-cell} ipython3
-upper_bound = [post.ppf(0.95) for post in posterior_list]
-lower_bound = [post.ppf(0.05) for post in posterior_list]
+quantiles = [0.05, 0.25, 0.5, 0.75, 0.95]
+box_stats = []
+for post in posterior_list:
+    lo, q1, med, q3, hi = post.ppf(quantiles)
+    box_stats.append({'med': med, 'q1': q1, 'q3': q3,
+                      'whislo': lo, 'whishi': hi, 'fliers': []})
 
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.scatter(np.arange(len(upper_bound)),
-           upper_bound, label='95th quantile')
-ax.scatter(np.arange(len(lower_bound)),
-           lower_bound, label='5th quantile')
-
-ax.set_xticks(np.arange(0, len(upper_bound), 2))
-ax.set_xticklabels(n_obs_list[::2])
+ax.bxp(box_stats, positions=np.arange(len(box_stats)), showfliers=False)
+ax.axhline(0.4, color='C1', linestyle='--', label=r'true $\theta = 0.4$')
+ax.set_xticks(np.arange(len(box_stats)))
+ax.set_xticklabels(n_obs_list, rotation=45)
 ax.set_xlabel('number of observations', fontsize=12)
-ax.set_title('Bayesian coverage intervals of '
-             'posterior distributions', fontsize=15)
-
+ax.set_ylabel(r'$\theta$', fontsize=12)
+ax.set_title('posterior coverage intervals as $n$ grows', fontsize=15)
 ax.legend(fontsize=11)
 plt.show()
 ```
