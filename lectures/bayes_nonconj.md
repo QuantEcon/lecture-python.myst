@@ -141,22 +141,22 @@ Notice that `binomial_model` returns nothing, and that we never call it ourselve
 
 Instead we hand it to an inference algorithm, which supplies the arguments and traces the two `sample` statements to assemble the posterior.
 
-We also write a small helper that runs NUTS and returns the fitted sampler.
+We also write a small helper that runs NUTS on a given model and returns the fitted sampler.
 
 We request four chains so that we can check convergence below, and run them with `chain_method="vectorized"`, which evaluates all chains together on a single device — so the same code runs unchanged on a CPU or a GPU.
 
 ```{code-cell} ipython3
-def run_nuts(prior, k, n, seed=0, num_warmup=1000, num_samples=4000, num_chains=4):
-    "Sample the posterior of θ with the NUTS sampler."
+def run_nuts(model, *args, seed=0, num_warmup=1000, num_samples=4000, num_chains=4):
+    "Sample a NumPyro model with the NUTS sampler."
     mcmc = MCMC(
-        NUTS(binomial_model),
+        NUTS(model),
         num_warmup=num_warmup,
         num_samples=num_samples,
         num_chains=num_chains,
         chain_method="vectorized",
         progress_bar=False,
     )
-    mcmc.run(random.key(seed), prior, k, n)
+    mcmc.run(random.key(seed), *args)
     return mcmc
 ```
 
@@ -164,7 +164,7 @@ NumPyro is built on [JAX](https://docs.jax.dev), which treats randomness explici
 
 (This is why we used NumPy's generator to make the data above but JAX keys here.)
 
-The remaining arguments to `mcmc.run` — `prior`, `k`, `n` — are simply forwarded to our model.
+`run_nuts` is deliberately generic: it samples whatever model we pass and forwards the extra arguments (`*args`) on to that model through `mcmc.run`. We always call it as `run_nuts(binomial_model, prior, k, n)`, so `prior`, `k`, and `n` reach `binomial_model` unchanged — there is only ever the one prior.
 
 ## MCMC reproduces the conjugate posterior
 
@@ -180,7 +180,7 @@ We take $\alpha_0 = \beta_0 = 2$ and sample the posterior with NUTS.
 
 ```{code-cell} ipython3
 α0, β0 = 2.0, 2.0
-mcmc = run_nuts(dist.Beta(α0, β0), k, n)
+mcmc = run_nuts(binomial_model, dist.Beta(α0, β0), k, n)
 ```
 
 Before looking at the posterior we check that the sampler converged.
@@ -263,7 +263,7 @@ A uniform prior on all of $[0, 1]$ expresses indifference.
 Because its density is constant, the posterior is then proportional to the likelihood alone.
 
 ```{code-cell} ipython3
-mcmc_flat = run_nuts(dist.Uniform(0.0, 1.0), k, n)
+mcmc_flat = run_nuts(binomial_model, dist.Uniform(0.0, 1.0), k, n)
 plot_prior_posterior(dist.Uniform(0.0, 1.0),
                      mcmc_flat.get_samples()["θ"],
                      title="flat uniform prior")
@@ -276,7 +276,7 @@ Now suppose instead that the analyst is convinced the coin favors heads, and pla
 This prior assigns *zero* density to the region around the true value $\theta = 0.4$.
 
 ```{code-cell} ipython3
-mcmc_restr = run_nuts(dist.Uniform(0.5, 0.95), k, n)
+mcmc_restr = run_nuts(binomial_model, dist.Uniform(0.5, 0.95), k, n)
 plot_prior_posterior(dist.Uniform(0.5, 0.95),
                      mcmc_restr.get_samples()["θ"],
                      title="restrictive uniform prior")
@@ -301,7 +301,7 @@ def truncated_lognormal(μ, σ):
     return dist.TransformedDistribution(base, dist.transforms.ExpTransform())
 
 prior_ln = truncated_lognormal(0.0, 1.0)
-mcmc_ln = run_nuts(prior_ln, k, n)
+mcmc_ln = run_nuts(binomial_model, prior_ln, k, n)
 plot_prior_posterior(prior_ln, mcmc_ln.get_samples()["θ"],
                      title="truncated log-normal prior")
 ```
@@ -324,7 +324,7 @@ def truncated_laplace(μ, b):
     return dist.TruncatedDistribution(dist.Laplace(μ, b), low=0.0, high=1.0)
 
 prior_lp = truncated_laplace(0.5, 0.1)
-mcmc_lp = run_nuts(prior_lp, k, n)
+mcmc_lp = run_nuts(binomial_model, prior_lp, k, n)
 plot_prior_posterior(prior_lp, mcmc_lp.get_samples()["θ"],
                      title="truncated Laplace prior")
 ```
