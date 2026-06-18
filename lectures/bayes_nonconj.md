@@ -345,7 +345,7 @@ We restrict attention to a tractable family of densities $q_\phi(\theta)$ — th
 
 ### The evidence lower bound
 
-Let the prior be $p(\theta)$ and the likelihood be $p(Y \mid \theta)$.
+Let the prior be $p(\theta)$ and the likelihood be $p(Y \mid \theta)$, where $Y$ denotes the observed data (here the head count $k$).
 
 By Bayes' rule,
 
