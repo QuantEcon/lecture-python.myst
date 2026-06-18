@@ -551,12 +551,14 @@ plt.show()
 
 As $n$ increases, we can see that the probability density functions _concentrate_ on $0.4$, the true value of $\theta$.
 
+The next section explains *why* this concentration occurs and how fast it happens.
+
 ```{solution-end}
 ```
 
 ### Why the posterior concentrates
 
-Why does the posterior pile up ever more tightly around the true value $\theta = 0.4$ as the sample grows?
+In the solution to {ref}`pm_ex3` we watched the posterior distribution concentrate ever more tightly around the true value $\theta = 0.4$ as the sample grew. Why does this happen?
 
 The answer is encoded in the posterior we derived.
 
@@ -617,22 +619,26 @@ ax[1].set_xlabel('number of observations', fontsize=11)
 plt.show()
 ```
 
+We can also display the Bayesian coverage intervals directly.
+
+The box-and-whisker plot below summarizes each posterior by its median (central line), interquartile range (box), and $5$th–$95$th percentile range (whiskers), with the true value $\theta = 0.4$ marked.
+
 ```{code-cell} ipython3
-upper_bound = [post.ppf(0.95) for post in posterior_list]
-lower_bound = [post.ppf(0.05) for post in posterior_list]
+quantiles = [0.05, 0.25, 0.5, 0.75, 0.95]
+box_stats = []
+for post in posterior_list:
+    lo, q1, med, q3, hi = post.ppf(quantiles)
+    box_stats.append({'med': med, 'q1': q1, 'q3': q3,
+                      'whislo': lo, 'whishi': hi, 'fliers': []})
 
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.scatter(np.arange(len(upper_bound)),
-           upper_bound, label='95th quantile')
-ax.scatter(np.arange(len(lower_bound)),
-           lower_bound, label='5th quantile')
-
-ax.set_xticks(np.arange(0, len(upper_bound), 2))
-ax.set_xticklabels(n_obs_list[::2])
+ax.bxp(box_stats, positions=np.arange(len(box_stats)), showfliers=False)
+ax.axhline(0.4, color='C1', linestyle='--', label=r'true $\theta = 0.4$')
+ax.set_xticks(np.arange(len(box_stats)))
+ax.set_xticklabels(n_obs_list, rotation=45)
 ax.set_xlabel('number of observations', fontsize=12)
-ax.set_title('Bayesian coverage intervals of '
-             'posterior distributions', fontsize=15)
-
+ax.set_ylabel(r'$\theta$', fontsize=12)
+ax.set_title('posterior coverage intervals as $n$ grows', fontsize=15)
 ax.legend(fontsize=11)
 plt.show()
 ```
