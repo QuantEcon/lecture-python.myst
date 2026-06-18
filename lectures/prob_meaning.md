@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.10.3
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -115,7 +115,7 @@ As usual, a law of large numbers justifies this answer.
 ```{exercise}
 :label: pm_ex1
 
-1. Please write a Python class to compute $f_k^I$
+1. Please write Python code to compute $f_k^I$
 
 2. Please use your code to compute $f_k^I, k = 0, \ldots , n$ and compare them to
   $p(k \mid \theta)$ for various values of $\theta, n$ and $I$
@@ -127,50 +127,37 @@ As usual, a law of large numbers justifies this answer.
 :class: dropdown
 ```
 
-Here is one solution:
+Here is one solution.
+
+We simulate the coin flips with one function and assemble the comparison table
+with another.
 
 ```{code-cell} ipython3
-class Frequentist:
+def simulate_head_counts(θ, n, I, rng=None):
+    "Simulate I sequences of n coin flips; return the heads count of each sequence."
+    rng = rng or np.random.default_rng()
+    Y = (rng.random((I, n)) <= θ).astype(int)
+    return Y.sum(axis=1)
+```
 
-    def __init__(self, θ, n, I, rng=None):
-        self.θ, self.n, self.I = θ, n, I
-        self.rng = rng or np.random.default_rng()
-
-    def binomial(self, k):
-        '''Compute the theoretical probability.'''
-        self.P = binom.pmf(k, self.n, self.θ)
-
-    def draw(self):
-        '''Draw n independent flips for I sequences.'''
-        θ, n, I = self.θ, self.n, self.I
-        sample = self.rng.random((I, n))
-        self.Y = (sample <= θ).astype(int)
-
-    def compute_fk(self, k):
-        '''Compute f_k^I for a given k.'''
-        head_counts = np.sum(self.Y, axis=1)
-        self.f_kI = np.sum(head_counts == k) / self.I
-
-    def compare(self):
-        '''Compute and print the comparison.'''
-        self.draw()
-        rows = []
-        for k in range(self.n + 1):
-            self.binomial(k)
-            self.compute_fk(k)
-            rows.append([k, self.P, self.f_kI])
-        return pd.DataFrame(
-            rows, columns=['k', 'Theoretical', 'Frequentist']
-        ).set_index('k')
+```{code-cell} ipython3
+def compare_frequencies(θ, n, I, rng=None):
+    "Tabulate theoretical binomial probabilities against simulated frequencies."
+    head_counts = simulate_head_counts(θ, n, I, rng)
+    rows = [
+        (k, binom.pmf(k, n, θ), np.mean(head_counts == k))
+        for k in range(n + 1)
+    ]
+    return pd.DataFrame(
+        rows, columns=['k', 'Theoretical', 'Frequentist']
+    ).set_index('k')
 ```
 
 ```{code-cell} ipython3
 rng = np.random.default_rng(123)
 θ, n, k, I = 0.7, 20, 10, 1_000_000
 
-freq = Frequentist(θ, n, I, rng=rng)
-
-freq.compare()
+compare_frequencies(θ, n, I, rng=rng)
 ```
 
 From the table above, can you see the law of large numbers at work?
@@ -197,12 +184,9 @@ thetas = np.linspace(θ_low, θ_high, n_thetas)
 P = []
 f_kI = []
 for i in range(n_thetas):
-    freq = Frequentist(thetas[i], n, I, rng=rng)
-    freq.binomial(k)
-    freq.draw()
-    freq.compute_fk(k)
-    P.append(freq.P)
-    f_kI.append(freq.f_kI)
+    P.append(binom.pmf(k, n, thetas[i]))
+    head_counts = simulate_head_counts(thetas[i], n, I, rng=rng)
+    f_kI.append(np.mean(head_counts == k))
 ```
 
 ```{code-cell} ipython3
@@ -232,12 +216,9 @@ ns = np.linspace(n_low, n_high, n_ns, dtype='int')
 P = []
 f_kI = []
 for i in range(n_ns):
-    freq = Frequentist(θ, ns[i], I, rng=rng)
-    freq.binomial(k)
-    freq.draw()
-    freq.compute_fk(k)
-    P.append(freq.P)
-    f_kI.append(freq.f_kI)
+    P.append(binom.pmf(k, ns[i], θ))
+    head_counts = simulate_head_counts(θ, ns[i], I, rng=rng)
+    f_kI.append(np.mean(head_counts == k))
 ```
 
 ```{code-cell} ipython3
@@ -266,12 +247,9 @@ Is = np.power(10, log_Is).astype(int)
 P = []
 f_kI = []
 for i in range(n_Is):
-    freq = Frequentist(θ, n, Is[i], rng=rng)
-    freq.binomial(k)
-    freq.draw()
-    freq.compute_fk(k)
-    P.append(freq.P)
-    f_kI.append(freq.f_kI)
+    P.append(binom.pmf(k, n, θ))
+    head_counts = simulate_head_counts(θ, n, Is[i], rng=rng)
+    f_kI.append(np.mean(head_counts == k))
 ```
 
 ```{code-cell} ipython3
