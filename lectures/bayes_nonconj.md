@@ -69,12 +69,6 @@ from numpyro.optim import Adam
 import arviz as az
 ```
 
-To draw posterior samples from several Markov chains in parallel, we tell NumPyro how many CPU devices to use.
-
-```{code-cell} ipython3
-numpyro.set_host_device_count(4)
-```
-
 ## The coin-flipping model
 
 As in {doc}`prob_meaning`, a coin lands heads ($Y=1$) with probability $\theta$ and tails ($Y=0$) with probability $1-\theta$.
@@ -133,6 +127,8 @@ The first `sample` statement draws $\theta$ from the prior; the second ties the 
 
 We also write a small helper that runs NUTS and returns the fitted sampler.
 
+We request four chains so that we can check convergence below, and run them with `chain_method="vectorized"`, which evaluates all chains together on a single device — so the same code runs unchanged on a CPU or a GPU.
+
 ```{code-cell} ipython3
 def run_nuts(prior, k, n, seed=0, num_warmup=1000, num_samples=4000, num_chains=4):
     "Sample the posterior of θ with the NUTS sampler."
@@ -141,6 +137,7 @@ def run_nuts(prior, k, n, seed=0, num_warmup=1000, num_samples=4000, num_chains=
         num_warmup=num_warmup,
         num_samples=num_samples,
         num_chains=num_chains,
+        chain_method="vectorized",
         progress_bar=False,
     )
     mcmc.run(random.PRNGKey(seed), prior, k, n)
