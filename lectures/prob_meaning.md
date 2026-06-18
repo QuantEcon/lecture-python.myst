@@ -346,7 +346,13 @@ $$
 p(\theta \mid k) = \frac{p(k \mid \theta) \cdot p(\theta)}{\int_0^1 p(k \mid \theta) \cdot p(\theta) \, d\theta}
 $$
 
-The exercise below derives a closed form for the posterior.
+Because the beta prior is conjugate to the binomial likelihood, this integral evaluates to (the kernel of) another beta density, so that
+
+$$
+\theta \mid k \sim \textrm{Beta}(\alpha + k, \, \beta + n - k)
+$$ (eq:beta_posterior)
+
+The exercise below asks you to derive this closed form.
 
 ```{exercise}
 :label: pm_ex2

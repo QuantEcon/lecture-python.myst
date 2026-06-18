@@ -105,25 +105,15 @@ $$
 
 We choose this as our prior for now because we know that a conjugate prior for the binomial likelihood function is a beta distribution.
 
-After observing $k$ successes among $N$ sample observations, the posterior probability distribution of $ \theta $ is
+As shown in {doc}`prob_meaning`, the beta prior is conjugate to the binomial likelihood, so the posterior is again a beta distribution.
 
-$$
-\textrm{Prob}(\theta|k) = \frac{\textrm{Prob}(\theta,k)}{\textrm{Prob}(k)}=\frac{\textrm{Prob}(k|\theta)\textrm{Prob}(\theta)}{\textrm{Prob}(k)}=\frac{\textrm{Prob}(k|\theta) \textrm{Prob}(\theta)}{\int_0^1 \textrm{Prob}(k|\theta)\textrm{Prob}(\theta) d\theta}
-$$
-
-$$
-=\frac{{N \choose k} (1 - \theta)^{N-k} \theta^k \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)}}{\int_0^1 {N \choose k} (1 - \theta)^{N-k} \theta^k\frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} d\theta}
-$$
-
-$$
-=\frac{(1 -\theta)^{\beta+N-k-1} \theta^{\alpha+k-1}}{\int_0^1 (1 - \theta)^{\beta+N-k-1} \theta^{\alpha+k-1} d\theta} .
-$$
-
-Thus,
+After observing $k$ successes among $N$ sample observations, the posterior probability distribution of $\theta$ is
 
 $$
 \textrm{Prob}(\theta|k) \sim {Beta}(\alpha + k, \beta+N-k)
 $$
+
+(this is the closed form derived in {doc}`prob_meaning`, with sample size $N$ here in place of $n$ there).
 
 The analytical posterior for a given conjugate beta prior is coded in the following
 
