@@ -70,7 +70,7 @@ $$
 
 where the fixed parameter $\theta \in (0,1)$.
 
-This is called the **binomial distribution**.
+This is called the [binomial distribution](https://en.wikipedia.org/wiki/Binomial_distribution).
 
 Here
 
