@@ -69,7 +69,7 @@ The random variable  $X $ takes on possible values $k = 0, 1, 2, \ldots, n$  wit
 
 $$
 p(k \mid \theta) := \mathbb{P}\{X = k \mid \theta\} =
-\left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
+\binom{n}{k} \theta^k (1-\theta)^{n-k}
 $$
 
 where the fixed parameter $\theta \in (0,1)$.
@@ -286,7 +286,7 @@ $$
 So, by the LLN, the average of $\rho_{k,i}$ converges to:
 
 $$
-\mathbb{E}[\rho_{k,i}] = p(k \mid \theta) = \left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
+\mathbb{E}[\rho_{k,i}] = p(k \mid \theta) = \binom{n}{k} \theta^k (1-\theta)^{n-k}
 $$
 
 as $I$ goes to infinity.

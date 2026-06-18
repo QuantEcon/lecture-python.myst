@@ -90,7 +90,7 @@ This defines a likelihood function
 
 $$
 L\left(Y\vert\theta\right) = \textrm{Prob}(X =  k | \theta) =
-\left(\frac{n!}{k! (n-k)!} \right) \theta^k (1-\theta)^{n-k}
+\binom{n}{k} \theta^k (1-\theta)^{n-k}
 $$
 
 where $Y=k$ is an observed data point.
