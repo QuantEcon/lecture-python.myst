@@ -44,6 +44,16 @@ This lecture introduces two widely used ways to do that, both implemented in the
 
 * **Variational inference (VI)** — replace sampling with optimization: search within a tractable family of distributions for the member closest to the posterior.
 
+```{note}
+We treat NUTS as a black box in this lecture.
+
+In brief, it is a form of **Hamiltonian Monte Carlo**, which is itself a version of the **Metropolis–Hastings** algorithm: it proposes candidate draws and accepts or rejects them so that the resulting Markov chain has the posterior as its stationary distribution.
+
+What distinguishes it from a basic Metropolis–Hastings sampler is that its proposals are built from *gradient* (derivative) information about the log-posterior, which lets the chain move efficiently through the parameter space; NUTS additionally tunes the length of each proposed move automatically.
+
+For a more advanced introduction to MCMC and the Metropolis–Hastings algorithm, see [this lecture](https://python-advanced.quantecon.org/mcmc.html).
+```
+
 Our plan is:
 
 1. Confirm that MCMC reproduces the *conjugate* beta posterior that we can compute analytically — this validates the machinery on a problem whose answer we already know.
