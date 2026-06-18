@@ -23,15 +23,11 @@ This lecture  illustrates two distinct interpretations of a  **probability distr
 
  * A Bayesian interpretation as a **personal opinion** (about a parameter or list of parameters) after seeing a collection of observations
 
-We recommend watching this video about **hypothesis testing** within  the frequentist approach
+We recommend watching the following two videos before proceeding:
 
-```{youtube} 8JIe_cz6qGA
-```
+* [Hypothesis testing within the frequentist approach](https://www.youtube.com/watch?v=8JIe_cz6qGA)
 
-After you watch that video, please watch the following video on the Bayesian approach to constructing **coverage intervals**
-
-```{youtube} Pahyv9i_X2k
-```
+* [The Bayesian approach to constructing coverage intervals](https://www.youtube.com/watch?v=Pahyv9i_X2k)
 
 After you are familiar with the material in these videos, this lecture uses the Socratic method to help consolidate your understanding of the different questions that are answered by
 
