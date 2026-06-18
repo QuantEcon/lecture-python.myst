@@ -98,8 +98,7 @@ Let $\sum_{h=1}^n y_h^i$ denote the total number of times  heads come up during 
 Let $f_k$ record the fraction of samples of length $n$ for which $\sum_{h=1}^n y_h^i = k$:
 
 $$
-f_k^I = \frac{\textrm{number of samples of length n for which } \sum_{h=1}^n y_h^i = k}{
-    I}
+f_k^I = \frac{1}{I} \sum_{i=1}^I \mathbb{1}\left\{ \sum_{h=1}^n y_h^i = k \right\}
 $$
 
 The probability  $p(k \mid \theta)$ answers the following question:
@@ -111,9 +110,9 @@ As usual, a law of large numbers justifies this answer.
 ```{exercise}
 :label: pm_ex1
 
-1. Please write Python code to compute $f_k^I$
+1. Write Python code to compute $f_k^I$
 
-2. Please use your code to compute $f_k^I, k = 0, \ldots , n$ and compare them to
+2. Use your code to compute $f_k^I, k = 0, \ldots , n$ and compare them to
   $p(k \mid \theta)$ for various values of $\theta, n$ and $I$
 
 3. With the Law of Large Numbers in mind, use your code to describe the relationship between $f_k^I$ and $p(k \mid \theta)$ as $I$ grows
@@ -331,21 +330,21 @@ The exercise below asks you to derive this closed form.
 ```{exercise}
 :label: pm_ex2
 
-**a)**  Please write down the **likelihood function** for a single coin flip with outcome $Y \in \{0, 1\}$.
+**a)**  Write down the **likelihood function** for a single coin flip with outcome $Y \in \{0, 1\}$.
 
-**b)** Please write down the **posterior** distribution for $\theta$ after observing that single flip.
+**b)** Write down the **posterior** distribution for $\theta$ after observing that single flip.
 
-**c)** Now pretend that the true value of $\theta = 0.4$ and that someone who doesn't know this has a beta prior distribution with parameters $\beta = \alpha = 0.5$. Please write Python code to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
+**c)** Now pretend that the true value of $\theta = 0.4$ and that someone who doesn't know this has a beta prior distribution with parameters $\beta = \alpha = 0.5$. Write Python code to simulate this person's personal posterior distribution for $\theta$  for a _single_ sequence of $n$ draws.
 
-**d)** Please plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows as $1, 2, \ldots$.
+**d)** Plot the posterior distribution for $\theta$ as a function of $\theta$ as $n$ grows as $1, 2, \ldots$.
 
-**e)** For various $n$'s, please describe and compute  a Bayesian coverage interval for the interval $[0.45, 0.55]$.
+**e)** For various $n$'s, describe and compute  a Bayesian coverage interval for the interval $[0.45, 0.55]$.
 
-**f)** Please tell what question a Bayesian coverage interval answers.
+**f)** Tell what question a Bayesian coverage interval answers.
 
-**g)** Please compute the posterior probability that $\theta \in [0.45, 0.55]$ for various values of sample size $n$.
+**g)** Compute the posterior probability that $\theta \in [0.45, 0.55]$ for various values of sample size $n$.
 
-**h)** Please use your Python class to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = 0.4$, though it is unknown to the person doing the updating via Bayes' Law.
+**h)** Use your Python code to study what happens to the posterior distribution as $n \rightarrow + \infty$, again assuming that the true value of $\theta = 0.4$, though it is unknown to the person doing the updating via Bayes' Law.
 ```
 
 
@@ -510,7 +509,7 @@ When the number of observations becomes large enough, our Bayesian becomes so co
 
 That is why we see a nearly horizontal line when the number of observations exceeds 1000.
 
-**h)** Using the Python class we made above, we can see the evolution of posterior distributions as $n$ approaches infinity.
+**h)** Using the functions we wrote above, we can see the evolution of posterior distributions as $n$ approaches infinity.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
