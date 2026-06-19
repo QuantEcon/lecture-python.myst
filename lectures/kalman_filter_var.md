@@ -766,6 +766,74 @@ $$
               = (A - KG)\hat{x}_t + K G x_t + K v_t
 $$ (eq:ex_kf_expanded)
 
+### Impulse Responses of $y_t$ to the Innovations $a_t$
+
+It is useful to compute the **ordinary impulse response functions** of the
+observable vector $y_t$ to its own innovations $a_t$ — the moving-average (Wold)
+representation that is the mirror image of the VAR {eq}`eq:var1`.
+
+From the time-invariant innovations representation {eq}`eq:innovti`
+
+$$
+\hat{x}_{t+1} = A\hat{x}_t + K a_t, \qquad y_t = G\hat{x}_t + a_t,
+$$
+
+the moving-average representation {eq}`eq:sf_wold` is
+
+$$
+y_t = \bigl[I + G(I - AL)^{-1} K L\bigr]\, a_t
+    = a_t + \sum_{h=1}^{\infty} G A^{h-1} K\, a_{t-h}.
+$$
+
+Hence the impulse response of $y_t$ to a unit innovation $a_t$ is
+
+$$
+\Psi_0 = I, \qquad \Psi_h = G A^{h-1} K \quad (h \ge 1).
+$$ (eq:ex_y_to_a)
+
+These coefficients decay at the rate governed by the eigenvalues of $A$ — in
+contrast to the innovation-to-structural-shock responses studied later in the
+numerical example, which decay at the rate governed by the eigenvalues of
+$A - KG$.
+
+We can read the coefficients {eq}`eq:ex_y_to_a` directly off a `quantecon`
+`LinearStateSpace` object.  We build a state-space system whose state is the
+filtered estimate $\hat{x}_t$, whose single "shock" is the innovation $a_t$
+loaded through $C = K$, and whose observation matrix is $G$.  The
+`impulse_response` method of that object returns the sequence $G A^{j} K$ for
+$j = 0, 1, 2, \ldots$, which are exactly the $\Psi_h$ for $h \ge 1$; we prepend
+$\Psi_0 = I$ to capture the contemporaneous feed-through $y_t = G\hat{x}_t + a_t$.
+
+```{code-cell} ipython3
+def y_to_a_irf(A, K, G, T=40):
+    """
+    Ordinary impulse responses of the observable y_t to its own
+    innovations a_t in the innovations (Wold) representation
+
+        x̂_{t+1} = A x̂_t + K a_t
+        y_t      = G x̂_t + a_t.
+
+    The moving-average coefficients are
+        Ψ_0 = I,   Ψ_h = G A^{h-1} K   (h ≥ 1).
+
+    The h ≥ 1 terms come from quantecon's LinearStateSpace: loading the
+    innovation a_t through C = K makes its impulse_response method return
+    G A^j K for j = 0, 1, 2, ....  We prepend Ψ_0 = I for the
+    contemporaneous feed-through.
+
+    Returns an array of shape (T, m, m); entry [h, i, j] is the response
+    of observable i at horizon h to a unit innovation in component j.
+    """
+    n, m     = A.shape[0], G.shape[0]
+    lss      = qe.LinearStateSpace(A, K, G, np.zeros((m, m)), mu_0=np.zeros(n))
+    _, ycoef = lss.impulse_response(j=T - 2)      # [GK, GAK, GA²K, ...]
+    Psi      = np.empty((T, m, m))
+    Psi[0]   = np.eye(m)                          # contemporaneous response
+    for h in range(1, T):
+        Psi[h] = ycoef[h - 1]
+    return Psi
+```
+
 ### Augmented State-Space Representation
 
 We want to express the innovations $a_t$ as a function of the state shocks
@@ -899,9 +967,9 @@ The parameter values are:
 
 $$
 \begin{aligned}
-d_1 &= 0.80,\quad d_2 = 0.05,\quad d_3 = 0.05,\quad d_4 = 0.02 \\
-\delta_1 &= 0.04,\quad \delta_2 = 0.00,\quad \delta_3 = 0.75,\quad \delta_4 = 0.20 \\
-c_{11} &= 1.0,\quad c_{12} = 0.5,\quad c_{21} = 0.5,\quad c_{22} = 1.0 \\
+d_1 &= 0.80,\quad d_2 = 0.05,\quad d_3 = 0.75,\quad d_4 = -0.72 \\
+\delta_1 &= 0.00,\quad \delta_2 = 0.00,\quad \delta_3 = 0.75,\quad \delta_4 = 0.20 \\
+c_{11} &= 1.0,\quad c_{12} = 0.0,\quad c_{21} = 0.0,\quad c_{22} = 1.0 \\
 R &= 0.0001 \times I_2 \quad \text{(bivariate case)}, \qquad
 R = 0.0001 \quad \text{(univariate case)}.
 \end{aligned}
@@ -950,9 +1018,9 @@ import matplotlib.pyplot as plt
 import quantecon as qe
 
 # ── Parameters ───────────────────────────────────────────────────────────────
-d1, d2, d3, d4             = 0.80, 0.05, 0.05, 0.02
-delta1, delta2, delta3, delta4 = 0.04, 0.00, 0.75, 0.20
-c11, c12, c21, c22         = 1.0,  0.5,  0.5,  1.0
+d1, d2, d3, d4             = 0.80, 0.05, 0.75, -.72
+delta1, delta2, delta3, delta4 = 0.00, 0.00, 0.75, 0.20
+c11, c12, c21, c22         = 1.0,  0.0,  0.0,  1.0
 sigma_v                    = 0.01          # sqrt(0.0001)
 
 # ── Shared matrices ───────────────────────────────────────────────────────────
@@ -1016,6 +1084,63 @@ print(np.round(Sigma_uni, 6))
 print("\nDifference  Σ̌ − Σ  (System 2 minus System 1):")
 print(np.round(Sigma_uni - Sigma_biv, 6))
 ```
+
+#### Impulse Responses of $y_t$ to the Innovations $a_t$
+
+We now apply the helper `y_to_a_irf` defined above to compute the ordinary
+impulse responses {eq}`eq:ex_y_to_a` of the observable $y_t$ to its own
+innovations $a_t$, for both System 1 (bivariate, so $a_t$ is $2 \times 1$) and
+System 2 (univariate, so $u_t$ is scalar).
+
+```{code-cell} ipython3
+T_irf    = 40
+horizons = np.arange(T_irf)
+
+Psi_biv = y_to_a_irf(A_var, K_biv, G_biv, T_irf)   # System 1: (T, 2, 2)
+Psi_uni = y_to_a_irf(A_var, K_uni, G_uni, T_irf)   # System 2: (T, 1, 1)
+
+obs_labels   = [r'$r_t$', r'$z_t$']
+innov_labels = [r'$a_{1,t}$', r'$a_{2,t}$']
+
+# ── Figure: System 1 – responses of y_t = (r_t, z_t)' to its innovations a_t ──
+fig, axes = plt.subplots(2, 2, figsize=(10, 6), sharex=True)
+for i, obs in enumerate(obs_labels):
+    for j, inn in enumerate(innov_labels):
+        ax = axes[i, j]
+        ax.plot(horizons, Psi_biv[:, i, j], lw=1.8)
+        ax.axhline(0, color='k', lw=0.6, ls='--')
+        ax.set_title(f'{obs} to {inn}', fontsize=9)
+        if i == 1:
+            ax.set_xlabel('Horizon $h$')
+        if j == 0:
+            ax.set_ylabel('Response')
+
+plt.suptitle(r'System 1: IRFs of $y_t = (r_t, z_t)$ to its innovations $a_t$',
+             fontsize=11)
+plt.tight_layout()
+plt.show()
+```
+
+```{code-cell} ipython3
+# ── Figure: System 2 – response of the scalar observable r_t to innovation u_t ──
+fig, ax = plt.subplots(figsize=(7, 3.5))
+ax.plot(horizons, Psi_uni[:, 0, 0], lw=1.8)
+ax.axhline(0, color='k', lw=0.6, ls='--')
+ax.set_title(r'System 2: IRF of $r_t$ to its innovation $u_t$', fontsize=10)
+ax.set_xlabel('Horizon $h$')
+ax.set_ylabel('Response')
+plt.tight_layout()
+plt.show()
+```
+
+At horizon $h = 0$ each innovation passes one-for-one into its own component of
+$y_t$ — the contemporaneous response equals the identity matrix $\Psi_0 = I$, so
+the diagonal panels start at $1$ and the off-diagonal panels start at $0$.
+For $h \ge 1$ the responses propagate through the state matrix $A$ and decay
+geometrically, tracing out the Wold moving-average representation of the
+bivariate (System 1) and univariate (System 2) processes.
+
+#### Impulse Responses of the Innovations to the Structural Shocks
 
 ```{code-cell} ipython3
 def innovation_irf(A, K, G, C, T=40):
