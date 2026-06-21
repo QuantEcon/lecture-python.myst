@@ -35,11 +35,11 @@ Month-end `date` index plus:
 
 | Column | Definition |
 | --- | --- |
-| `gross_real_return` | gross real market return, `(1 + (Mkt-RF + RF)/100) / gross_inflation` |
+| `gross_real_return` | gross real market return, `(1 + (Mkt-RF + RF)/100) / gross_inflation_cons` |
 | `gross_cons_growth` | gross growth of per-capita real nondurable consumption |
 | `gross_inflation_cons` | gross consumption-deflator inflation |
 | `consumption_per_capita` | per-capita real nondurable consumption level |
-| `gross_real_tbill` | gross real T-bill return, `(1 + RF/100) / gross_inflation` |
+| `gross_real_tbill` | gross real T-bill return, `(1 + RF/100) / gross_inflation_cons` |
 
 ## Regenerating
 

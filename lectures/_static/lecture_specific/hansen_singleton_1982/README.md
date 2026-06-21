@@ -32,8 +32,12 @@ Month-end `date` index plus:
 
 | Column | Definition |
 | --- | --- |
-| `gross_real_return` | gross real market return, `(1 + (Mkt-RF + RF)/100) / gross_inflation` |
+| `gross_real_return` | gross real market return, `(1 + (Mkt-RF + RF)/100) / gross_inflation_cons` |
 | `gross_cons_growth` | gross growth of per-capita real nondurable consumption |
+
+where `gross_inflation_cons` is the month-over-month gross inflation of the PCE
+nondurables price deflator (`DNDGRG3M086SBEA`). It is used to deflate the
+nominal return but is not itself a column of this CSV.
 
 ## Regenerating
 
