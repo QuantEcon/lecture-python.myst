@@ -1436,6 +1436,9 @@ DATA_URL = (
     "hansen_singleton_1983_data.csv"
 )
 
+# Read the vendored snapshot once; load_hs_monthly_data just slices it.
+_data = pd.read_csv(DATA_URL, index_col=0, parse_dates=True)
+
 
 def load_hs_monthly_data(start="1959-02-01", end="1978-12-01"):
     """
@@ -1447,10 +1450,9 @@ def load_hs_monthly_data(start="1959-02-01", end="1978-12-01"):
     ``_static/lecture_specific/hansen_singleton_1983/make_data.py``, which
     constructs them from FRED and the Ken French data library.
     """
-    frame = pd.read_csv(DATA_URL, index_col=0, parse_dates=True)
     start = pd.Timestamp(start).to_period("M").to_timestamp("M")
     end = pd.Timestamp(end).to_period("M").to_timestamp("M")
-    return frame.loc[start:end]
+    return _data.loc[start:end].copy()
 
 
 def get_estimation_data(
