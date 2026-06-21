@@ -11,10 +11,14 @@ kernelspec:
   name: python3
 ---
 
-# Posterior Distributions for  AR(1) Parameters
+# Posterior Distributions for AR(1) Parameters
 
 ```{include} _admonition/gpu.md
 ```
+
+In addition to what's included in base Anaconda, this lecture requires the following libraries.
+
+We first install `numpyro` and `jax`:
 
 ```{code-cell} ipython3
 :tags: [hide-output]
@@ -22,7 +26,7 @@ kernelspec:
 !pip install numpyro jax
 ```
 
-In addition to what's included in base Anaconda, we need to install the following packages
+We also install `arviz` and `pymc`:
 
 ```{code-cell} ipython3
 :tags: [hide-output]
@@ -30,36 +34,17 @@ In addition to what's included in base Anaconda, we need to install the followin
 !pip install arviz pymc
 ```
 
-We'll begin with some Python imports.
+## Overview
 
-```{code-cell} ipython3
-
-import arviz as az
-import pymc as pmc
-import numpyro
-from numpyro import distributions as dist
-
-import numpy as np
-import jax.numpy as jnp
-from jax import random
-import matplotlib.pyplot as plt
-
-import logging
-logging.basicConfig()
-logger = logging.getLogger('pymc')
-logger.setLevel(logging.CRITICAL)
-
-```
-
-This lecture uses Bayesian methods offered by [pymc](https://www.pymc.io/projects/docs/en/stable/) and [numpyro](https://num.pyro.ai/en/stable/) to make statistical inferences about two parameters of a univariate first-order autoregression.
+This lecture uses Bayesian methods offered by [pymc](https://www.pymc.io/projects/docs/en/stable/) and [numpyro](https://num.pyro.ai/en/stable/) to make statistical inferences about two parameters of a univariate [first-order autoregression](https://intro.quantecon.org/ar1_processes.html).
 
 
 The model is a good laboratory for illustrating
-consequences of alternative ways of modeling the distribution of the initial  $y_0$:
+consequences of alternative ways of modeling the distribution of the initial $y_0$:
 
 - As a fixed number
 
-- As a random variable drawn from the stationary distribution of the $\{y_t\}$ stochastic process
+- As a random variable drawn from the [stationary distribution](https://intro.quantecon.org/ar1_processes.html) of the $\{y_t\}$ stochastic process
 
 
 The first component of the statistical model is
@@ -69,12 +54,12 @@ y_{t+1} = \rho y_t + \sigma_x \epsilon_{t+1}, \quad t \geq 0
 $$ (eq:themodel)
 
 where the scalars $\rho$ and $\sigma_x$ satisfy $|\rho| < 1$ and $\sigma_x > 0$;
-$\{\epsilon_{t+1}\}$ is a sequence of i.i.d. normal random variables with mean $0$ and variance $1$.
+$\{\epsilon_{t+1}\}$ is a sequence of IID normal random variables with mean $0$ and variance $1$.
 
 The second component of the statistical model is
 
 $$
-y_0 \sim {\cal N}(\mu_0, \sigma_0^2)
+y_0 \sim N(\mu_0, \sigma_0^2)
 $$ (eq:themodel_2)
 
 
@@ -90,135 +75,173 @@ $$
 
 where we use $f$ to denote a generic probability density.
 
-The  statistical model {eq}`eq:themodel`-{eq}`eq:themodel_2` implies
+The statistical model {eq}`eq:themodel`-{eq}`eq:themodel_2` implies
 
 $$
 \begin{aligned}
-f(y_t | y_{t-1})  & \sim {\mathcal N}(\rho y_{t-1}, \sigma_x^2) \\
-        f(y_0)  & \sim {\mathcal N}(\mu_0, \sigma_0^2)
+f(y_t | y_{t-1})  & \sim N(\rho y_{t-1}, \sigma_x^2) \\
+        f(y_0)  & \sim N(\mu_0, \sigma_0^2)
 \end{aligned}
 $$
 
-We want to study how inferences about the unknown parameters $(\rho, \sigma_x)$ depend on what is assumed about the parameters $\mu_0, \sigma_0$  of the distribution of $y_0$.
+We want to study how inferences about the unknown parameters $(\rho, \sigma_x)$ depend on what is assumed about the parameters $\mu_0, \sigma_0$ of the distribution of $y_0$.
 
-Below, we study two widely used alternative assumptions:
+We study two assumptions about the initial value $y_0$, and we refer to them by name throughout the lecture.
 
--  $(\mu_0,\sigma_0) = (y_0, 0)$ which means  that $y_0$ is  drawn from the distribution ${\mathcal N}(y_0, 0)$; in effect, we are **conditioning on an observed initial value**.
+Under the **conditioning assumption** we take the observed $y_0$ as given.
 
--  $\mu_0,\sigma_0$ are functions of $\rho, \sigma_x$ because $y_0$ is drawn from the stationary distribution implied by $\rho, \sigma_x$.
+Formally we set $(\mu_0, \sigma_0) = (y_0, 0)$, so the density of $y_0$ is a spike at its observed value.
 
+This density does not depend on $\rho$ or $\sigma_x$, so $y_0$ carries no information about the parameters; in effect we **condition on** $y_0$ and model only what happens after it.
 
+Under the **stationary assumption** we treat $y_0$ as a draw from the stationary distribution of the process,
 
-**Note:** We do **not** treat a third possible case in which  $\mu_0,\sigma_0$ are free parameters to be estimated.
+$$
+y_0 \sim N\left(0, \frac{\sigma_x^2}{1 - \rho^2}\right) .
+$$
+
+This density *does* depend on $\rho$ and $\sigma_x$, so now the observed $y_0$ carries information about the parameters.
+
+The whole lecture is about how this one difference affects our estimates.
+
+```{note}
+We do **not** treat a third possible case in which $\mu_0, \sigma_0$ are free parameters to be estimated.
+```
 
 Unknown parameters are $\rho, \sigma_x$.
 
-We have  independent **prior probability distributions** for $\rho, \sigma_x$ and want to compute a posterior probability distribution after observing a sample $\{y_{t}\}_{t=0}^T$.
+We have independent **prior probability distributions** for $\rho, \sigma_x$ and want to compute a posterior probability distribution after observing a sample $\{y_{t}\}_{t=0}^T$.
 
-The notebook uses `pymc4` and `numpyro` to compute a posterior distribution of $\rho, \sigma_x$. We will use NUTS samplers to generate samples from the posterior in a chain. Both of these libraries support NUTS samplers.
+We use `pymc` and `numpyro` to compute the posterior distribution of $\rho, \sigma_x$.
 
-NUTS is a form of Monte Carlo Markov Chain (MCMC) algorithm that bypasses random walk behaviour and allows for convergence to a target distribution more quickly. This not only has the advantage of speed, but allows for complex models to be fitted without having to employ specialised knowledge regarding the theory underlying those fitting methods.
+We use two libraries because they make different trade-offs, and implementing the same model in each is instructive.
 
-Thus, we explore consequences of making these alternative assumptions about the distribution of $y_0$:
+`pymc` offers a mature and highly readable modeling syntax together with a rich set of diagnostic tools, which makes it convenient for learning and prototyping.
 
-- A first procedure is to condition on whatever value of $y_0$ is observed. This amounts to assuming that the probability distribution of the random variable  $y_0$ is a Dirac delta function that puts probability one on the observed value of $y_0$.
+`numpyro` is built on [JAX](https://jax.readthedocs.io/), so it compiles to fast machine code and can run on a GPU, which helps it scale to larger models and datasets.
 
-- A second procedure  assumes that $y_0$ is drawn from the stationary distribution of a process described by {eq}`eq:themodel`
-so that  $y_0 \sim {\cal N} \left(0, {\sigma_x^2\over (1-\rho)^2} \right) $
+Because both libraries fit the same model, running them side by side also lets us check that they agree.
 
-When the initial value $y_0$ is far out in a tail of the stationary distribution, conditioning on an initial value gives a posterior that is **more accurate** in a sense that we'll explain.
+Both libraries support the NUTS sampler, which we use to draw samples from the posterior.
 
-Basically, when $y_0$ happens to be  in a tail of the stationary distribution and we **don't condition on $y_0$**, the likelihood function for $\{y_t\}_{t=0}^T$ adjusts the posterior distribution of the parameter pair $\rho, \sigma_x $ to make the observed value of $y_0$  more likely than it really is under the stationary distribution, thereby adversely twisting the posterior in short samples.
+We treat NUTS as a black box here; see the {ref}`introduction to NUTS <nuts>` in {doc}`bayes_nonconj` for a brief account of how it works.
 
-An example below shows how not conditioning on $y_0$ adversely shifts the posterior probability distribution of $\rho$ toward larger values.
+This choice matters most when $y_0$ is far out in the tail of the stationary distribution.
 
+There, as we will see, the conditioning assumption gives a more accurate posterior, while the stationary assumption pulls the estimate of $\rho$ toward $1$ and away from the truth.
+
+Let's start with some Python imports.
+
+```{code-cell} ipython3
+import arviz as az
+import pymc as pm
+import numpyro
+from numpyro import distributions as dist
+
+import numpy as np
+import jax.numpy as jnp
+from jax import random
+import matplotlib.pyplot as plt
+
+import logging
+logging.basicConfig()
+logger = logging.getLogger('pymc')
+logger.setLevel(logging.CRITICAL)
+```
 
 We begin by solving a **direct problem** that simulates an AR(1) process.
 
 How we select the initial value $y_0$ matters.
 
-   * If we think $y_0$ is drawn from the stationary distribution ${\mathcal N}(0, \frac{\sigma_x^{2}}{1-\rho^2})$, then it is a good idea to use this distribution as $f(y_0)$.  Why? Because $y_0$ contains information about $\rho, \sigma_x$.
+   * If we believe $y_0$ really is a draw from the stationary distribution, the stationary assumption is a good choice, because then $y_0$ carries useful information about $\rho$ and $\sigma_x$.
 
-   * If we suspect that $y_0$ is far in the tails of the stationary distribution -- so that variation in early observations in the sample have a significant **transient component** -- it is better to condition on $y_0$ by setting $f(y_0) = 1$.
+   * If we suspect $y_0$ is far out in the tail — so that early observations carry a large **transient component** — the conditioning assumption is better.
 
 
 To illustrate the issue, we'll begin by choosing an initial $y_0$ that is far out in a tail of the stationary distribution.
 
+The following function simulates a path of the AR(1) process from a given initial condition.
+
 ```{code-cell} ipython3
+def ar1_simulate(ρ, σ, y0, T, rng):
 
-def ar1_simulate(rho, sigma, y0, T):
-
-    # Allocate space and draw epsilons
+    # Allocate space and draw shocks
     y = np.empty(T)
-    eps = np.random.normal(0.,sigma,T)
+    ε = rng.normal(0, σ, T)
 
     # Initial condition and step forward
     y[0] = y0
     for t in range(1, T):
-        y[t] = rho*y[t-1] + eps[t]
+        y[t] = ρ * y[t-1] + ε[t]
 
     return y
 
-sigma =  1.
-rho = 0.5
+σ_true = 1.0
+ρ_true = 0.5
 T = 50
 
-np.random.seed(145353452)
-y = ar1_simulate(rho, sigma, 10, T)
+rng = np.random.default_rng(145353452)
+y = ar1_simulate(ρ_true, σ_true, 10, T, rng)
 ```
 
+Let's plot the simulated series.
+
 ```{code-cell} ipython3
-plt.plot(y)
-plt.tight_layout()
+fig, ax = plt.subplots()
+ax.plot(y, lw=2)
+ax.set_xlabel('time')
+plt.show()
 ```
 
-Now we shall use Bayes' law to construct a posterior distribution, conditioning on the initial value of $y_0$.
+Now we shall use Bayes' law to construct a posterior distribution, starting with the conditioning assumption.
 
-(Later we'll assume that $y_0$ is drawn from the stationary distribution, but not now.)
+(We turn to the stationary assumption afterwards.)
 
-First we'll use **pymc4**.
+First we'll use `pymc`.
 
-## PyMC Implementation
+## PyMC implementation
 
-For a normal distribution in `pymc`,
-$var = 1/\tau = \sigma^{2}$.
+In this section we use `pymc` to compute the posterior under each assumption about $y_0$ — first the conditioning assumption, then the stationary assumption.
+
+We parameterize each normal distribution in `pymc` by its standard deviation $\sigma$, via the `sigma` argument.
 
 ```{code-cell} ipython3
-
-AR1_model = pmc.Model()
+AR1_model = pm.Model()
 
 with AR1_model:
 
     # Start with priors
-    rho = pmc.Uniform('rho', lower=-1., upper=1.) # Assume stable rho
-    sigma = pmc.HalfNormal('sigma', sigma = np.sqrt(10))
+    ρ = pm.Uniform('rho', lower=-1., upper=1.)  # Assume stable ρ
+    σ = pm.HalfNormal('sigma', sigma=np.sqrt(10))
 
-    # Expected value of y at the next period (rho * y)
-    yhat = rho * y[:-1]
+    # Expected value of y at the next period (ρ * y)
+    yhat = ρ * y[:-1]
 
     # Likelihood of the actual realization
-    y_like = pmc.Normal('y_obs', mu=yhat, sigma=sigma, observed=y[1:])
+    y_like = pm.Normal('y_obs', mu=yhat, sigma=σ, observed=y[1:])
 ```
 
-[pmc.sample](https://www.pymc.io/projects/docs/en/v5.10.0/api/generated/pymc.sample.html#pymc-sample) by default uses the NUTS samplers to generate samples as shown in the below cell:
+[pm.sample](https://www.pymc.io/projects/docs/en/v5.10.0/api/generated/pymc.sample.html#pymc-sample) by default uses the NUTS sampler to generate samples, as shown in the cell below:
 
 ```{code-cell} ipython3
-:tag: [hide-output]
+:tags: [hide-output]
 
 with AR1_model:
-    trace = pmc.sample(50000, tune=10000, return_inferencedata=True)
+    trace = pm.sample(50000, tune=10000, return_inferencedata=True)
 ```
+
+We plot the trace and the posterior densities for the two parameters.
 
 ```{code-cell} ipython3
 with AR1_model:
     az.plot_trace(trace, figsize=(17,6))
 ```
 
-Evidently, the posteriors aren't centered on the true values of $.5, 1$ that we used to generate the data.
+Evidently, the posteriors aren't centered on the true values of $0.5$ and $1$ that we used to generate the data.
 
-This is a symptom of the classic **Hurwicz bias** for first order autoregressive processes (see Leonid Hurwicz {cite}`hurwicz1950least`.)
+This is a symptom of the classic **Hurwicz bias** for first order autoregressive processes (see {cite:t}`hurwicz1950least`).
 
-The Hurwicz bias is worse the smaller is the sample (see {cite}`Orcutt_Winokur_69`).
+The Hurwicz bias is worse the smaller the sample (see {cite}`Orcutt_Winokur_69`).
 
 
 Be that as it may, here is more information about the posterior.
@@ -230,120 +253,172 @@ with AR1_model:
 summary
 ```
 
-Now we shall compute a posterior distribution after seeing the same data but instead assuming that $y_0$ is drawn from the stationary distribution.
+Now we switch to the stationary assumption, using the same data.
 
-This means that
+Recall that this means
 
 $$
-y_0 \sim N \left(0, \frac{\sigma_x^{2}}{1 - \rho^{2}} \right)
+y_0 \sim N \left(0, \frac{\sigma_x^{2}}{1 - \rho^{2}} \right) .
 $$
 
 We alter the code as follows:
 
 ```{code-cell} ipython3
-AR1_model_y0 = pmc.Model()
+AR1_model_y0 = pm.Model()
 
 with AR1_model_y0:
 
     # Start with priors
-    rho = pmc.Uniform('rho', lower=-1., upper=1.) # Assume stable rho
-    sigma = pmc.HalfNormal('sigma', sigma=np.sqrt(10))
+    ρ = pm.Uniform('rho', lower=-1., upper=1.)  # Assume stable ρ
+    σ = pm.HalfNormal('sigma', sigma=np.sqrt(10))
 
     # Standard deviation of ergodic y
-    y_sd = sigma / np.sqrt(1 - rho**2)
+    y_sd = σ / np.sqrt(1 - ρ**2)
 
-    # yhat
-    yhat = rho * y[:-1]
-    y_data = pmc.Normal('y_obs', mu=yhat, sigma=sigma, observed=y[1:])
-    y0_data = pmc.Normal('y0_obs', mu=0., sigma=y_sd, observed=y[0])
+    # Expected value of y at the next period (ρ * y)
+    yhat = ρ * y[:-1]
+    y_data = pm.Normal('y_obs', mu=yhat, sigma=σ, observed=y[1:])
+    y0_data = pm.Normal('y0_obs', mu=0., sigma=y_sd, observed=y[0])
 ```
+
+As before, we sample from the posterior.
 
 ```{code-cell} ipython3
-:tag: [hide-output]
+:tags: [hide-output]
 
 with AR1_model_y0:
-    trace_y0 = pmc.sample(50000, tune=10000, return_inferencedata=True)
-
-# Grey vertical lines are the cases of divergence
+    trace_y0 = pm.sample(50000, tune=10000, return_inferencedata=True)
 ```
+
+In the trace plot below, any grey vertical lines mark sampler divergences.
 
 ```{code-cell} ipython3
 with AR1_model_y0:
     az.plot_trace(trace_y0, figsize=(17,6))
 ```
 
+Here is a summary of the posterior.
+
 ```{code-cell} ipython3
-with AR1_model:
+with AR1_model_y0:
     summary_y0 = az.summary(trace_y0, round_to=4)
 
 summary_y0
 ```
 
-Please note how the posterior for $\rho$ has shifted to the right relative to when we conditioned on $y_0$ instead of assuming that $y_0$ is drawn from the stationary distribution.
+The posterior for $\rho$ has clearly moved when we changed our assumption about $y_0$.
 
-Think about why this happens.
+## Comparing the two posteriors
 
-```{hint}
-It is connected to how Bayes Law (conditional probability) solves an **inverse problem** by putting high probability on parameter values
-that make observations more likely.
-```
+Let's put the two posteriors for $\rho$ side by side to see what changed.
 
-We'll return to this issue after we use `numpyro` to compute posteriors under our two alternative assumptions about the distribution of $y_0$.
-
-We'll now repeat the calculations using `numpyro`.
-
-## Numpyro Implementation
+The figure below overlays the posterior for $\rho$ under each assumption, with the true value marked by a dashed line.
 
 ```{code-cell} ipython3
+ρ_cond = trace.posterior['rho'].values.flatten()
+ρ_stat = trace_y0.posterior['rho'].values.flatten()
 
+fig, ax = plt.subplots()
+ax.hist(ρ_cond, bins=50, density=True, alpha=0.5,
+        label='conditioning assumption')
+ax.hist(ρ_stat, bins=50, density=True, alpha=0.5,
+        label='stationary assumption')
+ax.axvline(ρ_true, color='k', linestyle='--', lw=2, label='true value')
+ax.set_xlabel('ρ')
+ax.legend()
+plt.show()
+```
 
+The posterior from the conditioning assumption sits close to the true value of $0.5$.
+
+It is centred a little below $0.5$, which is the small-sample Hurwicz bias mentioned above — a mild downward pull that shrinks as the sample grows.
+
+The posterior from the stationary assumption is different: it is pushed well to the right, toward $\rho = 1$.
+
+Here is why.
+
+We chose a starting value $y_0 = 10$ that lies far out in the tail of the stationary distribution.
+
+If $y_0$ really were a draw from that distribution, such an extreme value would be very unlikely.
+
+So when we force the model to explain $y_0$ this way, Bayes' law looks for parameter values that make the extreme $y_0$ plausible.
+
+It does this by pushing $\rho$ toward $1$, because a larger $\rho$ inflates the stationary variance $\sigma_x^2 / (1 - \rho^2)$ and makes a large $y_0$ less surprising.
+
+A single unusual starting value therefore drags the whole posterior away from the truth.
+
+This is the sense in which the conditioning assumption is more accurate here: it does not let one atypical observation distort our view of $\rho$ and $\sigma_x$.
+
+We can see the difference directly in the code.
+
+Recall that the likelihood factors as
+
+$$
+f(y_T, \ldots, y_0) = f(y_T \mid y_{T-1}) \cdots f(y_1 \mid y_0)\, f(y_0).
+$$
+
+The conditioning assumption simply drops the last factor $f(y_0)$.
+
+The stationary assumption keeps it — and that is exactly the extra `y0_obs` term we added to the second model.
+
+## NumPyro implementation
+
+We now redo both computations with `numpyro`.
+
+Because it fits the same two models, we expect its posteriors to match those from `pymc`.
+
+We start with a helper function that plots the trace and posterior histogram for the sampled parameters.
+
+```{code-cell} ipython3
 def plot_posterior(sample):
     """
     Plot trace and histogram
     """
     # To np array
-    rhos = sample['rho']
-    sigmas = sample['sigma']
-    rhos, sigmas, = np.array(rhos), np.array(sigmas)
+    ρs = np.array(sample['rho'])
+    σs = np.array(sample['sigma'])
 
     fig, axs = plt.subplots(2, 2, figsize=(17, 6))
     # Plot trace
-    axs[0, 0].plot(rhos)   # rho
-    axs[1, 0].plot(sigmas) # sigma
+    axs[0, 0].plot(ρs, lw=2)
+    axs[1, 0].plot(σs, lw=2)
 
     # Plot posterior
-    axs[0, 1].hist(rhos, bins=50, density=True, alpha=0.7)
+    axs[0, 1].hist(ρs, bins=50, density=True, alpha=0.7)
     axs[0, 1].set_xlim([0, 1])
-    axs[1, 1].hist(sigmas, bins=50, density=True, alpha=0.7)
+    axs[1, 1].hist(σs, bins=50, density=True, alpha=0.7)
 
-    axs[0, 0].set_title("rho")
-    axs[0, 1].set_title("rho")
-    axs[1, 0].set_title("sigma")
-    axs[1, 1].set_title("sigma")
+    axs[0, 0].set_ylabel('ρ')
+    axs[1, 0].set_ylabel('σ')
+    axs[0, 1].set_xlabel('ρ')
+    axs[1, 1].set_xlabel('σ')
     plt.show()
 ```
 
+The first model uses the conditioning assumption.
+
 ```{code-cell} ipython3
 def AR1_model(data):
-    # set prior
-    rho = numpyro.sample('rho', dist.Uniform(low=-1., high=1.))
-    sigma = numpyro.sample('sigma', dist.HalfNormal(scale=np.sqrt(10)))
+    # Set prior
+    ρ = numpyro.sample('rho', dist.Uniform(low=-1., high=1.))
+    σ = numpyro.sample('sigma', dist.HalfNormal(scale=np.sqrt(10)))
 
-    # Expected value of y at the next period (rho * y)
-    yhat = rho * data[:-1]
+    # Expected value of y at the next period (ρ * y)
+    yhat = ρ * data[:-1]
 
-    # Likelihood of the actual realization.
-    y_data = numpyro.sample('y_obs', dist.Normal(loc=yhat, scale=sigma), obs=data[1:])
-
+    # Likelihood of the actual realization
+    y_data = numpyro.sample('y_obs', dist.Normal(loc=yhat, scale=σ), obs=data[1:])
 ```
 
+We convert the data to a JAX array, build the NUTS sampler, and run MCMC.
+
 ```{code-cell} ipython3
-:tag: [hide-output]
+:tags: [hide-output]
 
 # Make jnp array
 y = jnp.array(y)
 
-# Set NUTS kernal
+# Set NUTS kernel
 NUTS_kernel = numpyro.infer.NUTS(AR1_model)
 
 # Run MCMC
@@ -351,18 +426,22 @@ mcmc = numpyro.infer.MCMC(NUTS_kernel, num_samples=50000, num_warmup=10000, prog
 mcmc.run(rng_key=random.PRNGKey(1), data=y)
 ```
 
+We plot the trace and posterior.
+
 ```{code-cell} ipython3
 plot_posterior(mcmc.get_samples())
 ```
+
+Here is the posterior summary.
 
 ```{code-cell} ipython3
 mcmc.print_summary()
 ```
 
-Next, we again compute the posterior under the assumption that $y_0$ is drawn from the stationary distribution, so that
+Next we use the stationary assumption, where
 
 $$
-y_0 \sim N \left(0, \frac{\sigma_x^{2}}{1 - \rho^{2}} \right)
+y_0 \sim N \left(0, \frac{\sigma_x^{2}}{1 - \rho^{2}} \right) .
 $$
 
 Here's the new code to achieve this.
@@ -370,27 +449,26 @@ Here's the new code to achieve this.
 ```{code-cell} ipython3
 def AR1_model_y0(data):
     # Set prior
-    rho = numpyro.sample('rho', dist.Uniform(low=-1., high=1.))
-    sigma = numpyro.sample('sigma', dist.HalfNormal(scale=np.sqrt(10)))
+    ρ = numpyro.sample('rho', dist.Uniform(low=-1., high=1.))
+    σ = numpyro.sample('sigma', dist.HalfNormal(scale=np.sqrt(10)))
 
     # Standard deviation of ergodic y
-    y_sd = sigma / jnp.sqrt(1 - rho**2)
+    y_sd = σ / jnp.sqrt(1 - ρ**2)
 
-    # Expected value of y at the next period (rho * y)
-    yhat = rho * data[:-1]
+    # Expected value of y at the next period (ρ * y)
+    yhat = ρ * data[:-1]
 
-    # Likelihood of the actual realization.
-    y_data = numpyro.sample('y_obs', dist.Normal(loc=yhat, scale=sigma), obs=data[1:])
+    # Likelihood of the actual realization
+    y_data = numpyro.sample('y_obs', dist.Normal(loc=yhat, scale=σ), obs=data[1:])
     y0_data = numpyro.sample('y0_obs', dist.Normal(loc=0., scale=y_sd), obs=data[0])
 ```
 
+We build the sampler for this model and run MCMC.
+
 ```{code-cell} ipython3
-:tag: [hide-output]
+:tags: [hide-output]
 
-# Make jnp array
-y = jnp.array(y)
-
-# Set NUTS kernal
+# Set NUTS kernel
 NUTS_kernel = numpyro.infer.NUTS(AR1_model_y0)
 
 # Run MCMC
@@ -398,19 +476,49 @@ mcmc2 = numpyro.infer.MCMC(NUTS_kernel, num_samples=50000, num_warmup=10000, pro
 mcmc2.run(rng_key=random.PRNGKey(1), data=y)
 ```
 
+Again we plot the trace and posterior.
+
 ```{code-cell} ipython3
 plot_posterior(mcmc2.get_samples())
 ```
+
+And here is the posterior summary.
 
 ```{code-cell} ipython3
 mcmc2.print_summary()
 ```
 
-Look what happened to the posterior!
+As with `pymc`, the posterior for $\rho$ shifts toward $1$ once we switch to the stationary assumption.
 
-It has moved far from the true values of the parameters used to generate the data because of how Bayes' Law (i.e., conditional probability)
-is telling `numpyro` to explain what it interprets as  "explosive" observations early in the sample.
+To confirm that the two libraries agree, we overlay their posteriors for $\rho$ under the conditioning assumption.
 
-Bayes' Law is able to generate a plausible likelihood for the first observation by driving $\rho \rightarrow 1$ and $\sigma \uparrow$ in order to raise the variance of the stationary distribution.
+```{code-cell} ipython3
+ρ_pymc = trace.posterior['rho'].values.flatten()
+ρ_numpyro = np.array(mcmc.get_samples()['rho'])
 
-Our example illustrates the importance of what you assume about the distribution of initial conditions.
+fig, ax = plt.subplots()
+ax.hist(ρ_pymc, bins=50, density=True, alpha=0.5, label='PyMC')
+ax.hist(ρ_numpyro, bins=50, density=True, alpha=0.5, label='NumPyro')
+ax.set_xlabel('ρ')
+ax.legend()
+plt.show()
+```
+
+The two posteriors line up, as they should.
+
+## Conclusion
+
+This lecture showed that what we assume about the initial value $y_0$ can have a large effect on our estimates of an AR(1) process.
+
+When the sample is short and $y_0$ might be unusual, the conditioning assumption is the safer choice.
+
+It lets the data speak about $\rho$ and $\sigma_x$ without forcing the model to explain the starting value.
+
+The stationary assumption adds information, and that information is valuable when the assumption is true.
+
+But when $y_0$ is in fact far from typical, the same assumption misleads us — here it pushed $\rho$ toward $1$ and away from the truth.
+
+A simple rule of thumb:
+
+- use the conditioning assumption when early observations look transient or the starting point may be atypical;
+- use the stationary assumption when you are confident the process has been running near its long-run behaviour.
