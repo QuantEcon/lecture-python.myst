@@ -54,8 +54,9 @@ def read_famafrench_factors(start, end):
     url = ("https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
            "F-F_Research_Data_Factors_CSV.zip")
     with urllib.request.urlopen(url) as response:
-        archive = zipfile.ZipFile(io.BytesIO(response.read()))
-    text = archive.read(archive.namelist()[0]).decode("utf-8")
+        payload = response.read()
+    with zipfile.ZipFile(io.BytesIO(payload)) as archive:
+        text = archive.read(archive.namelist()[0]).decode("utf-8")
 
     # Preamble, then a monthly table (rows keyed by YYYYMM), then an annual
     # table (rows keyed by YYYY). Keep the contiguous monthly block.
