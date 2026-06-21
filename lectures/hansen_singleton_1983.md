@@ -64,31 +64,20 @@ To keep lecture this lecture narrowly focused, we estimate one return at a time 
 
  * we  use only monthly nondurable consumption (`ND`).
 
-In addition to what comes with Anaconda, this lecture requires `pandas-datareader`
-
 ```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install pandas-datareader
-```
-
-```{code-cell} ipython3
-import warnings
+import io
+import urllib.request
+import zipfile
 from itertools import combinations
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from IPython.display import Latex
-from pandas_datareader import data as web
 from scipy import stats
 from scipy.linalg import LinAlgError, cholesky, solve_triangular
 from scipy.optimize import minimize
 from statsmodels.stats.stattools import durbin_watson
-
-warnings.filterwarnings(
-    "ignore", message=".*date_parser.*", category=FutureWarning
-) 
 ```
 
 We also define a helper to display DataFrames as LaTeX arrays in the hidden cell below
@@ -1439,7 +1428,7 @@ While Hansen-Singleton use CRSP value-weighted NYSE returns, we use the Ken Fren
 
 The consumption series is constructed from consumption of nondurables (`ND`) with the nondurables deflator.
 
-The hidden cell below pulls the relevant FRED series, constructs per capita real consumption, and joins with the Ken French returns
+The hidden cell below pulls the relevant FRED series, constructs per capita real consumption, and joins with the Ken French returns. The data are downloaded directly from the [FRED](https://fred.stlouisfed.org/) and [Ken French](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) data libraries.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
@@ -1455,6 +1444,55 @@ def to_month_end(index):
     Convert a date index to month-end timestamps.
     """
     return pd.PeriodIndex(pd.DatetimeIndex(index), freq="M").to_timestamp("M")
+
+
+def read_fred(codes, start, end):
+    """
+    Download FRED series as a date-indexed DataFrame whose columns are the
+    requested FRED codes (replaces pandas-datareader's "fred" reader).
+    """
+    base = "https://fred.stlouisfed.org/graph/fredgraph.csv"
+    columns = []
+    for code in codes:
+        url = f"{base}?id={code}&cosd={start:%Y-%m-%d}&coed={end:%Y-%m-%d}"
+        columns.append(
+            pd.read_csv(url, index_col=0, parse_dates=True, na_values="."))
+    fred = pd.concat(columns, axis=1).astype("float64")
+    fred.index.name = "DATE"
+    return fred
+
+
+def read_famafrench_factors(start, end):
+    """
+    Download the monthly Fama-French research factors directly from the Ken
+    French data library (replaces pandas-datareader's "famafrench" reader).
+    Returns a month-``Period``-indexed DataFrame with values in percent.
+    """
+    url = ("https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
+           "F-F_Research_Data_Factors_CSV.zip")
+    with urllib.request.urlopen(url) as response:
+        archive = zipfile.ZipFile(io.BytesIO(response.read()))
+    text = archive.read(archive.namelist()[0]).decode("utf-8")
+
+    # The file is a text preamble, then the monthly table (rows keyed by
+    # YYYYMM), then an annual table (rows keyed by YYYY). Keep the monthly
+    # rows, stopping once that contiguous block ends.
+    records = []
+    for line in text.splitlines():
+        cells = [cell.strip() for cell in line.split(",")]
+        key = cells[0]
+        if len(key) == 6 and key.isdigit():
+            records.append([key] + [float(x) for x in cells[1:5]])
+        elif records:
+            break
+    factors = pd.DataFrame(
+        records, columns=["date", "Mkt-RF", "SMB", "HML", "RF"])
+    factors.index = pd.PeriodIndex(
+        pd.to_datetime(factors["date"], format="%Y%m"), freq="M")
+    factors = factors.drop(columns="date")
+    window = ((factors.index >= pd.Period(start, "M"))
+              & (factors.index <= pd.Period(end, "M")))
+    return factors.loc[window]
 
 
 def load_hs_monthly_data(
@@ -1473,8 +1511,7 @@ def load_hs_monthly_data(
     sample_start = start_period.to_timestamp("M")
     sample_end = end_period.to_timestamp("M")
 
-    fred = web.DataReader(
-        list(fred_codes.values()), "fred", fetch_start, fetch_end)
+    fred = read_fred(list(fred_codes.values()), fetch_start, fetch_end)
     fred = fred.rename(columns={v: k for k, v in fred_codes.items()})
     fred.index = to_month_end(fred.index)
     fred["cons_real_level"] = fred["cons_nd_real_index"]
@@ -1488,9 +1525,7 @@ def load_hs_monthly_data(
         fred["cons_price_index"] / fred["cons_price_index"].shift(1)
     )
 
-    ff = web.DataReader(
-        "F-F_Research_Data_Factors", "famafrench", 
-        fetch_start, fetch_end)[0].copy()
+    ff = read_famafrench_factors(fetch_start, fetch_end).copy()
     ff.columns = [str(col).strip() for col in ff.columns]
     if ("Mkt-RF" not in ff.columns) or ("RF" not in ff.columns):
         raise KeyError(
