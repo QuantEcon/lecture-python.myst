@@ -107,6 +107,12 @@ print(f"monthly: {len(u_monthly)} obs, annual: {len(u_annual)} obs")
 Here are the two series.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: US unemployment rate, monthly and annual
+    name: fig-unrate-data
+---
 fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4))
 axL.plot(pre_covid.index, u_monthly, lw=2)
 axL.set_title('monthly')
@@ -118,7 +124,7 @@ axR.set_xlabel('year')
 plt.show()
 ```
 
-The rate rises sharply in recessions and drifts down in recoveries, but it always stays inside a band — roughly 3% to 11% over the whole post-war period.
+As {numref}`fig-unrate-data` shows, the rate rises sharply in recessions and drifts down in recoveries, but it always stays inside a band — roughly 3% to 11% over the whole post-war period.
 
 Any sensible model has to respect that band.
 
@@ -143,24 +149,33 @@ The distribution spreads out forever, and eventually probability mass drains out
 We can see the spreading by simulating many random-walk paths and watching them fan out.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Random walks leave the observed range
+    name: fig-rw-escape
+---
 rng = np.random.default_rng(0)
 T = len(u_monthly)
 σ_rw = np.diff(u_monthly).std()
 paths = u_monthly[0] + np.cumsum(rng.normal(0, σ_rw, size=(400, T)), axis=1)
 
+u_min, u_max = u_monthly.min(), u_monthly.max()
+
 fig, ax = plt.subplots()
 ax.plot(paths[:60].T, color='C0', lw=0.5, alpha=0.3)
-lo, hi = np.percentile(paths, [5, 95], axis=0)
-ax.fill_between(np.arange(T), lo, hi, color='C0', alpha=0.2,
-                label='90% band')
-ax.plot(u_monthly, 'k', lw=2, label='observed')
+ax.axhspan(u_min, u_max, color='C1', alpha=0.15, label='observed range')
+ax.axhline(u_min, color='C1', ls='--', lw=1.5)
+ax.axhline(u_max, color='C1', ls='--', lw=1.5)
 ax.set_xlabel('months since 1948')
 ax.set_ylabel('unemployment rate (%)')
 ax.legend()
 plt.show()
 ```
 
-The simulated band widens like $\sqrt{t}$ and soon covers negative rates and rates above 15%, while the actual series stays in its narrow band.
+In {numref}`fig-rw-escape` the dashed lines mark the lowest and highest unemployment rates seen in the data over 1948–2019, and the shaded region is the band between them.
+
+The simulated paths fan out like $\sqrt{t}$ and quickly spread far beyond this band — into negative rates and rates above 15% — whereas actual unemployment has never left it.
 
 A random walk has no anchor, but unemployment clearly has one.
 
@@ -240,6 +255,12 @@ mcmc_annual.print_summary()
 The persistence parameter $\phi$ tells the story, so we compare its posterior across the two frequencies.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Posterior for the persistence parameter
+    name: fig-phi-post
+---
 φ_m = np.asarray(mcmc_monthly.get_samples()["phi"])
 φ_a = np.asarray(mcmc_annual.get_samples()["phi"])
 
@@ -251,13 +272,31 @@ ax.legend()
 plt.show()
 ```
 
-At the monthly frequency the posterior for $\phi$ crowds right up against one — the random-walk boundary.
+As {numref}`fig-phi-post` shows, at the monthly frequency the posterior for $\phi$ crowds right up against one — the random-walk boundary.
 
 In other words, month to month, US unemployment is *almost* a random walk: the pull back toward $\bar u$ is barely detectable.
 
-Two summaries make the point.
+Two summaries make this concrete: the stationary distribution and the half-life of a shock.
 
-The model has a stationary distribution $N\!\big(\bar u,\ \sigma^2/(1-\phi^2)\big)$, and a shock has a half-life of $\ln 0.5 / \ln \phi$ periods.
+The **stationary distribution** is the long-run distribution the series settles into, $N\!\big(\bar u,\ \sigma^2/(1-\phi^2)\big)$.
+
+The **half-life** measures how quickly the series returns to $\bar u$ after a disturbance.
+
+To see where it comes from, suppose unemployment sits a gap $g$ above $\bar u$ and no further shocks arrive.
+
+From the model {eq}`eq:linear`, next period the gap is $\phi g$, the period after that $\phi^2 g$, and after $k$ periods $\phi^k g$ — it shrinks by the same factor $\phi$ every period, like radioactive decay.
+
+The half-life is the number of periods $k$ it takes for the gap to fall to half its size.
+
+Setting $\phi^k = \tfrac{1}{2}$ and taking logs gives
+
+$$
+k = \frac{\ln 0.5}{\ln \phi}.
+$$
+
+A $\phi$ close to one makes $k$ large — shocks fade slowly — while a smaller $\phi$ gives a short half-life and quick reversion.
+
+The next cell reports both summaries at each frequency.
 
 ```{code-cell} ipython3
 def describe(mcmc, label):
@@ -289,50 +328,6 @@ When $\phi$ is this close to one, the debate is hard to settle: in samples of th
 
 One way forward, which we take in {doc}`unemployment_nonlinear`, is to let the reversion be **nonlinear** — a series can look like a random walk to a linear test while reverting briskly once it strays far enough from its normal level {cite}`kapetanios_shin_snell2003`.
 ```
-
-## Random walk, yet recurrent
-
-The linear model is a clear improvement on the random walk — it has an anchor and a stationary distribution.
-
-But at the frequencies we care about it is *barely* an improvement: $\phi$ sits so close to one that the anchor does almost no work, and over realistic horizons the series still behaves much like the random walk we rejected.
-
-This leaves us with a genuine tension.
-
-Read through a linear lens, the data look like a random walk.
-
-But a random walk wanders off without limit, whereas unemployment has stayed in a narrow band for seventy-five years.
-
-The linear model can reconcile these two facts, but only by setting $\phi$ a hair below one — a knife-edge value the data cannot distinguish from one, and one that imposes the same gentle reversion at all times.
-
-A more robust reconciliation is to let the reversion be **nonlinear**.
-
-The series can then drift like a random walk in normal times, while a restoring force that strengthens far from the natural rate keeps it from ever wandering away.
-
-Recurrence then comes from the *shape* of the dynamics in the tails, not from a precise value of $\phi$ — and the series can be genuinely random-walk-like exactly where we usually observe it.
-
-To set up what comes next, it helps to look at the restoring force directly, by plotting each one-step change against the gap that preceded it, with the fitted linear pull overlaid.
-
-```{code-cell} ipython3
-ubar_hat = np.median(np.asarray(mcmc_annual.get_samples()["ubar"]))
-φ_hat = np.median(φ_a)
-gap = u_annual[:-1] - ubar_hat
-Δu = np.diff(u_annual)
-
-fig, ax = plt.subplots()
-ax.scatter(gap, Δu, alpha=0.6, label='annual data')
-gg = np.linspace(gap.min(), gap.max(), 100)
-ax.plot(gg, (φ_hat - 1) * gg, 'C1', lw=2, label='linear pull')
-ax.axhline(0, color='k', lw=.5)
-ax.axvline(0, color='k', lw=.5)
-ax.set_xlabel('gap $u_t - \\bar u$')
-ax.set_ylabel('change $\\Delta u$')
-ax.legend()
-plt.show()
-```
-
-The straight line is a reasonable summary of the average reversion in the data.
-
-Whether a force that is **gentle near the center but firmer far from it** fits better — and whether the data can even tell — is the question we take up in {doc}`unemployment_nonlinear`.
 
 ## Exercises
 

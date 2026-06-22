@@ -138,6 +138,12 @@ Fixed points sit where the two cross, and we can read off stability from the slo
 The next cell draws the diagram for illustrative parameters and adds **cobweb** paths from two starting points.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Deterministic skeleton with cobweb paths
+    name: fig-skeleton
+---
 ubar, β, λ = 5.0, -0.5, 1.0
 grid = np.linspace(0, 12, 400)
 
@@ -164,7 +170,7 @@ ax.legend()
 plt.show()
 ```
 
-The map crosses the 45-degree line exactly once, at $\bar u$, so $\bar u$ is the unique rest point.
+The map in {numref}`fig-skeleton` crosses the 45-degree line exactly once, at $\bar u$, so $\bar u$ is the unique rest point.
 
 Two things make it a stable one.
 
@@ -197,6 +203,12 @@ To see what each parameter does on its own we have to look at the whole restorin
 There are two independent things to control, and $\beta$ and $\lambda$ control one each.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Separate roles of the two parameters
+    name: fig-roles
+---
 gaps = np.linspace(-6, 6, 400)
 fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4.2), sharey=True)
 
@@ -219,7 +231,7 @@ axR.legend()
 plt.show()
 ```
 
-The left panel varies $\beta$: it sets the **ceiling**.
+The left panel of {numref}`fig-roles` varies $\beta$: it sets the **ceiling**.
 
 Because $|\tanh| \le 1$, the pull can never exceed $|\beta|$ per period, so $\beta$ is the *maximum* mean reversion — how hard unemployment is yanked back from a deep slump.
 
@@ -231,9 +243,15 @@ A large $\lambda$ means a sharp, threshold-like reversion; a small $\lambda$ mea
 
 Now we can see why $\beta$ and $\lambda$ are hard to tell apart from gentle data.
 
-The next figure draws several $(\beta, \lambda)$ pairs that share the *same product* $\beta\lambda$, alongside the deterministic recovery each implies from a deep slump.
+{numref}`fig-iso-bl` draws several $(\beta, \lambda)$ pairs that share the *same product* $\beta\lambda$, alongside the deterministic recovery each implies from a deep slump.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Same local slope, different tails
+    name: fig-iso-bl
+---
 pairs = [(-0.3, 1.0), (-0.5, 0.6), (-1.0, 0.3)]   # all have βλ = -0.3
 fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4.2))
 
@@ -296,6 +314,12 @@ def simulate(u0, T, ubar, β, λ, σ, rng):
 To see the stationarity, we run two long simulations from very different starting points and compare the distributions they visit.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Stationary distribution from two starting points
+    name: fig-stationary
+---
 rng = np.random.default_rng(0)
 T, σ = 20_000, 0.2
 paths = {u0: simulate(u0, T, 5.0, -0.5, 1.0, σ, rng) for u0 in (2.0, 9.0)}
@@ -310,7 +334,7 @@ ax.legend()
 plt.show()
 ```
 
-The two histograms lie almost on top of one another: the process forgets where it started and settles into the same distribution either way.
+In {numref}`fig-stationary`, the two histograms lie almost on top of one another: the process forgets where it started and settles into the same distribution either way.
 
 That distribution is centered on $\bar u$ and concentrated nearby.
 
@@ -347,9 +371,15 @@ u_monthly = pre_covid
 u_annual = pre_covid.resample("YE").last()
 ```
 
-Here are the two samples.
+{numref}`fig-nl-data` shows the two samples.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: US unemployment rate, monthly and annual
+    name: fig-nl-data
+---
 fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4))
 axL.plot(u_monthly.index, u_monthly.to_numpy(), lw=2)
 axL.set_title('monthly, 1948–2019')
@@ -395,6 +425,12 @@ Before looking at any data we should check that these priors imply sensible beha
 The next cell draws parameters from the prior and simulates the annual paths they generate.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Unemployment paths drawn from the prior
+    name: fig-prior-pred
+---
 rng = np.random.default_rng(1)
 T = len(u_annual)
 fig, ax = plt.subplots()
@@ -411,7 +447,7 @@ ax.set_title('paths drawn from the prior')
 plt.show()
 ```
 
-Most of the paths stay in a plausible range for an unemployment rate.
+Most of the paths in {numref}`fig-prior-pred` stay in a plausible range for an unemployment rate.
 
 The priors are only weakly informative, so a minority wander higher or dip below zero — a sign that the priors are loose, not that they are wrong.
 
@@ -478,6 +514,12 @@ The reason is exactly the one we met in the dynamics section: month to month the
 That shows up as a tight **ridge** in the joint posterior of $\beta$ and $\lambda$.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The beta-lambda ridge at monthly frequency
+    name: fig-ridge-monthly
+---
 def ridge_plot(ax, mcmc, title):
     p = mcmc.get_samples()
     ax.scatter(np.asarray(p["beta"]), np.asarray(p["lam"]),
@@ -491,7 +533,7 @@ ridge_plot(ax, mcmc_monthly, 'monthly: the $\\beta$–$\\lambda$ ridge')
 plt.show()
 ```
 
-Draws trade off $\beta$ against $\lambda$ along a curve of constant product — the data pin down $\beta\lambda$ but not the two parameters separately.
+In {numref}`fig-ridge-monthly`, draws trade off $\beta$ against $\lambda$ along a curve of constant product — the data pin down $\beta\lambda$ but not the two parameters separately.
 
 ### The annual data
 
@@ -520,13 +562,19 @@ The posterior for $\lambda$ is now bounded away from zero, the local reversion $
 The nonlinearity has become visible, and the ridge has loosened into a blob.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The ridge dissolves at annual frequency
+    name: fig-ridge-compare
+---
 fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4.2))
 ridge_plot(axL, mcmc_monthly, 'monthly')
 ridge_plot(axR, mcmc_annual, 'annual')
 plt.show()
 ```
 
-This is the payoff of the dynamics section.
+{numref}`fig-ridge-compare` is the payoff of the dynamics section.
 
 Annual data contain the deep recessions — the large-gap episodes where, as we saw, $\beta$ and $\lambda$ pull apart — so the data can now identify them separately.
 
@@ -558,6 +606,12 @@ mcmc_lin = run_nuts(linear_model, u_annual.to_numpy())
 Now we overlay the two **fitted restoring forces** — the mean one-step change each model implies as a function of the gap — with 90% posterior bands, over the range of gaps the data actually visit.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Fitted restoring forces, linear versus nonlinear
+    name: fig-force-compare
+---
 ann = mcmc_annual.get_samples()
 βs, λs = np.asarray(ann["beta"]), np.asarray(ann["lam"])
 φ_lin = np.asarray(mcmc_lin.get_samples()["phi"])
@@ -579,7 +633,7 @@ ax.legend()
 plt.show()
 ```
 
-Over the range the data actually visit, the two forces are close, and their bands overlap through most of it: in ordinary times the linear model is hard to beat.
+In {numref}`fig-force-compare`, over the range the data actually visit, the two forces are close, and their bands overlap through most of it: in ordinary times the linear model is hard to beat.
 
 They part company at the extremes — the largest recession gaps — where the linear pull keeps growing without limit while the nonlinear one levels off.
 
@@ -594,6 +648,12 @@ A fitted model should be able to generate data that look like what we observed.
 We draw parameters from the annual posterior, simulate a path from each, and compare the band of simulated paths to the data.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Posterior predictive paths against the data
+    name: fig-ppc
+---
 post = mcmc_annual.get_samples()
 βs, λs, σs, ubars = (np.asarray(post[k]) for k in ("beta", "lam", "sigma", "ubar"))
 
@@ -616,7 +676,7 @@ ax.legend()
 plt.show()
 ```
 
-The observed series stays within the predictive band, so the model reproduces the broad swings of post-war unemployment.
+In {numref}`fig-ppc`, the observed series stays within the predictive band, so the model reproduces the broad swings of post-war unemployment.
 
 It is not perfect — the model's IID shocks miss some of the smooth, multi-year persistence of real recoveries, and the band reaches down close to zero, a reminder of the Gaussian approximation we flagged earlier — but it captures the level, the spread, and the mean reversion well.
 
