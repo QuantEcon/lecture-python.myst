@@ -39,26 +39,30 @@ This lecture fits some simple time series models to the US unemployment rate.
 
 Our aim is partly to practice Bayesian estimation on real data, and partly to find out what these simple models *cannot* do — which will motivate the richer model in the sequel {doc}`unemployment_nonlinear`.
 
-We met Bayesian estimation of a first-order autoregression in {doc}`ar1_bayes`, but there the data were simulated and the focus was on the initial condition.
+We met Bayesian estimation of a first-order autoregression (AR(1)) in {doc}`ar1_bayes`, but there the data were simulated and the focus was on the initial condition.
 
-Here the data are real, and the questions are different: is unemployment a random walk, how strongly does it revert to a normal level, and where does the linear description break down?
+Here the data are real, and we try to describe them with an AR(1) model.
 
-That first question is not just a technical curiosity — it was the subject of a lively macroeconomics debate in the 1980s and 1990s.
+We will see how well that description works and where it breaks down.
+
+We'll also ask whether or not unemployment is a random walk, which is a special case of the AR(1) model.
+
+That last question is not just a technical curiosity — it was the subject of a lively macroeconomics debate in the 1980s and 1990s.
 
 The **natural rate hypothesis** {cite}`friedman1968role` holds that unemployment fluctuates around a stable equilibrium rate, so shocks fade away and the series is stationary.
 
 The **hysteresis hypothesis** {cite}`blanchard_summers1986` holds the opposite — that shocks to unemployment can be more or less permanent, so the series behaves like a random walk with no fixed level to return to.
 
-Strikingly, the paper that launched the unit-root literature {cite}`nelson_plosser1982` found that, of fourteen US macroeconomic series, the unemployment rate was the *one* it could confidently call stationary — even as the hysteresis literature was arguing the reverse for Europe.
+(Interestingly, the paper that launched the unit-root literature {cite}`nelson_plosser1982` found that, of fourteen US macroeconomic series, the unemployment rate was the *one* it could confidently call stationary — even as the hysteresis literature was arguing the reverse for Europe.)
 
-We will see that this debate is genuinely hard to settle, for reasons that come straight out of our estimates.
+We will see that this debate is genuinely hard to settle.
 
 As in {doc}`ar1_bayes` and {doc}`bayes_nonconj` we sample posteriors with the NUTS sampler in [NumPyro](https://num.pyro.ai/en/stable/); see {doc}`bayes_nonconj` for a brief account of how NUTS works.
 
 Our plan is:
 
 1. look at the data,
-2. consider the simplest model — a random walk — and see why it cannot be right,
+2. consider the simplest model — a random walk — and see what works and what doesn't,
 3. add mean reversion to get a linear model and estimate it,
 4. ask whether the data really want a random walk after all, and
 5. lay out what is unsatisfying about the linear model.
@@ -286,19 +290,25 @@ When $\phi$ is this close to one, the debate is hard to settle: in samples of th
 One way forward, which we take in {doc}`unemployment_nonlinear`, is to let the reversion be **nonlinear** — a series can look like a random walk to a linear test while reverting briskly once it strays far enough from its normal level {cite}`kapetanios_shin_snell2003`.
 ```
 
-## What's unsatisfying about the linear model
+## Random walk, yet recurrent
 
-The linear model is a clear improvement on the random walk — it has an anchor and a stationary distribution — but it has real weaknesses.
+The linear model is a clear improvement on the random walk — it has an anchor and a stationary distribution.
 
-First, at high frequency it is *barely* an improvement: $\phi$ so close to one means the anchor is doing almost no work.
+But at the frequencies we care about it is *barely* an improvement: $\phi$ sits so close to one that the anchor does almost no work, and over realistic horizons the series still behaves much like the random walk we rejected.
 
-Second, the linear pull is **unbounded**.
+This leaves us with a genuine tension.
 
-The mean step is $\phi - 1$ times the gap $u_t - \bar u$, so the model claims that the farther unemployment strays, the faster it reverts, without limit.
+Read through a linear lens, the data look like a random walk.
 
-Taken literally, a gap of twenty points would be erased many times faster than a gap of two — which is not how labor markets behave.
+But a random walk wanders off without limit, whereas unemployment has stayed in a narrow band for seventy-five years.
 
-Third, the linear model uses a **single reversion speed** at all times, yet recoveries from deep recessions are notoriously slow.
+The linear model can reconcile these two facts, but only by setting $\phi$ a hair below one — a knife-edge value the data cannot distinguish from one, and one that imposes the same gentle reversion at all times.
+
+A more robust reconciliation is to let the reversion be **nonlinear**.
+
+The series can then drift like a random walk in normal times, while a restoring force that strengthens far from the natural rate keeps it from ever wandering away.
+
+Recurrence then comes from the *shape* of the dynamics in the tails, not from a precise value of $\phi$ — and the series can be genuinely random-walk-like exactly where we usually observe it.
 
 To set up what comes next, it helps to look at the restoring force directly, by plotting each one-step change against the gap that preceded it, with the fitted linear pull overlaid.
 
@@ -320,11 +330,9 @@ ax.legend()
 plt.show()
 ```
 
-The straight line is a reasonable summary of the average reversion.
+The straight line is a reasonable summary of the average reversion in the data.
 
-But the data are noisy, and the line still carries the implausible implication we noted above: extended out, it predicts arbitrarily fast reversion.
-
-Whether a **bounded** force, whose strength **varies with the gap**, fits better — and whether the data can even tell — is the question we take up in {doc}`unemployment_nonlinear`.
+Whether a force that is **gentle near the center but firmer far from it** fits better — and whether the data can even tell — is the question we take up in {doc}`unemployment_nonlinear`.
 
 ## Exercises
 

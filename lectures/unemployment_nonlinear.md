@@ -37,13 +37,15 @@ We also install `pandas_datareader`, which we use to download data from FRED:
 
 This lecture is a sequel to {doc}`unemployment_linear`.
 
-There we fit linear models to the US unemployment rate and found two things wanting.
+There we fit linear models to the US unemployment rate and ran into a tension.
 
-At a monthly frequency the series is almost a random walk, so the linear model's anchor does little work.
+At a monthly frequency the series looks almost like a random walk — yet a random walk wanders off, while unemployment stays in a band.
 
-And the linear restoring force is **unbounded**: it claims that the farther unemployment strays from its normal level, the faster it reverts, without limit — which cannot be right.
+The linear model can square these only on a knife-edge, with $\phi$ a hair below one and the same gentle reversion at all times.
 
-Here we address the second point with a **nonlinear** model whose restoring force is *bounded* and whose strength *varies with the gap* from the normal level.
+Here we resolve the tension with a **nonlinear** model: one that drifts like a random walk in normal times, but whose restoring force *strengthens far from the normal level*, so the series is kept from ever wandering away.
+
+The model is a one-dimensional stochastic difference equation, so it is simple enough to understand completely while still being rich enough to be interesting.
 
 The model is a one-dimensional stochastic difference equation, so it is simple enough to understand completely while still being rich enough to be interesting.
 
@@ -624,7 +626,7 @@ We built a compact nonlinear model of unemployment and took it from theory to da
 
 The dynamics are clean: a saturating restoring force gives a globally stable rest point at the natural rate $\bar u$, with $\beta\lambda$ setting the speed of everyday mean reversion and $\beta$ setting how hard unemployment is pulled back from a deep slump.
 
-It also fixes a defect of the linear model in {doc}`unemployment_linear`: the pull is now bounded, so the model no longer claims ever-faster reversion as the gap grows.
+It also resolves the tension we met in {doc}`unemployment_linear`: the series can drift like a random walk near $\bar u$, yet the firmer pull farther out keeps it recurrent — so "looks like a random walk" and "never wanders away" can hold at once.
 
 The estimation taught a Bayesian lesson about identification: the nonlinearity is invisible in placid monthly data — where only $\beta\lambda$ is identified, as a ridge — and becomes visible in annual data that contain the large swings of recessions.
 
