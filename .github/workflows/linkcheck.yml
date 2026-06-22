@@ -13,7 +13,7 @@ jobs:
     steps:
       # Checkout the live site (html)
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: gh-pages
       - name: Link Checker
@@ -21,7 +21,10 @@ jobs:
         uses: lycheeverse/lychee-action@v2
         with:
           fail: false
-          args: --accept 200,403,503 *.html
+          # --root-dir resolves root-relative links (e.g. /_notebooks/*.ipynb,
+          # /_pdf/quantecon-python.pdf) against the gh-pages checkout so they are
+          # not reported as errors. See QuantEcon/lecture-python.myst#906.
+          args: --root-dir ${{ github.workspace }} --accept 200,403,503 *.html
       - name: Create Issue From File
         if: steps.lychee.outputs.exit_code != 0
         uses: peter-evans/create-issue-from-file@v6
