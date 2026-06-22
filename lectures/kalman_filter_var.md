@@ -1405,7 +1405,7 @@ x2_path, y2_path = lss2.simulate(ts_length=T2, random_state=0)
 x_hats2 = np.zeros((T2, 2))
 for t in range(T2):
     kf2.update(y2_path[:, t])
-    x_hats2[t] = kf2.x_hat
+    x_hats2[t] = kf2.x_hat.ravel()
 
 fig, axes = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
 for i, ax in enumerate(axes):
