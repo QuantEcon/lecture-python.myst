@@ -264,7 +264,7 @@ u_hat_t = x_hat_t[1, :]
 
 For this fixed worker initial state, we plot $\mathbb{E}[y_t | y^{t-1}] = G \hat x_t$ where $\hat x_t = \mathbb{E}[x_t | y^{t-1}]$.
 
-We also plot $\mathbb{E}[u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
+We also plot $\mathbb{E}[u_0 | y^{t-1}]$, which is  the firm's inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
 
 We can watch how the firm updates its inference $\mathbb{E}[u_0 | y^{t-1}]$ about the worker's work ethic as more output observations arrive.
 
@@ -341,7 +341,7 @@ for i, t in enumerate(np.linspace(0, T-1, 3, dtype=int)):
     # Create a contour plot for the PDF
     con = axs[i].contour(h, u, pdf_values, cmap='viridis')
     axs[i].clabel(con, inline=1, fontsize=10)
-    axs[i].set_title(f'Time Step {t}')
+    axs[i].set_title(f'time step {t}')
     axs[i].set_xlabel(r'$h_{{{}}}$'.format(str(t)))
     axs[i].set_ylabel(r'$u_{{{}}}$'.format(str(t)))
     
@@ -467,7 +467,7 @@ namedtuple.
 Here is an example.
 
 ```{code-cell} ipython3
-# We can set these parameters when creating a worker -- just like classes!
+# We can set these parameters when creating a worker, just like classes!
 hard_working_worker = create_worker(α=.4, β=.8, 
                         hhat_0=7.0, uhat_0=100, σ_h=2.5, σ_u=3.2)
 
