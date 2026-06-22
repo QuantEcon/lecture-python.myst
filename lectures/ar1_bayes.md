@@ -234,7 +234,7 @@ We plot the trace and the posterior densities for the two parameters.
 
 ```{code-cell} ipython3
 with AR1_model:
-    az.plot_trace(trace, figsize=(17,6))
+    az.plot_trace(trace)
 ```
 
 Evidently, the posteriors aren't centered on the true values of $0.5$ and $1$ that we used to generate the data.
@@ -294,7 +294,7 @@ In the trace plot below, any grey vertical lines mark sampler divergences.
 
 ```{code-cell} ipython3
 with AR1_model_y0:
-    az.plot_trace(trace_y0, figsize=(17,6))
+    az.plot_trace(trace_y0)
 ```
 
 Here is a summary of the posterior.
