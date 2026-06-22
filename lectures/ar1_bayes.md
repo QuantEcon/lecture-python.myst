@@ -154,7 +154,7 @@ def ar1_simulate(ρ, σ, y0, T, rng):
 ρ_true = 0.5
 T = 50
 
-rng = np.random.default_rng(145353452)
+rng = np.random.default_rng(42)
 y = ar1_simulate(ρ_true, σ_true, 10, T, rng)
 ```
 
@@ -378,18 +378,6 @@ It does this by pushing $\rho$ toward $1$, because a larger $\rho$ inflates the 
 A single unusual starting value therefore drags the whole posterior away from the truth.
 
 This is the sense in which the conditioning assumption is more accurate here: it does not let one atypical observation distort our view of $\rho$ and $\sigma_x$.
-
-We can see the difference directly in the code.
-
-Recall that the likelihood factors as
-
-$$
-f(y_T, \ldots, y_0) = f(y_T \mid y_{T-1}) \cdots f(y_1 \mid y_0)\, f(y_0).
-$$
-
-The conditioning assumption simply drops the last factor $f(y_0)$.
-
-The stationary assumption keeps it — and that is exactly the extra `y0_obs` term we added to the second model.
 
 ### NumPyro implementation
 
