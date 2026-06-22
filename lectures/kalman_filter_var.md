@@ -25,7 +25,7 @@ This lecture derives the **Kalman filter** for a linear Gaussian state space sys
 and then uses it to construct **vector autoregressions (VARs)**.
 
 Our approach rests on repeated applications of the **population linear least squares**
-projection formula — the insight that computing a conditional expectation of a jointly
+projection formula, the insight that computing a conditional expectation of a jointly
 normal random vector is the same as running a population OLS regression.
 
 The lecture covers:
@@ -40,7 +40,7 @@ The lecture covers:
 - why the Kalman filter is an essential tool for **interpreting VARs** estimated from
   economic data
 
-## The State Space System
+## The state space system
 
 The Kalman filter applies to the **state space system** for $t \geq 0$:
 
@@ -71,12 +71,12 @@ We observe $y_t, \ldots, y_0$ but **not** $x_t, \ldots, x_0$ at time $t$,
 and we know all first and second moments implied by
 {eq}`eq:statespace` and {eq}`eq:kalf3`.
 
-## The Kalman Filter
+## The Kalman filter
 
-### Starting Distribution
+### Starting distribution
 
 Working forward in time starting at $t = 0$, before observing $y_0$,
-the specification {eq}`eq:statespace`–{eq}`eq:kalf3` implies that the
+the specification {eq}`eq:statespace`-{eq}`eq:kalf3` implies that the
 marginal distribution of $y_0$ is
 
 $$
@@ -101,13 +101,13 @@ $\mathcal{N}(\hat{x}_t, \Sigma_t)$.
 The objects $\hat{x}_t$ and $\Sigma_t$ characterise the **population regression**
 
 $$
-\hat{x}_t = E[x_t \mid y_{t-1}, \ldots, y_0]
+\hat{x}_t = \mathbb{E}[x_t \mid y_{t-1}, \ldots, y_0]
 $$
 
 and the **conditional covariance matrix**
 
 $$
-\Sigma_t = E\!\left[(x_t - \hat{x}_t)(x_t - \hat{x}_t)' \mid y_{t-1}, \ldots, y_0\right]
+\Sigma_t = \mathbb{E}\!\left[(x_t - \hat{x}_t)(x_t - \hat{x}_t)' \mid y_{t-1}, \ldots, y_0\right]
 $$
 
 ### Derivation
@@ -133,19 +133,21 @@ a_0 \equiv y_0 - G \hat{x}_0
 $$
 
 **Updating beliefs about $x_0$:** The conditional mean
-$E[x_0 \mid y_0] = \hat{x}_0 + L_0(y_0 - G\hat{x}_0)$ satisfies the
+$\mathbb{E}[x_0 \mid y_0] = \hat{x}_0 + L_0(y_0 - G\hat{x}_0)$ satisfies the
 population regression formula
 
 $$
 x_0 - \hat{x}_0 = L_0(y_0 - G\hat{x}_0) + \eta
 $$ (eq:kalf5)
 
-where $\eta$ is the least squares residual.  Orthogonality of $\eta$ to
+where $\eta$ is the least squares residual.
+
+Orthogonality of $\eta$ to
 $(y_0 - G\hat{x}_0)$ pins down $L_0$ via the normal equations
 
 $$
-E(x_0 - \hat{x}_0)(y_0 - G\hat{x}_0)'
-= L_0\, E(y_0 - G\hat{x}_0)(y_0 - G\hat{x}_0)'
+\mathbb{E}(x_0 - \hat{x}_0)(y_0 - G\hat{x}_0)'
+= L_0\, \mathbb{E}(y_0 - G\hat{x}_0)(y_0 - G\hat{x}_0)'
 $$
 
 Evaluating the moment matrices and solving for $L_0$ gives
@@ -160,7 +162,7 @@ $$
 x_1 = A\hat{x}_0 + A(x_0 - \hat{x}_0) + C w_1
 $$ (eq:kalf6a)
 
-Applying {eq}`eq:kalf5` gives $E[x_1 \mid y_0] = A\hat{x}_0 + AL_0(y_0 - G\hat{x}_0)$,
+Applying {eq}`eq:kalf5` gives $\mathbb{E}[x_1 \mid y_0] = A\hat{x}_0 + AL_0(y_0 - G\hat{x}_0)$,
 which we write as
 
 $$
@@ -180,7 +182,7 @@ x_1 - \hat{x}_1 = A(x_0 - \hat{x}_0) + C w_1 - K_0(y_0 - G\hat{x}_0)
 $$ (eq:kalf8)
 
 Using {eq}`eq:kalf8` and $y_0 = G x_0 + v_0$ to evaluate
-$\Sigma_1 \equiv E[(x_1 - \hat{x}_1)(x_1 - \hat{x}_1)' \mid y_0]$ gives
+$\Sigma_1 \equiv \mathbb{E}[(x_1 - \hat{x}_1)(x_1 - \hat{x}_1)' \mid y_0]$ gives
 
 $$
 \Sigma_1 = (A - K_0 G)\Sigma_0(A - K_0 G)' + CC' + K_0 R K_0'
@@ -199,13 +201,13 @@ K_0       &= A\Sigma_0 G'(G\Sigma_0 G' + R)^{-1} \\
 \end{aligned}
 $$ (eq:kalf1000)
 
-System {eq}`eq:kalf1000` maps a mean–covariance pair $(\hat{x}_0, \Sigma_0)$ into a new
+System {eq}`eq:kalf1000` maps a mean-covariance pair $(\hat{x}_0, \Sigma_0)$ into a new
 pair $(\hat{x}_1, \Sigma_1)$, with auxiliary outputs $(a_0, K_0)$.
 
 Recognising that "we are in the same situation at the start of period 1 as at
-the start of period 0" activates a recursion — the **Kalman filter**.
+the start of period 0" activates a recursion, the **Kalman filter**.
 
-### The Kalman Filter Recursions
+### The Kalman filter recursions
 
 Iterating system {eq}`eq:kalf1000` yields the **Kalman filter** for $t \geq 0$:
 
@@ -220,7 +222,7 @@ $$ (eq:kalf10)
 
 Here $K_t$ is the **Kalman gain** at time $t$.
 
-### The Matrix Riccati Equation
+### The matrix Riccati equation
 
 Substituting the expression for $K_t$ from the second line of {eq}`eq:kalf10`
 into the fourth line gives an equivalent update formula:
@@ -231,63 +233,67 @@ $$
 $$ (eq:riccati)
 
 Equation {eq}`eq:riccati` is the **matrix Riccati difference equation**.
+
 It governs the sequence of conditional covariance matrices $\{\Sigma_t\}_{t=0}^\infty$
 without reference to the observations $\{y_t\}$.
 
 ```{index} single: Riccati equation; matrix difference
 ```
 
-## The Gram-Schmidt Process
+## The Gram-Schmidt process
 
 The random vector
 
 $$
-a_t = y_t - E[y_t \mid y_{t-1}, \ldots, y_0]
+a_t = y_t - \mathbb{E}[y_t \mid y_{t-1}, \ldots, y_0]
 $$
 
-is the **innovation** of $y_t$ with respect to $y^{t-1}$ — the part of $y_t$
+is the **innovation** of $y_t$ with respect to $y^{t-1}$, the part of $y_t$
 that cannot be predicted from past observations.
 
-Note that $E a_t a_t' = G\Sigma_t G' + R$, the matrix whose inverse appears in
+Note that $\mathbb{E} a_t a_t' = G\Sigma_t G' + R$, the matrix whose inverse appears in
 the Kalman gain formula {eq}`eq:kalf10`.
 
 A direct calculation using $a_t = G(x_t - \hat{x}_t) + v_t$ shows that
-$E a_t a_{t-1}' = 0$ and, more generally, $E[a_t \mid a_{t-1}, \ldots, a_0] = 0$.
+$\mathbb{E} a_t a_{t-1}' = 0$ and, more generally, $\mathbb{E}[a_t \mid a_{t-1}, \ldots, a_0] = 0$.
 
 ```{note}
 An alternative argument from first principles: let $H(y^t)$ denote the closed linear
-span of $y^t$.  Since $a_{t+1} = y_{t+1} - E[y_{t+1} \mid y^t]$ is a least-squares
+span of $y^t$.  Since $a_{t+1} = y_{t+1} - \mathbb{E}[y_{t+1} \mid y^t]$ is a least-squares
 error, $a_{t+1} \perp H(y^t)$, and in particular $a_{t+1} \perp a_t$.
 Thus $\{a_t\}$ is a white-noise process of innovations to $\{y_t\}$.
 ```
 
 Sometimes {eq}`eq:kalf10` is called a **whitening filter**: it takes the signal process
 $\{y_t\}$ as input and produces the white-noise innovation process $\{a_t\}$ as output.
+
 The linear space $H(a^t)$ is an orthogonal basis for the linear space $H(y^t)$.
 
-Rather than computing $E[x_t \mid y_{t-1}, \ldots, y_0]$ via one large regression,
+Rather than computing $\mathbb{E}[x_t \mid y_{t-1}, \ldots, y_0]$ via one large regression,
 the Kalman filter performs a sequence of small regressions on successive orthogonal
-components of the basis $[a_{t-1}, \ldots, a_0]$ — an instance of the
+components of the basis $[a_{t-1}, \ldots, a_0]$, an instance of the
 **Gram-Schmidt procedure**.
 
 ```{index} single: Gram-Schmidt process
 ```
 
-## Hidden Markov Model
+## Hidden Markov model
 
-System {eq}`eq:statespace`–{eq}`eq:kalf3` is an example of a **hidden Markov model**.
+System {eq}`eq:statespace`-{eq}`eq:kalf3` is an example of a **hidden Markov model**.
 
 ```{index} single: hidden Markov model
 ```
 
 The observed process $\{y_t\}_{t=0}^\infty$ is *not* Markov, but the hidden
-process $\{x_t\}_{t=0}^\infty$ *is* Markov.  So is the process of means and
+process $\{x_t\}_{t=0}^\infty$ *is* Markov.
+
+So is the process of means and
 covariances $\{(\hat{x}_t, \Sigma_t)\}$, which are sufficient statistics for
 the distribution of $x_t$ conditional on $[y_{t-1}, \ldots, y_0]$.
 
 ## Estimation
 
-### The Innovations Representation
+### The innovations representation
 
 The **innovations representation** emerging from the Kalman filter is
 
@@ -298,15 +304,16 @@ y_t           &= G\hat{x}_t + a_t
 \end{aligned}
 $$ (eq:innovrep)
 
-where $\hat{x}_t = E[x_t \mid y^{t-1}]$ for $t \geq 1$ and
-$E[a_t a_t' \mid y^{t-1}] = G\Sigma_t G' + R \equiv \Omega_t$.
+where $\hat{x}_t = \mathbb{E}[x_t \mid y^{t-1}]$ for $t \geq 1$ and
+$\mathbb{E}[a_t a_t' \mid y^{t-1}] = G\Sigma_t G' + R \equiv \Omega_t$.
 
-For $t \geq 1$, $E[y_t \mid y^{t-1}] = G\hat{x}_t$ and the conditional
+For $t \geq 1$, $\mathbb{E}[y_t \mid y^{t-1}] = G\hat{x}_t$ and the conditional
 distribution of $y_t$ given $y^{t-1}$ is $\mathcal{N}(G\hat{x}_t, \Omega_t)$.
+
 The objects $(G\hat{x}_t, \Omega_t)$ emerging from the Kalman filter recursions
 therefore completely characterise this conditional distribution.
 
-### The Likelihood Function
+### The likelihood function
 
 We can factor the likelihood of a sample $(y_T, y_{T-1}, \ldots, y_0)$ as
 
@@ -327,12 +334,14 @@ $$ (eq:gauss100)
 Using {eq}`eq:gauss100` and {eq}`eq:kalf10` together, we can evaluate
 the likelihood {eq}`eq:diff100` recursively for any parameter vector $\theta$
 that underlies the matrices $A, G, C, R$.
+
 Such calculations are at the heart of efficient strategies for computing
 **maximum likelihood estimators** of free parameters.
 
-### Bayesian Inference
+### Bayesian inference
 
 The likelihood function is also central to **Bayesian inference**.
+
 Where $\theta$ is the parameter vector, $y_0^T$ the data, and
 $\tilde{p}(\theta)$ a prior density over $\theta$ before seeing $y_0^T$,
 Bayes' law gives the **posterior**
@@ -345,9 +354,9 @@ $$
 
 The denominator is the marginal joint density $f(y_0^T)$.
 
-## Vector Autoregressions and the Kalman Filter
+## Vector autoregressions and the Kalman filter
 
-### Convergence to a Steady State
+### Convergence to a steady state
 
 Under conditions discussed by Anderson, Hansen, McGrattan, and Sargent (1996),
 iterations on the Riccati equation {eq}`eq:riccati` converge to a
@@ -358,12 +367,12 @@ A time-invariant fixed point $\Sigma_t = \Sigma$ of {eq}`eq:riccati` is the
 covariance matrix of $x_t$ around
 
 $$
-E\!\left[x_t \mid \{y_s\}_{s \leq t-1}\right]
+\mathbb{E}\!\left[x_t \mid \{y_s\}_{s \leq t-1}\right]
 $$
 
 where the conditioning extends over the **semi-infinite** past $s \leq t-1$.
 
-### A Time-Invariant VAR
+### A time-invariant VAR
 
 If the fixed point $\Sigma$ exists and we initialise the filter at $\Sigma_0 = \Sigma$,
 the innovations representation {eq}`eq:innovrep` becomes time-invariant:
@@ -375,7 +384,7 @@ y_t           &= G\hat{x}_t + a_t
 \end{aligned}
 $$ (eq:innovti)
 
-where $E a_t a_t' = G\Sigma G' + R$ and the **steady-state Kalman gain** is
+where $\mathbb{E} a_t a_t' = G\Sigma G' + R$ and the **steady-state Kalman gain** is
 $K = A\Sigma G'(G\Sigma G' + R)^{-1}$.
 
 From {eq}`eq:innovti` we obtain $\hat{x}_{t+1} = (A - KG)\hat{x}_t + K y_t$.
@@ -397,7 +406,7 @@ $$ (eq:var1)
 where by construction
 
 $$
-E\!\left[a_t\, y_{t-j-1}'\right] = 0 \quad \forall\, j \geq 0
+\mathbb{E}\!\left[a_t\, y_{t-j-1}'\right] = 0 \quad \forall\, j \geq 0
 $$ (eq:varorth)
 
 The orthogonality conditions {eq}`eq:varorth` identify {eq}`eq:var1` as a
@@ -422,11 +431,14 @@ typically take the form of state space system {eq}`eq:statespace`.
 This hidden Markov model disturbs the state $x_t$ by the $p \times 1$ shock
 vector $w_{t+1}$ and perturbs the $m \times 1$ vector of observables $y_t$ by the
 $m \times 1$ measurement error $v_t$.
+
 An economic theory typically makes $w_{t+1}$ and $v_t$ directly interpretable as
 shocks to preferences, technologies, endowments, or information sets.
 
 The state space system {eq}`eq:statespace` represents $\{y_t\}$ in terms of these
-**interpretable shocks**.  However, in the typical situation these shocks
+**interpretable shocks**.
+
+However, in the typical situation these shocks
 **cannot** be recovered directly from the $y_t$'s, even when $A, G, C, R$ are known.
 
 The innovations representation {eq}`eq:innovti` represents the *same* stochastic
@@ -440,7 +452,7 @@ Its role in mapping the original representation {eq}`eq:statespace` to the VAR
 ```{index} single: Kalman Filter; and vector autoregressions
 ```
 
-## Spectral Factorization Identity
+## Spectral factorization identity
 
 ```{index} single: spectral factorization identity
 ```
@@ -450,7 +462,7 @@ representation {eq}`eq:innovti` describe the **same** stochastic process $\{y_t\
 they imply two distinct formulas for the **spectral density matrix** of $\{y_t\}$.
 Equating those formulas yields the *spectral factorization identity*.
 
-### Two Representations of the Spectral Density
+### Two representations of the spectral density
 
 **From the original state space system.**  Writing the first line of
 {eq}`eq:statespace` as $x_t = (zI - A)^{-1} C w_{t+1}$ (using the $z$-transform
@@ -478,7 +490,7 @@ S_y(z) = \bigl[G(zI-A)^{-1}K + I\bigr]
           \bigl[K'(z^{-1}I - A')^{-1}G' + I\bigr].
 $$ (eq:sf_innov)
 
-### The Spectral Factorization Identity
+### The spectral factorization identity
 
 Equating {eq}`eq:sf_original` and {eq}`eq:sf_innov` gives the
 **spectral factorization identity**:
@@ -492,10 +504,11 @@ $$ (eq:sf_identity)
 
 The left side expresses $S_y(z)$ in terms of the **structural shocks**
 $(w_{t+1}, v_t)$ and the matrices $(A, C, G, R)$.
+
 The right side expresses the same object as a spectral factor built from the
 **innovations** $a_t$ and the steady-state Kalman gain $K$.
 
-### Connection to the Wold and Autoregressive Representations
+### Connection to the Wold and autoregressive representations
 
 The factorization {eq}`eq:sf_identity` underpins the passage from the innovations
 representation to the Wold moving average and to the VAR.
@@ -525,12 +538,14 @@ which is the **vector autoregression** already stated in {eq}`eq:var1`.
 
 The key analytical fact behind both representations is that, under mild stability
 conditions, the zeros of $\det[G(zI-A)^{-1}K + I]$ all lie **inside** the unit
-circle.  This ensures that the moving-average operator in {eq}`eq:sf_wold` has a
+circle.
+
+This ensures that the moving-average operator in {eq}`eq:sf_wold` has a
 causal (one-sided) inverse, so the innovation $a_t$ lies in the closed linear span
-of current and past observations $y^t$ — confirming that $a_t$ is the true
+of current and past observations $y^t$, confirming that $a_t$ is the true
 population forecast error from the VAR.
 
-## Python Implementation
+## Python implementation
 
 We now illustrate the theory using the `quantecon` library, which provides
 `LinearStateSpace` and `Kalman` classes that implement everything derived above.
@@ -541,7 +556,7 @@ import matplotlib.pyplot as plt
 import quantecon as qe
 ```
 
-### A Scalar Hidden AR(1) Model
+### A scalar hidden AR(1) model
 
 Consider a scalar hidden AR(1) state observed with measurement noise:
 
@@ -555,8 +570,6 @@ $$
 with $w_t, v_t \sim \mathcal{N}(0, 1)$ i.i.d.
 
 ```{code-cell} ipython3
-np.random.seed(42)
-
 # Model parameters
 rho     = 0.9
 sigma_w = 0.5
@@ -579,7 +592,7 @@ kf.set_state(np.zeros(1), np.eye(1) * 10.0)  # diffuse prior
 
 ```{code-cell} ipython3
 T = 200
-x_path, y_path = lss.simulate(ts_length=T)
+x_path, y_path = lss.simulate(ts_length=T, random_state=42)
 
 # x_path has shape (n, T+1);  y_path has shape (m, T)
 x_true = x_path[0, :T]
@@ -599,6 +612,12 @@ for t in range(T):
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Kalman filtering of a scalar AR(1) state
+    name: fig-kfvar-scalar
+---
 fig, axes = plt.subplots(3, 1, figsize=(10, 8), sharex=True)
 
 t_range = np.arange(T)
@@ -606,24 +625,24 @@ t_range = np.arange(T)
 axes[0].plot(t_range, x_true,  lw=1.5, label='True state $x_t$')
 axes[0].plot(t_range, x_hats,  lw=1.5, linestyle='--', label=r'$\hat{x}_t$ (Kalman)')
 axes[0].plot(t_range, y_obs,   alpha=0.35, label='Observation $y_t$')
-axes[0].set_title('State, Kalman Estimate, and Observation')
+axes[0].set_title('State, Kalman estimate, and observation')
 axes[0].legend(fontsize=9)
 
 axes[1].plot(t_range, Sigmas, color='tab:orange')
-axes[1].set_title(r'Conditional Variance $\Sigma_t$')
+axes[1].set_title(r'Conditional variance $\Sigma_t$')
 axes[1].axhline(kf.Sigma_infinity[0, 0], ls='--', color='k',
                 label=r'Steady-state $\Sigma_\infty$')
 axes[1].legend(fontsize=9)
 
 axes[2].plot(t_range, y_obs - x_hats, color='tab:green', lw=0.8, alpha=0.7)
 axes[2].set_title(r'Innovation $a_t = y_t - G\hat{x}_t$')
-axes[2].set_xlabel('Time $t$')
+axes[2].set_xlabel('time $t$')
 
 plt.tight_layout()
 plt.show()
 ```
 
-### Convergence of the Riccati Equation
+### Convergence of the Riccati equation
 
 The `Kalman` class computes the steady-state covariance $\Sigma_\infty$ by
 solving the discrete algebraic Riccati equation directly.
@@ -631,7 +650,7 @@ solving the discrete algebraic Riccati equation directly.
 ```{code-cell} ipython3
 Sigma_inf, K_inf = kf.stationary_values()
 
-print(f"Steady-state covariance  Σ∞ = {Sigma_inf[0, 0]:.6f}")
+print(f"Steady-state covariance  Σ_inf = {Sigma_inf[0, 0]:.6f}")
 print(f"Kalman filter converged to  = {Sigmas[-1]:.6f}")
 print(f"Steady-state Kalman gain K  = {K_inf[0, 0]:.6f}")
 
@@ -641,7 +660,7 @@ print(f"\nEigenvalue of (A - KG)      = {eigval:.6f}")
 print(f"Stable VAR: {np.abs(eigval) < 1}")
 ```
 
-### The VAR Representation
+### The VAR representation
 
 Using {eq}`eq:var1`, the coefficients in the infinite-order VAR representation are
 $G(A - KG)^j K$ for $j = 0, 1, 2, \ldots$
@@ -649,18 +668,23 @@ $G(A - KG)^j K$ for $j = 0, 1, 2, \ldots$
 We retrieve them via `stationary_coefficients`:
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: VAR coefficients from the innovations representation
+    name: fig-kfvar-varcoef
+---
 J = 30
 var_coeffs = kf.stationary_coefficients(J, coeff_type='var')
 
-# var_coeffs[j] gives the m×m coefficient matrix at lag j+1
+# var_coeffs[j] gives the mxm coefficient matrix at lag j+1
 lags = np.arange(1, J + 1)
 coeff_values = np.array([var_coeffs[j][0, 0] for j in range(J)])
 
 fig, ax = plt.subplots(figsize=(8, 4))
 ax.stem(lags, coeff_values, basefmt=' ')
-ax.set_xlabel('Lag $j$')
+ax.set_xlabel('lag $j$')
 ax.set_ylabel(r'VAR coefficient $G(A{-}KG)^{j-1}K$')
-ax.set_title('VAR Coefficients from the Innovations Representation (eq. {eq}`eq:var1`)')
 plt.tight_layout()
 plt.show()
 ```
@@ -668,7 +692,7 @@ plt.show()
 The coefficients decay geometrically, confirming that the infinite-order VAR
 {eq}`eq:var1` is well approximated by a finite-lag truncation.
 
-### Likelihood Evaluation
+### Likelihood evaluation
 
 We use {eq}`eq:gauss100` to evaluate the log-likelihood of the simulated sample.
 
@@ -704,12 +728,12 @@ ll = log_likelihood(A, C, G, R,
 print(f"Log-likelihood of sample: {ll:.4f}")
 ```
 
-## An Example
+## An example
 
 We now work through a structured example that shows how a bivariate VAR(2) fits naturally into the state space framework and how the Kalman filter delivers a 
 Wold (innovations) representation.
 
-### Linear State-Space System
+### Linear state-space system
 
 The state and observation equations are
 
@@ -729,7 +753,7 @@ w_{t+1} \sim \mathcal{N}(0, I), \quad
 v_t \sim \mathcal{N}(0, R).
 $$
 
-### Steady-State Riccati Equation
+### Steady-state Riccati equation
 
 The steady-state error covariance matrix $\Sigma$ satisfies
 
@@ -738,13 +762,13 @@ $$
          - A \Sigma G' \bigl(G \Sigma G' + R\bigr)^{-1} G \Sigma A'
 $$ (eq:ex_riccati)
 
-### Kalman Gain
+### Kalman gain
 
 $$
 K = A \Sigma G' \bigl(G \Sigma G' + R\bigr)^{-1}
 $$ (eq:ex_gain)
 
-### Kalman Filter Recursion
+### Kalman filter recursion
 
 Starting from an initial estimate $\hat{x}_0$, the Kalman filter updates the state estimate via
 
@@ -766,10 +790,10 @@ $$
               = (A - KG)\hat{x}_t + K G x_t + K v_t
 $$ (eq:ex_kf_expanded)
 
-### Impulse Responses of $y_t$ to the Innovations $a_t$
+### Impulse responses of $y_t$ to the innovations $a_t$
 
 It is useful to compute the **ordinary impulse response functions** of the
-observable vector $y_t$ to its own innovations $a_t$ — the moving-average (Wold)
+observable vector $y_t$ to its own innovations $a_t$, the moving-average (Wold)
 representation that is the mirror image of the VAR {eq}`eq:var1`.
 
 From the time-invariant innovations representation {eq}`eq:innovti`
@@ -791,15 +815,19 @@ $$
 \Psi_0 = I, \qquad \Psi_h = G A^{h-1} K \quad (h \ge 1).
 $$ (eq:ex_y_to_a)
 
-These coefficients decay at the rate governed by the eigenvalues of $A$ — in
+These coefficients decay at the rate governed by the eigenvalues of $A$, in
 contrast to the innovation-to-structural-shock responses studied later in the
 numerical example, which decay at the rate governed by the eigenvalues of
 $A - KG$.
 
 We can read the coefficients {eq}`eq:ex_y_to_a` directly off a `quantecon`
-`LinearStateSpace` object.  We build a state-space system whose state is the
+`LinearStateSpace` object.
+
+We build a state-space system whose state is the
 filtered estimate $\hat{x}_t$, whose single "shock" is the innovation $a_t$
-loaded through $C = K$, and whose observation matrix is $G$.  The
+loaded through $C = K$, and whose observation matrix is $G$.
+
+The
 `impulse_response` method of that object returns the sequence $G A^{j} K$ for
 $j = 0, 1, 2, \ldots$, which are exactly the $\Psi_h$ for $h \ge 1$; we prepend
 $\Psi_0 = I$ to capture the contemporaneous feed-through $y_t = G\hat{x}_t + a_t$.
@@ -810,13 +838,13 @@ def y_to_a_irf(A, K, G, T=40):
     Ordinary impulse responses of the observable y_t to its own
     innovations a_t in the innovations (Wold) representation
 
-        x̂_{t+1} = A x̂_t + K a_t
-        y_t      = G x̂_t + a_t.
+        x_hat_{t+1} = A x_hat_t + K a_t
+        y_t      = G x_hat_t + a_t.
 
     The moving-average coefficients are
-        Ψ_0 = I,   Ψ_h = G A^{h-1} K   (h ≥ 1).
+        Ψ_0 = I,   Ψ_h = G A^{h-1} K   (h >= 1).
 
-    The h ≥ 1 terms come from quantecon's LinearStateSpace: loading the
+    The h >= 1 terms come from quantecon's LinearStateSpace: loading the
     innovation a_t through C = K makes its impulse_response method return
     G A^j K for j = 0, 1, 2, ....  We prepend Ψ_0 = I for the
     contemporaneous feed-through.
@@ -826,7 +854,7 @@ def y_to_a_irf(A, K, G, T=40):
     """
     n, m     = A.shape[0], G.shape[0]
     lss      = qe.LinearStateSpace(A, K, G, np.zeros((m, m)), mu_0=np.zeros(n))
-    _, ycoef = lss.impulse_response(j=T - 2)      # [GK, GAK, GA²K, ...]
+    _, ycoef = lss.impulse_response(j=T - 2)      # [GK, GAK, GA^2K, ...]
     Psi      = np.empty((T, m, m))
     Psi[0]   = np.eye(m)                          # contemporaneous response
     for h in range(1, T):
@@ -834,7 +862,7 @@ def y_to_a_irf(A, K, G, T=40):
     return Psi
 ```
 
-### Augmented State-Space Representation
+### Augmented state-space representation
 
 We want to express the innovations $a_t$ as a function of the state shocks
 $w_{t+1}$ and the measurement error $v_t$.
@@ -853,7 +881,7 @@ $$
 $$ (eq:ex_augmented)
 
 
-### Bivariate VAR(2) in State-Space Form
+### Bivariate VAR(2) in state-space form
 
 Consider two observable series $r_t$ and $z_t$.
 
@@ -916,7 +944,7 @@ $$
 \, a_t
 $$ (eq:ex_wold_bivariate)
 
-where $E a_t a_t' = G \Sigma G' + R$ and $L$ is the lag operator.
+where $\mathbb{E} a_t a_t' = G \Sigma G' + R$ and $L$ is the lag operator.
 
 The innovation expressed in terms of the augmented state is
 
@@ -948,17 +976,18 @@ u_t
 = G_1(x_t - \hat{x}_t) + v_{1,t}
 $$ (eq:ex_innovation_aug2)
 
-and $E u_t^2 = G_1 \check  \Sigma G_1' + R_{11}$, and $\check \Sigma$ is the steady-state covariance of the augmented state vector associated with 
+and $\mathbb{E} u_t^2 = G_1 \check  \Sigma G_1' + R_{11}$, and $\check \Sigma$ is the steady-state covariance of the augmented state vector associated with 
 $G_1, R_{11}$.
 
-### Numerical Example: Impulse Responses of Innovations
+### Numerical example: impulse responses of innovations
 
 We now set specific parameter values and compute the **impulse response functions
-of the Kalman innovations** — $a_t$ in System 1 and $u_t$ in System 2 — to the
+of the Kalman innovations** ($a_t$ in System 1 and $u_t$ in System 2) to the
 two structural shocks $w_{1,t+1}$ and $w_{2,t+1}$.
 
 The key object is **not** the response of the observable $y_t$ to the shocks, but
 rather the response of the innovation that the Kalman filter produces.
+
 In System 1, $a_t$ is the $2 \times 1$ forecast error of $(r_t, z_t)'$ given the
 filter's estimate; in System 2, $u_t$ is the scalar forecast error of $r_t$ given
 the filter's estimate based on the $r_t$ history alone.
@@ -999,7 +1028,9 @@ $G$ selects $(r_t, z_t)'$ from the state and the innovation $a_t$ is $2 \times 1
 $G_1$ selects only $r_t$ and the innovation $u_t$ is scalar.
 
 Because the innovation equals $a_t = G(x_t - \hat{x}_t) + v_t$, a unit shock $w_j$
-propagates through the **augmented** state $(x_t', \hat{x}_t')'$.  A straightforward
+propagates through the **augmented** state $(x_t', \hat{x}_t')'$.
+
+A straightforward
 calculation using the augmented recursion {eq}`eq:ex_augmented` shows that the
 **impulse response of the innovation** at horizon $h \geq 0$ is
 
@@ -1009,7 +1040,9 @@ $$
 
 where $e_j$ is the $j$-th column of $I_2$ and $K$ is the appropriate steady-state
 Kalman gain (System 1 uses $K$ from the bivariate filter; System 2 uses $K_1$ from
-the univariate filter).  At $h=0$ the shock hits and the innovation equals $GCe_j$;
+the univariate filter).
+
+At $h=0$ the shock hits and the innovation equals $GCe_j$;
 for $h \geq 1$ the response decays at the rate governed by the eigenvalues of $A - KG$.
 
 ```{code-cell} ipython3
@@ -1017,13 +1050,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import quantecon as qe
 
-# ── Parameters ───────────────────────────────────────────────────────────────
+# -- Parameters ---------------------------------------------------------------
 d1, d2, d3, d4             = 0.80, 0.05, 0.75, -.72
 delta1, delta2, delta3, delta4 = 0.00, 0.00, 0.75, 0.20
 c11, c12, c21, c22         = 1.0,  0.0,  0.0,  1.0
 sigma_v                    = 0.01          # sqrt(0.0001)
 
-# ── Shared matrices ───────────────────────────────────────────────────────────
+# -- Shared matrices -----------------------------------------------------------
 A_var = np.array([[d1,     d2,     d3,     d4    ],
                   [1.0,    0.0,    0.0,    0.0   ],
                   [delta1, delta2, delta3, delta4],
@@ -1034,7 +1067,7 @@ C_var = np.array([[c11, c12],
                   [c21, c22],
                   [0.0, 0.0]])
 
-# ── System 1: bivariate observation ──────────────────────────────────────────
+# -- System 1: bivariate observation ------------------------------------------
 G_biv = np.array([[1.0, 0.0, 0.0, 0.0],
                   [0.0, 0.0, 1.0, 0.0]])
 H_biv = sigma_v * np.eye(2)          # H @ H.T = 0.0001 * I_2
@@ -1044,10 +1077,10 @@ lss_biv = qe.LinearStateSpace(A_var, C_var, G_biv, H_biv,
 kf_biv  = qe.Kalman(lss_biv)
 Sigma_biv, K_biv = kf_biv.stationary_values()
 
-print("System 1 – steady-state Kalman gain K (4×2):")
+print("System 1 - steady-state Kalman gain K (4x2):")
 print(np.round(K_biv, 5))
 
-# ── System 2: univariate observation ─────────────────────────────────────────
+# -- System 2: univariate observation -----------------------------------------
 G_uni = np.array([[1.0, 0.0, 0.0, 0.0]])
 H_uni = np.array([[sigma_v]])         # H @ H.T = 0.0001
 
@@ -1056,36 +1089,36 @@ lss_uni = qe.LinearStateSpace(A_var, C_var, G_uni, H_uni,
 kf_uni  = qe.Kalman(lss_uni)
 Sigma_uni, K_uni = kf_uni.stationary_values()
 
-print("\nSystem 2 – steady-state Kalman gain K (4×1):")
+print("\nSystem 2 - steady-state Kalman gain K (4x1):")
 print(np.round(K_uni, 5))
 ```
 
 ```{code-cell} ipython3
-# ── Covariance comparisons ────────────────────────────────────────────────────
+# -- Covariance comparisons ----------------------------------------------------
 
 # State-noise covariance CC' versus innovation covariance G Σ G' + R (System 1)
 CC_prime       = C_var @ C_var.T
 R_biv          = (sigma_v**2) * np.eye(2)
 innov_cov_biv  = G_biv @ Sigma_biv @ G_biv.T + R_biv
 
-print("State-noise covariance  CC'  (4×4):")
+print("State-noise covariance  CC'  (4x4):")
 print(np.round(CC_prime, 6))
 
-print("\nSystem 1 – innovation covariance  GΣG' + R  (2×2):")
+print("\nSystem 1 - innovation covariance  GΣG' + R  (2x2):")
 print(np.round(innov_cov_biv, 6))
 
 # Steady-state state covariance: System 1 (Σ_biv) vs System 2 (Σ_uni)
-print("\nSystem 1 – steady-state state covariance  Σ  (4×4):")
+print("\nSystem 1 - steady-state state covariance  Σ  (4x4):")
 print(np.round(Sigma_biv, 6))
 
-print("\nSystem 2 – steady-state state covariance  Σ̌  (4×4):")
+print("\nSystem 2 - steady-state state covariance  Σ_check  (4x4):")
 print(np.round(Sigma_uni, 6))
 
-print("\nDifference  Σ̌ − Σ  (System 2 minus System 1):")
+print("\nDifference  Σ_check - Σ  (System 2 minus System 1):")
 print(np.round(Sigma_uni - Sigma_biv, 6))
 ```
 
-#### Impulse Responses of $y_t$ to the Innovations $a_t$
+#### Impulse responses of $y_t$ to the innovations $a_t$
 
 We now apply the helper `y_to_a_irf` defined above to compute the ordinary
 impulse responses {eq}`eq:ex_y_to_a` of the observable $y_t$ to its own
@@ -1093,6 +1126,12 @@ innovations $a_t$, for both System 1 (bivariate, so $a_t$ is $2 \times 1$) and
 System 2 (univariate, so $u_t$ is scalar).
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "System 1: IRFs of $y_t = (r_t, z_t)$ to its innovations $a_t$"
+    name: fig-kfvar-sys1-ya
+---
 T_irf    = 40
 horizons = np.arange(T_irf)
 
@@ -1102,7 +1141,7 @@ Psi_uni = y_to_a_irf(A_var, K_uni, G_uni, T_irf)   # System 2: (T, 1, 1)
 obs_labels   = [r'$r_t$', r'$z_t$']
 innov_labels = [r'$a_{1,t}$', r'$a_{2,t}$']
 
-# ── Figure: System 1 – responses of y_t = (r_t, z_t)' to its innovations a_t ──
+# -- Figure: System 1 - responses of y_t = (r_t, z_t)' to its innovations a_t --
 fig, axes = plt.subplots(2, 2, figsize=(10, 6), sharex=True)
 for i, obs in enumerate(obs_labels):
     for j, inn in enumerate(innov_labels):
@@ -1111,36 +1150,39 @@ for i, obs in enumerate(obs_labels):
         ax.axhline(0, color='k', lw=0.6, ls='--')
         ax.set_title(f'{obs} to {inn}', fontsize=9)
         if i == 1:
-            ax.set_xlabel('Horizon $h$')
+            ax.set_xlabel('horizon $h$')
         if j == 0:
-            ax.set_ylabel('Response')
+            ax.set_ylabel('response')
 
-plt.suptitle(r'System 1: IRFs of $y_t = (r_t, z_t)$ to its innovations $a_t$',
-             fontsize=11)
 plt.tight_layout()
 plt.show()
 ```
 
 ```{code-cell} ipython3
-# ── Figure: System 2 – response of the scalar observable r_t to innovation u_t ──
+---
+mystnb:
+  figure:
+    caption: "System 2: IRF of $r_t$ to its innovation $u_t$"
+    name: fig-kfvar-sys2-ya
+---
 fig, ax = plt.subplots(figsize=(7, 3.5))
 ax.plot(horizons, Psi_uni[:, 0, 0], lw=1.8)
 ax.axhline(0, color='k', lw=0.6, ls='--')
-ax.set_title(r'System 2: IRF of $r_t$ to its innovation $u_t$', fontsize=10)
-ax.set_xlabel('Horizon $h$')
-ax.set_ylabel('Response')
+ax.set_xlabel('horizon $h$')
+ax.set_ylabel('response')
 plt.tight_layout()
 plt.show()
 ```
 
 At horizon $h = 0$ each innovation passes one-for-one into its own component of
-$y_t$ — the contemporaneous response equals the identity matrix $\Psi_0 = I$, so
+$y_t$, the contemporaneous response equals the identity matrix $\Psi_0 = I$, so
 the diagonal panels start at $1$ and the off-diagonal panels start at $0$.
+
 For $h \ge 1$ the responses propagate through the state matrix $A$ and decay
 geometrically, tracing out the Wold moving-average representation of the
 bivariate (System 1) and univariate (System 2) processes.
 
-#### Impulse Responses of the Innovations to the Structural Shocks
+#### Impulse responses of the innovations to the structural shocks
 
 ```{code-cell} ipython3
 def innovation_irf(A, K, G, C, T=40):
@@ -1171,43 +1213,46 @@ irf_uni = innovation_irf(A_var, K_uni, G_uni, C_var, T_irf)   # (T, 1, 2)
 shock_labels  = [r'Shock $w_{1,t+1}$', r'Shock $w_{2,t+1}$']
 innov_biv_lbl = [r'$a_{1,t}$', r'$a_{2,t}$']
 
-# ── Figure 1: System 1 – innovation IRFs ──────────────────────────────────────
+# -- Figure 1: System 1 - innovation IRFs --------------------------------------
 fig, axes = plt.subplots(2, 2, figsize=(10, 6), sharex=True)
 for j, shock in enumerate(shock_labels):
     for i, albl in enumerate(innov_biv_lbl):
         ax = axes[i, j]
         ax.plot(horizons, irf_biv[:, i, j], lw=1.8)
         ax.axhline(0, color='k', lw=0.6, ls='--')
-        ax.set_title(f'System 1 – {albl} to {shock}', fontsize=9)
-        ax.set_xlabel('Horizon $h$')
+        ax.set_title(f'System 1 - {albl} to {shock}', fontsize=9)
+        ax.set_xlabel('horizon $h$')
         if j == 0:
-            ax.set_ylabel('Innovation response')
+            ax.set_ylabel('innovation response')
 
-plt.suptitle(r'System 1: IRFs of Innovation $a_t$ to Structural Shocks',
+plt.suptitle(r'System 1: IRFs of innovation $a_t$ to structural shocks',
              fontsize=11)
 plt.tight_layout()
 plt.show()
 
-# ── Figure 2: System 2 – innovation IRFs ──────────────────────────────────────
+# -- Figure 2: System 2 - innovation IRFs --------------------------------------
 fig, axes = plt.subplots(1, 2, figsize=(10, 3.5))
 for j, shock in enumerate(shock_labels):
     axes[j].plot(horizons, irf_uni[:, 0, j], lw=1.8)
     axes[j].axhline(0, color='k', lw=0.6, ls='--')
-    axes[j].set_title(f'System 2 – $u_t$ to {shock}', fontsize=9)
-    axes[j].set_xlabel('Horizon $h$')
-axes[0].set_ylabel('Innovation response')
+    axes[j].set_title(f'System 2 - $u_t$ to {shock}', fontsize=9)
+    axes[j].set_xlabel('horizon $h$')
+axes[0].set_ylabel('innovation response')
 
-plt.suptitle(r'System 2: IRFs of Innovation $u_t$ to Structural Shocks',
+plt.suptitle(r'System 2: IRFs of innovation $u_t$ to structural shocks',
              fontsize=11)
 plt.tight_layout()
 plt.show()
 ```
 
 The two sets of innovation impulse responses illustrate an important point.
+
 In **System 1** the filter uses both $r_t$ and $z_t$, so $a_t$ is $2 \times 1$ and
 its response to each shock is a pair of numbers at every horizon.
+
 In **System 2** only $r_t$ is observed, so $u_t$ is scalar and carries less
 information about the two-dimensional shock vector.
+
 Because $K$ differs across the two systems, the decay matrix $A - KG$ differs
 as well, so the innovation IRFs $G(A-KG)^h C e_j$ differ across the two systems
 even though the structural DGP is identical.
@@ -1215,19 +1260,24 @@ even though the structural DGP is identical.
 The covariance comparisons printed above reveal two further insights.
 
 **State-noise $CC'$ vs. innovation covariance $G\Sigma G' + R$ (System 1).**
+
 The matrix $CC'$ is the unconditional covariance contributed by the structural
 shocks to the state transition in one period.
+
 The innovation covariance $G\Sigma G' + R$ is the covariance of the one-step
 forecast error in the *observable* vector after the Kalman filter has processed
 all available information.
+
 Because $G\Sigma G' + R \preceq G(A \Sigma A' + CC')G' + R$, the filter
 strictly reduces the variance attributable to the structural shocks; the
 diagonal entries of $G\Sigma G' + R$ are therefore smaller than those of $GCC'G'$.
 
 **System 1 covariance $\Sigma$ vs. System 2 covariance $\check\Sigma$.**
+
 Restricting observations to $r_t$ alone (System 2) yields less information about
 the hidden state, so the filter is less precise: $\check\Sigma \succeq \Sigma$,
 i.e., the difference $\check\Sigma - \Sigma$ is positive semi-definite.
+
 The printed difference matrix confirms this ordering for our parameter values.
 
 ## Exercises
@@ -1294,8 +1344,8 @@ H_ = np.array([[sigma_v_]])   # R_ = H_ @ H_.T
 lss_ = qe.LinearStateSpace(A_, C_, G_, H_, mu_0=np.zeros(1), Sigma_0=np.eye(1))
 kf_  = qe.Kalman(lss_)
 
-print(f"Analytical Σ∞   = {Sigma_formula:.8f}")
-print(f"Numerical  Σ∞   = {kf_.Sigma_infinity[0, 0]:.8f}")
+print(f"Analytical Σ_inf   = {Sigma_formula:.8f}")
+print(f"Numerical  Σ_inf   = {kf_.Sigma_infinity[0, 0]:.8f}")
 ```
 
 ```{solution-end}
@@ -1335,8 +1385,6 @@ $$
 ```
 
 ```{code-cell} ipython3
-np.random.seed(0)
-
 A2 = np.array([[0.9, 0.1],
                [0.0, 0.8]])
 C2 = np.array([[0.4],
@@ -1352,7 +1400,7 @@ kf2   = qe.Kalman(lss2)
 kf2.set_state(np.zeros(2), np.eye(2) * 5.0)
 
 T2 = 500
-x2_path, y2_path = lss2.simulate(ts_length=T2)
+x2_path, y2_path = lss2.simulate(ts_length=T2, random_state=0)
 
 x_hats2 = np.zeros((T2, 2))
 for t in range(T2):
@@ -1364,23 +1412,23 @@ for i, ax in enumerate(axes):
     ax.plot(x2_path[i, :T2], lw=1.2, label=f'True $x_{{{i+1},t}}$')
     ax.plot(x_hats2[:, i],   lw=1.2, ls='--', label=rf'$\hat{{x}}_{{{i+1},t}}$')
     ax.legend(fontsize=9)
-    ax.set_ylabel(f'Component {i+1}')
-axes[1].set_xlabel('Time $t$')
-plt.suptitle('Kalman Filter — Bivariate Hidden State')
+    ax.set_ylabel(f'component {i+1}')
+axes[1].set_xlabel('time $t$')
+plt.suptitle('Kalman filter: bivariate hidden state')
 plt.tight_layout()
 plt.show()
 
 # (c) Steady-state values
 Sigma2_inf, K2_inf = kf2.stationary_values()
-print("Steady-state covariance Σ∞:")
+print("Steady-state covariance Σ_inf:")
 print(np.round(Sigma2_inf, 5))
-print("\nSteady-state Kalman gain K∞:")
+print("\nSteady-state Kalman gain K_inf:")
 print(np.round(K2_inf, 5))
 
-# (d) Eigenvalues of A - K∞ G
+# (d) Eigenvalues of A - K_inf G
 AKG2 = A2 - K2_inf @ G2
 eigvals2 = np.linalg.eigvals(AKG2)
-print(f"\nEigenvalues of A - K∞G: {np.round(eigvals2, 5)}")
+print(f"\nEigenvalues of A - K_inf G: {np.round(eigvals2, 5)}")
 print(f"Stable VAR: {np.all(np.abs(eigvals2) < 1)}")
 ```
 
@@ -1413,8 +1461,6 @@ $(\rho, \sigma_w, \sigma_v) = (0.9, 0.5, 1.0)$:
 ```
 
 ```{code-cell} ipython3
-np.random.seed(7)
-
 # True parameters
 rho_true, sw_true, sv_true = 0.9, 0.5, 1.0
 
@@ -1426,7 +1472,7 @@ H_t = np.array([[sv_true]])   # R_t = H_t @ H_t.T
 
 lss_t = qe.LinearStateSpace(A_t, C_t, G_t, H_t,
                              mu_0=np.zeros(1), Sigma_0=np.eye(1))
-_, y_sim = lss_t.simulate(ts_length=300)
+_, y_sim = lss_t.simulate(ts_length=300, random_state=7)
 y_sim = y_sim.T          # shape (300, 1)
 
 def ll_rho(rho_val):
@@ -1445,15 +1491,15 @@ rho_mle = rho_grid[np.argmax(ll_vals)]
 fig, ax = plt.subplots(figsize=(8, 4))
 ax.plot(rho_grid, ll_vals)
 ax.axvline(rho_true, color='k',   ls='--', label=f'True ρ = {rho_true}')
-ax.axvline(rho_mle,  color='tab:red', ls=':', label=f'MLE  ρ̂ = {rho_mle:.3f}')
+ax.axvline(rho_mle,  color='tab:red', ls=':', label=f'MLE  ρ_hat = {rho_mle:.3f}')
 ax.set_xlabel(r'$\rho$')
-ax.set_ylabel('Log-likelihood')
-ax.set_title('Profile Log-likelihood as a Function of $\\rho$')
+ax.set_ylabel('log-likelihood')
+ax.set_title('Profile log-likelihood as a function of $\\rho$')
 ax.legend()
 plt.tight_layout()
 plt.show()
 
-print(f"True ρ = {rho_true},  MLE ρ̂ = {rho_mle:.4f}")
+print(f"True ρ = {rho_true},  MLE ρ_hat = {rho_mle:.4f}")
 ```
 
 ```{solution-end}

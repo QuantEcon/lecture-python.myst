@@ -83,7 +83,7 @@ $$
 x_{t+1} = A x_t + B i_t + C w_{t+1},
 $$ (eq:hst_lom)
 
-where $i_t$ is a control vector, $x_t$ is the state vector, and $w_{t+1}$ is an i.i.d. Gaussian vector with $E w_{t+1} = 0$ and $E w_{t+1} w_{t+1}' = I$.
+where $i_t$ is a control vector, $x_t$ is the state vector, and $w_{t+1}$ is an i.i.d. Gaussian vector with $\mathbb{E} w_{t+1} = 0$ and $\mathbb{E} w_{t+1} w_{t+1}' = I$.
 
 The one-period return is
 
@@ -102,12 +102,12 @@ $$ (eq:hst_recursion)
 where the **risk-sensitivity operator** is
 
 $$
-\mathcal{R}_t(U_{t+1}) \equiv \frac{2}{\sigma} \log E\!\left[ \exp\!\left( \frac{\sigma U_{t+1}}{2} \right) \Big| J_t \right].
+\mathcal{R}_t(U_{t+1}) \equiv \frac{2}{\sigma} \log \mathbb{E}\!\left[ \exp\!\left( \frac{\sigma U_{t+1}}{2} \right) \Big| J_t \right].
 $$ (eq:hst_R)
 
 Here $J_t$ is the information available at $t$.
 
-When $\sigma = 0$ we set $\mathcal{R}_t \equiv E(\,\cdot \mid J_t)$ and recover the usual von Neumann–Morgenstern, state-additive specification.
+When $\sigma = 0$ we set $\mathcal{R}_t \equiv \mathbb{E}(\,\cdot \mid J_t)$ and recover the usual von Neumann–Morgenstern, state-additive specification.
 
 When $\sigma \neq 0$ the operator $\mathcal{R}_t$ applies an additional risk adjustment *over and above* the one coming from the curvature of $u$.
 
@@ -121,18 +121,22 @@ The exponential-of-utility form in {eq}`eq:hst_R` originates in the *risk-sensit
 
 The operator $\mathcal{R}_t$ has a transparent closed form when continuation utility is Gaussian.
 
-Suppose $U_{t+1} \sim \mathcal{N}(\mu, s^2)$ conditional on $J_t$. Using the Gaussian moment generating function $E[\exp(a U_{t+1})] = \exp(a\mu + \tfrac{1}{2}a^2 s^2)$ with $a = \sigma/2$,
+Suppose $U_{t+1} \sim \mathcal{N}(\mu, s^2)$ conditional on $J_t$. Using the Gaussian moment generating function $\mathbb{E}[\exp(a U_{t+1})] = \exp(a\mu + \tfrac{1}{2}a^2 s^2)$ with $a = \sigma/2$,
 
 $$
 \mathcal{R}_t(U_{t+1})
-= \frac{2}{\sigma} \log E\!\left[ \exp\!\left( \frac{\sigma U_{t+1}}{2} \right) \Big| J_t \right]
+= \frac{2}{\sigma} \log \mathbb{E}\!\left[ \exp\!\left( \frac{\sigma U_{t+1}}{2} \right) \Big| J_t \right]
 = \frac{2}{\sigma}\left( \frac{\sigma}{2}\mu + \frac{\sigma^2}{8} s^2 \right)
 = \mu + \frac{\sigma}{4} s^2.
 $$ (eq:hst_R_gauss)
 
 For $\sigma < 0$ this is *below* the conditional mean $\mu$: the decision maker evaluates uncertain prospects **pessimistically**, and the penalty grows with the conditional variance $s^2$.
 
-This certainty equivalent has a revealing decomposition. The expectation in {eq}`eq:hst_R` re-weights outcomes by $\exp(\sigma U_{t+1}/2)$; for a Gaussian this **exponential tilting** produces a new normal density with the *same* variance $s^2$ but a mean shifted to $\mu + \frac{\sigma}{2} s^2$. The operator value $\mu + \frac{\sigma}{4} s^2$ lies *halfway* between the original mean $\mu$ and this worst-case mean: it equals the worst-case expected utility $\mu + \frac{\sigma}{2}s^2$ *plus* the relative-entropy penalty $-\frac{\sigma}{4}s^2$ that restrains the distortion.
+This certainty equivalent has a revealing decomposition.
+
+The expectation in {eq}`eq:hst_R` re-weights outcomes by $\exp(\sigma U_{t+1}/2)$; for a Gaussian this **exponential tilting** produces a new normal density with the *same* variance $s^2$ but a mean shifted to $\mu + \frac{\sigma}{2} s^2$.
+
+The operator value $\mu + \frac{\sigma}{4} s^2$ lies *halfway* between the original mean $\mu$ and this worst-case mean: it equals the worst-case expected utility $\mu + \frac{\sigma}{2}s^2$ *plus* the relative-entropy penalty $-\frac{\sigma}{4}s^2$ that restrains the distortion.
 
 ```{note}
 The two coefficients describe different objects. The **worst-case mean** of $U_{t+1}$ shifts by $\frac{\sigma}{2}s^2$, while the **operator value** (certainty equivalent) shifts by $\frac{\sigma}{4}s^2$. Both are correct; the smaller shift of $\mathcal{R}_t$ reflects the entropy cost the malevolent player pays for the distortion. A self-contained derivation of {eq}`eq:hst_R_gauss` is requested in {ref}`hst_ex1`.
@@ -141,6 +145,12 @@ The two coefficients describe different objects. The **worst-case mean** of $U_{
 Let's visualize both facts — the certainty equivalent on the left, and the worst-case (tilted) density of continuation utility on the right.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Risk-sensitive operator and worst-case density
+    name: fig-hst-operator
+---
 mu, s = 0.0, 1.0           # conditional mean and std of continuation utility
 
 def R_operator(mu, s, sigma):
@@ -158,7 +168,7 @@ axes[0].plot(sigmas, R_vals, lw=2)
 axes[0].axhline(mu, color='k', ls='--', lw=1, label=r'$E[U_{t+1}]=\mu$')
 axes[0].set_xlabel(r'risk-sensitivity $\sigma$')
 axes[0].set_ylabel(r'$\mathcal{R}_t(U_{t+1})$')
-axes[0].set_title('certainty equivalent falls as $\\sigma$ becomes negative')
+axes[0].set_title('Certainty equivalent falls with $\\sigma$')
 axes[0].legend()
 
 # worst-case (exponentially tilted) density of continuation utility
@@ -172,7 +182,7 @@ for sigma in [-0.5, -1.0]:
     axes[1].axvline(mu + sigma * s**2 / 4, color='C3', lw=0.8, ls=':')
 axes[1].set_xlabel(r'continuation utility $U_{t+1}$')
 axes[1].set_ylabel('density')
-axes[1].set_title('worst-case density tilts the mean downward')
+axes[1].set_title('Worst-case density tilts mean downward')
 axes[1].legend()
 
 plt.tight_layout()
@@ -185,25 +195,33 @@ The right panel shows the associated **worst-case** density of continuation util
 
 ## A preference for robustness
 
-The pessimistic tilt in the right panel above is not just an analogy. {cite}`HST_1999` show that the risk-sensitive problem is the value function of a **two-player zero-sum game**.
+The pessimistic tilt in the right panel above is not just an analogy.
 
-In this game, one player chooses the control $\{i_t\}$ while a second, malevolent player chooses a distortion $\{v_t\}$ to the conditional mean of the shocks. The distorted law of motion is
+{cite}`HST_1999` show that the risk-sensitive problem is the value function of a **two-player zero-sum game**.
+
+In this game, one player chooses the control $\{i_t\}$ while a second, malevolent player chooses a distortion $\{v_t\}$ to the conditional mean of the shocks.
+
+The distorted law of motion is
 
 $$
 x_{t+1} = A x_t + B i_t + C (w_{t+1} + v_t).
 $$ (eq:hst_distorted_lom)
 
-The minimizing player would like to push the state in painful directions, but is restrained by a penalty on the size of the distortion. With $-1/\sigma \geq 0$ acting as a Lagrange multiplier on a constraint that bounds the distortion sequence, the Markov perfect equilibrium has value function
+The minimizing player would like to push the state in painful directions, but is restrained by a penalty on the size of the distortion.
+
+With $-1/\sigma \geq 0$ acting as a Lagrange multiplier on a constraint that bounds the distortion sequence, the Markov perfect equilibrium has value function
 
 $$
-\tilde{W}(x) = \inf_v \sup_i \left\{ -i'Qi - x'Rx + \beta \left[ -\frac{1}{\sigma} v'v + E\,\tilde{W}(Ax + Bi + C(w + v)) \right] \right\}.
+\tilde{W}(x) = \inf_v \sup_i \left\{ -i'Qi - x'Rx + \beta \left[ -\frac{1}{\sigma} v'v + \mathbb{E}\,\tilde{W}(Ax + Bi + C(w + v)) \right] \right\}.
 $$ (eq:hst_game)
 
 Because $\sigma < 0$ makes $-1/\sigma > 0$, the term $-\frac{1}{\sigma}v'v$ *penalizes* the malevolent player for large distortions.
 
 A smaller $|1/\sigma|$ (more negative $\sigma$) means a cheaper distortion budget and hence a larger family of models the agent guards against — a *stronger* preference for robustness.
 
-This is exactly the max-min expected utility structure of {cite}`GilboaSchmeidler:1989`: the agent's "nominal model" sets $v_t = 0$, but they entertain a whole family of alternatives indexed by $\{v_t\}$ and act against the worst case. Following {cite}`EpsteinWang1994`, the non-uniqueness of the implied probability measures is a form of **Knightian uncertainty**.
+This is exactly the max-min expected utility structure of {cite}`GilboaSchmeidler:1989`: the agent's "nominal model" sets $v_t = 0$, but they entertain a whole family of alternatives indexed by $\{v_t\}$ and act against the worst case.
+
+Following {cite}`EpsteinWang1994`, the non-uniqueness of the implied probability measures is a form of **Knightian uncertainty**.
 
 The robust and risk-sensitive problems share the same value function matrix $\Omega$ and the same decision rule $i_t = -F x_t$; they differ only in interpretation.
 
@@ -239,7 +257,9 @@ $$
 c_t + i_t = \gamma k_{t-1} + d_t,
 $$
 
-and capital accumulates as $k_t = \delta_k k_{t-1} + i_t$, where $\{d_t\}$ is an exogenous endowment. Combining,
+and capital accumulates as $k_t = \delta_k k_{t-1} + i_t$, where $\{d_t\}$ is an exogenous endowment.
+
+Combining,
 
 $$
 c_t + k_t = (\delta_k + \gamma) k_{t-1} + d_t,
@@ -264,7 +284,7 @@ To build intuition, set $\sigma = 0$ and impose the permanent income restriction
 The first-order conditions then imply that the marginal utility of consumption services is a **martingale**,
 
 $$
-E_t \, \mu_{c,t+1} = \mu_{c,t},
+\mathbb{E}_t \, \mu_{c,t+1} = \mu_{c,t},
 $$ (eq:hst_martingale)
 
 and that $\mu_{s,t}$ inherits the representation
@@ -324,6 +344,12 @@ The lower bound $\underline{\sigma}$ is the most negative $\sigma$ for which the
 Let's reproduce the locus — a version of Figure 1 in {cite}`HST_1999`.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Observationally equivalent $(\sigma, \hat\beta)$ pairs
+    name: fig-hst-oe
+---
 beta_bench = 0.9971         # benchmark discount factor (annual rate ~2.5%)
 Rf = 1 / beta_bench         # gross risk-free return fixed by beta R = 1
 theta2 = 0.01               # variance of the marginal-utility innovation, v'v
@@ -352,7 +378,6 @@ fig, ax = plt.subplots(figsize=(7, 5))
 ax.plot(betas, sigmas, lw=2)
 ax.set_xlabel(r'discount factor $\hat\beta$')
 ax.set_ylabel(r'risk-sensitivity $\sigma$')
-ax.set_title('Observationally equivalent $(\\sigma, \\hat\\beta)$ pairs')
 ax.axhline(0, color='k', lw=0.8, ls='--')
 plt.tight_layout()
 plt.show()
@@ -368,7 +393,9 @@ This is why consumption and savings data alone cannot tell us how much the consu
 
 Section 4 of {cite}`HST_1999` turns the observational-equivalence result into an empirical strategy.
 
-Because the quantity data cannot pin down $\sigma$, the authors first estimate the $\sigma = 0$ version of the model, conditioning the likelihood **only on consumption and investment**, and then use the locus of {prf:ref}`prop:hst_oe` to trace out the family of $(\sigma, \hat\beta)$ pairs consistent with those estimates. Asset prices (the next section) break the tie.
+Because the quantity data cannot pin down $\sigma$, the authors first estimate the $\sigma = 0$ version of the model, conditioning the likelihood **only on consumption and investment**, and then use the locus of {prf:ref}`prop:hst_oe` to trace out the family of $(\sigma, \hat\beta)$ pairs consistent with those estimates.
+
+Asset prices (the next section) break the tie.
 
 ### The data and the likelihood
 
@@ -377,7 +404,9 @@ The model is fit to U.S. post-war quarterly data, **1970:I–1996:III**.
 * **Consumption** is measured as nondurables plus services.
 * **Investment** is measured as durables plus gross private investment.
 
-Both series are deflated by the deterministic growth factor $1.0033^{t}$, so the model is fit to *detrended* data. The likelihood is Gaussian, built recursively (a Kalman filter), with the unobserved part of the initial state estimated using the methods of Hansen and Sargent.
+Both series are deflated by the deterministic growth factor $1.0033^{t}$, so the model is fit to *detrended* data.
+
+The likelihood is Gaussian, built recursively (a Kalman filter), with the unobserved part of the initial state estimated using the methods of Hansen and Sargent.
 
 ### Specification
 
@@ -393,9 +422,13 @@ $$
 (1 - \alpha_1 L)(1 - \alpha_2 L)\, \hat d_t = c_{\hat d}\, w^{\hat d}_t,
 $$ (eq:hst_dhat)
 
-with $d_t = \mu_d + d^{*}_t + \hat d_t$. A likelihood comparison (a gain from AR(1) to AR(2) but not beyond) led the authors to a second-order specification for the transitory component.
+with $d_t = \mu_d + d^{*}_t + \hat d_t$.
 
-The four parameters governing the endogenous dynamics are $(\gamma, \delta_k, \beta, \lambda)$. The depreciation factor is set to $\delta_k = 0.975$, and the permanent-income restriction $\beta R = 1$ — confirmed by the unrestricted estimates — is imposed with $\beta = 0.9971$, implying a $2.5\%$ annual real interest rate after the growth adjustment.
+A likelihood comparison (a gain from AR(1) to AR(2) but not beyond) led the authors to a second-order specification for the transitory component.
+
+The four parameters governing the endogenous dynamics are $(\gamma, \delta_k, \beta, \lambda)$.
+
+The depreciation factor is set to $\delta_k = 0.975$, and the permanent-income restriction $\beta R = 1$ — confirmed by the unrestricted estimates — is imposed with $\beta = 0.9971$, implying a $2.5\%$ annual real interest rate after the growth adjustment.
 
 The maximum-likelihood estimates (with habit persistence) are reproduced below — a version of Table 2 in {cite}`HST_1999`.
 
@@ -422,11 +455,19 @@ $$
 \Delta c = \left(1 - \frac{1}{R}\right) \sum_{j \geq 0} R^{-j}\, \psi_j,
 $$ (eq:hst_pi_mpc)
 
-where $\psi_j = \partial d_{t+j} / \partial w_t$ is the endowment's own impulse response. A near-permanent shock has a large present value and moves consumption a lot; a transitory shock has a small present value and barely moves it.
+where $\psi_j = \partial d_{t+j} / \partial w_t$ is the endowment's own impulse response.
+
+A near-permanent shock has a large present value and moves consumption a lot; a transitory shock has a small present value and barely moves it.
 
 Let's compute the endowment responses {eq}`eq:hst_dstar`–{eq}`eq:hst_dhat` and the implied consumption responses.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Endowment and consumption impulse responses
+    name: fig-hst-irf
+---
 def ar2_irf(r1, r2, c, H):
     "Impulse response of (1 - r1 L)(1 - r2 L) x = c w to a unit w shock."
     psi = np.zeros(H)
@@ -454,8 +495,8 @@ print(f"transitory shock: consumption responds to "
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 4), sharey=True)
 for ax, psi, dc, title in [
-        (axes[0], psi_p, dc_p, 'persistent endowment shock $d^{*}$'),
-        (axes[1], psi_t, dc_t, 'transitory endowment shock $\\hat d$')]:
+        (axes[0], psi_p, dc_p, 'Persistent endowment shock $d^{*}$'),
+        (axes[1], psi_t, dc_t, 'Transitory endowment shock $\\hat d$')]:
     ax.plot(psi, lw=2, label='endowment response $\\psi_j$')
     ax.axhline(dc, color='C3', ls='--', lw=2, label='consumption response $\\Delta c$')
     ax.set_xlabel('horizon $j$ (quarters)')
@@ -482,7 +523,9 @@ Section 5 of {cite}`HST_1999` shows how the observationally-equivalent pairs tha
 
 Following {cite}`Lucas1978`, we regard the robust (or risk-sensitive) planning solution as the allocation of a competitive economy populated by a large number of identical agents who trade securities.
 
-Equilibrium prices are the **shadow prices** that leave each agent content to consume the planner's allocation, treating it as an endowment process. The equilibrium law of motion for the state is
+Equilibrium prices are the **shadow prices** that leave each agent content to consume the planner's allocation, treating it as an endowment process.
+
+The equilibrium law of motion for the state is
 
 $$
 x_{t+1} = A^{0} x_t + C w_{t+1},
@@ -490,19 +533,25 @@ $$ (eq:hst_equil_lom)
 
 and the value function at the optimum is $U^{e}_t = x_t' \Omega x_t + \rho$.
 
-To support the robust allocation, prices must be computed using the **same** pessimistic, distorted beliefs that rationalize the planner's choices. This is where risk-sensitivity ($\sigma < 0$) leaves its fingerprint on prices even though, by observational equivalence, it leaves no trace in quantities.
+To support the robust allocation, prices must be computed using the **same** pessimistic, distorted beliefs that rationalize the planner's choices.
+
+This is where risk-sensitivity ($\sigma < 0$) leaves its fingerprint on prices even though, by observational equivalence, it leaves no trace in quantities.
 
 ### The twisting operator and distorted beliefs
 
-Pricing a claim to next period's *utility* is trivial under the von Neumann–Morgenstern specification but nontrivial under risk-sensitivity. The key object is the **twisting operator**
+Pricing a claim to next period's *utility* is trivial under the von Neumann–Morgenstern specification but nontrivial under risk-sensitivity.
+
+The key object is the **twisting operator**
 
 $$
-\mathcal{T}_t U_{t+1} \equiv \frac{E(V_{t+1} U_{t+1} \mid J_t)}{E(V_{t+1} \mid J_t)},
+\mathcal{T}_t U_{t+1} \equiv \frac{\mathbb{E}(V_{t+1} U_{t+1} \mid J_t)}{\mathbb{E}(V_{t+1} \mid J_t)},
 \qquad
 V_{t+1} \equiv \exp\!\left(\frac{\sigma U^{e}_{t+1}}{2}\right),
 $$ (eq:hst_twist)
 
-which re-weights outcomes by the exponential of equilibrium continuation utility. It satisfies the subgradient inequality
+which re-weights outcomes by the exponential of equilibrium continuation utility.
+
+It satisfies the subgradient inequality
 
 $$
 \mathcal{R}_t(U_{t+1}) - \mathcal{R}_t(U^{e}_{t+1}) \leq \mathcal{T}_t U_{t+1} - \mathcal{T}_t U^{e}_{t+1},
@@ -518,15 +567,21 @@ x_{t+1} = \hat A x_t + \hat C w_{t+1},
 \hat C \hat C' = C (I - \sigma C' \Omega C)^{-1} C',
 $$ (eq:hst_pricing_lom)
 
-with $\hat A$ given by {eq}`eq:hst_D`-style risk corrections. Because $\sigma < 0$ and $\Omega$ is negative semidefinite, $(I - \sigma C'\Omega C)^{-1}$ exceeds the identity: the pricing measure assigns a **pessimistically shifted conditional mean** *and* an **inflated conditional variance** to next period's state. These two distortions are precisely what generate risk premia.
+with $\hat A$ given by {eq}`eq:hst_D`-style risk corrections.
+
+Because $\sigma < 0$ and $\Omega$ is negative semidefinite, $(I - \sigma C'\Omega C)^{-1}$ exceeds the identity: the pricing measure assigns a **pessimistically shifted conditional mean** *and* an **inflated conditional variance** to next period's state.
+
+These two distortions are precisely what generate risk premia.
 
 ### Multi-period claims and the one-period stochastic discount factor
 
-Prices of streams are built by iterating the operator. Define $\mathcal{S}_{t,\tau} = \mathcal{T}_t \mathcal{T}_{t+1} \cdots \mathcal{T}_{t+\tau-1}$. The time-$t$ price of a claim to the consumption stream $\{c_{t+\tau}\}$ is then a discounted sum of twisted marginal utilities, and the one-period security with payoff $p_{t+1}$ is priced as
+Prices of streams are built by iterating the operator.
+
+Define $\mathcal{S}_{t,\tau} = \mathcal{T}_t \mathcal{T}_{t+1} \cdots \mathcal{T}_{t+\tau-1}$. The time-$t$ price of a claim to the consumption stream $\{c_{t+\tau}\}$ is then a discounted sum of twisted marginal utilities, and the one-period security with payoff $p_{t+1}$ is priced as
 
 $$
 q_t = \mathcal{T}_t\!\left\{ \beta \frac{\mathcal{M}^{c}_{t+1}}{\mathcal{M}^{c}_{t}}\, p_{t+1} \right\}
-    = E\!\left( m_{t+1,t}\, p_{t+1} \mid J_t \right),
+    = \mathbb{E}\!\left( m_{t+1,t}\, p_{t+1} \mid J_t \right),
 $$ (eq:hst_oneperiod)
 
 where $\mathcal{M}^{c}_t$ is the marginal utility of consumption and $m_{t+1,t}$ is the one-period **stochastic discount factor** (intertemporal marginal rate of substitution).
@@ -546,7 +601,7 @@ $$
 is the *familiar* intertemporal marginal rate of substitution (the only term present when $\sigma = 0$), and
 
 $$
-m^{r}_{t+1,t} = \frac{\exp(\sigma U^{e}_{t+1}/2)}{E[\exp(\sigma U^{e}_{t+1}/2) \mid J_t]}
+m^{r}_{t+1,t} = \frac{\exp(\sigma U^{e}_{t+1}/2)}{\mathbb{E}[\exp(\sigma U^{e}_{t+1}/2) \mid J_t]}
 $$ (eq:hst_mr)
 
 is a multiplicative adjustment with conditional mean one. The factor {eq}`eq:hst_mr` is the source of the extra risk premia.
@@ -564,9 +619,9 @@ where $\hat v_t$ is the worst-case conditional-mean distortion chosen by the mal
 A direct calculation gives
 
 $$
-E_t(m^{u}_{t+1,t}) = 1,
+\mathbb{E}_t(m^{u}_{t+1,t}) = 1,
 \qquad
-E_t\big[(m^{u}_{t+1,t})^2\big] = \exp(\hat v_t' \hat v_t),
+\mathbb{E}_t\big[(m^{u}_{t+1,t})^2\big] = \exp(\hat v_t' \hat v_t),
 $$
 
 so that, for small distortions,
@@ -575,9 +630,11 @@ $$
 \operatorname{std}_t(m^{u}_{t+1,t}) = \big[\exp(\hat v_t' \hat v_t) - 1\big]^{1/2} \approx |\hat v_t|.
 $$ (eq:hst_mpr)
 
-The **market price of risk** — the maximal Sharpe ratio attainable, equal to $\operatorname{std}_t(m_{t+1,t}) / E_t(m_{t+1,t})$ along the efficient frontier (the {cite}`Hansen_Jagannathan_1991` bound) — is therefore approximately equal to the **magnitude of the worst-case distortion** $|\hat v_t|$.
+The **market price of risk** — the maximal Sharpe ratio attainable, equal to $\operatorname{std}_t(m_{t+1,t}) / \mathbb{E}_t(m_{t+1,t})$ along the efficient frontier (the {cite}`Hansen_Jagannathan_1991` bound) — is therefore approximately equal to the **magnitude of the worst-case distortion** $|\hat v_t|$.
 
-This is the paper's punchline: a conditional-mean misspecification of $x\%$ of a unit-norm direction raises the market price of risk by roughly $x/100$. A *small*, statistically-hard-to-detect doubt about the model can generate the *large* price of risk seen in the data.
+This is the paper's punchline: a conditional-mean misspecification of $x\%$ of a unit-norm direction raises the market price of risk by roughly $x/100$.
+
+A *small*, statistically-hard-to-detect doubt about the model can generate the *large* price of risk seen in the data.
 
 Let's check the key identity {eq}`eq:hst_mpr` by Monte Carlo.
 
@@ -603,7 +660,9 @@ for scale in [0.05, 0.10, 0.20]:
     print(f"{norm_v:10.3f}{mean:12.4f}{std:12.4f}{norm_v:16.3f}")
 ```
 
-The simulated conditional mean of $m^{u}$ is one, and its conditional standard deviation tracks $|\hat v_t|$ closely — confirming {eq}`eq:hst_mpr`. A 10% distortion delivers a market price of risk near 0.10.
+The simulated conditional mean of $m^{u}$ is one, and its conditional standard deviation tracks $|\hat v_t|$ closely — confirming {eq}`eq:hst_mpr`.
+
+A 10% distortion delivers a market price of risk near 0.10.
 
 ## A risk-sensitive regulator
 
@@ -615,7 +674,9 @@ $$
 \mathcal{D}(\Omega) = \Omega + \sigma \Omega C (I - \sigma C' \Omega C)^{-1} C' \Omega,
 $$ (eq:hst_D)
 
-so that, replacing $\Omega$ by $\mathcal{D}(\Omega)$, the Bellman equation becomes an ordinary linear-quadratic one. Iterating
+so that, replacing $\Omega$ by $\mathcal{D}(\Omega)$, the Bellman equation becomes an ordinary linear-quadratic one.
+
+Iterating
 
 $$
 F = (Q - \beta B' \mathcal{D} B)^{-1}(N - \beta B' \mathcal{D} A),
@@ -716,6 +777,12 @@ As $\sigma$ becomes more negative:
 Finally, let's see the worst-case distortion in action by simulating the controlled state under the *reference* model while displaying the conditional mean distortion $\hat v_t = G x_t$ the robust agent is guarding against.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Controlled state and worst-case distortion
+    name: fig-hst-sim
+---
 def simulate(A, B, C, F, G, T=60, seed=0):
     rng = np.random.default_rng(seed)
     n, kw = A.shape[0], C.shape[1]
@@ -736,12 +803,12 @@ for sigma, color in zip([0.0, -0.6], ['C0', 'C3']):
     axes[0].plot(x[:, 0], color=color, lw=2, label=f'$\\sigma={sigma}$')
     axes[1].plot(v[:, 0], color=color, lw=2, label=f'$\\sigma={sigma}$')
 
-axes[0].set_title('controlled state $x_{1,t}$')
+axes[0].set_title('Controlled state $x_{1,t}$')
 axes[0].set_xlabel('$t$')
 axes[0].axhline(0, color='k', lw=0.8, ls='--')
 axes[0].legend()
 
-axes[1].set_title(r'worst-case mean distortion $\hat v_{1,t} = (G x_t)_1$')
+axes[1].set_title(r'Worst-case mean distortion $\hat v_{1,t}$')
 axes[1].set_xlabel('$t$')
 axes[1].axhline(0, color='k', lw=0.8, ls='--')
 axes[1].legend()
@@ -767,7 +834,7 @@ $$
 
 Derive this result directly from the definition {eq}`eq:hst_R`.
 
-*Hint:* use the moment generating function of a normal random variable, $E[\exp(a U)] = \exp(a\mu + a^2 s^2 / 2)$.
+*Hint:* use the moment generating function of a normal random variable, $\mathbb{E}[\exp(a U)] = \exp(a\mu + a^2 s^2 / 2)$.
 ```
 
 ```{solution-start} hst_ex1
@@ -777,13 +844,13 @@ Derive this result directly from the definition {eq}`eq:hst_R`.
 Start from the definition with $a = \sigma/2$:
 
 $$
-\mathcal{R}_t(U_{t+1}) = \frac{2}{\sigma} \log E\!\left[\exp\!\left(\frac{\sigma}{2} U_{t+1}\right)\right].
+\mathcal{R}_t(U_{t+1}) = \frac{2}{\sigma} \log \mathbb{E}\!\left[\exp\!\left(\frac{\sigma}{2} U_{t+1}\right)\right].
 $$
 
 Since $U_{t+1} \sim \mathcal{N}(\mu, s^2)$, the moment generating function gives
 
 $$
-E\!\left[\exp\!\left(\frac{\sigma}{2} U_{t+1}\right)\right]
+\mathbb{E}\!\left[\exp\!\left(\frac{\sigma}{2} U_{t+1}\right)\right]
 = \exp\!\left(\frac{\sigma}{2}\mu + \frac{1}{2}\frac{\sigma^2}{4} s^2\right).
 $$
 
@@ -795,7 +862,7 @@ $$
 = \mu + \frac{\sigma}{4} s^2 .
 $$
 
-Letting $\sigma \to 0$ recovers $\mathcal{R}_t(U_{t+1}) = \mu = E_t U_{t+1}$, as expected.
+Letting $\sigma \to 0$ recovers $\mathcal{R}_t(U_{t+1}) = \mu = \mathbb{E}_t U_{t+1}$, as expected.
 
 ```{solution-end}
 ```
@@ -879,7 +946,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-The two curves are nearly indistinguishable for small $|\hat v_t|$ (i.e. $\sigma$ close to zero) because $\exp(z) - 1 \approx z$ when $z$ is small. They separate only when the preference for robustness — and hence the worst-case distortion — becomes large. This is precisely the regime {cite}`HST_1999` emphasize: *small*, hard-to-detect distortions map almost linearly into the market price of risk.
+The two curves are nearly indistinguishable for small $|\hat v_t|$ (i.e. $\sigma$ close to zero) because $\exp(z) - 1 \approx z$ when $z$ is small.
+
+They separate only when the preference for robustness — and hence the worst-case distortion — becomes large.
+
+This is precisely the regime {cite}`HST_1999` emphasize: *small*, hard-to-detect distortions map almost linearly into the market price of risk.
 
 ```{solution-end}
 ```
@@ -890,10 +961,6 @@ This lecture connects to several others in the QuantEcon collection.
 
 The underlying consumption-smoothing economics is developed in {doc}`perm_income` and {doc}`perm_income_cons`, and the linear-quadratic control machinery is laid out in {doc}`lqcontrol`.
 
-The reinterpretation of the market price of risk as a *price of model uncertainty*, calibrated through detection-error probabilities, is the subject of {cite}`BHS_2009`; the broader semigroup treatment of robustness, pricing, and model detection is in {cite}`AHS_2003`. Both build directly on {cite}`HST_1999`.
+The reinterpretation of the market price of risk as a *price of model uncertainty*, calibrated through detection-error probabilities, is the subject of {cite}`BHS_2009`; the broader semigroup treatment of robustness, pricing, and model detection is in {cite}`AHS_2003`.
 
-## References
-
-```{bibliography}
-:filter: docname in docnames
-```
+Both build directly on {cite}`HST_1999`.

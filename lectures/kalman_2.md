@@ -341,7 +341,7 @@ for i, t in enumerate(np.linspace(0, T-1, 3, dtype=int)):
     # Create a contour plot for the PDF
     con = axs[i].contour(h, u, pdf_values, cmap='viridis')
     axs[i].clabel(con, inline=1, fontsize=10)
-    axs[i].set_title(f'Time Step {t}')
+    axs[i].set_title(f'time step {t}')
     axs[i].set_xlabel(r'$h_{{{}}}$'.format(str(t)))
     axs[i].set_ylabel(r'$u_{{{}}}$'.format(str(t)))
     
@@ -467,7 +467,7 @@ namedtuple.
 Here is an example.
 
 ```{code-cell} ipython3
-# We can set these parameters when creating a worker -- just like classes!
+# We can set these parameters when creating a worker, just like classes!
 hard_working_worker = create_worker(α=.4, β=.8, 
                         hhat_0=7.0, uhat_0=100, σ_h=2.5, σ_u=3.2)
 
