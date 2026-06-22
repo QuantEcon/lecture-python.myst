@@ -84,6 +84,7 @@ y_0 \sim \mathcal{N}(G \hat{x}_0,\; G \Sigma_0 G' + R)
 $$ (eq:kalf4)
 
 For $t \geq 0$ let $y^t = [y_t, y_{t-1}, \ldots, y_0]$.
+
 We want a convenient recursive representation of the conditional distribution of
 $y_t$ given history $y^{t-1}$.
 
@@ -117,9 +118,10 @@ At each date, our approach is to **regress what we do not know on what we know**
 ```{note}
 Because our assumptions imply that $\{x_t, y_t\}_{t=0}^\infty$ is a jointly normal
 stochastic process, linear least squares regressions equal conditional mathematical
-expectations — each step below is an application of Bayes' law.  Under the weaker
-assumption that all means and covariances exist without joint normality, the same
-calculations yield "wide-sense conditional expectations" that coincide with true
+expectations — each step below is an application of Bayes' law.
+
+Under the weaker assumption that all means and covariances exist without joint normality,
+the same calculations yield "wide-sense conditional expectations" that coincide with true
 conditional expectations only when those conditional expectations are linear.
 ```
 
@@ -259,8 +261,11 @@ $\mathbb{E} a_t a_{t-1}' = 0$ and, more generally, $\mathbb{E}[a_t \mid a_{t-1},
 
 ```{note}
 An alternative argument from first principles: let $H(y^t)$ denote the closed linear
-span of $y^t$.  Since $a_{t+1} = y_{t+1} - \mathbb{E}[y_{t+1} \mid y^t]$ is a least-squares
+span of $y^t$.
+
+Since $a_{t+1} = y_{t+1} - \mathbb{E}[y_{t+1} \mid y^t]$ is a least-squares
 error, $a_{t+1} \perp H(y^t)$, and in particular $a_{t+1} \perp a_t$.
+
 Thus $\{a_t\}$ is a white-noise process of innovations to $\{y_t\}$.
 ```
 
@@ -460,6 +465,7 @@ Its role in mapping the original representation {eq}`eq:statespace` to the VAR
 Because the original state space system {eq}`eq:statespace` and the innovations
 representation {eq}`eq:innovti` describe the **same** stochastic process $\{y_t\}$,
 they imply two distinct formulas for the **spectral density matrix** of $\{y_t\}$.
+
 Equating those formulas yields the *spectral factorization identity*.
 
 ### Two representations of the spectral density
@@ -607,8 +613,8 @@ Sigmas = np.zeros(T)
 
 for t in range(T):
     kf.update(y_obs[t:t+1])          # one full filter cycle
-    x_hats[t] = kf.x_hat[0]
-    Sigmas[t]  = kf.Sigma[0, 0]
+    x_hats[t] = kf.x_hat.item()
+    Sigmas[t]  = kf.Sigma.item()
 ```
 
 ```{code-cell} ipython3
@@ -651,7 +657,7 @@ solving the discrete algebraic Riccati equation directly.
 Sigma_inf, K_inf = kf.stationary_values()
 
 print(f"Steady-state covariance  Σ_inf = {Sigma_inf[0, 0]:.6f}")
-print(f"Kalman filter converged to  = {Sigmas[-1]:.6f}")
+print(f"Kalman filter converged to Σ_t = {Sigmas[-1]:.6f}")
 print(f"Steady-state Kalman gain K  = {K_inf[0, 0]:.6f}")
 
 A_minus_KG = A - K_inf @ G
@@ -1008,15 +1014,15 @@ These give the $4 \times 4$ transition matrix and $4 \times 2$ shock-loading mat
 
 $$
 A = \begin{pmatrix}
-0.80 & 0.05 & 0.05 & 0.02 \\
+0.80 & 0.05 & 0.75 & -0.72 \\
 1    & 0    & 0    & 0    \\
-0.04 & 0    & 0.75 & 0.20 \\
+0    & 0    & 0.75 & 0.20 \\
 0    & 0    & 1    & 0
 \end{pmatrix}, \qquad
 C = \begin{pmatrix}
-1   & 0.5 \\
+1   & 0   \\
 0   & 0   \\
-0.5 & 1   \\
+0   & 1   \\
 0   & 0
 \end{pmatrix}.
 $$
@@ -1268,9 +1274,17 @@ The innovation covariance $G\Sigma G' + R$ is the covariance of the one-step
 forecast error in the *observable* vector after the Kalman filter has processed
 all available information.
 
-Because $G\Sigma G' + R \preceq G(A \Sigma A' + CC')G' + R$, the filter
-strictly reduces the variance attributable to the structural shocks; the
-diagonal entries of $G\Sigma G' + R$ are therefore smaller than those of $GCC'G'$.
+In this example $GCC'G'$ has diagonal entries equal to $1$.
+
+The printed innovation covariance has diagonal entries slightly above $1$ because it also
+contains residual uncertainty from estimating the hidden state and the small
+measurement-error variance $R = 0.0001 I_2$.
+
+Thus $G\Sigma G' + R$ should not be compared directly with $GCC'G'$ as a
+strict variance reduction.
+
+The variance reduction created by filtering is measured relative to the broader
+forecast-error covariance before conditioning on the available observations.
 
 **System 1 covariance $\Sigma$ vs. System 2 covariance $\check\Sigma$.**
 
@@ -1293,8 +1307,8 @@ Derive an algebraic expression for the **steady-state** conditional variance
 $\Sigma_\infty$ by solving the scalar Riccati equation {eq}`eq:riccati` at its
 fixed point $\Sigma_{t+1} = \Sigma_t = \Sigma$.
 
-Show that $\Sigma$ satisfies a quadratic equation and find its positive root.
-Verify numerically that your formula matches `kf.Sigma_infinity`.
+Show that $\Sigma$ satisfies a quadratic equation, find its positive root, and
+verify numerically that your formula matches `kf.Sigma_infinity`.
 
 ```{exercise-end}
 ```
@@ -1314,27 +1328,25 @@ $$
 Multiplying through by $\Sigma + \sigma_v^2$ and rearranging:
 
 $$
-\Sigma^2 + \sigma_v^2 \Sigma - \sigma_v^2 \sigma_w^2
-  - \sigma_v^2(1 - \rho^2)\Sigma = 0
-$$
-
-$$
-\Sigma^2 + \sigma_v^2 \rho^2 \Sigma - \sigma_v^2 \sigma_w^2 = 0
+\Sigma^2 + \left[\sigma_v^2(1-\rho^2) - \sigma_w^2\right]\Sigma
+  - \sigma_v^2 \sigma_w^2 = 0
 $$
 
 Taking the positive root of this quadratic:
 
 $$
 \Sigma_\infty
-  = \frac{-\sigma_v^2 \rho^2
-          + \sqrt{(\sigma_v^2 \rho^2)^2 + 4 \sigma_v^2 \sigma_w^2}}{2}
+  = \frac{\sigma_w^2 - \sigma_v^2(1-\rho^2)
+          + \sqrt{\left[\sigma_v^2(1-\rho^2) - \sigma_w^2\right]^2
+          + 4 \sigma_v^2 \sigma_w^2}}{2}
 $$
 
 ```{code-cell} ipython3
 rho_, sigma_w_, sigma_v_ = 0.9, 0.5, 1.0
 
-discriminant = (sigma_v_**2 * rho_**2)**2 + 4 * sigma_v_**2 * sigma_w_**2
-Sigma_formula = (-sigma_v_**2 * rho_**2 + np.sqrt(discriminant)) / 2
+b = sigma_v_**2 * (1 - rho_**2) - sigma_w_**2
+discriminant = b**2 + 4 * sigma_v_**2 * sigma_w_**2
+Sigma_formula = (-b + np.sqrt(discriminant)) / 2
 
 A_ = np.array([[rho_]])
 C_ = np.array([[sigma_w_]])
@@ -1447,8 +1459,8 @@ $(\rho, \sigma_w, \sigma_v) = (0.9, 0.5, 1.0)$:
 (a) Simulate $T = 300$ observations.
 
 (b) Write a function that evaluates the **log-likelihood** as a function of
-    $\rho \in (0, 1)$, holding $\sigma_w = 0.5$ and $\sigma_v = 1.0$ fixed.
-    Plot the log-likelihood against $\rho$ for a grid of values.
+    $\rho \in (0, 1)$, holding $\sigma_w = 0.5$ and $\sigma_v = 1.0$ fixed,
+    and plot the log-likelihood against $\rho$ for a grid of values.
 
 (c) Locate the maximum numerically and check that it is close to the true value
     $\rho = 0.9$.

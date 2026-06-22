@@ -1142,11 +1142,16 @@ human wealth $\mathbb{E}_t\sum R^{-j}d_{t+j}$.  This equal-propensity property i
 model and **persists** when a concern for robustness is present (in contrast to the usual
 precautionary savings models with convex marginal utility, where the two propensities diverge).
 
-**Upward drift in consumption.** Theorem 1 says that with $\sigma < 0$, the equivalent $\hat\beta$
-satisfies $\hat\beta R > 1$ if one starts from a model with $\beta R = 1$.  With $\hat\beta R > 1$,
-the Euler equation implies $\mathbb{E}_t c_{t+1} > c_t$: expected consumption grows over time.  Thus,
-activating a concern about robustness imparts an **upward drift** to the expected consumption
-profile.  This is a form of precautionary saving.
+**Theorem 1 offset.** Theorem 1 says that with $\sigma < 0$, the observationally equivalent
+$\hat\beta$ satisfies $\hat\beta < \beta$.  If the starting point has $\beta R = 1$, then
+$\hat\beta R < 1$.  For a non-robust consumer with discount factor $\hat\beta$ at the same
+interest rate, the Euler equation implies $\mathbb{E}_t c_{t+1} < c_t$: expected consumption
+declines over time.
+
+This downward drift is the impatience offset in Theorem 1.  It cancels the robust consumer's
+precautionary-savings motive, leaving the consumption and investment quantities unchanged.
+The upward-drift comparison appears below in Theorem 2, which asks the reverse observational
+equivalence question.
 
 **Comparison with classical precautionary savings.** The classical precautionary motive (see Leland 1968 and Miller 1974) arises because:
 
@@ -1163,15 +1168,15 @@ quadratic preferences.
 ---
 mystnb:
   figure:
-    caption: Expected consumption profile under robustness
+    caption: Expected consumption profile under Theorem 1 discount-factor offsets
     name: fig-lqcs-drift
 ---
-# Illustrate precautionary savings: consumption growth rate under σ < 0
+# Illustrate the Theorem 1 offset: lower β_hat at fixed R
 # In the special case λ = δ_h = 0:
-# With β R = 1, robust consumer behaves like σ=0 consumer with β_hatR = 1 + ε > 1
-# Euler equation: E_t c_{t+1} = (β_hatR) c_t  -> upward drift
+# With β0 R = 1, Theorem 1 gives β_hat < β0 and hence β_hat R < 1
+# Euler equation: E_t c_{t+1} = (β_hat R) c_t  -> downward drift
 
-β_vals  = [0.990, 0.993, 0.997]     # σ < 0 <-> β_hat < β0 in Theorem 1
+β_vals  = [0.990, 0.993, 0.995]     # σ < 0 <-> β_hat < β0 in Theorem 1
 R_fixed = 1 / 0.997
 T_plot  = 40
 
@@ -1184,7 +1189,7 @@ for β_hat_i in β_vals:
     ax.plot(t_grid, c0 * drift, label=label)
 
 ax.axhline(c0, linestyle=':', color='grey', linewidth=1,
-           label=r'$\beta_0 R = 1$ (no drift)')
+           label=r'$\beta_0 R = 1$ (benchmark)')
 ax.set_xlabel('period $t$')
 ax.set_ylabel(r'$E_0 c_t / c_0$')
 ax.legend(fontsize=9)
@@ -1538,12 +1543,11 @@ ax.grid(alpha=0.3)
 plt.show()
 ```
 
-```{warning}
-The function `payoff_approx` is a **stylised scalar approximation** whose purpose is to
-illustrate the qualitative pattern established by HST, not to reproduce exact numerical values.
-In particular, the effective-persistence formula $\rho_{\text{eff}} = 0.85 + K_1\sqrt{\alpha^2}$
-and the hardcoded loss scaling are heuristic.  The qualitative message (that the non-robust rule
-deteriorates fastest as $\sigma_1$ decreases) is exact; the magnitudes are illustrative only.
+```{note}
+The function `payoff_approx` is a reduced-form scalar analogue of the full HST matrix
+calculation.  It keeps the same comparison -- fix a data-generating distortion $\sigma_1$
+and compare rules indexed by $\sigma_2$ -- but it is not calibrated to reproduce HST's
+numerical payoffs.  The figure should be read as a qualitative payoff comparison.
 ```
 
 ```{note}

@@ -264,7 +264,7 @@ u_hat_t = x_hat_t[1, :]
 
 For this fixed worker initial state, we plot $\mathbb{E}[y_t | y^{t-1}] = G \hat x_t$ where $\hat x_t = \mathbb{E}[x_t | y^{t-1}]$.
 
-We also plot $\mathbb{E}[u_0 | y^{t-1}]$, which is  the firm inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
+We also plot $\mathbb{E}[u_0 | y^{t-1}]$, which is  the firm's inference about  a worker's hard-wired "work ethic" $u_0$, conditioned on information $y^{t-1}$ that it has about him or her coming into period $t$.
 
 We can watch how the firm updates its inference $\mathbb{E}[u_0 | y^{t-1}]$ about the worker's work ethic as more output observations arrive.
 
