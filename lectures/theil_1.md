@@ -73,7 +73,7 @@ That volume collected early papers on rational expectations modeling and econome
 
 ## A central problem of empirical economics
 
-To set the stage, {cite:t}`lucas1981rational` stated the central question for empirical economics that had been posed by Leonid Hurwicz ({cite}`Hurwicz:1962`,{cite}`Hurwicz:1966`):
+To set the stage, {cite:t}`lucas1981rational` stated the central question for empirical economics that had been posed by Leonid Hurwicz ({cite}`Hurwicz:1962`):
 
  *  Given observations on an agent's behavior in a particular economic environment, what can we infer about how that behavior *would have differed* had the environment been altered?
 
