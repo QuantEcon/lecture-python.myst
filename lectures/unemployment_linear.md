@@ -43,6 +43,16 @@ We met Bayesian estimation of a first-order autoregression in {doc}`ar1_bayes`, 
 
 Here the data are real, and the questions are different: is unemployment a random walk, how strongly does it revert to a normal level, and where does the linear description break down?
 
+That first question is not just a technical curiosity — it was the subject of a lively macroeconomics debate in the 1980s and 1990s.
+
+The **natural rate hypothesis** {cite}`friedman1968role` holds that unemployment fluctuates around a stable equilibrium rate, so shocks fade away and the series is stationary.
+
+The **hysteresis hypothesis** {cite}`blanchard_summers1986` holds the opposite — that shocks to unemployment can be more or less permanent, so the series behaves like a random walk with no fixed level to return to.
+
+Strikingly, the paper that launched the unit-root literature {cite}`nelson_plosser1982` found that, of fourteen US macroeconomic series, the unemployment rate was the *one* it could confidently call stationary — even as the hysteresis literature was arguing the reverse for Europe.
+
+We will see that this debate is genuinely hard to settle, for reasons that come straight out of our estimates.
+
 As in {doc}`ar1_bayes` and {doc}`bayes_nonconj` we sample posteriors with the NUTS sampler in [NumPyro](https://num.pyro.ai/en/stable/); see {doc}`bayes_nonconj` for a brief account of how NUTS works.
 
 Our plan is:
@@ -267,6 +277,14 @@ Over a sample of a few hundred months the series barely has time to revert, so i
 At the annual frequency the picture is better: $\phi$ sits well below one and shocks die out within a few years.
 
 The lesson is that whether unemployment "looks like a random walk" depends on how often you look.
+
+```{note}
+This is exactly the question behind the **natural rate versus hysteresis** debate of the 1980s and 1990s {cite}`friedman1968role,blanchard_summers1986`.
+
+When $\phi$ is this close to one, the debate is hard to settle: in samples of the length we have, a true random walk and a slowly-reverting series look almost the same, so the statistical tests have little power to tell them apart {cite}`roed1997hysteresis`.
+
+One way forward, which we take in {doc}`unemployment_nonlinear`, is to let the reversion be **nonlinear** — a series can look like a random walk to a linear test while reverting briskly once it strays far enough from its normal level {cite}`kapetanios_shin_snell2003`.
+```
 
 ## What's unsatisfying about the linear model
 
