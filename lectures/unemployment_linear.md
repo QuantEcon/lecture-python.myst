@@ -35,37 +35,28 @@ We also install `pandas_datareader`, which we use to download data from FRED:
 
 ## Overview
 
-This lecture fits some simple time series models to the US unemployment rate.
+This lecture fits a simple linear time series model to the US unemployment rate.
 
-Our aim is partly to practice Bayesian estimation on real data, and partly to find out what these simple models *cannot* do — which will motivate the richer model in the sequel {doc}`unemployment_nonlinear`.
+We met Bayesian estimation of such models in {doc}`ar1_bayes`, but there the data were simulated and the focus was on theory.
 
-We met Bayesian estimation of a first-order autoregression (AR(1)) in {doc}`ar1_bayes`, but there the data were simulated and the focus was on the initial condition.
+Here our aim is to apply Bayesian estimation to real data and work carefully through the results.
 
-Here the data are real, and we try to describe them with an AR(1) model.
+Along the way we ask whether unemployment is a **random walk** — a question that was the subject of considerable debate among macroeconomists in the 1980s and 1990s.
 
-We will see how well that description works and where it breaks down.
+We will find that the linear model we fit here is too limited to capture some important features of the data.
 
-We'll also ask whether or not unemployment is a random walk, which is a special case of the AR(1) model.
+That will motivate the nonlinear model we study in the sequel {doc}`unemployment_nonlinear`.
 
-That last question is not just a technical curiosity — it was the subject of a lively macroeconomics debate in the 1980s and 1990s.
+As in {doc}`ar1_bayes` and {doc}`bayes_nonconj`, we estimate by sampling posteriors with the NUTS sampler in [NumPyro](https://num.pyro.ai/en/stable/).
 
-The **natural rate hypothesis** {cite}`friedman1968role` holds that unemployment fluctuates around a stable equilibrium rate, so shocks fade away and the series is stationary.
-
-The **hysteresis hypothesis** {cite}`blanchard_summers1986` holds the opposite — that shocks to unemployment can be more or less permanent, so the series behaves like a random walk with no fixed level to return to.
-
-(Interestingly, the paper that launched the unit-root literature {cite}`nelson_plosser1982` found that, of fourteen US macroeconomic series, the unemployment rate was the *one* it could confidently call stationary — even as the hysteresis literature was arguing the reverse for Europe.)
-
-We will see that this debate is genuinely hard to settle.
-
-As in {doc}`ar1_bayes` and {doc}`bayes_nonconj` we sample posteriors with the NUTS sampler in [NumPyro](https://num.pyro.ai/en/stable/); see {doc}`bayes_nonconj` for a brief account of how NUTS works.
+(See {doc}`bayes_nonconj` for a brief account of how NUTS works.)
 
 Our plan is:
 
-1. look at the data,
-2. consider the simplest model — a random walk — and see what works and what doesn't,
-3. add mean reversion to get a linear model and estimate it,
-4. ask whether the data really want a random walk after all, and
-5. lay out what is unsatisfying about the linear model.
+1. look at the monthly data,
+2. fit a linear AR(1) model and find that it is *almost* a random walk,
+3. ask whether it could really be a random walk — and give two reasons it is not, and
+4. see how reconciling those reasons points toward a nonlinear model.
 
 Let's start with some imports.
 
@@ -86,67 +77,236 @@ from numpyro.infer import MCMC, NUTS
 
 We use the US civilian unemployment rate, series `UNRATE` from FRED, monthly and seasonally adjusted.
 
-We download the whole post-war record.
-
 ```{code-cell} ipython3
 start, end = dt.datetime(1948, 1, 1), dt.datetime(2024, 12, 31)
 unrate = web.DataReader("UNRATE", "fred", start, end)["UNRATE"]
 ```
 
-The COVID-19 spike of 2020 is an extreme outlier driven by events the model knows nothing about, so we drop it.
+The COVID-19 spike of 2020 is an extreme outlier driven by events our models know nothing about, so we drop it.
 
-We keep two versions of the series: the monthly data, and an annual series formed from end-of-year values.
+We begin with the monthly series; later we will also form an annual version.
 
 ```{code-cell} ipython3
 pre_covid = unrate[unrate.index < "2020-01-01"]
 u_monthly = pre_covid.to_numpy()
-u_annual = pre_covid.resample("YE").last().to_numpy()
-print(f"monthly: {len(u_monthly)} obs, annual: {len(u_annual)} obs")
+print(f"{len(u_monthly)} monthly observations")
 ```
 
-Here are the two series.
+Here is the monthly series.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: US unemployment rate, monthly and annual
-    name: fig-unrate-data
+    caption: US monthly unemployment rate, 1948–2019
+    name: fig-unrate-monthly
 ---
-fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4))
-axL.plot(pre_covid.index, u_monthly, lw=2)
-axL.set_title('monthly')
-axL.set_xlabel('year')
-axL.set_ylabel('unemployment rate (%)')
-axR.plot(pre_covid.resample("YE").last().index, u_annual, lw=2)
-axR.set_title('annual')
-axR.set_xlabel('year')
+fig, ax = plt.subplots()
+ax.plot(pre_covid.index, u_monthly, lw=2)
+ax.set_xlabel('year')
+ax.set_ylabel('unemployment rate (%)')
 plt.show()
 ```
 
-As {numref}`fig-unrate-data` shows, the rate rises sharply in recessions and drifts down in recoveries, but it always stays inside a band — roughly 3% to 11% over the whole post-war period.
+As {numref}`fig-unrate-monthly` shows, the rate rises sharply in recessions and drifts down in recoveries, but it always stays inside a band — roughly 3% to 11% over the whole post-war period.
 
 Any sensible model has to respect that band.
 
-## A random walk?
+## A linear model of unemployment
 
-The simplest dynamic model just says that next period equals this period plus a shock,
+In this section we set up a simple linear model, estimate it on the monthly data, and read off what the estimates say.
+
+This is also where we practise the mechanics of applying Bayesian estimation to a real series.
+
+### The model
+
+We let unemployment be pulled back toward a normal level $\bar u$:
+
+$$
+u_{t+1} = \bar u + \phi\,(u_t - \bar u) + \varepsilon_{t+1},
+\qquad \varepsilon_{t+1} \sim N(0, \sigma^2),
+$$ (eq:linear)
+
+with $0 \le \phi < 1$.
+
+This is a linear AR(1) model, written so that $\bar u$ is the level the series reverts to and $\phi$ measures persistence.
+
+The **random walk** is the special case $\phi = 1$, where the pull toward $\bar u$ vanishes.
+
+The smaller $\phi$, the faster the series returns to $\bar u$ after a shock.
+
+### Priors
+
+We treat $\bar u$, $\phi$ and $\sigma$ as unknown and place weakly informative priors on them.
+
+We give $\phi$ a uniform prior on $[0, 1)$ — this imposes stationarity (ruling out the explosive case) while letting the data decide how close to a random walk we are.
+
+We center $\bar u$ on a plausible natural rate with a fairly wide normal prior, and give the shock scale $\sigma$ a half-normal prior.
+
+We write the model as a NumPyro function: each `numpyro.sample` introduces a random variable, and the keyword `obs=` ties the last one to the data, supplying the likelihood.
+
+```{code-cell} ipython3
+def linear_model(u):
+    ubar = numpyro.sample("ubar",  dist.Normal(5.5, 2.0))
+    φ    = numpyro.sample("phi",   dist.Uniform(0.0, 1.0))
+    σ    = numpyro.sample("sigma", dist.HalfNormal(1.0))
+    μ = ubar + φ * (u[:-1] - ubar)
+    numpyro.sample("u_obs", dist.Normal(μ, σ), obs=u[1:])
+```
+
+The vector `μ` holds the conditional means $\bar u + \phi(u_t - \bar u)$, and `observed=u[1:]` says that each next value is drawn from $N(\mu_t, \sigma^2)$ — so this one statement encodes the whole likelihood. (See {doc}`bayes_nonconj` for more on writing NumPyro models.)
+
+### Estimation
+
+We sample the posterior with NUTS, running four chains so that we can check convergence.
+
+We use `chain_method="vectorized"`, which evaluates all chains together on a single device, so the same code runs unchanged on a CPU or a GPU.
+
+```{code-cell} ipython3
+def run_nuts(model, data, seed=0, num_warmup=1000, num_samples=2000, num_chains=4):
+    "Sample a NumPyro model with the NUTS sampler."
+    mcmc = MCMC(NUTS(model),
+                num_warmup=num_warmup, num_samples=num_samples,
+                num_chains=num_chains, chain_method="vectorized",
+                progress_bar=False)
+    mcmc.run(random.PRNGKey(seed), jnp.asarray(data))
+    return mcmc
+```
+
+We fit the model to the monthly data.
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+mcmc_monthly = run_nuts(linear_model, u_monthly)
+```
+
+Now we inspect the output.
+
+```{code-cell} ipython3
+mcmc_monthly.print_summary()
+```
+
+Each row summarizes the posterior for one parameter.
+
+The `mean`, `median`, and `5.0%`/`95.0%` columns give the posterior mean, median, and a 90% credible interval; `std` is the posterior standard deviation.
+
+The last two columns are convergence diagnostics: `n_eff` is the effective number of independent draws, and `r_hat` compares variation within and across chains — a value very close to $1.0$ means the chains agree and the sampler has converged.
+
+Here `r_hat` is essentially one and `n_eff` is large, so we can trust the draws.
+
+The number that matters for us is the posterior for $\phi$: its mass crowds right up against one.
+
+In other words, at a monthly frequency, US unemployment is *almost* a random walk — the estimated pull back toward $\bar u$ is barely distinguishable from no pull at all.
+
+### The hysteresis debate
+
+A persistence of essentially one is exactly what one side of a long-running macroeconomics debate predicted.
+
+The **natural rate hypothesis** {cite}`friedman1968role` holds that unemployment fluctuates around a stable equilibrium rate, so shocks fade away and the series is stationary — a $\phi$ below one.
+
+The **hysteresis hypothesis** {cite}`blanchard_summers1986` holds the opposite: shocks to unemployment can be more or less permanent, so the series behaves like a random walk with no fixed level to return to — a $\phi$ equal to one.
+
+Our monthly estimate sits right at the hysteresis boundary.
+
+There is an irony here.
+
+{cite:t}`nelson_plosser1982`, the study that launched the unit-root literature, examined fourteen US macroeconomic series and could reject the unit root for only *one* of them — the unemployment rate — even as the hysteresis literature was arguing the reverse for Europe.
+
+## Is it a unit root?
+
+The monthly fit cannot tell a unit root ($\phi = 1$) from a value just below it.
+
+So could unemployment really be a random walk?
+
+We give two reasons to think not: first the evidence from annual data, then a theoretical argument.
+
+### Evidence from annual data
+
+We form an annual series from end-of-year values and fit the same model to it.
+
+```{code-cell} ipython3
+u_annual = pre_covid.resample("YE").last().to_numpy()
+print(f"{len(u_annual)} annual observations")
+```
+
+We fit the same model to this series.
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+mcmc_annual = run_nuts(linear_model, u_annual)
+```
+
+Now we compare the posterior for $\phi$ across the two frequencies.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Posterior for the persistence parameter
+    name: fig-phi-post
+---
+φ_m = np.asarray(mcmc_monthly.get_samples()["phi"])
+φ_a = np.asarray(mcmc_annual.get_samples()["phi"])
+
+fig, ax = plt.subplots()
+ax.hist(φ_m, bins=50, density=True, alpha=0.6, label='monthly')
+ax.hist(φ_a, bins=50, density=True, alpha=0.6, label='annual')
+ax.set_xlabel('$\\phi$')
+ax.legend()
+plt.show()
+```
+
+{numref}`fig-phi-post` tells the story: the annual posterior for $\phi$ sits well below one, with clear reversion, while the monthly posterior is jammed against the boundary.
+
+This is **not** a sign of different dynamics at the two frequencies.
+
+A single linear AR(1) already predicts it: if the monthly persistence is $\phi$, then for end-of-year values the persistence is about $\phi^{12}$, and raising a number near one to the twelfth power pulls it appreciably below one — broadly in line with our annual estimate.
+
+The reversion was there all along; month to month it is so slight as to be invisible, but over a year it accumulates into something we can clearly see and measure.
+
+The annual data simply give us the statistical power to detect it.
+
+We can put a number on the speeds using the **half-life** of a shock.
+
+Suppose unemployment sits a gap $g$ above $\bar u$ and no further shocks arrive.
+
+From {eq}`eq:linear` the gap is $\phi g$ next period, $\phi^2 g$ the period after, and $\phi^k g$ after $k$ periods — it shrinks by the factor $\phi$ every period, like radioactive decay.
+
+The half-life is the number of periods $k$ for the gap to halve, so setting $\phi^k = \tfrac12$ and taking logs gives $k = \ln 0.5 / \ln \phi$.
+
+```{code-cell} ipython3
+def describe(mcmc, label, unit):
+    p = mcmc.get_samples()
+    φ = np.asarray(p["phi"])
+    half_life = np.median(np.log(0.5) / np.log(φ))
+    print(f"{label}: φ median {np.median(φ):.3f}, "
+          f"half-life median {half_life:.0f} {unit}")
+
+describe(mcmc_monthly, "monthly", "months")
+describe(mcmc_annual, "annual ", "years")
+```
+
+At the annual frequency a shock decays with a half-life of only a few years — robust, visible reversion toward the natural rate.
+
+At the monthly frequency the half-life runs to the better part of a decade, which is exactly why, over a few hundred months, the series looks like a random walk.
+
+### A random walk would wander off
+
+The second reason is decisive and needs no estimation.
+
+Return to the possibility that $\phi = 1$ exactly, so the model is a pure random walk,
 
 $$
 u_{t+1} = u_t + \varepsilon_{t+1}, \qquad \varepsilon_{t+1} \sim N(0, \sigma^2).
 $$
 
-This is a **random walk**.
-
-It is worth taking seriously because, as we will see, the data come surprisingly close to it.
-
-But as a description of unemployment it has a fatal flaw.
-
-Under a random walk, $u_t = u_0 + \sum_{s=1}^t \varepsilon_s$, so the variance of $u_t$ grows without bound: $\operatorname{Var}(u_t) = t\sigma^2$.
+Then $u_t = u_0 + \sum_{s=1}^t \varepsilon_s$, so the variance grows without bound, $\operatorname{Var}(u_t) = t\sigma^2$.
 
 The distribution spreads out forever, and eventually probability mass drains out of *every* bounded interval.
 
-We can see the spreading by simulating many random-walk paths and watching them fan out.
+We can see this by simulating many random-walk paths and watching them fan out.
 
 ```{code-cell} ipython3
 ---
@@ -173,161 +333,29 @@ ax.legend()
 plt.show()
 ```
 
-In {numref}`fig-rw-escape` the dashed lines mark the lowest and highest unemployment rates seen in the data over 1948–2019, and the shaded region is the band between them.
+In {numref}`fig-rw-escape` the dashed lines mark the lowest and highest unemployment rates seen in the data, and the shaded region is the band between them.
 
 The simulated paths fan out like $\sqrt{t}$ and quickly spread far beyond this band — into negative rates and rates above 15% — whereas actual unemployment has never left it.
 
-A random walk has no anchor, but unemployment clearly has one.
+A genuine random walk has no anchor, but unemployment clearly does, so it cannot literally be one.
 
-## Adding mean reversion
+## Reconciling the two views
 
-To give the series an anchor we let it be pulled back toward a normal level $\bar u$,
+We are left with a puzzle.
 
-$$
-u_{t+1} = \bar u + \phi\,(u_t - \bar u) + \varepsilon_{t+1},
-\qquad \varepsilon_{t+1} \sim N(0, \sigma^2),
-$$ (eq:linear)
+At a monthly frequency the data look like a random walk, and the persistence alone cannot rule one out.
 
-with $0 \le \phi < 1$.
+Yet a literal random walk is impossible — it would wander out of the historical band — and at an annual frequency we can plainly see the series reverting.
 
-This is a linear AR(1) model for unemployment, written so that $\bar u$ is the level it reverts to and $\phi$ measures persistence.
+A linear AR(1) does reconcile these facts: with $\phi$ a little below one it is stationary and bounded, while reverting only slowly.
 
-The random walk is the special case $\phi = 1$, where the pull vanishes.
+But that reconciliation sits on a knife-edge.
 
-The smaller $\phi$, the faster the series returns to $\bar u$ after a shock.
+The persistence has to be placed just below one — a value the monthly data cannot distinguish from a unit root {cite}`roed1997hysteresis` — and the model assumes the *same* gentle reversion at all times, however far unemployment strays.
 
-We give $\phi$ a uniform prior on $[0, 1)$, so we let the data decide how close to a random walk we are.
+A more robust reconciliation lets the reversion be **nonlinear**: the series can drift like a random walk in normal times while a firmer pull, switching on when it strays far from its normal level, keeps it from ever wandering away {cite}`kapetanios_shin_snell2003`.
 
-```{code-cell} ipython3
-def linear_model(u):
-    ubar = numpyro.sample("ubar",  dist.Normal(5.5, 2.0))
-    φ    = numpyro.sample("phi",   dist.Uniform(0.0, 1.0))
-    σ    = numpyro.sample("sigma", dist.HalfNormal(1.0))
-    μ = ubar + φ * (u[:-1] - ubar)
-    numpyro.sample("u_obs", dist.Normal(μ, σ), obs=u[1:])
-```
-
-We sample the posterior with NUTS, running four chains so we can check convergence.
-
-We use `chain_method="vectorized"`, which evaluates all chains together on a single device, so the same code runs unchanged on a CPU or a GPU.
-
-```{code-cell} ipython3
-def run_nuts(model, data, seed=0, num_warmup=1000, num_samples=2000, num_chains=4):
-    "Sample a NumPyro model with the NUTS sampler."
-    mcmc = MCMC(NUTS(model),
-                num_warmup=num_warmup, num_samples=num_samples,
-                num_chains=num_chains, chain_method="vectorized",
-                progress_bar=False)
-    mcmc.run(random.PRNGKey(seed), jnp.asarray(data))
-    return mcmc
-```
-
-We fit the model to the monthly data first.
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-mcmc_monthly = run_nuts(linear_model, u_monthly)
-```
-
-The chains mix well, and here is the posterior summary.
-
-```{code-cell} ipython3
-mcmc_monthly.print_summary()
-```
-
-We then fit it to the annual data.
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-mcmc_annual = run_nuts(linear_model, u_annual)
-```
-
-Here is the corresponding summary.
-
-```{code-cell} ipython3
-mcmc_annual.print_summary()
-```
-
-## Is it a random walk after all?
-
-The persistence parameter $\phi$ tells the story, so we compare its posterior across the two frequencies.
-
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Posterior for the persistence parameter
-    name: fig-phi-post
----
-φ_m = np.asarray(mcmc_monthly.get_samples()["phi"])
-φ_a = np.asarray(mcmc_annual.get_samples()["phi"])
-
-fig, ax = plt.subplots()
-ax.hist(φ_m, bins=50, density=True, alpha=0.6, label='monthly')
-ax.hist(φ_a, bins=50, density=True, alpha=0.6, label='annual')
-ax.set_xlabel('$\\phi$')
-ax.legend()
-plt.show()
-```
-
-As {numref}`fig-phi-post` shows, at the monthly frequency the posterior for $\phi$ crowds right up against one — the random-walk boundary.
-
-In other words, month to month, US unemployment is *almost* a random walk: the pull back toward $\bar u$ is barely detectable.
-
-Two summaries make this concrete: the stationary distribution and the half-life of a shock.
-
-The **stationary distribution** is the long-run distribution the series settles into, $N\!\big(\bar u,\ \sigma^2/(1-\phi^2)\big)$.
-
-The **half-life** measures how quickly the series returns to $\bar u$ after a disturbance.
-
-To see where it comes from, suppose unemployment sits a gap $g$ above $\bar u$ and no further shocks arrive.
-
-From the model {eq}`eq:linear`, next period the gap is $\phi g$, the period after that $\phi^2 g$, and after $k$ periods $\phi^k g$ — it shrinks by the same factor $\phi$ every period, like radioactive decay.
-
-The half-life is the number of periods $k$ it takes for the gap to fall to half its size.
-
-Setting $\phi^k = \tfrac{1}{2}$ and taking logs gives
-
-$$
-k = \frac{\ln 0.5}{\ln \phi}.
-$$
-
-A $\phi$ close to one makes $k$ large — shocks fade slowly — while a smaller $\phi$ gives a short half-life and quick reversion.
-
-The next cell reports both summaries at each frequency.
-
-```{code-cell} ipython3
-def describe(mcmc, label):
-    p = mcmc.get_samples()
-    φ, σ = np.asarray(p["phi"]), np.asarray(p["sigma"])
-    half_life = np.log(0.5) / np.log(φ)
-    stat_sd = σ / np.sqrt(1 - φ**2)
-    print(f"{label}:")
-    print(f"  φ          median {np.median(φ):.3f}  90% [{np.percentile(φ,5):.3f}, {np.percentile(φ,95):.3f}]")
-    print(f"  half-life  median {np.median(half_life):.0f} periods")
-    print(f"  stationary sd of u: median {np.median(stat_sd):.2f} pp")
-
-describe(mcmc_monthly, "monthly")
-describe(mcmc_annual, "annual")
-```
-
-At the monthly frequency the half-life of a shock runs to several years.
-
-Over a sample of a few hundred months the series barely has time to revert, so it behaves, for practical purposes, like the random walk we just rejected.
-
-At the annual frequency the picture is better: $\phi$ sits well below one and shocks die out within a few years.
-
-The lesson is that whether unemployment "looks like a random walk" depends on how often you look.
-
-```{note}
-This is exactly the question behind the **natural rate versus hysteresis** debate of the 1980s and 1990s {cite}`friedman1968role,blanchard_summers1986`.
-
-When $\phi$ is this close to one, the debate is hard to settle: in samples of the length we have, a true random walk and a slowly-reverting series look almost the same, so the statistical tests have little power to tell them apart {cite}`roed1997hysteresis`.
-
-One way forward, which we take in {doc}`unemployment_nonlinear`, is to let the reversion be **nonlinear** — a series can look like a random walk to a linear test while reverting briskly once it strays far enough from its normal level {cite}`kapetanios_shin_snell2003`.
-```
+We take up that nonlinear model in {doc}`unemployment_nonlinear`.
 
 ## Exercises
 
