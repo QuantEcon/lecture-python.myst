@@ -134,39 +134,10 @@ logger.setLevel(logging.CRITICAL)
 
 ## Estimation
 
-The following function simulates a path of the AR(1) process from a given initial condition.
+Let's turn to estimation, starting with the likelihood function.
 
-```{code-cell} ipython3
-def ar1_simulate(ρ, σ, y0, T, rng):
 
-    # Allocate space and draw shocks
-    y = np.empty(T)
-    ε = rng.normal(0, σ, T)
-
-    # Initial condition and step forward
-    y[0] = y0
-    for t in range(1, T):
-        y[t] = ρ * y[t-1] + ε[t]
-
-    return y
-
-σ_true = 1.0
-ρ_true = 0.5
-T = 50
-
-rng = np.random.default_rng(42)
-y = ar1_simulate(ρ_true, σ_true, 10, T, rng)
-```
-
-Let's plot the simulated series.
-
-```{code-cell} ipython3
-fig, ax = plt.subplots()
-ax.plot(y, lw=2)
-ax.set_xlabel('time')
-plt.show()
-```
-
+### Likelihood function
 
 For a sample $\{y_t\}_{t=0}^T$ from the AR(1) model, the likelihood function can be *factored* as follows:
 
@@ -193,6 +164,68 @@ As discussed above, the way that we select the initial value $y_0$ matters.
 * If we suspect $y_0$ is far out in the tail — so that early observations carry a large **transient component** — the conditioning assumption is better.
 
 To illustrate the issue, we'll begin by choosing an initial $y_0$ that is far out in a tail of the stationary distribution.
+
+### Simulation code
+
+We will work with simulated data, fixing parameters $\rho$ and $\sigma_x$.
+
+Then we will pretend that we don't know these parameters and try to estimate
+them under the two assumptions discussed above (conditioning and stationary).
+
+The following function simulates a path of the AR(1) process from a given initial condition.
+
+```{code-cell} ipython3
+def ar1_simulate(ρ, σ, y0, T, rng):
+
+    # Allocate space and draw shocks
+    y = np.empty(T)
+    ε = rng.normal(0, σ, T)
+
+    # Initial condition and step forward
+    y[0] = y0
+    for t in range(1, T):
+        y[t] = ρ * y[t-1] + ε[t]
+
+    return y
+```
+
+We use the following parameterization.
+
+```{code-cell} ipython3
+σ_true = 1.0   # Fix a value for σ_x
+ρ_true = 0.5   # Fix a value for ρ
+```
+
+Our simulated time series will be relatively short, so that the priors matter:
+
+```{code-cell} ipython3
+T = 50   # Length of time series
+```
+
+As mentioned above, we choose an initial $y_0$ that is far out in a tail of the stationary distribution:
+
+```{code-cell} ipython3
+y_0 = 10
+```
+
+Now let's simulate and generate our data:
+
+```{code-cell} ipython3
+rng = np.random.default_rng(42)
+y = ar1_simulate(ρ_true, σ_true, y_0, T, rng)
+```
+
+Here's a plot of the simulated series.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+ax.plot(y, lw=2)
+ax.set_xlabel('time')
+plt.show()
+```
+
+You can see that the initial condition is unusually large --- the series moves
+away from it quickly and fluctuates in a lower band.
 
 
 ### PyMC implementation
@@ -227,7 +260,7 @@ The line `yhat = ρ * y[:-1]` is just the vector of conditional means $\rho y_{t
 
 The last line is the **likelihood**: the keyword `observed=y[1:]` tells PyMC that the values `y[1:]` are data, drawn from $N(\rho y_{t-1}, \sigma^2)$.
 
-Because `yhat` and `y[1:]` are whole vectors, this single line encodes the entire product of one-step densities $\prod_{t=1}^{T} f(y_t \mid y_{t-1})$ from the factorization above.
+Because `yhat` and `y[1:]` are whole vectors, this single line encodes the entire product $\prod_{t=1}^{T} f(y_t \mid y_{t-1})$ from the factorization above.
 
 PyMC multiplies this likelihood by the priors to form the posterior, which we sample from below.
 
@@ -255,14 +288,17 @@ with AR1_model:
     az.plot_trace(trace)
 ```
 
-Evidently, the posteriors aren't centered on the true values of $0.5$ and $1$ that we used to generate the data.
+Recall that we generated the data with $\rho = 0.5$ and $\sigma_x = 1$.
 
-This is a symptom of the classic **Hurwicz bias** for first order autoregressive processes (see {cite:t}`hurwicz1950least`).
+The posteriors concentrate near these values, so conditioning on $y_0$ recovers the parameters reasonably well, even from this short sample.
 
-The Hurwicz bias is worse the smaller the sample (see {cite}`Orcutt_Winokur_69`).
+```{note}
+The fit is good but not exact — the posterior for $\rho$ sits a little below its true value.
 
+This is partly the classic **Hurwicz bias**: in a first-order autoregression the least-squares (and hence posterior) estimate of $\rho$ is biased downward in small samples, with the bias shrinking as the sample grows (see {cite:t}`hurwicz1950least` and {cite}`Orcutt_Winokur_69`).
+```
 
-Be that as it may, here is more information about the posterior.
+Here is a numerical summary of the posterior.
 
 ```{code-cell} ipython3
 with AR1_model:
