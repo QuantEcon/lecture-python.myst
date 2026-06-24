@@ -41,7 +41,9 @@ We met Bayesian estimation of such models in {doc}`ar1_bayes`, but there the dat
 
 Here our aim is to apply Bayesian estimation to real data and work carefully through the results.
 
-Along the way we ask whether unemployment is a **random walk** — a question that was the subject of considerable debate among macroeconomists in the 1980s and 1990s.
+Along the way we ask whether unemployment is a *random walk*.
+
+This question was the subject of considerable debate among macroeconomists in the 1980s and 1990s.
 
 We will find that the linear model we fit here is too limited to capture some important features of the data.
 
@@ -108,15 +110,12 @@ ax.set_ylabel('unemployment rate (%)')
 plt.show()
 ```
 
-As {numref}`fig-unrate-monthly` shows, the rate rises sharply in recessions and drifts down in recoveries, but it always stays inside a band — roughly 3% to 11% over the whole post-war period.
+As {numref}`fig-unrate-monthly` shows, the rate rises sharply in recessions and drifts down in recoveries, but it always stays inside a band: roughly 3% to 11% over the whole post-war period.
 
-Any sensible model has to respect that band.
 
 ## A linear model of unemployment
 
 In this section we set up a simple linear model, estimate it on the monthly data, and read off what the estimates say.
-
-This is also where we practise the mechanics of applying Bayesian estimation to a real series.
 
 ### The model
 
@@ -197,7 +196,7 @@ Here `r_hat` is essentially one and `n_eff` is large, so we can trust the draws.
 
 The number that matters for us is the posterior for $\phi$: its mass crowds right up against one.
 
-In other words, at a monthly frequency, US unemployment is *almost* a random walk — the estimated pull back toward $\bar u$ is barely distinguishable from no pull at all.
+In other words, at a monthly frequency, US unemployment is almost a random walk.
 
 ### The hysteresis debate
 
@@ -209,9 +208,6 @@ The **hysteresis hypothesis** {cite}`blanchard_summers1986` holds the opposite: 
 
 Our monthly estimate sits right at the hysteresis boundary.
 
-There is an irony here.
-
-{cite:t}`nelson_plosser1982`, the study that launched the unit-root literature, examined fourteen US macroeconomic series and could reject the unit root for only *one* of them — the unemployment rate — even as the hysteresis literature was arguing the reverse for Europe.
 
 ## Is it a unit root?
 
@@ -258,45 +254,18 @@ ax.legend()
 plt.show()
 ```
 
-{numref}`fig-phi-post` tells the story: the annual posterior for $\phi$ sits well below one, with clear reversion, while the monthly posterior is jammed against the boundary.
+{numref}`fig-phi-post` tells the story: the annual posterior for $\phi$ sits well below one, with clear reversion, while the monthly posterior pushes up against the boundary.
 
-This is **not** a sign of different dynamics at the two frequencies.
+This is not really surprising: if the monthly persistence is $\phi$, then for end-of-year values the persistence is about $\phi^{12}$, and raising a number near one to the twelfth power pulls it appreciably below one — broadly in line with our annual estimate.
 
-A single linear AR(1) already predicts it: if the monthly persistence is $\phi$, then for end-of-year values the persistence is about $\phi^{12}$, and raising a number near one to the twelfth power pulls it appreciably below one — broadly in line with our annual estimate.
+The reversion was there all along: over a year it accumulates into something we can clearly see and measure.
 
-The reversion was there all along; month to month it is so slight as to be invisible, but over a year it accumulates into something we can clearly see and measure.
-
-The annual data simply give us the statistical power to detect it.
-
-We can put a number on the speeds using the **half-life** of a shock.
-
-Suppose unemployment sits a gap $g$ above $\bar u$ and no further shocks arrive.
-
-From {eq}`eq:linear` the gap is $\phi g$ next period, $\phi^2 g$ the period after, and $\phi^k g$ after $k$ periods — it shrinks by the factor $\phi$ every period, like radioactive decay.
-
-The half-life is the number of periods $k$ for the gap to halve, so setting $\phi^k = \tfrac12$ and taking logs gives $k = \ln 0.5 / \ln \phi$.
-
-```{code-cell} ipython3
-def describe(mcmc, label, unit):
-    p = mcmc.get_samples()
-    φ = np.asarray(p["phi"])
-    half_life = np.median(np.log(0.5) / np.log(φ))
-    print(f"{label}: φ median {np.median(φ):.3f}, "
-          f"half-life median {half_life:.0f} {unit}")
-
-describe(mcmc_monthly, "monthly", "months")
-describe(mcmc_annual, "annual ", "years")
-```
-
-At the annual frequency a shock decays with a half-life of only a few years — robust, visible reversion toward the natural rate.
-
-At the monthly frequency the half-life runs to the better part of a decade, which is exactly why, over a few hundred months, the series looks like a random walk.
 
 ### A random walk would wander off
 
-The second reason is decisive and needs no estimation.
+The second reason a random walk cannot fit the data needs no estimation.
 
-Return to the possibility that $\phi = 1$ exactly, so the model is a pure random walk,
+Suppose that $\phi = 1$ exactly, so the model is a pure random walk,
 
 $$
 u_{t+1} = u_t + \varepsilon_{t+1}, \qquad \varepsilon_{t+1} \sim N(0, \sigma^2).
@@ -304,7 +273,7 @@ $$
 
 Then $u_t = u_0 + \sum_{s=1}^t \varepsilon_s$, so the variance grows without bound, $\operatorname{Var}(u_t) = t\sigma^2$.
 
-The distribution spreads out forever, and eventually probability mass drains out of *every* bounded interval.
+The distribution spreads out forever, and eventually probability mass leaves *every* bounded interval.
 
 We can see this by simulating many random-walk paths and watching them fan out.
 
@@ -335,25 +304,23 @@ plt.show()
 
 In {numref}`fig-rw-escape` the dashed lines mark the lowest and highest unemployment rates seen in the data, and the shaded region is the band between them.
 
-The simulated paths fan out like $\sqrt{t}$ and quickly spread far beyond this band — into negative rates and rates above 15% — whereas actual unemployment has never left it.
+The simulated paths fan out like $\sqrt{t}$ and quickly spread far beyond this band, including into negative rates.
 
-A genuine random walk has no anchor, but unemployment clearly does, so it cannot literally be one.
+A random walk has no anchor, but unemployment clearly does, so the coefficient cannot be one.
+
 
 ## Reconciling the two views
 
-We are left with a puzzle.
 
-At a monthly frequency the data look like a random walk, and the persistence alone cannot rule one out.
+At a monthly frequency the data are very hard to distinguish from a random walk. 
 
-Yet a literal random walk is impossible — it would wander out of the historical band — and at an annual frequency we can plainly see the series reverting.
+At the same time, a random walk is impossible — it would wander out of the
+historical band — and at an annual frequency we can plainly see the series
+reverting.
 
-A linear AR(1) does reconcile these facts: with $\phi$ a little below one it is stationary and bounded, while reverting only slowly.
+One way to accommodate these two facts is to allow the model to be *nonlinear*.
 
-But that reconciliation sits on a knife-edge.
-
-The persistence has to be placed just below one — a value the monthly data cannot distinguish from a unit root {cite}`roed1997hysteresis` — and the model assumes the *same* gentle reversion at all times, however far unemployment strays.
-
-A more robust reconciliation lets the reversion be **nonlinear**: the series can drift like a random walk in normal times while a firmer pull, switching on when it strays far from its normal level, keeps it from ever wandering away {cite}`kapetanios_shin_snell2003`.
+With a nonlinear model, the series can drift like a random walk in normal times while reverting strongly when it strays far from its normal level {cite}`kapetanios_shin_snell2003`.
 
 We take up that nonlinear model in {doc}`unemployment_nonlinear`.
 
