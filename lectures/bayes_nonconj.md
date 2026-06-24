@@ -44,6 +44,7 @@ This lecture introduces two widely used ways to do that, both implemented in the
 
 * **Variational inference (VI)** — replace sampling with optimization: search within a tractable family of distributions for the member closest to the posterior.
 
+(nuts)=
 ```{note}
 We treat NUTS as a black box in this lecture.
 
