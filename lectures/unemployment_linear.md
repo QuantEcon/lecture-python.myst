@@ -87,9 +87,9 @@ The debate matters because the two views imply different policies.
 
 In particular, if shocks are permanent, a deep recession leaves a lasting scar, encouraging remedial action.
 
-Here we reexamine the dynamics of unemployment, using Bayesian estimation.
+Here we reexamine the question with Bayesian estimation.
 
-We look at the implied dynamics and discuss the unit root hypothesis (which corresponds here to a random walk).
+We fit a linear model and ask how close to a random walk the data actually push us.
 
 
 ```{note}

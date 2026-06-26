@@ -47,7 +47,7 @@ Our instinct might be to fix this by bending the mean-reversion curve — making
 
 The lesson of this lecture is that **the action is in the shocks, not the curve**: keep the linear reversion, and give the *innovations* the freedom to be large and one-sided.
 
-Along the way we use this as a worked example of **model comparison** — how a Bayesian decides that one model fits better than another, using leave-one-out cross-validation.
+We also use it to develop one of the most useful tools in the Bayesian kit: **model comparison** by leave-one-out cross-validation, which decides with a single number whether one model really predicts better than another.
 
 Our plan is to
 
@@ -265,17 +265,85 @@ In {numref}`fig-jump-fit` the fitted density tracks the residuals, with the jump
 
 ## Comparing models with cross-validation
 
-The model looks reasonable, but is it actually *better* than the linear one?
+The jump model looks reasonable, but is it actually *better* than the linear one?
 
-In-sample fit is no guide: a richer model can always hug the data more closely, so we need a measure that rewards genuine predictive power and penalizes empty flexibility.
+Answering that well is worth a careful detour, because **Bayesian model comparison** is one of the most useful ideas these two lectures have to offer.
 
-The Bayesian workhorse is **leave-one-out cross-validation** (LOO).
+We build it up in stages: the guiding principle, the score it rests on, the leave-one-out estimate, and finally how the computation is actually done.
 
-LOO estimates the *expected log predictive density* — loosely, how well the model forecasts an observation it has not seen — and higher is better.
+### The guiding principle: predict, don't fit
 
-It is the Bayesian cousin of ordinary cross-validation and of measures like the AIC, with one twist: because the prediction averages over the whole posterior, a parameter the data fail to pin down contributes uncertainty rather than fit, so flexibility is penalized automatically.
+The tempting way to compare two models is to ask which one fits the observed data better.
 
-To compare, we refit the linear model on the same data.
+That fails, for a reason familiar from classical statistics: a model with more freedom can always be tuned to hug the data it was fit on, whether or not the extra freedom reflects anything real.
+
+So in-sample fit rewards complexity for its own sake.
+
+The honest question is instead *which model better predicts data it has not seen* — its **out-of-sample predictive accuracy**.
+
+A model that has truly learned the structure of the series will forecast new observations well; one that has merely memorized noise will not.
+
+### Scoring a prediction
+
+To make this precise we need a way to score a prediction, and here the Bayesian setting helps.
+
+A Bayesian model does not predict a single number; it predicts a whole distribution, the **posterior predictive density**
+
+$$
+p(\tilde u \mid u) = \int p(\tilde u \mid \theta)\, p(\theta \mid u)\, d\theta ,
+$$
+
+which averages the likelihood over the posterior rather than plugging in one estimate of $\theta$.
+
+This averaging is where the penalty for empty flexibility quietly enters: if the data leave a parameter poorly determined, that uncertainty spreads the predictive distribution out, and a diffuse forecast scores worse.
+
+We score a forecast by the **log predictive density it assigns to the value that actually occurs**, $\log p(\tilde u \mid u)$ — high when the model placed a lot of probability on what happened.
+
+The log score is not an arbitrary choice: it is a *proper* scoring rule, meaning a forecaster maximizes its expected value only by reporting honest probabilities, and maximizing it is equivalent to minimizing the Kullback–Leibler distance from the true data-generating process.
+
+Our target is therefore the **expected log predictive density** (elpd) over new data — and higher is better.
+
+### Leave-one-out cross-validation
+
+We do not have new data, so we manufacture some by **cross-validation**.
+
+Leave out one observation, fit the model to the rest, and then score the held-out point with the predictive distribution that never saw it.
+
+Doing this for every point and summing gives the leave-one-out estimate
+
+$$
+\text{elpd}_{\text{loo}} = \sum_{i=1}^{n} \log p(u_i \mid u_{-i}),
+\qquad
+p(u_i \mid u_{-i}) = \int p(u_i \mid \theta)\, p(\theta \mid u_{-i})\, d\theta ,
+$$
+
+where $u_{-i}$ is the data with observation $i$ removed.
+
+Every point is now scored by a model fit without it, so the number genuinely measures out-of-sample performance — overfitting is punished rather than rewarded.
+
+### Computing it from a single fit
+
+Taken literally, this asks us to refit the model $n$ times, once for each omitted point — here seventy-one separate MCMC runs.
+
+The trick that makes LOO practical is that we can avoid all but the first fit, by **reweighting the posterior we already have**.
+
+The leave-one-out posterior differs from the full posterior only in dropping the factor for point $i$, so
+
+$$
+p(\theta \mid u_{-i}) \;\propto\; \frac{p(\theta \mid u)}{p(u_i \mid \theta)} .
+$$
+
+A draw $\theta^s$ from the full posterior can therefore stand in for the leave-$i$-out posterior if we give it the importance weight $w_i^s \propto 1/p(u_i \mid \theta^s)$ — downweighting exactly those draws that fit $u_i$ well, since they are the ones that "peeked" at the answer.
+
+Substituting these weights collapses to something remarkably simple: the leave-one-out predictive density is the **harmonic mean** of the per-draw likelihoods of $u_i$,
+
+$$
+p(u_i \mid u_{-i}) \;\approx\; \frac{S}{\sum_{s=1}^{S} 1 / p(u_i \mid \theta^s)} .
+$$
+
+The only ingredient is the likelihood of each observation under each posterior draw — the **pointwise log-likelihood** — which is why, throughout, we have been careful to compute it.
+
+To compare against the linear model, we first fit it on the same data.
 
 ```{code-cell} ipython3
 def linear_model(u):
@@ -293,7 +361,50 @@ We sample it on the same annual data.
 mcmc_lin = run_nuts(linear_model, u_annual)
 ```
 
-ArviZ computes LOO from the draws we already have, once we supply the pointwise log-likelihood for each model.
+Now we can do the whole leave-one-out calculation by hand in a few lines.
+
+```{code-cell} ipython3
+from scipy.special import logsumexp
+
+def pointwise_loo(mcmc, model):
+    "Leave-one-out log predictive density for each observation."
+    ll = np.asarray(log_likelihood(model, mcmc.get_samples(),
+                                   u=jnp.asarray(u_annual))["u_obs"])  # (draws, obs)
+    S = ll.shape[0]
+    # log of the harmonic mean of the per-draw likelihoods, per observation
+    return np.log(S) - logsumexp(-ll, axis=0)
+
+elpd_jump = pointwise_loo(mcmc_jump, jump_model)
+elpd_lin  = pointwise_loo(mcmc_lin,  linear_model)
+
+print(f"jump   elpd_loo = {elpd_jump.sum():.1f}")
+print(f"linear elpd_loo = {elpd_lin.sum():.1f}")
+```
+
+The jump model scores higher (closer to zero), so on out-of-sample prediction it wins.
+
+To judge whether the gap is real, we need its uncertainty.
+
+Because the total elpd is a *sum* over observations, the difference between the two models is itself a sum of per-observation differences, and its standard error follows from their spread.
+
+```{code-cell} ipython3
+diff = elpd_jump - elpd_lin
+n = diff.size
+print(f"elpd difference = {diff.sum():.1f}")
+print(f"standard error  = {np.sqrt(n) * diff.std():.1f}")
+```
+
+The jump model is ahead by about twelve points, against a standard error near six — a bit over two standard errors, so a real improvement and not a fluke.
+
+This is a far cleaner verdict than the bent mean-reversion curve gave: there, the gap over the straight line was smaller than its own standard error, a coin-toss.
+
+### Letting ArviZ do it
+
+In practice we let a library handle the bookkeeping, and add two refinements.
+
+The raw importance weights $1/p(u_i\mid\theta^s)$ can occasionally be dominated by a single wild draw; **ArviZ** stabilizes them with Pareto-smoothed importance sampling, and reports a diagnostic — the Pareto shape $\hat k$ — that flags any observation where the estimate is unreliable (a value above $0.7$ is the usual warning line).
+
+We hand it the same pointwise log-likelihoods, packaged in its data format.
 
 ```{code-cell} ipython3
 import arviz as az
@@ -315,13 +426,27 @@ az.compare({
 })
 ```
 
-The table ranks the jump model first, and this time by a clear margin: its predictive score (`elpd`) is higher by roughly ten points (`elpd_diff`), against a standard error of the difference (`dse`) of about six — close to two standard errors, a real improvement rather than the coin-toss a bent mean-reversion curve gives.
+Here the smoothing changes nothing — every $\hat k$ stays below $0.7$ — so `az.compare` confirms the hand calculation and ranks the jump model first (its table rounds the scores for display).
 
-The effective number of parameters (`p`) also rises, but the fit improves by more than enough to pay for it: the extra freedom in the shocks earns its keep.
+### Reading the comparison
 
-Two caveats keep us honest.
+Two of the columns repay a closer look.
 
-The standard errors rest on only about seventy observations, so they are rough; and LOO treats the observations as exchangeable, whereas a time series is not — each value is modelled conditional on the one before, so a stricter test would leave out *future* observations rather than a single interior one.
+The column `p` is the **effective number of parameters**: not the count we wrote down, but how much freedom the data actually grant the model, estimated from the gap between its in-sample and out-of-sample fit.
+
+It is about three and a half for the linear model and six and a half for the jump model — and, tellingly, it need not equal the nominal parameter count, since a parameter the data cannot pin down (like the ceiling of our abandoned S-curve) adds almost nothing to it.
+
+Readers from classical statistics will recognize the whole exercise: it is the goal behind the **AIC**, which estimates out-of-sample accuracy as in-sample fit minus a parameter count.
+
+LOO reaches that goal without the asymptotic shortcut — it uses the entire posterior and learns the effective complexity from the data.
+
+(The **BIC**, by contrast, aims at a different target, the marginal likelihood, and hence the probability that each model is *true*; that is the province of Bayes factors, not of predictive accuracy.)
+
+Finally, two caveats keep us honest.
+
+The standard errors rest on only about seventy observations, so they are rough.
+
+And LOO treats the observations as exchangeable, whereas a time series is not — each value is modelled conditional on the one before, so a stricter test would leave out *future* observations rather than a single interior one.
 
 ## Does it capture the asymmetry?
 
@@ -411,6 +536,12 @@ In {doc}`unemployment_linear` we asked whether unemployment is a random walk and
 Here we found that the feature the linear model most conspicuously misses — the asymmetry of recessions — lives not in the shape of the mean reversion but in the **distribution of the shocks**.
 
 A linear reversion with large, one-sided innovations reproduces the spikes, the slow recoveries, and the boundedness, and cross-validation prefers it clearly.
+
+Two general tools did the real work, and both are worth carrying away.
+
+A *posterior predictive check* asks whether a model can reproduce a feature we care about — here, the skew of the annual changes.
+
+*Leave-one-out cross-validation* asks which model predicts better, and answers with a single comparable number — the verdict that told us the bent curve was not worth keeping, but the asymmetric shocks were.
 
 It is worth being precise about what improved.
 
