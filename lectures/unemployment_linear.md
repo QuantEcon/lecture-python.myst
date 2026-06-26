@@ -35,21 +35,22 @@ We also install `pandas_datareader`, which we use to download data from FRED:
 
 ## Overview
 
-This lecture applies Bayesian estimation to a real macroeconomic series: the US unemployment rate.
+This lecture applies Bayesian estimation to a linear AR(1) model of the US unemployment rate.
 
 We met the machinery in {doc}`ar1_bayes`, but there the data were simulated and the focus was theoretical.
 
-Here we work carefully through real data, and we organize the lecture around a question that divided macroeconomists in the 1980s and 1990s: is unemployment a *random walk*?
+Here we work carefully through real data, organizing the lecture around a
+question that divided macroeconomists in the 1980s and 1990s: is unemployment a
+*random walk*?
 
-Our plan is to
+In the process, we will observe an asymmetry the model cannot capture.
 
-1. lay out the historical debate behind that question,
-2. argue that a literal random walk is impossible, so we fit a *stationary* model,
-3. fit a linear AR(1) to monthly data and find that its persistence is very close to one,
-4. contrast what the monthly and annual frequencies can tell us, and
-5. close by noting an asymmetry the model cannot capture — which motivates the sequel, {doc}`unemployment_shocks`.
+This will motivate a sequel lecture, titled {doc}`unemployment_shocks`.
 
-As in {doc}`ar1_bayes` and {doc}`bayes_nonconj`, we estimate by sampling posteriors with the NUTS sampler in [NumPyro](https://num.pyro.ai/en/stable/); see {doc}`bayes_nonconj` for a brief account of how NUTS works.
+As in {doc}`ar1_bayes` and {doc}`bayes_nonconj`, we estimate by sampling
+posteriors with the NUTS sampler in [NumPyro](https://num.pyro.ai/en/stable/).
+
+(See {doc}`bayes_nonconj` for a brief account of how NUTS works.)
 
 Let's start with some imports.
 
@@ -68,23 +69,36 @@ from numpyro.infer import MCMC, NUTS
 
 ## The natural rate versus hysteresis
 
-Whether unemployment is a random walk is not a dry statistical question — it sits on a fault line in macroeconomics.
+In the early 1980s, {cite:t}`nelson_plosser1982` launched the unit-root literature.
 
-The **natural rate hypothesis** {cite}`friedman1968role` holds that unemployment fluctuates around a stable equilibrium rate.
+They examined 14 macroeconomic time series and found that they could reject the random walk for only one of them.
 
-On this view shocks fade away and the series reverts to its normal level — in the language of the model below, a persistence $\phi$ below one.
+Roughly speaking, this meant that, for most macroeconomic series, the effects of shocks looked permanent rather than transitory.
 
-The **hysteresis hypothesis** {cite}`blanchard_summers1986` holds the opposite: a shock to unemployment can be more or less permanent, because spells of joblessness erode skills and attachment to the labour force.
+That climate of thinking found expression, for unemployment, in the **hysteresis hypothesis** of {cite}`blanchard_summers1986`.
 
-On this view there is no fixed level to return to, and the series behaves like a random walk — a persistence $\phi$ equal to one.
+On this view a shock to unemployment can be more or less permanent, because spells of joblessness erode skills and attachment to the labour force.
 
-There is an irony in the history.
+That argument stands in contrast to the **natural rate hypothesis** of
+{cite}`friedman1968role`, which holds that unemployment fluctuates around a
+stable equilibrium rate --- and hence shocks are transitory rather than permanent.
 
-{cite:t}`nelson_plosser1982`, the study that launched the unit-root literature, examined fourteen US macroeconomic series and could reject the random walk for only *one* of them — the unemployment rate — even as the hysteresis literature was arguing the reverse for Europe.
+The debate matters because the two views imply different policies.
 
-The debate matters because the two views imply very different policy: if shocks are permanent, a deep recession leaves a lasting scar.
+In particular, if shocks are permanent, a deep recession leaves a lasting scar, encouraging remedial action.
 
-We bring Bayesian estimation to bear on it.
+Here we reexamine the dynamics of unemployment, using Bayesian estimation.
+
+We look at the implied dynamics and discuss the unit root hypothesis (which corresponds here to a random walk).
+
+
+```{note}
+There is an irony in the history described above.
+
+While {cite:t}`nelson_plosser1982` fueled the unit root debate, and hence the hysteresis hypothesis, the one macroeconomic series 
+they rejected the unit root for was the unemployment rate.
+```
+
 
 ## The data
 
@@ -123,58 +137,6 @@ As {numref}`fig-unrate-monthly` shows, the rate rises sharply in recessions and 
 
 Keep that band in mind: it is the first clue, and it tells against a literal random walk.
 
-## A random walk would wander off
-
-Before fitting anything, we can settle part of the question with a simple argument.
-
-Suppose unemployment really were a pure random walk, $\phi = 1$:
-
-$$
-u_{t+1} = u_t + \varepsilon_{t+1}, \qquad \varepsilon_{t+1} \sim N(0, \sigma^2).
-$$
-
-Then $u_t = u_0 + \sum_{s=1}^t \varepsilon_s$, so its variance grows without bound, $\operatorname{Var}(u_t) = t\sigma^2$.
-
-The distribution spreads out forever, and eventually probability mass leaves *every* bounded interval.
-
-We can see this by simulating many random-walk paths, using the observed one-month changes to set the shock size, and watching them fan out.
-
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Random walks leave the observed range
-    name: fig-rw-escape
----
-rng = np.random.default_rng(0)
-T = len(u_monthly)
-σ_rw = np.diff(u_monthly).std()
-paths = u_monthly[0] + np.cumsum(rng.normal(0, σ_rw, size=(400, T)), axis=1)
-
-u_min, u_max = u_monthly.min(), u_monthly.max()
-
-fig, ax = plt.subplots()
-ax.plot(paths[:60].T, color='C0', lw=0.5, alpha=0.3)
-ax.axhspan(u_min, u_max, color='C1', alpha=0.15, label='observed range')
-ax.axhline(u_min, color='C1', ls='--', lw=1.5)
-ax.axhline(u_max, color='C1', ls='--', lw=1.5)
-ax.set_xlabel('months since 1948')
-ax.set_ylabel('unemployment rate (%)')
-ax.legend()
-plt.show()
-```
-
-In {numref}`fig-rw-escape` the dashed lines mark the lowest and highest unemployment rates ever seen in the data, and the shaded region is the band between them.
-
-The simulated paths fan out like $\sqrt{t}$ and quickly spread far beyond this band, including into negative rates.
-
-A random walk has no anchor, but unemployment clearly does — it has stayed inside a narrow band for seventy years.
-
-So we can already rule out a *literal* random walk.
-
-This does not settle the debate, though: the interesting question is whether unemployment is *almost* a random walk — persistent enough that shocks die away only very slowly.
-
-For that we need to estimate.
 
 ## A linear model of unemployment
 
@@ -199,7 +161,7 @@ We treat $\bar u$, $\phi$ and $\sigma$ as unknown and place weakly informative p
 
 We give $\phi$ a uniform prior on $[0, 1)$.
 
-The upper endpoint is excluded deliberately: we argued above that unemployment is bounded, which rules out a unit root on economic grounds.
+The upper endpoint is excluded deliberately: it confines us to the *stationary* region. We will see shortly that a literal unit root is untenable anyway, since it would let unemployment wander without bound.
 
 This is not assuming our answer — the prior still lets $\phi$ approach one as closely as the data demand, and we will see that it does exactly that.
 
@@ -259,15 +221,75 @@ Here `r_hat` is essentially one and `n_eff` is large, so we can trust the draws.
 
 The number that matters for us is the posterior for $\phi$: its mass crowds right up against one.
 
+In particular, the mean and median are very close to one, while the standard deviation is very small.
+
 In other words, at a monthly frequency, US unemployment is *almost* a random walk.
 
 This is the hysteresis boundary.
 
-At this persistence the natural-rate and hysteresis views are nearly indistinguishable in the monthly data — the estimate is consistent with both, which is exactly why the unit-root tests of the era struggled to settle the debate {cite}`roed1997hysteresis`.
+Thus, we find that the natural-rate and hysteresis views are nearly indistinguishable in the monthly data — the estimate is consistent with both.
+
+This is why the unit-root tests of the era struggled to settle the debate {cite}`roed1997hysteresis`.
+
+
+## A random walk would wander off
+
+While the estimation above seems to give reasonable support to the unit root hypothesis, there is a good reason to view it as false.
+
+To see the argument, suppose that unemployment really is a pure random walk, with $\phi = 1$:
+
+$$
+u_{t+1} = u_t + \varepsilon_{t+1}, \qquad \varepsilon_{t+1} \sim N(0, \sigma^2).
+$$
+
+Then $u_t = u_0 + \sum_{s=1}^t \varepsilon_s$, so its variance grows without bound: $\operatorname{Var}(u_t) = t\sigma^2$.
+
+The distribution spreads out forever, and eventually probability mass leaves *every* bounded interval.
+
+We can see this by simulating many random-walk paths, using the observed one-month changes to set the shock size, and watching them fan out.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Random walks leave the observed range
+    name: fig-rw-escape
+---
+rng = np.random.default_rng(0)
+T = len(u_monthly)
+σ_rw = np.diff(u_monthly).std()
+paths = u_monthly[0] + np.cumsum(rng.normal(0, σ_rw, size=(400, T)), axis=1)
+
+u_min, u_max = u_monthly.min(), u_monthly.max()
+
+fig, ax = plt.subplots()
+ax.plot(paths[:60].T, color='C0', lw=0.5, alpha=0.3)
+ax.axhspan(u_min, u_max, color='C1', alpha=0.15, label='observed range')
+ax.axhline(u_min, color='C1', ls='--', lw=1.5)
+ax.axhline(u_max, color='C1', ls='--', lw=1.5)
+ax.set_xlabel('months since 1948')
+ax.set_ylabel('unemployment rate (%)')
+ax.legend()
+plt.show()
+```
+
+In {numref}`fig-rw-escape` the dashed lines mark the lowest and highest unemployment rates ever seen in the data, and the shaded region is the band between them.
+
+The simulated paths fan out like $\sqrt{t}$ and quickly spread far beyond this band, including into negative rates.
+
+A random walk has no anchor, but unemployment clearly does — it has stayed inside a narrow band for seventy years.
+
+So we can already rule out an exact random walk.
+
+This will become even clearer when we examine annual data.
+
+
 
 ## Monthly versus annual
 
-The monthly data leave $\phi$ pinned against one. Does a different frequency see more?
+The monthly data leave $\phi$ pinned against one. 
+
+Does a different frequency allow us to see something more?
 
 We form an annual series from end-of-year values and fit the same model to it.
 
@@ -304,23 +326,92 @@ ax.legend()
 plt.show()
 ```
 
-{numref}`fig-phi-post` tells the story: the annual posterior for $\phi$ sits well below one, with clear reversion, while the monthly posterior pushes up against the boundary.
+{numref}`fig-phi-post` illustrates our main finding: the annual posterior for $\phi$ sits well below one, with clear reversion, while the monthly posterior pushes up against the boundary.
 
 This is not a contradiction.
 
 If the monthly persistence is $\phi$, then for end-of-year values the persistence is about $\phi^{12}$, and raising a number near one to the twelfth power pulls it appreciably below one — broadly in line with our annual estimate.
 
-The reversion was there in the monthly data all along; month to month it is too slight to see, but over a year it accumulates into something we can measure.
+The reversion was there in the monthly data all along; month to month it is too
+slight to see, but over a year it accumulates into something we can measure.
 
-The lesson is about identification: *what the data can tell you depends on the frequency you look at*.
 
 ## What the linear model misses
 
-So far the linear model has served us well. But look again at {numref}`fig-unrate-monthly`: unemployment shoots *up* quickly in recessions and drifts *down* slowly in recoveries.
+So far the linear model has served us well.
+
+But look again at {numref}`fig-unrate-monthly`: unemployment shoots *up* quickly in recessions and drifts *down* slowly in recoveries.
 
 This is an asymmetry, and our model has no room for it.
 
-To see the problem, we compute the model's one-step residuals at the posterior median — the part of each month's change the model cannot explain — and compare them with the symmetric Gaussian the model assumes.
+To see why, we look closely at the one part of the model that is random — the shocks.
+
+We proceed in three steps: state what the model assumes about the shocks, recover them from the data, and compare the two.
+
+### What the model assumes about the shocks
+
+The model has a single stochastic ingredient.
+
+Given last period's rate $u_t$ and the parameters, the next rate is a deterministic conditional mean plus a shock:
+
+$$
+u_{t+1} = \underbrace{\bar u + \phi\,(u_t - \bar u)}_{\text{conditional mean}} + \varepsilon_{t+1},
+\qquad \varepsilon_{t+1} \sim N(0, \sigma^2).
+$$
+
+Rearranging, the shock is just the gap between what happened and what the model expected:
+
+$$
+\varepsilon_{t+1} = u_{t+1} - \big(\bar u + \phi\,(u_t - \bar u)\big).
+$$
+
+The model makes a strong and testable claim about these shocks: they are independent draws from a *symmetric* normal distribution.
+
+If that claim holds, the shocks we recover from the data should look like a bell curve.
+
+If it fails, the way it fails will tell us what the model is missing.
+
+### Recovering the shocks
+
+We cannot read the shocks off directly, because we do not know the parameters $\bar u$ and $\phi$.
+
+So we estimate them, plugging a single representative value in for each.
+
+We use the posterior medians — a deliberately rough choice, but all we need for a quick diagnostic.
+
+```{code-cell} ipython3
+med = {k: np.median(np.asarray(mcmc_monthly.get_samples()[k]))
+       for k in ("ubar", "phi", "sigma")}
+resid = u_monthly[1:] - (med["ubar"] + med["phi"] * (u_monthly[:-1] - med["ubar"]))
+```
+
+The `resid` array holds our estimated shocks, one for each month-to-month transition — the model's *residuals*.
+
+The slicing is what lines up each month with the one before it.
+
+`u_monthly[:-1]` is the sequence of "current" values $u_t$, and `u_monthly[1:]` is the same sequence shifted forward by one — the values $u_{t+1}$ that actually followed.
+
+So each entry of `resid` is $u_{t+1} - \big(\hat{\bar u} + \hat\phi\,(u_t - \hat{\bar u})\big)$, the model's one-step-ahead forecast error, with hats denoting the median estimates.
+
+Because our estimate $\hat\phi$ is so close to one, this is nearly just the monthly change $u_{t+1} - u_t$ — but conceptually it is a forecast error, not a raw difference.
+
+### Comparing with the Gaussian
+
+Now we ask whether these residuals look Gaussian.
+
+We overlay a normal density whose standard deviation we set equal to that of the residuals themselves.
+
+This is deliberate: the residuals already have mean near zero, and matching the variance as well makes the mean and the spread agree *by construction*.
+
+Anything left over is then a difference in *shape* — which is exactly what we want to isolate.
+
+We measure that shape with the **skewness**, the third standardized moment,
+
+$$
+\text{skew} = \frac{\frac1n \sum_i (\varepsilon_i - \bar\varepsilon)^3}{\Big(\frac1n \sum_i (\varepsilon_i - \bar\varepsilon)^2\Big)^{3/2}},
+$$
+
+which is zero for any symmetric distribution and positive when the right tail is the longer one.
 
 ```{code-cell} ipython3
 ---
@@ -332,10 +423,6 @@ mystnb:
 def skewness(x):
     x = x - x.mean()
     return (x**3).mean() / x.std()**3
-
-med = {k: np.median(np.asarray(mcmc_monthly.get_samples()[k]))
-       for k in ("ubar", "phi", "sigma")}
-resid = u_monthly[1:] - (med["ubar"] + med["phi"] * (u_monthly[:-1] - med["ubar"]))
 
 fig, ax = plt.subplots()
 ax.hist(resid, bins=60, density=True, alpha=0.6, label='residuals')
@@ -359,7 +446,17 @@ The symmetric Gaussian (orange) can match neither feature: it treats upward and 
 
 So our model is bound to misread the data, seeing the rare jump up and the long gentle slide down as the *same* kind of shock.
 
-Capturing that asymmetry is the task of the next lecture, {doc}`unemployment_shocks`, where we model the shocks themselves rather than the reversion curve.
+### A note on the plug-in
+
+A purist would object that there is no single residual series here.
+
+Every posterior draw of $(\bar u, \phi)$ implies its own, and we simply chose the medians.
+
+That is fair, and the fully Bayesian version of this check — simulating whole datasets from the posterior and comparing a summary statistic — is what we do in {doc}`unemployment_shocks`.
+
+This plug-in version is the quick preview; that one is the real thing.
+
+Capturing the asymmetry is the task of that next lecture, where we model the shocks themselves rather than the reversion curve.
 
 We will find there that allowing for asymmetric shocks barely changes the estimated persistence — so the near-unit-root we found here is robust, not an artifact of the Gaussian assumption.
 
