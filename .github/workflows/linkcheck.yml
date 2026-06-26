@@ -44,9 +44,9 @@ jobs:
           args: >-
             --root-dir ${{ github.workspace }}
             --accept 200,202,403,503
-            --exclude-path genindex.html
-            --exclude-path search.html
-            --exclude-path prf-prf.html
+            --exclude-path 'genindex\.html$'
+            --exclude-path 'search\.html$'
+            --exclude-path 'prf-prf\.html$'
             --exclude '10\.3905/jod\.2012\.20\.1\.038'
             *.html
       - name: Create Issue From File
