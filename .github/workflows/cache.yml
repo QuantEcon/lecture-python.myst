@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 jobs:
   cache:
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/volume=80gb"
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/volume=80gb/spot=false"
     steps:
       - uses: actions/checkout@v7
         with:
