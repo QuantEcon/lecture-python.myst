@@ -51,31 +51,16 @@ Though maximum likelihood estimators (such as the MLE in {doc}`hansen_singleton_
 
 Relative to the full paper, we only estimate one return at a time (value-weighted stock returns), using only monthly nondurable consumption (`ND`), and omitting their maximum-likelihood comparison (Table II) and multi-return systems (Table III).
 
-In addition to what comes with Anaconda, this lecture requires `pandas-datareader`
-
 ```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install pandas-datareader 
-```
-
-```{code-cell} ipython3
-import warnings
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from IPython.display import Latex
 from numba import njit
-from pandas_datareader import data as web
 from scipy import stats
 from scipy.optimize import minimize
 from statsmodels.sandbox.regression import gmm
 from statsmodels.tsa.stattools import acf
-
-warnings.filterwarnings(
-    "ignore", message=".*date_parser.*", category=FutureWarning
-)
 ```
 
 We also define a helper to display DataFrames as LaTeX arrays in the hidden cell below
@@ -1000,80 +985,32 @@ Because the Ken French return is not identical to the original CRSP NYSE value-w
 
 Both this lecture and the companion lecture {doc}`hansen_singleton_1983` use the same data construction.
 
-The hidden cell below pulls the relevant FRED series, constructs per capita real consumption, and joins with Ken French market returns via `pandas-datareader`.
+The hidden cell below loads a vendored monthly dataset of gross real returns and gross consumption growth. The data are built from the [FRED](https://fred.stlouisfed.org/) and [Ken French](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) data libraries by the maintenance script at [`_static/lecture_specific/hansen_singleton_1982/make_data.py`](https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/_static/lecture_specific/hansen_singleton_1982/make_data.py) and read here directly from GitHub.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
 
-fred_codes = {
-    "population_16plus": "CNP16OV",
-    "cons_nd_real_index": "DNDGRA3M086SBEA",
-    "cons_nd_price_index": "DNDGRG3M086SBEA",
-}
+DATA_URL = (
+    "https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/"
+    "lectures/_static/lecture_specific/hansen_singleton_1982/"
+    "hansen_singleton_1982_data.csv"
+)
 
-def to_month_end(index):
+# Read the vendored snapshot once; load_hs_monthly_data just slices it.
+_data = pd.read_csv(DATA_URL, index_col=0, parse_dates=True)
+
+
+def load_hs_monthly_data(start="1959-02-01", end="1978-12-01"):
     """
-    Convert a date index to month-end timestamps.
+    Load the monthly gross real return and gross consumption-growth series.
+
+    The data are a vendored snapshot built by the maintenance script at
+    ``_static/lecture_specific/hansen_singleton_1982/make_data.py``, which
+    constructs them from FRED and the Ken French data library.
     """
-    return pd.PeriodIndex(pd.DatetimeIndex(index), freq="M").to_timestamp("M")
-
-
-def load_hs_monthly_data(
-    start="1959-02-01",
-    end="1978-12-01",
-):
-    """
-    Build monthly gross real return and gross consumption-growth series.
-    """
-    start_period = pd.Timestamp(start).to_period("M")
-    end_period = pd.Timestamp(end).to_period("M")
-
-    # Pull one extra month to build the first in-sample growth rate.
-    fetch_start = (start_period - 1).to_timestamp(how="start")
-    fetch_end = end_period.to_timestamp("M")
-    sample_start = start_period.to_timestamp("M")
-    sample_end = end_period.to_timestamp("M")
-
-    fred = web.DataReader(
-        list(fred_codes.values()), "fred", fetch_start, fetch_end)
-    fred = fred.rename(columns={v: k for k, v in fred_codes.items()})
-    fred.index = to_month_end(fred.index)
-    fred["cons_real_level"] = fred["cons_nd_real_index"]
-    fred["cons_price_index"] = fred["cons_nd_price_index"]
-    fred["consumption_per_capita"] = fred["cons_real_level"] \
-        / fred["population_16plus"]
-    fred["gross_cons_growth"] = (
-        fred["consumption_per_capita"] 
-        / fred["consumption_per_capita"].shift(1)
-    )
-    fred["gross_inflation_cons"] = (
-        fred["cons_price_index"] / fred["cons_price_index"].shift(1)
-    )
-
-    ff = web.DataReader(
-        "F-F_Research_Data_Factors", "famafrench",
-        fetch_start, fetch_end)[0].copy()
-    ff.columns = [str(col).strip() for col in ff.columns]
-    if ("Mkt-RF" not in ff.columns) or ("RF" not in ff.columns):
-        raise KeyError(
-            "Fama-French data missing required columns: 'Mkt-RF' and 'RF'.")
-
-    # Mkt-RF and RF are reported in percent per month.
-    ff["gross_nom_return"] = 1.0 + (ff["Mkt-RF"] + ff["RF"]) / 100.0
-    ff.index = ff.index.to_timestamp(how="end")
-    ff.index = to_month_end(ff.index)
-    market = ff[["gross_nom_return"]]
-
-    out = fred.join(market, how="inner")
-    out["gross_real_return"] = out["gross_nom_return"] \
-        / out["gross_inflation_cons"]
-    out = out.loc[sample_start:sample_end].dropna()
-
-    required_cols = [
-        "gross_real_return",
-        "gross_cons_growth",
-    ]
-    return out[required_cols].copy()
+    start = pd.Timestamp(start).to_period("M").to_timestamp("M")
+    end = pd.Timestamp(end).to_period("M").to_timestamp("M")
+    return _data.loc[start:end].copy()
 
 
 def get_estimation_data(
