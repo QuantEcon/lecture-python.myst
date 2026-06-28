@@ -50,7 +50,7 @@ This will motivate a sequel lecture, titled {doc}`unemployment_shocks`.
 As in {doc}`ar1_bayes` and {doc}`bayes_nonconj`, we estimate by sampling
 posteriors with the NUTS sampler in [NumPyro](https://num.pyro.ai/en/stable/).
 
-(See {doc}`bayes_nonconj` for a brief account of how NUTS works.)
+(See the {ref}`introduction to NUTS <nuts>` in {doc}`bayes_nonconj` for a brief account of how it works.)
 
 Let's start with some imports.
 
