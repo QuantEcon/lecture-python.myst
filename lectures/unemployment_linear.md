@@ -411,7 +411,7 @@ $$
 
 This measure is zero for any symmetric distribution and positive when the right tail is the longer one.
 
-Here's our plot and skewness result:
+We now plot the residuals and compute their skewness:
 
 ```{code-cell} ipython3
 ---
@@ -436,7 +436,7 @@ plt.show()
 print(f"residual skewness = {skewness(resid):.2f}")
 ```
 
-If we look closely, we can see that the residuals in {numref}`fig-resid-skew` depart from the Gaussian in two ways.
+The residuals in {numref}`fig-resid-skew` depart from the Gaussian in two ways.
 
 They are *heavy-tailed* and *sharply peaked*: more tiny changes, and more large ones, than a bell curve allows.
 
@@ -455,11 +455,9 @@ Every posterior draw of $(\bar u, \phi)$ implies its own, and we simply chose th
 
 That is fair, and the fully Bayesian version of this check — simulating whole datasets from the posterior and comparing a summary statistic — is what we do in {doc}`unemployment_shocks`.
 
-This plug-in version is the quick preview; that one is the real thing.
+This plug-in check is a quick preview of that fuller test.
 
 Capturing the asymmetry is the task of that next lecture, where we model the shocks themselves rather than the reversion curve.
-
-We will find there that allowing for asymmetric shocks barely changes the estimated persistence — so the near-unit-root we found here is robust, not an artifact of the Gaussian assumption.
 
 ## Exercises
 

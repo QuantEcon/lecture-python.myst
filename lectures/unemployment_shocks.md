@@ -345,7 +345,7 @@ w_i^s
 \;\propto\; \frac{1}{p(u_i \mid \theta^s)} ,
 $$
 
-which downweights exactly the draws that fit $u_i$ well — the ones that "peeked" at the answer.
+which downweights exactly the draws that fit $u_i$ well, since their good fit to $u_i$ is the influence we want to remove.
 
 Estimating the expectation by self-normalized importance sampling, and then substituting this weight, the numerator collapses because $w_i^s\, p(u_i \mid \theta^s) = 1$:
 
@@ -425,13 +425,11 @@ print(f"standard error  = {np.sqrt(n) * diff.std():.1f}")
 
 The jump model is ahead by about twelve points, against a standard error near six — a bit over two standard errors, so a real improvement and not a fluke.
 
-This is a far cleaner verdict than the bent mean-reversion curve gave: there, the gap over the straight line was smaller than its own standard error, a coin-toss.
-
 ### Letting ArviZ do it
 
 In practice we let a library handle the bookkeeping, and add two refinements.
 
-The raw importance weights $1/p(u_i\mid\theta^s)$ can occasionally be dominated by a single wild draw; **ArviZ** stabilizes them with Pareto-smoothed importance sampling, and reports a diagnostic — the Pareto shape $\hat k$ — that flags any observation where the estimate is unreliable (a value above $0.7$ is the usual warning line).
+The raw importance weights $1/p(u_i\mid\theta^s)$ can occasionally be dominated by a single extreme draw; **ArviZ** stabilizes them with Pareto-smoothed importance sampling, and reports a diagnostic — the Pareto shape $\hat k$ — that flags any observation where the estimate is unreliable (a value above $0.7$ is the usual warning line).
 
 We hand it the same pointwise log-likelihoods, packaged in its data format.
 
@@ -463,7 +461,7 @@ Two of the columns repay a closer look.
 
 The column `p` is the **effective number of parameters**: not the count we wrote down, but how much freedom the data actually grant the model, estimated from the gap between its in-sample and out-of-sample fit.
 
-It is about three and a half for the linear model and six and a half for the jump model — and, tellingly, it need not equal the nominal parameter count, since a parameter the data cannot pin down (like the ceiling of our abandoned S-curve) adds almost nothing to it.
+It is about three and a half for the linear model and six and a half for the jump model — and, tellingly, it need not equal the nominal parameter count, since a parameter the data cannot pin down adds almost nothing to it.
 
 Readers from classical statistics will recognize the whole exercise: it is the goal behind the **AIC**, which estimates out-of-sample accuracy as in-sample fit minus a parameter count.
 
@@ -580,23 +578,20 @@ The symmetric models of {doc}`unemployment_linear` would put that vertical line 
 
 ## Conclusion
 
-The story of these two lectures is a single arc with a twist.
 
-In {doc}`unemployment_linear` we asked whether unemployment is a random walk and found a near-unit-root that nonetheless cannot be a literal one.
+In {doc}`unemployment_linear` we applied a linear AR(1) model with Gaussian shocks to unemployment and found a high levels of persistence in monthly data.
 
-Here we found that the feature the linear model most conspicuously misses — the asymmetry of recessions — lives not in the shape of the mean reversion but in the **distribution of the shocks**.
+We also argued that the model is overly simplistic.
+
+Here we found that the feature the linear model most conspicuously misses — the asymmetry of recessions — can be addressed by considering the distribution of the shocks.
 
 A linear reversion with large, one-sided innovations reproduces the spikes, the slow recoveries, and the boundedness, and cross-validation prefers it clearly.
 
-Two general tools did the real work, and both are worth carrying away.
+Along the way we learned about leave-one-out cross-validation, which helps us determine asks which model predicts better.
 
-A *posterior predictive check* asks whether a model can reproduce a feature we care about — here, the skew of the annual changes.
+A richer model would let the economy switch between persistent expansion and recession regimes.
 
-*Leave-one-out cross-validation* asks which model predicts better, and answers with a single comparable number — the verdict that told us the bent curve was not worth keeping, but the asymmetric shocks were.
-
-The model is still simple, and the honest gaps point the way forward.
-
-Its jumps are independent across time, so it misses the *clustering and duration* of real recessions — a richer description would let the economy switch between persistent expansion and recession regimes, the Markov-switching approach of Hamilton, which we leave to the exercises and to further reading.
+This is the Markov-switching approach of Hamilton, which we leave to further reading.
 
 ## Exercises
 
@@ -610,22 +605,3 @@ Replace the two-component mixture with a single **skew-normal** (or Student-$t$ 
 Does the simpler skewed shock do as well as the mixture?
 ```
 
-```{exercise}
-:label: unemp_shocks_ex2
-
-Our jumps arrive independently each year, so the model cannot capture the fact that recessions cluster and persist.
-
-Sketch (and, if you are ambitious, implement) a two-state **Markov-switching** model in which the economy moves between a calm regime and a turbulent one, with persistent transition probabilities.
-
-Why can NUTS not sample the regime indicators directly, and how would you marginalize them out?
-```
-
-```{exercise}
-:label: unemp_shocks_ex3
-
-Reintroduce the COVID-19 observations you dropped.
-
-Using the annual posterior fitted without them, compute the posterior predictive probability of an annual unemployment rate as high as the 2020 value.
-
-How surprising is the COVID spike under the estimated model — and is a heavy-tailed shock model less surprised than a Gaussian one?
-```
