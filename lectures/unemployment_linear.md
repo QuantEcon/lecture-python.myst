@@ -75,12 +75,11 @@ They examined 14 macroeconomic time series and found that they could reject the 
 
 Roughly speaking, this meant that, for most macroeconomic series, the effects of shocks looked permanent rather than transitory.
 
-That climate of thinking found expression, for unemployment, in the **hysteresis hypothesis** of {cite}`blanchard_summers1986`.
+For unemployment, that view found expression in the **hysteresis hypothesis** of {cite}`blanchard_summers1986`.
 
-On this view a shock to unemployment can be more or less permanent, because spells of joblessness erode skills and attachment to the labour force.
+This hypothesis states that a shock to unemployment can be more or less permanent, because spells of joblessness erode skills and attachment to the labor force.
 
-That argument stands in contrast to the **natural rate hypothesis** of
-{cite}`friedman1968role`, which holds that unemployment fluctuates around a
+In contrast, the **natural rate hypothesis** of {cite}`friedman1968role` holds that unemployment fluctuates around a
 stable equilibrium rate --- and hence shocks are transitory rather than permanent.
 
 The debate matters because the two views imply different policies.
@@ -89,7 +88,6 @@ In particular, if shocks are permanent, a deep recession leaves a lasting scar, 
 
 Here we reexamine the question with Bayesian estimation.
 
-We fit a linear model and ask how close to a random walk the data actually push us.
 
 
 ```{note}
@@ -135,10 +133,12 @@ plt.show()
 
 As {numref}`fig-unrate-monthly` shows, the rate rises sharply in recessions and drifts down in recoveries, but it always stays inside a band — roughly 3% to 11% over the whole post-war period.
 
-Keep that band in mind: it is the first clue, and it tells against a literal random walk.
+(Keep that band in mind, since it connects back to the unit root debate, as we discuss below.)
 
 
 ## A linear model of unemployment
+
+Let's now set up and estimate our model, using monthly data.
 
 ### The model
 
@@ -161,9 +161,11 @@ We treat $\bar u$, $\phi$ and $\sigma$ as unknown and place weakly informative p
 
 We give $\phi$ a uniform prior on $[0, 1)$.
 
-The upper endpoint is excluded deliberately: it confines us to the *stationary* region. We will see shortly that a literal unit root is untenable anyway, since it would let unemployment wander without bound.
+The upper endpoint is excluded deliberately, since doing so confines us to the *stationary* region. 
 
-This is not assuming our answer — the prior still lets $\phi$ approach one as closely as the data demand, and we will see that it does exactly that.
+This is necessary, as we'll see below.
+
+At the same time, the prior still lets $\phi$ approach one as closely as the data demand.
 
 We center $\bar u$ on a plausible natural rate with a fairly wide normal prior, and give the shock scale $\sigma$ a half-normal prior.
 
@@ -171,14 +173,16 @@ We write the model as a NumPyro function: each `numpyro.sample` introduces a ran
 
 ```{code-cell} ipython3
 def linear_model(u):
-    ubar = numpyro.sample("ubar",  dist.Normal(5.5, 2.0))
-    φ    = numpyro.sample("phi",   dist.Uniform(0.0, 1.0))
-    σ    = numpyro.sample("sigma", dist.HalfNormal(1.0))
+    ubar = numpyro.sample("ubar",  dist.Normal(5.5, 2.0))      # Natural rate prior
+    φ    = numpyro.sample("phi",   dist.Uniform(0.0, 1.0))     # Persistence prior
+    σ    = numpyro.sample("sigma", dist.HalfNormal(1.0))       # Volatility prior
     μ = ubar + φ * (u[:-1] - ubar)
     numpyro.sample("u_obs", dist.Normal(μ, σ), obs=u[1:])
 ```
 
-The vector `μ` holds the conditional means $\bar u + \phi(u_t - \bar u)$, and `obs=u[1:]` says that each next value is drawn from $N(\mu_t, \sigma^2)$ — so this one statement encodes the whole likelihood. (See {doc}`bayes_nonconj` for more on writing NumPyro models.)
+The vector `μ` holds the conditional means $\bar u + \phi(u_t - \bar u)$, and `obs=u[1:]` says that each next value is drawn from $N(\mu_t, \sigma^2)$. 
+
+This one statement encodes the whole likelihood. (See {doc}`bayes_nonconj` for more on writing NumPyro models.)
 
 ### Estimation
 
@@ -330,19 +334,15 @@ plt.show()
 
 This is not a contradiction.
 
-If the monthly persistence is $\phi$, then for end-of-year values the persistence is about $\phi^{12}$, and raising a number near one to the twelfth power pulls it appreciably below one — broadly in line with our annual estimate.
-
-The reversion was there in the monthly data all along; month to month it is too
-slight to see, but over a year it accumulates into something we can measure.
+If the monthly persistence is $\phi$, then for end-of-year values the persistence is about $\phi^{12}$, and raising a number near one to the twelfth power pulls it appreciably below one — in line with our annual estimate.
 
 
-## What the linear model misses
 
-So far the linear model has served us well.
+## What the model misses
 
-But look again at {numref}`fig-unrate-monthly`: unemployment shoots *up* quickly in recessions and drifts *down* slowly in recoveries.
+Looking again at {numref}`fig-unrate-monthly`, we notice that unemployment jumps up quickly in recessions and drifts down slowly in recoveries.
 
-This is an asymmetry, and our model has no room for it.
+This is an *asymmetry* that our current model cannot replicate.
 
 To see why, we look closely at the one part of the model that is random — the shocks.
 
@@ -350,7 +350,6 @@ We proceed in three steps: state what the model assumes about the shocks, recove
 
 ### What the model assumes about the shocks
 
-The model has a single stochastic ingredient.
 
 Given last period's rate $u_t$ and the parameters, the next rate is a deterministic conditional mean plus a shock:
 
@@ -377,7 +376,7 @@ We cannot read the shocks off directly, because we do not know the parameters $\
 
 So we estimate them, plugging a single representative value in for each.
 
-We use the posterior medians — a deliberately rough choice, but all we need for a quick diagnostic.
+We use the posterior medians — a reasonable choice for a quick diagnostic.
 
 ```{code-cell} ipython3
 med = {k: np.median(np.asarray(mcmc_monthly.get_samples()[k]))
@@ -385,15 +384,14 @@ med = {k: np.median(np.asarray(mcmc_monthly.get_samples()[k]))
 resid = u_monthly[1:] - (med["ubar"] + med["phi"] * (u_monthly[:-1] - med["ubar"]))
 ```
 
-The `resid` array holds our estimated shocks, one for each month-to-month transition — the model's *residuals*.
+The `resid` array holds our estimated shocks, one for each month-to-month transition — the model's **residuals**.
 
 The slicing is what lines up each month with the one before it.
 
-`u_monthly[:-1]` is the sequence of "current" values $u_t$, and `u_monthly[1:]` is the same sequence shifted forward by one — the values $u_{t+1}$ that actually followed.
+Each entry of `resid` is $u_{t+1} - \big(\hat{\bar u} + \hat\phi\,(u_t - \hat{\bar u})\big)$, the model's one-step-ahead forecast error, with hats denoting the median estimates.
 
-So each entry of `resid` is $u_{t+1} - \big(\hat{\bar u} + \hat\phi\,(u_t - \hat{\bar u})\big)$, the model's one-step-ahead forecast error, with hats denoting the median estimates.
+(Because our estimate $\hat\phi$ is so close to one, this is nearly just the monthly change $u_{t+1} - u_t$.)
 
-Because our estimate $\hat\phi$ is so close to one, this is nearly just the monthly change $u_{t+1} - u_t$ — but conceptually it is a forecast error, not a raw difference.
 
 ### Comparing with the Gaussian
 
@@ -401,17 +399,19 @@ Now we ask whether these residuals look Gaussian.
 
 We overlay a normal density whose standard deviation we set equal to that of the residuals themselves.
 
-This is deliberate: the residuals already have mean near zero, and matching the variance as well makes the mean and the spread agree *by construction*.
+This is deliberate: the residuals already have mean near zero, so matching the variance makes the mean and the spread agree.
 
-Anything left over is then a difference in *shape* — which is exactly what we want to isolate.
+Anything left over is then a difference in *shape* — which is what we want to isolate.
 
-We measure that shape with the **skewness**, the third standardized moment,
+One way to measure the shape is the **skewness**, the third standardized moment:
 
 $$
-\text{skew} = \frac{\frac1n \sum_i (\varepsilon_i - \bar\varepsilon)^3}{\Big(\frac1n \sum_i (\varepsilon_i - \bar\varepsilon)^2\Big)^{3/2}},
+\text{skew} = \frac{\frac1n \sum_i (\varepsilon_i - \bar\varepsilon)^3}{\Big(\frac1n \sum_i (\varepsilon_i - \bar\varepsilon)^2\Big)^{3/2}}.
 $$
 
-which is zero for any symmetric distribution and positive when the right tail is the longer one.
+This measure is zero for any symmetric distribution and positive when the right tail is the longer one.
+
+Here's our plot and skewness result:
 
 ```{code-cell} ipython3
 ---
@@ -436,19 +436,20 @@ plt.show()
 print(f"residual skewness = {skewness(resid):.2f}")
 ```
 
-The residuals in {numref}`fig-resid-skew` depart from the Gaussian in two ways.
+If we look closely, we can see that the residuals in {numref}`fig-resid-skew` depart from the Gaussian in two ways.
 
-They are **heavy-tailed and sharply peaked**: far more tiny changes, and more large ones, than a bell curve allows.
+They are *heavy-tailed* and *sharply peaked*: more tiny changes, and more large ones, than a bell curve allows.
 
-And they are **right-skewed** (a skewness of about $0.4$) — the largest surprises sit on the upside, the recessions, with nothing comparable on the downside.
+Moreover, they are *right-skewed*, with the largest surprises on the upside (recessions).
 
-The symmetric Gaussian (orange) can match neither feature: it treats upward and downward shocks as equally likely and has no room for the occasional violent jump.
+The symmetric Gaussian (orange) can match neither feature: it treats upward and downward shocks as equally likely and has no room for the occasional very large jump.
 
 So our model is bound to misread the data, seeing the rare jump up and the long gentle slide down as the *same* kind of shock.
 
+
 ### A note on the plug-in
 
-A purist would object that there is no single residual series here.
+A Bayesian purist would object that there is no single residual series here.
 
 Every posterior draw of $(\bar u, \phi)$ implies its own, and we simply chose the medians.
 
@@ -462,9 +463,9 @@ We will find there that allowing for asymmetric shocks barely changes the estima
 
 ## Exercises
 
-The lecture {doc}`ar1_turningpts` forecasts an AR(1) process by simulating future paths, and draws a careful distinction between a predictive distribution that **conditions on** fixed parameter values and one that **integrates over** their posterior uncertainty.
+The lecture {doc}`ar1_turningpts` forecasts an AR(1) process by simulating future paths, considering both a predictive distribution that **conditions on** fixed parameter values and one that **integrates over** their posterior uncertainty.
 
-The following exercises apply that methodology to our fitted unemployment model.
+The following exercises apply these ideas to our fitted unemployment model.
 
 ```{exercise}
 :label: unemp_lin_ex1
@@ -485,7 +486,8 @@ Which band is wider, and why?
 
 We use the annual posterior draws and simulate forward from the last observation.
 
-We work with the annual model because its persistence $\phi$ is far less certain than at the monthly frequency, so parameter uncertainty has more to say.
+We work with the annual model because its persistence $\phi$ is far less certain
+than at the monthly frequency, so parameter uncertainty has more to say.
 
 ```{code-cell} ipython3
 post = mcmc_annual.get_samples()

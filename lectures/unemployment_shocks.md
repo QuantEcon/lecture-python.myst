@@ -37,24 +37,26 @@ We also install `pandas_datareader`, which we use to download data from FRED:
 
 This lecture is a sequel to {doc}`unemployment_linear`.
 
-There we fit a linear AR(1) model to the US unemployment rate and found a persistence very close to one — almost a random walk.
+There we fit a linear AR(1) model to the US unemployment rate and examined persistence.
 
-But we ended on a loose thread: the model's residuals were **heavy-tailed and right-skewed**.
+One thing we found but didn't address is that the model's residuals were both *heavy-tailed and right-skewed*.
 
-Unemployment jumps *up* sharply in recessions and drifts *down* slowly in recoveries, and a model with symmetric Gaussian shocks cannot reproduce that sawtooth.
+Unemployment jumps up sharply in recessions and drifts down slowly in recoveries. 
 
-Our instinct might be to fix this by bending the mean-reversion curve — making the pull nonlinear. We tried; the data cannot tell a bent curve from a straight line, so it buys almost nothing.
+A model with symmetric Gaussian shocks cannot reproduce these features.
 
-The lesson of this lecture is that **the action is in the shocks, not the curve**: keep the linear reversion, and give the *innovations* the freedom to be large and one-sided.
+In this lecture we allow the innovations to be right-skewed and, to some degree, heavy-tailed.
 
-We also use it to develop one of the most useful tools in the Bayesian kit: **model comparison** by leave-one-out cross-validation, which decides with a single number whether one model really predicts better than another.
+We also use this lecture to develop a very useful Bayesian technique: *model comparison* by leave-one-out cross-validation.
+
+We use this to decide whether one model really predicts better than another.
 
 Our plan is to
 
 1. build a model with a linear mean but asymmetric, occasionally-large shocks,
 2. estimate it on the annual data,
-3. compare it to the linear model with cross-validation, and
-4. check, with a posterior predictive test, whether it captures the asymmetry the linear model missed.
+3. compare it to the original Gaussian model with cross-validation, and
+4. check whether it captures the asymmetry the original model missed.
 
 Let's start with some imports.
 
@@ -89,7 +91,7 @@ The shape we want to capture is plain in the annual series.
 ---
 mystnb:
   figure:
-    caption: Annual US unemployment, with its sawtooth shape
+    caption: Annual US unemployment
     name: fig-annual-data
 ---
 fig, ax = plt.subplots()
@@ -131,15 +133,15 @@ The model has six parameters:
 | $\mu_J$ | jump size | the average upward kick of a recession |
 | $\sigma_s,\ \sigma_J$ | shock spreads | the quiet and jumpy volatilities |
 
-The mechanism is exactly the sawtooth.
+The mechanism leads to a sawtooth dynamic for the unemployment rate.
 
 Most years are quiet, with small noise; occasionally a positive jump throws unemployment up; then, with no further jumps, the linear reversion $\rho$ glides it slowly back down toward $\bar u$.
 
 A spike arrives in one step, the recovery takes many — fast up, slow down.
 
-Because $\rho < 1$ the series is still stationary and bounded, so it cannot wander off — the lesson we kept from {doc}`unemployment_linear`.
+Because $\rho < 1$ the series is still stationary and bounded. 
 
-The conditional *mean* is the same straight line as before; all that has changed is that the shocks can be large and one-sided.
+All that has changed is that the shocks can be large and one-sided.
 
 This is, in spirit, Milton Friedman's "plucking" picture: a floor near full employment, from which recessions pluck the series upward.
 
@@ -181,9 +183,9 @@ The mixture is written with NumPyro's `MixtureSameFamily`, which sums over the t
 
 ```{code-cell} ipython3
 def jump_model(u):
-    ubar = numpyro.sample("ubar",    dist.Normal(4.5, 1.5))
-    ρ    = numpyro.sample("rho",     dist.Uniform(0.0, 1.0))
-    p    = numpyro.sample("p",       dist.Beta(2.0, 8.0))
+    ubar = numpyro.sample("ubar",    dist.Normal(4.5, 1.5))  
+    ρ    = numpyro.sample("rho",     dist.Uniform(0.0, 1.0))  
+    p    = numpyro.sample("p",       dist.Beta(2.0, 8.0))      
     μ_J  = numpyro.sample("mu_J",    dist.HalfNormal(2.0))
     σ_s  = numpyro.sample("sigma_s", dist.HalfNormal(0.5))
     σ_J  = numpyro.sample("sigma_J", dist.HalfNormal(1.5))
@@ -227,13 +229,13 @@ mcmc_jump.print_summary()
 
 The `r_hat` values are essentially one, so the chains have converged.
 
-The estimates tell a coherent story: a floor $\bar u$ around 3%, slow reversion ($\rho \approx 0.8$), and a jump component clearly distinct from the quiet one — the quiet spread $\sigma_s$ is small (a few tenths of a point) while the jump spread $\sigma_J$ is several times larger, with a positive mean $\mu_J$.
+The estimates tell a coherent story: 
+
+* a floor $\bar u$ around 3%
+* slow reversion ($\rho \approx 0.8$), and 
+* a distinct jump component: the quiet spread $\sigma_s$ is small and the jump spread $\sigma_J$ is several times larger, with a positive mean $\mu_J$.
 
 The data have split the innovations into "ordinary years" and "recession years" on their own.
-
-Notice too that $\rho \approx 0.84$ is close to the persistence the linear model gave at this frequency in {doc}`unemployment_linear`: the jumps reshaped the *shocks*, not the speed of reversion.
-
-That is why the near-unit-root finding of the previous lecture is robust — it survives a much better model of the innovations.
 
 We can see that split by overlaying the fitted shock density on the model's actual residuals.
 
@@ -263,85 +265,112 @@ plt.show()
 
 In {numref}`fig-jump-fit` the fitted density tracks the residuals, with the jump component accounting for the spread of large positive surprises on the right.
 
+
 ## Comparing models with cross-validation
 
-The jump model looks reasonable, but is it actually *better* than the linear one?
+The jump model looks reasonable, but is it actually better than the linear one?
 
-Answering that well is worth a careful detour, because **Bayesian model comparison** is one of the most useful ideas these two lectures have to offer.
+To answer this question, we will use *Bayesian model comparison*.
 
-We build it up in stages: the guiding principle, the score it rests on, the leave-one-out estimate, and finally how the computation is actually done.
+We build it up in stages: the guiding principle, the leave-one-out estimate, and how the computation is actually done.
 
-### The guiding principle: predict, don't fit
+### The guiding principle: look at predictions, not in-sample fit
 
-The tempting way to compare two models is to ask which one fits the observed data better.
+It is tempting to compare two models by asking which one fits the observed data better.
 
-That fails, for a reason familiar from classical statistics: a model with more freedom can always be tuned to hug the data it was fit on, whether or not the extra freedom reflects anything real.
+This isn't the right criterion: more complex models can always be tuned to better match the data they are fitting.
 
-So in-sample fit rewards complexity for its own sake.
+The right question is instead: which model better predicts data it has not seen?
 
-The honest question is instead *which model better predicts data it has not seen* — its **out-of-sample predictive accuracy**.
+In other words, the criterion we care about is *out-of-sample predictive accuracy*.
 
-A model that has truly learned the structure of the series will forecast new observations well; one that has merely memorized noise will not.
-
-### Scoring a prediction
-
-To make this precise we need a way to score a prediction, and here the Bayesian setting helps.
-
-A Bayesian model does not predict a single number; it predicts a whole distribution, the **posterior predictive density**
-
-$$
-p(\tilde u \mid u) = \int p(\tilde u \mid \theta)\, p(\theta \mid u)\, d\theta ,
-$$
-
-which averages the likelihood over the posterior rather than plugging in one estimate of $\theta$.
-
-This averaging is where the penalty for empty flexibility quietly enters: if the data leave a parameter poorly determined, that uncertainty spreads the predictive distribution out, and a diffuse forecast scores worse.
-
-We score a forecast by the **log predictive density it assigns to the value that actually occurs**, $\log p(\tilde u \mid u)$ — high when the model placed a lot of probability on what happened.
-
-The log score is not an arbitrary choice: it is a *proper* scoring rule, meaning a forecaster maximizes its expected value only by reporting honest probabilities, and maximizing it is equivalent to minimizing the Kullback–Leibler distance from the true data-generating process.
-
-Our target is therefore the **expected log predictive density** (elpd) over new data — and higher is better.
 
 ### Leave-one-out cross-validation
 
-We do not have new data, so we manufacture some by **cross-validation**.
+We do not have new data, so we create some by **cross-validation**.
 
-Leave out one observation, fit the model to the rest, and then score the held-out point with the predictive distribution that never saw it.
+The idea is to leave out one observation, fit the model to the rest, and then
+score the held-out point using a predictive distribution constructed from the
+rest of the data set.
 
-Doing this for every point and summing gives the leave-one-out estimate
+The predictive distribution for data point $u_i$ given the rest of the data $u_{-i}$ is 
 
 $$
-\text{elpd}_{\text{loo}} = \sum_{i=1}^{n} \log p(u_i \mid u_{-i}),
-\qquad
-p(u_i \mid u_{-i}) = \int p(u_i \mid \theta)\, p(\theta \mid u_{-i})\, d\theta ,
+p(u_i \mid u_{-i}) = \int p(u_i \mid \theta)\, p(\theta \mid u_{-i})\, d\theta .
 $$
 
-where $u_{-i}$ is the data with observation $i$ removed.
+We score each held-out point by the *log* of this density: the logarithm rewards a model for putting high probability on what actually happened, and it makes the scores for the whole data set add up rather than multiply.
 
-Every point is now scored by a model fit without it, so the number genuinely measures out-of-sample performance — overfitting is punished rather than rewarded.
+Adding these scores gives the **expected log predictive density** (elpd), here in its leave-one-out (LOO) form,
+
+$$
+\text{elpd}_{\text{loo}} = \sum_{i=1}^{n} \log p(u_i \mid u_{-i}).
+$$
+
 
 ### Computing it from a single fit
 
-Taken literally, this asks us to refit the model $n$ times, once for each omitted point — here seventy-one separate MCMC runs.
+If we calculate this measure naively, we need to refit the model $n$ times, once for each omitted point, which is very time consuming.
 
-The trick that makes LOO practical is that we can avoid all but the first fit, by **reweighting the posterior we already have**.
+The trick that makes LOO practical is that we can avoid all but the first fit, by reweighting the posterior we already have.
 
-The leave-one-out posterior differs from the full posterior only in dropping the factor for point $i$, so
-
-$$
-p(\theta \mid u_{-i}) \;\propto\; \frac{p(\theta \mid u)}{p(u_i \mid \theta)} .
-$$
-
-A draw $\theta^s$ from the full posterior can therefore stand in for the leave-$i$-out posterior if we give it the importance weight $w_i^s \propto 1/p(u_i \mid \theta^s)$ — downweighting exactly those draws that fit $u_i$ well, since they are the ones that "peeked" at the answer.
-
-Substituting these weights collapses to something remarkably simple: the leave-one-out predictive density is the **harmonic mean** of the per-draw likelihoods of $u_i$,
+Start from the quantity we want, which is an expectation over the leave-one-out posterior:
 
 $$
-p(u_i \mid u_{-i}) \;\approx\; \frac{S}{\sum_{s=1}^{S} 1 / p(u_i \mid \theta^s)} .
+p(u_i \mid u_{-i})
+\;=\; \int p(u_i \mid \theta)\, p(\theta \mid u_{-i})\, d\theta
+\;=\; \mathbb{E}_{\,\theta \sim p(\theta \mid u_{-i})}\big[\, p(u_i \mid \theta) \,\big].
 $$
 
-The only ingredient is the likelihood of each observation under each posterior draw — the **pointwise log-likelihood** — which is why, throughout, we have been careful to compute it.
+We do not have draws from $p(\theta \mid u_{-i})$, but we do have $S$ draws $\theta^1, \dots, \theta^S$ from the *full* posterior $p(\theta \mid u)$ — the chains we already ran.
+
+The two posteriors differ by a single factor.
+
+The likelihood is a product of one per-observation term, so dropping observation $i$ just removes its factor:
+
+$$
+p(\theta \mid u_{-i})
+\;\propto\; p(\theta) \prod_{j \neq i} p(u_j \mid \theta)
+\;=\; \frac{p(\theta) \prod_{j} p(u_j \mid \theta)}{p(u_i \mid \theta)}
+\;\propto\; \frac{p(\theta \mid u)}{p(u_i \mid \theta)} ,
+$$
+
+where the last step uses $p(\theta \mid u) \propto p(\theta) \prod_j p(u_j \mid \theta)$.
+
+A draw from the full posterior can therefore stand in for the leave-$i$-out posterior if we give it the **importance weight**
+
+$$
+w_i^s
+\;=\; \frac{p(\theta^s \mid u_{-i})}{p(\theta^s \mid u)}
+\;\propto\; \frac{1}{p(u_i \mid \theta^s)} ,
+$$
+
+which downweights exactly the draws that fit $u_i$ well — the ones that "peeked" at the answer.
+
+Estimating the expectation by self-normalized importance sampling, and then substituting this weight, the numerator collapses because $w_i^s\, p(u_i \mid \theta^s) = 1$:
+
+$$
+p(u_i \mid u_{-i})
+\;\approx\;
+\frac{\sum_{s=1}^{S} w_i^s\, p(u_i \mid \theta^s)}{\sum_{s=1}^{S} w_i^s}
+\;=\;
+\frac{S}{\sum_{s=1}^{S} 1 / p(u_i \mid \theta^s)} .
+$$
+
+The right-hand side is the **harmonic mean** of the per-draw likelihoods of $u_i$, with $S$ the number of posterior draws.
+
+Its only ingredient is the likelihood of each observation under each posterior draw — the **pointwise log-likelihood** — which is why, throughout, we have been careful to compute it.
+
+In code we work on the log scale for stability, where the harmonic mean becomes
+
+$$
+\log p(u_i \mid u_{-i})
+\;\approx\;
+\log S - \log \sum_{s=1}^{S} e^{-\ell_i^s},
+\qquad \ell_i^s = \log p(u_i \mid \theta^s),
+$$
+
+which is the `np.log(S) - logsumexp(-ll)` we use below.
 
 To compare against the linear model, we first fit it on the same data.
 
@@ -442,11 +471,33 @@ LOO reaches that goal without the asymptotic shortcut — it uses the entire pos
 
 (The **BIC**, by contrast, aims at a different target, the marginal likelihood, and hence the probability that each model is *true*; that is the province of Bayes factors, not of predictive accuracy.)
 
-Finally, two caveats keep us honest.
+Finally, a word of caution: these standard errors rest on only about seventy observations, so they are rough.
 
-The standard errors rest on only about seventy observations, so they are rough.
+There is also a deeper issue, special to time series, which we take up now.
 
-And LOO treats the observations as exchangeable, whereas a time series is not — each value is modelled conditional on the one before, so a stricter test would leave out *future* observations rather than a single interior one.
+### Accommodating the time series structure
+
+Leave-one-out drops one transition at a time, but it does not respect the order of time.
+
+When it scores the step from $u_t$ to $u_{t+1}$, the model doing the scoring was fit on data lying on *both* sides of that step — including the neighboring values $u_t$ and $u_{t+1}$ themselves.
+
+So the held-out point was never truly unseen, and a time series, unlike an exchangeable sample, has an arrow of time that this ignores.
+
+The formally correct measure is **leave-future-out** cross-validation.
+
+It only ever predicts forward: fit the model on $u_1, \dots, u_t$, score its one-step-ahead forecast of $u_{t+1}$, then expand the window by one step and repeat.
+
+Now the model is genuinely blind to the future it is asked to predict, exactly as in real forecasting.
+
+The price is computational.
+
+Leave-one-out reused a single fit through its importance-sampling shortcut, but leave-future-out has no such trick — each step conditions on a different stretch of history, so the model must be refit from scratch, dozens of times rather than once.
+
+For our short annual series that is minutes rather than seconds; for a long series it can become prohibitive.
+
+We ran it anyway, and the conclusion holds: under leave-future-out the jump model still beats the linear one, by an even clearer margin than leave-one-out reported.
+
+Genuine forecasting favors the asymmetric shocks more strongly, not less — so the verdict survives the stricter test.
 
 ## Does it capture the asymmetry?
 
@@ -542,10 +593,6 @@ Two general tools did the real work, and both are worth carrying away.
 A *posterior predictive check* asks whether a model can reproduce a feature we care about — here, the skew of the annual changes.
 
 *Leave-one-out cross-validation* asks which model predicts better, and answers with a single comparable number — the verdict that told us the bent curve was not worth keeping, but the asymmetric shocks were.
-
-It is worth being precise about what improved.
-
-Persistence and asymmetry are *separate* features of the data: adding the jump shocks barely moves the estimated persistence, so the random-walk question of the first lecture and the asymmetry question of this one are answered independently.
 
 The model is still simple, and the honest gaps point the way forward.
 
