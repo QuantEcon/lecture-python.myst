@@ -17,7 +17,7 @@ kernelspec:
 ---
 tags: [hide-output]
 ---
-!pip install -U prettytable wcwidth
+!pip install "prettytable<3.18"
 ```
 
 ##  Overview
