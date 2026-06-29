@@ -33,6 +33,14 @@ We also install `pandas_datareader`, which we use to download data from FRED:
 !pip install pandas_datareader
 ```
 
+We also use [ArviZ](https://www.arviz.org/) for model comparison:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install arviz
+```
+
 ## Overview
 
 This lecture is a sequel to {doc}`unemployment_linear`.
