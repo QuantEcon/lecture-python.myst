@@ -572,7 +572,7 @@ a2.legend()
 plt.show()
 ```
 
-The left panel of {numref}`fig-ppc` shows the observed series staying inside the predictive band; the middle panel shows simulated paths with the same spiky, fast-up-slow-down character as the data; and the right panel shows the observed skewness falling in the bulk of the predictive distribution.
+The left panel shows the observed series staying inside the predictive band; the middle panel shows simulated paths with the same spiky, fast-up-slow-down character as the data; and the right panel shows the observed skewness falling in the bulk of the predictive distribution.
 
 The symmetric models of {doc}`unemployment_linear` would put that vertical line far out in the tail.
 
