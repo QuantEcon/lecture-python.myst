@@ -118,7 +118,9 @@ At each date, our approach is to **regress what we do not know on what we know**
 ```{note}
 Because our assumptions imply that $\{x_t, y_t\}_{t=0}^\infty$ is a jointly normal
 stochastic process, linear least squares regressions equal conditional mathematical
-expectations — each step below is an application of Bayes' law.
+expectations.
+
+Each step below is an application of Bayes' law.
 
 Under the weaker assumption that all means and covariances exist without joint normality,
 the same calculations yield "wide-sense conditional expectations" that coincide with true
@@ -577,18 +579,18 @@ with $w_t, v_t \sim N(0, 1)$ IID.
 
 ```{code-cell} ipython3
 # Model parameters
-rho = 0.9
-sigma_w = 0.5
-sigma_v = 1.0
+ρ = 0.9
+σ_w = 0.5
+σ_v = 1.0
 
 # State-space matrices
-A = np.array([[rho]])
-C = np.array([[sigma_w]])
+A = np.array([[ρ]])
+C = np.array([[σ_w]])
 G = np.array([[1.0]])
-R = np.array([[sigma_v**2]])
+R = np.array([[σ_v**2]])
 
 # Build a LinearStateSpace and a Kalman filter object
-H = np.array([[sigma_v]])   # measurement noise factor: R = H @ H.T
+H = np.array([[σ_v]])   # measurement noise factor: R = H @ H.T
 lss = qe.LinearStateSpace(
   A, C, G, H, mu_0=np.zeros(1), Sigma_0=np.eye(1) * 10.0)
 kf = qe.Kalman(lss)
@@ -1063,14 +1065,14 @@ import quantecon as qe
 
 # Parameters
 d1, d2, d3, d4 = 0.80, 0.05, 0.75, -.72
-delta1, delta2, delta3, delta4 = 0.00, 0.00, 0.75, 0.20
+δ1, δ2, δ3, δ4 = 0.00, 0.00, 0.75, 0.20
 c11, c12, c21, c22 = 1.0,  0.0,  0.0,  1.0
-sigma_v = 0.01  # sqrt(0.0001)
+σ_v = 0.01  # sqrt(0.0001)
 
 # Shared matrices
 A_var = np.array([[d1,     d2,     d3,     d4    ],
                   [1.0,    0.0,    0.0,    0.0   ],
-                  [delta1, delta2, delta3, delta4],
+                  [δ1, δ2, δ3, δ4],
                   [0.0,    0.0,    1.0,    0.0   ]])
 
 C_var = np.array([[c11, c12],
@@ -1081,7 +1083,7 @@ C_var = np.array([[c11, c12],
 # System 1: bivariate observation
 G_biv = np.array([[1.0, 0.0, 0.0, 0.0],
                   [0.0, 0.0, 1.0, 0.0]])
-H_biv = sigma_v * np.eye(2)          # H @ H.T = 0.0001 * I_2
+H_biv = σ_v * np.eye(2)          # H @ H.T = 0.0001 * I_2
 
 lss_biv = qe.LinearStateSpace(A_var, C_var, G_biv, H_biv,
                                mu_0=np.zeros(4), Sigma_0=np.eye(4))
@@ -1093,7 +1095,7 @@ print(np.round(K_biv, 5))
 
 # System 2: univariate observation
 G_uni = np.array([[1.0, 0.0, 0.0, 0.0]])
-H_uni = np.array([[sigma_v]])         # H @ H.T = 0.0001
+H_uni = np.array([[σ_v]])         # H @ H.T = 0.0001
 
 lss_uni = qe.LinearStateSpace(A_var, C_var, G_uni, H_uni,
                                mu_0=np.zeros(4), Sigma_0=np.eye(4))
@@ -1109,7 +1111,7 @@ print(np.round(K_uni, 5))
 
 # State-noise and innovation covariances
 CC_prime = C_var @ C_var.T
-R_biv = (sigma_v**2) * np.eye(2)
+R_biv = (σ_v**2) * np.eye(2)
 innov_cov_biv = G_biv @ Sigma_biv @ G_biv.T + R_biv
 
 print("State-noise covariance  C @ C.T  (4x4):")
@@ -1140,7 +1142,7 @@ System 2 (univariate, so $u_t$ is scalar).
 ---
 mystnb:
   figure:
-    caption: "System 1: IRFs of $y_t = (r_t, z_t)$ to its innovations $a_t$"
+    caption: System 1 responses to own innovations
     name: fig-kfvar-sys1-ya
 ---
 T_irf = 40
@@ -1172,7 +1174,7 @@ plt.show()
 ---
 mystnb:
   figure:
-    caption: "System 2: IRF of $r_t$ to its innovation $u_t$"
+    caption: System 2 response to own innovation
     name: fig-kfvar-sys2-ya
 ---
 fig, ax = plt.subplots()
@@ -1356,17 +1358,17 @@ $$
 $$
 
 ```{code-cell} ipython3
-rho_, sigma_w_, sigma_v_ = 0.9, 0.5, 1.0
+ρ_, σ_w_, σ_v_ = 0.9, 0.5, 1.0
 
-b = sigma_v_**2 * (1 - rho_**2) - sigma_w_**2
-discriminant = b**2 + 4 * sigma_v_**2 * sigma_w_**2
+b = σ_v_**2 * (1 - ρ_**2) - σ_w_**2
+discriminant = b**2 + 4 * σ_v_**2 * σ_w_**2
 Sigma_formula = (-b + np.sqrt(discriminant)) / 2
 
-A_ = np.array([[rho_]])
-C_ = np.array([[sigma_w_]])
+A_ = np.array([[ρ_]])
+C_ = np.array([[σ_w_]])
 G_ = np.array([[1.0]])
-R_ = np.array([[sigma_v_**2]])
-H_ = np.array([[sigma_v_]])   # R_ = H_ @ H_.T
+R_ = np.array([[σ_v_**2]])
+H_ = np.array([[σ_v_]])   # R_ = H_ @ H_.T
 lss_ = qe.LinearStateSpace(A_, C_, G_, H_, mu_0=np.zeros(1), Sigma_0=np.eye(1))
 kf_ = qe.Kalman(lss_)
 
@@ -1489,9 +1491,9 @@ $(\rho, \sigma_w, \sigma_v) = (0.9, 0.5, 1.0)$:
 
 ```{code-cell} ipython3
 # True parameters
-rho_true, sw_true, sv_true = 0.9, 0.5, 1.0
+ρ_true, sw_true, sv_true = 0.9, 0.5, 1.0
 
-A_t = np.array([[rho_true]])
+A_t = np.array([[ρ_true]])
 C_t = np.array([[sw_true]])
 G_t = np.array([[1.0]])
 R_t = np.array([[sv_true**2]])
@@ -1502,23 +1504,23 @@ lss_t = qe.LinearStateSpace(A_t, C_t, G_t, H_t,
 _, y_sim = lss_t.simulate(ts_length=300, random_state=7)
 y_sim = y_sim.T          # shape (300, 1)
 
-def ll_rho(rho_val):
-    A_ = np.array([[rho_val]])
+def ll_rho(ρ_val):
+    A_ = np.array([[ρ_val]])
     C_ = np.array([[sw_true]])
     G_ = np.array([[1.0]])
     R_ = np.array([[sv_true**2]])
     return log_likelihood(A_, C_, G_, R_, y_sim,
                           np.zeros(1), np.eye(1) * 10.0)
 
-rho_grid = np.linspace(0.5, 0.99, 60)
-ll_vals = np.array([ll_rho(r) for r in rho_grid])
+ρ_grid = np.linspace(0.5, 0.99, 60)
+ll_vals = np.array([ll_rho(r) for r in ρ_grid])
 
-rho_mle = rho_grid[np.argmax(ll_vals)]
+ρ_mle = ρ_grid[np.argmax(ll_vals)]
 
 fig, ax = plt.subplots()
-ax.plot(rho_grid, ll_vals, lw=2)
-ax.axvline(rho_true, color='k',   ls='--', label=f'true ρ = {rho_true}')
-ax.axvline(rho_mle, color='C1', ls=':', label=f'MLE  ρ_hat = {rho_mle:.3f}')
+ax.plot(ρ_grid, ll_vals, lw=2)
+ax.axvline(ρ_true, color='k',   ls='--', label=f'true ρ = {ρ_true}')
+ax.axvline(ρ_mle, color='C1', ls=':', label=f'MLE  ρ_hat = {ρ_mle:.3f}')
 ax.set_xlabel(r'$\rho$')
 ax.set_ylabel('log-likelihood')
 ax.set_title('Profile log-likelihood as a function of $\\rho$')
@@ -1526,7 +1528,7 @@ ax.legend()
 fig.tight_layout()
 plt.show()
 
-print(f"True ρ = {rho_true},  MLE ρ_hat = {rho_mle:.4f}")
+print(f"True ρ = {ρ_true},  MLE ρ_hat = {ρ_mle:.4f}")
 ```
 
 ```{solution-end}
