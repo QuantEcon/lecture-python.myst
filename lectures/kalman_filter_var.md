@@ -1140,7 +1140,7 @@ System 2 (univariate, so $u_t$ is scalar).
 ---
 mystnb:
   figure:
-    caption: System 1: IRFs of $y_t = (r_t, z_t)$ to its innovations $a_t$
+    caption: "System 1: IRFs of $y_t = (r_t, z_t)$ to its innovations $a_t$"
     name: fig-kfvar-sys1-ya
 ---
 T_irf = 40
@@ -1172,7 +1172,7 @@ plt.show()
 ---
 mystnb:
   figure:
-    caption: System 2: IRF of $r_t$ to its innovation $u_t$
+    caption: "System 2: IRF of $r_t$ to its innovation $u_t$"
     name: fig-kfvar-sys2-ya
 ---
 fig, ax = plt.subplots()
