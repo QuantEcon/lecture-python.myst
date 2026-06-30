@@ -4,44 +4,18 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-# Asymmetry and Large Shocks in Unemployment
+# Unemployment Dynamics with Asymmetric Shocks 
 
 ```{include} _admonition/gpu.md
 ```
 
-In addition to what's in Anaconda, this lecture needs the following libraries.
-
-We first install `numpyro` and `jax`:
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install numpyro jax
-```
-
-We also install `pandas_datareader`, which we use to download data from FRED:
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install pandas_datareader
-```
-
-We also use [ArviZ](https://www.arviz.org/) for model comparison:
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install arviz
-```
-
-## Overview
 
 This lecture is a sequel to {doc}`unemployment_linear`.
 
@@ -62,11 +36,18 @@ We use this to decide whether one model really predicts better than another.
 Our plan is to
 
 1. build a model with a linear mean but asymmetric, occasionally-large shocks,
-2. estimate it on the annual data,
-3. compare it to the original Gaussian model with cross-validation, and
-4. check whether it captures the asymmetry the original model missed.
+2. estimate it on the annual data, and
+3. compare it to the original Gaussian model with cross-validation.
 
-Let's start with some imports.
+In addition to what's in Anaconda, this lecture needs the following libraries.
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install numpyro jax pandas_datareader arviz
+```
+
+We'll use the following imports.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -83,7 +64,9 @@ from numpyro.infer import MCMC, NUTS, log_likelihood
 
 ## The data
 
-We use the same series as in {doc}`unemployment_linear` — the US unemployment rate (`UNRATE` from FRED), excluding the COVID-19 spike — and work at an annual frequency, where the recessions stand out as clean spikes.
+We use the same series as in {doc}`unemployment_linear` — the US unemployment
+rate (`UNRATE` from FRED), excluding the COVID-19 spike — and work at an annual
+frequency.
 
 ```{code-cell} ipython3
 start, end = dt.datetime(1948, 1, 1), dt.datetime(2024, 12, 31)
@@ -113,14 +96,14 @@ In {numref}`fig-annual-data` each recession is a sharp rise followed by a long, 
 
 ## A model with asymmetric shocks
 
-We keep the linear reversion of {doc}`unemployment_linear` and change only the shock:
+We keep the linear structure from {doc}`unemployment_linear`:
 
 $$
 u_{t+1} = \bar u + \rho\,(u_t - \bar u) + \eta_{t+1},
 \qquad 0 \le \rho < 1,
 $$ (eq:shocks)
 
-where the innovation $\eta_{t+1}$ is drawn from a **mixture of two normals**:
+Here, however, the innovation $\eta_{t+1}$ is drawn from a *mixture of two normals*:
 
 $$
 \eta_{t+1} \sim
@@ -143,23 +126,23 @@ The model has six parameters:
 
 The mechanism leads to a sawtooth dynamic for the unemployment rate.
 
-Most years are quiet, with small noise; occasionally a positive jump throws unemployment up; then, with no further jumps, the linear reversion $\rho$ glides it slowly back down toward $\bar u$.
+Most years are quiet, with small noise.
 
-A spike arrives in one step, the recovery takes many — fast up, slow down.
+Occasionally a positive jump pushes unemployment up by a large amount. 
 
-Because $\rho < 1$ the series is still stationary and bounded. 
+Then, in most cases, the linear reversion pulls it slowly back down toward $\bar u$.
 
-All that has changed is that the shocks can be large and one-sided.
+Thus, a spike arrives in one step, while the recovery takes time --- the asymmetric dynamics we observe in the data.
 
-This is, in spirit, Milton Friedman's "plucking" picture: a floor near full employment, from which recessions pluck the series upward.
+This is, in spirit, Milton Friedman's "plucking model": a floor near full employment, from which bad shocks pluck the series upward.
 
-The next cell draws an illustrative innovation density and its two components.
+The next cell shows the density of the shock and its two components.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: The two-component shock distribution
+    caption: Shock distribution as a mixture
     name: fig-shock-density
 ---
 def normal_pdf(x, m, s):
@@ -179,24 +162,28 @@ ax.legend()
 plt.show()
 ```
 
-{numref}`fig-shock-density` shows the signature shape: a tall, narrow peak at zero for ordinary years, plus a low, broad bump on the *positive* side for the recession jumps.
+{numref}`fig-shock-density` shows a tall, narrow peak at zero for
+ordinary years, plus a low, broad bump on the positive side for the recession
+jumps.
 
-That right-leaning bump is what the symmetric Gaussian of the linear lecture cannot produce.
+
 
 ## Bayesian estimation
 
-We place weakly informative priors on the six parameters, anchoring $\bar u$ low (a floor) and making jumps occasional.
+We place weakly informative priors on the six parameters. 
 
-The mixture is written with NumPyro's `MixtureSameFamily`, which sums over the two components analytically — so there is no discrete "which component?" variable for the sampler to struggle with.
+The mixture is written with NumPyro's `MixtureSameFamily`, which sums over the two components analytically.
 
 ```{code-cell} ipython3
 def jump_model(u):
+    # Set the priors
     ubar = numpyro.sample("ubar",    dist.Normal(4.5, 1.5))  
     ρ    = numpyro.sample("rho",     dist.Uniform(0.0, 1.0))  
     p    = numpyro.sample("p",       dist.Beta(2.0, 8.0))      
     μ_J  = numpyro.sample("mu_J",    dist.HalfNormal(2.0))
     σ_s  = numpyro.sample("sigma_s", dist.HalfNormal(0.5))
     σ_J  = numpyro.sample("sigma_J", dist.HalfNormal(1.5))
+    # Build the model
     n = u.shape[0] - 1
     base   = ubar + ρ * (u[:-1] - ubar)
     locs   = jnp.stack([base, base + μ_J], axis=-1)
@@ -237,15 +224,9 @@ mcmc_jump.print_summary()
 
 The `r_hat` values are essentially one, so the chains have converged.
 
-The estimates tell a coherent story: 
+Notice the distinct jump component: the normal year spread $\sigma_s$ is small and the jump spread $\sigma_J$ is large, with a positive mean $\mu_J$.
 
-* a floor $\bar u$ around 3%
-* slow reversion ($\rho \approx 0.8$), and 
-* a distinct jump component: the quiet spread $\sigma_s$ is small and the jump spread $\sigma_J$ is several times larger, with a positive mean $\mu_J$.
-
-The data have split the innovations into "ordinary years" and "recession years" on their own.
-
-We can see that split by overlaying the fitted shock density on the model's actual residuals.
+Let's do a quick check by overlaying the fitted shock density on the model's actual residuals, as we did in {doc}`unemployment_linear`.
 
 ```{code-cell} ipython3
 ---
@@ -271,31 +252,33 @@ ax.legend()
 plt.show()
 ```
 
-In {numref}`fig-jump-fit` the fitted density tracks the residuals, with the jump component accounting for the spread of large positive surprises on the right.
+The fit looks quite good (although we are still struggling to capture some of
+the large shocks in the right tail).
 
 
 ## Comparing models with cross-validation
 
 The jump model looks reasonable, but is it actually better than the linear one?
 
-To answer this question, we will use *Bayesian model comparison*.
+To answer this question, we will use a form of *Bayesian model comparison*.
 
 We build it up in stages: the guiding principle, the leave-one-out estimate, and how the computation is actually done.
 
-### The guiding principle: look at predictions, not in-sample fit
+
+### The guiding principle: out-of-sample predictions
 
 It is tempting to compare two models by asking which one fits the observed data better.
 
-This isn't the right criterion: more complex models can always be tuned to better match the data they are fitting.
+But this isn't the right criterion: more complex models can always be tuned to better match the data they are fitting.
 
 The right question is instead: which model better predicts data it has not seen?
 
-In other words, the criterion we care about is *out-of-sample predictive accuracy*.
+In other words, the criterion we care about is out-of-sample predictive accuracy.
+
+We do not have new data for out-of-sample testing, so we manufacture some using *cross-validation*.
 
 
 ### Leave-one-out cross-validation
-
-We do not have new data, so we create some by **cross-validation**.
 
 The idea is to leave out one observation, fit the model to the rest, and then
 score the held-out point using a predictive distribution constructed from the
@@ -307,69 +290,131 @@ $$
 p(u_i \mid u_{-i}) = \int p(u_i \mid \theta)\, p(\theta \mid u_{-i})\, d\theta .
 $$
 
-We score each held-out point by the *log* of this density: the logarithm rewards a model for putting high probability on what actually happened, and it makes the scores for the whole data set add up rather than multiply.
+Here $p(\theta \mid u_{-i})$ is the posterior obtained from the data in $u_{-i}$.
 
-Adding these scores gives the **expected log predictive density** (elpd), here in its leave-one-out (LOO) form,
+We score each held-out point by the *log* of this density. 
+
+This rewards a model for putting high probability on what actually happened. 
+
+Adding these scores over all data points gives the **expected log predictive density** (elpd), here in its leave-one-out (LOO) form,
 
 $$
 \text{elpd}_{\text{loo}} = \sum_{i=1}^{n} \log p(u_i \mid u_{-i}).
 $$
 
 
-### Computing it from a single fit
+### Computational methods
 
-If we calculate this measure naively, we need to refit the model $n$ times, once for each omitted point, which is very time consuming.
+The definition of elpd suggests that we need to refit the model $n$ times, once for each omitted point.
 
-The trick that makes LOO practical is that we can avoid all but the first fit, by reweighting the posterior we already have.
+This would be very time-consuming.
 
-Start from the quantity we want, which is an expectation over the leave-one-out posterior:
+Here we discuss a method that removes all but the first fit, using 
+the full posterior --- which we have already sampled.
 
-$$
-p(u_i \mid u_{-i})
-\;=\; \int p(u_i \mid \theta)\, p(\theta \mid u_{-i})\, d\theta
-\;=\; \mathbb{E}_{\,\theta \sim p(\theta \mid u_{-i})}\big[\, p(u_i \mid \theta) \,\big].
-$$
 
-We do not have draws from $p(\theta \mid u_{-i})$, but we do have $S$ draws $\theta^1, \dots, \theta^S$ from the *full* posterior $p(\theta \mid u)$ — the chains we already ran.
+Regarding notation: let $u = (u_1, \dots, u_n)$, and write $u_{-i}$ for the sample with $u_i$ deleted.
 
-The two posteriors differ by a single factor.
+The method depends on the following independence-type assumption:
 
-The likelihood is a product of one per-observation term, so dropping observation $i$ just removes its factor:
 
-$$
-p(\theta \mid u_{-i})
-\;\propto\; p(\theta) \prod_{j \neq i} p(u_j \mid \theta)
-\;=\; \frac{p(\theta) \prod_{j} p(u_j \mid \theta)}{p(u_i \mid \theta)}
-\;\propto\; \frac{p(\theta \mid u)}{p(u_i \mid \theta)} ,
-$$
+```{prf:assumption}
+:label: assm-cond-ind
 
-where the last step uses $p(\theta \mid u) \propto p(\theta) \prod_j p(u_j \mid \theta)$.
-
-A draw from the full posterior can therefore stand in for the leave-$i$-out posterior if we give it the **importance weight**
+Given $\theta$, the observations are conditionally independent:
 
 $$
-w_i^s
-\;=\; \frac{p(\theta^s \mid u_{-i})}{p(\theta^s \mid u)}
-\;\propto\; \frac{1}{p(u_i \mid \theta^s)} ,
+p(u \mid \theta) = \prod_{j=1}^{n} p(u_j \mid \theta) .
+$$
+```
+
+For our autoregressive data this assumption is false, since each
+$u_i$ is dependent on earlier observations through the transition dynamics.
+
+We adopt it nonetheless, since 
+
+* it's what makes the leave-one-out computation tractable and
+* it's a very standard procedure that needs to be understood.
+
+We discuss the consequences in the section on time-series structure below.
+
+Conditional on our assumption, the proposition that follows is exact.
+
+```{prf:proposition}
+:label: prop-loo-identity
+
+Under {prf:ref}`assm-cond-ind`, we have
+
+$$
+\frac{1}{p(u_i \mid u_{-i})}
+\;=\;
+\int \frac{1}{p(u_i \mid \theta)}\, p(\theta \mid u)\, d\theta
+\qquad (i = 1, \dots, n).
 $$
 
-which downweights exactly the draws that fit $u_i$ well, since their good fit to $u_i$ is the influence we want to remove.
+```
 
-Estimating the expectation by self-normalized importance sampling, and then substituting this weight, the numerator collapses because $w_i^s\, p(u_i \mid \theta^s) = 1$:
+```{prf:proof}
+By Bayes' rule, $p(\theta \mid u) = p(u \mid \theta)\, p(\theta) / p(u)$ and $p(\theta \mid u_{-i}) = p(u_{-i} \mid \theta)\, p(\theta) / p(u_{-i})$.
+
+By {prf:ref}`assm-cond-ind`, $p(u \mid \theta) = p(u_i \mid \theta)\, p(u_{-i} \mid \theta)$.
+
+Dividing the two posteriors and substituting this factorization,
 
 $$
+\frac{p(\theta \mid u)}{p(\theta \mid u_{-i})}
+\;=\;
+\frac{p(u \mid \theta)}{p(u_{-i} \mid \theta)} \cdot \frac{p(u_{-i})}{p(u)}
+\;=\;
+p(u_i \mid \theta) \cdot \frac{p(u_{-i})}{p(u)} ,
+$$
+
+so, rearranging,
+
+$$
+\frac{p(\theta \mid u)}{p(u_i \mid \theta)}
+\;=\;
+\frac{p(u_{-i})}{p(u)}\, p(\theta \mid u_{-i}) .
+$$
+
+Now integrate both sides over $\theta$.
+
+On the right, $\int p(\theta \mid u_{-i})\, d\theta = 1$, leaving the constant factor $p(u_{-i}) / p(u)$, so
+
+$$
+\int \frac{1}{p(u_i \mid \theta)}\, p(\theta \mid u)\, d\theta
+\;=\;
+\frac{p(u_{-i})}{p(u)}
+\;=\;
+\frac{1}{p(u_i \mid u_{-i})} ,
+$$
+
+the last equality by $p(u) = p(u_i \mid u_{-i})\, p(u_{-i})$.
+```
+
+The leave-$i$-out posterior has vanished; only the full posterior remains, and of it we have $S$ draws $\theta^1, \dots, \theta^S$.
+
+Replacing the integral in {prf:ref}`prop-loo-identity` by the average over these draws gives
+
+$$
+\frac{1}{p(u_i \mid u_{-i})}
+\;\approx\;
+\frac{1}{S} \sum_{s=1}^{S} \frac{1}{p(u_i \mid \theta^s)},
+\qquad\text{so}\qquad
 p(u_i \mid u_{-i})
 \;\approx\;
-\frac{\sum_{s=1}^{S} w_i^s\, p(u_i \mid \theta^s)}{\sum_{s=1}^{S} w_i^s}
-\;=\;
-\frac{S}{\sum_{s=1}^{S} 1 / p(u_i \mid \theta^s)} .
+\frac{S}{\sum_{s=1}^{S} 1 / p(u_i \mid \theta^s)} ,
 $$
 
-The right-hand side is the **harmonic mean** of the per-draw likelihoods of $u_i$, with $S$ the number of posterior draws.
+the harmonic mean of the per-draw likelihoods of $u_i$.
 
-Its only ingredient is the likelihood of each observation under each posterior draw — the **pointwise log-likelihood** — which is why, throughout, we have been careful to compute it.
+The integrand has finite mean, equal to $1/p(u_i \mid u_{-i})$ itself, so the law of large numbers applies.
 
-In code we work on the log scale for stability, where the harmonic mean becomes
+The average therefore converges to that mean as $S \to \infty$, and the approximation becomes exact, with probability one, in the limit.
+
+Its one ingredient is the likelihood of each observation under each draw — the **pointwise log-likelihood** — which is why we have been careful to keep it.
+
+For numerical stability we compute on the log scale, where the harmonic mean becomes
 
 $$
 \log p(u_i \mid u_{-i})
@@ -378,7 +423,7 @@ $$
 \qquad \ell_i^s = \log p(u_i \mid \theta^s),
 $$
 
-which is the `np.log(S) - logsumexp(-ll)` we use below.
+which is the `jnp.log(S) - logsumexp(-ll)` we use below.
 
 To compare against the linear model, we first fit it on the same data.
 
@@ -401,15 +446,15 @@ mcmc_lin = run_nuts(linear_model, u_annual)
 Now we can do the whole leave-one-out calculation by hand in a few lines.
 
 ```{code-cell} ipython3
-from scipy.special import logsumexp
+from jax.scipy.special import logsumexp
 
 def pointwise_loo(mcmc, model):
     "Leave-one-out log predictive density for each observation."
-    ll = np.asarray(log_likelihood(model, mcmc.get_samples(),
-                                   u=jnp.asarray(u_annual))["u_obs"])  # (draws, obs)
+    ll = log_likelihood(model, mcmc.get_samples(),
+                        u=jnp.asarray(u_annual))["u_obs"]  # (draws, obs)
     S = ll.shape[0]
     # log of the harmonic mean of the per-draw likelihoods, per observation
-    return np.log(S) - logsumexp(-ll, axis=0)
+    return jnp.log(S) - logsumexp(-ll, axis=0)
 
 elpd_jump = pointwise_loo(mcmc_jump, jump_model)
 elpd_lin  = pointwise_loo(mcmc_lin,  linear_model)
@@ -420,24 +465,20 @@ print(f"linear elpd_loo = {elpd_lin.sum():.1f}")
 
 The jump model scores higher (closer to zero), so on out-of-sample prediction it wins.
 
-To judge whether the gap is real, we need its uncertainty.
-
-Because the total elpd is a *sum* over observations, the difference between the two models is itself a sum of per-observation differences, and its standard error follows from their spread.
+To help understand whether the gap is real, we compute its standard error:
 
 ```{code-cell} ipython3
 diff = elpd_jump - elpd_lin
 n = diff.size
 print(f"elpd difference = {diff.sum():.1f}")
-print(f"standard error  = {np.sqrt(n) * diff.std():.1f}")
+print(f"standard error  = {jnp.sqrt(n) * diff.std():.1f}")
 ```
 
-The jump model is ahead by about twelve points, against a standard error near six — a bit over two standard errors, so a real improvement and not a fluke.
+The jump model is ahead by about twelve points, against a standard error near six — a bit over two standard errors, so a real improvement.
 
-### Letting ArviZ do it
+### ArviZ implementation
 
-In practice we let a library handle the bookkeeping, and add two refinements.
-
-The raw importance weights $1/p(u_i\mid\theta^s)$ can occasionally be dominated by a single extreme draw; **ArviZ** stabilizes them with Pareto-smoothed importance sampling, and reports a diagnostic — the Pareto shape $\hat k$ — that flags any observation where the estimate is unreliable (a value above $0.7$ is the usual warning line).
+In practice, most people do this calculation with a library like ArviZ.
 
 We hand it the same pointwise log-likelihoods, packaged in its data format.
 
@@ -461,145 +502,64 @@ az.compare({
 })
 ```
 
-Here the smoothing changes nothing — every $\hat k$ stays below $0.7$ — so `az.compare` confirms the hand calculation and ranks the jump model first (its table rounds the scores for display).
+Here `az.compare` confirms the hand calculation and ranks the jump model first (its
+table rounds the scores for display).
 
-### Reading the comparison
 
-Two of the columns repay a closer look.
-
-The column `p` is the **effective number of parameters**: not the count we wrote down, but how much freedom the data actually grant the model, estimated from the gap between its in-sample and out-of-sample fit.
-
-It is about three and a half for the linear model and six and a half for the jump model — and, tellingly, it need not equal the nominal parameter count, since a parameter the data cannot pin down adds almost nothing to it.
-
-Readers from classical statistics will recognize the whole exercise: it is the goal behind the **AIC**, which estimates out-of-sample accuracy as in-sample fit minus a parameter count.
-
-LOO reaches that goal without the asymptotic shortcut — it uses the entire posterior and learns the effective complexity from the data.
-
-(The **BIC**, by contrast, aims at a different target, the marginal likelihood, and hence the probability that each model is *true*; that is the province of Bayes factors, not of predictive accuracy.)
-
-Finally, a word of caution: these standard errors rest on only about seventy observations, so they are rough.
-
-There is also a deeper issue, special to time series, which we take up now.
 
 ### Accommodating the time series structure
 
-Leave-one-out drops one transition at a time, but it does not respect the order of time.
+Leave-one-out drops one transition at a time, but it does not respect the order
+of time.
 
-When it scores the step from $u_t$ to $u_{t+1}$, the model doing the scoring was fit on data lying on *both* sides of that step — including the neighboring values $u_t$ and $u_{t+1}$ themselves.
+When it scores the step from $u_t$ to $u_{t+1}$, the model doing the scoring was
+fit on data lying on *both* sides of that step — including the neighboring
+values $u_t$ and $u_{t+1}$ themselves.
 
-So the held-out point was never truly unseen, and a time series, unlike an exchangeable sample, has an arrow of time that this ignores.
+So the held-out point was never truly unseen. 
 
 The formally correct measure is **leave-future-out** cross-validation.
 
-It only ever predicts forward: fit the model on $u_1, \dots, u_t$, score its one-step-ahead forecast of $u_{t+1}$, then expand the window by one step and repeat.
+It only ever predicts forward: fit the model on $u_1, \dots, u_t$, score its
+one-step-ahead forecast of $u_{t+1}$, then expand the window by one step and
+repeat.
 
-Now the model is genuinely blind to the future it is asked to predict, exactly as in real forecasting.
+Now the model is genuinely blind to the future it is asked to predict, exactly
+as in real forecasting.
 
 The price is computational.
 
-Leave-one-out reused a single fit through its importance-sampling shortcut, but leave-future-out has no such trick — each step conditions on a different stretch of history, so the model must be refit from scratch, dozens of times rather than once.
+Leave-one-out reused a single fit through its importance-sampling shortcut, but
+leave-future-out has no such trick.
 
-For our short annual series that is minutes rather than seconds; for a long series it can become prohibitive.
+For our short annual series leave-future-out cross-validation is still feasible but for a long
+series it can become prohibitive.
 
-We ran it anyway, and the conclusion holds: under leave-future-out the jump model still beats the linear one, by an even clearer margin than leave-one-out reported.
+(We ran it without including it here and the conclusion holds: under leave-future-out the jump
+model still beats the linear one, by an even larger margin.)
 
-Genuine forecasting favors the asymmetric shocks more strongly, not less — so the verdict survives the stricter test.
 
-## Does it capture the asymmetry?
-
-LOO says the jump model predicts better, but we built it for a specific reason: to reproduce the asymmetry.
-
-A **posterior predictive check** tests exactly that.
-
-We pick a statistic that summarizes the asymmetry — the **skewness of the annual changes** $\Delta u$ — and ask whether paths simulated from the fitted model produce values like the one we see in the data.
-
-A symmetric model is pinned at a skewness of zero and cannot pass; the jump model should.
-
-```{code-cell} ipython3
-def simulate(u0, T, ubar, ρ, p, μ_J, σ_s, σ_J, rng):
-    "Simulate a path of the jump model."
-    u = np.empty(T)
-    u[0] = u0
-    for t in range(1, T):
-        η = rng.normal(μ_J, σ_J) if rng.random() < p else rng.normal(0.0, σ_s)
-        u[t] = ubar + ρ * (u[t-1] - ubar) + η
-    return u
-
-def skewness(x):
-    x = x - x.mean()
-    return (x**3).mean() / x.std()**3
-
-post = mcmc_jump.get_samples()
-keys = ("ubar", "rho", "p", "mu_J", "sigma_s", "sigma_J")
-draws = {k: np.asarray(post[k]) for k in keys}
-
-rng = np.random.default_rng(1)
-T, N = len(u_annual), 2000
-idx = rng.integers(0, len(draws["rho"]), N)
-sims = np.array([simulate(u_annual[0], T, *(draws[k][i] for k in keys), rng)
-                 for i in idx])
-
-obs_skew = skewness(np.diff(u_annual))
-rep_skew = np.array([skewness(np.diff(s)) for s in sims])
-print(f"observed skewness of Δu = {obs_skew:.2f}")
-print(f"posterior predictive P(skew > observed) = {(rep_skew > obs_skew).mean():.2f}")
-```
-
-The observed annual changes are right-skewed, and the simulated paths reproduce that skew, with the observed value sitting comfortably inside the predictive distribution.
-
-The figure makes the check, and the sawtooth, visible.
-
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Posterior predictive check for the asymmetry
-    name: fig-ppc
----
-fig, (a0, a1, a2) = plt.subplots(1, 3, figsize=(15, 4.2))
-
-lo, mid, hi = np.percentile(sims, [5, 50, 95], axis=0)
-a0.fill_between(years, lo, hi, alpha=0.3, label='90% band')
-a0.plot(years, u_annual, 'k', lw=2, label='observed')
-a0.set_title('predictive band')
-a0.set_xlabel('year')
-a0.legend()
-
-for s in sims[:6]:
-    a1.plot(years, s, lw=1, alpha=0.7)
-a1.plot(years, u_annual, 'k', lw=2.5, label='observed')
-a1.set_title('simulated paths')
-a1.set_xlabel('year')
-a1.legend()
-
-a2.hist(rep_skew, bins=50, density=True, alpha=0.6)
-a2.axvline(obs_skew, color='k', lw=2, label='observed')
-a2.set_title('skewness of $\\Delta u$')
-a2.set_xlabel('skewness')
-a2.legend()
-plt.show()
-```
-
-The left panel shows the observed series staying inside the predictive band; the middle panel shows simulated paths with the same spiky, fast-up-slow-down character as the data; and the right panel shows the observed skewness falling in the bulk of the predictive distribution.
-
-The symmetric models of {doc}`unemployment_linear` would put that vertical line far out in the tail.
 
 ## Conclusion
 
 
-In {doc}`unemployment_linear` we applied a linear AR(1) model with Gaussian shocks to unemployment and found a high levels of persistence in monthly data.
+In {doc}`unemployment_linear` we applied a linear AR(1) model with Gaussian
+shocks to unemployment and found high levels of persistence in monthly data.
 
 We also argued that the model is overly simplistic.
 
-Here we found that the feature the linear model most conspicuously misses — the asymmetry of recessions — can be addressed by considering the distribution of the shocks.
+Here we found that the feature the linear model most conspicuously misses — the
+asymmetry of recessions — can be addressed by modeling the distribution of the
+shocks.
 
-A linear reversion with large, one-sided innovations reproduces the spikes, the slow recoveries, and the boundedness, and cross-validation prefers it clearly.
+A linear reversion with large, one-sided innovations matches the right-skewed,
+heavy-tailed shocks that the Gaussian model could not.
 
-Along the way we learned about leave-one-out cross-validation, which helps us determine asks which model predicts better.
+Cross-validation prefers it.
 
-A richer model would let the economy switch between persistent expansion and recession regimes.
+An even better model than the one considered above would let the economy switch between persistent expansion and recession regimes.
 
-This is the Markov-switching approach of Hamilton, which we leave to further reading.
+This is the Markov-switching approach, which we leave to further reading.
 
 ## Exercises
 
@@ -612,4 +572,3 @@ Replace the two-component mixture with a single **skew-normal** (or Student-$t$ 
 
 Does the simpler skewed shock do as well as the mixture?
 ```
-
