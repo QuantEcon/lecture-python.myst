@@ -100,7 +100,7 @@ Consider a single decision maker whose situation at date $t$ is fully described 
 z_{t+1} = f(z_t,\, \epsilon_{t+1}),
 ```
 
-where the innovations $\{\epsilon_t\}$ are i.i.d. draws from a fixed c.d.f. $\Phi(\cdot) : \mathcal{E} \to [0,1]$.
+where the innovations $\{\epsilon_t\}$ are IID draws from a fixed CDF $\Phi(\cdot) : \mathcal{E} \to [0,1]$.
 
 The function $f : S_1 \times \mathcal{E} \to S_1$ is called the **decision maker's environment**.
 
@@ -292,13 +292,14 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 axes[0].plot(σ_vals, F_vals, lw=2)
 axes[0].set_xlabel('noise level $\\sigma$')
 axes[0].set_ylabel('policy gain $F$')
+axes[0].set_title('policy gain')
 axes[0].set_ylim(0, 2 * max(F_vals) + 0.1)
 
-axes[1].plot(σ_vals, d_vals, lw=2, color='darkorange')
+axes[1].plot(σ_vals, d_vals, lw=2, color='C1')
 axes[1].set_xlabel('noise level $\\sigma$')
 axes[1].set_ylabel('value constant $d$')
-
-plt.tight_layout()
+axes[1].set_title('value constant')
+fig.tight_layout()
 plt.show()
 ```
 
@@ -359,17 +360,16 @@ slope $\tfrac{\beta}{1-\beta} P$.
 ```{code-cell} ipython3
 σ_sq_vals = σ_vals ** 2
 
-fig, ax = plt.subplots(figsize=(8, 5))
+fig, ax = plt.subplots()
 ax.plot(σ_sq_vals, d_vals, lw=2)
 ax.set_xlabel('$\\sigma^2$')
 ax.set_ylabel('value constant $d$')
-ax.set_title('Value constant is linear in noise variance (CE principle)')
 
 coeffs = np.polyfit(σ_sq_vals, d_vals, 1)
 ax.plot(σ_sq_vals, np.polyval(coeffs, σ_sq_vals),
         'r--', lw=2, label=f'Linear fit: slope = {coeffs[0]:.3f}')
 ax.legend()
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 
 P_scalar = float(LQ(Q_mat, R_mat, A, B, C=np.zeros((1, 1)),

@@ -83,12 +83,12 @@ $$
 x_{t+1} = A x_t + B i_t + C w_{t+1},
 $$ (eq:hst_lom)
 
-where $i_t$ is a control vector, $x_t$ is the state vector, and $w_{t+1}$ is an i.i.d. Gaussian vector with $\mathbb{E} w_{t+1} = 0$ and $\mathbb{E} w_{t+1} w_{t+1}' = I$.
+where $i_t$ is a control vector, $x_t$ is the state vector, and $w_{t+1}$ is an IID Gaussian vector with $\mathbb{E} w_{t+1} = 0$ and $\mathbb{E} w_{t+1} w_{t+1}^\top = I$.
 
 The one-period return is
 
 $$
-u(i_t, x_t) = -i_t' Q i_t - x_t' R x_t,
+u(i_t, x_t) = -i_t^\top Q i_t - x_t^\top R x_t,
 $$ (eq:hst_return)
 
 with $Q$ positive definite and $R$ positive semidefinite.
@@ -121,7 +121,7 @@ The exponential-of-utility form in {eq}`eq:hst_R` originates in the *risk-sensit
 
 The operator $\mathcal{R}_t$ has a transparent closed form when continuation utility is Gaussian.
 
-Suppose $U_{t+1} \sim \mathcal{N}(\mu, s^2)$ conditional on $J_t$. Using the Gaussian moment generating function $\mathbb{E}[\exp(a U_{t+1})] = \exp(a\mu + \tfrac{1}{2}a^2 s^2)$ with $a = \sigma/2$,
+Suppose $U_{t+1} \sim N(\mu, s^2)$ conditional on $J_t$. Using the Gaussian moment generating function $\mathbb{E}[\exp(a U_{t+1})] = \exp(a\mu + \tfrac{1}{2}a^2 s^2)$ with $a = \sigma/2$,
 
 $$
 \mathcal{R}_t(U_{t+1})
@@ -168,13 +168,13 @@ axes[0].plot(sigmas, R_vals, lw=2)
 axes[0].axhline(mu, color='k', ls='--', lw=1, label=r'$E[U_{t+1}]=\mu$')
 axes[0].set_xlabel(r'risk-sensitivity $\sigma$')
 axes[0].set_ylabel(r'$\mathcal{R}_t(U_{t+1})$')
-axes[0].set_title('Certainty equivalent falls with $\\sigma$')
+axes[0].set_title('certainty equivalent')
 axes[0].legend()
 
-# worst-case (exponentially tilted) density of continuation utility
+# Tilted density
 grid = np.linspace(mu - 4*s, mu + 4*s, 400)
 axes[1].plot(grid, norm.pdf(grid, mu, s), lw=2,
-             label='reference $\\mathcal{N}(\\mu, s^2)$')
+             label=r'reference $N(\mu, s^2)$')
 for sigma in [-0.5, -1.0]:
     shift = sigma * s**2 / 2     # worst-case mean shift of U_{t+1}
     axes[1].plot(grid, norm.pdf(grid, mu + shift, s), lw=2, ls='--',
@@ -182,10 +182,9 @@ for sigma in [-0.5, -1.0]:
     axes[1].axvline(mu + sigma * s**2 / 4, color='C3', lw=0.8, ls=':')
 axes[1].set_xlabel(r'continuation utility $U_{t+1}$')
 axes[1].set_ylabel('density')
-axes[1].set_title('Worst-case density tilts mean downward')
+axes[1].set_title('worst-case density')
 axes[1].legend()
-
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 ```
 
@@ -212,10 +211,10 @@ The minimizing player would like to push the state in painful directions, but is
 With $-1/\sigma \geq 0$ acting as a Lagrange multiplier on a constraint that bounds the distortion sequence, the Markov perfect equilibrium has value function
 
 $$
-\tilde{W}(x) = \inf_v \sup_i \left\{ -i'Qi - x'Rx + \beta \left[ -\frac{1}{\sigma} v'v + \mathbb{E}\,\tilde{W}(Ax + Bi + C(w + v)) \right] \right\}.
+\tilde{W}(x) = \inf_v \sup_i \left\{ -i^\top Q i - x^\top R x + \beta \left[ -\frac{1}{\sigma} v^\top v + \mathbb{E}\,\tilde{W}(Ax + Bi + C(w + v)) \right] \right\}.
 $$ (eq:hst_game)
 
-Because $\sigma < 0$ makes $-1/\sigma > 0$, the term $-\frac{1}{\sigma}v'v$ *penalizes* the malevolent player for large distortions.
+Because $\sigma < 0$ makes $-1/\sigma > 0$, the term $-\frac{1}{\sigma}v^\top v$ *penalizes* the malevolent player for large distortions.
 
 A smaller $|1/\sigma|$ (more negative $\sigma$) means a cheaper distortion budget and hence a larger family of models the agent guards against — a *stronger* preference for robustness.
 
@@ -290,7 +289,7 @@ $$ (eq:hst_martingale)
 and that $\mu_{s,t}$ inherits the representation
 
 $$
-\mu_{s,t} = \mu_{s,t-1} + v' w_t
+\mu_{s,t} = \mu_{s,t-1} + v^\top w_t
 $$ (eq:hst_mu_rw)
 
 for some loading vector $v$.
@@ -300,7 +299,7 @@ Equation {eq}`eq:hst_martingale` is the classic statement that, under $\beta R =
 The scalar
 
 $$
-\theta^2 \equiv v' v
+\theta^2 \equiv v^\top v
 $$
 
 measures the variance of the innovation to the marginal-utility martingale {eq}`eq:hst_mu_rw`. It will be the one summary statistic of the benchmark economy that we need below.
@@ -347,12 +346,12 @@ Let's reproduce the locus — a version of Figure 1 in {cite}`HST_1999`.
 ---
 mystnb:
   figure:
-    caption: Observationally equivalent $(\sigma, \hat\beta)$ pairs
+    caption: Equivalent $(\sigma, \hat\beta)$ pairs
     name: fig-hst-oe
 ---
 beta_bench = 0.9971         # benchmark discount factor (annual rate ~2.5%)
 Rf = 1 / beta_bench         # gross risk-free return fixed by beta R = 1
-theta2 = 0.01               # variance of the marginal-utility innovation, v'v
+theta2 = 0.01               # variance of the marginal-utility innovation, v^T v
 
 def Omega_scalar(beta, sigma, theta2):
     disc = (beta - 1 + sigma * theta2)**2 + 4 * sigma * theta2
@@ -374,12 +373,12 @@ def beta_hat(sigma, theta2, Rf):
 sigmas = np.linspace(-1.2e-4, 0.0, 200)
 betas = np.array([beta_hat(sg, theta2, Rf) for sg in sigmas])
 
-fig, ax = plt.subplots(figsize=(7, 5))
+fig, ax = plt.subplots()
 ax.plot(betas, sigmas, lw=2)
 ax.set_xlabel(r'discount factor $\hat\beta$')
 ax.set_ylabel(r'risk-sensitivity $\sigma$')
 ax.axhline(0, color='k', lw=0.8, ls='--')
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 ```
 
@@ -479,12 +478,12 @@ def ar2_irf(r1, r2, c, H):
     return psi
 
 H = 50
-disc = Rf**(-np.arange(H))                      # Rf = 1/beta from the previous cell
+disc = Rf**(-np.arange(H))   # Rf = 1/beta from the previous cell
 
 psi_p = ar2_irf(0.998, 0.704, 0.108, H)         # persistent endowment d*
 psi_t = ar2_irf(0.813, 0.189, 0.155, H)         # transitory endowment d_hat
 
-# permanent income consumption response: a flat (martingale) jump
+# Flat consumption response
 dc_p = (1 - 1/Rf) * np.sum(disc * psi_p)
 dc_t = (1 - 1/Rf) * np.sum(disc * psi_t)
 
@@ -494,16 +493,17 @@ print(f"transitory shock: consumption responds to "
       f"{100*dc_t/psi_t[0]:.0f}% of the impact")
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 4), sharey=True)
-for ax, psi, dc, title in [
-        (axes[0], psi_p, dc_p, 'Persistent endowment shock $d^{*}$'),
-        (axes[1], psi_t, dc_t, 'Transitory endowment shock $\\hat d$')]:
-    ax.plot(psi, lw=2, label='endowment response $\\psi_j$')
-    ax.axhline(dc, color='C3', ls='--', lw=2, label='consumption response $\\Delta c$')
+for ax, psi, dc, shock_label in [
+        (axes[0], psi_p, dc_p, 'persistent shock $d^{*}$'),
+        (axes[1], psi_t, dc_t, 'transitory shock $\\hat d$')]:
+    ax.plot(psi, lw=2, label=fr'{shock_label}: endowment response $\psi_j$')
+    ax.axhline(dc, color='C3', ls='--', lw=2,
+               label=r'consumption response $\Delta c$')
+    ax.set_title(shock_label)
     ax.set_xlabel('horizon $j$ (quarters)')
-    ax.set_title(title)
     ax.legend()
 axes[0].set_ylabel('response')
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 ```
 
@@ -531,7 +531,7 @@ $$
 x_{t+1} = A^{0} x_t + C w_{t+1},
 $$ (eq:hst_equil_lom)
 
-and the value function at the optimum is $U^{e}_t = x_t' \Omega x_t + \rho$.
+and the value function at the optimum is $U^{e}_t = x_t^\top \Omega x_t + \rho$.
 
 To support the robust allocation, prices must be computed using the **same** pessimistic, distorted beliefs that rationalize the planner's choices.
 
@@ -564,12 +564,12 @@ Concretely, $\mathcal{T}_t$ is the ordinary conditional expectation under a **di
 $$
 x_{t+1} = \hat A x_t + \hat C w_{t+1},
 \qquad
-\hat C \hat C' = C (I - \sigma C' \Omega C)^{-1} C',
+\hat C \hat C^\top = C (I - \sigma C^\top \Omega C)^{-1} C^\top,
 $$ (eq:hst_pricing_lom)
 
 with $\hat A$ given by {eq}`eq:hst_D`-style risk corrections.
 
-Because $\sigma < 0$ and $\Omega$ is negative semidefinite, $(I - \sigma C'\Omega C)^{-1}$ exceeds the identity: the pricing measure assigns a **pessimistically shifted conditional mean** *and* an **inflated conditional variance** to next period's state.
+Because $\sigma < 0$ and $\Omega$ is negative semidefinite, $(I - \sigma C^\top\Omega C)^{-1}$ exceeds the identity: the pricing measure assigns a **pessimistically shifted conditional mean** *and* an **inflated conditional variance** to next period's state.
 
 These two distortions are precisely what generate risk premia.
 
@@ -611,7 +611,7 @@ is a multiplicative adjustment with conditional mean one. The factor {eq}`eq:hst
 Under the *robustness* interpretation, the same multiplicative factor equals a **likelihood ratio** between the worst-case and reference shock densities,
 
 $$
-m^{u}_{t+1,t} = \frac{\exp[-(w_{t+1} - \hat v_t)'(w_{t+1} - \hat v_t)/2]}{\exp(-w_{t+1}' w_{t+1}/2)},
+m^{u}_{t+1,t} = \frac{\exp[-(w_{t+1} - \hat v_t)^\top(w_{t+1} - \hat v_t)/2]}{\exp(-w_{t+1}^\top w_{t+1}/2)},
 $$ (eq:hst_mu)
 
 where $\hat v_t$ is the worst-case conditional-mean distortion chosen by the malevolent player.
@@ -621,13 +621,13 @@ A direct calculation gives
 $$
 \mathbb{E}_t(m^{u}_{t+1,t}) = 1,
 \qquad
-\mathbb{E}_t\big[(m^{u}_{t+1,t})^2\big] = \exp(\hat v_t' \hat v_t),
+\mathbb{E}_t\big[(m^{u}_{t+1,t})^2\big] = \exp(\hat v_t^\top \hat v_t),
 $$
 
 so that, for small distortions,
 
 $$
-\operatorname{std}_t(m^{u}_{t+1,t}) = \big[\exp(\hat v_t' \hat v_t) - 1\big]^{1/2} \approx |\hat v_t|.
+\operatorname{std}_t(m^{u}_{t+1,t}) = \big[\exp(\hat v_t^\top \hat v_t) - 1\big]^{1/2} \approx |\hat v_t|.
 $$ (eq:hst_mpr)
 
 The **market price of risk** — the maximal Sharpe ratio attainable, equal to $\operatorname{std}_t(m_{t+1,t}) / \mathbb{E}_t(m_{t+1,t})$ along the efficient frontier (the {cite}`Hansen_Jagannathan_1991` bound) — is therefore approximately equal to the **magnitude of the worst-case distortion** $|\hat v_t|$.
@@ -668,10 +668,10 @@ A 10% distortion delivers a market price of risk near 0.10.
 
 To see the robust decision rules and worst-case shocks concretely, we solve the recursive risk-sensitive control problem {eq}`eq:hst_lom`–{eq}`eq:hst_recursion` directly.
 
-Guess a value function $W(x) = x' \Omega x + \rho$ with $\Omega$ negative semidefinite. The risk-sensitive operator {eq}`eq:hst_R` acting on this quadratic form introduces the **risk adjustment**
+Guess a value function $W(x) = x^\top \Omega x + \rho$ with $\Omega$ negative semidefinite. The risk-sensitive operator {eq}`eq:hst_R` acting on this quadratic form introduces the **risk adjustment**
 
 $$
-\mathcal{D}(\Omega) = \Omega + \sigma \Omega C (I - \sigma C' \Omega C)^{-1} C' \Omega,
+\mathcal{D}(\Omega) = \Omega + \sigma \Omega C (I - \sigma C^\top \Omega C)^{-1} C^\top \Omega,
 $$ (eq:hst_D)
 
 so that, replacing $\Omega$ by $\mathcal{D}(\Omega)$, the Bellman equation becomes an ordinary linear-quadratic one.
@@ -679,11 +679,11 @@ so that, replacing $\Omega$ by $\mathcal{D}(\Omega)$, the Bellman equation becom
 Iterating
 
 $$
-F = (Q - \beta B' \mathcal{D} B)^{-1}(N - \beta B' \mathcal{D} A),
+F = (Q - \beta B^\top \mathcal{D} B)^{-1}(N - \beta B^\top \mathcal{D} A),
 $$
 
 $$
-\Omega \leftarrow -R - F' Q F + (F'N + N'F) + \beta (A - BF)' \mathcal{D} (A - BF),
+\Omega \leftarrow -R - F^\top Q F + (F^\top N + N^\top F) + \beta (A - BF)^\top \mathcal{D} (A - BF),
 $$
 
 to a fixed point yields the optimal rule $i_t = -F x_t$.
@@ -691,7 +691,7 @@ to a fixed point yields the optimal rule $i_t = -F x_t$.
 The worst-case mean distortion is then linear in the state, $\hat v_t = G x_t$, with
 
 $$
-G = \sigma (I - \sigma C' \Omega C)^{-1} C' \Omega (A - B F).
+G = \sigma (I - \sigma C^\top \Omega C)^{-1} C^\top \Omega (A - B F).
 $$ (eq:hst_G)
 
 When $\sigma = 0$ we have $\mathcal{D}(\Omega) = \Omega$ and $G = 0$, recovering the standard regulator.
@@ -702,7 +702,7 @@ def solve_rslq(A, B, C, Q, R, beta, sigma, N=None,
     """
     Solve the recursive risk-sensitive LQ problem
 
-        U_t = -(x'R x + i'Q i + 2 i'N x) + beta R_t(U_{t+1})
+        U_t = -(x^T R x + i^T Q i + 2 i^T N x) + beta R_t(U_{t+1})
         x_{t+1} = A x_t + B i_t + C w_{t+1}
 
     Returns the feedback rule F (i = -F x), the value matrix Omega,
@@ -733,7 +733,7 @@ def solve_rslq(A, B, C, Q, R, beta, sigma, N=None,
 We first verify that at $\sigma = 0$ our solver reproduces QuantEcon's ordinary LQ regulator.
 
 ```{code-cell} ipython3
-# a stylized stable regulator with a persistent shock
+# Stable regulator
 A = np.array([[0.9, 0.0],
               [0.0, 0.8]])
 B = np.array([[1.0],
@@ -748,7 +748,7 @@ beta = 0.95
 lq = qe.LQ(Q, R, A, B, C=C, beta=beta)
 P, F_qe, d = lq.stationary_values()
 
-# our solver at sigma = 0
+# Sigma-zero check
 F0, Omega0, Acl0, G0 = solve_rslq(A, B, C, Q, R, beta, sigma=0.0)
 
 print("QuantEcon LQ feedback rule F :", F_qe.flatten())
@@ -766,7 +766,8 @@ sigmas = [0.0, -0.3, -0.6]
 print(f"{'sigma':>7}{'F[0]':>10}{'F[1]':>10}{'G[0]':>10}{'G[1]':>10}")
 for sigma in sigmas:
     F, Omega, Acl, G = solve_rslq(A, B, C, Q, R, beta, sigma)
-    print(f"{sigma:7.2f}{F[0,0]:10.4f}{F[0,1]:10.4f}{G[0,0]:10.4f}{G[0,1]:10.4f}")
+    print(f"{sigma:7.2f}{F[0,0]:10.4f}{F[0,1]:10.4f}"
+          f"{G[0,0]:10.4f}{G[0,1]:10.4f}")
 ```
 
 As $\sigma$ becomes more negative:
@@ -780,7 +781,7 @@ Finally, let's see the worst-case distortion in action by simulating the control
 ---
 mystnb:
   figure:
-    caption: Controlled state and worst-case distortion
+    caption: Controlled state and distortion
     name: fig-hst-sim
 ---
 def simulate(A, B, C, F, G, T=60, seed=0):
@@ -803,17 +804,18 @@ for sigma, color in zip([0.0, -0.6], ['C0', 'C3']):
     axes[0].plot(x[:, 0], color=color, lw=2, label=f'$\\sigma={sigma}$')
     axes[1].plot(v[:, 0], color=color, lw=2, label=f'$\\sigma={sigma}$')
 
-axes[0].set_title('Controlled state $x_{1,t}$')
 axes[0].set_xlabel('$t$')
+axes[0].set_ylabel(r'controlled state $x_{1,t}$')
 axes[0].axhline(0, color='k', lw=0.8, ls='--')
+axes[0].set_title('controlled state')
 axes[0].legend()
 
-axes[1].set_title(r'Worst-case mean distortion $\hat v_{1,t}$')
 axes[1].set_xlabel('$t$')
+axes[1].set_ylabel(r'worst-case mean distortion $\hat v_{1,t}$')
 axes[1].axhline(0, color='k', lw=0.8, ls='--')
+axes[1].set_title('mean distortion')
 axes[1].legend()
-
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 ```
 
@@ -826,7 +828,7 @@ For $\sigma < 0$ the robust agent's decisions are shaped by a nonzero worst-case
 ```{exercise}
 :label: hst_ex1
 
-The Gaussian formula {eq}`eq:hst_R_gauss` says that for $U_{t+1} \sim \mathcal{N}(\mu, s^2)$,
+The Gaussian formula {eq}`eq:hst_R_gauss` says that for $U_{t+1} \sim N(\mu, s^2)$,
 
 $$
 \mathcal{R}_t(U_{t+1}) = \mu + \frac{\sigma}{4} s^2 .
@@ -847,7 +849,7 @@ $$
 \mathcal{R}_t(U_{t+1}) = \frac{2}{\sigma} \log \mathbb{E}\!\left[\exp\!\left(\frac{\sigma}{2} U_{t+1}\right)\right].
 $$
 
-Since $U_{t+1} \sim \mathcal{N}(\mu, s^2)$, the moment generating function gives
+Since $U_{t+1} \sim N(\mu, s^2)$, the moment generating function gives
 
 $$
 \mathbb{E}\!\left[\exp\!\left(\frac{\sigma}{2} U_{t+1}\right)\right]
@@ -910,9 +912,9 @@ A larger $\theta^2$ means the marginal-utility martingale {eq}`eq:hst_mu_rw` car
 :label: hst_ex3
 
 The market-price-of-risk approximation {eq}`eq:hst_mpr` states that
-$\operatorname{std}_t(m^u_{t+1,t}) = [\exp(\hat v_t'\hat v_t) - 1]^{1/2} \approx |\hat v_t|$.
+$\operatorname{std}_t(m^u_{t+1,t}) = [\exp(\hat v_t^\top \hat v_t) - 1]^{1/2} \approx |\hat v_t|$.
 
-For the risk-sensitive regulator solved in the lecture (with $A$, $B$, $C$, $Q$, $R$, $\beta$ as given there), compute the *exact* market price of risk $[\exp(\hat v_t' \hat v_t) - 1]^{1/2}$ as a function of $\sigma$, evaluated at the state $x = (1, 1)'$, and plot it together with the linear approximation $|\hat v_t|$.
+For the risk-sensitive regulator solved in the lecture (with $A$, $B$, $C$, $Q$, $R$, $\beta$ as given there), compute the *exact* market price of risk $[\exp(\hat v_t^\top \hat v_t) - 1]^{1/2}$ as a function of $\sigma$, evaluated at the state $x = (1, 1)^\top$, and plot it together with the linear approximation $|\hat v_t|$.
 
 Comment on the range of $\sigma$ over which the approximation is accurate.
 ```
@@ -921,7 +923,7 @@ Comment on the range of $\sigma$ over which the approximation is accurate.
 :class: dropdown
 ```
 
-We solve the regulator for a grid of $\sigma$ values, evaluate $\hat v_t = G x$ at $x = (1,1)'$, and compare the exact and approximate market prices of risk.
+We solve the regulator for a grid of $\sigma$ values, evaluate $\hat v_t = G x$ at $x = (1,1)^\top$, and compare the exact and approximate market prices of risk.
 
 ```{code-cell} ipython3
 x_eval = np.array([1.0, 1.0])
@@ -935,14 +937,14 @@ for sigma in sigma_grid:
     exact.append(np.sqrt(np.exp(nv2) - 1))
     approx.append(np.sqrt(nv2))           # |v_hat|
 
-fig, ax = plt.subplots(figsize=(7, 5))
-ax.plot(sigma_grid, exact, lw=2, label=r'exact $[\exp(\hat v\,\!^\prime \hat v)-1]^{1/2}$')
+fig, ax = plt.subplots()
+ax.plot(sigma_grid, exact, lw=2,
+        label=r'exact $[\exp(\hat v^\top \hat v)-1]^{1/2}$')
 ax.plot(sigma_grid, approx, lw=2, ls='--', label=r'approximation $|\hat v|$')
 ax.set_xlabel(r'risk-sensitivity $\sigma$')
 ax.set_ylabel('market price of risk')
-ax.set_title('exact vs. approximate market price of risk')
 ax.legend()
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 ```
 

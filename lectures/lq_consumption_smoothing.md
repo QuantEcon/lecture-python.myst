@@ -125,11 +125,11 @@ y_t &= \check{G}\, z_t
 \end{aligned}
 $$ (eq:sprob15)
 
-where $w_{t+1}$ is i.i.d. with mean zero and identity covariance matrix, $\check{A}$ is a stable
+where $w_{t+1}$ is IID with mean zero and identity covariance matrix, $\check{A}$ is a stable
 matrix (eigenvalues strictly less than one in modulus), and $\check{G}$ is a row vector.
 
 The state confronting the household at $t$ is
-$\bigl[b_t \;\; z_t'\bigr]'$, where $b_t$ is its one-period debt due at the start of period $t$
+$\bigl[b_t \;\; z_t^\top\bigr]^\top$, where $b_t$ is its one-period debt due at the start of period $t$
 and $z_t$ contains all variables useful for forecasting its future endowment.
 
 To make the problem linear-quadratic, we adopt the **quadratic utility function**
@@ -208,7 +208,7 @@ $$
 c_t = (1-\beta)\!\left[\check{G}(I-\beta\check{A})^{-1} z_t - b_t\right]
 $$ (eq:lccf)
 
-This expresses $c_t$ as a function of the state $[b_t,\, z_t']'$ that confronts the household.
+This expresses $c_t$ as a function of the state $[b_t,\, z_t^\top]^\top$ that confronts the household.
 
 ### Representation 1: state $(b_t, z_t)$
 
@@ -388,7 +388,7 @@ Here the coefficient $-(1-K)$ on the lagged innovation reflects that only the fr
 $K$ of last period's surprise was treated as permanent; the remainder mean-reverts.
 
 The scalar
-$a_t$ is i.i.d. with variance $\Sigma + \sigma_2^2$.
+$a_t$ is IID with variance $\Sigma + \sigma_2^2$.
 Applying {eq}`eq:sprob16` to this innovation representation:
 
 $$
@@ -407,7 +407,7 @@ $$
 y_{t+1} - y_t = a_{t+1} - (1-K)\,a_t
 $$ (eq:incomemaar)
 
-while the first difference of consumption is i.i.d.
+while the first difference of consumption is IID
 
 ### Numerical illustration of the two examples
 
@@ -417,7 +417,7 @@ while the first difference of consumption is i.i.d.
 σ1 = 0.15      # std of permanent shock
 σ2 = 0.30      # std of transitory shock
 
-# -- Example 1: full information ----------------------------------------------
+# Example 1: full information
 A_check = np.array([[1.0, 0.0],
                     [0.0, 0.0]])
 C_check = np.array([[σ1, 0.0],
@@ -426,21 +426,22 @@ G_check = np.array([[1.0, 1.0]])
 
 # Key matrix M = G(I - βA)^{-1}
 IbA = np.eye(2) - β * A_check
-M   = G_check @ inv(IbA)   # shape (1, 2)
+M = G_check @ inv(IbA)   # shape (1, 2)
 
-# Impulse response of consumption (permanent to unit permanent / transitory shock)
+# Consumption impulse responses
 h = (1 - β) * M @ C_check          # shape (1, 2)
-irf_perm_ex1  = h[0, 0] / σ1       # response per unit std of permanent shock
+irf_perm_ex1 = h[0, 0] / σ1       # response per unit std of permanent shock
 irf_trans_ex1 = h[0, 1] / σ2       # response per unit std of transitory shock
 
 print("Example 1 (full information)")
-print(f"  IRF c to permanent shock  (normalised): {irf_perm_ex1:.4f}   (theory: 1.0)")
+print(f"  IRF c to permanent shock  (normalised): {irf_perm_ex1:.4f}   "
+      f"(theory: 1.0)")
 print(f"  IRF c to transitory shock (normalised): {irf_trans_ex1:.4f}   "
       f"(theory: {1-β:.4f})")
 ```
 
 ```{code-cell} ipython3
-# -- Example 2: partial information / Muth model -------------------------------
+# Example 2: partial information
 Σ = (σ1**2 + np.sqrt(σ1**4 + 4 * σ1**2 * σ2**2)) / 2
 K = Σ / (Σ + σ2**2)
 
@@ -455,12 +456,12 @@ print(f"  Fraction saved: β(1-K) = {β*(1-K):.4f}")
 ---
 mystnb:
   figure:
-    caption: Consumption impulse responses in the two examples
+    caption: Consumption impulse responses
     name: fig-lqcs-irf-examples
 ---
-# -- Compare impulse responses across examples ---------------------------------
+# Compare impulse responses
 T = 30
-irf_c_ex1_perm  = np.ones(T) * irf_perm_ex1 * σ1
+irf_c_ex1_perm = np.ones(T) * irf_perm_ex1 * σ1
 irf_c_ex1_trans = np.ones(T) * irf_trans_ex1 * σ2
 
 irf_c_ex2 = np.ones(T) * (1 - β * (1 - K))   # per unit innovation a_t
@@ -469,26 +470,24 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
 axes[0].axhline(0, color='k', linewidth=0.8)
 axes[0].step(range(T), irf_c_ex1_perm, where='post',
-             label='permanent shock ($z_1$)', color='steelblue')
+             label='permanent shock ($z_1$)', color='C0', lw=2)
 axes[0].step(range(T), irf_c_ex1_trans, where='post',
-             label='transitory shock ($z_2$)', color='tomato', linestyle='--')
-axes[0].set_title('Example 1: IRF of $c$ (full information)')
+             label='transitory shock ($z_2$)', color='C3',
+             linestyle='--', lw=2)
 axes[0].set_xlabel('periods after shock')
 axes[0].set_ylabel('response of $c$')
+axes[0].set_title('full information')
 axes[0].legend()
-axes[0].grid(alpha=0.3)
 
 axes[1].axhline(0, color='k', linewidth=0.8)
 axes[1].step(range(T), irf_c_ex2, where='post',
              label=f'unit innovation $a_{{t+1}}$ (K = {K:.2f})',
-             color='purple')
-axes[1].set_title('Example 2: IRF of $c$ (partial information)')
+             color='C4', lw=2)
 axes[1].set_xlabel('periods after shock')
 axes[1].set_ylabel('response of $c$')
+axes[1].set_title('partial information')
 axes[1].legend()
-axes[1].grid(alpha=0.3)
-
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 ```
 
@@ -522,10 +521,10 @@ $$
 Since the $w^i_{t+1}$ are independent across agents,
 
 $$
-\mathbb{E}_0\bigl(c_t^i - c_0^i\bigr)^2 = t\, h h'
+\mathbb{E}_0\bigl(c_t^i - c_0^i\bigr)^2 = t\, h h^\top
 $$ (eq:varspread)
 
-In the two-factor model, $h$ is a $1 \times 2$ row vector so $hh'$ is a positive scalar equal to
+In the two-factor model, $h$ is a $1 \times 2$ row vector so $hh^\top$ is a positive scalar equal to
 $\sigma_1^2 + (1-\beta)^2\sigma_2^2$.
 
 The cross-section variance of consumption grows like $t$.
@@ -539,31 +538,30 @@ mystnb:
 ---
 # Simulate cross-section spreading
 rng = np.random.default_rng(42)
-N      = 5000       # number of agents
-T_sim  = 80         # number of periods
+N = 5000       # number of agents
+T_sim = 80         # number of periods
 
-h_vec  = (1 - β) * (M @ C_check)   # shape (1, 2), then flatten
-h_vec  = h_vec.flatten()            # h = [h1, h2]
+h_vec = (1 - β) * (M @ C_check)   # shape (1, 2), then flatten
+h_vec = h_vec.flatten()            # h = [h1, h2]
 
 c = np.zeros((N, T_sim + 1))       # consumption paths
 # initialise all agents at c_0 = 0 (demeaned)
 for t in range(T_sim):
     eps = rng.standard_normal((N, 2))    # N draws of 2D shock
-    dc  = eps @ h_vec              # shape (N,)
+    dc = eps @ h_vec              # shape (N,)
     c[:, t+1] = c[:, t] + dc
 
 # Cross-section variance at each date
-var_c  = np.var(c, axis=0)
+var_c = np.var(c, axis=0)
 theory = np.arange(T_sim + 1) * np.dot(h_vec, h_vec)
 
 fig, ax = plt.subplots()
-ax.plot(var_c,  label='simulated cross-section variance', linewidth=2)
-ax.plot(theory, label=r'theoretical: $t \cdot h h^\prime$',
-        linestyle='--', color='tomato')
+ax.plot(var_c, label='simulated cross-section variance', lw=2)
+ax.plot(theory, label=r'theoretical: $t \cdot h h^\top$',
+        linestyle='--', color='C3', lw=2)
 ax.set_xlabel('period $t$')
 ax.set_ylabel('cross-section variance of $c$')
 ax.legend()
-ax.grid(alpha=0.3)
 plt.show()
 ```
 
@@ -640,18 +638,16 @@ mystnb:
     name: fig-lqcs-bewley
 ---
 # Verify Bewley market clearing via simulation
-# We use an online (Welford) accumulator for mean and variance so that we never
-# store the full NxT consumption array in memory.
+# Online mean and variance avoid storing all paths.
 rng = np.random.default_rng(0)
-N_bew  = 10000    # agents - enough to illustrate the law of large numbers
-T_bew  = 60
+N_bew = 10000    # number of agents
+T_bew = 60
 
-# Draw initial z^i_0; z1 is a random walk so its stationary distribution is
-# degenerate - we draw from a distribution with std 1 for illustration.
-z0_i   = rng.standard_normal((N_bew, 2)) * np.array([1.0, σ2])
-c0_i   = ((1 - β) * (M @ z0_i.T)).flatten()   # shape (N_bew,)
+# Draw illustrative initial states.
+z0_i = rng.standard_normal((N_bew, 2)) * np.array([1.0, σ2])
+c0_i = ((1 - β) * (M @ z0_i.T)).flatten()   # shape (N_bew,)
 
-# Online accumulation: propagate c_t across agents without storing all paths.
+# Propagate consumption across agents.
 mean_c = np.zeros(T_bew + 1)
 var_c2 = np.zeros(T_bew + 1)
 mean_c[0] = c0_i.mean()
@@ -659,32 +655,29 @@ var_c2[0] = c0_i.var()
 
 c_now = c0_i.copy()
 for t in range(T_bew):
-    eps    = rng.standard_normal((N_bew, 2))
-    c_now  = c_now + eps @ h_vec
+    eps = rng.standard_normal((N_bew, 2))
+    c_now = c_now + eps @ h_vec
     mean_c[t + 1] = c_now.mean()
     var_c2[t + 1] = c_now.var()
 
-# Keep c0_i available for the complete-markets figure below
+# Reuse initial consumption below.
 c_bew_t0 = c0_i
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
-axes[0].plot(mean_c, linewidth=2, color='steelblue')
-axes[0].axhline(mean_c[0], linestyle='--', color='tomato', label='initial mean')
-axes[0].set_title('Cross-section mean of $c$ (Bewley economy)')
+axes[0].plot(mean_c, lw=2, color='C0')
+axes[0].axhline(mean_c[0], linestyle='--', color='C3', label='initial mean')
 axes[0].set_xlabel('period $t$')
 axes[0].set_ylabel('mean consumption')
+axes[0].set_title('mean')
 axes[0].legend()
-axes[0].grid(alpha=0.3)
 
-axes[1].plot(var_c2, linewidth=2, color='steelblue', label='simulated variance')
-axes[1].set_title('Cross-section variance of $c$ (Bewley economy)')
+axes[1].plot(var_c2, lw=2, color='C0', label='simulated variance')
 axes[1].set_xlabel('period $t$')
 axes[1].set_ylabel('variance of consumption')
+axes[1].set_title('variance')
 axes[1].legend()
-axes[1].grid(alpha=0.3)
-
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 ```
 
@@ -759,16 +752,16 @@ of consumption grows without bound.
 ---
 mystnb:
   figure:
-    caption: Complete vs incomplete markets consumption distributions
+    caption: Complete and incomplete distributions
     name: fig-lqcs-markets
 ---
-# Illustrate: complete vs incomplete markets consumption distributions over time
+# Complete and incomplete consumption distributions
 rng = np.random.default_rng(1)
 N_cm = 5000
 T_cm = 50
 
 # Initial consumption draws (same as Bewley economy)
-c0_cm = c_bew_t0[:N_cm]   # initial consumption draws from the Bewley cell above
+c0_cm = c_bew_t0[:N_cm]
 
 # Incomplete markets: consumption evolves (random walk)
 c_inc = np.zeros((N_cm, T_cm + 1))
@@ -782,23 +775,22 @@ c_comp = np.tile(c0_cm[:, np.newaxis], T_cm + 1)
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
-for t_plot, color in zip([0, 10, 30, 50], ['steelblue', 'orange', 'tomato', 'purple']):
+for t_plot, color in zip([0, 10, 30, 50], ['C0', 'C1', 'C3', 'C4']):
     axes[0].hist(c_inc[:, t_plot], bins=60, alpha=0.4,
                  label=f't = {t_plot}', color=color, density=True)
-axes[0].set_title('Incomplete markets:\ncross-section distribution of $c$')
 axes[0].set_xlabel('$c$')
+axes[0].set_ylabel('density, incomplete markets')
+axes[0].set_title('incomplete markets')
 axes[0].legend(fontsize=9)
-axes[0].grid(alpha=0.3)
 
-for t_plot, color in zip([0, 10, 30, 50], ['steelblue', 'orange', 'tomato', 'purple']):
+for t_plot, color in zip([0, 10, 30, 50], ['C0', 'C1', 'C3', 'C4']):
     axes[1].hist(c_comp[:, t_plot], bins=60, alpha=0.4,
                  label=f't = {t_plot}', color=color, density=True)
-axes[1].set_title('Complete markets:\ncross-section distribution of $c$')
 axes[1].set_xlabel('$c$')
+axes[1].set_ylabel('density, complete markets')
+axes[1].set_title('complete markets')
 axes[1].legend(fontsize=9)
-axes[1].grid(alpha=0.3)
-
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 ```
 
@@ -870,8 +862,8 @@ through **service streams** $\{s_t\}$.  Let $b$ be a preference shifter (utility
 The **Bellman equation for the robust planner** is
 
 $$
--x' P x - p =
-\sup_c \inf_w \Bigl\{-(s-b)^2 + \beta\bigl(\theta w^{*\prime} w^* - \mathbb{E}\,x^{*\prime} P x^* - p\bigr)\Bigr\}
+-x^\top P x - p =
+\sup_c \inf_w \Bigl\{-(s-b)^2 + \beta\bigl(\theta (w^*)^\top w^* - \mathbb{E}\,(x^*)^\top P x^* - p\bigr)\Bigr\}
 $$ (eq:income1)
 
 subject to the household technology, capital accumulation, endowment dynamics, and the state law:
@@ -890,7 +882,7 @@ $$ (eq:income1a)
 Here $^*$ denotes the next-period value; $c$ is consumption; $s$ is the scalar service measure;
 $h$ is a habit stock; $k$ is the capital stock; $i$ is investment; $d$ is an endowment/technology
 shock; $b$ is a **preference shock** (bliss-point shifter, distinct from the bond/debt variable
-$b_t$ used in Part A); $\epsilon^* \sim \mathcal{N}(0,I)$ is the baseline shock; and
+$b_t$ used in Part A); $\epsilon^* \sim N(0,I)$ is the baseline shock; and
 $w^*$ is a **distortion** to the conditional mean of $\epsilon^*$ chosen by an evil agent.
 
 The penalty parameter $\theta > 0$ governs the consumer's concern about robustness.  We use the
@@ -910,7 +902,7 @@ $h_t$ is a geometric weighted average of current and past consumption.
 $R = \delta_k + \gamma$ combines capital accumulation with a linear production technology.  $R$ is
 the physical gross return on capital.
 
-**State vector.** Let $x_t' = [h_{t-1},\, k_{t-1},\, z_t']$.  There is a set of state transition
+**State vector.** Let $x_t^\top = [h_{t-1},\, k_{t-1},\, z_t^\top]$.  There is a set of state transition
 equations:
 
 $$
@@ -965,7 +957,7 @@ $\mathbb{E}_t\mu_{c,t+1} = (\beta R)^{-1}\mu_{ct}$, so $\mu_{st}$ satisfies a **
 when $\beta R = 1$:
 
 $$
-\mu_{st} = \mu_{s,t-1} + \nu'\epsilon_t
+\mu_{st} = \mu_{s,t-1} + \nu^\top \epsilon_t
 $$ (eq:martingale)
 
 for some vector $\nu$.  Solving forward and substituting gives
@@ -993,7 +985,7 @@ the LQ model.
 $\mu_{st} = M_s x_t$ where $x_t$ follows {eq}`eq:law0`.  It follows that
 
 $$
-\nu' = M_s C, \qquad \alpha = \sqrt{\nu'\nu} = \sqrt{M_s CC' M_s'}
+\nu^\top = M_s C, \qquad \alpha = \sqrt{\nu^\top \nu} = \sqrt{M_s C C^\top M_s^\top}
 $$ (eq:hsoffset2)
 
 The scalar $\alpha$ plays a central role in the observational equivalence result below.
@@ -1040,7 +1032,7 @@ $$
 \mu_{st} = \mu_{s,t-1} + \alpha\,\tilde\epsilon_t
 $$ (eq:reversee1)
 
-where $\tilde\epsilon_t$ is scalar i.i.d.\ with mean zero and unit variance.  Activating robustness
+where $\tilde\epsilon_t$ is scalar IID with mean zero and unit variance.  Activating robustness
 ($\sigma < 0$) means the **evil agent** solves
 
 $$
@@ -1086,10 +1078,10 @@ mystnb:
     caption: Observational equivalence locus
     name: fig-lqcs-oe-locus
 ---
-# Observational equivalence locus: β_hat(σ) = 1/R + σα^2 / (R-1)
+# Observational equivalence locus
 # HST benchmark values
-β0    = 0.997          # benchmark discount factor
-R0    = 1.0 / β0       # gross interest rate
+β0 = 0.997          # benchmark discount factor
+R0 = 1.0 / β0       # gross interest rate
 α2_vals = [0.005, 0.015, 0.030]   # three values of α^2 for illustration
 
 σ_grid = np.linspace(-0.002, 0.0, 400)
@@ -1097,14 +1089,14 @@ R0    = 1.0 / β0       # gross interest rate
 fig, ax = plt.subplots()
 for α2 in α2_vals:
     β_hat = 1/R0 + σ_grid * α2 / (R0 - 1)
-    ax.plot(σ_grid, β_hat, label=rf'$\alpha^2 = {α2}$')
+    ax.plot(σ_grid, β_hat, lw=2, label=rf'$\alpha^2 = {α2}$')
 
-ax.axhline(β0, linestyle=':', color='grey', linewidth=1, label=r'$\beta_0 = 0.997$')
-ax.axvline(0,  linestyle=':', color='grey', linewidth=1)
+ax.axhline(β0, linestyle=':', color='grey', linewidth=1,
+           label=r'$\beta_0 = 0.997$')
+ax.axvline(0, linestyle=':', color='grey', linewidth=1)
 ax.set_xlabel(r'$\sigma = -\theta^{-1}$ (robustness parameter)')
 ax.set_ylabel(r'$\hat\beta(\sigma)$')
 ax.legend()
-ax.grid(alpha=0.3)
 plt.show()
 ```
 
@@ -1168,32 +1160,28 @@ quadratic preferences.
 ---
 mystnb:
   figure:
-    caption: Expected consumption profile under Theorem 1 discount-factor offsets
+    caption: Discount-factor consumption profiles
     name: fig-lqcs-drift
 ---
-# Illustrate the Theorem 1 offset: lower β_hat at fixed R
-# In the special case λ = δ_h = 0:
-# With β0 R = 1, Theorem 1 gives β_hat < β0 and hence β_hat R < 1
-# Euler equation: E_t c_{t+1} = (β_hat R) c_t  -> downward drift
+# Theorem 1 offset: lower β_hat at fixed R
 
-β_vals  = [0.990, 0.993, 0.995]     # σ < 0 <-> β_hat < β0 in Theorem 1
+β_vals = [0.990, 0.993, 0.995]     # σ < 0 <-> β_hat < β0 in Theorem 1
 R_fixed = 1 / 0.997
-T_plot  = 40
+T_plot = 40
 
 fig, ax = plt.subplots()
 t_grid = np.arange(T_plot + 1)
-c0     = 1.0
+c0 = 1.0
 for β_hat_i in β_vals:
     drift = (β_hat_i * R_fixed) ** t_grid
     label = rf'$\hat\beta = {β_hat_i}$, $\hat\beta R = {β_hat_i*R_fixed:.4f}$'
-    ax.plot(t_grid, c0 * drift, label=label)
+    ax.plot(t_grid, c0 * drift, lw=2, label=label)
 
 ax.axhline(c0, linestyle=':', color='grey', linewidth=1,
            label=r'$\beta_0 R = 1$ (benchmark)')
 ax.set_xlabel('period $t$')
 ax.set_ylabel(r'$E_0 c_t / c_0$')
 ax.legend(fontsize=9)
-ax.grid(alpha=0.3)
 plt.show()
 ```
 
@@ -1243,41 +1231,36 @@ makes future income look more risky by introducing low-frequency persistence.
 ---
 mystnb:
   figure:
-    caption: Worst-case model makes endowment more persistent
+    caption: Worst-case endowment persistence
     name: fig-lqcs-persistence
 ---
-# Illustrate how worst-case model makes endowment process more persistent
-# We work with a simplified scalar AR(1) version for illustration:
-#   d_{t+1} = ρ d_t + σ_d ε_{t+1}      (approximating model)
-# The worst-case distortion increases the effective AR coefficient
+# Worst-case persistence in a scalar AR(1)
 
 ρ_approx = 0.80   # AR coefficient under approximating model
-σ_d      = 0.10   # endowment shock std
+σ_d = 0.10   # endowment shock std
 
-# Under worst-case model: effective AR coefficient = ρ + α*K(σ, β_hat)
-# Here we show how the worst-case AR coefficient varies with |σ|
+# Effective AR coefficient rises with |σ|.
 σ_rob_vals = [0.0, -0.0001, -0.0003, -0.0005]
-T_irf      = 30
+T_irf = 30
 
 fig, ax = plt.subplots()
 for σ_rob in σ_rob_vals:
-    # α K ~= |σ| * P * α^2 / (1 - |σ| * α^2 * P) - simplified scalar version
-    # For illustration, use a linear approximation: Δρ ~= -σ * α^2 * const
-    α2_scal  = 0.01
-    Δρ       = -σ_rob * α2_scal * 2.0    # heuristic scaling for illustration
-    ρ_wc     = ρ_approx + Δρ
-    irf      = ρ_wc ** np.arange(T_irf)
+    # Linear approximation for display.
+    α2_scal = 0.01
+    Δρ = -σ_rob * α2_scal * 2.0    # heuristic scaling for illustration
+    ρ_wc = ρ_approx + Δρ
+    irf = ρ_wc ** np.arange(T_irf)
     if σ_rob == 0.0:
-        ax.plot(irf, linewidth=2.5, linestyle='-',
+        ax.plot(irf, lw=2, linestyle='-',
                 label=rf'approx. model ($\sigma = 0$, $\rho = {ρ_approx}$)')
     else:
-        ax.plot(irf, linestyle='--',
-                label=rf'worst-case ($\sigma = {σ_rob}$, $\rho_{{wc}} \approx {ρ_wc:.4f}$)')
+        lbl = (rf'worst-case ($\sigma = {σ_rob}$, '
+               rf'$\rho_{{wc}} \approx {ρ_wc:.4f}$)')
+        ax.plot(irf, lw=2, linestyle='--', label=lbl)
 
 ax.set_xlabel('periods after shock')
 ax.set_ylabel('impulse response of $d_t$')
 ax.legend(fontsize=9)
-ax.grid(alpha=0.3)
 plt.show()
 ```
 
@@ -1301,63 +1284,59 @@ In the frequency-domain notation of HST, the transfer function from shocks $\eps
 target $s_t - b_t$ is $G(\zeta)$, and the frequency decomposition of the $H_2$ criterion is
 
 $$
-H_2 = -\frac{1}{2\pi}\int_{-\pi}^{\pi} \operatorname{trace}\!\bigl[G(\sqrt\beta\, e^{i\omega})'\,G(\sqrt\beta\, e^{i\omega})\bigr]\, d\omega
+H_2 = -\frac{1}{2\pi}\int_{-\pi}^{\pi} \operatorname{trace}\!\bigl[G(\sqrt\beta\, e^{i\omega})^\top\,G(\sqrt\beta\, e^{i\omega})\bigr]\, d\omega
 $$
 
-The integrand $G'G$ is **largest at low frequencies** $\omega \approx 0$, the consumer's welfare is
+The integrand $G^\top G$ is **largest at low frequencies** $\omega \approx 0$, the consumer's welfare is
 most sensitive to low-frequency income variability.
 
 Recognising this, the evil agent concentrates the worst-case distortions at low frequencies.  The
-distortion process has spectral density $W(\zeta)' W(\zeta)$ that is concentrated near $\omega = 0$.
+distortion process has spectral density $W(\zeta)^\top W(\zeta)$ that is concentrated near $\omega = 0$.
 The variance of the worst-case shocks grows as $|\sigma|$ increases.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Worst-case distortions concentrate at low frequencies
+    caption: Low-frequency distortions
     name: fig-lqcs-frequency
 ---
-# Illustrate frequency concentration of worst-case shocks
-# We plot a stylised version of trace[W(ζ)'W(ζ)] vs frequency
+# Frequency concentration of worst-case shocks
 
 ω_grid = np.linspace(-np.pi, np.pi, 500)
 
-# Approximating model: flat spectrum (i.i.d. shocks)
+# Approximating model: flat spectrum (IID shocks)
 spectrum_approx = np.ones_like(ω_grid)
 
-# Worst-case shocks: power concentrated at low frequencies
-# Model as a low-pass spectrum W(ω) ~ 1/(ω^2 + κ^2)
+# Low-pass worst-case spectrum
 def low_pass(ω, κ, scale):
     return scale / (ω**2 + κ**2)
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
-# Left panel: criterion G'G (low-frequency dominance)
+# Low-frequency dominance
 G_sq = 1.0 / (np.abs(np.exp(1j * ω_grid) - 0.95)**2 + 0.01)
 G_sq = G_sq / G_sq.max()
-axes[0].plot(ω_grid, G_sq, color='steelblue', linewidth=2)
-axes[0].set_title(r"Stylised $G(\zeta)'G(\zeta)$ vs frequency $\omega$")
+axes[0].plot(ω_grid, G_sq, color='C0', lw=2)
 axes[0].set_xlabel(r'frequency $\omega$')
-axes[0].set_ylabel(r'$G(\zeta)^\prime G(\zeta)$')
+axes[0].set_ylabel(r'$G(\zeta)^\top G(\zeta)$')
 axes[0].set_xlim(-np.pi, np.pi)
-axes[0].grid(alpha=0.3)
-axes[0].text(0, 0.5, 'Low-frequency\ndominance', ha='center', fontsize=10, color='steelblue')
+axes[0].set_title('low-frequency criterion')
+axes[0].text(0, 0.5, 'low-frequency\ndominance', ha='center',
+             fontsize=10, color='C0')
 
-# Right panel: worst-case shock spectra for two values of |σ|
+# Worst-case spectra
 for σ_abs, kap, scale in [(0.0001, 0.02, 0.8), (0.00005, 0.02, 0.4)]:
     W_sq = low_pass(ω_grid, kap, scale) + 0.01
     W_sq = W_sq / W_sq.max() * σ_abs / 0.0001
-    axes[1].plot(ω_grid, W_sq,
+    axes[1].plot(ω_grid, W_sq, lw=2,
                  label=rf'$|\sigma| = {σ_abs}$')
-axes[1].set_title(r"Stylised $\operatorname{tr}[W(\zeta)'W(\zeta)]$ vs frequency")
 axes[1].set_xlabel(r'frequency $\omega$')
-axes[1].set_ylabel(r'$\operatorname{tr}[W^\prime W]$')
+axes[1].set_ylabel(r'$\operatorname{tr}[W^\top W]$')
 axes[1].set_xlim(-np.pi, np.pi)
+axes[1].set_title('worst-case spectra')
 axes[1].legend()
-axes[1].grid(alpha=0.3)
-
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 ```
 
@@ -1377,8 +1356,8 @@ decision using the log-likelihood ratio statistic when one does not know which m
 data.  Specifically:
 
 $$
-\text{DEP}(\sigma) = \frac{1}{2}\bigl[\mathbb{P}(\text{prefer approx.} \mid \text{worst-case is true})
-                                    + \mathbb{P}(\text{prefer worst-case} \mid \text{approx. is true})\bigr]
+\text{DEP}(\sigma) = \frac{1}{2}\bigl[\mathbb{P}\{\text{prefer approx.} \mid \text{worst-case is true}\}
+                                    + \mathbb{P}\{\text{prefer worst-case} \mid \text{approx. is true}\}\bigr]
 $$
 
 When $\sigma = 0$ the two models are identical and DEP $= 0.5$.  As $|\sigma|$ increases the
@@ -1399,14 +1378,13 @@ mystnb:
     caption: Detection error probabilities
     name: fig-lqcs-dep
 ---
-# Illustrate detection error probabilities (scalar stylised version)
-# We compute relative entropy approximation and convert to DEP
+# Scalar detection-error illustration
 
 T_sample = 107        # HST sample length (1970Q1 - 1996Q3)
-α2_val   = 0.01       # representative α^2 value
-R_dep    = 1.0 / 0.997
+α2_val = 0.01       # representative α^2 value
+R_dep = 1.0 / 0.997
 
-# For each σ compute: K(σ,β_hat) from worst-case multiplier, then Δ, then DEP
+# Convert relative entropy to DEP.
 def compute_dep(σ_val, α2, R, T):
     """
     Compute detection error probability for a given σ.
@@ -1419,35 +1397,36 @@ def compute_dep(σ_val, α2, R, T):
         return 0.0
 
     # Scalar Bellman equation for P(β_hat)
-    disc  = (β_hat - 1 + σ_val * α2)**2 + 4 * σ_val * α2
+    disc = (β_hat - 1 + σ_val * α2)**2 + 4 * σ_val * α2
     if disc < 0:
         return np.nan
     P_val = (β_hat - 1 + σ_val * α2 + np.sqrt(disc)) / (-2 * σ_val * α2)
 
     # Worst-case gain K
-    K_val  = σ_val * α2 * P_val / (1 - σ_val * α2 * P_val)
+    K_val = σ_val * α2 * P_val / (1 - σ_val * α2 * P_val)
 
     # KL divergence (one-sided) approximation per period: 0.5 * K^2 * α^2
     kl_per = 0.5 * K_val**2 * α2
-    kl_T   = kl_per * T
+    kl_T = kl_per * T
 
     # DEP ~= Φ(-sqrt(KL_T / 2)) where Φ is standard normal CDF
-    dep    = norm.cdf(-np.sqrt(kl_T / 2))
+    dep = norm.cdf(-np.sqrt(kl_T / 2))
     return dep
 
 σ_dep_grid = np.linspace(-0.002, 0, 200)
-dep_vals   = np.array([compute_dep(s, α2_val, R_dep, T_sample)
+dep_vals = np.array([compute_dep(s, α2_val, R_dep, T_sample)
                        for s in σ_dep_grid])
 
 fig, ax = plt.subplots()
-ax.plot(σ_dep_grid, dep_vals, linewidth=2, color='steelblue')
-ax.axhline(0.5, linestyle=':', color='grey', linewidth=1, label='DEP = 0.5 at σ = 0')
-ax.axhline(0.3, linestyle='--', color='tomato', linewidth=1, label='DEP = 0.3 (plausible threshold)')
-ax.axhline(0.2, linestyle='--', color='orange', linewidth=1, label='DEP = 0.2')
+ax.plot(σ_dep_grid, dep_vals, lw=2, color='C0')
+ax.axhline(0.5, linestyle=':', color='grey', linewidth=1,
+           label='DEP = 0.5 at σ = 0')
+ax.axhline(0.3, linestyle='--', color='C3', linewidth=1,
+           label='DEP = 0.3 (plausible threshold)')
+ax.axhline(0.2, linestyle='--', color='C1', linewidth=1, label='DEP = 0.2')
 ax.set_xlabel(r'$\sigma$ (robustness parameter)')
 ax.set_ylabel('detection error probability')
 ax.legend()
-ax.grid(alpha=0.3)
 plt.show()
 ```
 
@@ -1470,7 +1449,7 @@ robustness parameter $\sigma_2$ and the data are generated by the distorted mode
 $\sigma_1$:
 
 $$
-\pi(\sigma_1;\sigma_2) = -\mathbb{E}_{0,\sigma_1}\sum_{t=0}^{\infty}\beta^t\, x_t' H(\sigma_2)' H(\sigma_2)\, x_t
+\pi(\sigma_1;\sigma_2) = -\mathbb{E}_{0,\sigma_1}\sum_{t=0}^{\infty}\beta^t\, x_t^\top H(\sigma_2)^\top H(\sigma_2)\, x_t
 $$ (eq:soln3)
 
 where the state evolves under decision rule $F(\sigma_2)$ and worst-case shocks $K(\sigma_1)$:
@@ -1488,18 +1467,17 @@ rules.
 ---
 mystnb:
   figure:
-    caption: Payoff of robust vs non-robust rules
+    caption: Robust and non-robust payoffs
     name: fig-lqcs-payoff
 ---
-# Illustrate robustness payoff comparison (scalar stylised version)
-# π(σ1; σ2) measures performance of rule σ2 when model σ1 generates data
+# Scalar robustness payoff comparison
 
-α2_rob   = 0.01
-R_rob    = 1.0 / 0.997
-β_rob    = 0.997
-σ2_vals  = [0.0, -0.0004, -0.0008]   # three decision-rule robustness levels
+α2_rob = 0.01
+R_rob = 1.0 / 0.997
+β_rob = 0.997
+σ2_vals = [0.0, -0.0004, -0.0008]   # three decision-rule robustness levels
 
-σ1_grid  = np.linspace(-0.0010, 0.0, 300)
+σ1_grid = np.linspace(-0.0010, 0.0, 300)
 
 def payoff_approx(σ1, σ2, α2, β, R):
     """
@@ -1520,26 +1498,25 @@ def payoff_approx(σ1, σ2, α2, β, R):
         K1 = σ1 * α2 * P1 / (1 - σ1*α2*P1)
 
     # Effective persistence of state under (F(σ2), K(σ1))
-    ρ_eff  = 0.85 + K1 * np.sqrt(α2)   # simplified
+    ρ_eff = 0.85 + K1 * np.sqrt(α2)   # simplified
     if abs(ρ_eff) >= 1.0:
         return np.nan
 
     # Lyapunov variance of state
-    var_x  = α2 / (1 - ρ_eff**2)
+    var_x = α2 / (1 - ρ_eff**2)
 
     # Per-period loss scales with variance of state
-    loss   = -var_x * (1.0 + 0.5 * abs(σ2) / 0.001)
+    loss = -var_x * (1.0 + 0.5 * abs(σ2) / 0.001)
     return loss
 
 fig, ax = plt.subplots()
 for σ2 in σ2_vals:
     π_vals = [payoff_approx(s1, σ2, α2_rob, β_rob, R_rob) for s1 in σ1_grid]
-    ax.plot(σ1_grid, π_vals, label=rf'$\sigma_2 = {σ2}$ (rule)')
+    ax.plot(σ1_grid, π_vals, lw=2, label=rf'$\sigma_2 = {σ2}$ (rule)')
 
 ax.set_xlabel(r'$\sigma_1$ (data-generating distortion)')
 ax.set_ylabel(r'$\pi(\sigma_1;\,\sigma_2)$')
 ax.legend(fontsize=9)
-ax.grid(alpha=0.3)
 plt.show()
 ```
 
@@ -1605,11 +1582,10 @@ mystnb:
     caption: Theorem 2 observational equivalence locus
     name: fig-lqcs-theorem2
 ---
-# Compute the Theorem 2 equivalence: β_tilde(σ_hat) vs σ_hat
-# Starting from β_hat R = 1 and σ_hat < 0
+# Theorem 2 equivalence locus
 
-β_hat_val  = 0.997     # β_hat satisfying β_hatR = 1
-α2_th2     = 0.01
+β_hat_val = 0.997     # β_hat satisfying β_hatR = 1
+α2_th2 = 0.01
 
 σ_hat_grid = np.linspace(-0.001, 0.0, 300)
 
@@ -1623,14 +1599,13 @@ def β_tilde(σ_hat, β_hat, α2):
 β_tilde_vals = β_tilde(σ_hat_grid, β_hat_val, α2_th2)
 
 fig, ax = plt.subplots()
-ax.plot(σ_hat_grid, β_tilde_vals, linewidth=2, color='steelblue',
+ax.plot(σ_hat_grid, β_tilde_vals, lw=2, color='C0',
         label=r'$\tilde\beta(\hat\sigma)$')
-ax.axhline(β_hat_val, linestyle='--', color='tomato',
+ax.axhline(β_hat_val, linestyle='--', color='C3',
            label=rf'$\hat\beta = {β_hat_val}$ (baseline, $\hat\beta R = 1$)')
 ax.set_xlabel(r'$\hat\sigma$ (robustness parameter)')
 ax.set_ylabel(r'$\tilde\beta$')
 ax.legend()
-ax.grid(alpha=0.3)
 plt.show()
 ```
 
@@ -1655,7 +1630,7 @@ pure endowment economy (no physical capital, $k_t = 0$).  In this case:
 - The only asset is the one-period risk-free bond $b_t$.
 - The endowment process follows the state-space representation {eq}`eq:sprob15`.
 
-The household's augmented state vector is $x_t = [b_t,\; z_t']'$, and the law of motion
+The household's augmented state vector is $x_t = [b_t,\; z_t^\top]^\top$, and the law of motion
 {eq}`eq:law0` specialises to
 
 $$
@@ -1685,12 +1660,12 @@ c_{t+1} - c_t = h\, w_{t+1}, \qquad
 h = (1-\beta)\,\check{G}(I-\beta\check{A})^{-1}\check{C}
 $$ (eq:bew_cinno)
 
-The vector $h$ plays the role of $\nu' = M_s C$ in the HST scalar $\alpha$ formula
+The vector $h$ plays the role of $\nu^\top = M_s C$ in the HST scalar $\alpha$ formula
 {eq}`eq:hsoffset2`.  Consequently,
 
 $$
-\alpha^2 = h h' = (1-\beta)^2\,
-\check{G}(I-\beta\check{A})^{-1}\check{C}\check{C}'(I-\beta\check{A}')^{-1}\check{G}'
+\alpha^2 = h h^\top = (1-\beta)^2\,
+\check{G}(I-\beta\check{A})^{-1}\check{C}\check{C}^\top(I-\beta\check{A}^\top)^{-1}\check{G}^\top
 $$ (eq:bew_alpha)
 
 For the two-factor model {eq}`eq:twofactor` with $\check{A} = \mathrm{diag}(1,0)$ and
@@ -1757,16 +1732,13 @@ models of the income process and have different attitudes toward model uncertain
 #### Numerical illustration
 
 ```{code-cell} ipython3
-# -- Part B Bewley model: compute α^2 and the observational equivalence locus --
-# Reuse Part A parameters (β = 0.95, σ1 = 0.15, σ2 = 0.30 from the top of the lecture).
-# Note: Part B's HST calibration used β0 = 0.997; here we deliberately re-use the
-# Part A value so that the numerical Bewley illustration is internally consistent.
+# Part B Bewley parameters
 β0_bew = β       # 0.95
 σ1_bew = σ1      # 0.15
 σ2_bew = σ2      # 0.30
-R_bew  = 1.0 / β0_bew
+R_bew = 1.0 / β0_bew
 
-# α^2 for the two-factor Bewley model  (eq:bew_alpha2)
+# Two-factor Bewley α^2
 α2_bew = σ1_bew**2 + (1 - β0_bew)**2 * σ2_bew**2
 
 print(f"α^2  (Bewley, two-factor)        = {α2_bew:.6f}")
@@ -1783,21 +1755,21 @@ mystnb:
     caption: Bewley locus and $\alpha^2$ decomposition
     name: fig-lqcs-bewley-locus
 ---
-# -- Observational equivalence locus  β_hat(σ) = β0 + σ α^2 β0 / (1-β0) ----------
+# Observational equivalence locus
 # σ range: go down until β_hat = 0.80
-σ_min_bew  = (0.80 - β0_bew) * (1 - β0_bew) / (α2_bew * β0_bew)
+σ_min_bew = (0.80 - β0_bew) * (1 - β0_bew) / (α2_bew * β0_bew)
 σ_bew_grid = np.linspace(σ_min_bew, 0, 400)
-β_hat_bew  = β0_bew + σ_bew_grid * α2_bew * β0_bew / (1 - β0_bew)
+β_hat_bew = β0_bew + σ_bew_grid * α2_bew * β0_bew / (1 - β0_bew)
 
-# Five representative agent types evenly spaced on the locus
-n_types   = 5
-σ_types   = np.linspace(σ_min_bew * 0.8, 0.0, n_types)
-β_types   = β0_bew + σ_types * α2_bew * β0_bew / (1 - β0_bew)
+# Representative agent types
+n_types = 5
+σ_types = np.linspace(σ_min_bew * 0.8, 0.0, n_types)
+β_types = β0_bew + σ_types * α2_bew * β0_bew / (1 - β0_bew)
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
-# -- Left: the locus with agent types -----------------------------------------
-axes[0].plot(σ_bew_grid, β_hat_bew, lw=2, color='steelblue',
+# Locus with agent types
+axes[0].plot(σ_bew_grid, β_hat_bew, lw=2, color='C0',
              label=r'$\hat\beta(\sigma)$ locus')
 axes[0].axhline(β0_bew, ls=':', color='grey', lw=1,
                 label=rf'$\beta_0 = {β0_bew}$ (benchmark, $\sigma=0$)')
@@ -1807,31 +1779,27 @@ for i, (s, b) in enumerate(zip(σ_types, β_types)):
                     label=rf'Type {i+1}: $\sigma={s:.4f},\;\beta={b:.4f}$')
 axes[0].set_xlabel(r'$\sigma$  (robustness parameter)')
 axes[0].set_ylabel(r'$\hat\beta(\sigma)$')
-axes[0].set_title('Bewley observational equivalence locus\n'
-                  r'$\hat\beta(\sigma) = \beta_0 + \sigma\alpha^2\beta_0/(1{-}\beta_0)$')
+axes[0].set_title('equivalence locus')
 axes[0].legend(fontsize=7.5)
-axes[0].grid(alpha=0.3)
 
-# -- Right: α^2 decomposition as σ1 and σ2 vary --------------------------------
+# α^2 decomposition
 σ1_range = np.linspace(0.01, 0.50, 120)
 σ2_range = np.linspace(0.01, 0.70, 120)
 axes[1].plot(σ1_range, σ1_range**2,
-             lw=2, color='steelblue',
+             lw=2, color='C0',
              label=r'permanent:  $\sigma_1^2$')
 axes[1].plot(σ2_range, (1 - β0_bew)**2 * σ2_range**2,
-             lw=2, color='tomato', ls='--',
+             lw=2, color='C3', ls='--',
              label=r'transitory: $(1{-}\beta)^2\sigma_2^2$')
-axes[1].axvline(σ1_bew, ls=':', color='steelblue', alpha=0.7,
+axes[1].axvline(σ1_bew, ls=':', color='C0', alpha=0.7,
                 label=rf'calibrated $\sigma_1={σ1_bew}$')
-axes[1].axvline(σ2_bew, ls=':', color='tomato', alpha=0.7,
+axes[1].axvline(σ2_bew, ls=':', color='C3', alpha=0.7,
                 label=rf'calibrated $\sigma_2={σ2_bew}$')
 axes[1].set_xlabel(r'$\sigma_j$')
 axes[1].set_ylabel(r'contribution to $\alpha^2$')
-axes[1].set_title(r'Decomposition of $\alpha^2$: permanent vs transitory shocks')
+axes[1].set_title(r'$\alpha^2$ decomposition')
 axes[1].legend(fontsize=9)
-axes[1].grid(alpha=0.3)
-
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 ```
 
@@ -1839,19 +1807,18 @@ plt.show()
 ---
 mystnb:
   figure:
-    caption: Identical consumption paths across robust types
+    caption: Robust type consumption paths
     name: fig-lqcs-types
 ---
-# -- Observational equivalence: all agent types share the same consumption path -
-# Consumption innovation h is IDENTICAL across all types on the locus
-# h = [σ1, (1-β0)σ2]  (from eq:bew_cinno for the two-factor model)
+# Same consumption innovation on the locus
 h_bew = np.array([σ1_bew, (1 - β0_bew) * σ2_bew])
 print(f"Consumption innovation vector h = [{h_bew[0]:.4f}, {h_bew[1]:.4f}]")
-print(f"Var(Δc) = h*h' = α^2 = {h_bew @ h_bew:.6f}  (equals α^2_bew: {α2_bew:.6f})")
+print(f"Var(Δc) = h*h.T = α^2 = {h_bew @ h_bew:.6f}  "
+      f"(equals α^2_bew: {α2_bew:.6f})")
 
 rng = np.random.default_rng(17)
 T_het = 80
-eps   = rng.standard_normal((T_het, 2))    # one common shock sequence
+eps = rng.standard_normal((T_het, 2))    # one common shock sequence
 
 c_types = np.zeros((n_types, T_het + 1))
 for i in range(n_types):
@@ -1861,22 +1828,17 @@ for i in range(n_types):
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
-# -- Left: consumption paths (should all coincide) -----------------------------
+# Consumption paths
 for i in range(n_types):
-    axes[0].plot(c_types[i], color=colors_types[i], lw=1.5,
+    axes[0].plot(c_types[i], color=colors_types[i], lw=2,
                  label=rf'Type {i+1}  ($\sigma^i={σ_types[i]:.4f}$)',
                  alpha=0.8)
 axes[0].set_xlabel('period $t$')
 axes[0].set_ylabel(r'$c_t - c_0$')
-axes[0].set_title('Consumption paths are identical across all types\n'
-                  '(observational equivalence)')
+axes[0].set_title('consumption paths')
 axes[0].legend(fontsize=8)
-axes[0].grid(alpha=0.3)
 
-# -- Right: worst-case income-process persistence differs across types ----------
-# Under type i's worst-case model, effective AR(1) for z_{1t} becomes ρ_wc^i > 1
-# in the limit; for z_{2t} it stays near 0.
-# Simple scalar illustration: ρ_wc ~= 1 + sqrt α^2 * K(σ^i, β^i), K from Bellman eqn
+# Worst-case persistence by type
 ρ0 = 1.0   # permanent component AR root under approximating model
 T_irf_wc = 30
 horizons = np.arange(T_irf_wc)
@@ -1884,29 +1846,27 @@ horizons = np.arange(T_irf_wc)
 for i, (s, b) in enumerate(zip(σ_types, β_types)):
     if s == 0.0:
         ρ_wc = ρ0
-        lbl  = rf'Type {i+1} $(\sigma=0)$: approx. model'
+        lbl = rf'Type {i+1} $(\sigma=0)$: approx. model'
     else:
         # K from scalar Bellman (eq:distort2 / eq:distortcons)
         R_i = 1.0 / b
         disc = (b - 1 + s * α2_bew)**2 + 4 * s * α2_bew
         disc = max(disc, 0)
-        P_i  = (b - 1 + s * α2_bew + np.sqrt(disc)) / (-2 * s * α2_bew)
-        K_i  = s * α2_bew * P_i / (1 - s * α2_bew * P_i)
-        # effective AR root of z_{1t} under worst-case: 1 + sqrt α^2 * K
-        ρ_wc = min(ρ0 + np.sqrt(α2_bew) * abs(K_i) * 0.6, 1.08)  # cap for display
-        lbl  = (rf'Type {i+1} $(\sigma={s:.4f})$: '
+        P_i = (b - 1 + s * α2_bew + np.sqrt(disc)) / (-2 * s * α2_bew)
+        K_i = s * α2_bew * P_i / (1 - s * α2_bew * P_i)
+        # Effective AR root under the worst-case model (capped for display).
+        ρ_wc = min(ρ0 + np.sqrt(α2_bew) * abs(K_i) * 0.6, 1.08)
+        lbl = (rf'Type {i+1} $(\sigma={s:.4f})$: '
                 rf'$\rho_{{wc}}\approx{ρ_wc:.4f}$')
     irf_wc = ρ_wc ** horizons
-    axes[1].plot(horizons, irf_wc, color=colors_types[i], lw=1.8,
+    axes[1].plot(horizons, irf_wc, color=colors_types[i], lw=2,
                  linestyle='-' if s == 0 else '--', label=lbl)
 
 axes[1].set_xlabel('horizon $h$')
-axes[1].set_ylabel('Impulse response of permanent income component')
-axes[1].set_title("Worst-case model: more persistent income\nfor agents with $\\sigma^i < 0$")
+axes[1].set_ylabel('impulse response of permanent income component')
+axes[1].set_title('worst-case persistence')
 axes[1].legend(fontsize=7.5)
-axes[1].grid(alpha=0.3)
-
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 ```
 
@@ -1985,7 +1945,7 @@ Specialise the Part B robust-control setup to the no-habit, no-capital LQ Bewley
 ($\lambda = \delta_h = 0$, $k_t = 0$), and let the endowment process be the two-factor model in
 {eq}`eq:twofactor`.
 
-1. Write the household state as $x_t = [b_t, z_t']'$ and derive matrices $(A, B, C)$ for the law
+1. Write the household state as $x_t = [b_t, z_t^\top]^\top$ and derive matrices $(A, B, C)$ for the law
   of motion {eq}`eq:law0`.
 2. Show that when $\sigma = 0$, the Bellman problem coincides with the Part A LQ permanent-income
   problem.
@@ -2004,7 +1964,7 @@ Interpret economically why the permanent and transitory components enter with di
 :class: dropdown
 ```
 
-1. With $x_t = [b_t, z_t']'$ and budget law $b_{t+1} = R(b_t + c_t - y_t)$,
+1. With $x_t = [b_t, z_t^\top]^\top$ and budget law $b_{t+1} = R(b_t + c_t - y_t)$,
   $y_t = \check G z_t$, $z_{t+1} = \check A z_t + \check C \epsilon_{t+1}$, the stacked law is
 
 $$
@@ -2031,7 +1991,7 @@ $$
 \qquad h = (1-\beta)\check G (I-\beta\check A)^{-1}\check C.
 $$
 
-  In HST notation, $\alpha^2 = h h'$.  For the two-factor calibration,
+  In HST notation, $\alpha^2 = h h^\top$.  For the two-factor calibration,
   $\check A=\mathrm{diag}(1,0)$ and $\check C=\mathrm{diag}(\sigma_1,\sigma_2)$, so
 
 $$
