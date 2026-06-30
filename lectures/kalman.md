@@ -46,6 +46,12 @@ It is aimed at readers who either
 * have heard of the Kalman filter but don't know how it works, or
 * know the Kalman filter equations, but don't know where they come from
 
+Subsequent lectures use the same recursive logic in more applied and more econometric settings.
+
+See {doc}`kalman_2` for an economic application in which a firm infers a worker's hidden human capital and effort.
+
+See {doc}`kalman_filter_var` for a derivation of the innovations representation and its connection to vector autoregressions.
+
 For additional (more advanced) reading on the Kalman filter, see
 
 * {cite}`Ljungqvist2012`, section 2.7
