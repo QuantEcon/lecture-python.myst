@@ -38,6 +38,8 @@ This lecture studies consumption smoothing in a linear-quadratic (LQ) permanent 
 
 We start with a rational-expectations version of the permanent income theories of {cite:t}`Friedman1956` and {cite:t}`Hall1978`.
 
+Throughout, we set $\beta R = 1$, so that the baseline consumer's subjective discount factor equals the bond price.
+
 The standard model is useful for studying
 
 - impulse response functions
@@ -48,31 +50,31 @@ The standard model is useful for studying
 
 We then study a robust version of the permanent income model due to {cite:t}`HST_1999` and {cite:t}`HansenSargent2008`.
 
-A consumer who distrusts his specification of the labor income process engages in a form of precautionary savings even when preferences are quadratic.
+A consumer who distrusts his specification of the labor income process engages in a form of precautionary savings.
 
-This robust model shows
+Our description of the  model with concerns about robustness includes 
 
-- how a concern for robustness is observationally equivalent (for quantities) to an increase in
+- how (for quantities) a concern for robustness is observationally equivalent  to an increase in
   impatience
-- how the worst-case model distorts the endowment process toward greater persistence
-- frequency-domain and detection-error-probability characterizations of the size of model
-  uncertainty
+- how the worst-case model that the consumer uses to shape his decision rule  distorts the baseline model's endowment process toward greater persistence
+- a frequency-domain representation of the effects of concerns about misspecification of the endowment process
+- a detection-error-probability characterization of the amount of model   uncertainty
 
 The lecture concludes by combining the Bewley economy with the robustness machinery.
 
 Using tools from {cite:t}`HansenSargent2008`, we show:
 
-- how a continuum of consumers can differ in their robustness parameter $\sigma^i \leq 0$ and
-  their discount factor $\beta^i$, with each pair lying on the observational-equivalence locus
+- how a continuum of consumers $i$ who use identical decision rules can nevertheless differ in their robustness parameters $\sigma_i \leq 0$ and
+  their discount factors $\beta_i$, provided that the  pair $(\sigma_i, \beta_i)$ lies on an observational-equivalence locus
   derived below
-- how every such consumer nevertheless chooses the **same consumption-saving rule** as the
-  plain-vanilla $(\sigma = 0, \beta_0)$ agent
-- how the equilibrium interest rate $R = \beta_0^{-1}$ and all aggregate dynamics therefore
-  coincide with those of the benchmark Bewley model
-- how agents can hold genuinely different internal (worst-case) models of their income process
-  while remaining observationally indistinguishable in quantities
+- how every such consumer  chooses the **same consumption-saving rule** as a baseline
+  plain-vanilla $(\sigma = 0, \beta)$ agent with no concerns about misspecification of the endowment process
+- how the equilibrium interest rate $R = \beta^{-1}$ and all aggregate dynamics therefore
+  coincide with those of a benchmark Bewley model
+- how distinct $(\sigma_i, \beta_i)$ agents act as if they have  different subjective  models of their non-financial income process
+  
 
-Throughout, we set $\beta R = 1$, so the consumer's subjective discount factor equals the bond price.
+
 
 Let's begin with some imports.
 
@@ -100,7 +102,7 @@ $$
 \mathbb{E}_0 \sum_{t=0}^{\infty} \beta^t u(c_t)
 $$ (eq:sprob1)
 
-where $\mathbb{E}_t$ is the mathematical expectation conditioned on the consumer's time-$t$ information,
+where $\mathbb{E}_t$ is a mathematical expectation conditioned on the consumer's time-$t$ information,
 $c_t$ is time-$t$ consumption, $u(c)$ is a strictly concave one-period utility function, and
 $\beta \in (0,1)$ is a discount factor.
 
@@ -124,7 +126,7 @@ the consumer at the start of period $t$.
 
 We assume $R^{-1} = \beta$.
 
-The endowment process has the state-space representation
+The endowment or non-financial income process has the state-space representation
 
 $$
 \begin{aligned}
@@ -151,18 +153,17 @@ where $\gamma > 0$ is a bliss level of consumption.
 We allow $c_t$ to be negative (a producer
 rather than a consumer).
 
-We impose the **transversality condition**
+We impose a **transversality condition**
 
 $$
-\mathbb{E}_0 \sum_{t=0}^{\infty} \beta^t b_t^2 < +\infty
+\mathbb{E}_0 \sum_{t=0}^{\infty} \beta^t b_t^2 < +\infty ,
 $$ (eq:sprob3)
 
 which rules out Ponzi schemes.
 
 ### Euler equation and certainty equivalence
 
-With quadratic utility, the first-order conditions for the consumer's problem imply the **martingale
-Euler equation**
+With quadratic utility, the first-order conditions for the consumer's problem imply that 
 
 $$
 \mathbb{E}_t c_{t+1} = c_t
@@ -177,9 +178,13 @@ It contrasts with models that have convex marginal utility
 ($u''' > 0$), where consumption is instead a submartingale.
 ```
 
-The problem satisfies a **certainty-equivalence** property: one can find the optimal plan by (1)
-solving the problem under perfect foresight to express $c_t$ as a function of $b_t$ and the entire
-future path $\{y_{t+j}\}_{j=0}^{\infty}$, and then (2) replacing those future values with
+Because the consumer maximizes a quadratic objective subject to a linear transition equation,
+the problem satisfies a **certainty-equivalence** property.
+
+This implies that we  can find the optimal plan by 
+
+- first solving the problem while pretending to have perfect foresight; this lets us express $c_t$ as a function of $b_t$ and the continuation sequence  $\{y_{t+j}\}_{j=0}^{\infty}$
+- then simply replace $\{y_{t+j}\}_{j=0}^{\infty}$  with
 $\{\mathbb{E}_t y_{t+j}\}_{j=0}^{\infty}$.
 
 ### The optimal consumption function
@@ -203,17 +208,17 @@ $$
 c_t = \frac{r}{1+r}\!\left[\sum_{j=0}^{\infty} \beta^j \mathbb{E}_t y_{t+j} - b_t\right]
 $$ (eq:sprob9)
 
-Consumption equals $r/(1+r)$ times total wealth, where total wealth is the sum of human wealth
+Evidently, consumption at $t$ equals $r/(1+r)$ times total wealth, where total wealth is the sum of human wealth
 $\sum_{j=0}^{\infty}\beta^j \mathbb{E}_t y_{t+j}$ and financial wealth $-b_t$.
 
-Using the state-space representation {eq}`eq:sprob15` to evaluate the geometric sum of expected
+Using state-space representation {eq}`eq:sprob15` to evaluate the geometric sum of expected
 future endowments,
 
 $$
-\sum_{j=0}^{\infty} \beta^j \mathbb{E}_t y_{t+j} = \check{G}(I - \beta \check{A})^{-1} z_t
+\sum_{j=0}^{\infty} \beta^j \mathbb{E}_t y_{t+j} = \check{G}(I - \beta \check{A})^{-1} z_t ,
 $$ (eq:discount1)
 
-we obtain the **Lucas-critique-respecting consumption function**
+we obtain 
 
 $$
 c_t = (1-\beta)\!\left[\check{G}(I-\beta\check{A})^{-1} z_t - b_t\right]
@@ -224,7 +229,7 @@ This expresses $c_t$ as a function of the state $[b_t,\, z_t^\top]^\top$ that co
 ### Representation 1: state $(b_t, z_t)$
 
 Combining the endowment law of motion with the optimal debt dynamics (derived by substituting
-{eq}`eq:lccf` into {eq}`eq:sprob2`) gives the first system representation:
+{eq}`eq:lccf` into {eq}`eq:sprob2`) gives  representation:
 
 $$
 \begin{aligned}
@@ -237,11 +242,15 @@ $$ (eq:rep1)
 
 In this representation the **exogenous** state is $z_t$ and the **endogenous** state is $b_t$.
 
+We turn now to an alternative representation.
+
 ### Representation 2: state $(c_t, z_t)$
 
-{cite:t}`Hall1978` showed that the LQ permanent income model implies a particularly sharp
-state-space representation in which the state consists of current consumption $c_t$ and the
-exogenous endowment state $z_t$, with assets $b_t$ becoming an outcome rather than a state
+{cite:t}`Hall1978` showed that the LQ permanent income model implies a
+ representation in which the state consists of current consumption $c_t$ and the
+exogenous endowment state $z_t$.
+
+In this representation, $b_t$ becoming an outcome rather than a state
 variable.
 
 Shifting {eq}`eq:sprob8` forward, eliminating $b_{t+1}$ via
@@ -254,7 +263,7 @@ $$ (eq:sprob11)
 The right-hand side is $(1-\beta)$ times the time-$(t+1)$ **innovation** to the expected present
 value of the endowment stream.
 
-Suppose the endowment has the moving-average representation
+Suppose the endowment has the (Wold)  moving-average representation
 
 $$
 y_{t+1} = d(L)\, w_{t+1}, \qquad d(L) = \sum_{j=0}^{\infty} d_j L^j
@@ -271,13 +280,13 @@ $$ (eq:sprob120)
 Substituting {eq}`eq:sprob120` into {eq}`eq:sprob11` gives the key result
 
 $$
-c_{t+1} - c_t = (1-\beta)\, d(\beta)\, w_{t+1}
+c_{t+1} - c_t = (1-\beta)\, d(\beta)\, w_{t+1} .
 $$ (eq:sprob13)
 
-where $d(\beta) = \check{G}(I-\beta\check{A})^{-1}\check{C}$ is the **present value of the
+Here,  $d(\beta) = \check{G}(I-\beta\check{A})^{-1}\check{C}$ is the **present value of the (Wold)
 moving-average coefficients**.
 
-Consumption is a **random walk** with innovation
+Thus, consumption is a **random walk** with innovation
 $(1-\beta)d(\beta)w_{t+1}$.
 
 Combining {eq}`eq:sprob13` and {eq}`eq:sprob7` gives
@@ -312,8 +321,9 @@ $$
 (1-\beta)b_t + c_t = (1-\beta)\mathbb{E}_t\sum_{j=0}^{\infty}\beta^j y_{t+j}
 $$ (eq:cointegration)
 
-   The left side is the cointegrating residual, which equals the consumer's expected present value
-   of future income.
+The left side is the cointegrating residual. 
+   
+
 
 ### Debt dynamics
 
@@ -332,7 +342,7 @@ This shows that $b_{t+1}$ is **predetermined** at time $t$ as a function of $z_t
 Solving backward from any $t$, $b_t$ depends on the entire history $z^{t-1} = [z_{t-1},\ldots,z_0]$
 and the initial condition $b_0$.
 
-This **history dependence** is a hallmark of incomplete markets.
+Such **history dependence** is a hallmark of a consumption plan in a various incomplete-markets economies.
 
 ### Two classic examples
 
@@ -381,7 +391,7 @@ $$ (eq:consexample1a)
 
 confirming that none of the permanent shock is saved, while all of the transitory shock is saved.
 
-In the partial-information (Muth model) example, the consumer observes $y_t$ and its history,
+In the incomplete-information (Muth model) example, the consumer observes $y_t$ and its history,
 but not $z_{1t}$ and $z_{2t}$ separately.
 
 The appropriate approach uses an **innovations
@@ -520,14 +530,21 @@ a shock occurs, consumption shifts permanently to a new level and stays there.
 ```{index} single: Cross-Section Distributions; consumption
 ```
 
-The unit root in consumption (Representation 2) causes the **cross-section variance** of
-consumption to grow linearly with age.
+The unit root in consumption (Representation 2) causes a **cross-section variance** of
+consumption to grow linearly with time.
 
 Consider a continuum of *ex ante* identical households born at $t = 0$.
 
-Each household $i$ has
-the same preferences and the same stochastic income process, but faces **idiosyncratic** shocks
-$w_{t+1}^i$.
+All households $i$ share  the same preferences.
+
+They all face a stochastic process for non-financial income of the same form
+
+
+$$
+y_t^i = g( w_t^i, w_{t-1}^i, \ldots, w_0^i; z_0^i),
+$$ (eq:gstochpro)
+
+While all consumers face have the same $g$ process, they  have different, statistically independent realizations of the  **idiosyncratic** shock sequences $\{w_{t}^i\}_{t=0}^\infty$.
 
 Let all households start from the same initial conditions $c_0^i = c_0$ and $z_0^i$.
 
@@ -537,7 +554,7 @@ $$
 c_{t+1}^i = c_t^i + h\, w_{t+1}^i, \qquad h = (1-\beta)\,\check{G}(I-\beta\check{A})^{-1}\check{C}
 $$
 
-Since the $w^i_{t+1}$ are independent across agents,
+Since  $\{w^i_{t}\}$ realizations are independent across agents,
 
 $$
 \mathbb{E}_0\bigl(c_t^i - c_0^i\bigr)^2 = t\, h h^\top
@@ -599,7 +616,7 @@ A continuum of measure one of consumers, indexed by $i \in [0,1]$, trade a
 risk-free one-period bond with price $\beta$.
 
 All consumers have the same preferences and the
-same stochastic income process, but face **idiosyncratic** income shocks.
+same stochastic income process {eq}`eq:gstochpro`, but face have  **idiosyncratic** non-financial income shock process realizations.
 
 Initial bond positions
 are zero: $b_0^i = 0$ for all $i$.
@@ -628,7 +645,7 @@ $$
 \int_0^1 c_0^i\, di = (1-\beta)\sum_{j=0}^{\infty}\beta^j \mathbb{E}_0\!\int_0^1 y_j^i\, di = Y
 $$ (eq:c_marketclear_0)
 
-because the continuum of idiosyncratic shocks averages out.
+because the continuum of idiosyncratic shocks averages to zero.
 
 For future periods, integrating
 {eq}`eq:c_future`:
@@ -643,14 +660,15 @@ The
 bond market clears at zero net supply each period.
 
 Thus $R = \beta^{-1}$ is an equilibrium
-outcome: we have constructed a Bewley model.
+outcome.
+
+ 
 
 While the cross-section mean of consumption is constant, the
 cross-section *variance* grows without bound according to {eq}`eq:varspread`.
 
 Initial
-differences in endowment draws $z_0^i$ create permanent differences in consumption levels, and
-idiosyncratic shocks create ongoing divergence.
+differences in endowment draws $z_0^i$ create permanent differences in consumption levels.
 
 ```{code-cell} ipython3
 ---
@@ -706,11 +724,10 @@ plt.show()
 Because each consumer dislikes variation of consumption over time, each
 consumer would prefer a completely smoothed stream $c_t^i = c_0^i$ for all $t$.
 
-Such an allocation is feasible (the cross-section average of income is constant), and it is **Pareto
-superior** to the incomplete-markets equilibrium.
+Such an allocation is feasible because the cross-section average of income is constant.
 
-The next section describes the complete-markets
-allocation that achieves this.
+The next section describes a complete-markets
+allocation that supports this allocation.
 
 ### Consumption smoothing with complete markets
 
@@ -728,7 +745,7 @@ $$ (eq:CMbudget)
 where $q(z_{t+1}|z_t)$ is the pricing kernel for one-period state-contingent claims and
 $b_t(z_{t+1})$ is the household's portfolio of Arrow securities chosen at $t$.
 
-We conjecture (and verify) that the equilibrium pricing kernel is
+We guess (and verify) that the equilibrium pricing kernel is
 
 $$
 q(z_{t+1}|z_t) = \beta\,\phi(z_{t+1}|z_t)
@@ -773,14 +790,14 @@ Consumer $i$'s rank in the consumption distribution is fixed forever.
 A lucky initial draw $z_0^i$ manifests itself as perpetually high consumption $\bar{c}^i$ and
 lower indebtedness $b(z_t^i, \bar{c}^i)$ across all future states.
 
-This contrasts sharply with the incomplete-markets Bewley economy, where the cross-section variance
+This outcome contrasts  with what happens in  the incomplete-markets Bewley economy, where the cross-section variance
 of consumption grows without bound.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Complete and incomplete distributions
+    caption:  Cross section distributions with incomplete and complete markets 
     name: fig-lqcs-markets
 ---
 # Complete and incomplete consumption distributions
@@ -823,8 +840,8 @@ plt.show()
 ```
 
 ```{note}
-Under **complete markets** the histogram stays the same across all $t$ (distributions overlap
-perfectly), while under **incomplete markets** the distribution spreads out over time.
+Under **complete markets** the histogram stays the same across all $t$ (distributions coincide
+perfectly), while under **incomplete markets**  distributions spread out over time.
 ```
 
 So far the consumer fully trusts his stochastic income model.
@@ -980,7 +997,7 @@ Here $\mu_{st}$ is the **marginal valuation of consumption services**, which sum
 endogenous state variables $h_{t-1}$ and $k_{t-1}$.
 
 Equation {eq}`eq:foc` (last line) implies
-$\mathbb{E}_t\mu_{c,t+1} = (\beta R)^{-1}\mu_{ct}$, so $\mu_{st}$ satisfies a **martingale representation**
+$\mathbb{E}_t\mu_{c,t+1} = (\beta R)^{-1}\mu_{ct}$, so $\mu_{st}$ is a martingale
 when $\beta R = 1$:
 
 $$
@@ -1025,7 +1042,7 @@ The scalar $\alpha$ plays a central role in the observational equivalence result
 ```{index} single: Observational Equivalence; Theorem 1
 ```
 
-The central HST result is an observational-equivalence theorem.
+HST result state an observational-equivalence theorem.
 
 ````{prf:theorem} Observational Equivalence, I
 :label: thm-lqcs-oe1
@@ -1046,11 +1063,11 @@ and $\hat\beta(\sigma) < \beta$.
 Since $R > 1$ and $\alpha^2 > 0$, a more negative $\sigma$ (stronger robustness
 concern) lowers $\hat\beta$.
 
-A robust consumer wants to save more because the minimizing agent makes future income look worse than the approximating model predicts.
+A robust consumer wants to save more because his alter-ago, a utility  minimizing agent, makes future income look worse than the approximating model predicts.
 
-A lower discount factor makes the same consumer less patient and therefore reduces saving.
+A lower discount factor makes a consumer less patient and therefore reduces saving.
 
-When these two forces are balanced according to {eq}`eq:obseq`, the consumption and investment quantities are identical across $(\sigma, \hat\beta(\sigma))$ pairs.
+When these two forces are balanced according to {eq}`eq:obseq`, consumption plans are identical across $(\sigma, \hat\beta(\sigma))$ pairs.
 
 ````{prf:proof}
 When $\beta R = 1$ and $\sigma = 0$, the marginal utility $\mu_{st}$ obeys the martingale
@@ -1061,7 +1078,7 @@ $$ (eq:reversee1)
 
 where $\tilde\epsilon_t$ is scalar IID with mean zero and unit variance.
 
-Activating robustness ($\sigma < 0$) means the minimizing agent solves
+Activating a concern about robustness ($\sigma < 0$) implies the utility minimizing alter ego sets 
 
 $$
 \tilde w_t = K(\sigma,\hat\beta)\,\mu_{s,t-1}
@@ -1138,7 +1155,7 @@ It cancels the robust consumer's precautionary-savings motive, leaving the consu
 
 The upward-drift comparison appears in {prf:ref}`thm-lqcs-oe2`, which asks the reverse observational-equivalence question.
 
-The classical precautionary motive (see Leland 1968 and Miller 1974) arises because:
+The classical precautionary motive  arises because:
 
 $$
 u'''(c) > 0 \;\Rightarrow\; \mathbb{E}_t u'(c_{t+1}) > u'(\mathbb{E}_t c_{t+1}) \;\Rightarrow\; \mathbb{E}_t c_{t+1} > c_t
@@ -1146,7 +1163,7 @@ $$
 
 This channel requires *convexity of marginal utility* and is absent with quadratic preferences.
 
-In contrast, the robustness-based precautionary motive operates through distortions of **conditional means** of shocks, shifting first moments of the shock distribution even with quadratic preferences.
+In contrast, the robustness-based precautionary motive operates through distortions of **conditional means** of shocks, shifting the first moment of the innovation to non-financial income.
 
 ### Observational equivalence and distorted expectations
 
@@ -1164,7 +1181,7 @@ X_{t+1} &= \bigl(A - BF(\sigma,\hat\beta) + CK(\sigma,\hat\beta)\bigr) X_t + C\t
 \end{aligned}
 $$ (eq:sys2)
 
-The consumer forms expectations of future income using the **distorted transition matrix**
+A robust consumer with concerns about possible misspecification of the approximating model's stochastic process for non-financial income forms expectations of future income using the **distorted transition matrix**
 $A - BF + CK$ rather than the approximating transition matrix $A - BF$.
 
 The distorted expectations operator $\hat{\mathbb{E}}_t$ satisfies
@@ -1244,7 +1261,7 @@ models diverge and the DEP falls toward zero.
 
 The full DEP calculation requires a specified approximating model, its worst-case counterpart, and the sample length used in the likelihood-ratio experiment.
 
-We compute such a DEP for the solved robust Bewley scalar model below.
+We compute such a DEP for a robust Bewley  model below.
 
 ```{note}
 HST suggested that a DEP above 0.2 is "plausible", meaning the models are still hard enough to distinguish statistically that a concern for robustness is warranted.
@@ -1332,7 +1349,7 @@ The solution satisfies $\tilde\beta > \hat\beta$ when $\hat\sigma < 0$.
 
 We now synthesise the lecture by embedding the Bewley economy above into the HST framework and applying the observational-equivalence theorem.
 
-This constructs a family of **robust Bewley economies**, parameterised by a robustness level $\sigma \leq 0$, whose equilibrium quantities are identical to those of the plain vanilla Bewley model.
+In this way, we construct a family of **robust Bewley economies**, parameterised by a robustness level $\sigma \leq 0$, whose equilibrium quantities are identical to those of the plain vanilla Bewley model.
 
 We first map the Bewley economy into HST notation, specialising the robust model to
 $\lambda = \delta_h = 0$ (no habits, no durable goods) and to a
@@ -1433,24 +1450,24 @@ The goods-market clearing condition $\int c_t^i\, di = Y$ is therefore satisfied
 $R = \beta_0^{-1}$ for the same reason as in the benchmark Bewley economy.
 ````
 
-#### Heterogeneous $(\beta^i, \sigma^i)$ preferences
+#### Heterogeneous $(\beta_i, \sigma_i)$ preferences
 
 A richer extension populates the economy with a **continuum of types**, each indexed by a
-robustness parameter $\sigma^i \in [\underline\sigma, 0]$, with discount factor
+robustness parameter $\sigma_i \in [\underline\sigma, 0]$, with discount factor
 
 $$
-\beta^i = \hat\beta(\sigma^i) = \beta_0 + \frac{\sigma^i\,\alpha^2\,\beta_0}{1-\beta_0}
+\beta_i = \hat\beta(\sigma_i) = \beta_0 + \frac{\sigma_i\,\alpha^2\,\beta_0}{1-\beta_0}
 $$ (eq:bew_heterog)
 
-Since all pairs $(\sigma^i, \beta^i)$ lie on {eq}`eq:bew_locus`, every agent adopts the **same consumption rule** as the benchmark.
+Since all pairs $(\sigma_i, \beta_i)$ lie on {eq}`eq:bew_locus`, every agent adopts the **same consumption rule** as the benchmark.
 
 Aggregate dynamics are unchanged because the cross-section mean of consumption equals $Y$ and the cross-section variance grows at rate $\alpha^2$ per period.
 
 The equilibrium interest rate is unchanged: $R = \beta_0^{-1}$.
 
-Agents are observationally indistinguishable to an outside econometrician because data on $(c_t^i, a_t^i)$ cannot reveal whether agent $i$ has $\sigma^i = 0$ or $\sigma^i < 0$.
+Agents are observationally indistinguishable to an outside econometrician because data on $(c_t^i, a_t^i)$ cannot reveal whether agent $i$ has $\sigma_i = 0$ or $\sigma_i < 0$.
 
-Agents differ in their internal model because an agent with $\sigma^i < 0$ applies a worst-case distortion $w_{t+1}^i = K(\sigma^i, \beta^i)\,\mu_{s,t}^i$ to her conditional expectations, while an agent with $\sigma^i = 0$ takes the approximating model at face value.
+Agents differ in their internal model because an agent with $\sigma_i < 0$ applies a worst-case distortion $w_{t+1}^i = K(\sigma_i, \beta_i)\,\mu_{s,t}^i$ to her conditional expectations, while an agent with $\sigma_i = 0$ takes the approximating model at face value.
 
 This sets the stage for a Bewley model with **heterogeneous ambiguity aversion**: although
 every agent acts identically in terms of observable choices, they hold different subjective
@@ -1722,8 +1739,8 @@ $$
 \qquad \sigma \in [-\bar\sigma, 0].
 $$
 
-Suppose a unit interval of consumers is indexed by $i$ with type $\sigma^i \in [-\bar\sigma, 0]$
-and discount factor $\beta^i = \beta(\sigma^i)$.
+Suppose a unit interval of consumers is indexed by $i$ with type $\sigma_i \in [-\bar\sigma, 0]$
+and discount factor $\beta_i = \beta(\sigma_i)$.
 
 1. Use {prf:ref}`thm-lqcs-oe1` to show that each type has the same consumption rule as the benchmark
   $(\beta_0, 0)$ agent.
@@ -1743,17 +1760,17 @@ and discount factor $\beta^i = \beta(\sigma^i)$.
 
 Here is one solution:
 
-1. {prf:ref}`thm-lqcs-oe1` implies that if $(\sigma^i, \beta^i)$ lies on
+1. {prf:ref}`thm-lqcs-oe1` implies that if $(\sigma_i, \beta_i)$ lies on
 
 $$
-\beta^i = \beta_0 + \frac{\sigma^i\alpha^2\beta_0}{1-\beta_0},
+\beta_i = \beta_0 + \frac{\sigma_i\alpha^2\beta_0}{1-\beta_0},
 $$
 
   then type $i$ chooses the same decision rule as the benchmark $(0,\beta_0)$ agent and all types share the same consumption policy function $c_t = \mathcal C(a_t,z_t)$.
 
 2. Since all individual policy rules coincide with benchmark Bewley policies, aggregating over consumers gives the same goods- and bond-market clearing conditions and supports the same equilibrium $R=\beta_0^{-1}$.
 
-3. Observational equivalence concerns quantities generated by optimal rules, so distinct $(\sigma^i,\beta^i)$ can generate the same $\{c_t^i,a_t^i\}$ while implying different internal worst-case beliefs.
+3. Observational equivalence concerns quantities generated by optimal rules, so distinct $(\sigma_i,\beta_i)$ can generate the same $\{c_t^i,a_t^i\}$ while implying different internal worst-case beliefs.
 
 ```{solution-end}
 ```
