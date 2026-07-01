@@ -63,9 +63,9 @@ The decision rule does not depend on the variance of the shocks, but the *level*
 
 After describing the structure of the certainty equivalence property in detail, this lecture describes its role in rational expectations modeling.
 
-We do so by drawing heavily on the introduction to {cite}`lucas1981rational`.
+We do so by drawing heavily on the introduction to {cite:t}`lucas1981rational`.
 
-In addition to learning the certainty equivalence principle, this lecture describes troubles with pre-rational expectations econometric policy evaluation procedures described by {cite}`lucas1976econometric`.
+In addition to learning the certainty equivalence principle, this lecture describes troubles with pre-rational expectations econometric policy evaluation procedures described by {cite:t}`lucas1976econometric`.
 
 ```{note}
 That volume collected early papers on rational expectations modeling and econometrics.
@@ -137,7 +137,7 @@ Policy evaluation requires knowledge of the entire map $f \mapsto T(f)$.
 
 Under an environment change $f_0 \to f_1$, agents will in general revise their decision rules $h_0 \to h_1 = T(f_1)$, rendering the estimated rule $h_0$ invalid for forecasting behavior under $f_1$.
 
-{cite:t}`lucas1976econometric` and the introduction to {cite}`lucas1981rational` conclude that the only nonexperimental path forward is to recover the **return function** $V$ from which $h$ is derived as the solution to an optimization problem, and then re-solve that problem under the counterfactual environment $f_1$.
+{cite:t}`lucas1976econometric` and the introduction to {cite:t}`lucas1981rational` conclude that the only nonexperimental path forward is to recover the **return function** $V$ from which $h$ is derived as the solution to an optimization problem, and then re-solve that problem under the counterfactual environment $f_1$.
 
 
 ## An optimization problem
@@ -167,7 +167,7 @@ The dependence on $g$ and $V$ is suppressed in the main text but made explicit w
 
 Progress beyond the level of generality of the previous section requires restricting the primitives.
 
-A productive restriction, exploited in the papers collected in {cite}`lucas1981rational`, imposes *quadratic* $V$ and *linear* $g$, which forces $h$ to be linear.
+A productive restriction, exploited in the papers collected in {cite:t}`lucas1981rational`, imposes *quadratic* $V$ and *linear* $g$, which forces $h$ to be linear.
 
 As part of its computational tractability, this specialization delivers a striking structural result:
 
@@ -245,7 +245,7 @@ The requirement that $\tilde{z}_t = h_2(z_t) = S(f)(z_t)$ -- i.e., that agents' 
 These restrictions, rather than any conditions on distributed lags within a single equation, are the operative empirical content of rational expectations.
 
 ```{note}
-This is the message of {cite}`lucas1976econometric` and {cite}`sargent1981interpreting`.
+This is the message of {cite:t}`lucas1976econometric` and {cite:t}`sargent1981interpreting`.
 ```
 
 The following code verifies the CE principle numerically.

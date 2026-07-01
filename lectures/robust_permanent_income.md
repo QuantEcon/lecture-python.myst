@@ -35,18 +35,18 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 
 ## Overview
 
-This lecture studies the model of {cite}`HST_1999`.
+This lecture studies the model of {cite:t}`HST_1999`.
 
 The paper asks a simple question with surprising consequences.
 
-What happens to a classic permanent income consumer when, instead of trusting a single probability model of their income, they **fear that their model is misspecified** and want decisions that work well across a *family* of nearby models?
+What happens to a classic permanent income consumer when, instead of trusting a single probability model of their income, they *fear that their model is misspecified* and want decisions that work well across a *family* of nearby models?
 
 Such a consumer is called a **robust** decision maker.
 
 The central findings are:
 
 * A preference for robustness is hidden inside the quantity implications of the ordinary permanent income model.
-* Robustness and risk-sensitivity are two interpretations of the **same** decision rules, with a single parameter $\sigma$ governing both.
+* Robustness and risk-sensitivity are two interpretations of the *same* decision rules, with a single parameter $\sigma$ governing both.
 * Concern about *small* amounts of model misspecification can show up as *large* market-based measures of risk aversion.
 * The consumption and savings data alone cannot identify the robustness parameter: the model is **observationally equivalent** to a standard permanent income model with a lower discount factor.
 * But asset prices, in particular the **market price of risk**, *can* be used to pin robustness down.
@@ -55,13 +55,13 @@ We will learn about
 
 * risk-sensitive recursive preferences and the operator $\mathcal{R}_t$
 * how a malevolent "second agent" implements a preference for robustness through a two-player zero-sum game
-* the link between robustness and **Knightian uncertainty** in the sense of {cite}`GilboaSchmeidler:1989` and {cite}`EpsteinWang1994`
+* the link between robustness and **Knightian uncertainty** in the sense of {cite:t}`GilboaSchmeidler:1989` and {cite:t}`EpsteinWang1994`
 * an **observational equivalence** result that we will reproduce numerically
 * how a small worst-case distortion of conditional means translates almost one-for-one into a market price of risk
 
 This lecture builds on ideas in {doc}`perm_income`, {doc}`perm_income_cons`, and {doc}`lqcontrol`.
 
-The robustness machinery here is developed at book length in {cite}`HansenSargent2008`, extended in {cite}`AHS_2003`, and reinterpreted through detection-error probabilities in {cite}`BHS_2009`.
+The robustness machinery here is developed at book length in {cite:t}`HansenSargent2008`, extended in {cite:t}`AHS_2003`, and reinterpreted through detection-error probabilities in {cite:t}`BHS_2009`.
 
 Let's start with some imports.
 
@@ -93,7 +93,7 @@ $$ (eq:hst_return)
 
 with $Q$ positive definite and $R$ positive semidefinite.
 
-Following {cite}`Epstein_Zin1989`, {cite}`Weil_1989`, and {cite}`hansen1995discounted`, intertemporal preferences are induced by the recursion
+Following {cite:t}`Epstein_Zin1989`, {cite:t}`Weil_1989`, and {cite:t}`hansen1995discounted`, intertemporal preferences are induced by the recursion
 
 $$
 U_t = u(i_t, x_t) + \beta \, \mathcal{R}_t(U_{t+1}),
@@ -114,7 +114,9 @@ When $\sigma \neq 0$ the operator $\mathcal{R}_t$ applies an additional risk adj
 Values of $\sigma < 0$ correspond to *more* aversion to risk than the von Neumann–Morgenstern benchmark, which is the case studied throughout the paper.
 
 ```{note}
-The exponential-of-utility form in {eq}`eq:hst_R` originates in the *risk-sensitive control* literature started by {cite}`Jacobson_73` and extended by {cite}`Whittle_1981` and {cite}`Whittle_1990`. {cite}`HST_1999` give it an economic reinterpretation as a *preference for robustness*.
+The exponential-of-utility form in {eq}`eq:hst_R` originates in the *risk-sensitive control* literature started by {cite:t}`Jacobson_73` and extended by {cite:t}`Whittle_1981` and {cite:t}`Whittle_1990`.
+
+{cite:t}`HST_1999` give it an economic reinterpretation as a *preference for robustness*.
 ```
 
 ### The operator under Gaussian uncertainty
@@ -130,7 +132,7 @@ $$
 = \mu + \frac{\sigma}{4} s^2.
 $$ (eq:hst_R_gauss)
 
-For $\sigma < 0$ this is *below* the conditional mean $\mu$: the decision maker evaluates uncertain prospects **pessimistically**, and the penalty grows with the conditional variance $s^2$.
+For $\sigma < 0$ this is *below* the conditional mean $\mu$: the decision maker evaluates uncertain prospects *pessimistically*, and the penalty grows with the conditional variance $s^2$.
 
 This certainty equivalent has a revealing decomposition.
 
@@ -139,7 +141,13 @@ The expectation in {eq}`eq:hst_R` re-weights outcomes by $\exp(\sigma U_{t+1}/2)
 The operator value $\mu + \frac{\sigma}{4} s^2$ lies *halfway* between the original mean $\mu$ and this worst-case mean: it equals the worst-case expected utility $\mu + \frac{\sigma}{2}s^2$ *plus* the relative-entropy penalty $-\frac{\sigma}{4}s^2$ that restrains the distortion.
 
 ```{note}
-The two coefficients describe different objects. The **worst-case mean** of $U_{t+1}$ shifts by $\frac{\sigma}{2}s^2$, while the **operator value** (certainty equivalent) shifts by $\frac{\sigma}{4}s^2$. Both are correct; the smaller shift of $\mathcal{R}_t$ reflects the entropy cost the malevolent player pays for the distortion. A self-contained derivation of {eq}`eq:hst_R_gauss` is requested in {ref}`hst_ex1`.
+The two coefficients describe different objects.
+
+The **worst-case mean** of $U_{t+1}$ shifts by $\frac{\sigma}{2}s^2$, while the **operator value** (certainty equivalent) shifts by $\frac{\sigma}{4}s^2$.
+
+Both are correct; the smaller shift of $\mathcal{R}_t$ reflects the entropy cost the malevolent player pays for the distortion.
+
+A self-contained derivation of {eq}`eq:hst_R_gauss` is requested in {ref}`hst_ex1`.
 ```
 
 Let's visualize both facts, with the certainty equivalent on the left and the worst-case (tilted) density of continuation utility on the right.
@@ -190,13 +198,13 @@ plt.show()
 
 The left panel shows the certainty equivalent $\mathcal{R}_t$ sliding below the mean as $\sigma$ becomes more negative.
 
-The right panel shows the associated **worst-case** density of continuation utility: a robust agent behaves *as if* $U_{t+1}$ were drawn from a pessimistically re-centered distribution (mean $\mu + \frac{\sigma}{2}s^2$, dashed), while the operator value $\mathcal{R}_t = \mu + \frac{\sigma}{4}s^2$ (dotted) sits halfway between it and the reference mean $\mu$.
+The right panel shows the associated worst-case density of continuation utility: a robust agent behaves *as if* $U_{t+1}$ were drawn from a pessimistically re-centered distribution (mean $\mu + \frac{\sigma}{2}s^2$, dashed), while the operator value $\mathcal{R}_t = \mu + \frac{\sigma}{4}s^2$ (dotted) sits halfway between it and the reference mean $\mu$.
 
 ## A preference for robustness
 
 The pessimistic tilt in the right panel above is not just an analogy.
 
-{cite}`HST_1999` show that the risk-sensitive problem is the value function of a **two-player zero-sum game**.
+{cite:t}`HST_1999` show that the risk-sensitive problem is the value function of a **two-player zero-sum game**.
 
 In this game, one player chooses the control $\{i_t\}$ while a second, malevolent player chooses a distortion $\{v_t\}$ to the conditional mean of the shocks.
 
@@ -218,9 +226,9 @@ Because $\sigma < 0$ makes $-1/\sigma > 0$, the term $-\frac{1}{\sigma}v^\top v$
 
 A smaller $|1/\sigma|$ (more negative $\sigma$) means a cheaper distortion budget and hence a larger family of models the agent guards against, reflecting a *stronger* preference for robustness.
 
-This is exactly the max-min expected utility structure of {cite}`GilboaSchmeidler:1989`: the agent's "nominal model" sets $v_t = 0$, but they entertain a whole family of alternatives indexed by $\{v_t\}$ and act against the worst case.
+This is exactly the max-min expected utility structure of {cite:t}`GilboaSchmeidler:1989`: the agent's "nominal model" sets $v_t = 0$, but they entertain a whole family of alternatives indexed by $\{v_t\}$ and act against the worst case.
 
-Following {cite}`EpsteinWang1994`, the non-uniqueness of the implied probability measures is a form of **Knightian uncertainty**.
+Following {cite:t}`EpsteinWang1994`, the non-uniqueness of the implied probability measures is a form of **Knightian uncertainty**.
 
 The robust and risk-sensitive problems share the same value function matrix $\Omega$ and the same decision rule $i_t = -F x_t$; they differ only in interpretation.
 
@@ -278,7 +286,7 @@ This whole economy is a special case of the control problem {eq}`eq:hst_lom`–{
 
 ### The $\sigma = 0$ benchmark and the martingale
 
-To build intuition, set $\sigma = 0$ and impose the permanent income restriction $\beta R = 1$, as in {cite}`Hall1978`.
+To build intuition, set $\sigma = 0$ and impose the permanent income restriction $\beta R = 1$, as in {cite:t}`Hall1978`.
 
 The first-order conditions then imply that the marginal utility of consumption services is a **martingale**,
 
@@ -296,7 +304,7 @@ for some loading vector $v$.
 
 Equation {eq}`eq:hst_martingale` is the classic statement that, under $\beta R = 1$, consumption responds only to *news*, so it is a random walk.
 
-This is the result that {cite}`Hall1978` and {cite}`Campbell1987` tested on aggregate U.S. data.
+This is the result that {cite:t}`Hall1978` and {cite:t}`Campbell1987` tested on aggregate U.S. data.
 
 The scalar
 
@@ -304,10 +312,14 @@ $$
 \theta^2 \equiv v^\top v
 $$
 
-measures the variance of the innovation to the marginal-utility martingale {eq}`eq:hst_mu_rw`. It will be the one summary statistic of the benchmark economy that we need below.
+measures the variance of the innovation to the marginal-utility martingale {eq}`eq:hst_mu_rw`.
+
+It will be the one summary statistic of the benchmark economy that we need below.
 
 ```{note}
-Under a rational-expectations reading, the benchmark $\sigma = 0$ permanent income model has **no precautionary savings**, as emphasized by Zeldes. Introducing robustness ($\sigma < 0$) revives a precautionary motive: the consumer guards against worst-case mistakes in the conditional means of shocks.
+Under a rational-expectations reading, the benchmark $\sigma = 0$ permanent income model has *no precautionary savings*, as emphasized by Zeldes.
+
+Introducing robustness ($\sigma < 0$) revives a precautionary motive: the consumer guards against worst-case mistakes in the conditional means of shocks.
 ```
 
 ## Observational equivalence
@@ -320,7 +332,7 @@ Here is the paper's first headline result.
 Fix all parameters except $\beta$ and $\sigma$. Suppose $\beta R = 1$. There exists $\underline{\sigma} < 0$ such that the optimal consumption–investment plan for $\sigma = 0$ is *also* optimal for any $\sigma \in (\underline{\sigma}, 0)$, provided the discount factor is lowered to a value $\hat\beta(\sigma)$ that varies directly with $\sigma$.
 ```
 
-In words: as far as the **quantities** $\{c_t, k_t\}$ are concerned, the robust ($\sigma < 0$) permanent income model is indistinguishable from the standard ($\sigma = 0$) one with a smaller discount factor.
+In words: as far as the *quantities* $\{c_t, k_t\}$ are concerned, the robust ($\sigma < 0$) permanent income model is indistinguishable from the standard ($\sigma = 0$) one with a smaller discount factor.
 
 Increasing the preference for robustness stimulates a precautionary motive for saving; lowering $\beta$ makes saving less attractive; along a particular locus the two effects exactly cancel.
 
@@ -342,7 +354,7 @@ $$ (eq:hst_betahat)
 
 The lower bound $\underline{\sigma}$ is the most negative $\sigma$ for which the square root in {eq}`eq:hst_Omega_scalar` stays real.
 
-Let's reproduce the locus, a version of Figure 1 in {cite}`HST_1999`.
+Let's reproduce the locus, a version of Figure 1 in {cite:t}`HST_1999`.
 
 ```{code-cell} ipython3
 ---
@@ -392,18 +404,18 @@ This is why consumption and savings data alone cannot tell us how much the consu
 
 ## Estimation
 
-Section 4 of {cite}`HST_1999` turns the observational-equivalence result into an empirical strategy.
+{cite:t}`HST_1999` turns the observational-equivalence result into an empirical strategy.
 
-Because the quantity data cannot pin down $\sigma$, the authors first estimate the $\sigma = 0$ version of the model, conditioning the likelihood **only on consumption and investment**, and then use the locus of {prf:ref}`prop:hst_oe` to trace out the family of $(\sigma, \hat\beta)$ pairs consistent with those estimates.
+Because the quantity data cannot pin down $\sigma$, the authors first estimate the $\sigma = 0$ version of the model, conditioning the likelihood *only on consumption and investment*, and then use the locus of {prf:ref}`prop:hst_oe` to trace out the family of $(\sigma, \hat\beta)$ pairs consistent with those estimates.
 
 Asset prices (the next section) break the tie.
 
 ### The data and the likelihood
 
-The model is fit to U.S. post-war quarterly data, **1970:I–1996:III**.
+The model is fit to U.S. post-war quarterly data, 1970:I–1996:III.
 
-* **Consumption** is measured as nondurables plus services.
-* **Investment** is measured as durables plus gross private investment.
+* *Consumption* is measured as nondurables plus services.
+* *Investment* is measured as durables plus gross private investment.
 
 Both series are deflated by the deterministic growth factor $1.0033^{t}$, so the model is fit to *detrended* data.
 
@@ -413,7 +425,7 @@ The likelihood is Gaussian, built recursively (a Kalman filter), with the unobse
 
 The preference shock is a constant, $b_t = \mu_b$, fixed at $\mu_b = 32$; recall from the discussion of {eq}`eq:hst_budget` that the *level* of $b_t$ does not affect the decision rules, only prices.
 
-The endowment is the sum of a **persistent** and a **transitory** component, each a second-order autoregression driven by orthogonal shocks,
+The endowment is the sum of a *persistent* and a *transitory* component, each a second-order autoregression driven by orthogonal shocks,
 
 $$
 (1 - \phi_1 L)(1 - \phi_2 L)\, d^{*}_t = c_{d^{*}}\, w^{d^{*}}_t,
@@ -431,7 +443,7 @@ The four parameters governing the endogenous dynamics are $(\gamma, \delta_k, \b
 
 The depreciation factor is set to $\delta_k = 0.975$, and the permanent-income restriction $\beta R = 1$ (confirmed by the unrestricted estimates) is imposed with $\beta = 0.9971$, implying a $2.5\%$ annual real interest rate after the growth adjustment.
 
-The maximum-likelihood estimates (with habit persistence) are reproduced below, a version of Table 2 in {cite}`HST_1999`.
+The maximum-likelihood estimates (with habit persistence) are reproduced below, a version of Table 2 in {cite:t}`HST_1999`.
 
 | Parameter | Symbol | Estimate |
 |---|---|---|
@@ -509,21 +521,25 @@ fig.tight_layout()
 plt.show()
 ```
 
-The contrast is the heart of the permanent income hypothesis tested by {cite}`Hall1978` and {cite}`Campbell1987`.
+The contrast is the heart of the permanent income hypothesis tested by {cite:t}`Hall1978` and {cite:t}`Campbell1987`.
 
-Consumption tracks a large fraction of the **persistent** shock, whose near-unit root makes it almost permanent income, but only a sliver of the **transitory** shock, the bulk of which is saved and shows up as investment.
+Consumption tracks a large fraction of the persistent shock, whose near-unit root makes it almost permanent income, but only a sliver of the transitory shock, the bulk of which is saved and shows up as investment.
 
 ```{note}
-With habit persistence ($\lambda > 0$) the consumption responses are no longer flat: they become hump-shaped, because services rather than consumption obey the martingale logic. The estimated $\lambda = 2.443$ and $\delta_h = 0.682$ imply economically important habit effects, and a likelihood-ratio comparison strongly rejects $\lambda = 0$. {cite}`HST_1999` compare these magnitudes with the habit estimates in the time-nonseparable preference literature.
+With habit persistence ($\lambda > 0$) the consumption responses are no longer flat: they become hump-shaped, because services rather than consumption obey the martingale logic.
+
+The estimated $\lambda = 2.443$ and $\delta_h = 0.682$ imply economically important habit effects, and a likelihood-ratio comparison strongly rejects $\lambda = 0$.
+
+{cite:t}`HST_1999` compare these magnitudes with the habit estimates in the time-nonseparable preference literature.
 ```
 
 ## Asset pricing and the market price of risk
 
-Section 5 of {cite}`HST_1999` shows how the observationally-equivalent pairs that look identical in quantity data have *different* implications for asset prices.
+{cite:t}`HST_1999` shows how the observationally-equivalent pairs that look identical in quantity data have *different* implications for asset prices.
 
 ### Decentralization
 
-Following {cite}`Lucas1978`, we regard the robust (or risk-sensitive) planning solution as the allocation of a competitive economy populated by a large number of identical agents who trade securities.
+Following {cite:t}`Lucas1978`, we regard the robust (or risk-sensitive) planning solution as the allocation of a competitive economy populated by a large number of identical agents who trade securities.
 
 Equilibrium prices are the **shadow prices** that leave each agent content to consume the planner's allocation, treating it as an endowment process.
 
@@ -535,7 +551,7 @@ $$ (eq:hst_equil_lom)
 
 and the value function at the optimum is $U^{e}_t = x_t^\top \Omega x_t + \rho$.
 
-To support the robust allocation, prices must be computed using the **same** pessimistic, distorted beliefs that rationalize the planner's choices.
+To support the robust allocation, prices must be computed using the *same* pessimistic, distorted beliefs that rationalize the planner's choices.
 
 This is where risk-sensitivity ($\sigma < 0$) leaves its fingerprint on prices even though, by observational equivalence, it leaves no trace in quantities.
 
@@ -559,7 +575,7 @@ $$
 \mathcal{R}_t(U_{t+1}) - \mathcal{R}_t(U^{e}_{t+1}) \leq \mathcal{T}_t U_{t+1} - \mathcal{T}_t U^{e}_{t+1},
 $$ (eq:hst_subgrad)
 
-so $\mathcal{T}_t$ behaves like a *distorted* conditional expectation, exactly the change of measure used to price derivative claims in {cite}`EpsteinWang1994`.
+so $\mathcal{T}_t$ behaves like a *distorted* conditional expectation, exactly the change of measure used to price derivative claims in {cite:t}`EpsteinWang1994`.
 
 Concretely, $\mathcal{T}_t$ is the ordinary conditional expectation under a **distorted transition law**
 
@@ -571,7 +587,7 @@ $$ (eq:hst_pricing_lom)
 
 with $\hat A$ given by {eq}`eq:hst_D`-style risk corrections.
 
-Because $\sigma < 0$ and $\Omega$ is negative semidefinite, $(I - \sigma C^\top\Omega C)^{-1}$ exceeds the identity: the pricing measure assigns a **pessimistically shifted conditional mean** *and* an **inflated conditional variance** to next period's state.
+Because $\sigma < 0$ and $\Omega$ is negative semidefinite, $(I - \sigma C^\top\Omega C)^{-1}$ exceeds the identity: the pricing measure assigns a *pessimistically shifted conditional mean* *and* an *inflated conditional variance* to next period's state.
 
 These two distortions are precisely what generate risk premia.
 
@@ -634,9 +650,9 @@ $$
 \operatorname{std}_t(m^{u}_{t+1,t}) = \big[\exp(\hat v_t^\top \hat v_t) - 1\big]^{1/2} \approx |\hat v_t|.
 $$ (eq:hst_mpr)
 
-The **market price of risk** is the maximal Sharpe ratio attainable, equal to $\operatorname{std}_t(m_{t+1,t}) / \mathbb{E}_t(m_{t+1,t})$ along the efficient frontier (the {cite}`Hansen_Jagannathan_1991` bound).
+The **market price of risk** is the maximal Sharpe ratio attainable, equal to $\operatorname{std}_t(m_{t+1,t}) / \mathbb{E}_t(m_{t+1,t})$ along the efficient frontier (the {cite:t}`Hansen_Jagannathan_1991` bound).
 
-It is therefore approximately equal to the **magnitude of the worst-case distortion** $|\hat v_t|$.
+It is therefore approximately equal to the *magnitude of the worst-case distortion* $|\hat v_t|$.
 
 This is the paper's punchline: a conditional-mean misspecification of $x\%$ of a unit-norm direction raises the market price of risk by roughly $x/100$.
 
@@ -849,6 +865,8 @@ Derive this result directly from the definition {eq}`eq:hst_R`.
 :class: dropdown
 ```
 
+Here is one solution:
+
 Start from the definition with $a = \sigma/2$:
 
 $$
@@ -889,7 +907,11 @@ Using the code from the lecture, find $\underline{\sigma}$ numerically for `thet
 :class: dropdown
 ```
 
-The boundary $\underline{\sigma}$ is the most negative $\sigma$ at which a valid $\hat\beta$ can still be found. We scan $\sigma$ downward and stop when `beta_hat` can no longer return a real solution.
+Here is one solution:
+
+The boundary $\underline{\sigma}$ is the most negative $\sigma$ at which a valid $\hat\beta$ can still be found.
+
+We scan $\sigma$ downward and stop when `beta_hat` can no longer return a real solution.
 
 ```{code-cell} ipython3
 def σ_underbar(θ2, Rf, grid=np.linspace(-1e-6, -5e-4, 5000)):
@@ -909,7 +931,11 @@ for θ2 in [0.01, 0.02]:
     print(f"θ2 = {θ2}:  σ_underbar ≈ {sb:.3e}")
 ```
 
-A larger $\theta^2$ means the marginal-utility martingale {eq}`eq:hst_mu_rw` carries a bigger innovation variance, so each unit of $|\sigma|$ generates a larger risk adjustment. The discriminant in {eq}`eq:hst_Omega_scalar`, which contains the term $4\sigma\theta^2 < 0$, turns negative at a *smaller* $|\sigma|$. Hence the admissible range $(\underline{\sigma}, 0)$ shrinks as $\theta^2$ grows.
+A larger $\theta^2$ means the marginal-utility martingale {eq}`eq:hst_mu_rw` carries a bigger innovation variance, so each unit of $|\sigma|$ generates a larger risk adjustment.
+
+The discriminant in {eq}`eq:hst_Omega_scalar`, which contains the term $4\sigma\theta^2 < 0$, turns negative at a *smaller* $|\sigma|$.
+
+Hence the admissible range $(\underline{\sigma}, 0)$ shrinks as $\theta^2$ grows.
 
 ```{solution-end}
 ```
@@ -928,6 +954,8 @@ Comment on the range of $\sigma$ over which the approximation is accurate.
 ```{solution-start} hst_ex3
 :class: dropdown
 ```
+
+Here is one solution:
 
 We solve the regulator for a grid of $\sigma$ values, evaluate $\hat v_t = G x$ at $x = (1,1)^\top$, and compare the exact and approximate market prices of risk.
 
@@ -958,7 +986,7 @@ The two curves are nearly indistinguishable for small $|\hat v_t|$ (i.e. $\sigma
 
 They separate only when the preference for robustness, and hence the worst-case distortion, becomes large.
 
-This is precisely the regime {cite}`HST_1999` emphasize: *small*, hard-to-detect distortions map almost linearly into the market price of risk.
+This is precisely the regime {cite:t}`HST_1999` emphasize: *small*, hard-to-detect distortions map almost linearly into the market price of risk.
 
 ```{solution-end}
 ```
@@ -969,6 +997,6 @@ This lecture connects to several others in the QuantEcon collection.
 
 The underlying consumption-smoothing economics is developed in {doc}`perm_income` and {doc}`perm_income_cons`, and the linear-quadratic control machinery is laid out in {doc}`lqcontrol`.
 
-The reinterpretation of the market price of risk as a *price of model uncertainty*, calibrated through detection-error probabilities, is the subject of {cite}`BHS_2009`; the broader semigroup treatment of robustness, pricing, and model detection is in {cite}`AHS_2003`.
+The reinterpretation of the market price of risk as a *price of model uncertainty*, calibrated through detection-error probabilities, is the subject of {cite:t}`BHS_2009`; the broader semigroup treatment of robustness, pricing, and model detection is in {cite:t}`AHS_2003`.
 
-Both build directly on {cite}`HST_1999`.
+Both build directly on {cite:t}`HST_1999`.
