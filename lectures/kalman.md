@@ -46,6 +46,12 @@ It is aimed at readers who either
 * have heard of the Kalman filter but don't know how it works, or
 * know the Kalman filter equations, but don't know where they come from
 
+Subsequent lectures use the same recursive logic in more applied and more econometric settings.
+
+See {doc}`kalman_2` for an economic application in which a firm infers a worker's hidden human capital and effort.
+
+See {doc}`kalman_filter_var` for a derivation of the innovations representation and its connection to vector autoregressions.
+
 For additional (more advanced) reading on the Kalman filter, see
 
 * {cite}`Ljungqvist2012`, section 2.7
@@ -258,7 +264,9 @@ and
 ```
 
 ```{note}
-A proof can be found in {cite}`Bishop2006`. To get from his expressions to the ones used above, you will also need to apply the [Woodbury matrix identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity).
+A proof can be found in {cite}`Bishop2006`.
+
+To get from his expressions to the ones used above, you will also need to apply the [Woodbury matrix identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity).
 ```
 
 Here $\Sigma G^\top (G \Sigma G^\top + R)^{-1}$ is the matrix of population
@@ -457,7 +465,9 @@ Repeating {eq}`kl_mlom0`, the dynamics for $\mu_t$ and $\Sigma_t$ are as follows
 These are the standard dynamic equations for the Kalman filter (see, for example, {cite}`Ljungqvist2012`, page 58).
 
 ```{note}
-Here $\mu_t$ is the filter's prediction of the hidden state $X_t$. In much of the Kalman filter literature it is written $\hat x_t$, emphasizing that it is an estimate of $X_t$.
+Here $\mu_t$ is the filter's prediction of the hidden state $X_t$.
+
+In much of the Kalman filter literature it is written $\hat x_t$, emphasizing that it is an estimate of $X_t$.
 ```
 
 (kalman_convergence)=
@@ -501,7 +511,9 @@ Equation {eq}`kalman_dare` is known as a [discrete-time algebraic Riccati equati
 
 Conditions under which a fixed point exists and the sequence $\{\Sigma_t\}$ converges to it are discussed in {cite}`AHMS1996` and {cite}`AndersonMoore2005`, chapter 4.
 
-A sufficient (but not necessary) condition is that all the eigenvalues $\lambda_i$ of $A$ satisfy $|\lambda_i| < 1$ (cf. e.g., {cite}`AndersonMoore2005`, p. 77).
+A sufficient (but not necessary) condition is that all the eigenvalues $\lambda_i$ of $A$ satisfy $|\lambda_i| < 1$.
+
+See, for example, {cite}`AndersonMoore2005`, p. 77.
 
 (This strong condition assures that the unconditional  distribution of $X_t$  converges as $t \to \infty$.)
 
@@ -583,6 +595,8 @@ Your figure should -- modulo randomness -- look something like this
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
 # Parameters
 θ = 10  # Constant value of state X_t
@@ -642,6 +656,8 @@ Plot $z_t$ against $t$, setting $\epsilon = 0.1$ and $T = 600$.
 ```{solution-start} kalman_ex2
 :class: dropdown
 ```
+
+Here is one solution:
 
 ```{code-cell} ipython3
 ϵ = 0.1
@@ -742,6 +758,8 @@ Finally, set the realized initial state to $x_0 = (0, 0)$.
 ```{solution-start} kalman_ex3
 :class: dropdown
 ```
+
+Here is one solution:
 
 ```{code-cell} ipython3
 # Define A, C, G, H
