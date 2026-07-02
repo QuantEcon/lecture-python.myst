@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-(lq_consumption_smoothing)=
+(lq_robust_smoothing)=
 ```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
@@ -20,276 +20,76 @@ kernelspec:
 </div>
 ```
 
-# LQ Consumption Smoothing: Incomplete Markets, Complete Markets, and Robust Control
+# Robust Consumption Smoothing and Precautionary Savings
 
 ```{contents} Contents
 :depth: 2
 ```
 
-```{index} single: LQ Permanent Income Model
+```{index} single: Robust Control; permanent income
 ```
 
-```{index} single: Consumption Smoothing
+```{index} single: Precautionary Savings; robustness
 ```
 
 ## Overview
 
-This lecture studies consumption smoothing in a linear-quadratic (LQ) permanent income model.
+This lecture studies a robust version of the LQ permanent income model due to {cite:t}`HST_1999` and {cite:t}`HansenSargent2008`.
 
-We start with a rational-expectations version of the permanent income theories of {cite:t}`Friedman1956` and {cite:t}`Hall1978`.
+It is the third of three lectures on the LQ permanent income model.
 
-Throughout, we set $\beta R = 1$, so that the baseline consumer's subjective discount factor equals the bond price.
-
-The standard model is useful for studying
-
-- impulse response functions
-- alternative state-space representations of the optimal decision rule
-- cointegration of consumption and assets
-- a closed economy with borrowers and lenders
-- complete-markets consumption smoothing
-
-We then study a robust version of the permanent income model due to {cite:t}`HST_1999` and {cite:t}`HansenSargent2008`.
+It builds on {doc}`lq_permanent_income`, which develops the standard model, and {doc}`lq_bewley_complete_markets`, which studies its cross-section and market-structure implications.
 
 A consumer who distrusts his specification of the labor income process engages in a form of precautionary savings.
 
-Our description of the  model with concerns about robustness includes 
+Our description of the model with concerns about robustness includes
 
-- how (for quantities) a concern for robustness is observationally equivalent  to an increase in
+- how (for quantities) a concern for robustness is observationally equivalent to an increase in
   impatience
-- how the worst-case model that the consumer uses to shape his decision rule  distorts the baseline model's endowment process toward greater persistence
+- how the worst-case model that the consumer uses to shape his decision rule distorts the baseline model's endowment process toward greater persistence
 - a frequency-domain representation of the effects of concerns about misspecification of the endowment process
-- a detection-error-probability characterization of the amount of model   uncertainty
+- a detection-error-probability characterization of the amount of model uncertainty
 
-The lecture concludes by combining the Bewley economy with the robustness machinery.
+The lecture concludes by combining the Bewley economy of {doc}`lq_bewley_complete_markets` with the robustness machinery.
 
 Using tools from {cite:t}`HansenSargent2008`, we show:
 
 - how a continuum of consumers $i$ who use identical decision rules can nevertheless differ in their robustness parameters $\sigma_i \leq 0$ and
   their discount factors $\beta_i$, provided that the  pair $(\sigma_i, \beta_i)$ lies on an observational-equivalence locus
   derived below
-- how every such consumer  chooses the **same consumption-saving rule** as a baseline
+- how every such consumer chooses the **same consumption-saving rule** as a baseline
   plain-vanilla $(\sigma = 0, \beta)$ agent with no concerns about misspecification of the endowment process
 - how the equilibrium interest rate $R = \beta^{-1}$ and all aggregate dynamics therefore
   coincide with those of a benchmark Bewley model
 - how distinct $(\sigma_i, \beta_i)$ agents act as if they have  different subjective  models of their non-financial income process
-  
 
+We first present the HST model in its general form, which includes physical capital and investment $i_t$.
 
+When we return to the Bewley economy of {doc}`lq_bewley_complete_markets`, we specialise to a pure endowment economy with no capital, so investment plays no role there.
 
 Let's begin with some imports.
 
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.linalg import solve, inv, solve_discrete_lyapunov
 from scipy.stats import norm
 
 ```
 
-## Standard LQ Permanent Income Model
+## A brief review
 
-```{index} single: LQ Permanent Income Model; standard
-```
+We recall the essentials from {doc}`lq_permanent_income` and {doc}`lq_bewley_complete_markets`.
 
-### Setup
-
-```{index} single: Permanent Income Hypothesis; Friedman
-```
-
-A consumer has preferences over consumption streams ordered by
-
-$$
-\mathbb{E}_0 \sum_{t=0}^{\infty} \beta^t u(c_t)
-$$ (eq:sprob1)
-
-where $\mathbb{E}_t$ is a mathematical expectation conditioned on the consumer's time-$t$ information,
-$c_t$ is time-$t$ consumption, $u(c)$ is a strictly concave one-period utility function, and
-$\beta \in (0,1)$ is a discount factor.
-
-The consumer maximizes {eq}`eq:sprob1` by choosing a plan
-$\{c_t, b_{t+1}\}_{t=0}^{\infty}$ subject to the sequence of budget constraints
-
-$$
-c_t + b_t = R^{-1} b_{t+1} + y_t, \quad t \geq 0
-$$ (eq:sprob2)
-
-where $\{y_t\}$ is an exogenous stationary endowment process, $R$ is a constant gross risk-free
-interest rate, $b_t$ is a one-period risk-free bond maturing at $t$, and $b_0$ is a given
-initial condition.
-
-```{note}
-For $t \geq 1$, $b_t$ is chosen at time $t-1$.
-
-The bond $b_t > 0$ represents debt owed by
-the consumer at the start of period $t$.
-```
-
-We assume $R^{-1} = \beta$.
-
-The endowment or non-financial income process has the state-space representation
+A consumer with quadratic utility and discount factor $\beta$ faces the endowment process
 
 $$
 \begin{aligned}
 z_{t+1} &= \check{A}\, z_t + \check{C}\, w_{t+1} \\
 y_t &= \check{G}\, z_t
 \end{aligned}
-$$ (eq:sprob15)
+$$ (eq:pi-endowment)
 
-where $w_{t+1}$ is IID with mean zero and identity covariance matrix, $\check{A}$ is a stable
-matrix (eigenvalues strictly less than one in modulus), and $\check{G}$ is a row vector.
-
-The state confronting the household at $t$ is
-$\bigl[b_t \;\; z_t^\top\bigr]^\top$, where $b_t$ is its one-period debt due at the start of period $t$
-and $z_t$ contains all variables useful for forecasting its future endowment.
-
-To make the problem linear-quadratic, we adopt the **quadratic utility function**
-
-$$
-u(c_t) = -\tfrac{1}{2}(c_t - \gamma)^2
-$$
-
-where $\gamma > 0$ is a bliss level of consumption.
-
-We allow $c_t$ to be negative (a producer
-rather than a consumer).
-
-We impose a **transversality condition**
-
-$$
-\mathbb{E}_0 \sum_{t=0}^{\infty} \beta^t b_t^2 < +\infty ,
-$$ (eq:sprob3)
-
-which rules out Ponzi schemes.
-
-### Euler equation and certainty equivalence
-
-With quadratic utility, the first-order conditions for the consumer's problem imply that 
-
-$$
-\mathbb{E}_t c_{t+1} = c_t
-$$ (eq:sprob5)
-
-```{note}
-Equation {eq}`eq:sprob5` says that consumption is a martingale.
-
-This is the key implication of the LQ permanent income model.
-
-It contrasts with models that have convex marginal utility
-($u''' > 0$), where consumption is instead a submartingale.
-```
-
-Because the consumer maximizes a quadratic objective subject to a linear transition equation,
-the problem satisfies a **certainty-equivalence** property.
-
-This implies that we  can find the optimal plan by 
-
-- first solving the problem while pretending to have perfect foresight; this lets us express $c_t$ as a function of $b_t$ and the continuation sequence  $\{y_{t+j}\}_{j=0}^{\infty}$
-- then simply replace $\{y_{t+j}\}_{j=0}^{\infty}$  with
-$\{\mathbb{E}_t y_{t+j}\}_{j=0}^{\infty}$.
-
-### The optimal consumption function
-
-Solving the budget constraint {eq}`eq:sprob2` forward, imposing the transversality condition, and
-taking conditional expectations gives
-
-$$
-b_t = \sum_{j=0}^{\infty} \beta^j \mathbb{E}_t y_{t+j} - \frac{1}{1-\beta} c_t
-$$ (eq:sprob7)
-
-Rearranging yields the **consumption function**
-
-$$
-c_t = (1-\beta)\!\left[\sum_{j=0}^{\infty} \beta^j \mathbb{E}_t y_{t+j} - b_t\right]
-$$ (eq:sprob8)
-
-Equivalently, with net interest rate $r$ defined by $\beta = 1/(1+r)$,
-
-$$
-c_t = \frac{r}{1+r}\!\left[\sum_{j=0}^{\infty} \beta^j \mathbb{E}_t y_{t+j} - b_t\right]
-$$ (eq:sprob9)
-
-Evidently, consumption at $t$ equals $r/(1+r)$ times total wealth, where total wealth is the sum of human wealth
-$\sum_{j=0}^{\infty}\beta^j \mathbb{E}_t y_{t+j}$ and financial wealth $-b_t$.
-
-Using state-space representation {eq}`eq:sprob15` to evaluate the geometric sum of expected
-future endowments,
-
-$$
-\sum_{j=0}^{\infty} \beta^j \mathbb{E}_t y_{t+j} = \check{G}(I - \beta \check{A})^{-1} z_t ,
-$$ (eq:discount1)
-
-we obtain 
-
-$$
-c_t = (1-\beta)\!\left[\check{G}(I-\beta\check{A})^{-1} z_t - b_t\right]
-$$ (eq:lccf)
-
-This expresses $c_t$ as a function of the state $[b_t,\, z_t^\top]^\top$ that confronts the household.
-
-### Representation 1: state $(b_t, z_t)$
-
-Combining the endowment law of motion with the optimal debt dynamics (derived by substituting
-{eq}`eq:lccf` into {eq}`eq:sprob2`) gives  representation:
-
-$$
-\begin{aligned}
-z_{t+1} &= \check{A}\, z_t + \check{C}\, w_{t+1} \\
-b_{t+1} &= b_t + \check{G}\bigl[(I - \beta\check{A})^{-1}(\check{A}-I)\bigr] z_t \\
-y_t &= \check{G}\, z_t \\
-c_t &= (1-\beta)\!\left[\check{G}(I-\beta\check{A})^{-1} z_t - b_t\right]
-\end{aligned}
-$$ (eq:rep1)
-
-In this representation the **exogenous** state is $z_t$ and the **endogenous** state is $b_t$.
-
-We turn now to an alternative representation.
-
-### Representation 2: state $(c_t, z_t)$
-
-{cite:t}`Hall1978` showed that the LQ permanent income model implies a
- representation in which the state consists of current consumption $c_t$ and the
-exogenous endowment state $z_t$.
-
-In this representation, $b_t$ becoming an outcome rather than a state
-variable.
-
-Shifting {eq}`eq:sprob8` forward, eliminating $b_{t+1}$ via
-{eq}`eq:sprob2`, and rearranging yields
-
-$$
-c_{t+1} - c_t = (1-\beta)\sum_{j=0}^{\infty} \beta^j \bigl(\mathbb{E}_{t+1} y_{t+j+1} - \mathbb{E}_t y_{t+j+1}\bigr)
-$$ (eq:sprob11)
-
-The right-hand side is $(1-\beta)$ times the time-$(t+1)$ **innovation** to the expected present
-value of the endowment stream.
-
-Suppose the endowment has the (Wold)  moving-average representation
-
-$$
-y_{t+1} = d(L)\, w_{t+1}, \qquad d(L) = \sum_{j=0}^{\infty} d_j L^j
-$$ (eq:sprob12)
-
-where $d(L) = \check{G}(I - \check{A} L)^{-1}\check{C}$.
-
-Then
-
-$$
-\mathbb{E}_{t+1} y_{t+j} - \mathbb{E}_t y_{t+j} = d_{j-1}\, w_{t+1}
-$$ (eq:sprob120)
-
-Substituting {eq}`eq:sprob120` into {eq}`eq:sprob11` gives the key result
-
-$$
-c_{t+1} - c_t = (1-\beta)\, d(\beta)\, w_{t+1} .
-$$ (eq:sprob13)
-
-Here,  $d(\beta) = \check{G}(I-\beta\check{A})^{-1}\check{C}$ is the **present value of the (Wold)
-moving-average coefficients**.
-
-Thus, consumption is a **random walk** with innovation
-$(1-\beta)d(\beta)w_{t+1}$.
-
-Combining {eq}`eq:sprob13` and {eq}`eq:sprob7` gives
+The optimal decision rule has a state-space representation in which the state is current consumption $c_t$ and the exogenous endowment state $z_t$:
 
 $$
 \begin{aligned}
@@ -298,61 +98,9 @@ b_t &= \check{G}(I-\beta\check{A})^{-1} z_t - \frac{1}{1-\beta}\,c_t \\
 y_t &= \check{G}\, z_t \\
 z_{t+1} &= \check{A}\, z_t + \check{C}\, w_{t+1}
 \end{aligned}
-$$ (eq:sprob16)
+$$ (eq:pi-crep)
 
-This representation reveals several important features of the optimal decision rule:
-
-1. **State**: The state consists of the endogenous component $c_t$ and the exogenous component
-   $z_t$, with financial assets $b_t$ encoded in $c_t$ rather than carried as a separate state.
-
-2. **Random walk**: Consumption is a random walk with innovation $(1-\beta)d(\beta)w_{t+1}$, which
-   confirms that the Euler equation {eq}`eq:sprob5` is built into the solution and implies that
-   consumption has no asymptotic stationary distribution.
-
-3. **Box impulse response**: For all $j \geq 1$, the response of $c_{t+j}$ to the innovation
-   $w_{t+1}$ is the constant $(1-\beta)d(\beta)$, giving a "box-shaped" impulse response.
-
-4. **Cointegration**: Both $c_t$ and $b_t$ are nonstationary (unit-root processes), but the
-   linear combination $(1-\beta)b_t + c_t$ is stationary.
-
-   From {eq}`eq:sprob7`,
-
-$$
-(1-\beta)b_t + c_t = (1-\beta)\mathbb{E}_t\sum_{j=0}^{\infty}\beta^j y_{t+j}
-$$ (eq:cointegration)
-
-The left side is the cointegrating residual. 
-   
-
-
-### Debt dynamics
-
-```{index} single: History Dependence
-```
-
-Subtracting {eq}`eq:sprob16` (equation for $b_t$) at time $t$ from the same equation at time $t+1$
-and substituting gives
-
-$$
-b_{t+1} - b_t = \check{G}(I-\beta\check{A})^{-1}(\check{A}-I)\, z_t
-$$ (eq:debt_evolution)
-
-This shows that $b_{t+1}$ is **predetermined** at time $t$ as a function of $z_t$ alone.
-
-Solving backward from any $t$, $b_t$ depends on the entire history $z^{t-1} = [z_{t-1},\ldots,z_0]$
-and the initial condition $b_0$.
-
-Such **history dependence** is a hallmark of a consumption plan in a various incomplete-markets economies.
-
-### Two classic examples
-
-```{index} single: Permanent Income Model; examples
-```
-
-We illustrate formulas {eq}`eq:sprob16` with two examples.
-
-In both, the endowment is
-$y_t = z_{1t} + z_{2t}$, where
+We again use the two-factor endowment $y_t = z_{1t} + z_{2t}$,
 
 $$
 \begin{pmatrix}z_{1,t+1}\\z_{2,t+1}\end{pmatrix}
@@ -362,495 +110,20 @@ $$
 +
 \begin{pmatrix}\sigma_1 & 0\\0 & \sigma_2\end{pmatrix}
 \begin{pmatrix}w_{1,t+1}\\w_{2,t+1}\end{pmatrix}
-$$ (eq:twofactor)
+$$ (eq:pi-twofactor)
 
-Here $z_{1t}$ is a **permanent** component of $y_t$ and $z_{2t}$ is a **purely transitory**
-component.
+with $z_{1t}$ a permanent component and $z_{2t}$ a purely transitory component.
 
-In the full-information example, the consumer observes the state $z_t$ at time $t$, so he
-can reconstruct $w_{t+1}$ from $z_{t+1}$ and $z_t$.
-
-Applying {eq}`eq:sprob16`:
-
-$$
-c_{t+1} - c_t = \sigma_1 w_{1,t+1} + (1-\beta)\,\sigma_2\, w_{2,t+1}
-$$ (eq:consexample1)
-
-A unit increment to the permanent component $z_{1t}$ raises consumption *one-for-one* permanently
-and causes **zero net saving**.
-
-A unit increment to the purely transitory component raises
-consumption by only the fraction $(1-\beta)$ permanently, while the remaining fraction $\beta$ is
-saved.
-
-From {eq}`eq:debt_evolution`:
-
-$$
-b_{t+1} - b_t = -z_{2t} = -\sigma_2 w_{2t}
-$$ (eq:consexample1a)
-
-confirming that none of the permanent shock is saved, while all of the transitory shock is saved.
-
-In the incomplete-information (Muth model) example, the consumer observes $y_t$ and its history,
-but not $z_{1t}$ and $z_{2t}$ separately.
-
-The appropriate approach uses an **innovations
-representation** derived by the Kalman filter.
-
-At the Kalman filter steady state, the **Kalman gain** $K \in [0,1]$ satisfies
-
-$$
-K = \frac{\Sigma}{\Sigma + \sigma_2^2}, \qquad \Sigma = \frac{\sigma_1^2 + \sqrt{\sigma_1^4 + 4\sigma_1^2\sigma_2^2}}{2}
-$$ (eq:kalmangain)
-
-where $K$ increases with the ratio $\sigma_1^2/\sigma_2^2$ (the variance of the permanent shock
-relative to the transitory shock).
-
-The innovations representation expresses the endowment as an ARMA(1,1) in
-its own innovation $a_t = y_t - \mathbb{E}[y_t \mid y^{t-1}]$ (the one-step-ahead forecast error):
-
-$$
-y_{t+1} = y_t - (1-K)\,a_t + a_{t+1}
-$$ (eq:muth_innov)
-
-Here the coefficient $-(1-K)$ on the lagged innovation reflects that only the fraction
-$K$ of last period's surprise was treated as permanent; the remainder mean-reverts.
-
-The scalar $a_t$ is IID with variance $\Sigma + \sigma_2^2$.
-
-Applying {eq}`eq:sprob16` to this innovation representation:
-
-$$
-c_{t+1} - c_t = [1 - \beta(1-K)]\, a_{t+1}
-$$ (eq:consexample2)
-
-The consumer regards a fraction $K$ of the innovation $a_{t+1}$ as permanent and fraction $1-K$
-as transitory.
-
-He permanently increments consumption by $K + (1-\beta)(1-K) = 1 - \beta(1-K)$
-of $a_{t+1}$ and saves the remaining fraction $\beta(1-K)$.
-
-The first difference of income obeys a first-order moving average:
-
-$$
-y_{t+1} - y_t = a_{t+1} - (1-K)\,a_t
-$$ (eq:incomemaar)
-
-By contrast, the first difference of consumption is IID by {eq}`eq:consexample2`.
-
-### Implementation
+The following cell fixes the calibration used below.
 
 ```{code-cell} ipython3
-# Parameters
-β = 0.95       # discount factor (so R = 1/β)
+# Parameters (as in the preceding lectures)
+β = 0.95       # discount factor
 σ1 = 0.15      # std of permanent shock
 σ2 = 0.30      # std of transitory shock
-
-# Example 1: full information
-A_check = np.array([[1.0, 0.0],
-                    [0.0, 0.0]])
-C_check = np.array([[σ1, 0.0],
-                    [0.0, σ2]])
-G_check = np.array([[1.0, 1.0]])
-
-# Key matrix M = G(I - βA)^{-1}
-IbA = np.eye(2) - β * A_check
-M = G_check @ inv(IbA)   # shape (1, 2)
-
-# Consumption impulse responses
-h = (1 - β) * M @ C_check          # shape (1, 2)
-irf_perm_ex1 = h[0, 0] / σ1       # response per unit std of permanent shock
-irf_trans_ex1 = h[0, 1] / σ2       # response per unit std of transitory shock
-
-print("Example 1 (full information)")
-print(f"  IRF c to permanent shock  (normalised): {irf_perm_ex1:.4f}   "
-      f"(theory: 1.0)")
-print(f"  IRF c to transitory shock (normalised): {irf_trans_ex1:.4f}   "
-      f"(theory: {1-β:.4f})")
 ```
 
-```{code-cell} ipython3
-# Example 2: partial information
-Σ = (σ1**2 + np.sqrt(σ1**4 + 4 * σ1**2 * σ2**2)) / 2
-K = Σ / (Σ + σ2**2)
-
-print("Example 2 (partial information)")
-print(f"  Steady-state Kalman gain K = {K:.4f}")
-print(f"  IRF c to unit innovation a_{{t+1}}: {1 - β*(1-K):.4f}")
-print(f"  Fraction of innovation treated as permanent (K): {K:.4f}")
-print(f"  Fraction saved: β(1-K) = {β*(1-K):.4f}")
-```
-
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Consumption impulse responses
-    name: fig-lqcs-irf-examples
----
-# Compare impulse responses
-T = 30
-irf_c_ex1_perm = np.ones(T) * irf_perm_ex1 * σ1
-irf_c_ex1_trans = np.ones(T) * irf_trans_ex1 * σ2
-
-irf_c_ex2 = np.ones(T) * (1 - β * (1 - K))   # per unit innovation a_t
-
-fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-
-axes[0].axhline(0, color='k', linewidth=0.8)
-axes[0].step(range(T), irf_c_ex1_perm, where='post',
-             label='permanent shock ($z_1$)', color='C0', lw=2)
-axes[0].step(range(T), irf_c_ex1_trans, where='post',
-             label='transitory shock ($z_2$)', color='C3',
-             linestyle='--', lw=2)
-axes[0].set_xlabel('periods after shock')
-axes[0].set_ylabel('response of $c$')
-axes[0].set_title('full information')
-axes[0].legend()
-
-axes[1].axhline(0, color='k', linewidth=0.8)
-axes[1].step(range(T), irf_c_ex2, where='post',
-             label=f'unit innovation $a_{{t+1}}$ (K = {K:.2f})',
-             color='C4', lw=2)
-axes[1].set_xlabel('periods after shock')
-axes[1].set_ylabel('response of $c$')
-axes[1].set_title('partial information')
-axes[1].legend()
-fig.tight_layout()
-plt.show()
-```
-
-```{note}
-The impulse responses have the "box" shape characteristic of the LQ permanent income model: once
-a shock occurs, consumption shifts permanently to a new level and stays there.
-```
-
-### Spreading consumption cross sections
-
-```{index} single: Cross-Section Distributions; consumption
-```
-
-The unit root in consumption (Representation 2) causes a **cross-section variance** of
-consumption to grow linearly with time.
-
-Consider a continuum of *ex ante* identical households born at $t = 0$.
-
-All households $i$ share  the same preferences.
-
-They all face a stochastic process for non-financial income of the same form
-
-
-$$
-y_t^i = g( w_t^i, w_{t-1}^i, \ldots, w_0^i; z_0^i),
-$$ (eq:gstochpro)
-
-While all consumers face have the same $g$ process, they  have different, statistically independent realizations of the  **idiosyncratic** shock sequences $\{w_{t}^i\}_{t=0}^\infty$.
-
-Let all households start from the same initial conditions $c_0^i = c_0$ and $z_0^i$.
-
-From {eq}`eq:sprob16`, household $i$'s consumption follows
-
-$$
-c_{t+1}^i = c_t^i + h\, w_{t+1}^i, \qquad h = (1-\beta)\,\check{G}(I-\beta\check{A})^{-1}\check{C}
-$$
-
-Since  $\{w^i_{t}\}$ realizations are independent across agents,
-
-$$
-\mathbb{E}_0\bigl(c_t^i - c_0^i\bigr)^2 = t\, h h^\top
-$$ (eq:varspread)
-
-In the two-factor model, $h$ is a $1 \times 2$ row vector so $hh^\top$ is a positive scalar equal to
-$\sigma_1^2 + (1-\beta)^2\sigma_2^2$.
-
-The cross-section variance of consumption grows like $t$.
-
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Spreading consumption cross sections
-    name: fig-lqcs-spread
----
-# Simulate cross-section spreading
-rng = np.random.default_rng(42)
-N = 5000       # number of agents
-T_sim = 80         # number of periods
-
-h_vec = (1 - β) * (M @ C_check)   # shape (1, 2), then flatten
-h_vec = h_vec.flatten()            # h = [h1, h2]
-
-c = np.zeros((N, T_sim + 1))       # consumption paths
-# initialise all agents at c_0 = 0 (demeaned)
-for t in range(T_sim):
-    eps = rng.standard_normal((N, 2))    # N draws of 2D shock
-    dc = eps @ h_vec              # shape (N,)
-    c[:, t+1] = c[:, t] + dc
-
-# Cross-section variance at each date
-var_c = np.var(c, axis=0)
-theory = np.arange(T_sim + 1) * np.dot(h_vec, h_vec)
-
-fig, ax = plt.subplots()
-ax.plot(var_c, label='simulated cross-section variance', lw=2)
-ax.plot(theory, label=r'theoretical: $t \cdot h h^\top$',
-        linestyle='--', color='C3', lw=2)
-ax.set_xlabel('period $t$')
-ax.set_ylabel('cross-section variance of $c$')
-ax.legend()
-plt.show()
-```
-
-### A borrowers and lenders economy
-
-```{index} single: Bewley Model
-```
-
-Up to now we have set $R = \beta^{-1}$ and taken it as determined outside the model ("small open
-economy").
-
-Following ideas of {cite:t}`Bewley1977`, we can construct a **closed economy** in which
-$R = \beta^{-1}$ is an **equilibrium outcome**.
-
-A continuum of measure one of consumers, indexed by $i \in [0,1]$, trade a
-risk-free one-period bond with price $\beta$.
-
-All consumers have the same preferences and the
-same stochastic income process {eq}`eq:gstochpro`, but face have  **idiosyncratic** non-financial income shock process realizations.
-
-Initial bond positions
-are zero: $b_0^i = 0$ for all $i$.
-
-Initial endowment states $z_0^i$ are independent draws from
-the stationary distribution of {eq}`eq:sprob15`.
-
-From {eq}`eq:lccf`, with $b_0^i = 0$, agent $i$'s time-0 consumption
-is
-
-$$
-c_0^i = (1-\beta)\,\check{G}(I-\beta\check{A})^{-1} z_0^i
-$$ (eq:c_null)
-
-For $t \geq 1$, from {eq}`eq:sprob16`:
-
-$$
-c_{t+1}^i = c_t^i + h\, w_{t+1}^i, \qquad h = (1-\beta)\,\check{G}(I-\beta\check{A})^{-1}\check{C}
-$$ (eq:c_future)
-
-Let $Y$ denote the stationary mean of the cross-section average of non-financial income.
-
-Integrating {eq}`eq:c_null` over all agents:
-
-$$
-\int_0^1 c_0^i\, di = (1-\beta)\sum_{j=0}^{\infty}\beta^j \mathbb{E}_0\!\int_0^1 y_j^i\, di = Y
-$$ (eq:c_marketclear_0)
-
-because the continuum of idiosyncratic shocks averages to zero.
-
-For future periods, integrating
-{eq}`eq:c_future`:
-
-$$
-\int_0^1 c_{t+1}^i\, di = \int_0^1 c_t^i\, di + h\!\underbrace{\int_0^1 w_{t+1}^i\, di}_{=\,0} = Y
-$$
-
-The goods market clears at every date at *constant* aggregate consumption equal to $Y$.
-
-The
-bond market clears at zero net supply each period.
-
-Thus $R = \beta^{-1}$ is an equilibrium
-outcome.
-
- 
-
-While the cross-section mean of consumption is constant, the
-cross-section *variance* grows without bound according to {eq}`eq:varspread`.
-
-Initial
-differences in endowment draws $z_0^i$ create permanent differences in consumption levels.
-
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Bewley economy cross-section moments
-    name: fig-lqcs-bewley
----
-# Verify Bewley market clearing via simulation
-# Online mean and variance avoid storing all paths.
-rng = np.random.default_rng(0)
-N_bew = 10000    # number of agents
-T_bew = 60
-
-# Draw initial states for the simulation.
-z0_i = rng.standard_normal((N_bew, 2)) * np.array([1.0, σ2])
-c0_i = ((1 - β) * (M @ z0_i.T)).flatten()   # shape (N_bew,)
-
-# Propagate consumption across agents.
-mean_c = np.zeros(T_bew + 1)
-var_c2 = np.zeros(T_bew + 1)
-mean_c[0] = c0_i.mean()
-var_c2[0] = c0_i.var()
-
-c_now = c0_i.copy()
-for t in range(T_bew):
-    eps = rng.standard_normal((N_bew, 2))
-    c_now = c_now + eps @ h_vec
-    mean_c[t + 1] = c_now.mean()
-    var_c2[t + 1] = c_now.var()
-
-# Reuse initial consumption below.
-c_bew_t0 = c0_i
-
-fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-
-axes[0].plot(mean_c, lw=2, color='C0')
-axes[0].axhline(mean_c[0], linestyle='--', color='C3', label='initial mean')
-axes[0].set_xlabel('period $t$')
-axes[0].set_ylabel('mean consumption')
-axes[0].set_title('mean')
-axes[0].legend()
-
-axes[1].plot(var_c2, lw=2, color='C0', label='simulated variance')
-axes[1].set_xlabel('period $t$')
-axes[1].set_ylabel('variance of consumption')
-axes[1].set_title('variance')
-axes[1].legend()
-fig.tight_layout()
-plt.show()
-```
-
-Because each consumer dislikes variation of consumption over time, each
-consumer would prefer a completely smoothed stream $c_t^i = c_0^i$ for all $t$.
-
-Such an allocation is feasible because the cross-section average of income is constant.
-
-The next section describes a complete-markets
-allocation that supports this allocation.
-
-### Consumption smoothing with complete markets
-
-```{index} single: Complete Markets; Arrow securities
-```
-
-We replace the single bond with a **complete set of Arrow securities**.
-
-The budget constraint becomes
-
-$$
-c_t + b_{t-1}(z_t) = \int q(z_{t+1}|z_t)\, b_t(z_{t+1})\, dz_{t+1} + y_t
-$$ (eq:CMbudget)
-
-where $q(z_{t+1}|z_t)$ is the pricing kernel for one-period state-contingent claims and
-$b_t(z_{t+1})$ is the household's portfolio of Arrow securities chosen at $t$.
-
-We guess (and verify) that the equilibrium pricing kernel is
-
-$$
-q(z_{t+1}|z_t) = \beta\,\phi(z_{t+1}|z_t)
-$$ (eq:kernel)
-
-where $\phi(z_{t+1}|z_t)$ is the transition density of $z$.
-
-This kernel prices a one-period
-risk-free bond at $\beta$, so $R = \beta^{-1}$, consistent with the incomplete-markets
-equilibrium.
-
-We conjecture that the equilibrium delivers each consumer
-$i$ a *constant* consumption level:
-
-$$
-c_t^i = \bar{c}^i = c_0^i, \quad \forall\, t \geq 0
-$$ (eq:constcons)
-
-where $c_0^i = (1-\beta)\,\check{G}(I-\beta\check{A})^{-1} z_0^i$ is the consumer's time-0
-consumption in the incomplete-markets economy.
-
-The state-contingent debt that supports constant consumption is
-
-$$
-b_{t-1}(z_t) = \check{G}(I-\beta\check{A})^{-1} z_t - \frac{1}{1-\beta}\,\bar{c}^i \;\equiv\; b(z_t, \bar{c}^i)
-$$ (eq:cmdebt)
-
-Note that indebtedness depends only on the current Markov state $z_t$, *not* on the history of
-earlier states.
-
-This absence of history dependence reflects the **complete risk sharing** attained
-under complete markets.
-
-Substituting the pricing kernel {eq}`eq:kernel` and the portfolio conjecture {eq}`eq:cmdebt` into
-the budget constraint {eq}`eq:CMbudget` and using the law of iterated expectations confirms that
-the budget constraint simplifies to $c_t = \bar{c}^i$ in every state and period.
-
-Under complete markets, the cross-section distribution of consumption is **time-invariant**.
-
-Consumer $i$'s rank in the consumption distribution is fixed forever.
-
-A lucky initial draw $z_0^i$ manifests itself as perpetually high consumption $\bar{c}^i$ and
-lower indebtedness $b(z_t^i, \bar{c}^i)$ across all future states.
-
-This outcome contrasts  with what happens in  the incomplete-markets Bewley economy, where the cross-section variance
-of consumption grows without bound.
-
-```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption:  Cross section distributions with incomplete and complete markets 
-    name: fig-lqcs-markets
----
-# Complete and incomplete consumption distributions
-rng = np.random.default_rng(1)
-N_cm = 5000
-T_cm = 50
-
-# Initial consumption draws (same as Bewley economy)
-c0_cm = c_bew_t0[:N_cm]
-
-# Incomplete markets: consumption evolves (random walk)
-c_inc = np.zeros((N_cm, T_cm + 1))
-c_inc[:, 0] = c0_cm
-for t in range(T_cm):
-    eps = rng.standard_normal((N_cm, 2))
-    c_inc[:, t+1] = c_inc[:, t] + eps @ h_vec
-
-# Complete markets: consumption stays constant
-c_comp = np.tile(c0_cm[:, np.newaxis], T_cm + 1)
-
-fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-
-for t_plot, color in zip([0, 10, 30, 50], ['C0', 'C1', 'C3', 'C4']):
-    axes[0].hist(c_inc[:, t_plot], bins=60, alpha=0.4,
-                 label=f't = {t_plot}', color=color, density=True)
-axes[0].set_xlabel('$c$')
-axes[0].set_ylabel('density, incomplete markets')
-axes[0].set_title('incomplete markets')
-axes[0].legend(fontsize=9)
-
-for t_plot, color in zip([0, 10, 30, 50], ['C0', 'C1', 'C3', 'C4']):
-    axes[1].hist(c_comp[:, t_plot], bins=60, alpha=0.4,
-                 label=f't = {t_plot}', color=color, density=True)
-axes[1].set_xlabel('$c$')
-axes[1].set_ylabel('density, complete markets')
-axes[1].set_title('complete markets')
-axes[1].legend(fontsize=9)
-fig.tight_layout()
-plt.show()
-```
-
-```{note}
-Under **complete markets** the histogram stays the same across all $t$ (distributions coincide
-perfectly), while under **incomplete markets**  distributions spread out over time.
-```
-
-So far the consumer fully trusts his stochastic income model.
-
-We next relax that assumption and let the consumer seek decision rules that are robust to plausible misspecifications.
-
-The optimal robust rule takes the same form as the rule above, but under a distorted model of the income process that looks more persistent than the approximating one.
-
-## Robust Permanent Income Model
+## A robust permanent income model
 
 ```{index} single: Robust Control; permanent income
 ```
@@ -1042,7 +315,7 @@ The scalar $\alpha$ plays a central role in the observational equivalence result
 ```{index} single: Observational Equivalence; Theorem 1
 ```
 
-HST result state an observational-equivalence theorem.
+HST state an observational-equivalence theorem.
 
 ````{prf:theorem} Observational Equivalence, I
 :label: thm-lqcs-oe1
@@ -1063,7 +336,7 @@ and $\hat\beta(\sigma) < \beta$.
 Since $R > 1$ and $\alpha^2 > 0$, a more negative $\sigma$ (stronger robustness
 concern) lowers $\hat\beta$.
 
-A robust consumer wants to save more because his alter-ago, a utility  minimizing agent, makes future income look worse than the approximating model predicts.
+A robust consumer wants to save more because his alter ego, a utility-minimizing agent, makes future income look worse than the approximating model predicts.
 
 A lower discount factor makes a consumer less patient and therefore reduces saving.
 
@@ -1155,7 +428,7 @@ It cancels the robust consumer's precautionary-savings motive, leaving the consu
 
 The upward-drift comparison appears in {prf:ref}`thm-lqcs-oe2`, which asks the reverse observational-equivalence question.
 
-The classical precautionary motive  arises because:
+The classical precautionary motive arises because:
 
 $$
 u'''(c) > 0 \;\Rightarrow\; \mathbb{E}_t u'(c_{t+1}) > u'(\mathbb{E}_t c_{t+1}) \;\Rightarrow\; \mathbb{E}_t c_{t+1} > c_t
@@ -1261,7 +534,7 @@ models diverge and the DEP falls toward zero.
 
 The full DEP calculation requires a specified approximating model, its worst-case counterpart, and the sample length used in the likelihood-ratio experiment.
 
-We compute such a DEP for a robust Bewley  model below.
+We compute such a DEP for a robust Bewley model below.
 
 ```{note}
 HST suggested that a DEP above 0.2 is "plausible", meaning the models are still hard enough to distinguish statistically that a concern for robustness is warranted.
@@ -1342,12 +615,60 @@ $$ (eq:obsequivn2)
 The solution satisfies $\tilde\beta > \hat\beta$ when $\hat\sigma < 0$.
 ````
 
+The map {eq}`eq:obsequivn2` is a closed form, so we can plot it directly.
+
+The next figure compares the two observational-equivalence loci for the two-factor calibration, using $\alpha^2 = \sigma_1^2 + (1-\beta)^2\sigma_2^2$ (derived below in {eq}`eq:bew_alpha2`).
+
+We start from a benchmark with $\hat\beta R = 1$, so $\hat\beta = \beta$.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The two observational-equivalence loci
+    name: fig-lqcs-oe-loci
+---
+β_bench = β                                 # benchmark with β̂ R = 1
+α2 = σ1**2 + (1 - β)**2 * σ2**2             # two-factor α² (see eq:bew_alpha2)
+
+σ_hat_vals = np.linspace(0.0, -0.16, 60)
+
+# Locus II (eq:obsequivn2): robustness ⟺ an *increase* in β (σ = 0)
+disc = 1 - 4 * β_bench * (1 + σ_hat_vals * α2) / (1 + β_bench)**2
+β_tilde = (β_bench * (1 + β_bench)) / (2 * (1 + σ_hat_vals * α2)) \
+          * (1 + np.sqrt(disc))
+
+# Locus I (eq:obseq / eq:bew_locus): robustness ⟺ a *decrease* in β (σ = 0)
+β_hat = β_bench + σ_hat_vals * α2 * β_bench / (1 - β_bench)
+
+fig, ax = plt.subplots()
+ax.plot(-σ_hat_vals, β_tilde, lw=2, color='C0',
+        label=r'locus II: $\tilde\beta(\hat\sigma)$ (upward drift)')
+ax.plot(-σ_hat_vals, β_hat, lw=2, color='C3',
+        label=r'locus I: $\hat\beta(\sigma)$ (downward drift)')
+ax.axhline(β_bench, color='k', linestyle=':', lw=1,
+           label=r'benchmark $\beta$ ($\beta R = 1$)')
+ax.set_xlabel(r'robustness concern $-\hat\sigma$')
+ax.set_ylabel('observationally equivalent discount factor')
+ax.legend()
+plt.show()
+
+print(f"at σ̂ = {σ_hat_vals[-1]:.3f}:  β̃ = {β_tilde[-1]:.4f} > β = {β_bench}")
+print(f"                       β̂ = {β_hat[-1]:.4f} < β = {β_bench}")
+```
+
+The two loci pass through the benchmark $\beta$ at $\hat\sigma = 0$ and separate as the robustness concern grows.
+
+Locus I, from {prf:ref}`thm-lqcs-oe1`, lies *below* $\beta$: activating robustness looks like an increase in impatience, which imparts a downward drift to expected consumption.
+
+Locus II, from {prf:ref}`thm-lqcs-oe2`, lies *above* $\beta$: the same robustness concern, viewed from a benchmark with $\beta R = 1$, looks like an increase in patience, which imparts an upward drift.
+
 ### A robust LQ Bewley model
 
 ```{index} single: Robust Bewley Model
 ```
 
-We now synthesise the lecture by embedding the Bewley economy above into the HST framework and applying the observational-equivalence theorem.
+We now synthesise the lecture by embedding the Bewley economy of {doc}`lq_bewley_complete_markets` into the HST framework and applying the observational-equivalence theorem.
 
 In this way, we construct a family of **robust Bewley economies**, parameterised by a robustness level $\sigma \leq 0$, whose equilibrium quantities are identical to those of the plain vanilla Bewley model.
 
@@ -1361,7 +682,7 @@ Services equal consumption: $s_t = c_t$.
 
 The only traded security is the one-period risk-free bond, and we write the household's net asset position as $a_t=-b_t$ so that positive $a_t$ denotes wealth rather than debt.
 
-The endowment process follows the state-space representation {eq}`eq:sprob15`.
+The endowment process follows the state-space representation {eq}`eq:pi-endowment`.
 
 The household's augmented state vector is $x_t = [a_t,\; z_t^\top]^\top$, and the law of motion
 {eq}`eq:law0` specialises to
@@ -1383,11 +704,11 @@ The objective is $\mathbb{E}_0 \sum_{t=0}^\infty \beta^t [-(c_t - \gamma)^2/2]$,
 criterion {eq}`eq:income5` with $\sigma = 0$ and $b_t \equiv \gamma$ (a fixed bliss level).
 
 The robust Bellman equation {eq}`eq:income1` with $\sigma = 0$ therefore reduces exactly to
-the LQ problem above, confirming that the HST framework nests the Bewley model.
+the LQ problem of {doc}`lq_permanent_income`, confirming that the HST framework nests the Bewley model.
 
 We next compute the robustness parameter $\alpha^2$.
 
-From the $(c_t,z_t)$ representation {eq}`eq:sprob16`, the consumption innovation is
+From the $(c_t,z_t)$ representation {eq}`eq:pi-crep`, the consumption innovation is
 
 $$
 c_{t+1} - c_t = h\, w_{t+1}, \qquad
@@ -1404,7 +725,7 @@ $$
 \check{G}(I-\beta\check{A})^{-1}\check{C}\check{C}^\top(I-\beta\check{A}^\top)^{-1}\check{G}^\top
 $$ (eq:bew_alpha)
 
-For the two-factor model {eq}`eq:twofactor` with $\check{A} = \mathrm{diag}(1,0)$ and
+For the two-factor model {eq}`eq:pi-twofactor` with $\check{A} = \mathrm{diag}(1,0)$ and
 $\check{C} = \mathrm{diag}(\sigma_1,\sigma_2)$ this simplifies to
 
 $$
@@ -1619,7 +940,7 @@ The right panel computes the DEP from the exact likelihood ratio between the app
 
 ### Concluding remarks
 
-We close with a summary of the key messages.
+We close with a summary of the key messages from all three lectures.
 
 The LQ permanent income model, a rational-expectations version of Friedman's permanent income hypothesis, has two complementary state-space representations:
 
@@ -1666,7 +987,7 @@ We translate from the benchmark Bewley economy to HST notation.
 
 Specialise the robust-control setup to the no-habit, no-capital LQ Bewley environment
 ($\lambda = \delta_h = 0$, $k_t = 0$), and let the endowment process be the two-factor model in
-{eq}`eq:twofactor`.
+{eq}`eq:pi-twofactor`.
 
 1. Write the household state as $x_t = [a_t, z_t^\top]^\top$, where $a_t=-b_t$ is net assets, and derive matrices $(A, B, C)$ for the law of motion {eq}`eq:law0`.
 
