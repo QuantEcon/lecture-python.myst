@@ -87,7 +87,7 @@ $$
 z_{t+1} &= \check{A}\, z_t + \check{C}\, w_{t+1} \\
 y_t &= \check{G}\, z_t
 \end{aligned}
-$$ (eq:pi-endowment)
+$$ (eq:rs-endowment)
 
 The optimal decision rule has a state-space representation in which the state is current consumption $c_t$ and the exogenous endowment state $z_t$:
 
@@ -98,7 +98,7 @@ b_t &= \check{G}(I-\beta\check{A})^{-1} z_t - \frac{1}{1-\beta}\,c_t \\
 y_t &= \check{G}\, z_t \\
 z_{t+1} &= \check{A}\, z_t + \check{C}\, w_{t+1}
 \end{aligned}
-$$ (eq:pi-crep)
+$$ (eq:rs-crep)
 
 We again use the two-factor endowment $y_t = z_{1t} + z_{2t}$,
 
@@ -682,7 +682,7 @@ Services equal consumption: $s_t = c_t$.
 
 The only traded security is the one-period risk-free bond, and we write the household's net asset position as $a_t=-b_t$ so that positive $a_t$ denotes wealth rather than debt.
 
-The endowment process follows the state-space representation {eq}`eq:pi-endowment`.
+The endowment process follows the state-space representation {eq}`eq:rs-endowment`.
 
 The household's augmented state vector is $x_t = [a_t,\; z_t^\top]^\top$, and the law of motion
 {eq}`eq:law0` specialises to
@@ -708,7 +708,7 @@ the LQ problem of {doc}`lq_permanent_income`, confirming that the HST framework 
 
 We next compute the robustness parameter $\alpha^2$.
 
-From the $(c_t,z_t)$ representation {eq}`eq:pi-crep`, the consumption innovation is
+From the $(c_t,z_t)$ representation {eq}`eq:rs-crep`, the consumption innovation is
 
 $$
 c_{t+1} - c_t = h\, w_{t+1}, \qquad

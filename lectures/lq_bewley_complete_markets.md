@@ -211,8 +211,9 @@ same stochastic income process {eq}`eq:gstochpro`, but face **idiosyncratic** no
 Initial bond positions
 are zero: $b_0^i = 0$ for all $i$.
 
-Initial endowment states $z_0^i$ are independent draws from
-the stationary distribution of {eq}`eq:pi-endowment`.
+Initial endowment states $z_0^i$ are independent draws from a common initial distribution.
+
+Because the permanent component $z_{1t}$ has a unit root, process {eq}`eq:pi-endowment` has no stationary distribution, so in the simulation below we draw the permanent component $z_{10}^i \sim N(0,1)$ and draw the transitory component $z_{20}^i \sim N(0,\sigma_2^2)$ from its stationary distribution.
 
 From {eq}`eq:pi-ccf`, with $b_0^i = 0$, agent $i$'s time-0 consumption
 is
