@@ -36,9 +36,13 @@ In this lecture,  we'll use the Kalman filter to
 infer a worker's human capital and the  effort that the worker devotes to accumulating 
 human capital, neither of which the firm observes directly.
 
+This lecture is an application of the filtering and forecasting recursion introduced in {doc}`kalman`.
+
 The firm learns about those things only by observing a history of the output that the worker generates for the firm, and from understanding how that output depends on the worker's human capital and how human capital evolves as a function of the worker's effort. 
 
 We'll posit a rule that expresses how much the firm pays the worker each period as a function of the firm's information each period.
+
+The lecture {doc}`kalman_filter_var` uses the same recursion to construct innovations, likelihoods, and vector autoregressions.
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
