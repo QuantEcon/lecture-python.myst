@@ -45,6 +45,19 @@ To construct an $N \times N$ circulant matrix, we  need only the first row, say,
 
 $$ \begin{bmatrix} c_{0} & c_{1} & c_{2} & c_{3} & c_{4} & \cdots & c_{N-1} \end{bmatrix} .$$
 
+```{prf:definition} Circulant matrix
+:label: def-circulant-matrix
+
+An $N \times N$ matrix $C$ is **circulant** if there are numbers $c_0, \ldots, c_{N-1}$ such that
+
+$$
+C_{ij} = c_{(j-i) \bmod N},
+\qquad 0 \leq i,j \leq N-1.
+$$
+
+Equivalently, each row is obtained from the previous row by shifting entries one step to the right.
+```
+
 After setting entries in the first row, the remaining rows of a circulant matrix are determined as
 follows:
 
@@ -89,8 +102,9 @@ construct_cirlulant(np.array([1., 2., 3.]))
 
 Here are some useful properties:
 
-Suppose that $A$ and $B$ are both circulant matrices of the same order and constructed
-using the same cyclic shift convention. Then it can be verified that
+Suppose that $A$ and $B$ are both circulant matrices of the same order and constructed using the same cyclic shift convention.
+
+Then it can be verified that
 
  * The transpose of a circulant matrix is a circulant matrix.
 
