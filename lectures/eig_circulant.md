@@ -17,21 +17,21 @@ kernelspec:
 
 This lecture describes circulant matrices and some of their properties.
 
-Circulant matrices have a special structure that connects them to  useful concepts
-including
+Building on eigenvalues and eigenvectors from {doc}`linear_algebra`, we use circulant matrices to connect several useful concepts, including
 
   * convolution
   * Fourier transforms
   * permutation matrices
 
-Because of these connections, circulant matrices are widely used  in machine learning, for example, in image processing.
+These connections appear elsewhere in this series: {doc}`hoist_failure` uses Fourier transforms to compute convolutions, while {doc}`svd_intro` develops related matrix decomposition tools.
+
+Circulant matrices are also widely used in machine learning, for example, in image processing.
 
 
 We begin by importing some Python packages
 
 ```{code-cell} ipython3
 import numpy as np
-from numba import jit
 import matplotlib.pyplot as plt
 ```
 
@@ -66,7 +66,6 @@ first column needs to be specified.
 Let's write some Python code to generate a circulant matrix.
 
 ```{code-cell} ipython3
-@jit
 def construct_cirlulant(row):
 
     N = row.size
@@ -90,7 +89,8 @@ construct_cirlulant(np.array([1., 2., 3.]))
 
 Here are some useful properties:
 
-Suppose that $A$ and $B$ are both circulant matrices. Then it can be verified that
+Suppose that $A$ and $B$ are both circulant matrices of the same order and constructed
+using the same cyclic shift convention. Then it can be verified that
 
  * The transpose of a circulant matrix is a circulant matrix.
 
@@ -200,7 +200,6 @@ $$
 Let's write some Python code to illustrate these ideas.
 
 ```{code-cell} ipython3
-@jit
 def construct_P(N):
 
     P = np.zeros((N, N))
