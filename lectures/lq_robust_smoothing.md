@@ -625,43 +625,68 @@ We start from a benchmark with $\hat\beta R = 1$, so $\hat\beta = \beta$.
 ---
 mystnb:
   figure:
-    caption: The two observational-equivalence loci
+    caption: |
+      Two observational-equivalence experiments. Locus I (below $\beta$) holds the
+      *non-robust* agent fixed at $\beta R=1$ and reports the *robust* twin's
+      discount factor $\hat\beta(\sigma)$; locus II (above $\beta$) holds the
+      *robust* agent fixed at $\beta R=1$ and reports the *non-robust* twin's
+      discount factor $\tilde\beta(\hat\sigma)$.
     name: fig-lqcs-oe-loci
 ---
-β_bench = β                                 # benchmark with β̂ R = 1
-α2 = σ1**2 + (1 - β)**2 * σ2**2             # two-factor α² (see eq:bew_alpha2)
+β_bench = β  # benchmark with β R = 1
+α2 = σ1**2 + (1 - β)**2 * σ2**2  # two-factor α^2 (see eq:bew_alpha2)
 
 σ_hat_vals = np.linspace(0.0, -0.16, 60)
 
-# Locus II (eq:obsequivn2): robustness ⟺ an *increase* in β (σ = 0)
+# Locus I (eq:obseq / eq:bew_locus): non-robust agent fixed at βR=1;
+# report the robust twin's discount factor β̂(σ) < β
+β_hat = β_bench + σ_hat_vals * α2 * β_bench / (1 - β_bench)
+
+# Locus II (eq:obsequivn2): robust agent fixed at βR=1;
+# report the non-robust twin's discount factor β̃(σ̂) > β
 disc = 1 - 4 * β_bench * (1 + σ_hat_vals * α2) / (1 + β_bench)**2
 β_tilde = (β_bench * (1 + β_bench)) / (2 * (1 + σ_hat_vals * α2)) \
           * (1 + np.sqrt(disc))
 
-# Locus I (eq:obseq / eq:bew_locus): robustness ⟺ a *decrease* in β (σ = 0)
-β_hat = β_bench + σ_hat_vals * α2 * β_bench / (1 - β_bench)
-
 fig, ax = plt.subplots()
-ax.plot(-σ_hat_vals, β_tilde, lw=2, color='C0',
-        label=r'locus II: $\tilde\beta(\hat\sigma)$ (upward drift)')
 ax.plot(-σ_hat_vals, β_hat, lw=2, color='C3',
-        label=r'locus I: $\hat\beta(\sigma)$ (downward drift)')
+        label=r'locus I: robust twin $\hat\beta(\sigma)<\beta$'
+              '\n(non-robust agent fixed at $\\beta R=1$)')
+ax.plot(-σ_hat_vals, β_tilde, lw=2, color='C0',
+        label=r'locus II: non-robust twin $\tilde\beta(\hat\sigma)>\beta$'
+              '\n(robust agent fixed at $\\beta R=1$)')
 ax.axhline(β_bench, color='k', linestyle=':', lw=1,
            label=r'benchmark $\beta$ ($\beta R = 1$)')
-ax.set_xlabel(r'robustness concern $-\hat\sigma$')
-ax.set_ylabel('observationally equivalent discount factor')
-ax.legend()
+ax.set_xlabel(r'robustness concern $|\sigma|$')
+ax.set_ylabel('discount factor of the equivalent agent')
+ax.legend(fontsize=8.5)
 plt.show()
 
 print(f"at σ̂ = {σ_hat_vals[-1]:.3f}:  β̃ = {β_tilde[-1]:.4f} > β = {β_bench}")
 print(f"                       β̂ = {β_hat[-1]:.4f} < β = {β_bench}")
 ```
 
-The two loci pass through the benchmark $\beta$ at $\hat\sigma = 0$ and separate as the robustness concern grows.
+Both loci pass through the benchmark $\beta$ at $\sigma = 0$ and separate as the robustness concern grows.
 
-Locus I, from {prf:ref}`thm-lqcs-oe1`, lies *below* $\beta$: activating robustness looks like an increase in impatience, which imparts a downward drift to expected consumption.
+The key to reading the figure is that the two loci hold *different* agents fixed, so the discount factor plotted on the vertical axis refers to a different agent on each curve.
 
-Locus II, from {prf:ref}`thm-lqcs-oe2`, lies *above* $\beta$: the same robustness concern, viewed from a benchmark with $\beta R = 1$, looks like an increase in patience, which imparts an upward drift.
+Locus I, from {prf:ref}`thm-lqcs-oe1`, holds the **non-robust** agent fixed at the benchmark $(\sigma = 0, \beta)$ with $\beta R = 1$ and reports the discount factor $\hat\beta(\sigma) < \beta$ of the **robust** agent that mimics it.
+
+This is the sense in which HST call a concern for robustness observationally equivalent to a *lower* discount factor: because robustness already makes the agent save more, its discount factor must be lowered to hold the allocation at the benchmark.
+
+Because the non-robust benchmark has $\beta R = 1$, its optimal consumption is a martingale, $\mathbb{E}_t c_{t+1} = c_t$.
+
+The robust twin chooses the identical consumption process, so it too satisfies $\mathbb{E}_t c_{t+1} = c_t$.
+
+The lower $\hat\beta$, which has $\hat\beta R < 1$, would on its own impart a downward drift, but the robust agent's precautionary saving offsets it exactly, leaving expected consumption flat.
+
+Locus II, from {prf:ref}`thm-lqcs-oe2`, instead holds the **robust** agent fixed at $(\hat\sigma, \beta)$ with $\beta R = 1$ and reports the discount factor $\tilde\beta(\hat\sigma) > \beta$ of the **non-robust** agent that mimics it.
+
+Here there is no impatience offset, so the common allocation inherits the robust agent's precautionary *upward* drift, which the non-robust twin reproduces through $\tilde\beta R > 1$.
+
+The two experiments encode the *same* economics: a concern for robustness adds precautionary saving that acts like extra patience.
+
+They differ only in which agent is anchored at $\beta R = 1$, and hence in whether the common saving motive shows up as an exactly-offsetting impatience adjustment (locus I, expected consumption flat) or as an upward drift in expected consumption (locus II).
 
 ### A robust LQ Bewley model
 
@@ -670,7 +695,7 @@ Locus II, from {prf:ref}`thm-lqcs-oe2`, lies *above* $\beta$: the same robustnes
 
 We now synthesise the lecture by embedding the Bewley economy of {doc}`lq_bewley_complete_markets` into the HST framework and applying the observational-equivalence theorem.
 
-In this way, we construct a family of **robust Bewley economies**, parameterised by a robustness level $\sigma \leq 0$, whose equilibrium quantities are identical to those of the plain vanilla Bewley model.
+We shall construct a family of **robust Bewley economies**, parameterised by a robustness level $\sigma \leq 0$, whose equilibrium quantities are identical to those of the plain vanilla Bewley model.
 
 We first map the Bewley economy into HST notation, specialising the robust model to
 $\lambda = \delta_h = 0$ (no habits, no durable goods) and to a
