@@ -125,16 +125,18 @@ Now consider a circulant matrix with first row
  The **convolution** of  vectors $c$ and $a$ is defined   as the vector $b = c * a $  with components
 
 $$
- b_k = \sum_{i=0}^{n-1} c_{k-i} a_i
+ b_k = \sum_{i=0}^{N-1} c_{k-i} a_i
 $$ (eqn:conv)
+
+Here and below, indices such as $k-i$ are interpreted modulo $N$.
 
 We use $*$ to denote **convolution** via the calculation described in equation {eq}`eqn:conv`.
 
 It can be verified that the vector $b$ satisfies
 
-$$ b = C^T a  $$
+$$ b = C^\top a  $$
 
-where $C^T$ is the transpose of the circulant matrix  defined in equation {eq}`eqn:circulant`.
+where $C^\top$ is the transpose of the circulant matrix  defined in equation {eq}`eqn:circulant`.
 
 
 
