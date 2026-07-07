@@ -81,8 +81,6 @@ We begin with some imports.
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
-
-np.random.seed(0)
 ```
 
 ## Experiments and stochastic transformations
@@ -627,15 +625,17 @@ mystnb:
     caption: Sampled posterior points on the 2-simplex
     name: fig-blackwell-simplex-clouds
 ---
-def sample_posteriors(μ_matrix, prior, n_draws=3000):
+def sample_posteriors(μ_matrix, prior, n_draws=3000, rng=None):
     """
     Simulate n_draws observations from the experiment and compute
     the resulting posterior beliefs.
     Returns array of shape (n_draws, N).
     """
+    if rng is None:
+        rng = np.random.default_rng()
     N, M = μ_matrix.shape
-    states = np.random.choice(N, size=n_draws, p=prior)
-    signals = np.array([np.random.choice(M, p=μ_matrix[s]) for s in states])
+    states = rng.choice(N, size=n_draws, p=prior)
+    signals = np.array([rng.choice(M, p=μ_matrix[s]) for s in states])
     posteriors, _ = compute_posteriors(μ_matrix, prior)
     return posteriors[signals]
 
@@ -648,9 +648,10 @@ def simplex_to_cart(pts):
     return pts @ corners
 
 
-def plot_simplex_posteriors(μ_matrix, ν_matrix, prior3, n_draws=3000):
-    posts_μ = sample_posteriors(μ_matrix, prior3, n_draws)
-    posts_ν = sample_posteriors(ν_matrix, prior3, n_draws)
+def plot_simplex_posteriors(μ_matrix, ν_matrix, prior3, n_draws=3000, seed=0):
+    rng = np.random.default_rng(seed)
+    posts_μ = sample_posteriors(μ_matrix, prior3, n_draws, rng=rng)
+    posts_ν = sample_posteriors(ν_matrix, prior3, n_draws, rng=rng)
 
     cart_μ = simplex_to_cart(posts_μ)
     cart_ν = simplex_to_cart(posts_ν)
