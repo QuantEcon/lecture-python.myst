@@ -432,11 +432,12 @@ arr = np.arange(m+n)
 ```{code-cell} ipython3
 sol_found = []
 cost = []
+rng = np.random.default_rng()
 
 # simulate 1000 times
 for i in range(1000):
 
-    np.random.shuffle(arr)
+    rng.shuffle(arr)
     res_shuffle = linprog(C_vec, A_eq=A[arr], b_eq=b[arr])
 
     # if find a new solution
@@ -709,18 +710,18 @@ Locations are assigned randomly.
 def build_nodes_of_one_type(group='p', n=100, seed=123):
 
     nodes = []
-    np.random.seed(seed)
+    rng = np.random.default_rng(seed)
 
     for i in range(n):
 
         if group == 'p':
             m = 1/n
-            x = np.random.uniform(-2, 2)
-            y = np.random.uniform(-2, 2)
+            x = rng.uniform(-2, 2)
+            y = rng.uniform(-2, 2)
         else:
             m = betabinom.pmf(i, n-1, 2, 2)
-            x = 0.6 * np.random.uniform(-1.5, 1.5)
-            y = 0.6 * np.random.uniform(-1.5, 1.5)
+            x = 0.6 * rng.uniform(-1.5, 1.5)
+            y = 0.6 * rng.uniform(-1.5, 1.5)
 
         name = group + str(i)
         nodes.append(Node(x, y, m, group, name))
