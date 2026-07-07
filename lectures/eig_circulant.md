@@ -216,7 +216,7 @@ $$
 Let's write some Python code to illustrate these ideas.
 
 ```{code-cell} ipython3
-def construct_P(N):
+def construct_cyclic_shift_matrix(N):
 
     P = np.zeros((N, N))
 
@@ -228,7 +228,7 @@ def construct_P(N):
 ```
 
 ```{code-cell} ipython3
-P4 = construct_P(4)
+P4 = construct_cyclic_shift_matrix(4)
 P4
 ```
 
@@ -239,7 +239,7 @@ P4
 
 ```{code-cell} ipython3
 for i in range(4):
-    print(f'𝜆{i} = {𝜆[i]:.1f} \nvec{i} = {Q[i, :]}\n')
+    print(f'𝜆{i} = {𝜆[i]:.1f} \nvec{i} = {Q[:, i]}\n')
 ```
 
 In graphs  below, we shall portray eigenvalues of a shift  permutation matrix   in the complex plane.
@@ -264,7 +264,7 @@ for i, N in enumerate([3, 4, 6, 8]):
     row_i = i // 2
     col_i = i % 2
 
-    P = construct_P(N)
+    P = construct_cyclic_shift_matrix(N)
     𝜆, Q = np.linalg.eig(P)
 
     circ = plt.Circle((0, 0), radius=1, edgecolor='b', facecolor='None')
@@ -302,7 +302,7 @@ F_{8}=\left[\begin{array}{ccccc}
 \end{array}\right]
 $$
 
-The matrix $F_8$ defines a  [Discete Fourier Transform](https://en.wikipedia.org/wiki/Discrete_Fourier_transform).
+The matrix $F_8$ defines a  [Discrete Fourier Transform](https://en.wikipedia.org/wiki/Discrete_Fourier_transform).
 
 To convert it into an orthogonal eigenvector matrix, we can simply normalize it by dividing every entry  by $\sqrt{8}$.
 
@@ -347,7 +347,7 @@ Q8 @ np.conjugate(Q8)
 Let's verify that $k$th column of $Q_{8}$ is an eigenvector of $P_{8}$ with an eigenvalue $w^{k}$.
 
 ```{code-cell} ipython3
-P8 = construct_P(8)
+P8 = construct_cyclic_shift_matrix(8)
 ```
 
 ```{code-cell} ipython3
