@@ -19,6 +19,14 @@ kernelspec:
 ```{index} single: Vector Autoregression; and Kalman filter
 ```
 
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install quantecon
+```
+
 ## Overview
 
 This lecture derives the **Kalman filter** for a linear Gaussian state space system
