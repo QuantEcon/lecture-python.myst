@@ -633,8 +633,8 @@ mystnb:
       discount factor $\tilde\beta(\hat\sigma)$.
     name: fig-lqcs-oe-loci
 ---
-β_bench = β                                 # benchmark with β̂ R = 1
-α2 = σ1**2 + (1 - β)**2 * σ2**2             # two-factor α² (see eq:bew_alpha2)
+β_bench = β  # benchmark with β R = 1
+α2 = σ1**2 + (1 - β)**2 * σ2**2  # two-factor α^2 (see eq:bew_alpha2)
 
 σ_hat_vals = np.linspace(0.0, -0.16, 60)
 
@@ -674,7 +674,9 @@ Locus I, from {prf:ref}`thm-lqcs-oe1`, holds the **non-robust** agent fixed at t
 
 This is the sense in which HST call a concern for robustness observationally equivalent to a *lower* discount factor: because robustness already makes the agent save more, its discount factor must be lowered to hold the allocation at the benchmark.
 
-Because the non-robust benchmark has $\beta R = 1$, its optimal consumption is a martingale, $\mathbb{E}_t c_{t+1} = c_t$; the robust twin chooses the identical consumption process, so it too satisfies $\mathbb{E}_t c_{t+1} = c_t$.
+Because the non-robust benchmark has $\beta R = 1$, its optimal consumption is a martingale, $\mathbb{E}_t c_{t+1} = c_t$.
+
+The robust twin chooses the identical consumption process, so it too satisfies $\mathbb{E}_t c_{t+1} = c_t$.
 
 The lower $\hat\beta$, which has $\hat\beta R < 1$, would on its own impart a downward drift, but the robust agent's precautionary saving offsets it exactly, leaving expected consumption flat.
 
@@ -682,7 +684,7 @@ Locus II, from {prf:ref}`thm-lqcs-oe2`, instead holds the **robust** agent fixed
 
 Here there is no impatience offset, so the common allocation inherits the robust agent's precautionary *upward* drift, which the non-robust twin reproduces through $\tilde\beta R > 1$.
 
-The two experiments encode the *same* economics — a concern for robustness adds precautionary saving that acts like extra patience.
+The two experiments encode the *same* economics: a concern for robustness adds precautionary saving that acts like extra patience.
 
 They differ only in which agent is anchored at $\beta R = 1$, and hence in whether the common saving motive shows up as an exactly-offsetting impatience adjustment (locus I, expected consumption flat) or as an upward drift in expected consumption (locus II).
 
