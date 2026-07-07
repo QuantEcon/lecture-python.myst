@@ -441,7 +441,7 @@ for j in range(8):
 
 The **Discrete Fourier Transform** (DFT) allows us to  represent a  discrete time sequence as a weighted sum of complex sinusoids.
 
-Consider a sequence of $N$ real number $\{x_j\}_{j=0}^{N-1}$.
+Consider a sequence of $N$ real numbers $\{x_j\}_{j=0}^{N-1}$.
 
 The **Discrete Fourier Transform** maps $\{x_j\}_{j=0}^{N-1}$ into a sequence of complex numbers $\{X_k\}_{k=0}^{N-1}$
 
@@ -509,7 +509,7 @@ def plot_magnitude(x=None, X=None):
     if (X is not None):
         data.append(X)
         names.append('X')
-        xs.append('j')
+        xs.append('k')
 
     num = len(data)
     for i in range(num):
@@ -537,7 +537,7 @@ x_{n} = \sum_{k=0}^{N-1} \frac{1}{N} X_{k} e^{2\pi\left(\frac{kn}{N}\right)i}, \
 $$
 
 ```{code-cell} ipython3
-def inverse_transform(X):
+def inverse_DFT(X):
 
     N = len(X)
     w = np.e ** (complex(0, 2*np.pi/N))
@@ -551,7 +551,7 @@ def inverse_transform(X):
 ```
 
 ```{code-cell} ipython3
-inverse_transform(X)
+inverse_DFT(X)
 ```
 
 Another example is
@@ -562,7 +562,7 @@ $$
 
 Since $N=20$, we cannot use an integer multiple of $\frac{1}{20}$ to represent a frequency $\frac{11}{40}$.
 
-To handle this,  we shall end up using all $N$ of the availble   frequencies in the DFT.
+To handle this,  we shall end up using all $N$ of the available   frequencies in the DFT.
 
 Since $\frac{11}{40}$ is in between $\frac{10}{40}$ and $\frac{12}{40}$ (each of which is an integer multiple of $\frac{1}{20}$), the complex coefficients in the DFT   have their  largest magnitudes at $k=5,6,15,16$, not just at a single frequency.
 
@@ -625,7 +625,7 @@ X = DFT(x)
 X
 ```
 
-Now let's evaluate the outcome  of postmultiplying  the eigenvector matrix  $F_{20}$ by the vector $x$, a product that we claim should equal the Fourier tranform of the sequence $\{x_n\}_{n=0}^{N-1}$.
+Now let's evaluate the outcome  of postmultiplying  the eigenvector matrix  $F_{20}$ by the vector $x$, a product that we claim should equal the Fourier transform of the sequence $\{x_n\}_{n=0}^{N-1}$.
 
 ```{code-cell} ipython3
 F20, _ = construct_F(20)
@@ -635,13 +635,9 @@ F20, _ = construct_F(20)
 F20 @ x
 ```
 
-Similarly, the inverse DFT can be expressed as a inverse DFT matrix $F^{-1}_{20}$.
+Similarly, the inverse DFT can be expressed as an inverse DFT matrix $F^{-1}_{20}$.
 
 ```{code-cell} ipython3
 F20_inv = np.linalg.inv(F20)
 F20_inv @ X
-```
-
-```{code-cell} ipython3
-
 ```
