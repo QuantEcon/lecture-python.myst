@@ -192,7 +192,7 @@ $$
 and solving
 
 $$
-\textrm{det}(P - \lambda I) = (-1)^N \lambda^{N}-1=0
+\textrm{det}(P - \lambda I) = (-1)^N(\lambda^N - 1)=0
 $$
 
 
@@ -205,7 +205,7 @@ Thus, **singular values** of the  permutation matrix $P$ defined in equation {eq
 It can be verified that permutation matrices are orthogonal matrices:
 
 $$
-P P' = I
+P P^\top = I
 $$
 
 
