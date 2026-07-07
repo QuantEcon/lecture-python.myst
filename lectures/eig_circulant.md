@@ -79,7 +79,7 @@ first column needs to be specified.
 Let's write some Python code to generate a circulant matrix.
 
 ```{code-cell} ipython3
-def construct_cirlulant(row):
+def construct_circulant(row):
 
     N = row.size
 
@@ -95,7 +95,7 @@ def construct_cirlulant(row):
 
 ```{code-cell} ipython3
 # a simple case when N = 3
-construct_cirlulant(np.array([1., 2., 3.]))
+construct_circulant(np.array([1., 2., 3.]))
 ```
 
 ### Some Properties of Circulant Matrices
@@ -368,14 +368,10 @@ Next, we execute calculations to verify that the circulant matrix $C$ defined  i
 
 
 $$
-C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
+C = c_{0} I + c_{1} P + \cdots + c_{N-1} P^{N-1}
 $$
 
 and that every eigenvector of $P$ is also an eigenvector of $C$.
-
-```{code-cell} ipython3
-
-```
 
 We illustrate this for $N=8$ case.
 
@@ -388,10 +384,10 @@ c
 ```
 
 ```{code-cell} ipython3
-C8 = construct_cirlulant(c)
+C8 = construct_circulant(c)
 ```
 
-Compute $c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}$.
+Compute $c_{0} I + c_{1} P + \cdots + c_{N-1} P^{N-1}$.
 
 ```{code-cell} ipython3
 N = 8
@@ -418,7 +414,7 @@ Now let's compute the difference between two circulant matrices that we have  co
 np.abs(C - C8).max()
 ```
 
-The  $k$th column of $P_{8}$ associated with eigenvalue $w^{k-1}$ is an eigenvector of $C_{8}$ associated with an eigenvalue $\sum_{h=0}^{7} c_{j} w^{h k}$.
+The $j$th column of $Q_{8}$ is an eigenvector of $C_{8}$ associated with eigenvalue $\sum_{k=0}^{7} c_k w^{j k}$.
 
 ```{code-cell} ipython3
 𝜆_C8 = np.zeros(8, dtype=complex)
