@@ -32,7 +32,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p _site
-          curl -fsSL "${{ steps.release.outputs.asset-url }}" | tar -xz -C _site
+          curl -fsSL "${{ steps.release.outputs.asset-url }}" | tar -xzf - -C _site
       - name: Link Checker
         id: lychee
         uses: lycheeverse/lychee-action@v2
