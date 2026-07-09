@@ -328,7 +328,7 @@ def draw_from_posterior(sample):
 
     # check condition
     with AR1_model:
-        az.plot_trace(trace, figsize=(17, 6))
+        az.plot_trace(trace)
     
     rhos = trace.posterior.rho.values.flatten()
     sigmas = trace.posterior.sigma.values.flatten()
