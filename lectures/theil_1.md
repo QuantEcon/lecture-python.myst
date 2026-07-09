@@ -63,9 +63,9 @@ The decision rule does not depend on the variance of the shocks, but the *level*
 
 After describing the structure of the certainty equivalence property in detail, this lecture describes its role in rational expectations modeling.
 
-We do so by drawing heavily on the introduction to {cite}`lucas1981rational`.
+We do so by drawing heavily on the introduction to {cite:t}`lucas1981rational`.
 
-In addition to learning the certainty equivalence principle, this lecture describes troubles with pre-rational expectations econometric policy evaluation procedures described by {cite}`lucas1976econometric`.
+In addition to learning the certainty equivalence principle, this lecture describes troubles with pre-rational expectations econometric policy evaluation procedures described by {cite:t}`lucas1976econometric`.
 
 ```{note}
 That volume collected early papers on rational expectations modeling and econometrics.
@@ -73,7 +73,7 @@ That volume collected early papers on rational expectations modeling and econome
 
 ## A central problem of empirical economics
 
-To set the stage, {cite:t}`lucas1981rational` stated the central question for empirical economics that had been posed by Leonid Hurwicz ({cite}`Hurwicz:1962`,{cite}`Hurwicz:1966`):
+To set the stage, {cite:t}`lucas1981rational` stated the central question for empirical economics that had been posed by Leonid Hurwicz ({cite}`Hurwicz:1962`):
 
  *  Given observations on an agent's behavior in a particular economic environment, what can we infer about how that behavior *would have differed* had the environment been altered?
 
@@ -100,7 +100,7 @@ Consider a single decision maker whose situation at date $t$ is fully described 
 z_{t+1} = f(z_t,\, \epsilon_{t+1}),
 ```
 
-where the innovations $\{\epsilon_t\}$ are i.i.d. draws from a fixed c.d.f. $\Phi(\cdot) : \mathcal{E} \to [0,1]$.
+where the innovations $\{\epsilon_t\}$ are IID draws from a fixed CDF $\Phi(\cdot) : \mathcal{E} \to [0,1]$.
 
 The function $f : S_1 \times \mathcal{E} \to S_1$ is called the **decision maker's environment**.
 
@@ -137,7 +137,7 @@ Policy evaluation requires knowledge of the entire map $f \mapsto T(f)$.
 
 Under an environment change $f_0 \to f_1$, agents will in general revise their decision rules $h_0 \to h_1 = T(f_1)$, rendering the estimated rule $h_0$ invalid for forecasting behavior under $f_1$.
 
-{cite:t}`lucas1976econometric` and the introduction to {cite}`lucas1981rational` conclude that the only nonexperimental path forward is to recover the **return function** $V$ from which $h$ is derived as the solution to an optimization problem, and then re-solve that problem under the counterfactual environment $f_1$.
+{cite:t}`lucas1976econometric` and the introduction to {cite:t}`lucas1981rational` conclude that the only nonexperimental path forward is to recover the **return function** $V$ from which $h$ is derived as the solution to an optimization problem, and then re-solve that problem under the counterfactual environment $f_1$.
 
 
 ## An optimization problem
@@ -167,7 +167,7 @@ The dependence on $g$ and $V$ is suppressed in the main text but made explicit w
 
 Progress beyond the level of generality of the previous section requires restricting the primitives.
 
-A productive restriction, exploited in the papers collected in {cite}`lucas1981rational`, imposes *quadratic* $V$ and *linear* $g$, which forces $h$ to be linear.
+A productive restriction, exploited in the papers collected in {cite:t}`lucas1981rational`, imposes *quadratic* $V$ and *linear* $g$, which forces $h$ to be linear.
 
 As part of its computational tractability, this specialization delivers a striking structural result:
 
@@ -245,7 +245,7 @@ The requirement that $\tilde{z}_t = h_2(z_t) = S(f)(z_t)$ -- i.e., that agents' 
 These restrictions, rather than any conditions on distributed lags within a single equation, are the operative empirical content of rational expectations.
 
 ```{note}
-This is the message of {cite}`lucas1976econometric` and {cite}`sargent1981interpreting`.
+This is the message of {cite:t}`lucas1976econometric` and {cite:t}`sargent1981interpreting`.
 ```
 
 The following code verifies the CE principle numerically.
@@ -292,13 +292,14 @@ fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 axes[0].plot(σ_vals, F_vals, lw=2)
 axes[0].set_xlabel('noise level $\\sigma$')
 axes[0].set_ylabel('policy gain $F$')
+axes[0].set_title('policy gain')
 axes[0].set_ylim(0, 2 * max(F_vals) + 0.1)
 
-axes[1].plot(σ_vals, d_vals, lw=2, color='darkorange')
+axes[1].plot(σ_vals, d_vals, lw=2, color='C1')
 axes[1].set_xlabel('noise level $\\sigma$')
 axes[1].set_ylabel('value constant $d$')
-
-plt.tight_layout()
+axes[1].set_title('value constant')
+fig.tight_layout()
 plt.show()
 ```
 
@@ -359,17 +360,16 @@ slope $\tfrac{\beta}{1-\beta} P$.
 ```{code-cell} ipython3
 σ_sq_vals = σ_vals ** 2
 
-fig, ax = plt.subplots(figsize=(8, 5))
+fig, ax = plt.subplots()
 ax.plot(σ_sq_vals, d_vals, lw=2)
 ax.set_xlabel('$\\sigma^2$')
 ax.set_ylabel('value constant $d$')
-ax.set_title('Value constant is linear in noise variance (CE principle)')
 
 coeffs = np.polyfit(σ_sq_vals, d_vals, 1)
 ax.plot(σ_sq_vals, np.polyval(coeffs, σ_sq_vals),
         'r--', lw=2, label=f'Linear fit: slope = {coeffs[0]:.3f}')
 ax.legend()
-plt.tight_layout()
+fig.tight_layout()
 plt.show()
 
 P_scalar = float(LQ(Q_mat, R_mat, A, B, C=np.zeros((1, 1)),

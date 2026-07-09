@@ -450,8 +450,9 @@ In particular, let's take F2 as computed above, plug it into {eq}`eq_mpe_p1p` an
 We hope that the resulting policy will agree with F1 as computed above
 
 ```{code-cell} ipython3
+beta = 0.96
 Λ1 = A - B2 @ F2
-lq1 = qe.LQ(Q1, R1, Λ1, B1, beta=β)
+lq1 = qe.LQ(Q1, R1, Λ1, B1, beta=beta)
 P1_ih, F1_ih, d = lq1.stationary_values()
 F1_ih
 ```

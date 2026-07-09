@@ -46,6 +46,12 @@ It is aimed at readers who either
 * have heard of the Kalman filter but don't know how it works, or
 * know the Kalman filter equations, but don't know where they come from
 
+Subsequent lectures use the same recursive logic in more applied and more econometric settings.
+
+See {doc}`kalman_2` for an economic application in which a firm infers a worker's hidden human capital and effort.
+
+See {doc}`kalman_filter_var` for a derivation of the innovations representation and its connection to vector autoregressions.
+
 For additional (more advanced) reading on the Kalman filter, see
 
 * {cite}`Ljungqvist2012`, section 2.7
@@ -258,7 +264,9 @@ and
 ```
 
 ```{note}
-A proof can be found in {cite}`Bishop2006`. To get from his expressions to the ones used above, you will also need to apply the [Woodbury matrix identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity).
+A proof can be found in {cite}`Bishop2006`.
+
+To get from his expressions to the ones used above, you will also need to apply the [Woodbury matrix identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity).
 ```
 
 Here $\Sigma G^\top (G \Sigma G^\top + R)^{-1}$ is the matrix of population
@@ -457,7 +465,9 @@ Repeating {eq}`kl_mlom0`, the dynamics for $\mu_t$ and $\Sigma_t$ are as follows
 These are the standard dynamic equations for the Kalman filter (see, for example, {cite}`Ljungqvist2012`, page 58).
 
 ```{note}
-Here $\mu_t$ is the filter's prediction of the hidden state $X_t$. In much of the Kalman filter literature it is written $\hat x_t$, emphasizing that it is an estimate of $X_t$.
+Here $\mu_t$ is the filter's prediction of the hidden state $X_t$.
+
+In much of the Kalman filter literature it is written $\hat x_t$, emphasizing that it is an estimate of $X_t$.
 ```
 
 (kalman_convergence)=
@@ -501,7 +511,9 @@ Equation {eq}`kalman_dare` is known as a [discrete-time algebraic Riccati equati
 
 Conditions under which a fixed point exists and the sequence $\{\Sigma_t\}$ converges to it are discussed in {cite}`AHMS1996` and {cite}`AndersonMoore2005`, chapter 4.
 
-A sufficient (but not necessary) condition is that all the eigenvalues $\lambda_i$ of $A$ satisfy $|\lambda_i| < 1$ (cf. e.g., {cite}`AndersonMoore2005`, p. 77).
+A sufficient (but not necessary) condition is that all the eigenvalues $\lambda_i$ of $A$ satisfy $|\lambda_i| < 1$.
+
+See, for example, {cite}`AndersonMoore2005`, p. 77.
 
 (This strong condition assures that the unconditional  distribution of $X_t$  converges as $t \to \infty$.)
 
@@ -522,13 +534,13 @@ The latter represents a linear state space model of the form
 
 $$
 \begin{aligned}
-    x_{t+1} & = A x_t + C w_{t+1}
+    X_{t+1} & = A X_t + C w_{t+1}
     \\
-    y_t & = G x_t + H v_t
+    Y_t & = G X_t + H v_t
 \end{aligned}
 $$
 
-where the shocks $w_t$ and $v_t$ are IID standard normals.
+where $X_t$ and $Y_t$ denote random variables, and the shocks $w_t$ and $v_t$ are IID standard normals.
 
 To connect this with the notation of this lecture we set
 
@@ -557,13 +569,13 @@ on {cite}`Ljungqvist2012`, section 2.9.2.
 Suppose that
 
 * all variables are scalars
-* the hidden state $\{x_t\}$ is in fact constant, equal to some $\theta \in \mathbb{R}$ unknown to the modeler
+* the hidden state $\{X_t\}$ is in fact constant, equal to some $\theta \in \mathbb{R}$ unknown to the modeler
 
-State dynamics are therefore given by {eq}`kl_xdynam` with $A=1$, $Q=0$ and $x_0 = \theta$.
+State dynamics are therefore given by {eq}`kl_xdynam` with $A=1$, $Q=0$ and $X_0 = \theta$.
 
-The measurement equation is $y_t = \theta + v_t$ where $v_t$ is $N(0,1)$ and IID.
+The measurement equation is $Y_t = \theta + v_t$ where $v_t$ is $N(0,1)$ and IID.
 
-The task of this exercise to simulate the model and, using the code from `kalman.py`, plot the first five predictive densities $p_t(x) = N(\mu_t, \Sigma_t)$.
+The task of this exercise is to simulate the model and, using the code from `kalman.py`, plot the first five predictive densities $p_t(x) = N(\mu_t, \Sigma_t)$ for $X_t$.
 
 As shown in {cite}`Ljungqvist2012`, sections 2.9.1--2.9.2, these distributions asymptotically put all mass on the unknown value $\theta$.
 
@@ -583,9 +595,11 @@ Your figure should -- modulo randomness -- look something like this
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
 # Parameters
-θ = 10  # Constant value of state x_t
+θ = 10  # Constant value of state X_t
 A, C, G, H = 1, 0, 1, 1
 ss = LinearStateSpace(A, C, G, H, mu_0=θ)
 
@@ -643,9 +657,11 @@ Plot $z_t$ against $t$, setting $\epsilon = 0.1$ and $T = 600$.
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
 ϵ = 0.1
-θ = 10  # Constant value of state x_t
+θ = 10  # Constant value of state X_t
 A, C, G, H = 1, 0, 1, 1
 ss = LinearStateSpace(A, C, G, H, mu_0=θ)
 
@@ -682,25 +698,27 @@ plt.show()
 :label: kalman_ex3
 ```
 
-As discussed {ref}`above <kalman_convergence>`, if the shock sequence $\{W_t\}$ is not degenerate, then it is not in general possible to predict $x_t$ without error at time $t-1$ (and this would be the case even if we could observe $x_{t-1}$).
+As discussed {ref}`above <kalman_convergence>`, if the shock sequence $\{W_t\}$ is not degenerate, then it is not in general possible to predict $X_t$ without error at time $t-1$ (and this would be the case even if we could observe $X_{t-1}$).
 
 Let's now compare the prediction $\mu_t$ made by the Kalman filter
-against a competitor who **is** allowed to observe $x_{t-1}$.
+against a competitor who **is** allowed to observe $X_{t-1}$.
 
-This competitor will use the conditional expectation $\mathbb E[ x_t
-\,|\, x_{t-1}]$, which in this case is $A x_{t-1}$.
+This competitor will use the conditional expectation $\mathbb E[ X_t
+\,|\, X_{t-1}]$, which in this case is $A X_{t-1}$.
 
 The conditional expectation is known to be the optimal prediction method in terms of minimizing mean squared error.
 
-(More precisely, the minimizer of $\mathbb E \, \| x_t - g(x_{t-1}) \|^2$ with respect to $g$ is $g^*(x_{t-1}) := \mathbb E[ x_t \,|\, x_{t-1}]$)
+(More precisely, the minimizer of $\mathbb E \, \| X_t - g(X_{t-1}) \|^2$ with respect to $g$ is $g^*(X_{t-1}) := \mathbb E[ X_t \,|\, X_{t-1}]$)
 
 Thus we are comparing the Kalman filter against a competitor who has more
 information (in the sense of being able to observe the latent state) and
 behaves optimally in terms of minimizing squared error.
 
-Our horse race will be assessed in terms of squared error.
+Our horse race will be assessed in terms of realized squared error.
 
-In particular, your task is to generate a graph plotting observations of both $\| x_t - A x_{t-1} \|^2$ and $\| x_t - \mu_t \|^2$ against $t$ for $t = 1, \ldots, 49$.
+In particular, your task is to generate a graph plotting simulated realizations of both $\| X_t - A X_{t-1} \|^2$ and $\| X_t - \mu_t \|^2$ against $t$ for $t = 1, \ldots, 49$.
+
+In the code below, `x[:, t]` is the realized value of $X_t$ along the simulated path.
 
 For the parameters, set $G = I, R = 0.5 I$ and $Q = 0.3 I$, where $I$ is
 the $2 \times 2$ identity.
@@ -731,7 +749,7 @@ $$
 
 and $\mu_0 = (8, 8)$.
 
-Finally, set $x_0 = (0, 0)$.
+Finally, set the realized initial state to $x_0 = (0, 0)$.
 
 
 ```{exercise-end}
@@ -740,6 +758,8 @@ Finally, set $x_0 = (0, 0)$.
 ```{solution-start} kalman_ex3
 :class: dropdown
 ```
+
+Here is one solution:
 
 ```{code-cell} ipython3
 # Define A, C, G, H
@@ -806,5 +826,5 @@ Try varying the coefficient $0.3$ in $Q = 0.3 I$ up and down.
 
 Observe how the diagonal values in the stationary solution $\Sigma$ (see {eq}`kalman_dare`) increase and decrease in line with this coefficient.
 
-The interpretation is that more randomness in the law of motion for $x_t$ causes more (permanent) uncertainty in prediction.
+The interpretation is that more randomness in the law of motion for $X_t$ causes more (permanent) uncertainty in prediction.
 ```
