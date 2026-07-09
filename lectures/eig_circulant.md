@@ -17,13 +17,15 @@ kernelspec:
 
 This lecture describes circulant matrices and some of their properties.
 
-Building on eigenvalues and eigenvectors from {doc}`linear_algebra`, we use circulant matrices to connect several useful concepts, including
+Circulant matrices are useful because multiplying by them is closely connected to convolution, and their eigenvectors can be constructed using the Discrete Fourier Transform.
+
+We use circulant matrices to connect several useful concepts, including
 
   * convolution
   * Fourier transforms
   * permutation matrices
 
-These connections appear elsewhere in this series: {doc}`hoist_failure` uses Fourier transforms to compute convolutions, while {doc}`svd_intro` develops related matrix decomposition tools.
+For background on eigenvalues and eigenvectors, see {doc}`linear_algebra`; for another use of Fourier transforms and convolution, see {doc}`hoist_failure`.
 
 Circulant matrices are also widely used in machine learning, for example, in image processing.
 
