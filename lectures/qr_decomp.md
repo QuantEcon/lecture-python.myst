@@ -82,7 +82,7 @@ $$
 u_1=a_1, \ \ \ e_1=\frac{u_1}{||u_1||}
 $$
 
-We **orgonalize** first to compute $u_2$ and then **normalize** to create $e_2$:
+We **orthogonalize** first to compute $u_2$ and then **normalize** to create $e_2$:
 
 $$
 u_2=a_2-(a_2· e_1)e_1, \ \ \  e_2=\frac{u_2}{||u_2||}
