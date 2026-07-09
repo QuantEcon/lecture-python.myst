@@ -47,7 +47,7 @@ Let's start with some imports.
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import seaborn as sns
-from typing import NamedTuple
+from typing import NamedTuplep
 
 # numpyro
 import numpyro
@@ -406,7 +406,7 @@ $$
 
 This is designed to express the event
 
-- "after one or two decreases, $Y$ will grow for two consecutive quarters" 
+- "after one or two decrease(s), $Y$ will grow for two consecutive quarters" 
 
 The **negative turning point today or tomorrow** $N_t$ is defined in the same way.
 
