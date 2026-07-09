@@ -6,13 +6,13 @@ on:
   workflow_dispatch:
 jobs:
   cache:
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/disk=large"
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/volume=80gb/spot=false"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Setup Anaconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           auto-update-conda: true
           auto-activate-base: true
@@ -20,12 +20,11 @@ jobs:
           python-version: "3.13"
           environment-file: environment.yml
           activate-environment: quantecon
-      - name: Install JAX, Numpyro, PyTorch
+      - name: Install JAX and Numpyro
         shell: bash -l {0}
         run: |
-          pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
-          pip install --upgrade "jax[cuda12-local]==0.6.2"
-          pip install numpyro  
+          pip install -U "jax[cuda13]"
+          pip install numpyro
           python scripts/test-jax-install.py
       - name: Check nvidia drivers
         shell: bash -l {0}
@@ -36,13 +35,13 @@ jobs:
         run: |
           jb build lectures --path-output ./ -W --keep-going
       - name: Upload Execution Reports
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: execution-reports
           path: _build/html/reports
       - name: Upload "_build" folder (cache)
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: build-cache
           path: _build
