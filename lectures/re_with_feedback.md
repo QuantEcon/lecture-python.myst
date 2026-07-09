@@ -78,14 +78,14 @@ first-order and second-order linear difference equations.
 
 ## Linear Difference Equations
 
-We'll use the *backward shift* or *lag* operator $L$.
+We'll use the **backward shift** or **lag** operator $L$.
 
 The lag operator $L$  maps a sequence $\{x_t\}_{t=0}^\infty$ into the sequence $\{x_{t-1}\}_{t=0}^\infty$
 
 We'll deploy  $L$  by using the equality
 $L x_t \equiv x_{t-1}$ in algebraic expressions.
 
-Further,  the inverse $L^{-1}$ of the lag operator is  the *forward shift*
+Further,  the inverse $L^{-1}$ of the lag operator is  the **forward shift**
 operator.
 
 We'll often use the equality  $L^{-1} x_t \equiv x_{t+1}$ below.
@@ -345,7 +345,7 @@ F = (1-\lambda) G (I - \lambda A)^{-1}
 ```
 
 ```{note}
-As mentioned above, an *explosive solution* of difference
+As mentioned above, an **explosive solution** of difference
 equation {eq}`equation_1` can be constructed by adding to the right hand of {eq}`equation_4` a
 sequence $c \lambda^{-t}$ where $c$ is an arbitrary positive
 constant.
