@@ -15,6 +15,7 @@ opt_growth_data = [
 class OptimalGrowthModel_CRRA:
 
     def __init__(self,
+                rng,
                 α=0.4,
                 β=0.96,
                 μ=0,
@@ -22,17 +23,15 @@ class OptimalGrowthModel_CRRA:
                 γ=1.5,
                 grid_max=4,
                 grid_size=120,
-                shock_size=250,
-                seed=1234):
+                shock_size=250):
 
         self.α, self.β, self.γ, self.μ, self.s = α, β, γ, μ, s
 
         # Set up grid
         self.grid = np.linspace(1e-5, grid_max, grid_size)
 
-        # Store shocks (with a seed, so results are reproducible)
-        np.random.seed(seed)
-        self.shocks = np.exp(μ + s * np.random.randn(shock_size))
+        # Store shocks (drawn from the passed-in rng, so results are reproducible)
+        self.shocks = np.exp(μ + s * rng.standard_normal(shock_size))
 
 
     def f(self, k):
