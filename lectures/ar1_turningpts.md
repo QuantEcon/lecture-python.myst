@@ -123,11 +123,11 @@ we'll plot $.9$ and $.95$ coverage intervals using conditional distribution
 We'll also plot a bunch of samples of sequences of future values and watch where they fall relative to the coverage interval.  
 
 ```{code-cell} ipython3
-def AR1_simulate(rho, sigma, y0, T):
+def AR1_simulate(rho, sigma, y0, T, rng):
 
     # Allocate space and draw epsilons
     y = np.empty(T)
-    eps = np.random.normal(0, sigma, T)
+    eps = rng.normal(0, sigma, T)
 
     # Initial condition and step forward
     y[0] = y0
@@ -137,7 +137,7 @@ def AR1_simulate(rho, sigma, y0, T):
     return y
 
 
-def plot_initial_path(initial_path):
+def plot_initial_path(initial_path, rng):
     """
     Plot the initial path and the preceding predictive densities
     """
@@ -157,7 +157,7 @@ def plot_initial_path(initial_path):
 
     # Simulate future paths
     for i in range(10):
-        y_future = AR1_simulate(rho, sigma, y0, T1)
+        y_future = AR1_simulate(rho, sigma, y0, T1, rng)
         ax.plot(np.arange(T1), y_future, color='grey', alpha=.5)
     
     # Plot 90% CI
@@ -174,11 +174,11 @@ T0, T1 = 100, 100
 y0 = 10
 
 # Simulate
-np.random.seed(145)
-initial_path = AR1_simulate(rho, sigma, y0, T0)
+rng = np.random.default_rng(145)
+initial_path = AR1_simulate(rho, sigma, y0, T0, rng)
 
 # Plot
-plot_initial_path(initial_path)
+plot_initial_path(initial_path, rng)
 ```
 
 As functions of forecast horizon, the coverage intervals have shapes like those described in 
@@ -410,7 +410,7 @@ Now we  apply Wecker's original  method by simulating future paths and compute p
 on the true  parameters associated with the data-generating model.
 
 ```{code-cell} ipython3
-def plot_Wecker(initial_path, N, ax):
+def plot_Wecker(initial_path, N, ax, rng):
     """
     Plot the predictive distributions from "pure" Wecker's method.
     """
@@ -440,7 +440,7 @@ def plot_Wecker(initial_path, N, ax):
 
     # Simulate future paths
     for n in range(N):
-        sim_path = AR1_simulate(rho, sigma, initial_path[-1], T1)
+        sim_path = AR1_simulate(rho, sigma, initial_path[-1], T1, rng)
         next_reces[n] = next_recession(np.hstack([initial_path[-3:-1], sim_path]))
         severe_rec[n] = severe_recession(sim_path)
         min_vals[n] = minimum_value(sim_path)
@@ -466,7 +466,7 @@ def plot_Wecker(initial_path, N, ax):
     ax[2, 1].set_title("Predictive distribution of time until the next negative turn", fontsize=13)
 
 fig, ax = plt.subplots(3, 2, figsize=(15,12))
-plot_Wecker(initial_path, 1000, ax)
+plot_Wecker(initial_path, 1000, ax, rng)
 plt.show()
 ```
 
@@ -478,12 +478,12 @@ Now we apply we apply our  "extended" Wecker method based on  predictive densiti
 To approximate  the intergration on the right side of {eq}`ar1-tp-eq4`, we  repeatedly draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model {eq}`ar1-tp-eq1`.
 
 ```{code-cell} ipython3
-def plot_extended_Wecker(post_samples, initial_path, N, ax):
+def plot_extended_Wecker(post_samples, initial_path, N, ax, rng):
     """
     Plot the extended Wecker's predictive distribution
     """
     # Select a sample
-    index = np.random.choice(np.arange(len(post_samples['rho'])), N + 1, replace=False)
+    index = rng.choice(np.arange(len(post_samples['rho'])), N + 1, replace=False)
     rho_sample = post_samples['rho'][index]
     sigma_sample = post_samples['sigma'][index]
 
@@ -501,7 +501,7 @@ def plot_extended_Wecker(post_samples, initial_path, N, ax):
 
     # Simulate future paths
     for n in range(N):
-        sim_path = AR1_simulate(rho_sample[n], sigma_sample[n], initial_path[-1], T1)
+        sim_path = AR1_simulate(rho_sample[n], sigma_sample[n], initial_path[-1], T1, rng)
         next_reces[n] = next_recession(np.hstack([initial_path[-3:-1], sim_path]))
         severe_rec[n] = severe_recession(sim_path)
         min_vals[n] = minimum_value(sim_path)
@@ -527,7 +527,7 @@ def plot_extended_Wecker(post_samples, initial_path, N, ax):
     ax[2, 1].set_title("Predictive distribution of time until the next negative turn", fontsize=13)
 
 fig, ax = plt.subplots(3, 2, figsize=(15, 12))
-plot_extended_Wecker(post_samples, initial_path, 1000, ax)
+plot_extended_Wecker(post_samples, initial_path, 1000, ax, rng)
 plt.show()
 ```
 
@@ -537,9 +537,9 @@ Finally, we plot both the original Wecker method and the extended method with pa
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(3, 2, figsize=(15,12))
-plot_Wecker(initial_path, 1000, ax)
+plot_Wecker(initial_path, 1000, ax, rng)
 ax[0, 0].clear()
-plot_extended_Wecker(post_samples, initial_path, 1000, ax)
+plot_extended_Wecker(post_samples, initial_path, 1000, ax, rng)
 plt.legend()
 plt.show()
 ```
