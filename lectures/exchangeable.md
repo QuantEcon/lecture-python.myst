@@ -396,7 +396,7 @@ to increase or decrease the subjective probability he/she attaches to distributi
 
 When the likelihood ratio $l(w_{t+1})$ exceeds one, the observation $w_{t+1}$ nudges the probability
 $\pi$ put on distribution $F$ upward,
-and when the likelihood ratio $l(w_{t+1})$ is less that  one, the observation $w_{t+1}$ nudges $\pi$ downward.
+and when the likelihood ratio $l(w_{t+1})$ is less than one, the observation $w_{t+1}$ nudges $\pi$ downward.
 
 Representation {eq}`eq_Bayes103` is the foundation of some graphs that we'll use to display the dynamics of
 $\{\pi_t\}_{t=0}^\infty$ that are  induced by
@@ -512,7 +512,7 @@ The middle graph plots both $f(w)$ and $g(w)$  against $w$, with the horizontal 
 of $w$ at which the likelihood ratio equals $1$.
 
 The graph on the right plots arrows to the right that show when Bayes' Law  makes $\pi$ increase and arrows
-to the left that show when Bayes' Law make $\pi$ decrease.
+to the left that show when Bayes' Law makes $\pi$ decrease.
 
 Lengths of the arrows  show  magnitudes of the force from Bayes' Law impelling $\pi$ to change.
 
@@ -559,7 +559,7 @@ assumptions about nature's choice of distribution, namely
 Outcomes depend on a peculiar property of likelihood ratio processes  discussed in
 [this lecture](https://python-advanced.quantecon.org/additive_functionals.html).
 
-To proceed, we create some Python code.
+The simulation has two dimensions: recursion over time and repetition across independent paths. In JAX, we use `lax.scan` for the time recursion and `vmap` to apply the path simulator across many independent key sequences.
 
 ```{code-cell} ipython3
 def function_factory(F_a=1, F_b=1, G_a=3, G_b=1.2):
@@ -581,7 +581,7 @@ def function_factory(F_a=1, F_b=1, G_a=3, G_b=1.2):
     def simulate_path(keys, a, b):
         """Simulates a path of beliefs π with length T"""
 
-        # Generate all random keys upfront
+        # Use one random key for each date
         def scan_fn(π_prev, subkey):
             π_new = update(subkey, a, b, π_prev)
             return π_new, π_new
@@ -591,14 +591,11 @@ def function_factory(F_a=1, F_b=1, G_a=3, G_b=1.2):
         # Prepend initial condition
         return jnp.concatenate([jnp.array([0.5]), π_path])
 
-    def simulate(a=1, b=1, T=50, N=200, display=True):
+    def simulate(a=1, b=1, T=50, N=200, seed=42, display=True):
         "Simulates N paths of beliefs π with length T"
         # vectorize over the first argument of the function
         simulate_path_vmap = jax.vmap(simulate_path, in_axes=(0, None, None))
-        # create any random seed. Using some combination of a, b, T, N
-        # so that the seed becomes unique.
-        random_seed = int(a * b + T + N)
-        keys = jax.random.split(jax.random.PRNGKey(random_seed), (N, T))
+        keys = jax.random.split(jax.random.PRNGKey(seed), (N, T))
         # Call the vectorized function over the first axis of keys
         π_paths = simulate_path_vmap(keys, a, b)
 
@@ -696,11 +693,11 @@ def expected_ratio(F_a=1, F_b=1, G_a=3, G_b=1.2):
 
     π_grid = np.linspace(0.02, 0.98, 100)
 
-    expected_rario = np.empty(len(π_grid))
+    expected_ratio = np.empty(len(π_grid))
     for q, inte in zip(["f", "g"], [integrand_f, integrand_g]):
         for i, π in enumerate(π_grid):
-            expected_rario[i] = quad(inte, 0, 1, args=(π,))[0]
-        plt.plot(π_grid, expected_rario, label=f"{q} generates")
+            expected_ratio[i] = quad(inte, 0, 1, args=(π,))[0]
+        plt.plot(π_grid, expected_ratio, label=f"{q} generates")
 
     plt.hlines(1, 0, 1, linestyle="--")
     plt.xlabel(r"$\pi_t$")
@@ -717,7 +714,7 @@ $G_a=3, G_b=1.2$.
 expected_ratio()
 ```
 
-The above graphs shows that when $F$ generates the data, $\pi_t$ on average always heads north, while
+The above graph shows that when $F$ generates the data, $\pi_t$ on average always heads north, while
 when $G$ generates the data, $\pi_t$ heads south.
 
 Next, we'll look at a degenerate case in which  $f$ and $g$ are identical beta
