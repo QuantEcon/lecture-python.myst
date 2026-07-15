@@ -1267,7 +1267,7 @@ The parameters are $r = 0.05, \beta = 1 / (1 + r), \bar c = 1.5,  \mu = 2, \sigm
 
 Here’s one solution.
 
-We use some fancy plot commands to get a certain style — feel free to
+We use some fancy plot commands to get a certain style -- feel free to
 use simpler ones.
 
 The model is an LQ permanent income / life-cycle model with hump-shaped
