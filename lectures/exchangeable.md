@@ -595,7 +595,7 @@ def function_factory(F_a=1, F_b=1, G_a=3, G_b=1.2):
         "Simulates N paths of beliefs π with length T"
         # vectorize over the first argument of the function
         simulate_path_vmap = jax.vmap(simulate_path, in_axes=(0, None, None))
-        keys = jax.random.split(jax.random.PRNGKey(seed), (N, T))
+        keys = jax.random.split(jax.random.key(seed), (N, T))
         # Call the vectorized function over the first axis of keys
         π_paths = simulate_path_vmap(keys, a, b)
 
