@@ -1,17 +1,17 @@
 ---
 jupytext:
   text_representation:
-    extension: .md
+    extension: .myst
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.1
+    jupytext_version: 1.13.8
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-# Forecasting  an AR(1) Process
+# Forecasting an AR(1) Process
 
 ```{include} _admonition/gpu.md
 ```
@@ -47,7 +47,7 @@ Let's start with some imports.
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import seaborn as sns
-from typing import NamedTuplep
+from typing import NamedTuple
 
 # numpyro
 import numpyro
@@ -64,7 +64,6 @@ from jax import lax
 import arviz as az
 
 sns.set_style('white')
-colors = sns.color_palette()
 key = random.PRNGKey(0)
 ```
 
@@ -162,7 +161,19 @@ class AR1(NamedTuple):
     T1: int = 100
 ```
 
-Using the `AR1` class, we can simulate paths more conveniently. The following function simulates an initial path with $T0$ length.
+We create instances through a factory function that validates the parameters.
+
+```{code-cell} ipython3
+def create_ar1(ρ=0.9, σ=1.0, y0=10.0, T0=100, T1=100):
+    """Create an AR(1) instance, checking the parameter restrictions."""
+    if not abs(ρ) < 1:
+        raise ValueError("ρ must satisfy |ρ| < 1 for stationarity")
+    if not σ > 0:
+        raise ValueError("σ must be positive")
+    return AR1(ρ=ρ, σ=σ, y0=y0, T0=T0, T1=T1)
+```
+
+Using the `AR1` class, we can simulate paths more conveniently. The following function simulates an initial path of length $T_0$.
 
 ```{code-cell} ipython3
 def AR1_simulate_past(ar1: AR1, key=key):
@@ -200,7 +211,7 @@ def AR1_simulate_past(ar1: AR1, key=key):
     return initial_path
 ```
 
-Now we define the simulation function that generates a realization of the AR(1) process for future $T1$ periods.
+Now we define the simulation function that generates a realization of the AR(1) process for the future $T_1$ periods.
 
 ```{code-cell} ipython3
 def AR1_simulate_future(ar1: AR1, y_T0, N=10, key=key):
@@ -289,7 +300,7 @@ def plot_path(ar1, initial_path, future_path, ax, key=key):
     y_lower_c90 = center - 1.65 * jnp.sqrt(vars)
 
     # Plot
-    ax.plot(jnp.arange(-T0, 1), initial_path)
+    ax.plot(jnp.arange(-T0, 1), initial_path, lw=2)
     ax.axvline(0, linestyle='--', alpha=.4, color='k', lw=1)
     
     # Choose 10 future paths to plot
@@ -307,7 +318,8 @@ def plot_path(ar1, initial_path, future_path, ax, key=key):
         jnp.arange(1, T1+1), y_upper_c90, y_lower_c90, alpha=.35, label='90% CI'
         )
     ax.plot(
-        jnp.arange(1, T1+1), center, color='red', alpha=.7, label='expectation'
+        jnp.arange(1, T1+1), center, color='red', alpha=.7, lw=2,
+        label='expectation'
         )
     ax.set_xlim([-T0, T1])
     ax.set_xlabel("time", fontsize=13)
@@ -319,10 +331,10 @@ def plot_path(ar1, initial_path, future_path, ax, key=key):
 ---
 mystnb:
   figure:
-    caption: "Initial and predictive future paths \n"
+    caption: Initial and predictive future paths
     name: fig_path
 ---
-ar1 = AR1(ρ=0.9, σ=1, y0=10)
+ar1 = create_ar1(ρ=0.9, σ=1.0, y0=10.0)
 
 # Simulate
 initial_path = AR1_simulate_past(ar1)
@@ -441,24 +453,22 @@ Note that in defining the likelihood function, we choose to condition on the ini
 ---
 mystnb:
   figure:
-    caption: AR(1) model
+    caption: Posterior and trace plots
     name: fig_trace
 ---
-def draw_from_posterior(data, size=10000, bins=20, dis_plot=1, key=key):
-    """Draw a sample of size from the posterior distribution."""
+def draw_from_posterior(data, size=10000, dis_plot=True, key=key):
+    """Draw a sample of the given size from the posterior distribution."""
 
     def model(data):
         # Start with priors
         ρ = numpyro.sample('ρ', dist.Uniform(-1, 1))  # Assume stable ρ
         σ = numpyro.sample('σ', dist.HalfNormal(jnp.sqrt(10)))
 
-        # Define likelihood recursively
-        for t in range(1, len(data)):
-            # Expectation of y_t
-            μ = ρ * data[t-1]
-            
-            # Likelihood of the actual realization.
-            numpyro.sample(f'y_{t}', dist.Normal(μ, σ), obs=data[t])
+        # Expected value of y at the next period (ρ * y), conditioning on y_0
+        yhat = ρ * data[:-1]
+
+        # Likelihood of the actual realization
+        numpyro.sample('y_obs', dist.Normal(yhat, σ), obs=data[1:])
 
     # Compute posterior distribution of parameters
     nuts_kernel = NUTS(model)
@@ -483,24 +493,16 @@ def draw_from_posterior(data, size=10000, bins=20, dis_plot=1, key=key):
     }
 
     # Plot posterior distributions and trace plots
-    if dis_plot == 1:
+    if dis_plot:
         plot_data = az.from_numpyro(posterior=mcmc)
-        axes = az.plot_trace(
-            data=plot_data,
-            compact=True,
-            lines=[
-                ("ρ", {}, ar1.ρ),
-                ("σ", {}, ar1.σ),
-            ],
-            backend_kwargs={"figsize": (10, 6), "layout": "constrained"},
-        )
+        az.plot_trace_dist(plot_data, var_names=['ρ', 'σ'])
 
     return post_sample
 
 post_samples = draw_from_posterior(initial_path)
 ```
 
-The graphs above portray posterior distributions and trace plots. The posterior distributions (top row) show the marginal distributions of the parameters after observing the data, while the trace plots (bottom row) help diagnose MCMC convergence by showing how the sampler explored the parameter space over iterations.
+The graphs above portray posterior distributions and trace plots. The posterior distributions (left column) show the marginal distributions of the parameters after observing the data, while the trace plots (right column) help diagnose MCMC convergence by showing how the sampler explored the parameter space over iterations.
 
 ## Calculating Sample Path Statistics
 
@@ -513,9 +515,10 @@ These two kinds of definitions are equivalent because $\omega$ determines path s
 Moreover, we ignore all equality in the definitions, as equality occurs with zero probability for continuous random variables.
 
 ```{code-cell} ipython3
+@jax.jit
 def compute_path_statistics(initial_path, future_path):
     """Compute path statistics for the AR(1) process."""
-    # Concatenate the last two elements of initial path to identify recession
+    # Prepend the last three observed values so we can identify a turn at t=0
     y = jnp.concatenate([initial_path[-3:], future_path])
     n = y.shape[0]
     
@@ -579,24 +582,27 @@ The following function creates visualizations of the path statistics in a subplo
 
 ```{code-cell} ipython3
 def plot_path_stats(next_recession, next_severe_recession, min_val_8q, 
-                    next_up_turn, next_down_turn, ax):
+                    next_up_turn, next_down_turn, ax, label=None):
     """Plot the path statistics in subplots(3,2)"""
     # ax[0, 0] is for paths of y
-    sns.histplot(next_recession, kde=True, stat='density', ax=ax[0, 1], alpha=.8)
+    sns.histplot(next_recession, kde=True, stat='density', ax=ax[0, 1],
+                 alpha=.8, label=label)
     ax[0, 1].set_xlabel("time until the next recession", fontsize=13)
 
-    sns.histplot(
-        next_severe_recession, kde=True, stat='density', ax=ax[1, 0], alpha=.8
-        )
+    sns.histplot(next_severe_recession, kde=True, stat='density', ax=ax[1, 0],
+                 alpha=.8, label=label)
     ax[1, 0].set_xlabel("time until the next severe recession", fontsize=13)
 
-    sns.histplot(min_val_8q, kde=True, stat='density', ax=ax[1, 1], alpha=.8)
+    sns.histplot(min_val_8q, kde=True, stat='density', ax=ax[1, 1],
+                 alpha=.8, label=label)
     ax[1, 1].set_xlabel("minimum value in next 8 periods", fontsize=13)
 
-    sns.histplot(next_up_turn, kde=True, stat='density', ax=ax[2, 0], alpha=.8)
+    sns.histplot(next_up_turn, kde=True, stat='density', ax=ax[2, 0],
+                 alpha=.8, label=label)
     ax[2, 0].set_xlabel("time until the next positive turn", fontsize=13)
 
-    sns.histplot(next_down_turn, kde=True, stat='density', ax=ax[2, 1], alpha=.8)
+    sns.histplot(next_down_turn, kde=True, stat='density', ax=ax[2, 1],
+                 alpha=.8, label=label)
     ax[2, 1].set_xlabel("time until the next negative turn", fontsize=13)
 ```
 
@@ -608,11 +614,10 @@ Now we apply Wecker's original method by simulating future paths and compute pre
 ---
 mystnb:
   figure:
-    caption: |
-        Distributions of statistics by Wecker's method
+    caption: Distributions from Wecker's method
     name: fig_wecker
 ---
-def plot_Wecker(ar1: AR1, initial_path, ax, N=1000):
+def plot_Wecker(ar1: AR1, initial_path, ax, N=1000, label='true parameters'):
     """
     Plot the predictive distributions from "pure" Wecker's method.
 
@@ -624,6 +629,8 @@ def plot_Wecker(ar1: AR1, initial_path, ax, N=1000):
         The initial observed path of the AR(1) process.
     N : int
         Number of future sample paths to simulate for predictive distributions.
+    label : str
+        Legend label for the plotted distributions.
     """
     # Plot simulated initial and future paths
     y_T0 = initial_path[-1]
@@ -651,7 +658,7 @@ def plot_Wecker(ar1: AR1, initial_path, ax, N=1000):
     
     # Plot path statistics
     plot_path_stats(next_reces, severe_rec, min_val_8q, 
-                    next_up_turn, next_down_turn, ax)
+                    next_up_turn, next_down_turn, ax, label=label)
 
 
 fig, ax = plt.subplots(3, 2, figsize=(15, 12))
@@ -670,12 +677,12 @@ To approximate the integration on the right side of {eq}`ar1-tp-eq4`, we repeate
 ---
 mystnb:
   figure:
-    caption: |
-        Distributions of statistics by extended Wecker's method
+    caption: Distributions from extended Wecker's method
     name: fig_extend_wecker
 ---
 def plot_extended_Wecker(
-    ar1: AR1, post_samples, initial_path, ax, N=1000
+    ar1: AR1, post_samples, initial_path, ax, N=1000,
+    label='sampling from posterior'
     ):
     """Plot the extended Wecker's predictive distribution"""
     y0, T1 = ar1.y0, ar1.T1
@@ -683,7 +690,7 @@ def plot_extended_Wecker(
 
     # Select a parameter sample
     index = random.choice(
-        key, jnp.arange(len(post_samples['ρ'])), (N + 1,), replace=False
+        key, jnp.arange(len(post_samples['ρ'])), (N,), replace=False
         )
     ρ_sample = post_samples['ρ'][index]
     σ_sample = post_samples['σ'][index]
@@ -696,12 +703,15 @@ def plot_extended_Wecker(
     next_down_turn = jnp.zeros(N)
 
     subkeys = random.split(key, num=N)
-    
+
+    # Simulate one future path per posterior draw
+    future_paths = []
     for n in range(N):
         ar1_n = AR1(ρ=ρ_sample[n], σ=σ_sample[n], y0=y0, T1=T1)
         future_temp = AR1_simulate_future(
             ar1_n, y_T0, N=1, key=subkeys[n]
             ).reshape(-1)
+        future_paths.append(future_temp)
         (next_reces_val, severe_rec_val, min_val_8q_val, 
         next_up_turn_val, next_down_turn_val
          ) = compute_path_statistics(initial_path, future_temp)
@@ -712,12 +722,13 @@ def plot_extended_Wecker(
         next_up_turn = next_up_turn.at[n].set(next_up_turn_val)
         next_down_turn = next_down_turn.at[n].set(next_down_turn_val)
 
-    # Plot simulated initial and future paths
-    plot_path(ar1, initial_path, future_path, ax[0, 0])
+    # Plot the initial path and the future paths drawn from the posterior
+    future_paths = jnp.stack(future_paths)
+    plot_path(ar1, initial_path, future_paths, ax[0, 0])
     
     # Plot path statistics
     plot_path_stats(next_reces, severe_rec, min_val_8q, 
-                    next_up_turn, next_down_turn, ax)
+                    next_up_turn, next_down_turn, ax, label=label)
 
 fig, ax = plt.subplots(3, 2, figsize=(12, 15))
 plot_extended_Wecker(ar1, post_samples, initial_path, ax)
@@ -732,13 +743,13 @@ Finally, we plot both the original Wecker method and the extended method with pa
 ---
 mystnb:
   figure:
-    caption: |
-        Comparison between two methods
+    caption: Comparison of the two methods
     name: fig_compare_wecker
 ---
 fig, ax = plt.subplots(3, 2, figsize=(12, 15))
 plot_Wecker(ar1, initial_path, ax)
 ax[0, 0].clear()
 plot_extended_Wecker(ar1, post_samples, initial_path, ax)
+ax[0, 1].legend(fontsize=10)
 plt.show()
 ```
