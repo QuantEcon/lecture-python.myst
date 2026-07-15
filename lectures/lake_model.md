@@ -592,7 +592,7 @@ P = jnp.array([[1 - λ,        λ],
 xbar = rate_steady_state(model_markov)
 
 # Simulate the Markov chain - we need a different approach for random updates
-key = jax.random.PRNGKey(0)
+key = jax.random.key(0)
 
 def simulate_markov(P, initial_state, T, key):
     """Simulate Markov chain for T periods"""

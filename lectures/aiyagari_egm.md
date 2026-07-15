@@ -472,7 +472,7 @@ Let's test it:
 ```{code-cell} ipython3
 household = create_household()
 prices = Prices(r=0.01, w=1.0)
-key = jax.random.PRNGKey(42)
+key = jax.random.key(42)
 
 with qe.Timer():
     K_supply = capital_supply(household, prices, key)
@@ -529,7 +529,7 @@ Let's compute the equilibrium:
 ```{code-cell} ipython3
 firm = Firm()
 household = create_household()
-key = jax.random.PRNGKey(42)
+key = jax.random.key(42)
 
 with qe.Timer():
     K_star = compute_equilibrium(firm, household, key)

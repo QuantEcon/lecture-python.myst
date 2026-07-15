@@ -9,7 +9,7 @@ def matrix_multiply(a, b):
     return jnp.dot(a, b)
 
 # Example usage:
-key = jax.random.PRNGKey(0)
+key = jax.random.key(0)
 x = jax.random.normal(key, (1000, 1000))
 y = jax.random.normal(key, (1000, 1000))
 z = matrix_multiply(x, y)

@@ -393,7 +393,7 @@ N = 3  # Number of layers
 layer_sizes = [1, ] * (N + 1)
 param_scale = 0.1
 step_size = 0.01
-params = init_network_params(layer_sizes, random.PRNGKey(1))
+params = init_network_params(layer_sizes, random.key(1))
 ```
 
 ```{code-cell} ipython3
@@ -496,12 +496,12 @@ f_val = f(grid)
 
 ```{code-cell} ipython3
 indices = jnp.arange(M)
-key = random.PRNGKey(0)
+key = random.key(0)
 
 def train(params, grid, f_val, key, num_epochs=300):
     for epoch in range(num_epochs):
         key, _ = random.split(key)
-        random_permutation = random.permutation(random.PRNGKey(1), indices)
+        random_permutation = random.permutation(random.key(1), indices)
         for x, y in zip(grid[random_permutation], f_val[random_permutation]):
             params = update_la(params, x, y)
             

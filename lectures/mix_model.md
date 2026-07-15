@@ -676,7 +676,7 @@ def MCMC_run(ws):
     kernel = NUTS(model)
     mcmc = MCMC(kernel, num_samples=5000, num_warmup=1000, progress_bar=False)
 
-    mcmc.run(rng_key=random.PRNGKey(142857), w=jnp.array(ws))
+    mcmc.run(rng_key=random.key(142857), w=jnp.array(ws))
     sample = mcmc.get_samples()
     return sample['α']
 ```
