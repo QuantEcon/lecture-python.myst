@@ -39,6 +39,10 @@ To investigate sample path properties we'll use a simulation procedure recommend
 
 To acknowledge uncertainty about parameters, we'll deploy `pymc` to construct a Bayesian joint posterior distribution for unknown parameters.
 
+This lecture builds on {doc}`ar1_bayes`, which studies Bayesian inference for the parameters of exactly this AR(1) model in detail.
+
+We recommend reading that lecture first, since here we treat the construction of the posterior more briefly.
+
 Let's start with some imports.
 
 ```{code-cell} ipython3
@@ -59,14 +63,16 @@ logger.setLevel(logging.CRITICAL)
 
 ## A Univariate First-Order Autoregressive Process
 
-Consider the univariate AR(1) model: 
+Consider the univariate AR(1) model, which is the same model studied in {doc}`ar1_bayes`:
 
 $$ 
 y_{t+1} = \rho y_t + \sigma \epsilon_{t+1}, \quad t \geq 0 
 $$ (ar1-tp-eq1) 
 
-where the scalars $\rho$ and $\sigma$ satisfy $|\rho| < 1$ and $\sigma > 0$; 
-$\{\epsilon_{t+1}\}$ is a sequence of i.i.d. normal random variables with mean $0$ and variance $1$. 
+where
+
+* the scalars $\rho$ and $\sigma$ satisfy $|\rho| < 1$ and $\sigma > 0$
+* $\{\epsilon_{t+1}\}$ is a sequence of IID normal random variables with mean $0$ and variance $1$.
 
 The initial condition $y_{0}$ is a known number. 
 
@@ -123,6 +129,12 @@ we'll plot $.9$ and $.95$ coverage intervals using conditional distribution
 We'll also plot a bunch of samples of sequences of future values and watch where they fall relative to the coverage interval.  
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Initial path and predictive densities
+    name: fig-initial-path
+---
 def AR1_simulate(rho, sigma, y0, T):
 
     # Allocate space and draw epsilons
@@ -150,7 +162,6 @@ def plot_initial_path(initial_path):
 
     # Plot
     fig, ax = plt.subplots(1, 1, figsize=(12, 6))
-    ax.set_title("Initial Path and Predictive Densities", fontsize=15)
     ax.plot(np.arange(-T0 + 1, 1), initial_path)
     ax.set_xlim([-T0, T1])
     ax.axvline(0, linestyle='--', alpha=.4, color='k', lw=1)
@@ -278,6 +289,20 @@ This is designed to express the event
 
 - "after one or two decrease(s), $Y$ will grow for two consecutive quarters" 
 
+Symmetrically, define a **negative turning point today or tomorrow** statistic as
+
+$$
+N_t(\omega) := 
+\begin{cases}
+\ 1 & \text{if } T_t(\omega)=-1 \ \text{or} \ T_{t+1}(\omega)=-1 \\
+0 & \text{otherwise}
+\end{cases}
+$$
+
+This is designed to express the event
+
+- "after one or two increase(s), $Y$ will decline for two consecutive quarters"
+
 Following {cite}`wecker1979predicting`, we can use simulations to calculate  probabilities of $P_t$ and $N_t$ for each period $t$. 
 
 ## A Wecker-Like Algorithm
@@ -301,7 +326,11 @@ $$
 
 The next code cells use `pymc` to compute the time $t$ posterior distribution of $\rho, \sigma$.
 
-Note that in defining the likelihood function, we choose to condition on the initial value $y_0$.
+We construct this posterior just as in {doc}`ar1_bayes`, to which we refer for a detailed discussion.
+
+As there, in defining the likelihood function we condition on the initial value $y_0$.
+
+This is the **conditioning assumption** of {doc}`ar1_bayes`, and it is the appropriate choice here because our initial path starts from an atypical value $y_0 = 10$.
 
 ```{code-cell} ipython3
 def draw_from_posterior(sample):
@@ -470,12 +499,18 @@ plot_Wecker(initial_path, 1000, ax)
 plt.show()
 ```
 
+Apart from the top-left panel, which repeats the initial path and coverage intervals, each panel shows the predictive distribution of one sample path statistic.
+
+These are computed by simulating many future paths with the parameters held fixed at their true values.
+
+The distributions therefore reflect only the uncertainty that comes from future shocks.
+
 ## Extended Wecker Method
 
-Now we apply we apply our  "extended" Wecker method based on  predictive densities of $y$ defined by
+Now we apply our  "extended" Wecker method based on  predictive densities of $y$ defined by
 {eq}`ar1-tp-eq4` that acknowledge posterior uncertainty in the parameters $\rho, \sigma$.
 
-To approximate  the intergration on the right side of {eq}`ar1-tp-eq4`, we  repeatedly draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model {eq}`ar1-tp-eq1`.
+To approximate  the integration on the right side of {eq}`ar1-tp-eq4`, we  repeatedly draw parameters from the joint posterior distribution each time we simulate a sequence of future values from model {eq}`ar1-tp-eq1`.
 
 ```{code-cell} ipython3
 def plot_extended_Wecker(post_samples, initial_path, N, ax):
@@ -531,6 +566,10 @@ plot_extended_Wecker(post_samples, initial_path, 1000, ax)
 plt.show()
 ```
 
+The panels show the same statistics, but now each future path is simulated with parameters drawn from the posterior.
+
+These distributions therefore combine two sources of uncertainty: randomness in future shocks and our uncertainty about $(\rho, \sigma)$.
+
 ## Comparison
 
 Finally, we plot both the original Wecker method and the extended method with parameter values drawn from the posterior together to compare the differences that emerge from pretending to know parameter values when they are actually uncertain.  
@@ -543,3 +582,23 @@ plot_extended_Wecker(post_samples, initial_path, 1000, ax)
 plt.legend()
 plt.show()
 ```
+
+The two sets of predictive distributions reveal the cost of pretending that we know the parameters.
+
+The extended Wecker method draws $(\rho, \sigma)$ from their posterior each time it simulates a future path.
+
+It therefore layers parameter uncertainty on top of the shock uncertainty already present in the original method.
+
+As a result, its predictive distributions are more dispersed than those computed with the parameters fixed at their true values.
+
+## Conclusion
+
+This lecture combined two tools to forecast nonlinear functions of the future path of an AR(1) process.
+
+Wecker's simulation method let us approximate predictive distributions of sample path statistics, such as the time until the next turning point.
+
+A Bayesian posterior over $(\rho, \sigma)$, computed as in {doc}`ar1_bayes`, let us also account for our uncertainty about the parameters that govern the process.
+
+Putting these together, the extended Wecker method produces predictive distributions that reflect both sources of uncertainty identified at the outset.
+
+Ignoring parameter uncertainty, as the original Wecker method does, yields tighter distributions that overstate how much we really know about these future statistics.
