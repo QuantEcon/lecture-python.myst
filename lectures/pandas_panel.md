@@ -65,7 +65,7 @@ countries and assign it to `realwage`.
 The dataset can be accessed with the following link:
 
 ```{code-cell} ipython3
-url1 = 'https://raw.githubusercontent.com/QuantEcon/lecture-python/master/source/_static/lecture_specific/pandas_panel/realwage.csv'
+url1 = 'https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/pandas_panel/realwage.csv'
 ```
 
 ```{code-cell} ipython3
@@ -185,7 +185,7 @@ function.
 The dataset can be accessed with the following link:
 
 ```{code-cell} ipython3
-url2 = 'https://raw.githubusercontent.com/QuantEcon/lecture-python/master/source/_static/lecture_specific/pandas_panel/countries.csv'
+url2 = 'https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/pandas_panel/countries.csv'
 ```
 
 ```{code-cell} ipython3
