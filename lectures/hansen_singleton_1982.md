@@ -985,19 +985,18 @@ Because the Ken French return is not identical to the original CRSP NYSE value-w
 
 Both this lecture and the companion lecture {doc}`hansen_singleton_1983` use the same data construction.
 
-The hidden cell below loads a vendored monthly dataset of gross real returns and gross consumption growth. The data are built from the [FRED](https://fred.stlouisfed.org/) and [Ken French](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) data libraries by the maintenance script at [`_static/lecture_specific/hansen_singleton_1982/make_data.py`](https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/_static/lecture_specific/hansen_singleton_1982/make_data.py) and read here directly from GitHub.
+The hidden cell below loads a vendored monthly dataset of gross real returns and gross consumption growth. The data are built from the [FRED](https://fred.stlouisfed.org/) and [Ken French](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) data libraries by the maintenance script at [`_static/lecture_specific/hansen_singleton_1982/make_data.py`](https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/_static/lecture_specific/hansen_singleton_1982/make_data.py) and read here from the checked-out copy.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
 
-DATA_URL = (
-    "https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/"
-    "lectures/_static/lecture_specific/hansen_singleton_1982/"
+DATA_PATH = (
+    "_static/lecture_specific/hansen_singleton_1982/"
     "hansen_singleton_1982_data.csv"
 )
 
 # Read the vendored snapshot once; load_hs_monthly_data just slices it.
-_data = pd.read_csv(DATA_URL, index_col=0, parse_dates=True)
+_data = pd.read_csv(DATA_PATH, index_col=0, parse_dates=True)
 
 
 def load_hs_monthly_data(start="1959-02-01", end="1978-12-01"):
