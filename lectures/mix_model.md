@@ -141,12 +141,7 @@ from numpyro.infer import MCMC, NUTS
 import jax.numpy as jnp
 from jax import random
 
-np.random.seed(142857)
-
-@jit
-def set_seed():
-    np.random.seed(142857)
-set_seed()
+rng = np.random.default_rng(142857)
 ```
 
 Let's use Python to generate two beta distributions
@@ -172,7 +167,7 @@ g = jit(lambda x: p(x, G_a, G_b))
 :hide-output: false
 
 @jit
-def simulate(a, b, T=50, N=500):
+def simulate(a, b, rng, T=50, N=500):
     '''
     Generate N sets of T observations of the likelihood ratio,
     return as N x T matrix.
@@ -184,7 +179,7 @@ def simulate(a, b, T=50, N=500):
     for i in range(N):
 
         for j in range(T):
-            w = np.random.beta(a, b)
+            w = rng.beta(a, b)
             l_arr[i, j] = f(w) / g(w)
 
     return l_arr
@@ -195,14 +190,14 @@ We’ll also use the following Python code to prepare some informative simulatio
 ```{code-cell} ipython3
 :hide-output: false
 
-l_arr_g = simulate(G_a, G_b, N=50000)
+l_arr_g = simulate(G_a, G_b, rng, N=50000)
 l_seq_g = np.cumprod(l_arr_g, axis=1)
 ```
 
 ```{code-cell} ipython3
 :hide-output: false
 
-l_arr_f = simulate(F_a, F_b, N=50000)
+l_arr_f = simulate(F_a, F_b, rng, N=50000)
 l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```
 
@@ -217,7 +212,7 @@ Here is pseudo code for a direct "method 1" for drawing from our compound lotter
 
 * Step one:
 
-  * use the numpy.random.choice function to flip an unfair coin that selects distribution $F$ with prob $\alpha$
+  * use the `rng.choice` method to flip an unfair coin that selects distribution $F$ with prob $\alpha$
   and $G$ with prob $1 -\alpha$
 
 * Step two:
@@ -251,24 +246,24 @@ from our target mixture distribution.
 
 ```{code-cell} ipython3
 @jit
-def draw_lottery(p, N):
+def draw_lottery(p, rng, N):
     "Draw from the compound lottery directly."
 
     draws = []
     for i in range(0, N):
-        if np.random.rand()<=p:
-            draws.append(np.random.beta(F_a, F_b))
+        if rng.random()<=p:
+            draws.append(rng.beta(F_a, F_b))
         else:
-            draws.append(np.random.beta(G_a, G_b))
+            draws.append(rng.beta(G_a, G_b))
     return np.array(draws)
 
-def draw_lottery_MC(p, N):
+def draw_lottery_MC(p, rng, N):
     "Draw from the compound lottery using the Monte Carlo trick."
 
     xs = np.linspace(1e-8,1-(1e-8),10000)
     CDF = p*sp.beta.cdf(xs, F_a, F_b) + (1-p)*sp.beta.cdf(xs, G_a, G_b)
 
-    Us = np.random.rand(N)
+    Us = rng.random(N)
     draws = xs[np.searchsorted(CDF[:-1], Us)]
     return draws
 ```
@@ -278,8 +273,8 @@ def draw_lottery_MC(p, N):
 N = 100000
 α = 0.0
 
-sample1 = draw_lottery(α, N)
-sample2 = draw_lottery_MC(α, N)
+sample1 = draw_lottery(α, rng, N)
+sample2 = draw_lottery_MC(α, rng, N)
 
 # plot draws and density function
 plt.hist(sample1, 50, density=True, alpha=0.5, label='direct draws')
@@ -409,24 +404,24 @@ what fundamental force determines the limiting value of $\pi_t$.
 Let's set a value of $\alpha$ and then watch how $\pi_t$ evolves.
 
 ```{code-cell} ipython3
-def simulate_mixed(α, T=50, N=500):
+def simulate_mixed(α, rng, T=50, N=500):
     """
     Generate N sets of T observations of the likelihood ratio,
     return as N x T matrix, when the true density is mixed h;α
     """
 
-    w_s = draw_lottery(α, N*T).reshape(N, T)
+    w_s = draw_lottery(α, rng, N*T).reshape(N, T)
     l_arr = f(w_s) / g(w_s)
 
     return l_arr
 
-def plot_π_seq(α, π1=0.2, π2=0.8, T=200):
+def plot_π_seq(α, rng, π1=0.2, π2=0.8, T=200):
     """
     Compute and plot π_seq and the log likelihood ratio process
     when the mixed distribution governs the data.
     """
 
-    l_arr_mixed = simulate_mixed(α, T=T, N=50)
+    l_arr_mixed = simulate_mixed(α, rng, T=T, N=50)
     l_seq_mixed = np.cumprod(l_arr_mixed, axis=1)
 
     T = l_arr_mixed.shape[1]
@@ -456,7 +451,7 @@ def plot_π_seq(α, π1=0.2, π2=0.8, T=200):
 ```
 
 ```{code-cell} ipython3
-plot_π_seq(α = 0.6)
+plot_π_seq(α = 0.6, rng=rng)
 ```
 
 The above graph shows a sample path of the log likelihood ratio process as the blue dotted line, together with
@@ -466,7 +461,7 @@ sample paths of $\pi_t$ that start from two distinct initial conditions.
 Let's see what happens when we change $\alpha$
 
 ```{code-cell} ipython3
-plot_π_seq(α = 0.2)
+plot_π_seq(α = 0.2, rng=rng)
 ```
 
 Evidently, $\alpha$ is having a big effect on the destination of $\pi_t$ as $t \rightarrow + \infty$
@@ -541,7 +536,7 @@ def π_lim(α, T=5000, π_0=0.4):
     "Find limit of π sequence."
     π_seq = np.zeros(T+1)
     π_seq[0] = π_0
-    l_arr = simulate_mixed(α, T, N=1)[0]
+    l_arr = simulate_mixed(α, rng, T, N=1)[0]
 
     for t in range(T):
         π_seq[t+1] = update(π_seq[t], l_arr[t])
@@ -661,7 +656,7 @@ We use the `Mixture` class in numpyro to construct the likelihood function.
 α = 0.8
 
 # simulate data with true α
-data = draw_lottery(α, 1000)
+data = draw_lottery(α, rng, 1000)
 sizes = [5, 20, 50, 200, 1000, 25000]
 
 def model(w):
@@ -785,7 +780,7 @@ T_mix = 200
 prior_params = [(1, 3), (1, 1), (3, 1)]
 prior_means = [a/(a+b) for a, b in prior_params]
 
-w_mix = draw_lottery(x_true, T_mix)
+w_mix = draw_lottery(x_true, rng, T_mix)
 ```
 
 ```{code-cell} ipython3
@@ -849,14 +844,14 @@ The plot shows that regardless of the initial prior belief, all three posterior 
 Next, let's look at multiple simulations with a longer time horizon, all starting from a uniform prior.
 
 ```{code-cell} ipython3
-set_seed()
+rng = np.random.default_rng(142857)
 n_paths = 20
 T_long = 10_000
 
 fig, ax = plt.subplots(figsize=(10, 5))
 
 for j in range(n_paths):
-    w_path = draw_lottery(x_true, T_long) 
+    w_path = draw_lottery(x_true, rng, T_long) 
     x_means = learn_x_bayesian(w_path, 1, 1)  # Uniform prior
     ax.plot(range(T_long + 1), x_means, alpha=0.5, linewidth=1)
 
