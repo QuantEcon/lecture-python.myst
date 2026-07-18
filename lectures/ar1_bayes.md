@@ -483,7 +483,7 @@ NUTS_kernel = numpyro.infer.NUTS(AR1_model)
 
 # Run MCMC
 mcmc = numpyro.infer.MCMC(NUTS_kernel, num_samples=50000, num_warmup=10000, progress_bar=False)
-mcmc.run(rng_key=random.PRNGKey(1), data=y)
+mcmc.run(rng_key=random.key(1), data=y)
 ```
 
 We plot the trace and posterior.
@@ -535,7 +535,7 @@ NUTS_kernel = numpyro.infer.NUTS(AR1_model_y0)
 
 # Run MCMC
 mcmc2 = numpyro.infer.MCMC(NUTS_kernel, num_samples=50000, num_warmup=10000, progress_bar=False)
-mcmc2.run(rng_key=random.PRNGKey(1), data=y)
+mcmc2.run(rng_key=random.key(1), data=y)
 ```
 
 Again we plot the trace and posterior.

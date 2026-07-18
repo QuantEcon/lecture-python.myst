@@ -411,7 +411,7 @@ def create_ifp(r=0.01,
                shock_draw_size=100,
                seed=1234):
 
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     s = jnp.linspace(0, savings_grid_max, savings_grid_size)
     Π, z_grid = jnp.array(Π), jnp.array(z_grid)
     R = 1 + r
@@ -779,7 +779,7 @@ def compute_asset_stationary(
     z_idx_0_vector = jnp.zeros(num_households).astype(jnp.int32)
 
     # Vectorize over many households
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     keys = jax.random.split(key, num_households)
     # Vectorize simulate_household in (key, a_0, z_idx_0)
     sim_all_households = jax.vmap(

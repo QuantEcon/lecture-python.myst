@@ -817,7 +817,7 @@ The excess demand function is essentially the same, but now the matrix $A$ is $3
 dim = 3000
 
 # Create JAX random key
-key = jax.random.PRNGKey(0)
+key = jax.random.key(0)
 
 # Create a random matrix A and normalize the columns to sum to one
 A = jax.random.uniform(key, (dim, dim))
