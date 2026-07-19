@@ -20,12 +20,12 @@ kernelspec:
 ```{code-cell} ipython3
 :tags: [no-execute, hide-output]
 
-!pip install numpyro jax
+!pip install numpyro
 ```
 
 ## Overview
 
-This is a sequel to {doc}`this quantecon lecture <likelihood_bayes>`.
+This is a sequel to [](likelihood_bayes).
 
 We discuss two ways to create a compound lottery and their consequences.
 
@@ -37,9 +37,9 @@ Our two ways of constructing a compound lottery will differ in their *timing*.
 
 * in the other, mixing between the same two possible probability distributions will occur each period
 
-The statistical setting is close but not identical to the problem studied in that quantecon lecture.
+The statistical setting is close but not identical to the problem studied in that lecture.
 
-In that lecture, there were two i.i.d. processes that could possibly govern successive draws of a non-negative random variable $W$.
+In that lecture, there were two IID processes that could possibly govern successive draws of a non-negative random variable $W$.
 
 Nature decided once and for all whether to make a sequence of IID draws from either $ f $ or from $ g $.
 
@@ -53,14 +53,14 @@ random sequence $\{W_t\}_{t=0}^\infty$.
 We studied how the agent would then use the laws of conditional probability and an observed history $w^t =\{w_s\}_{s=0}^t$ to form
 
 $$
-\pi_t = E [ \textrm{nature chose distribution } f | w^t] , \quad t = 0, 1, 2, \ldots
+\pi_t = \mathbb{E}[ \textrm{nature chose distribution } f \mid w^t] , \quad t = 0, 1, 2, \ldots
 $$
 
 However, in the setting of this lecture, that rule imputes to the agent an incorrect model.
 
 The reason is that now the wage sequence is actually described by a different statistical model.
 
-Thus, we change the specification in {doc}`likelihood_bayes` in the following way.
+Thus, we change the specification in [](likelihood_bayes) in the following way.
 
 Now, **each period** $t \geq 0$, nature flips a possibly unfair coin that comes up $f$ with probability $\alpha$
 and $g$ with probability $1 -\alpha$.
@@ -81,7 +81,7 @@ permanently draws from that distribution.
 Our second type of agent knows, correctly, that nature mixes $f$ and $g$ with mixing probability $\alpha \in (0,1)$
 each period, though the agent doesn't know the mixing parameter.
 
-Our first type of agent applies the learning algorithm described in {doc}`likelihood_bayes`.
+Our first type of agent applies the learning algorithm described in [](likelihood_bayes).
 
 In the context of the statistical model that prevailed in that lecture, that was a good learning algorithm and it enabled the Bayesian learner
 eventually to learn the distribution that nature had drawn at time $-1$.
@@ -126,7 +126,6 @@ As usual, we'll start by importing some Python tools.
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-import pandas as pd
 from scipy.integrate import quad
 
 import numpyro
@@ -219,7 +218,7 @@ Here is pseudo code for a direct "method 1" for drawing from our compound lotter
   * put the first two steps in a big loop and do them for each realization of $w$
 
 
-Our second method uses a uniform distribution and the following fact that we also described and used in {doc}`prob_matrix`:
+Our second method uses a uniform distribution and the following fact that we also described and used in [](prob_matrix):
 
  * If a random variable $X$ has c.d.f. $F$, then a random variable $F^{-1}(U)$ also has c.d.f. $F$, where $U$ is a uniform random variable on $[0,1]$.
 
@@ -281,7 +280,7 @@ plt.hist(sample1, 50, density=True, alpha=0.5, label="direct draws")
 plt.hist(sample2, 50, density=True, alpha=0.5, label="MC draws")
 
 xs = np.linspace(0, 1, 1000)
-plt.plot(xs, α * f(xs) + (1 - α) * g(xs), color="red", label="density")
+plt.plot(xs, α * f(xs) + (1 - α) * g(xs), color="red", label="density", lw=2)
 
 plt.legend()
 plt.show()
@@ -293,20 +292,20 @@ We'll now study what our type 1 agent learns.
 
 Remember that our type 1 agent uses the wrong statistical model, thinking that nature mixed between $f$ and $g$ once and for all at time $-1$.
 
-The type 1 agent thus uses the learning algorithm studied in {doc}`likelihood_bayes`.
+The type 1 agent thus uses the learning algorithm studied in [](likelihood_bayes).
 
 We'll briefly review that learning algorithm now.
 
 Let $ \pi_t $ be a Bayesian posterior defined as
 
 $$
-\pi_t = {\rm Prob}(q=f|w^t)
+\pi_t = \mathbb{P}\{q = f \mid w^t\}
 $$
 
 The likelihood ratio process plays a principal role in the formula that governs the evolution
-of the posterior probability $ \pi_t $, an instance of **Bayes' Law**.
+of the posterior probability $ \pi_t $, an instance of **Bayes' law**.
 
-Bayes’ law implies that $ \{\pi_t\} $ obeys the recursion
+Bayes' law implies that $ \{\pi_t\} $ obeys the recursion
 
 $$
 \pi_t=\frac{\pi_{t-1} l_t(w_t)}{\pi_{t-1} l_t(w_t)+1-\pi_{t-1}}
@@ -439,19 +438,20 @@ def plot_π_seq(key, α, π1=0.2, π2=0.8, T=200):
             range(T + 1),
             π_seq_mixed[i, :],
             label=rf"$\pi_0$={π_seq_mixed[i, 0]}",
+            lw=2,
         )
 
     ax1.plot(
-        np.nan, np.nan, "--", color="b", label="Log likelihood ratio process"
+        np.nan, np.nan, "--", color="b",
+        label="Log likelihood ratio process", lw=2,
     )
     ax1.set_ylabel(r"$\pi_t$")
-    ax1.set_xlabel("t")
+    ax1.set_xlabel("$t$")
     ax1.legend()
-    ax1.set_title("when $\\alpha F + (1-\\alpha)G$ governs data")
 
     ax2 = ax1.twinx()
-    ax2.plot(range(1, T + 1), np.log(l_seq_mixed[0, :]), "--", color="b")
-    ax2.set_ylabel("$log(L(w^{t}))$")
+    ax2.plot(range(1, T + 1), np.log(l_seq_mixed[0, :]), "--", color="b", lw=2)
+    ax2.set_ylabel(r"$\log(L(w^{t}))$")
 
     plt.show()
 ```
@@ -572,10 +572,10 @@ Let us first plot the KL divergences $KL_g\left(\alpha\right), KL_f\left(\alpha\
 KL_g_arr = KL_g_v(α_arr)
 KL_f_arr = KL_f_v(α_arr)
 
-fig, ax = plt.subplots(1, figsize=[10, 6])
+fig, ax = plt.subplots()
 
-ax.plot(α_arr, KL_g_arr, label="KL(h, g)")
-ax.plot(α_arr, KL_f_arr, label="KL(h, f)")
+ax.plot(α_arr, KL_g_arr, label="KL(h, g)", lw=2)
+ax.plot(α_arr, KL_f_arr, label="KL(h, f)", lw=2)
 ax.set_ylabel("KL divergence")
 ax.set_xlabel(r"$\alpha$")
 
@@ -603,10 +603,10 @@ keys = jax.random.split(jax.random.key(42), len(α_arr_x))
 π_lim_arr = π_lim_v(keys, α_arr_x)
 
 # plot
-fig, ax = plt.subplots(1, figsize=[10, 6])
+fig, ax = plt.subplots()
 
-ax.plot(α_arr, KL_g_arr, label="KL(h, g)")
-ax.plot(α_arr, KL_f_arr, label="KL(h, f)")
+ax.plot(α_arr, KL_g_arr, label="KL(h, g)", lw=2)
+ax.plot(α_arr, KL_f_arr, label="KL(h, f)", lw=2)
 ax.set_ylabel("KL divergence")
 ax.set_xlabel(r"$\alpha$")
 
@@ -640,7 +640,7 @@ We now describe how our type 2 agent formulates his learning problem and what he
 
 Our type 2 agent understands the correct statistical model but does not know $\alpha$.
 
-We apply Bayes law to deduce an algorithm for learning $\alpha$ under the assumption
+We apply Bayes' law to deduce an algorithm for learning $\alpha$ under the assumption
 that the agent knows that
 
 $$
@@ -650,7 +650,7 @@ $$
 but does not know $\alpha$.
 
 We'll assume that the agent starts out with a prior probability $\pi_0(\alpha)$ on
-$\alpha \in (0,1)$ where the prior has one of the forms that we deployed in {doc}`bayes_nonconj`.
+$\alpha \in (0,1)$ where the prior has one of the forms that we deployed in [](bayes_nonconj).
 
 
 We'll fire up `numpyro` and apply it to the present situation.
@@ -666,7 +666,7 @@ $$
 We'll use numpyro to approximate this equation.
 
 We'll create graphs of the posterior $\pi_t(\alpha)$ as
-$t \rightarrow +\infty$ corresponding to ones presented in {doc}`bayes_nonconj`.
+$t \rightarrow +\infty$ corresponding to ones presented in [](bayes_nonconj).
 
 We anticipate that a posterior distribution will collapse around the true $\alpha$ as
 $t \rightarrow + \infty$.
@@ -710,7 +710,7 @@ def MCMC_run(ws):
 The following code generates the graph below that displays Bayesian posteriors for $\alpha$ at various history lengths.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots()
 
 for i in range(len(sizes)):
     sample = MCMC_run(data[: sizes[i]])
@@ -725,13 +725,12 @@ for i in range(len(sizes)):
         linewidth=0.05,
         label=f"t={sizes[i]}",
     )
-ax.set_title(r"$\pi_t(\alpha)$ as $t$ increases")
 ax.legend()
 ax.set_xlabel(r"$\alpha$")
 plt.show()
 ```
 
-Evidently, the Bayesian posterior narrows in on the true value $\alpha = .8$ of the mixing parameter as the length of a history of observations grows.
+Evidently, the Bayesian posterior narrows in on the true value $\alpha = 0.8$ of the mixing parameter as the length of a history of observations grows.
 
 ## Concluding remarks
 
@@ -772,18 +771,18 @@ If the scientist uses Bayes' law or a related likelihood-based method to infer $
 ```{exercise}
 :label: mix_model_ex1
 
-In {doc}`likelihood_bayes`, we studied the consequence of applying likelihood ratio 
+In [](likelihood_bayes), we studied the consequence of applying likelihood ratio 
 and Bayes' law to a misspecified statistical model.
 
 In that lecture, we used a model selection algorithm to study the case where the true data generating process is a mixture.
 
 In this lecture, we studied how to correctly "learn" a model generated by a mixing process using a Bayesian approach.
 
-To fix the algorithm we used in {doc}`likelihood_bayes`, a correct Bayesian approach should directly model the uncertainty about $x$ and update beliefs about it as new data arrives. 
+To fix the algorithm we used in [](likelihood_bayes), a correct Bayesian approach should directly model the uncertainty about $x$ and update beliefs about it as new data arrives. 
 
 Here is the algorithm:
 
-First we specify a prior distribution for $x$ given by $x \sim \text{Beta}(\alpha_0, \beta_0)$ with expectation $\mathbb{E}[x] = \frac{\alpha_0}{\alpha_0 + \beta_0}$.
+First we specify a prior distribution for $x$ given by $x \sim \mathrm{Beta}(\alpha_0, \beta_0)$ with expectation $\mathbb{E}[x] = \frac{\alpha_0}{\alpha_0 + \beta_0}$.
 
 The likelihood for a single observation $w_t$ is $p(w_t|x) = x f(w_t) + (1-x) g(w_t)$. 
 
@@ -797,7 +796,7 @@ Without a conjugate prior, we can approximate the posterior by discretizing $x$ 
 
 Your task is to implement this algorithm in Python. 
 
-You can verify your implementation by checking that the posterior mean converges to the true value of $x$ as $t$ increases in {doc}`likelihood_bayes`.
+You can verify your implementation by checking that the posterior mean converges to the true value of $x$ as $t$ increases in [](likelihood_bayes).
 ```
 
 ```{solution-start} mix_model_ex1
@@ -876,7 +875,7 @@ x_posterior_means = compute_all_posteriors(w_mix, jnp.array(prior_params))
 Let's visualize how the posterior mean of $x$ evolves over time, starting from three different prior beliefs.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots()
 
 for i, (x_means, mean0) in enumerate(zip(x_posterior_means, prior_means)):
     ax.plot(
@@ -910,12 +909,12 @@ T_long = 10_000
 
 keys = jax.random.split(jax.random.key(42), n_paths)
 
-fig, ax = plt.subplots(figsize=(10, 5))
+fig, ax = plt.subplots()
 
 for j in range(n_paths):
     w_path = draw_lottery(keys[j], x_true, T_long)
     x_means = learn_x_bayesian(w_path, 1, 1)  # Uniform prior
-    ax.plot(range(T_long + 1), x_means, alpha=0.5, linewidth=1)
+    ax.plot(range(T_long + 1), x_means, alpha=0.5, lw=2)
 
 ax.axhline(
     y=x_true,
