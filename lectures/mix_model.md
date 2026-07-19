@@ -65,7 +65,7 @@ Thus, we change the specification in [](likelihood_bayes) in the following way.
 Now, **each period** $t \geq 0$, nature flips a possibly unfair coin that comes up $f$ with probability $\alpha$
 and $g$ with probability $1 -\alpha$.
 
-Thus, nature perpetually draws from the **mixture distribution** with c.d.f.
+Thus, nature perpetually draws from the **mixture distribution** with CDF
 
 $$
 H(w) = \alpha F(w) + (1-\alpha) G(w), \quad \alpha \in (0,1)
@@ -220,7 +220,7 @@ Here is pseudo code for a direct "method 1" for drawing from our compound lotter
 
 Our second method uses a uniform distribution and the following fact that we also described and used in [](prob_matrix):
 
- * If a random variable $X$ has c.d.f. $F$, then a random variable $F^{-1}(U)$ also has c.d.f. $F$, where $U$ is a uniform random variable on $[0,1]$.
+ * If a random variable $X$ has CDF $F$, then a random variable $F^{-1}(U)$ also has CDF $F$, where $U$ is a uniform random variable on $[0,1]$.
 
 In other words, if $X \sim F(x)$ we can generate a random sample from $F$ by drawing a random sample from
 a uniform distribution on $[0,1]$ and computing $F^{-1}(U)$.
@@ -267,6 +267,12 @@ def draw_lottery_MC(key, p, N):
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Direct and Monte Carlo draws
+    name: fig-lottery-draws
+---
 # verify
 N = 100000
 α = 0.0
@@ -457,6 +463,12 @@ def plot_π_seq(key, α, π1=0.2, π2=0.8, T=200):
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Belief paths, $\alpha = 0.6$
+    name: fig-pi-seq-1
+---
 plot_π_seq(jax.random.key(42), α=0.6)
 ```
 
@@ -467,6 +479,12 @@ sample paths of $\pi_t$ that start from two distinct initial conditions.
 Let's see what happens when we change $\alpha$.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Belief paths, $\alpha = 0.2$
+    name: fig-pi-seq-2
+---
 plot_π_seq(jax.random.key(42), α=0.2)
 ```
 
@@ -568,6 +586,12 @@ def π_lim(key, α, T=5000, π_0=0.4):
 Let us first plot the KL divergences $KL_g\left(\alpha\right), KL_f\left(\alpha\right)$ for each $\alpha$.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: KL divergences against $\alpha$
+    name: fig-kl
+---
 α_arr = np.linspace(0, 1, 100)
 KL_g_arr = KL_g_v(α_arr)
 KL_f_arr = KL_f_v(α_arr)
@@ -598,6 +622,12 @@ recorded on the $x$ axis.
 Thus, the graph below confirms how a minimum KL divergence governs what our type 1 agent eventually learns.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Limit points and KL divergences
+    name: fig-kl-limit
+---
 α_arr_x = α_arr[(α_arr < discretion) | (α_arr > discretion)]
 keys = jax.random.split(jax.random.key(42), len(α_arr_x))
 π_lim_arr = π_lim_v(keys, α_arr_x)
@@ -710,6 +740,12 @@ def MCMC_run(ws):
 The following code generates the graph below that displays Bayesian posteriors for $\alpha$ at various history lengths.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Posterior for $\alpha$ as $t$ grows
+    name: fig-posterior-alpha
+---
 fig, ax = plt.subplots()
 
 for i in range(len(sizes)):
