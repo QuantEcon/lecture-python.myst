@@ -124,27 +124,27 @@ As usual, we'll start by importing some Python tools.
 :hide-output: false
 
 import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
-from numba import vectorize, jit
-from math import gamma
 import pandas as pd
-import scipy.stats as sp
 from scipy.integrate import quad
 
-import seaborn as sns
-colors = sns.color_palette()
-
 import numpyro
+import jax
 import numpyro.distributions as dist
 from numpyro.infer import MCMC, NUTS
-
 import jax.numpy as jnp
+import jax.scipy.stats as jsp
 from jax import random
+from jax.scipy.special import gamma
 
-rng = np.random.default_rng(142857)
+# Enable JAX to use 64-bit float operations
+jax.config.update("jax_enable_x64", True)
+
+colors = sns.color_palette()
 ```
 
-Let's use Python to generate two beta distributions
+Let's use Python to generate two Beta distributions.
 
 ```{code-cell} ipython3
 :hide-output: false
@@ -153,51 +153,46 @@ Let's use Python to generate two beta distributions
 F_a, F_b = 1, 1
 G_a, G_b = 3, 1.2
 
-@vectorize
+
+@jax.jit
 def p(x, a, b):
     r = gamma(a + b) / (gamma(a) * gamma(b))
     return r * x**(a-1) * (1 - x)**(b-1)
 
 # The two density functions.
-f = jit(lambda x: p(x, F_a, F_b))
-g = jit(lambda x: p(x, G_a, G_b))
+f = jax.jit(lambda x: p(x, F_a, F_b))
+g = jax.jit(lambda x: p(x, G_a, G_b))
 ```
 
 ```{code-cell} ipython3
 :hide-output: false
 
-@jit
-def simulate(a, b, rng, T=50, N=500):
-    '''
+def simulate(key, a, b, T=50, N=500):
+    """
     Generate N sets of T observations of the likelihood ratio,
     return as N x T matrix.
-
-    '''
-
-    l_arr = np.empty((N, T))
-
-    for i in range(N):
-
-        for j in range(T):
-            w = rng.beta(a, b)
-            l_arr[i, j] = f(w) / g(w)
-
+    """
+    w = jax.random.beta(key, a, b, (N, T))
+    l_arr = f(w) / g(w)
     return l_arr
 ```
 
-We’ll also use the following Python code to prepare some informative simulations
+We'll also use the following Python code to prepare some informative simulations.
 
 ```{code-cell} ipython3
 :hide-output: false
 
-l_arr_g = simulate(G_a, G_b, rng, N=50000)
+key = jax.random.key(42)
+key_g, key_f = jax.random.split(key)
+
+l_arr_g = simulate(key_g, G_a, G_b, N=50000)
 l_seq_g = np.cumprod(l_arr_g, axis=1)
 ```
 
 ```{code-cell} ipython3
 :hide-output: false
 
-l_arr_f = simulate(F_a, F_b, rng, N=50000)
+l_arr_f = simulate(key_f, F_a, F_b, N=50000)
 l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```
 
@@ -212,7 +207,7 @@ Here is pseudo code for a direct "method 1" for drawing from our compound lotter
 
 * Step one:
 
-  * use the `rng.choice` method to flip an unfair coin that selects distribution $F$ with prob $\alpha$
+  * use a uniform random draw to flip an unfair coin that selects distribution $F$ with prob $\alpha$
   and $G$ with prob $1 -\alpha$
 
 * Step two:
@@ -243,26 +238,32 @@ In the Python code below, we'll use both of our methods and confirm that each of
 from our target mixture distribution.
 
 ```{code-cell} ipython3
-@jit
-def draw_lottery(p, rng, N):
-    "Draw from the compound lottery directly."
+def draw_lottery(key, p, N):
+    """Draw from the compound lottery directly."""
+    # split the key: one for the coin flip, one for each distribution
+    key_uniform, key_beta1, key_beta2 = jax.random.split(key, 3)
 
-    draws = []
-    for i in range(0, N):
-        if rng.random()<=p:
-            draws.append(rng.beta(F_a, F_b))
-        else:
-            draws.append(rng.beta(G_a, G_b))
-    return np.array(draws)
+    u = jax.random.uniform(key_uniform, shape=(N,))
+    f_draws = jax.random.beta(key_beta1, F_a, F_b, shape=(N,))
+    g_draws = jax.random.beta(key_beta2, G_a, G_b, shape=(N,))
 
-def draw_lottery_MC(p, rng, N):
+    # select F with probability p, else G
+    return jnp.where(u <= p, f_draws, g_draws)
+
+
+# JIT-compile with `N` as a static argument
+draw_lottery = jax.jit(draw_lottery, static_argnums=(2,))
+```
+
+```{code-cell} ipython3
+def draw_lottery_MC(key, p, N):
     "Draw from the compound lottery using the Monte Carlo trick."
 
-    xs = np.linspace(1e-8, 1-(1e-8), 10000)
-    CDF = p*sp.beta.cdf(xs, F_a, F_b) + (1-p)*sp.beta.cdf(xs, G_a, G_b)
+    xs = jnp.linspace(1e-8, 1 - (1e-8), 10000)
+    CDF = p * jsp.beta.cdf(xs, F_a, F_b) + (1 - p) * jsp.beta.cdf(xs, G_a, G_b)
 
-    Us = rng.random(N)
-    draws = xs[np.searchsorted(CDF[:-1], Us)]
+    Us = jax.random.uniform(key, shape=(N,))
+    draws = xs[jnp.searchsorted(CDF[:-1], Us)]
     return draws
 ```
 
@@ -271,15 +272,16 @@ def draw_lottery_MC(p, rng, N):
 N = 100000
 α = 0.0
 
-sample1 = draw_lottery(α, rng, N)
-sample2 = draw_lottery_MC(α, rng, N)
+key1, key2 = jax.random.split(jax.random.key(42))
+sample1 = draw_lottery(key1, α, N)
+sample2 = draw_lottery_MC(key2, α, N)
 
 # plot draws and density function
-plt.hist(sample1, 50, density=True, alpha=0.5, label='direct draws')
-plt.hist(sample2, 50, density=True, alpha=0.5, label='MC draws')
+plt.hist(sample1, 50, density=True, alpha=0.5, label="direct draws")
+plt.hist(sample2, 50, density=True, alpha=0.5, label="MC draws")
 
-xs = np.linspace(0,1,1000)
-plt.plot(xs, α*f(xs)+(1-α)*g(xs), color='red', label='density')
+xs = np.linspace(0, 1, 1000)
+plt.plot(xs, α * f(xs) + (1 - α) * g(xs), color="red", label="density")
 
 plt.legend()
 plt.show()
@@ -287,7 +289,7 @@ plt.show()
 
 ## Type 1 agent
 
-We'll now study what our type 1 agent learns
+We'll now study what our type 1 agent learns.
 
 Remember that our type 1 agent uses the wrong statistical model, thinking that nature mixed between $f$ and $g$ once and for all at time $-1$.
 
@@ -319,13 +321,11 @@ likelihood ratio $ \ell $ according to recursion {eq}`eq:recur1`
 ```{code-cell} ipython3
 :hide-output: false
 
-@jit
+@jax.jit
 def update(π, l):
-    "Update π using likelihood l"
-
+    """Update π using likelihood l"""
     # Update belief
     π = π * l / (π * l + 1 - π)
-
     return π
 ```
 
@@ -402,67 +402,75 @@ what fundamental force determines the limiting value of $\pi_t$.
 Let's set a value of $\alpha$ and then watch how $\pi_t$ evolves.
 
 ```{code-cell} ipython3
-def simulate_mixed(α, rng, T=50, N=500):
+def simulate_mixed(key, α, T=50, N=500):
     """
     Generate N sets of T observations of the likelihood ratio,
     return as N x T matrix, when the true density is mixed h;α
     """
 
-    w_s = draw_lottery(α, rng, N*T).reshape(N, T)
+    w_s = draw_lottery(key, α, N * T).reshape(N, T)
     l_arr = f(w_s) / g(w_s)
-
     return l_arr
 
-def plot_π_seq(α, rng, π1=0.2, π2=0.8, T=200):
+
+def plot_π_seq(key, α, π1=0.2, π2=0.8, T=200):
     """
     Compute and plot π_seq and the log likelihood ratio process
     when the mixed distribution governs the data.
     """
 
-    l_arr_mixed = simulate_mixed(α, rng, T=T, N=50)
+    l_arr_mixed = simulate_mixed(key, α, T=T, N=50)
     l_seq_mixed = np.cumprod(l_arr_mixed, axis=1)
 
     T = l_arr_mixed.shape[1]
-    π_seq_mixed = np.empty((2, T+1))
+    π_seq_mixed = np.empty((2, T + 1))
     π_seq_mixed[:, 0] = π1, π2
 
     for t in range(T):
         for i in range(2):
-            π_seq_mixed[i, t+1] = update(π_seq_mixed[i, t], l_arr_mixed[0, t])
+            π_seq_mixed[i, t + 1] = update(
+                π_seq_mixed[i, t], l_arr_mixed[0, t]
+            )
 
     # plot
     fig, ax1 = plt.subplots()
     for i in range(2):
-        ax1.plot(range(T+1), π_seq_mixed[i, :], label=rf"$\pi_0$={π_seq_mixed[i, 0]}")
+        ax1.plot(
+            range(T + 1),
+            π_seq_mixed[i, :],
+            label=rf"$\pi_0$={π_seq_mixed[i, 0]}",
+        )
 
-    ax1.plot(np.nan, np.nan, '--', color='b', label='Log likelihood ratio process')
+    ax1.plot(
+        np.nan, np.nan, "--", color="b", label="Log likelihood ratio process"
+    )
     ax1.set_ylabel(r"$\pi_t$")
     ax1.set_xlabel("t")
     ax1.legend()
     ax1.set_title("when $\\alpha F + (1-\\alpha)G$ governs data")
 
     ax2 = ax1.twinx()
-    ax2.plot(range(1, T+1), np.log(l_seq_mixed[0, :]), '--', color='b')
+    ax2.plot(range(1, T + 1), np.log(l_seq_mixed[0, :]), "--", color="b")
     ax2.set_ylabel("$log(L(w^{t}))$")
 
     plt.show()
 ```
 
 ```{code-cell} ipython3
-plot_π_seq(α = 0.6, rng=rng)
+plot_π_seq(jax.random.key(42), α=0.6)
 ```
 
 The above graph shows a sample path of the log likelihood ratio process as the blue dotted line, together with
 sample paths of $\pi_t$ that start from two distinct initial conditions.
 
 
-Let's see what happens when we change $\alpha$
+Let's see what happens when we change $\alpha$.
 
 ```{code-cell} ipython3
-plot_π_seq(α = 0.2, rng=rng)
+plot_π_seq(jax.random.key(42), α=0.2)
 ```
 
-Evidently, $\alpha$ is having a big effect on the destination of $\pi_t$ as $t \rightarrow + \infty$
+Evidently, $\alpha$ is having a big effect on the destination of $\pi_t$ as $t \rightarrow +\infty$.
 
 ## Kullback-Leibler divergence governs limit of $\pi_t$
 
@@ -491,73 +499,87 @@ $$ \min_{f,g} \{KL_g, KL_f\} $$
 
 The only possible limits are $0$ and $1$.
 
-As $t \rightarrow +\infty$, $\pi_t$ goes to one if and only if $KL_f < KL_g$
+As $t \rightarrow +\infty$, $\pi_t$ goes to one if and only if $KL_f < KL_g$.
 
 ```{code-cell} ipython3
-@vectorize
+@jax.jit
 def KL_g(α):
     "Compute the KL divergence KL(h, g)."
-    err = 1e-8                          # to avoid 0 at end points
-    ws = np.linspace(err, 1-err, 10000)
+    err = 1e-8  # to avoid 0 at end points
+    ws = jnp.linspace(err, 1 - err, 10000)
     gs, fs = g(ws), f(ws)
-    hs = α*fs + (1-α)*gs
-    return np.sum(np.log(hs/gs)*hs)/10000
+    hs = α * fs + (1 - α) * gs
+    return jnp.sum(jnp.log(hs / gs) * hs) / 10000
 
-@vectorize
+
+KL_g_v = jax.vmap(KL_g)
+
+
+@jax.jit
 def KL_f(α):
     "Compute the KL divergence KL(h, f)."
-    err = 1e-8                          # to avoid 0 at end points
-    ws = np.linspace(err, 1-err, 10000)
+    err = 1e-8  # to avoid 0 at end points
+    ws = jnp.linspace(err, 1 - err, 10000)
     gs, fs = g(ws), f(ws)
-    hs = α*fs + (1-α)*gs
-    return np.sum(np.log(hs/fs)*hs)/10000
+    hs = α * fs + (1 - α) * gs
+    return jnp.sum(jnp.log(hs / fs) * hs) / 10000
+
+
+KL_f_v = jax.vmap(KL_f)
 
 
 # compute KL using quad in Scipy
 def KL_g_quad(α):
     "Compute the KL divergence KL(h, g) using scipy.integrate."
-    h = lambda x: α*f(x) + (1-α)*g(x)
-    return quad(lambda x: h(x) * np.log(h(x)/g(x)), 0, 1)[0]
+    h = lambda x: α * f(x) + (1 - α) * g(x)
+    return quad(lambda x: h(x) * np.log(h(x) / g(x)), 0, 1)[0]
+
 
 def KL_f_quad(α):
     "Compute the KL divergence KL(h, f) using scipy.integrate."
-    h = lambda x: α*f(x) + (1-α)*g(x)
-    return quad(lambda x: h(x) * np.log(h(x)/f(x)), 0, 1)[0]
+    h = lambda x: α * f(x) + (1 - α) * g(x)
+    return quad(lambda x: h(x) * np.log(h(x) / f(x)), 0, 1)[0]
+
 
 # vectorize
 KL_g_quad_v = np.vectorize(KL_g_quad)
 KL_f_quad_v = np.vectorize(KL_f_quad)
 
 
-# Let us find the limit point
-def π_lim(α, T=5000, π_0=0.4):
-    "Find limit of π sequence."
-    π_seq = np.zeros(T+1)
-    π_seq[0] = π_0
-    l_arr = simulate_mixed(α, rng, T, N=1)[0]
+@jax.jit
+def π_lim(key, α, T=5000, π_0=0.4):
+    """Find limit of π sequence."""
+    # Get lottery draws
+    l_arr = simulate_mixed(key, α, T, N=1)[0]
 
-    for t in range(T):
-        π_seq[t+1] = update(π_seq[t], l_arr[t])
-    return π_seq[-1]
+    def scan_fn(π_prev, l_t):
+        π_new = update(π_prev, l_t)
+        return π_new, π_new
 
-π_lim_v = np.vectorize(π_lim)
+    # Scan over lottery draws
+    π_final, _ = jax.lax.scan(scan_fn, π_0, l_arr)
+
+    return π_final
+
+
+π_lim_v = jax.vmap(π_lim)
 ```
 
 Let us first plot the KL divergences $KL_g\left(\alpha\right), KL_f\left(\alpha\right)$ for each $\alpha$.
 
 ```{code-cell} ipython3
 α_arr = np.linspace(0, 1, 100)
-KL_g_arr = KL_g(α_arr)
-KL_f_arr = KL_f(α_arr)
+KL_g_arr = KL_g_v(α_arr)
+KL_f_arr = KL_f_v(α_arr)
 
 fig, ax = plt.subplots(1, figsize=[10, 6])
 
-ax.plot(α_arr, KL_g_arr, label='KL(h, g)')
-ax.plot(α_arr, KL_f_arr, label='KL(h, f)')
-ax.set_ylabel('KL divergence')
-ax.set_xlabel(r'$\alpha$')
+ax.plot(α_arr, KL_g_arr, label="KL(h, g)")
+ax.plot(α_arr, KL_f_arr, label="KL(h, f)")
+ax.set_ylabel("KL divergence")
+ax.set_xlabel(r"$\alpha$")
 
-ax.legend(loc='upper right')
+ax.legend(loc="upper right")
 plt.show()
 ```
 
@@ -565,7 +587,7 @@ Let's compute an $\alpha$ for which the KL divergence between $h$ and $g$ is the
 
 ```{code-cell} ipython3
 # where KL_f = KL_g
-discretion = α_arr[np.argmin(np.abs(KL_g_arr-KL_f_arr))]
+discretion = α_arr[np.argmin(np.abs(KL_g_arr - KL_f_arr))]
 ```
 
 We can compute and plot the convergence point $\pi_{\infty}$ for each $\alpha$ to verify that the convergence is indeed governed by the KL divergence.
@@ -576,25 +598,29 @@ recorded on the $x$ axis.
 Thus, the graph below confirms how a minimum KL divergence governs what our type 1 agent eventually learns.
 
 ```{code-cell} ipython3
-α_arr_x = α_arr[(α_arr<discretion)|(α_arr>discretion)]
-π_lim_arr = π_lim_v(α_arr_x)
+α_arr_x = α_arr[(α_arr < discretion) | (α_arr > discretion)]
+keys = jax.random.split(jax.random.key(42), len(α_arr_x))
+π_lim_arr = π_lim_v(keys, α_arr_x)
 
 # plot
 fig, ax = plt.subplots(1, figsize=[10, 6])
 
-ax.plot(α_arr, KL_g_arr, label='KL(h, g)')
-ax.plot(α_arr, KL_f_arr, label='KL(h, f)')
-ax.set_ylabel('KL divergence')
-ax.set_xlabel(r'$\alpha$')
+ax.plot(α_arr, KL_g_arr, label="KL(h, g)")
+ax.plot(α_arr, KL_f_arr, label="KL(h, f)")
+ax.set_ylabel("KL divergence")
+ax.set_xlabel(r"$\alpha$")
 
 # plot KL
 ax2 = ax.twinx()
 # plot limit point
-ax2.scatter(α_arr_x, π_lim_arr, 
-            facecolors='none', 
-            edgecolors='tab:blue', 
-            label=r'$\pi$ lim')
-ax2.set_ylabel('π lim')
+ax2.scatter(
+    α_arr_x,
+    π_lim_arr,
+    facecolors="none",
+    edgecolors="tab:blue",
+    label=r"$\pi$ lim",
+)
+ax2.set_ylabel("π lim")
 
 ax.legend(loc=[0.85, 0.8])
 ax2.legend(loc=[0.85, 0.73])
@@ -653,14 +679,22 @@ We use the `Mixture` class in numpyro to construct the likelihood function.
 α = 0.8
 
 # simulate data with true α
-data = draw_lottery(α, rng, 1000)
+data = draw_lottery(jax.random.key(42), α, 1000)
 sizes = [5, 20, 50, 200, 1000, 25000]
 
-def model(w):
-    α = numpyro.sample('α', dist.Uniform(low=0.0, high=1.0))
 
-    y_samp = numpyro.sample('w',
-        dist.Mixture(dist.Categorical(jnp.array([α, 1-α])), [dist.Beta(F_a, F_b), dist.Beta(G_a, G_b)]), obs=w)
+def model(w):
+    α = numpyro.sample("α", dist.Uniform(low=0.0, high=1.0))
+
+    y_samp = numpyro.sample(
+        "w",
+        dist.Mixture(
+            dist.Categorical(jnp.array([α, 1 - α])),
+            [dist.Beta(F_a, F_b), dist.Beta(G_a, G_b)],
+        ),
+        obs=w,
+    )
+
 
 def MCMC_run(ws):
     "Compute posterior using MCMC with observed ws"
@@ -668,9 +702,9 @@ def MCMC_run(ws):
     kernel = NUTS(model)
     mcmc = MCMC(kernel, num_samples=5000, num_warmup=1000, progress_bar=False)
 
-    mcmc.run(rng_key=random.PRNGKey(142857), w=jnp.array(ws))
+    mcmc.run(rng_key=random.key(42), w=jnp.array(ws))
     sample = mcmc.get_samples()
-    return sample['α']
+    return sample["α"]
 ```
 
 The following code generates the graph below that displays Bayesian posteriors for $\alpha$ at various history lengths.
@@ -679,14 +713,21 @@ The following code generates the graph below that displays Bayesian posteriors f
 fig, ax = plt.subplots(figsize=(10, 6))
 
 for i in range(len(sizes)):
-    sample = MCMC_run(data[:sizes[i]])
+    sample = MCMC_run(data[: sizes[i]])
     sns.histplot(
-        data=sample, kde=True, stat='density', alpha=0.2, ax=ax,
-        color=colors[i], binwidth=0.02, linewidth=0.05, label=f't={sizes[i]}'
+        data=sample,
+        kde=True,
+        stat="density",
+        alpha=0.2,
+        ax=ax,
+        color=colors[i],
+        binwidth=0.02,
+        linewidth=0.05,
+        label=f"t={sizes[i]}",
     )
-ax.set_title(r'$\pi_t(\alpha)$ as $t$ increases')
+ax.set_title(r"$\pi_t(\alpha)$ as $t$ increases")
 ax.legend()
-ax.set_xlabel(r'$\alpha$')
+ax.set_xlabel(r"$\alpha$")
 plt.show()
 ```
 
@@ -774,47 +815,62 @@ T_mix = 200
 
 # Three different priors with means 0.25, 0.5, 0.75
 prior_params = [(1, 3), (1, 1), (3, 1)]
-prior_means = [a/(a+b) for a, b in prior_params]
+prior_means = [a / (a + b) for a, b in prior_params]
 
-w_mix = draw_lottery(x_true, rng, T_mix)
+w_mix = draw_lottery(jax.random.key(42), x_true, T_mix)
 ```
 
 ```{code-cell} ipython3
-@jit
+@jax.jit
 def learn_x_bayesian(observations, α0, β0, grid_size=2000):
     """
     Sequential Bayesian learning of the mixing probability x
     using a grid approximation.
     """
-    w = np.asarray(observations)
+    w = jnp.asarray(observations)
     T = w.size
 
-    x_grid = np.linspace(1e-3, 1 - 1e-3, grid_size)
+    x_grid = jnp.linspace(1e-3, 1 - 1e-3, grid_size)
 
     # Log prior
-    log_prior = (α0 - 1) * np.log(x_grid) + (β0 - 1) * np.log1p(-x_grid)
+    log_prior = (α0 - 1) * jnp.log(x_grid) + (β0 - 1) * jnp.log1p(-x_grid)
 
-    μ_path = np.empty(T + 1)
-    μ_path[0] = α0 / (α0 + β0)
-
-    log_post = log_prior.copy()
-
-    for t in range(T):
-        wt = w[t]
+    def scan_fn(log_post, wt):
         # P(w_t | x) = x f(w_t) + (1 - x) g(w_t)
         like = x_grid * f(wt) + (1 - x_grid) * g(wt)
-        log_post += np.log(like)
+        log_post = log_post + jnp.log(like)
 
-        # normalize
-        log_post -= log_post.max()
-        post = np.exp(log_post)
-        post /= post.sum()
+        # Normalize using log-sum-exp trick
+        log_post = log_post - jax.nn.logsumexp(log_post)
+        post = jnp.exp(log_post)
 
-        μ_path[t + 1] = x_grid @ post
+        # Compute posterior mean
+        μ = x_grid @ post
 
-    return μ_path
+        return log_post, μ
 
-x_posterior_means = [learn_x_bayesian(w_mix, α0, β0) for α0, β0 in prior_params]
+    # Initial posterior mean
+    μ_0 = α0 / (α0 + β0)
+
+    # Scan over observations
+    _, μ_path = jax.lax.scan(scan_fn, log_prior, w)
+
+    # Prepend initial value
+    return jnp.concatenate([jnp.array([μ_0]), μ_path])
+
+
+# Vectorize over different prior parameters
+def compute_all_posteriors(observations, prior_params):
+    """Compute posterior means for all prior parameter pairs."""
+
+    def single_posterior(params):
+        α0, β0 = params
+        return learn_x_bayesian(observations, α0, β0)
+
+    return jax.vmap(single_posterior)(jnp.array(prior_params))
+
+
+x_posterior_means = compute_all_posteriors(w_mix, jnp.array(prior_params))
 ```
 
 Let's visualize how the posterior mean of $x$ evolves over time, starting from three different prior beliefs.
@@ -823,14 +879,23 @@ Let's visualize how the posterior mean of $x$ evolves over time, starting from t
 fig, ax = plt.subplots(figsize=(10, 6))
 
 for i, (x_means, mean0) in enumerate(zip(x_posterior_means, prior_means)):
-    ax.plot(range(T_mix + 1), x_means, 
-            label=fr'Prior mean = ${mean0:.2f}$', 
-            color=colors[i], linewidth=2)
+    ax.plot(
+        range(T_mix + 1),
+        x_means,
+        label=rf"Prior mean = ${mean0:.2f}$",
+        color=colors[i],
+        linewidth=2,
+    )
 
-ax.axhline(y=x_true, color='black', linestyle='--', 
-           label=f'True x = {x_true}', linewidth=2)
-ax.set_xlabel('$t$')
-ax.set_ylabel('Posterior mean of $x$')
+ax.axhline(
+    y=x_true,
+    color="black",
+    linestyle="--",
+    label=f"True x = {x_true}",
+    linewidth=2,
+)
+ax.set_xlabel("$t$")
+ax.set_ylabel("Posterior mean of $x$")
 ax.legend()
 plt.show()
 ```
@@ -840,21 +905,27 @@ The plot shows that regardless of the initial prior belief, all three posterior 
 Next, let's look at multiple simulations with a longer time horizon, all starting from a uniform prior.
 
 ```{code-cell} ipython3
-rng = np.random.default_rng(142857)
 n_paths = 20
 T_long = 10_000
+
+keys = jax.random.split(jax.random.key(42), n_paths)
 
 fig, ax = plt.subplots(figsize=(10, 5))
 
 for j in range(n_paths):
-    w_path = draw_lottery(x_true, rng, T_long) 
+    w_path = draw_lottery(keys[j], x_true, T_long)
     x_means = learn_x_bayesian(w_path, 1, 1)  # Uniform prior
     ax.plot(range(T_long + 1), x_means, alpha=0.5, linewidth=1)
 
-ax.axhline(y=x_true, color='red', linestyle='--', 
-            label=f'True x = {x_true}', linewidth=2)
-ax.set_ylabel('Posterior mean of $x$')
-ax.set_xlabel('$t$')
+ax.axhline(
+    y=x_true,
+    color="red",
+    linestyle="--",
+    label=f"True x = {x_true}",
+    linewidth=2,
+)
+ax.set_ylabel("Posterior mean of $x$")
+ax.set_xlabel("$t$")
 ax.legend()
 plt.tight_layout()
 plt.show()
