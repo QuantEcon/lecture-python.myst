@@ -27,6 +27,9 @@ kernelspec:
 :depth: 2
 ```
 
+```{include} _admonition/gpu.md
+```
+
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython
@@ -46,15 +49,16 @@ This exposition draws on the presentation in {cite}`Ljungqvist2012`, section 6.5
 
 We begin with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
+from typing import NamedTuple
+
 import matplotlib.pyplot as plt
-import numpy as np
-import quantecon as qe
-from numba import jit, prange
-from quantecon.distributions import BetaBinomial
-from scipy.special import binom, beta
-from mpl_toolkits.mplot3d.axes3d import Axes3D
 from matplotlib import cm
+from mpl_toolkits.mplot3d.axes3d import Axes3D
+import jax
+import jax.numpy as jnp
+import jax.random as jr
+from quantecon.distributions import BetaBinomial
 ```
 
 ### Model Features
@@ -132,14 +136,14 @@ Evidently $I$, $II$ and $III$ correspond to "stay put", "new job" and "new life"
 As in {cite}`Ljungqvist2012`, section 6.5, we will focus on a discrete version of the model, parameterized as follows:
 
 * both $\theta$ and $\epsilon$ take values in the set
-  `np.linspace(0, B, grid_size)` --- an even grid of points between
+  `jnp.linspace(0, B, grid_size)` --- an even grid of points between
   $0$ and $B$ inclusive
 * `grid_size = 50`
 * `B = 5`
 * `β = 0.95`
 
 The distributions $F$ and $G$ are discrete distributions
-generating draws from the grid points `np.linspace(0, B, grid_size)`.
+generating draws from the grid points `jnp.linspace(0, B, grid_size)`.
 
 A very useful family of discrete distributions is the Beta-binomial family,
 with probability mass function
@@ -163,161 +167,159 @@ Nice properties:
 
 Here's a figure showing the effect on the pmf of different shape parameters when $n=50$.
 
-```{code-cell} python3
-def gen_probs(n, a, b):
-    probs = np.zeros(n+1)
-    for k in range(n+1):
-        probs[k] = binom(n, k) * beta(k + a, n - k + b) / beta(a, b)
-    return probs
-
+```{code-cell} ipython3
 n = 50
 a_vals = [0.5, 1, 100]
 b_vals = [0.5, 1, 100]
+
 fig, ax = plt.subplots(figsize=(10, 6))
 for a, b in zip(a_vals, b_vals):
     ab_label = f'$a = {a:.1f}$, $b = {b:.1f}$'
-    ax.plot(list(range(0, n+1)), gen_probs(n, a, b), '-o', label=ab_label)
+    ax.plot(range(n + 1), BetaBinomial(n, a, b).pdf(), '-o', label=ab_label)
 ax.legend()
 plt.show()
 ```
 
 ## Implementation
 
-We will first create a class `CareerWorkerProblem` which will hold the
-default parameterizations of the model and an initial guess for the value function.
+We store the model primitives in a `NamedTuple`, built by a factory function.
 
-```{code-cell} python3
-class CareerWorkerProblem:
+```{code-cell} ipython3
+class CareerWorkerProblem(NamedTuple):
+    β: float                 # Discount factor
+    θ: jnp.ndarray           # Set of θ values (career)
+    ϵ: jnp.ndarray           # Set of ϵ values (job)
+    F_probs: jnp.ndarray     # Distribution over new career draws
+    G_probs: jnp.ndarray     # Distribution over new job draws
+    F_mean: float            # Mean of F
+    G_mean: float            # Mean of G
 
-    def __init__(self,
-                 B=5.0,          # Upper bound
-                 β=0.95,         # Discount factor
-                 grid_size=50,   # Grid size
-                 F_a=1,
-                 F_b=1,
-                 G_a=1,
-                 G_b=1):
 
-        self.β, self.grid_size, self.B = β, grid_size, B
+def create_career_worker_problem(B=5.0,          # Upper bound
+                                 β=0.95,         # Discount factor
+                                 grid_size=50,   # Grid size
+                                 F_a=1,
+                                 F_b=1,
+                                 G_a=1,
+                                 G_b=1):
+    "Create an instance of the career choice model."
+    θ = jnp.linspace(0, B, grid_size)
+    ϵ = jnp.linspace(0, B, grid_size)
 
-        self.θ = np.linspace(0, B, grid_size)     # Set of θ values
-        self.ϵ = np.linspace(0, B, grid_size)     # Set of ϵ values
+    F_probs = jnp.array(BetaBinomial(grid_size - 1, F_a, F_b).pdf())
+    G_probs = jnp.array(BetaBinomial(grid_size - 1, G_a, G_b).pdf())
 
-        self.F_probs = BetaBinomial(grid_size - 1, F_a, F_b).pdf()
-        self.G_probs = BetaBinomial(grid_size - 1, G_a, G_b).pdf()
-        self.F_mean = self.θ @ self.F_probs
-        self.G_mean = self.ϵ @ self.G_probs
-
-        # Store these parameters for str and repr methods
-        self._F_a, self._F_b = F_a, F_b
-        self._G_a, self._G_b = G_a, G_b
+    return CareerWorkerProblem(β=β, θ=θ, ϵ=ϵ,
+                               F_probs=F_probs, G_probs=G_probs,
+                               F_mean=θ @ F_probs, G_mean=ϵ @ G_probs)
 ```
 
-The following function takes an instance of `CareerWorkerProblem` and returns
-the corresponding Bellman operator $T$ and the greedy policy function.
-
-In this model, $T$ is defined by $Tv(\theta, \epsilon) = \max\{I, II, III\}$, where
+The Bellman operator is $Tv(\theta, \epsilon) = \max\{I, II, III\}$, where
 $I$, $II$ and $III$ are as given in {eq}`eyes`.
 
-```{code-cell} python3
-def operator_factory(cw, parallel_flag=True):
+We start by writing those three values for a **single** state
+$(\theta_i, \epsilon_j)$, so that the code sits close to the equation.
 
+```{code-cell} ipython3
+def _B(v, cw, i, j):
     """
-    Returns jitted versions of the Bellman operator and the
-    greedy policy function
-
-    cw is an instance of ``CareerWorkerProblem``
+    The values of the three options available at state (θ_i, ϵ_j), in the
+    order they appear in the Bellman equation.
     """
-
-    θ, ϵ, β = cw.θ, cw.ϵ, cw.β
-    F_probs, G_probs = cw.F_probs, cw.G_probs
-    F_mean, G_mean = cw.F_mean, cw.G_mean
-
-    @jit(parallel=parallel_flag)
-    def T(v):
-        "The Bellman operator"
-
-        v_new = np.empty_like(v)
-
-        for i in prange(len(v)):
-            for j in prange(len(v)):
-                v1 = θ[i] + ϵ[j] + β * v[i, j]                    # Stay put
-                v2 = θ[i] + G_mean + β * v[i, :] @ G_probs        # New job
-                v3 = G_mean + F_mean + β * F_probs @ v @ G_probs  # New life
-                v_new[i, j] = max(v1, v2, v3)
-
-        return v_new
-
-    @jit
-    def get_greedy(v):
-        "Computes the v-greedy policy"
-
-        σ = np.empty(v.shape)
-
-        for i in range(len(v)):
-            for j in range(len(v)):
-                v1 = θ[i] + ϵ[j] + β * v[i, j]
-                v2 = θ[i] + G_mean + β * v[i, :] @ G_probs
-                v3 = G_mean + F_mean + β * F_probs @ v @ G_probs
-                if v1 > max(v2, v3):
-                    action = 1
-                elif v2 > max(v1, v3):
-                    action = 2
-                else:
-                    action = 3
-                σ[i, j] = action
-
-        return σ
-
-    return T, get_greedy
+    stay_put = cw.θ[i] + cw.ϵ[j] + cw.β * v[i, j]                        # I
+    new_job = cw.θ[i] + cw.G_mean + cw.β * v[i, :] @ cw.G_probs          # II
+    new_life = cw.G_mean + cw.F_mean + cw.β * cw.F_probs @ v @ cw.G_probs # III
+    return jnp.array([stay_put, new_job, new_life])
 ```
 
-Lastly, `solve_model` will  take an instance of `CareerWorkerProblem` and
-iterate using the Bellman operator to find the fixed point of the Bellman equation.
+Now we evaluate `_B` at every state.
 
-```{code-cell} python3
-def solve_model(cw,
-                use_parallel=True,
-                tol=1e-4,
-                max_iter=1000,
-                verbose=True,
-                print_skip=25):
+Rather than write two nested loops over $i$ and $j$, we apply `jax.vmap` twice.
 
-    T, _ = operator_factory(cw, parallel_flag=use_parallel)
+In `in_axes`, a `0` marks the argument being mapped over, while `None` holds an
+argument fixed.
 
-    # Set up loop
-    v = np.full((cw.grid_size, cw.grid_size), 100.)  # Initial guess
-    i = 0
-    error = tol + 1
+```{code-cell} ipython3
+# The argument order of _B is  (v,    cw,   i,    j)
+_B_j  = jax.vmap(_B,   in_axes=(None, None, None, 0))   # over j
+_B_ij = jax.vmap(_B_j, in_axes=(None, None, 0,    None))  # then over i
 
-    while i < max_iter and error > tol:
-        v_new = T(v)
-        error = np.max(np.abs(v - v_new))
-        i += 1
-        if verbose and i % print_skip == 0:
-            print(f"Error at iteration {i} is {error}.")
-        v = v_new
 
-    if error > tol:
-        print("Failed to converge!")
+@jax.jit
+def B(v, cw):
+    "Value of each option at each state; shape (grid_size, grid_size, 3)."
+    n = len(cw.θ)
+    return _B_ij(v, cw, jnp.arange(n), jnp.arange(n))
+```
 
-    elif verbose:
-        print(f"\nConverged in {i} iterations.")
+The Bellman operator and the greedy policy are now the maximum and the
+maximizer of the same array.
 
-    return v_new
+```{code-cell} ipython3
+@jax.jit
+def T(v, cw):
+    "The Bellman operator."
+    return jnp.max(B(v, cw), axis=-1)
+
+
+@jax.jit
+def get_greedy(v, cw):
+    "The v-greedy policy, coded as 1 = stay put, 2 = new job, 3 = new life."
+    return jnp.argmax(B(v, cw), axis=-1) + 1
+```
+
+Lastly, `solve_model` iterates the Bellman operator to find the fixed point.
+
+We use `jax.lax.while_loop` so that the whole iteration compiles into a single
+operation, and bound the number of steps so the loop always terminates.
+
+```{code-cell} ipython3
+@jax.jit
+def solve_model(cw, tol=1e-4, max_iter=1_000):
+    """
+    Solve the model by value function iteration.
+
+    Returns the value function, the number of iterations taken and the final
+    error, so that the caller can check convergence.
+    """
+    def condition(loop_state):
+        i, v, error = loop_state
+        return (error > tol) & (i < max_iter)
+
+    def update(loop_state):
+        i, v, error = loop_state
+        v_new = T(v, cw)
+        return i + 1, v_new, jnp.max(jnp.abs(v_new - v))
+
+    n = len(cw.θ)
+    v_init = jnp.full((n, n), 100.0)
+    i, v, error = jax.lax.while_loop(condition, update, (0, v_init, tol + 1))
+    return v, i, error
+```
+
+```{note}
+The grid here is small, and this model would also run perfectly well in NumPy.
+
+We use JAX because the code is almost as readable as the NumPy equivalent while
+scaling far better --- to finer grids, or to richer versions of the model with
+more state variables, where the same code will make full use of a GPU.
+
+The gain is already visible in {ref}`career_ex2`, where we simulate 25,000
+independent careers at once.
 ```
 
 Here's the solution to the model -- an approximate value function
 
-```{code-cell} python3
-cw = CareerWorkerProblem()
-T, get_greedy = operator_factory(cw)
-v_star = solve_model(cw, verbose=False)
-greedy_star = get_greedy(v_star)
+```{code-cell} ipython3
+cw = create_career_worker_problem()
+v_star, num_iter, error = solve_model(cw)
+greedy_star = get_greedy(v_star, cw)
+
+print(f"Converged in {num_iter} iterations with error {error:.2e}.")
 
 fig = plt.figure(figsize=(8, 6))
 ax = fig.add_subplot(111, projection='3d')
-tg, eg = np.meshgrid(cw.θ, cw.ϵ)
+tg, eg = jnp.meshgrid(cw.θ, cw.ϵ)
 ax.plot_surface(tg,
                 eg,
                 v_star.T,
@@ -331,9 +333,9 @@ plt.show()
 
 And here is the optimal policy
 
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(6, 6))
-tg, eg = np.meshgrid(cw.θ, cw.ϵ)
+tg, eg = jnp.meshgrid(cw.θ, cw.ϵ)
 lvls = (0.5, 1.5, 2.5, 3.5)
 ax.contourf(tg, eg, greedy_star.T, levels=lvls, cmap=cm.winter, alpha=0.5)
 ax.contour(tg, eg, greedy_star.T, colors='k', levels=lvls, linewidths=2)
@@ -352,8 +354,7 @@ Interpretation:
 
 Notice that the worker will always hold on to a sufficiently good career, but not necessarily hold on to even the best paying job.
 
-The reason is that high lifetime wages require both variables to be large, and
-the worker cannot change careers without changing jobs.
+The reason is that high lifetime wages require both a good job and a good career, but the worker cannot change careers without changing jobs.
 
 * Sometimes a good job must be sacrificed in order to change to a better career.
 
@@ -363,7 +364,7 @@ the worker cannot change careers without changing jobs.
 :label: career_ex1
 ```
 
-Using the default parameterization in the class `CareerWorkerProblem`,
+Using the default parameterization in the function `create_career_worker_problem`,
 generate and plot typical sample paths for $\theta$ and $\epsilon$
 when the worker follows the optimal policy.
 
@@ -375,7 +376,7 @@ In particular, modulo randomness, reproduce the following figure (where the hori
 
 ```{hint}
 :class: dropdown
-To generate the draws from the distributions $F$ and $G$, use `quantecon.random.draw()`.
+To draw from $F$ and $G$, invert their cdfs with `jnp.searchsorted`.
 ```
 
 ```{exercise-end}
@@ -388,51 +389,57 @@ To generate the draws from the distributions $F$ and $G$, use `quantecon.random.
 
 Simulate job/career paths.
 
-In reading the code, recall that `optimal_policy[i, j]` = policy at
+In reading the code, recall that `greedy_star[i, j]` = policy at
 $(\theta_i, \epsilon_j)$ = either 1, 2 or 3; meaning 'stay put',
 'new job' and 'new life'.
 
-```{code-cell} python3
-F = np.cumsum(cw.F_probs)
-G = np.cumsum(cw.G_probs)
-v_star = solve_model(cw, verbose=False)
-T, get_greedy = operator_factory(cw)
-greedy_star = get_greedy(v_star)
-
-def gen_path(optimal_policy, F, G, t=20):
-    i = j = 0
-    θ_index = []
-    ϵ_index = []
-    for t in range(t):
-        if optimal_policy[i, j] == 1:       # Stay put
-            pass
-
-        elif greedy_star[i, j] == 2:     # New job
-            j = qe.random.draw(G)
-
-        else:                            # New life
-            i, j = qe.random.draw(F), qe.random.draw(G)
-        θ_index.append(i)
-        ϵ_index.append(j)
-    return cw.θ[θ_index], cw.ϵ[ϵ_index]
+```{code-cell} ipython3
+def draw(key, cdf):
+    "Draw an index from the distribution with the given cdf."
+    return jnp.searchsorted(cdf, jr.uniform(key), side="right")
 
 
+def simulate_path(cw, greedy_star, key, t=20):
+    "Simulate a career/job path of length t under the greedy policy."
+    F_cdf, G_cdf = jnp.cumsum(cw.F_probs), jnp.cumsum(cw.G_probs)
+
+    def update(state, key):
+        i, j = state
+        action = greedy_star[i, j]
+        key_F, key_G = jr.split(key)
+        # Career changes only under 'new life'; the job changes unless we stay put
+        i_new = jnp.where(action == 3, draw(key_F, F_cdf), i)
+        j_new = jnp.where(action == 1, j, draw(key_G, G_cdf))
+        return (i_new, j_new), (i_new, j_new)
+
+    _, (i_path, j_path) = jax.lax.scan(update, (0, 0), jr.split(key, t))
+    return cw.θ[i_path], cw.ϵ[j_path]
+
+
+cw = create_career_worker_problem()
+v_star, _, _ = solve_model(cw)
+greedy_star = get_greedy(v_star, cw)
+
+key = jr.key(42)
 fig, axes = plt.subplots(2, 1, figsize=(10, 8))
+
 for ax in axes:
-    θ_path, ϵ_path = gen_path(greedy_star, F, G)
+    key, subkey = jr.split(key)
+    θ_path, ϵ_path = simulate_path(cw, greedy_star, subkey)
     ax.plot(ϵ_path, label='ϵ')
     ax.plot(θ_path, label='θ')
     ax.set_ylim(0, 6)
+    ax.legend()
 
-plt.legend()
 plt.show()
 ```
 
 ```{solution-end}
 ```
 
-```{exercise}
+```{exercise-start}
 :label: career_ex2
+```
 
 Let's now consider how long it takes for the worker to settle down to a
 permanent job, given a starting point of $(\theta, \epsilon) = (0, 0)$.
@@ -456,48 +463,61 @@ $$
 Collect 25,000 draws of this random variable and compute the median (which should be about 7).
 
 Repeat the exercise with $\beta=0.99$ and interpret the change.
+
+```{exercise-end}
 ```
 
 ```{solution-start} career_ex2
 :class: dropdown
 ```
 
-The median for the original parameterization can be computed as follows
+The median for the original parameterization can be computed as follows.
 
-```{code-cell} python3
-cw = CareerWorkerProblem()
-F = np.cumsum(cw.F_probs)
-G = np.cumsum(cw.G_probs)
-T, get_greedy = operator_factory(cw)
-v_star = solve_model(cw, verbose=False)
-greedy_star = get_greedy(v_star)
+Each simulation is an independent sequential search, so we write one with
+`jax.lax.while_loop` and then run 25,000 of them at once with `jax.vmap`.
 
-@jit
-def passage_time(optimal_policy, F, G):
-    t = 0
-    i = j = 0
-    while True:
-        if optimal_policy[i, j] == 1:    # Stay put
-            return t
-        elif optimal_policy[i, j] == 2:  # New job
-            j = qe.random.draw(G)
-        else:                            # New life
-            i, j  = qe.random.draw(F), qe.random.draw(G)
-        t += 1
+```{code-cell} ipython3
+def passage_time(cw, greedy_star, key, max_t=1_000):
+    "Time until the worker first chooses to stay put."
+    F_cdf, G_cdf = jnp.cumsum(cw.F_probs), jnp.cumsum(cw.G_probs)
 
-@jit(parallel=True)
-def median_time(optimal_policy, F, G, M=25000):
-    samples = np.empty(M)
-    for i in prange(M):
-        samples[i] = passage_time(optimal_policy, F, G)
-    return np.median(samples)
+    def condition(state):
+        i, j, t, key = state
+        return (greedy_star[i, j] != 1) & (t < max_t)
 
-median_time(greedy_star, F, G)
+    def update(state):
+        i, j, t, key = state
+        action = greedy_star[i, j]
+        key, key_F, key_G = jr.split(key, 3)
+        i_new = jnp.where(action == 3, draw(key_F, F_cdf), i)
+        j_new = jnp.where(action == 1, j, draw(key_G, G_cdf))
+        return i_new, j_new, t + 1, key
+
+    _, _, t, _ = jax.lax.while_loop(condition, update, (0, 0, 0, key))
+    return t
+
+
+@jax.jit
+def median_passage_time(cw, greedy_star, key, M=25_000):
+    "Median time to settle down, over M independent simulations."
+    keys = jr.split(key, M)
+    times = jax.vmap(passage_time, in_axes=(None, None, 0))(cw, greedy_star, keys)
+    return jnp.median(times)
+
+
+median_passage_time(cw, greedy_star, jr.key(42))
 ```
 
 To compute the median with $\beta=0.99$ instead of the default
-value $\beta=0.95$, replace `cw = CareerWorkerProblem()` with
-`cw = CareerWorkerProblem(β=0.99)`.
+value $\beta=0.95$, we create a new instance and solve it again.
+
+```{code-cell} ipython3
+cw_patient = create_career_worker_problem(β=0.99)
+v_patient, _, _ = solve_model(cw_patient)
+greedy_patient = get_greedy(v_patient, cw_patient)
+
+median_passage_time(cw_patient, greedy_patient, jr.key(42))
+```
 
 The medians are subject to randomness but should be about 7 and 14 respectively.
 
@@ -505,7 +525,6 @@ Not surprisingly, more patient workers will wait longer to settle down to their 
 
 ```{solution-end}
 ```
-
 
 ```{exercise}
 :label: career_ex3
@@ -520,14 +539,13 @@ figure -- interpret.
 
 Here is one solution
 
-```{code-cell} python3
-cw = CareerWorkerProblem(G_a=100, G_b=100)
-T, get_greedy = operator_factory(cw)
-v_star = solve_model(cw, verbose=False)
-greedy_star = get_greedy(v_star)
+```{code-cell} ipython3
+cw = create_career_worker_problem(G_a=100, G_b=100)
+v_star, _, _ = solve_model(cw)
+greedy_star = get_greedy(v_star, cw)
 
 fig, ax = plt.subplots(figsize=(6, 6))
-tg, eg = np.meshgrid(cw.θ, cw.ϵ)
+tg, eg = jnp.meshgrid(cw.θ, cw.ϵ)
 lvls = (0.5, 1.5, 2.5, 3.5)
 ax.contourf(tg, eg, greedy_star.T, levels=lvls, cmap=cm.winter, alpha=0.5)
 ax.contour(tg, eg, greedy_star.T, colors='k', levels=lvls, linewidths=2)
