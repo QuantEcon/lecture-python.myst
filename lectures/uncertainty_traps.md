@@ -323,7 +323,7 @@ at once, for a given set of shocks
 
 Notice how the traps only take hold after a sequence of bad draws for the fundamental.
 
-Thus, the model gives us a *propagation mechanism* that maps bad random draws into long downturns in economic activity.
+Thus, the model gives us a **propagation mechanism** that maps bad random draws into long downturns in economic activity.
 
 ## Exercises
 

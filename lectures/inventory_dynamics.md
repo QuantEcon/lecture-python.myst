@@ -271,7 +271,7 @@ plot_kde(sample, ax)
 plt.show()
 ```
 
-The allocation of probability mass is similar to what was shown by the
+The allocation of probability density is similar to what was shown by the
 histogram just above.
 
 ## Exercises
@@ -427,7 +427,7 @@ freq = compute_freq()
 print(f"Frequency of at least two stock outs = {freq}")
 ```
 
-Try switching the `parallel` flag to `False` in the jitted function
+Try switching the `parallel` flag to `False` in the `@jit` decorator
 above.
 
 Depending on your system, the difference can be substantial.
