@@ -264,7 +264,7 @@ $$
 p_t = \frac{1 + \kappa}{ \rho - \kappa} d_t
 $$
 
-This is called the *Gordon formula*.
+This is called the **Gordon formula**.
 
 (mass_mg)=
 ### Example 3: Markov Growth, Risk-Neutral Pricing
@@ -473,7 +473,7 @@ where $u$ is a concave utility function and $c_t$ is time $t$ consumption of a r
 
 Assume the existence of an endowment that follows growth process {eq}`mass_fmce`.
 
-The asset being priced is a claim on the endowment process, i.e., the *Lucas tree* described above.
+The asset being priced is a claim on the endowment process, i.e., the **Lucas tree** described above.
 
 Following {cite}`Lucas1978`, we suppose  that in equilibrium the representative consumer's  consumption equals the aggregate endowment, so that $d_t = c_t$ for all $t$.
 
@@ -748,7 +748,7 @@ We'll study an option that  gives the owner the  right to purchase a consol at a
 
 #### An Infinite Horizon Call Option
 
-We want to price an *infinite horizon*  option to purchase a consol at a price $p_S$.
+We want to price an **infinite horizon**  option to purchase a consol at a price $p_S$.
 
 The option entitles the owner at the beginning of a period either
 
@@ -757,7 +757,7 @@ The option entitles the owner at the beginning of a period either
 
 Thus, the owner either *exercises* the option now or chooses *not to exercise* and wait until next period.
 
-This is termed an infinite-horizon *call option* with *strike price* $p_S$.
+This is termed an infinite-horizon **call option** with **strike price** $p_S$.
 
 The owner of the option is entitled to purchase the consol at  price $p_S$ at the beginning of any period, after the coupon has been paid to the previous owner of the bond.
 

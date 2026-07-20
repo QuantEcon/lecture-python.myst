@@ -18,13 +18,16 @@ kernelspec:
 </div>
 ```
 
-# {index}`Job Search VI: On-the-Job Search <single: Job Search VI: On-the-Job Search>`
+# {index}`Job Search VII: On-the-Job Search <single: Job Search VII: On-the-Job Search>`
 
 ```{index} single: Models; On-the-Job Search
 ```
 
 ```{contents} Contents
 :depth: 2
+```
+
+```{include} _admonition/gpu.md
 ```
 
 ## Overview
@@ -35,11 +38,14 @@ In this section, we solve a simple on-the-job search model
 
 Let's start with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
+from typing import NamedTuple
+
 import matplotlib.pyplot as plt
-import numpy as np
 import scipy.stats as stats
-from numba import jit, prange
+import jax
+import jax.numpy as jnp
+import jax.random as jr
 ```
 
 ### Model Features
@@ -174,186 +180,193 @@ Now let's turn to implementation, and see if we can match our predictions.
 ```{index} single: On-the-Job Search; Programming Implementation
 ```
 
-We will set up a class `JVWorker` that holds the parameters of the model described above
+We solve the model with [JAX](https://docs.jax.dev/), using a `NamedTuple` to
+hold the parameters and grids.
 
-```{code-cell} python3
-class JVWorker:
-    r"""
-    A Jovanovic-type model of employment with on-the-job search.
+```{code-cell} ipython3
+class JVWorker(NamedTuple):
+    A: float                # Scale parameter in g
+    α: float                # Curvature parameter in g
+    β: float                # Discount factor
+    x_grid: jnp.ndarray     # Grid of human capital values
+    s_grid: jnp.ndarray     # Grid of search effort values
+    ϕ_grid: jnp.ndarray     # Grid of investment values
+    f_rvs: jnp.ndarray      # Draws from f, for Monte Carlo integration
 
+
+def create_jv_worker(A=1.4,               # Scale parameter in g
+                     α=0.6,               # Curvature parameter in g
+                     β=0.96,              # Discount factor
+                     a=2,                 # Parameter of f
+                     b=2,                 # Parameter of f
+                     grid_size=50,        # Size of the state grid
+                     mc_size=100,         # Number of draws from f
+                     search_grid_size=15, # Size of each action grid
+                     ɛ=1e-4,
+                     seed=1234):
     """
+    Create an instance of the on-the-job search model.
+    """
+    f_rvs = jr.beta(jr.key(seed), a, b, (mc_size,))
 
-    def __init__(self,
-                 A=1.4,
-                 α=0.6,
-                 β=0.96,         # Discount factor
-                 π=np.sqrt,      # Search effort function
-                 a=2,            # Parameter of f
-                 b=2,            # Parameter of f
-                 grid_size=50,
-                 mc_size=100,
-                 ɛ=1e-4):
+    # Max of grid is the max of a large quantile value for f and the
+    # fixed point y = g(y, 1)
+    grid_max = max(A**(1 / (1 - α)), stats.beta(a, b).ppf(1 - ɛ))
 
-        self.A, self.α, self.β, self.π = A, α, β, π
-        self.mc_size, self.ɛ = mc_size, ɛ
+    x_grid = jnp.linspace(ɛ, grid_max, grid_size)
+    s_grid = jnp.linspace(ɛ, 1, search_grid_size)
+    ϕ_grid = jnp.linspace(ɛ, 1, search_grid_size)
 
-        self.g = jit(lambda x, ϕ: A * (x * ϕ)**α)    # Transition function
-        self.f_rvs = np.random.beta(a, b, mc_size)
-
-        # Max of grid is the max of a large quantile value for f and the
-        # fixed point y = g(y, 1)
-        ɛ = 1e-4
-        grid_max = max(A**(1 / (1 - α)), stats.beta(a, b).ppf(1 - ɛ))
-
-        # Human capital
-        self.x_grid = np.linspace(ɛ, grid_max, grid_size)
+    return JVWorker(A=A, α=α, β=β, x_grid=x_grid, s_grid=s_grid,
+                    ϕ_grid=ϕ_grid, f_rvs=f_rvs)
 ```
 
-The function `operator_factory` takes an instance of this class and returns a
-jitted version of the Bellman operator `T`, i.e.
+Here are the transition function $g$ and the offer probability $\pi$.
 
-$$
-Tv(x)
-= \max_{s + \phi \leq 1} w(s, \phi)
-$$
+```{code-cell} ipython3
+@jax.jit
+def g(jv, x, ϕ):
+    "Transition function for job-specific human capital."
+    return jv.A * (x * ϕ)**jv.α
 
-where
+
+@jax.jit
+def π(s):
+    "Probability of receiving an offer when search effort is s."
+    return jnp.sqrt(s)
+```
+
+Next we write the right-hand side of the Bellman equation {eq}`jvbell`, before
+maximization:
 
 ```{math}
 :label: defw
 
-w(s, \phi)
+B(x, s, \phi)
  := x (1 - s - \phi) + \beta (1 - \pi(s)) v[g(x, \phi)] +
          \beta \pi(s) \int v[g(x, \phi) \vee u] f(du)
 ```
 
-When we represent $v$, it will be with a NumPy array `v` giving values on grid `x_grid`.
+We represent $v$ by an array giving its values on `x_grid`, and recover a
+function from it by linear interpolation.
 
-But to evaluate the right-hand side of {eq}`defw`, we need a function, so
-we replace the arrays `v` and `x_grid` with a function `v_func` that gives linear
-interpolation of `v` on `x_grid`.
+The integral is replaced by a Monte Carlo average over the draws in `f_rvs`.
 
-Inside the `for` loop, for each `x` in the grid over the state space, we
-set up the function $w(z) = w(s, \phi)$ defined in {eq}`defw`.
+The function below is written for a **single** state $x$ and a **single**
+action pair $(s, \phi)$ --- so it reads much like {eq}`defw` itself.
 
-The function is maximized over all feasible $(s, \phi)$ pairs.
-
-Another function, `get_greedy` returns the optimal choice of $s$ and $\phi$
-at each $x$, given a value function.
-
-```{code-cell} python3
-def operator_factory(jv, parallel_flag=True):
-
+```{code-cell} ipython3
+def _B(v, jv, x, s, ϕ):
     """
-    Returns a jitted version of the Bellman operator T
+    The right-hand side of the Bellman equation before maximization, for one
+    state x and one action pair (s, ϕ).
 
-    jv is an instance of JVWorker
-
+    Infeasible pairs, where s + ϕ > 1, are given value -∞ so that they are
+    never selected by the maximization step.
     """
+    v_func = lambda z: jnp.interp(z, jv.x_grid, v)
+    gxϕ = g(jv, x, ϕ)
 
-    π, β = jv.π, jv.β
-    x_grid, ɛ, mc_size = jv.x_grid, jv.ɛ, jv.mc_size
-    f_rvs, g = jv.f_rvs, jv.g
+    # Monte Carlo estimate of ∫ v[g(x, ϕ) ∨ u] f(du)
+    integral = jnp.mean(v_func(jnp.maximum(gxϕ, jv.f_rvs)))
 
-    @jit
-    def state_action_values(z, x, v):
-        s, ϕ = z
-        v_func = lambda x: np.interp(x, x_grid, v)
-
-        integral = 0
-        for m in range(mc_size):
-            u = f_rvs[m]
-            integral += v_func(max(g(x, ϕ), u))
-        integral = integral / mc_size
-
-        q = π(s) * integral + (1 - π(s)) * v_func(g(x, ϕ))
-        return x * (1 - ϕ - s) + β * q
-
-    @jit(parallel=parallel_flag)
-    def T(v):
-        """
-        The Bellman operator
-        """
-
-        v_new = np.empty_like(v)
-        for i in prange(len(x_grid)):
-            x = x_grid[i]
-
-            # Search on a grid
-            search_grid = np.linspace(ɛ, 1, 15)
-            max_val = -1
-            for s in search_grid:
-                for ϕ in search_grid:
-                    current_val = state_action_values((s, ϕ), x, v) if s + ϕ <= 1 else -1
-                    if current_val > max_val:
-                        max_val = current_val
-            v_new[i] = max_val
-
-        return v_new
-
-    @jit
-    def get_greedy(v):
-        """
-        Computes the v-greedy policy of a given function v
-        """
-        s_policy, ϕ_policy = np.empty_like(v), np.empty_like(v)
-
-        for i in range(len(x_grid)):
-            x = x_grid[i]
-            # Search on a grid
-            search_grid = np.linspace(ɛ, 1, 15)
-            max_val = -1
-            for s in search_grid:
-                for ϕ in search_grid:
-                    current_val = state_action_values((s, ϕ), x, v) if s + ϕ <= 1 else -1
-                    if current_val > max_val:
-                        max_val = current_val
-                        max_s, max_ϕ = s, ϕ
-                        s_policy[i], ϕ_policy[i] = max_s, max_ϕ
-        return s_policy, ϕ_policy
-
-    return T, get_greedy
+    q = π(s) * integral + (1 - π(s)) * v_func(gxϕ)
+    return jnp.where(s + ϕ <= 1, x * (1 - s - ϕ) + jv.β * q, -jnp.inf)
 ```
 
-To solve the model, we will write a function that uses the Bellman operator
-and iterates to find a fixed point.
+Now we evaluate `_B` at every combination of state and action.
 
-```{code-cell} python3
-def solve_model(jv,
-                use_parallel=True,
-                tol=1e-4,
-                max_iter=1000,
-                verbose=True,
-                print_skip=25):
+Rather than write three nested loops, we apply `jax.vmap` three times.
 
+Each application vectorizes over one argument, so the stack below plays the
+role of a triple loop --- but the whole thing compiles to code that runs in
+parallel.
+
+In `in_axes`, a `0` marks the argument being mapped over, while `None` holds an
+argument fixed.
+
+```{code-cell} ipython3
+# The argument order of _B is    (v,    jv,   x,    s,    ϕ)
+_B_ϕ   = jax.vmap(_B,    in_axes=(None, None, None, None, 0))     # over ϕ
+_B_sϕ  = jax.vmap(_B_ϕ,  in_axes=(None, None, None, 0,    None))  # then over s
+_B_xsϕ = jax.vmap(_B_sϕ, in_axes=(None, None, 0,    None, None))  # then over x
+```
+
+The result is a fully vectorized version of $B$.
+
+```{code-cell} ipython3
+@jax.jit
+def B(v, jv):
     """
-    Solves the model by value function iteration
+    Evaluate B at every (state, action) combination.
 
-    * jv is an instance of JVWorker
-
+    Returns an array of shape (len(x_grid), len(s_grid), len(ϕ_grid)) where
+    entry [i, j, k] holds the value of choosing (s_j, ϕ_k) in state x_i.
     """
+    return _B_xsϕ(v, jv, jv.x_grid, jv.s_grid, jv.ϕ_grid)
+```
 
-    T, _ = operator_factory(jv, parallel_flag=use_parallel)
+With `B` in hand, the Bellman operator and the greedy policy are both one-liners
+--- we maximize over the two action axes, taking the maximum in one case and the
+maximizer in the other.
 
-    # Set up loop
-    v = jv.x_grid * 0.5  # Initial condition
-    i = 0
-    error = tol + 1
+```{code-cell} ipython3
+@jax.jit
+def T(v, jv):
+    "The Bellman operator."
+    return jnp.max(B(v, jv), axis=(1, 2))
 
-    while i < max_iter and error > tol:
-        v_new = T(v)
-        error = np.max(np.abs(v - v_new))
-        i += 1
-        if verbose and i % print_skip == 0:
-            print(f"Error at iteration {i} is {error}.")
-        v = v_new
 
-    if error > tol:
-        print("Failed to converge!")
-    elif verbose:
-        print(f"\nConverged in {i} iterations.")
+@jax.jit
+def get_greedy(v, jv):
+    "Compute the v-greedy policy, returned as a pair (s_policy, ϕ_policy)."
+    vals = B(v, jv)
 
-    return v_new
+    # Flatten the two action axes so that a single argmax picks out the best
+    # pair at each state, then convert the flat index back to a (s, ϕ) pair
+    n_s, n_ϕ = len(jv.s_grid), len(jv.ϕ_grid)
+    best = jnp.argmax(vals.reshape(len(jv.x_grid), n_s * n_ϕ), axis=1)
+    j, k = jnp.unravel_index(best, (n_s, n_ϕ))
+
+    return jv.s_grid[j], jv.ϕ_grid[k]
+```
+
+To solve the model we iterate $T$ to convergence.
+
+We use `jax.lax.while_loop` so that the entire iteration compiles into a single
+operation, and bound the number of steps so that the loop always terminates.
+
+```{code-cell} ipython3
+@jax.jit
+def solve_model(jv, tol=1e-4, max_iter=1_000):
+    """
+    Solve the model by value function iteration.
+
+    Returns the value function, the number of iterations taken, and the final
+    error, so that the caller can check convergence.
+    """
+    def condition(loop_state):
+        i, v, error = loop_state
+        return (error > tol) & (i < max_iter)
+
+    def update(loop_state):
+        i, v, error = loop_state
+        v_new = T(v, jv)
+        return i + 1, v_new, jnp.max(jnp.abs(v_new - v))
+
+    v_init = jv.x_grid * 0.5
+    i, v, error = jax.lax.while_loop(condition, update, (0, v_init, tol + 1))
+    return v, i, error
+```
+
+```{note}
+The grids here are small, and this model would also run perfectly well in
+NumPy.
+
+We use JAX because the code is almost as readable as the NumPy equivalent,
+while scaling far better --- to finer grids, or to richer versions of the model
+with additional state variables, where the same code will make full use of a
+GPU.
 ```
 
 ## Solving for Policies
@@ -364,16 +377,17 @@ def solve_model(jv,
 Let's generate the optimal policies and see what they look like.
 
 (jv_policies)=
-```{code-cell} python3
-jv = JVWorker()
-T, get_greedy = operator_factory(jv)
-v_star = solve_model(jv)
-s_star, ϕ_star = get_greedy(v_star)
+```{code-cell} ipython3
+jv = create_jv_worker()
+v_star, num_iter, error = solve_model(jv)
+s_star, ϕ_star = get_greedy(v_star, jv)
+
+print(f"Converged in {num_iter} iterations with error {error:.2e}.")
 ```
 
 Here are the plots:
 
-```{code-cell} python3
+```{code-cell} ipython3
 plots = [s_star, ϕ_star, v_star]
 titles = ["s policy", "ϕ policy",  "value function"]
 
@@ -418,10 +432,10 @@ x$.
 Plot this with one dot for each realization, in the form of a 45 degree
 diagram, setting
 
-```{code-block} python3
-jv = JVWorker(grid_size=25, mc_size=50)
+```{code-block} ipython3
+jv = create_jv_worker(grid_size=25, mc_size=50)
 plot_grid_max, plot_grid_size = 1.2, 100
-plot_grid = np.linspace(0, plot_grid_max, plot_grid_size)
+plot_grid = jnp.linspace(0, plot_grid_max, plot_grid_size)
 fig, ax = plt.subplots()
 ax.set_xlim(0, plot_grid_max)
 ax.set_ylim(0, plot_grid_max)
@@ -439,25 +453,42 @@ Argue that at the steady state, $s_t \approx 0$ and $\phi_t \approx 0.6$.
 :class: dropdown
 ```
 
-Here’s code to produce the 45 degree diagram
+Here's code to produce the 45 degree diagram.
 
-```{code-cell} python3
-jv = JVWorker(grid_size=25, mc_size=50)
-π, g, f_rvs, x_grid = jv.π, jv.g, jv.f_rvs, jv.x_grid
-T, get_greedy = operator_factory(jv)
-v_star = solve_model(jv, verbose=False)
-s_policy, ϕ_policy = get_greedy(v_star)
+Note that we draw all of the realizations at once, rather than looping over
+states and draws.
+
+```{code-cell} ipython3
+jv = create_jv_worker(grid_size=25, mc_size=50)
+v_star, _, _ = solve_model(jv)
+s_policy, ϕ_policy = get_greedy(v_star, jv)
 
 # Turn the policy function arrays into actual functions
-s = lambda y: np.interp(y, x_grid, s_policy)
-ϕ = lambda y: np.interp(y, x_grid, ϕ_policy)
-
-def h(x, b, u):
-    return (1 - b) * g(x, ϕ(x)) + b * max(g(x, ϕ(x)), u)
-
+s = lambda y: jnp.interp(y, jv.x_grid, s_policy)
+ϕ = lambda y: jnp.interp(y, jv.x_grid, ϕ_policy)
 
 plot_grid_max, plot_grid_size = 1.2, 100
-plot_grid = np.linspace(0, plot_grid_max, plot_grid_size)
+plot_grid = jnp.linspace(0, plot_grid_max, plot_grid_size)
+
+
+@jax.jit
+def simulate_next(key, plot_grid):
+    """
+    Draw realizations of next period capital for every x in plot_grid,
+    following the law of motion for x_{t+1} given above.  Returns an array of shape (len(plot_grid), mc_size).
+    """
+    K = len(jv.f_rvs)
+    gxϕ = g(jv, plot_grid, ϕ(plot_grid))[:, jnp.newaxis]   # Shape (n, 1)
+    u = jv.f_rvs[jnp.newaxis, :]                           # Shape (1, K)
+
+    # An offer arrives with probability π(s(x)), independently across draws
+    b = jr.uniform(key, (len(plot_grid), K)) < π(s(plot_grid))[:, jnp.newaxis]
+
+    return jnp.where(b, jnp.maximum(gxϕ, u), gxϕ)
+
+
+x_next = simulate_next(jr.key(1234), plot_grid)
+
 fig, ax = plt.subplots(figsize=(8, 8))
 ticks = (0.25, 0.5, 0.75, 1.0)
 ax.set(xticks=ticks, yticks=ticks,
@@ -466,12 +497,8 @@ ax.set(xticks=ticks, yticks=ticks,
        xlabel='$x_t$', ylabel='$x_{t+1}$')
 
 ax.plot(plot_grid, plot_grid, 'k--', alpha=0.6)  # 45 degree line
-for x in plot_grid:
-    for i in range(jv.mc_size):
-        b = 1 if np.random.uniform(0, 1) < π(s(x)) else 0
-        u = f_rvs[i]
-        y = h(x, b, u)
-        ax.plot(x, y, 'go', alpha=0.25)
+ax.plot(jnp.repeat(plot_grid, x_next.shape[1]), x_next.ravel(),
+        'go', alpha=0.25)
 
 plt.show()
 ```
@@ -523,17 +550,17 @@ Can you give a rough interpretation for the value that you see?
 
 The figure can be produced as follows
 
-```{code-cell} python3
-jv = JVWorker()
+```{code-cell} ipython3
+jv = create_jv_worker()
 
 def xbar(ϕ):
-    A, α = jv.A, jv.α
-    return (A * ϕ**α)**(1 / (1 - α))
+    return (jv.A * ϕ**jv.α)**(1 / (1 - jv.α))
 
-ϕ_grid = np.linspace(0, 1, 100)
+ϕ_grid = jnp.linspace(0, 1, 100)
+
 fig, ax = plt.subplots(figsize=(9, 7))
 ax.set(xlabel=r'$\phi$')
-ax.plot(ϕ_grid, [xbar(ϕ) * (1 - ϕ) for ϕ in ϕ_grid], label=r'$w^*(\phi)$')
+ax.plot(ϕ_grid, xbar(ϕ_grid) * (1 - ϕ_grid), label=r'$w^*(\phi)$')
 ax.legend()
 
 plt.show()

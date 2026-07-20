@@ -226,9 +226,9 @@ class Comparison:
         A = self.A
         n = self.n
         df = self.template.copy()
-        np.random.seed(seed)
-        sample = np.random.rand(size, self.n) <= A
-        random_device = np.random.rand(size, n)
+        rng = np.random.default_rng(seed)
+        sample = rng.random((size, self.n)) <= A
+        random_device = rng.random((size, n))
         mse_rd = {}
         for p in self.p_arr:
             spinner = random_device <= p
@@ -237,8 +237,8 @@ class Comparison:
             pi_hat = (p - 1) / (2 * p - 1) + n1 / n / (2 * p - 1)
             mse_rd[p] = np.sum((pi_hat - A)**2)
         for inum, irow in df.iterrows():
-            truth_a = np.random.rand(size, self.n) <= irow.T_a
-            truth_b = np.random.rand(size, self.n) <= irow.T_b
+            truth_a = rng.random((size, self.n)) <= irow.T_a
+            truth_b = rng.random((size, self.n)) <= irow.T_b
             trad_answer = sample * truth_a + (1 - sample) * (1 - truth_b)
             pi_trad = trad_answer.sum(axis=1) / n
             df.loc[inum, 'Bias'] = pi_trad.mean() - A

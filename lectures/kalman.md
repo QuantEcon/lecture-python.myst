@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.7
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -39,10 +39,18 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 
 ## Overview
 
-This lecture provides a simple and intuitive introduction to the Kalman filter, for those who either
+This lecture provides a simple and intuitive introduction to the Kalman filter
+
+It is aimed at readers who either
 
 * have heard of the Kalman filter but don't know how it works, or
 * know the Kalman filter equations, but don't know where they come from
+
+Subsequent lectures use the same recursive logic in more applied and more econometric settings.
+
+See {doc}`kalman_2` for an economic application in which a firm infers a worker's hidden human capital and effort.
+
+See {doc}`kalman_filter_var` for a derivation of the innovations representation and its connection to vector autoregressions.
 
 For additional (more advanced) reading on the Kalman filter, see
 
@@ -59,51 +67,58 @@ We'll need the following imports:
 import matplotlib.pyplot as plt
 from scipy import linalg
 import numpy as np
-import matplotlib.cm as cm
 from quantecon import Kalman, LinearStateSpace
-from scipy.stats import norm
+from scipy.stats import norm, multivariate_normal
 from scipy.integrate import quad
 from scipy.linalg import eigvals
 ```
 
-## The Basic Idea
+## The basic idea
 
 The Kalman filter has many applications in economics, but for now
 let's pretend that we are rocket scientists.
 
-A missile has been launched from country Y and our mission is to track it.
+A missile has been launched from a hostile country and our mission is to track it.
 
-Let $x  \in \mathbb{R}^2$ denote the current location of the missile---a
+Let $X_t  \in \mathbb{R}^2$ denote the current location of the missile---a
 pair indicating latitude-longitude coordinates on a map.
 
-At the present moment in time, the precise location $x$ is unknown, but
-we do have some beliefs about $x$.
+At the present moment in time, the location $X_t$ is unknown, but we do have some beliefs about it.
 
-One way to summarize our knowledge is a point prediction $\hat x$
+We could certainly produce a point prediction.
 
-* But what if the President wants to know the probability that the missile is currently over the Sea of Japan?
-* Then it is better to summarize our initial beliefs with a bivariate probability density $p$
-  * $\int_E p(x)dx$ indicates the probability that we attach to the missile being in region $E$.
+For example, it could mark a point on the globe somewhere in northern Mongolia.
 
-The density $p$ is called our *prior* for the random variable $x$.
+But the fact is that we are uncertain.
 
-To keep things tractable in our example,  we  assume that our prior is Gaussian.
+And the President wants to know: what is the probability that the missile is within 500km of Manhattan?
+
+A point prediction doesn't address that question.
+
+Hence it's best if we can express our current understanding via a bivariate probability density $p$.
+
+* Now $\int_E p(x)dx$ indicates the probability that the missile is in region $E$.
+
+We will call $p$ our **prior** for the random variable $X$.
+
+To keep things tractable, we assume for now that our prior is Gaussian.
 
 In particular, we take
 
 ```{math}
 :label: prior
 
-p = N(\hat x, \Sigma)
+    p = N(\mu, \Sigma)
 ```
 
-where $\hat x$ is the mean of the distribution and $\Sigma$ is a
-$2 \times 2$ covariance matrix.  In our simulations, we will suppose that
+where $\mu$ is the (vector) mean of the distribution---a natural point prediction---and $\Sigma$ is a $2 \times 2$ covariance matrix.
+
+In our simulations, we will suppose that
 
 ```{math}
 :label: kalman_dhxs
 
-\hat x
+\mu
 = \left(
 \begin{array}{c}
     0.2 \\
@@ -120,151 +135,116 @@ $2 \times 2$ covariance matrix.  In our simulations, we will suppose that
   \right)
 ```
 
-This density $p(x)$ is shown below as a contour map, with the center of the red ellipse being equal to $\hat x$.
+This density $p$ is shown below as a contour map, with the center of the red ellipse being equal to $\mu$.
 
 ```{code-cell} ipython3
 :tags: [output_scroll]
 
 # Set up the Gaussian prior density p
-Σ = [[0.4, 0.3], [0.3, 0.45]]
-Σ = np.matrix(Σ)
-x_hat = np.matrix([0.2, -0.2]).T
-# Define the matrices G and R from the equation y = G x + N(0, R)
-G = [[1, 0], [0, 1]]
-G = np.matrix(G)
+Σ = np.array([[0.4, 0.3],
+              [0.3, 0.45]])
+μ = np.array([[0.2],
+              [-0.2]])
+# Define the matrices G and R from the measurement equation Y = G X + v
+G = np.array([[1, 0],
+              [0, 1]])
 R = 0.5 * Σ
 # The matrices A and Q
-A = [[1.2, 0], [0, -0.2]]
-A = np.matrix(A)
+A = np.array([[1.2, 0],
+              [0, -0.2]])
 Q = 0.3 * Σ
 # The observed value of y
-y = np.matrix([2.3, -1.9]).T
+y = np.array([[2.3],
+              [-1.9]])
 
 # Set up grid for plotting
 x_grid = np.linspace(-1.5, 2.9, 100)
 y_grid = np.linspace(-3.1, 1.7, 100)
 X, Y = np.meshgrid(x_grid, y_grid)
 
-def bivariate_normal(x, y, σ_x=1.0, σ_y=1.0, μ_x=0.0, μ_y=0.0, σ_xy=0.0):
-    """
-    Compute and return the probability density function of bivariate normal
-    distribution of normal random variables x and y
-
-    Parameters
-    ----------
-    x : array_like(float)
-        Random variable
-
-    y : array_like(float)
-        Random variable
-
-    σ_x : array_like(float)
-          Standard deviation of random variable x
-
-    σ_y : array_like(float)
-          Standard deviation of random variable y
-
-    μ_x : scalar(float)
-          Mean value of random variable x
-
-    μ_y : scalar(float)
-          Mean value of random variable y
-
-    σ_xy : array_like(float)
-           Covariance of random variables x and y
-
-    """
-
-    x_μ = x - μ_x
-    y_μ = y - μ_y
-
-    ρ = σ_xy / (σ_x * σ_y)
-    z = x_μ**2 / σ_x**2 + y_μ**2 / σ_y**2 - 2 * ρ * x_μ * y_μ / (σ_x * σ_y)
-    denom = 2 * np.pi * σ_x * σ_y * np.sqrt(1 - ρ**2)
-    return np.exp(-z / (2 * (1 - ρ**2))) / denom
-
 def gen_gaussian_plot_vals(μ, C):
     "Z values for plotting the bivariate Gaussian N(μ, C)"
-    m_x, m_y = float(μ[0,0]), float(μ[1,0])
-    s_x, s_y = np.sqrt(C[0, 0]), np.sqrt(C[1, 1])
-    s_xy = C[0, 1]
-    return bivariate_normal(X, Y, s_x, s_y, m_x, m_y, s_xy)
+    pos = np.dstack((X, Y))
+    return multivariate_normal(μ.ravel(), C).pdf(pos)
 
 # Plot the figure
 
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots()
 ax.grid()
-
-Z = gen_gaussian_plot_vals(x_hat, Σ)
-ax.contourf(X, Y, Z, 6, alpha=0.6, cmap=cm.jet)
+Z = gen_gaussian_plot_vals(μ, Σ)
+ax.contourf(X, Y, Z, 6, alpha=0.6, cmap="viridis")
 cs = ax.contour(X, Y, Z, 6, colors="black")
 ax.clabel(cs, inline=1, fontsize=10)
-
 plt.show()
 ```
 
-### The Filtering Step
+### The filtering step
 
 We are now presented with some good news and some bad news.
 
-The good news is that the missile has been located by our sensors, which report that the current location is $y = (2.3, -1.9)$.
+The good news is that the missile has been located by our sensors, which report that the current location is $Y_t = (2.3, -1.9)$.
 
-The next figure shows the original prior $p(x)$ and the new reported
-location $y$
+The next figure shows the original prior $p$ and the new reported signal $Y_t$
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots()
 ax.grid()
-
-Z = gen_gaussian_plot_vals(x_hat, Σ)
-ax.contourf(X, Y, Z, 6, alpha=0.6, cmap=cm.jet)
+Z = gen_gaussian_plot_vals(μ, Σ)
+ax.contourf(X, Y, Z, 6, alpha=0.6, cmap="viridis")
 cs = ax.contour(X, Y, Z, 6, colors="black")
 ax.clabel(cs, inline=1, fontsize=10)
-ax.text(float(y[0].item()), float(y[1].item()), "$y$", fontsize=20, color="black")
-
+y_1, y_2 = y[0].item(), y[1].item()
+ax.scatter(y_1, y_2, marker="o", s=50, color="black", zorder=3)
+ax.text(y_1 + 0.1, y_2 + 0.1, "$Y_t$", fontsize=20, color="black")
 plt.show()
 ```
 
 The bad news is that our sensors are imprecise.
 
-In particular, we should interpret the output of our sensor not as
-$y=x$, but rather as
+The sensor report is a noisy signal distorted by measurement error.
+
+In particular, we should interpret the output of our sensor not as $Y_t=X_t$, but rather as
 
 ```{math}
 :label: kl_measurement_model
 
-y = G x + v, \quad \text{where} \quad v \sim N(0, R)
+Y_t = G X_t + v_t, \quad \text{where} \quad v_t \sim N(0, R)
 ```
 
-Here $G$ and $R$ are $2 \times 2$ matrices with $R$
-positive definite.  Both are assumed known, and the noise term $v$ is assumed
-to be independent of $x$.
+Here $G$ and $R$ are $2 \times 2$ matrices, with $R$ being symmetric and positive definite.
 
-How then should we combine our prior $p(x) = N(\hat x, \Sigma)$ and this
-new information $y$ to improve our understanding of the location of the
+We assume that
+
+* $G$ and $R$ are known
+* the noise term $v_t$ is unobservable and independent of $X_t$
+
+How then should we combine our prior $X_t \sim N(\mu, \Sigma)$ and this
+new information $Y_t$ to improve our understanding of the location of the
 missile?
 
-As you may have guessed, the answer is to use Bayes' theorem, which tells
-us to  update our prior $p(x)$ to $p(x \,|\, y)$ via
+As you may have guessed, the answer is to use Bayes' theorem.
+
+It tells us how to update the prior density $p(x)$ for $X_t$ to the
+posterior density $p(x \,|\, y)$ after observing $Y_t$:
 
 $$
-p(x \,|\, y) = \frac{p(y \,|\, x) \, p(x)} {p(y)}
+p(x \,|\, Y_t) = \frac{p(Y_t \,|\, x) \, p(x)} {p(Y_t)}
 $$
 
-where $p(y) = \int p(y \,|\, x) \, p(x) dx$.
+where $p(Y_t) = \int p(Y_t \,|\, x) \, p(x) dx$.
 
-In solving for $p(x \,|\, y)$, we observe that
+In solving for $p(x \,|\, Y_t)$, we observe that
 
-* $p(x) = N(\hat x, \Sigma)$.
-* In view of {eq}`kl_measurement_model`, the conditional density $p(y \,|\, x)$ is $N(Gx, R)$.
-* $p(y)$ does not depend on $x$, and enters into the calculations only as a normalizing constant.
+* $p(x)$ is the prior density $N(\mu, \Sigma)$.
+* $p(Y_t \,|\, x)$ is the conditional density of $Y_t$ given $X_t=x$.
+* In view of {eq}`kl_measurement_model`, this conditional density is $N(Gx, R)$.
 
-Because we are in a linear and Gaussian framework, the updated density can be computed by calculating population linear regressions.
+Due to our linear Gaussian framework, the updated density turns out to be Gaussian as well.
 
-In particular, the solution is known [^f1] to be
+In particular, the solution is known to be
 
 $$
-p(x \,|\, y) = N(\hat x^F, \Sigma^F)
+    p(x \,|\, Y_t) = N(\mu^F, \Sigma^F)
 $$
 
 where
@@ -272,43 +252,57 @@ where
 ```{math}
 :label: kl_filter_exp
 
-\hat x^F := \hat x + \Sigma G' (G \Sigma G' + R)^{-1}(y - G \hat x)
-\quad \text{and} \quad
-\Sigma^F := \Sigma - \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma
+\mu^F := \mu + \Sigma G^\top (G \Sigma G^\top + R)^{-1}(y - G \mu)
 ```
 
-Here  $\Sigma G' (G \Sigma G' + R)^{-1}$ is the matrix of population regression coefficients of the hidden object $x - \hat x$ on the surprise $y - G \hat x$.
+and 
 
-This new density $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ is shown in the next figure via contour lines and the color map.
+```{math}
+:label: kl_filter_exp2
+
+\Sigma^F := \Sigma - \Sigma G^\top (G \Sigma G^\top + R)^{-1} G \Sigma
+```
+
+```{note}
+A proof can be found in {cite}`Bishop2006`.
+
+To get from his expressions to the ones used above, you will also need to apply the [Woodbury matrix identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity).
+```
+
+Here $\Sigma G^\top (G \Sigma G^\top + R)^{-1}$ is the matrix of population
+regression coefficients of the hidden state deviation $X_t - \mu$ on the
+*signal surprise* $Y_t - G \mu$.
+
+This new density $p(x \,|\, Y_t) = N(\mu^F, \Sigma^F)$ is shown in the next figure via contour lines and the color map.
 
 The original density is left in as contour lines for comparison
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots()
 ax.grid()
 
-Z = gen_gaussian_plot_vals(x_hat, Σ)
+Z = gen_gaussian_plot_vals(μ, Σ)
 cs1 = ax.contour(X, Y, Z, 6, colors="black")
 ax.clabel(cs1, inline=1, fontsize=10)
-M = Σ * G.T * linalg.inv(G * Σ * G.T + R)
-x_hat_F = x_hat + M * (y - G * x_hat)
-Σ_F = Σ - M * G * Σ
-new_Z = gen_gaussian_plot_vals(x_hat_F, Σ_F)
+M = Σ @ G.T @ linalg.inv(G @ Σ @ G.T + R)
+μ_F = μ + M @ (y - G @ μ)
+Σ_F = Σ - M @ G @ Σ
+new_Z = gen_gaussian_plot_vals(μ_F, Σ_F)
 cs2 = ax.contour(X, Y, new_Z, 6, colors="black")
 ax.clabel(cs2, inline=1, fontsize=10)
-ax.contourf(X, Y, new_Z, 6, alpha=0.6, cmap=cm.jet)
-ax.text(float(y[0].item()), float(y[1].item()), "$y$", fontsize=20, color="black")
-
+ax.contourf(X, Y, new_Z, 6, alpha=0.6, cmap="viridis")
+y_1, y_2 = y[0].item(), y[1].item()
+ax.scatter(y_1, y_2, marker="o", s=50, color="black", zorder=3)
+ax.text(y_1 + 0.1, y_2 + 0.1, "$Y_t$", fontsize=20, color="black")
 plt.show()
 ```
 
-Our new density twists the prior $p(x)$ in a direction determined by  the new
-information $y - G \hat x$.
+Our new density twists the prior $p(x)$ in a direction determined by the new information $Y_t - G \mu$.
 
 In generating the figure, we set $G$ to the identity matrix and $R = 0.5 \Sigma$ for $\Sigma$ defined in {eq}`kalman_dhxs`.
 
 (kl_forecase_step)=
-### The Forecast Step
+### The forecast step
 
 What have we achieved so far?
 
@@ -317,63 +311,72 @@ We have obtained probabilities for the current location of the state (missile) g
 This is called "filtering" rather than forecasting because we are filtering
 out noise rather than looking into the future.
 
-* $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ is called the *filtering distribution*
+The posterior $p(x \,|\, Y_t) = N(\mu^F, \Sigma^F)$ is called the **filtering distribution** for $X_t$ after observing $Y_t$
 
-But now let's suppose that we are given another task: to predict the location of the missile after one unit of time (whatever that may be) has elapsed.
+But now let's suppose that we are given another task: to predict the location of
+the missile after one unit of time (whatever that may be) has elapsed.
 
 To do this we need a model of how the state evolves.
 
-Let's suppose that we have one, and that it's linear and Gaussian. In particular,
+Let's suppose that we have one, and that it's linear and Gaussian.
+
+In particular,
 
 ```{math}
 :label: kl_xdynam
 
-x_{t+1} = A x_t + w_{t+1}, \quad \text{where} \quad w_t \sim N(0, Q)
+X_{t+1} = A X_t + W_{t+1}, \quad \text{where} \quad W_t \sim N(0, Q)
 ```
 
-Our aim is to combine this law of motion and our current distribution $p(x \,|\, y) = N(\hat x^F, \Sigma^F)$ to come up with a new *predictive* distribution for the location in one unit of time.
+Our aim is to combine this law of motion and our current filtering distribution
+$N(\mu^F, \Sigma^F)$ to come up with a new **predictive** distribution for
+the location in one unit of time.
 
-In view of {eq}`kl_xdynam`, all we have to do is introduce a random vector $x^F \sim N(\hat x^F, \Sigma^F)$ and work out the distribution of $A x^F + w$ where $w$ is independent of $x^F$ and has distribution $N(0, Q)$.
+In view of {eq}`kl_xdynam`, all we have to do is introduce a random vector $X^F \sim N(\mu^F, \Sigma^F)$ and work out the distribution of $A X^F + W$ where $W$ is independent of $X^F$ and has distribution $N(0, Q)$.
 
-Since linear combinations of Gaussians are Gaussian, $A x^F + w$ is Gaussian.
+Since linear combinations of Gaussians are Gaussian, $A X^F + W$ is Gaussian.
 
-Elementary calculations and the expressions in {eq}`kl_filter_exp` tell us that
+Standard calculations and the expressions in {eq}`kl_filter_exp`--{eq}`kl_filter_exp2` tell us that
 
 $$
-\mathbb{E} [A x^F + w]
-= A \mathbb{E} x^F + \mathbb{E} w
-= A \hat x^F
-= A \hat x + A \Sigma G' (G \Sigma G' + R)^{-1}(y - G \hat x)
+\begin{aligned}
+\mathbb{E} [A X^F + W]
+&= A \mathbb{E}[X^F] + \mathbb{E}[W] \\
+&= A \mu^F \\
+&= A \mu + A \Sigma G^\top (G \Sigma G^\top + R)^{-1}(Y_t - G \mu)
+\end{aligned}
 $$
 
 and
 
 $$
-\operatorname{Var} [A x^F + w]
-= A \operatorname{Var}[x^F] A' + Q
-= A \Sigma^F A' + Q
-= A \Sigma A' - A \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma A' + Q
+\begin{aligned}
+\operatorname{Var} [A X^F + W]
+&= A \operatorname{Var}[X^F] A^\top + Q \\
+&= A \Sigma^F A^\top + Q \\
+&= A \Sigma A^\top + Q - A \Sigma G^\top (G \Sigma G^\top + R)^{-1} G \Sigma A^\top
+\end{aligned}
 $$
 
-The matrix $A \Sigma G' (G \Sigma G' + R)^{-1}$ is often written as
-$K_{\Sigma}$ and called the *Kalman gain*.
+The matrix $A \Sigma G^\top (G \Sigma G^\top + R)^{-1}$ is often written as
+$K_{\Sigma}$ and called the **Kalman gain**.
 
-* The subscript $\Sigma$ has been added to remind us that  $K_{\Sigma}$ depends on $\Sigma$, but not $y$ or $\hat x$.
+* The subscript $\Sigma$ has been added to remind us that  $K_{\Sigma}$ depends on $\Sigma$, but not $Y_t$ or $\mu$.
 
 Using this notation, we can summarize our results as follows.
 
-Our updated prediction is the density $N(\hat x_{new}, \Sigma_{new})$ where
+Our updated prediction is the density $N(\mu_{\mathrm{new}}, \Sigma_{\mathrm{new}})$ where
 
 ```{math}
 :label: kl_mlom0
 
 \begin{aligned}
-    \hat x_{new} &:= A \hat x + K_{\Sigma} (y - G \hat x) \\
-    \Sigma_{new} &:= A \Sigma A' - K_{\Sigma} G \Sigma A' + Q \nonumber
+    \mu_{\mathrm{new}} &:= A \mu + K_{\Sigma} (y - G \mu) \\
+    \Sigma_{\mathrm{new}} &:= A \Sigma A^\top - K_{\Sigma} G \Sigma A^\top + Q \nonumber
 \end{aligned}
 ```
 
-* The density $p_{new}(x) = N(\hat x_{new}, \Sigma_{new})$ is called the *predictive distribution*
+* The density $p_{\mathrm{new}}(x) = N(\mu_{\mathrm{new}}, \Sigma_{\mathrm{new}})$ is called the **predictive distribution**
 
 The predictive distribution is the new density shown in the following figure, where
 the update has used parameters.
@@ -387,87 +390,100 @@ A
 \end{array}
   \right),
   \qquad
-Q = 0.3 * \Sigma
+  Q = 0.3 \Sigma
 $$
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots()
 ax.grid()
 
 # Density 1
-Z = gen_gaussian_plot_vals(x_hat, Σ)
+Z = gen_gaussian_plot_vals(μ, Σ)
 cs1 = ax.contour(X, Y, Z, 6, colors="black")
 ax.clabel(cs1, inline=1, fontsize=10)
 
 # Density 2
-M = Σ * G.T * linalg.inv(G * Σ * G.T + R)
-x_hat_F = x_hat + M * (y - G * x_hat)
-Σ_F = Σ - M * G * Σ
-Z_F = gen_gaussian_plot_vals(x_hat_F, Σ_F)
+M = Σ @ G.T @ linalg.inv(G @ Σ @ G.T + R)
+μ_F = μ + M @ (y - G @ μ)
+Σ_F = Σ - M @ G @ Σ
+Z_F = gen_gaussian_plot_vals(μ_F, Σ_F)
 cs2 = ax.contour(X, Y, Z_F, 6, colors="black")
 ax.clabel(cs2, inline=1, fontsize=10)
 
 # Density 3
-new_x_hat = A * x_hat_F
-new_Σ = A * Σ_F * A.T + Q
-new_Z = gen_gaussian_plot_vals(new_x_hat, new_Σ)
+new_μ = A @ μ_F
+new_Σ = A @ Σ_F @ A.T + Q
+new_Z = gen_gaussian_plot_vals(new_μ, new_Σ)
 cs3 = ax.contour(X, Y, new_Z, 6, colors="black")
 ax.clabel(cs3, inline=1, fontsize=10)
-ax.contourf(X, Y, new_Z, 6, alpha=0.6, cmap=cm.jet)
-ax.text(float(y[0].item()), float(y[1].item()), "$y$", fontsize=20, color="black")
+ax.contourf(X, Y, new_Z, 6, alpha=0.6, cmap="viridis")
+y_1, y_2 = y[0].item(), y[1].item()
+ax.scatter(y_1, y_2, marker="o", s=50, color="black", zorder=3)
+ax.text(y_1 + 0.1, y_2 + 0.1, "$Y_t$", fontsize=20, color="black")
 
 plt.show()
 ```
 
-### The Recursive Procedure
+### The recursive procedure
 
 ```{index} single: Kalman Filter; Recursive Procedure
 ```
 
 Let's look back at what we've done.
 
-We started the current period with a prior $p(x)$ for the location $x$ of the missile.
+We started the current period with a prior density $p_t(x)$ for the hidden state $X_t$.
 
-We then used the current measurement $y$ to update to $p(x \,|\, y)$.
+We then observed the signal $Y_t$ and updated the prior density to the
+filtering density $p_t(x \,|\, Y_t)$.
 
-Finally, we used the law of motion {eq}`kl_xdynam` for $\{x_t\}$ to update to $p_{new}(x)$.
+Finally, we used the law of motion {eq}`kl_xdynam` for $\{X_t\}$ to update
+to the predictive density $p_{t+1}(x)$ for $X_{t+1}$.
 
-If we now step into the next period, we are ready to go round again, taking $p_{new}(x)$
-as the current prior.
+If we now step into the next period, we are ready to go round again, taking
+$p_{t+1}(x)$ as the current prior density and reading in the new observation
+$Y_{t+1}$.
 
-Swapping notation $p_t(x)$ for $p(x)$ and $p_{t+1}(x)$ for $p_{new}(x)$, the full recursive procedure is:
+Using this time-indexed notation, the full recursive procedure is:
 
-1. Start the current period with prior $p_t(x) = N(\hat x_t, \Sigma_t)$.
-1. Observe current measurement $y_t$.
-1. Compute the filtering distribution $p_t(x \,|\, y) = N(\hat x_t^F, \Sigma_t^F)$ from $p_t(x)$ and $y_t$, applying Bayes rule and the conditional distribution {eq}`kl_measurement_model`.
-1. Compute the predictive distribution $p_{t+1}(x) = N(\hat x_{t+1}, \Sigma_{t+1})$ from the filtering distribution and {eq}`kl_xdynam`.
+1. Start the current period with prior density $p_t(x) = N(\mu_t, \Sigma_t)$ for $X_t$.
+1. Observe current signal $Y_t = y_t$.
+1. Compute the filtering density $p_t(x \,|\, y_t) = N(\mu_t^F, \Sigma_t^F)$ from $p_t(x)$ and $y_t$, applying Bayes rule and the conditional distribution {eq}`kl_measurement_model`.
+1. Compute the predictive density $p_{t+1}(x) = N(\mu_{t+1}, \Sigma_{t+1})$ for $X_{t+1}$ from the filtering density and {eq}`kl_xdynam`.
 1. Increment $t$ by one and go to step 1.
 
-Repeating {eq}`kl_mlom0`, the dynamics for $\hat x_t$ and $\Sigma_t$ are as follows
+Repeating {eq}`kl_mlom0`, the dynamics for $\mu_t$ and $\Sigma_t$ are as follows
 
 ```{math}
 :label: kalman_lom
 
 \begin{aligned}
-    \hat x_{t+1} &= A \hat x_t + K_{\Sigma_t} (y_t - G \hat x_t) \\
-    \Sigma_{t+1} &= A \Sigma_t A' - K_{\Sigma_t} G \Sigma_t A' + Q \nonumber
+    \mu_{t+1} &= A \mu_t + K_{\Sigma_t} (y_t - G \mu_t) \\
+    \Sigma_{t+1} &= A \Sigma_t A^\top - K_{\Sigma_t} G \Sigma_t A^\top + Q \nonumber
 \end{aligned}
 ```
 
 These are the standard dynamic equations for the Kalman filter (see, for example, {cite}`Ljungqvist2012`, page 58).
 
+```{note}
+Here $\mu_t$ is the filter's prediction of the hidden state $X_t$.
+
+In much of the Kalman filter literature it is written $\hat x_t$, emphasizing that it is an estimate of $X_t$.
+```
+
 (kalman_convergence)=
 ## Convergence
 
-The matrix $\Sigma_t$ is a measure of the uncertainty of our prediction $\hat x_t$ of $x_t$.
+The matrix $\Sigma_t$ is a measure of the uncertainty of our prediction $\mu_t$ of $X_t$.
 
 Apart from special cases, this uncertainty will never be fully resolved, regardless of how much time elapses.
 
-One reason is that our prediction $\hat x_t$ is made based on information available at $t-1$, not $t$.
+One reason is that our prediction $\mu_t$ is made based on information available at $t-1$, not $t$.
 
-Even if we know the precise value of $x_{t-1}$ (which we don't), the transition equation {eq}`kl_xdynam` implies that $x_t = A x_{t-1} + w_t$.
+Even if we knew the precise realized value $X_{t-1}=x_{t-1}$ (which we
+don't), the transition equation {eq}`kl_xdynam` implies that
+$X_t = A x_{t-1} + W_t$.
 
-Since the shock $w_t$ is not observable at $t-1$, any time $t-1$ prediction of $x_t$ will incur some error (unless $w_t$ is degenerate).
+Since the shock $W_t$ is not observable at $t-1$, any time $t-1$ prediction of $X_t$ will incur some error (unless $W_t$ is degenerate).
 
 However, it is certainly possible that $\Sigma_t$ converges to a constant matrix as $t \to \infty$.
 
@@ -476,7 +492,7 @@ To study this topic, let's expand the second equation in {eq}`kalman_lom`:
 ```{math}
 :label: kalman_sdy
 
-\Sigma_{t+1} = A \Sigma_t A' -  A \Sigma_t G' (G \Sigma_t G' + R)^{-1} G \Sigma_t A' + Q
+\Sigma_{t+1} = A \Sigma_t A^\top -  A \Sigma_t G^\top (G \Sigma_t G^\top + R)^{-1} G \Sigma_t A^\top + Q
 ```
 
 This is a nonlinear difference equation in $\Sigma_t$.
@@ -486,7 +502,7 @@ A fixed point of {eq}`kalman_sdy` is a constant matrix $\Sigma$ such that
 ```{math}
 :label: kalman_dare
 
-\Sigma = A \Sigma A' -  A \Sigma G' (G \Sigma G' + R)^{-1} G \Sigma A' + Q
+\Sigma = A \Sigma A^\top -  A \Sigma G^\top (G \Sigma G^\top + R)^{-1} G \Sigma A^\top + Q
 ```
 
 Equation {eq}`kalman_sdy` is known as a discrete-time Riccati difference equation.
@@ -495,45 +511,47 @@ Equation {eq}`kalman_dare` is known as a [discrete-time algebraic Riccati equati
 
 Conditions under which a fixed point exists and the sequence $\{\Sigma_t\}$ converges to it are discussed in {cite}`AHMS1996` and {cite}`AndersonMoore2005`, chapter 4.
 
-A sufficient (but not necessary) condition is that all the eigenvalues $\lambda_i$ of $A$ satisfy $|\lambda_i| < 1$ (cf. e.g., {cite}`AndersonMoore2005`, p. 77).
+A sufficient (but not necessary) condition is that all the eigenvalues $\lambda_i$ of $A$ satisfy $|\lambda_i| < 1$.
 
-(This strong condition assures that the unconditional  distribution of $x_t$  converges as $t \rightarrow + \infty$.)
+See, for example, {cite}`AndersonMoore2005`, p. 77.
 
-In this case, for any initial choice of $\Sigma_0$ that is both non-negative and symmetric, the sequence $\{\Sigma_t\}$ in {eq}`kalman_sdy` converges to a non-negative symmetric matrix $\Sigma$ that solves {eq}`kalman_dare`.
+(This strong condition assures that the unconditional  distribution of $X_t$  converges as $t \to \infty$.)
+
+In this case, for any symmetric nonnegative definite initial choice of $\Sigma_0$, the sequence $\{\Sigma_t\}$ in {eq}`kalman_sdy` converges to a nonnegative symmetric matrix $\Sigma$ that solves {eq}`kalman_dare`.
 
 ## Implementation
 
 ```{index} single: Kalman Filter; Programming Implementation
 ```
 
-The class `Kalman` from the [QuantEcon.py](https://quantecon.org/quantecon-py) package implements the Kalman filter
+The class `Kalman` from the [QuantEcon.py](https://quantecon.org/quantecon-py/) package implements the Kalman filter
 
 * Instance data consists of:
-    * the moments $(\hat x_t, \Sigma_t)$ of the current prior.
-    * An instance of the [LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) class from [QuantEcon.py](https://quantecon.org/quantecon-py).
+    * the moments $(\mu_t, \Sigma_t)$ of the current prior, stored as the attributes `x_hat` and `Sigma` (the mean $\mu_t$ is named `x_hat` because it is also written $\hat x_t$ in much of the literature).
+    * An instance of the [LinearStateSpace](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lss.py) class from [QuantEcon.py](https://quantecon.org/quantecon-py/).
 
 The latter represents a linear state space model of the form
 
 $$
 \begin{aligned}
-    x_{t+1} & = A x_t + C w_{t+1}
+    X_{t+1} & = A X_t + C w_{t+1}
     \\
-    y_t & = G x_t + H v_t
+    Y_t & = G X_t + H v_t
 \end{aligned}
 $$
 
-where the shocks $w_t$ and $v_t$ are IID standard normals.
+where $X_t$ and $Y_t$ denote random variables, and the shocks $w_t$ and $v_t$ are IID standard normals.
 
 To connect this with the notation of this lecture we set
 
 $$
-Q := CC' \quad \text{and} \quad R := HH'
+Q := C C^\top \quad \text{and} \quad R := H H^\top
 $$
 
-* The class `Kalman` from the [QuantEcon.py](https://quantecon.org/quantecon-py) package has a number of methods, some that we will wait to use until we study more advanced applications in subsequent lectures.
+* The class `Kalman` from the [QuantEcon.py](https://quantecon.org/quantecon-py/) package has a number of methods, some that we will wait to use until we study more advanced applications in subsequent lectures.
 * Methods pertinent for this lecture  are:
-    * `prior_to_filtered`, which updates $(\hat x_t, \Sigma_t)$ to $(\hat x_t^F, \Sigma_t^F)$
-    * `filtered_to_forecast`, which updates the filtering distribution to the predictive distribution -- which becomes the new prior $(\hat x_{t+1}, \Sigma_{t+1})$
+    * `prior_to_filtered`, which updates $(\mu_t, \Sigma_t)$ to $(\mu_t^F, \Sigma_t^F)$
+    * `filtered_to_forecast`, which updates the filtering distribution to the predictive distribution -- which becomes the new prior $(\mu_{t+1}, \Sigma_{t+1})$
     * `update`, which combines the last two methods
     * a `stationary_values`, which computes the solution to {eq}`kalman_dare` and the corresponding (stationary) Kalman gain
 
@@ -551,17 +569,17 @@ on {cite}`Ljungqvist2012`, section 2.9.2.
 Suppose that
 
 * all variables are scalars
-* the hidden state $\{x_t\}$ is in fact constant, equal to some $\theta \in \mathbb{R}$ unknown to the modeler
+* the hidden state $\{X_t\}$ is in fact constant, equal to some $\theta \in \mathbb{R}$ unknown to the modeler
 
-State dynamics are therefore given by {eq}`kl_xdynam` with $A=1$, $Q=0$ and $x_0 = \theta$.
+State dynamics are therefore given by {eq}`kl_xdynam` with $A=1$, $Q=0$ and $X_0 = \theta$.
 
-The measurement equation is $y_t = \theta + v_t$ where $v_t$ is $N(0,1)$ and IID.
+The measurement equation is $Y_t = \theta + v_t$ where $v_t$ is $N(0,1)$ and IID.
 
-The task of this exercise to simulate the model and, using the code from `kalman.py`, plot the first five predictive densities $p_t(x) = N(\hat x_t, \Sigma_t)$.
+The task of this exercise is to simulate the model and, using the code from `kalman.py`, plot the first five predictive densities $p_t(x) = N(\mu_t, \Sigma_t)$ for $X_t$.
 
 As shown in {cite}`Ljungqvist2012`, sections 2.9.1--2.9.2, these distributions asymptotically put all mass on the unknown value $\theta$.
 
-In the simulation, take $\theta = 10$, $\hat x_0 = 8$ and $\Sigma_0 = 1$.
+In the simulation, take $\theta = 10$, $\mu_0 = 8$ and $\Sigma_0 = 1$.
 
 Your figure should -- modulo randomness -- look something like this
 
@@ -577,15 +595,17 @@ Your figure should -- modulo randomness -- look something like this
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
 # Parameters
-θ = 10  # Constant value of state x_t
+θ = 10  # Constant value of state X_t
 A, C, G, H = 1, 0, 1, 1
 ss = LinearStateSpace(A, C, G, H, mu_0=θ)
 
 # Set prior, initialize kalman filter
-x_hat_0, Σ_0 = 8, 1
-kalman = Kalman(ss, x_hat_0, Σ_0)
+μ_0, Σ_0 = 8, 1
+kalman = Kalman(ss, μ_0, Σ_0)
 
 # Draw observations of y from state space model
 N = 5
@@ -593,12 +613,12 @@ x, y = ss.simulate(N)
 y = y.flatten()
 
 # Set up plot
-fig, ax = plt.subplots(figsize=(10,8))
+fig, ax = plt.subplots()
 xgrid = np.linspace(θ - 5, θ + 2, 200)
 
 for i in range(N):
     # Record the current predicted mean and variance
-    m, v = [float(z) for z in (kalman.x_hat.item(), kalman.Sigma.item())]
+    m, v = kalman.x_hat.item(), kalman.Sigma.item()
     # Plot, update filter
     ax.plot(xgrid, norm.pdf(xgrid, loc=m, scale=np.sqrt(v)), label=f'$t={i}$')
     kalman.update(y[i])
@@ -618,7 +638,7 @@ plt.show()
 The preceding figure gives some support to the idea that probability mass
 converges to $\theta$.
 
-To get a better idea, choose a small $\epsilon > 0$ and calculate
+To get a better idea, choose a small $\epsilon > 0$ and calculate the error
 
 $$
 z_t := 1 - \int_{\theta - \epsilon}^{\theta + \epsilon} p_t(x) dx
@@ -626,13 +646,8 @@ $$
 
 for $t = 0, 1, 2, \ldots, T$.
 
-Plot $z_t$ against $T$, setting $\epsilon = 0.1$ and $T = 600$.
+Plot $z_t$ against $t$, setting $\epsilon = 0.1$ and $T = 600$.
 
-Your figure should show error erratically declining something like this
-
-```{image} /_static/lecture_specific/kalman/kl_ex2_fig.png
-:align: center
-```
 
 ```{exercise-end}
 ```
@@ -642,14 +657,16 @@ Your figure should show error erratically declining something like this
 :class: dropdown
 ```
 
+Here is one solution:
+
 ```{code-cell} ipython3
 ϵ = 0.1
-θ = 10  # Constant value of state x_t
+θ = 10  # Constant value of state X_t
 A, C, G, H = 1, 0, 1, 1
 ss = LinearStateSpace(A, C, G, H, mu_0=θ)
 
-x_hat_0, Σ_0 = 8, 1
-kalman = Kalman(ss, x_hat_0, Σ_0)
+μ_0, Σ_0 = 8, 1
+kalman = Kalman(ss, μ_0, Σ_0)
 
 T = 600
 z = np.empty(T)
@@ -658,7 +675,7 @@ y = y.flatten()
 
 for t in range(T):
     # Record the current predicted mean and variance and plot their densities
-    m, v = [float(temp) for temp in (kalman.x_hat.item(), kalman.Sigma.item())]
+    m, v = kalman.x_hat.item(), kalman.Sigma.item()
 
     f = lambda x: norm.pdf(x, loc=m, scale=np.sqrt(v))
     integral, error = quad(f, θ - ϵ, θ + ϵ)
@@ -666,7 +683,7 @@ for t in range(T):
 
     kalman.update(y[t])
 
-fig, ax = plt.subplots(figsize=(9, 7))
+fig, ax = plt.subplots()
 ax.set_ylim(0, 1)
 ax.set_xlim(0, T)
 ax.plot(range(T), z)
@@ -681,25 +698,27 @@ plt.show()
 :label: kalman_ex3
 ```
 
-As discussed {ref}`above <kalman_convergence>`, if the shock sequence $\{w_t\}$ is not degenerate, then it is not in general possible to predict $x_t$ without error at time $t-1$ (and this would be the case even if we could observe $x_{t-1}$).
+As discussed {ref}`above <kalman_convergence>`, if the shock sequence $\{W_t\}$ is not degenerate, then it is not in general possible to predict $X_t$ without error at time $t-1$ (and this would be the case even if we could observe $X_{t-1}$).
 
-Let's now compare the prediction $\hat x_t$ made by the Kalman filter
-against a competitor who **is** allowed to observe $x_{t-1}$.
+Let's now compare the prediction $\mu_t$ made by the Kalman filter
+against a competitor who **is** allowed to observe $X_{t-1}$.
 
-This competitor will use the conditional expectation $\mathbb E[ x_t
-\,|\, x_{t-1}]$, which in this case is $A x_{t-1}$.
+This competitor will use the conditional expectation $\mathbb E[ X_t
+\,|\, X_{t-1}]$, which in this case is $A X_{t-1}$.
 
 The conditional expectation is known to be the optimal prediction method in terms of minimizing mean squared error.
 
-(More precisely, the minimizer of $\mathbb E \, \| x_t - g(x_{t-1}) \|^2$ with respect to $g$ is $g^*(x_{t-1}) := \mathbb E[ x_t \,|\, x_{t-1}]$)
+(More precisely, the minimizer of $\mathbb E \, \| X_t - g(X_{t-1}) \|^2$ with respect to $g$ is $g^*(X_{t-1}) := \mathbb E[ X_t \,|\, X_{t-1}]$)
 
 Thus we are comparing the Kalman filter against a competitor who has more
 information (in the sense of being able to observe the latent state) and
 behaves optimally in terms of minimizing squared error.
 
-Our horse race will be assessed in terms of squared error.
+Our horse race will be assessed in terms of realized squared error.
 
-In particular, your task is to generate a graph plotting observations of both $\| x_t - A x_{t-1} \|^2$ and $\| x_t - \hat x_t \|^2$ against $t$ for $t = 1, \ldots, 50$.
+In particular, your task is to generate a graph plotting simulated realizations of both $\| X_t - A X_{t-1} \|^2$ and $\| X_t - \mu_t \|^2$ against $t$ for $t = 1, \ldots, 49$.
+
+In the code below, `x[:, t]` is the realized value of $X_t$ along the simulated path.
 
 For the parameters, set $G = I, R = 0.5 I$ and $Q = 0.3 I$, where $I$ is
 the $2 \times 2$ identity.
@@ -728,17 +747,10 @@ $$
   \right)
 $$
 
-and $\hat x_0 = (8, 8)$.
+and $\mu_0 = (8, 8)$.
 
-Finally, set $x_0 = (0, 0)$.
+Finally, set the realized initial state to $x_0 = (0, 0)$.
 
-You should end up with a figure similar to the following (modulo randomness)
-
-```{image} /_static/lecture_specific/kalman/kalman_ex3.png
-:align: center
-```
-
-Observe how, after an initial learning period, the Kalman filter performs quite well, even relative to the competitor who predicts optimally with knowledge of the latent state.
 
 ```{exercise-end}
 ```
@@ -746,6 +758,8 @@ Observe how, after an initial learning period, the Kalman filter performs quite 
 ```{solution-start} kalman_ex3
 :class: dropdown
 ```
+
+Here is one solution:
 
 ```{code-cell} ipython3
 # Define A, C, G, H
@@ -763,10 +777,10 @@ ss = LinearStateSpace(A, C, G, H, mu_0 = np.zeros(2))
 Σ = [[0.9, 0.3],
      [0.3, 0.9]]
 Σ = np.array(Σ)
-x_hat = np.array([8, 8])
+μ = np.array([8, 8])
 
 # Initialize the Kalman filter
-kn = Kalman(ss, x_hat, Σ)
+kn = Kalman(ss, μ, Σ)
 
 # Print eigenvalues of A
 print("Eigenvalues of A:")
@@ -785,13 +799,13 @@ e1 = np.empty(T-1)
 e2 = np.empty(T-1)
 
 for t in range(1, T):
-    kn.update(y[:,t])
+    kn.update(y[:, t-1])
     diff1 = x[:, t] - kn.x_hat.flatten()
     diff2 = x[:, t] - A @ x[:, t-1]
     e1[t-1] = diff1 @ diff1
     e2[t-1] = diff2 @ diff2
 
-fig, ax = plt.subplots(figsize=(9,6))
+fig, ax = plt.subplots()
 ax.plot(range(1, T), e1, 'k-', lw=2, alpha=0.6,
         label='Kalman filter error')
 ax.plot(range(1, T), e2, 'g-', lw=2, alpha=0.6,
@@ -799,6 +813,8 @@ ax.plot(range(1, T), e2, 'g-', lw=2, alpha=0.6,
 ax.legend()
 plt.show()
 ```
+
+Observe how, after an initial learning period, the Kalman filter performs quite well, even relative to the competitor who predicts optimally with knowledge of the latent state.
 
 ```{solution-end}
 ```
@@ -810,7 +826,5 @@ Try varying the coefficient $0.3$ in $Q = 0.3 I$ up and down.
 
 Observe how the diagonal values in the stationary solution $\Sigma$ (see {eq}`kalman_dare`) increase and decrease in line with this coefficient.
 
-The interpretation is that more randomness in the law of motion for $x_t$ causes more (permanent) uncertainty in prediction.
+The interpretation is that more randomness in the law of motion for $X_t$ causes more (permanent) uncertainty in prediction.
 ```
-
-[^f1]: See, for example, page 93 of {cite}`Bishop2006`. To get from his expressions to the ones used above, you will also need to apply the [Woodbury matrix identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity).
