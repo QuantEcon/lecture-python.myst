@@ -32,7 +32,6 @@ We start by importing some Python packages.
 ```{code-cell} ipython3
 import jax
 import jax.numpy as jnp
-import jax.random as jr
 import matplotlib.pyplot as plt
 from jax.scipy.special import gammaln
 from typing import NamedTuple
@@ -105,13 +104,18 @@ def g(w, params=params):
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: 'Beta density functions $f$ and $g$'
+    name: fig_imp_densities
+---
 w_range = jnp.linspace(1e-2, 1-1e-5, 1000)
 
-plt.plot(w_range, g(w_range), label='g')
-plt.plot(w_range, f(w_range), label='f')
+plt.plot(w_range, g(w_range), lw=2, label='g')
+plt.plot(w_range, f(w_range), lw=2, label='f')
 plt.xlabel(r'$\omega$')
 plt.legend()
-plt.title('density functions $f$ and $g$')
 plt.show()
 ```
 
@@ -124,8 +128,13 @@ def l(w):
 ```
 
 ```{code-cell} ipython3
-plt.plot(w_range, l(w_range))
-plt.title(r'$\ell(\omega)$')
+---
+mystnb:
+  figure:
+    caption: 'Likelihood ratio $\ell(\omega)$'
+    name: fig_imp_likelihood_ratio
+---
+plt.plot(w_range, l(w_range), lw=2)
 plt.xlabel(r'$\omega$')
 plt.show()
 ```
@@ -183,23 +192,21 @@ The  plots compare $g$ and $h$.
 ```{code-cell} ipython3
 g_a, g_b = params.G_a, params.G_b
 h_a, h_b = 0.5, 0.5
-
-key = jr.PRNGKey(0)
 ```
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: 'Real data generating process $g$ and importance distribution $h$'
+    caption: 'Data and importance sampling distributions'
     name: fig_imp_real
 ---
 w_range = jnp.linspace(1e-5, 1-1e-5, 1000)
 
 plt.plot(w_range, g(w_range),
-         label=f'g=Beta({g_a}, {g_b})')
+         lw=2, label=f'g=Beta({g_a}, {g_b})')
 plt.plot(w_range, beta_pdf(w_range, 0.5, 0.5),
-         label=f'h=Beta({h_a}, {h_b})')
+         lw=2, label=f'h=Beta({h_a}, {h_b})')
 plt.legend()
 plt.ylim([0., 3.])
 plt.show()
@@ -232,8 +239,8 @@ def estimate_single_path(key, p_a, p_b, q_a, q_b, T):
 
     def loop_body(i, carry):
         L, weight, key_state = carry
-        key_state, subkey = jr.split(key_state)
-        w = jr.beta(subkey, q_a, q_b)
+        key_state, subkey = jax.random.split(key_state)
+        w = jax.random.beta(subkey, q_a, q_b)
 
         # Compute likelihood ratio using f/g functions
         likelihood_ratio = f(w) / g(w)
@@ -255,7 +262,7 @@ def estimate_single_path(key, p_a, p_b, q_a, q_b, T):
 @partial(jax.jit, static_argnames=['N'])
 def estimate(key, p_a, p_b, q_a, q_b, T=1, N=10000):
     """Estimation of a batch of sample paths."""
-    keys = jr.split(key, N)
+    keys = jax.random.split(key, N)
 
     # Use vmap for vectorized computation
     estimates = jax.vmap(
@@ -271,15 +278,15 @@ Consider the case when $T=1$, which amounts  to approximating $E_0\left[\ell\lef
 For the standard Monte Carlo estimate, we can set $p=g$ and $q=g$.
 
 ```{code-cell} ipython3
-key, subkey = jr.split(key)
-estimate(subkey, g_a, g_b, g_a, g_b, T=1, N=10000)
+estimate(jax.random.key(0), g_a, g_b, g_a, g_b,
+         T=1, N=10000)
 ```
 
 For our importance sampling estimate, we set $q = h$.
 
 ```{code-cell} ipython3
-key, subkey = jr.split(key)
-estimate(subkey, g_a, g_b, h_a, h_b, T=1, N=10000)
+estimate(jax.random.key(1), g_a, g_b, h_a, h_b,
+         T=1, N=10000)
 ```
 
 Evidently, even at $T=1$, our importance sampling  estimate is closer to $1$ than is the Monte Carlo estimate.
@@ -290,13 +297,13 @@ Setting $T=10$, we find that the  Monte Carlo method severely underestimates the
 still produces an estimate close to its theoretical value of unity.
 
 ```{code-cell} ipython3
-key, subkey = jr.split(key)
-estimate(subkey, g_a, g_b, g_a, g_b, T=10, N=10000)
+estimate(jax.random.key(2), g_a, g_b, g_a, g_b,
+         T=10, N=10000)
 ```
 
 ```{code-cell} ipython3
-key, subkey = jr.split(key)
-estimate(subkey, g_a, g_b, h_a, h_b, T=10, N=10000)
+estimate(jax.random.key(3), g_a, g_b, h_a, h_b,
+         T=10, N=10000)
 ```
 
 The Monte Carlo method underestimates because the likelihood ratio $L(\omega^T) = \prod_{t=1}^T \frac{f(\omega_t)}{g(\omega_t)}$ has a highly skewed distribution under $g$.
@@ -318,9 +325,9 @@ The code  below produces distributions of estimates using both Monte Carlo and i
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=['N_simu', 'N_samples'])
 def simulate(key, p_a, p_b, q_a, q_b, N_simu, T=1,
-             N_samples=1000):
+             N_samples=10000):
     """Simulation for both Monte Carlo and importance sampling."""
-    keys = jr.split(key, 2 * N_simu)
+    keys = jax.random.split(key, 2 * N_simu)
     keys_p = keys[:N_simu]
     keys_q = keys[N_simu:]
 
@@ -344,8 +351,8 @@ We simulate $1000$ times for each method.
 
 ```{code-cell} ipython3
 N_simu = 1000
-key, subkey = jr.split(key)
-μ_L_p, μ_L_q = simulate(subkey, g_a, g_b, h_a, h_b, N_simu)
+μ_L_p, μ_L_q = simulate(jax.random.key(4), g_a, g_b,
+                         h_a, h_b, N_simu)
 ```
 
 ```{code-cell} ipython3
@@ -363,13 +370,11 @@ Although both methods tend to provide a mean estimate of ${E} \left[\ell\left(\o
 Next, we present distributions of estimates for $\hat{E} \left[L\left(\omega^t\right)\right]$, in cases for $T=1, 5, 10, 20$.
 
 ```{code-cell} ipython3
-T_values = [1, 5, 10, 20]
-
 def simulate_multiple_T(key, p_a, p_b, q_a, q_b, N_simu,
-                        T_list, N_samples=1000):
+                        T_list, N_samples=10000):
     """Simulation for multiple T values."""
     n_T = len(T_list)
-    keys = jr.split(key, n_T)
+    keys = jax.random.split(key, n_T)
 
     results = []
     for i, T in enumerate(T_list):
@@ -383,13 +388,22 @@ def simulate_multiple_T(key, p_a, p_b, q_a, q_b, N_simu,
     μ_L_q_all = jnp.stack([r[1] for r in results])
 
     return μ_L_p_all, μ_L_q_all
+```
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: 'Monte Carlo and importance sampling estimates'
+    name: fig_imp_estimates
+---
+T_values = [1, 5, 10, 20]
 
 # Run all simulations at once
-key, subkey = jr.split(key)
-all_results = simulate_multiple_T(subkey,
+all_results = simulate_multiple_T(jax.random.key(5),
                                   g_a, g_b, h_a, h_b,
                                   N_simu, T_values,
-                                  N_samples=1000)
+                                  N_samples=10000)
 
 # Extract results
 μ_L_p_all, μ_L_q_all = all_results
@@ -457,9 +471,8 @@ $$
 $$
 
 ```{code-cell} ipython3
-key, subkey = jr.split(key)
-μ_L_p, μ_L_q = simulate(subkey, g_a, g_b, params.F_a,
-                         params.F_b, N_simu)
+μ_L_p, μ_L_q = simulate(jax.random.key(6), g_a, g_b,
+                         params.F_a, params.F_b, N_simu)
 ```
 
 ```{code-cell} ipython3
@@ -477,16 +490,22 @@ b_list = [0.5, 1.2, 5.]
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: 'Comparison of importance sampling distributions'
+    name: fig_imp_sampling_distributions
+---
 w_range = jnp.linspace(1e-5, 1-1e-5, 1000)
 
 plt.plot(w_range, g(w_range),
-         label=f'g=Beta({g_a}, {g_b})')
+         lw=2, label=f'g=Beta({g_a}, {g_b})')
 plt.plot(w_range, beta_pdf(w_range, a_list[0], b_list[0]),
-         label=f'$h_1$=Beta({a_list[0]},{b_list[0]})')
+         lw=2, label=f'$h_1$=Beta({a_list[0]},{b_list[0]})')
 plt.plot(w_range, beta_pdf(w_range, a_list[1], b_list[1]),
-         label=f'$h_2$=Beta({a_list[1]},{b_list[1]})')
+         lw=2, label=f'$h_2$=Beta({a_list[1]},{b_list[1]})')
 plt.plot(w_range, beta_pdf(w_range, a_list[2], b_list[2]),
-         label=f'$h_3$=Beta({a_list[2]},{b_list[2]})')
+         lw=2, label=f'$h_3$=Beta({a_list[2]},{b_list[2]})')
 plt.legend()
 plt.ylim([0., 3.])
 plt.show()
@@ -512,15 +531,20 @@ Our hunch is that $h_3$ will  be a poor importance sampling distribution.
 We first simulate a plot the distribution of estimates for $\hat{E} \left[L\left(\omega^t\right)\right]$ using $h_2$ as the importance sampling distribution.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: 'Estimates using importance distribution $h_2$'
+    name: fig_imp_estimates_h2
+---
 h_a = a_list[1]
 h_b = b_list[1]
 
 T_values_h2 = [1, 20]
-key, subkey = jr.split(key)
-all_results_h2 = simulate_multiple_T(subkey,
+all_results_h2 = simulate_multiple_T(jax.random.key(7),
                                      g_a, g_b, h_a, h_b,
                                      N_simu, T_values_h2,
-                                     N_samples=1000)
+                                     N_samples=10000)
 μ_L_p_all_h2, μ_L_q_all_h2 = all_results_h2
 
 fig, axs = plt.subplots(1, 2, figsize=(14, 10))
@@ -564,21 +588,28 @@ Our simulations suggest that indeed $h_2$ is a quite  good importance sampling d
 Even at $T=20$, the mean  is very close to $1$ and the  variance is small.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: 'Estimates using importance distribution $h_3$'
+    name: fig_imp_estimates_h3
+---
 h_a = a_list[2]
 h_b = b_list[2]
 
-T_list = [1, 20]
-key, subkey = jr.split(key)
-results = simulate_multiple_T(subkey,
-                              g_a, g_b, h_a, h_b,
-                              N_simu, T_list,
-                              N_samples=1000)
+T_values_h3 = [1, 20]
+all_results_h3 = simulate_multiple_T(jax.random.key(8),
+                                     g_a, g_b, h_a, h_b,
+                                     N_simu, T_values_h3,
+                                     N_samples=10000)
+μ_L_p_all_h3, μ_L_q_all_h3 = all_results_h3
 
 fig, axs = plt.subplots(1, 2, figsize=(14, 10))
 μ_range = jnp.linspace(0, 2, 100)
 
-for i, t in enumerate(T_list):
-    μ_L_p, μ_L_q = results[i]
+for i, t in enumerate(T_values_h3):
+    μ_L_p = μ_L_p_all_h3[i]
+    μ_L_q = μ_L_q_all_h3[i]
     μ_hat_p = jnp.nanmean(μ_L_p)
     μ_hat_q = jnp.nanmean(μ_L_q)
     σ_hat_p = jnp.nanvar(μ_L_p)
