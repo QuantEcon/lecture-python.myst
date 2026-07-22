@@ -82,7 +82,6 @@ Let's start with some imports and the path to the data.
 
 ```{code-cell} ipython3
 from pathlib import Path
-import hashlib
 import time
 
 import matplotlib.pyplot as plt
@@ -141,9 +140,12 @@ the hypothesis that VAR coefficients were time invariant.
 
 How can we discriminate?
 
-A model with constant coefficients and constant volatility cannot represent the
-bad-luck story, while a model with drifting coefficients but constant volatility
-risks attributing to drift what is really changing volatility.
+A constant-coefficient, constant-volatility VAR can generate unusually large
+realized shocks, but it cannot represent systematic changes in their variance
+over time.
+
+A model with drifting coefficients but constant volatility can also mistake
+changing volatility for coefficient drift.
 
 So Cogley and Sargent build a model that has room for *both* channels at once,
 and they let a Bayesian posterior sort out how much of each the data call for.
@@ -210,9 +212,11 @@ The coefficient vector follows a driftless random walk,
 v_t \sim N(0,Q).
 ```
 
-The companion matrix is stable when every eigenvalue of it, called a
-**companion root**, lies strictly inside the unit circle, just as a scalar AR
-process is stable only when the root of its characteristic polynomial does.
+The companion system is stable when every companion-matrix eigenvalue lies
+strictly inside the unit circle.
+
+For an AR(1), this is $|\rho|<1$; equivalently, the zero of $1-\rho z$ lies
+outside the unit circle.
 
 Cogley and Sargent rule out explosive paths by retaining a path only when the
 companion matrix is stable at every date and using the truncated prior
@@ -276,9 +280,6 @@ B =
 H_t = \operatorname{diag}(h_{1t},h_{2t},h_{3t}).
 $$
 
-The matrix $B$ orthogonalizes the reduced-form innovations but is not
-interpreted as a structural identification scheme.
-
 The diagonal elements $h_{it}$ let the size of each orthogonalized shock wax and
 wane over time.
 
@@ -338,9 +339,6 @@ expressed as a quarterly fraction.
 The data starts in 1948Q2 because its first inflation observation is
 already differenced, so two VAR lags make 1948Q4 the first usable regression
 date.
-
-Its SHA-256 checksum is asserted above so that every run uses the same
-historical input.
 
 The following cell performs every transformation and constructs the VAR(2) data
 directly from the series.
@@ -410,7 +408,7 @@ Let's view the data in familiar economic units.
 ---
 mystnb:
   figure:
-    caption: U.S. macroeconomic series
+    caption: Observed $\pi_t$, $u_t$, and $i_t$, 1948Q2--2000Q4
     name: fig-csdv-historical-data
 ---
 dates_raw = data['raw_dates']
@@ -513,8 +511,7 @@ $$
 
 where $\bar R$ is the residual covariance from the training-sample regression.
 
-The next function gathers these hyperparameters so that the same sampler can be
-applied to every variable ordering.
+The next function gathers these hyperparameters.
 
 ```{code-cell} ipython3
 def calibrate_prior(model_data, γ_squared=3.5e-4):
@@ -568,7 +565,7 @@ by {cite:t}`CogleySargent2005`.
 Cogley and Sargent simulate the unrestricted posterior and then discard a
 complete MCMC realization whenever its coefficient path is explosive.
 
-Their rejection rule is exact, but only stable sweeps contribute realizations
+But in this case only stable sweeps contribute realizations
 to the retained restricted-posterior sample.
 
 We instead impose stability inside the coefficient-path block with the
@@ -872,157 +869,94 @@ def draw_volatility_path(h, residuals, β, σ, prior, rng):
 The restricted posterior assigns zero density to coefficient paths that are
 explosive at any date, including $\theta_0$.
 
-Stack the whole coefficient path $\theta_0,\ldots,\theta_T$ into $z$ and collect
-the other parameter blocks in $\lambda=(Q,H^T,\beta,\sigma)$.
+Stack the whole coefficient path $\theta_0,\ldots,\theta_T$ into $z$, and
+collect the other parameter blocks in $\lambda=(Q,H^T,\beta,\sigma)$.
 
 Conditional on $\lambda$ and the data $Y^T$, the unrestricted Carter--Kohn
-distribution is multivariate Gaussian.
+distribution is Gaussian with smoothing mean $m$ and covariance $C$,
 
 $$
-z\mid \lambda,Y^T \sim N(m,C),
-\qquad
-g(z\mid\lambda,Y^T)=N(z;m,C).
+z\mid \lambda,Y^T \sim N(m,C).
 $$
-
-Here $m$ is the smoothing mean and $C$ is the covariance of the entire smoothed
-path.
 
 Let $\mathcal A$ be the set of paths whose companion roots are strictly inside
-the unit circle at every date.
-
-The stability-restricted full conditional is the Gaussian density truncated to
-$\mathcal A$.
+the unit circle at every date, so that the restricted full conditional is this
+Gaussian truncated to $\mathcal A$,
 
 $$
 \pi_{\mathcal A}(z\mid\lambda,Y^T)
-= \frac{g(z\mid\lambda,Y^T)\,\mathbb{1}_{\mathcal A}(z)}
-       {\Pr_g(z\in\mathcal A\mid\lambda,Y^T)}.
+= \frac{N(z;m,C)\,\mathbb{1}_{\mathcal A}(z)}
+       {\Pr(z\in\mathcal A\mid\lambda,Y^T)}.
 $$
 
-The normalizing probability in the denominator is difficult to calculate, but
-the elliptical transition never evaluates it.
+That normalizing probability is difficult to compute, but the elliptical
+transition never evaluates it.
 
-Cogley and Sargent impose this restriction by running an MCMC chain for the
-unrestricted joint posterior and retaining a realization only when its entire
-coefficient path is stable.
+Cogley and Sargent instead simulate the unrestricted joint posterior and keep
+a realization only when its whole path is stable, which is valid because
+conditioning the unrestricted posterior on $z\in\mathcal A$ reproduces the
+restricted posterior exactly.
 
-Their rejection rule is valid because the restricted joint posterior is the
-unrestricted posterior conditioned on $z\in\mathcal A$.
+If $a$ denotes the unrestricted probability that a path is stable, this
+rejection scheme needs roughly $1/a$ complete sweeps, including the four other
+parameter updates, for every retained draw.
 
-$$
-p_{\mathcal A}(z,Q,H^T,\beta,\sigma\mid Y^T)
-=
-\frac{
-    \mathbb{1}_{\mathcal A}(z)
-    p_U(z,Q,H^T,\beta,\sigma\mid Y^T)
-}{
-    \Pr_U(z\in\mathcal A\mid Y^T)
-}.
-$$
+The elliptical slice sampler avoids that waste by moving within the stable
+region instead of restarting from an arbitrary draw.
 
-The computational cost is that an explosive realization does not enter the
-retained sample despite the Carter--Kohn calculation and all four subsequent
-parameter and volatility updates.
-
-If $a=\Pr_U(z\in\mathcal A\mid Y^T)$, the original rejection method needs
-roughly $1/a$ full sweeps per retained stable realization.
-
-A direct rejection sampler for the coefficient conditional has the analogous
-problem because it repeats a whole Carter--Kohn simulation until all $T+1$
-coefficient states are stable.
-
-The elliptical transition starts instead from the current stable path
-$z^{(c)}$.
-
-A single Carter--Kohn simulation supplies a fresh auxiliary draw
-$\widetilde z\sim N(m,C)$.
-
-The ``innovation'' in the code is the centered *whole path*
-$\nu=\widetilde z-m\sim N(0,C)$, not one of the state innovations $v_t$.
-
-Carter--Kohn supplies this draw with the correct smoothing covariance without
-ever forming the large matrix $C$.
-
-The current path and the auxiliary draw define the following ellipse in path
-space.
+It starts from the current stable path $z^{(c)}$ and a fresh Carter--Kohn
+draw $\widetilde z\sim N(m,C)$, whose centered version
+$\nu=\widetilde z-m$ traces an ellipse together with $z^{(c)}$,
 
 $$
 z(\phi)
 =m+(z^{(c)}-m)\cos\phi+\nu\sin\phi,
-\qquad 0\leq\phi<2\pi.
+\qquad 0\leq\phi<2\pi,
 $$
 
-Thus $z(0)=z^{(c)}$ and $z(\pi/2)=\widetilde z$: the ellipse passes through
-both the current stable path and the fresh Carter--Kohn path.
+so that $z(0)=z^{(c)}$ and $z(\pi/2)=\widetilde z$.
 
-The first angle is drawn uniformly from the full circle.
+The algorithm draws an angle uniformly from the full circle and, whenever
+$z(\phi)$ is explosive, shrinks the bracket to the side containing the
+known-stable angle $\phi=0$ before drawing again.
 
-If $z(\phi)$ is explosive, the algorithm retains the side of the angle bracket
-that contains the known acceptable angle $\phi=0$ and draws a new angle from
-the contracted bracket.
+Because companion roots vary continuously with the coefficients, a nonzero
+interval around $\phi=0$ is always stable, so this bracket search always
+terminates.
 
-Strict stability makes a nonzero interval around $\phi=0$ acceptable because
-the companion roots vary continuously with the coefficients.
+Each rejected angle costs only a linear combination and a companion-root
+check, far cheaper than another Kalman filter and backward simulation.
 
-Each rejected angle costs only another linear combination and set of
-companion-root calculations rather than another Kalman filter and backward
-simulation.
+The transition is valid because rotating the pair $(z^{(c)}-m,\nu)$ by any
+angle leaves their joint Gaussian density unchanged, so the search moves
+along a fixed orbit on which every point is equally likely under the
+unrestricted density.
 
-The invariance argument follows from a Gaussian rotation after writing
-$x=z^{(c)}-m$.
+The stability indicator plays the role of the likelihood in a standard
+elliptical slice update, and since it equals one at the current point, every
+accepted angle is automatically a stable one and no separate slice-height
+draw is needed.
 
-The centered current path and auxiliary path have the following augmented
-density.
+Marginalizing out the auxiliary path shows that this transition leaves the
+truncated Gaussian $N(z;m,C)\mathbb{1}_{\mathcal A}(z)$ invariant, exactly the
+property a valid transition kernel needs.
 
-$$
-\widetilde\pi(x,\nu)
-\propto
-\mathbb{1}_{\mathcal A}(m+x)N(x;0,C)N(\nu;0,C).
-$$
+The other four blocks require no such adjustment.
 
-For any angle $\phi$, define the following rotation.
-
-$$
-(x,\nu)
-\longmapsto
-(x\cos\phi+\nu\sin\phi,
- -x\sin\phi+\nu\cos\phi).
-$$
-
-This rotation has unit Jacobian and leaves the product
-$N(x;0,C)N(\nu;0,C)$ unchanged.
-
-The randomly positioned full-circle bracket and its contraction form a
-reversible slice update along this Gaussian orbit.
-
-In a generic elliptical slice update, the slice height is
-$uL(z^{(c)})$ for $u\in(0,1)$ and a likelihood factor $L$.
-
-Here $L=\mathbb{1}_{\mathcal A}$ and $L(z^{(c)})=1$, so every possible slice
-height accepts exactly the stable angles.
-
-This binary likelihood explains why the code needs only the stability test and
-has no explicit slice-height draw.
-
-Marginalizing the auxiliary path therefore leaves the truncated Gaussian
-density $N(z;m,C)\mathbb{1}_{\mathcal A}(z)$ invariant.
-
-Finally, conditional on a stable $z$, the indicator is constant with respect to
+Conditional on a stable $z$, the stability indicator is constant in
 $Q,H^T,\beta$, and $\sigma$, so it cancels from each of their full
-conditionals.
+conditionals and leaves the same updates as the unrestricted sampler.
 
-Those four updates are therefore exactly the same as in the unrestricted
-sampler.
+$Q$'s conditional is unchanged in form, but its marginal posterior still tilts
+toward less explosive drift because every draw of $Q$ is conditioned on a
+stable coefficient path.
 
-The unchanged conditional for $Q$ still produces the stability-induced tilt
-in its marginal posterior because every $Q$ update is conditioned on a stable
-coefficient path.
+Together, the elliptical transition for $z$ and the unchanged updates for
+$Q,H^T,\beta$, and $\sigma$ target the same stability-restricted posterior as
+Cogley and Sargent's original rejection sampler, at a fraction of the cost.
 
-Composing those four updates with the elliptical transition targets the same
-joint stability-restricted posterior as the original rejection sampler.
-
-The next function composes the five blocks and includes a stochastic-volatility
-warm-up.
+The next function composes these five blocks and includes a
+stochastic-volatility warm-up.
 
 ```{code-cell} ipython3
 def initial_volatilities(y, prior):
@@ -1049,7 +983,7 @@ def run_sampler(
     retain=('S0D', 'SD', 'QD', 'HD', 'CD', 'VD', 'stable_draw'),
     progress_every=0,
 ):
-    """Run a coherent Gibbs sampler for the unrestricted or stable posterior.
+    """Run a Gibbs sampler for the unrestricted or stable posterior.
 
     For the stable posterior, an elliptical-slice transition updates the FFBS
     path inside its stability-truncated Gaussian full conditional.
@@ -1173,10 +1107,14 @@ def run_sampler(
 The executable version below uses 1,000 sweeps, discards the first 500, and
 retains the remaining 500.
 
-It uses the complete historical sample and the stable ordering $(i,u,\pi)$.
+It uses the complete historical sample and the ordering $(i,u,\pi)$.
 
 Instead of running a large MCMC experiment, we intentionally keep the sampler
-run small so that it finishes in a reasonable time.
+run small so that it finishes in a reasonable time for a lecture.
+
+This short run illustrates the method but not a numerical replication.
+
+However the main qualitative features of the posterior are close to those reported by Cogley and Sargent.
 
 ```{code-cell} ipython3
 posterior = run_sampler(
@@ -1192,7 +1130,7 @@ posterior = run_sampler(
     progress_every=0,
 )
 
-def validate_posterior(result, periods):
+def validate_posterior_arrays(result, periods):
     """Check posterior shapes, finiteness, positivity, and stability."""
     draws = result['diagnostics']['retained_draws']
     expected = {
@@ -1212,7 +1150,7 @@ def validate_posterior(result, periods):
     return expected
 
 
-expected_shapes = validate_posterior(posterior, len(data['dates']))
+expected_shapes = validate_posterior_arrays(posterior, len(data['dates']))
 ```
 
 ## What the data say
@@ -1232,7 +1170,7 @@ The histogram shows the retained $Q$ draws and the prior scale.
 ---
 mystnb:
   figure:
-    caption: Posterior coefficient-drift rate
+    caption: Posterior $\operatorname{tr}(Q)$ and prior $\operatorname{tr}(\bar Q)$
     name: fig-csdv-drift-rate
 ---
 trace_q = np.trace(posterior['QD'], axis1=0, axis2=1)
@@ -1246,20 +1184,27 @@ ax.legend()
 plt.show()
 ```
 
-Almost all posterior drift-rate mass lies far to the right of the small prior
-marker, so the data favor meaningful coefficient change over fixed dynamics.
+The posterior drift rate lies well above the conservative prior calibration,
+indicating more coefficient variation than that calibration anticipated.
 
-This finding says that the economy's systematic relationships changed, but it
-does not identify policy as the cause.
+This is not a formal comparison with a fixed-coefficient model because the
+continuous prior assigns no point mass to $Q=0$.
+
+Within the fitted TVP-VAR, this variation is attributed to changing systematic
+relationships; it does not identify policy as the cause.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Posterior mean coefficient paths
+    caption: Posterior mean VAR coefficients $E(\theta_t\mid T)$
     name: fig-csdv-coefficient-paths
 ---
 θ_mean = posterior['SD'].mean(axis=2)
+mean_path_root_modulus = np.max(
+    np.abs(companion_roots(θ_mean)), axis=1
+)
+assert np.all(mean_path_root_modulus < 1)
 coefficient_labels = (
     'constant',
     r'$i_{t-1}$',
@@ -1317,7 +1262,8 @@ The drift is therefore concentrated in how inflation propagates rather than
 spread evenly across the VAR, and individual lag coefficients should not be
 given structural interpretations because paired lags can offset one another.
 
-We summarize drift for the stable ordering $(i,u,\pi)$.
+We summarize drift for the ordering $(i,u,\pi)$, which has the smallest stable
+posterior mean $\operatorname{tr}(Q)$.
 
 ```{code-cell} ipython3
 trace_q = np.trace(posterior['QD'], axis1=0, axis2=1)
@@ -1340,6 +1286,23 @@ display(Math(rf'''
 \end{{array}}
 '''))
 ```
+
+Cogley and Sargent estimated every ordering. 
+
+Their posterior means show that
+the ordering changes magnitudes but does not remove drift:
+
+| Ordering | Stable $\operatorname{tr}(Q)$ | Stable $\max(\lambda)$ | Unrestricted $\operatorname{tr}(Q)$ | Unrestricted $\max(\lambda)$ |
+|---|---:|---:|---:|---:|
+| $(i,\pi,u)$ | 0.055 | 0.025 | 0.056 | 0.027 |
+| $(i,u,\pi)$ | 0.047 | 0.023 | 0.059 | 0.031 |
+| $(\pi,i,u)$ | 0.064 | 0.031 | 0.082 | 0.044 |
+| $(\pi,u,i)$ | 0.062 | 0.031 | 0.088 | 0.051 |
+| $(u,i,\pi)$ | 0.057 | 0.026 | 0.051 | 0.028 |
+| $(u,\pi,i)$ | 0.055 | 0.024 | 0.072 | 0.035 |
+
+For the minimum-$Q$ ordering, removing the stability restriction raises
+$\operatorname{tr}(Q)$ from 0.047 to 0.059.
 
 The analysis that follows adopts the $(i,u,\pi)$ ordering, which places the
 nominal interest rate first and inflation last.
@@ -1408,7 +1371,7 @@ The next plot shows the innovation standard deviations and correlations.
 ---
 mystnb:
   figure:
-    caption: Innovation volatility and correlation
+    caption: Standard deviations and correlations implied by $E(R_t\mid T)$
     name: fig-csdv-volatility-correlation
 ---
 variances = ((0, 'Nominal interest'), (2, 'Inflation'), (1, 'Unemployment'))
@@ -1448,28 +1411,6 @@ These movements give the changing-shocks, or bad-luck, explanation an important
 role, although the interest-rate innovation is not itself a structural
 monetary-policy shock.
 
-The following calculation reports both the raw endpoint change in the
-unemployment innovation standard deviation and a less noisy comparison of the
-first and last 16-quarter averages.
-
-```{code-cell} ipython3
-unemployment_sd = np.sqrt(r_mean[:, 1, 1])
-unemployment_sd_endpoint_decline = 1 - unemployment_sd[-1] / unemployment_sd[0]
-unemployment_sd_smoothed_decline = (
-    1 - unemployment_sd[-16:].mean() / unemployment_sd[:16].mean()
-)
-
-pd.Series(
-    {
-        'endpoint decline': unemployment_sd_endpoint_decline,
-        'first/last 16-quarter mean decline': (
-            unemployment_sd_smoothed_decline
-        ),
-    },
-    name='fractional decline',
-).to_frame().round(2)
-```
-
 The log determinant of the posterior mean covariance matrix summarizes the
 generalized one-step innovation variance {cite}`Whittle1953`.
 
@@ -1479,7 +1420,7 @@ The following transformation summarizes generalized innovation variance.
 ---
 mystnb:
   figure:
-    caption: Generalized innovation variance
+    caption: Generalized innovation variance $\log |E(R_t\mid T)|$
     name: fig-csdv-total-variance
 ---
 sign, logdet_r = np.linalg.slogdet(r_mean)
@@ -1553,7 +1494,7 @@ We plot the fourth-quarter observation from each year.
 ---
 mystnb:
   figure:
-    caption: Core inflation and natural rate
+    caption: Local means $\bar\pi_t$ and $\bar u_t$
     name: fig-csdv-local-means
 ---
 def annual_indices(dates, start=1960):
@@ -1614,8 +1555,7 @@ sample.
 core_natural_correlation = np.corrcoef(core_inflation, natural_rate)[0, 1]
 ```
 
-The quarterly correlation between posterior-mean core inflation and the natural
-rate is 0.838.
+The quarterly correlation between $\bar\pi_t$ and $\bar u_t$ is 0.838.
 
 This strong positive association says that the model-implied long-run inflation
 and unemployment anchors share a broad cycle, not that current inflation and
@@ -1633,7 +1573,7 @@ volatilities.
 The main summary is inflation persistence, measured by the normalized spectrum
 of inflation at frequency zero.
 
-The date-local spectral density of inflation is
+The spectral density of inflation at date $t$ is
 
 ```{math}
 :label: csdv_spectrum
@@ -1653,7 +1593,7 @@ Low-frequency power depends on both the autoregressive coefficients and the
 innovation covariance.
 
 The next function evaluates inflation power at any frequency measured in cycles
-per quarter and also returns the date-local inflation variance.
+per quarter and also returns inflation variance at date $t$.
 
 ```{code-cell} ipython3
 def inflation_spectrum(θ, covariance, frequencies):
@@ -1676,7 +1616,7 @@ def inflation_spectrum(θ, covariance, frequencies):
 
 ```
 
-The normalized spectrum divides by the date-local inflation variance,
+The normalized spectrum divides by inflation variance at date $t$,
 
 ```{math}
 :label: csdv_normalized_spectrum
@@ -1686,8 +1626,10 @@ g_{\pi\pi}(\omega,t)
 {\int_{-\pi}^{\pi}f_{\pi\pi}(\omega,t)d\omega},
 ```
 
-so $g_{\pi\pi}(0,t)$ measures persistence after adjusting for changes in
-innovation variance.
+so $g_{\pi\pi}(0,t)$ is an autocorrelation-based persistence measure.
+
+The normalization removes a common scale factor from $R_t$, but it can still
+depend on the relative variances and covariances in $R_t$.
 
 The first figure isolates frequency zero as a one-dimensional persistence
 summary.
@@ -1696,7 +1638,7 @@ summary.
 ---
 mystnb:
   figure:
-    caption: Inflation persistence
+    caption: Normalized zero-frequency spectrum $g_{\pi\pi}(0,t)$
     name: fig-csdv-inflation-persistence
 ---
 zero_frequency = np.array([0.0])
@@ -1741,9 +1683,9 @@ persistence_summary.to_frame().round(3)
 Normalized zero-frequency power rises from about 0.2 in the early 1960s to
 nearly 4 around 1980 and then falls below 1 for most of the remaining sample.
 
-Because normalization removes the changing scale of inflation innovations, the
-post-1980 collapse shows that inflation became less persistent independently of
-the volatility channel.
+The post-1980 collapse cannot be explained by a proportional rescaling of all
+innovations, although the normalized statistic can still depend on the
+composition of $R_t$.
 
 For comparison, an $AR(1)$ with coefficient $\rho$ has normalized zero-frequency
 power $(1+\rho)/[2\pi(1-\rho)]$.
@@ -1758,7 +1700,7 @@ over both time and frequency.
 
 ```{code-cell} ipython3
 def inflation_spectrum_surface(θ_path, covariance_path, frequencies):
-    """Evaluate the date-local inflation spectrum on a frequency grid."""
+    """Evaluate the inflation spectrum at each date on a frequency grid."""
     raw = np.empty((len(frequencies), θ_path.shape[1]))
     normalized = np.empty_like(raw)
     for date in range(θ_path.shape[1]):
@@ -1782,7 +1724,7 @@ raw_spectrum, normalized_spectrum = inflation_spectrum_surface(
 ---
 mystnb:
   figure:
-    caption: Inflation spectra over time
+    caption: Inflation spectra $f_{\pi\pi}(\omega,t)$ and $g_{\pi\pi}(\omega,t)$
     name: fig-csdv-inflation-spectra
 ---
 spectrum_start = data['dates'] >= 1960
@@ -1853,7 +1795,7 @@ historical_feature_draws = posterior_feature_draws(posterior, annual)
 ---
 mystnb:
   figure:
-    caption: Uncertainty in inflation dynamics
+    caption: Posterior medians and pointwise 90 percent intervals for $\bar\pi_t$, $\bar u_t$, and $g_{\pi\pi}(0,t)$
     name: fig-csdv-feature-uncertainty
 ---
 fig, axes = plt.subplots(3, 1, figsize=(9, 8), sharex=True)
@@ -1899,7 +1841,7 @@ The following plot compares the timing of core inflation and persistence.
 ---
 mystnb:
   figure:
-    caption: Core inflation and persistence
+    caption: $\bar\pi_t$ and $g_{\pi\pi}(0,t)$
     name: fig-csdv-core-persistence
 ---
 core_persistence_correlation = np.corrcoef(
@@ -1924,8 +1866,11 @@ Their quarterly correlation of 0.909 summarizes common timing rather than a
 causal relationship because the two measures have different units and are
 nonlinear summaries of the same fitted coefficients.
 
-The joint movement shows that a fixed-coefficient, changing-shocks-only account
-cannot explain the entire Great Inflation.
+Within the fitted TVP-VAR, the joint movement supports an important role for
+changing propagation as well as changing shock volatility.
+
+A direct comparison with fixed coefficients requires fitting the restricted
+$Q=0$ model.
 
 The fall in persistence during the Volcker disinflation conflicts with
 escape-route models in which persistence grows along a transition from high to
@@ -1969,7 +1914,7 @@ def policy_activism(
     h_u=2,
     return_denominator=False,
 ):
-    """Compute the date-local population-2SLS activism coefficient."""
+    """Compute the population-2SLS activism coefficient at one date."""
     _, companion = companion_matrix(θ)
     innovation = np.zeros((6, 6))
     innovation[:3, :3] = covariance
@@ -2029,14 +1974,14 @@ activism_path = break_ratio_crossings(
 )
 ```
 
-The plug-in path evaluates activism at posterior-mean coefficients and
+This path evaluates $\mathcal A_t$ at posterior mean coefficients and
 covariances.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Plug-in monetary policy activism
+    caption: Policy activism $\mathcal A_t$
     name: fig-csdv-policy-activism
 ---
 fig, ax = plt.subplots()
@@ -2047,13 +1992,15 @@ ax.set_ylabel('activism coefficient')
 plt.show()
 ```
 
-The plug-in activism measure falls from well above one in the 1960s to below the
+The activism measure falls from well above one in the 1960s to below the
 active-policy threshold through much of the 1970s and then moves decisively
 above one after the early 1980s.
 
 This timing is consistent with a policy-regime contribution to the Great
-Inflation, but the late-1990s spike is a fragile ratio effect rather than a
-literal measure of policy strength.
+Inflation.
+
+The late-1990s spike occurs when the denominator is near zero and should not be
+interpreted as stronger policy.
 
 The following scatter plots use fourth-quarter observations.
 
@@ -2061,7 +2008,7 @@ The following scatter plots use fourth-quarter observations.
 ---
 mystnb:
   figure:
-    caption: Activism and inflation dynamics
+    caption: $\mathcal A_t$ versus $\bar\pi_t$ and $g_{\pi\pi}(0,t)$
     name: fig-csdv-activism-correlations
 ---
 activism_core_correlation = np.corrcoef(
@@ -2093,8 +2040,8 @@ The fourth-quarter correlations are -0.78 with core inflation and -0.74 with
 persistence, but these jointly estimated, time-ordered points establish a
 historical association rather than a causal policy effect.
 
-The activism transformation is weakly identified at some dates, so a path based
-on posterior-mean inputs understates uncertainty.
+The activism transformation is weakly identified at some dates, so a path with
+inputs fixed at their posterior means understates uncertainty.
 
 We therefore calculate activism from every retained draw in 1975, 1985, and
 1995.
@@ -2154,7 +2101,7 @@ probability estimates.
 ---
 mystnb:
   figure:
-    caption: Central posterior policy activism
+    caption: Central posterior draws of $\mathcal A_t$ in 1975, 1985, and 1995
     name: fig-csdv-activism-distributions
 ---
 pooled_activity = np.concatenate(tuple(activity_draws.values()))
@@ -2209,24 +2156,21 @@ This splice prevents revisions to pre-2001 CPI and unemployment data from being
 mistaken for information in the additional quarter-century.
 
 We download seasonally adjusted [CPI][fred-cpi], seasonally adjusted
-[unemployment][fred-unemployment], and the [three-month Treasury
-yield][fred-interest] from FRED.
+[unemployment][fred-unemployment], and the [three-month Treasury-bill
+rate][fred-interest] from FRED.
 
 [fred-cpi]: https://fred.stlouisfed.org/series/CPIAUCSL
 [fred-unemployment]: https://fred.stlouisfed.org/series/UNRATE
-[fred-interest]: https://fred.stlouisfed.org/series/GS3M
+[fred-interest]: https://fred.stlouisfed.org/series/TB3MS
 
 The transformations and within-quarter timing remain unchanged: CPI comes from
 the third month, unemployment is a three-month average, and the interest rate
 comes from the first month.
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
 fred_url = (
     'https://fred.stlouisfed.org/graph/fredgraph.csv?'
-    'id=CPIAUCSL%2CUNRATE%2CGS3M'
+    'id=CPIAUCSL%2CUNRATE%2CTB3MS'
 )
 fred_monthly = pd.read_csv(
     fred_url,
@@ -2239,19 +2183,14 @@ fred_monthly = pd.read_csv(
 2025Q4 unemployment estimates could not be produced because the October 2025
 observation was not collected during the federal shutdown.
 
-Consequently, 2025Q4 has no authoritative three-month unemployment average, and
-the updated estimation sample ends in 2025Q3.
-
-This endpoint keeps the extension fully observed and quarterly contiguous.
+The updated estimation sample therefore ends in 2025Q3, the last quarter with a
+complete three-month unemployment average.
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
 def fred_quarterly_table(unemployment_monthly):
-    """Construct transformed quarterly observations after 2000Q4."""
+    """Construct transformed quarterly observations from current FRED data."""
     interest = fred_monthly.loc[
-        fred_monthly.index.month.isin((1, 4, 7, 10)), 'GS3M'
+        fred_monthly.index.month.isin((1, 4, 7, 10)), 'TB3MS'
     ].copy()
     interest.index = interest.index.to_period('Q').start_time
 
@@ -2276,7 +2215,7 @@ def fred_quarterly_table(unemployment_monthly):
         quarterly.index.year + (quarterly.index.quarter - 1) / 4
     )
     columns = ['date', 'y3', 'ur', 'dp']
-    return quarterly.loc['2001-01-01':, columns].dropna()
+    return quarterly.loc[:, columns].dropna()
 
 
 unemployment_monthly = fred_monthly['UNRATE']
@@ -2292,7 +2231,8 @@ assert missing_unemployment.equals(
 )
 
 unemployment_counts = unemployment_monthly.resample('QS').count()
-quarterly_unfilled = fred_quarterly_table(unemployment_monthly)
+current_quarterly = fred_quarterly_table(unemployment_monthly)
+quarterly_unfilled = current_quarterly.loc['2001-01-01':]
 incomplete_quarters = unemployment_counts.loc[
     quarterly_unfilled.index[0]:quarterly_unfilled.index[-1]
 ]
@@ -2303,6 +2243,34 @@ complete_extension = quarterly_unfilled.loc[
 ]
 
 frozen_table = pd.read_csv(data_path)
+overlap_date = pd.Timestamp('2000-10-01')
+frozen_overlap = frozen_table.iloc[-1]
+current_overlap = current_quarterly.loc[overlap_date]
+
+
+def scaled_observation(row):
+    """Return observable units for a transformed quarterly row."""
+    return pd.Series(
+        {
+            'interest rate (annual %)': 400 * np.expm1(row['y3']),
+            'unemployment (%)': 100 * row['ur'],
+            'inflation (annual %)': 400 * row['dp'],
+        }
+    )
+
+
+frozen_scaled = scaled_observation(frozen_overlap)
+current_scaled = scaled_observation(current_overlap)
+splice_audit = pd.DataFrame(
+    {
+        'frozen 2000Q4': frozen_scaled,
+        'current-vintage 2000Q4': current_scaled,
+        'current minus frozen': current_scaled - frozen_scaled,
+        'first appended 2001Q1': scaled_observation(
+            complete_extension.iloc[0]
+        ),
+    }
+)
 extended_observations = pd.concat(
     (frozen_table, complete_extension.reset_index(drop=True)),
     ignore_index=True,
@@ -2325,16 +2293,23 @@ update_summary = pd.Series(
     },
     name='value',
 )
+display(splice_audit.round(3))
 update_summary.to_frame()
 ```
 
 No missing value is filled or otherwise treated as observed.
 
+The overlap table makes any vintage discontinuity visible.
+
+The appended 2001Q1 inflation rate is computed from current-vintage CPI levels
+for both 2000Q4 and 2001Q1 before the splice, so a single log difference never
+mixes vintages.
+
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Extended data through 2025Q3
+    caption: Observed $\pi_t$, $u_t$, and $i_t$, 1959Q1--2025Q3
     name: fig-csdv-updated-data
 ---
 fig, axes = plt.subplots(3, 1, figsize=(9, 7), sharex=True)
@@ -2399,9 +2374,9 @@ pd.Series(
 ).to_frame().round(3)
 ```
 
-The extension adds the financial-crisis contraction, a pandemic unemployment
-spike above 13 percent, and a short 2021--2022 inflation surge alongside two
-long stretches of near-zero interest rates.
+The extension adds the financial-crisis contraction, a pandemic quarterly
+unemployment spike to 13.0 percent, and a short 2021--2022 inflation surge
+alongside two long stretches of near-zero interest rates.
 
 Because inflation is annualized from quarterly changes, isolated movements look
 especially large in this panel, but the recent surge is still visibly much
@@ -2411,12 +2386,10 @@ These observations provide a demanding test of whether the model assigns recent
 extremes to shock volatility or persistent dynamics, while the near-zero rate
 also weakens short-rate measures of policy after 2008.
 
-We fit the same stable model through the authoritative 2025Q3 endpoint.
+We fit the stable TVP-VAR through 2025Q3, the last complete quarter, using the
+Treasury-bill measure above.
 
 ```{code-cell} ipython3
----
-tags: [hide-input, hide-output]
----
 def append_extension(extension):
     """Append a transformed FRED extension to the frozen history."""
     extension = extension.reset_index(drop=True)
@@ -2442,7 +2415,7 @@ def fit_updated_model(table):
         stable=True,
         progress_every=500,
     )
-    validate_posterior(result, len(model_data['dates']))
+    validate_posterior_arrays(result, len(model_data['dates']))
     trace = np.trace(result['QD'], axis1=0, axis2=1)
     return {
         'data': model_data,
@@ -2453,6 +2426,13 @@ def fit_updated_model(table):
 
 
 updated_fit = fit_updated_model(append_extension(complete_extension))
+
+current_vintage_table = current_quarterly.loc[
+    (current_quarterly.index >= pd.Timestamp('1948-04-01'))
+    & (current_quarterly.index <= complete_extension.index[-1])
+].reset_index(drop=True)
+assert np.allclose(np.diff(current_vintage_table['date']), 0.25)
+current_vintage_fit = fit_updated_model(current_vintage_table)
 ```
 
 ### Did coefficient drift continue?
@@ -2464,25 +2444,23 @@ def updated_drift_summary(fit):
     q_mean = fit['posterior']['QD'].mean(axis=2)
     eigenvalues = np.linalg.eigvalsh(q_mean)[::-1]
     return {
-        r'E[\operatorname{tr}(Q)]': trace.mean(),
-        r'\text{First-three drift share}': (
+        'posterior mean tr(Q)': trace.mean(),
+        'share in first three eigen-directions': (
             eigenvalues[:3].sum() / eigenvalues.sum()
         ),
     }
 
 
 updated_label = quarter_label(complete_extension.index[-1])
-updated_summary = updated_drift_summary(updated_fit)
-updated_rows = ' \\\\\n'.join(
-    f'{label} & {value:.3f}' for label, value in updated_summary.items()
+updated_summary = pd.DataFrame(
+    {
+        'frozen history + extension': updated_drift_summary(updated_fit),
+        'current-vintage full sample': updated_drift_summary(
+            current_vintage_fit
+        ),
+    }
 )
-display(Math(rf'''
-\begin{{array}}{{lr}}
-\text{{Quantity}} & \text{{{updated_label}}} \\
-\hline
-{updated_rows}
-\end{{array}}
-'''))
+updated_summary.round(3)
 ```
 
 The drift-rate distributions and coefficient paths provide the same views used
@@ -2496,7 +2474,7 @@ rather than from attaching new points to an unchanged historical estimate.
 ---
 mystnb:
   figure:
-    caption: Updated coefficient-drift rate
+    caption: Posterior $\operatorname{tr}(Q)$ and prior $\operatorname{tr}(\bar Q)$ through 2025Q3
     name: fig-csdv-updated-drift-rate
 ---
 fig, ax = plt.subplots()
@@ -2513,9 +2491,13 @@ ax.legend()
 plt.show()
 ```
 
-The updated drift-rate posterior remains far to the right of its small prior
-marker and is centered near 0.040, so the longer sample preserves the evidence
-for coefficient drift.
+In both data constructions, the full-sample posterior drift rate remains above
+its conservative prior calibration.
+
+Within the TVP-VAR this indicates non-negligible full-sample drift, but it is
+not a formal comparison of $Q=0$ with $Q>0$.
+
+Its magnitude is sensitive to the vintage construction.
 
 Because $Q$ is a single variance parameter for the full 1959--2025 path, this
 histogram does not by itself show that drift accelerated after 2000.
@@ -2524,7 +2506,7 @@ histogram does not by itself show that drift accelerated after 2000.
 ---
 mystnb:
   figure:
-    caption: Updated coefficient paths
+    caption: Posterior mean VAR coefficients $E(\theta_t\mid T)$ through 2025Q3
     name: fig-csdv-updated-coefficient-paths
 ---
 fig, axes = plt.subplots(1, 3, figsize=(10, 4), sharex=True)
@@ -2554,8 +2536,9 @@ appearing as abrupt financial-crisis or pandemic breaks.
 The opposing movements of some paired lag coefficients also show why their
 combined dynamic implications are more informative than any single line.
 
-The first three eigen-directions account for about 96 percent of the posterior
-mean drift variance, so the estimated movement remains low dimensional.
+The first three eigen-directions account for more than 95 percent of the
+posterior mean drift variance, so the estimated movement remains low
+dimensional.
 
 The stability restriction now applies to a longer path, which makes the
 posterior drift rate a property of the full 1959--2025 sample.
@@ -2566,18 +2549,15 @@ We next separate changes in the sizes and correlations of innovations from
 changes in the VAR dynamics.
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
 def model_features(fit):
-    """Compute plug-in features from one fitted posterior."""
+    """Compute features at posterior mean parameters."""
     result = fit['posterior']
     θ = result['SD'].mean(axis=2)
-    stable_mean_path = np.array(
-        [is_stable(θ[:, t]) for t in range(θ.shape[1])]
+    mean_root_modulus = np.max(
+        np.abs(companion_roots(θ)), axis=1
     )
-    if not np.all(stable_mean_path):
-        raise ValueError('posterior-mean coefficient path is unstable')
+    if not np.all(mean_root_modulus < 1):
+        raise ValueError('mean coefficient path is unstable')
     covariance = mean_innovation_covariance(result['HD'], result['CD'])
     core, natural = local_means(θ)
     persistence = np.array([
@@ -2600,6 +2580,7 @@ def model_features(fit):
     )
     return {
         'θ': θ,
+        'maximum_companion_root': mean_root_modulus.max(),
         'covariance': covariance,
         'core': core,
         'natural': natural,
@@ -2611,13 +2592,26 @@ def model_features(fit):
 
 
 updated_features = model_features(updated_fit)
+current_vintage_features = model_features(current_vintage_fit)
+
+pd.Series(
+    {
+        'frozen history + extension': (
+            updated_features['maximum_companion_root']
+        ),
+        'current-vintage full sample': (
+            current_vintage_features['maximum_companion_root']
+        ),
+    },
+    name='maximum companion-root modulus of mean path',
+).to_frame().round(4)
 ```
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Updated innovation volatility and correlation
+    caption: Standard deviations and correlations implied by $E(R_t\mid T)$ through 2025Q3
     name: fig-csdv-updated-volatility-correlation
 ---
 fig, axes = plt.subplots(3, 2, figsize=(9, 8), sharex=True)
@@ -2670,7 +2664,7 @@ exogenous.
 ---
 mystnb:
   figure:
-    caption: Updated generalized innovation variance
+    caption: $\log |E(R_t\mid T)|$ through 2025Q3
     name: fig-csdv-updated-total-variance
 ---
 fig, ax = plt.subplots()
@@ -2737,7 +2731,7 @@ in the model's long-horizon forecast.
 ---
 mystnb:
   figure:
-    caption: Updated local means
+    caption: Local means $\bar\pi_t$ and $\bar u_t$ through 2025Q3
     name: fig-csdv-updated-local-means
 ---
 updated_dates = updated_fit['data']['dates']
@@ -2770,13 +2764,15 @@ The 1970s core-inflation peak is lower here than in the frozen-sample figure
 because later observations revise the smoothed history, so values on both sides
 of the dashed line belong to one updated fit.
 
-After 2000 the plug-in core rate stays mostly between about 2 and 3 percent and
+After 2000 the core rate stays mostly between about 2 and 3 percent and
 rises only modestly after 2020, even though observed inflation moves much more
 sharply.
 
 The natural-rate line is the model's locally implied long-run unemployment
-anchor, which is why actual unemployment can jump above 13 percent in 2020 while
-this line remains near 5 percent.
+anchor, which is why quarterly unemployment can jump to 13.0 percent in 2020
+while this line remains near 5 percent.
+
+The monthly peak was 14.8 percent.
 
 The final annual point represents 2025Q3 because the sample ends before the
 fourth quarter.
@@ -2797,15 +2793,24 @@ def endpoint_features(features):
 updated_endpoints = endpoint_features(updated_features).to_frame(
     name=updated_label
 ).T
-updated_endpoints.round(3)
+current_vintage_endpoints = endpoint_features(
+    current_vintage_features
+).to_frame(name=updated_label).T
+vintage_endpoint_sensitivity = pd.concat(
+    {
+        'frozen history + extension': updated_endpoints,
+        'current-vintage full sample': current_vintage_endpoints,
+    }
+)
+vintage_endpoint_sensitivity.round(3)
 ```
+
+The endpoint core-inflation, natural-rate, and persistence summaries are similar
+across the two data constructions.
 
 The draw-wise annual paths show how uncertainty evolves inside the updated fit.
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
 updated_feature_draws = posterior_feature_draws(
     updated_fit['posterior'],
     updated_annual,
@@ -2816,7 +2821,7 @@ updated_feature_draws = posterior_feature_draws(
 ---
 mystnb:
   figure:
-    caption: Updated feature uncertainty
+    caption: Posterior medians and pointwise 90 percent intervals for $\bar\pi_t$, $\bar u_t$, and $g_{\pi\pi}(0,t)$ through 2025Q3
     name: fig-csdv-updated-feature-uncertainty
 ---
 fig, axes = plt.subplots(3, 1, figsize=(9, 8), sharex=True)
@@ -2875,24 +2880,23 @@ updated_endpoint_intervals = endpoint_feature_intervals(
 updated_endpoint_intervals.round(3)
 ```
 
-At 2025Q3 the posterior medians are about 2.50 percent for core inflation and
-5.20 percent for the natural rate, with 90 percent intervals of 1.23--3.73 and
-3.37--8.76 percent, respectively.
+At 2025Q3 the core-inflation median is near 2.5 percent and the natural-rate
+median is below 5 percent.
 
-The persistence median is 0.38 but its 0.15--4.39 interval retains a substantial
-upper tail, so the evidence favors temporary recent inflation without making
-that classification certain.
+Their intervals remain broad, and normalized persistence retains a substantial
+upper tail, so the classification of recent inflation as temporary is not
+certain.
 
 ### Did inflation become persistent again?
 
-The normalized spectrum asks whether the recent inflation surge changed the
-systematic dynamics rather than only the size of shocks.
+The normalized spectrum reduces sensitivity to a common change in shock scale,
+although it still depends on the relative variances and covariances in $R_t$.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Updated inflation persistence
+    caption: $g_{\pi\pi}(0,t)$ through 2025Q3
     name: fig-csdv-updated-persistence
 ---
 fig, ax = plt.subplots()
@@ -2912,15 +2916,17 @@ plt.show()
 Persistence recreates the rise to a 1980 peak and the subsequent collapse, but
 it stays near 0.2--0.5 after 2000 and shows only a small post-2020 increase.
 
-Because this measure removes the changing scale of shocks, neither the financial
-crisis nor the recent inflation surge looks like a return to 1970s propagation
-in the posterior-mean dynamics.
+Neither the financial crisis nor the recent inflation surge produces a
+low-frequency ridge comparable to the 1970s in the mean path.
+
+This cannot be explained by a proportional rescaling of all innovations, but
+the statistic is not independent of the composition of $R_t$.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Updated core and persistence
+    caption: $\bar\pi_t$ and $g_{\pi\pi}(0,t)$ through 2025Q3
     name: fig-csdv-updated-core-persistence
 ---
 fig, axes = plt.subplots(
@@ -2964,9 +2970,6 @@ persistent, not that all alternative models must classify it as transitory.
 The full spectrum shows where the difference comes from.
 
 ```{code-cell} ipython3
----
-tags: [hide-input]
----
 updated_raw_spectrum, updated_normalized_spectrum = (
     inflation_spectrum_surface(
         updated_features['θ'],
@@ -2980,7 +2983,7 @@ updated_raw_spectrum, updated_normalized_spectrum = (
 ---
 mystnb:
   figure:
-    caption: Updated inflation spectra
+    caption: $f_{\pi\pi}(\omega,t)$ and $g_{\pi\pi}(\omega,t)$ through 2025Q3
     name: fig-csdv-updated-spectra
 ---
 fig, axes = plt.subplots(
@@ -3016,9 +3019,11 @@ The financial crisis and pandemic appear as bright, broad bands in raw spectral
 power, while the normalized panel lacks any post-2000 low-frequency ridge
 comparable to the 1970s.
 
-This is the clearest spectral separation between recent bad luck, which raises
-variance across frequencies, and the changed propagation visible during the
-Great Inflation.
+The post-2000 episodes raise raw power without producing a comparable
+low-frequency ridge in the normalized statistic.
+
+This argues against a simple return to 1970s-style persistence without making
+the statistic independent of $R_t$.
 
 ```{code-cell} ipython3
 def episode_summary(fit, features):
@@ -3047,8 +3052,8 @@ updated_episodes = episode_summary(updated_fit, updated_features)
 updated_episodes.round(3)
 ```
 
-The episode averages separate the high volatility of 2020--2022 from the lower
-average persistence of the post-2000 decades.
+The episode averages contrast the high volatility of 2020--2022 with the lower
+normalized persistence of the post-2000 decades.
 
 ### Can recent policy activism be measured?
 
@@ -3062,7 +3067,7 @@ $\mathcal A=1$.
 ---
 mystnb:
   figure:
-    caption: Updated plug-in policy activism
+    caption: Policy activism $\mathcal A_t$ through 2025Q3
     name: fig-csdv-updated-activism
 ---
 fig, ax = plt.subplots()
@@ -3079,18 +3084,17 @@ ax.set_ylabel('activism coefficient')
 plt.show()
 ```
 
-After 2000 the plug-in ratio is mostly above one, dips toward the threshold in
+After 2000 the ratio is mostly above one, dips toward the threshold in
 the mid-2010s and around 2020, and then rises sharply after 2021.
 
 Its sign breaks and extreme spikes occur when the denominator approaches zero,
-and the symmetric-log scale exposes this fragility rather than making the peaks
-literal measures of policy strength.
+so the peaks should not be interpreted as stronger policy.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Post-2000 plug-in activism relationships
+    caption: Post-2000 $\mathcal A_t$ versus $\bar\pi_t$ and $g_{\pi\pi}(0,t)$
     name: fig-csdv-updated-activism-correlations
 ---
 fig, axes = plt.subplots(1, 2, figsize=(9, 4))
@@ -3115,7 +3119,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-After 2000 core inflation is positively associated with the plug-in activism
+After 2000 core inflation is positively associated with the activism
 ratio, reversing the historical negative pattern, while persistence has no
 clear monotone relationship with activism.
 
@@ -3163,7 +3167,7 @@ updated_activism.round(3)
 ---
 mystnb:
   figure:
-    caption: Central 90-percent activism draws
+    caption: Central 90 percent of posterior draws for $\mathcal A_t$ at 2025Q3
     name: fig-csdv-updated-activism-distributions
 ---
 updated_activity_limits = np.quantile(
@@ -3193,8 +3197,9 @@ The mode lies just above the active-policy threshold, but that threshold cuts
 through substantial central mass and even the displayed draws span large
 negative and positive values.
 
-The median of 2.42 and active-policy probability of 0.69 lean active, but the
-90 percent interval from -16.99 to 17.57 makes the endpoint classification weak.
+The median and active-policy probability lean active, but the central interval
+spans large negative and positive values, making the endpoint classification
+weak.
 
 The plot displays only draws between the 5th and 95th percentiles, and the zero
 lower bound and unconventional policy further weaken the interpretation of this
@@ -3202,13 +3207,15 @@ short-rate projection after 2008.
 
 ### What the additional observations change
 
-The extra quarter-century adds a dramatic episode consistent with volatility
-moving independently of persistent inflation dynamics.
+The extra quarter-century adds a dramatic volatility episode without a
+post-2000 low-frequency ridge comparable to the 1970s.
 
 The pandemic is the dominant aggregate uncertainty episode, but the recent
 inflation surge does not reproduce the 1970s low-frequency persistence ridge.
 
-The data still support coefficient drift.
+Within the updated TVP-VAR, the full-sample drift-rate posterior remains above
+its conservative prior calibration; a fixed-coefficient comparison would
+require a separate $Q=0$ model.
 
 The 2025Q3 natural-rate and activism estimates remain weakly pinned down, and
 both are nonlinear functions that become fragile near singular cases.
@@ -3222,9 +3229,10 @@ lecture.
   Volcker-era spike and a subsequent Great Moderation, so the bad-luck story
   captures something real.
 
-- *Coefficients drifted too:* inflation persistence and core inflation rose
-  through the 1970s and fell in the 1980s, so the systematic dynamics were not
-  time invariant.
+- *The fitted TVP-VAR attributes variation to coefficients too:* inflation
+  persistence and core inflation rose through the 1970s and fell in the 1980s,
+  although a formal fixed-versus-drifting comparison requires a separate $Q=0$
+  model.
 
 - *The new observations do not overturn that distinction:* the pandemic
   produces an extreme volatility episode, while the recent inflation surge does
