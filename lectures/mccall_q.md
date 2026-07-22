@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Job Search IX: Search with Q-Learning
+# Job Search X: Search with Q-Learning
 
 ## Overview
 
