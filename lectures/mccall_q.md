@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.17.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -25,7 +25,7 @@ The Q-learning algorithm combines ideas from
 
 * a recursive version of least squares known as [temporal difference learning](https://en.wikipedia.org/wiki/Temporal_difference_learning).
 
-This lecture applies a Q-learning algorithm to the situation faced by  a   McCall worker.
+This lecture applies a Q-learning algorithm to the situation faced by a McCall worker.
 
 This lecture also considers the case where a McCall worker is given an option to quit the current job.
 
@@ -67,22 +67,25 @@ As usual, let's  import some Python modules.
 
 ```{code-cell} ipython3
 :tags: [hide-output]
+
 !pip install quantecon
 ```
 
 ```{code-cell} ipython3
-import numpy as np
-
-from numba import jit, float64, int64
-from numba.experimental import jitclass
+import jax
+import jax.numpy as jnp
+import matplotlib.pyplot as plt
+from typing import NamedTuple
 from quantecon.distributions import BetaBinomial
 
-import matplotlib.pyplot as plt
+# set random key for reproducibility
+key = jax.random.PRNGKey(0)
 
-np.random.seed(123)
+# set jax to use CPU
+jax.config.update('jax_platform_name', 'cpu')
 ```
 
-## Review of McCall Model
+## Review of McCall model
 
 We begin by reviewing the McCall model described in {doc}`this quantecon lecture <mccall_model>`.
 
@@ -121,7 +124,7 @@ $$
 
 Let's use  Python   code from {doc}`this quantecon lecture <mccall_model>`.
 
-We use a Python method called `VFI` to compute the optimal value function using value function iterations.
+We use a Python method called `vfi` to compute the optimal value function using value function iterations.
 
 We construct an assumed distribution  of wages and plot it with the following Python code
 
@@ -130,7 +133,7 @@ n, a, b = 10, 200, 100                        # default parameters
 q_default = BetaBinomial(n, a, b).pdf()       # default choice of q
 
 w_min, w_max = 10, 60
-w_default = np.linspace(w_min, w_max, n+1)
+w_default = jnp.linspace(w_min, w_max, n+1)
 
 # plot distribution of wage offer
 fig, ax = plt.subplots(figsize=(10,6))
@@ -146,81 +149,87 @@ Next we'll compute the worker's optimal value function by iterating to convergen
 Then we'll plot various iterates on the Bellman operator.
 
 ```{code-cell} ipython3
-mccall_data = [
-    ('c', float64),      # unemployment compensation
-    ('β', float64),      # discount factor
-    ('w', float64[::1]),  # array of wage values, w[i] = wage at state i
-    ('q', float64[::1])   # array of probabilities
-]
+class McCallModel(NamedTuple):
+      c: float              # unemployment compensation
+      β: float              # discount factor
+      w: jnp.ndarray        # array of wage values, w[i] = wage at state i
+      q: jnp.ndarray        # array of probabilities
 
+def create_mccall_model(c=25, β=0.99, w=w_default, q=q_default):
+      return McCallModel(c=c, β=β, w=w, q=q)
 
-@jitclass(mccall_data)
-class McCallModel:
+@jax.jit
+def state_action_values(model, i, v):
+      """The values of state-action pairs."""
+      # Unpack model parameters
+      c, β, w, q = model.c, model.β, model.w, model.q
+      # Evaluate value for each state-action pair
+      # Consider action = accept or reject the current offer
+      accept = w[i] / (1 - β)
+      reject = c + β * (v @ q)
+      return jnp.array([accept, reject])
 
-    def __init__(self, c=25, β=0.99, w=w_default, q=q_default):
+@jax.jit
+def update(model, v):
+    n = model.w.shape[0]
 
-        self.c, self.β = c, β
-        self.w, self.q = w, q
+    def v_at_state(i):
+        # compute state-action values
+        sa = state_action_values(model, i, v)
+        # apply max operator
+        return jnp.max(sa)
 
-    def state_action_values(self, i, v):
-        """
-        The values of state-action pairs.
-        """
-        # Simplify names
-        c, β, w, q = self.c, self.β, self.w, self.q
-        # Evaluate value for each state-action pair
-        # Consider action = accept or reject the current offer
-        accept = w[i] / (1 - β)
-        reject = c + β * (v @ q)
+    # vectorize over all states
+    indices = jnp.arange(n)
+    v_new = jax.vmap(v_at_state)(indices)
+    return v_new
 
-        return np.array([accept, reject])
+@jax.jit
+def vfi(model, tol=1e-5, max_iter=500):
 
-    def VFI(self, eps=1e-5, max_iter=500):
-        """
-        Find the optimal value function.
-        """
+    v0 = model.w / (1.0 - model.β)
 
-        n = len(self.w)
-        v = self.w / (1 - self.β)
-        v_next = np.empty_like(v)
-        flag=0
+    def body_fun(state):
+        v, i, err = state
+        v_new = update(model, v)
+        err_new = jnp.max(jnp.abs(v_new - v))
+        return v_new, i + 1, err_new
 
-        for i in range(max_iter):
-            for j in range(n):
-                v_next[j] = np.max(self.state_action_values(j, v))
+    def cond_fun(state):
+        _, i, err = state
+        return (err > tol) & (i < max_iter)
 
-            if np.max(np.abs(v_next - v))<=eps:
-                flag=1
-                break
-            v[:] = v_next
-
-        return v, flag
+    # iterate until convergence
+    init_state = (v0, 0, tol + 1.0)
+    v_final, iters, err = jax.lax.while_loop(cond_fun, body_fun, init_state)
+    converged = jnp.where(err <= tol, 1, 0)
+    return v_final, converged
 
 def plot_value_function_seq(mcm, ax, num_plots=8):
-    """
-    Plot a sequence of value functions.
+      """
+      Plot a sequence of value functions.
 
-        * mcm is an instance of McCallModel
-        * ax is an axes object that implements a plot method.
+          * mcm is an instance of McCallModel
+          * ax is an axes object that implements a plot method.
 
-    """
+      """
+      n = len(mcm.w)
+      v = mcm.w / (1 - mcm.β)
+      v_next = jnp.empty_like(v)
+      for i in range(num_plots):
+          ax.plot(mcm.w, v, '-', alpha=0.4, label=f"iterate {i}")
 
-    n = len(mcm.w)
-    v = mcm.w / (1 - mcm.β)
-    v_next = np.empty_like(v)
-    for i in range(num_plots):
-        ax.plot(mcm.w, v, '-', alpha=0.4, label=f"iterate {i}")
-        # Update guess
-        for i in range(n):
-            v_next[i] = np.max(mcm.state_action_values(i, v))
-        v[:] = v_next  # copy contents into v
+          indices = jnp.arange(n)
+          v_next = jax.vmap(
+            lambda j: jnp.max(state_action_values(mcm, j, v)))(indices)
+          v = v_next
 
-    ax.legend(loc='lower right')
+      ax.legend(loc='lower right')
 ```
 
 ```{code-cell} ipython3
-mcm = McCallModel()
-valfunc_VFI, flag = mcm.VFI()
+mcm = create_mccall_model()
+valfunc_vfi, converged = vfi(mcm)
 
 fig, ax = plt.subplots(figsize=(10,6))
 ax.set_xlabel('wage')
@@ -236,13 +245,13 @@ This  is the approximation to the McCall worker's value function that is produce
 We'll use this value function as a benchmark later after we have done some Q-learning.
 
 ```{code-cell} ipython3
-print(valfunc_VFI)
+print(valfunc_vfi)
 ```
 
-## Implied Quality Function  $Q$
+## Implied quality function  $Q$
 
 
-A **quality function** $Q$ map  state-action pairs into optimal values.
+A **quality function** $Q$ maps state-action pairs into optimal values.
 
 They are tightly linked to optimal  value functions.
 
@@ -275,7 +284,7 @@ Q\left(w,\text{reject}\right) & =c+\beta\int\max_{\text{accept, reject}}\left\{ 
 $$ (eq:impliedq)
 
 
-Note that the first equation of system {eq}`eq:impliedq` presumes that after  the agent has  accepted an offer, he will not have the objection to reject that same offer in the future.
+Note that the first equation of system {eq}`eq:impliedq` presumes that after  the agent has  accepted an offer, he will not have the option to reject that same offer in the future.
 
 These equations are aligned with the Bellman equation for the worker's  optimal value function that we studied in {doc}`this quantecon lecture <mccall_model>`.
 
@@ -313,7 +322,7 @@ $$
 
 +++
 
-## From Probabilities  to Samples
+## From probabilities  to samples
 
 We noted  above that  the optimal Q function for our McCall worker satisfies the Bellman equations
 
@@ -326,7 +335,7 @@ $$ (eq:probtosample1)
 
 Notice the integral over $F(w')$ on the second line.
 
-Erasing the integral sign sets the stage for an illegitmate argument that can get us started thinking about  Q-learning.
+Erasing the integral sign sets the stage for an illegitimate argument that can get us started thinking about  Q-learning.
 
 Thus, construct a difference  equation system that keeps the first equation of {eq}`eq:probtosample1`
 but replaces the second by removing integration over $F (w')$:
@@ -456,7 +465,7 @@ pseudo-code for   our McCall worker to do Q-learning:
 
 4. Update the state associated with the chosen action and compute $\widetilde{TD}$ according to {eq}`eq:old4` and update $\widetilde{Q}$ according to {eq}`eq:old3`.
 
-5.  Either draw a new state  $w'$ if required or else take existing wage if and update the Q-table again according to {eq}`eq:old3`.
+5.  Either draw a new state  $w'$ if required or else take the existing wage and update the Q-table again according to {eq}`eq:old3`.
 
 6. Stop when the old and new Q-tables are close enough, i.e., $\lVert\tilde{Q}^{new}-\tilde{Q}^{old}\rVert_{\infty}\leq\delta$ for given $\delta$ or if the worker keeps accepting for $T$ periods for a prescribed $T$.
 
@@ -474,7 +483,7 @@ The Q-table is updated via temporal difference learning.
 
 We iterate this until convergence of the Q-table or the maximum length of an episode is reached.
 
-Multiple episodes allow the agent to start afresh and visit states that she was less likely to visit from the terminal state of a previos episode.
+Multiple episodes allow the agent to start afresh and visit states that she was less likely to visit from the terminal state of a previous episode.
 
 For example, an agent who has accepted a wage offer based on her Q-table will be less likely to draw a new offer from other parts of the wage distribution.
 
@@ -488,127 +497,141 @@ For simplicity and convenience, we let `s` represent the state index between $0$
 
 The first column of the Q-table represents the value associated with rejecting the wage and the second represents accepting the wage.
 
-We use `numba` compilation to accelerate computations.
+We use JAX compilation to accelerate computations.
 
 ```{code-cell} ipython3
-params=[
-    ('c', float64),            # unemployment compensation
-    ('β', float64),            # discount factor
-    ('w', float64[:]),         # array of wage values, w[i] = wage at state i
-    ('q', float64[:]),         # array of probabilities
-    ('eps', float64),          # for epsilon greedy algorithm
-    ('δ', float64),            # Q-table threshold
-    ('lr', float64),           # the learning rate α
-    ('T', int64),              # maximum periods of accepting
-    ('quit_allowed', int64)    # whether quit is allowed after accepting the wage offer
-]
+class QLearningMcCall(NamedTuple):
+      c: float = 25                           # unemployment compensation
+      β: float = 0.99                         # discount factor
+      w: jnp.ndarray = w_default              # array of wage values, w[i] = wage at state i
+      q: jnp.ndarray = q_default              # array of probabilities
+      ε: float = 0.1                          # for ε greedy algorithm
+      δ: float = 1e-5                         # Q-table threshold
+      lr: float = 0.5                         # the learning rate α
+      T: int = 10000                          # maximum periods of accepting
+      quit_allowed: int = 0                   # whether quit is allowed
 
-@jitclass(params)
-class Qlearning_McCall:
-    def __init__(self, c=25, β=0.99, w=w_default, q=q_default, eps=0.1,
-                 δ=1e-5, lr=0.5, T=10000, quit_allowed=0):
-
-        self.c, self.β = c, β
-        self.w, self.q = w, q
-        self.eps, self.δ, self.lr, self.T = eps, δ, lr, T
-        self.quit_allowed = quit_allowed
+@jax.jit
+def draw_offer_index(model, key):
+    """
+    Draw a state index from the wage distribution.
+    """
+    q = model.q
+    random_val = jax.random.uniform(key)
+    return jnp.searchsorted(jnp.cumsum(q), random_val, side="right")
 
 
-    def draw_offer_index(self):
-        """
-        Draw a state index from the wage distribution.
-        """
+@jax.jit
+def temp_diff(model, qtable, state, accept, key):
+    """
+    Compute the TD associated with state and action.
+    """
+    c, β, w = model.c, model.β, model.w
 
-        q = self.q
-        return np.searchsorted(np.cumsum(q), np.random.random(), side="right")
+    def reject_case():
+        state_next = draw_offer_index(model, key)
+        td = c + β * jnp.max(qtable[state_next, :]) - qtable[state, accept]
+        return td, state_next
 
-    def temp_diff(self, qtable, state, accept):
-        """
-        Compute the TD associated with state and action.
-        """
+    def accept_case():
+        state_next = state
+        value_if_no_quit = (w[state_next] + β * jnp.max(qtable[state_next, :])
+                              - qtable[state, accept])
+        value_if_quit = (w[state_next] + β * qtable[state_next, 1]
+                           - qtable[state, accept])
+        td = jnp.where(model.quit_allowed == 0,
+                         value_if_no_quit,
+                         value_if_quit)
+        return td, state_next
 
-        c, β, w = self.c, self.β, self.w
+    return jax.lax.cond(accept == 0, reject_case, accept_case)
 
-        if accept==0:
-            state_next = self.draw_offer_index()
-            TD = c + β*np.max(qtable[state_next, :]) - qtable[state, accept]
-        else:
-            state_next = state
-            if self.quit_allowed == 0:
-                TD = w[state_next] + β*np.max(qtable[state_next, :]) - qtable[state, accept]
-            else:
-                TD = w[state_next] + β*qtable[state_next, 1] - qtable[state, accept]
 
-        return TD, state_next
+@jax.jit
+def run_one_epoch(model, qtable, key, max_times=20000):
+    """Run an "epoch"."""
+    ε, δ, lr, T = model.ε, model.δ, model.lr, model.T
 
-    def run_one_epoch(self, qtable, max_times=20000):
-        """
-        Run an "epoch".
-        """
+    # Split keys for multiple random operations
+    key, subkey1, subkey2 = jax.random.split(key, 3)
 
-        c, β, w = self.c, self.β, self.w
-        eps, δ, lr, T = self.eps, self.δ, self.lr, self.T
+    # Initial state
+    s0 = draw_offer_index(model, subkey1)
 
-        s0 = self.draw_offer_index()
-        s = s0
-        accept_count = 0
+    def body_fun(state):
+        qtable, s, accept_count, t, key = state
 
-        for t in range(max_times):
+        # Split key for this iteration's random operations
+        key, action_key, td_key = jax.random.split(key, 3)
 
-            # choose action
-            accept = np.argmax(qtable[s, :])
-            if np.random.random()<=eps:
-                accept = 1 - accept
+        # Choose action (ε-greedy)
+        accept = jnp.argmax(qtable[s, :])
+        random_val = jax.random.uniform(action_key)
+        accept = jnp.where(random_val <= ε, 1 - accept, accept)
 
-            if accept == 1:
-                accept_count += 1
-            else:
-                accept_count = 0
+        # Update accept count
+        accept_count = jnp.where(accept == 1, accept_count + 1, 0)
 
-            TD, s_next = self.temp_diff(qtable, s, accept)
+        # Compute temporal difference
+        td, s_next = temp_diff(model, qtable, s, accept, td_key)
 
-            # update qtable
-            qtable_new = qtable.copy()
-            qtable_new[s, accept] = qtable[s, accept] + lr*TD
+        # Update qtable
+        qtable_new = qtable.at[s, accept].add(lr * td)
 
-            if np.max(np.abs(qtable_new-qtable))<=δ:
-                break
+        # Calculate error
+        error = jnp.max(jnp.abs(qtable_new - qtable))
 
-            if accept_count == T:
-                break
+        return qtable_new, s_next, accept_count, t + 1, key
 
-            s, qtable = s_next, qtable_new
+    def cond_fun(state):
+        qtable, s, accept_count, t, key = state
+        # for first interaction, just continue since error is large
+        # for subsequent interactions, compute actual error
+        error = jnp.where(t==0, δ + 1, jnp.max(jnp.abs(qtable - state[0])))
 
-        return qtable_new
+        continue_condition = (error > δ) & (accept_count < T) & (t < max_times)
+        return continue_condition
 
-@jit
-def run_epochs(N, qlmc, qtable):
+    # Initial state: (qtable, state, accept_count, iteration, key)
+    init_state = (qtable, s0, 0, 0, subkey2)
+    final_qtable, final_s, final_accept_count, final_t, final_key = jax.lax.while_loop(
+        cond_fun, body_fun, init_state
+    )
+
+    return final_qtable
+
+
+def run_epochs(N, qlmc, qtable, key):
     """
     Run epochs N times with qtable from the last iteration each time.
     """
-
     for n in range(N):
-        if n%(N/10)==0:
+        if n % max(1, N // 10) == 0:
             print(f"Progress: EPOCHs = {n}")
-        new_qtable = qlmc.run_one_epoch(qtable)
-        qtable = new_qtable
+
+        # Split key for this epoch
+        key, subkey = jax.random.split(key)
+        qtable = run_one_epoch(qlmc, qtable, subkey)
 
     return qtable
 
-def valfunc_from_qtable(qtable):
-    return np.max(qtable, axis=1)
 
-def compute_error(valfunc, valfunc_VFI):
-    return np.mean(np.abs(valfunc-valfunc_VFI))
+def valfunc_from_qtable(qtable):
+    return jnp.max(qtable, axis=1)
+
+
+def compute_error(valfunc, valfunc_vfi):
+    return jnp.mean(jnp.abs(valfunc - valfunc_vfi))
 ```
 
 ```{code-cell} ipython3
-# create an instance of Qlearning_McCall
-qlmc = Qlearning_McCall()
+# create an instance of QLearningMcCall
+qlmc = QLearningMcCall()
 
 # run
-qtable0 = np.zeros((len(w_default), 2))
-qtable = run_epochs(20000, qlmc, qtable0)
+qtable0 = jnp.zeros((len(w_default), 2))
+key, subkey = jax.random.split(key)
+qtable = run_epochs(20000, qlmc, qtable0, subkey)
 ```
 
 ```{code-cell} ipython3
@@ -625,7 +648,7 @@ print(valfunc_qlr)
 ```{code-cell} ipython3
 # plot
 fig, ax = plt.subplots(figsize=(10,6))
-ax.plot(w_default, valfunc_VFI, '-o', label='VFI')
+ax.plot(w_default, valfunc_vfi, '-o', label='VFI')
 ax.plot(w_default, valfunc_qlr, '-o', label='QL')
 ax.set_xlabel('wages')
 ax.set_ylabel('optimal value')
@@ -641,7 +664,7 @@ n, a, b = 30, 200, 100                        # default parameters
 q_new = BetaBinomial(n, a, b).pdf()           # default choice of q
 
 w_min, w_max = 10, 60
-w_new = np.linspace(w_min, w_max, n+1)
+w_new = jnp.linspace(w_min, w_max, n+1)
 
 
 # plot distribution of wage offer
@@ -651,51 +674,50 @@ ax.set_xlabel('wages')
 ax.set_ylabel('probabilities')
 
 plt.show()
-
-# VFI
-mcm = McCallModel(w=w_new, q=q_new)
-valfunc_VFI, flag = mcm.VFI()
 ```
 
 ```{code-cell} ipython3
-mcm = McCallModel(w=w_new, q=q_new)
-valfunc_VFI, flag = mcm.VFI()
-valfunc_VFI
+# vfi
+mcm = create_mccall_model(w=w_new, q=q_new)
+valfunc_vfi, converged = vfi(mcm)
+valfunc_vfi
 ```
 
 ```{code-cell} ipython3
-def plot_epochs(epochs_to_plot, quit_allowed=1):
-    "Plot value function implied by outcomes of an increasing number of epochs."
-    qlmc_new = Qlearning_McCall(w=w_new, q=q_new, quit_allowed=quit_allowed)
-    qtable = np.zeros((len(w_new),2))
-    epochs_to_plot = np.asarray(epochs_to_plot)
-    # plot
-    fig, ax = plt.subplots(figsize=(10,6))
-    ax.plot(w_new, valfunc_VFI, '-o', label='VFI')
+def plot_epochs(epochs_to_plot, quit_allowed=1, key=key):
+      "Plot value function implied by outcomes of an increasing number of epochs."
 
-    max_epochs = np.max(epochs_to_plot)
-    # iterate on epoch numbers
-    for n in range(max_epochs + 1):
-        if n%(max_epochs/10)==0:
-            print(f"Progress: EPOCHs = {n}")
-        if n in epochs_to_plot:
-            valfunc_qlr = valfunc_from_qtable(qtable)
-            error = compute_error(valfunc_qlr, valfunc_VFI)
+      qlmc_new = QLearningMcCall(w=w_new, q=q_new, quit_allowed=quit_allowed)
+      qtable = jnp.zeros((len(w_new),2))
+      epochs_to_plot = jnp.asarray(epochs_to_plot)
+      # plot
+      fig, ax = plt.subplots(figsize=(10,6))
+      ax.plot(w_new, valfunc_vfi, '-o', label='VFI')
 
-            ax.plot(w_new, valfunc_qlr, '-o', label=f'QL:epochs={n}, mean error={error}')
+      max_epochs = int(jnp.max(epochs_to_plot))  # Convert to Python int
+      # iterate on epoch numbers
+      for n in range(max_epochs + 1):
+          if n % max(1, max_epochs // 10) == 0:
+              print(f"Progress: EPOCHs = {n}")
+          if n in epochs_to_plot:
+              valfunc_qlr = valfunc_from_qtable(qtable)
+              error = compute_error(valfunc_qlr, valfunc_vfi)
 
+              ax.plot(w_new, valfunc_qlr, '-o', label=f'QL:epochs={n}, mean error={error}')
 
-        new_qtable = qlmc_new.run_one_epoch(qtable)
-        qtable = new_qtable
+          # Split key for this epoch
+          key, subkey = jax.random.split(key)
+          qtable = run_one_epoch(qlmc_new, qtable, subkey)
 
-    ax.set_xlabel('wages')
-    ax.set_ylabel('optimal value')
-    ax.legend(loc='lower right')
-    plt.show()
+      ax.set_xlabel('wages')
+      ax.set_ylabel('optimal value')
+      ax.legend(bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=2)
+      plt.subplots_adjust(bottom=0.2)
+      plt.show()
 ```
 
 ```{code-cell} ipython3
-plot_epochs(epochs_to_plot=[100, 1000, 10000, 100000, 200000])
+plot_epochs(epochs_to_plot=[100, 1000, 10000, 100000, 200000], key=key)
 ```
 
 The above graphs indicates that
@@ -704,7 +726,7 @@ The above graphs indicates that
 
 * the quality of approximation to the "true" value function computed by value function iteration improves for longer epochs
 
-## Employed Worker Can't Quit
+## Employed worker can't quit
 
 
 The preceding version of temporal difference Q-learning described in  equation system  {eq}`eq:old4` lets an employed  worker quit, i.e., reject her wage as an incumbent and instead receive unemployment compensation this period
@@ -715,7 +737,7 @@ This is an option that the McCall worker described in {doc}`this quantecon lectu
 See {cite}`Ljungqvist2012`, chapter 6 on search, for a proof.
 
 But in the context of Q-learning, giving the worker the option to quit and get unemployment compensation while
-unemployed turns out to accelerate the learning process by promoting experimentation vis a vis premature
+unemployed turns out to accelerate the learning process by promoting experimentation versus premature
 exploitation only.
 
 To illustrate this, we'll amend our formulas for temporal differences to forbid an employed worker from quitting a job she had accepted earlier.
@@ -731,7 +753,7 @@ $$ (eq:temp-diff)
 
 It turns out that formulas {eq}`eq:temp-diff` combined with our Q-learning recursion {eq}`eq:old3` can lead our agent to eventually learn the optimal value function as well as in the case where an option to redraw can be exercised.
 
-But learning is slower because  an agent who ends up accepting a wage offer prematurally loses the option to explore new states in the same episode and to adjust the value associated with that state.
+But learning is slower because  an agent who ends up accepting a wage offer prematurely loses the option to explore new states in the same episode and to adjust the value associated with that state.
 
 This can lead to inferior outcomes when the number of epochs/episodes is low.
 
@@ -741,12 +763,12 @@ But if we increase the number of epochs/episodes, we can observe that the error 
 We illustrate these possibilities with the following code and graph.
 
 ```{code-cell} ipython3
-plot_epochs(epochs_to_plot=[100, 1000, 10000, 100000, 200000], quit_allowed=0)
+plot_epochs(epochs_to_plot=[100, 1000, 10000, 100000, 200000], quit_allowed=0, key=key)
 ```
 
-## Possible Extensions
+## Possible extensions
 
-To extend the algorthm to handle problems with continuous state spaces,
+To extend the algorithm to handle problems with continuous state spaces,
 a typical approach is to restrict Q-functions and policy functions to take particular
 functional forms.
 
