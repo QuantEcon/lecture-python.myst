@@ -1119,11 +1119,52 @@ mystnb:
     name: fig-csdv-coefficient-paths
 ---
 theta_mean = posterior['SD'].mean(axis=2)
-fig, ax = plt.subplots()
-ax.plot(data['dates'], theta_mean.T, lw=2)
-ax.axhline(0, color='0.65', lw=1)
-ax.set_xlabel('year')
-ax.set_ylabel('coefficient')
+coefficient_labels = (
+    'constant',
+    r'$i_{t-1}$',
+    r'$u_{t-1}$',
+    r'$\pi_{t-1}$',
+    r'$i_{t-2}$',
+    r'$u_{t-2}$',
+    r'$\pi_{t-2}$',
+)
+equation_labels = (
+    'interest equation',
+    'unemployment equation',
+    'inflation equation',
+)
+
+
+def plot_coefficient_blocks(axes, dates, theta_path):
+    """Plot seven labeled coefficients for each VAR equation."""
+    first_lines = None
+    for equation, (ax, label) in enumerate(zip(axes, equation_labels)):
+        start = equation * len(coefficient_labels)
+        stop = start + len(coefficient_labels)
+        lines = ax.plot(dates, theta_path[start:stop].T, lw=2)
+        for line, coefficient_label in zip(lines, coefficient_labels):
+            line.set_label(coefficient_label)
+        if first_lines is None:
+            first_lines = lines
+        ax.axhline(0, color='0.65', lw=1)
+        ax.set_xlabel('year')
+        ax.set_ylabel(f'{label} coefficient')
+    return first_lines
+
+
+fig, axes = plt.subplots(1, 3, figsize=(10, 4), sharex=True)
+coefficient_lines = plot_coefficient_blocks(
+    axes,
+    data['dates'],
+    theta_mean,
+)
+fig.legend(
+    coefficient_lines,
+    coefficient_labels,
+    loc='lower center',
+    ncol=4,
+)
+plt.tight_layout(rect=(0, 0.17, 1, 1))
 fig.show()
 ```
 
@@ -1284,8 +1325,10 @@ for row, (left, right, label) in enumerate(correlations):
     scale = np.sqrt(r_mean[:, left, left] * r_mean[:, right, right])
     axes[row, 1].plot(data['dates'], r_mean[:, left, right] / scale, lw=2)
     axes[row, 1].text(0.03, 0.88, label, transform=axes[row, 1].transAxes)
-axes[0, 0].set_title(r'Innovation standard deviation $\times 10^4$')
-axes[0, 1].set_title('Correlations')
+axes[1, 0].set_ylabel(
+    r'innovation standard deviation $\times 10^4$'
+)
+axes[1, 1].set_ylabel('correlation')
 axes[-1, 0].set_xlabel('year')
 axes[-1, 1].set_xlabel('year')
 plt.tight_layout()
@@ -1331,16 +1374,16 @@ early in the estimated path.
 The signs of these correlations caution against interpreting the
 nominal-interest innovation as a structural monetary-policy shock.
 
-The log determinant of the posterior mean covariance matrix summarizes the total
-one-step uncertainty entering the system {cite}`Whittle1953`.
+The log determinant of the posterior mean covariance matrix summarizes the
+generalized one-step innovation variance {cite}`Whittle1953`.
 
-The following transformation summarizes total prediction variance.
+The following transformation summarizes generalized innovation variance.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Total prediction variance
+    caption: Generalized innovation variance
     name: fig-csdv-total-variance
 ---
 sign, logdet_r = np.linalg.slogdet(r_mean)
@@ -1352,8 +1395,8 @@ ax.set_ylabel(r'$\log |E(R_t\mid T)|$')
 fig.show()
 ```
 
-Total prediction variance rises in two steps before 1981 and then falls during
-the Volcker era.
+Generalized innovation variance rises in two steps before 1981 and then falls
+during the Volcker era.
 
 The pattern documents substantial movement in volatility and gives the bad-luck
 account an important role.
@@ -1418,22 +1461,28 @@ mystnb:
     caption: Core inflation and natural rate
     name: fig-csdv-local-means
 ---
+def annual_indices(dates, start=1960):
+    """Return the final observation in each year from a start date."""
+    year_values = np.floor(dates + 1e-8).astype(int)
+    return np.array(
+        [
+            np.flatnonzero(year_values == year)[-1]
+            for year in np.unique(year_values)
+            if year >= start
+        ]
+    )
+
+
 years = np.floor(data['dates'] + 1e-8).astype(int)
-annual = np.array(
-    [
-        np.flatnonzero(years == year)[-1]
-        for year in np.unique(years)
-        if year >= 1960
-    ]
-)
+annual = annual_indices(data['dates'])
 
 fig, ax = plt.subplots()
-ax.plot(data['dates'][annual], core_inflation[annual], 'o-', lw=2,
+ax.plot(data['dates'][annual], 100 * core_inflation[annual], 'o-', lw=2,
         markersize=3, label='core inflation')
-ax.plot(data['dates'][annual], natural_rate[annual], '+-', lw=2,
+ax.plot(data['dates'][annual], 100 * natural_rate[annual], '+-', lw=2,
         markersize=5, label='natural rate')
 ax.set_xlabel('year')
-ax.set_ylabel('annual rate')
+ax.set_ylabel('percent')
 ax.legend()
 fig.show()
 ```
@@ -1541,8 +1590,8 @@ g_{\pi\pi}(\omega,t)
 so $g_{\pi\pi}(0,t)$ measures persistence after adjusting for changes in
 innovation variance.
 
-We compute frequency zero rather than the full three-dimensional spectral
-surface.
+The first figure isolates frequency zero as a one-dimensional persistence
+summary.
 
 ```{code-cell} ipython3
 ---
@@ -1599,6 +1648,143 @@ power $(1+\rho)/[2\pi(1-\rho)]$.
 Values between 2 and 10 correspond to $\rho$ between approximately $0.85$ and
 $0.97$.
 
+The zero-frequency path omits the rest of the frequency distribution.
+
+The following heatmaps show how raw and variance-normalized inflation power move
+over both time and frequency.
+
+```{code-cell} ipython3
+def inflation_spectrum_surface(theta_path, covariance_path, frequencies):
+    """Evaluate the date-local inflation spectrum on a frequency grid."""
+    raw = np.empty((len(frequencies), theta_path.shape[1]))
+    normalized = np.empty_like(raw)
+    for date in range(theta_path.shape[1]):
+        raw[:, date], normalized[:, date] = inflation_spectrum(
+            theta_path[:, date],
+            covariance_path[date],
+            frequencies,
+        )
+    return raw, normalized
+
+
+spectrum_frequencies = np.linspace(0, 0.5, 41)
+raw_spectrum, normalized_spectrum = inflation_spectrum_surface(
+    theta_mean,
+    r_mean,
+    spectrum_frequencies,
+)
+```
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Inflation spectra over time
+    name: fig-csdv-inflation-spectra
+---
+spectrum_start = data['dates'] >= 1960
+fig, axes = plt.subplots(1, 2, figsize=(9, 4), sharey=True)
+surfaces = (
+    (raw_spectrum, 'raw spectrum', 'log10 power'),
+    (normalized_spectrum, 'normalized spectrum', 'log10 normalized power'),
+)
+for ax, (surface, title, color_label) in zip(axes, surfaces):
+    image = ax.pcolormesh(
+        data['dates'][spectrum_start],
+        spectrum_frequencies,
+        np.log10(surface[:, spectrum_start]),
+        shading='auto',
+    )
+    ax.set_xlabel('year')
+    ax.set_ylabel(f'{title}\ncycles per quarter')
+    fig.colorbar(image, ax=ax, label=color_label)
+plt.tight_layout()
+fig.show()
+```
+
+Raw low-frequency power rises most sharply when persistence and innovation
+variance are both elevated.
+
+Normalization removes the changing local variance and leaves a broad
+low-frequency ridge through the 1970s that recedes after 1980.
+
+Point estimates do not reveal how strongly the data locate these paths.
+
+We therefore compute the same annual features from every retained draw.
+
+```{code-cell} ipython3
+def posterior_feature_draws(result, indices):
+    """Compute selected local means and persistence for retained draws."""
+    n_draws = result['SD'].shape[2]
+    shape = (len(indices), n_draws)
+    core = np.empty(shape)
+    natural = np.empty(shape)
+    persistence = np.empty(shape)
+    for draw in range(n_draws):
+        core[:, draw], natural[:, draw] = local_means(
+            result['SD'][:, indices, draw]
+        )
+        for row, date in enumerate(indices):
+            covariance = innovation_covariance(
+                result['HD'][date + 1, :, draw],
+                result['CD'][:, draw],
+            )
+            persistence[row, draw] = inflation_spectrum(
+                result['SD'][:, date, draw],
+                covariance,
+                zero_frequency,
+            )[1][0]
+    return {
+        'core': 100 * core,
+        'natural': 100 * natural,
+        'persistence': persistence,
+    }
+
+
+historical_feature_draws = posterior_feature_draws(posterior, annual)
+```
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Uncertainty in inflation dynamics
+    name: fig-csdv-feature-uncertainty
+---
+fig, axes = plt.subplots(3, 1, figsize=(9, 8), sharex=True)
+feature_specs = (
+    ('core', 'core inflation (%)'),
+    ('natural', 'natural rate (%)'),
+    ('persistence', r'$g_{\pi\pi}(0,t)$'),
+)
+for ax, (key, ylabel) in zip(axes, feature_specs):
+    lower, median, upper = np.quantile(
+        historical_feature_draws[key],
+        (0.05, 0.5, 0.95),
+        axis=1,
+    )
+    line, = ax.plot(data['dates'][annual], median, lw=2)
+    ax.fill_between(
+        data['dates'][annual],
+        lower,
+        upper,
+        color=line.get_color(),
+        alpha=0.2,
+    )
+    ax.set_ylabel(ylabel)
+axes[-1].set_xlabel('year')
+plt.tight_layout()
+fig.show()
+```
+
+The shaded regions are pointwise 90 percent posterior intervals rather than a
+simultaneous band for each whole path.
+
+The solid line is the posterior median of the nonlinear feature at each date.
+
+Uncertainty expands when local roots approach one, especially for long-horizon
+means and zero-frequency persistence.
+
 Core inflation and inflation persistence move closely together over the sample.
 
 The following plot shows the two series together.
@@ -1616,7 +1802,7 @@ core_persistence_correlation = np.corrcoef(
 
 fig, ax = plt.subplots()
 ax.plot(data['dates'][annual], 100 * core_inflation[annual], 'o-',
-        lw=2, markersize=3, label='core inflation (x100)')
+        lw=2, markersize=3, label='core inflation (%)')
 ax.plot(data['dates'][annual], inflation_persistence[annual], 'x-',
         lw=2, markersize=4, label='normalized spectrum at zero')
 ax.set_xlabel('year')
@@ -1665,7 +1851,13 @@ The following function implements equation (34) and footnote 18 from the
 stationary second moments of each local VAR.
 
 ```{code-cell} ipython3
-def policy_activism(theta, covariance, h_pi=4, h_u=2):
+def policy_activism(
+    theta,
+    covariance,
+    h_pi=4,
+    h_u=2,
+    return_denominator=False,
+):
     """Compute the date-local population-2SLS activism coefficient."""
     _, companion = companion_matrix(theta)
     innovation = np.zeros((6, 6))
@@ -1689,14 +1881,40 @@ def policy_activism(theta, covariance, h_pi=4, h_u=2):
     regressor_covariance = loadings @ stationary @ loadings.T
     dependent_covariance = loadings @ stationary @ companion.T @ selectors[0]
     coefficients = np.linalg.solve(regressor_covariance, dependent_covariance)
-    return coefficients[0] / (1 - coefficients[2])
+    denominator = 1 - coefficients[2]
+    activism = coefficients[0] / denominator
+    if return_denominator:
+        return activism, denominator
+    return activism
 
 
-activism = np.array(
+def break_ratio_crossings(values, denominator):
+    """Break a ratio path on both sides of denominator sign changes."""
+    broken = np.asarray(values, dtype=float).copy()
+    denominator = np.asarray(denominator, dtype=float)
+    crossings = np.flatnonzero(
+        denominator[1:] * denominator[:-1] <= 0
+    ) + 1
+    broken[crossings] = np.nan
+    broken[np.maximum(crossings - 1, 0)] = np.nan
+    return broken
+
+
+activism_pairs = np.array(
     [
-        policy_activism(theta_mean[:, t], r_mean[t])
+        policy_activism(
+            theta_mean[:, t],
+            r_mean[t],
+            return_denominator=True,
+        )
         for t in range(len(data['dates']))
     ]
+)
+activism = activism_pairs[:, 0]
+activism_denominator = activism_pairs[:, 1]
+activism_path = break_ratio_crossings(
+    activism,
+    activism_denominator,
 )
 ```
 
@@ -1707,11 +1925,11 @@ covariances.
 ---
 mystnb:
   figure:
-    caption: Monetary policy activism
+    caption: Plug-in monetary policy activism
     name: fig-csdv-policy-activism
 ---
 fig, ax = plt.subplots()
-ax.plot(data['dates'], activism, lw=2)
+ax.plot(data['dates'], activism_path, lw=2)
 ax.axhline(1, color='0.45', lw=1)
 ax.set_xlabel('year')
 ax.set_ylabel('activism coefficient')
@@ -1742,11 +1960,12 @@ activism_persistence_correlation = np.corrcoef(
 
 fig, axes = plt.subplots(1, 2, figsize=(9, 4))
 pairs = (
-    (core_inflation, 'core inflation'),
+    (100 * core_inflation, 'core inflation (%)'),
     (inflation_persistence, 'normalized spectrum at zero'),
 )
 for ax, (feature, label) in zip(axes, pairs):
     ax.scatter(activism[annual], feature[annual], s=18)
+    ax.axvline(1, color='0.45', lw=1)
     ax.set_xlabel('policy activism')
     ax.set_ylabel(label)
 plt.tight_layout()
@@ -1830,11 +2049,54 @@ They support a move from passive policy in the mid-1970s toward active policy
 after 1980, but overlapping posterior tails keep that conclusion probabilistic
 rather than dispositive.
 
+The central draw distributions expose the overlap and skewness behind those
+probabilities.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Central posterior policy activism
+    name: fig-csdv-activism-distributions
+---
+pooled_activity = np.concatenate(tuple(activity_draws.values()))
+activity_limits = np.quantile(pooled_activity, (0.05, 0.95))
+activity_bins = np.linspace(*activity_limits, 31)
+
+fig, ax = plt.subplots()
+for year in selected_years:
+    central_draws = activity_draws[year]
+    central_draws = central_draws[
+        (central_draws >= activity_limits[0])
+        & (central_draws <= activity_limits[1])
+    ]
+    ax.hist(
+        central_draws,
+        bins=activity_bins,
+        histtype='step',
+        lw=2,
+        label=str(year),
+    )
+ax.axvline(1, color='0.45', lw=1)
+ax.set_xlabel('activism coefficient')
+ax.set_ylabel('retained draws')
+ax.legend()
+fig.show()
+```
+
+The figure plots unmodified draws inside the pooled 5th and 95th percentiles,
+while all probability calculations above use every draw.
+
 (csdv-updated-evidence)=
-## Updating the evidence
+## Another quarter-century of evidence
 
 The frozen sample ends in 2000Q4, so it misses the financial crisis, the
 zero-interest-rate period, the pandemic, and the 2021--2022 inflation surge.
+
+The question is whether these episodes alter the earlier evidence about drift,
+volatility, inflation persistence, and systematic policy.
+
+### The new observations
 
 To examine those observations, we append current data after 2000Q4 while leaving
 the frozen history unchanged.
@@ -1855,6 +2117,9 @@ the third month, unemployment is a three-month average, and the interest rate
 comes from the first month.
 
 ```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 fred_url = (
     'https://fred.stlouisfed.org/graph/fredgraph.csv?'
     'id=CPIAUCSL%2CUNRATE%2CGS3M'
@@ -1864,14 +2129,6 @@ fred_monthly = pd.read_csv(
     parse_dates=['observation_date'],
 ).set_index('observation_date')
 
-fred_last_dates = pd.Series(
-    {
-        series: fred_monthly[series].last_valid_index().date()
-        for series in fred_monthly.columns
-    },
-    name='last observation',
-)
-fred_last_dates.to_frame()
 ```
 
 [BLS reports](https://www.bls.gov/web/empsit/cpsee_e12.pdf) that reliable
@@ -1879,13 +2136,14 @@ fred_last_dates.to_frame()
 observation was not collected during the federal shutdown.
 
 Consequently, 2025Q4 has no authoritative three-month unemployment average, and
-the longest fully observed contiguous extension ends in 2025Q3.
+the updated estimation sample ends in 2025Q3.
 
-We estimate that sample first, then use a linear midpoint interpolation for
-October 2025 in a separate sensitivity run that reaches the latest complete
-quarter.
+This endpoint keeps the extension fully observed and quarterly contiguous.
 
 ```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 def fred_quarterly_table(unemployment_monthly):
     """Construct transformed quarterly observations after 2000Q4."""
     interest = fred_monthly.loc[
@@ -1940,12 +2198,11 @@ complete_extension = quarterly_unfilled.loc[
     quarterly_unfilled.index < first_incomplete_quarter
 ]
 
-unemployment_interpolated = unemployment_monthly.interpolate(
-    method='linear',
-    limit=1,
-    limit_area='inside',
+frozen_table = pd.read_csv(data_path)
+extended_observations = pd.concat(
+    (frozen_table, complete_extension.reset_index(drop=True)),
+    ignore_index=True,
 )
-latest_extension = fred_quarterly_table(unemployment_interpolated)
 
 
 def quarter_label(timestamp):
@@ -1955,14 +2212,9 @@ def quarter_label(timestamp):
 
 update_summary = pd.Series(
     {
-        'fully observed sample end': quarter_label(
+        'updated sample end': quarter_label(
             complete_extension.index[-1]
         ),
-        'latest sensitivity end': quarter_label(latest_extension.index[-1]),
-        'interpolated month': missing_unemployment[0].strftime('%B %Y'),
-        'interpolated unemployment (%)': unemployment_interpolated.loc[
-            missing_unemployment[0]
-        ],
         'retrieval date': pd.Timestamp.now(
             tz='America/New_York'
         ).date().isoformat(),
@@ -1972,79 +2224,95 @@ update_summary = pd.Series(
 update_summary.to_frame()
 ```
 
-The missing October CPI observation does not require interpolation because the
-quarterly inflation measure uses December.
-
-The sensitivity value for October unemployment is $4.45$ percent, the midpoint
-of September and November, but it is an assumption rather than an official
-observation.
+No missing value is filled or otherwise treated as observed.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: U.S. data after 2000
+    caption: Extended data through 2025Q3
     name: fig-csdv-updated-data
 ---
 fig, axes = plt.subplots(3, 1, figsize=(9, 7), sharex=True)
+extended_plot = extended_observations[
+    extended_observations['date'] >= 1959
+]
+updated_sample_end = complete_extension['date'].iloc[-1]
 axes[0].plot(
-    latest_extension.index,
-    400 * latest_extension['dp'],
+    extended_plot['date'],
+    400 * extended_plot['dp'],
     lw=2,
 )
 axes[0].set_ylabel('inflation (annual %)')
 axes[1].plot(
-    latest_extension.index,
-    100 * latest_extension['ur'],
+    extended_plot['date'],
+    100 * extended_plot['ur'],
     lw=2,
 )
 axes[1].set_ylabel('unemployment (%)')
 axes[2].plot(
-    latest_extension.index,
-    400 * np.expm1(latest_extension['y3']),
+    extended_plot['date'],
+    400 * np.expm1(extended_plot['y3']),
     lw=2,
 )
 axes[2].set_ylabel('interest (annual %)')
 axes[2].set_xlabel('year')
+for index, ax in enumerate(axes):
+    frozen_label = 'frozen sample end' if index == 0 else None
+    sample_end_label = 'updated sample end' if index == 0 else None
+    ax.axvline(
+        2000.75,
+        color='0.65',
+        ls='--',
+        lw=1,
+        label=frozen_label,
+    )
+    ax.axvline(
+        updated_sample_end,
+        color='0.45',
+        ls=':',
+        lw=1,
+        label=sample_end_label,
+    )
+axes[0].legend()
 plt.tight_layout()
 fig.show()
 ```
 
 ```{code-cell} ipython3
-latest_observation = latest_extension.iloc[-1]
+endpoint_observation = complete_extension.iloc[-1]
 pd.Series(
     {
-        'annualized quarterly inflation (%)': 400 * latest_observation['dp'],
-        'unemployment (%)': 100 * latest_observation['ur'],
+        'annualized quarterly inflation (%)': (
+            400 * endpoint_observation['dp']
+        ),
+        'unemployment (%)': 100 * endpoint_observation['ur'],
         'three-month interest rate (%)': (
-            400 * np.expm1(latest_observation['y3'])
+            400 * np.expm1(endpoint_observation['y3'])
         ),
     },
-    name=quarter_label(latest_extension.index[-1]),
+    name=quarter_label(complete_extension.index[-1]),
 ).to_frame().round(3)
 ```
 
 The pandemic produces an exceptionally sharp unemployment movement, while the
 inflation surge is large but much shorter than the 1970s episode.
 
-We now recalibrate the same prior and run the same stable model on two appended
-samples.
+The short interest rate also spends years near zero, which makes it a less
+complete summary of the stance of policy after 2008.
 
-The longer 5,000-sweep runs retain 500 thinned draws and improve, but do not
-eliminate, serial correlation in the drift block.
+We fit the same stable model through the authoritative 2025Q3 endpoint.
 
 ```{code-cell} ipython3
 ---
-tags: [hide-output]
+tags: [hide-input, hide-output]
 ---
-frozen_table = pd.read_csv(data_path)
-
-
 def append_extension(extension):
     """Append a transformed FRED extension to the frozen history."""
     extension = extension.reset_index(drop=True)
     table = pd.concat((frozen_table, extension), ignore_index=True)
     assert table['date'].is_unique
+    assert np.allclose(np.diff(table['date']), 0.25)
     return table
 
 
@@ -2075,9 +2343,13 @@ def fit_updated_model(table):
     }
 
 
-complete_fit = fit_updated_model(append_extension(complete_extension))
-latest_fit = fit_updated_model(append_extension(latest_extension))
+updated_fit = fit_updated_model(append_extension(complete_extension))
 ```
+
+### Did coefficient drift continue?
+
+The updated posterior still puts substantial mass on economically meaningful
+coefficient drift.
 
 ```{code-cell} ipython3
 def updated_drift_diagnostics(fit):
@@ -2093,43 +2365,101 @@ def updated_drift_diagnostics(fit):
             'first-three drift share': (
                 eigenvalues[:3].sum() / eigenvalues.sum()
             ),
-            'elapsed seconds': fit['posterior']['diagnostics'][
-                'elapsed_seconds'
-            ],
         }
     )
 
 
-updated_diagnostics = pd.concat(
-    {
-        quarter_label(complete_extension.index[-1]): (
-            updated_drift_diagnostics(complete_fit)
-        ),
-        f'{quarter_label(latest_extension.index[-1])} sensitivity': (
-            updated_drift_diagnostics(latest_fit)
-        ),
-    },
-    axis=1,
+updated_label = quarter_label(complete_extension.index[-1])
+updated_diagnostics = updated_drift_diagnostics(updated_fit).to_frame(
+    name=updated_label
 ).T
 updated_diagnostics.round(3)
 ```
 
-The trace estimates are the same order of magnitude, but their low ESS and the
-visible endpoint sensitivity make a precise claim about whether the *rate* of
-drift changed unwarranted.
+The drift-rate distributions and coefficient paths provide the same views used
+for the frozen sample.
 
-The stability restriction also applies to a longer path in the updated fits, so
-a difference in $\operatorname{tr}(Q)$ cannot be attributed only to the new
-observations.
-
-We next compute volatility, local means, and persistence from each updated
-posterior-mean path.
+The dashed vertical line in updated time-series figures marks the frozen
+sample's 2000Q4 endpoint.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Updated coefficient-drift rate
+    name: fig-csdv-updated-drift-rate
+---
+fig, ax = plt.subplots()
+ax.hist(updated_fit['trace'], bins=30, histtype='step', lw=2)
+ax.axvline(
+    np.trace(updated_fit['prior']['q_center']),
+    color='C1',
+    lw=2,
+    label=r'prior $\mathrm{tr}(\bar Q)$',
+)
+ax.set_xlabel(r'$\mathrm{tr}(Q)$')
+ax.set_ylabel('frequency')
+ax.legend()
+fig.show()
+```
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Updated coefficient paths
+    name: fig-csdv-updated-coefficient-paths
+---
+fig, axes = plt.subplots(1, 3, figsize=(10, 4), sharex=True)
+updated_dates = updated_fit['data']['dates']
+updated_coefficients = updated_fit['posterior']['SD'].mean(axis=2)
+coefficient_lines = plot_coefficient_blocks(
+    axes,
+    updated_dates,
+    updated_coefficients,
+)
+for ax in axes:
+    ax.axvline(2000.75, color='0.65', ls='--', lw=1)
+fig.legend(
+    coefficient_lines,
+    coefficient_labels,
+    loc='lower center',
+    ncol=4,
+)
+plt.tight_layout(rect=(0, 0.17, 1, 1))
+fig.show()
+```
+
+The posterior mean trace is about $0.040$, but an ESS near 20 limits fine
+inferences about its magnitude.
+
+The first three eigen-directions account for about 96 percent of the posterior
+mean drift variance, so the estimated movement remains low dimensional.
+
+The stability restriction now applies to a longer path, which makes the
+posterior drift rate a property of the full 1959--2025 sample.
+
+Several coefficient paths continue moving after 2000, especially in the
+inflation equation.
+
+### Volatility after the Great Moderation
+
+The retained posterior draws let us separate the sizes and correlations of new
+innovations from changes in the VAR dynamics.
+
+```{code-cell} ipython3
+---
+tags: [hide-input]
+---
 def model_features(fit):
     """Compute plug-in features from one fitted posterior."""
     result = fit['posterior']
     theta = result['SD'].mean(axis=2)
+    stable_mean_path = np.array(
+        [is_stable(theta[:, t]) for t in range(theta.shape[1])]
+    )
+    if not np.all(stable_mean_path):
+        raise ValueError('posterior-mean coefficient path is unstable')
     covariance = mean_innovation_covariance(result['HD'], result['CD'])
     core, natural = local_means(theta)
     persistence = np.array([
@@ -2140,6 +2470,16 @@ def model_features(fit):
     ])
     sign, logdet = np.linalg.slogdet(covariance)
     assert np.all(sign > 0)
+    activism_pairs = np.array(
+        [
+            policy_activism(
+                theta[:, t],
+                covariance[t],
+                return_denominator=True,
+            )
+            for t in range(len(fit['data']['dates']))
+        ]
+    )
     return {
         'theta': theta,
         'covariance': covariance,
@@ -2147,12 +2487,165 @@ def model_features(fit):
         'natural': natural,
         'persistence': persistence,
         'logdet': logdet,
+        'activism': activism_pairs[:, 0],
+        'activism_denominator': activism_pairs[:, 1],
     }
 
 
-complete_features = model_features(complete_fit)
-latest_features = model_features(latest_fit)
+updated_features = model_features(updated_fit)
 ```
+
+The innovation covariance paths reproduce the earlier decomposition through
+2025Q3.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Updated innovation volatility and correlation
+    name: fig-csdv-updated-volatility-correlation
+---
+fig, axes = plt.subplots(3, 2, figsize=(9, 8), sharex=True)
+dates = updated_fit['data']['dates']
+covariance = updated_features['covariance']
+for row, (index, _) in enumerate(variances):
+    axes[row, 0].plot(
+        dates,
+        10000 * np.sqrt(covariance[:, index, index]),
+        lw=2,
+    )
+for row, (left, right, _) in enumerate(correlations):
+    scale = np.sqrt(
+        covariance[:, left, left] * covariance[:, right, right]
+    )
+    axes[row, 1].plot(
+        dates,
+        covariance[:, left, right] / scale,
+        lw=2,
+    )
+for row, (_, label) in enumerate(variances):
+    axes[row, 0].text(0.03, 0.88, label, transform=axes[row, 0].transAxes)
+for row, (_, _, label) in enumerate(correlations):
+    axes[row, 1].text(0.03, 0.88, label, transform=axes[row, 1].transAxes)
+for ax in axes.flat:
+    ax.axvline(2000.75, color='0.65', ls='--', lw=1)
+axes[1, 0].set_ylabel(
+    r'innovation standard deviation $\times 10^4$'
+)
+axes[1, 1].set_ylabel('correlation')
+axes[-1, 0].set_xlabel('year')
+axes[-1, 1].set_xlabel('year')
+plt.tight_layout()
+fig.show()
+```
+
+The interest-rate innovation remains largest around the Volcker transition,
+while the financial crisis is the largest inflation-volatility episode.
+
+The pandemic instead dominates unemployment volatility and aggregate
+one-step uncertainty.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Updated generalized innovation variance
+    name: fig-csdv-updated-total-variance
+---
+fig, ax = plt.subplots()
+ax.plot(
+    updated_fit['data']['dates'],
+    updated_features['logdet'],
+    lw=2,
+)
+ax.axvline(2000.75, color='0.65', ls='--', lw=1)
+ax.set_xlabel('year')
+ax.set_ylabel(r'$\log |E(R_t\mid T)|$')
+fig.show()
+```
+
+```{code-cell} ipython3
+def decimal_quarter_label(value):
+    """Format a decimal quarterly date."""
+    year = int(np.floor(value + 1e-8))
+    quarter = int(round(4 * (value - year))) + 1
+    return f'{year}Q{quarter}'
+
+
+def volatility_summary(fit, features):
+    """Summarize innovation-volatility peaks and endpoints."""
+    dates = fit['data']['dates']
+    standard_deviation = 10000 * np.sqrt(
+        np.diagonal(features['covariance'], axis1=1, axis2=2)
+    )
+    names = ('interest', 'unemployment', 'inflation')
+    return pd.DataFrame(
+        {
+            'peak quarter': [
+                decimal_quarter_label(
+                    dates[np.argmax(standard_deviation[:, index])]
+                )
+                for index in range(n_variables)
+            ],
+            r'endpoint standard deviation $\times 10^4$': (
+                standard_deviation[-1]
+            ),
+        },
+        index=names,
+    )
+
+
+updated_volatility = volatility_summary(updated_fit, updated_features)
+updated_volatility
+```
+
+All three innovation standard deviations are well below their peaks at the
+2025Q3 endpoint.
+
+This pattern supports a transient-shock interpretation inside this model, but
+it does not establish that the pandemic disturbances were structurally
+exogenous or harmless.
+
+### Core inflation and the natural rate after 2000
+
+The same local-mean calculation distinguishes temporary inflation from a shift
+in the model's long-horizon forecast.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Updated local means
+    name: fig-csdv-updated-local-means
+---
+updated_dates = updated_fit['data']['dates']
+updated_annual = annual_indices(updated_dates)
+fig, ax = plt.subplots()
+ax.plot(
+    updated_dates[updated_annual],
+    100 * updated_features['core'][updated_annual],
+    'o-',
+    lw=2,
+    markersize=3,
+    label='core inflation',
+)
+ax.plot(
+    updated_dates[updated_annual],
+    100 * updated_features['natural'][updated_annual],
+    '+-',
+    lw=2,
+    markersize=5,
+    label='natural rate',
+)
+ax.axvline(2000.75, color='0.65', ls='--', lw=1)
+ax.set_xlabel('year')
+ax.set_ylabel('percent')
+ax.legend()
+fig.show()
+```
+
+The final annual point represents 2025Q3 because the sample ends before the
+fourth quarter.
 
 ```{code-cell} ipython3
 def endpoint_features(features):
@@ -2162,31 +2655,221 @@ def endpoint_features(features):
             'core inflation (%)': 100 * features['core'][-1],
             'natural rate (%)': 100 * features['natural'][-1],
             'normalized persistence': features['persistence'][-1],
-            'log total prediction variance': features['logdet'][-1],
+            'log generalized innovation variance': features['logdet'][-1],
         }
     )
 
 
-updated_endpoints = pd.concat(
-    {
-        quarter_label(complete_extension.index[-1]): endpoint_features(
-            complete_features
-        ),
-        f'{quarter_label(latest_extension.index[-1])} sensitivity': (
-            endpoint_features(latest_features)
-        ),
-    },
-    axis=1,
-)
+updated_endpoints = endpoint_features(updated_features).to_frame(
+    name=updated_label
+).T
 updated_endpoints.round(3)
 ```
 
-The endpoint core-inflation estimates are close across the two samples, while
-the natural-rate and persistence estimates move more noticeably.
+The draw-wise annual paths show how uncertainty evolves inside the updated fit.
 
-That sensitivity is expected because local means and zero-frequency spectra
-magnify small coefficient changes near a unit root and because endpoint
-smoothing has little future data to anchor it.
+```{code-cell} ipython3
+---
+tags: [hide-input]
+---
+updated_feature_draws = posterior_feature_draws(
+    updated_fit['posterior'],
+    updated_annual,
+)
+```
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Updated feature uncertainty
+    name: fig-csdv-updated-feature-uncertainty
+---
+fig, axes = plt.subplots(3, 1, figsize=(9, 8), sharex=True)
+for ax, (key, ylabel) in zip(axes, feature_specs):
+    lower, median, upper = np.quantile(
+        updated_feature_draws[key],
+        (0.05, 0.5, 0.95),
+        axis=1,
+    )
+    line, = ax.plot(updated_dates[updated_annual], median, lw=2)
+    ax.fill_between(
+        updated_dates[updated_annual],
+        lower,
+        upper,
+        color=line.get_color(),
+        alpha=0.2,
+    )
+    ax.axvline(2000.75, color='0.65', ls='--', lw=1)
+    ax.set_ylabel(ylabel)
+axes[-1].set_xlabel('year')
+plt.tight_layout()
+fig.show()
+```
+
+The solid lines are posterior medians and the shaded regions are pointwise 90
+percent intervals rather than simultaneous whole-path bands.
+
+The endpoint rows summarize uncertainty in the three nonlinear features.
+
+```{code-cell} ipython3
+def endpoint_feature_intervals(draws):
+    """Summarize draw-wise uncertainty in endpoint model features."""
+    labels = {
+        'core': 'core inflation (%)',
+        'natural': 'natural rate (%)',
+        'persistence': 'normalized persistence',
+    }
+    rows = {}
+    for key, label in labels.items():
+        values = draws[key][-1]
+        rows[label] = {
+            'median': np.median(values),
+            '5th percentile': np.quantile(values, 0.05),
+            '95th percentile': np.quantile(values, 0.95),
+        }
+    return pd.DataFrame.from_dict(rows, orient='index')
+
+
+updated_endpoint_intervals = endpoint_feature_intervals(
+    updated_feature_draws
+)
+updated_endpoint_intervals.round(3)
+```
+
+The raw inflation path in {numref}`fig-csdv-updated-data` rises much more than
+the estimated core rate because core is a long-horizon forecast.
+
+The 2025Q3 estimates place core inflation near 2.7 percent and the natural rate
+near 5.2 percent.
+
+The natural-rate interval remains comparatively wide, consistent with the
+amplification that occurs when a companion root approaches one.
+
+### Did inflation become persistent again?
+
+The normalized spectrum asks whether the recent inflation surge changed the
+systematic dynamics rather than only the size of shocks.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Updated inflation persistence
+    name: fig-csdv-updated-persistence
+---
+fig, ax = plt.subplots()
+ax.plot(
+    updated_dates[updated_annual],
+    updated_features['persistence'][updated_annual],
+    'o-',
+    lw=2,
+    markersize=3,
+)
+ax.axvline(2000.75, color='0.65', ls='--', lw=1)
+ax.set_xlabel('year')
+ax.set_ylabel(r'$g_{\pi\pi}(0,t)$')
+fig.show()
+```
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Updated core and persistence
+    name: fig-csdv-updated-core-persistence
+---
+fig, axes = plt.subplots(
+    2,
+    1,
+    figsize=(9, 6),
+    sharex=True,
+)
+axes[0].plot(
+    updated_dates[updated_annual],
+    100 * updated_features['core'][updated_annual],
+    'o-',
+    lw=2,
+    markersize=3,
+)
+axes[1].plot(
+    updated_dates[updated_annual],
+    updated_features['persistence'][updated_annual],
+    'x-',
+    lw=2,
+    markersize=4,
+)
+for ax in axes:
+    ax.axvline(2000.75, color='0.65', ls='--', lw=1)
+axes[0].set_ylabel('core inflation (%)')
+axes[1].set_ylabel('normalized spectrum at zero')
+axes[1].set_xlabel('year')
+plt.tight_layout()
+fig.show()
+```
+
+The post-2020 rise in core inflation is visible, but the posterior-mean
+persistence path stays below its 1970s values.
+
+The 2025Q3 persistence median is $0.38$, while its 90 percent interval from
+$0.15$ to $4.39$ leaves meaningful upper-tail uncertainty.
+
+This result says that the fitted local VAR views the recent surge as less
+persistent, not that all alternative models must classify it as transitory.
+
+The full spectrum shows where the difference comes from.
+
+```{code-cell} ipython3
+---
+tags: [hide-input]
+---
+updated_raw_spectrum, updated_normalized_spectrum = (
+    inflation_spectrum_surface(
+        updated_features['theta'],
+        updated_features['covariance'],
+        spectrum_frequencies,
+    )
+)
+```
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Updated inflation spectra
+    name: fig-csdv-updated-spectra
+---
+fig, axes = plt.subplots(
+    1,
+    2,
+    figsize=(9, 4),
+    sharey=True,
+    constrained_layout=True,
+)
+updated_surfaces = (
+    (updated_raw_spectrum, 'raw spectrum', 'log10 power'),
+    (
+        updated_normalized_spectrum,
+        'normalized spectrum',
+        'log10 normalized power',
+    ),
+)
+for ax, (surface, title, color_label) in zip(axes, updated_surfaces):
+    image = ax.pcolormesh(
+        updated_dates,
+        spectrum_frequencies,
+        np.log10(surface),
+        shading='auto',
+    )
+    ax.axvline(2000.75, color='0.85', ls='--', lw=1)
+    ax.set_xlabel('year')
+    ax.set_ylabel(f'{title}\ncycles per quarter')
+    fig.colorbar(image, ax=ax, label=color_label)
+fig.show()
+```
+
+The pandemic and recent inflation surge add raw power across frequencies, while
+the normalized low-frequency ridge remains most prominent in the 1970s.
 
 ```{code-cell} ipython3
 def episode_summary(fit, features):
@@ -2197,103 +2880,92 @@ def episode_summary(fit, features):
         '1985--2000': (years >= 1985) & (years <= 2000),
         '2001--2019': (years >= 2001) & (years <= 2019),
         '2020--2022': (years >= 2020) & (years <= 2022),
-        '2023--latest': years >= 2023,
+        '2023--2025Q3': years >= 2023,
     }
     rows = {}
     for label, mask in periods.items():
         rows[label] = {
             'core inflation (%)': 100 * features['core'][mask].mean(),
             'normalized persistence': features['persistence'][mask].mean(),
-            'log prediction variance': features['logdet'][mask].mean(),
+            'log generalized innovation variance': (
+                features['logdet'][mask].mean()
+            ),
         }
     return pd.DataFrame.from_dict(rows, orient='index')
 
 
-episode_summary(latest_fit, latest_features).round(3)
+updated_episodes = episode_summary(updated_fit, updated_features)
+updated_episodes.round(3)
 ```
+
+The episode averages separate the high volatility of 2020--2022 from the lower
+average persistence of the post-2000 decades.
+
+### Can recent policy activism be measured?
+
+The same projection-based activism path can be computed after 2000, but its
+ratio becomes unstable whenever $1-\beta_3$ approaches zero.
+
+In the following figures, the gray line marks the active-policy threshold
+$\mathcal A=1$.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Extended-sample model features
-    name: fig-csdv-updated-features
+    caption: Updated plug-in policy activism
+    name: fig-csdv-updated-activism
 ---
-updated_dates = latest_fit['data']['dates']
-fig, axes = plt.subplots(2, 2, figsize=(9, 7), sharex=True)
-series = (
-    (100 * latest_features['core'], 'core inflation', 'percent'),
-    (100 * latest_features['natural'], 'natural rate', 'percent'),
-    (
-        latest_features['persistence'],
-        'inflation persistence',
-        r'$g_{\pi\pi}(0,t)$',
-    ),
-    (
-        latest_features['logdet'],
-        'total prediction variance',
-        r'$\log |E(R_t\mid T)|$',
-    ),
+fig, ax = plt.subplots()
+updated_activism_path = break_ratio_crossings(
+    updated_features['activism'],
+    updated_features['activism_denominator'],
 )
-for ax, (values, title, ylabel) in zip(axes.flat, series):
-    ax.plot(updated_dates, values, lw=2)
-    ax.axvline(2000.75, color='0.65', ls='--', lw=1)
-    ax.set_title(title)
-    ax.set_ylabel(ylabel)
-for ax in axes[-1]:
-    ax.set_xlabel('year')
+ax.plot(updated_dates, updated_activism_path, lw=2)
+ax.axhline(1, color='0.45', lw=1)
+ax.axvline(2000.75, color='0.65', ls='--', lw=1)
+ax.set_yscale('symlog', linthresh=1)
+ax.set_xlabel('year')
+ax.set_ylabel('activism coefficient')
+fig.show()
+```
+
+The symmetric-log scale preserves the sign and exposes ratio explosions rather
+than hiding them behind a truncated axis.
+
+The association with inflation features is therefore descriptive and not a
+stable structural-policy estimate.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Post-2000 plug-in activism relationships
+    name: fig-csdv-updated-activism-correlations
+---
+fig, axes = plt.subplots(1, 2, figsize=(9, 4))
+recent_annual = annual_indices(updated_dates, start=2001)
+axes[0].scatter(
+    updated_features['activism'][recent_annual],
+    100 * updated_features['core'][recent_annual],
+    s=18,
+)
+axes[1].scatter(
+    updated_features['activism'][recent_annual],
+    updated_features['persistence'][recent_annual],
+    s=18,
+)
+for ax in axes:
+    ax.set_xscale('symlog', linthresh=1)
+    ax.axvline(1, color='0.45', lw=1)
+    ax.set_xlabel('policy activism')
+axes[0].set_ylabel('core inflation (%)')
+axes[1].set_ylabel('normalized spectrum at zero')
 plt.tight_layout()
 fig.show()
 ```
 
-The added data reinforce the distinction between volatility and persistence.
-
-The 2020 pandemic generates the largest aggregate prediction-variance episode in
-the sample, but the 2021--2022 inflation surge does not restore the high
-normalized persistence of the 1970s.
-
-The estimated core rate rises only modestly because it is a local long-horizon
-forecast, not the observed quarterly inflation rate.
-
-The volatility components locate different exceptional episodes.
-
-```{code-cell} ipython3
-def decimal_quarter_label(value):
-    """Format a decimal quarterly date."""
-    year = int(np.floor(value + 1e-8))
-    quarter = int(round(4 * (value - year))) + 1
-    return f'{year}Q{quarter}'
-
-
-innovation_sd = 10000 * np.sqrt(
-    np.diagonal(latest_features['covariance'], axis1=1, axis2=2)
-)
-volatility_names = ('interest', 'unemployment', 'inflation')
-volatility_summary = pd.DataFrame(
-    {
-        'peak quarter': [
-            decimal_quarter_label(updated_dates[np.argmax(innovation_sd[:, i])])
-            for i in range(n_variables)
-        ],
-        r'latest standard deviation $\times 10^4$': innovation_sd[-1],
-    },
-    index=volatility_names,
-)
-volatility_summary
-```
-
-Interest-rate innovation volatility still peaks during the Volcker period,
-inflation innovation volatility peaks during the financial crisis, and
-unemployment innovation volatility peaks in 2020.
-
-All three are well below their peaks by the final quarter, so the pandemic
-appears mainly as a large transient volatility event in this specification.
-
-Finally, the forward-looking activism ratio becomes especially fragile in the
-extended sample because its denominator can approach zero.
-
-We therefore report its draw-wise endpoint distribution instead of interpreting
-the plug-in ratio.
+We also examine the central draw distribution at the 2025Q3 endpoint.
 
 ```{code-cell} ipython3
 def endpoint_activism_draws(fit):
@@ -2311,9 +2983,8 @@ def endpoint_activism_draws(fit):
     return draws
 
 
-def activism_uncertainty(fit):
+def activism_uncertainty(draws):
     """Summarize endpoint activism without relying on its mean."""
-    draws = endpoint_activism_draws(fit)
     active = draws > 1
     ess = scalar_mcmc_ess(active)
     probability = active.mean()
@@ -2331,28 +3002,68 @@ def activism_uncertainty(fit):
     )
 
 
-updated_activism = pd.concat(
-    {
-        quarter_label(complete_extension.index[-1]): activism_uncertainty(
-            complete_fit
-        ),
-        f'{quarter_label(latest_extension.index[-1])} sensitivity': (
-            activism_uncertainty(latest_fit)
-        ),
-    },
-    axis=1,
-).T
+updated_activity_draws = endpoint_activism_draws(updated_fit)
+updated_activism = activism_uncertainty(
+    updated_activity_draws
+).to_frame(name=updated_label).T
 updated_activism.round(3)
 ```
 
-The wide intervals do not support a precise endpoint classification.
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Central 90-percent activism draws
+    name: fig-csdv-updated-activism-distributions
+---
+updated_activity_limits = np.quantile(
+    updated_activity_draws,
+    (0.05, 0.95),
+)
+updated_activity_bins = np.linspace(*updated_activity_limits, 31)
 
-Moreover, the zero lower bound and unconventional monetary policy weaken the
-interpretation of a standard Taylor-rule projection after 2008.
+fig, ax = plt.subplots()
+central_draws = updated_activity_draws[
+    (updated_activity_draws >= updated_activity_limits[0])
+    & (updated_activity_draws <= updated_activity_limits[1])
+]
+ax.hist(
+    central_draws,
+    bins=updated_activity_bins,
+    histtype='step',
+    lw=2,
+)
+ax.axvline(1, color='0.45', lw=1)
+ax.set_xlabel('activism coefficient')
+ax.set_ylabel('draw count')
+fig.show()
+```
 
-Thus the updated data sharpen the volatility evidence and preserve the broad
-persistence result, but they do not identify a precise current natural rate,
-rate of coefficient drift, or activism coefficient.
+The 2025Q3 activism median is $2.42$, but its 90 percent interval from $-16.99$
+to $17.57$ makes the active-versus-passive classification weak.
+
+The active-policy probability is $0.69$ with an MCSE of $0.04$, so the evidence
+leans active without becoming decisive.
+
+The figure plots unmodified draws between the 5th and 95th percentiles, while
+the table uses every draw.
+
+The zero lower bound and unconventional monetary policy further weaken the
+economic interpretation of a short-rate projection after 2008.
+
+### What the additional observations change
+
+The extra quarter-century adds a dramatic episode consistent with volatility
+moving independently of persistent inflation dynamics.
+
+The pandemic is the dominant aggregate uncertainty episode, but the recent
+inflation surge does not reproduce the 1970s low-frequency persistence ridge.
+
+The data still support coefficient drift, although the trace ESS limits the
+precision of the drift-rate estimate.
+
+The 2025Q3 natural-rate and activism estimates remain weakly pinned down, and
+both are nonlinear functions that become fragile near singular cases.
 
 ## Bad policy or bad luck? A verdict
 
