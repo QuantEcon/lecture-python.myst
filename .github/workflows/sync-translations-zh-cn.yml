@@ -14,10 +14,21 @@ on:
 
 jobs:
   sync:
+    # The issue_comment path requires: a comment on a PR (not a bare issue), the
+    # resync command, and a trusted author — anyone else could otherwise fire a
+    # secrets-bearing run (Anthropic spend + PAT) from any comment.
     if: >
       (github.event_name == 'pull_request' && github.event.pull_request.merged == true) ||
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '\translate-resync'))
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.pull_request &&
+       contains(github.event.comment.body, '\translate-resync') &&
+       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association))
     runs-on: ubuntu-latest
+
+    # The action authenticates with QUANTECON_SERVICES_PAT; the ambient
+    # GITHUB_TOKEN is unused beyond checkout, so keep it read-only.
+    permissions:
+      contents: read
 
     steps:
       - uses: actions/checkout@v7
