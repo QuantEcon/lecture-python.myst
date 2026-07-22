@@ -46,8 +46,7 @@ Those lectures were mostly about *theory*.
 
 This lecture turns to the *data*.
 
-It studies {cite:t}`CogleySargent2005`, "Drifts and Volatilities: Monetary
-Policies and Outcomes in the Post WWII US", which asks a deceptively simple
+It studies {cite:t}`CogleySargent2005`, which asks a deceptively simple
 question:
 
 > When we look at postwar U.S. time series on inflation, unemployment, and
@@ -79,9 +78,6 @@ Fitting it requires a Markov chain Monte Carlo algorithm that combines the
 We work through the data transformation, prior, sampler, and main empirical
 results in the order in which they arise.
 
-All model and post-processing routines are defined immediately below the objects
-that they implement.
-
 Let's start with some imports and the path to the frozen data.
 
 ```{code-cell} ipython3
@@ -92,6 +88,7 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from IPython.display import Markdown
 from scipy import linalg
 from scipy.special import expit
 from scipy.stats import invwishart
@@ -110,11 +107,6 @@ def locate_data_assets():
 
 asset_path = locate_data_assets()
 data_path = asset_path / 'NEWQDATA.csv'
-
-data_sha256 = hashlib.sha256(data_path.read_bytes()).hexdigest()
-assert data_sha256 == (
-    '98fb884bf59fbf211a4095c558b210ff8df471f863357803cc3ad88d0066bcaf'
-)
 ```
 
 ## Bad policy or bad luck?
@@ -165,6 +157,8 @@ $$
 y_t = \begin{bmatrix} i_t & u_t & \pi_t \end{bmatrix}'.
 $$
 
+(Here $u_t$ is not the raw unemployment rate but its logit, we define this transformation in the data section below.)
+
 The measurement equation is a VAR with two lags and date-specific coefficients,
 
 ```{math}
@@ -177,8 +171,13 @@ X_t' = I_3 \otimes \begin{bmatrix} 1 & y_{t-1}' & y_{t-2}' \end{bmatrix}.
 Each equation has an intercept and six lag coefficients, so $\theta_t$ contains
 $3(1+2\times 3)=21$ elements.
 
-The following function implements this equation-major coefficient stacking and
-its companion representation.
+A two-lag VAR can be rewritten as a one-lag system by stacking $y_t$ and
+$y_{t-1}$ into a single vector; the matrix that multiplies this stacked vector
+is the **companion matrix**, and the rewritten system is the VAR in
+**companion form**.
+
+The following function builds the companion matrix from the stacked
+coefficients.
 
 ```{code-cell} ipython3
 n_variables = 3
@@ -187,9 +186,9 @@ n_regressors = 1 + n_variables * n_lags
 n_coefficients = n_variables * n_regressors
 
 
-def companion_matrix(theta):
+def companion_matrix(θ):
     """Return the intercept and companion matrix for one coefficient vector."""
-    blocks = np.asarray(theta, dtype=float).reshape(n_variables, n_regressors)
+    blocks = np.asarray(θ, dtype=float).reshape(n_variables, n_regressors)
     intercept = np.r_[blocks[:, 0], np.zeros(n_variables)]
     companion = np.zeros((n_variables * n_lags, n_variables * n_lags))
     companion[:n_variables] = blocks[:, 1:]
@@ -211,6 +210,10 @@ The coefficient vector follows a driftless random walk,
 v_t \sim N(0,Q).
 ```
 
+The companion matrix is stable when every eigenvalue of it, called a
+**companion root**, lies strictly inside the unit circle, just as a scalar AR
+process is stable only when the root of its characteristic polynomial does.
+
 Cogley and Sargent rule out explosive paths by retaining a path only when the
 companion matrix is stable at every date and using the truncated prior
 
@@ -227,27 +230,26 @@ explosive path.
 This restriction also tilts the marginal prior for $Q$ toward values that are
 less likely to generate explosive coefficient paths.
 
-The code below applies the stability restriction to an entire trajectory rather
-than clipping individual roots.
+The code below applies the stability restriction to an entire trajectory
 
 ```{code-cell} ipython3
-def companion_roots(theta_path):
+def companion_roots(θ_path):
     """Return all companion roots along a path with shape (21, T)."""
-    theta_path = np.asarray(theta_path, dtype=float)
-    if theta_path.ndim == 1:
-        theta_path = theta_path[:, None]
+    θ_path = np.asarray(θ_path, dtype=float)
+    if θ_path.ndim == 1:
+        θ_path = θ_path[:, None]
     companions = np.stack(
         [
-            companion_matrix(theta_path[:, t])[1]
-            for t in range(theta_path.shape[1])
+            companion_matrix(θ_path[:, t])[1]
+            for t in range(θ_path.shape[1])
         ]
     )
     return np.linalg.eigvals(companions)
 
 
-def is_stable(theta_path):
+def is_stable(θ_path):
     """Test whether every companion root is strictly inside the unit circle."""
-    return bool(np.max(np.abs(companion_roots(theta_path))) < 1)
+    return bool(np.max(np.abs(companion_roots(θ_path))) < 1)
 ```
 
 The reduced-form innovation covariance changes over time according to
@@ -284,16 +286,16 @@ The next two functions construct the triangular factor and the reduced-form
 innovation covariance.
 
 ```{code-cell} ipython3
-def b_matrix(beta):
-    """Construct B from beta_21, beta_31, and beta_32."""
+def b_matrix(β):
+    """Construct B from β_21, β_31, and β_32."""
     matrix = np.eye(n_variables)
-    matrix[1, 0], matrix[2, 0], matrix[2, 1] = np.asarray(beta, dtype=float)
+    matrix[1, 0], matrix[2, 0], matrix[2, 1] = np.asarray(β, dtype=float)
     return matrix
 
 
-def innovation_covariance(h, beta):
+def innovation_covariance(h, β):
     """Construct R_t from one vector of orthogonalized variances."""
-    inverse = np.linalg.inv(b_matrix(beta))
+    inverse = np.linalg.inv(b_matrix(β))
     return inverse @ np.diag(h) @ inverse.T
 ```
 
@@ -320,7 +322,7 @@ conditional block at a time.
 
 ## The data
 
-We begin with a frozen quarterly U.S. dataset ending in 2000Q4.
+We begin with {cite:t}`CogleySargent2005`'s quarterly U.S. dataset ending in 2000Q4.
 
 Inflation is the log difference of the seasonally adjusted CPI for all urban
 consumers, point sampled in the third month of each quarter.
@@ -425,7 +427,7 @@ axes[2].plot(dates_raw, interest, lw=2)
 axes[2].set_ylabel('interest (annual %)')
 axes[2].set_xlabel('year')
 plt.tight_layout()
-fig.show()
+plt.show()
 ```
 
 The rise in inflation and nominal interest rates during the 1970s, the Volcker
@@ -462,14 +464,14 @@ def sur_prior(y, x):
     coefficients = xx_inverse @ x.T @ y
     residuals = y - x @ coefficients
     residual_covariance = np.cov(residuals, rowvar=False, ddof=1)
-    theta = coefficients.T.reshape(-1)
+    θ = coefficients.T.reshape(-1)
     covariance = np.kron(residual_covariance, xx_inverse)
-    return theta, covariance, residual_covariance
+    return θ, covariance, residual_covariance
 
 
-theta_bar, p_bar, r_bar = sur_prior(data['prior_y'], data['prior_x'])
+θ_bar, p_bar, r_bar = sur_prior(data['prior_y'], data['prior_x'])
 
-assert is_stable(theta_bar)
+assert is_stable(θ_bar)
 ```
 
 The coefficient-drift covariance has the inverse-Wishart prior
@@ -513,26 +515,26 @@ The next function gathers these hyperparameters so that the same sampler can be
 applied to every variable ordering.
 
 ```{code-cell} ipython3
-def calibrate_prior(model_data, gamma_squared=3.5e-4):
+def calibrate_prior(model_data, γ_squared=3.5e-4):
     """Return every prior block calibrated to one variable ordering."""
-    theta_mean, theta_covariance, residual_covariance = sur_prior(
+    θ_mean, θ_covariance, residual_covariance = sur_prior(
         model_data['prior_y'], model_data['prior_x']
     )
     degrees_freedom = n_coefficients + 1
-    q_center = gamma_squared * theta_covariance
+    q_center = γ_squared * θ_covariance
     return {
-        'theta_mean': theta_mean,
-        'theta_covariance': theta_covariance,
+        'θ_mean': θ_mean,
+        'θ_covariance': θ_covariance,
         'q_center': q_center,
         'q_scale': degrees_freedom * q_center,
         'q_degrees_freedom': degrees_freedom,
         'log_h_mean': np.log(np.diag(residual_covariance)),
         'log_h_variance': 10.0,
-        'beta_mean': np.zeros(3),
-        'beta_variance': 10000.0,
-        'sigma_degrees_freedom': 1.0,
-        'sigma_scale': 0.01**2,
-        'gamma_squared': gamma_squared,
+        'β_mean': np.zeros(3),
+        'β_variance': 10000.0,
+        'σ_degrees_freedom': 1.0,
+        'σ_scale': 0.01**2,
+        'γ_squared': γ_squared,
     }
 
 
@@ -541,14 +543,14 @@ q_bar = prior['q_center']
 
 prior_summary = pd.Series(
     {
-        'dim(theta)': n_coefficients,
+        'dim(θ)': n_coefficients,
         'T0': prior['q_degrees_freedom'],
-        'gamma squared': prior['gamma_squared'],
+        'γ squared': prior['γ_squared'],
         'trace(Q bar)': np.trace(q_bar),
         'log-h prior variance': prior['log_h_variance'],
-        'beta prior variance': prior['beta_variance'],
-        'sigma-squared IG shape': prior['sigma_degrees_freedom'] / 2,
-        'sigma-squared IG scale': prior['sigma_scale'] / 2,
+        'β prior variance': prior['β_variance'],
+        'σ-squared IG shape': prior['σ_degrees_freedom'] / 2,
+        'σ-squared IG scale': prior['σ_scale'] / 2,
     },
     name='value',
 )
@@ -609,22 +611,22 @@ def covariance_root(matrix):
 
 
 def draw_coefficient_path(
-    y, x, q, h, beta, prior, rng, return_mean=False
+    y, x, q, h, β, prior, rng, return_mean=False
 ):
-    """Draw theta_0,...,theta_T and optionally return its smoothing mean."""
+    """Draw θ_0,...,θ_T and optionally return its smoothing mean."""
     periods = len(y)
     filtered_mean = np.empty((periods + 1, n_coefficients))
     filtered_covariance = np.empty(
         (periods + 1, n_coefficients, n_coefficients)
     )
     predicted_covariance = np.empty_like(filtered_covariance)
-    filtered_mean[0] = prior['theta_mean']
-    filtered_covariance[0] = prior['theta_covariance']
-    predicted_covariance[0] = prior['theta_covariance']
+    filtered_mean[0] = prior['θ_mean']
+    filtered_covariance[0] = prior['θ_covariance']
+    predicted_covariance[0] = prior['θ_covariance']
     for t in range(1, periods + 1):
         observation = design_matrix(x[t - 1])
         prediction_covariance = filtered_covariance[t - 1] + q
-        r_t = innovation_covariance(h[t], beta)
+        r_t = innovation_covariance(h[t], β)
         forecast_covariance = (
             observation @ prediction_covariance @ observation.T + r_t
         )
@@ -695,13 +697,13 @@ def draw_coefficient_path(
 
 
 def draw_stable_coefficient_path(
-    current, y, x, q, h, beta, prior, rng, max_contractions=100
+    current, y, x, q, h, β, prior, rng, max_contractions=100
 ):
     """Elliptical-slice update of the stability-truncated Gaussian path."""
     if not is_stable(current):
         raise ValueError('the elliptical-slice update needs a stable path')
     gaussian_draw, mean = draw_coefficient_path(
-        y, x, q, h, beta, prior, rng, return_mean=True
+        y, x, q, h, β, prior, rng, return_mean=True
     )
     current_centered = current - mean
     innovation = gaussian_draw - mean
@@ -733,9 +735,9 @@ The retained simulation draws $Q$ from a scale matrix formed by its prior scale
 and all $T$ squared increments from $\theta_0$ through $\theta_T$.
 
 ```{code-cell} ipython3
-def draw_q(theta_path, prior, rng):
+def draw_q(θ_path, prior, rng):
     """Draw Q conditional on the sampled coefficient path."""
-    increments = np.diff(theta_path, axis=1)
+    increments = np.diff(θ_path, axis=1)
     scale = prior['q_scale'] + increments @ increments.T
     degrees_freedom = prior['q_degrees_freedom'] + increments.shape[1]
     return invwishart.rvs(df=degrees_freedom, scale=scale, random_state=rng)
@@ -760,45 +762,45 @@ The following code implements the conditional updates, including the different
 endpoint proposals.
 
 ```{code-cell} ipython3
-def var_residuals(y, x, theta_path):
+def var_residuals(y, x, θ_path):
     """Return residuals with shape (T, 3)."""
-    if theta_path.shape[1] == len(y) + 1:
-        theta_path = theta_path[:, 1:]
-    if theta_path.shape[1] != len(y):
-        raise ValueError('theta_path must contain T or T + 1 states')
-    coefficients = theta_path.T.reshape(len(y), n_variables, n_regressors)
+    if θ_path.shape[1] == len(y) + 1:
+        θ_path = θ_path[:, 1:]
+    if θ_path.shape[1] != len(y):
+        raise ValueError('θ_path must contain T or T + 1 states')
+    coefficients = θ_path.T.reshape(len(y), n_variables, n_regressors)
     fitted = np.einsum('tk,tnk->tn', x, coefficients)
     return y - fitted
 
 
-def draw_sigma(h, prior, rng):
+def draw_σ(h, prior, rng):
     """Draw the three log-volatility innovation standard deviations."""
     increments = np.diff(np.log(h), axis=0)
-    shape = (prior['sigma_degrees_freedom'] + increments.shape[0]) / 2
-    scales = (prior['sigma_scale'] + np.sum(increments**2, axis=0)) / 2
-    sigma_squared = scales / rng.gamma(shape, 1.0, size=n_variables)
-    return np.sqrt(sigma_squared)
+    shape = (prior['σ_degrees_freedom'] + increments.shape[0]) / 2
+    scales = (prior['σ_scale'] + np.sum(increments**2, axis=0)) / 2
+    σ_squared = scales / rng.gamma(shape, 1.0, size=n_variables)
+    return np.sqrt(σ_squared)
 
 
-def draw_beta(residuals, h, prior, rng):
+def draw_β(residuals, h, prior, rng):
     """Draw the free elements of B from transformed Gaussian regressions."""
-    beta = np.empty(3)
+    β = np.empty(3)
     offset = 0
     for equation in range(1, n_variables):
         standardized = residuals / np.sqrt(h[1:, equation])[:, None]
         dependent = standardized[:, equation]
         regressors = -standardized[:, :equation]
-        prior_precision = np.eye(equation) / prior['beta_variance']
+        prior_precision = np.eye(equation) / prior['β_variance']
         covariance = np.linalg.inv(prior_precision + regressors.T @ regressors)
-        prior_slice = prior['beta_mean'][offset:offset + equation]
+        prior_slice = prior['β_mean'][offset:offset + equation]
         mean = covariance @ (
             prior_precision @ prior_slice + regressors.T @ dependent
         )
-        beta[offset:offset + equation] = (
+        β[offset:offset + equation] = (
             mean + covariance_root(covariance) @ rng.standard_normal(equation)
         )
         offset += equation
-    return beta
+    return β
 
 
 def accept_volatility(proposal, current, residual, rng):
@@ -812,13 +814,13 @@ def accept_volatility(proposal, current, residual, rng):
     return proposal if np.log(rng.random()) <= min(0.0, log_ratio) else current
 
 
-def draw_volatility_path(h, residuals, beta, sigma, prior, rng):
+def draw_volatility_path(h, residuals, β, σ, prior, rng):
     """Update all stochastic-volatility states one date at a time."""
     periods = len(residuals)
-    orthogonalized = (b_matrix(beta) @ residuals.T).T
+    orthogonalized = (b_matrix(β) @ residuals.T).T
     updated = np.empty_like(h)
     for equation in range(n_variables):
-        variance = sigma[equation]**2
+        variance = σ[equation]**2
         initial_variance = (
             prior['log_h_variance'] * variance
             / (variance + prior['log_h_variance'])
@@ -845,7 +847,7 @@ def draw_volatility_path(h, residuals, beta, sigma, prior, rng):
             )
         proposal = np.exp(
             np.log(updated[-2, equation])
-            + sigma[equation] * rng.standard_normal()
+            + σ[equation] * rng.standard_normal()
         )
         updated[-1, equation] = accept_volatility(
             proposal,
@@ -917,21 +919,21 @@ def run_sampler(
     started = time.perf_counter()
     rng = np.random.default_rng(seed)
     h = initial_volatilities(y, prior)
-    beta = prior['beta_mean'].copy()
-    warm_theta = np.repeat(prior['theta_mean'][:, None], len(y), axis=1)
-    warm_residuals = var_residuals(y, x, warm_theta)
+    β = prior['β_mean'].copy()
+    warm_θ = np.repeat(prior['θ_mean'][:, None], len(y), axis=1)
+    warm_residuals = var_residuals(y, x, warm_θ)
     for _ in range(warmup):
-        sigma = draw_sigma(h, prior, rng)
-        beta = draw_beta(warm_residuals, h, prior, rng)
+        σ = draw_σ(h, prior, rng)
+        β = draw_β(warm_residuals, h, prior, rng)
         h = draw_volatility_path(
-            h, warm_residuals, beta, sigma, prior, rng
+            h, warm_residuals, β, σ, prior, rng
         )
 
     q = prior['q_center'].copy()
-    theta = np.repeat(
-        prior['theta_mean'][:, None], len(y) + 1, axis=1
+    θ = np.repeat(
+        prior['θ_mean'][:, None], len(y) + 1, axis=1
     )
-    if stable and not is_stable(theta):
+    if stable and not is_stable(θ):
         raise ValueError('the prior mean does not provide a stable start')
     slice_contractions = 0
     maximum_slice_contractions = 0
@@ -940,42 +942,42 @@ def run_sampler(
     saved_stability = []
     for sweep in range(1, n_sweeps + 1):
         if stable:
-            theta, contractions = draw_stable_coefficient_path(
-                theta,
+            θ, contractions = draw_stable_coefficient_path(
+                θ,
                 y,
                 x,
                 q,
                 h,
-                beta,
+                β,
                 prior,
                 rng,
                 max_contractions=max_contractions,
             )
         else:
-            theta = draw_coefficient_path(y, x, q, h, beta, prior, rng)
+            θ = draw_coefficient_path(y, x, q, h, β, prior, rng)
             contractions = 0
         slice_contractions += contractions
         maximum_slice_contractions = max(
             maximum_slice_contractions, contractions
         )
-        q = draw_q(theta, prior, rng)
-        residuals = var_residuals(y, x, theta)
-        sigma = draw_sigma(h, prior, rng)
-        beta = draw_beta(residuals, h, prior, rng)
+        q = draw_q(θ, prior, rng)
+        residuals = var_residuals(y, x, θ)
+        σ = draw_σ(h, prior, rng)
+        β = draw_β(residuals, h, prior, rng)
         h = draw_volatility_path(
-            h, residuals, beta, sigma, prior, rng
+            h, residuals, β, σ, prior, rng
         )
 
         if sweep > burn and (sweep - burn) % thin == 0:
-            path_is_stable = is_stable(theta)
+            path_is_stable = is_stable(θ)
             saved_stability.append(path_is_stable)
             values = {
-                'S0D': theta[:, 0],
-                'SD': theta[:, 1:],
+                'S0D': θ[:, 0],
+                'SD': θ[:, 1:],
                 'QD': q,
                 'HD': h,
-                'CD': beta,
-                'VD': sigma,
+                'CD': β,
+                'VD': σ,
                 'stable_draw': path_is_stable,
             }
             for name in retained:
@@ -1101,7 +1103,7 @@ ax.axvline(np.trace(q_bar), color='C1', lw=2,
 ax.set_xlabel(r'$\mathrm{tr}(Q)$')
 ax.set_ylabel('frequency')
 ax.legend()
-fig.show()
+plt.show()
 ```
 
 The posterior mean paths show visible drift concentrated in a subset of
@@ -1118,7 +1120,7 @@ mystnb:
     caption: Posterior mean coefficient paths
     name: fig-csdv-coefficient-paths
 ---
-theta_mean = posterior['SD'].mean(axis=2)
+θ_mean = posterior['SD'].mean(axis=2)
 coefficient_labels = (
     'constant',
     r'$i_{t-1}$',
@@ -1135,13 +1137,13 @@ equation_labels = (
 )
 
 
-def plot_coefficient_blocks(axes, dates, theta_path):
+def plot_coefficient_blocks(axes, dates, θ_path):
     """Plot seven labeled coefficients for each VAR equation."""
     first_lines = None
     for equation, (ax, label) in enumerate(zip(axes, equation_labels)):
         start = equation * len(coefficient_labels)
         stop = start + len(coefficient_labels)
-        lines = ax.plot(dates, theta_path[start:stop].T, lw=2)
+        lines = ax.plot(dates, θ_path[start:stop].T, lw=2)
         for line, coefficient_label in zip(lines, coefficient_labels):
             line.set_label(coefficient_label)
         if first_lines is None:
@@ -1156,7 +1158,7 @@ fig, axes = plt.subplots(1, 3, figsize=(10, 4), sharex=True)
 coefficient_lines = plot_coefficient_blocks(
     axes,
     data['dates'],
-    theta_mean,
+    θ_mean,
 )
 fig.legend(
     coefficient_lines,
@@ -1165,7 +1167,7 @@ fig.legend(
     ncol=4,
 )
 plt.tight_layout(rect=(0, 0.17, 1, 1))
-fig.show()
+plt.show()
 ```
 
 We summarize drift for the stable ordering $(i,u,\pi)$.
@@ -1184,28 +1186,34 @@ def scalar_mcmc_ess(values):
     autocovariance /= np.arange(n, 0, -1)
     if autocovariance[0] <= np.finfo(float).tiny:
         return float(n)
-    rho = autocovariance / autocovariance[0]
-    paired = rho[1:1 + 2 * ((n - 1) // 2)].reshape(-1, 2).sum(axis=1)
+    ρ = autocovariance / autocovariance[0]
+    paired = ρ[1:1 + 2 * ((n - 1) // 2)].reshape(-1, 2).sum(axis=1)
     nonpositive = np.flatnonzero(paired <= 0)
     if len(nonpositive):
         paired = paired[:nonpositive[0]]
-    tau = max(1.0, 1.0 + 2.0 * paired.sum())
-    return min(float(n), float(n / tau))
+    τ = max(1.0, 1.0 + 2.0 * paired.sum())
+    return min(float(n), float(n / τ))
 
 
 trace_q = np.trace(posterior['QD'], axis1=0, axis2=1)
 q_mean = posterior['QD'].mean(axis=2)
 trace_ess = scalar_mcmc_ess(trace_q)
 trace_mcse = trace_q.std(ddof=1) / np.sqrt(trace_ess)
-drift_summary = pd.Series(
-    {
-        r'posterior mean $\operatorname{tr}(Q)$': np.trace(q_mean),
-        'posterior mean largest eigenvalue': np.linalg.eigvalsh(q_mean)[-1],
-        r'prior $\operatorname{tr}(\bar Q)$': np.trace(q_bar),
-    },
-    name='estimate',
+drift_summary = {
+    r'\text{posterior mean } \operatorname{tr}(Q)': np.trace(q_mean),
+    r'\text{posterior mean largest eigenvalue}': np.linalg.eigvalsh(q_mean)[-1],
+    r'\text{prior } \operatorname{tr}(\bar Q)': np.trace(q_bar),
+}
+drift_rows = ' \\\\\n'.join(
+    f'{label} & {value:.4f}' for label, value in drift_summary.items()
 )
-drift_summary.to_frame().round(4)
+Markdown(rf'''$$
+\begin{{array}}{{lr}}
+\text{{quantity}} & \text{{estimate}} \\
+\hline
+{drift_rows}
+\end{{array}}
+$$''')
 ```
 
 ```{code-cell} ipython3
@@ -1273,13 +1281,13 @@ Equation {eq}`csdv_covariance` can be averaged over draws without constructing a
 four-dimensional covariance array.
 
 ```{code-cell} ipython3
-def mean_innovation_covariance(h_draws, beta_draws):
+def mean_innovation_covariance(h_draws, β_draws):
     """Compute E(R_t | T) with working memory proportional to T times D."""
     n_draws = h_draws.shape[2]
     matrices = np.broadcast_to(np.eye(3), (n_draws, 3, 3)).copy()
-    matrices[:, 1, 0] = beta_draws[0]
-    matrices[:, 2, 0] = beta_draws[1]
-    matrices[:, 2, 1] = beta_draws[2]
+    matrices[:, 1, 0] = β_draws[0]
+    matrices[:, 2, 0] = β_draws[1]
+    matrices[:, 2, 1] = β_draws[2]
     inverses = np.linalg.solve(
         matrices,
         np.broadcast_to(np.eye(3), matrices.shape),
@@ -1320,11 +1328,11 @@ for row, (index, label) in enumerate(variances):
     axes[row, 0].plot(
         data['dates'], 10000 * np.sqrt(r_mean[:, index, index]), lw=2
     )
-    axes[row, 0].text(0.03, 0.88, label, transform=axes[row, 0].transAxes)
+    axes[row, 0].set_title(label)
 for row, (left, right, label) in enumerate(correlations):
     scale = np.sqrt(r_mean[:, left, left] * r_mean[:, right, right])
     axes[row, 1].plot(data['dates'], r_mean[:, left, right] / scale, lw=2)
-    axes[row, 1].text(0.03, 0.88, label, transform=axes[row, 1].transAxes)
+    axes[row, 1].set_title(label)
 axes[1, 0].set_ylabel(
     r'innovation standard deviation $\times 10^4$'
 )
@@ -1332,7 +1340,7 @@ axes[1, 1].set_ylabel('correlation')
 axes[-1, 0].set_xlabel('year')
 axes[-1, 1].set_xlabel('year')
 plt.tight_layout()
-fig.show()
+plt.show()
 ```
 
 The standard deviation of the interest-rate innovation spikes dramatically
@@ -1392,7 +1400,7 @@ fig, ax = plt.subplots()
 ax.plot(data['dates'], logdet_r, lw=2)
 ax.set_xlabel('year')
 ax.set_ylabel(r'$\log |E(R_t\mid T)|$')
-fig.show()
+plt.show()
 ```
 
 Generalized innovation variance rises in two steps before 1981 and then falls
@@ -1434,22 +1442,22 @@ The following implementation annualizes core inflation and reverses the
 archive's unemployment transformation.
 
 ```{code-cell} ipython3
-def local_means(theta_path):
+def local_means(θ_path):
     """Compute local core inflation and the natural unemployment rate."""
-    theta_path = np.asarray(theta_path, dtype=float)
-    if theta_path.ndim == 1:
-        theta_path = theta_path[:, None]
-    core = np.empty(theta_path.shape[1])
-    natural = np.empty(theta_path.shape[1])
-    for t in range(theta_path.shape[1]):
-        intercept, companion = companion_matrix(theta_path[:, t])
+    θ_path = np.asarray(θ_path, dtype=float)
+    if θ_path.ndim == 1:
+        θ_path = θ_path[:, None]
+    core = np.empty(θ_path.shape[1])
+    natural = np.empty(θ_path.shape[1])
+    for t in range(θ_path.shape[1]):
+        intercept, companion = companion_matrix(θ_path[:, t])
         mean = np.linalg.solve(np.eye(6) - companion, intercept)
         core[t] = 4 * mean[2]
         natural[t] = expit(100 * mean[1])
     return core, natural
 
 
-core_inflation, natural_rate = local_means(theta_mean)
+core_inflation, natural_rate = local_means(θ_mean)
 ```
 
 We plot the fourth-quarter observation from each year.
@@ -1484,7 +1492,7 @@ ax.plot(data['dates'][annual], 100 * natural_rate[annual], '+-', lw=2,
 ax.set_xlabel('year')
 ax.set_ylabel('percent')
 ax.legend()
-fig.show()
+plt.show()
 ```
 
 ```{code-cell} ipython3
@@ -1557,9 +1565,9 @@ The next function implements equation (32) at any frequency measured in cycles
 per quarter and also returns the date-local inflation variance.
 
 ```{code-cell} ipython3
-def inflation_spectrum(theta, covariance, frequencies):
+def inflation_spectrum(θ, covariance, frequencies):
     """Compute inflation power and its variance-normalized counterpart."""
-    _, companion = companion_matrix(theta)
+    _, companion = companion_matrix(θ)
     innovation = np.zeros((6, 6))
     innovation[:3, :3] = covariance
     selector = np.zeros(6)
@@ -1602,7 +1610,7 @@ mystnb:
 ---
 zero_frequency = np.array([0.0])
 inflation_persistence = np.array([
-    inflation_spectrum(theta_mean[:, t], r_mean[t], zero_frequency)[1][0]
+    inflation_spectrum(θ_mean[:, t], r_mean[t], zero_frequency)[1][0]
     for t in range(len(data['dates']))
 ])
 
@@ -1616,7 +1624,7 @@ ax.plot(
 )
 ax.set_xlabel('year')
 ax.set_ylabel(r'$g_{\pi\pi}(0,t)$')
-fig.show()
+plt.show()
 ```
 
 ```{code-cell} ipython3
@@ -1654,13 +1662,13 @@ The following heatmaps show how raw and variance-normalized inflation power move
 over both time and frequency.
 
 ```{code-cell} ipython3
-def inflation_spectrum_surface(theta_path, covariance_path, frequencies):
+def inflation_spectrum_surface(θ_path, covariance_path, frequencies):
     """Evaluate the date-local inflation spectrum on a frequency grid."""
-    raw = np.empty((len(frequencies), theta_path.shape[1]))
+    raw = np.empty((len(frequencies), θ_path.shape[1]))
     normalized = np.empty_like(raw)
-    for date in range(theta_path.shape[1]):
+    for date in range(θ_path.shape[1]):
         raw[:, date], normalized[:, date] = inflation_spectrum(
-            theta_path[:, date],
+            θ_path[:, date],
             covariance_path[date],
             frequencies,
         )
@@ -1669,7 +1677,7 @@ def inflation_spectrum_surface(theta_path, covariance_path, frequencies):
 
 spectrum_frequencies = np.linspace(0, 0.5, 41)
 raw_spectrum, normalized_spectrum = inflation_spectrum_surface(
-    theta_mean,
+    θ_mean,
     r_mean,
     spectrum_frequencies,
 )
@@ -1699,7 +1707,7 @@ for ax, (surface, title, color_label) in zip(axes, surfaces):
     ax.set_ylabel(f'{title}\ncycles per quarter')
     fig.colorbar(image, ax=ax, label=color_label)
 plt.tight_layout()
-fig.show()
+plt.show()
 ```
 
 Raw low-frequency power rises most sharply when persistence and innovation
@@ -1774,7 +1782,7 @@ for ax, (key, ylabel) in zip(axes, feature_specs):
     ax.set_ylabel(ylabel)
 axes[-1].set_xlabel('year')
 plt.tight_layout()
-fig.show()
+plt.show()
 ```
 
 The shaded regions are pointwise 90 percent posterior intervals rather than a
@@ -1807,7 +1815,7 @@ ax.plot(data['dates'][annual], inflation_persistence[annual], 'x-',
         lw=2, markersize=4, label='normalized spectrum at zero')
 ax.set_xlabel('year')
 ax.legend()
-fig.show()
+plt.show()
 ```
 
 The quarterly correlation between posterior-mean core inflation and persistence
@@ -1852,14 +1860,14 @@ stationary second moments of each local VAR.
 
 ```{code-cell} ipython3
 def policy_activism(
-    theta,
+    θ,
     covariance,
     h_pi=4,
     h_u=2,
     return_denominator=False,
 ):
     """Compute the date-local population-2SLS activism coefficient."""
-    _, companion = companion_matrix(theta)
+    _, companion = companion_matrix(θ)
     innovation = np.zeros((6, 6))
     innovation[:3, :3] = covariance
     stationary = linalg.solve_discrete_lyapunov(companion, innovation)
@@ -1903,7 +1911,7 @@ def break_ratio_crossings(values, denominator):
 activism_pairs = np.array(
     [
         policy_activism(
-            theta_mean[:, t],
+            θ_mean[:, t],
             r_mean[t],
             return_denominator=True,
         )
@@ -1933,7 +1941,7 @@ ax.plot(data['dates'], activism_path, lw=2)
 ax.axhline(1, color='0.45', lw=1)
 ax.set_xlabel('year')
 ax.set_ylabel('activism coefficient')
-fig.show()
+plt.show()
 ```
 
 The plug-in activism coefficient is below one in much of the 1970s and above one
@@ -1969,7 +1977,7 @@ for ax, (feature, label) in zip(axes, pairs):
     ax.set_xlabel('policy activism')
     ax.set_ylabel(label)
 plt.tight_layout()
-fig.show()
+plt.show()
 ```
 
 The fourth-quarter correlations of activism with core inflation and persistence
@@ -2081,7 +2089,7 @@ ax.axvline(1, color='0.45', lw=1)
 ax.set_xlabel('activism coefficient')
 ax.set_ylabel('retained draws')
 ax.legend()
-fig.show()
+plt.show()
 ```
 
 The figure plots unmodified draws inside the pooled 5th and 95th percentiles,
@@ -2276,7 +2284,7 @@ for index, ax in enumerate(axes):
     )
 axes[0].legend()
 plt.tight_layout()
-fig.show()
+plt.show()
 ```
 
 ```{code-cell} ipython3
@@ -2357,23 +2365,28 @@ def updated_drift_diagnostics(fit):
     trace = fit['trace']
     q_mean = fit['posterior']['QD'].mean(axis=2)
     eigenvalues = np.linalg.eigvalsh(q_mean)[::-1]
-    return pd.Series(
-        {
-            r'$E[\operatorname{tr}(Q)]$': trace.mean(),
-            'trace ESS': fit['trace_ess'],
-            'trace MCSE': trace.std(ddof=1) / np.sqrt(fit['trace_ess']),
-            'first-three drift share': (
-                eigenvalues[:3].sum() / eigenvalues.sum()
-            ),
-        }
-    )
+    return {
+        r'E[\operatorname{tr}(Q)]': trace.mean(),
+        r'\text{trace ESS}': fit['trace_ess'],
+        r'\text{trace MCSE}': trace.std(ddof=1) / np.sqrt(fit['trace_ess']),
+        r'\text{first-three drift share}': (
+            eigenvalues[:3].sum() / eigenvalues.sum()
+        ),
+    }
 
 
 updated_label = quarter_label(complete_extension.index[-1])
-updated_diagnostics = updated_drift_diagnostics(updated_fit).to_frame(
-    name=updated_label
-).T
-updated_diagnostics.round(3)
+updated_diagnostics = updated_drift_diagnostics(updated_fit)
+updated_rows = ' \\\\\n'.join(
+    f'{label} & {value:.3f}' for label, value in updated_diagnostics.items()
+)
+Markdown(rf'''$$
+\begin{{array}}{{lr}}
+\text{{quantity}} & \text{{{updated_label}}} \\
+\hline
+{updated_rows}
+\end{{array}}
+$$''')
 ```
 
 The drift-rate distributions and coefficient paths provide the same views used
@@ -2400,7 +2413,7 @@ ax.axvline(
 ax.set_xlabel(r'$\mathrm{tr}(Q)$')
 ax.set_ylabel('frequency')
 ax.legend()
-fig.show()
+plt.show()
 ```
 
 ```{code-cell} ipython3
@@ -2427,7 +2440,7 @@ fig.legend(
     ncol=4,
 )
 plt.tight_layout(rect=(0, 0.17, 1, 1))
-fig.show()
+plt.show()
 ```
 
 The posterior mean trace is about $0.040$, but an ESS near 20 limits fine
@@ -2454,17 +2467,17 @@ tags: [hide-input]
 def model_features(fit):
     """Compute plug-in features from one fitted posterior."""
     result = fit['posterior']
-    theta = result['SD'].mean(axis=2)
+    θ = result['SD'].mean(axis=2)
     stable_mean_path = np.array(
-        [is_stable(theta[:, t]) for t in range(theta.shape[1])]
+        [is_stable(θ[:, t]) for t in range(θ.shape[1])]
     )
     if not np.all(stable_mean_path):
         raise ValueError('posterior-mean coefficient path is unstable')
     covariance = mean_innovation_covariance(result['HD'], result['CD'])
-    core, natural = local_means(theta)
+    core, natural = local_means(θ)
     persistence = np.array([
         inflation_spectrum(
-            theta[:, t], covariance[t], zero_frequency
+            θ[:, t], covariance[t], zero_frequency
         )[1][0]
         for t in range(len(fit['data']['dates']))
     ])
@@ -2473,7 +2486,7 @@ def model_features(fit):
     activism_pairs = np.array(
         [
             policy_activism(
-                theta[:, t],
+                θ[:, t],
                 covariance[t],
                 return_denominator=True,
             )
@@ -2481,7 +2494,7 @@ def model_features(fit):
         ]
     )
     return {
-        'theta': theta,
+        'θ': θ,
         'covariance': covariance,
         'core': core,
         'natural': natural,
@@ -2524,9 +2537,9 @@ for row, (left, right, _) in enumerate(correlations):
         lw=2,
     )
 for row, (_, label) in enumerate(variances):
-    axes[row, 0].text(0.03, 0.88, label, transform=axes[row, 0].transAxes)
+    axes[row, 0].set_title(label)
 for row, (_, _, label) in enumerate(correlations):
-    axes[row, 1].text(0.03, 0.88, label, transform=axes[row, 1].transAxes)
+    axes[row, 1].set_title(label)
 for ax in axes.flat:
     ax.axvline(2000.75, color='0.65', ls='--', lw=1)
 axes[1, 0].set_ylabel(
@@ -2536,7 +2549,7 @@ axes[1, 1].set_ylabel('correlation')
 axes[-1, 0].set_xlabel('year')
 axes[-1, 1].set_xlabel('year')
 plt.tight_layout()
-fig.show()
+plt.show()
 ```
 
 The interest-rate innovation remains largest around the Volcker transition,
@@ -2561,7 +2574,7 @@ ax.plot(
 ax.axvline(2000.75, color='0.65', ls='--', lw=1)
 ax.set_xlabel('year')
 ax.set_ylabel(r'$\log |E(R_t\mid T)|$')
-fig.show()
+plt.show()
 ```
 
 ```{code-cell} ipython3
@@ -2641,7 +2654,7 @@ ax.axvline(2000.75, color='0.65', ls='--', lw=1)
 ax.set_xlabel('year')
 ax.set_ylabel('percent')
 ax.legend()
-fig.show()
+plt.show()
 ```
 
 The final annual point represents 2025Q3 because the sample ends before the
@@ -2704,7 +2717,7 @@ for ax, (key, ylabel) in zip(axes, feature_specs):
     ax.set_ylabel(ylabel)
 axes[-1].set_xlabel('year')
 plt.tight_layout()
-fig.show()
+plt.show()
 ```
 
 The solid lines are posterior medians and the shaded regions are pointwise 90
@@ -2769,7 +2782,7 @@ ax.plot(
 ax.axvline(2000.75, color='0.65', ls='--', lw=1)
 ax.set_xlabel('year')
 ax.set_ylabel(r'$g_{\pi\pi}(0,t)$')
-fig.show()
+plt.show()
 ```
 
 ```{code-cell} ipython3
@@ -2805,7 +2818,7 @@ axes[0].set_ylabel('core inflation (%)')
 axes[1].set_ylabel('normalized spectrum at zero')
 axes[1].set_xlabel('year')
 plt.tight_layout()
-fig.show()
+plt.show()
 ```
 
 The post-2020 rise in core inflation is visible, but the posterior-mean
@@ -2825,7 +2838,7 @@ tags: [hide-input]
 ---
 updated_raw_spectrum, updated_normalized_spectrum = (
     inflation_spectrum_surface(
-        updated_features['theta'],
+        updated_features['θ'],
         updated_features['covariance'],
         spectrum_frequencies,
     )
@@ -2865,7 +2878,7 @@ for ax, (surface, title, color_label) in zip(axes, updated_surfaces):
     ax.set_xlabel('year')
     ax.set_ylabel(f'{title}\ncycles per quarter')
     fig.colorbar(image, ax=ax, label=color_label)
-fig.show()
+plt.show()
 ```
 
 The pandemic and recent inflation surge add raw power across frequencies, while
@@ -2927,7 +2940,7 @@ ax.axvline(2000.75, color='0.65', ls='--', lw=1)
 ax.set_yscale('symlog', linthresh=1)
 ax.set_xlabel('year')
 ax.set_ylabel('activism coefficient')
-fig.show()
+plt.show()
 ```
 
 The symmetric-log scale preserves the sign and exposes ratio explosions rather
@@ -2962,7 +2975,7 @@ for ax in axes:
 axes[0].set_ylabel('core inflation (%)')
 axes[1].set_ylabel('normalized spectrum at zero')
 plt.tight_layout()
-fig.show()
+plt.show()
 ```
 
 We also examine the central draw distribution at the 2025Q3 endpoint.
@@ -3036,7 +3049,7 @@ ax.hist(
 ax.axvline(1, color='0.45', lw=1)
 ax.set_xlabel('activism coefficient')
 ax.set_ylabel('draw count')
-fig.show()
+plt.show()
 ```
 
 The 2025Q3 activism median is $2.42$, but its 90 percent interval from $-16.99$
@@ -3130,9 +3143,9 @@ path above to interpret how inflation dynamics changed around 1980.
 ```
 
 ```{code-cell} ipython3
-rho = np.array([0.0, 0.85, 0.97])
-g0 = (1 + rho) / (2 * np.pi * (1 - rho))
-pd.Series(g0, index=rho, name='normalized power at zero').to_frame()
+ρ = np.array([0.0, 0.85, 0.97])
+g0 = (1 + ρ) / (2 * np.pi * (1 - ρ))
+pd.Series(g0, index=ρ, name='normalized power at zero').to_frame()
 ```
 
 White noise has $g(0)=1/(2\pi)$, while values between roughly 2 and 10
