@@ -15,7 +15,12 @@ kernelspec:
 ```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
-                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+                <img
+                    style="width:250px;display:inline;"
+                    width="250px"
+                    src="https://assets.quantecon.org/img/qe-menubar-logo.svg"
+                    alt="QuantEcon"
+                >
         </a>
 </div>
 ```
@@ -26,754 +31,2405 @@ kernelspec:
 :depth: 2
 ```
 
-In addition to what's in Anaconda, this lecture will use the following library to download data from FRED:
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-!pip install pandas_datareader
-```
-
 ## Overview
 
-The lectures in this section have told a story about how a government's *model* of the Phillips curve, and the *policy* it induces, can drift over time.
+The lectures in this section have told a story about how a government's *model*
+of the Phillips curve, and the *policy* it induces, can drift over time.
 
-In {doc}`phillips_learning` and {doc}`phillips_escaping_nash` a government that fits and refits an approximating Phillips curve is repeatedly pushed away from a bad {doc}`self-confirming equilibrium <phillips_self_confirming>` along an *escape route*, and in {doc}`phillips_priors` and {doc}`phillips_lost_conquest` we watched drifting beliefs rationalize the rise and fall — and the recent return — of American inflation.
+In {doc}`phillips_learning` and {doc}`phillips_escaping_nash` a government that
+fits and refits an approximating Phillips curve is repeatedly pushed away from a
+bad {doc}`self-confirming equilibrium <phillips_self_confirming>` along an
+*escape route*, while {doc}`phillips_priors` and {doc}`phillips_lost_conquest`
+use drifting beliefs to interpret the rise and fall of American inflation.
 
 Those lectures were mostly about *theory*.
 
 This lecture turns to the *data*.
 
-It studies {cite}`CogleySargent2005`, "Drifts and Volatilities: Monetary Policies and Outcomes in the Post WWII US", which asks a deceptively simple question:
+It studies {cite:t}`CogleySargent2005`, "Drifts and Volatilities: Monetary
+Policies and Outcomes in the Post WWII US", which asks a deceptively simple
+question:
 
-> When we look at postwar U.S. time series on inflation, unemployment, and interest rates, do we see evidence that the dynamics have *drifted*?
+> When we look at postwar U.S. time series on inflation, unemployment, and
+> interest rates, do we see evidence that the dynamics have *drifted*?
 
-Tim Cogley and Thomas Sargent began this work as an empirical companion to the *Conquest* book {cite}`Sargent1999` and the escape-route papers {cite}`ChoWilliamsSargent2002`.
+Tim Cogley and Thomas Sargent began this work as an empirical companion to the
+*Conquest* book {cite}`Sargent1999` and the escape-route papers
+{cite}`ChoWilliamsSargent2002`.
 
-It is also a response to searching comments by Christopher Sims {cite}`Sims2001comment` and James Stock {cite}`Stock2001comment` on an earlier paper {cite}`CogleySargent2001`, and it grew into a friendly debate with Sims and Tao Zha {cite}`SimsZha2006` and with Ben Bernanke and Ilian Mihov {cite}`BernankeMihov1998` about a question that organizes this whole section:
+It is also a response to searching comments by {cite:t}`Sims2001comment` and
+{cite:t}`Stock2001comment` on an earlier paper {cite}`CogleySargent2001`, and it
+grew into a friendly debate with {cite:t}`SimsZha2006` and
+{cite:t}`BernankeMihov1998` about a question that organizes this whole section:
 
-**Was the Great Inflation of the 1970s and its conquest in the 1980s a story of bad *policy*, or of bad *luck*?**
+*Was the Great Inflation of the 1970s and its conquest in the 1980s a story of
+bad policy, or of bad luck?*
 
-To let the data speak to that question we need a statistical model flexible enough to accommodate *both* answers.
+To let the data speak to that question we need a statistical model flexible
+enough to accommodate *both* answers.
 
-That model is a **Bayesian vector autoregression (VAR) whose coefficients drift as random walks and whose shock variances themselves evolve as stochastic volatilities.**
+That model is a *Bayesian vector autoregression whose coefficients drift as
+random walks and whose shock variances evolve as stochastic volatilities*.
 
-Fitting it requires a Markov chain Monte Carlo (MCMC) algorithm that is a beautiful application of the {doc}`Kalman filter <kalman>` — specifically the Carter–Kohn {cite}`CarterKohn1994` forward-filter/backward-sample smoother — combined with the stochastic-volatility sampler of Jacquier, Polson, and Rossi {cite}`Jacquier1994`.
+Fitting it requires a Markov chain Monte Carlo algorithm that combines the
+{doc}`Kalman filter <kalman>`, the forward-filter/backward-sample smoother of
+{cite:t}`CarterKohn1994`, and the stochastic-volatility sampler of
+{cite:t}`Jacquier1994`.
 
-Let's start with some imports.
+We work through the data transformation, prior, sampler, and main empirical
+results in the order in which they arise.
+
+All model and post-processing routines are defined immediately below the objects
+that they implement.
+
+Let's start with some imports and the path to the frozen data.
 
 ```{code-cell} ipython3
+from pathlib import Path
+import hashlib
+import time
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import pandas_datareader.data as web
-import matplotlib.pyplot as plt
-from numpy.linalg import inv, cholesky, eigvals, solve
+from scipy import linalg
+from scipy.special import expit
 from scipy.stats import invwishart
+
+
+def locate_data_assets():
+    """Find assets from either a MyST build or the repository root."""
+    relative = Path('_static/lecture_specific/phillips_drifts_volatilities')
+    candidates = (relative, Path('lectures') / relative)
+    for candidate in candidates:
+        if (candidate / 'NEWQDATA.csv').is_file():
+            return candidate
+    searched = ', '.join(str(path.resolve()) for path in candidates)
+    raise FileNotFoundError(f'NEWQDATA.csv was not found; searched {searched}')
+
+
+asset_path = locate_data_assets()
+data_path = asset_path / 'NEWQDATA.csv'
+
+data_sha256 = hashlib.sha256(data_path.read_bytes()).hexdigest()
+assert data_sha256 == (
+    '98fb884bf59fbf211a4095c558b210ff8df471f863357803cc3ad88d0066bcaf'
+)
 ```
 
 ## Bad policy or bad luck?
 
 Two respectable views compete to explain the American Great Inflation.
 
-The **bad policy** view is the one dramatized throughout this section and in the *Conquest* book {cite}`Sargent1999`.
+The **bad policy** view is the one dramatized throughout this section and in the
+*Conquest* book {cite}`Sargent1999`.
 
-Something about Arthur Burns's *model* of the economy, his *patience*, or his inability to *commit* to a better rule led the Federal Reserve to administer monetary policy in a way that produced the greatest peacetime inflation in U.S. history; and an improved model, more patience, or greater discipline led Paul Volcker to conquer it (see {cite}`DeLong1997` and {cite}`Taylor1997comment`).
+Something about Arthur Burns's *model* of the economy, his *patience*, or his
+inability to *commit* to a better rule led the Federal Reserve to administer
+monetary policy in a way that produced the greatest peacetime inflation in U.S.
+history, while an improved model, more patience, or greater discipline led Paul
+Volcker to conquer it {cite}`DeLong1997,Taylor1997comment`.
 
-On this view, what changed between the 1970s and the 1980s was the *systematic part* of policy — the way the Fed's interest-rate setting responded to inflation and unemployment.
+On this view, what changed between the 1970s and the 1980s was the *systematic
+part* of policy, namely the way the Fed's interest-rate setting responded to
+inflation and unemployment.
 
 The **bad luck** view says something quite different.
 
-What distinguished the Burns and Volcker eras was not their models or policies, but the *shocks* that hit the economy.
+What distinguished the Burns and Volcker eras was not their models or policies,
+but the *shocks* that hit the economy.
 
-On this view the *coefficients* of a reduced-form description of the economy were essentially constant, and what changed was the *size* of the disturbances — the *volatility*.
+On this view the *coefficients* of a reduced-form description of the economy
+were essentially constant, and what changed was the *size* of the disturbances,
+namely the *volatility*.
 
-Bernanke and Mihov {cite}`BernankeMihov1998` and Sims and Zha {cite}`SimsZha2006` marshaled evidence for this second view, in part by applying classical tests that *failed to reject* the hypothesis that VAR coefficients were time-invariant.
+{cite:t}`BernankeMihov1998` and {cite:t}`SimsZha2006` marshaled evidence for
+this second view, in part by applying classical tests that *failed to reject*
+the hypothesis that VAR coefficients were time invariant.
 
 How can we discriminate?
 
-A model with constant coefficients and constant volatility cannot represent the bad-luck story; a model with drifting coefficients but constant volatility (as in {cite}`CogleySargent2001`) risks *attributing to drift what is really changing volatility* — exactly the criticism Sims and Stock leveled.
+A model with constant coefficients and constant volatility cannot represent the
+bad-luck story, while a model with drifting coefficients but constant volatility
+risks attributing to drift what is really changing volatility.
 
-So Cogley and Sargent build a model that has room for **both** channels at once, and they let a Bayesian posterior sort out how much of each the data call for.
+So Cogley and Sargent build a model that has room for *both* channels at once,
+and they let a Bayesian posterior sort out how much of each the data call for.
 
 ## A VAR with drifting coefficients and stochastic volatility
 
-Collect the three variables of interest in a vector
+Let the variables be ordered as nominal interest, transformed unemployment, and
+inflation,
 
 $$
-y_t = \begin{bmatrix} i_t \\ u_t \\ \pi_t\end{bmatrix},
+y_t = \begin{bmatrix} i_t & u_t & \pi_t \end{bmatrix}'.
 $$
 
-the nominal interest rate, (a transform of) the unemployment rate, and inflation.
-
-The **measurement equation** is a VAR with two lags whose coefficients carry a time subscript,
+The measurement equation is a VAR with two lags and date-specific coefficients,
 
 ```{math}
-:label: csdv_meas
-y_t = X_t' \theta_t + \varepsilon_t ,
-\qquad X_t' = I_3 \otimes [\,1,\ y_{t-1}',\ y_{t-2}'\,],
+:label: csdv_measurement
+y_t = X_t'\theta_t + \varepsilon_t,
+\qquad
+X_t' = I_3 \otimes \begin{bmatrix} 1 & y_{t-1}' & y_{t-2}' \end{bmatrix}.
 ```
 
-so that $\theta_t$ stacks the $21 = 3\times 7$ intercepts and autoregressive coefficients that prevail at date $t$.
+Each equation has an intercept and six lag coefficients, so $\theta_t$ contains
+$3(1+2\times 3)=21$ elements.
 
-The coefficients follow a **driftless random walk**,
+The following function implements this equation-major coefficient stacking and
+its companion representation.
+
+```{code-cell} ipython3
+n_variables = 3
+n_lags = 2
+n_regressors = 1 + n_variables * n_lags
+n_coefficients = n_variables * n_regressors
+
+
+def companion_matrix(theta):
+    """Return the intercept and companion matrix for one coefficient vector."""
+    blocks = np.asarray(theta, dtype=float).reshape(n_variables, n_regressors)
+    intercept = np.r_[blocks[:, 0], np.zeros(n_variables)]
+    companion = np.zeros((n_variables * n_lags, n_variables * n_lags))
+    companion[:n_variables] = blocks[:, 1:]
+    companion[n_variables:, :n_variables] = np.eye(n_variables)
+    return intercept, companion
+
+
+def design_matrix(regressors):
+    """Return the observation matrix X_t prime for one date."""
+    return np.kron(np.eye(n_variables), np.asarray(regressors, dtype=float))
+```
+
+The coefficient vector follows a driftless random walk,
 
 ```{math}
-:label: csdv_trans
-\theta_t = \theta_{t-1} + v_t, \qquad v_t \sim N(0, Q),
+:label: csdv_transition
+\theta_t = \theta_{t-1} + v_t,
+\qquad
+v_t \sim N(0,Q).
 ```
 
-subject to a *stability* (reflecting-barrier) restriction: paths of $\theta_t$ that would make the implied VAR explosive are ruled out a priori.
-
-Writing $I(\theta^T)$ for the indicator that the *entire* trajectory $\theta^T = \{\theta_t\}_{t=1}^T$ stays in the nonexplosive region, the prior is
-
-$$
-p(\theta^T \mid Q) \propto I(\theta^T)\, f(\theta^T \mid Q),
-$$
-
-the random-walk prior *truncated* to stable paths. This restriction encodes our belief that the economy did not in fact explode.
-
-The **innovations** are conditionally Gaussian with a time-varying covariance matrix,
+Cogley and Sargent rule out explosive paths by retaining a path only when the
+companion matrix is stable at every date and using the truncated prior
 
 ```{math}
-:label: csdv_R
-\varepsilon_t = R_t^{1/2}\,\xi_t, \qquad \xi_t \sim N(0, I_3),
-\qquad R_t = B^{-1} H_t B^{-1\prime}.
+:label: csdv_stability
+p(\theta^T,Q) \propto I(\theta^T) f(\theta^T \mid Q) f(Q),
 ```
 
-Here $B$ is a fixed lower-triangular matrix with ones on the diagonal,
+where $I(\theta^T)=1$ denotes a stable path.
 
-$$
-B = \begin{bmatrix} 1 & 0 & 0 \\ \beta_{21} & 1 & 0 \\ \beta_{31} & \beta_{32} & 1\end{bmatrix},
-$$
+This restriction encodes the belief that the economy did not in fact follow an
+explosive path.
 
-and $H_t = \operatorname{diag}(h_{1t}, h_{2t}, h_{3t})$ collects three **stochastic volatilities**, each of which evolves as a geometric random walk,
+This restriction also tilts the marginal prior for $Q$ toward values that are
+less likely to generate explosive coefficient paths.
+
+The code below applies the stability restriction to an entire trajectory rather
+than clipping individual roots.
+
+```{code-cell} ipython3
+def companion_roots(theta_path):
+    """Return all companion roots along a path with shape (21, T)."""
+    theta_path = np.asarray(theta_path, dtype=float)
+    if theta_path.ndim == 1:
+        theta_path = theta_path[:, None]
+    companions = np.stack(
+        [
+            companion_matrix(theta_path[:, t])[1]
+            for t in range(theta_path.shape[1])
+        ]
+    )
+    return np.linalg.eigvals(companions)
+
+
+def is_stable(theta_path):
+    """Test whether every companion root is strictly inside the unit circle."""
+    return bool(np.max(np.abs(companion_roots(theta_path))) < 1)
+```
+
+The reduced-form innovation covariance changes over time according to
 
 ```{math}
-:label: csdv_vol
-\ln h_{it} = \ln h_{i,t-1} + \sigma_i\, \eta_{it}, \qquad \eta_{it}\sim N(0,1).
+:label: csdv_covariance
+\varepsilon_t = R_t^{1/2}\xi_t,
+\qquad
+\xi_t \sim N(0,I_3),
+\qquad
+R_t = B^{-1} H_t B^{-1\prime},
 ```
 
-The matrix $B$ orthogonalizes the innovations; the diagonal elements $h_{it}$ let the size of each orthogonalized shock wax and wane over time.
+where
 
-The model nests both stories.
+$$
+B =
+\begin{bmatrix}
+1 & 0 & 0 \\
+\beta_{21} & 1 & 0 \\
+\beta_{31} & \beta_{32} & 1
+\end{bmatrix},
+\qquad
+H_t = \operatorname{diag}(h_{1t},h_{2t},h_{3t}).
+$$
 
-Set $Q = 0$ and the coefficients are constant — the *bad luck* model (only volatilities move).
+The matrix $B$ orthogonalizes the reduced-form innovations but is not
+interpreted as a structural identification scheme.
 
-Freeze $H_t$ and the volatilities are constant — a pure *drifting-coefficients* model.
+The diagonal elements $h_{it}$ let the size of each orthogonalized shock wax and
+wane over time.
 
-The unknowns to be inferred are the whole history of coefficients $\theta^T$, the whole history of volatilities $H^T$, and the hyperparameters $Q$, $\sigma = (\sigma_1,\sigma_2,\sigma_3)$, and $\beta = (\beta_{21},\beta_{31},\beta_{32})$.
+The next two functions construct the triangular factor and the reduced-form
+innovation covariance.
 
-The posterior $p(\theta^T, H^T, Q, \sigma, \beta \mid y^T)$ has thousands of dimensions, which is why we need MCMC.
+```{code-cell} ipython3
+def b_matrix(beta):
+    """Construct B from beta_21, beta_31, and beta_32."""
+    matrix = np.eye(n_variables)
+    matrix[1, 0], matrix[2, 0], matrix[2, 1] = np.asarray(beta, dtype=float)
+    return matrix
+
+
+def innovation_covariance(h, beta):
+    """Construct R_t from one vector of orthogonalized variances."""
+    inverse = np.linalg.inv(b_matrix(beta))
+    return inverse @ np.diag(h) @ inverse.T
+```
+
+Each diagonal volatility is a geometric random walk,
+
+```{math}
+:label: csdv_volatility
+\log h_{it} = \log h_{i,t-1} + \sigma_i \eta_{it},
+\qquad
+\eta_{it} \sim N(0,1).
+```
+
+The standardized measurement innovations, coefficient innovations, and
+volatility innovations are mutually independent.
+
+Setting $Q=0$ produces constant coefficients with drifting volatility, while
+holding $H_t$ fixed produces drifting coefficients with constant volatility.
+
+The posterior contains the full paths $\theta^T$ and $H^T$ together with $Q$,
+$\beta$, and $(\sigma_1,\sigma_2,\sigma_3)$.
+
+This posterior has thousands of dimensions, which is why we simulate it one
+conditional block at a time.
 
 ## The data
 
-Following the paper, we use quarterly U.S. data.
+We begin with a frozen quarterly U.S. dataset ending in 2000Q4.
 
-* inflation $\pi_t$ is the log-difference of the consumer price index, point-sampled in the third month of each quarter;
-* unemployment enters as the *logit* of the civilian unemployment rate (a transform that keeps a rate bounded in $(0,1)$ from wandering outside it), averaged over the quarter;
-* the interest rate $i_t$ is the three-month Treasury bill rate in the first month of the quarter, expressed at a quarterly rate.
+Inflation is the log difference of the seasonally adjusted CPI for all urban
+consumers, point sampled in the third month of each quarter.
 
-We download the raw series from [FRED](https://fred.stlouisfed.org/) and build the three transformed series.
+Unemployment is the quarterly average of the seasonally adjusted civilian
+unemployment rate and enters the VAR as $0.01\log[u/(1-u)]$, a logit
+transformation that maps a bounded rate into an unconstrained variable.
 
-The paper's sample runs through 2000; we extend it through 2019, adding the Great Moderation, the 2008 financial crisis, and the recovery that followed.
+The nominal interest rate is the log of one plus the three-month Treasury-bill
+rate, averaged over daily observations in the first month of each quarter and
+expressed as a quarterly fraction.
 
-We stop before the COVID-19 pandemic, whose enormous 2020 swings in measured unemployment break a linear-Gaussian VAR (we return to the pandemic inflation in {doc}`phillips_lost_conquest`).
+The frozen file starts in 1948Q2 because its first inflation observation is
+already differenced, so two VAR lags make 1948Q4 the first usable regression
+date.
+
+Its SHA-256 checksum is asserted above so that every run uses the same
+historical input.
+
+The following cell performs every transformation and constructs the VAR(2) data
+directly from the frozen series.
 
 ```{code-cell} ipython3
-start, end = '1947-01-01', '2019-12-31'
-cpi = web.DataReader('CPIAUCSL', 'fred', start, end)['CPIAUCSL']
-ur  = web.DataReader('UNRATE',   'fred', start, end)['UNRATE']
-tb  = web.DataReader('TB3MS',    'fred', start, end)['TB3MS']
+def prepare_data(source, ordering=('i', 'u', 'pi')):
+    """Transform a quarterly table and construct the VAR data."""
+    if isinstance(source, (str, Path)):
+        table = pd.read_csv(source)
+    else:
+        table = source.copy()
+    variables = {
+        'i': table['y3'].to_numpy(dtype=float),
+        'u': 0.01 * np.log(
+            table['ur'].to_numpy(dtype=float)
+            / (1 - table['ur'].to_numpy(dtype=float))
+        ),
+        'pi': table['dp'].to_numpy(dtype=float),
+    }
+    if sorted(ordering) != ['i', 'pi', 'u']:
+        raise ValueError("ordering must be a permutation of ('i', 'u', 'pi')")
+    raw_y = np.column_stack([variables[name] for name in ordering])
+    raw_dates = table['date'].to_numpy(dtype=float)
+    regressors = np.ones((len(table) - n_lags, n_regressors))
+    for lag in range(1, n_lags + 1):
+        left = 1 + n_variables * (lag - 1)
+        regressors[:, left:left + n_variables] = raw_y[n_lags-lag:-lag]
+    targets = raw_y[n_lags:]
+    dates = raw_dates[n_lags:]
+    n_training = 4 * 11 - n_lags - 1
+    return {
+        'raw_dates': raw_dates,
+        'raw_y': raw_y,
+        'prior_dates': dates[:n_training],
+        'prior_y': targets[:n_training],
+        'prior_x': regressors[:n_training],
+        'dates': dates[n_training:],
+        'y': targets[n_training:],
+        'x': regressors[n_training:],
+    }
 
-# inflation: log-change of CPI point-sampled in the third month of each quarter
-cpi_q = cpi[cpi.index.month.isin([3, 6, 9, 12])]
-infl = np.log(cpi_q).diff().dropna()
-infl.index = infl.index.to_period('Q')
 
-# unemployment: quarterly average, as a fraction, then logit
-u_q = (ur / 100).resample('QE').mean()
-u_q.index = u_q.index.to_period('Q')
-logit_u = np.log(u_q / (1 - u_q))
+data = prepare_data(data_path)
 
-# interest: 3-month T-bill, first month of quarter, at a quarterly rate
-i_q = tb[tb.index.month.isin([1, 4, 7, 10])] / 100 / 4
-i_q.index = i_q.index.to_period('Q')
+data_summary = pd.Series(
+    {
+        'ordering': 'interest, unemployment, inflation',
+        'prior sample': '1948Q4--1958Q4',
+        'prior observations': len(data['prior_dates']),
+        'posterior sample': '1959Q1--2000Q4',
+        'posterior observations': len(data['dates']),
+        'VAR lags': n_lags,
+        'coefficient dimension': n_coefficients,
+    },
+    name='value',
+)
 
-data = pd.concat({'i': i_q, 'u': logit_u, 'pi': infl}, axis=1).dropna().loc['1948Q1':]
-data.tail()
+data_summary.to_frame()
 ```
 
-Let us look at the three series, with inflation and the interest rate shown at annualized percentage rates and unemployment untransformed back to a percentage.
+The first 41 usable observations calibrate the prior, while the remaining 168
+observations form the posterior sample.
+
+Let us view the data in familiar economic units.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: U.S. macroeconomic series
+    name: fig-csdv-historical-data
+---
+dates_raw = data['raw_dates']
+interest = 400 * np.expm1(data['raw_y'][:, 0])
+unemployment = 100 * expit(100 * data['raw_y'][:, 1])
+inflation = 400 * data['raw_y'][:, 2]
+
 fig, axes = plt.subplots(3, 1, figsize=(9, 7), sharex=True)
-tt = data.index.to_timestamp()
-axes[0].plot(tt, data['pi'] * 400)
-axes[0].set_ylabel('inflation (ann. %)')
-axes[1].plot(tt, 100 / (1 + np.exp(-data['u'])))
+axes[0].plot(dates_raw, inflation, lw=2)
+axes[0].set_ylabel('inflation (annual %)')
+axes[1].plot(dates_raw, unemployment, lw=2)
 axes[1].set_ylabel('unemployment (%)')
-axes[2].plot(tt, data['i'] * 400)
-axes[2].set_ylabel('interest (ann. %)')
+axes[2].plot(dates_raw, interest, lw=2)
+axes[2].set_ylabel('interest (annual %)')
 axes[2].set_xlabel('year')
 plt.tight_layout()
-plt.show()
+fig.show()
 ```
 
-The rise of inflation and interest rates through the 1970s, the Volcker disinflation of the early 1980s, and the long calm that followed are all plainly visible.
+The rise in inflation and nominal interest rates during the 1970s, the Volcker
+disinflation, and the subsequent moderation are all visible before a model is
+fitted.
 
 The question is what a flexible statistical model makes of them.
 
-## Setting up the state space
-
-We now build the pieces the sampler needs.
-
-Because the three series live on very different numerical scales (the logit of unemployment is around $-3$, while quarterly inflation is around $0.01$), we standardize each series by its sample standard deviation before estimation.
-
-This is a standard preconditioning in time-varying VAR work {cite}`Primiceri2005`: it puts the random-walk innovations $v_t$ on comparable scales and keeps the regressor cross-product matrix well conditioned. We undo the scaling when we report results in economic units.
-
-```{code-cell} ipython3
-n, p = 3, 2               # variables, lags
-k = 1 + n * p             # 7 regressors per equation
-d = n * k                 # 21 drifting VAR coefficients
-
-scale = data.values.std(0)
-Yz = data.values / scale  # standardized data
-
-def companion(theta):
-    "Companion matrix of the VAR(2) implied by a coefficient vector theta."
-    C = theta.reshape(n, k)
-    F = np.zeros((n * p, n * p))
-    F[:n, :n] = C[:, 1:1+n]
-    F[:n, n:2*n] = C[:, 1+n:1+2*n]
-    F[n:, :n] = np.eye(n)
-    return F
-
-# stack regressors x_t = [1, y_{t-1}, y_{t-2}] and outcomes y_t
-rows_x, rows_y = [], []
-for t in range(p, len(Yz)):
-    rows_x.append(np.concatenate([[1.0], Yz[t-1], Yz[t-2]]))
-    rows_y.append(Yz[t])
-X_all, Y_all = np.array(rows_x), np.array(rows_y)
-dates_all = data.index[p:]
-
-# training sample (through 1958) calibrates the priors; estimate on 1959-2019
-train = dates_all <= pd.Period('1958Q4', 'Q')
-est = (dates_all >= pd.Period('1959Q1', 'Q')) & (dates_all <= pd.Period('2019Q4', 'Q'))
-Xtr, Ytr = X_all[train], Y_all[train]
-X, Y = X_all[est], Y_all[est]
-dates = dates_all[est]
-T = len(X)
-print(f'{T} quarters, {dates[0]} to {dates[-1]}')
-```
-
 ## Priors
 
-The paper's priors are deliberately weak, chosen so that "the data are free to speak."
+The prior blocks are independent and deliberately weak so that, in the authors'
+phrase, "the data are free to speak."
 
-They are calibrated from a time-invariant VAR fit to the short 1948–1958 training sample.
+They are calibrated from a time-invariant VAR fitted to the short 1948--1958
+training sample.
 
-Let $\hat\theta$ and $\hat P$ be the OLS point estimate and its covariance from that regression, and let $\Sigma_0$ be the OLS residual covariance.
+The initial coefficient prior is a stable, truncated Gaussian,
 
-* The initial coefficient vector has a Gaussian prior $\theta_0 \sim N(\hat\theta, \hat P)$, truncated to stable values.
-* The drift covariance has an inverse-Wishart prior $Q \sim IW(\bar Q, \tau)$. We center it on a small multiple of $\hat P$ so that a *priori* the coefficients drift only slowly — the "business as usual" prior of {cite}`Primiceri2005`. The scalar $k_Q^2$ controls how much drift the prior permits.
-* The volatility innovation standard deviations have an inverse-gamma prior $\sigma_i^2 \sim IG(0.5, 5\times 10^{-5})$, and the covariance parameters $\beta$ a diffuse Gaussian prior.
+$$
+p(\theta_0) \propto I(\theta_0)N(\bar\theta,\bar P),
+$$
+
+where $\bar\theta$ and $\bar P$ come from a constant-coefficient seemingly
+unrelated regression fitted to the 1948--1958 training sample.
+
+Because all three equations have identical regressors, the SUR coefficient
+estimates equal equation-by-equation OLS estimates, which lets us implement the
+calibration compactly.
 
 ```{code-cell} ipython3
-XtX = Xtr.T @ Xtr
-B_ols = solve(XtX, Xtr.T @ Ytr)
-Sigma0 = (Ytr - Xtr @ B_ols).T @ (Ytr - Xtr @ B_ols) / len(Xtr)
+def sur_prior(y, x):
+    """Calibrate the Gaussian coefficient prior from a constant VAR."""
+    xx_inverse = np.linalg.inv(x.T @ x)
+    coefficients = xx_inverse @ x.T @ y
+    residuals = y - x @ coefficients
+    residual_covariance = np.cov(residuals, rowvar=False, ddof=1)
+    theta = coefficients.T.reshape(-1)
+    covariance = np.kron(residual_covariance, xx_inverse)
+    return theta, covariance, residual_covariance
 
-theta0 = B_ols.flatten(order='F')       # prior mean for the coefficients
-P0 = np.kron(Sigma0, inv(XtX))          # prior covariance
 
-tau = len(Xtr)
-kQ = 0.01                               # controls the prior amount of drift
-Q_scale = kQ**2 * tau * P0              # inverse-Wishart scale matrix
-Q_df = tau                              # inverse-Wishart degrees of freedom
+theta_bar, p_bar, r_bar = sur_prior(data['prior_y'], data['prior_x'])
 
-# initial volatilities from the training-sample orthogonalized residuals
-B_init = inv(cholesky(Sigma0))
-B_init /= np.diag(B_init)[:, None]
-lnh0 = np.log(np.diag(B_init @ Sigma0 @ B_init.T))
-lnh0_var = 10.0
+assert is_stable(theta_bar)
+```
 
-# precompute the measurement matrices Z_t = I_3 ⊗ x_t'
-Z = [np.kron(np.eye(n), X[t][None, :]) for t in range(T)]
+The coefficient-drift covariance has the inverse-Wishart prior
+
+```{math}
+:label: csdv_q_prior
+Q \sim IW_{21}\left(T_0,T_0\bar Q\right),
+\qquad
+T_0 = 22,
+\qquad
+\bar Q = \gamma^2 \bar P,
+\qquad
+\gamma^2 = 3.5\times 10^{-4}.
+```
+
+The convention in {eq}`csdv_q_prior` lists degrees of freedom first and the
+inverse-Wishart scale matrix second.
+
+Because $T_0$ is only one greater than the dimension of $\theta_t$, the prior is
+proper but has no finite mean.
+
+The matrix $\bar Q$ is therefore a conservative scale calibration rather than
+the expectation of $Q$.
+
+This calibration favors slow coefficient drift before the posterior sees the
+main sample.
+
+The remaining priors are
+
+$$
+\begin{aligned}
+\log h_{i0} &\sim N(\log \bar R_{ii},10), \\
+\beta &\sim N(0,10000I_3), \\
+\sigma_i^2 &\sim IG\left(\frac{1}{2},\frac{0.01^2}{2}\right),
+\end{aligned}
+$$
+
+where $\bar R$ is the residual covariance from the training-sample regression.
+
+The next function gathers these hyperparameters so that the same sampler can be
+applied to every variable ordering.
+
+```{code-cell} ipython3
+def calibrate_prior(model_data, gamma_squared=3.5e-4):
+    """Return every prior block calibrated to one variable ordering."""
+    theta_mean, theta_covariance, residual_covariance = sur_prior(
+        model_data['prior_y'], model_data['prior_x']
+    )
+    degrees_freedom = n_coefficients + 1
+    q_center = gamma_squared * theta_covariance
+    return {
+        'theta_mean': theta_mean,
+        'theta_covariance': theta_covariance,
+        'q_center': q_center,
+        'q_scale': degrees_freedom * q_center,
+        'q_degrees_freedom': degrees_freedom,
+        'log_h_mean': np.log(np.diag(residual_covariance)),
+        'log_h_variance': 10.0,
+        'beta_mean': np.zeros(3),
+        'beta_variance': 10000.0,
+        'sigma_degrees_freedom': 1.0,
+        'sigma_scale': 0.01**2,
+        'gamma_squared': gamma_squared,
+    }
+
+
+prior = calibrate_prior(data)
+q_bar = prior['q_center']
+
+prior_summary = pd.Series(
+    {
+        'dim(theta)': n_coefficients,
+        'T0': prior['q_degrees_freedom'],
+        'gamma squared': prior['gamma_squared'],
+        'trace(Q bar)': np.trace(q_bar),
+        'log-h prior variance': prior['log_h_variance'],
+        'beta prior variance': prior['beta_variance'],
+        'sigma-squared IG shape': prior['sigma_degrees_freedom'] / 2,
+        'sigma-squared IG scale': prior['sigma_scale'] / 2,
+    },
+    name='value',
+)
+
+prior_summary.to_frame()
 ```
 
 ## A Metropolis-within-Gibbs sampler
 
-We simulate the posterior by cycling through five blocks, drawing each group of unknowns conditional on the others.
+We simulate the posterior by cycling through the five conditional blocks in
+Appendix B of {cite:t}`CogleySargent2005`.
 
-This is the algorithm in Appendix B of {cite}`CogleySargent2005`.
+For the stability-truncated coefficient block, we replace repeated whole-path
+rejection with the exact elliptical-slice transition described below; the
+target posterior is unchanged.
 
-1. **Coefficients $\theta^T$**, given the volatilities and hyperparameters.
-Conditional on the sequence of covariance matrices $R_t$, {eq}`csdv_meas`–{eq}`csdv_trans` is a linear Gaussian state-space model, and the whole coefficient path can be drawn in one sweep by the **Carter–Kohn** {cite}`CarterKohn1994` forward-filter/backward-sample algorithm — a stochastic version of the {doc}`Kalman smoother <kalman>`. We *reject* any proposed path that violates the stability restriction, keeping the previous draw instead.
-2. **Drift covariance $Q$**, an inverse-Wishart draw given the coefficient innovations $v_t = \theta_t - \theta_{t-1}$.
-3. **Covariance parameters $\beta$**, drawn from a pair of transformed regressions.
-4. **Volatilities $H^T$**, drawn one date at a time by the **Jacquier–Polson–Rossi** {cite}`Jacquier1994` Metropolis step for stochastic-volatility models.
-5. **Volatility innovation variances $\sigma_i^2$**, an inverse-gamma draw given the volatility path.
+1. An auxiliary Gaussian coefficient path is drawn by a Carter--Kohn
+   forward-filter/backward-sample step and used to update the stable path by
+   elliptical slice sampling.
 
-We first write a helper to draw from a multivariate normal via its Cholesky factor.
+2. The drift covariance $Q$ is drawn from an inverse-Wishart distribution
+   conditional on the coefficient innovations.
+
+3. The volatility innovation variances $\sigma_i^2$ are drawn from inverse-gamma
+   distributions conditional on the volatility increments.
+
+4. The covariance parameters $\beta$ are drawn from two transformed Gaussian
+   regressions among the VAR residuals.
+
+5. The volatility paths $H^T$ are drawn one date at a time by a
+   Jacquier--Polson--Rossi Metropolis step.
+
+This ordering matters: every block in a sweep is paired with the values on which
+it was actually conditioned.
+
+### Coefficient path
+
+Conditional on $R^T$ and $Q$, a forward Kalman filter followed by the
+Carter--Kohn backward simulator draws the entire coefficient path
+{cite}`CarterKohn1994`.
+
+The forward pass is a Kalman filter, while the backward pass samples
+$\theta_T,\theta_{T-1},\ldots,\theta_0$ in reverse with each state conditioned
+on the draw that follows it.
+
+Sampling $\theta_0$ is essential.
+
+It supplies all $T$ random-walk increments to the conjugate update for $Q$;
+integrating it out while retaining an inverse-Wishart $Q$ update would be
+inconsistent.
 
 ```{code-cell} ipython3
-def draw_mvn(mean, cov):
-    cov = 0.5 * (cov + cov.T) + 1e-12 * np.eye(len(cov))
-    return mean + cholesky(cov) @ rng.standard_normal(len(mean))
+def covariance_root(matrix):
+    """Return a numerically stable lower covariance factor."""
+    matrix = 0.5 * (matrix + matrix.T)
+    scale = max(1.0, np.max(np.abs(np.diag(matrix))))
+    return np.linalg.cholesky(matrix + 1e-12 * scale * np.eye(len(matrix)))
+
+
+def draw_coefficient_path(
+    y, x, q, h, beta, prior, rng, return_mean=False
+):
+    """Draw theta_0,...,theta_T and optionally return its smoothing mean."""
+    periods = len(y)
+    filtered_mean = np.empty((periods + 1, n_coefficients))
+    filtered_covariance = np.empty(
+        (periods + 1, n_coefficients, n_coefficients)
+    )
+    predicted_covariance = np.empty_like(filtered_covariance)
+    filtered_mean[0] = prior['theta_mean']
+    filtered_covariance[0] = prior['theta_covariance']
+    predicted_covariance[0] = prior['theta_covariance']
+    for t in range(1, periods + 1):
+        observation = design_matrix(x[t - 1])
+        prediction_covariance = filtered_covariance[t - 1] + q
+        r_t = innovation_covariance(h[t], beta)
+        forecast_covariance = (
+            observation @ prediction_covariance @ observation.T + r_t
+        )
+        gain = linalg.solve(
+            forecast_covariance,
+            (prediction_covariance @ observation.T).T,
+            assume_a='pos',
+        ).T
+        mean = filtered_mean[t - 1]
+        mean = mean + gain @ (y[t - 1] - observation @ mean)
+        covariance = (
+            prediction_covariance
+            - gain @ observation @ prediction_covariance
+        )
+        covariance = 0.5 * (covariance + covariance.T)
+        filtered_mean[t] = mean
+        filtered_covariance[t] = covariance
+        predicted_covariance[t] = prediction_covariance
+    path = np.empty((n_coefficients, periods + 1))
+    if not return_mean:
+        path[:, -1] = (
+            filtered_mean[-1]
+            + covariance_root(filtered_covariance[-1])
+            @ rng.standard_normal(n_coefficients)
+        )
+        for t in range(periods - 1, -1, -1):
+            smoother = linalg.solve(
+                predicted_covariance[t + 1],
+                filtered_covariance[t].T,
+                assume_a='pos',
+            ).T
+            mean = filtered_mean[t] + smoother @ (
+                path[:, t + 1] - filtered_mean[t]
+            )
+            covariance = (
+                filtered_covariance[t]
+                - smoother @ predicted_covariance[t + 1] @ smoother.T
+            )
+            path[:, t] = mean + covariance_root(covariance) @ (
+                rng.standard_normal(n_coefficients)
+            )
+        return path
+
+    smoothed_mean = np.empty_like(path)
+    centered_draw = np.empty_like(path)
+    smoothed_mean[:, -1] = filtered_mean[-1]
+    centered_draw[:, -1] = covariance_root(filtered_covariance[-1]) @ (
+        rng.standard_normal(n_coefficients)
+    )
+    for t in range(periods - 1, -1, -1):
+        smoother = linalg.solve(
+            predicted_covariance[t + 1],
+            filtered_covariance[t].T,
+            assume_a='pos',
+        ).T
+        smoothed_mean[:, t] = filtered_mean[t] + smoother @ (
+            smoothed_mean[:, t + 1] - filtered_mean[t]
+        )
+        covariance = (
+            filtered_covariance[t]
+            - smoother @ predicted_covariance[t + 1] @ smoother.T
+        )
+        centered_draw[:, t] = (
+            smoother @ centered_draw[:, t + 1]
+            + covariance_root(covariance) @ rng.standard_normal(n_coefficients)
+        )
+    return smoothed_mean + centered_draw, smoothed_mean
+
+
+def draw_stable_coefficient_path(
+    current, y, x, q, h, beta, prior, rng, max_contractions=100
+):
+    """Elliptical-slice update of the stability-truncated Gaussian path."""
+    if not is_stable(current):
+        raise ValueError('the elliptical-slice update needs a stable path')
+    gaussian_draw, mean = draw_coefficient_path(
+        y, x, q, h, beta, prior, rng, return_mean=True
+    )
+    current_centered = current - mean
+    innovation = gaussian_draw - mean
+    angle = rng.uniform(0, 2 * np.pi)
+    lower = angle - 2 * np.pi
+    upper = angle
+    for contractions in range(max_contractions + 1):
+        proposal = (
+            mean
+            + current_centered * np.cos(angle)
+            + innovation * np.sin(angle)
+        )
+        if is_stable(proposal):
+            return proposal, contractions
+        if angle < 0:
+            lower = angle
+        else:
+            upper = angle
+        angle = rng.uniform(lower, upper)
+    raise RuntimeError('elliptical-slice stability bracket did not contract')
 ```
 
-### Block 1: the coefficient path
+### Drift covariance
 
-The forward pass is the Kalman filter run through the sample; the backward pass samples $\theta_T, \theta_{T-1}, \dots, \theta_0$ in reverse, each conditioned on the draw that follows it.
+Conditional on the coefficient increments, $Q$ has an inverse-Wishart full
+conditional.
 
-If the sampled path is stable everywhere we accept it; otherwise we keep the previous path — this is how the reflecting-barrier prior is imposed.
+The retained simulation draws $Q$ from a scale matrix formed by its prior scale
+and all $T$ squared increments from $\theta_0$ through $\theta_T$.
 
 ```{code-cell} ipython3
-def draw_theta(Rseq, Q, theta_prev):
-    # forward pass: Kalman filter with time-varying measurement covariance R_t
-    tf = np.zeros((T + 1, d))
-    Pf = np.zeros((T + 1, d, d))
-    tf[0], Pf[0] = theta0, P0
-    for t in range(1, T + 1):
-        Ppred = Pf[t-1] + Q
-        S = Z[t-1] @ Ppred @ Z[t-1].T + Rseq[t-1]
-        K = Ppred @ Z[t-1].T @ inv(S)
-        tf[t] = tf[t-1] + K @ (Y[t-1] - Z[t-1] @ tf[t-1])
-        Pf[t] = Ppred - K @ Z[t-1] @ Ppred
-    # backward pass: sample the path from T back to 0
-    Th = np.zeros((T + 1, d))
-    Th[T] = draw_mvn(tf[T], Pf[T])
-    for t in range(T - 1, -1, -1):
-        J = Pf[t] @ inv(Pf[t] + Q)
-        Th[t] = draw_mvn(tf[t] + J @ (Th[t+1] - tf[t]), Pf[t] - J @ Pf[t])
-    # impose the stability (reflecting-barrier) prior
-    stable = all(np.max(np.abs(eigvals(companion(Th[t])))) < 1 for t in range(1, T + 1))
-    return (Th, True) if stable else (theta_prev, False)
+def draw_q(theta_path, prior, rng):
+    """Draw Q conditional on the sampled coefficient path."""
+    increments = np.diff(theta_path, axis=1)
+    scale = prior['q_scale'] + increments @ increments.T
+    degrees_freedom = prior['q_degrees_freedom'] + increments.shape[1]
+    return invwishart.rvs(df=degrees_freedom, scale=scale, random_state=rng)
 ```
 
-### Blocks 3 and 4: covariance parameters and volatilities
+### Volatility parameters and paths
 
-Given a coefficient path we can form the VAR residuals $\varepsilon_t$.
+Conditional on the volatility increments, each $\sigma_i^2$ has an inverse-gamma
+full conditional.
 
-The parameters $\beta$ that build the orthogonalizing matrix $B$ come from two "seemingly unrelated" regressions among the residuals, and the volatilities are then updated one date at a time.
+Conditional on the VAR residuals and $H^T$, the free elements of $B$ are drawn
+from two Gaussian regressions.
+
+Conditional on the orthogonalized residuals, each volatility state is updated
+with the single-site Metropolis step of {cite:t}`Jacquier1994`.
+
+The random-walk neighbors determine the Gaussian proposal for a log volatility,
+while the corresponding orthogonalized residual determines whether that proposal
+is accepted.
+
+The following code implements the conditional updates, including the different
+endpoint proposals.
 
 ```{code-cell} ipython3
-def Bmatrix(beta):
-    B = np.eye(n)
-    B[1, 0], B[2, 0], B[2, 1] = beta
-    return B
+def var_residuals(y, x, theta_path):
+    """Return residuals with shape (T, 3)."""
+    if theta_path.shape[1] == len(y) + 1:
+        theta_path = theta_path[:, 1:]
+    if theta_path.shape[1] != len(y):
+        raise ValueError('theta_path must contain T or T + 1 states')
+    coefficients = theta_path.T.reshape(len(y), n_variables, n_regressors)
+    fitted = np.einsum('tk,tnk->tn', x, coefficients)
+    return y - fitted
 
-def draw_beta(eps, h):
-    prior = 1 / 10000.0
-    # equation 2: regress h2^{-1/2} eps2 on -h2^{-1/2} eps1
-    z2 = eps[:, 1] / np.sqrt(h[:, 1])
-    x2 = (-eps[:, 0] / np.sqrt(h[:, 1]))[:, None]
-    V = 1 / (prior + (x2.T @ x2)[0, 0])
-    b21 = V * (x2.T @ z2)[0] + np.sqrt(V) * rng.standard_normal()
-    # equation 3: regress h3^{-1/2} eps3 on -h3^{-1/2}(eps1, eps2)
-    z3 = eps[:, 2] / np.sqrt(h[:, 2])
-    x3 = np.column_stack([-eps[:, 0] / np.sqrt(h[:, 2]),
-                          -eps[:, 1] / np.sqrt(h[:, 2])])
-    V3 = inv(prior * np.eye(2) + x3.T @ x3)
-    b3 = draw_mvn(V3 @ (x3.T @ z3), V3)
-    return np.array([b21, b3[0], b3[1]])
+
+def draw_sigma(h, prior, rng):
+    """Draw the three log-volatility innovation standard deviations."""
+    increments = np.diff(np.log(h), axis=0)
+    shape = (prior['sigma_degrees_freedom'] + increments.shape[0]) / 2
+    scales = (prior['sigma_scale'] + np.sum(increments**2, axis=0)) / 2
+    sigma_squared = scales / rng.gamma(shape, 1.0, size=n_variables)
+    return np.sqrt(sigma_squared)
+
+
+def draw_beta(residuals, h, prior, rng):
+    """Draw the free elements of B from transformed Gaussian regressions."""
+    beta = np.empty(3)
+    offset = 0
+    for equation in range(1, n_variables):
+        standardized = residuals / np.sqrt(h[1:, equation])[:, None]
+        dependent = standardized[:, equation]
+        regressors = -standardized[:, :equation]
+        prior_precision = np.eye(equation) / prior['beta_variance']
+        covariance = np.linalg.inv(prior_precision + regressors.T @ regressors)
+        prior_slice = prior['beta_mean'][offset:offset + equation]
+        mean = covariance @ (
+            prior_precision @ prior_slice + regressors.T @ dependent
+        )
+        beta[offset:offset + equation] = (
+            mean + covariance_root(covariance) @ rng.standard_normal(equation)
+        )
+        offset += equation
+    return beta
+
+
+def accept_volatility(proposal, current, residual, rng):
+    """Apply the Jacquier--Polson--Rossi likelihood acceptance step."""
+    log_ratio = (
+        -0.5 * np.log(proposal)
+        - residual**2 / (2 * proposal)
+        + 0.5 * np.log(current)
+        + residual**2 / (2 * current)
+    )
+    return proposal if np.log(rng.random()) <= min(0.0, log_ratio) else current
+
+
+def draw_volatility_path(h, residuals, beta, sigma, prior, rng):
+    """Update all stochastic-volatility states one date at a time."""
+    periods = len(residuals)
+    orthogonalized = (b_matrix(beta) @ residuals.T).T
+    updated = np.empty_like(h)
+    for equation in range(n_variables):
+        variance = sigma[equation]**2
+        initial_variance = (
+            prior['log_h_variance'] * variance
+            / (variance + prior['log_h_variance'])
+        )
+        initial_mean = initial_variance * (
+            prior['log_h_mean'][equation] / prior['log_h_variance']
+            + np.log(h[1, equation]) / variance
+        )
+        updated[0, equation] = np.exp(
+            initial_mean + np.sqrt(initial_variance) * rng.standard_normal()
+        )
+        for t in range(1, periods):
+            mean = 0.5 * (
+                np.log(updated[t - 1, equation]) + np.log(h[t + 1, equation])
+            )
+            proposal = np.exp(
+                mean + np.sqrt(variance / 2) * rng.standard_normal()
+            )
+            updated[t, equation] = accept_volatility(
+                proposal,
+                h[t, equation],
+                orthogonalized[t - 1, equation],
+                rng,
+            )
+        proposal = np.exp(
+            np.log(updated[-2, equation])
+            + sigma[equation] * rng.standard_normal()
+        )
+        updated[-1, equation] = accept_volatility(
+            proposal,
+            h[-1, equation],
+            orthogonalized[-1, equation],
+            rng,
+        )
+    return updated
 ```
 
-The Jacquier–Polson–Rossi step draws each $\ln h_{it}$ from a proposal centered on its neighbors in the random walk and accepts or rejects it by comparing how well it fits the orthogonalized residual $u_{it}$.
+### Complete sampler
+
+The restricted posterior assigns zero density to coefficient paths that are
+explosive at any date, including $\theta_0$.
+
+Repeated independent draws from the Gaussian coefficient-path conditional are
+wasteful because requiring all 169 states to be stable can lead to many
+full-path rejections.
+
+We instead use an elliptical-slice transition: one Carter--Kohn innovation
+defines an ellipse through the current stable path, and a cheap one-dimensional
+angle bracket contracts until the proposed path is stable.
+
+This transition leaves the same stability-truncated Gaussian conditional
+invariant and computes the Kalman filter only once per sweep.
+
+The next function composes the five blocks and includes a stochastic-volatility
+warm-up.
 
 ```{code-cell} ipython3
-def draw_vol(lnh, u, sig2):
-    for i in range(n):
-        s2 = sig2[i]
-        # initial log-volatility from a Gaussian full conditional
-        v0 = 1 / (1 / lnh0_var + 1 / s2)
-        lnh[0, i] = v0 * (lnh0[i] / lnh0_var + lnh[1, i] / s2) \
-            + np.sqrt(v0) * rng.standard_normal()
-        for t in range(1, T + 1):
-            if t < T:
-                mu, sc2 = 0.5 * (lnh[t+1, i] + lnh[t-1, i]), 0.5 * s2
-            else:
-                mu, sc2 = lnh[t-1, i], s2
-            old = lnh[t, i]
-            new = mu + np.sqrt(sc2) * rng.standard_normal()
-            log_acc = -0.5 * (new - old) \
-                - 0.5 * u[t-1, i]**2 * (np.exp(-new) - np.exp(-old))
-            if np.log(rng.random()) < log_acc:
-                lnh[t, i] = new
-    return lnh
-```
+def initial_volatilities(y, prior):
+    """Construct the sampler's initial volatility path."""
+    changes = np.diff(y, axis=0)
+    centered = changes - changes.mean(axis=0)
+    log_h = np.empty((len(y) + 1, n_variables))
+    log_h[:2] = prior['log_h_mean']
+    log_h[2:] = np.log(np.maximum(centered**2, np.finfo(float).tiny))
+    return np.exp(log_h)
 
-### The main loop
 
-The loop ties the blocks together.
+def run_sampler(
+    y,
+    x,
+    prior,
+    n_sweeps=1_000,
+    burn=500,
+    thin=1,
+    seed=42,
+    warmup=200,
+    max_contractions=100,
+    stable=True,
+    retain=('S0D', 'SD', 'QD', 'HD', 'CD', 'VD', 'stable_draw'),
+    progress_every=0,
+):
+    """Run a coherent Gibbs sampler for the unrestricted or stable posterior.
 
-Each sweep produces one draw from the posterior; after a burn-in we keep every few draws to reduce autocorrelation and storage.
+    For the stable posterior, an elliptical-slice transition updates the FFBS
+    path inside its stability-truncated Gaussian full conditional.
+    """
+    if not (0 <= burn < n_sweeps and thin >= 1):
+        raise ValueError('require 0 <= burn < n_sweeps and thin >= 1')
+    if (n_sweeps - burn) % thin:
+        raise ValueError('(n_sweeps - burn) must be divisible by thin')
+    valid_retain = {'S0D', 'SD', 'QD', 'HD', 'CD', 'VD', 'stable_draw'}
+    unknown = set(retain) - valid_retain
+    if unknown:
+        raise ValueError(f'unknown retained arrays: {sorted(unknown)}')
 
-```{code-cell} ipython3
-def run(ndraw, nburn, thin, seed=2024):
-    global rng
+    started = time.perf_counter()
     rng = np.random.default_rng(seed)
-    Th = np.tile(theta0, (T + 1, 1)).astype(float)
-    Q = Q_scale / (Q_df - d - 1)
-    beta = np.zeros(3)
-    sig2 = np.full(3, 0.05**2)
-    lnh = np.tile(lnh0, (T + 1, 1)).astype(float)
-    keep_th, keep_R = [], []
-    accept = 0
-    for it in range(ndraw):
-        # build the covariance sequence R_t = B^{-1} H_t B^{-1'}
-        Binv = inv(Bmatrix(beta))
-        h = np.exp(lnh[1:])
-        Rseq = np.array([Binv @ np.diag(h[t]) @ Binv.T for t in range(T)])
-        # 1) coefficient path
-        Th, ok = draw_theta(Rseq, Q, Th)
-        accept += ok
-        # 2) drift covariance Q
-        v = np.diff(Th, axis=0)
-        Q = invwishart.rvs(df=Q_df + T, scale=Q_scale + v.T @ v, random_state=rng)
-        # residuals, then 3) beta and 4) volatilities
-        eps = np.array([Y[t] - Z[t] @ Th[t+1] for t in range(T)])
-        beta = draw_beta(eps, h)
-        u = (Bmatrix(beta) @ eps.T).T
-        lnh = draw_vol(lnh, u, sig2)
-        # 5) volatility innovation variances
-        for i in range(n):
-            sig2[i] = (1e-4 + np.sum(np.diff(lnh[:, i])**2)) / 2 \
-                / rng.gamma((1 + T) / 2, 1)
-        # store
-        if it >= nburn and (it - nburn) % thin == 0:
-            keep_th.append(Th[1:].copy())
-            Binv = inv(Bmatrix(beta))
-            h = np.exp(lnh[1:])
-            keep_R.append(np.array([Binv @ np.diag(h[t]) @ Binv.T
-                                    for t in range(T)]))
-    print(f'acceptance rate for coefficient paths: {accept / ndraw:.2f}')
-    return np.array(keep_th), np.array(keep_R)
+    h = initial_volatilities(y, prior)
+    beta = prior['beta_mean'].copy()
+    warm_theta = np.repeat(prior['theta_mean'][:, None], len(y), axis=1)
+    warm_residuals = var_residuals(y, x, warm_theta)
+    for _ in range(warmup):
+        sigma = draw_sigma(h, prior, rng)
+        beta = draw_beta(warm_residuals, h, prior, rng)
+        h = draw_volatility_path(
+            h, warm_residuals, beta, sigma, prior, rng
+        )
+
+    q = prior['q_center'].copy()
+    theta = np.repeat(
+        prior['theta_mean'][:, None], len(y) + 1, axis=1
+    )
+    if stable and not is_stable(theta):
+        raise ValueError('the prior mean does not provide a stable start')
+    slice_contractions = 0
+    maximum_slice_contractions = 0
+
+    retained = {name: [] for name in retain}
+    saved_stability = []
+    for sweep in range(1, n_sweeps + 1):
+        if stable:
+            theta, contractions = draw_stable_coefficient_path(
+                theta,
+                y,
+                x,
+                q,
+                h,
+                beta,
+                prior,
+                rng,
+                max_contractions=max_contractions,
+            )
+        else:
+            theta = draw_coefficient_path(y, x, q, h, beta, prior, rng)
+            contractions = 0
+        slice_contractions += contractions
+        maximum_slice_contractions = max(
+            maximum_slice_contractions, contractions
+        )
+        q = draw_q(theta, prior, rng)
+        residuals = var_residuals(y, x, theta)
+        sigma = draw_sigma(h, prior, rng)
+        beta = draw_beta(residuals, h, prior, rng)
+        h = draw_volatility_path(
+            h, residuals, beta, sigma, prior, rng
+        )
+
+        if sweep > burn and (sweep - burn) % thin == 0:
+            path_is_stable = is_stable(theta)
+            saved_stability.append(path_is_stable)
+            values = {
+                'S0D': theta[:, 0],
+                'SD': theta[:, 1:],
+                'QD': q,
+                'HD': h,
+                'CD': beta,
+                'VD': sigma,
+                'stable_draw': path_is_stable,
+            }
+            for name in retained:
+                retained[name].append(np.asarray(values[name]).copy())
+
+        if progress_every and sweep % progress_every == 0:
+            elapsed = time.perf_counter() - started
+            print(
+                f'{sweep:,}/{n_sweeps:,} sweeps; '
+                f'{slice_contractions:,} slice contractions; '
+                f'{elapsed / 60:.1f} minutes',
+                flush=True,
+            )
+
+    stack_axis = {
+        'S0D': 1,
+        'SD': 2,
+        'QD': 2,
+        'HD': 2,
+        'CD': 1,
+        'VD': 1,
+        'stable_draw': 0,
+    }
+    result = {
+        name: np.stack(values, axis=stack_axis[name])
+        for name, values in retained.items()
+    }
+    result['diagnostics'] = {
+        'sampler_version': 3,
+        'seed': int(seed),
+        'stable_restriction': bool(stable),
+        'n_sweeps': int(n_sweeps),
+        'burn': int(burn),
+        'thin': int(thin),
+        'warmup': int(warmup),
+        'retained_draws': int((n_sweeps - burn) // thin),
+        'slice_contractions': int(slice_contractions),
+        'mean_slice_contractions': float(slice_contractions / n_sweeps),
+        'maximum_slice_contractions': int(maximum_slice_contractions),
+        'retained_stability_rate': float(np.mean(saved_stability)),
+        'elapsed_seconds': float(time.perf_counter() - started),
+    }
+    return result
 ```
 
-```{note}
-The original paper ran 100,000 sweeps and kept every tenth after a 50,000-draw burn-in.
-We use a much shorter run so the lecture builds in a few minutes.
-The posterior *means* we report below stabilize quickly; the price of the short run is noisier tails, and — because inflation is so persistent that drifting paths frequently graze the stability barrier — a coefficient-path acceptance rate well below one.
-```
+The executable version below uses 1,000 sweeps, discards the first 500, and
+retains the remaining 500.
 
-Now we run the sampler.
+It uses the complete historical sample and the stable ordering $(i,u,\pi)$, and
+it does not load posterior draws or precomputed results.
+
+This short teaching run is exploratory rather than publication-precision
+inference, so we report effective sample sizes and Monte Carlo standard errors
+alongside its estimates.
 
 ```{code-cell} ipython3
-theta_draws, R_draws = run(ndraw=3000, nburn=1000, thin=4)
-theta_draws.shape
+posterior = run_sampler(
+    data['y'],
+    data['x'],
+    prior,
+    n_sweeps=1_000,
+    burn=500,
+    thin=1,
+    seed=42,
+    warmup=200,
+    stable=True,
+    progress_every=0,
+)
+
+def validate_posterior(result, periods):
+    """Check posterior shapes, finiteness, positivity, and stability."""
+    draws = result['diagnostics']['retained_draws']
+    expected = {
+        'S0D': (n_coefficients, draws),
+        'SD': (n_coefficients, periods, draws),
+        'QD': (n_coefficients, n_coefficients, draws),
+        'HD': (periods + 1, n_variables, draws),
+        'CD': (3, draws),
+        'VD': (3, draws),
+        'stable_draw': (draws,),
+    }
+    assert {name: result[name].shape for name in expected} == expected
+    assert all(np.all(np.isfinite(result[name])) for name in expected)
+    assert np.all(result['HD'] > 0)
+    assert np.all(result['VD'] > 0)
+    assert np.all(result['stable_draw'])
+    return expected
+
+
+expected_shapes = validate_posterior(posterior, len(data['dates']))
+
+pd.Series(posterior['diagnostics'], name='value').to_frame()
 ```
 
 ## What the data say
 
-We summarize the posterior by its mean coefficient path $\bar\theta_t$ and mean covariance path $\bar R_t$, and read the economically interesting objects off them — exactly as in the paper, which evaluates its measures at the posterior mean.
+We summarize the posterior by its mean coefficient path $E(\theta_t\mid T)$ and
+mean covariance path $E(R_t\mid T)$, and then read the economically interesting
+objects from them.
+
+The retained in-memory draws are also used for a few probability statements and
+Monte Carlo diagnostics.
+
+### The rate and structure of drift
+
+The trace of $Q$ measures the total rate of coefficient drift, with
+$\operatorname{tr}(Q)=0$ corresponding to constant coefficients.
+
+The histogram shows the retained $Q$ draws and the prior scale.
 
 ```{code-cell} ipython3
-thb = theta_draws.mean(0)
-Rb = R_draws.mean(0)
-S = np.diag(scale)
-tt = dates.to_timestamp()
+---
+mystnb:
+  figure:
+    caption: Posterior coefficient-drift rate
+    name: fig-csdv-drift-rate
+---
+trace_q = np.trace(posterior['QD'], axis1=0, axis2=1)
+fig, ax = plt.subplots()
+ax.hist(trace_q, bins=30, histtype='step', lw=2)
+ax.axvline(np.trace(q_bar), color='C1', lw=2,
+           label=r'prior $\mathrm{tr}(\bar Q)$')
+ax.set_xlabel(r'$\mathrm{tr}(Q)$')
+ax.set_ylabel('frequency')
+ax.legend()
+fig.show()
 ```
+
+The posterior mean paths show visible drift concentrated in a subset of
+coefficients.
+
+We do not simulate the stability-truncated prior paths here because doing so by
+whole-path rejection recreates the runtime problem that the elliptical-slice
+update avoids.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Posterior mean coefficient paths
+    name: fig-csdv-coefficient-paths
+---
+theta_mean = posterior['SD'].mean(axis=2)
+fig, ax = plt.subplots()
+ax.plot(data['dates'], theta_mean.T, lw=2)
+ax.axhline(0, color='0.65', lw=1)
+ax.set_xlabel('year')
+ax.set_ylabel('coefficient')
+fig.show()
+```
+
+We summarize drift for the stable ordering $(i,u,\pi)$.
+
+```{code-cell} ipython3
+def scalar_mcmc_ess(values):
+    """Estimate scalar ESS with Geyer's initial-positive-sequence rule."""
+    values = np.asarray(values, dtype=float)
+    centered = values - values.mean()
+    n = len(centered)
+    n_fft = 1 << (2 * n - 1).bit_length()
+    spectrum = np.fft.rfft(centered, n=n_fft)
+    autocovariance = np.fft.irfft(
+        spectrum * spectrum.conj(), n=n_fft
+    )[:n]
+    autocovariance /= np.arange(n, 0, -1)
+    if autocovariance[0] <= np.finfo(float).tiny:
+        return float(n)
+    rho = autocovariance / autocovariance[0]
+    paired = rho[1:1 + 2 * ((n - 1) // 2)].reshape(-1, 2).sum(axis=1)
+    nonpositive = np.flatnonzero(paired <= 0)
+    if len(nonpositive):
+        paired = paired[:nonpositive[0]]
+    tau = max(1.0, 1.0 + 2.0 * paired.sum())
+    return min(float(n), float(n / tau))
+
+
+trace_q = np.trace(posterior['QD'], axis1=0, axis2=1)
+q_mean = posterior['QD'].mean(axis=2)
+trace_ess = scalar_mcmc_ess(trace_q)
+trace_mcse = trace_q.std(ddof=1) / np.sqrt(trace_ess)
+drift_summary = pd.Series(
+    {
+        r'posterior mean $\operatorname{tr}(Q)$': np.trace(q_mean),
+        'posterior mean largest eigenvalue': np.linalg.eigvalsh(q_mean)[-1],
+        r'prior $\operatorname{tr}(\bar Q)$': np.trace(q_bar),
+    },
+    name='estimate',
+)
+drift_summary.to_frame().round(4)
+```
+
+```{code-cell} ipython3
+pd.Series(
+    {
+        'trace ESS': trace_ess,
+        'trace MCSE': trace_mcse,
+        'first-half trace mean': trace_q[:len(trace_q) // 2].mean(),
+        'second-half trace mean': trace_q[len(trace_q) // 2:].mean(),
+        'mean slice contractions per sweep': posterior['diagnostics'][
+            'mean_slice_contractions'
+        ],
+        'maximum slice contractions': posterior['diagnostics'][
+            'maximum_slice_contractions'
+        ],
+        'elapsed seconds': posterior['diagnostics']['elapsed_seconds'],
+    },
+    name='MCMC diagnostic',
+).to_frame().round(4)
+```
+
+The estimate of $\operatorname{tr}(Q)$ is well above the conservative prior
+scale, which points to economically meaningful coefficient drift.
+
+Its precision should be judged from the ESS, MCSE, and split-chain means rather
+than from the displayed decimal places.
+
+The same Monte Carlo caveat applies to the eigenvalue shares and nonlinear
+feature paths below.
+
+The analysis that follows adopts the $(i,u,\pi)$ ordering, which places the
+nominal interest rate first and inflation last.
+
+Diagonalizing the posterior mean of $Q$ reveals that the drift is low
+dimensional.
+
+The following eigendecomposition summarizes the posterior mean of $Q$.
+
+```{code-cell} ipython3
+q_mean = posterior['QD'].mean(axis=2)
+q_eigenvalues = np.linalg.eigvalsh(q_mean)[::-1]
+q_cumulative = np.cumsum(q_eigenvalues) / q_eigenvalues.sum()
+
+drift_structure = pd.DataFrame(
+    {
+        'eigenvalue': q_eigenvalues[:3],
+        'cumulative share': q_cumulative[:3],
+    },
+    index=pd.Index(range(1, 4), name='principal component'),
+)
+drift_structure.round(4)
+```
+
+The first three principal components account for 96.3 percent of total
+coefficient drift even though the VAR contains 21 coefficients.
 
 ### The evolution of volatility
 
-First we ask how the *size* of the shocks changed.
+We first ask how the *size* of the shocks changed.
 
-For each quarter we translate the orthogonalized volatilities back into the standard deviations of the reduced-form innovations to inflation and the interest rate (in original units), and we compute the log determinant of $R_t$ — a scalar measure of the total one-step-ahead forecast uncertainty entering the system, following {cite}`Whittle1953`.
+The posterior mean of $R_t$ shows large and systematic movements in both
+innovation standard deviations and correlations.
+
+Equation {eq}`csdv_covariance` can be averaged over draws without constructing a
+four-dimensional covariance array.
 
 ```{code-cell} ipython3
-sig_i = np.zeros(T)
-sig_pi = np.zeros(T)
-logdetR = np.zeros(T)
-for t in range(T):
-    Ro = S @ Rb[t] @ S                       # covariance in original units
-    sig_i[t] = np.sqrt(Ro[0, 0]) * 400       # annualized %
-    sig_pi[t] = np.sqrt(Ro[2, 2]) * 400
-    logdetR[t] = np.log(np.linalg.det(Ro))
+def mean_innovation_covariance(h_draws, beta_draws):
+    """Compute E(R_t | T) with working memory proportional to T times D."""
+    n_draws = h_draws.shape[2]
+    matrices = np.broadcast_to(np.eye(3), (n_draws, 3, 3)).copy()
+    matrices[:, 1, 0] = beta_draws[0]
+    matrices[:, 2, 0] = beta_draws[1]
+    matrices[:, 2, 1] = beta_draws[2]
+    inverses = np.linalg.solve(
+        matrices,
+        np.broadcast_to(np.eye(3), matrices.shape),
+    )
+    h = h_draws[1:]
+    mean = np.empty((h.shape[0], 3, 3))
+    for row in range(3):
+        for column in range(row + 1):
+            value = np.zeros(h.shape[0])
+            for shock in range(3):
+                weights = inverses[:, row, shock] * inverses[:, column, shock]
+                value += h[:, shock, :] @ weights
+            mean[:, row, column] = value / n_draws
+            mean[:, column, row] = mean[:, row, column]
+    return mean
 
-fig, axes = plt.subplots(1, 3, figsize=(14, 3.8))
-axes[0].plot(tt, sig_i)
-axes[0].set_title('interest innovation std (ann. %)')
-axes[1].plot(tt, sig_pi)
-axes[1].set_title('inflation innovation std (ann. %)')
-axes[2].plot(tt, logdetR)
-axes[2].set_title('total prediction variance $\\log|R_t|$')
-for ax in axes:
-    ax.set_xlabel('year')
-plt.tight_layout()
-plt.show()
+
+r_mean = mean_innovation_covariance(posterior['HD'], posterior['CD'])
 ```
 
-The stochastic volatilities are far from constant.
+The next plot shows the innovation standard deviations and correlations.
 
-The standard deviation of the interest-rate innovation *spikes* dramatically around 1979–1982, the years of the Volcker experiment with nonborrowed-reserves targeting — the single most visible feature of the whole sample.
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Innovation volatility and correlation
+    name: fig-csdv-volatility-correlation
+---
+variances = ((0, 'Nominal interest'), (2, 'Inflation'), (1, 'Unemployment'))
+correlations = (
+    (0, 1, 'Interest--unemployment'),
+    (0, 2, 'Interest--inflation'),
+    (2, 1, 'Inflation--unemployment'),
+)
+fig, axes = plt.subplots(3, 2, figsize=(9, 8), sharex=True)
+for row, (index, label) in enumerate(variances):
+    axes[row, 0].plot(
+        data['dates'], 10000 * np.sqrt(r_mean[:, index, index]), lw=2
+    )
+    axes[row, 0].text(0.03, 0.88, label, transform=axes[row, 0].transAxes)
+for row, (left, right, label) in enumerate(correlations):
+    scale = np.sqrt(r_mean[:, left, left] * r_mean[:, right, right])
+    axes[row, 1].plot(data['dates'], r_mean[:, left, right] / scale, lw=2)
+    axes[row, 1].text(0.03, 0.88, label, transform=axes[row, 1].transAxes)
+axes[0, 0].set_title(r'Innovation standard deviation $\times 10^4$')
+axes[0, 1].set_title('Correlations')
+axes[-1, 0].set_xlabel('year')
+axes[-1, 1].set_xlabel('year')
+plt.tight_layout()
+fig.show()
+```
 
-The inflation innovation swells through the 1970s and peaks near 1980, and again during the 2008 financial crisis.
+The standard deviation of the interest-rate innovation spikes dramatically
+around 1979--1982, the years of the Volcker experiment with nonborrowed-reserves
+targeting.
 
-The total-prediction-variance measure $\log|R_t|$ rises in two steps into the early 1980s and then falls substantially — the "Great Moderation" documented by {cite}`KimNelson1999` and {cite}`McConnellPerezQuiros2000`.
+The following calculation reports both the raw endpoint change in the
+unemployment innovation standard deviation and a less noisy comparison of the
+first and last 16-quarter averages.
 
-**There is emphatically evidence for the bad-luck story: the volatilities move a lot.**
+```{code-cell} ipython3
+unemployment_sd = np.sqrt(r_mean[:, 1, 1])
+unemployment_sd_endpoint_decline = 1 - unemployment_sd[-1] / unemployment_sd[0]
+unemployment_sd_smoothed_decline = (
+    1 - unemployment_sd[-16:].mean() / unemployment_sd[:16].mean()
+)
 
-But that is not the end of the matter.
+pd.Series(
+    {
+        'endpoint decline': unemployment_sd_endpoint_decline,
+        'first/last 16-quarter mean decline': (
+            unemployment_sd_smoothed_decline
+        ),
+    },
+    name='fractional decline',
+).to_frame().round(2)
+```
+
+The interest-rate and inflation innovation variances spike between 1979 and 1981
+before falling sharply.
+
+Interest--unemployment innovations are negatively correlated, and
+interest--inflation innovations are positively correlated.
+
+The inflation--unemployment correlation is mostly negative and most pronounced
+around the Volcker disinflation, but is near zero and briefly slightly positive
+early in the estimated path.
+
+The signs of these correlations caution against interpreting the
+nominal-interest innovation as a structural monetary-policy shock.
+
+The log determinant of the posterior mean covariance matrix summarizes the total
+one-step uncertainty entering the system {cite}`Whittle1953`.
+
+The following transformation summarizes total prediction variance.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Total prediction variance
+    name: fig-csdv-total-variance
+---
+sign, logdet_r = np.linalg.slogdet(r_mean)
+assert np.all(sign > 0)
+fig, ax = plt.subplots()
+ax.plot(data['dates'], logdet_r, lw=2)
+ax.set_xlabel('year')
+ax.set_ylabel(r'$\log |E(R_t\mid T)|$')
+fig.show()
+```
+
+Total prediction variance rises in two steps before 1981 and then falls during
+the Volcker era.
+
+The pattern documents substantial movement in volatility and gives the bad-luck
+account an important role.
+
+The decline after 1981 looks more like a return to an earlier stability than an
+unprecedented new regime, which connects it to the Great Moderation documented
+by {cite:t}`KimNelson1999` and {cite:t}`McConnellPerezQuiros2000`.
+
+### Core inflation and the natural rate
+
+To study the systematic dynamics, write the VAR at date $t$ in companion form as
+
+$$
+z_t = \mu_{t\mid T} + A_{t\mid T}z_{t-1} + e_t.
+$$
+
+Local mean inflation and unemployment are defined by freezing the posterior mean
+coefficients at date $t$,
+
+```{math}
+:label: csdv_local_means
+\bar\pi_t = s_\pi(I-A_{t\mid T})^{-1}\mu_{t\mid T},
+\qquad
+\bar u_t = s_u(I-A_{t\mid T})^{-1}\mu_{t\mid T}.
+```
+
+These are local linear approximations rather than unconditional means of the
+globally drifting process.
+
+Core inflation is therefore the long-horizon inflation forecast implied by
+freezing the date-$t$ coefficients, while the natural rate is the corresponding
+long-horizon unemployment forecast.
+
+The following implementation annualizes core inflation and reverses the
+archive's unemployment transformation.
+
+```{code-cell} ipython3
+def local_means(theta_path):
+    """Compute local core inflation and the natural unemployment rate."""
+    theta_path = np.asarray(theta_path, dtype=float)
+    if theta_path.ndim == 1:
+        theta_path = theta_path[:, None]
+    core = np.empty(theta_path.shape[1])
+    natural = np.empty(theta_path.shape[1])
+    for t in range(theta_path.shape[1]):
+        intercept, companion = companion_matrix(theta_path[:, t])
+        mean = np.linalg.solve(np.eye(6) - companion, intercept)
+        core[t] = 4 * mean[2]
+        natural[t] = expit(100 * mean[1])
+    return core, natural
+
+
+core_inflation, natural_rate = local_means(theta_mean)
+```
+
+We plot the fourth-quarter observation from each year.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Core inflation and natural rate
+    name: fig-csdv-local-means
+---
+years = np.floor(data['dates'] + 1e-8).astype(int)
+annual = np.array(
+    [
+        np.flatnonzero(years == year)[-1]
+        for year in np.unique(years)
+        if year >= 1960
+    ]
+)
+
+fig, ax = plt.subplots()
+ax.plot(data['dates'][annual], core_inflation[annual], 'o-', lw=2,
+        markersize=3, label='core inflation')
+ax.plot(data['dates'][annual], natural_rate[annual], '+-', lw=2,
+        markersize=5, label='natural rate')
+ax.set_xlabel('year')
+ax.set_ylabel('annual rate')
+ax.legend()
+fig.show()
+```
+
+```{code-cell} ipython3
+core_summary = pd.Series(
+    {
+        'early-1960s mean core inflation (%)': (
+            100 * core_inflation[(years >= 1960) & (years <= 1964)].mean()
+        ),
+        'peak core inflation (%)': 100 * core_inflation[annual].max(),
+        '1985--2000 mean core inflation (%)': (
+            100 * core_inflation[(years >= 1985) & (years <= 2000)].mean()
+        ),
+    },
+    name='estimate',
+)
+core_summary.to_frame().round(2)
+```
+
+Core inflation rises into the 1970s and then falls after the Volcker
+disinflation.
+
+The natural rate follows a similar lower-frequency pattern, although both
+quantities become sensitive when a local companion root approaches one.
+
+The following calculation summarizes their comovement over the full posterior
+sample.
+
+```{code-cell} ipython3
+core_natural_correlation = np.corrcoef(core_inflation, natural_rate)[0, 1]
+```
+
+The quarterly correlation between posterior-mean core inflation and the natural
+rate is 0.838.
+
+This strong positive association says that the model's low-frequency movements
+in inflation and unemployment tend to occur together.
+
+Because $(I-A_t)^{-1}$ amplifies small coefficient changes when the largest root
+is close to one, long-run means are intrinsically more sensitive than
+short-horizon forecasts.
 
 ### Inflation persistence
 
-The question that most interests Cogley and Sargent is whether, *on top of* the moving volatilities, the *systematic* dynamics also drifted.
+We now ask whether the *systematic* dynamics drifted on top of the moving
+volatilities.
 
-Their favorite summary of the systematic dynamics is the **persistence** of inflation, measured by the normalized spectrum of inflation at frequency zero.
+The main summary is inflation persistence, measured by the normalized spectrum
+of inflation at frequency zero.
 
-Write the drifting VAR in companion form with autoregressive matrix $A_t = A_{1t}+A_{2t}$ (the sum of the two lag matrices) and innovation covariance $R_t$.
+The date-local spectral density of inflation is
 
-The spectral density of inflation at frequency zero is the $(\pi,\pi)$ element of
+```{math}
+:label: csdv_spectrum
+f_{\pi\pi}(\omega,t)
+=
+\frac{1}{2\pi}
+s_\pi
+(I-A_{t\mid T}e^{-i\omega})^{-1}
+\mathcal R_t
+(I-A_{t\mid T}'e^{i\omega})^{-1}
+s_\pi',
+```
 
-$$
-f(0) = \frac{1}{2\pi}(I - A_t)^{-1} R_t (I - A_t)^{-1\prime},
-$$
+where $\mathcal R_t$ embeds $E(R_t\mid T)$ in the companion system.
 
-and dividing it by the unconditional variance of inflation gives a scale-free number $g_{\pi\pi}(0,t)$ that behaves like the persistence of a univariate autoregression.
+Low-frequency power depends on both the autoregressive coefficients and the
+innovation covariance.
 
-(For an $AR(1)$ with coefficient $\rho$, $g_{\pi\pi}(0) = (1+\rho)/[2\pi(1-\rho)]$; values of 2 to 10 correspond to $\rho$ between 0.85 and 0.97.)
+The next function implements equation (32) at any frequency measured in cycles
+per quarter and also returns the date-local inflation variance.
 
 ```{code-cell} ipython3
-def unconditional_var(F, R):
-    "Solve the discrete Lyapunov equation for the companion-form variance."
-    m = F.shape[0]
-    Sc = np.zeros((m, m))
-    Sc[:n, :n] = R
-    return (inv(np.eye(m * m) - np.kron(F, F)) @ Sc.flatten()).reshape(m, m)
+def inflation_spectrum(theta, covariance, frequencies):
+    """Compute inflation power and its variance-normalized counterpart."""
+    _, companion = companion_matrix(theta)
+    innovation = np.zeros((6, 6))
+    innovation[:3, :3] = covariance
+    selector = np.zeros(6)
+    selector[2] = 1
+    stationary = linalg.solve_discrete_lyapunov(companion, innovation)
+    variance = float(selector @ stationary @ selector)
+    power = np.empty(len(frequencies))
+    for index, frequency in enumerate(frequencies):
+        phase = np.exp(-2j * np.pi * frequency)
+        transfer = np.linalg.solve(np.eye(6) - companion * phase, np.eye(6))
+        power[index] = np.real(
+            selector @ transfer @ innovation @ transfer.conj().T @ selector
+        ) / (2 * np.pi)
+    return power, power / variance
 
-persist = np.zeros(T)
-for t in range(T):
-    C = thb[t].reshape(n, k)
-    Asum = C[:, 1:1+n] + C[:, 1+n:1+2*n]
-    M = inv(np.eye(n) - Asum)
-    f0 = (M @ Rb[t] @ M.T) / (2 * np.pi)
-    G0 = unconditional_var(companion(thb[t]), Rb[t])
-    persist[t] = f0[2, 2] / G0[2, 2]
+```
 
-fig, ax = plt.subplots(figsize=(9, 4))
-ax.plot(tt, persist)
-ax.set_title('inflation persistence: normalized spectrum at zero $g_{\\pi\\pi}(0,t)$')
+The normalized spectrum divides by the date-local inflation variance,
+
+```{math}
+:label: csdv_normalized_spectrum
+g_{\pi\pi}(\omega,t)
+=
+\frac{f_{\pi\pi}(\omega,t)}
+{\int_{-\pi}^{\pi}f_{\pi\pi}(\omega,t)d\omega},
+```
+
+so $g_{\pi\pi}(0,t)$ measures persistence after adjusting for changes in
+innovation variance.
+
+We compute frequency zero rather than the full three-dimensional spectral
+surface.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Inflation persistence
+    name: fig-csdv-inflation-persistence
+---
+zero_frequency = np.array([0.0])
+inflation_persistence = np.array([
+    inflation_spectrum(theta_mean[:, t], r_mean[t], zero_frequency)[1][0]
+    for t in range(len(data['dates']))
+])
+
+fig, ax = plt.subplots()
+ax.plot(
+    data['dates'][annual],
+    inflation_persistence[annual],
+    'o-',
+    lw=2,
+    markersize=3,
+)
 ax.set_xlabel('year')
-plt.tight_layout()
-plt.show()
+ax.set_ylabel(r'$g_{\pi\pi}(0,t)$')
+fig.show()
 ```
 
-This is the paper's central finding.
+```{code-cell} ipython3
+persistence_summary = pd.Series(
+    {
+        '1960--64 mean': inflation_persistence[
+            (years >= 1960) & (years <= 1964)
+        ].mean(),
+        '1970--79 mean': inflation_persistence[
+            (years >= 1970) & (years <= 1979)
+        ].mean(),
+        '1985--2000 mean': inflation_persistence[
+            (years >= 1985) & (years <= 2000)
+        ].mean(),
+        'peak': inflation_persistence[annual].max(),
+        'peak year': years[annual][np.argmax(inflation_persistence[annual])],
+    },
+    name='estimate',
+)
+persistence_summary.to_frame().round(3)
+```
 
-Inflation persistence was low and roughly flat in the early 1960s, **rose sharply through the late 1960s and 1970s** to a peak around 1980, and then **fell just as sharply during and after the Volcker disinflation**, settling at a low level for the Great Moderation decades.
+The normalized spectrum rises gradually during the late 1960s, remains high in
+the 1970s, and falls sharply after 1980.
 
-The evidence says the *systematic dynamics drifted too* — not just the volatilities.
+For comparison, an $AR(1)$ with coefficient $\rho$ has normalized zero-frequency
+power $(1+\rho)/[2\pi(1-\rho)]$.
 
-So the answer to "bad policy or bad luck" is: the data want **both**.
+Values between 2 and 10 correspond to $\rho$ between approximately $0.85$ and
+$0.97$.
 
-### Core inflation
+Core inflation and inflation persistence move closely together over the sample.
 
-A closely related object is *core inflation* — the long-horizon forecast of inflation implied by the drifting VAR, $\bar\pi_t = s_\pi (I - A_t)^{-1} \mu_t$, where $\mu_t$ collects the drifting intercepts.
+The following plot shows the two series together.
 
 ```{code-cell} ipython3
-core = np.zeros(T)
-for t in range(T):
-    C = thb[t].reshape(n, k)
-    mu = C[:, 0]
-    Asum = C[:, 1:1+n] + C[:, 1+n:1+2*n]
-    core[t] = (scale * (inv(np.eye(n) - Asum) @ mu))[2] * 400
+---
+mystnb:
+  figure:
+    caption: Core inflation and persistence
+    name: fig-csdv-core-persistence
+---
+core_persistence_correlation = np.corrcoef(
+    core_inflation, inflation_persistence
+)[0, 1]
 
-fig, ax = plt.subplots(figsize=(9, 4))
-ax.plot(tt, core)
-ax.set_title('core inflation (annualized %)')
+fig, ax = plt.subplots()
+ax.plot(data['dates'][annual], 100 * core_inflation[annual], 'o-',
+        lw=2, markersize=3, label='core inflation (x100)')
+ax.plot(data['dates'][annual], inflation_persistence[annual], 'x-',
+        lw=2, markersize=4, label='normalized spectrum at zero')
 ax.set_xlabel('year')
+ax.legend()
+fig.show()
+```
+
+The quarterly correlation between posterior-mean core inflation and persistence
+is 0.909.
+
+The rise through the late 1960s and 1970s followed by the sharp fall after 1980
+is a central finding because it shows that the systematic dynamics moved along
+with the volatilities.
+
+The fall in persistence during the Volcker disinflation conflicts with
+escape-route models in which persistence grows along a transition from high to
+low inflation {cite}`Sargent1999,ChoWilliamsSargent2002`.
+
+That tension helped motivate later learning models in which policymakers became
+reluctant to disinflate during the 1970s and then changed course.
+
+### Monetary policy activism
+
+Cogley and Sargent summarize systematic policy with a forward-looking Taylor
+rule,
+
+```{math}
+:label: csdv_policy_rule
+i_t = \beta_0
++ \beta_1 E_t\bar\pi_{t,t+h_\pi}
++ \beta_2 E_t\bar u_{t,t+h_u}
++ \beta_3 i_{t-1}
++ \nu_t.
+```
+
+They define the activism coefficient as $\mathcal A_t=\beta_1/(1-\beta_3)$ and
+call policy active when $\mathcal A_t\geq 1$.
+
+At each date, population two-stage least squares projections implied by the
+local VAR produce the policy-rule coefficients.
+
+The benchmark horizons are $h_\pi=4$ quarters and $h_u=2$ quarters, reflecting
+conventional views about monetary-policy lags.
+
+The following function implements equation (34) and footnote 18 from the
+stationary second moments of each local VAR.
+
+```{code-cell} ipython3
+def policy_activism(theta, covariance, h_pi=4, h_u=2):
+    """Compute the date-local population-2SLS activism coefficient."""
+    _, companion = companion_matrix(theta)
+    innovation = np.zeros((6, 6))
+    innovation[:3, :3] = covariance
+    stationary = linalg.solve_discrete_lyapunov(companion, innovation)
+    selectors = np.eye(6)
+    power = np.eye(6)
+    inflation_loading = np.zeros(6)
+    unemployment_loading = np.zeros(6)
+    for horizon in range(1, max(h_pi, h_u) + 1):
+        power = power @ companion
+        if horizon <= h_pi:
+            inflation_loading += selectors[2] @ power
+        if horizon <= h_u:
+            unemployment_loading += selectors[1] @ power
+    inflation_loading /= h_pi
+    unemployment_loading /= h_u
+    loadings = np.vstack(
+        (inflation_loading, unemployment_loading, selectors[0])
+    )
+    regressor_covariance = loadings @ stationary @ loadings.T
+    dependent_covariance = loadings @ stationary @ companion.T @ selectors[0]
+    coefficients = np.linalg.solve(regressor_covariance, dependent_covariance)
+    return coefficients[0] / (1 - coefficients[2])
+
+
+activism = np.array(
+    [
+        policy_activism(theta_mean[:, t], r_mean[t])
+        for t in range(len(data['dates']))
+    ]
+)
+```
+
+The plug-in path evaluates activism at posterior-mean coefficients and
+covariances.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Monetary policy activism
+    name: fig-csdv-policy-activism
+---
+fig, ax = plt.subplots()
+ax.plot(data['dates'], activism, lw=2)
+ax.axhline(1, color='0.45', lw=1)
+ax.set_xlabel('year')
+ax.set_ylabel('activism coefficient')
+fig.show()
+```
+
+The plug-in activism coefficient is below one in much of the 1970s and above one
+after the early 1980s.
+
+Policy activism is negatively related to both core inflation and inflation
+persistence.
+
+The following scatter plots use fourth-quarter observations.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Activism and inflation dynamics
+    name: fig-csdv-activism-correlations
+---
+activism_core_correlation = np.corrcoef(
+    activism[annual], core_inflation[annual]
+)[0, 1]
+activism_persistence_correlation = np.corrcoef(
+    activism[annual], inflation_persistence[annual]
+)[0, 1]
+
+fig, axes = plt.subplots(1, 2, figsize=(9, 4))
+pairs = (
+    (core_inflation, 'core inflation'),
+    (inflation_persistence, 'normalized spectrum at zero'),
+)
+for ax, (feature, label) in zip(axes, pairs):
+    ax.scatter(activism[annual], feature[annual], s=18)
+    ax.set_xlabel('policy activism')
+    ax.set_ylabel(label)
 plt.tight_layout()
-plt.show()
+fig.show()
 ```
 
-Core inflation traces out the familiar hump — rising into the early 1970s and declining through the 1980s and 1990s — and it moves *together* with the persistence measure, just as in the paper.
+The fourth-quarter correlations of activism with core inflation and persistence
+are -0.78 and -0.74, respectively.
 
-```{admonition} A caveat about long-run means
-:class: warning
-The *level* of core inflation is a fragile object.
-It is the long-run mean of a system whose largest root sits very close to one, so $(I - A_t)^{-1}$ is an enormous amplifier and small movements across equations can nearly cancel.
-Our short posterior run recovers the *shape* of core inflation reliably but compresses its *amplitude* relative to the paper's long run.
-The persistence and volatility measures above are far more robust — a useful reminder that not every function of a fitted model is estimated equally well.
-```
+Thus, periods with a stronger estimated policy response tend to have lower core
+inflation and less low-frequency inflation persistence.
 
-## How powerful are tests of coefficient stability?
+The activism transformation is weakly identified at some dates, so a path based
+on posterior-mean inputs understates uncertainty.
 
-We have found drift.
-
-Yet Bernanke and Mihov {cite}`BernankeMihov1998`, applying classical tests of parameter constancy due to Andrews {cite}`Andrews1993` and Nyblom {cite}`Nyblom1989`, *could not reject* the hypothesis that VAR coefficients were time-invariant, and read that failure as evidence for the bad-luck view.
-
-Cogley and Sargent's rejoinder is a *power* calculation.
-
-A failure to reject is evidence against an alternative only if the test has decent power against it.
-
-So they ask: if the data were *actually generated* by a drifting-coefficient VAR like the one we just fit, how often would a standard stability test detect the drift?
-
-We reproduce that experiment for a sup-Wald test of a single break at an unknown date (a version of {cite}`Andrews1993`), applied to the inflation equation.
-
-We
-
-1. fit a *constant*-coefficient VAR to the data to serve as the null data-generating process, and calibrate the test's 5% critical value by simulating from it;
-2. simulate many samples from our *drifting* VAR and count how often the test rejects constancy.
+We therefore calculate activism from every retained draw in 1975, 1985, and
+1995.
 
 ```{code-cell} ipython3
-# initial conditions: the two data lags at the start of the estimation sample
-j0 = list(data.index[p:]).index(pd.Period('1959Q1', 'Q'))
-y_init = [Yz[j0 - 2], Yz[j0 - 1]]
+selected_years = (1975, 1985, 1995)
+selected_dates = [np.flatnonzero(years == year)[-1] for year in selected_years]
 
-def simulate_drift():
-    y = list(y_init)
-    out = []
-    for t in range(T):
-        C = thb[t].reshape(n, k)
-        L = cholesky(Rb[t] + 1e-12 * np.eye(n))
-        yt = C[:, 0] + C[:, 1:1+n] @ y[-1] + C[:, 1+n:1+2*n] @ y[-2] \
-            + L @ rng.standard_normal(n)
-        out.append(yt)
-        y.append(yt)
-    return np.array(out)
+activity_draws = {
+    year: np.empty(posterior['SD'].shape[2]) for year in selected_years
+}
+for draw in range(posterior['SD'].shape[2]):
+    for year, date in zip(selected_years, selected_dates):
+        covariance = innovation_covariance(
+            posterior['HD'][date + 1, :, draw],
+            posterior['CD'][:, draw],
+        )
+        activity_draws[year][draw] = policy_activism(
+            posterior['SD'][:, date, draw], covariance
+        )
+```
 
-# constant-coefficient null, fit to the estimation sample
-Xc = np.column_stack([np.ones(T - 2), Y[1:-1], Y[:-2]])
-Bc = solve(Xc.T @ Xc, Xc.T @ Y[2:])
-Sc = cholesky((Y[2:] - Xc @ Bc).T @ (Y[2:] - Xc @ Bc) / (T - 2) + 1e-12 * np.eye(n))
+These draws give posterior probabilities of active policy at each date and of a
+rise in activism after 1975.
 
-def simulate_const():
-    y = list(y_init)
-    out = []
-    for t in range(T):
-        yt = Bc[0] + Bc[1:1+n].T @ y[-1] + Bc[1+n:1+2*n].T @ y[-2] \
-            + Sc @ rng.standard_normal(n)
-        out.append(yt)
-        y.append(yt)
-    return np.array(out)
+```{code-cell} ipython3
+activity_events = (
+    activity_draws[1975] > 1,
+    activity_draws[1985] > 1,
+    activity_draws[1995] > 1,
+    activity_draws[1985] > activity_draws[1975],
+    activity_draws[1995] > activity_draws[1975],
+)
+activity_probability_values = np.array(
+    [event.mean() for event in activity_events]
+)
+activity_probability_ess = np.array(
+    [scalar_mcmc_ess(event) for event in activity_events]
+)
 
-def sup_wald(Yd, eq=2):
-    "sup-Wald statistic for a break in the coefficients of one equation."
-    Xr = np.column_stack([np.ones(T - 2), Yd[1:-1], Yd[:-2]])
-    yv = Yd[2:, eq]
-    N = len(yv)
-    stats = []
-    for kk in range(int(0.15 * N), int(0.85 * N)):
-        X1, X2 = Xr[:kk], Xr[kk:]
-        y1, y2 = yv[:kk], yv[kk:]
-        b1 = solve(X1.T @ X1, X1.T @ y1)
-        b2 = solve(X2.T @ X2, X2.T @ y2)
-        s2 = ((y1 - X1 @ b1) @ (y1 - X1 @ b1)
-              + (y2 - X2 @ b2) @ (y2 - X2 @ b2)) / (N - 2 * k)
-        db = b1 - b2
-        stats.append(db @ inv(s2 * (inv(X1.T @ X1) + inv(X2.T @ X2))) @ db)
-    return max(stats)
+activity_probability_index = (
+    'P(A_1975 > 1)',
+    'P(A_1985 > 1)',
+    'P(A_1995 > 1)',
+    'P(A_1985 > A_1975)',
+    'P(A_1995 > A_1975)',
+)
+activity_probabilities = pd.DataFrame(
+    {
+        'estimate': activity_probability_values,
+        'indicator ESS': activity_probability_ess,
+    },
+    index=activity_probability_index,
+)
+activity_probabilities['MCSE'] = np.sqrt(
+    activity_probabilities['estimate']
+    * (1 - activity_probabilities['estimate'])
+    / activity_probability_ess
+)
+
+activity_probabilities.round(3)
+```
+
+The probabilities should be read with their indicator ESS and MCSE.
+
+They support a move from passive policy in the mid-1970s toward active policy
+after 1980, but overlapping posterior tails keep that conclusion probabilistic
+rather than dispositive.
+
+(csdv-updated-evidence)=
+## Updating the evidence
+
+The frozen sample ends in 2000Q4, so it misses the financial crisis, the
+zero-interest-rate period, the pandemic, and the 2021--2022 inflation surge.
+
+To examine those observations, we append current data after 2000Q4 while leaving
+the frozen history unchanged.
+
+This splice prevents revisions to pre-2001 CPI and unemployment data from being
+mistaken for information in the additional quarter-century.
+
+We download seasonally adjusted [CPI][fred-cpi], seasonally adjusted
+[unemployment][fred-unemployment], and the [three-month Treasury
+yield][fred-interest] from FRED.
+
+[fred-cpi]: https://fred.stlouisfed.org/series/CPIAUCSL
+[fred-unemployment]: https://fred.stlouisfed.org/series/UNRATE
+[fred-interest]: https://fred.stlouisfed.org/series/GS3M
+
+The transformations and within-quarter timing remain unchanged: CPI comes from
+the third month, unemployment is a three-month average, and the interest rate
+comes from the first month.
+
+```{code-cell} ipython3
+fred_url = (
+    'https://fred.stlouisfed.org/graph/fredgraph.csv?'
+    'id=CPIAUCSL%2CUNRATE%2CGS3M'
+)
+fred_monthly = pd.read_csv(
+    fred_url,
+    parse_dates=['observation_date'],
+).set_index('observation_date')
+
+fred_last_dates = pd.Series(
+    {
+        series: fred_monthly[series].last_valid_index().date()
+        for series in fred_monthly.columns
+    },
+    name='last observation',
+)
+fred_last_dates.to_frame()
+```
+
+[BLS reports](https://www.bls.gov/web/empsit/cpsee_e12.pdf) that reliable
+2025Q4 unemployment estimates could not be produced because the October 2025
+observation was not collected during the federal shutdown.
+
+Consequently, 2025Q4 has no authoritative three-month unemployment average, and
+the longest fully observed contiguous extension ends in 2025Q3.
+
+We estimate that sample first, then use a linear midpoint interpolation for
+October 2025 in a separate sensitivity run that reaches the latest complete
+quarter.
+
+```{code-cell} ipython3
+def fred_quarterly_table(unemployment_monthly):
+    """Construct transformed quarterly observations after 2000Q4."""
+    interest = fred_monthly.loc[
+        fred_monthly.index.month.isin((1, 4, 7, 10)), 'GS3M'
+    ].copy()
+    interest.index = interest.index.to_period('Q').start_time
+
+    cpi = fred_monthly.loc[
+        fred_monthly.index.month.isin((3, 6, 9, 12)), 'CPIAUCSL'
+    ].copy()
+    cpi.index = cpi.index.to_period('Q').start_time
+
+    unemployment = unemployment_monthly.resample('QS').mean()
+    quarterly = pd.concat(
+        {
+            'interest': interest,
+            'unemployment': unemployment,
+            'cpi': cpi,
+        },
+        axis=1,
+    )
+    quarterly['y3'] = np.log1p(quarterly['interest'] / 400)
+    quarterly['ur'] = quarterly['unemployment'] / 100
+    quarterly['dp'] = np.log(quarterly['cpi']).diff()
+    quarterly['date'] = (
+        quarterly.index.year + (quarterly.index.quarter - 1) / 4
+    )
+    columns = ['date', 'y3', 'ur', 'dp']
+    return quarterly.loc['2001-01-01':, columns].dropna()
+
+
+unemployment_monthly = fred_monthly['UNRATE']
+internal_unemployment = unemployment_monthly.loc[
+    unemployment_monthly.first_valid_index():
+    unemployment_monthly.last_valid_index()
+]
+missing_unemployment = internal_unemployment.index[
+    internal_unemployment.isna()
+]
+assert missing_unemployment.equals(
+    pd.DatetimeIndex([pd.Timestamp('2025-10-01')])
+)
+
+unemployment_counts = unemployment_monthly.resample('QS').count()
+quarterly_unfilled = fred_quarterly_table(unemployment_monthly)
+incomplete_quarters = unemployment_counts.loc[
+    quarterly_unfilled.index[0]:quarterly_unfilled.index[-1]
+]
+incomplete_quarters = incomplete_quarters[incomplete_quarters < 3]
+first_incomplete_quarter = incomplete_quarters.index[0]
+complete_extension = quarterly_unfilled.loc[
+    quarterly_unfilled.index < first_incomplete_quarter
+]
+
+unemployment_interpolated = unemployment_monthly.interpolate(
+    method='linear',
+    limit=1,
+    limit_area='inside',
+)
+latest_extension = fred_quarterly_table(unemployment_interpolated)
+
+
+def quarter_label(timestamp):
+    """Format a timestamp as year and quarter."""
+    return str(timestamp.to_period('Q'))
+
+
+update_summary = pd.Series(
+    {
+        'fully observed sample end': quarter_label(
+            complete_extension.index[-1]
+        ),
+        'latest sensitivity end': quarter_label(latest_extension.index[-1]),
+        'interpolated month': missing_unemployment[0].strftime('%B %Y'),
+        'interpolated unemployment (%)': unemployment_interpolated.loc[
+            missing_unemployment[0]
+        ],
+        'retrieval date': pd.Timestamp.now(
+            tz='America/New_York'
+        ).date().isoformat(),
+    },
+    name='value',
+)
+update_summary.to_frame()
+```
+
+The missing October CPI observation does not require interpolation because the
+quarterly inflation measure uses December.
+
+The sensitivity value for October unemployment is $4.45$ percent, the midpoint
+of September and November, but it is an assumption rather than an official
+observation.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: U.S. data after 2000
+    name: fig-csdv-updated-data
+---
+fig, axes = plt.subplots(3, 1, figsize=(9, 7), sharex=True)
+axes[0].plot(
+    latest_extension.index,
+    400 * latest_extension['dp'],
+    lw=2,
+)
+axes[0].set_ylabel('inflation (annual %)')
+axes[1].plot(
+    latest_extension.index,
+    100 * latest_extension['ur'],
+    lw=2,
+)
+axes[1].set_ylabel('unemployment (%)')
+axes[2].plot(
+    latest_extension.index,
+    400 * np.expm1(latest_extension['y3']),
+    lw=2,
+)
+axes[2].set_ylabel('interest (annual %)')
+axes[2].set_xlabel('year')
+plt.tight_layout()
+fig.show()
 ```
 
 ```{code-cell} ipython3
-rng = np.random.default_rng(0)
-n_mc = 300
-null = np.array([sup_wald(simulate_const()) for _ in range(n_mc)])
-crit = np.percentile(null, 95)
-power = np.mean([sup_wald(simulate_drift()) > crit for _ in range(n_mc)])
-print(f'5% critical value: {crit:.1f}')
-print(f'power against the drifting VAR: {power:.2f}')
+latest_observation = latest_extension.iloc[-1]
+pd.Series(
+    {
+        'annualized quarterly inflation (%)': 400 * latest_observation['dp'],
+        'unemployment (%)': 100 * latest_observation['ur'],
+        'three-month interest rate (%)': (
+            400 * np.expm1(latest_observation['y3'])
+        ),
+    },
+    name=quarter_label(latest_extension.index[-1]),
+).to_frame().round(3)
 ```
 
-The power is low — the test detects the drift only a fraction of the time, even though the drift is really there.
+The pandemic produces an exceptionally sharp unemployment movement, while the
+inflation surge is large but much shorter than the 1970s episode.
 
-This reproduces the paper's striking conclusion (its Tables 4–8): the classical stability tests that the bad-luck camp relied on have **little power against smoothly drifting alternatives** of exactly the kind our Bayesian model finds.
+We now recalibrate the same prior and run the same stable model on two appended
+samples.
 
-A failure to reject constancy is therefore *not* evidence that the coefficients are constant.
+The longer 5,000-sweep runs retain 500 thinned draws and improve, but do not
+eliminate, serial correlation in the drift block.
 
-As Cogley and Sargent put it, a model with economically meaningful drift often falls in the "indeterminate range" where such tests simply cannot see it.
+```{code-cell} ipython3
+---
+tags: [hide-output]
+---
+frozen_table = pd.read_csv(data_path)
+
+
+def append_extension(extension):
+    """Append a transformed FRED extension to the frozen history."""
+    extension = extension.reset_index(drop=True)
+    table = pd.concat((frozen_table, extension), ignore_index=True)
+    assert table['date'].is_unique
+    return table
+
+
+def fit_updated_model(table):
+    """Calibrate and fit the stable drifting VAR to one table."""
+    model_data = prepare_data(table)
+    model_prior = calibrate_prior(model_data)
+    result = run_sampler(
+        model_data['y'],
+        model_data['x'],
+        model_prior,
+        n_sweeps=5_000,
+        burn=2_500,
+        thin=5,
+        seed=42,
+        warmup=500,
+        stable=True,
+        progress_every=500,
+    )
+    validate_posterior(result, len(model_data['dates']))
+    trace = np.trace(result['QD'], axis1=0, axis2=1)
+    return {
+        'data': model_data,
+        'prior': model_prior,
+        'posterior': result,
+        'trace': trace,
+        'trace_ess': scalar_mcmc_ess(trace),
+    }
+
+
+complete_fit = fit_updated_model(append_extension(complete_extension))
+latest_fit = fit_updated_model(append_extension(latest_extension))
+```
+
+```{code-cell} ipython3
+def updated_drift_diagnostics(fit):
+    """Summarize coefficient drift and its Monte Carlo precision."""
+    trace = fit['trace']
+    q_mean = fit['posterior']['QD'].mean(axis=2)
+    eigenvalues = np.linalg.eigvalsh(q_mean)[::-1]
+    return pd.Series(
+        {
+            r'$E[\operatorname{tr}(Q)]$': trace.mean(),
+            'trace ESS': fit['trace_ess'],
+            'trace MCSE': trace.std(ddof=1) / np.sqrt(fit['trace_ess']),
+            'first-three drift share': (
+                eigenvalues[:3].sum() / eigenvalues.sum()
+            ),
+            'elapsed seconds': fit['posterior']['diagnostics'][
+                'elapsed_seconds'
+            ],
+        }
+    )
+
+
+updated_diagnostics = pd.concat(
+    {
+        quarter_label(complete_extension.index[-1]): (
+            updated_drift_diagnostics(complete_fit)
+        ),
+        f'{quarter_label(latest_extension.index[-1])} sensitivity': (
+            updated_drift_diagnostics(latest_fit)
+        ),
+    },
+    axis=1,
+).T
+updated_diagnostics.round(3)
+```
+
+The trace estimates are the same order of magnitude, but their low ESS and the
+visible endpoint sensitivity make a precise claim about whether the *rate* of
+drift changed unwarranted.
+
+The stability restriction also applies to a longer path in the updated fits, so
+a difference in $\operatorname{tr}(Q)$ cannot be attributed only to the new
+observations.
+
+We next compute volatility, local means, and persistence from each updated
+posterior-mean path.
+
+```{code-cell} ipython3
+def model_features(fit):
+    """Compute plug-in features from one fitted posterior."""
+    result = fit['posterior']
+    theta = result['SD'].mean(axis=2)
+    covariance = mean_innovation_covariance(result['HD'], result['CD'])
+    core, natural = local_means(theta)
+    persistence = np.array([
+        inflation_spectrum(
+            theta[:, t], covariance[t], zero_frequency
+        )[1][0]
+        for t in range(len(fit['data']['dates']))
+    ])
+    sign, logdet = np.linalg.slogdet(covariance)
+    assert np.all(sign > 0)
+    return {
+        'theta': theta,
+        'covariance': covariance,
+        'core': core,
+        'natural': natural,
+        'persistence': persistence,
+        'logdet': logdet,
+    }
+
+
+complete_features = model_features(complete_fit)
+latest_features = model_features(latest_fit)
+```
+
+```{code-cell} ipython3
+def endpoint_features(features):
+    """Return economically scaled endpoint features."""
+    return pd.Series(
+        {
+            'core inflation (%)': 100 * features['core'][-1],
+            'natural rate (%)': 100 * features['natural'][-1],
+            'normalized persistence': features['persistence'][-1],
+            'log total prediction variance': features['logdet'][-1],
+        }
+    )
+
+
+updated_endpoints = pd.concat(
+    {
+        quarter_label(complete_extension.index[-1]): endpoint_features(
+            complete_features
+        ),
+        f'{quarter_label(latest_extension.index[-1])} sensitivity': (
+            endpoint_features(latest_features)
+        ),
+    },
+    axis=1,
+)
+updated_endpoints.round(3)
+```
+
+The endpoint core-inflation estimates are close across the two samples, while
+the natural-rate and persistence estimates move more noticeably.
+
+That sensitivity is expected because local means and zero-frequency spectra
+magnify small coefficient changes near a unit root and because endpoint
+smoothing has little future data to anchor it.
+
+```{code-cell} ipython3
+def episode_summary(fit, features):
+    """Average selected features over economically distinct episodes."""
+    years = np.floor(fit['data']['dates'] + 1e-8).astype(int)
+    periods = {
+        '1970--1979': (years >= 1970) & (years <= 1979),
+        '1985--2000': (years >= 1985) & (years <= 2000),
+        '2001--2019': (years >= 2001) & (years <= 2019),
+        '2020--2022': (years >= 2020) & (years <= 2022),
+        '2023--latest': years >= 2023,
+    }
+    rows = {}
+    for label, mask in periods.items():
+        rows[label] = {
+            'core inflation (%)': 100 * features['core'][mask].mean(),
+            'normalized persistence': features['persistence'][mask].mean(),
+            'log prediction variance': features['logdet'][mask].mean(),
+        }
+    return pd.DataFrame.from_dict(rows, orient='index')
+
+
+episode_summary(latest_fit, latest_features).round(3)
+```
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Extended-sample model features
+    name: fig-csdv-updated-features
+---
+updated_dates = latest_fit['data']['dates']
+fig, axes = plt.subplots(2, 2, figsize=(9, 7), sharex=True)
+series = (
+    (100 * latest_features['core'], 'core inflation', 'percent'),
+    (100 * latest_features['natural'], 'natural rate', 'percent'),
+    (
+        latest_features['persistence'],
+        'inflation persistence',
+        r'$g_{\pi\pi}(0,t)$',
+    ),
+    (
+        latest_features['logdet'],
+        'total prediction variance',
+        r'$\log |E(R_t\mid T)|$',
+    ),
+)
+for ax, (values, title, ylabel) in zip(axes.flat, series):
+    ax.plot(updated_dates, values, lw=2)
+    ax.axvline(2000.75, color='0.65', ls='--', lw=1)
+    ax.set_title(title)
+    ax.set_ylabel(ylabel)
+for ax in axes[-1]:
+    ax.set_xlabel('year')
+plt.tight_layout()
+fig.show()
+```
+
+The added data reinforce the distinction between volatility and persistence.
+
+The 2020 pandemic generates the largest aggregate prediction-variance episode in
+the sample, but the 2021--2022 inflation surge does not restore the high
+normalized persistence of the 1970s.
+
+The estimated core rate rises only modestly because it is a local long-horizon
+forecast, not the observed quarterly inflation rate.
+
+The volatility components locate different exceptional episodes.
+
+```{code-cell} ipython3
+def decimal_quarter_label(value):
+    """Format a decimal quarterly date."""
+    year = int(np.floor(value + 1e-8))
+    quarter = int(round(4 * (value - year))) + 1
+    return f'{year}Q{quarter}'
+
+
+innovation_sd = 10000 * np.sqrt(
+    np.diagonal(latest_features['covariance'], axis1=1, axis2=2)
+)
+volatility_names = ('interest', 'unemployment', 'inflation')
+volatility_summary = pd.DataFrame(
+    {
+        'peak quarter': [
+            decimal_quarter_label(updated_dates[np.argmax(innovation_sd[:, i])])
+            for i in range(n_variables)
+        ],
+        r'latest standard deviation $\times 10^4$': innovation_sd[-1],
+    },
+    index=volatility_names,
+)
+volatility_summary
+```
+
+Interest-rate innovation volatility still peaks during the Volcker period,
+inflation innovation volatility peaks during the financial crisis, and
+unemployment innovation volatility peaks in 2020.
+
+All three are well below their peaks by the final quarter, so the pandemic
+appears mainly as a large transient volatility event in this specification.
+
+Finally, the forward-looking activism ratio becomes especially fragile in the
+extended sample because its denominator can approach zero.
+
+We therefore report its draw-wise endpoint distribution instead of interpreting
+the plug-in ratio.
+
+```{code-cell} ipython3
+def endpoint_activism_draws(fit):
+    """Compute the endpoint activism ratio for every retained draw."""
+    result = fit['posterior']
+    draws = np.empty(result['SD'].shape[2])
+    for draw in range(len(draws)):
+        covariance = innovation_covariance(
+            result['HD'][-1, :, draw],
+            result['CD'][:, draw],
+        )
+        draws[draw] = policy_activism(
+            result['SD'][:, -1, draw], covariance
+        )
+    return draws
+
+
+def activism_uncertainty(fit):
+    """Summarize endpoint activism without relying on its mean."""
+    draws = endpoint_activism_draws(fit)
+    active = draws > 1
+    ess = scalar_mcmc_ess(active)
+    probability = active.mean()
+    return pd.Series(
+        {
+            'median': np.median(draws),
+            '5th percentile': np.quantile(draws, 0.05),
+            '95th percentile': np.quantile(draws, 0.95),
+            'P(active)': probability,
+            'indicator ESS': ess,
+            'probability MCSE': np.sqrt(
+                probability * (1 - probability) / ess
+            ),
+        }
+    )
+
+
+updated_activism = pd.concat(
+    {
+        quarter_label(complete_extension.index[-1]): activism_uncertainty(
+            complete_fit
+        ),
+        f'{quarter_label(latest_extension.index[-1])} sensitivity': (
+            activism_uncertainty(latest_fit)
+        ),
+    },
+    axis=1,
+).T
+updated_activism.round(3)
+```
+
+The wide intervals do not support a precise endpoint classification.
+
+Moreover, the zero lower bound and unconventional monetary policy weaken the
+interpretation of a standard Taylor-rule projection after 2008.
+
+Thus the updated data sharpen the volatility evidence and preserve the broad
+persistence result, but they do not identify a precise current natural rate,
+rate of coefficient drift, or activism coefficient.
 
 ## Bad policy or bad luck? A verdict
 
-The Bayesian VAR delivers a nuanced answer to the question that opened this lecture.
+The Bayesian VAR delivers a nuanced answer to the question that opened this
+lecture.
 
-* **Volatilities drifted.** The size of the shocks changed enormously, with a Volcker-era spike and a subsequent Great Moderation. The bad-luck story captures something real.
-* **Coefficients drifted too.** Inflation persistence and core inflation rose through the 1970s and fell in the 1980s. The systematic dynamics were *not* time-invariant, so the bad-policy story also captures something real.
-* **The classical tests could not have told us.** Their low power against drifting alternatives means that "we cannot reject constancy" was never good evidence for pure bad luck.
+- *Volatilities drifted:* the size of the shocks changed enormously, with a
+  Volcker-era spike and a subsequent Great Moderation, so the bad-luck story
+  captures something real.
+
+- *Coefficients drifted too:* inflation persistence and core inflation rose
+  through the 1970s and fell in the 1980s, so the systematic dynamics were not
+  time invariant.
+
+- *The new observations do not overturn that distinction:* the pandemic
+  produces an extreme volatility episode, while the recent inflation surge does
+  not recreate the persistence of the 1970s.
+
+The reduced-form VAR cannot by itself prove that changes in Federal Reserve
+beliefs caused the coefficient drift, because private behavior and other omitted
+mechanisms can also change reduced-form dynamics.
 
 There is one more twist, and it loops us back to the theory of this section.
 
-The escape-route models of {doc}`phillips_learning` and {doc}`phillips_escaping_nash` predict that inflation persistence should **grow** along a disinflation, as a learning government becomes reluctant to abandon a high-inflation self-confirming equilibrium.
+The escape-route models of {doc}`phillips_learning` and
+{doc}`phillips_escaping_nash` predict that inflation persistence should *grow*
+along a disinflation as a learning government becomes reluctant to abandon a
+high-inflation self-confirming equilibrium.
 
-The data show the **opposite**: persistence *fell* as inflation came down after 1980.
+The data show the opposite because persistence fell as inflation came down after
+1980.
 
-Cogley and Sargent flag this tension honestly.
+It helped motivate later learning models, including
+{cite:t}`CogleySargentConquest2005` and {cite:t}`Primiceri2006`, in which
+policymakers' reluctance to disinflate in the 1970s and their eventual
+conversion generate persistence that first rises and then falls.
 
-It is precisely what motivated the next round of learning models — Cogley and Sargent's own {cite}`CogleySargentConquest2005` and Primiceri's {cite}`Primiceri2006` — in which policymakers' *reluctance to disinflate in the 1970s*, and their eventual conversion, generate a persistence that rises and then falls, matching the drift we have measured here.
+The friendly debate with Sims, Zha, Bernanke, and Mihov thus did more than
+adjudicate a historical question.
 
-The friendly debate with Sims, Zha, Bernanke, and Mihov thus did more than adjudicate a historical question.
+It sharpened the theoretical models of learning and drift that run through this
+section, from the {doc}`self-confirming equilibria <phillips_self_confirming>`
+of the *Conquest* book to the
+{doc}`drifting Fed beliefs <phillips_lost_conquest>` used to interpret later
+inflation.
 
-It sharpened the theoretical models of learning and drift that run through this entire section — from the {doc}`self-confirming equilibria <phillips_self_confirming>` of the *Conquest* book to the {doc}`drifting Fed beliefs <phillips_lost_conquest>` of the 2020s.
-
-## Exercises
+## Exercise
 
 ```{exercise}
 :label: csdv_ex1
 
-The model nests the pure "bad luck" hypothesis as the special case $Q = 0$: constant coefficients, drifting volatilities only.
+For an $AR(1)$ process, normalized zero-frequency power is
 
-Modify the sampler to impose $Q = 0$ (so `draw_theta` is called with a zero drift covariance and the coefficients never move), refit, and compare the *volatility* paths and the *persistence* series to those from the full model.
+$$
+g(0)=\frac{1+\rho}{2\pi(1-\rho)}.
+$$
 
-What happens to measured inflation persistence when the coefficients are forced to be constant? Explain why.
+Compute $g(0)$ for $\rho=0$, $0.85$, and $0.97$, and use the persistence
+path above to interpret how inflation dynamics changed around 1980.
 ```
 
 ```{solution-start} csdv_ex1
 :class: dropdown
 ```
 
-With $Q=0$ the coefficient path collapses to a single constant vector (the smoothed estimate), so `companion(thb[t])` no longer depends on $t$ and the *only* source of time variation in
-
-$$
-f(0)_t = \tfrac{1}{2\pi}(I-A)^{-1} R_t (I-A)^{-1\prime}
-$$
-
-is the drifting covariance $R_t$.
-
-But the *normalized* spectrum $g_{\pi\pi}(0,t) = f(0)_t / \operatorname{Var}(\pi_t)$ divides out the scale of $R_t$, so with constant $A$ it is very nearly *flat*: forcing constant coefficients removes essentially all of the rise-and-fall in persistence.
-
-That is exactly why one needs drifting *coefficients*, not just drifting volatilities, to reproduce the persistence dynamics — the substantive point of the paper.
-
-The estimated volatility paths, by contrast, look much like those from the full model, because they are identified mostly by the size of the residuals.
-
-A sketch of the change to the sampler:
-
 ```{code-cell} ipython3
-:tags: [skip-execution]
-
-# inside run(), replace the Q block with a frozen Q of zeros
-Q = np.zeros((d, d))
-# ... and skip the invwishart.rvs draw so Q stays zero throughout
+rho = np.array([0.0, 0.85, 0.97])
+g0 = (1 + rho) / (2 * np.pi * (1 - rho))
+pd.Series(g0, index=rho, name='normalized power at zero').to_frame()
 ```
 
-```{solution-end}
-```
+White noise has $g(0)=1/(2\pi)$, while values between roughly 2 and 10
+correspond to highly persistent autoregressions with coefficients between about
+$0.85$ and $0.97$.
 
-```{exercise}
-:label: csdv_ex2
-
-The prior scalar `kQ` controls how much the coefficients are allowed to drift.
-
-Re-run the sampler with `kQ = 0.005` and `kQ = 0.02` and plot the three resulting persistence series together.
-
-How sensitive is the rise-and-fall of inflation persistence to this prior? What tradeoff do you face as you raise `kQ`?
-```
-
-```{solution-start} csdv_ex2
-:class: dropdown
-```
-
-Raising `kQ` loosens the prior and permits faster drift.
-
-The qualitative rise-and-fall of persistence — low in the early 1960s, high through the 1970s, low again after the Volcker disinflation — is present for all three values, which is reassuring: it is a feature of the data, not of the prior.
-
-But the *amplitude* and *smoothness* change.
-
-A larger `kQ` lets the coefficients chase the data more aggressively, which can *lower* the estimated peak persistence (some of what was drift in the systematic part gets reallocated) and makes the path more jagged; it also lowers the acceptance rate for coefficient paths, because looser drift more often proposes an explosive path that the stability prior rejects.
-
-A smaller `kQ` gives a smoother, more strongly shrunk path.
-
-The lesson is the one in the caveat about core inflation: the broad drift pattern is robust, while finer quantitative features depend on the prior and on the length of the run.
+Thus, the rise in zero-frequency power during the Great Inflation and its
+decline after 1980 represent a large change in persistence.
 
 ```{solution-end}
 ```
