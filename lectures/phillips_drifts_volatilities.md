@@ -78,7 +78,7 @@ Fitting it requires a Markov chain Monte Carlo algorithm that combines the
 We work through the data transformation, prior, sampler, and main empirical
 results in the order in which they arise.
 
-Let's start with some imports and the path to the frozen data.
+Let's start with some imports and the path to the data.
 
 ```{code-cell} ipython3
 from pathlib import Path
@@ -88,7 +88,7 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from IPython.display import Markdown
+from IPython.display import display, Math
 from scipy import linalg
 from scipy.special import expit
 from scipy.stats import invwishart
@@ -335,7 +335,7 @@ The nominal interest rate is the log of one plus the three-month Treasury-bill
 rate, averaged over daily observations in the first month of each quarter and
 expressed as a quarterly fraction.
 
-The frozen file starts in 1948Q2 because its first inflation observation is
+The data starts in 1948Q2 because its first inflation observation is
 already differenced, so two VAR lags make 1948Q4 the first usable regression
 date.
 
@@ -343,7 +343,7 @@ Its SHA-256 checksum is asserted above so that every run uses the same
 historical input.
 
 The following cell performs every transformation and constructs the VAR(2) data
-directly from the frozen series.
+directly from the series.
 
 ```{code-cell} ipython3
 def prepare_data(source, ordering=('i', 'u', 'pi')):
@@ -404,7 +404,7 @@ data_summary.to_frame()
 The first 41 usable observations calibrate the prior, while the remaining 168
 observations form the posterior sample.
 
-Let us view the data in familiar economic units.
+Let's view the data in familiar economic units.
 
 ```{code-cell} ipython3
 ---
@@ -430,15 +430,17 @@ plt.tight_layout()
 plt.show()
 ```
 
-The rise in inflation and nominal interest rates during the 1970s, the Volcker
-disinflation, and the subsequent moderation are all visible before a model is
-fitted.
+Inflation and nominal interest rates rise together through the 1970s and peak
+around 1980, unemployment peaks only after disinflation begins, and all three
+series are calmer in the 1990s.
 
-The question is what a flexible statistical model makes of them.
+These observations locate the episode but cannot tell whether changed
+systematic dynamics or unusually large shocks produced it, which is the
+distinction the model is built to examine.
 
 ## Priors
 
-The prior blocks are independent and deliberately weak so that, in the authors'
+The prior blocks are independent and deliberately weak so that, in the Cogley and Sargent's
 phrase, "the data are free to speak."
 
 They are calibrated from a time-invariant VAR fitted to the short 1948--1958
@@ -560,12 +562,19 @@ prior_summary.to_frame()
 
 ## A Metropolis-within-Gibbs sampler
 
-We simulate the posterior by cycling through the five conditional blocks in
-Appendix B of {cite:t}`CogleySargent2005`.
+We simulate the posterior by cycling through the five conditional blocks used
+by {cite:t}`CogleySargent2005`.
 
-For the stability-truncated coefficient block, we replace repeated whole-path
-rejection with the exact elliptical-slice transition described below; the
-target posterior is unchanged.
+Cogley and Sargent simulate the unrestricted posterior and then discard a
+complete MCMC realization whenever its coefficient path is explosive.
+
+Their rejection rule is exact, but only stable sweeps contribute realizations
+to the retained restricted-posterior sample.
+
+We instead impose stability inside the coefficient-path block with the
+elliptical slice sampler of {cite:t}`MurrayAdamsMacKay2010`.
+
+This changes the transition kernel, but not its target posterior.
 
 1. An auxiliary Gaussian coefficient path is drawn by a Carter--Kohn
    forward-filter/backward-sample step and used to update the stable path by
@@ -863,16 +872,154 @@ def draw_volatility_path(h, residuals, β, σ, prior, rng):
 The restricted posterior assigns zero density to coefficient paths that are
 explosive at any date, including $\theta_0$.
 
-Repeated independent draws from the Gaussian coefficient-path conditional are
-wasteful because requiring all 169 states to be stable can lead to many
-full-path rejections.
+Stack the whole coefficient path $\theta_0,\ldots,\theta_T$ into $z$ and collect
+the other parameter blocks in $\lambda=(Q,H^T,\beta,\sigma)$.
 
-We instead use an elliptical-slice transition: one Carter--Kohn innovation
-defines an ellipse through the current stable path, and a cheap one-dimensional
-angle bracket contracts until the proposed path is stable.
+Conditional on $\lambda$ and the data $Y^T$, the unrestricted Carter--Kohn
+distribution is multivariate Gaussian.
 
-This transition leaves the same stability-truncated Gaussian conditional
-invariant and computes the Kalman filter only once per sweep.
+$$
+z\mid \lambda,Y^T \sim N(m,C),
+\qquad
+g(z\mid\lambda,Y^T)=N(z;m,C).
+$$
+
+Here $m$ is the smoothing mean and $C$ is the covariance of the entire smoothed
+path.
+
+Let $\mathcal A$ be the set of paths whose companion roots are strictly inside
+the unit circle at every date.
+
+The stability-restricted full conditional is the Gaussian density truncated to
+$\mathcal A$.
+
+$$
+\pi_{\mathcal A}(z\mid\lambda,Y^T)
+= \frac{g(z\mid\lambda,Y^T)\,\mathbb{1}_{\mathcal A}(z)}
+       {\Pr_g(z\in\mathcal A\mid\lambda,Y^T)}.
+$$
+
+The normalizing probability in the denominator is difficult to calculate, but
+the elliptical transition never evaluates it.
+
+Cogley and Sargent impose this restriction by running an MCMC chain for the
+unrestricted joint posterior and retaining a realization only when its entire
+coefficient path is stable.
+
+Their rejection rule is valid because the restricted joint posterior is the
+unrestricted posterior conditioned on $z\in\mathcal A$.
+
+$$
+p_{\mathcal A}(z,Q,H^T,\beta,\sigma\mid Y^T)
+=
+\frac{
+    \mathbb{1}_{\mathcal A}(z)
+    p_U(z,Q,H^T,\beta,\sigma\mid Y^T)
+}{
+    \Pr_U(z\in\mathcal A\mid Y^T)
+}.
+$$
+
+The computational cost is that an explosive realization does not enter the
+retained sample despite the Carter--Kohn calculation and all four subsequent
+parameter and volatility updates.
+
+If $a=\Pr_U(z\in\mathcal A\mid Y^T)$, the original rejection method needs
+roughly $1/a$ full sweeps per retained stable realization.
+
+A direct rejection sampler for the coefficient conditional has the analogous
+problem because it repeats a whole Carter--Kohn simulation until all $T+1$
+coefficient states are stable.
+
+The elliptical transition starts instead from the current stable path
+$z^{(c)}$.
+
+A single Carter--Kohn simulation supplies a fresh auxiliary draw
+$\widetilde z\sim N(m,C)$.
+
+The ``innovation'' in the code is the centered *whole path*
+$\nu=\widetilde z-m\sim N(0,C)$, not one of the state innovations $v_t$.
+
+Carter--Kohn supplies this draw with the correct smoothing covariance without
+ever forming the large matrix $C$.
+
+The current path and the auxiliary draw define the following ellipse in path
+space.
+
+$$
+z(\phi)
+=m+(z^{(c)}-m)\cos\phi+\nu\sin\phi,
+\qquad 0\leq\phi<2\pi.
+$$
+
+Thus $z(0)=z^{(c)}$ and $z(\pi/2)=\widetilde z$: the ellipse passes through
+both the current stable path and the fresh Carter--Kohn path.
+
+The first angle is drawn uniformly from the full circle.
+
+If $z(\phi)$ is explosive, the algorithm retains the side of the angle bracket
+that contains the known acceptable angle $\phi=0$ and draws a new angle from
+the contracted bracket.
+
+Strict stability makes a nonzero interval around $\phi=0$ acceptable because
+the companion roots vary continuously with the coefficients.
+
+Each rejected angle costs only another linear combination and set of
+companion-root calculations rather than another Kalman filter and backward
+simulation.
+
+The invariance argument follows from a Gaussian rotation after writing
+$x=z^{(c)}-m$.
+
+The centered current path and auxiliary path have the following augmented
+density.
+
+$$
+\widetilde\pi(x,\nu)
+\propto
+\mathbb{1}_{\mathcal A}(m+x)N(x;0,C)N(\nu;0,C).
+$$
+
+For any angle $\phi$, define the following rotation.
+
+$$
+(x,\nu)
+\longmapsto
+(x\cos\phi+\nu\sin\phi,
+ -x\sin\phi+\nu\cos\phi).
+$$
+
+This rotation has unit Jacobian and leaves the product
+$N(x;0,C)N(\nu;0,C)$ unchanged.
+
+The randomly positioned full-circle bracket and its contraction form a
+reversible slice update along this Gaussian orbit.
+
+In a generic elliptical slice update, the slice height is
+$uL(z^{(c)})$ for $u\in(0,1)$ and a likelihood factor $L$.
+
+Here $L=\mathbb{1}_{\mathcal A}$ and $L(z^{(c)})=1$, so every possible slice
+height accepts exactly the stable angles.
+
+This binary likelihood explains why the code needs only the stability test and
+has no explicit slice-height draw.
+
+Marginalizing the auxiliary path therefore leaves the truncated Gaussian
+density $N(z;m,C)\mathbb{1}_{\mathcal A}(z)$ invariant.
+
+Finally, conditional on a stable $z$, the indicator is constant with respect to
+$Q,H^T,\beta$, and $\sigma$, so it cancels from each of their full
+conditionals.
+
+Those four updates are therefore exactly the same as in the unrestricted
+sampler.
+
+The unchanged conditional for $Q$ still produces the stability-induced tilt
+in its marginal posterior because every $Q$ update is conditioned on a stable
+coefficient path.
+
+Composing those four updates with the elliptical transition targets the same
+joint stability-restricted posterior as the original rejection sampler.
 
 The next function composes the five blocks and includes a stochastic-volatility
 warm-up.
@@ -1026,12 +1173,10 @@ def run_sampler(
 The executable version below uses 1,000 sweeps, discards the first 500, and
 retains the remaining 500.
 
-It uses the complete historical sample and the stable ordering $(i,u,\pi)$, and
-it does not load posterior draws or precomputed results.
+It uses the complete historical sample and the stable ordering $(i,u,\pi)$.
 
-This short teaching run is exploratory rather than publication-precision
-inference, so we report effective sample sizes and Monte Carlo standard errors
-alongside its estimates.
+Instead of running a large MCMC experiment, we intentionally keep the sampler
+run small so that it finishes in a reasonable time.
 
 ```{code-cell} ipython3
 posterior = run_sampler(
@@ -1068,18 +1213,13 @@ def validate_posterior(result, periods):
 
 
 expected_shapes = validate_posterior(posterior, len(data['dates']))
-
-pd.Series(posterior['diagnostics'], name='value').to_frame()
 ```
 
 ## What the data say
 
 We summarize the posterior by its mean coefficient path $E(\theta_t\mid T)$ and
-mean covariance path $E(R_t\mid T)$, and then read the economically interesting
-objects from them.
-
-The retained in-memory draws are also used for a few probability statements and
-Monte Carlo diagnostics.
+mean covariance path $E(R_t\mid T)$, and then interpret them 
+in the context of the question we asked.
 
 ### The rate and structure of drift
 
@@ -1106,12 +1246,11 @@ ax.legend()
 plt.show()
 ```
 
-The posterior mean paths show visible drift concentrated in a subset of
-coefficients.
+Almost all posterior drift-rate mass lies far to the right of the small prior
+marker, so the data favor meaningful coefficient change over fixed dynamics.
 
-We do not simulate the stability-truncated prior paths here because doing so by
-whole-path rejection recreates the runtime problem that the elliptical-slice
-update avoids.
+This finding says that the economy's systematic relationships changed, but it
+does not identify policy as the cause.
 
 ```{code-cell} ipython3
 ---
@@ -1170,79 +1309,37 @@ plt.tight_layout(rect=(0, 0.17, 1, 1))
 plt.show()
 ```
 
+The unemployment equation is comparatively stable, whereas several inflation
+equation coefficients move strongly through the 1970s and turn around near
+1980.
+
+The drift is therefore concentrated in how inflation propagates rather than
+spread evenly across the VAR, and individual lag coefficients should not be
+given structural interpretations because paired lags can offset one another.
+
 We summarize drift for the stable ordering $(i,u,\pi)$.
 
 ```{code-cell} ipython3
-def scalar_mcmc_ess(values):
-    """Estimate scalar ESS with Geyer's initial-positive-sequence rule."""
-    values = np.asarray(values, dtype=float)
-    centered = values - values.mean()
-    n = len(centered)
-    n_fft = 1 << (2 * n - 1).bit_length()
-    spectrum = np.fft.rfft(centered, n=n_fft)
-    autocovariance = np.fft.irfft(
-        spectrum * spectrum.conj(), n=n_fft
-    )[:n]
-    autocovariance /= np.arange(n, 0, -1)
-    if autocovariance[0] <= np.finfo(float).tiny:
-        return float(n)
-    ρ = autocovariance / autocovariance[0]
-    paired = ρ[1:1 + 2 * ((n - 1) // 2)].reshape(-1, 2).sum(axis=1)
-    nonpositive = np.flatnonzero(paired <= 0)
-    if len(nonpositive):
-        paired = paired[:nonpositive[0]]
-    τ = max(1.0, 1.0 + 2.0 * paired.sum())
-    return min(float(n), float(n / τ))
-
-
 trace_q = np.trace(posterior['QD'], axis1=0, axis2=1)
 q_mean = posterior['QD'].mean(axis=2)
-trace_ess = scalar_mcmc_ess(trace_q)
-trace_mcse = trace_q.std(ddof=1) / np.sqrt(trace_ess)
 drift_summary = {
-    r'\text{posterior mean } \operatorname{tr}(Q)': np.trace(q_mean),
-    r'\text{posterior mean largest eigenvalue}': np.linalg.eigvalsh(q_mean)[-1],
-    r'\text{prior } \operatorname{tr}(\bar Q)': np.trace(q_bar),
+    r'\text{Posterior mean } \operatorname{tr}(Q)': np.trace(q_mean),
+    r'\text{Posterior mean largest eigenvalue}': (
+        np.linalg.eigvalsh(q_mean)[-1]
+    ),
+    r'\text{Prior } \operatorname{tr}(\bar Q)': np.trace(q_bar),
 }
 drift_rows = ' \\\\\n'.join(
     f'{label} & {value:.4f}' for label, value in drift_summary.items()
 )
-Markdown(rf'''$$
+display(Math(rf'''
 \begin{{array}}{{lr}}
-\text{{quantity}} & \text{{estimate}} \\
+\text{{Quantity}} & \text{{Estimate}} \\
 \hline
 {drift_rows}
 \end{{array}}
-$$''')
+'''))
 ```
-
-```{code-cell} ipython3
-pd.Series(
-    {
-        'trace ESS': trace_ess,
-        'trace MCSE': trace_mcse,
-        'first-half trace mean': trace_q[:len(trace_q) // 2].mean(),
-        'second-half trace mean': trace_q[len(trace_q) // 2:].mean(),
-        'mean slice contractions per sweep': posterior['diagnostics'][
-            'mean_slice_contractions'
-        ],
-        'maximum slice contractions': posterior['diagnostics'][
-            'maximum_slice_contractions'
-        ],
-        'elapsed seconds': posterior['diagnostics']['elapsed_seconds'],
-    },
-    name='MCMC diagnostic',
-).to_frame().round(4)
-```
-
-The estimate of $\operatorname{tr}(Q)$ is well above the conservative prior
-scale, which points to economically meaningful coefficient drift.
-
-Its precision should be judged from the ESS, MCSE, and split-chain means rather
-than from the displayed decimal places.
-
-The same Monte Carlo caveat applies to the eigenvalue shares and nonlinear
-feature paths below.
 
 The analysis that follows adopts the $(i,u,\pi)$ ordering, which places the
 nominal interest rate first and inflation last.
@@ -1273,9 +1370,6 @@ coefficient drift even though the VAR contains 21 coefficients.
 ### The evolution of volatility
 
 We first ask how the *size* of the shocks changed.
-
-The posterior mean of $R_t$ shows large and systematic movements in both
-innovation standard deviations and correlations.
 
 Equation {eq}`csdv_covariance` can be averaged over draws without constructing a
 four-dimensional covariance array.
@@ -1343,9 +1437,16 @@ plt.tight_layout()
 plt.show()
 ```
 
-The standard deviation of the interest-rate innovation spikes dramatically
-around 1979--1982, the years of the Volcker experiment with nonborrowed-reserves
-targeting.
+The interest-rate and inflation innovation standard deviations peak sharply
+around 1980, whereas unemployment innovation volatility declines more gradually
+toward the end of the sample.
+
+All three innovation correlations also move most abruptly around 1980, so both
+the size and the joint composition of reduced-form shocks changed.
+
+These movements give the changing-shocks, or bad-luck, explanation an important
+role, although the interest-rate innovation is not itself a structural
+monetary-policy shock.
 
 The following calculation reports both the raw endpoint change in the
 unemployment innovation standard deviation and a less noisy comparison of the
@@ -1369,19 +1470,6 @@ pd.Series(
 ).to_frame().round(2)
 ```
 
-The interest-rate and inflation innovation variances spike between 1979 and 1981
-before falling sharply.
-
-Interest--unemployment innovations are negatively correlated, and
-interest--inflation innovations are positively correlated.
-
-The inflation--unemployment correlation is mostly negative and most pronounced
-around the Volcker disinflation, but is near zero and briefly slightly positive
-early in the estimated path.
-
-The signs of these correlations caution against interpreting the
-nominal-interest innovation as a structural monetary-policy shock.
-
 The log determinant of the posterior mean covariance matrix summarizes the
 generalized one-step innovation variance {cite}`Whittle1953`.
 
@@ -1403,15 +1491,13 @@ ax.set_ylabel(r'$\log |E(R_t\mid T)|$')
 plt.show()
 ```
 
-Generalized innovation variance rises in two steps before 1981 and then falls
-during the Volcker era.
-
-The pattern documents substantial movement in volatility and gives the bad-luck
-account an important role.
-
-The decline after 1981 looks more like a return to an earlier stability than an
-unprecedented new regime, which connects it to the Great Moderation documented
+Because a less negative log determinant means greater joint innovation
+variance, the two-step rise to an exceptional 1981 peak and the long subsequent
+decline mark a large shock episode followed by the Great Moderation documented
 by {cite:t}`KimNelson1999` and {cite:t}`McConnellPerezQuiros2000`.
+
+This is the clearest aggregate evidence for changing luck, but it cannot explain
+the coefficient-based changes in inflation dynamics examined next.
 
 ### Core inflation and the natural rate
 
@@ -1434,9 +1520,10 @@ coefficients at date $t$,
 These are local linear approximations rather than unconditional means of the
 globally drifting process.
 
-Core inflation is therefore the long-horizon inflation forecast implied by
-freezing the date-$t$ coefficients, while the natural rate is the corresponding
-long-horizon unemployment forecast.
+Core inflation is the long-horizon inflation forecast implied by freezing the
+date-$t$ coefficients, while the natural rate is the corresponding long-run
+unemployment anchor rather than a natural interest rate or a forecast of next
+quarter's unemployment.
 
 The following implementation annualizes core inflation and reverses the
 archive's unemployment transformation.
@@ -1511,11 +1598,14 @@ core_summary = pd.Series(
 core_summary.to_frame().round(2)
 ```
 
-Core inflation rises into the 1970s and then falls after the Volcker
-disinflation.
+Core inflation climbs from roughly 1.5 percent in the early 1960s to about 8
+percent near 1980 and then falls toward 3 percent, while the natural unemployment
+rate rises more smoothly from about 5 to 6.5 percent before returning toward 4
+percent.
 
-The natural rate follows a similar lower-frequency pattern, although both
-quantities become sensitive when a local companion root approaches one.
+Because both lines are determined by the fitted coefficients rather than by
+realized shocks, their persistent shifts point to a changing systematic
+component.
 
 The following calculation summarizes their comovement over the full posterior
 sample.
@@ -1527,8 +1617,9 @@ core_natural_correlation = np.corrcoef(core_inflation, natural_rate)[0, 1]
 The quarterly correlation between posterior-mean core inflation and the natural
 rate is 0.838.
 
-This strong positive association says that the model's low-frequency movements
-in inflation and unemployment tend to occur together.
+This strong positive association says that the model-implied long-run inflation
+and unemployment anchors share a broad cycle, not that current inflation and
+current unemployment must move together.
 
 Because $(I-A_t)^{-1}$ amplifies small coefficient changes when the largest root
 is close to one, long-run means are intrinsically more sensitive than
@@ -1561,7 +1652,7 @@ where $\mathcal R_t$ embeds $E(R_t\mid T)$ in the companion system.
 Low-frequency power depends on both the autoregressive coefficients and the
 innovation covariance.
 
-The next function implements equation (32) at any frequency measured in cycles
+The next function evaluates inflation power at any frequency measured in cycles
 per quarter and also returns the date-local inflation variance.
 
 ```{code-cell} ipython3
@@ -1647,8 +1738,12 @@ persistence_summary = pd.Series(
 persistence_summary.to_frame().round(3)
 ```
 
-The normalized spectrum rises gradually during the late 1960s, remains high in
-the 1970s, and falls sharply after 1980.
+Normalized zero-frequency power rises from about 0.2 in the early 1960s to
+nearly 4 around 1980 and then falls below 1 for most of the remaining sample.
+
+Because normalization removes the changing scale of inflation innovations, the
+post-1980 collapse shows that inflation became less persistent independently of
+the volatility channel.
 
 For comparison, an $AR(1)$ with coefficient $\rho$ has normalized zero-frequency
 power $(1+\rho)/[2\pi(1-\rho)]$.
@@ -1710,11 +1805,13 @@ plt.tight_layout()
 plt.show()
 ```
 
-Raw low-frequency power rises most sharply when persistence and innovation
-variance are both elevated.
+The raw spectrum is brightest near frequency zero around 1980 because shocks
+and persistence are both elevated, while the normalized spectrum retains a
+broad low-frequency ridge through the 1970s that recedes after 1980.
 
-Normalization removes the changing local variance and leaves a broad
-low-frequency ridge through the 1970s that recedes after 1980.
+The ridge that survives normalization shows that the Great Inflation was not
+only a high-volatility episode because inflation shocks were also propagated
+more persistently.
 
 Point estimates do not reveal how strongly the data locate these paths.
 
@@ -1785,17 +1882,18 @@ plt.tight_layout()
 plt.show()
 ```
 
-The shaded regions are pointwise 90 percent posterior intervals rather than a
-simultaneous band for each whole path.
+The solid curves are posterior medians, and the shaded regions are pointwise 90
+percent intervals rather than simultaneous bands for entire paths.
 
-The solid line is the posterior median of the nonlinear feature at each date.
+The median core-inflation and persistence paths preserve the rise and
+post-1980 fall, but their right-skewed bands widen markedly through the 1970s
+and around 1980.
 
-Uncertainty expands when local roots approach one, especially for long-horizon
-means and zero-frequency persistence.
+The natural-rate median moves more smoothly, with broad uncertainty around 1980
+and again at the sample endpoint, so the direction of the historical movement
+is clearer than its exact magnitude.
 
-Core inflation and inflation persistence move closely together over the sample.
-
-The following plot shows the two series together.
+The following plot compares the timing of core inflation and persistence.
 
 ```{code-cell} ipython3
 ---
@@ -1818,12 +1916,16 @@ ax.legend()
 plt.show()
 ```
 
-The quarterly correlation between posterior-mean core inflation and persistence
-is 0.909.
+Core inflation and normalized persistence rise together through the late 1960s
+and 1970s and collapse almost simultaneously after 1980, although core remains
+positive after persistence falls below one.
 
-The rise through the late 1960s and 1970s followed by the sharp fall after 1980
-is a central finding because it shows that the systematic dynamics moved along
-with the volatilities.
+Their quarterly correlation of 0.909 summarizes common timing rather than a
+causal relationship because the two measures have different units and are
+nonlinear summaries of the same fitted coefficients.
+
+The joint movement shows that a fixed-coefficient, changing-shocks-only account
+cannot explain the entire Great Inflation.
 
 The fall in persistence during the Volcker disinflation conflicts with
 escape-route models in which persistence grows along a transition from high to
@@ -1855,8 +1957,9 @@ local VAR produce the policy-rule coefficients.
 The benchmark horizons are $h_\pi=4$ quarters and $h_u=2$ quarters, reflecting
 conventional views about monetary-policy lags.
 
-The following function implements equation (34) and footnote 18 from the
-stationary second moments of each local VAR.
+The following function projects the short rate on the model-implied inflation
+and unemployment forecasts using the stationary second moments of each local
+VAR.
 
 ```{code-cell} ipython3
 def policy_activism(
@@ -1944,11 +2047,13 @@ ax.set_ylabel('activism coefficient')
 plt.show()
 ```
 
-The plug-in activism coefficient is below one in much of the 1970s and above one
-after the early 1980s.
+The plug-in activism measure falls from well above one in the 1960s to below the
+active-policy threshold through much of the 1970s and then moves decisively
+above one after the early 1980s.
 
-Policy activism is negatively related to both core inflation and inflation
-persistence.
+This timing is consistent with a policy-regime contribution to the Great
+Inflation, but the late-1990s spike is a fragile ratio effect rather than a
+literal measure of policy strength.
 
 The following scatter plots use fourth-quarter observations.
 
@@ -1980,11 +2085,13 @@ plt.tight_layout()
 plt.show()
 ```
 
-The fourth-quarter correlations of activism with core inflation and persistence
-are -0.78 and -0.74, respectively.
+High core-inflation and persistence observations cluster near or below the
+activism threshold, whereas high-activism observations cluster at low values of
+both measures.
 
-Thus, periods with a stronger estimated policy response tend to have lower core
-inflation and less low-frequency inflation persistence.
+The fourth-quarter correlations are -0.78 with core inflation and -0.74 with
+persistence, but these jointly estimated, time-ordered points establish a
+historical association rather than a causal policy effect.
 
 The activism transformation is weakly identified at some dates, so a path based
 on posterior-mean inputs understates uncertainty.
@@ -2024,9 +2131,6 @@ activity_events = (
 activity_probability_values = np.array(
     [event.mean() for event in activity_events]
 )
-activity_probability_ess = np.array(
-    [scalar_mcmc_ess(event) for event in activity_events]
-)
 
 activity_probability_index = (
     'P(A_1975 > 1)',
@@ -2036,29 +2140,15 @@ activity_probability_index = (
     'P(A_1995 > A_1975)',
 )
 activity_probabilities = pd.DataFrame(
-    {
-        'estimate': activity_probability_values,
-        'indicator ESS': activity_probability_ess,
-    },
+    {'estimate': activity_probability_values},
     index=activity_probability_index,
-)
-activity_probabilities['MCSE'] = np.sqrt(
-    activity_probabilities['estimate']
-    * (1 - activity_probabilities['estimate'])
-    / activity_probability_ess
 )
 
 activity_probabilities.round(3)
 ```
 
-The probabilities should be read with their indicator ESS and MCSE.
-
-They support a move from passive policy in the mid-1970s toward active policy
-after 1980, but overlapping posterior tails keep that conclusion probabilistic
-rather than dispositive.
-
-The central draw distributions expose the overlap and skewness behind those
-probabilities.
+The central draw distributions expose the overlap and skewness behind the
+probability estimates.
 
 ```{code-cell} ipython3
 ---
@@ -2092,13 +2182,20 @@ ax.legend()
 plt.show()
 ```
 
+The 1975 distribution is concentrated around or below one, while the 1985 and
+1995 distributions shift substantially to the right but remain broad, skewed,
+and overlapping.
+
+The posterior therefore favors a passive-to-active shift after 1975 but does
+not sharply distinguish 1985 from 1995.
+
 The figure plots unmodified draws inside the pooled 5th and 95th percentiles,
-while all probability calculations above use every draw.
+while the probability calculations use every draw.
 
 (csdv-updated-evidence)=
 ## Another quarter-century of evidence
 
-The frozen sample ends in 2000Q4, so it misses the financial crisis, the
+The sample ends in 2000Q4, so it misses the financial crisis, the
 zero-interest-rate period, the pandemic, and the 2021--2022 inflation surge.
 
 The question is whether these episodes alter the earlier evidence about drift,
@@ -2106,8 +2203,7 @@ volatility, inflation persistence, and systematic policy.
 
 ### The new observations
 
-To examine those observations, we append current data after 2000Q4 while leaving
-the frozen history unchanged.
+To examine those observations, we append current data after 2000Q4 while leaving pre-2000Q4 sample unchanged.
 
 This splice prevents revisions to pre-2001 CPI and unemployment data from being
 mistaken for information in the additional quarter-century.
@@ -2303,11 +2399,17 @@ pd.Series(
 ).to_frame().round(3)
 ```
 
-The pandemic produces an exceptionally sharp unemployment movement, while the
-inflation surge is large but much shorter than the 1970s episode.
+The extension adds the financial-crisis contraction, a pandemic unemployment
+spike above 13 percent, and a short 2021--2022 inflation surge alongside two
+long stretches of near-zero interest rates.
 
-The short interest rate also spends years near zero, which makes it a less
-complete summary of the stance of policy after 2008.
+Because inflation is annualized from quarterly changes, isolated movements look
+especially large in this panel, but the recent surge is still visibly much
+shorter than the sustained 1970s rise.
+
+These observations provide a demanding test of whether the model assigns recent
+extremes to shock volatility or persistent dynamics, while the near-zero rate
+also weakens short-rate measures of policy after 2008.
 
 We fit the same stable model through the authoritative 2025Q3 endpoint.
 
@@ -2347,7 +2449,6 @@ def fit_updated_model(table):
         'prior': model_prior,
         'posterior': result,
         'trace': trace,
-        'trace_ess': scalar_mcmc_ess(trace),
     }
 
 
@@ -2356,44 +2457,40 @@ updated_fit = fit_updated_model(append_extension(complete_extension))
 
 ### Did coefficient drift continue?
 
-The updated posterior still puts substantial mass on economically meaningful
-coefficient drift.
-
 ```{code-cell} ipython3
-def updated_drift_diagnostics(fit):
-    """Summarize coefficient drift and its Monte Carlo precision."""
+def updated_drift_summary(fit):
+    """Summarize the updated coefficient-drift distribution."""
     trace = fit['trace']
     q_mean = fit['posterior']['QD'].mean(axis=2)
     eigenvalues = np.linalg.eigvalsh(q_mean)[::-1]
     return {
         r'E[\operatorname{tr}(Q)]': trace.mean(),
-        r'\text{trace ESS}': fit['trace_ess'],
-        r'\text{trace MCSE}': trace.std(ddof=1) / np.sqrt(fit['trace_ess']),
-        r'\text{first-three drift share}': (
+        r'\text{First-three drift share}': (
             eigenvalues[:3].sum() / eigenvalues.sum()
         ),
     }
 
 
 updated_label = quarter_label(complete_extension.index[-1])
-updated_diagnostics = updated_drift_diagnostics(updated_fit)
+updated_summary = updated_drift_summary(updated_fit)
 updated_rows = ' \\\\\n'.join(
-    f'{label} & {value:.3f}' for label, value in updated_diagnostics.items()
+    f'{label} & {value:.3f}' for label, value in updated_summary.items()
 )
-Markdown(rf'''$$
+display(Math(rf'''
 \begin{{array}}{{lr}}
-\text{{quantity}} & \text{{{updated_label}}} \\
+\text{{Quantity}} & \text{{{updated_label}}} \\
 \hline
 {updated_rows}
 \end{{array}}
-$$''')
+'''))
 ```
 
 The drift-rate distributions and coefficient paths provide the same views used
 for the frozen sample.
 
 The dashed vertical line in updated time-series figures marks the frozen
-sample's 2000Q4 endpoint.
+sample's 2000Q4 endpoint, but each updated path comes from a full re-estimation
+rather than from attaching new points to an unchanged historical estimate.
 
 ```{code-cell} ipython3
 ---
@@ -2415,6 +2512,13 @@ ax.set_ylabel('frequency')
 ax.legend()
 plt.show()
 ```
+
+The updated drift-rate posterior remains far to the right of its small prior
+marker and is centered near 0.040, so the longer sample preserves the evidence
+for coefficient drift.
+
+Because $Q$ is a single variance parameter for the full 1959--2025 path, this
+histogram does not by itself show that drift accelerated after 2000.
 
 ```{code-cell} ipython3
 ---
@@ -2443,8 +2547,12 @@ plt.tight_layout(rect=(0, 0.17, 1, 1))
 plt.show()
 ```
 
-The posterior mean trace is about $0.040$, but an ESS near 20 limits fine
-inferences about its magnitude.
+Several coefficient paths continue moving gradually after 2000, with the
+largest changes again concentrated in the inflation equation rather than
+appearing as abrupt financial-crisis or pandemic breaks.
+
+The opposing movements of some paired lag coefficients also show why their
+combined dynamic implications are more informative than any single line.
 
 The first three eigen-directions account for about 96 percent of the posterior
 mean drift variance, so the estimated movement remains low dimensional.
@@ -2452,13 +2560,10 @@ mean drift variance, so the estimated movement remains low dimensional.
 The stability restriction now applies to a longer path, which makes the
 posterior drift rate a property of the full 1959--2025 sample.
 
-Several coefficient paths continue moving after 2000, especially in the
-inflation equation.
-
 ### Volatility after the Great Moderation
 
-The retained posterior draws let us separate the sizes and correlations of new
-innovations from changes in the VAR dynamics.
+We next separate changes in the sizes and correlations of innovations from
+changes in the VAR dynamics.
 
 ```{code-cell} ipython3
 ---
@@ -2508,9 +2613,6 @@ def model_features(fit):
 updated_features = model_features(updated_fit)
 ```
 
-The innovation covariance paths reproduce the earlier decomposition through
-2025Q3.
-
 ```{code-cell} ipython3
 ---
 mystnb:
@@ -2552,11 +2654,17 @@ plt.tight_layout()
 plt.show()
 ```
 
-The interest-rate innovation remains largest around the Volcker transition,
-while the financial crisis is the largest inflation-volatility episode.
+The Volcker transition still dominates interest-rate innovation volatility, the
+financial crisis produces the largest inflation-volatility spike, and the
+pandemic uniquely dominates unemployment volatility.
 
-The pandemic instead dominates unemployment volatility and aggregate
-one-step uncertainty.
+The pandemic also drives a sharp fall in the inflation--unemployment
+correlation, so recent episodes changed the mix of reduced-form shocks as well
+as their size.
+
+This is direct evidence for a bad-luck component, although reduced-form
+innovations do not establish that the underlying disturbances were structurally
+exogenous.
 
 ```{code-cell} ipython3
 ---
@@ -2576,6 +2684,10 @@ ax.set_xlabel('year')
 ax.set_ylabel(r'$\log |E(R_t\mid T)|$')
 plt.show()
 ```
+
+Joint innovation variance rises during the financial crisis, reaches a deep
+Great Moderation trough in the 2010s, and then jumps in 2020 above even its 1981
+peak before falling rapidly.
 
 ```{code-cell} ipython3
 def decimal_quarter_label(value):
@@ -2613,11 +2725,8 @@ updated_volatility
 ```
 
 All three innovation standard deviations are well below their peaks at the
-2025Q3 endpoint.
-
-This pattern supports a transient-shock interpretation inside this model, but
-it does not establish that the pandemic disturbances were structurally
-exogenous or harmless.
+2025Q3 endpoint, which supports a large but transient pandemic-shock
+interpretation inside this model.
 
 ### Core inflation and the natural rate after 2000
 
@@ -2656,6 +2765,18 @@ ax.set_ylabel('percent')
 ax.legend()
 plt.show()
 ```
+
+The 1970s core-inflation peak is lower here than in the frozen-sample figure
+because later observations revise the smoothed history, so values on both sides
+of the dashed line belong to one updated fit.
+
+After 2000 the plug-in core rate stays mostly between about 2 and 3 percent and
+rises only modestly after 2020, even though observed inflation moves much more
+sharply.
+
+The natural-rate line is the model's locally implied long-run unemployment
+anchor, which is why actual unemployment can jump above 13 percent in 2020 while
+this line remains near 5 percent.
 
 The final annual point represents 2025Q3 because the sample ends before the
 fourth quarter.
@@ -2720,8 +2841,12 @@ plt.tight_layout()
 plt.show()
 ```
 
-The solid lines are posterior medians and the shaded regions are pointwise 90
+The solid lines are posterior medians, and the shaded regions are pointwise 90
 percent intervals rather than simultaneous whole-path bands.
+
+After 2000 the core-inflation median is comparatively flat and the persistence
+median remains low, whereas the natural-rate band is broad and widens again at
+the endpoint.
 
 The endpoint rows summarize uncertainty in the three nonlinear features.
 
@@ -2750,14 +2875,13 @@ updated_endpoint_intervals = endpoint_feature_intervals(
 updated_endpoint_intervals.round(3)
 ```
 
-The raw inflation path in {numref}`fig-csdv-updated-data` rises much more than
-the estimated core rate because core is a long-horizon forecast.
+At 2025Q3 the posterior medians are about 2.50 percent for core inflation and
+5.20 percent for the natural rate, with 90 percent intervals of 1.23--3.73 and
+3.37--8.76 percent, respectively.
 
-The 2025Q3 estimates place core inflation near 2.7 percent and the natural rate
-near 5.2 percent.
-
-The natural-rate interval remains comparatively wide, consistent with the
-amplification that occurs when a companion root approaches one.
+The persistence median is 0.38 but its 0.15--4.39 interval retains a substantial
+upper tail, so the evidence favors temporary recent inflation without making
+that classification certain.
 
 ### Did inflation become persistent again?
 
@@ -2784,6 +2908,13 @@ ax.set_xlabel('year')
 ax.set_ylabel(r'$g_{\pi\pi}(0,t)$')
 plt.show()
 ```
+
+Persistence recreates the rise to a 1980 peak and the subsequent collapse, but
+it stays near 0.2--0.5 after 2000 and shows only a small post-2020 increase.
+
+Because this measure removes the changing scale of shocks, neither the financial
+crisis nor the recent inflation surge looks like a return to 1970s propagation
+in the posterior-mean dynamics.
 
 ```{code-cell} ipython3
 ---
@@ -2821,11 +2952,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-The post-2020 rise in core inflation is visible, but the posterior-mean
-persistence path stays below its 1970s values.
+Core inflation recovers from its mid-2010s low to roughly 2.6 percent, while
+persistence remains in its low post-1980 range instead of rising with it.
 
-The 2025Q3 persistence median is $0.38$, while its 90 percent interval from
-$0.15$ to $4.39$ leaves meaningful upper-tail uncertainty.
+This divergence separates a modest shift in the model's long-run inflation
+level from a renewed persistent-inflation regime.
 
 This result says that the fitted local VAR views the recent surge as less
 persistent, not that all alternative models must classify it as transitory.
@@ -2881,8 +3012,13 @@ for ax, (surface, title, color_label) in zip(axes, updated_surfaces):
 plt.show()
 ```
 
-The pandemic and recent inflation surge add raw power across frequencies, while
-the normalized low-frequency ridge remains most prominent in the 1970s.
+The financial crisis and pandemic appear as bright, broad bands in raw spectral
+power, while the normalized panel lacks any post-2000 low-frequency ridge
+comparable to the 1970s.
+
+This is the clearest spectral separation between recent bad luck, which raises
+variance across frequencies, and the changed propagation visible during the
+Great Inflation.
 
 ```{code-cell} ipython3
 def episode_summary(fit, features):
@@ -2943,11 +3079,12 @@ ax.set_ylabel('activism coefficient')
 plt.show()
 ```
 
-The symmetric-log scale preserves the sign and exposes ratio explosions rather
-than hiding them behind a truncated axis.
+After 2000 the plug-in ratio is mostly above one, dips toward the threshold in
+the mid-2010s and around 2020, and then rises sharply after 2021.
 
-The association with inflation features is therefore descriptive and not a
-stable structural-policy estimate.
+Its sign breaks and extreme spikes occur when the denominator approaches zero,
+and the symmetric-log scale exposes this fragility rather than making the peaks
+literal measures of policy strength.
 
 ```{code-cell} ipython3
 ---
@@ -2978,6 +3115,13 @@ plt.tight_layout()
 plt.show()
 ```
 
+After 2000 core inflation is positively associated with the plug-in activism
+ratio, reversing the historical negative pattern, while persistence has no
+clear monotone relationship with activism.
+
+This reversal shows that the earlier scatter describes one historical regime
+rather than a stable causal policy law.
+
 We also examine the central draw distribution at the 2025Q3 endpoint.
 
 ```{code-cell} ipython3
@@ -2998,19 +3142,12 @@ def endpoint_activism_draws(fit):
 
 def activism_uncertainty(draws):
     """Summarize endpoint activism without relying on its mean."""
-    active = draws > 1
-    ess = scalar_mcmc_ess(active)
-    probability = active.mean()
     return pd.Series(
         {
             'median': np.median(draws),
             '5th percentile': np.quantile(draws, 0.05),
             '95th percentile': np.quantile(draws, 0.95),
-            'P(active)': probability,
-            'indicator ESS': ess,
-            'probability MCSE': np.sqrt(
-                probability * (1 - probability) / ess
-            ),
+            'P(active)': np.mean(draws > 1),
         }
     )
 
@@ -3052,17 +3189,16 @@ ax.set_ylabel('draw count')
 plt.show()
 ```
 
-The 2025Q3 activism median is $2.42$, but its 90 percent interval from $-16.99$
-to $17.57$ makes the active-versus-passive classification weak.
+The mode lies just above the active-policy threshold, but that threshold cuts
+through substantial central mass and even the displayed draws span large
+negative and positive values.
 
-The active-policy probability is $0.69$ with an MCSE of $0.04$, so the evidence
-leans active without becoming decisive.
+The median of 2.42 and active-policy probability of 0.69 lean active, but the
+90 percent interval from -16.99 to 17.57 makes the endpoint classification weak.
 
-The figure plots unmodified draws between the 5th and 95th percentiles, while
-the table uses every draw.
-
-The zero lower bound and unconventional monetary policy further weaken the
-economic interpretation of a short-rate projection after 2008.
+The plot displays only draws between the 5th and 95th percentiles, and the zero
+lower bound and unconventional policy further weaken the interpretation of this
+short-rate projection after 2008.
 
 ### What the additional observations change
 
@@ -3072,8 +3208,7 @@ moving independently of persistent inflation dynamics.
 The pandemic is the dominant aggregate uncertainty episode, but the recent
 inflation surge does not reproduce the 1970s low-frequency persistence ridge.
 
-The data still support coefficient drift, although the trace ESS limits the
-precision of the drift-rate estimate.
+The data still support coefficient drift.
 
 The 2025Q3 natural-rate and activism estimates remain weakly pinned down, and
 both are nonlinear functions that become fragile near singular cases.
