@@ -63,6 +63,8 @@ from scipy.stats import beta as beta_dist
 import pandas as pd
 from IPython.display import display, Math
 import quantecon as qe
+
+rng = np.random.default_rng()
 ```
 
 ## Likelihood Ratio Process
@@ -154,18 +156,18 @@ def likelihood_ratio(w, f_func, g_func):
     return f_func(w) / g_func(w)
 
 @jit
-def simulate_likelihood_ratios(a, b, f_func, g_func, T=50, N=500):
+def simulate_likelihood_ratios(a, b, f_func, g_func, rng, T=50, N=500):
     """
     Generate N sets of T observations of the likelihood ratio.
     """
     l_arr = np.empty((N, T))
     for i in range(N):
         for j in range(T):
-            w = np.random.beta(a, b)
+            w = rng.beta(a, b)
             l_arr[i, j] = f_func(w) / g_func(w)
     return l_arr
 
-def simulate_sequences(distribution, f_func, g_func, 
+def simulate_sequences(distribution, f_func, g_func, rng,
         F_params=(1, 1), G_params=(3, 1.2), T=50, N=500):
     """
     Generate N sequences of T observations from specified distribution.
@@ -177,7 +179,7 @@ def simulate_sequences(distribution, f_func, g_func,
     else:
         raise ValueError("distribution must be 'f' or 'g'")
     
-    l_arr = simulate_likelihood_ratios(a, b, f_func, g_func, T, N)
+    l_arr = simulate_likelihood_ratios(a, b, f_func, g_func, rng, T, N)
     l_seq = np.cumprod(l_arr, axis=1)
     return l_arr, l_seq
 
@@ -207,7 +209,7 @@ draws from $g$.
 
 ```{code-cell} ipython3
 # Simulate when nature draws from g
-l_arr_g, l_seq_g = simulate_sequences('g', f, g, (F_a, F_b), (G_a, G_b))
+l_arr_g, l_seq_g = simulate_sequences('g', f, g, rng, (F_a, F_b), (G_a, G_b))
 plot_likelihood_paths(l_seq_g, 
                      title="$L(w^{t})$ paths when nature draws from g",
                      ylim=[0, 3])
@@ -288,7 +290,7 @@ averaging across these many paths at each $t$.
 
 ```{code-cell} ipython3
 l_arr_g, l_seq_g = simulate_sequences('g', 
-                f, g, (F_a, F_b), (G_a, G_b), N=50000)
+                f, g, rng, (F_a, F_b), (G_a, G_b), N=50000)
 ```
 
 It would be useful to use simulations to verify that unconditional means
@@ -335,7 +337,7 @@ Please note the scale of the $y$ axis.
 
 ```{code-cell} ipython3
 # Simulate when nature draws from f
-l_arr_f, l_seq_f = simulate_sequences('f', f, g, 
+l_arr_f, l_seq_f = simulate_sequences('f', f, g, rng,
                         (F_a, F_b), (G_a, G_b), N=50000)
 ```
 
@@ -787,7 +789,7 @@ for i, scenario in enumerate(scenarios):
     T = 150
 
     # Generate data from h
-    h_data = np.random.beta(scenario["h_params"][0], 
+    h_data = rng.beta(scenario["h_params"][0], 
                 scenario["h_params"][1], (N_paths, T))
     l_ratios, l_cumulative = compute_likelihood_ratios(h_data, f, g)
     log_l_cumulative = np.log(l_cumulative)
@@ -876,7 +878,7 @@ of  IID  draws from  $g$.
 Here is  Python code that we'll use to implement timing protocol 1 and 2
 
 ```{code-cell} ipython3
-def protocol_1(π_minus_1, T, N=1000, F_params=(1, 1), G_params=(3, 1.2)):
+def protocol_1(π_minus_1, T, rng, N=1000, F_params=(1, 1), G_params=(3, 1.2)):
     """
     Simulate Protocol 1: Nature decides once at t=-1 which model to use.
     """
@@ -884,20 +886,20 @@ def protocol_1(π_minus_1, T, N=1000, F_params=(1, 1), G_params=(3, 1.2)):
     G_a, G_b = G_params
     
     # Single coin flip for the true model
-    true_models_F = np.random.rand(N) < π_minus_1
+    true_models_F = rng.random(N) < π_minus_1
     sequences = np.empty((N, T))
     
     n_f = np.sum(true_models_F)
     n_g = N - n_f
     
     if n_f > 0:
-        sequences[true_models_F, :] = np.random.beta(F_a, F_b, (n_f, T))
+        sequences[true_models_F, :] = rng.beta(F_a, F_b, (n_f, T))
     if n_g > 0:
-        sequences[~true_models_F, :] = np.random.beta(G_a, G_b, (n_g, T))
+        sequences[~true_models_F, :] = rng.beta(G_a, G_b, (n_g, T))
     
     return sequences, true_models_F
 
-def protocol_2(π_minus_1, T, N=1000, F_params=(1, 1), G_params=(3, 1.2)):
+def protocol_2(π_minus_1, T, rng, N=1000, F_params=(1, 1), G_params=(3, 1.2)):
     """
     Simulate Protocol 2: Nature decides at each time step which model to use.
     """
@@ -905,16 +907,16 @@ def protocol_2(π_minus_1, T, N=1000, F_params=(1, 1), G_params=(3, 1.2)):
     G_a, G_b = G_params
     
     # Coin flips for each time step
-    true_models_F = np.random.rand(N, T) < π_minus_1
+    true_models_F = rng.random((N, T)) < π_minus_1
     sequences = np.empty((N, T))
     
     n_f = np.sum(true_models_F)
     n_g = N * T - n_f
     
     if n_f > 0:
-        sequences[true_models_F] = np.random.beta(F_a, F_b, n_f)
+        sequences[true_models_F] = rng.beta(F_a, F_b, n_f)
     if n_g > 0:
-        sequences[~true_models_F] = np.random.beta(G_a, G_b, n_g)
+        sequences[~true_models_F] = rng.beta(G_a, G_b, n_g)
     
     return sequences, true_models_F
 ```
@@ -970,12 +972,12 @@ Now let's simulate timing protocol 1 and compute the error probabilities
 ```{code-cell} ipython3
 
 def compute_protocol_1_errors(π_minus_1, T_max, N_simulations, f_func, g_func, 
-                              F_params=(1, 1), G_params=(3, 1.2)):
+                              rng, F_params=(1, 1), G_params=(3, 1.2)):
     """
     Compute error probabilities for Protocol 1.
     """
     sequences, true_models = protocol_1(
-        π_minus_1, T_max, N_simulations, F_params, G_params)
+        π_minus_1, T_max, rng, N_simulations, F_params, G_params)
     l_ratios, L_cumulative = compute_likelihood_ratios(sequences, 
                                     f_func, g_func)
     
@@ -1007,10 +1009,10 @@ The following code visualizes the error probabilities for timing protocol 1
 :tags: [hide-input]
 
 def analyze_protocol_1(π_minus_1, T_max, N_simulations, f_func, g_func, 
-                      F_params=(1, 1), G_params=(3, 1.2)):
+                      rng, F_params=(1, 1), G_params=(3, 1.2)):
     """Analyze Protocol 1"""
     result = compute_protocol_1_errors(π_minus_1, T_max, N_simulations, 
-                                      f_func, g_func, F_params, G_params)
+                                      f_func, g_func, rng, F_params, G_params)
     
     # Plot results
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
@@ -1046,7 +1048,7 @@ T_max = 30
 N_simulations = 10_000
 
 result_p1 = analyze_protocol_1(π_minus_1, T_max, N_simulations, 
-                                f, g, (F_a, F_b), (G_a, G_b))
+                                f, g, rng, (F_a, F_b), (G_a, G_b))
 ```
 
 Notice how the model selection  error probability approaches zero as $T$ grows.  
@@ -1078,12 +1080,12 @@ Now let's write some code to simulate it
 
 ```{code-cell} ipython3
 def compute_protocol_2_errors(π_minus_1, T_max, N_simulations, f_func, g_func,
-                              F_params=(1, 1), G_params=(3, 1.2)):
+                              rng, F_params=(1, 1), G_params=(3, 1.2)):
     """
     Compute error probabilities for Protocol 2.
     """
     sequences, true_models = protocol_2(π_minus_1, 
-                        T_max, N_simulations, F_params, G_params)
+                        T_max, rng, N_simulations, F_params, G_params)
     l_ratios, _ = compute_likelihood_ratios(sequences, f_func, g_func)
     
     T_range = np.arange(1, T_max + 1)
@@ -1186,11 +1188,11 @@ Now we simulate timing protocol 2 and compute the classification error probabili
 In the next cell, we also compare the theoretical classification accuracy to the empirical classification accuracy
 
 ```{code-cell} ipython3
-def analyze_protocol_2(π_minus_1, T_max, N_simulations, f_func, g_func, 
+def analyze_protocol_2(π_minus_1, T_max, N_simulations, f_func, g_func, rng,
                       theory_error=None, F_params=(1, 1), G_params=(3, 1.2)):
     """Analyze Protocol 2."""
     result = compute_protocol_2_errors(π_minus_1, T_max, N_simulations, 
-                                      f_func, g_func, F_params, G_params)
+                                      f_func, g_func, rng, F_params, G_params)
     
     # Plot results
     plt.figure(figsize=(10, 6))
@@ -1210,7 +1212,7 @@ def analyze_protocol_2(π_minus_1, T_max, N_simulations, f_func, g_func,
     return result
 
 # Analyze Protocol 2
-result_p2 = analyze_protocol_2(π_minus_1, T_max, N_simulations, f, g, 
+result_p2 = analyze_protocol_2(π_minus_1, T_max, N_simulations, f, g, rng,
                               theory_error, (F_a, F_b), (G_a, G_b))
 ```
 
@@ -1403,8 +1405,8 @@ for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
     chernoff_vals[i], _ = compute_chernoff_entropy(f, g)
 
     # Generate samples
-    sequences_f = np.random.beta(f_a, f_b, (N_half, T_large))
-    sequences_g = np.random.beta(g_a, g_b, (N_half, T_large))
+    sequences_f = rng.beta(f_a, f_b, (N_half, T_large))
+    sequences_g = rng.beta(g_a, g_b, (N_half, T_large))
 
     # Compute likelihood ratios and cumulative products
     _, L_cumulative_f = compute_likelihood_ratios(sequences_f, f, g)
@@ -1585,12 +1587,12 @@ def markov_kl_divergence(P_f, P_g, pi_f):
     kl_rate = np.sum(pi_f[:, np.newaxis] * P_f * log_ratios)
     return kl_rate
 
-def simulate_markov_chain(P, pi_0, T, N_paths=1000):
+def simulate_markov_chain(P, pi_0, T, rng, N_paths=1000):
     """
     Simulate N_paths sample paths from a Markov chain
     """
     mc = qe.MarkovChain(P, state_values=None)
-    initial_states = np.random.choice(len(P), size=N_paths, p=pi_0)
+    initial_states = rng.choice(len(P), size=N_paths, p=pi_0)
     paths = np.zeros((N_paths, T+1), dtype=int)
     
     for i in range(N_paths):
@@ -1621,7 +1623,7 @@ def compute_likelihood_ratio_markov(paths, P_f, P_g, π_0_f, π_0_g):
     
     return L_ratios
 
-def analyze_markov_chains(P_f, P_g, 
+def analyze_markov_chains(P_f, P_g, rng,
                 T=500, N_paths=1000, plot_paths=True, n_show=50):
     """
     Complete analysis of two Markov chains
@@ -1642,7 +1644,7 @@ def analyze_markov_chains(P_f, P_g,
     
     if plot_paths:
         # Simulate and plot paths
-        paths_from_f = simulate_markov_chain(P_f, π_f, T, N_paths)
+        paths_from_f = simulate_markov_chain(P_f, π_f, T, rng, N_paths)
         L_ratios_f = compute_likelihood_ratio_markov(
             paths_from_f, P_f, P_g, π_f, π_g)
         
@@ -1676,7 +1678,7 @@ def analyze_markov_chains(P_f, P_g,
         'kl_rate_gf': kl_rate_gf
     }
 
-def compute_markov_selection_error(T_values, P_f, P_g, π_0_f, π_0_g, N_sim=1000):
+def compute_markov_selection_error(T_values, P_f, P_g, π_0_f, π_0_g, rng, N_sim=1000):
     """
     Compute model selection error probability for Markov chains
     """
@@ -1684,8 +1686,8 @@ def compute_markov_selection_error(T_values, P_f, P_g, π_0_f, π_0_g, N_sim=100
     
     for T in T_values:
         # Simulate from both models
-        paths_f = simulate_markov_chain(P_f, π_0_f, T, N_sim//2)
-        paths_g = simulate_markov_chain(P_g, π_0_g, T, N_sim//2)
+        paths_f = simulate_markov_chain(P_f, π_0_f, T, rng, N_sim//2)
+        paths_g = simulate_markov_chain(P_g, π_0_g, T, rng, N_sim//2)
         
         # Compute likelihood ratios
         L_f = compute_likelihood_ratio_markov(paths_f, P_f, P_g, π_0_f, π_0_g)
@@ -1717,7 +1719,7 @@ P_g = np.array([[0.5, 0.3, 0.2],
                 [0.2, 0.6, 0.2],
                 [0.2, 0.2, 0.6]])
 
-markov_results = analyze_markov_chains(P_f, P_g)
+markov_results = analyze_markov_chains(P_f, P_g, rng)
 ```
 
 ## Related lectures
