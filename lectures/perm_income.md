@@ -479,8 +479,8 @@ r = 0.05
 T = 60
 
 @jit
-def time_path(T):
-    w = np.random.randn(T+1)  # w_0, w_1, ..., w_T
+def time_path(T, rng):
+    w = rng.standard_normal(T+1)  # w_0, w_1, ..., w_T
     w[0] = 0
     b = np.zeros(T+1)
     for t in range(1, T+1):
@@ -489,7 +489,8 @@ def time_path(T):
     c = μ + (1 - β) * (σ * w - b)
     return w, b, c
 
-w, b, c = time_path(T)
+rng = np.random.default_rng()
+w, b, c = time_path(T, rng)
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
@@ -512,7 +513,7 @@ fig, ax = plt.subplots(figsize=(10, 6))
 
 b_sum = np.zeros(T+1)
 for i in range(250):
-    w, b, c = time_path(T)  # Generate new time path
+    w, b, c = time_path(T, rng)  # Generate new time path
     rcolor = random.choice(('c', 'g', 'b', 'k'))
     ax.plot(c, color=rcolor, lw=0.8, alpha=0.7)
 
