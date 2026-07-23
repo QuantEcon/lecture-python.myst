@@ -76,7 +76,7 @@ Fitting it requires a Markov chain Monte Carlo algorithm that combines the
 {cite:t}`Jacquier1994`.
 
 We work through the data transformation, prior, sampler, and main empirical
-results in the order in which they arise.
+results.
 
 Let's start with some imports and the path to the data.
 
@@ -190,10 +190,12 @@ n_coefficients = n_variables * n_regressors
 
 def companion_matrix(θ):
     """Return the intercept and companion matrix for one coefficient vector."""
-    blocks = np.asarray(θ, dtype=float).reshape(n_variables, n_regressors)
-    intercept = np.r_[blocks[:, 0], np.zeros(n_variables)]
+    equation_rows = np.asarray(θ, dtype=float).reshape(
+        n_variables, n_regressors
+    )
+    intercept = np.r_[equation_rows[:, 0], np.zeros(n_variables)]
     companion = np.zeros((n_variables * n_lags, n_variables * n_lags))
-    companion[:n_variables] = blocks[:, 1:]
+    companion[:n_variables] = equation_rows[:, 1:]
     companion[n_variables:, :n_variables] = np.eye(n_variables)
     return intercept, companion
 
@@ -318,8 +320,8 @@ holding $H_t$ fixed produces drifting coefficients with constant volatility.
 The posterior contains the full paths $\theta^T$ and $H^T$ together with $Q$,
 $\beta$, and $(\sigma_1,\sigma_2,\sigma_3)$.
 
-This posterior has thousands of dimensions, which is why we simulate it one
-conditional block at a time.
+This posterior has thousands of dimensions, so later sections build a sampler
+that updates one group of parameters at a time, holding the rest fixed.
 
 ## The data
 
@@ -399,8 +401,8 @@ data_summary = pd.Series(
 data_summary.to_frame()
 ```
 
-The first 41 usable observations calibrate the prior, while the remaining 168
-observations form the posterior sample.
+The early observations calibrate the prior, while the remaining observations
+form the posterior sample.
 
 Let's view the data in familiar economic units.
 
@@ -438,8 +440,8 @@ distinction the model is built to examine.
 
 ## Priors
 
-The prior blocks are independent and deliberately weak so that, in the Cogley and Sargent's
-phrase, "the data are free to speak."
+The priors are independent across parameters and deliberately weak so that, in
+Cogley and Sargent's phrase, "the data are free to speak."
 
 They are calibrated from a time-invariant VAR fitted to the short 1948--1958
 training sample.
@@ -515,7 +517,7 @@ The next function gathers these hyperparameters.
 
 ```{code-cell} ipython3
 def calibrate_prior(model_data, γ_squared=3.5e-4):
-    """Return every prior block calibrated to one variable ordering."""
+    """Return every calibrated prior for one variable ordering."""
     θ_mean, θ_covariance, residual_covariance = sur_prior(
         model_data['prior_y'], model_data['prior_x']
     )
@@ -559,8 +561,11 @@ prior_summary.to_frame()
 
 ## A Metropolis-within-Gibbs sampler
 
-We simulate the posterior by cycling through the five conditional blocks used
-by {cite:t}`CogleySargent2005`.
+We simulate the posterior by cycling through five parameter blocks used by
+{cite:t}`CogleySargent2005`.
+
+One pass through all five blocks is called a sweep, and the sampler runs many
+sweeps to build up the posterior sample.
 
 Cogley and Sargent simulate the unrestricted posterior and then discard a
 complete MCMC realization whenever its coefficient path is explosive.
@@ -604,9 +609,7 @@ on the draw that follows it.
 
 Sampling $\theta_0$ is essential.
 
-It supplies all $T$ random-walk increments to the conjugate update for $Q$;
-integrating it out while retaining an inverse-Wishart $Q$ update would be
-inconsistent.
+It supplies all $T$ random-walk increments to the conjugate update for $Q$.
 
 ```{code-cell} ipython3
 def covariance_root(matrix):
@@ -1221,7 +1224,7 @@ equation_labels = (
 )
 
 
-def plot_coefficient_blocks(axes, dates, θ_path):
+def plot_equation_coefficients(axes, dates, θ_path):
     """Plot seven labeled coefficients for each VAR equation."""
     first_lines = None
     for equation, (ax, label) in enumerate(zip(axes, equation_labels)):
@@ -1239,7 +1242,7 @@ def plot_coefficient_blocks(axes, dates, θ_path):
 
 
 fig, axes = plt.subplots(1, 3, figsize=(10, 4), sharex=True)
-coefficient_lines = plot_coefficient_blocks(
+coefficient_lines = plot_equation_coefficients(
     axes,
     data['dates'],
     θ_mean,
@@ -1301,8 +1304,8 @@ the ordering changes magnitudes but does not remove drift:
 | $(u,i,\pi)$ | 0.057 | 0.026 | 0.051 | 0.028 |
 | $(u,\pi,i)$ | 0.055 | 0.024 | 0.072 | 0.035 |
 
-For the minimum-$Q$ ordering, removing the stability restriction raises
-$\operatorname{tr}(Q)$ from 0.047 to 0.059.
+For the minimum-$Q$ ordering, removing the stability restriction raises the
+posterior mean drift rate, as the table above shows.
 
 The analysis that follows adopts the $(i,u,\pi)$ ordering, which places the
 nominal interest rate first and inflation last.
@@ -1327,7 +1330,7 @@ drift_structure = pd.DataFrame(
 drift_structure.round(4)
 ```
 
-The first three principal components account for 96.3 percent of total
+The first three principal components account for the large majority of total
 coefficient drift even though the VAR contains 21 coefficients.
 
 ### The evolution of volatility
@@ -1448,18 +1451,25 @@ $$
 z_t = \mu_{t\mid T} + A_{t\mid T}z_{t-1} + e_t.
 $$
 
-Local mean inflation and unemployment are defined by freezing the posterior mean
-coefficients at date $t$,
+At date $t$, the local mean $m_t$ is the fixed point to which the companion-form
+VAR would converge if its coefficients remained fixed at their posterior means
+and future innovations were zero.
 
 ```{math}
 :label: csdv_local_means
-\bar\pi_t = s_\pi(I-A_{t\mid T})^{-1}\mu_{t\mid T},
+m_t = (I-A_{t\mid T})^{-1}\mu_{t\mid T},
 \qquad
-\bar u_t = s_u(I-A_{t\mid T})^{-1}\mu_{t\mid T}.
+\bar\pi_t = 4s_\pi m_t,
+\qquad
+\bar u_t = \frac{\exp(100s_u m_t)}{1+\exp(100s_u m_t)}.
 ```
 
-These are local linear approximations rather than unconditional means of the
-globally drifting process.
+Here $s_\pi$ and $s_u$ select inflation and unemployment from $m_t$, the factor
+four annualizes inflation, and the inverse-logit transformation returns
+unemployment to its observed rate.
+
+These are date-specific steady states of frozen local systems rather than
+unconditional means of the globally drifting process.
 
 Core inflation is the long-horizon inflation forecast implied by freezing the
 date-$t$ coefficients, while the natural rate is the corresponding long-run
@@ -1539,10 +1549,9 @@ core_summary = pd.Series(
 core_summary.to_frame().round(2)
 ```
 
-Core inflation climbs from roughly 1.5 percent in the early 1960s to about 8
-percent near 1980 and then falls toward 3 percent, while the natural unemployment
-rate rises more smoothly from about 5 to 6.5 percent before returning toward 4
-percent.
+Core inflation climbs from a low level in the early 1960s to a high peak near
+1980 and then falls back, while the natural unemployment rate rises more
+smoothly from about 5 to 6.5 percent before returning toward 4 percent.
 
 Because both lines are determined by the fitted coefficients rather than by
 realized shocks, their persistent shifts point to a changing systematic
@@ -1553,13 +1562,14 @@ sample.
 
 ```{code-cell} ipython3
 core_natural_correlation = np.corrcoef(core_inflation, natural_rate)[0, 1]
+
+core_natural_correlation
 ```
 
-The quarterly correlation between $\bar\pi_t$ and $\bar u_t$ is 0.838.
-
-This strong positive association says that the model-implied long-run inflation
-and unemployment anchors share a broad cycle, not that current inflation and
-current unemployment must move together.
+The strong positive quarterly correlation between $\bar\pi_t$ and $\bar u_t$
+says that the model-implied long-run inflation and unemployment anchors share
+a broad cycle, not that current inflation and current unemployment must move
+together.
 
 Because $(I-A_t)^{-1}$ amplifies small coefficient changes when the largest root
 is close to one, long-run means are intrinsically more sensitive than
@@ -1680,8 +1690,9 @@ persistence_summary = pd.Series(
 persistence_summary.to_frame().round(3)
 ```
 
-Normalized zero-frequency power rises from about 0.2 in the early 1960s to
-nearly 4 around 1980 and then falls below 1 for most of the remaining sample.
+Normalized zero-frequency power rises sharply from a low level in the early
+1960s to a high peak around 1980 and then falls back below one for most of the
+remaining sample.
 
 The post-1980 collapse cannot be explained by a proportional rescaling of all
 innovations, although the normalized statistic can still depend on the
@@ -1912,7 +1923,7 @@ def policy_activism(
     covariance,
     h_pi=4,
     h_u=2,
-    return_denominator=False,
+    return_details=False,
 ):
     """Compute the population-2SLS activism coefficient at one date."""
     _, companion = companion_matrix(θ)
@@ -1939,68 +1950,84 @@ def policy_activism(
     coefficients = np.linalg.solve(regressor_covariance, dependent_covariance)
     denominator = 1 - coefficients[2]
     activism = coefficients[0] / denominator
-    if return_denominator:
-        return activism, denominator
+    margin = coefficients[0] + coefficients[2] - 1
+    if return_details:
+        return activism, denominator, margin
     return activism
 
 
-def break_ratio_crossings(values, denominator):
-    """Break a ratio path on both sides of denominator sign changes."""
-    broken = np.asarray(values, dtype=float).copy()
+def mask_unstable_policy_values(values, denominator):
+    """Hide policy summaries when the interest-rate response is unstable."""
+    masked = np.asarray(values, dtype=float).copy()
     denominator = np.asarray(denominator, dtype=float)
-    crossings = np.flatnonzero(
-        denominator[1:] * denominator[:-1] <= 0
-    ) + 1
-    broken[crossings] = np.nan
-    broken[np.maximum(crossings - 1, 0)] = np.nan
-    return broken
+    interest_rate_persistence = 1 - denominator
+    displayed = np.abs(interest_rate_persistence) < 1
+    masked[~displayed] = np.nan
+    return masked
 
 
-activism_pairs = np.array(
+policy_details = np.array(
     [
         policy_activism(
             θ_mean[:, t],
             r_mean[t],
-            return_denominator=True,
+            return_details=True,
         )
         for t in range(len(data['dates']))
     ]
 )
-activism = activism_pairs[:, 0]
-activism_denominator = activism_pairs[:, 1]
-activism_path = break_ratio_crossings(
-    activism,
+activism = policy_details[:, 0]
+activism_denominator = policy_details[:, 1]
+activism_margin = policy_details[:, 2]
+activism_margin_path = mask_unstable_policy_values(
+    activism_margin,
     activism_denominator,
 )
 ```
 
-This path evaluates $\mathcal A_t$ at posterior mean coefficients and
-covariances.
+For a stable interest-rate response, the policy margin
+$\mathcal{M}_t=\beta_{1t}+\beta_{3t}-1$ is nonnegative exactly when
+$\mathcal A_t\geq 1$.
+
+The margin preserves the active-policy comparison without dividing by
+$1-\beta_3$.
+
+The coefficient $\beta_3$ measures how much of the previous quarter's interest
+rate carries into the current quarter.
+
+The long-run inflation response adds the repeated effects
+$\beta_1(1+\beta_3+\beta_3^2+\cdots)$, which equals
+$\beta_1/(1-\beta_3)$ only when $|\beta_3|<1$.
+
+When $|\beta_3|\geq1$, the repeated effects do not shrink toward zero, so the
+ratio has no finite long-run interpretation.
+
+The figures leave those dates blank because showing the resulting negative or
+extreme ratio would misrepresent it as a meaningful policy response.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Policy activism $\mathcal A_t$
+    caption: Policy margin $\mathcal{M}_t=\beta_{1t}+\beta_{3t}-1$
     name: fig-csdv-policy-activism
 ---
 fig, ax = plt.subplots()
-ax.plot(data['dates'], activism_path, lw=2)
-ax.axhline(1, color='0.45', lw=1)
+ax.plot(data['dates'], activism_margin_path, lw=2)
+ax.axhline(0, color='0.45', lw=1)
 ax.set_xlabel('year')
-ax.set_ylabel('activism coefficient')
+ax.set_ylabel(r'policy margin $\mathcal{M}_t$')
 plt.show()
 ```
 
-The activism measure falls from well above one in the 1960s to below the
-active-policy threshold through much of the 1970s and then moves decisively
-above one after the early 1980s.
+The policy margin falls below zero through much of the 1970s and then moves
+decisively above zero after the early 1980s.
 
 This timing is consistent with a policy-regime contribution to the Great
 Inflation.
 
-The late-1990s spike occurs when the denominator is near zero and should not be
-interpreted as stronger policy.
+Blank intervals mark dates at which the policy margin is omitted by the rule
+above.
 
 The following scatter plots use fourth-quarter observations.
 
@@ -2008,14 +2035,17 @@ The following scatter plots use fourth-quarter observations.
 ---
 mystnb:
   figure:
-    caption: $\mathcal A_t$ versus $\bar\pi_t$ and $g_{\pi\pi}(0,t)$
+    caption: $\mathcal{M}_t$ versus $\bar\pi_t$ and $g_{\pi\pi}(0,t)$
     name: fig-csdv-activism-correlations
 ---
-activism_core_correlation = np.corrcoef(
-    activism[annual], core_inflation[annual]
+displayed_annual = annual[np.isfinite(activism_margin_path[annual])]
+margin_core_correlation = np.corrcoef(
+    activism_margin_path[displayed_annual],
+    core_inflation[displayed_annual],
 )[0, 1]
-activism_persistence_correlation = np.corrcoef(
-    activism[annual], inflation_persistence[annual]
+margin_persistence_correlation = np.corrcoef(
+    activism_margin_path[displayed_annual],
+    inflation_persistence[displayed_annual],
 )[0, 1]
 
 fig, axes = plt.subplots(1, 2, figsize=(9, 4))
@@ -2024,21 +2054,23 @@ pairs = (
     (inflation_persistence, 'normalized spectrum at zero'),
 )
 for ax, (feature, label) in zip(axes, pairs):
-    ax.scatter(activism[annual], feature[annual], s=18)
-    ax.axvline(1, color='0.45', lw=1)
-    ax.set_xlabel('policy activism')
+    ax.scatter(
+        activism_margin_path[displayed_annual],
+        feature[displayed_annual],
+        s=18,
+    )
+    ax.axvline(0, color='0.45', lw=1)
+    ax.set_xlabel(r'policy margin $\mathcal{M}_t$')
     ax.set_ylabel(label)
 plt.tight_layout()
 plt.show()
 ```
 
-High core-inflation and persistence observations cluster near or below the
-activism threshold, whereas high-activism observations cluster at low values of
-both measures.
+High core-inflation and persistence observations cluster near or below the zero
+margin, whereas positive policy margins cluster at low values of both measures.
 
-The fourth-quarter correlations are -0.78 with core inflation and -0.74 with
-persistence, but these jointly estimated, time-ordered points establish a
-historical association rather than a causal policy effect.
+The displayed fourth-quarter observations establish a historical association
+rather than a causal policy effect.
 
 The activism transformation is weakly identified at some dates, so a path with
 inputs fixed at their posterior means understates uncertainty.
@@ -2231,8 +2263,8 @@ assert missing_unemployment.equals(
 )
 
 unemployment_counts = unemployment_monthly.resample('QS').count()
-current_quarterly = fred_quarterly_table(unemployment_monthly)
-quarterly_unfilled = current_quarterly.loc['2001-01-01':]
+latest_quarterly = fred_quarterly_table(unemployment_monthly)
+quarterly_unfilled = latest_quarterly.loc['2001-01-01':]
 incomplete_quarters = unemployment_counts.loc[
     quarterly_unfilled.index[0]:quarterly_unfilled.index[-1]
 ]
@@ -2242,10 +2274,10 @@ complete_extension = quarterly_unfilled.loc[
     quarterly_unfilled.index < first_incomplete_quarter
 ]
 
-frozen_table = pd.read_csv(data_path)
+cs_sample = pd.read_csv(data_path)
 overlap_date = pd.Timestamp('2000-10-01')
-frozen_overlap = frozen_table.iloc[-1]
-current_overlap = current_quarterly.loc[overlap_date]
+cs_sample_overlap = cs_sample.iloc[-1]
+latest_overlap = latest_quarterly.loc[overlap_date]
 
 
 def scaled_observation(row):
@@ -2259,20 +2291,22 @@ def scaled_observation(row):
     )
 
 
-frozen_scaled = scaled_observation(frozen_overlap)
-current_scaled = scaled_observation(current_overlap)
+cs_sample_scaled = scaled_observation(cs_sample_overlap)
+latest_scaled = scaled_observation(latest_overlap)
 splice_audit = pd.DataFrame(
     {
-        'frozen 2000Q4': frozen_scaled,
-        'current-vintage 2000Q4': current_scaled,
-        'current minus frozen': current_scaled - frozen_scaled,
+        'Cogley-Sargent (2005) 2000Q4': cs_sample_scaled,
+        'latest revised 2000Q4 data': latest_scaled,
+        'current minus Cogley-Sargent (2005)': (
+            latest_scaled - cs_sample_scaled
+        ),
         'first appended 2001Q1': scaled_observation(
             complete_extension.iloc[0]
         ),
     }
 )
 extended_observations = pd.concat(
-    (frozen_table, complete_extension.reset_index(drop=True)),
+    (cs_sample, complete_extension.reset_index(drop=True)),
     ignore_index=True,
 )
 
@@ -2282,28 +2316,17 @@ def quarter_label(timestamp):
     return str(timestamp.to_period('Q'))
 
 
-update_summary = pd.Series(
-    {
-        'updated sample end': quarter_label(
-            complete_extension.index[-1]
-        ),
-        'retrieval date': pd.Timestamp.now(
-            tz='America/New_York'
-        ).date().isoformat(),
-    },
-    name='value',
-)
 display(splice_audit.round(3))
-update_summary.to_frame()
 ```
 
 No missing value is filled or otherwise treated as observed.
 
-The overlap table makes any vintage discontinuity visible.
+The overlap table shows any break created by joining the archived data to the
+newly downloaded data.
 
-The appended 2001Q1 inflation rate is computed from current-vintage CPI levels
-for both 2000Q4 and 2001Q1 before the splice, so a single log difference never
-mixes vintages.
+The appended 2001Q1 inflation rate uses the latest revised CPI level for both
+2000Q4 and 2001Q1, so one log difference never combines observations from two
+data releases.
 
 ```{code-cell} ipython3
 ---
@@ -2337,14 +2360,14 @@ axes[2].plot(
 axes[2].set_ylabel('interest (annual %)')
 axes[2].set_xlabel('year')
 for index, ax in enumerate(axes):
-    frozen_label = 'frozen sample end' if index == 0 else None
+    cs_sample_label = 'Cogley-Sargent (2005)' if index == 0 else None
     sample_end_label = 'updated sample end' if index == 0 else None
     ax.axvline(
         2000.75,
         color='0.65',
         ls='--',
         lw=1,
-        label=frozen_label,
+        label=cs_sample_label,
     )
     ax.axvline(
         updated_sample_end,
@@ -2391,9 +2414,9 @@ Treasury-bill measure above.
 
 ```{code-cell} ipython3
 def append_extension(extension):
-    """Append a transformed FRED extension to the frozen history."""
+    """Append a transformed FRED extension to the Cogley-Sargent sample."""
     extension = extension.reset_index(drop=True)
-    table = pd.concat((frozen_table, extension), ignore_index=True)
+    table = pd.concat((cs_sample, extension), ignore_index=True)
     assert table['date'].is_unique
     assert np.allclose(np.diff(table['date']), 0.25)
     return table
@@ -2427,12 +2450,12 @@ def fit_updated_model(table):
 
 updated_fit = fit_updated_model(append_extension(complete_extension))
 
-current_vintage_table = current_quarterly.loc[
-    (current_quarterly.index >= pd.Timestamp('1948-04-01'))
-    & (current_quarterly.index <= complete_extension.index[-1])
+latest_data_table = latest_quarterly.loc[
+    (latest_quarterly.index >= pd.Timestamp('1948-04-01'))
+    & (latest_quarterly.index <= complete_extension.index[-1])
 ].reset_index(drop=True)
-assert np.allclose(np.diff(current_vintage_table['date']), 0.25)
-current_vintage_fit = fit_updated_model(current_vintage_table)
+assert np.allclose(np.diff(latest_data_table['date']), 0.25)
+latest_data_fit = fit_updated_model(latest_data_table)
 ```
 
 ### Did coefficient drift continue?
@@ -2454,9 +2477,11 @@ def updated_drift_summary(fit):
 updated_label = quarter_label(complete_extension.index[-1])
 updated_summary = pd.DataFrame(
     {
-        'frozen history + extension': updated_drift_summary(updated_fit),
-        'current-vintage full sample': updated_drift_summary(
-            current_vintage_fit
+        'Cogley-Sargent (2005) + extension': (
+            updated_drift_summary(updated_fit)
+        ),
+        'latest revised data for full sample': updated_drift_summary(
+            latest_data_fit
         ),
     }
 )
@@ -2464,11 +2489,12 @@ updated_summary.round(3)
 ```
 
 The drift-rate distributions and coefficient paths provide the same views used
-for the frozen sample.
+for the {cite:t}`CogleySargent2005` sample.
 
-The dashed vertical line in updated time-series figures marks the frozen
-sample's 2000Q4 endpoint, but each updated path comes from a full re-estimation
-rather than from attaching new points to an unchanged historical estimate.
+The dashed vertical line in updated time-series figures marks the
+{cite:t}`CogleySargent2005` sample's 2000Q4 endpoint, but each updated path
+comes from a full re-estimation rather than from attaching new points to an
+unchanged historical estimate.
 
 ```{code-cell} ipython3
 ---
@@ -2497,7 +2523,8 @@ its conservative prior calibration.
 Within the TVP-VAR this indicates non-negligible full-sample drift, but it is
 not a formal comparison of $Q=0$ with $Q>0$.
 
-Its magnitude is sensitive to the vintage construction.
+Its magnitude depends on whether the historical observations come from the
+archived dataset or the latest revisions.
 
 Because $Q$ is a single variance parameter for the full 1959--2025 path, this
 histogram does not by itself show that drift accelerated after 2000.
@@ -2512,7 +2539,7 @@ mystnb:
 fig, axes = plt.subplots(1, 3, figsize=(10, 4), sharex=True)
 updated_dates = updated_fit['data']['dates']
 updated_coefficients = updated_fit['posterior']['SD'].mean(axis=2)
-coefficient_lines = plot_coefficient_blocks(
+coefficient_lines = plot_equation_coefficients(
     axes,
     updated_dates,
     updated_coefficients,
@@ -2536,7 +2563,7 @@ appearing as abrupt financial-crisis or pandemic breaks.
 The opposing movements of some paired lag coefficients also show why their
 combined dynamic implications are more informative than any single line.
 
-The first three eigen-directions account for more than 95 percent of the
+The first three eigen-directions account for the large majority of the
 posterior mean drift variance, so the estimated movement remains low
 dimensional.
 
@@ -2568,12 +2595,12 @@ def model_features(fit):
     ])
     sign, logdet = np.linalg.slogdet(covariance)
     assert np.all(sign > 0)
-    activism_pairs = np.array(
+    policy_details = np.array(
         [
             policy_activism(
                 θ[:, t],
                 covariance[t],
-                return_denominator=True,
+                return_details=True,
             )
             for t in range(len(fit['data']['dates']))
         ]
@@ -2586,21 +2613,22 @@ def model_features(fit):
         'natural': natural,
         'persistence': persistence,
         'logdet': logdet,
-        'activism': activism_pairs[:, 0],
-        'activism_denominator': activism_pairs[:, 1],
+        'activism': policy_details[:, 0],
+        'activism_denominator': policy_details[:, 1],
+        'activism_margin': policy_details[:, 2],
     }
 
 
 updated_features = model_features(updated_fit)
-current_vintage_features = model_features(current_vintage_fit)
+latest_data_features = model_features(latest_data_fit)
 
 pd.Series(
     {
-        'frozen history + extension': (
+        'Cogley-Sargent (2005) + extension': (
             updated_features['maximum_companion_root']
         ),
-        'current-vintage full sample': (
-            current_vintage_features['maximum_companion_root']
+        'latest revised data for full sample': (
+            latest_data_features['maximum_companion_root']
         ),
     },
     name='maximum companion-root modulus of mean path',
@@ -2706,9 +2734,6 @@ def volatility_summary(fit, features):
                 )
                 for index in range(n_variables)
             ],
-            r'endpoint standard deviation $\times 10^4$': (
-                standard_deviation[-1]
-            ),
         },
         index=names,
     )
@@ -2760,9 +2785,10 @@ ax.legend()
 plt.show()
 ```
 
-The 1970s core-inflation peak is lower here than in the frozen-sample figure
-because later observations revise the smoothed history, so values on both sides
-of the dashed line belong to one updated fit.
+The 1970s core-inflation peak is lower here than in the
+{cite:t}`CogleySargent2005` figure because later observations revise the
+smoothed history, so values on both sides of the dashed line belong to one
+updated fit.
 
 After 2000 the core rate stays mostly between about 2 and 3 percent and
 rises only modestly after 2020, even though observed inflation moves much more
@@ -2793,16 +2819,16 @@ def endpoint_features(features):
 updated_endpoints = endpoint_features(updated_features).to_frame(
     name=updated_label
 ).T
-current_vintage_endpoints = endpoint_features(
-    current_vintage_features
+latest_data_endpoints = endpoint_features(
+    latest_data_features
 ).to_frame(name=updated_label).T
-vintage_endpoint_sensitivity = pd.concat(
+data_revision_sensitivity = pd.concat(
     {
-        'frozen history + extension': updated_endpoints,
-        'current-vintage full sample': current_vintage_endpoints,
+        'Cogley-Sargent (2005) + extension': updated_endpoints,
+        'latest revised data for full sample': latest_data_endpoints,
     }
 )
-vintage_endpoint_sensitivity.round(3)
+data_revision_sensitivity.round(3)
 ```
 
 The endpoint core-inflation, natural-rate, and persistence summaries are similar
@@ -2880,14 +2906,18 @@ updated_endpoint_intervals = endpoint_feature_intervals(
 updated_endpoint_intervals.round(3)
 ```
 
-At 2025Q3 the core-inflation median is near 2.5 percent and the natural-rate
-median is below 5 percent.
+At 2025Q3 both the core-inflation and natural-rate medians remain
+historically moderate, as the table above shows.
 
 Their intervals remain broad, and normalized persistence retains a substantial
 upper tail, so the classification of recent inflation as temporary is not
 certain.
 
 ### Did inflation become persistent again?
+
+Here persistence means propagation of an inflation innovation into future
+inflation, rather than the number of quarters in which observed inflation
+remains high.
 
 The normalized spectrum reduces sensitivity to a common change in shock scale,
 although it still depends on the relative variances and covariances in $R_t$.
@@ -2913,14 +2943,13 @@ ax.set_ylabel(r'$g_{\pi\pi}(0,t)$')
 plt.show()
 ```
 
-Persistence recreates the rise to a 1980 peak and the subsequent collapse, but
-it stays near 0.2--0.5 after 2000 and shows only a small post-2020 increase.
+The estimated $g_{\pi\pi}(0,t)$ path recreates the rise to a 1980 peak and the
+subsequent collapse, but it stays near 0.2--0.5 after 2000 and rises only
+slightly after 2020.
 
-Neither the financial crisis nor the recent inflation surge produces a
-low-frequency ridge comparable to the 1970s in the mean path.
-
-This cannot be explained by a proportional rescaling of all innovations, but
-the statistic is not independent of the composition of $R_t$.
+A sequence of large reduced-form innovations can keep observed inflation high
+for several quarters without generating the strong propagation estimated for
+the 1970s.
 
 ```{code-cell} ipython3
 ---
@@ -2958,14 +2987,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-Core inflation recovers from its mid-2010s low to roughly 2.6 percent, while
+Core inflation recovers from its mid-2010s low toward its earlier level, while
 persistence remains in its low post-1980 range instead of rising with it.
 
-This divergence separates a modest shift in the model's long-run inflation
-level from a renewed persistent-inflation regime.
-
-This result says that the fitted local VAR views the recent surge as less
-persistent, not that all alternative models must classify it as transitory.
+This divergence separates a modest rise in the model's long-run inflation rate
+from a return to 1970s-style propagation.
 
 The full spectrum shows where the difference comes from.
 
@@ -3015,15 +3041,14 @@ for ax, (surface, title, color_label) in zip(axes, updated_surfaces):
 plt.show()
 ```
 
-The financial crisis and pandemic appear as bright, broad bands in raw spectral
-power, while the normalized panel lacks any post-2000 low-frequency ridge
-comparable to the 1970s.
+The financial crisis and pandemic appear as bright, broad bands in
+$f_{\pi\pi}(\omega,t)$ because reduced-form innovation variance increased.
 
-The post-2000 episodes raise raw power without producing a comparable
-low-frequency ridge in the normalized statistic.
+The normalized spectrum $g_{\pi\pi}(\omega,t)$ lacks a post-2000 low-frequency
+ridge comparable to the 1970s.
 
-This argues against a simple return to 1970s-style persistence without making
-the statistic independent of $R_t$.
+Together, the panels weigh against a return to 1970s-style persistence without
+making the normalized statistic independent of $R_t$.
 
 ```{code-cell} ipython3
 def episode_summary(fit, features):
@@ -3057,149 +3082,159 @@ normalized persistence of the post-2000 decades.
 
 ### Can recent policy activism be measured?
 
-The same projection-based activism path can be computed after 2000, but its
-ratio becomes unstable whenever $1-\beta_3$ approaches zero.
+The policy margin provides the same active-policy classification after 2000
+without the unstable division in $\mathcal A_t$.
 
 In the following figures, the gray line marks the active-policy threshold
-$\mathcal A=1$.
+$\mathcal{M}_t=0$.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Policy activism $\mathcal A_t$ through 2025Q3
+    caption: Policy margin $\mathcal{M}_t$ through 2025Q3
     name: fig-csdv-updated-activism
 ---
 fig, ax = plt.subplots()
-updated_activism_path = break_ratio_crossings(
-    updated_features['activism'],
+updated_margin_path = mask_unstable_policy_values(
+    updated_features['activism_margin'],
     updated_features['activism_denominator'],
 )
-ax.plot(updated_dates, updated_activism_path, lw=2)
-ax.axhline(1, color='0.45', lw=1)
+ax.plot(updated_dates, updated_margin_path, lw=2)
+ax.axhline(0, color='0.45', lw=1)
 ax.axvline(2000.75, color='0.65', ls='--', lw=1)
-ax.set_yscale('symlog', linthresh=1)
 ax.set_xlabel('year')
-ax.set_ylabel('activism coefficient')
+ax.set_ylabel(r'policy margin $\mathcal{M}_t$')
 plt.show()
 ```
 
-After 2000 the ratio is mostly above one, dips toward the threshold in
-the mid-2010s and around 2020, and then rises sharply after 2021.
+Among the displayed post-2000 dates, the margin is mostly positive and moves
+toward zero in the mid-2010s and around 2020.
 
-Its sign breaks and extreme spikes occur when the denominator approaches zero,
-so the peaks should not be interpreted as stronger policy.
+Blank intervals omit dates for which the fitted interest-rate response does not
+settle down.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Post-2000 $\mathcal A_t$ versus $\bar\pi_t$ and $g_{\pi\pi}(0,t)$
+    caption: Post-2000 $\mathcal{M}_t$ versus $\bar\pi_t$ and $g_{\pi\pi}(0,t)$
     name: fig-csdv-updated-activism-correlations
 ---
 fig, axes = plt.subplots(1, 2, figsize=(9, 4))
 recent_annual = annual_indices(updated_dates, start=2001)
+displayed_recent = recent_annual[
+    np.isfinite(updated_margin_path[recent_annual])
+]
 axes[0].scatter(
-    updated_features['activism'][recent_annual],
-    100 * updated_features['core'][recent_annual],
+    updated_margin_path[displayed_recent],
+    100 * updated_features['core'][displayed_recent],
     s=18,
 )
 axes[1].scatter(
-    updated_features['activism'][recent_annual],
-    updated_features['persistence'][recent_annual],
+    updated_margin_path[displayed_recent],
+    updated_features['persistence'][displayed_recent],
     s=18,
 )
 for ax in axes:
-    ax.set_xscale('symlog', linthresh=1)
-    ax.axvline(1, color='0.45', lw=1)
-    ax.set_xlabel('policy activism')
+    ax.axvline(0, color='0.45', lw=1)
+    ax.set_xlabel(r'policy margin $\mathcal{M}_t$')
 axes[0].set_ylabel('core inflation (%)')
 axes[1].set_ylabel('normalized spectrum at zero')
 plt.tight_layout()
 plt.show()
 ```
 
-After 2000 core inflation is positively associated with the activism
-ratio, reversing the historical negative pattern, while persistence has no
-clear monotone relationship with activism.
-
-This reversal shows that the earlier scatter describes one historical regime
-rather than a stable causal policy law.
+The remaining post-2000 observations do not establish a stable causal relation
+between the policy margin, core inflation, and persistence.
 
 We also examine the central draw distribution at the 2025Q3 endpoint.
 
 ```{code-cell} ipython3
-def endpoint_activism_draws(fit):
-    """Compute the endpoint activism ratio for every retained draw."""
+def endpoint_policy_margin_draws(fit):
+    """Compute the endpoint policy margin for every retained draw."""
     result = fit['posterior']
-    draws = np.empty(result['SD'].shape[2])
-    for draw in range(len(draws)):
+    margins = np.empty(result['SD'].shape[2])
+    stable = np.empty(result['SD'].shape[2], dtype=bool)
+    for draw in range(len(margins)):
         covariance = innovation_covariance(
             result['HD'][-1, :, draw],
             result['CD'][:, draw],
         )
-        draws[draw] = policy_activism(
-            result['SD'][:, -1, draw], covariance
+        _, denominator, margin = policy_activism(
+            result['SD'][:, -1, draw],
+            covariance,
+            return_details=True,
         )
-    return draws
+        margins[draw] = margin
+        stable[draw] = np.abs(1 - denominator) < 1
+    return margins, stable
 
 
-def activism_uncertainty(draws):
-    """Summarize endpoint activism without relying on its mean."""
+def policy_margin_uncertainty(margins, stable):
+    """Summarize the endpoint margin for stable policy responses."""
+    if not np.any(stable):
+        raise ValueError('no endpoint draws have |beta_3| < 1')
+    displayed = margins[stable]
     return pd.Series(
         {
-            'median': np.median(draws),
-            '5th percentile': np.quantile(draws, 0.05),
-            '95th percentile': np.quantile(draws, 0.95),
-            'P(active)': np.mean(draws > 1),
+            'median M': np.median(displayed),
+            '5th percentile of M': np.quantile(displayed, 0.05),
+            '95th percentile of M': np.quantile(displayed, 0.95),
+            'P(M >= 0 | |beta_3| < 1)': np.mean(displayed >= 0),
+            'share with |beta_3| < 1': stable.mean(),
         }
     )
 
 
-updated_activity_draws = endpoint_activism_draws(updated_fit)
-updated_activism = activism_uncertainty(
-    updated_activity_draws
+updated_margin_draws, updated_stable_policy_draws = (
+    endpoint_policy_margin_draws(updated_fit)
+)
+updated_policy_margin = policy_margin_uncertainty(
+    updated_margin_draws,
+    updated_stable_policy_draws,
 ).to_frame(name=updated_label).T
-updated_activism.round(3)
+updated_policy_margin.round(3)
 ```
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Central 90 percent of posterior draws for $\mathcal A_t$ at 2025Q3
+    caption: Central 90 percent of posterior draws for $\mathcal{M}_t$ conditional on $|\beta_3|<1$ at 2025Q3
     name: fig-csdv-updated-activism-distributions
 ---
-updated_activity_limits = np.quantile(
-    updated_activity_draws,
+stable_margin_draws = updated_margin_draws[
+    updated_stable_policy_draws
+]
+updated_margin_limits = np.quantile(
+    stable_margin_draws,
     (0.05, 0.95),
 )
-updated_activity_bins = np.linspace(*updated_activity_limits, 31)
+updated_margin_bins = np.linspace(*updated_margin_limits, 31)
 
 fig, ax = plt.subplots()
-central_draws = updated_activity_draws[
-    (updated_activity_draws >= updated_activity_limits[0])
-    & (updated_activity_draws <= updated_activity_limits[1])
+central_draws = stable_margin_draws[
+    (stable_margin_draws >= updated_margin_limits[0])
+    & (stable_margin_draws <= updated_margin_limits[1])
 ]
 ax.hist(
     central_draws,
-    bins=updated_activity_bins,
+    bins=updated_margin_bins,
     histtype='step',
     lw=2,
 )
-ax.axvline(1, color='0.45', lw=1)
-ax.set_xlabel('activism coefficient')
+ax.axvline(0, color='0.45', lw=1)
+ax.set_xlabel(r'policy margin $\mathcal{M}_t$')
 ax.set_ylabel('draw count')
 plt.show()
 ```
 
-The mode lies just above the active-policy threshold, but that threshold cuts
-through substantial central mass and even the displayed draws span large
-negative and positive values.
+The table reports the share of draws with a stable interest-rate response and
+the active-policy probability among those draws.
 
-The median and active-policy probability lean active, but the central interval
-spans large negative and positive values, making the endpoint classification
-weak.
+An interval spanning zero indicates that the endpoint classification remains
+uncertain.
 
 The plot displays only draws between the 5th and 95th percentiles, and the zero
 lower bound and unconventional policy further weaken the interpretation of this
