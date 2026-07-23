@@ -63,6 +63,8 @@ import numpy as np
 from numba import vectorize, jit, prange
 from math import gamma
 from scipy.integrate import quad
+
+rng = np.random.default_rng()
 ```
 
 ## Review: likelihood ratio processes
@@ -150,7 +152,7 @@ g = jit(lambda x: p(x, G_a, G_b))
 
 ```{code-cell} ipython3
 @jit
-def simulate(a, b, T=50, N=500):
+def simulate(a, b, rng, T=50, N=500):
     '''
     Generate N sets of T observations of the likelihood ratio,
     return as N x T matrix.
@@ -160,7 +162,7 @@ def simulate(a, b, T=50, N=500):
 
     for i in range(N):
         for j in range(T):
-            w = np.random.beta(a, b)
+            w = rng.beta(a, b)
             l_arr[i, j] = f(w) / g(w)
 
     return l_arr
@@ -614,14 +616,14 @@ T = 100
 N = 10000
 
 # Nature follows f, g, or mixture
-s_seq_f = np.random.beta(F_a, F_b, (N, T))
-s_seq_g = np.random.beta(G_a, G_b, (N, T))
+s_seq_f = rng.beta(F_a, F_b, (N, T))
+s_seq_g = rng.beta(G_a, G_b, (N, T))
 
 h = jit(lambda x: 0.5 * f(x) + 0.5 * g(x))
-model_choices = np.random.rand(N, T) < 0.5
+model_choices = rng.random((N, T)) < 0.5
 s_seq_h = np.empty((N, T))
-s_seq_h[model_choices] = np.random.beta(F_a, F_b, size=model_choices.sum())
-s_seq_h[~model_choices] = np.random.beta(G_a, G_b, size=(~model_choices).sum())
+s_seq_h[model_choices] = rng.beta(F_a, F_b, size=model_choices.sum())
+s_seq_h[~model_choices] = rng.beta(G_a, G_b, size=(~model_choices).sum())
 
 l_cum_f, c1_f = simulate_blume_easley(s_seq_f)
 l_cum_g, c1_g = simulate_blume_easley(s_seq_g)
@@ -770,7 +772,7 @@ for row, (f_belief, g_belief, label) in enumerate([
     
     for col, nature_label in enumerate(nature_labels):
         params = nature_params[label][col]
-        s_seq = np.random.beta(params[0], params[1], (1000, 200))
+        s_seq = rng.beta(params[0], params[1], (1000, 200))
         _, c1 = simulate_blume_easley(s_seq, f_belief, g_belief, λ)
         
         median_c1 = np.median(c1, axis=0)
@@ -1120,11 +1122,13 @@ We'll  start with different initial priors $\pi^i_0 \in (0, 1)$ and widen the ga
 Now we can run simulations for different scenarios
 
 ```{code-cell} ipython3
+rng = np.random.default_rng()
+
 # Nature follows f
-s_seq_f = np.random.beta(F_a, F_b, (N, T))
+s_seq_f = rng.beta(F_a, F_b, (N, T))
 
 # Nature follows g
-s_seq_g = np.random.beta(G_a, G_b, (N, T)) 
+s_seq_g = rng.beta(G_a, G_b, (N, T)) 
 
 results_f = {}
 results_g = {}
@@ -1241,6 +1245,8 @@ Here is one solution
 T = 40
 N = 1000
 
+rng = np.random.default_rng()
+
 F_a, F_b = 2, 5
 G_a, G_b = 5, 2
 
@@ -1253,8 +1259,8 @@ g = jit(lambda x: p(x, G_a, G_b))
     (0.1, 0.9),
 ]
 
-s_seq_f = np.random.beta(F_a, F_b, (N, T))
-s_seq_g = np.random.beta(G_a, G_b, (N, T)) 
+s_seq_f = rng.beta(F_a, F_b, (N, T))
+s_seq_g = rng.beta(G_a, G_b, (N, T)) 
 
 results_f = {}
 results_g = {}
@@ -1586,9 +1592,11 @@ In the simulation below, agent 1 assigns positive probabilities only to $f$ and 
 T = 100
 N = 1000
 
+rng = np.random.default_rng()
+
 # Generate sequences for nature f and g
-s_seq_f = np.random.beta(F_a, F_b, (N, T))
-s_seq_g = np.random.beta(G_a, G_b, (N, T))
+s_seq_f = rng.beta(F_a, F_b, (N, T))
+s_seq_g = rng.beta(G_a, G_b, (N, T))
 
 # Run simulations
 results_f = simulate_three_model_allocation(s_seq_f, 
@@ -1712,9 +1720,11 @@ Now we can run the simulation
 T = 1000
 N = 1000
 
+rng = np.random.default_rng()
+
 # Generate sequences for different nature scenarios
-s_seq_f = np.random.beta(F_a, F_b, (N, T))
-s_seq_g = np.random.beta(G_a, G_b, (N, T))
+s_seq_f = rng.beta(F_a, F_b, (N, T))
+s_seq_g = rng.beta(G_a, G_b, (N, T))
 
 # Run simulations for both scenarios
 results_f = simulate_three_model_allocation(
