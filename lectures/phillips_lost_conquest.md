@@ -232,7 +232,7 @@ def phelps_rate(θ, state):
     sb = np.sqrt(β)
     P = solve_discrete_are(sb * A, sb * B, Q, R, s=sb * N)
     F = np.linalg.solve(R + β * B.T @ P @ B, β * B.T @ P @ A + N.T)
-    return max(float(-F @ state), 0.0)        # impose the zero lower bound
+    return max((-F @ state).item(), 0.0)      # impose the zero lower bound
 ```
 
 ```{code-cell} ipython3
