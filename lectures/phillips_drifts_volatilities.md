@@ -75,6 +75,10 @@ Fitting it requires a Markov chain Monte Carlo algorithm that combines the
 {cite:t}`CarterKohn1994`, and the stochastic-volatility sampler of
 {cite:t}`Jacquier1994`.
 
+Readers who want background will find companion-form vector autoregressions in
+{doc}`var_dmd`, the Kalman smoother in {doc}`kalman_2`, and Bayesian inference
+for state-space models by MCMC in {doc}`ar1_bayes` and {doc}`ar1_turningpts`.
+
 We work through the data transformation, prior, sampler, and main empirical
 results.
 
@@ -110,7 +114,8 @@ data_path = asset_path / 'NEWQDATA.csv'
 
 ## Bad policy or bad luck?
 
-Two respectable views compete to explain the American Great Inflation.
+Two respectable views compete to explain the American Great Inflation — the same
+two stories, triumph versus vindication, that open {doc}`phillips_two_stories`.
 
 The **bad policy** view is the one dramatized throughout this section and in the
 *Conquest* book {cite}`Sargent1999`.
@@ -213,6 +218,11 @@ The coefficient vector follows a driftless random walk,
 \qquad
 v_t \sim N(0,Q).
 ```
+
+A prior over how fast coefficients drift plays a mirror-image role in
+{doc}`phillips_priors`: there it is the *government's* prior about a drifting
+Phillips curve that shapes the policy it chooses, whereas here it is the
+*econometrician's* prior in a posterior about drifting reduced-form dynamics.
 
 The companion system is stable when every companion-matrix eigenvalue lies
 strictly inside the unit circle.
@@ -983,13 +993,16 @@ def run_sampler(
     warmup=200,
     max_contractions=100,
     stable=True,
+    fixed_q=None,
     retain=('S0D', 'SD', 'QD', 'HD', 'CD', 'VD', 'stable_draw'),
     progress_every=0,
 ):
     """Run a Gibbs sampler for the unrestricted or stable posterior.
 
     For the stable posterior, an elliptical-slice transition updates the FFBS
-    path inside its stability-truncated Gaussian full conditional.
+    path inside its stability-truncated Gaussian full conditional.  Passing
+    ``fixed_q`` holds Q at that value (for example a matrix of zeros) instead of
+    drawing it, which nests the constant-coefficient model.
     """
     if not (0 <= burn < n_sweeps and thin >= 1):
         raise ValueError('require 0 <= burn < n_sweeps and thin >= 1')
@@ -1013,7 +1026,11 @@ def run_sampler(
             h, warm_residuals, β, σ, prior, rng
         )
 
-    q = prior['q_center'].copy()
+    q = (
+        prior['q_center'].copy()
+        if fixed_q is None
+        else np.array(fixed_q, dtype=float)
+    )
     θ = np.repeat(
         prior['θ_mean'][:, None], len(y) + 1, axis=1
     )
@@ -1044,7 +1061,8 @@ def run_sampler(
         maximum_slice_contractions = max(
             maximum_slice_contractions, contractions
         )
-        q = draw_q(θ, prior, rng)
+        if fixed_q is None:
+            q = draw_q(θ, prior, rng)
         residuals = var_residuals(y, x, θ)
         σ = draw_σ(h, prior, rng)
         β = draw_β(residuals, h, prior, rng)
@@ -1475,6 +1493,11 @@ Core inflation is the long-horizon inflation forecast implied by freezing the
 date-$t$ coefficients, while the natural rate is the corresponding long-run
 unemployment anchor rather than a natural interest rate or a forecast of next
 quarter's unemployment.
+
+Freezing the current coefficients and projecting forward is exactly the
+*anticipated-utility* device used by the learning governments of
+{doc}`phillips_learning` and {doc}`phillips_escaping_nash`, who act as if their
+current beliefs will never be revised.
 
 The following implementation annualizes core inflation and reverses the
 archive's unemployment transformation.
@@ -2211,12 +2234,13 @@ fred_monthly = pd.read_csv(
 
 ```
 
-[BLS reports](https://www.bls.gov/web/empsit/cpsee_e12.pdf) that reliable
-2025Q4 unemployment estimates could not be produced because the October 2025
-observation was not collected during the federal shutdown.
+The [BLS notes](https://www.bls.gov/web/empsit/cpsee_e12.pdf) that the October
+2025 unemployment observation was not collected during the federal government
+shutdown, leaving 2025Q4 without a complete three-month average.
 
-The updated estimation sample therefore ends in 2025Q3, the last quarter with a
-complete three-month unemployment average.
+The code below therefore ends the updated sample at the last quarter whose three
+monthly unemployment readings are all present, detected automatically rather
+than hard-coded; at the time of writing that quarter is 2025Q3.
 
 ```{code-cell} ipython3
 def fred_quarterly_table(unemployment_monthly):
@@ -2251,28 +2275,25 @@ def fred_quarterly_table(unemployment_monthly):
 
 
 unemployment_monthly = fred_monthly['UNRATE']
-internal_unemployment = unemployment_monthly.loc[
-    unemployment_monthly.first_valid_index():
-    unemployment_monthly.last_valid_index()
-]
-missing_unemployment = internal_unemployment.index[
-    internal_unemployment.isna()
-]
-assert missing_unemployment.equals(
-    pd.DatetimeIndex([pd.Timestamp('2025-10-01')])
-)
-
 unemployment_counts = unemployment_monthly.resample('QS').count()
 latest_quarterly = fred_quarterly_table(unemployment_monthly)
+
+# Extend the archived sample dynamically: append post-2000Q4 quarters only up
+# to the first one missing any of its three monthly unemployment readings, so
+# no endpoint is hard-coded.  An isolated missing month -- for example October
+# 2025, which the federal shutdown left uncollected -- caps the sample at the
+# preceding complete quarter, and a normally incomplete current quarter caps it
+# at the last finished one.
 quarterly_unfilled = latest_quarterly.loc['2001-01-01':]
-incomplete_quarters = unemployment_counts.loc[
-    quarterly_unfilled.index[0]:quarterly_unfilled.index[-1]
-]
-incomplete_quarters = incomplete_quarters[incomplete_quarters < 3]
-first_incomplete_quarter = incomplete_quarters.index[0]
-complete_extension = quarterly_unfilled.loc[
-    quarterly_unfilled.index < first_incomplete_quarter
-]
+month_counts = unemployment_counts.reindex(quarterly_unfilled.index)
+incomplete_quarters = month_counts.index[month_counts < 3]
+if len(incomplete_quarters):
+    first_incomplete_quarter = incomplete_quarters[0]
+    complete_extension = quarterly_unfilled.loc[
+        quarterly_unfilled.index < first_incomplete_quarter
+    ]
+else:
+    complete_extension = quarterly_unfilled
 
 cs_sample = pd.read_csv(data_path)
 overlap_date = pd.Timestamp('2000-10-01')
@@ -3301,7 +3322,7 @@ of the *Conquest* book to the
 {doc}`drifting Fed beliefs <phillips_lost_conquest>` used to interpret later
 inflation.
 
-## Exercise
+## Exercises
 
 ```{exercise}
 :label: csdv_ex1
@@ -3332,6 +3353,92 @@ $0.85$ and $0.97$.
 
 Thus, the rise in zero-frequency power during the Great Inflation and its
 decline after 1980 represent a large change in persistence.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: csdv_ex2
+
+Throughout this lecture we noted that a formal contrast between drifting and
+constant coefficients requires refitting the model with $Q=0$, the pure
+"bad luck" special case in which the VAR coefficients are frozen and only the
+stochastic volatilities $H_t$ move.
+
+The sampler already supports this: pass
+`fixed_q=np.zeros((n_coefficients, n_coefficients))` to `run_sampler` to hold
+$Q$ at zero instead of drawing it.
+
+Fit this constant-coefficient model to the Cogley--Sargent sample and plot its
+normalized zero-frequency spectrum $g_{\pi\pi}(0,t)$ against the
+drifting-coefficient path from {numref}`fig-csdv-inflation-persistence`.
+
+What happens to the 1970s rise and post-1980 fall in measured persistence, and
+what does that tell you about whether drifting *volatility* alone can account
+for the persistence dynamics?
+```
+
+```{solution-start} csdv_ex2
+:class: dropdown
+```
+
+With $Q=0$ the elliptical-slice update returns a coefficient path that is
+constant across time, so $A_{t\mid T}$ no longer moves and the only remaining
+source of time variation in $g_{\pi\pi}(0,t)$ is the drifting covariance $R_t$.
+
+```{code-cell} ipython3
+constant_posterior = run_sampler(
+    data['y'],
+    data['x'],
+    prior,
+    n_sweeps=1_000,
+    burn=500,
+    thin=1,
+    seed=42,
+    warmup=200,
+    stable=True,
+    fixed_q=np.zeros((n_coefficients, n_coefficients)),
+)
+
+constant_θ = constant_posterior['SD'].mean(axis=2)
+constant_R = mean_innovation_covariance(
+    constant_posterior['HD'], constant_posterior['CD']
+)
+constant_persistence = np.array([
+    inflation_spectrum(constant_θ[:, t], constant_R[t], zero_frequency)[1][0]
+    for t in range(len(data['dates']))
+])
+
+fig, ax = plt.subplots()
+ax.plot(data['dates'][annual], inflation_persistence[annual], 'o-',
+        lw=2, markersize=3, label='drifting coefficients')
+ax.plot(data['dates'][annual], constant_persistence[annual], 's-',
+        lw=2, markersize=3, label=r'constant coefficients ($Q=0$)')
+ax.set_xlabel('year')
+ax.set_ylabel(r'$g_{\pi\pi}(0,t)$')
+ax.legend()
+plt.show()
+```
+
+With a fixed $A$ the persistence measure still moves, because the *composition*
+of $R_t$ — the relative sizes of the three orthogonal shocks — changes even
+after its overall scale is normalized out.
+
+In fact the constant-coefficient path also climbs to a peak around 1980, as
+inflation innovations grow large relative to the others, so the bad-luck channel
+alone can manufacture much of the *rise*.
+
+What it cannot reproduce is the *fall*: after 1980 the constant-coefficient
+persistence stays elevated, around 2 to 3, for the rest of the sample, whereas
+the drifting-coefficient path collapses back below one.
+
+Freezing $A$ at its full-sample average leaves inflation propagating almost as
+strongly in the 1990s as in the 1970s.
+
+So drifting volatility alone accounts for part of the run-up but none of the
+Volcker-era disinflation of persistence — the post-1980 collapse is evidence
+about the *systematic* dynamics, which is exactly why both channels are needed
+to answer the bad-policy-or-bad-luck question.
 
 ```{solution-end}
 ```
