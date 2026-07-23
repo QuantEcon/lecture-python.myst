@@ -1941,92 +1941,61 @@ and unemployment forecasts using the stationary second moments of each local
 VAR.
 
 ```{code-cell} ipython3
-def policy_activism(
-    θ,
-    covariance,
-    h_pi=4,
-    h_u=2,
-    return_details=False,
-):
-    """Compute the population-2SLS activism coefficient at one date."""
+def policy_rule_coefficients(θ, covariance, h_pi=4, h_u=2):
+    """Return the local policy-rule coefficients."""
     _, companion = companion_matrix(θ)
     innovation = np.zeros((6, 6))
     innovation[:3, :3] = covariance
-    stationary = linalg.solve_discrete_lyapunov(companion, innovation)
+    stationary_covariance = linalg.solve_discrete_lyapunov(
+        companion, innovation
+    )
     selectors = np.eye(6)
-    power = np.eye(6)
+    companion_power = np.eye(6)
     inflation_loading = np.zeros(6)
     unemployment_loading = np.zeros(6)
     for horizon in range(1, max(h_pi, h_u) + 1):
-        power = power @ companion
+        companion_power = companion_power @ companion
         if horizon <= h_pi:
-            inflation_loading += selectors[2] @ power
+            inflation_loading += selectors[2] @ companion_power
         if horizon <= h_u:
-            unemployment_loading += selectors[1] @ power
+            unemployment_loading += selectors[1] @ companion_power
     inflation_loading /= h_pi
     unemployment_loading /= h_u
     loadings = np.vstack(
         (inflation_loading, unemployment_loading, selectors[0])
     )
-    regressor_covariance = loadings @ stationary @ loadings.T
-    dependent_covariance = loadings @ stationary @ companion.T @ selectors[0]
-    coefficients = np.linalg.solve(regressor_covariance, dependent_covariance)
-    denominator = 1 - coefficients[2]
-    activism = coefficients[0] / denominator
-    margin = coefficients[0] + coefficients[2] - 1
-    if return_details:
-        return activism, denominator, margin
-    return activism
+    regressor_covariance = loadings @ stationary_covariance @ loadings.T
+    cross_covariance = (
+        loadings @ stationary_covariance @ companion.T @ selectors[0]
+    )
+    return np.linalg.solve(regressor_covariance, cross_covariance)
 
 
-def mask_unstable_policy_values(values, denominator):
-    """Hide policy summaries when the interest-rate response is unstable."""
-    masked = np.asarray(values, dtype=float).copy()
-    denominator = np.asarray(denominator, dtype=float)
-    interest_rate_persistence = 1 - denominator
-    displayed = np.abs(interest_rate_persistence) < 1
-    masked[~displayed] = np.nan
-    return masked
-
-
-policy_details = np.array(
+policy_coefficients = np.array(
     [
-        policy_activism(
-            θ_mean[:, t],
-            r_mean[t],
-            return_details=True,
-        )
+        policy_rule_coefficients(θ_mean[:, t], r_mean[t])
         for t in range(len(data['dates']))
     ]
 )
-activism = policy_details[:, 0]
-activism_denominator = policy_details[:, 1]
-activism_margin = policy_details[:, 2]
-activism_margin_path = mask_unstable_policy_values(
-    activism_margin,
-    activism_denominator,
+inflation_response = policy_coefficients[:, 0]
+interest_persistence = policy_coefficients[:, 2]
+policy_margin = np.where(
+    np.abs(interest_persistence) < 1,
+    inflation_response + interest_persistence - 1,
+    np.nan,
 )
 ```
 
-For a stable interest-rate response, the policy margin
+For $|\beta_3|<1$, the policy margin
 $\mathcal{M}_t=\beta_{1t}+\beta_{3t}-1$ is nonnegative exactly when
-$\mathcal A_t\geq 1$.
+$\mathcal A_t\geq1$ and avoids division by $1-\beta_3$.
 
-The margin preserves the active-policy comparison without dividing by
-$1-\beta_3$.
+Because $\beta_3$ multiplies the lagged interest rate, the long-run response
+sums $\beta_1(1+\beta_3+\beta_3^2+\cdots)$ and exists only when
+$|\beta_3|<1$.
 
-The coefficient $\beta_3$ measures how much of the previous quarter's interest
-rate carries into the current quarter.
-
-The long-run inflation response adds the repeated effects
-$\beta_1(1+\beta_3+\beta_3^2+\cdots)$, which equals
-$\beta_1/(1-\beta_3)$ only when $|\beta_3|<1$.
-
-When $|\beta_3|\geq1$, the repeated effects do not shrink toward zero, so the
-ratio has no finite long-run interpretation.
-
-The figures leave those dates blank because showing the resulting negative or
-extreme ratio would misrepresent it as a meaningful policy response.
+The figures leave other dates blank because $\mathcal A_t$ has no finite
+long-run interpretation there.
 
 ```{code-cell} ipython3
 ---
@@ -2036,7 +2005,7 @@ mystnb:
     name: fig-csdv-policy-activism
 ---
 fig, ax = plt.subplots()
-ax.plot(data['dates'], activism_margin_path, lw=2)
+ax.plot(data['dates'], policy_margin, lw=2)
 ax.axhline(0, color='0.45', lw=1)
 ax.set_xlabel('year')
 ax.set_ylabel(r'policy margin $\mathcal{M}_t$')
@@ -2061,15 +2030,7 @@ mystnb:
     caption: $\mathcal{M}_t$ versus $\bar\pi_t$ and $g_{\pi\pi}(0,t)$
     name: fig-csdv-activism-correlations
 ---
-displayed_annual = annual[np.isfinite(activism_margin_path[annual])]
-margin_core_correlation = np.corrcoef(
-    activism_margin_path[displayed_annual],
-    core_inflation[displayed_annual],
-)[0, 1]
-margin_persistence_correlation = np.corrcoef(
-    activism_margin_path[displayed_annual],
-    inflation_persistence[displayed_annual],
-)[0, 1]
+displayed_annual = annual[np.isfinite(policy_margin[annual])]
 
 fig, axes = plt.subplots(1, 2, figsize=(9, 4))
 pairs = (
@@ -2078,7 +2039,7 @@ pairs = (
 )
 for ax, (feature, label) in zip(axes, pairs):
     ax.scatter(
-        activism_margin_path[displayed_annual],
+        policy_margin[displayed_annual],
         feature[displayed_annual],
         s=18,
     )
@@ -2095,8 +2056,8 @@ margin, whereas positive policy margins cluster at low values of both measures.
 The displayed fourth-quarter observations establish a historical association
 rather than a causal policy effect.
 
-The activism transformation is weakly identified at some dates, so a path with
-inputs fixed at their posterior means understates uncertainty.
+The policy-rule coefficients are weakly identified at some dates, so a path
+based on posterior mean inputs understates uncertainty.
 
 We therefore calculate activism from every retained draw in 1975, 1985, and
 1995.
@@ -2105,8 +2066,12 @@ We therefore calculate activism from every retained draw in 1975, 1985, and
 selected_years = (1975, 1985, 1995)
 selected_dates = [np.flatnonzero(years == year)[-1] for year in selected_years]
 
-activity_draws = {
+activism_draws = {
     year: np.empty(posterior['SD'].shape[2]) for year in selected_years
+}
+stable_response_by_year = {
+    year: np.empty(posterior['SD'].shape[2], dtype=bool)
+    for year in selected_years
 }
 for draw in range(posterior['SD'].shape[2]):
     for year, date in zip(selected_years, selected_dates):
@@ -2114,40 +2079,61 @@ for draw in range(posterior['SD'].shape[2]):
             posterior['HD'][date + 1, :, draw],
             posterior['CD'][:, draw],
         )
-        activity_draws[year][draw] = policy_activism(
+        rule = policy_rule_coefficients(
             posterior['SD'][:, date, draw], covariance
         )
+        activism_draws[year][draw] = rule[0] / (1 - rule[2])
+        stable_response_by_year[year][draw] = np.abs(rule[2]) < 1
 ```
 
 These draws give posterior probabilities of active policy at each date and of a
-rise in activism after 1975.
+rise in activism after 1975, conditional on $|\beta_3|<1$.
 
 ```{code-cell} ipython3
-activity_events = (
-    activity_draws[1975] > 1,
-    activity_draws[1985] > 1,
-    activity_draws[1995] > 1,
-    activity_draws[1985] > activity_draws[1975],
-    activity_draws[1995] > activity_draws[1975],
+activism_events = (
+    activism_draws[1975] > 1,
+    activism_draws[1985] > 1,
+    activism_draws[1995] > 1,
+    activism_draws[1985] > activism_draws[1975],
+    activism_draws[1995] > activism_draws[1975],
 )
-activity_probability_values = np.array(
-    [event.mean() for event in activity_events]
+activism_conditions = (
+    stable_response_by_year[1975],
+    stable_response_by_year[1985],
+    stable_response_by_year[1995],
+    stable_response_by_year[1985] & stable_response_by_year[1975],
+    stable_response_by_year[1995] & stable_response_by_year[1975],
+)
+assert all(condition.any() for condition in activism_conditions)
+activism_probability_values = np.array(
+    [
+        event[condition].mean()
+        for event, condition in zip(activism_events, activism_conditions)
+    ]
 )
 
-activity_probability_index = (
+activism_probability_index = (
     'P(A_1975 > 1)',
     'P(A_1985 > 1)',
     'P(A_1995 > 1)',
     'P(A_1985 > A_1975)',
     'P(A_1995 > A_1975)',
 )
-activity_probabilities = pd.DataFrame(
-    {'estimate': activity_probability_values},
-    index=activity_probability_index,
+activism_probabilities = pd.DataFrame(
+    {'conditional estimate': activism_probability_values},
+    index=activism_probability_index,
+)
+stable_response_shares = pd.Series(
+    {year: draws.mean() for year, draws in stable_response_by_year.items()},
+    name='share with |beta_3| < 1',
 )
 
-activity_probabilities.round(3)
+display(activism_probabilities.round(3))
+stable_response_shares.to_frame().round(3)
 ```
+
+The first three probabilities condition on $|\beta_3|<1$ at that date, while
+the comparisons require this condition at both dates.
 
 The central draw distributions expose the overlap and skewness behind the
 probability estimates.
@@ -2156,23 +2142,27 @@ probability estimates.
 ---
 mystnb:
   figure:
-    caption: Central posterior draws of $\mathcal A_t$ in 1975, 1985, and 1995
+    caption: Central posterior draws of $\mathcal A_t$ conditional on $|\beta_3|<1$ in 1975, 1985, and 1995
     name: fig-csdv-activism-distributions
 ---
-pooled_activity = np.concatenate(tuple(activity_draws.values()))
-activity_limits = np.quantile(pooled_activity, (0.05, 0.95))
-activity_bins = np.linspace(*activity_limits, 31)
+stable_activism_draws = {
+    year: activism_draws[year][stable_response_by_year[year]]
+    for year in selected_years
+}
+pooled_activism = np.concatenate(tuple(stable_activism_draws.values()))
+activism_limits = np.quantile(pooled_activism, (0.05, 0.95))
+activism_bins = np.linspace(*activism_limits, 31)
 
 fig, ax = plt.subplots()
 for year in selected_years:
-    central_draws = activity_draws[year]
+    central_draws = stable_activism_draws[year]
     central_draws = central_draws[
-        (central_draws >= activity_limits[0])
-        & (central_draws <= activity_limits[1])
+        (central_draws >= activism_limits[0])
+        & (central_draws <= activism_limits[1])
     ]
     ax.hist(
         central_draws,
-        bins=activity_bins,
+        bins=activism_bins,
         histtype='step',
         lw=2,
         label=str(year),
@@ -2191,8 +2181,8 @@ and overlapping.
 The posterior therefore favors a passive-to-active shift after 1975 but does
 not sharply distinguish 1985 from 1995.
 
-The figure plots unmodified draws inside the pooled 5th and 95th percentiles,
-while the probability calculations use every draw.
+The figure plots draws with $|\beta_3|<1$ inside the pooled 5th and 95th
+percentiles, while the probability calculations use every such draw.
 
 (csdv-updated-evidence)=
 ## Another quarter-century of evidence
@@ -2616,15 +2606,18 @@ def model_features(fit):
     ])
     sign, logdet = np.linalg.slogdet(covariance)
     assert np.all(sign > 0)
-    policy_details = np.array(
+    policy_coefficients = np.array(
         [
-            policy_activism(
-                θ[:, t],
-                covariance[t],
-                return_details=True,
-            )
+            policy_rule_coefficients(θ[:, t], covariance[t])
             for t in range(len(fit['data']['dates']))
         ]
+    )
+    inflation_response = policy_coefficients[:, 0]
+    interest_persistence = policy_coefficients[:, 2]
+    policy_margin = np.where(
+        np.abs(interest_persistence) < 1,
+        inflation_response + interest_persistence - 1,
+        np.nan,
     )
     return {
         'θ': θ,
@@ -2634,9 +2627,7 @@ def model_features(fit):
         'natural': natural,
         'persistence': persistence,
         'logdet': logdet,
-        'activism': policy_details[:, 0],
-        'activism_denominator': policy_details[:, 1],
-        'activism_margin': policy_details[:, 2],
+        'policy_margin': policy_margin,
     }
 
 
@@ -3103,8 +3094,8 @@ normalized persistence of the post-2000 decades.
 
 ### Can recent policy activism be measured?
 
-The policy margin provides the same active-policy classification after 2000
-without the unstable division in $\mathcal A_t$.
+When $|\beta_3|<1$, the policy margin gives the same active-policy
+classification after 2000 without division by $1-\beta_3$.
 
 In the following figures, the gray line marks the active-policy threshold
 $\mathcal{M}_t=0$.
@@ -3117,11 +3108,8 @@ mystnb:
     name: fig-csdv-updated-activism
 ---
 fig, ax = plt.subplots()
-updated_margin_path = mask_unstable_policy_values(
-    updated_features['activism_margin'],
-    updated_features['activism_denominator'],
-)
-ax.plot(updated_dates, updated_margin_path, lw=2)
+updated_policy_margin = updated_features['policy_margin']
+ax.plot(updated_dates, updated_policy_margin, lw=2)
 ax.axhline(0, color='0.45', lw=1)
 ax.axvline(2000.75, color='0.65', ls='--', lw=1)
 ax.set_xlabel('year')
@@ -3145,15 +3133,15 @@ mystnb:
 fig, axes = plt.subplots(1, 2, figsize=(9, 4))
 recent_annual = annual_indices(updated_dates, start=2001)
 displayed_recent = recent_annual[
-    np.isfinite(updated_margin_path[recent_annual])
+    np.isfinite(updated_policy_margin[recent_annual])
 ]
 axes[0].scatter(
-    updated_margin_path[displayed_recent],
+    updated_policy_margin[displayed_recent],
     100 * updated_features['core'][displayed_recent],
     s=18,
 )
 axes[1].scatter(
-    updated_margin_path[displayed_recent],
+    updated_policy_margin[displayed_recent],
     updated_features['persistence'][displayed_recent],
     s=18,
 )
@@ -3173,49 +3161,39 @@ We also examine the central draw distribution at the 2025Q3 endpoint.
 
 ```{code-cell} ipython3
 def endpoint_policy_margin_draws(fit):
-    """Compute the endpoint policy margin for every retained draw."""
+    """Return endpoint margins and stability indicators."""
     result = fit['posterior']
     margins = np.empty(result['SD'].shape[2])
-    stable = np.empty(result['SD'].shape[2], dtype=bool)
+    stable_response = np.empty(result['SD'].shape[2], dtype=bool)
     for draw in range(len(margins)):
         covariance = innovation_covariance(
             result['HD'][-1, :, draw],
             result['CD'][:, draw],
         )
-        _, denominator, margin = policy_activism(
-            result['SD'][:, -1, draw],
-            covariance,
-            return_details=True,
+        rule = policy_rule_coefficients(
+            result['SD'][:, -1, draw], covariance
         )
-        margins[draw] = margin
-        stable[draw] = np.abs(1 - denominator) < 1
-    return margins, stable
+        margins[draw] = rule[0] + rule[2] - 1
+        stable_response[draw] = np.abs(rule[2]) < 1
+    return margins, stable_response
 
 
-def policy_margin_uncertainty(margins, stable):
-    """Summarize the endpoint margin for stable policy responses."""
-    if not np.any(stable):
-        raise ValueError('no endpoint draws have |beta_3| < 1')
-    displayed = margins[stable]
-    return pd.Series(
-        {
-            'median M': np.median(displayed),
-            '5th percentile of M': np.quantile(displayed, 0.05),
-            '95th percentile of M': np.quantile(displayed, 0.95),
-            'P(M >= 0 | |beta_3| < 1)': np.mean(displayed >= 0),
-            'share with |beta_3| < 1': stable.mean(),
-        }
-    )
-
-
-updated_margin_draws, updated_stable_policy_draws = (
+updated_margin_draws, stable_response_draws = (
     endpoint_policy_margin_draws(updated_fit)
 )
-updated_policy_margin = policy_margin_uncertainty(
-    updated_margin_draws,
-    updated_stable_policy_draws,
-).to_frame(name=updated_label).T
-updated_policy_margin.round(3)
+assert np.any(stable_response_draws)
+stable_margin_draws = updated_margin_draws[stable_response_draws]
+updated_margin_summary = pd.Series(
+    {
+        'median M': np.median(stable_margin_draws),
+        '5th percentile of M': np.quantile(stable_margin_draws, 0.05),
+        '95th percentile of M': np.quantile(stable_margin_draws, 0.95),
+        'P(M >= 0 | |beta_3| < 1)': np.mean(stable_margin_draws >= 0),
+        'share with |beta_3| < 1': stable_response_draws.mean(),
+    },
+    name=updated_label,
+).to_frame().T
+updated_margin_summary.round(3)
 ```
 
 ```{code-cell} ipython3
@@ -3225,9 +3203,6 @@ mystnb:
     caption: Central 90 percent of posterior draws for $\mathcal{M}_t$ conditional on $|\beta_3|<1$ at 2025Q3
     name: fig-csdv-updated-activism-distributions
 ---
-stable_margin_draws = updated_margin_draws[
-    updated_stable_policy_draws
-]
 updated_margin_limits = np.quantile(
     stable_margin_draws,
     (0.05, 0.95),
@@ -3273,8 +3248,8 @@ Within the updated TVP-VAR, the full-sample drift-rate posterior remains above
 its conservative prior calibration; a fixed-coefficient comparison would
 require a separate $Q=0$ model.
 
-The 2025Q3 natural-rate and activism estimates remain weakly pinned down, and
-both are nonlinear functions that become fragile near singular cases.
+The 2025Q3 natural-rate and policy-margin estimates remain imprecise, especially
+because not every posterior draw satisfies $|\beta_3|<1$.
 
 ## Bad policy or bad luck? A verdict
 
