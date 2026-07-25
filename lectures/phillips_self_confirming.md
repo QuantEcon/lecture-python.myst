@@ -22,6 +22,9 @@ kernelspec:
 
 # Self-Confirming Equilibria
 
+```{index} single: Phillips Curve; Self-Confirming Equilibria
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -36,9 +39,10 @@ In addition to what's in Anaconda, this lecture will use the following library:
 
 ## Overview
 
-This lecture completes the study of Phillips curve tradeoffs begun in {doc}`phillips_credibility`.
+This lecture completes the *equilibrium* half of the study begun in {doc}`phillips_credibility`.
 
-It follows chapter 7 of {cite}`Sargent1999`.
+It follows chapter 7 of {cite}`Sargent1999`, after which the suite turns from fixed beliefs to
+beliefs that are learned in real time.
 
 We seek models that depart minimally from the basic {cite}`KydlandPrescott1977` model of {doc}`phillips_credibility` but that also let a government's *beliefs* be shaped by the data its own policies generate.
 
@@ -222,6 +226,12 @@ Under the Keynesian direction of fit, the government estimates a *flatter* Phill
 Let's draw the two self-confirming Phillips curves, reproducing Figure 7.1.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The two self-confirming Phillips curves, one for each direction of fit
+    name: fig-sce-two-curves
+---
 fig, ax = plt.subplots(figsize=(7, 6))
 
 U_grid = np.linspace(0, 12, 100)
@@ -386,6 +396,12 @@ The induction hypothesis embedded in the adaptive expectations scheme, together 
 As the government becomes more patient, the equilibrium mean inflation rate falls toward the Ramsey value of zero.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Mean inflation and the equilibrium gain as the government becomes more patient
+    name: fig-sce-patience
+---
 δ_grid = np.array([0.95, 0.96, 0.97, 0.98, 0.99, 0.995])
 C_vals, ν_vals = [], []
 for δ in δ_grid:
@@ -419,6 +435,12 @@ The precise equilibrium values depend on the near–unit-root approximation $\rh
 Let's compare the true and approximating inflation processes at the equilibrium, as in Figures 7.2 and 7.3 of {cite}`Sargent1999`.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Spectral densities of the true and approximating inflation processes at the equilibrium
+    name: fig-sce-spectra
+---
 ν_star, F, _ = mp.true_process(C_star)
 c_star = mp.best_estimate(C_star)
 H = np.abs((1 - (1 - c_star) * mp.z) / (1 - mp.ρ * mp.z))**2
@@ -440,6 +462,12 @@ The true and approximating spectral densities match well at all but the lowest f
 The true inflation rate is only moderately serially correlated, and — as in the Bray model of {doc}`phillips_misspecified` — the approximating model uses a unit root to simulate a mean, capturing first moments with second moments.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Impulse responses of the true and approximating inflation processes
+    name: fig-sce-irf
+---
 def ima_impulse(num, den, T=25):
     "IRF of (1 - num L)/(1 - den L)."
     h = np.empty(T)
@@ -498,6 +526,12 @@ What happens as $\sigma_1 \to 0$, and why?
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Keynesian mean inflation as a function of the Phillips curve shock
+    name: fig-sce-sigma1
+---
 σ1_grid = np.linspace(0.05, 1.0, 50)
 y_keynes = [SelfConfirmingStatic(σ1=σ1, σ2=0.3).keynesian()[2]
             for σ1 in σ1_grid]
@@ -534,6 +568,12 @@ For $\delta = 0.97$, plot the best-estimate map $C \mapsto B(C)$ against the 45-
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The best-estimate map and the equilibrium gain
+    name: fig-sce-fixed-point
+---
 mp = MisspecifiedPhillips(δ=0.97)
 C_grid = np.linspace(0.02, 0.3, 20)
 B_vals = [mp.best_estimate(C) for C in C_grid]

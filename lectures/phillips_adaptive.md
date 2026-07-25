@@ -22,6 +22,9 @@ kernelspec:
 
 # Adaptive Expectations and the Phelps Problem
 
+```{index} single: Phillips Curve; Adaptive Expectations
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -46,6 +49,13 @@ In addition to what's in Anaconda, this lecture will use the following library:
 This lecture continues the study of Phillips curve tradeoffs begun in {doc}`phillips_credibility`.
 
 It follows chapter 5 of {cite}`Sargent1999`.
+
+{doc}`phillips_credible_policies` pursued better-than-Nash outcomes while keeping *everyone*
+rational, and found too many of them: a continuum of sustainable values, with nothing inside the
+theory to choose among them.
+
+Here we retreat from that perfection in the smallest way we can, by keeping the government
+rational and giving the public a mechanical forecasting rule.
 
 We describe
 
@@ -102,6 +112,12 @@ The weights $(1 - \lambda)\lambda^{i-1}$ sum to one, so a permanently maintained
 Let's confirm the induction property numerically.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Adaptive expectations converge to a constant inflation policy: the induction property"
+    name: fig-adapt-induction
+---
 def adaptive_forecast(y, λ, x0=0.0):
     "Simulate x_t = λ x_{t-1} + (1-λ) y_{t-1}."
     T = len(y)
@@ -277,6 +293,12 @@ In the undiscounted case ($\delta = 1$), inflation is driven all the way to the 
 Let's plot the full disinflation paths.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Optimal disinflation paths from the Phelps problem, discounted and undiscounted
+    name: fig-adapt-disinflation
+---
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
 
 for δ, ax in zip([0.96, 1.0], axes):
@@ -410,6 +432,12 @@ Plot $y_\infty$ against $\delta$ and confirm that it declines toward zero as $\d
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Limiting inflation of the Phelps problem falls toward Ramsey as the government becomes patient
+    name: fig-adapt-limit
+---
 δ_grid = np.arange(0.90, 0.995, 0.01)
 y_inf = []
 for δ in δ_grid:

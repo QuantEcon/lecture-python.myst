@@ -22,6 +22,9 @@ kernelspec:
 
 # The Lost Conquest: Fed Policy in the 2020s
 
+```{index} single: Phillips Curve; Fed Policy in the 2020s
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -157,6 +160,12 @@ beliefs = estimate_beliefs(data)
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The Fed's perceived inflation persistence and Phillips curve slope
+    name: fig-lc-beliefs
+---
 fig, axes = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
 axes[0].plot(beliefs['rho'])
 axes[0].axhline(1, color='k', lw=0.5, ls=':')
@@ -172,8 +181,6 @@ axes[1].set_title('Perceived Phillips-curve slope')
 plt.tight_layout()
 plt.show()
 ```
-
-The two panels tell the story.
 
 Perceived **persistence** $\rho_t$ is near one through the high-inflation 1970s and 1980s, then drifts down after the mid-1980s, reaching a post-2008 trough — and then *jumps back up* toward one when belief updating resumes in 2022, just as the Fed abandoned the "transitory" characterization and began to tighten.
 
@@ -215,7 +222,7 @@ b0, b1, g = np.linalg.lstsq(X_is, x[1:], rcond=None)[0]
 
 β, π_star, λ_x, η = 0.95, 2.0, 0.2, 0.5
 
-def phelps_rate(θ, state):
+def phelps_rate(θ, state, η=η):
     "Optimal (subjectively) funds rate given beliefs θ=(α₀,ρ,κ) and state."
     α0, ρ, κ = θ
     A = np.array([[1, 0, 0, 0],
@@ -255,6 +262,12 @@ optimal = pd.Series(opt, index=data.index[1:])
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The belief-driven Phelps rule against the actual federal funds rate
+    name: fig-lc-phelps-rate
+---
 fig, ax = plt.subplots(figsize=(10, 4.5))
 window = slice('1991', None)
 ax.plot(optimal[window], 'C0', label="Phelps problem's recommended rate")
@@ -278,6 +291,12 @@ Crucially, around the 2021 surge the recommended rate barely moves — the belie
 To isolate the role of the drifting beliefs, we recompute the Phelps recommendations holding beliefs *fixed* at their January 2000 values — when inflation was still perceived as persistent and the Phillips curve as steeper.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Counterfactual: a Fed that had not updated its beliefs since 2000"
+    name: fig-lc-counterfactual
+---
 counterfactual = pd.Series(
     [phelps_rate(θ_2000, np.array([1.0, pi[t], x[t], i_[t - 1]]))
      for t in range(1, n)],
@@ -294,8 +313,6 @@ ax.set_title('Counterfactual: a Fed that had not updated its beliefs since 2000'
 ax.legend()
 plt.show()
 ```
-
-The contrast is stark.
 
 A Fed with year-2000 beliefs — perceiving persistent inflation and a steeper Phillips curve — would have tightened *immediately and sharply* in 2021, driving the funds rate well above 4% before the actual Fed had moved at all.
 
@@ -342,6 +359,12 @@ Under sufficient conditions (a small lagged-inflation term and a sufficiently ag
 Let's reproduce {prf:ref}`lc_prop1` by solving the cubic for the stable root.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Aggressive policy makes inflation look less persistent
+    name: fig-lc-persistence
+---
 def measured_persistence(φ_π, β=0.99, γ_b=0.5, κ=0.1, σ=1.0):
     "Stable MSV root λ(φ_π): the persistence an econometrician would measure."
     coeffs = [β, -(1 + β + κ * σ), 1 + γ_b + κ * σ * φ_π, -γ_b]
@@ -387,6 +410,10 @@ This is a modern replay of the *Conquest*'s recurrent dynamics, one level up: th
 As {cite}`SargentWilliams2025` note, the drifting-coefficients model is a purely descriptive "Kepler stage" model, not a structural "Newton stage" one. The paper also acknowledges an alternative reading in which the 2020s accommodation was fiscal in origin — see the fiscal-theory accounts it cites — a very different rationalization of the same policy path.
 ```
 
+This lecture imputed drifting beliefs to the Fed and then asked what policy they would recommend.
+
+The closing lecture of the suite, {doc}`phillips_drifts_volatilities`, comes at the same period from the opposite direction: it asks the data whether the *reduced form* of the economy drifted at all, and how much of what looks like drifting beliefs is really drifting shock variances.
+
 ## Exercises
 
 ```{exercise-start}
@@ -407,10 +434,14 @@ How does a larger smoothing penalty change the character of the recommended poli
 ```
 
 ```{code-cell} ipython3
-def recommend(θ_path_fn, η_val):
-    global η
-    η_save = η
-    η = η_val
+---
+mystnb:
+  figure:
+    caption: Phelps recommendations for three interest-smoothing weights
+    name: fig-lc-smoothing
+---
+def recommend(η_val):
+    "Phelps recommendations along the whole sample, for a given smoothing weight."
     θ, R = np.array([0.5, 0.9, 0.05]), np.diag([1.0, 10.0, 5.0])
     out = []
     for t in range(1, n):
@@ -418,14 +449,14 @@ def recommend(θ_path_fn, η_val):
         X = np.array([1.0, pi[t - 1], x[t]])
         R = R + g_t * (np.outer(X, X) - R)
         θ = θ + g_t * np.linalg.solve(R, X * (pi[t] - X @ θ))
-        out.append(phelps_rate(θ, np.array([1.0, pi[t], x[t], i_[t - 1]])))
-    η = η_save
+        out.append(phelps_rate(θ, np.array([1.0, pi[t], x[t], i_[t - 1]]),
+                               η=η_val))
     return pd.Series(out, index=data.index[1:])
 
 fig, ax = plt.subplots(figsize=(10, 4.5))
 w = slice('2015', None)
 for η_val in [0.1, 0.5, 2.0]:
-    ax.plot(recommend(None, η_val)[w], lw=1, label=rf'$\eta = {η_val}$')
+    ax.plot(recommend(η_val)[w], lw=1, label=rf'$\eta = {η_val}$')
 ax.plot(data['i'][w], 'k:', lw=1.5, label='actual')
 ax.set_xlabel('year')
 ax.set_ylabel('percent')

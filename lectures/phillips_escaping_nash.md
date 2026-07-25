@@ -22,6 +22,9 @@ kernelspec:
 
 # Escaping Nash Inflation
 
+```{index} single: Phillips Curve; Escaping Nash Inflation
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -87,6 +90,13 @@ U_n = \gamma_1 \pi_n + \gamma_{-1} + \eta_n ,
 
 with beliefs $\gamma = (\gamma_1, \gamma_{-1})$ (slope and intercept), and it treats $\eta_n$ as exogenous.
 
+```{note}
+The slope comes first here, and the regressors are $\Phi = (\pi, 1)$, matching
+{cite}`ChoWilliamsSargent2002` and the $\gamma_1, \gamma_{-1}$ convention of
+{doc}`phillips_self_confirming`. {doc}`phillips_priors` studies the same model with the
+intercept first; see the warning there for the translation.
+```
+
 Believing {eq}`en_belief`, the government solves the {doc}`Phelps problem <phillips_adaptive>`, whose static best response sets inflation to the constant
 
 ```{math}
@@ -150,6 +160,12 @@ print(f"check g_bar = {model.g_bar(γ_sce)}")
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The unique self-confirming equilibrium in belief space
+    name: fig-esc-sce
+---
 γ1_grid = np.linspace(-2, 1, 200)
 fig, ax = plt.subplots(figsize=(7, 6))
 ax.plot(γ1_grid, model.u * (1 + γ1_grid**2), label=r'$\gamma_{-1} = u(1+\gamma_1^2)$')
@@ -183,6 +199,12 @@ A rest point of {eq}`en_mean` is a self-confirming equilibrium, and CWS show thi
 So under the mean dynamics alone, the adaptive government is drawn to Nash inflation.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Mean dynamics: from a perturbed start, beliefs return to Nash"
+    name: fig-esc-mean-dynamics
+---
 def mean_ode(t, z, model):
     γ, R = z[:2], z[2:].reshape(2, 2)
     return np.concatenate([np.linalg.inv(R) @ model.g_bar(γ),
@@ -291,6 +313,12 @@ infl = -intercept * slope / (1 + slope**2)
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The dominant escape path and the inflation rate along it
+    name: fig-esc-dominant-path
+---
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
 axes[0].plot(esc.t, intercept, label='intercept $\\gamma_{-1}$')
@@ -338,15 +366,18 @@ R0 = model.M(γ_sce)
 R0_inv = np.linalg.inv(R0)
 σ1σ2 = model.σ1 * model.σ2
 
+x_sce = model.x(γ_sce)
+
+# each pair of shock realizations induces its own escape forcing
 candidates = {
-    "{(1,1),(-1,-1)}  → Ramsey": np.array([σ1σ2, 0.0]),
+    "{(1,1),(-1,-1)}  → Ramsey":   np.array([σ1σ2, 0.0]),
     "{(1,-1),(-1,1)}  → higher π": np.array([-σ1σ2, 0.0]),
-    "{(1,1),(1,-1)}": R0 @ (R0_inv @ np.array([model.x(γ_sce) * model.σ1, model.σ1])),
-    "{(-1,1),(-1,-1)}": R0 @ (R0_inv @ np.array([-model.x(γ_sce) * model.σ1, -model.σ1])),
+    "{(1,1),(1,-1)}":              np.array([x_sce * model.σ1, model.σ1]),
+    "{(-1,1),(-1,-1)}":            np.array([-x_sce * model.σ1, -model.σ1]),
 }
 
 for name, force in candidates.items():
-    v = R0_inv @ force
+    v = R0_inv @ force                     # belief velocity along this candidate
     print(f"  {name:28s}  |velocity| = {np.linalg.norm(v):.3f}")
 ```
 
@@ -367,6 +398,12 @@ But CWS (their Figures 8-9) show that once beliefs have moved a little way out a
 We can see this by plotting the mean-dynamics vector field in belief space.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Mean-dynamics vector field with the escape path superimposed
+    name: fig-esc-vector-field
+---
 gs = np.linspace(-1.2, 0.1, 16)      # slope
 gi = np.linspace(4.5, 10.5, 16)      # intercept
 GS, GI = np.meshgrid(gs, gi)
@@ -451,6 +488,12 @@ Along an escape, $\gamma_1 \to 0$: the government stops believing it can exploit
 Applying {eq}`en_vol` to the belief path we already computed shows the level and volatility of inflation escaping *in tandem*.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The level and volatility of inflation escape in tandem
+    name: fig-esc-volatility
+---
 σ3 = 0.9                                   # size of the stabilizable shock
 infl_vol = np.sqrt(model.σ2**2 + (slope / (1 + slope**2))**2 * σ3**2)
 
@@ -479,6 +522,10 @@ A larger stabilizable shock $\sigma_3$ makes an escape *harder to trigger*: to c
 The more shocks the government can offset, the more complex the escape-triggering sequence, and the longer the wait.
 
 Taken literally, this says an economy is more likely to escape to low inflation precisely when there are *few* shocks to stabilize — a suggestive link between the arrival of the mid-1980s calm and the disinflation that accompanied it.
+
+It is also a claim about data, and it points to the empirical lecture that closes this suite.
+
+If the calm and the disinflation arrived together, then a statistical model must be able to separate *shrinking shocks* from *shifting dynamics* before it can say which caused which. {doc}`phillips_drifts_volatilities` builds a model with room for both channels and lets the data apportion them.
 
 ## Exercises
 

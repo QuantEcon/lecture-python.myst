@@ -22,6 +22,9 @@ kernelspec:
 
 # Priors, Escapes, and Learning Cycles
 
+```{index} single: Phillips Curve; Priors and Learning Cycles
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -93,6 +96,20 @@ U_n = a + b\, \pi_n + \eta_n ,
 ```
 
 with belief vector $\gamma = (a, b)$ (intercept and slope), and it treats $\eta_n$ as an exogenous shock.
+
+```{warning}
+{doc}`phillips_escaping_nash` studies this same static model but orders the belief vector the
+other way round, as $\gamma = (\gamma_1, \gamma_{-1})$ with the *slope* first and regressors
+$\Phi = (\pi, 1)$, following {cite}`ChoWilliamsSargent2002`.
+
+Here we put the *intercept* first, with $\Phi = (1, \pi)$, following
+{cite}`SargentWilliams2005`.
+
+The two are the same model in different coordinates: $a = \gamma_{-1}$ and $b = \gamma_1$, so
+the self-confirming belief $(2u, -1)$ of this lecture is the $(-1, u(1+\theta^2))$ of the last
+one, with $\theta = 1$. Matrices such as $M$, $V$, and $P$ have their rows and columns
+correspondingly transposed.
+```
 
 Believing {eq}`pp_belief`, the government solves the Phelps problem — minimize $\hat E \sum_n \delta^n (U_n^2 + \pi_n^2)$ — whose static best response sets inflation to the constant
 
@@ -287,6 +304,12 @@ V(\lambda) = \begin{bmatrix} V^*_{11} & \sqrt\lambda\, V^*_{12} \\ \sqrt\lambda\
 For each $\lambda$ we solve the Riccati equation and look at the largest real part among the eigenvalues of $\bar P(\lambda)\, \partial\bar g/\partial\gamma$: where it is positive, the self-confirming equilibrium is unstable.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Stability of the self-confirming equilibrium as the slope prior tightens
+    name: fig-pri-stability
+---
 def V_tighten_slope(λ, V_star):
     V = V_star.copy()
     V[0, 1] = V[1, 0] = np.sqrt(λ) * V_star[0, 1]
@@ -334,6 +357,12 @@ mask = sol.t > sol.t[-1] - 800
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Coefficients cycle, and the limit cycle in belief space
+    name: fig-pri-cycle
+---
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
 axes[0].plot(sol.t[mask], a_path[mask], label='intercept')
@@ -359,6 +388,12 @@ The beliefs settle into a closed orbit around the self-confirming equilibrium.
 Because inflation is a function of the coefficients through the best response {eq}`pp_bestresp`, the cycle in beliefs shows up as a cycle in inflation that oscillates between the Nash and Ramsey outcomes.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Inflation oscillates between Nash and Ramsey along the learning cycle
+    name: fig-pri-inflation-cycle
+---
 fig, ax = plt.subplots(figsize=(9, 4.5))
 ax.plot(sol.t[mask], x_path[mask])
 ax.axhline(model.u, color='k', ls='--', lw=1, label='Nash')
@@ -417,7 +452,37 @@ When $\sigma = \sigma_1$ — as in a self-confirming equilibrium, where the regr
 
 Sims instead used $\sigma \neq \sigma_1$ (and did not shrink the gain), which *misallocates* the observed variation and produces prolonged, perhaps permanent, departures from the self-confirming equilibrium.
 
-Let's simulate the static model under both specifications.
+The mechanism is visible in the Riccati equation {eq}`pp_riccati` before we simulate anything.
+
+A government that attributes *too little* variance to its regression error must attribute the
+variation it sees to something else, and the only thing else available is drift in its own
+coefficients.
+
+So $\sigma < \sigma_1$ inflates the steady-state $P$, and $P$ is what multiplies each forecast
+error in {eq}`pp_kalman`.
+
+Understating the error variance therefore makes the government *learn faster* — which is
+precisely what weakens the pull of the mean dynamics.
+
+```{code-cell} ipython3
+def effective_gain(model, σ_govt, ε, λ=1.0):
+    "Steady-state weight the filter puts on a single forecast error at the SCE."
+    V = ε**2 * V_tighten_slope(λ, V_star)
+    P = solve_riccati(V, M_sce, σ_govt)
+    Φ = np.array([1.0, model.x(γ_sce)])
+    return (P @ Φ)[0] / (σ_govt**2 + Φ @ P @ Φ)
+
+ε_common = 0.0002
+for σ_govt, tag in ((model.σ1, 'σ = σ1  (correct) '), (0.1, 'σ ≠ σ1  (Sims)   ')):
+    print(f"{tag}: effective gain = {effective_gain(model, σ_govt, ε_common):.5f}")
+```
+
+Understating the error variance multiplies the effective gain by more than twenty, even though
+the prior $V$ and the scale $\varepsilon$ are identical in the two runs.
+
+Let's now simulate the static model under both specifications, holding $\varepsilon$ fixed so
+that the *only* difference is the variance the government attributes to its own regression
+error.
 
 ```{code-cell} ipython3
 def simulate(model, σ_govt, ε, λ=1.0, T=3000, seed=0):
@@ -442,35 +507,75 @@ def simulate(model, σ_govt, ε, λ=1.0, T=3000, seed=0):
         infl[n] = π
     return infl
 
-x_base = simulate(model, σ_govt=model.σ1, ε=0.05, seed=1)     # σ = σ1
-x_sims = simulate(model, σ_govt=0.1,       ε=0.20, seed=1)     # σ ≠ σ1 (Sims-like)
+T_sim, seeds = 6000, range(10)
 
-print(f"σ = σ1  : mean inflation {x_base.mean():.2f}, "
-      f"fraction near Ramsey {(x_base < 2).mean():.0%}")
-print(f"σ ≠ σ1  : mean inflation {x_sims.mean():.2f}, "
-      f"fraction near Ramsey {(x_sims < 2).mean():.0%}")
+def summarize(σ_govt):
+    "Mean inflation and time near Ramsey, across seeds."
+    paths = [simulate(model, σ_govt=σ_govt, ε=ε_common, T=T_sim, seed=s)
+             for s in seeds]
+    return (np.array([p.mean() for p in paths]),
+            np.array([(p < 2).mean() for p in paths]))
+
+mean_base, ramsey_base = summarize(model.σ1)
+mean_sims, ramsey_sims = summarize(0.1)
+
+print(f"{'seed':>4} | {'σ = σ1: mean π':>15} {'near Ramsey':>12}"
+      f" | {'σ ≠ σ1: mean π':>15} {'near Ramsey':>12}")
+for s in seeds:
+    print(f"{s:>4} | {mean_base[s]:>15.2f} {ramsey_base[s]:>11.0%}"
+          f" | {mean_sims[s]:>15.2f} {ramsey_sims[s]:>11.0%}")
+print(f"\nnever escaped in {T_sim} periods:  "
+      f"σ = σ1: {np.sum(ramsey_base < 0.01)}/{len(seeds)} paths,   "
+      f"σ ≠ σ1: {np.sum(ramsey_sims < 0.01)}/{len(seeds)} paths")
 ```
 
+The two columns behave quite differently, and the difference is about *how often* the economy
+leaves Nash rather than about where it goes when it does.
+
+With the correct error variance, an escape is a genuinely rare event: several of the sample
+paths sit at the Nash rate for six thousand periods without ever escaping at all, and the rest
+escape at some point and are held near Ramsey afterwards.
+
+With Sims's misallocation, *every* path escapes, and every one of them spends most of its time
+near Ramsey.
+
+Three seeds make the point without any cherry-picking: seed 0 never escapes, seed 4 escapes
+repeatedly and is pulled back each time, and seed 6 escapes and stays away for a long spell.
+
 ```{code-cell} ipython3
-fig, axes = plt.subplots(2, 1, figsize=(9, 7), sharex=True)
-axes[0].plot(x_base, lw=0.6)
-axes[0].axhline(model.u, color='k', ls='--', lw=1)
-axes[0].set_ylabel('inflation')
-axes[0].set_title(r'$\sigma = \sigma_1$: recurrent escapes, pulled back to Nash')
+---
+mystnb:
+  figure:
+    caption: Escapes are rare under the correct error variance and pervasive under Sims's misallocation
+    name: fig-pri-sims
+---
+show = (0, 4, 6)
 
-axes[1].plot(x_sims, lw=0.6, color='C1')
-axes[1].axhline(model.u, color='k', ls='--', lw=1)
+fig, axes = plt.subplots(2, 1, figsize=(9.5, 7), sharex=True, sharey=True)
+for s in show:
+    axes[0].plot(simulate(model, σ_govt=model.σ1, ε=ε_common, T=T_sim, seed=s),
+                 lw=0.5, label=f'seed {s}')
+    axes[1].plot(simulate(model, σ_govt=0.1, ε=ε_common, T=T_sim, seed=s),
+                 lw=0.5, label=f'seed {s}')
+for ax, title in zip(axes, [r'$\sigma = \sigma_1$ (correct): escapes are rare events',
+                            r'$\sigma \neq \sigma_1$ (Sims): every path escapes and lingers']):
+    ax.axhline(model.u, color='k', ls='--', lw=1)
+    ax.axhline(0, color='C2', ls=':', lw=1)
+    ax.set_ylabel('inflation')
+    ax.set_title(title)
+    ax.legend(frameon=False, fontsize=8, ncol=3, loc='lower right')
 axes[1].set_xlabel('$n$')
-axes[1].set_ylabel('inflation')
-axes[1].set_title(r'$\sigma \neq \sigma_1$ (Sims): prolonged spells near Ramsey')
-
 plt.tight_layout()
 plt.show()
 ```
 
-With the correct error variance the mean dynamics reassert themselves and inflation is repeatedly pulled back toward Nash.
+With the correct error variance the mean dynamics dominate: the economy sits at Nash, and only
+an unusual run of shocks dislodges it — the rare-escape picture of {doc}`phillips_learning` and
+{doc}`phillips_escaping_nash`.
 
-With Sims's misallocation the pull is weakened, and the economy lingers near the Ramsey outcome — the government behaves as if it has *permanently* learned a good-enough version of the natural-rate hypothesis.
+With Sims's misallocation the government learns too fast for the mean dynamics to hold it, so
+it escapes almost immediately and behaves as if it had *permanently* learned a good-enough
+version of the natural-rate hypothesis.
 
 As {cite}`SargentWilliams2005` put it, one can read the difference in two equivalent ways: either Sims allowed too much parameter drift to permit convergence, or he did not let the government attribute enough variation to its regression error.
 
@@ -506,7 +611,9 @@ The broader message is that *how* an adaptive government learns — the prior it
 
 It determines whether the economy converges to Nash, cycles between Nash and Ramsey, or escapes to Ramsey and stays there.
 
-The final lecture, {doc}`phillips_lost_conquest`, carries these same tools — constant-gain learning, an anticipated-utility Phelps problem, and a self-confirming equilibrium — into the present, to rationalize the Federal Reserve's response to the inflation of the 2020s.
+{doc}`phillips_lost_conquest` carries these same tools — constant-gain learning, an anticipated-utility Phelps problem, and a self-confirming equilibrium — into the present, to rationalize the Federal Reserve's response to the inflation of the 2020s.
+
+{doc}`phillips_drifts_volatilities` then closes the suite by putting the whole account to an empirical test, fitting a drifting-coefficient, stochastic-volatility VAR to post-war data and asking how much of the Great Inflation was drifting beliefs and how much was simply bad luck.
 
 ## Exercises
 
@@ -534,6 +641,12 @@ Verify this by plotting the maximum real part of the eigenvalues of $\bar P(\lam
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Tightening the intercept prior leaves the self-confirming equilibrium stable
+    name: fig-pri-intercept
+---
 def V_tighten_intercept(λ, V_star):
     V = V_star.copy()
     V[0, 0] = λ * V_star[0, 0]
@@ -595,9 +708,16 @@ for name, V in [("baseline V*", V_star),
     print(f"{name:24s}: direction {v.round(3)}, terminal {term.round(2)}")
 ```
 
-Both priors send beliefs toward a terminal point with slope $0$ — the Ramsey belief — but along different directions and to slightly different intercepts.
+Both priors send beliefs toward a terminal point with slope $0$ — the Ramsey belief — but along
+different directions, and the intercepts they arrive at differ considerably: the slope-tightened
+prior lands at an intercept a little over half the baseline's.
 
-The destination (zero inflation) is a robust feature; the *route* depends on the shape of the prior.
+The destination is robust in the sense that matters for policy: slope $0$ means the government
+perceives no exploitable tradeoff, and {eq}`pp_bestresp` then sets inflation to zero whatever the
+intercept.
+
+The *route*, and where along the Ramsey line the escape terminates, depend on the shape of the
+prior.
 
 ```{solution-end}
 ```

@@ -22,6 +22,9 @@ kernelspec:
 
 # Optimal Misspecified Beliefs
 
+```{index} single: Phillips Curve; Optimal Misspecified Beliefs
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -31,6 +34,16 @@ kernelspec:
 This lecture continues the study of Phillips curve tradeoffs.
 
 It follows chapter 6 of {cite}`Sargent1999`.
+
+In {doc}`phillips_adaptive` the public forecast inflation with a fixed adaptive rule whose
+parameter $\lambda$ we simply chose.
+
+That was unsatisfying in a way the *vindication* story of {doc}`phillips_two_stories` cannot
+afford: a free parameter describing expectations is exactly what rational expectations was meant
+to eliminate.
+
+Here we take the first step toward earning that parameter, by letting agents choose it to fit
+the data their own beliefs generate.
 
 We describe three conceptual issues that recur throughout this suite of lectures:
 
@@ -271,6 +284,12 @@ print(f"actual one-step forecast error std  σ̄_ε = {σ_bar:.4f}")
 For the equilibrium $C$, we plot the equilibrium spectral densities of the true and approximating models.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Spectral densities of the true price process and of the agents' approximating model
+    name: fig-mis-spectra
+---
 F = bray.true_spectrum(C_star)
 σ_ε2 = fitted_sigma2(bray, C_star, c_star)
 G = bray.approx_spectrum(c_star, σ_ε2)
@@ -296,6 +315,12 @@ The true spectral density decreases sharply with frequency — Granger's "typica
 We compare the impulse response functions of the two models by feeding a unit shock through each moving-average representation.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Impulse responses of the true and approximating models
+    name: fig-mis-irf
+---
 def impulse_response(num_roots, den_roots, T=25):
     "IRF of (1 - num L)/(1 - den L): coefficients of the ratio of lag polys."
     h = np.empty(T)
@@ -357,6 +382,12 @@ How does stronger expectational feedback (larger $b$) affect the equilibrium amo
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The equilibrium belief as a function of the strength of expectational feedback
+    name: fig-mis-C-of-b
+---
 b_grid = np.arange(0.1, 0.85, 0.1)
 C_of_b = [solve_equilibrium(BrayModel(a=1.0, b=b, σ_u=1.0)) for b in b_grid]
 
@@ -386,6 +417,12 @@ Verify that the equilibrium is a genuine fixed point by plotting the best-estima
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The best-estimate map and its fixed point
+    name: fig-mis-fixed-point
+---
 C_grid = np.linspace(0.02, 0.4, 25)
 B_vals = [best_estimate(bray, C) for C in C_grid]
 

@@ -22,6 +22,9 @@ kernelspec:
 
 # The Credibility Problem
 
+```{index} single: Phillips Curve; Credibility Problem
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -30,7 +33,7 @@ kernelspec:
 
 This lecture describes a basic expectational Phillips curve model of the sort studied by {cite}`KydlandPrescott1977` and Robert Barro and David Gordon.
 
-It is the first in a suite of lectures based on chapters of {cite}`Sargent1999`.
+It is the first *modeling* lecture in a suite based on chapters of {cite}`Sargent1999`, following {doc}`phillips_two_stories`, which lays out the two stories and reviews the Lucas Critique.
 
 Those chapters formalize
 
@@ -206,6 +209,12 @@ For a given expectation $x$, the Phillips curve {eq}`pc_phillips` is a downward-
 The government's best response for $y$, given $x$, occurs where an indifference curve is tangent to the Phillips curve indexed by $x$.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Phillips curves indexed by expected inflation, government indifference curves, and the Nash and Ramsey outcomes
+    name: fig-cred-nash-ramsey
+---
 fig, ax = plt.subplots(figsize=(7, 6))
 
 U_grid = np.linspace(0, 12, 200)
@@ -218,7 +227,7 @@ for x in [0.0, y_N / 2, y_N]:
 
 # government indifference curves (circles U^2 + y^2 = const)
 ξ = np.linspace(0, 2 * np.pi, 200)
-for R in [y_R, np.hypot(cm.U_star, y_N)]:
+for R in [np.hypot(cm.U_star, y_R), np.hypot(cm.U_star, y_N)]:
     if R > 0:
         ax.plot(R * np.cos(ξ), R * np.sin(ξ), 'C1--', lw=1)
 
@@ -265,6 +274,12 @@ y_path = best_response_path(cm, y0=0.0, T=20)
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Best response dynamics cobwebbing up to the Nash inflation rate
+    name: fig-cred-best-response
+---
 fig, ax = plt.subplots(figsize=(6, 6))
 
 x_grid = np.linspace(0, y_N + 1, 100)
@@ -362,12 +377,18 @@ def ls_learning(cm, T=2000, σ_η=1.0, seed=0):
     for t in range(1, T + 1):
         η = σ_η * rng.standard_normal()
         y[t] = cm.B(x[t - 1]) + η
-        gain = 1.0 / (t + 1)          # decreasing gain
+        gain = 1.0 / t                # the 1/(t-1) gain of equation (7), reindexed
         x[t] = x[t - 1] + gain * (cm.B(x[t - 1]) - x[t - 1] + η)
     return x, y
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Least squares learning of expected inflation converges to the Nash outcome
+    name: fig-cred-ls-learning
+---
 x, y = ls_learning(cm, T=2000, σ_η=1.0)
 
 fig, ax = plt.subplots(figsize=(9, 5))
@@ -398,7 +419,7 @@ Better outcomes can occur if the government plans for the future.
 
 Subsequent lectures describe three ways of modeling foresight, which impute varying amounts of rationality and predict different qualities of outcomes:
 
-1. A reputational approach that attributes rational expectations to both the government and the public. Many outcomes are sustainable, ranging from repetition of the Ramsey outcome to paths worse than repetition of the Nash outcome.
+1. A reputational approach that attributes rational expectations to both the government and the public. This is the subject of {doc}`phillips_credible_policies`. Many outcomes are sustainable, ranging from repetition of the Ramsey outcome to paths worse than repetition of the Nash outcome — a multiplicity that turns out to be the theory's chief lesson.
 2. An approach that keeps the government rational but gives the public *adaptive* expectations in the original Cagan-Friedman sense. This is the subject of {doc}`phillips_adaptive`. Depending on a comparison between a discount factor and an adaptation parameter, this setup can improve outcomes and possibly sustain repetition of the Ramsey outcome.
 3. An approach that attributes adaptive behavior to both the government and the public. This is the subject of {doc}`phillips_misspecified` and {doc}`phillips_self_confirming`.
 
@@ -476,6 +497,12 @@ Plot the three paths of $x_t - \theta U^*$ on one figure.
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Convergence of least squares learning for three values of the Phillips slope
+    name: fig-cred-theta
+---
 fig, ax = plt.subplots(figsize=(9, 5))
 
 for θ in [0.5, 1.0, 2.0]:

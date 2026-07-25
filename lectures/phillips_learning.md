@@ -22,15 +22,21 @@ kernelspec:
 
 # Adaptive Learning and Escape Dynamics
 
+```{index} single: Phillips Curve; Adaptive Learning and Escape Dynamics
+```
+
 ```{contents} Contents
 :depth: 2
 ```
 
 ## Overview
 
-This lecture is the culmination of the *Phillips curve tradeoffs* suite.
+This lecture is the culmination of the theory built by {cite}`Sargent1999`.
 
-It follows chapter 8 of {cite}`Sargent1999`, the most ambitious chapter of the book.
+It follows chapter 8, the most ambitious chapter of the book, and everything after it in this
+suite either sharpens its analytics ({doc}`phillips_escaping_nash`, {doc}`phillips_priors`),
+carries its tools to a later episode ({doc}`phillips_lost_conquest`), or puts its central claim
+to an empirical test ({doc}`phillips_drifts_volatilities`).
 
 In {doc}`phillips_self_confirming` a government held *fixed* beliefs about the Phillips curve — beliefs that were confirmed by the data those beliefs generated.
 
@@ -548,6 +554,12 @@ The classical self-confirming equilibrium has serially uncorrelated $(U, y)$ flu
 First, least squares (a decreasing gain).
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Classical adaptive model under least squares: inflation hugs the self-confirming value"
+    name: fig-learn-ls
+---
 ls = simulate(model, λ=1.0, T_prior=5000, n=1000, seed=1)
 
 fig, ax = plt.subplots(figsize=(9, 4.5))
@@ -570,6 +582,12 @@ We get nothing new — the government is stuck near the Nash outcome.
 Now give the government a *constant* gain, $\lambda = 0.975$, so it discounts past data.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Classical adaptive model under a constant gain: recurrent escapes toward Ramsey"
+    name: fig-learn-cgain
+---
 cg = simulate(model, λ=0.975, T_prior=300, n=1000, seed=1)
 
 fig, ax = plt.subplots(figsize=(9, 4.5))
@@ -583,8 +601,6 @@ ax.set_title('Figure 8.2: classical adaptive model, constant gain '
 ax.legend()
 plt.show()
 ```
-
-The picture is completely different.
 
 Inflation starts near the self-confirming value of 5, then drops almost to zero and stays there for a long time, before slowly heading back toward 5 only to be propelled toward zero again.
 
@@ -606,6 +622,12 @@ The answer is the **induction hypothesis** of {doc}`phillips_adaptive`: when the
 Let's plot inflation together with that sum of weights.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Stabilizations coincide with the sum of weights on inflation rising toward zero
+    name: fig-learn-escape-route
+---
 fig, axes = plt.subplots(2, 1, figsize=(9, 7), sharex=True)
 
 axes[0].plot(cg['y'], lw=0.8)
@@ -632,6 +654,12 @@ When it reaches zero, the induction hypothesis is (temporarily) satisfied, the P
 We can see the escape route directly by plotting the joint path of the constant and the sum of weights in the estimated Phillips curve.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The escape route in belief space, coloured by time
+    name: fig-learn-belief-path
+---
 fig, ax = plt.subplots(figsize=(8, 6))
 sc = ax.scatter(cg['constant'], cg['sumweights'], c=np.arange(len(cg['y'])),
                 cmap='viridis', s=6)
@@ -661,6 +689,12 @@ The recurrent stabilizations toward Ramsey depend on the discount factor $\delta
 Lowering $\delta$ raises the inflation rate observed during the low-inflation episodes, consistent with the workings of the Phelps problem under the induction hypothesis.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Escapes toward Ramsey deepen as the government becomes more patient
+    name: fig-learn-discount
+---
 fig, ax = plt.subplots(figsize=(9, 4.5))
 for δ in [0.90, 0.95, 0.98]:
     m = AdaptivePhillips(δ=δ)
@@ -700,19 +734,27 @@ Adaptation makes the government's beliefs a hidden state that imparts serial cor
 
 In this sense the adaptive models contain the underpinnings for vindicating econometric policy evaluation — the second of the two stories of {doc}`phillips_two_stories`.
 
+That last observation is a testable one, and it is worth recording what the model predicts before anyone looks.
+
+If the government's beliefs really are a hidden drifting state, then a reduced-form description of post-war inflation and unemployment ought to show *drifting coefficients*, not merely drifting shock variances.
+
+{doc}`phillips_drifts_volatilities` fits exactly such a model to the data and reports the verdict — including one prediction of the escape mechanism that the data decline to confirm.
+
 ## Exercises
 
 ```{exercise-start}
 :label: pl_ex1
 ```
 
-Build the **Keynesian** adaptive model, in which the government fits the Phillips curve in the reverse direction, regressing inflation on unemployment.
+Everything above hinges on the constant gain, so it is worth seeing how much.
 
-The regressors are $X_{K,t} = \begin{bmatrix} U_t & U_{t-1} & U_{t-2} & y_{t-1} & y_{t-2} & 1 \end{bmatrix}'$, and the government estimates $\beta$ in $y_t = \beta' X_{K,t} + \varepsilon_{K,t}$, then inverts to $\gamma$ before solving the Phelps problem.
-
-Rather than re-derive everything, explore the *classical* model's sensitivity to the constant gain: simulate with $\lambda \in \{0.99, 0.975, 0.95\}$ and compare how often inflation escapes toward Ramsey.
+Simulate the classical adaptive model with $\lambda \in \{0.99, 0.975, 0.95\}$ and compare how often inflation escapes toward Ramsey.
 
 How does a larger gain (smaller $\lambda$, faster discounting of the past) affect the frequency of escapes?
+
+```{note}
+A more ambitious version of this exercise is to build the **Keynesian** adaptive model, in which the government fits the Phillips curve in the reverse direction, regressing inflation on unemployment. The regressors are $X_{K,t} = \begin{bmatrix} U_t & U_{t-1} & U_{t-2} & y_{t-1} & y_{t-2} & 1 \end{bmatrix}'$; the government estimates $\beta$ in $y_t = \beta' X_{K,t} + \varepsilon_{K,t}$, then inverts to $\gamma$ using the inversion formulas $\gamma_1 = \beta_1^{-1}$, $\gamma_{-1} = -\beta_{-1}/\beta_1$ of {doc}`phillips_self_confirming` before solving the Phelps problem. {cite}`Sargent1999` reports that this variant escapes less readily than the classical one.
+```
 
 ```{exercise-end}
 ```
@@ -722,6 +764,12 @@ How does a larger gain (smaller $\lambda$, faster discounting of the past) affec
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Sensitivity of the escape frequency to the constant gain
+    name: fig-learn-gain-sweep
+---
 fig, ax = plt.subplots(figsize=(9, 4.5))
 for λ in [0.99, 0.975, 0.95]:
     sim = simulate(model, λ=λ, T_prior=300, n=1000, seed=1)

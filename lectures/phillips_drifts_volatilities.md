@@ -27,6 +27,9 @@ kernelspec:
 
 # Drifts and Volatilities
 
+```{index} single: Phillips Curve; Drifts and Volatilities
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -155,6 +158,7 @@ changing volatility for coefficient drift.
 So Cogley and Sargent build a model that has room for *both* channels at once,
 and they let a Bayesian posterior sort out how much of each the data call for.
 
+(csdv-model)=
 ## A VAR with drifting coefficients and stochastic volatility
 
 Let the variables be ordered as nominal interest, transformed unemployment, and
@@ -569,6 +573,7 @@ prior_summary = pd.Series(
 prior_summary.to_frame()
 ```
 
+(csdv-sampler)=
 ## A Metropolis-within-Gibbs sampler
 
 We simulate the posterior by cycling through five parameter blocks used by
@@ -1174,6 +1179,7 @@ def validate_posterior_arrays(result, periods):
 expected_shapes = validate_posterior_arrays(posterior, len(data['dates']))
 ```
 
+(csdv-results)=
 ## What the data say
 
 We summarize the posterior by its mean coefficient path $E(\theta_t\mid T)$ and
@@ -3251,6 +3257,7 @@ require a separate $Q=0$ model.
 The 2025Q3 natural-rate and policy-margin estimates remain imprecise, especially
 because not every posterior draw satisfies $|\beta_3|<1$.
 
+(csdv-verdict)=
 ## Bad policy or bad luck? A verdict
 
 The Bayesian VAR delivers a nuanced answer to the question that opened this
