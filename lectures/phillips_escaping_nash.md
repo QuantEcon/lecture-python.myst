@@ -76,7 +76,7 @@ U_n = u - \theta(\pi_n - \hat x_n) + \sigma_1 W_{1n},
 \hat x_n = x_n,
 ```
 
-with $\theta, u > 0$ and $W_n = (W_{1n}, W_{2n})'$ i.i.d. standard Gaussian.
+with $\theta, u > 0$ and $W_n = (W_{1n}, W_{2n})^\top$ IID standard Gaussian.
 
 The government does not know {eq}`en_truth`.
 
@@ -93,8 +93,10 @@ with beliefs $\gamma = (\gamma_1, \gamma_{-1})$ (slope and intercept), and it tr
 ```{note}
 The slope comes first here, and the regressors are $\Phi = (\pi, 1)$, matching
 {cite}`ChoWilliamsSargent2002` and the $\gamma_1, \gamma_{-1}$ convention of
-{doc}`phillips_self_confirming`. {doc}`phillips_priors` studies the same model with the
-intercept first; see the warning there for the translation.
+{doc}`phillips_self_confirming`.
+
+{doc}`phillips_priors` studies the same model with the intercept first; see the warning there
+for the translation.
 ```
 
 Believing {eq}`en_belief`, the government solves the {doc}`Phelps problem <phillips_adaptive>`, whose static best response sets inflation to the constant
@@ -141,7 +143,7 @@ A self-confirming equilibrium is a belief that reproduces itself: the population
 Writing $T(\gamma)$ for those population coefficients, CWS show
 
 $$
-\bar g(\gamma) \equiv E\left[\Phi(U - \Phi'\gamma)\right] = \bar M \left(T(\gamma) - \gamma\right),
+\bar g(\gamma) \equiv \mathbb{E}\left[\Phi(U - \Phi^\top \gamma)\right] = \bar M \left(T(\gamma) - \gamma\right),
 $$
 
 so a self-confirming equilibrium solves $\bar g(\gamma) = 0$.
@@ -168,7 +170,7 @@ mystnb:
 ---
 γ1_grid = np.linspace(-2, 1, 200)
 fig, ax = plt.subplots(figsize=(7, 6))
-ax.plot(γ1_grid, model.u * (1 + γ1_grid**2), label=r'$\gamma_{-1} = u(1+\gamma_1^2)$')
+ax.plot(γ1_grid, model.u * (1 + γ1_grid**2), label=r'$\gamma_{-1} = u(1+\gamma_1^2)$', lw=2)
 ax.axvline(-model.θ, color='C1', ls='--', label=r'$\gamma_1 = -\theta$')
 ax.plot(γ_sce[0], γ_sce[1], 'ko', ms=8)
 ax.annotate('SCE (Nash)', γ_sce, (γ_sce[0] + 0.1, γ_sce[1] + 1))
@@ -243,7 +245,7 @@ Drawing on {cite}`Williams2019`, CWS reduce this to a clean control problem: the
 ```{math}
 :label: en_control
 
-\bar S = \inf_{v(\cdot),\, T} \; \frac12 \int_0^T v(s)' Q(\gamma(s), R(s))^{-1} v(s)\, ds
+\bar S = \inf_{v(\cdot),\, T} \; \frac12 \int_0^T v(s)^\top Q(\gamma(s), R(s))^{-1} v(s)\, ds
 ```
 
 subject to the *perturbed* mean dynamics
@@ -385,7 +387,7 @@ The pair $\{(1,1), (-1,-1)\}$ produces a velocity far larger than the last two, 
 
 Its mirror image $\{(1,-1),(-1,1)\}$ has the same speed but points the wrong way — toward *higher* inflation — where the mean dynamics oppose it and quickly pull it back.
 
-So the winner of the race is the Ramsey-ward path, and the escape forcing it induces is the $R^{-1}(\sigma_1\sigma_2, 0)'$ of {eq}`en_force`.
+So the winner of the race is the Ramsey-ward path, and the escape forcing it induces is the $R^{-1}(\sigma_1\sigma_2, 0)^\top$ of {eq}`en_force`.
 
 ## Mean dynamics reinforce the escape
 
@@ -458,7 +460,13 @@ The full dynamic model of {doc}`phillips_learning` — with lagged unemployment 
 A richer model lets the government detect the subtler distributed-lag ("induction-hypothesis") version of the natural-rate hypothesis, so it escapes toward Ramsey more readily.
 
 ```{note}
-The escape dynamics inherit the same "near determinism" that makes the mean dynamics useful: for small gains, the stochastic simulations of {doc}`phillips_learning` hug the deterministic escape path derived here. The next lecture, {doc}`phillips_priors`, shows that the government's *prior* about how its coefficients drift reshapes both dynamics — and can even make the escape a deterministic *cycle*.
+The escape dynamics inherit the same "near determinism" that makes the mean dynamics useful:
+for small gains, the stochastic simulations of {doc}`phillips_learning` hug the deterministic
+escape path derived here.
+
+The next lecture, {doc}`phillips_priors`, shows that the government's *prior* about how its
+coefficients drift reshapes both dynamics — and can even make the escape a deterministic
+*cycle*.
 ```
 
 ## Escaping volatile inflation
@@ -478,7 +486,7 @@ In their model the expected inflation volatility a private agent faces is
 ```{math}
 :label: en_vol
 
-E(\sigma_\pi \mid \gamma) = \left[ \sigma_2^2 + \left(\frac{\gamma_1}{1 + \gamma_1^2}\right)^2 \sigma_3^2 \right]^{1/2} .
+\mathbb{E}(\sigma_\pi \mid \gamma) = \left[ \sigma_2^2 + \left(\frac{\gamma_1}{1 + \gamma_1^2}\right)^2 \sigma_3^2 \right]^{1/2} .
 ```
 
 At the self-confirming equilibrium $\gamma_1 = -\theta$, the government believes policy is effective and leans against $W_3$ aggressively, so inflation is *volatile*.
@@ -525,7 +533,11 @@ Taken literally, this says an economy is more likely to escape to low inflation 
 
 It is also a claim about data, and it points to the empirical lecture that closes this suite.
 
-If the calm and the disinflation arrived together, then a statistical model must be able to separate *shrinking shocks* from *shifting dynamics* before it can say which caused which. {doc}`phillips_drifts_volatilities` builds a model with room for both channels and lets the data apportion them.
+If the calm and the disinflation arrived together, then a statistical model must be able to
+separate *shrinking shocks* from *shifting dynamics* before it can say which caused which.
+
+{doc}`phillips_drifts_volatilities` builds a model with room for both channels and lets the
+data apportion them.
 
 ## Exercises
 
@@ -562,7 +574,7 @@ for σ in [0.2, 0.3, 0.4, 0.5]:
     print(f"σ = {σ}: exit time along the escape path = {s.t[-1]:.2f}")
 ```
 
-A larger $\sigma$ makes the escape forcing $R^{-1}(\sigma_1\sigma_2, 0)'$ stronger, so beliefs travel the escape route faster (a shorter exit *time* along the deterministic path).
+A larger $\sigma$ makes the escape forcing $R^{-1}(\sigma_1\sigma_2, 0)^\top$ stronger, so beliefs travel the escape route faster (a shorter exit *time* along the deterministic path).
 
 Note that this is distinct from the *frequency* of escapes, which is governed by the action $\bar S$ and the gain $\varepsilon$; a noisier economy travels a given escape route more quickly once the escape is under way.
 

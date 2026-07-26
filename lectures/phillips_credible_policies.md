@@ -56,10 +56,12 @@ That is the conclusion this lecture exists to establish, and Sargent states it i
 
 > My conclusion is that the multiplicity of credible plans replaces pessimism with agnosticism.
 
-It matters for the argument of the whole suite. {doc}`phillips_two_stories` rests part of its
-case against the *triumph of natural-rate theory* on exactly this weakness: a theory with so
-many equilibria makes few predictions, so a story that depends on policy makers having learned
-the right one is doing work the theory cannot do for it.
+It matters for the argument of the whole suite.
+
+{doc}`phillips_two_stories` rests part of its case against the *triumph of natural-rate theory*
+on exactly this weakness: a theory with so many equilibria makes few predictions, so a story
+that depends on policy makers having learned the right one is doing work the theory cannot do
+for it.
 
 ### What we build
 
@@ -74,11 +76,14 @@ set of subgame perfect equilibrium values is its largest fixed point.
 
 ```{note}
 Making a promised value into a state variable, and then doing dynamic programming in that
-state, is the technique sometimes called **dynamic programming squared**. It is the organizing
-idea of the QuantEcon lectures on
-[Stackelberg plans](https://python-advanced.quantecon.org/dyn_stack.html) and of the recursive
-treatments of Ramsey problems in {cite}`Ljungqvist2012`. This lecture is a compact instance:
-the state is a promised value, and the object we compute is a set.
+state, is the technique sometimes called **dynamic programming squared**.
+
+It is the organizing idea of the QuantEcon lectures on [Stackelberg
+plans](https://python-advanced.quantecon.org/dyn_stack.html) and of the recursive treatments of
+Ramsey problems in {cite}`Ljungqvist2012`.
+
+This lecture is a compact instance: the state is a promised value, and the object we compute is
+a set.
 ```
 
 We then use the machinery three ways.
@@ -311,9 +316,12 @@ current and future outcomes that make it *want* to do what is expected of it.
 
 ```{note}
 Two readings of $\sigma$ are available and, within an equilibrium, impossible to tell apart.
+
 It can be a decision rule that the government chooses, or a description of a system of public
-expectations to which the government conforms. We return to this ambiguity in the
-interpretation section, because it is where the theory's agnosticism comes from.
+expectations to which the government conforms.
+
+We return to this ambiguity in the interpretation section, because it is where the theory's
+agnosticism comes from.
 ```
 
 ### Historical antecedents

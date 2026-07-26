@@ -80,7 +80,7 @@ Following {cite}`Bray1982`, assume that
 p_t = a + b \, p_{t+1}^e + u_t ,
 ```
 
-where $u_t$ is i.i.d. with mean zero and variance $\sigma_u^2$, $a > 0$, $b \in (0, 1)$, $p_t$ is the market price, and $p_{t+1}^e$ is the market's expectation of next period's price.
+where $u_t$ is IID with mean zero and variance $\sigma_u^2$, $a > 0$, $b \in (0, 1)$, $p_t$ is the market price, and $p_{t+1}^e$ is the market's expectation of next period's price.
 
 The rational expectations equilibrium has $p_{t+1}^e = \frac{a}{1-b}$ and $p_t = \frac{a}{1-b} + u_t$.
 
@@ -296,8 +296,8 @@ G = bray.approx_spectrum(c_star, σ_ε2)
 
 half = bray.N // 2
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.plot(bray.ω[:half], np.log(F[:half]), 'C0', label='true model')
-ax.plot(bray.ω[:half], np.log(G[:half]), 'C1--', label='forecasting model')
+ax.plot(bray.ω[:half], np.log(F[:half]), 'C0', label='true model', lw=2)
+ax.plot(bray.ω[:half], np.log(G[:half]), 'C1--', label='forecasting model', lw=2)
 ax.set_xlabel(r'angular frequency $\omega$')
 ax.set_ylabel('log spectral density')
 ax.legend()
@@ -336,8 +336,8 @@ irf_true = scale * impulse_response(1 - C_star, φ)          # f(L)
 irf_approx = impulse_response(1 - c_star, bray.ρ)           # g(L)
 
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.plot(irf_true, 'C0o-', ms=4, label='true model')
-ax.plot(irf_approx, 'C1s--', ms=4, label='approximating model')
+ax.plot(irf_true, 'C0o-', ms=4, label='true model', lw=2)
+ax.plot(irf_approx, 'C1s--', ms=4, label='approximating model', lw=2)
 ax.set_xlabel('lag')
 ax.set_ylabel('response')
 ax.legend()
@@ -392,7 +392,7 @@ b_grid = np.arange(0.1, 0.85, 0.1)
 C_of_b = [solve_equilibrium(BrayModel(a=1.0, b=b, σ_u=1.0)) for b in b_grid]
 
 fig, ax = plt.subplots(figsize=(8, 4.5))
-ax.plot(b_grid, C_of_b, 'o-')
+ax.plot(b_grid, C_of_b, 'o-', lw=2)
 ax.set_xlabel('feedback parameter $b$')
 ax.set_ylabel('equilibrium belief $C$')
 plt.show()

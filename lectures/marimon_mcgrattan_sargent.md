@@ -189,10 +189,13 @@ Not consuming is not free either -- it costs $s(x^+_{at})$.
 Learning which of these to do is part of the problem.
 
 ```{note}
-Kiyotaki and Wright ranked payoff streams by expected discounted utility.  Marimon,
-McGrattan and Sargent instead assume that each agent cares about his **long-run average**
-utility.  This matters: as we shall see, it is the reason the accounting system inside a
-classifier system is built out of running averages.
+Kiyotaki and Wright ranked payoff streams by expected discounted utility.
+
+Marimon, McGrattan and Sargent instead assume that each agent cares about his **long-run
+average** utility.
+
+This matters: as we shall see, it is the reason the accounting system inside a classifier
+system is built out of running averages.
 ```
 
 ### Two equilibria
@@ -282,9 +285,10 @@ For example
 There are $6 \times 6 \times 2 = 72$ distinct exchange classifiers, which is a *complete
 enumeration* of all rules definable on the state $z_{at}$.
 
-A **consumption classifier** is a string of length 4: two positions for the post-trade
-holding $x^+_{at}$ and one action digit ($1$ = consume). There are $6 \times 2 = 12$ of
-these.
+A **consumption classifier** is a string of length 4: two positions for the post-trade holding
+$x^+_{at}$ and one action digit ($1$ = consume).
+
+There are $6 \times 2 = 12$ of these.
 
 ### The auction
 
@@ -368,6 +372,7 @@ across periods.
 The consumption classifier updated at date $t$ is the one that won at $t-1$: it collects the
 external payoff its own decision earned, and it collects the bid $b_1(e)S_e$ from the exchange
 classifier winning *now*, because that is the classifier whose opportunity to act it created.
+
 The exchange classifier, in turn, is paid within the period by the consumption classifier that
 follows it.
 
@@ -386,14 +391,17 @@ its counter does not advance: the agent learns nothing from an offer that was re
 ```{note}
 Equations {eq}`mms_strengthc`-{eq}`mms_strengthe` make strength a **cumulative average** of
 past net receipts rather than a cumulative total, which is what Holland's original
-specification used.  This is the innovation that makes strengths converge.  With
-$1/\tau$ gains these are stochastic approximation recursions, so any limit point must
+specification used.
+
+This is the innovation that makes strengths converge.
+
+With $1/\tau$ gains these are stochastic approximation recursions, so any limit point must
 satisfy
 
 $$
-E\Bigl[(1 + b_2(c))S_c - \sum_e I_e b_1(e) S_e - U(\gamma_c)\Bigr] = 0,
+\mathbb{E}\Bigl[(1 + b_2(c))S_c - \sum_e I_e b_1(e) S_e - U(\gamma_c)\Bigr] = 0,
 \qquad
-E\Bigl[(1 + b_1(e))S_e - \sum_c I_c b_2(c) S_c\Bigr] = 0 .
+\mathbb{E}\Bigl[(1 + b_1(e))S_e - \sum_c I_c b_2(c) S_c\Bigr] = 0 .
 $$
 
 Marimon, McGrattan and Sargent define a set of strengths solving these equations to be
@@ -663,10 +671,10 @@ class Agent:
         b2 = b21 + b22 * C.specificity(c)
 
         if active:                       # exchange rule: pays b1, receives b2 * S_c
-            tau = T.used[e]
+            τ = T.used[e]
             T.used[e] += 1
             T.traded[e] += int(T.action[e] == 1)
-            T.strength[e] -= ((1 + b1) * T.strength[e] - b2 * C.strength[c]) / tau
+            T.strength[e] -= ((1 + b1) * T.strength[e] - b2 * C.strength[c]) / τ
 
         # Now settle last period's consumption rule.  Its update waits a period
         # because only now is the second of its two receipts known: it collects
@@ -852,8 +860,11 @@ class Simulation:
 therefore deferred to {ref}`mms_ga` below, where they can be motivated by the problem they
 solve.
 
-Deferring them costs nothing. Python looks names up when a function runs rather than when it
-is defined, and the complete-enumeration economies we study first never call any of the four.
+Deferring them costs nothing.
+
+Python looks names up when a function runs rather than when it is defined, and the
+complete-enumeration economies we study first never call any of the four.
+
 Readers who prefer to see the machinery before it is used can run that section's cells first.
 ```
 
@@ -1555,11 +1566,16 @@ plot_flows(sim_a12, title="Economy A1.2: discovered exchange pattern")
 ```
 
 ```{warning}
-Convergence is not guaranteed run by run.  With random initial rules the population
-sometimes fails to manufacture the rules needed for the fundamental equilibrium within
-2000 periods, and the economy settles into a pattern with little trade.  Try changing the
-seed above to see this.  The paper is explicit that the algorithm has "too little
-experimentation" and that improving it is unfinished business.
+Convergence is not guaranteed run by run.
+
+With random initial rules the population sometimes fails to manufacture the rules needed for
+the fundamental equilibrium within 2000 periods, and the economy settles into a pattern with
+little trade.
+
+Try changing the seed above to see this.
+
+The paper is explicit that the algorithm has "too little experimentation" and that improving it
+is unfinished business.
 ```
 
 ## Economy C: fiat money
@@ -1775,9 +1791,11 @@ Out of this the following emerges:
   trading patterns converge to a stationary Nash equilibrium of the Kiyotaki-Wright model.
 * **Learning selects among equilibria.** Where the rational-expectations model admits both a
   fundamental and a speculative equilibrium, the classifier systems always found the
-  fundamental one. Economy A2 shows they found it even where theory says it should not be an
-  equilibrium at all for patient agents, and Economy B shows this is not simply early
-  myopia, since that economy moves *away* from a speculative pattern as it learns.
+  fundamental one.
+  - Economy A2 shows they found it even where theory says it should not be an equilibrium at
+    all for patient agents.
+  - Economy B shows this is not simply early myopia, since that economy moves *away* from a
+    speculative pattern as it learns.
 * **Institutions can be discovered.** Economy C's agents built a fiat monetary system out of
   nothing but their own experience of storage costs.
 * **The method scales.** Economy D produced a credible description of equilibrium in a model
@@ -1902,6 +1920,7 @@ toward the fundamental equilibrium that the paper describes.
 
 After that the type 3 split stops moving in one direction and rattles around a half-and-half
 mix from one reading to the next, so this economy has not converged in the sense that B.1 has.
+
 That is the paper's own verdict on it.
 
 Compared with the complete-enumeration run, the genetic algorithm gets type 1 and type 2 to
@@ -1950,8 +1969,9 @@ sim_flat.run(1000)
 print(holdings(sim_flat))
 ```
 
-The holdings are unchanged: the fundamental equilibrium is reached either way. What changes is
-the *kind of rule* that gets there.
+The holdings are unchanged: the fundamental equilibrium is reached either way.
+
+What changes is the *kind of rule* that gets there.
 
 ```{code-cell} ipython3
 def wildcards_in_winners(sim):
@@ -1996,15 +2016,18 @@ print(f"higher without the premium in {np.sum(flat > base)} of {len(base)} seeds
 Removing the specificity premium raises the average generality of the winning rules, but the
 effect is modest and does not show up in every run.
 
-That is worth knowing rather than glossing over. With a complete enumeration the specific rules
-are all present from the start and accumulate strength on their own, so the bid premium is only
-one of the forces tilting the auction toward them; the counter is a genuine tendency visible in
-the average rather than a law obeyed run by run.
+That is worth knowing rather than glossing over.
 
-The tilt matters more where it is harder to see. It is the mechanism the paper blames for the
-failure of Economy A2: general consumption classifiers cannot tell stored goods apart, so they
-cannot transmit to the exchange classifiers the information that would make speculation
-profitable.
+With a complete enumeration the specific rules are all present from the start and accumulate
+strength on their own, so the bid premium is only one of the forces tilting the auction toward
+them; the counter is a genuine tendency visible in the average rather than a law obeyed run by
+run.
+
+The tilt matters more where it is harder to see.
+
+It is the mechanism the paper blames for the failure of Economy A2: general consumption
+classifiers cannot tell stored goods apart, so they cannot transmit to the exchange classifiers
+the information that would make speculation profitable.
 
 ```{solution-end}
 ```

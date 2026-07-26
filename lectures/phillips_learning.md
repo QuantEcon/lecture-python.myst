@@ -52,7 +52,7 @@ We ask whether such an adaptive government converges to a self-confirming equili
 The answer depends on a single parameter — the **gain** that governs how fast old data are discounted:
 
 * With a *decreasing* gain that implements least squares, the mean dynamics pull the economy to a self-confirming equilibrium, and we get nothing new: the system is stuck near the Nash outcome.
-* With a *constant* gain, agents discount past data, convergence is arrested, and **new outcomes emerge**. The system recurrently *escapes* the self-confirming equilibrium toward the Ramsey (zero-inflation) outcome — spontaneous stabilizations that resemble the arrival of Volcker.
+* With a *constant* gain, agents discount past data, convergence is arrested, and **new outcomes emerge** as the system recurrently *escapes* the self-confirming equilibrium toward the Ramsey (zero-inflation) outcome, in spontaneous stabilizations that resemble the arrival of Volcker.
 
 These escapes are the heart of the *vindication of econometric policy evaluation* story from {doc}`phillips_two_stories`: an adaptive government, learning a Solow-Tobin distributed-lag version of the natural-rate hypothesis, is led by chance observations to stabilize inflation.
 
@@ -80,7 +80,7 @@ The material is technical, and readers who want the punchline can skip to the si
 
 A self-confirming equilibrium under the classical identification is pinned down by the government's beliefs about some population moments and the regression coefficients they imply.
 
-Under the classical identification these beliefs are measured by the triple $(\gamma, \, E X_{C} X_{C}', \, E U X_{C})$, where $\gamma$ is the vector of Phillips-curve coefficients.
+Under the classical identification these beliefs are measured by the triple $(\gamma, \, E X_{C} X_{C}^\top, \, E U X_{C})$, where $\gamma$ is the vector of Phillips-curve coefficients.
 
 In the adaptive models of this lecture the *time-$t$ values* of these objects are among the economy's state variables; they disappear as state variables in a self-confirming equilibrium only because there they are constants.
 
@@ -90,8 +90,8 @@ A self-confirming equilibrium under the classical identification satisfies the m
 :label: pl_scemoments
 
 \begin{aligned}
-E\, R_{XC}^{-1}(\gamma)\left[ U_t X_{Ct}' - \left(X_{Ct} X_{Ct}'\right)\gamma \right] &= 0, \\
-E\, X_{Ct} X_{Ct}' - R_{XC}(\gamma) &= 0,
+\mathbb{E}\, R_{XC}^{-1}(\gamma)\left[ U_t X_{Ct}^\top - \left(X_{Ct} X_{Ct}^\top \right)\gamma \right] &= 0, \\
+\mathbb{E}\, X_{Ct} X_{Ct}^\top - R_{XC}(\gamma) &= 0,
 \end{aligned}
 ```
 
@@ -116,9 +116,9 @@ The moment conditions {eq}`pl_scemoments` then take the compact form
 ```{math}
 :label: pl_bdef
 
-E\left[F(\phi, \zeta)\right] = 0,
+\mathbb{E}\left[F(\phi, \zeta)\right] = 0,
 \qquad
-b(\phi) \equiv E\left[F(\phi, \zeta)\right],
+b(\phi) \equiv \mathbb{E}\left[F(\phi, \zeta)\right],
 ```
 
 where $\zeta$ is a random vector and the expectation is over its distribution (which, again, depends on $\phi$).
@@ -147,7 +147,7 @@ where the distribution used to evaluate the expectation defining $b(\phi_k)$ in 
 
 This is the relaxation algorithm used to compute self-confirming equilibria in {doc}`phillips_self_confirming`.
 
-Each step requires evaluating the mathematical expectation $b(\phi) = E[F(\phi, \zeta)]$ — which is exactly why we needed the moment (Lyapunov) formulas there.
+Each step requires evaluating the mathematical expectation $b(\phi) = \mathbb{E}[F(\phi, \zeta)]$ — which is exactly why we needed the moment (Lyapunov) formulas there.
 
 ### Stochastic approximation
 
@@ -176,7 +176,17 @@ One then approximates $\phi^o(t)$ by a continuous-time process as $n \to \infty$
 Different rates of decrease of the gain sequence $\{a_n\}$ produce different approximating processes, because they change the mapping {eq}`pl_artificial` from real time $n$ to artificial time $t_n$.
 
 ```{note}
-Recursive stochastic approximation originates with {cite}`RobbinsMonro1951`, who devised {eq}`pl_sa` to find the root of a regression function observed with noise, and with {cite}`KieferWolfowitz1952`, who adapted it to find the maximum of a regression function (the "K-W" algorithms referred to below). The "ODE method" for analyzing such recursions — approximating the interpolated process by the solution of a differential equation — is due to {cite}`Ljung1977`; book-length treatments are {cite}`BenvenisteMetivierPriouret1990` and {cite}`KushnerYin2003`. Its use to study learning in self-referential macroeconomic models is developed by {cite}`MarcetSargent1989` and, comprehensively, by {cite}`EvansHonkapohja2001`.
+Recursive stochastic approximation originates with {cite}`RobbinsMonro1951`, who devised
+{eq}`pl_sa` to find the root of a regression function observed with noise, and with
+{cite}`KieferWolfowitz1952`, who adapted it to find the maximum of a regression function (the
+"K-W" algorithms referred to below).
+
+The "ODE method" for analyzing such recursions — approximating the interpolated process by the
+solution of a differential equation — is due to {cite}`Ljung1977`; book-length treatments are
+{cite}`BenvenisteMetivierPriouret1990` and {cite}`KushnerYin2003`.
+
+Its use to study learning in self-referential macroeconomic models is developed by
+{cite}`MarcetSargent1989` and, comprehensively, by {cite}`EvansHonkapohja2001`.
 ```
 
 ### Mean dynamics
@@ -245,17 +255,21 @@ First, the log moment generating function of (an averaged version of) the innova
 ```{math}
 :label: pl_mgf
 
-H(\theta, \phi) = \log E \exp\left(\theta' F(\phi, \zeta)\right),
+H(\theta, \phi) = \log \mathbb{E} \exp\left(\theta^\top F(\phi, \zeta)\right),
 ```
 
 where the expectation is over the distribution of $\zeta$.
 
 ```{note}
-Equation {eq}`pl_mgf` is a heuristic shorthand. The object that actually enters the theory is a *time-averaged* limit; {cite}`DupuisKushner1987` and {cite}`KushnerYin2003` assume that for each $\delta > 0$ the following limit exists uniformly in $\phi_i, \alpha_i$ on any compact set:
+Equation {eq}`pl_mgf` is a heuristic shorthand.
+
+The object that actually enters the theory is a *time-averaged* limit;
+{cite}`DupuisKushner1987` and {cite}`KushnerYin2003` assume that for each $\delta > 0$ the
+following limit exists uniformly in $\phi_i, \alpha_i$ on any compact set:
 $$
 \sum_{i=0}^{T/\delta - 1} \delta\, H(\alpha_i, \phi_i)
 = \lim_{N \to \infty} \frac{\delta}{N}
-  \log E \exp \sum_{i=0}^{T/\delta - 1} \alpha_i'
+  \log \mathbb{E} \exp \sum_{i=0}^{T/\delta - 1} \alpha_i^\top
   \sum_{j=iN}^{iN+N-1} F(\phi_i, \zeta_j) .
 $$
 The inner sum averages the innovations over a block of length $N$; the double limit lets us treat serially dependent innovations.
@@ -266,7 +280,7 @@ Second, the **Legendre transform** of $H$, which plays the role of a rate functi
 ```{math}
 :label: pl_legendre
 
-L(\beta, \phi) = \sup_\theta \left[ \theta'\beta - H(\theta, \phi) \right] .
+L(\beta, \phi) = \sup_\theta \left[ \theta^\top \beta - H(\theta, \phi) \right] .
 ```
 
 Third, the **action functional**, which measures the "cost" of a candidate escape path $\phi(\cdot)$:
@@ -328,7 +342,7 @@ $$
 F(\phi, \zeta) = b(\phi) + \sigma(\phi)\, \zeta,
 $$
 
-where $\zeta_n$ is stationary and Gaussian but not necessarily serially uncorrelated, and define $R = \sum_j E\, \zeta_t \zeta_{t-j}'$.
+where $\zeta_n$ is stationary and Gaussian but not necessarily serially uncorrelated, and define $R = \sum_j \mathbb{E}\, \zeta_t \zeta_{t-j}^\top$.
 
 Then the action functional takes the quadratic form
 
@@ -336,22 +350,31 @@ Then the action functional takes the quadratic form
 :label: pl_action2
 
 S(T, \phi) = \frac{1}{2} \int_0^T
-\left(\tfrac{d}{ds}\phi - b(\phi)\right)'
-\left[\sigma(\phi)\, R\, \sigma(\phi)'\right]^{+}
+\left(\tfrac{d}{ds}\phi - b(\phi)\right)^\top
+\left[\sigma(\phi)\, R\, \sigma(\phi)^\top \right]^{+}
 \left(\tfrac{d}{ds}\phi - b(\phi)\right)
 h(s)\, ds ,
 ```
 
-where $(\cdot)^{+}$ is the Moore-Penrose generalized inverse (used to handle possible stochastic singularity of $\sigma R \sigma'$).
+where $(\cdot)^{+}$ is the Moore-Penrose generalized inverse (used to handle possible stochastic singularity of $\sigma R \sigma^\top$).
 
 The weight $h(s)$ depends on the gain: $h(s) = \exp(s)$ when $\gamma = 1$ in $a_n = a_0 / n^\gamma$, and $h(s) = 1$ when $\gamma < 1$.
 
-Read {eq}`pl_action2` as a cost that penalizes departures of the *realized drift* $\tfrac{d}{ds}\phi$ from the *mean drift* $b(\phi)$, weighting each direction by the inverse of the local noise covariance $\sigma R \sigma'$.
+Read {eq}`pl_action2` as a cost that penalizes departures of the *realized drift* $\tfrac{d}{ds}\phi$ from the *mean drift* $b(\phi)$, weighting each direction by the inverse of the local noise covariance $\sigma R \sigma^\top$.
 
 The least-action escape therefore threads the beliefs through regions where the mean dynamics are weak and the noise is informative — which, in our model, is the direction of the *induction hypothesis*.
 
 ```{note}
-This quadratic action functional is precisely the object minimized in {cite}`ChoWilliamsSargent2002`, the published treatment of the model of this lecture. They solve the control problem {eq}`pl_escapeproblem` for the Nash self-confirming equilibrium and show, analytically, that the least-action escape drives the sum of weights on inflation toward the value that activates the induction hypothesis — that is, toward the Ramsey outcome. {cite}`SargentWilliams2005` study how the government's prior (equivalently, the covariance structure of the gain algorithm, our $P_0$ and forgetting factor) reshapes the escape, and {cite}`Kasa2004` applies the same large-deviation machinery to recurrent currency crises.
+This quadratic action functional is precisely the object minimized in
+{cite}`ChoWilliamsSargent2002`, the published treatment of the model of this lecture.
+
+They solve the control problem {eq}`pl_escapeproblem` for the Nash self-confirming equilibrium
+and show, analytically, that the least-action escape drives the sum of weights on inflation
+toward the value that activates the induction hypothesis — that is, toward the Ramsey outcome.
+
+{cite}`SargentWilliams2005` study how the government's prior (equivalently, the covariance
+structure of the gain algorithm, our $P_0$ and forgetting factor) reshapes the escape, and
+{cite}`Kasa2004` applies the same large-deviation machinery to recurrent currency crises.
 ```
 
 ### From computation to adaptation
@@ -366,7 +389,25 @@ Two facts organize everything below:
 2. gain sequences that fall off more slowly — in the limit, constant gains that discount the past — *arrest* that pull and increase the frequency with which the escape dynamics influence outcomes.
 
 ```{note}
-A brief intellectual history. {cite}`Lucas_Prescott_1971` dismissed iterating on the moment conditions {eq}`pl_scezero` as a computational strategy, but {cite}`Townsend1983` used it. {cite}`Woodford1990` and {cite}`MarcetSargent1989` used the mean dynamics {eq}`pl_ode` to establish conditions for the convergence of least squares learning to rational expectations in models with self-reference, both requiring continuity of $b(\phi)$. In-Koo Cho studied problems with *discontinuous* $b(\phi)$ inherited from discontinuous decision rules (trigger strategies in credibility and search problems); to make least squares learning approach rational expectations he used gains satisfying $\tfrac{1}{\log n} < a_n < \tfrac{1}{\sqrt n}$, which yield a *diffusion* approximation to {eq}`pl_sa` that promotes enough experimentation to discover an equilibrium. {cite}`KandoriMailathRob1993` use related mathematics to select long-run equilibria in games via mutation, and Roger Myerson applied an escape-route calculation to a voting problem. The modern synthesis of these learning methods is {cite}`EvansHonkapohja2001`.
+A brief intellectual history.
+
+{cite}`Lucas_Prescott_1971` dismissed iterating on the moment conditions {eq}`pl_scezero` as a
+computational strategy, but {cite}`Townsend1983` used it.
+
+{cite}`Woodford1990` and {cite}`MarcetSargent1989` used the mean dynamics {eq}`pl_ode` to
+establish conditions for the convergence of least squares learning to rational expectations in
+models with self-reference, both requiring continuity of $b(\phi)$.
+
+In-Koo Cho studied problems with *discontinuous* $b(\phi)$ inherited from discontinuous
+decision rules (trigger strategies in credibility and search problems); to make least squares
+learning approach rational expectations he used gains satisfying $\tfrac{1}{\log n} < a_n < \tfrac{1}{\sqrt n}$,
+which yield a *diffusion* approximation to {eq}`pl_sa` that promotes enough experimentation to
+discover an equilibrium.
+
+{cite}`KandoriMailathRob1993` use related mathematics to select long-run equilibria in games
+via mutation, and Roger Myerson applied an escape-route calculation to a voting problem.
+
+The modern synthesis of these learning methods is {cite}`EvansHonkapohja2001`.
 ```
 
 ## The adaptive model
@@ -380,9 +421,9 @@ The government believes in a distributed-lag Phillips curve
 ```{math}
 :label: pl_belief
 
-U_t = \gamma' X_{C,t} + \varepsilon_{C,t},
+U_t = \gamma^\top X_{C,t} + \varepsilon_{C,t},
 \qquad
-X_{C,t} = \begin{bmatrix} y_t & U_{t-1} & U_{t-2} & y_{t-1} & y_{t-2} & 1 \end{bmatrix}' .
+X_{C,t} = \begin{bmatrix} y_t & U_{t-1} & U_{t-2} & y_{t-1} & y_{t-2} & 1 \end{bmatrix}^\top.
 ```
 
 Arriving at time $t$ with an estimate $\gamma_{t-1}$, it sets the systematic part of inflation by solving the Phelps problem *as if* $\gamma_{t-1}$ will govern the Phillips curve forever:
@@ -392,7 +433,7 @@ Arriving at time $t$ with an estimate $\gamma_{t-1}$, it sets the systematic par
 
 y_t = h(\gamma_{t-1}) X_{t-1} + v_{2t},
 \qquad
-X_{t-1} = \begin{bmatrix} U_{t-1} & U_{t-2} & y_{t-1} & y_{t-2} & 1 \end{bmatrix}' .
+X_{t-1} = \begin{bmatrix} U_{t-1} & U_{t-2} & y_{t-1} & y_{t-2} & 1 \end{bmatrix}^\top.
 ```
 
 It then updates its beliefs by **recursive least squares** (RLS):
@@ -401,8 +442,8 @@ It then updates its beliefs by **recursive least squares** (RLS):
 :label: pl_rls
 
 \begin{aligned}
-\gamma_t &= \gamma_{t-1} + g_t R_{XC,t}^{-1} X_{C,t}\left(U_t - \gamma_{t-1}' X_{C,t}\right), \\
-R_{XC,t} &= R_{XC,t-1} + g_t\left(X_{C,t} X_{C,t}' - R_{XC,t-1}\right),
+\gamma_t &= \gamma_{t-1} + g_t R_{XC,t}^{-1} X_{C,t}\left(U_t - \gamma_{t-1}^\top X_{C,t}\right), \\
+R_{XC,t} &= R_{XC,t-1} + g_t\left(X_{C,t} X_{C,t}^\top - R_{XC,t-1}\right),
 \end{aligned}
 ```
 
@@ -422,14 +463,14 @@ $$
 
 Given a belief $\gamma$, the decision rule $h(\gamma)$ solves an LQ control problem.
 
-Write the believed Phillips curve as $U_t = \gamma_0 y_t + c' s_t$, where $\gamma_0$ is the coefficient on current inflation and $c$ collects the coefficients on the state $s_t = X_{t-1}$.
+Write the believed Phillips curve as $U_t = \gamma_0 y_t + c^\top s_t$, where $\gamma_0$ is the coefficient on current inflation and $c$ collects the coefficients on the state $s_t = X_{t-1}$.
 
-The government minimizes $E\sum_t \delta^t (U_t^2 + y_t^2)$, so the per-period loss is $s_t' (cc') s_t + (\gamma_0^2 + 1) y_t^2 + 2\gamma_0\, y_t\, c' s_t$, and the state evolves as $s_{t+1} = A s_t + B y_t$ with
+The government minimizes $\mathbb{E}\sum_t \delta^t (U_t^2 + y_t^2)$, so the per-period loss is $s_t^\top (cc^\top) s_t + (\gamma_0^2 + 1) y_t^2 + 2\gamma_0\, y_t\, c^\top s_t$, and the state evolves as $s_{t+1} = A s_t + B y_t$ with
 
 $$
 s_{t+1} = \begin{bmatrix} U_t \\ U_{t-1} \\ y_t \\ y_{t-1} \\ 1 \end{bmatrix},
 \qquad
-U_t = c' s_t + \gamma_0 y_t .
+U_t = c^\top s_t + \gamma_0 y_t .
 $$
 
 We solve the discounted LQ problem with `scipy`'s discrete algebraic Riccati equation.
@@ -568,7 +609,6 @@ ax.axhline(5, color='k', ls='--', lw=1, label='self-confirming (Nash)')
 ax.axhline(0, color='C2', ls=':', lw=1, label='Ramsey')
 ax.set_xlabel('$t$')
 ax.set_ylabel('inflation $y_t$')
-ax.set_title('Figure 8.1: classical adaptive model, least squares')
 ax.legend()
 plt.show()
 ```
@@ -596,8 +636,6 @@ ax.axhline(5, color='k', ls='--', lw=1, label='self-confirming (Nash)')
 ax.axhline(0, color='C2', ls=':', lw=1, label='Ramsey')
 ax.set_xlabel('$t$')
 ax.set_ylabel('inflation $y_t$')
-ax.set_title('Figure 8.2: classical adaptive model, constant gain '
-             r'($\lambda = 0.975$)')
 ax.legend()
 plt.show()
 ```
@@ -704,7 +742,6 @@ ax.axhline(0, color='k', lw=0.5)
 ax.set_xlabel('$t$')
 ax.set_ylabel('inflation $y_t$')
 ax.legend()
-ax.set_title('Escapes toward Ramsey deepen as the government becomes patient')
 plt.show()
 ```
 
@@ -753,7 +790,16 @@ Simulate the classical adaptive model with $\lambda \in \{0.99, 0.975, 0.95\}$ a
 How does a larger gain (smaller $\lambda$, faster discounting of the past) affect the frequency of escapes?
 
 ```{note}
-A more ambitious version of this exercise is to build the **Keynesian** adaptive model, in which the government fits the Phillips curve in the reverse direction, regressing inflation on unemployment. The regressors are $X_{K,t} = \begin{bmatrix} U_t & U_{t-1} & U_{t-2} & y_{t-1} & y_{t-2} & 1 \end{bmatrix}'$; the government estimates $\beta$ in $y_t = \beta' X_{K,t} + \varepsilon_{K,t}$, then inverts to $\gamma$ using the inversion formulas $\gamma_1 = \beta_1^{-1}$, $\gamma_{-1} = -\beta_{-1}/\beta_1$ of {doc}`phillips_self_confirming` before solving the Phelps problem. {cite}`Sargent1999` reports that this variant escapes less readily than the classical one.
+A more ambitious version of this exercise is to build the **Keynesian** adaptive model, in
+which the government fits the Phillips curve in the reverse direction, regressing inflation on
+unemployment.
+
+The regressors are $X_{K,t} = \begin{bmatrix} U_t & U_{t-1} & U_{t-2} & y_{t-1} & y_{t-2} & 1 \end{bmatrix}^\top$;
+the government estimates $\beta$ in $y_t = \beta^\top X_{K,t} + \varepsilon_{K,t}$, then inverts to
+$\gamma$ using the inversion formulas $\gamma_1 = \beta_1^{-1}$, $\gamma_{-1} = -\beta_{-1}/\beta_1$
+of {doc}`phillips_self_confirming` before solving the Phelps problem.
+
+{cite}`Sargent1999` reports that this variant escapes less readily than the classical one.
 ```
 
 ```{exercise-end}

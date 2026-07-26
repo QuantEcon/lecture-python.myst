@@ -44,26 +44,41 @@ puts adaptive ones in their place.
 
 Two questions organize what follows.
 
-**First**, does learning pin the exchange rate down? An adaptive agent has beliefs, a rule for
-revising them, and initial conditions, and those initial conditions are exactly what the
-equilibrium conditions failed to determine. So a system of adaptive agents *can* select an
-exchange rate where rational expectations could not.
+**First**, does learning pin the exchange rate down?
 
-We shall see that it does, but in a very particular way. Newton–Raphson learners converge to a
-**determinate** exchange rate that depends entirely on where they started. The "dead hand of
-history" does the pinning that fundamentals refused to do.
+An adaptive agent has beliefs, a rule for revising them, and initial conditions, and those
+initial conditions are exactly what the equilibrium conditions failed to determine.
 
-**Second**, does a ghost of the indeterminacy survive? It does. The rest points of the learning
-algorithm reproduce the indeterminacy exactly: the condition that stops the algorithm is the
-same arbitrage condition that made the exchange rate free in the first place. Sargent calls a
-regime that leaves the exchange rate history-dependent "a weak reed" on which to base exchange
-rate determination.
+So a system of adaptive agents *can* select an exchange rate where rational expectations could
+not.
 
-Then we turn to evidence. {cite:t}`Arifovic1996` ran this economy as a laboratory experiment
-with paying human subjects. Their exchange rate never settled down. And when she replaced the
-Newton–Raphson learners with a **genetic algorithm** — a population of binary-string agents bred
-by selection, crossover, and mutation — she got an economy whose exchange rate wanders
-persistently, with a spectrum resembling real floating exchange rates.
+We shall see that it does, but in a very particular way.
+
+Newton–Raphson learners converge to a **determinate** exchange rate that depends entirely on
+where they started.
+
+The "dead hand of history" does the pinning that fundamentals refused to do.
+
+**Second**, does a ghost of the indeterminacy survive?
+
+It does.
+
+The rest points of the learning algorithm reproduce the indeterminacy exactly: the condition
+that stops the algorithm is the same arbitrage condition that made the exchange rate free in
+the first place.
+
+Sargent calls a regime that leaves the exchange rate history-dependent "a weak reed" on which
+to base exchange rate determination.
+
+Then we turn to evidence.
+
+{cite:t}`Arifovic1996` ran this economy as a laboratory experiment with paying human subjects.
+
+Their exchange rate never settled down.
+
+And when she replaced the Newton–Raphson learners with a **genetic algorithm** — a population
+of binary-string agents bred by selection, crossover, and mutation — she got an economy whose
+exchange rate wanders persistently, with a spectrum resembling real floating exchange rates.
 
 That contrast — a learning rule that converges versus one that generates permanent volatility —
 is where this lecture lands, and it is the on-ramp to {doc}`marimon_mcgrattan_sargent`, where
@@ -84,7 +99,9 @@ We use the overlapping generations incarnation of the {cite:t}`KarekenWallace198
 indeterminacy.
 
 At each date $t$, $N$ two-period-lived agents are born, endowed with $w_1$ when young and $w_2$
-when old, with $w_1 > w_2$. There are two fiat currencies in fixed supplies $H_1$ and $H_2$.
+when old, with $w_1 > w_2$.
+
+There are two fiat currencies in fixed supplies $H_1$ and $H_2$.
 
 A young agent makes two decisions: how much to save, $s_t$, and what fraction $\lambda_t$ of
 that saving to hold in currency 1 (the rest going to currency 2).
@@ -101,7 +118,9 @@ U(s_t, \lambda_t)
 ```
 
 where $p_{it}$ is the price level in currency $i$ and $p_{it}/p_{i,t+1}$ is the gross return on
-holding currency $i$. We take $u(c) = \ln c$ throughout.
+holding currency $i$.
+
+We take $u(c) = \ln c$ throughout.
 
 Equating each currency's supply to the demand for it gives the price levels
 
@@ -117,9 +136,10 @@ and the exchange rate is $e_t = p_{1t}/p_{2t}$.
 
 ### The indeterminacy, recalled
 
-Consider a stationary equilibrium with constant prices. Then each currency returns
-$p_{it}/p_{i,t+1} = 1$, so both returns are equal, and the portfolio return in {eq}`xr_utility`
-is $1$ regardless of $\lambda$.
+Consider a stationary equilibrium with constant prices.
+
+Then each currency returns $p_{it}/p_{i,t+1} = 1$, so both returns are equal, and the portfolio
+return in {eq}`xr_utility` is $1$ regardless of $\lambda$.
 
 The saving decision then solves $\max_s \ln(w_1 - s) + \ln(w_2 + s)$, giving
 
@@ -130,14 +150,16 @@ $$
 but the portfolio share $\lambda$ is *completely undetermined*: utility does not depend on it
 when the two returns are equal.
 
-And $\lambda$ is what fixes the exchange rate. From {eq}`xr_prices`, with a common
-$(s, \lambda)$,
+And $\lambda$ is what fixes the exchange rate.
+
+From {eq}`xr_prices`, with a common $(s, \lambda)$,
 
 $$
 e = \frac{p_{1}}{p_{2}} = \frac{H_1}{H_2}\cdot\frac{1 - \lambda}{\lambda}.
 $$
 
 Every $\lambda \in (0, 1)$ is an equilibrium, so every $e \in (0, \infty)$ is an equilibrium.
+
 This is the indeterminacy of {doc}`bounded_rationality`, now expressed through an undetermined
 portfolio choice.
 
@@ -168,15 +190,18 @@ print(f"any portfolio share λ is an equilibrium, and e = (H1/H2)(1-λ)/λ is fr
 
 Now expel the rational agents.
 
-Following {cite:t}`Sargent1993`, we split the population into two classes — call them "even" and
-"odd" — because a cohort's lifetime utility cannot be evaluated until it is old. Each class
-carries its own rule $(s, \lambda)$, updated only from the experience of earlier agents of the
-same class.
+Following {cite:t}`Sargent1993`, we split the population into two classes — call them "even"
+and "odd" — because a cohort's lifetime utility cannot be evaluated until it is old.
+
+Each class carries its own rule $(s, \lambda)$, updated only from the experience of earlier
+agents of the same class.
 
 An agent revises $(s, \lambda)$ by a **Newton–Raphson** step against realized utility: move in
 the direction that a second-order expansion of {eq}`xr_utility` says would have raised utility,
-given the returns the agent actually experienced. Writing $g$ for the gradient and $R$ for a
-running estimate of the (negative-definite) Hessian, the recursion is
+given the returns the agent actually experienced.
+
+Writing $g$ for the gradient and $R$ for a running estimate of the (negative-definite) Hessian,
+the recursion is
 
 ```{math}
 :label: xr_newton
@@ -210,21 +235,26 @@ def grad_hess(p, s, lam, R1, R2):
 
 ### The indeterminacy shows up as a singular Hessian
 
-Look at the $\lambda$ block of the Hessian. When the two returns are equal, $R_1 = R_2$, every
-$\lambda$-derivative vanishes: the gradient component $s(R_1 - R_2)/c_2$ is zero, and so is the
-curvature $-s^2(R_1 - R_2)^2/c_2^2$.
+Look at the $\lambda$ block of the Hessian.
 
-Utility is **flat in $\lambda$** at equal returns. That is the indeterminacy, seen locally: there
-is no force pushing $\lambda$ in any direction, so a Newton step — which divides the gradient by
-the curvature — is $0/0$ in the $\lambda$ direction.
+When the two returns are equal, $R_1 = R_2$, every $\lambda$-derivative vanishes: the gradient
+component $s(R_1 - R_2)/c_2$ is zero, and so is the curvature $-s^2(R_1 - R_2)^2/c_2^2$.
 
-For the algorithm to move at all we must keep $R$ invertible. We do that with a small **prior
-curvature** $\kappa$ in the $\lambda$ direction. Economically this is exactly the sluggishness
-that {cite:t}`Sargent1993` invokes: it is the "dead hand of history" that lets an otherwise-free
-exchange rate settle down.
+Utility is **flat in $\lambda$** at equal returns.
+
+That is the indeterminacy, seen locally: there is no force pushing $\lambda$ in any direction,
+so a Newton step — which divides the gradient by the curvature — is $0/0$ in the $\lambda$
+direction.
+
+For the algorithm to move at all we must keep $R$ invertible.
+
+We do that with a small **prior curvature** $\kappa$ in the $\lambda$ direction.
+
+Economically this is exactly the sluggishness that {cite:t}`Sargent1993` invokes: it is the
+"dead hand of history" that lets an otherwise-free exchange rate settle down.
 
 ```{code-cell} ipython3
-def newton_learning(p, s0, lam0, T=400, gain=0.3, kappa=0.5):
+def newton_learning(p, s0, lam0, T=400, gain=0.3, κ=0.5):
     """
     Two-currency OLG with Newton-Raphson learning of (s, λ), one rule per class
     (even/odd).  κ is a prior curvature in the indeterminate λ direction that
@@ -232,7 +262,7 @@ def newton_learning(p, s0, lam0, T=400, gain=0.3, kappa=0.5):
     """
     s = np.array(s0, float)
     lam = np.array(lam0, float)
-    R = [np.array([[-1.0, 0.0], [0.0, -kappa]]) for _ in range(2)]   # prior curvature
+    R = [np.array([[-1.0, 0.0], [0.0, -κ]]) for _ in range(2)]   # prior curvature
     p1 = np.empty(T)
     p2 = np.empty(T)
     e = np.empty(T)
@@ -248,7 +278,7 @@ def newton_learning(p, s0, lam0, T=400, gain=0.3, kappa=0.5):
             jp = 1 - j
             R1, R2 = p1[t-1]/p1[t], p2[t-1]/p2[t]
             g, H = grad_hess(p, s[jp], lam[jp], R1, R2)
-            H[1, 1] -= kappa                         # retain prior λ-curvature
+            H[1, 1] -= κ                         # retain prior λ-curvature
             R[jp] = R[jp] + gain*(H - R[jp])
             step = gain * np.linalg.solve(R[jp], g)
             s[jp] = np.clip(s[jp] - step[0], 0.1, p.w1 - 0.1)
@@ -264,6 +294,12 @@ def newton_learning(p, s0, lam0, T=400, gain=0.3, kappa=0.5):
 Run two experiments that are identical except for the initial portfolio shares.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Newton-Raphson learning from two initial conditions"
+    name: fig-xr-learning
+---
 e1, s1, l1 = newton_learning(kw, [3.5, 2.0], [0.35, 0.40])
 e2, s2, l2 = newton_learning(kw, [2.0, 3.5], [0.62, 0.58])
 
@@ -291,11 +327,14 @@ plt.tight_layout()
 plt.show()
 ```
 
-Both economies converge. Saving climbs or falls to the rational expectations rate $s^\star = 2.5$
-from either side, and the two classes' portfolio shares merge to a common value.
+Both economies converge.
 
-But the two experiments converge to *different exchange rates*. The only thing that differed
-between them was where the portfolios started.
+Saving climbs or falls to the rational expectations rate $s^\star = 2.5$ from either side, and
+the two classes' portfolio shares merge to a common value.
+
+But the two experiments converge to *different exchange rates*.
+
+The only thing that differed between them was where the portfolios started.
 
 ```{code-cell} ipython3
 for name, e, l in [("experiment 1", e1, l1), ("experiment 2", e2, l2)]:
@@ -310,6 +349,12 @@ To see how completely history governs the outcome, sweep the initial portfolio s
 the exchange rate each economy settles on.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Limiting exchange rate against initial portfolio share"
+    name: fig-xr-limits
+---
 λ0_grid = np.linspace(0.15, 0.85, 15)
 e_limits = [newton_learning(kw, [4.0, 4.0], [λ0, λ0])[0][-1] for λ0 in λ0_grid]
 
@@ -323,14 +368,17 @@ ax.legend(frameon=False)
 plt.show()
 ```
 
-The limiting exchange rate traces out the *entire rational expectations continuum*. Every point
-on the curve is a valid rational expectations equilibrium; learning selects among them purely by
-initial condition.
+The limiting exchange rate traces out the *entire rational expectations continuum*.
 
-This is the sense in which learning renders the exchange rate determinate. It does not add a
-fundamental that fundamentals were missing. It converts an *indeterminacy of levels* into a
-*dependence on history*: the exchange rate the economy reaches is whatever the initial portfolio
-beliefs implied, frozen in place.
+Every point on the curve is a valid rational expectations equilibrium; learning selects among
+them purely by initial condition.
+
+This is the sense in which learning renders the exchange rate determinate.
+
+It does not add a fundamental that fundamentals were missing.
+
+It converts an *indeterminacy of levels* into a *dependence on history*: the exchange rate the
+economy reaches is whatever the initial portfolio beliefs implied, frozen in place.
 
 ### The ghost of indeterminacy
 
@@ -352,16 +400,21 @@ print(f"→ the λ-gradient is zero for *any* λ, so learning cannot move the ex
 ```
 
 The rest points of the learning dynamics *are* the rational expectations equilibria, exchange
-rate and all. The indeterminacy is not resolved; it is displaced into the initial conditions.
+rate and all.
+
+The indeterminacy is not resolved; it is displaced into the initial conditions.
 
 Sargent is blunt about how much weight this can bear:
 
 > Put differently, a regime that allows the exchange rate to be history-dependent seems to be an
 > ill-formed mechanism.
 
-An exchange rate determined by nothing but the accident of initial beliefs is a weak reed. If the
-economy is a shade different — if the learning rule keeps experimenting rather than settling — the
-whole construction can come apart. That is exactly what the next two exhibits show.
+An exchange rate determined by nothing but the accident of initial beliefs is a weak reed.
+
+If the economy is a shade different — if the learning rule keeps experimenting rather than
+settling — the whole construction can come apart.
+
+That is exactly what the next two exhibits show.
 
 ## Evidence from the laboratory
 
@@ -371,13 +424,18 @@ subjects, using $w_1 = 11$, $w_2 = 1$, $H_1 = H_2 = 10$.
 Each young subject chose a saving rate and a fraction to allocate between the two currencies; the
 experimenters cleared the two money markets against those choices, exactly as in {eq}`xr_prices`.
 
-The result did not look like the Newton–Raphson simulations at all. The exchange rate fluctuated
-persistently, roughly within a band from $0.5$ to $2$, and showed no sign of settling down. If
-anything the amplitude grew across sessions.
+The result did not look like the Newton–Raphson simulations at all.
+
+The exchange rate fluctuated persistently, roughly within a band from $0.5$ to $2$, and showed
+no sign of settling down.
+
+If anything the amplitude grew across sessions.
 
 The simple Newton–Raphson model, which always converges to a constant, does a poor job of
-matching that. So Arifovic built a different model of the same economy, one in which the agents
-are a **population** bred by a genetic algorithm.
+matching that.
+
+So Arifovic built a different model of the same economy, one in which the agents are a
+**population** bred by a genetic algorithm.
 
 ## A genetic algorithm economy
 
@@ -386,8 +444,10 @@ length $30$: the first $20$ bits encode its saving rate, the last $10$ its portf
 
 Every period the young population's strings are decoded into $(s_i, \lambda_i)$ pairs, the two
 money markets clear against the aggregates via {eq}`xr_prices`, and the exchange rate is read
-off. A generation later, when the cohort is old, each string's realized utility {eq}`xr_utility`
-is its **fitness**, and the genetic algorithm breeds the next generation.
+off.
+
+A generation later, when the cohort is old, each string's realized utility {eq}`xr_utility` is
+its **fitness**, and the genetic algorithm breeds the next generation.
 
 ```{code-cell} ipython3
 N, L_s, L_lam = 30, 20, 10           # population size; bits for saving and portfolio
@@ -462,6 +522,12 @@ def genetic_economy(p, T=3000, seed=0, election=True):
 ### Volatility that never dies
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Exchange rate in the genetic-algorithm economy"
+    name: fig-xr-genetic
+---
 e_ga = genetic_economy(arifovic, T=4000, seed=1)
 log_e = np.log(e_ga[500:])                            # drop a burn-in
 
@@ -469,13 +535,15 @@ fig, ax = plt.subplots(figsize=(9, 4))
 ax.plot(log_e, lw=0.5)
 ax.set_xlabel("$t$")
 ax.set_ylabel("$\\log e_t$")
-ax.set_title("Exchange rate in the genetic-algorithm economy")
 plt.show()
 ```
 
-The exchange rate wanders and keeps wandering. Unlike the Newton–Raphson learner, the genetic
-population never settles: mutation keeps injecting new strings, and the market keeps repricing
-them. The volatility is a permanent feature, not a transient.
+The exchange rate wanders and keeps wandering.
+
+Unlike the Newton–Raphson learner, the genetic population never settles: mutation keeps
+injecting new strings, and the market keeps repricing them.
+
+The volatility is a permanent feature, not a transient.
 
 ```{code-cell} ipython3
 early = np.log(e_ga[500:1500]).std()
@@ -492,6 +560,12 @@ Arifovic reported that the exchange rate in her genetic economy behaves almost l
 zero frequency.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Spectrum and autocorrelation of the exchange rate"
+    name: fig-xr-spectrum
+---
 def averaged_spectrum(x, n_seg=16):
     "Bartlett-averaged periodogram, for a readable spectral estimate."
     x = x - x.mean()
@@ -526,9 +600,10 @@ plt.show()
 
 The spectrum of the first difference is low near zero frequency and rises toward the higher
 frequencies, the signature of a series whose *level* is close to a random walk, but with enough
-mean reversion to pull the low-frequency power down. The autocorrelation of the level decays
-slowly, as a near-unit-root series would, but it *does* decay, which a pure random walk's would
-not.
+mean reversion to pull the low-frequency power down.
+
+The autocorrelation of the level decays slowly, as a near-unit-root series would, but it *does*
+decay, which a pure random walk's would not.
 
 ```{code-cell} ipython3
 band = slice(1, len(spec)//2)
@@ -539,30 +614,39 @@ print(f"→ pronounced dip at zero frequency (mean reversion): {spec[1] < spec[b
 
 The book's assessment: real floating exchange rates for hard-currency pairs have spectra of log
 differences that look much like this, except *without* the dip at zero frequency; actual
-exchange rates are even closer to pure random walks. Arifovic's genetic economy, with no
-fundamental shocks at all, manufactures most of the way there out of nothing but a population of
-adapting agents repricing two intrinsically identical currencies.
+exchange rates are even closer to pure random walks.
+
+Arifovic's genetic economy, with no fundamental shocks at all, manufactures most of the way
+there out of nothing but a population of adapting agents repricing two intrinsically identical
+currencies.
 
 ## Concluding remarks
 
 Two models of the same indeterminate economy gave two very different verdicts.
 
 The Newton–Raphson learner **converges** — and in converging, exposes the indeterminacy rather
-than curing it. Its rest point is an arbitrage condition that leaves the exchange rate free, so
-the limiting exchange rate is whatever history's initial portfolio beliefs implied. Determinacy
-by dead hand, which Sargent judges a weak reed.
+than curing it.
 
-The genetic-algorithm economy **does not converge**. A whole population of adapting strings,
-constantly refreshed by mutation and repriced by the market, generates exchange rate volatility
-that never dies and that mimics the low-frequency behavior of real floating rates — from an
-economy with no fundamental disturbances whatsoever.
+Its rest point is an arbitrage condition that leaves the exchange rate free, so the limiting
+exchange rate is whatever history's initial portfolio beliefs implied.
+
+Determinacy by dead hand, which Sargent judges a weak reed.
+
+The genetic-algorithm economy **does not converge**.
+
+A whole population of adapting strings, constantly refreshed by mutation and repriced by the
+market, generates exchange rate volatility that never dies and that mimics the low-frequency
+behavior of real floating rates — from an economy with no fundamental disturbances whatsoever.
 
 The gap between them is not about the economics, which is identical, but about the *adaptive
-machinery*. A device that stabilizes a single agent's learning — the election operator, which
-keeps only improving offspring — turns out, inside a self-referential market, to sustain
-volatility rather than damp it ({ref}`xr_ex2`). Which learning model an
-economist reaches for is, once again, one of the choices that the bounded-rationality program
-forces into the open.
+machinery*.
+
+A device that stabilizes a single agent's learning — the election operator, which keeps only
+improving offspring — turns out, inside a self-referential market, to sustain volatility rather
+than damp it ({ref}`xr_ex2`).
+
+Which learning model an economist reaches for is, once again, one of the choices that the
+bounded-rationality program forces into the open.
 
 That machinery — Holland's genetic algorithm, and its richer cousin the classifier system — is
 the subject of {doc}`marimon_mcgrattan_sargent`, where a population of adaptive agents must not
@@ -583,7 +667,9 @@ just the initial $\lambda$, by starting the two classes **asymmetrically**.
 Run the learner from several initial conditions in which the even and odd classes begin with
 different portfolio shares, and confirm that (a) the classes' shares merge to a common value,
 (b) saving converges to $s^\star$, and (c) the limiting exchange rate depends on the starting
-point. Does the common limiting $\lambda$ equal the average of the two initial shares?
+point.
+
+Does the common limiting $\lambda$ equal the average of the two initial shares?
 
 ```{exercise-end}
 ```
@@ -611,11 +697,14 @@ The two classes' shares always merge (columns 2 and 3 agree), saving always conv
 $s^\star = 2.5$, and the limiting exchange rate differs across starting points — so it is
 genuinely history-dependent.
 
-But the common limiting $\lambda$ is **not** simply the average of the two initial shares: compare
-the merged value with the last column. The transient path matters, because while the classes
-still differ the returns differ, and those transient return gaps push $\lambda$ around before the
-arbitrage condition shuts the motion off. The exchange rate records the whole history of the
-adjustment, not just its starting average.
+But the common limiting $\lambda$ is **not** simply the average of the two initial shares:
+compare the merged value with the last column.
+
+The transient path matters, because while the classes still differ the returns differ, and
+those transient return gaps push $\lambda$ around before the arbitrage condition shuts the
+motion off.
+
+The exchange rate records the whole history of the adjustment, not just its starting average.
 
 ```{solution-end}
 ```
@@ -628,11 +717,16 @@ Arifovic's **election operator** admits a child to the next generation only if i
 on the latest returns.
 
 In single-agent optimization such a filter can only help — it never lets a worse rule replace a
-better one. But this economy is *self-referential*: the returns against which fitness is measured
-are themselves determined by the population's choices.
+better one.
 
-Investigate what the election operator does to exchange rate volatility. Run the genetic economy
-with and without it across several seeds, and report the volatility of the log exchange rate.
+But this economy is *self-referential*: the returns against which fitness is measured are
+themselves determined by the population's choices.
+
+Investigate what the election operator does to exchange rate volatility.
+
+Run the genetic economy with and without it across several seeds, and report the volatility of
+the log exchange rate.
+
 Which way does the operator push volatility, and can you explain why?
 
 ```{exercise-end}
@@ -657,17 +751,22 @@ pd.DataFrame(rows, columns=["election operator", "mean s.d. of log e",
 The election operator **raises** volatility — the opposite of its stabilizing role in
 single-agent search.
 
-The mechanism is the self-reference. With the filter on, the population keeps only offspring that
-beat their parents *on last period's returns*, so it chases the recently profitable portfolio.
-But "recently profitable" depends on the exchange rate, which the population's own chasing moves —
-so the whole population piles into the recent winner, overshoots, and the exchange rate lurches to
-make a different portfolio profitable, whereupon the population chases that. Without the filter,
-mutation keeps the population diffuse, and diverse portfolios partly cancel in the aggregates
-{eq}`xr_prices`, damping the swings.
+The mechanism is the self-reference.
 
-A device that unambiguously improves an isolated learner can destabilize a market of learners. It
-is a compact warning about reading single-agent intuitions into multi-agent systems — a theme
-that returns in {doc}`marimon_mcgrattan_sargent`.
+With the filter on, the population keeps only offspring that beat their parents *on last
+period's returns*, so it chases the recently profitable portfolio.
+
+But "recently profitable" depends on the exchange rate, which the population's own chasing
+moves — so the whole population piles into the recent winner, overshoots, and the exchange rate
+lurches to make a different portfolio profitable, whereupon the population chases that.
+
+Without the filter, mutation keeps the population diffuse, and diverse portfolios partly cancel
+in the aggregates {eq}`xr_prices`, damping the swings.
+
+A device that unambiguously improves an isolated learner can destabilize a market of learners.
+
+It is a compact warning about reading single-agent intuitions into multi-agent systems — a
+theme that returns in {doc}`marimon_mcgrattan_sargent`.
 
 ```{solution-end}
 ```
@@ -679,9 +778,12 @@ that returns in {doc}`marimon_mcgrattan_sargent`.
 The lecture claimed the genetic economy's exchange rate is "close to a random walk, but with mean
 reversion."
 
-Make the claim quantitative. Treating $\log e_t$ as data, estimate the first-order autoregressive
-coefficient in $\log e_t = \mu + \phi \log e_{t-1} + \varepsilon_t$, and compare it with $1$ (a
-pure random walk). Do this for several seeds.
+Make the claim quantitative.
+
+Treating $\log e_t$ as data, estimate the first-order autoregressive coefficient in $\log e_t = \mu + \phi \log e_{t-1} + \varepsilon_t$,
+and compare it with $1$ (a pure random walk).
+
+Do this for several seeds.
 
 Is $\phi$ close to but below $1$, consistent with a near-unit-root, mean-reverting series?
 
@@ -715,10 +817,11 @@ series that nonetheless reverts to its mean rather than drifting forever.
 
 That is precisely the "near random walk with mean reversion" the spectrum showed: a pure random
 walk would have $\phi = 1$ exactly (and no dip at zero frequency), while a value a little under
-$1$ produces the slow autocorrelation decay and the low-frequency dip we saw. The genetic economy
-lands in that near-unit-root region on its own, with no fundamental shocks driving it — the
-persistence is manufactured entirely by the population dynamics repricing two identical
-currencies.
+$1$ produces the slow autocorrelation decay and the low-frequency dip we saw.
+
+The genetic economy lands in that near-unit-root region on its own, with no fundamental shocks
+driving it — the persistence is manufactured entirely by the population dynamics repricing two
+identical currencies.
 
 ```{solution-end}
 ```

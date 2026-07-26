@@ -37,8 +37,9 @@ equilibrium it was never told about.
 The agents there learned a *separate* saving rate for each level of the government deficit —
 a **non-parametric** rule, one number per state.
 
-That works when there are two states. It runs into two walls otherwise, both noted in
-{cite:t}`Sargent1993`:
+That works when there are two states.
+
+It runs into two walls otherwise, both noted in {cite:t}`Sargent1993`:
 
 * a state that occurs rarely is learned about slowly, because its observations arrive slowly;
 * when the number of states is large — and especially when the state is *continuous* — one
@@ -50,20 +51,27 @@ $\theta$.
 
 This lecture works through what that buys and what it costs.
 
-The costs and benefits are two sides of one idea. A parametric family can be learned quickly
-because every observation informs every state. But a learning scheme confined to a family of
-functions can converge to a rational expectations equilibrium *only if some member of the
-family supports one*. Otherwise the best it can reach is an **approximate equilibrium**.
+The costs and benefits are two sides of one idea.
+
+A parametric family can be learned quickly because every observation informs every state.
+
+But a learning scheme confined to a family of functions can converge to a rational expectations
+equilibrium *only if some member of the family supports one*.
+
+Otherwise the best it can reach is an **approximate equilibrium**.
 
 Working this out surfaces a theme that runs through the whole bounded-rationality program:
 
 > Learning algorithms and equilibrium computation algorithms look like each other.
 
-We will make that concrete. **Marcet's method of parameterized expectations** — a standard
-tool for *computing* rational expectations equilibria — turns out, when written recursively,
-to be exactly a model of adaptive agents learning. An equilibrium computation is a centralized
-learning algorithm run by the modeller; a learning economy is a decentralized equilibrium
-computation run by the agents.
+We will make that concrete.
+
+**Marcet's method of parameterized expectations** — a standard tool for *computing* rational
+expectations equilibria — turns out, when written recursively, to be exactly a model of
+adaptive agents learning.
+
+An equilibrium computation is a centralized learning algorithm run by the modeller; a learning
+economy is a decentralized equilibrium computation run by the agents.
 
 The plan:
 
@@ -101,8 +109,8 @@ $s_t = f(G_t)$.
 The household's first-order condition, evaluated at $s_t = f(G_t)$, is
 
 $$
-u'(w_1 - f(G_t)) = E_t\bigl[u'(w_2 + f(G_t) R_t)\, R_t\bigr],
-\qquad E_t(\cdot) = E(\cdot \mid G_t),
+u'(w_1 - f(G_t)) = \mathbb{E}_t\bigl[u'(w_2 + f(G_t) R_t)\, R_t\bigr],
+\qquad \mathbb{E}_t(\cdot) = \mathbb{E}(\cdot \mid G_t),
 $$
 
 and the government budget constraint with market clearing gives the return on currency in
@@ -119,19 +127,21 @@ turns the first-order condition into a **functional equation** in $f$:
 :label: functional_equation
 
 u'\bigl(w_1 - f(G_t)\bigr)
-= E_t\!\left[
+= \mathbb{E}_t\!\left[
 u'\!\bigl(w_2 + f(G_{t+1}) - G_{t+1}\bigr)
 \cdot \frac{f(G_{t+1}) - G_{t+1}}{f(G_t)}
 \right].
 ```
 
 Under log utility, $u'(c) = 1/c$, and because $f(G_t)$ is known at $t$ it pulls out of the
-expectation. Writing
+expectation.
+
+Writing
 
 ```{math}
 :label: psi_definition
 
-\psi(G_t) \equiv E_t\bigl[u'(w_2 + f(G_{t+1}) - G_{t+1})\,(f(G_{t+1}) - G_{t+1})\bigr],
+\psi(G_t) \equiv \mathbb{E}_t\bigl[u'(w_2 + f(G_{t+1}) - G_{t+1})\,(f(G_{t+1}) - G_{t+1})\bigr],
 ```
 
 equation {eq}`functional_equation` becomes
@@ -145,8 +155,9 @@ $$
 So the whole problem reduces to finding the **conditional expectation** $\psi(G)$: once we
 have it, the saving rule follows in closed form.
 
-That observation is the hinge of the entire lecture. Every method below — parametric or
-not — is a way of estimating the one object $\psi(G)$.
+That observation is the hinge of the entire lecture.
+
+Every method below — parametric or not — is a way of estimating the one object $\psi(G)$.
 
 ```{code-cell} ipython3
 w1, w2 = 20.0, 10.0
@@ -184,9 +195,10 @@ On the discrete grid, {eq}`functional_equation` is a system of equations that we
 **iterating the perceived-to-actual map**, precisely the $T$ map of {doc}`bounded_rationality`.
 
 Guess a saving rule; use it on the right-hand side to compute the actual saving each state
-would call forth; repeat until the two agree. Because $\psi$ is monotone we can invert the
-first-order condition state by state with a bracketing root-finder, which makes the iteration
-robust.
+would call forth; repeat until the two agree.
+
+Because $\psi$ is monotone we can invert the first-order condition state by state with a
+bracketing root-finder, which makes the iteration robust.
 
 ```{code-cell} ipython3
 def solve_benchmark(G, P, damp=0.5, tol=1e-12, max_iter=5000):
@@ -228,18 +240,27 @@ print(f"saving rule f(G) runs from {s_benchmark.max():.3f} (low deficit) "
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Benchmark equilibrium saving rule"
+    name: fig-la-benchmark
+---
 fig, ax = plt.subplots(figsize=(6.5, 4))
 ax.plot(G, s_benchmark, 'k-', lw=2)
 ax.set_xlabel("deficit $G$")
 ax.set_ylabel("saving $f(G)$")
-ax.set_title("Benchmark equilibrium saving rule")
 plt.show()
 ```
 
 Saving falls as the deficit rises: a larger deficit means faster money creation, a poorer
-return on currency, and less saving. The rule is gently curved, which will matter in a moment.
+return on currency, and less saving.
 
-This $f(G)$ is the object no adaptive agent gets to see. Everything below tries to recover it.
+The rule is gently curved, which will matter in a moment.
+
+This $f(G)$ is the object no adaptive agent gets to see.
+
+Everything below tries to recover it.
 
 ## Parameterized expectations
 
@@ -247,7 +268,7 @@ Marcet's **method of parameterized expectations** attacks {eq}`functional_equati
 a parametric form on the conditional expectation $\psi(G)$ from {eq}`psi_definition`,
 
 $$
-\psi(G) \approx \psi(G, \theta) = \phi(G)'\theta ,
+\psi(G) \approx \psi(G, \theta) = \phi(G)^\top \theta ,
 $$
 
 where $\phi(G)$ is a vector of basis functions and $\theta$ a short vector of coefficients.
@@ -263,7 +284,7 @@ The algorithm is a fixed-point iteration on $\theta$:
 
 The regression in step 3 is doing the work of the conditional expectation: least squares
 projects the realized $y_t$ onto functions of the current state, which is exactly what
-$E_t[\cdot \mid G_t]$ is.
+$\mathbb{E}_t[\cdot \mid G_t]$ is.
 
 We use monomials in a rescaled $\log G$ as the basis, and vary the degree.
 
@@ -273,11 +294,11 @@ G_min, G_max = G.min(), G.max()
 def simulate_deficit(T, seed=0):
     "Simulate the AR(1) deficit, clipped to the benchmark support."
     rng = np.random.default_rng(seed)
-    mu = np.log(G_bar) * (1 - ρ)
+    μ = np.log(G_bar) * (1 - ρ)
     lg = np.empty(T)
     lg[0] = np.log(G_bar)
     for t in range(1, T):
-        lg[t] = mu + ρ * lg[t-1] + σ * rng.standard_normal()
+        lg[t] = μ + ρ * lg[t-1] + σ * rng.standard_normal()
     return np.clip(np.exp(lg), G_min, G_max)
 
 def basis(G_vals, degree):
@@ -311,6 +332,12 @@ Now run it for families of increasing richness: a constant $\psi$ (saving indepe
 deficit), a linear one, and a quadratic one.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Parameterized expectations rules of increasing degree"
+    name: fig-la-pea
+---
 rules = {deg: parameterized_expectations(deg) for deg in (0, 1, 2)}
 
 fig, ax = plt.subplots(figsize=(7, 4.5))
@@ -325,9 +352,10 @@ plt.show()
 ```
 
 The **constant** family cannot represent a saving rule that depends on the deficit at all, so
-the best it can do is a flat line through the middle of the data. That flat line *is* an
-approximate equilibrium — a fixed point of the learning scheme — but it satisfies the
-first-order condition only on average, not state by state.
+the best it can do is a flat line through the middle of the data.
+
+That flat line *is* an approximate equilibrium — a fixed point of the learning scheme — but it
+satisfies the first-order condition only on average, not state by state.
 
 The **linear** family does much better but bends the wrong way at the extremes.
 
@@ -350,18 +378,23 @@ pd.DataFrame(rows, columns=["family", "sup $|s - f|$",
                             "ergodic RMS", "FOC residual"]).set_index("family").round(4)
 ```
 
-Every column falls as the family grows richer. The first-order-condition residual — the
-quantity that is exactly zero at a rational expectations equilibrium and positive at an
-approximate one — drops by more than an order of magnitude from the constant family to the
-quadratic.
+Every column falls as the family grows richer.
+
+The first-order-condition residual — the quantity that is exactly zero at a rational
+expectations equilibrium and positive at an approximate one — drops by more than an order of
+magnitude from the constant family to the quadratic.
 
 ```{note}
-Richer is not *always* better with finite data. Push the degree higher and the extra terms
-start chasing sampling noise in the tails of the deficit distribution, where observations are
-scarce, and the sup-norm error can tick back up even as the fit improves where agents actually
-spend their time. That is the same phenomenon as the slowly-learned rare state in
-{doc}`olg_adaptive_money`, seen from the approximation side: a scheme fits well where the data
-is, and the cost of misfitting a rarely-visited region is small in terms of expected utility.
+Richer is not *always* better with finite data.
+
+Push the degree higher and the extra terms start chasing sampling noise in the tails of the
+deficit distribution, where observations are scarce, and the sup-norm error can tick back up
+even as the fit improves where agents actually spend their time.
+
+That is the same phenomenon as the slowly-learned rare state in {doc}`olg_adaptive_money`, seen
+from the approximation side: a scheme fits well where the data is, and the cost of misfitting a
+rarely-visited region is small in terms of expected utility.
+
 {ref}`lae_ex1` explores this.
 ```
 
@@ -369,9 +402,11 @@ is, and the cost of misfitting a rarely-visited region is small in terms of expe
 
 So far parameterized expectations is an algorithm *we* run to compute an equilibrium.
 
-Now comes the point of the whole lecture. Write the same algorithm **recursively** — updating
-$\theta$ once per period as a single new observation arrives, rather than re-regressing a whole
-simulated panel — and it becomes a model of *adaptive agents learning in real time*.
+Now comes the point of the whole lecture.
+
+Write the same algorithm **recursively** — updating $\theta$ once per period as a single new
+observation arrives, rather than re-regressing a whole simulated panel — and it becomes a model
+of *adaptive agents learning in real time*.
 
 The recursive form is ordinary recursive least squares:
 
@@ -379,8 +414,8 @@ The recursive form is ordinary recursive least squares:
 :label: recursive_pea
 
 \begin{aligned}
-R_{t+1} &= R_t + \tfrac{1}{t}\bigl(\phi(G_t)\phi(G_t)' - R_t\bigr), \\
-\theta_{t+1} &= \theta_t + \tfrac{1}{t} R_{t+1}^{-1} \phi(G_t)\bigl(y_t - \phi(G_t)'\theta_t\bigr),
+R_{t+1} &= R_t + \tfrac{1}{t}\bigl(\phi(G_t)\phi(G_t)^\top - R_t\bigr), \\
+\theta_{t+1} &= \theta_t + \tfrac{1}{t} R_{t+1}^{-1} \phi(G_t)\bigl(y_t - \phi(G_t)^\top \theta_t\bigr),
 \end{aligned}
 ```
 
@@ -388,9 +423,10 @@ where $y_t$ is the same realized regressand as before and $R_t$ tracks the secon
 the regressors.
 
 This is the identical object we met in {doc}`olg_adaptive_money`: a stochastic-approximation
-recursion with a $1/t$ gain. The only difference from the state-by-state learning there is that
-$\theta$ indexes a *parametric* rule, so a single observation updates the saving rule
-everywhere at once.
+recursion with a $1/t$ gain.
+
+The only difference from the state-by-state learning there is that $\theta$ indexes a
+*parametric* rule, so a single observation updates the saving rule everywhere at once.
 
 ```{code-cell} ipython3
 def online_pea(degree=2, T=500_000, seed=0, ridge=1e-3):
@@ -431,11 +467,17 @@ print(f"online PEA: sup error = {np.max(np.abs(s_online - s_benchmark)):.4f},  "
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Online learning of the saving rule"
+    name: fig-la-online
+---
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.2))
 
-axes[0].plot(θ_path[:, 0], label=r"$\theta_0$")
-axes[0].plot(θ_path[:, 1], label=r"$\theta_1$")
-axes[0].plot(θ_path[:, 2], label=r"$\theta_2$")
+axes[0].plot(θ_path[:, 0], label=r"$\theta_0$", lw=2)
+axes[0].plot(θ_path[:, 1], label=r"$\theta_1$", lw=2)
+axes[0].plot(θ_path[:, 2], label=r"$\theta_2$", lw=2)
 axes[0].set_xscale('log')
 axes[0].set_xlabel("$t$  (log scale)")
 axes[0].set_ylabel(r"$\theta_t$")
@@ -452,16 +494,20 @@ plt.tight_layout()
 plt.show()
 ```
 
-The coefficients settle down, and the saving rule they imply tracks the benchmark closely. The
-small remaining gap is the signature of a scheme that has not quite finished converging.
+The coefficients settle down, and the saving rule they imply tracks the benchmark closely.
+
+The small remaining gap is the signature of a scheme that has not quite finished converging.
 
 Convergence is *slow*: the $1/t$ gain guarantees it but does not hurry it, and the online
 scheme takes hundreds of thousands of periods to reach an accuracy the batch algorithm attains
-in a handful of passes. That gap is exactly the difference between an agent constrained to
-learn from experience as it arrives and a modeller free to re-use a whole simulated history at
-once.
+in a handful of passes.
 
-But the limit is the same object. Sargent's summary:
+That gap is exactly the difference between an agent constrained to learn from experience as it
+arrives and a modeller free to re-use a whole simulated history at once.
+
+But the limit is the same object.
+
+Sargent's summary:
 
 > Learning algorithms and equilibrium computation algorithms look like each other. Equilibrium
 > computation algorithms often have interpretations as centralized learning algorithms whereby
@@ -472,19 +518,22 @@ But the limit is the same object. Sargent's summary:
 > computation algorithms.
 
 This is why Marcet arrived at parameterized expectations as a *computational* method by way of
-earlier work on the *dynamics of least squares learning*. The two are the same recursion read
-in two directions.
+earlier work on the *dynamics of least squares learning*.
+
+The two are the same recursion read in two directions.
 
 ## Learning without a functional form
 
-The parametric route is fast but stakes everything on the family. If no member of
-$\{f(\cdot, \theta)\}$ supports an equilibrium, the scheme converges to an approximate
-equilibrium and stops.
+The parametric route is fast but stakes everything on the family.
 
-The **non-parametric** alternative imposes no functional form. Following the recursive kernel
-estimators of {cite:t}`ChenWhite1998`, an agent estimates the conditional expectation
-$\psi(G)$ directly from a kernel-weighted average of past realized values, letting the data
-choose the shape.
+If no member of $\{f(\cdot, \theta)\}$ supports an equilibrium, the scheme converges to an
+approximate equilibrium and stops.
+
+The **non-parametric** alternative imposes no functional form.
+
+Following the recursive kernel estimators of {cite:t}`ChenWhite1998`, an agent estimates the
+conditional expectation $\psi(G)$ directly from a kernel-weighted average of past realized
+values, letting the data choose the shape.
 
 The recursive kernel density estimator is itself a stochastic-approximation recursion,
 
@@ -501,9 +550,11 @@ regressand $y$ over a whole simulated history, with weights that fall off with d
 $\log G$, and iterated to a fixed point.
 
 Reading it in batch form keeps the comparison clean, because the parametric scheme we are
-measuring it against is also in batch form. The recursive display above stands to this
-smoother exactly as {eq}`recursive_pea` stands to the batch algorithm of the previous section:
-same estimator, read as a real-time learning rule rather than as a computation.
+measuring it against is also in batch form.
+
+The recursive display above stands to this smoother exactly as {eq}`recursive_pea` stands to
+the batch algorithm of the previous section: same estimator, read as a real-time learning rule
+rather than as a computation.
 
 ```{code-cell} ipython3
 def kernel_smoother(T=400_000, seed=0, h=0.06, n_iter=40, damp=0.5):
@@ -537,6 +588,12 @@ print(f"kernel smoother: sup error = {np.max(np.abs(s_kernel - s_benchmark)):.4f
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Kernel smoother approximation to the saving rule"
+    name: fig-la-kernel
+---
 fig, ax = plt.subplots(figsize=(6.5, 4.2))
 ax.plot(G, s_benchmark, 'k-', lw=2.2, label="benchmark $f(G)$")
 ax.plot(G, s_kernel, 'C3o', ms=4, label="kernel smoother")
@@ -549,10 +606,12 @@ plt.show()
 With no functional form imposed, the kernel learner recovers the benchmark to about the same
 accuracy as the quadratic parametric rule.
 
-That the two do equally well here is not a coincidence to lean on. It is because the true
-$f(G)$ *happens* to be almost exactly quadratic, so the parametric family we chose was very
-nearly correct. When it is not, the two part ways, and the trade-off is the one familiar from
-econometrics:
+That the two do equally well here is not a coincidence to lean on.
+
+It is because the true $f(G)$ *happens* to be almost exactly quadratic, so the parametric
+family we chose was very nearly correct.
+
+When it is not, the two part ways, and the trade-off is the one familiar from econometrics:
 
 * the **parametric** scheme learns fast and extrapolates gracefully, but is only as good as
   its family; a poorly chosen family delivers an approximate equilibrium and no warning;
@@ -560,31 +619,39 @@ econometrics:
   flexibility with slower learning and with bias where the data is thin, at the edges of the
   deficit's range, where the kernel has few neighbours to average.
 
-Both are recursions of the same shape. Which one an adaptive agent should use is, once again,
-one of the modelling choices that the bounded-rationality program forces into the open and that
-rational expectations quietly made for us.
+Both are recursions of the same shape.
+
+Which one an adaptive agent should use is, once again, one of the modelling choices that the
+bounded-rationality program forces into the open and that rational expectations quietly made
+for us.
 
 ## Concluding remarks
 
 The overlapping generations model gave us a clean laboratory for a general lesson.
 
 An adaptive agent in an environment with a large or continuous state cannot learn a separate
-response for every contingency. It must **generalize**, imposing some structure that lets a
-finite amount of experience inform behavior across the whole state space. Whether that
-structure is a low-order polynomial, a kernel bandwidth, or something else is a modelling
-choice with real consequences: it fixes whether the achievable limit is a rational expectations
-equilibrium or merely an approximation to one.
+response for every contingency.
+
+It must **generalize**, imposing some structure that lets a finite amount of experience inform
+behavior across the whole state space.
+
+Whether that structure is a low-order polynomial, a kernel bandwidth, or something else is a
+modelling choice with real consequences: it fixes whether the achievable limit is a rational
+expectations equilibrium or merely an approximation to one.
 
 That same act of generalization is what makes learning and equilibrium computation two faces of
-one object. Marcet's algorithm computes an equilibrium by parameterizing an expectation and
-regressing; an adaptive agent learns by parameterizing an expectation and regressing; the
-recursions coincide.
+one object.
+
+Marcet's algorithm computes an equilibrium by parameterizing an expectation and regressing; an
+adaptive agent learns by parameterizing an expectation and regressing; the recursions coincide.
 
 The next lecture, {doc}`marimon_mcgrattan_sargent`, carries the generalization problem to its
-sharpest form. There the state and action spaces are large enough that enumerating rules is out
-of the question, and agents must **discover** a compact set of good rules from scratch, using
-John Holland's classifier systems and genetic algorithm in place of the least squares and
-kernel machinery of this lecture.
+sharpest form.
+
+There the state and action spaces are large enough that enumerating rules is out of the
+question, and agents must **discover** a compact set of good rules from scratch, using John
+Holland's classifier systems and genetic algorithm in place of the least squares and kernel
+machinery of this lecture.
 
 ## Exercises
 
@@ -596,12 +663,16 @@ The note above claimed that pushing the polynomial degree too high can *hurt* th
 because high-order terms chase sampling noise in the sparsely-visited tails of the deficit
 distribution.
 
-Verify it. Run the batch parameterized-expectations algorithm for degrees $0$ through $5$ and
-report two error measures against the benchmark: the sup norm over the whole grid, and the RMS
-error weighted by the ergodic distribution of the deficit (i.e. weighted by where agents
-actually operate).
+Verify it.
 
-Which measure is monotone in the degree, and which is not? Interpret.
+Run the batch parameterized-expectations algorithm for degrees $0$ through $5$ and report two
+error measures against the benchmark: the sup norm over the whole grid, and the RMS error
+weighted by the ergodic distribution of the deficit (i.e. weighted by where agents actually
+operate).
+
+Which measure is monotone in the degree, and which is not?
+
+Interpret.
 
 ```{exercise-end}
 ```
@@ -626,14 +697,18 @@ The ergodic-weighted error falls monotonically and then flattens: once the famil
 enough to capture the curvature of $f$ where the deficit actually spends its time, extra terms
 add nothing.
 
-The sup-norm error falls at first but then rises again. The high-order polynomials fit the
-center well but oscillate at the ends of the grid, where the ergodic distribution puts almost
-no mass and so the regression has almost no data to discipline them.
+The sup-norm error falls at first but then rises again.
+
+The high-order polynomials fit the center well but oscillate at the ends of the grid, where the
+ergodic distribution puts almost no mass and so the regression has almost no data to discipline
+them.
 
 This is the approximation-side image of the rare-state problem from {doc}`olg_adaptive_money`.
-A learning scheme allocates its accuracy to where the observations are. Misfitting a
-rarely-visited region shows up starkly in the sup norm but costs almost nothing in expected
-utility, which is why the ergodic-weighted measure is the economically relevant one.
+
+A learning scheme allocates its accuracy to where the observations are.
+
+Misfitting a rarely-visited region shows up starkly in the sup norm but costs almost nothing in
+expected utility, which is why the ergodic-weighted measure is the economically relevant one.
 
 ```{solution-end}
 ```
@@ -645,11 +720,15 @@ utility, which is why the ergodic-weighted measure is the economically relevant 
 The constant family (degree 0) delivers an *approximate* equilibrium: a single saving rate,
 independent of the deficit, that satisfies the first-order condition only on average.
 
-There is a natural benchmark for it. Compute the single saving rate $\bar s$ that a
-degree-0 parameterized-expectations agent converges to, and compare it with the saving rate of
-the economy in which the deficit is fixed forever at its mean $\bar G$.
+There is a natural benchmark for it.
 
-Are they the same? Should they be?
+Compute the single saving rate $\bar s$ that a degree-0 parameterized-expectations agent
+converges to, and compare it with the saving rate of the economy in which the deficit is fixed
+forever at its mean $\bar G$.
+
+Are they the same?
+
+Should they be?
 
 ```{exercise-end}
 ```
@@ -684,16 +763,20 @@ print(f"saving in the economy with G fixed at E[G]   : {s_fixed:.4f}")
 They are close but not equal.
 
 The degree-0 agent picks the single saving rate that best fits the first-order condition
-*across the stochastic economy*, an average over the realized distribution of returns. The
-fixed-deficit economy replaces that whole distribution with a single degenerate one at the mean
-deficit.
+*across the stochastic economy*, an average over the realized distribution of returns.
 
-By a Jensen-type argument these need not coincide: the first-order condition is nonlinear in the
-return, so its expectation over a spread-out distribution of deficits differs from its value at
-the mean deficit. They would agree only if the deficit were deterministic to begin with.
+The fixed-deficit economy replaces that whole distribution with a single degenerate one at the
+mean deficit.
 
-The lesson is that an approximate equilibrium is not a naive "certainty-equivalent" object. Even
-the crudest one-parameter learner is responding to the *whole* distribution of outcomes it
+By a Jensen-type argument these need not coincide: the first-order condition is nonlinear in
+the return, so its expectation over a spread-out distribution of deficits differs from its
+value at the mean deficit.
+
+They would agree only if the deficit were deterministic to begin with.
+
+The lesson is that an approximate equilibrium is not a naive "certainty-equivalent" object.
+
+Even the crudest one-parameter learner is responding to the *whole* distribution of outcomes it
 experiences, not to a point forecast.
 
 ```{solution-end}
@@ -705,9 +788,13 @@ experiences, not to a point forecast.
 
 The non-parametric kernel learner has one free tuning constant: the bandwidth $h$.
 
-Explore its effect. Run the kernel learner for a range of bandwidths and report the sup and
-ergodic-weighted errors against the benchmark. Explain the shape of the trade-off, and relate
-the two failure modes to the bias–variance decomposition.
+Explore its effect.
+
+Run the kernel learner for a range of bandwidths and report the sup and ergodic-weighted errors
+against the benchmark.
+
+Explain the shape of the trade-off, and relate the two failure modes to the bias–variance
+decomposition.
 
 ```{exercise-end}
 ```
@@ -742,20 +829,22 @@ plt.show()
 
 There is an interior optimum.
 
-A **small** bandwidth averages over few neighbours, so the estimate is noisy: it wiggles
-around the benchmark, and the wiggle is worst at the edges where neighbours are scarce. This is
-the **variance** end of the trade-off.
+A **small** bandwidth averages over few neighbours, so the estimate is noisy: it wiggles around
+the benchmark, and the wiggle is worst at the edges where neighbours are scarce.
+
+This is the **variance** end of the trade-off.
 
 A **large** bandwidth averages over a wide window, smoothing the estimate but flattening the
-genuine curvature of $f(G)$, so the rule is pulled toward a straight line. This is the **bias**
-end.
+genuine curvature of $f(G)$, so the rule is pulled toward a straight line.
 
-The bandwidth is the non-parametric counterpart of the polynomial degree in
-{ref}`lae_ex1`: both control how much structure the learner imposes, and both
-have a sweet spot that trades misfit-from-too-little-flexibility against
-noise-from-too-much. The bounded-rationality program does not tell us where that spot is; it
-is one more choice that replaces the single discipline of rational expectations with a menu of
-plausible alternatives.
+This is the **bias** end.
+
+The bandwidth is the non-parametric counterpart of the polynomial degree in {ref}`lae_ex1`:
+both control how much structure the learner imposes, and both have a sweet spot that trades
+misfit-from-too-little-flexibility against noise-from-too-much.
+
+The bounded-rationality program does not tell us where that spot is; it is one more choice that
+replaces the single discipline of rational expectations with a menu of plausible alternatives.
 
 ```{solution-end}
 ```

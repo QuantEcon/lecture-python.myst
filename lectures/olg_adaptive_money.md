@@ -42,8 +42,10 @@ We do this twice, for two different purposes.
 generations, groping their way by trial and error, can somehow as a society converge to a rational expectations
 equilibrium.
 
-They can. Each generation observes what happened to its predecessors and adjusts their saving
-decision in a utility-improving direction, using a **Robbins–Monro** recursion. 
+They can.
+
+Each generation observes what happened to its predecessors and adjusts their saving decision in
+a utility-improving direction, using a **Robbins–Monro** recursion.
 
 Given enough
 time the economy converges to the stationary equilibrium we compute independently.
@@ -137,10 +139,13 @@ Currency holds its value only if the next generation is willing to absorb the ou
 stock plus the new issue.
 
 ```{note}
-{eq}`return_from_saving` is worth pausing on, because it is what makes this a *self-referential*
-system, the property studied at length in {doc}`ls_learning`. The return that today's young earn
-on their saving depends on how much tomorrow's young choose to save, which in turn depends on
-what tomorrow's young expect to earn. Nobody's beliefs are about an exogenous process.
+{eq}`return_from_saving` is worth pausing on, because it is what makes this a
+*self-referential* system, the property studied at length in {doc}`ls_learning`.
+
+The return that today's young earn on their saving depends on how much tomorrow's young choose
+to save, which in turn depends on what tomorrow's young expect to earn.
+
+Nobody's beliefs are about an exogenous process.
 ```
 
 ## Part 1: a stochastic deficit
@@ -275,13 +280,16 @@ The connection to equilibrium is that in a rational expectations equilibrium
 $V'(s_i) = E_t U'(s_i)$ and $V''(s_i) = E_t U''(s_i)$, where $E_t$ conditions on
 $G_t = \bar G_i$.
 
-So an agent who could compute $E_t U'$ would just set it to zero and be done. Our agents
-cannot, and must estimate it from experience instead.
+So an agent who could compute $E_t U'$ would just set it to zero and be done.
+
+Our agents cannot, and must estimate it from experience instead.
 
 They use a **Robbins–Monro** algorithm, applied state by state.
 
 Let $\tau_i$ count the number of times the deficit state $\bar G_i$ has been visited so far,
-and let $\gamma_\tau$ be a decreasing gain sequence. The rules are
+and let $\gamma_\tau$ be a decreasing gain sequence.
+
+The rules are
 
 ```{math}
 :label: robbins_monro
@@ -302,15 +310,21 @@ Two features of the setup deserve comment.
 
 **Two classes of agent.** To evaluate a saving decision we must wait until *two* periods of
 that agent's consumption are known, so the population is split into an "odd" and an "even"
-subsequence. Odd agents reset their rule in odd periods and learn only from earlier odd
-agents; even agents likewise. This is the same device used in the laboratory experiments
-discussed in Part 2.
+subsequence.
+
+Odd agents reset their rule in odd periods and learn only from earlier odd agents; even agents
+likewise.
+
+This is the same device used in the laboratory experiments discussed in Part 2.
 
 **A projection facility.** Nothing in {eq}`robbins_monro` prevents a Newton step from pushing
 saving below the deficit, at which point {eq}`market_clearing` has no positive price level and
-the economy ceases to exist. We therefore confine $s$ to a region where an equilibrium price
-level exists. Devices of this kind are needed for the convergence theorems too; {doc}`ls_learning`
-discusses the projection facility in detail.
+the economy ceases to exist.
+
+We therefore confine $s$ to a region where an equilibrium price level exists.
+
+Devices of this kind are needed for the convergence theorems too; {doc}`ls_learning` discusses
+the projection facility in detail.
 
 ```{code-cell} ipython3
 def U_prime(s, R):
@@ -331,7 +345,7 @@ def simulate(G, P, T=50_000, s0=None, seed=0, tau0=20, band=0.4):
     n = len(G)
     s = np.array(s0, float)
     M = np.array([[U_double(s[j, k], 1.0) for k in range(n)] for j in range(2)])
-    tau = np.zeros((2, n), int)
+    τ = np.zeros((2, n), int)
     floor = G/N + band                 # projection facility: saving must cover the deficit
 
     hist = np.empty((T, 2, n))
@@ -346,8 +360,8 @@ def simulate(G, P, T=50_000, s0=None, seed=0, tau0=20, band=0.4):
             j_p, i_p, s_p = prev
             R = (N*s_t - G[i]) / (N*s_p)          # the return on currency
             R_hist[t-1] = R
-            tau[j_p, i_p] += 1
-            g = 1 / (tau[j_p, i_p] + tau0)
+            τ[j_p, i_p] += 1
+            g = 1 / (τ[j_p, i_p] + tau0)
             M[j_p, i_p] += g * (U_double(s_p, R) - M[j_p, i_p])
             step = g * U_prime(s_p, R) / M[j_p, i_p]
             s[j_p, i_p] = np.clip(s[j_p, i_p] - step, floor[i_p], w1 - 0.4)
@@ -360,16 +374,25 @@ def simulate(G, P, T=50_000, s0=None, seed=0, tau0=20, band=0.4):
 ```
 
 ```{note}
-The simulation never computes a price level. Because {eq}`return_from_saving` expresses the
-return on currency purely in terms of saving rates and the deficit, the *real* side of the
-model is self-contained. This is more than a convenience: the nominal money stock in these
-economies grows without bound whenever the government runs a deficit, so a simulation that
-tracked $H_t$ and $p_t$ directly would overflow long before the learning converged.
+The simulation never computes a price level.
+
+Because {eq}`return_from_saving` expresses the return on currency purely in terms of saving
+rates and the deficit, the *real* side of the model is self-contained.
+
+This is more than a convenience: the nominal money stock in these economies grows without bound
+whenever the government runs a deficit, so a simulation that tracked $H_t$ and $p_t$ directly
+would overflow long before the learning converged.
 ```
 
 ### Do they find it?
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Saving rates converge in both economies"
+    name: fig-olg-saving
+---
 start = [[8.0, 2.0],
          [2.0, 8.0]]                   # deliberately far from equilibrium, and asymmetric
 
@@ -419,14 +442,19 @@ the right place.
 ### How much do the agents have to be told?
 
 The specification above lets agents learn a *separate* saving rate for each level of the
-deficit. In effect they are learning the policy function $s = f(G)$ **non-parametrically**,
-state by state.
+deficit.
 
-That is feasible here because there are only two states. It has two drawbacks that Sargent
-emphasizes.
+In effect they are learning the policy function $s = f(G)$ **non-parametrically**, state by
+state.
 
-First, states that are rarely visited are learned about slowly, because the observations
-arrive slowly. {ref}`olg_ex1` makes this concrete.
+That is feasible here because there are only two states.
+
+It has two drawbacks that Sargent emphasizes.
+
+First, states that are rarely visited are learned about slowly, because the observations arrive
+slowly.
+
+{ref}`olg_ex1` makes this concrete.
 
 Second, when the number of states is large, one parameter per state becomes unmanageable.
 
@@ -434,20 +462,28 @@ An econometrician's response would be to impose a **parametric** form $s = f(G, 
 $\theta$ of low dimension and use every observation to estimate it, replacing
 {eq}`robbins_monro` with a recursion in $\theta$ driven by $\partial U/\partial \theta$.
 
-This buys speed at the cost of *approximation*: a parametric learning scheme can converge to
-a rational expectations equilibrium only if some member of the family $f(\cdot, \theta)$
-supports one. Otherwise the best it can do is converge to an approximate equilibrium.
+This buys speed at the cost of *approximation*: a parametric learning scheme can converge to a
+rational expectations equilibrium only if some member of the family $f(\cdot, \theta)$ supports
+one.
+
+Otherwise the best it can do is converge to an approximate equilibrium.
 
 ```{note}
 This is the point at which models of learning and algorithms for *computing* equilibria become
-hard to tell apart. Marcet's method of parameterized expectations posits a parametric form for
-a conditional expectation, simulates, regresses realized outcomes on the parametric form to
-update the coefficients, and iterates. Written recursively, that algorithm is a
-nonlinear-least-squares recursion of the same shape as {eq}`robbins_monro`.
+hard to tell apart.
+
+Marcet's method of parameterized expectations posits a parametric form for a conditional
+expectation, simulates, regresses realized outcomes on the parametric form to update the
+coefficients, and iterates.
+
+Written recursively, that algorithm is a nonlinear-least-squares recursion of the same shape as
+{eq}`robbins_monro`.
 
 Sargent's summary: "Learning algorithms and equilibrium computation algorithms look like each
-other." An equilibrium computation is a centralized learning algorithm run by the modeller;
-a learning economy is a decentralized equilibrium computation run by the agents.
+other."
+
+An equilibrium computation is a centralized learning algorithm run by the modeller; a learning
+economy is a decentralized equilibrium computation run by the agents.
 ```
 
 ## Part 2: a constant deficit and two steady states
@@ -509,6 +545,12 @@ There it is: the *low*-inflation stationary equilibrium is **unstable** under th
 expectations dynamics, and the high-inflation one is stable.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Rational expectations inflation dynamics"
+    name: fig-olg-re-dynamics
+---
 π_grid = np.linspace(1.35, 4.2, 400)
 
 fig, ax = plt.subplots(figsize=(6.5, 5.5))
@@ -529,7 +571,6 @@ for p, name in [(π_low, "low"), (π_high, "high")]:
                 xytext=(10, -22), fontsize=9)
 ax.set_xlabel(r"$\pi_t$")
 ax.set_ylabel(r"$\pi_{t+1}$")
-ax.set_title("Rational expectations dynamics")
 ax.legend(frameon=False, loc='upper left')
 plt.show()
 ```
@@ -556,9 +597,10 @@ converges to $\pi = 3$.
 This matters because of how the two equilibria rank.
 
 The comparative statics of the low-inflation equilibrium are "classical": raising the deficit
-$G$ lowers $A_1$, which raises the low stationary inflation rate. The comparative statics of
-the high-inflation equilibrium are the reverse, because the economy is on the wrong side of
-an inflation-tax **Laffer curve**; see {ref}`olg_ex3`.
+$G$ lowers $A_1$, which raises the low stationary inflation rate.
+
+The comparative statics of the high-inflation equilibrium are the reverse, because the economy
+is on the wrong side of an inflation-tax **Laffer curve**; see {ref}`olg_ex3`.
 
 And the low-inflation equilibrium Pareto-dominates every other equilibrium of this model,
 stationary or not.
@@ -596,9 +638,10 @@ $$
 shows what the estimator is doing: it is a weighted average of *past realized inflation
 rates*, with weights proportional to $p_{s-1}^2$.
 
-That form is also what makes the recursion easy to compute. The price level grows
-geometrically, so the two sums overflow quickly, but if we rescale both by the newest weight
-at each step everything stays of order one.
+That form is also what makes the recursion easy to compute.
+
+The price level grows geometrically, so the two sums overflow quickly, but if we rescale both
+by the newest weight at each step everything stays of order one.
 
 ```{code-cell} ipython3
 def ls_dynamics(π_init, T=3000):
@@ -642,6 +685,12 @@ belief in the table, including from $\pi_0 = 3.0$, which is the steady state tha
 rational expectations dynamics converge *to*.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Least squares and rational expectations inflation paths"
+    name: fig-olg-ls-vs-re
+---
 fig, ax = plt.subplots(figsize=(8, 4.5))
 
 for π0 in (1.5, 2.5, 3.0):
@@ -684,11 +733,16 @@ The steady state that the rational expectations dynamics single out as *the* sta
 out to be precisely the edge of the basin of attraction of the learning dynamics toward the
 other one.
 
-Why the reversal? Under perfect foresight, a belief slightly above $\pi_{\text{low}}$ is
-*validated and amplified* — the map $g$ has slope $1.5$ there. Under least squares, beliefs
-are a weighted average of a long history of realized inflation rates, and that averaging drags
-the forecast back down. The high steady state is stable for the forward-looking dynamics and
-repelling for the backward-looking ones.
+Why the reversal?
+
+Under perfect foresight, a belief slightly above $\pi_{\text{low}}$ is *validated and
+amplified* — the map $g$ has slope $1.5$ there.
+
+Under least squares, beliefs are a weighted average of a long history of realized inflation
+rates, and that averaging drags the forecast back down.
+
+The high steady state is stable for the forward-looking dynamics and repelling for the
+backward-looking ones.
 
 {cite:t}`BrunoFischer1990` found the same reversal in a closely related model using
 Friedman-style adaptive expectations instead of least squares, so the result does not hinge on
@@ -700,10 +754,12 @@ Which set of dynamics describes people?
 
 {cite:t}`MarimonSunder1993` built a laboratory economy to find out.
 
-A fixed number of paying subjects were assigned roles as "young" and "old" in an
-implementation of exactly this model. Each period the young submitted a schedule saying how
-much output they were willing to supply to the old for money at each price, and the
-experimenters cleared the market against the demand from the old and from the government.
+A fixed number of paying subjects were assigned roles as "young" and "old" in an implementation
+of exactly this model.
+
+Each period the young submitted a schedule saying how much output they were willing to supply
+to the old for money at each price, and the experimenters cleared the market against the demand
+from the old and from the government.
 
 Subjects temporarily on the sidelines played a **forecasting game** with its own cash prize,
 so the experiment produced a direct record of the price expectations driving the economy.
@@ -715,20 +771,26 @@ Two findings matter here.
 
 First, the experimental inflation paths were much better approximated by the least squares
 dynamics converging to the **low** stationary rate than by the rational expectations dynamics
-converging to the high one. That pattern held across all of their economies.
+converging to the high one.
+
+That pattern held across all of their economies.
 
 Second, the sideliners' forecast errors were comparable in size to those a least squares
-forecaster would have made using the same data. The subjects were not doing something
-exotic, they were doing roughly what the adaptive model says.
+forecaster would have made using the same data.
+
+The subjects were not doing something exotic, they were doing roughly what the adaptive model
+says.
 
 The equilibrium that theory calls unstable is the one that both the algorithm and the humans
 select.
 
 ```{note}
-Experimental evidence is not the only way to discriminate. {cite:t}`Imrohoroglu1993` estimated
-a rational expectations version of this model on German hyperinflation data and found the
-opposite: his estimated equilibrium slides along the *bad* side of the Laffer curve toward the
-high stationary rate, which is inconsistent with the equilibrium the adaptive dynamics select.
+Experimental evidence is not the only way to discriminate.
+
+{cite:t}`Imrohoroglu1993` estimated a rational expectations version of this model on German
+hyperinflation data and found the opposite: his estimated equilibrium slides along the *bad*
+side of the Laffer curve toward the high stationary rate, which is inconsistent with the
+equilibrium the adaptive dynamics select.
 ```
 
 ### A warning
@@ -781,8 +843,10 @@ in the overlapping generations model.
 The difference is the welfare ranking: in the Brock model, the non-stationary equilibria all
 Pareto-dominate the classical stationary one that learning picks.
 
-So least squares dynamics reliably select the *classical* equilibrium. Whether that
-equilibrium is the good one is a separate question, and the answer depends on the model.
+So least squares dynamics reliably select the *classical* equilibrium.
+
+Whether that equilibrium is the good one is a separate question, and the answer depends on the
+model.
 
 ## A government learning the Phillips curve
 
@@ -795,10 +859,12 @@ The environment is different from the overlapping generations model — it is a 
 economy — but the machinery is the same: an agent runs a regression, acts on it, and thereby
 helps generate the very data it is fitting.
 
-This example matters for a further reason. It is the one in {cite:t}`Sargent1993` that most
-directly seeded later work: {cite:t}`Sims1988` and {cite:t}`Chung1990` studied it, and it led
-Sargent to the escape-dynamics model of {cite:t}`Sargent1999`, *The Conquest of American
-Inflation*, which the {doc}`Phillips curve lectures <phillips_escaping_nash>` study in depth.
+This example matters for a further reason.
+
+It is the one in {cite:t}`Sargent1993` that most directly seeded later work: {cite:t}`Sims1988`
+and {cite:t}`Chung1990` studied it, and it led Sargent to the escape-dynamics model of
+{cite:t}`Sargent1999`, *The Conquest of American Inflation*, which the {doc}`Phillips curve lectures <phillips_escaping_nash>`
+study in depth.
 
 ### Two stories about post-war inflation
 
@@ -856,7 +922,7 @@ regression
 U_t = \alpha_{0} + \alpha_{1}\pi_t + \epsilon_t.
 ```
 
-Each period it minimizes $\tfrac12 E(U_t^2 + \pi_t^2)$ subject to its perceived model, which
+Each period it minimizes $\tfrac12 \mathbb{E}(U_t^2 + \pi_t^2)$ subject to its perceived model, which
 yields the myopic target
 
 ```{math}
@@ -903,8 +969,10 @@ print(f"consistent equilibrium beliefs α = {α_consistent},  target inflation g
 print(f"optimal (Ramsey) outcome:                                  target inflation g = 0")
 ```
 
-This is the **inflation bias**. The government inflates at rate $\theta U^*$ and gets nothing
-for it: because only surprises move unemployment, average unemployment is $U^*$ either way.
+This is the **inflation bias**.
+
+The government inflates at rate $\theta U^*$ and gets nothing for it: because only surprises
+move unemployment, average unemployment is $U^*$ either way.
 
 Had the government understood the true model {eq}`phillips_true`, it would have chosen $g = 0$
 : the same unemployment with none of the inflation.
@@ -918,6 +986,12 @@ The deterministic path that least squares learning follows on average — its **
 dynamics** — moves beliefs toward the regression their current policy would induce.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Least squares learning converges to the inflation bias"
+    name: fig-olg-mean-dynamics
+---
 def induced_beliefs(α):
     "The OLS fit that the current beliefs' policy would induce in a stationary sample."
     g = govt_target(α)
@@ -939,7 +1013,6 @@ ax.plot(path[:, 0], 'C1', lw=1.2, label=r"belief $\alpha_0$")
 ax.plot(path[:, 1], 'C2', lw=1.2, label=r"belief $\alpha_1$")
 ax.axhline(g_consistent, color='C0', ls='--', lw=0.8)
 ax.set_xlabel("iteration")
-ax.set_title("Least squares learning converges to the inflation bias")
 ax.legend(frameon=False)
 plt.show()
 ```
@@ -963,6 +1036,12 @@ estimates, it keeps a fixed gain forever, so the government never stops paying a
 what just happened.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Constant-gain learning and recurrent escapes to zero inflation"
+    name: fig-olg-escapes
+---
 def constant_gain(T=40_000, gain=0.02, seed=1):
     "Government estimates a drifting-coefficient Phillips curve; returns target inflation g_t."
     rng = np.random.default_rng(seed)
@@ -988,7 +1067,6 @@ ax.axhline(g_consistent, color='C3', ls='--', lw=1, label="consistent equilibriu
 ax.axhline(0, color='C2', ls=':', lw=1, label="Ramsey / zero inflation")
 ax.set_xlabel("$t$")
 ax.set_ylabel("target inflation $g_t$")
-ax.set_title("Constant-gain learning: recurrent escapes toward zero inflation")
 ax.legend(frameon=False)
 plt.show()
 ```
@@ -998,18 +1076,22 @@ The constant-gain government does not settle at the inflation bias.
 It climbs toward it, then abruptly **escapes** toward zero inflation, then drifts back up, then
 escapes again, in a recurring sawtooth.
 
-The mechanism is the one Sims and Chung identified. Because the government discounts old data,
-a run of observations in which inflation surprises are small and unemployment stays near $U^*$
-regardless of inflation quickly persuades it that the tradeoff is not there, and it stops
-exploiting a tradeoff it no longer believes in, dropping inflation toward zero.
+The mechanism is the one Sims and Chung identified.
+
+Because the government discounts old data, a run of observations in which inflation surprises
+are small and unemployment stays near $U^*$ regardless of inflation quickly persuades it that
+the tradeoff is not there, and it stops exploiting a tradeoff it no longer believes in,
+dropping inflation toward zero.
 
 The willingness to entertain drifting coefficients lets the government learn the truth of the
 natural-rate hypothesis *without having to sit through a long inflation to do it*.
 
 How often the escapes happen depends on the gain — the government's degree of doubt about its
 own model — which is exactly the parameter {cite:t}`Sims1988` found to select between the two
-stories. A small gain keeps the economy near the inflation bias; a larger gain sends it toward
-the optimum more often ({ref}`olg_ex4`).
+stories.
+
+A small gain keeps the economy near the inflation bias; a larger gain sends it toward the
+optimum more often ({ref}`olg_ex4`).
 
 ### From escape dynamics to the *Conquest of American Inflation*
 
@@ -1043,15 +1125,19 @@ was never told about, and made visible how much the *complexity of the environme
 the speed: a rare deficit state is learned about slowly, and a large state space forces a
 parametric shortcut that may put the equilibrium out of reach entirely.
 
-Part 2 showed something stronger. Where the model has two equilibria, the learning dynamics do
-not merely find one; they systematically pick out the one that the rational expectations
-dynamics reject, and laboratory subjects go the same way.
+Part 2 showed something stronger.
+
+Where the model has two equilibria, the learning dynamics do not merely find one; they
+systematically pick out the one that the rational expectations dynamics reject, and laboratory
+subjects go the same way.
 
 That is the best case in {cite:t}`Sargent1993` for treating adaptive dynamics as an
 equilibrium selection device.
 
-The Brock counterexample marks its limit. The selection is a fact about the algorithm, not a
-welfare theorem, and Sargent is candid about the resulting discomfort:
+The Brock counterexample marks its limit.
+
+The selection is a fact about the algorithm, not a welfare theorem, and Sargent is candid about
+the resulting discomfort:
 
 > I know that it is inconsistent to doubt the real-time dynamics but keep the equilibria
 > selected by them. I confess that my affection for the selection performed in the monetary
@@ -1121,8 +1207,9 @@ an order of magnitude larger than the error in the rule for the common state, ev
 have had 30,000 periods of calendar time to settle.
 
 Sargent's comment is worth keeping in mind: in terms of *unconditional expected utility*,
-failing to learn what to do in a rarely visited state may cost very little. The cost of slow
-learning is not proportional to the size of the error.
+failing to learn what to do in a rarely visited state may cost very little.
+
+The cost of slow learning is not proportional to the size of the error.
 
 Note also that changing the transition matrix changes the equilibrium itself — beliefs about
 the persistence of deficits feed straight into {eq}`olg_equilibrium` — so the comparison has to
@@ -1140,9 +1227,10 @@ The gain sequence $\gamma_\tau = 1/\tau$ is what makes {eq}`robbins_monro` conve
 An agent who suspected the environment might be drifting would use a **constant gain**
 instead, weighting recent experience more heavily forever.
 
-Modify the simulation to use a constant gain and describe what happens to the limiting
-behavior of the saving rules. Compare gains of $0.02$ and $0.005$ against the $1/\tau$
-benchmark.
+Modify the simulation to use a constant gain and describe what happens to the limiting behavior
+of the saving rules.
+
+Compare gains of $0.02$ and $0.005$ against the $1/\tau$ benchmark.
 
 ```{exercise-end}
 ```
@@ -1207,13 +1295,16 @@ They settle into a *neighborhood* of the equilibrium and then keep rattling arou
 forever, because each new observation is always given the same weight and so never stops
 moving the estimate.
 
-Shrinking the gain tightens the band but does not eliminate it. Only a gain that declines to
-zero — like $1/\tau$ — delivers convergence to a point, which is why the convergence theorems
-for these systems all require it.
+Shrinking the gain tightens the band but does not eliminate it.
+
+Only a gain that declines to zero — like $1/\tau$ — delivers convergence to a point, which is
+why the convergence theorems for these systems all require it.
 
 What the constant-gain agent buys in exchange is adaptability: if the deficit process were to
 change, the $1/\tau$ agent would barely notice, while the constant-gain agent would track the
-change. That trade-off reappears throughout this literature.
+change.
+
+That trade-off reappears throughout this literature.
 
 ```{solution-end}
 ```
@@ -1272,9 +1363,10 @@ The high one sits on the falling branch, where more inflation raises *less* reve
 larger deficit is financed by a *lower* stationary inflation rate, the anti-classical
 comparative static that makes the high equilibrium so awkward.
 
-As $G$ rises the horizontal line moves up and the two intersections converge. Past the peak of
-the curve there is no stationary equilibrium at all: the deficit exceeds the maximum revenue
-the inflation tax can raise.
+As $G$ rises the horizontal line moves up and the two intersections converge.
+
+Past the peak of the curve there is no stationary equilibrium at all: the deficit exceeds the
+maximum revenue the inflation tax can raise.
 
 ```{code-cell} ipython3
 rows = []
@@ -1294,9 +1386,11 @@ pd.DataFrame(rows, columns=["$G$", "low $\\pi$", "high $\\pi$",
 The two roots move toward each other as $G$ rises and collide at $G \approx 1.0505$, after
 which the model has no stationary equilibrium at all.
 
-That number is not a coincidence. Setting the discriminant of {eq}`inflation_map`'s fixed-point
-equation to zero gives a double root at $\pi = \sqrt{A_2} = \sqrt{w_1/w_2}$, and the deficit
-at which it occurs is exactly the peak of the Laffer curve computed above.
+That number is not a coincidence.
+
+Setting the discriminant of {eq}`inflation_map`'s fixed-point equation to zero gives a double
+root at $\pi = \sqrt{A_2} = \sqrt{w_1/w_2}$, and the deficit at which it occurs is exactly the
+peak of the Laffer curve computed above.
 
 ```{code-cell} ipython3
 G_max = (w1_d + w2_d - 2*np.sqrt(A2)*w2_d) / 2
@@ -1318,9 +1412,10 @@ In the Phillips curve application, the constant-gain government escapes toward z
 and the lecture claims that *how often* it escapes depends on the gain, the government's degree
 of doubt about its own model.
 
-Make the claim quantitative. For a range of gains, simulate the constant-gain economy and
-measure both the average target inflation and the fraction of time spent near the Ramsey outcome
-(say, $g_t < 1$).
+Make the claim quantitative.
+
+For a range of gains, simulate the constant-gain economy and measure both the average target
+inflation and the fraction of time spent near the Ramsey outcome (say, $g_t < 1$).
 
 Which way does more doubt push the economy, and how does this connect to the two stories about
 post-war inflation?
@@ -1352,9 +1447,10 @@ The intuition is that a higher gain discounts old data more heavily, so the gove
 faster to the run of observations that reveals the tradeoff to be illusory, and escapes sooner
 and more often.
 
-This is exactly the parameter {cite:t}`Sims1988` found to select between the two stories. A
-government confident in its constant-coefficient model (small gain) is the natural-rate story's
-government, stuck inflating; a government alert to model change (large gain) is the
+This is exactly the parameter {cite:t}`Sims1988` found to select between the two stories.
+
+A government confident in its constant-coefficient model (small gain) is the natural-rate
+story's government, stuck inflating; a government alert to model change (large gain) is the
 counter-story's, detecting the poor tradeoff and stepping away from it.
 
 The same gain reappears as the central object in {cite:t}`Sargent1999`, where the *rate* of

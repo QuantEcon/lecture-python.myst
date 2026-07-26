@@ -184,7 +184,9 @@ There was no rush.
 {doc}`olg_adaptive_money` — was, Sargent noted, close to the *only* econometrically serious
 macroeconomic implementation of bounded rationality he knew of.
 
-Why the reluctance? The reasons are worth spelling out, because they are not about taste.
+Why the reluctance?
+
+The reasons are worth spelling out, because they are not about taste.
 
 The governing dictum among applied econometricians is Lucas's: *beware of theorists bearing
 free parameters*.
@@ -226,15 +228,17 @@ $$
 \gamma_t = \frac{1}{t + t_0},
 $$
 
-and $u_t$ is an i.i.d. shock.
+and $u_t$ is an IID shock.
 
 The constant $t_0$ is the weight the agents attach to the belief they start with, measured in
 observations: with $t_0 = 50$ they treat $\beta_0$ as though it summarized fifty prior prices, so
 that after $t$ periods $\beta_0$ still carries weight $t_0/(t + t_0)$.
 
-Some such weight is needed for the exercise to have any content. With $t_0 = 0$ the first gain
-is $\gamma_1 = 1$, so $\beta_1 = p_0$ exactly and the initial belief is erased after a single
-period — there would be no transient left for the econometrician to try to estimate.
+Some such weight is needed for the exercise to have any content.
+
+With $t_0 = 0$ the first gain is $\gamma_1 = 1$, so $\beta_1 = p_0$ exactly and the initial
+belief is erased after a single period — there would be no transient left for the
+econometrician to try to estimate.
 
 When $b < 1$ the belief converges to the rational expectations value $\beta^\star = a/(1-b)$,
 whatever value it started from.
@@ -242,21 +246,21 @@ whatever value it started from.
 ```{code-cell} ipython3
 a, b, sigma_u = 5.0, 0.7, 1.0
 t0 = 50                                       # weight on the initial belief
-beta_star = a / (1 - b)                       # rational expectations belief
+β_star = a / (1 - b)                       # rational expectations belief
 
-def simulate(beta0, u):
+def simulate(β0, u):
     "Bray's cobweb under least squares learning, given a shock path u."
     T = len(u)
-    beta = np.empty(T)
+    β = np.empty(T)
     p = np.empty(T)
-    beta[0] = beta0
+    β[0] = β0
     for t in range(T):
-        p[t] = a + b * beta[t] + u[t]
+        p[t] = a + b * β[t] + u[t]
         if t + 1 < T:
-            beta[t + 1] = beta[t] + (1 / (t + 1 + t0)) * (p[t] - beta[t])
-    return p, beta
+            β[t + 1] = β[t] + (1 / (t + 1 + t0)) * (p[t] - β[t])
+    return p, β
 
-print(f"rational expectations belief β* = {beta_star:.3f}")
+print(f"rational expectations belief β* = {β_star:.3f}")
 ```
 
 The initial belief $\beta_0$ is the extra "bounded rationality" parameter.
@@ -264,17 +268,22 @@ The initial belief $\beta_0$ is the extra "bounded rationality" parameter.
 Watch three economies with very different initial beliefs forget where they started.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "The belief forgets its starting point"
+    name: fig-pbr-belief
+---
 rng = np.random.default_rng(0)
 u = rng.standard_normal(400)
 
 fig, ax = plt.subplots(figsize=(7.5, 4))
-for beta0, colour in [(2.0, 'C0'), (16.667, 'C1'), (40.0, 'C2')]:
-    _, beta = simulate(beta0, u)
-    ax.plot(beta, color=colour, lw=1.3, label=fr"$\beta_0 = {beta0}$")
-ax.axhline(beta_star, color='k', ls='--', lw=0.8, label=r"$\beta^\star$")
+for β0, colour in [(2.0, 'C0'), (16.667, 'C1'), (40.0, 'C2')]:
+    _, β = simulate(β0, u)
+    ax.plot(β, color=colour, lw=1.3, label=fr"$\beta_0 = {β0}$")
+ax.axhline(β_star, color='k', ls='--', lw=0.8, label=r"$\beta^\star$")
 ax.set_xlabel("$t$")
 ax.set_ylabel(r"belief $\beta_t$")
-ax.set_title("The belief forgets its starting point")
 ax.legend(frameon=False)
 plt.show()
 ```
@@ -290,48 +299,55 @@ the belief path is pinned down by $\beta_0$ and the observed prices.
 The sum of squared implied shocks measures how well a given $\beta_0$ fits the data.
 
 ```{code-cell} ipython3
-def belief_path(beta0, p):
+def belief_path(β0, p):
     "Belief sequence implied by an initial belief and an observed price path."
     T = len(p)
-    beta = np.empty(T)
-    beta[0] = beta0
+    β = np.empty(T)
+    β[0] = β0
     for t in range(1, T):
-        beta[t] = beta[t - 1] + (1 / (t + t0)) * (p[t - 1] - beta[t - 1])
-    return beta
+        β[t] = β[t - 1] + (1 / (t + t0)) * (p[t - 1] - β[t - 1])
+    return β
 
-def ssr(beta0, p):
-    "Sum of squared implied shocks, as a function of the belief parameter β₀."
-    beta = belief_path(beta0, p)
-    return np.sum((p - a - b * beta) ** 2)
+def ssr(β0, p):
+    "Sum of squared implied shocks, as a function of the belief parameter β0."
+    β = belief_path(β0, p)
+    return np.sum((p - a - b * β) ** 2)
 ```
 
 Whether the data can pin $\beta_0$ down is a question of how fast *information* about it
 accumulates as the sample grows.
 
 The natural way to read that off is the **excess** sum of squares — how much worse a wrong
-$\beta_0$ fits than the best one. For an ordinary, well-identified parameter every new
-observation adds to the penalty for being wrong, so the excess grows in proportion to $T$ and
-the confidence interval shrinks like $1/\sqrt{T}$.
+$\beta_0$ fits than the best one.
+
+For an ordinary, well-identified parameter every new observation adds to the penalty for being
+wrong, so the excess grows in proportion to $T$ and the confidence interval shrinks like
+$1/\sqrt{T}$.
 
 Watch what happens here.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Information about the belief parameter stops accumulating"
+    name: fig-pbr-excess
+---
 grid = np.linspace(2, 40, 80)
 
 def excess_curve(T, seed=1):
     "SSR(β₀) − min SSR across the β₀ grid, for a sample of length T."
     u = np.random.default_rng(seed).standard_normal(T)
-    p, _ = simulate(beta_star, u)
+    p, _ = simulate(β_star, u)
     curve = np.array([ssr(b0, p) for b0 in grid])
     return curve - curve.min()
 
 fig, ax = plt.subplots(figsize=(7.5, 4))
 for T, colour in zip((50, 500, 5000), ('C0', 'C1', 'C2')):
     ax.plot(grid, excess_curve(T), color=colour, lw=1.5, label=f"$T = {T}$")
-ax.axvline(beta_star, color='k', ls='--', lw=0.8)
+ax.axvline(β_star, color='k', ls='--', lw=0.8)
 ax.set_xlabel(r"belief parameter $\beta_0$")
 ax.set_ylabel("excess sum of squares")
-ax.set_title("Information about the belief parameter stops accumulating")
 ax.legend(frameon=False)
 plt.show()
 ```
@@ -346,12 +362,12 @@ same model, estimated from the same data.
 rows = []
 for T in (50, 500, 5_000, 50_000):
     u = np.random.default_rng(1).standard_normal(T)
-    p, _ = simulate(beta_star, u)
-    beta = belief_path(beta_star, p)                  # belief path at the true β₀
-    wrong_beta0 = ssr(2.0, p) - ssr(beta_star, p)
-    wrong_slope = (np.sum((p - a - 0.75 * beta) ** 2)
-                   - np.sum((p - a - b * beta) ** 2))
-    rows.append([T, wrong_beta0, wrong_slope])
+    p, _ = simulate(β_star, u)
+    β = belief_path(β_star, p)                  # belief path at the true β0
+    wrong_β0 = ssr(2.0, p) - ssr(β_star, p)
+    wrong_slope = (np.sum((p - a - 0.75 * β) ** 2)
+                   - np.sum((p - a - b * β) ** 2))
+    rows.append([T, wrong_β0, wrong_slope])
 
 for T, e_b0, e_b in rows:
     print(f"T = {T:6d}:  penalty for β₀ = 2 : {e_b0:10.1f}     "
@@ -364,17 +380,21 @@ The penalty for getting the slope wrong grows in proportion to the sample: a hun
 data makes a hundredfold stronger case against the wrong value, which is what identification
 looks like.
 
-The penalty for getting the initial belief wrong stops growing. Past a few thousand
-observations it is pinned at a constant, and every further observation is uninformative about
-$\beta_0$. The confidence interval for $\beta_0$ never shrinks; the parameter is not
-consistently estimable at all.
+The penalty for getting the initial belief wrong stops growing.
+
+Past a few thousand observations it is pinned at a constant, and every further observation is
+uninformative about $\beta_0$.
+
+The confidence interval for $\beta_0$ never shrinks; the parameter is not consistently
+estimable at all.
 
 This is the technical heart of the matter.
 
-The parameters that bounded rationality adds live entirely in the transient. A transient
-contributes a fixed, finite amount of information no matter how long we watch the economy
-afterwards, so those parameters become a **nuisance to estimate** — they enter the likelihood,
-and the data have only ever a bounded amount to say about them.
+The parameters that bounded rationality adds live entirely in the transient.
+
+A transient contributes a fixed, finite amount of information no matter how long we watch the
+economy afterwards, so those parameters become a **nuisance to estimate** — they enter the
+likelihood, and the data have only ever a bounded amount to say about them.
 
 And there is a final, decisive reason for the econometricians' cool response.
 
@@ -447,9 +467,11 @@ did not.
 
 Line the two columns up against the destination we set out for.
 
-The **debit** column holds the prize itself. A theory of real-time transition dynamics — the
-map the Eastern European reformers lacked — remained, in 1993, largely unclaimed, blocked by
-arbitrariness, prompting, over-simple learning tasks, and a shortage of empirical traction.
+The **debit** column holds the prize itself.
+
+A theory of real-time transition dynamics — the map the Eastern European reformers lacked —
+remained, in 1993, largely unclaimed, blocked by arbitrariness, prompting, over-simple learning
+tasks, and a shortage of empirical traction.
 
 The **credit** column holds what the journey delivered along the way: a principled way to select
 among multiple equilibria, a practical way to compute equilibria that resist analysis, and a
@@ -485,79 +507,96 @@ about a field that had not yet found its footing.
 The first reservation was that once we stop insisting agents know the equilibrium, nothing tells
 us what to put in its place.
 
-The discipline that emerged is **expectational stability**. Evans and Honkapohja
-{cite:p}`EvansHonkapohja2001` showed that whether a rational expectations equilibrium is
-learnable is governed by a condition on the map from perceived to actual laws of motion — the
-very $T$ map of {doc}`bounded_rationality` — and that the condition is largely *independent* of
-the details of the learning algorithm.
+The discipline that emerged is **expectational stability**.
 
-That is exactly what was missing in 1993. Selection is no longer an artifact of whichever
-recursion the modeller happened to write down; a large class of reasonable learning rules select
-the same equilibria, and one can check which those are without simulating anything.
+Evans and Honkapohja {cite:p}`EvansHonkapohja2001` showed that whether a rational expectations
+equilibrium is learnable is governed by a condition on the map from perceived to actual laws of
+motion — the very $T$ map of {doc}`bounded_rationality` — and that the condition is largely
+*independent* of the details of the learning algorithm.
 
-The stability reversal of {doc}`olg_adaptive_money` is a case in point. It looked in 1993 like a
-fact about least squares, propped up by {cite:t}`BrunoFischer1990` having found the same thing
-with a different estimator. E-stability explains why the two agreed.
+That is exactly what was missing in 1993.
+
+Selection is no longer an artifact of whichever recursion the modeller happened to write down;
+a large class of reasonable learning rules select the same equilibria, and one can check which
+those are without simulating anything.
+
+The stability reversal of {doc}`olg_adaptive_money` is a case in point.
+
+It looked in 1993 like a fact about least squares, propped up by {cite:t}`BrunoFischer1990`
+having found the same thing with a different estimator.
+
+E-stability explains why the two agreed.
 
 ### The transition dynamics arrived, in a narrower form than hoped
 
-The prize was a theory of out-of-equilibrium adjustment. What the program delivered instead was a
-theory of *departures from* equilibrium: escape dynamics.
+The prize was a theory of out-of-equilibrium adjustment.
+
+What the program delivered instead was a theory of *departures from* equilibrium: escape
+dynamics.
 
 The sawtooth we simulated at the end of {doc}`olg_adaptive_money` was, in 1993, a numerical
-curiosity. {cite:t}`ChoWilliamsSargent2002` characterized it analytically with large-deviations
-theory, computing the most likely escape path and the rate at which escapes occur, and
-{cite:t}`Williams2019` extended the characterization considerably. The QuantEcon lectures
-{doc}`phillips_escaping_nash` and {doc}`phillips_priors` work through both.
+curiosity.
 
-This is less than the original quest asked for. It describes recurrent excursions away from a
-self-confirming equilibrium, not the arrival of a market economy in a country that never had
-one. But it is a genuine theory of a system that does not settle down, derived rather than
+{cite:t}`ChoWilliamsSargent2002` characterized it analytically with large-deviations theory,
+computing the most likely escape path and the rate at which escapes occur, and
+{cite:t}`Williams2019` extended the characterization considerably.
+
+The QuantEcon lectures {doc}`phillips_escaping_nash` and {doc}`phillips_priors` work through
+both.
+
+This is less than the original quest asked for.
+
+It describes recurrent excursions away from a self-confirming equilibrium, not the arrival of a
+market economy in a country that never had one.
+
+But it is a genuine theory of a system that does not settle down, derived rather than
 simulated, and in 1993 there was none.
 
 ### The econometricians did return the compliment
 
 Here the 1993 assessment was simply overtaken.
 
-The obstacle, we saw above, was that the added parameters live in a vanishing transient. But that
-argument applies only to a learning scheme with a $1/t$ gain, which converges and then stops
-moving.
+The obstacle, we saw above, was that the added parameters live in a vanishing transient.
+
+But that argument applies only to a learning scheme with a $1/t$ gain, which converges and then
+stops moving.
 
 *Constant-gain learning has no such transient.* Beliefs never settle; they keep moving forever,
-and their movement is part of the stationary distribution of the data. So the gain is identified
-the way an ordinary structural parameter is — from the whole sample, at the usual rate — and not,
-like $\beta_0$, from a bounded initial episode.
+and their movement is part of the stationary distribution of the data.
+
+So the gain is identified the way an ordinary structural parameter is — from the whole sample,
+at the usual rate — and not, like $\beta_0$, from a bounded initial episode.
 
 Let us check that on the model we have been using.
 
 ```{code-cell} ipython3
-def simulate_constant_gain(beta0, gain, u):
+def simulate_constant_gain(β0, gain, u):
     "Bray's cobweb when agents discount old prices at a fixed rate."
     T = len(u)
-    beta, p = np.empty(T), np.empty(T)
-    beta[0] = beta0
+    β, p = np.empty(T), np.empty(T)
+    β[0] = β0
     for t in range(T):
-        p[t] = a + b * beta[t] + u[t]
+        p[t] = a + b * β[t] + u[t]
         if t + 1 < T:
-            beta[t + 1] = beta[t] + gain * (p[t] - beta[t])
-    return p, beta
+            β[t + 1] = β[t] + gain * (p[t] - β[t])
+    return p, β
 
-def ssr_gain(g_hat, p, beta0):
+def ssr_gain(g_hat, p, β0):
     "Fit criterion for a candidate gain, given observed prices."
     T = len(p)
-    beta = np.empty(T)
-    beta[0] = beta0
+    β = np.empty(T)
+    β[0] = β0
     for t in range(1, T):
-        beta[t] = beta[t - 1] + g_hat * (p[t - 1] - beta[t - 1])
-    return np.sum((p - a - b * beta) ** 2)
+        β[t] = β[t - 1] + g_hat * (p[t - 1] - β[t - 1])
+    return np.sum((p - a - b * β) ** 2)
 
 gain_true = 0.05
 for T in (500, 5_000, 50_000):
     penalties = []
     for seed in range(20):                    # average out sampling noise
         u = np.random.default_rng(seed).standard_normal(T)
-        p, _ = simulate_constant_gain(beta_star, gain_true, u)
-        penalties.append(ssr_gain(0.08, p, beta_star) - ssr_gain(gain_true, p, beta_star))
+        p, _ = simulate_constant_gain(β_star, gain_true, u)
+        penalties.append(ssr_gain(0.08, p, β_star) - ssr_gain(gain_true, p, β_star))
     print(f"T = {T:6d}:  mean penalty for using gain 0.08 instead of 0.05 : "
           f"{np.mean(penalties):9.1f}")
 ```
@@ -565,46 +604,65 @@ for T in (500, 5_000, 50_000):
 The penalty grows in proportion to the sample, exactly as it did for the slope $b$ and exactly as
 it did *not* for the initial belief.
 
-That is why the econometric work that eventually materialized uses constant gain. {cite:t}`SargentWilliamsZha2006`
-estimated a constant-gain learning model of the Federal Reserve on post-war U.S. data — imputing
-to the government inside the model a genuine recursive estimation procedure, and asking the data
-which gain it used. {cite:t}`SargentWilliams2005` studied how the government's prior about
-drifting coefficients shapes what it converges to, and {doc}`phillips_priors` develops that.
-{doc}`phillips_drifts_volatilities` fits a drifting-coefficient VAR to the same episode and asks
-whether it was bad policy or bad luck.
+That is why the econometric work that eventually materialized uses constant gain.
 
-So the flattery did run both ways in the end. It took a change in the learning technology — from
-a scheme that converges to one that never does — to make the models estimable, and that change
-was made for reasons of economics rather than econometrics.
+{cite:t}`SargentWilliamsZha2006` estimated a constant-gain learning model of the Federal
+Reserve on post-war U.S. data — imputing to the government inside the model a genuine recursive
+estimation procedure, and asking the data which gain it used.
+
+{cite:t}`SargentWilliams2005` studied how the government's prior about drifting coefficients
+shapes what it converges to, and {doc}`phillips_priors` develops that.
+
+{doc}`phillips_drifts_volatilities` fits a drifting-coefficient VAR to the same episode and
+asks whether it was bad policy or bad luck.
+
+So the flattery did run both ways in the end.
+
+It took a change in the learning technology — from a scheme that converges to one that never
+does — to make the models estimable, and that change was made for reasons of economics rather
+than econometrics.
 
 ### A second retreat, made differently
 
 The program in this book keeps individual rationality and gives up mutual consistency: agents
 optimize, but against beliefs they are still estimating.
 
-A parallel literature retreats along the other axis. In the **robustness** work of Hansen and
-Sargent {cite:p}`HansenSargent2008`, agents do not estimate their model at all. They admit that
-they cannot know it, and optimize against the worst case among the models they cannot rule out.
+A parallel literature retreats along the other axis.
+
+In the **robustness** work of Hansen and Sargent {cite:p}`HansenSargent2008`, agents do not
+estimate their model at all.
+
+They admit that they cannot know it, and optimize against the worst case among the models they
+cannot rule out.
 
 The two are complements rather than rivals, and both are answers to the question that opens
-{doc}`bounded_rationality`: what do we do about the knowledge that rational expectations imputes?
-One answer is that agents should learn what the econometrician is learning. The other is that
-they should behave well without ever learning it.
+{doc}`bounded_rationality`: what do we do about the knowledge that rational expectations
+imputes?
+
+One answer is that agents should learn what the econometrician is learning.
+
+The other is that they should behave well without ever learning it.
 
 ### The algorithms kept crossing over
 
 The 1993 ledger noted that econometricians had adopted the adaptive algorithms as computational
-tools even while declining the models. That traffic increased, and reversed direction again.
+tools even while declining the models.
+
+That traffic increased, and reversed direction again.
 
 Holland's bucket brigade of {doc}`genetic_classifier` — pay part of your reward backward to
 whatever set you up — is *temporal-difference learning*, which became the organizing idea of
-modern reinforcement learning {cite:p}`Sutton_2018`. The classifier systems of
-{doc}`marimon_mcgrattan_sargent` are recognizable, in retrospect, as reinforcement learners with
-a hand-built function approximator; and the perceptrons of {doc}`genetic_classifier` became the
-deep networks of {doc}`back_prop`, which now serve as the function approximators.
+modern reinforcement learning {cite:p}`Sutton_2018`.
+
+The classifier systems of {doc}`marimon_mcgrattan_sargent` are recognizable, in retrospect, as
+reinforcement learners with a hand-built function approximator; and the perceptrons of
+{doc}`genetic_classifier` became the deep networks of {doc}`back_prop`, which now serve as the
+function approximators.
 
 Sargent's artificially intelligent agents were not, it turned out, a metaphor borrowed from a
-neighboring field. They were an early instance of what that field went on to build.
+neighboring field.
+
+They were an early instance of what that field went on to build.
 
 ### Reading the ledger again
 
@@ -614,10 +672,12 @@ The choices remain many, the learning tasks we set our agents remain simple next
 firms solve, and no one has produced the theory of transition dynamics that the Eastern European
 reforms called for.
 
-But the entries have moved. Selection acquired a theory instead of a set of examples;
-non-convergence acquired an analytical characterization instead of a simulation; and the
-econometricians, offered a version of the models whose extra parameters the data could actually
-speak to, took them up.
+But the entries have moved.
 
-The gap between the econometrician and the agents inside the model is still there. It is
-narrower, and we now know a good deal about its width.
+Selection acquired a theory instead of a set of examples; non-convergence acquired an
+analytical characterization instead of a simulation; and the econometricians, offered a version
+of the models whose extra parameters the data could actually speak to, took them up.
+
+The gap between the econometrician and the agents inside the model is still there.
+
+It is narrower, and we now know a good deal about its width.

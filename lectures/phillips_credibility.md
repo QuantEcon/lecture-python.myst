@@ -110,7 +110,9 @@ We work with the following objects.
 
 **Nash equilibrium:** a pair $(x, y)$ satisfying (i) $x = y$, and (ii) $y = B(x)$.
 
-**Ramsey problem:** $\max_y r(y, y)$. The *Ramsey outcome* is the value of $y$ that attains the maximum.
+**Ramsey problem:** $\max_y r(y, y)$.
+
+The *Ramsey outcome* is the value of $y$ that attains the maximum.
 
 **Best response dynamics:** the dynamical system $y_t = B(y_{t-1})$, $y_0$ given.
 
@@ -336,7 +338,7 @@ Actual inflation is a disturbed version of the best response mapping evaluated a
 y_t = B(x_t) + \eta_t ,
 ```
 
-where $\eta_t$ is an i.i.d. mean-zero term that represents the government's imperfect control of inflation.
+where $\eta_t$ is an IID mean-zero term that represents the government's imperfect control of inflation.
 
 Substituting {eq}`pc_expect2` into {eq}`pc_expect1` gives the stochastic recursion
 
@@ -419,9 +421,11 @@ Better outcomes can occur if the government plans for the future.
 
 Subsequent lectures describe three ways of modeling foresight, which impute varying amounts of rationality and predict different qualities of outcomes:
 
-1. A reputational approach that attributes rational expectations to both the government and the public. This is the subject of {doc}`phillips_credible_policies`. Many outcomes are sustainable, ranging from repetition of the Ramsey outcome to paths worse than repetition of the Nash outcome — a multiplicity that turns out to be the theory's chief lesson.
-2. An approach that keeps the government rational but gives the public *adaptive* expectations in the original Cagan-Friedman sense. This is the subject of {doc}`phillips_adaptive`. Depending on a comparison between a discount factor and an adaptation parameter, this setup can improve outcomes and possibly sustain repetition of the Ramsey outcome.
-3. An approach that attributes adaptive behavior to both the government and the public. This is the subject of {doc}`phillips_misspecified` and {doc}`phillips_self_confirming`.
+1. A reputational approach that attributes rational expectations to both the government and the public, the subject of {doc}`phillips_credible_policies`.
+   - Many outcomes are sustainable, ranging from repetition of the Ramsey outcome to paths worse than repetition of the Nash outcome, a multiplicity that turns out to be the theory's chief lesson.
+2. An approach that keeps the government rational but gives the public *adaptive* expectations in the original Cagan-Friedman sense, the subject of {doc}`phillips_adaptive`.
+   - Depending on a comparison between a discount factor and an adaptation parameter, this setup can improve outcomes and possibly sustain repetition of the Ramsey outcome.
+3. An approach that attributes adaptive behavior to both the government and the public, the subject of {doc}`phillips_misspecified` and {doc}`phillips_self_confirming`.
 
 ## Appendix: stochastic approximation
 
@@ -445,7 +449,7 @@ Rewrite the recursion as
 x_{n+1} = x_n + a_n \left[ B(x_n) - x_n + \eta_n \right] ,
 ```
 
-where $\eta_n$ is i.i.d. with mean zero and finite variance.
+where $\eta_n$ is IID with mean zero and finite variance.
 
 Introduce the transformed time scale $t_0 = 0$, $t_n = \sum_{i=0}^{n-1} a_i$, and interpolate the discrete sequence $\{x_n\}$ into a continuous-time process $x^0(t)$.
 

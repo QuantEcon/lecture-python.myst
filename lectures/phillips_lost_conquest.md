@@ -81,19 +81,32 @@ from scipy.linalg import solve_discrete_are
 
 The first two elements are among the most documented facts in modern macroeconomics.
 
-**Declining persistence.**
-From the 1970s into the 1980s inflation was highly persistent; a shock raised inflation for years.
-{cite}`CogleySargentConquest2005` and {cite}`StockWatson2007` document a marked decline in persistence after the mid-1980s — inflation began reverting to target much faster.
+**Declining persistence.** From the 1970s into the 1980s inflation was highly persistent; a
+shock raised inflation for years.
 
-**A flatter Phillips curve.**
-Since the 1990s, estimates of the Phillips curve's slope have trended toward zero — the "missing disinflation" after the Great Recession being the leading example.
+{cite}`CogleySargentConquest2005` and {cite}`StockWatson2007` document a marked decline in
+persistence after the mid-1980s — inflation began reverting to target much faster.
+
+**A flatter Phillips curve.** Since the 1990s, estimates of the Phillips curve's slope have
+trended toward zero — the "missing disinflation" after the Great Recession being the leading
+example.
+
 Both facts were on policy makers' minds.
-Former Fed Chair Janet Yellen observed in 2019 that "the slope of the Phillips curve … has diminished very significantly since the 1960s … and … inflation has become much less persistent."
-And, as {cite}`Bernanke2022` writes, "a flat Phillips curve means that inflation is a less reliable indicator of economic overheating [and] the costs, in terms of unemployment, of bringing inflation back down to target could be higher than in the past."
 
-**Real-time uncertainty.**
-The third element, emphasized by {cite}`Orphanides2001`, is that the output gap is badly mismeasured in *real time*, especially at business-cycle turning points.
-Through 2020–2023 the real-time gap was persistently *below* the later-revised measure, so the Fed perceived more slack — reinforcing the belief that inflation would fade on its own.
+Former Fed Chair Janet Yellen observed in 2019 that "the slope of the Phillips curve … has
+diminished very significantly since the 1960s … and … inflation has become much less
+persistent."
+
+And, as {cite}`Bernanke2022` writes, "a flat Phillips curve means that inflation is a less
+reliable indicator of economic overheating [and] the costs, in terms of unemployment, of
+bringing inflation back down to target could be higher than in the past."
+
+**Real-time uncertainty.** The third element, emphasized by {cite}`Orphanides2001`, is that the
+output gap is badly mismeasured in *real time*, especially at business-cycle turning points.
+
+Through 2020–2023 the real-time gap was persistently *below* the later-revised measure, so the
+Fed perceived more slack — reinforcing the belief that inflation would fade on its own.
+
 We use current-vintage data below and return to the real-time distinction in the conclusion.
 
 ## The Fed's drifting-coefficients beliefs
@@ -111,12 +124,12 @@ where $\pi_t$ is inflation, $x_t$ the output gap, $\rho_t$ the *perceived persis
 The Fed updates $\theta_t = (\alpha_{0,t}, \rho_t, \kappa_t)$ by constant-gain recursive least squares — exactly the algorithm of {doc}`phillips_learning` and {doc}`phillips_priors`, with gain $\gamma$ discounting the past so the estimates can *track* drift:
 
 $$
-\theta_{t+1} = \theta_t + \gamma R_t^{-1} X_t\left(\pi_t - X_t'\theta_t\right),
+\theta_{t+1} = \theta_t + \gamma R_t^{-1} X_t\left(\pi_t - X_t^\top \theta_t\right),
 \qquad
-R_{t+1} = R_t + \gamma\left(X_t X_t' - R_t\right),
+R_{t+1} = R_t + \gamma\left(X_t X_t^\top - R_t\right),
 $$
 
-with $X_t = (1, \pi_{t-1}, x_t)'$.
+with $X_t = (1, \pi_{t-1}, x_t)^\top$.
 
 We download quarterly PCE inflation, the CBO output gap, and the federal funds rate from FRED.
 
@@ -192,7 +205,7 @@ By 2019 the Fed's model said inflation was *not persistent* and only *weakly lin
 
 Each period the Fed sets its policy rate by solving a linear-quadratic Phelps problem, taking its *current* estimates as if they will hold forever — the anticipated-utility assumption of {cite}`Kreps1998` that we met in {doc}`phillips_learning`.
 
-Pairing the belief Phillips curve {eq}`lc_pc` with a fixed "IS curve" $x_t = b_0 + b_1 x_{t-1} + g(i_{t-1} - \pi_{t-1}) + \varepsilon^x_t$ gives linear state dynamics for $X_t = (1, \pi_t, x_t, i_{t-1})'$,
+Pairing the belief Phillips curve {eq}`lc_pc` with a fixed "IS curve" $x_t = b_0 + b_1 x_{t-1} + g(i_{t-1} - \pi_{t-1}) + \varepsilon^x_t$ gives linear state dynamics for $X_t = (1, \pi_t, x_t, i_{t-1})^\top$,
 
 $$
 X_{t+1} = A_t X_t + B_t\, i_t + C \varepsilon_{t+1},
@@ -274,7 +287,6 @@ ax.plot(optimal[window], 'C0', label="Phelps problem's recommended rate")
 ax.plot(data['i'][window], 'C3', lw=1, label='actual federal funds rate')
 ax.set_xlabel('year')
 ax.set_ylabel('percent')
-ax.set_title("The belief-driven Phelps rule vs. actual policy")
 ax.legend()
 plt.show()
 
@@ -309,7 +321,6 @@ ax.plot(counterfactual[w], 'C1--', label='counterfactual (beliefs frozen at 2000
 ax.plot(data['i'][w], 'C3', lw=1, alpha=0.7, label='actual funds rate')
 ax.set_xlabel('year')
 ax.set_ylabel('percent')
-ax.set_title('Counterfactual: a Fed that had not updated its beliefs since 2000')
 ax.legend()
 plt.show()
 ```
@@ -377,10 +388,9 @@ def measured_persistence(φ_π, β=0.99, γ_b=0.5, κ=0.1, σ=1.0):
 λ_path = [measured_persistence(φ) for φ in φ_grid]
 
 fig, ax = plt.subplots(figsize=(8, 4.5))
-ax.plot(φ_grid, λ_path)
+ax.plot(φ_grid, λ_path, lw=2)
 ax.set_xlabel(r'Taylor-rule aggressiveness $\phi_\pi$')
 ax.set_ylabel(r'measured persistence $\lambda$')
-ax.set_title('Aggressive policy makes inflation look less persistent')
 plt.show()
 ```
 
@@ -407,7 +417,12 @@ When large post-pandemic shocks finally hit, those self-confirming beliefs told 
 This is a modern replay of the *Conquest*'s recurrent dynamics, one level up: the mechanism now works through the perceived slope and persistence of the Phillips curve and the policy-rate instrument, and the misspecification is not about expectations but about the *policy endogeneity* of the reduced-form Phillips curve that the Fed treats as structural — ignoring the Lucas Critique in just the way the "vindication" story of {doc}`phillips_two_stories` describes.
 
 ```{note}
-As {cite}`SargentWilliams2025` note, the drifting-coefficients model is a purely descriptive "Kepler stage" model, not a structural "Newton stage" one. The paper also acknowledges an alternative reading in which the 2020s accommodation was fiscal in origin — see the fiscal-theory accounts it cites — a very different rationalization of the same policy path.
+As {cite}`SargentWilliams2025` note, the drifting-coefficients model is a purely descriptive
+"Kepler stage" model, not a structural "Newton stage" one.
+
+The paper also acknowledges an alternative reading in which the 2020s accommodation was fiscal
+in origin — see the fiscal-theory accounts it cites — a very different rationalization of the
+same policy path.
 ```
 
 This lecture imputed drifting beliefs to the Fed and then asked what policy they would recommend.

@@ -165,7 +165,7 @@ Let the variables be ordered as nominal interest, transformed unemployment, and
 inflation,
 
 $$
-y_t = \begin{bmatrix} i_t & u_t & \pi_t \end{bmatrix}'.
+y_t = \begin{bmatrix} i_t & u_t & \pi_t \end{bmatrix}^\top.
 $$
 
 (Here $u_t$ is not the raw unemployment rate but its logit, we define this transformation in the data section below.)
@@ -174,9 +174,9 @@ The measurement equation is a VAR with two lags and date-specific coefficients,
 
 ```{math}
 :label: csdv_measurement
-y_t = X_t'\theta_t + \varepsilon_t,
+y_t = X_t^\top \theta_t + \varepsilon_t,
 \qquad
-X_t' = I_3 \otimes \begin{bmatrix} 1 & y_{t-1}' & y_{t-2}' \end{bmatrix}.
+X_t^\top = I_3 \otimes \begin{bmatrix} 1 & y_{t-1}^\top & y_{t-2}^\top \end{bmatrix}.
 ```
 
 Each equation has an intercept and six lag coefficients, so $\theta_t$ contains
@@ -904,7 +904,7 @@ Gaussian truncated to $\mathcal A$,
 $$
 \pi_{\mathcal A}(z\mid\lambda,Y^T)
 = \frac{N(z;m,C)\,\mathbb{1}_{\mathcal A}(z)}
-       {\Pr(z\in\mathcal A\mid\lambda,Y^T)}.
+       {\mathbb{P}\{z\in\mathcal A\mid\lambda,Y^T\}}.
 $$
 
 That normalizing probability is difficult to compute, but the elliptical
@@ -1182,8 +1182,8 @@ expected_shapes = validate_posterior_arrays(posterior, len(data['dates']))
 (csdv-results)=
 ## What the data say
 
-We summarize the posterior by its mean coefficient path $E(\theta_t\mid T)$ and
-mean covariance path $E(R_t\mid T)$, and then interpret them 
+We summarize the posterior by its mean coefficient path $\mathbb{E}(\theta_t\mid T)$ and
+mean covariance path $\mathbb{E}(R_t\mid T)$, and then interpret them 
 in the context of the question we asked.
 
 ### The rate and structure of drift
@@ -1622,11 +1622,11 @@ f_{\pi\pi}(\omega,t)
 s_\pi
 (I-A_{t\mid T}e^{-i\omega})^{-1}
 \mathcal R_t
-(I-A_{t\mid T}'e^{i\omega})^{-1}
-s_\pi',
+(I-A_{t\mid T}^\top e^{i\omega})^{-1}
+s_\pi^\top,
 ```
 
-where $\mathcal R_t$ embeds $E(R_t\mid T)$ in the companion system.
+where $\mathcal R_t$ embeds $\mathbb{E}(R_t\mid T)$ in the companion system.
 
 Low-frequency power depends on both the autoregressive coefficients and the
 innovation covariance.
@@ -1927,8 +1927,8 @@ rule,
 ```{math}
 :label: csdv_policy_rule
 i_t = \beta_0
-+ \beta_1 E_t\bar\pi_{t,t+h_\pi}
-+ \beta_2 E_t\bar u_{t,t+h_u}
++ \beta_1 \mathbb{E}_t\bar\pi_{t,t+h_\pi}
++ \beta_2 \mathbb{E}_t\bar u_{t,t+h_u}
 + \beta_3 i_{t-1}
 + \nu_t.
 ```

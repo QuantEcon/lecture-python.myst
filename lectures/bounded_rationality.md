@@ -114,8 +114,12 @@ The agents are made more like the people who build the models: they gather data,
 theories, estimate, and adapt.
 
 ```{note} 
-After he saw Sargent's manuscript, 
-Carnegie-Mellon's Herbert Simon wrote Sargent a letter saying that he objected to  Sargent's formulation and recommended that Sargent not call what he was doing ''bounded rationality''. Simon particularly disliked Sargent's making the agents inside his model act like econometricians, a pretense that Simon found preposterous.
+After he saw Sargent's manuscript, Carnegie-Mellon's Herbert Simon wrote Sargent a letter
+saying that he objected to Sargent's formulation and recommended that Sargent not call what he
+was doing ''bounded rationality''.
+
+Simon particularly disliked Sargent's making the agents inside his model act like
+econometricians, a pretense that Simon found preposterous.
 ```  
 
 Sargent's proposal makes work harder for the model builder, not easier.
@@ -171,15 +175,17 @@ lectures use to expel the rational agents and put adaptive ones in their place.
 ### The rest of the series
 
 * {doc}`olg_adaptive_money` — adaptive households in Samuelson's overlapping generations
-  monetary model. Least squares learning selects the low-inflation equilibrium that the
-  rational expectations dynamics reject, and laboratory subjects go the same way. A government
-  learning a Phillips curve closes the lecture.
-* {doc}`learning_approximation` — what an agent must give up when the state is continuous and
-  a separate response for each contingency is out of the question. Approximate equilibria, and
-  why learning algorithms and equilibrium computation algorithms look like each other.
-* {doc}`exchange_rate_learning` — the two-currency model of this lecture, with adaptive agents.
-  Learning pins the exchange rate down only by making it depend on history; a genetic-algorithm
-  economy instead produces volatility that never dies.
+  monetary model.
+  - Least squares learning selects the low-inflation equilibrium that the rational expectations
+    dynamics reject, and laboratory subjects go the same way.
+  - A government learning a Phillips curve closes the lecture.
+* {doc}`learning_approximation` — what an agent must give up when the state is continuous and a
+  separate response for each contingency is out of the question, which brings in approximate
+  equilibria and the resemblance between learning algorithms and equilibrium computation
+  algorithms.
+* {doc}`exchange_rate_learning` — the two-currency model of this lecture with adaptive agents,
+  where learning pins the exchange rate down only by making it depend on history, while a
+  genetic-algorithm economy instead produces volatility that never dies.
 * {doc}`genetic_classifier` — a catalogue of candidate brains, from Holland and the
   connectionists: perceptrons, associative memories, genetic algorithms, classifier systems.
 * {doc}`marimon_mcgrattan_sargent` — populations of classifier systems that discover, from
@@ -219,8 +225,9 @@ in which $X$ is the output of the *average* firm.
 Each firm is a price-taker and an $X$-taker: it takes $p$ as given and sets marginal cost
 equal to price, $p = c'(x)$.
 
-Write the solution as $x = g(p)$. Substituting the demand curve gives the **best-response
-map**
+Write the solution as $x = g(p)$.
+
+Substituting the demand curve gives the **best-response map**
 
 ```{math}
 :label: br_map
@@ -288,6 +295,12 @@ where $\lambda \in (0, 1]$ is a **relaxation parameter**.
 With $\lambda = 1$ this is simple iteration on $h$, the classic cobweb.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Relaxation algorithm paths, undamped and damped"
+    name: fig-br-relaxation
+---
 def relax(λ, X0=1.0, n_iter=12):
     "Iterate the relaxation algorithm, returning the whole path."
     path = np.empty(n_iter + 1)
@@ -345,8 +358,10 @@ undamped zigzag in the right panel.
 Damping the adjustment enough makes the algorithm find the equilibrium; not damping it
 enough makes the algorithm chase its own tail.
 
-Hold on to that observation. A recurring theme of this series is that *how* you adapt determines
-where, and whether, you end up.
+Hold on to that observation.
+
+A recurring theme of this series is that *how* you adapt determines where, and whether, you end
+up.
 
 ### Adaptive expectations
 
@@ -398,13 +413,17 @@ $$
 
 ```{note}
 Sargent writes both the smoothing weight in {eq}`adaptive_exp` and the moving-average
-coefficient in {eq}`muth_process` as $\lambda$. We use $\theta$ for the second to keep the
-relationship $\lambda = 1 - \theta$ visible.
+coefficient in {eq}`muth_process` as $\lambda$.
 
-Two other symbols work double shifts in this lecture, both following the book. In the money
-model below, $\lambda$ is no longer a gain but the gross growth rate $w_1/w_2$ of the bubble
-term, and $\gamma$ is no longer the curvature of a cost function but the coefficient linking
-the price level to the money supply. The code distinguishes them as `λ_m` and `γ_m`.
+We use $\theta$ for the second to keep the relationship $\lambda = 1 - \theta$ visible.
+
+Two other symbols work double shifts in this lecture, both following the book.
+
+In the money model below, $\lambda$ is no longer a gain but the gross growth rate $w_1/w_2$ of
+the bubble term, and $\gamma$ is no longer the curvature of a cost function but the coefficient
+linking the price level to the money supply.
+
+The code distinguishes them as `λ_m` and `γ_m`.
 ```
 
 The forecasting rule inherits its one parameter from the stochastic process being forecast.
@@ -413,6 +432,12 @@ Let's confirm this numerically: simulate {eq}`muth_process`, run exponential smo
 range of weights, and see which weight forecasts best.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Forecast MSE of exponential smoothing"
+    name: fig-br-smoothing-mse
+---
 def smoothing_mse(x, λ):
     "One-step-ahead forecast MSE of exponential smoothing with weight λ."
     f = np.empty_like(x)
@@ -443,7 +468,7 @@ plt.show()
 ```
 
 Each curve bottoms out exactly at its dashed line $\lambda = 1 - \theta$, and the minimized
-mean squared error is $\operatorname{Var}(\epsilon_t) = 1$ up to simulation noise —
+mean squared error is $\mathbb{V}[\epsilon_t] = 1$ up to simulation noise —
 exponential smoothing at that weight *is* the conditional expectation, and nothing can beat
 it.
 
@@ -465,7 +490,7 @@ $$
 X_t = H(X_{t-1}, u_t),
 $$
 
-where $\{u_t\}$ is i.i.d.
+where $\{u_t\}$ is IID
 
 Solving the agent's dynamic program yields an individual decision rule
 $x_t = h(x_{t-1}, X_{t-1}, u_t)$.
@@ -505,10 +530,11 @@ $\lambda$ made to decline over time and the revision driven by data rather than 
 exact evaluation of $T$.
 
 ```{seealso}
-{doc}`rational_expectations` develops the $T$ map in detail for a Lucas–Prescott industry
-model and computes its fixed point. {doc}`ls_learning` studies what happens when agents
-estimate the perceived law of motion by least squares while living inside the system their
-estimates help determine.
+{doc}`rational_expectations` develops the $T$ map in detail for a Lucas–Prescott industry model
+and computes its fixed point.
+
+{doc}`ls_learning` studies what happens when agents estimate the perceived law of motion by
+least squares while living inside the system their estimates help determine.
 ```
 
 ## Money and prices
@@ -546,8 +572,9 @@ Real balances fall when currency is expected to lose value faster.
 This is a version of the demand function Cagan {cite:p}`Cagan` used to study hyperinflations,
 and it also arises in Samuelson's {cite:p}`Samuelson1958` overlapping generations model.
 
-To close the model we need a theory of $p^*_{t+1}$. Suppose the money supply grows at a
-constant rate,
+To close the model we need a theory of $p^*_{t+1}$.
+
+Suppose the money supply grows at a constant rate,
 
 ```{math}
 :label: money_supply
@@ -591,7 +618,9 @@ $$
 M_t = \gamma (w_1 - w_2 \mu) M_t + \lambda^t (w_1 - w_2 \lambda) c ,
 $$
 
-which must hold at every date. Matching the two terms gives
+which must hold at every date.
+
+Matching the two terms gives
 
 ```{math}
 :label: money_ree
@@ -611,7 +640,9 @@ so the equilibrium price level is
 p_t = (w_1 - \mu w_2)^{-1} M_t + \left(\frac{w_1}{w_2}\right)^t c .
 ```
 
-The parameters $\gamma$ and $\lambda$ are pinned down. The constant $c$ is not.
+The parameters $\gamma$ and $\lambda$ are pinned down.
+
+The constant $c$ is not.
 
 *Every $c \geq 0$ is a rational expectations equilibrium*, and expectations formed from
 {eq}`price_belief` are always exactly right in each of them.
@@ -650,6 +681,12 @@ In every other equilibrium the price level carries a component that has nothing 
 the money supply and grows exponentially: a purely speculative **bubble**.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Price levels and real balances under bubbles"
+    name: fig-br-bubbles
+---
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
 
 for c in (0.0, 0.5, 3.0):
@@ -773,9 +810,10 @@ pd.DataFrame(
 
 Every row is an equilibrium.
 
-The nominal price levels move around a great deal as $e$ varies. Since $e$ is the value of a
-unit of currency 2 in units of currency 1, a larger $e$ means currency 2 is worth more, which
-raises $p_1$ and lowers $p_2$.
+The nominal price levels move around a great deal as $e$ varies.
+
+Since $e$ is the value of a unit of currency 2 in units of currency 1, a larger $e$ means
+currency 2 is worth more, which raises $p_1$ and lowers $p_2$.
 
 But the last two columns tell the real story: total real balances are $w_1 - w_2 = 1$
 regardless of $e$, and markets clear exactly.
@@ -818,16 +856,19 @@ equilibrium from the one the rational expectations dynamics converge to, and hum
 subjects side with the adaptive model.
 
 In the two-currency model above, adaptive agents do pin the exchange rate down, but only by
-making it depend on initial conditions. The rest points of the learning algorithm reproduce the
-indeterminacy exactly, and what selects an outcome is the dead hand of history.
+making it depend on initial conditions.
+
+The rest points of the learning algorithm reproduce the indeterminacy exactly, and what selects
+an outcome is the dead hand of history.
 
 In a Kiyotaki–Wright search economy, adaptive agents learn to use a medium of exchange and
 select the *fundamental* equilibrium over the speculative one, even at parameters where theory
 says the speculative equilibrium is the only one.
 
-In each case the algorithm supplies what the equilibrium concept did not. Whether that is a
-discovery about economies or an artifact of the algorithm is the question the series keeps
-returning to, and {doc}`prospects_bounded_rationality` renders a verdict.
+In each case the algorithm supplies what the equilibrium concept did not.
+
+Whether that is a discovery about economies or an artifact of the algorithm is the question the
+series keeps returning to, and {doc}`prospects_bounded_rationality` renders a verdict.
 
 ## Exercises
 
@@ -895,8 +936,10 @@ pd.DataFrame({"$bn/\\gamma$": [0.5, 1.0, 1.5, 2.0, 4.0],
 ```
 
 Note the first row: when $bn/\gamma < 1$ the boundary exceeds one, so the naive cobweb
-converges on its own and no damping is needed. Damping is what buys convergence in the steep
-markets, and the steeper the market the more damping is required.
+converges on its own and no damping is needed.
+
+Damping is what buys convergence in the steep markets, and the steeper the market the more
+damping is required.
 
 ```{solution-end}
 ```

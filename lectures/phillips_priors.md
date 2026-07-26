@@ -81,7 +81,7 @@ U_n &= u - (\pi_n - \hat x_n) + \sigma_1 W_{1n}, \qquad u > 0, \\
 \end{aligned}
 ```
 
-where $U_n$ is unemployment, $\pi_n$ is inflation, $x_n$ is the systematic part of inflation set by the government, $\hat x_n$ is the public's (rational) forecast, and $W_n = (W_{1n}, W_{2n})'$ is i.i.d. standard Gaussian noise.
+where $U_n$ is unemployment, $\pi_n$ is inflation, $x_n$ is the systematic part of inflation set by the government, $\hat x_n$ is the public's (rational) forecast, and $W_n = (W_{1n}, W_{2n})^\top$ is IID standard Gaussian noise.
 
 Since $\pi_n - \hat x_n = \sigma_2 W_{2n}$, the true unemployment rate is $U_n = u - \sigma_2 W_{2n} + \sigma_1 W_{1n}$ — it fluctuates around the natural rate $u$ regardless of systematic policy.
 
@@ -107,11 +107,12 @@ Here we put the *intercept* first, with $\Phi = (1, \pi)$, following
 
 The two are the same model in different coordinates: $a = \gamma_{-1}$ and $b = \gamma_1$, so
 the self-confirming belief $(2u, -1)$ of this lecture is the $(-1, u(1+\theta^2))$ of the last
-one, with $\theta = 1$. Matrices such as $M$, $V$, and $P$ have their rows and columns
-correspondingly transposed.
+one, with $\theta = 1$.
+
+Matrices such as $M$, $V$, and $P$ have their rows and columns correspondingly transposed.
 ```
 
-Believing {eq}`pp_belief`, the government solves the Phelps problem — minimize $\hat E \sum_n \delta^n (U_n^2 + \pi_n^2)$ — whose static best response sets inflation to the constant
+Believing {eq}`pp_belief`, the government solves the Phelps problem — minimize $\hat{\mathbb{E}} \sum_n \delta^n (U_n^2 + \pi_n^2)$ — whose static best response sets inflation to the constant
 
 ```{math}
 :label: pp_bestresp
@@ -147,7 +148,7 @@ class StaticPhillips:
 
 Three belief vectors are worth naming.
 
-* **Belief 1 (Nash):** $b = -1$ with an intercept that makes the government set $x = u$. This is the time-consistent outcome of {cite}`KydlandPrescott1977`.
+* **Belief 1 (Nash):** $b = -1$ with an intercept that makes the government set $x = u$, the time-consistent outcome of {cite}`KydlandPrescott1977`.
 * **Belief 2 (Ramsey):** $b = 0$, so the government perceives *no* tradeoff and sets $x = 0$.
 * **Belief 3 (induction):** in a dynamic version, coefficients on current and lagged inflation summing to zero, which for a patient government also sends inflation toward $0$.
 
@@ -157,7 +158,7 @@ A self-confirming equilibrium is a belief $\bar\gamma$ that reproduces itself: t
 
 For the static model this is easy to solve by hand.
 
-The slope is $b = \operatorname{cov}(U, \pi)/\operatorname{var}(\pi) = -\sigma_2^2/\sigma_2^2 = -1$, and matching means gives the intercept $a = u + x(\bar\gamma)$.
+The slope is $b = \operatorname{cov}(U, \pi)/\mathbb{V}[\pi] = -\sigma_2^2/\sigma_2^2 = -1$, and matching means gives the intercept $a = u + x(\bar\gamma)$.
 
 Substituting the best response {eq}`pp_bestresp` with $b = -1$ gives $x = a/2$, so $a = u + a/2$, i.e. $a = 2u$.
 
@@ -192,13 +193,13 @@ and it forms its estimate $\gamma_n = \hat\alpha_{n \mid n-1}$ by the Kalman fil
 
 The covariance matrix $V$ is the government's **prior about parameter drift** — the object we set free.
 
-With regressors $\Phi_n = (1, \pi_n)'$, a large-sample approximation to the Kalman filter (see {cite}`BenvenisteMetivierPriouret1990`) is
+With regressors $\Phi_n = (1, \pi_n)^\top$, a large-sample approximation to the Kalman filter (see {cite}`BenvenisteMetivierPriouret1990`) is
 
 ```{math}
 :label: pp_kalman
 
 \begin{aligned}
-\gamma_{n+1} &= \gamma_n + P_n \Phi_n\left(U_n - \Phi_n' \gamma_n\right), \\
+\gamma_{n+1} &= \gamma_n + P_n \Phi_n\left(U_n - \Phi_n^\top \gamma_n\right), \\
 P_{n+1} &= P_n - P_n M(\gamma_n) P_n + \sigma^{-2} V ,
 \end{aligned}
 ```
@@ -329,7 +330,6 @@ ax.plot(λ_grid, max_re)
 ax.axhline(0, color='k', lw=0.8)
 ax.set_xlabel(r'prior-tightening parameter $\lambda$')
 ax.set_ylabel('max real part of eigenvalue')
-ax.set_title(r'Figure 4: stability of the SCE as the slope prior tightens')
 plt.show()
 ```
 
@@ -365,14 +365,14 @@ mystnb:
 ---
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-axes[0].plot(sol.t[mask], a_path[mask], label='intercept')
-axes[0].plot(sol.t[mask], b_path[mask], label='slope')
+axes[0].plot(sol.t[mask], a_path[mask], label='intercept', lw=2)
+axes[0].plot(sol.t[mask], b_path[mask], label='slope', lw=2)
 axes[0].set_xlabel('time')
 axes[0].set_ylabel('coefficient')
 axes[0].set_title('Figure 5a: coefficients cycle')
 axes[0].legend()
 
-axes[1].plot(a_path[mask], b_path[mask])
+axes[1].plot(a_path[mask], b_path[mask], lw=2)
 axes[1].plot(*γ_sce, 'kx', ms=10, label='SCE')
 axes[1].set_xlabel('intercept')
 axes[1].set_ylabel('slope')
@@ -400,7 +400,6 @@ ax.axhline(model.u, color='k', ls='--', lw=1, label='Nash')
 ax.axhline(0, color='C2', ls=':', lw=1, label='Ramsey')
 ax.set_xlabel('time')
 ax.set_ylabel('inflation $x$')
-ax.set_title('Figure 6: inflation oscillates between Nash and Ramsey along the cycle')
 ax.legend()
 plt.show()
 ```

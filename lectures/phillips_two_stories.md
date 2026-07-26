@@ -54,7 +54,8 @@ In both stories, the Federal Reserve learns the natural-rate-of-unemployment the
 The stories differ in how that theory is cast:
 
 * **The triumph of natural-rate theory.** Academic economists discovered the natural-rate hypothesis, taught that any inflation-unemployment tradeoff is temporary, and eventually persuaded policy makers to pursue low inflation.
-* **The vindication of econometric policy evaluation.** Policy makers never abandoned the methods that Robert Lucas criticized in his famous Critique. Recurrently re-estimating a Phillips curve and using it to choose a target, they were led by the *data itself* — an adversely shifting empirical Phillips curve — toward lower inflation.
+* **The vindication of econometric policy evaluation.** Policy makers never abandoned the methods that Robert Lucas criticized in his famous Critique.
+  - Recurrently re-estimating a Phillips curve and using it to choose a target, they were led toward lower inflation by the *data itself*, an adversely shifting empirical Phillips curve.
 
 This lecture presents the facts that motivate both stories, sketches the two interpretations, and reviews the Lucas Critique that chapter 2 both invokes and modifies.
 
@@ -100,8 +101,9 @@ Three collisions are worth flagging in advance, because a reader carrying symbol
 otherwise be caught by them.
 
 The letter $x$ changes sides: in {doc}`phillips_credibility` it is what the *public* expects,
-while from {doc}`phillips_escaping_nash` onward it is what the *government* sets. The two
-coincide in equilibrium, which is exactly what makes the switch easy to miss.
+while from {doc}`phillips_escaping_nash` onward it is what the *government* sets.
+
+The two coincide in equilibrium, which is exactly what makes the switch easy to miss.
 
 The letter $\theta$ is the slope of the Phillips curve in the early lectures and the government's
 whole belief vector in the last two.
@@ -123,9 +125,15 @@ from statsmodels.tsa.filters.bk_filter import bkfilter
 ```
 
 ```{note}
-The figures in the next two sections reproduce the ones in chapters 1 and 2 of {cite}`Sargent1999`, which were drawn from data available in the late 1990s.
-We download the underlying series from [FRED](https://fred.stlouisfed.org/) and restrict attention to the same historical window.
-The section {ref}`phillips_after_1999` then carries the most enlightening of these figures through to the present and asks what the additional quarter-century of data means for the two stories.
+The figures in the next two sections reproduce the ones in chapters 1 and 2 of
+{cite}`Sargent1999`, which were drawn from data available in the late 1990s.
+
+We download the underlying series from [FRED](https://fred.stlouisfed.org/) and restrict
+attention to the same historical window.
+
+The section {ref}`phillips_after_1999` then carries the most enlightening of these figures
+through to the present and asks what the additional quarter-century of data means for the two
+stories.
 ```
 
 ## Facts
@@ -272,7 +280,14 @@ Focusing on the business-cycle components sharpens the apparent Phillips curve.
 Figure 1.5 reveals **Phillips loops**: inflation and unemployment trace out counter-clockwise loops rather than a single stable curve, a signature of the shifting expectations that the natural-rate theory places at the center of the story.
 
 ```{note}
-The book adjusts for demographic change by choosing a single unemployment series. A broader definition of unemployment would inject additional low-frequency demographic components, which one might model with a unit-root process. The essay instead puts a unit root into the inflation-unemployment process from a different source: the *drifting beliefs* of a monetary authority cut loose from the discipline of Bretton Woods.
+The book adjusts for demographic change by choosing a single unemployment series.
+
+A broader definition of unemployment would inject additional low-frequency demographic
+components, which one might model with a unit-root process.
+
+The essay instead puts a unit root into the inflation-unemployment process from a different
+source: the *drifting beliefs* of a monetary authority cut loose from the discipline of Bretton
+Woods.
 ```
 
 ## Two interpretations
@@ -594,7 +609,15 @@ The surge is also a reminder that the monetary authority's *model* can still mis
 The decade of near-zero inflation before 2020 — the apparently *flat* Phillips curve, with neither the "missing disinflation" of 2009-2013 nor the "missing inflation" of 2015-2019 fitting a stable curve — is precisely the kind of drifting empirical relationship whose changing slope and intercept the book's adaptive government tracks in real time.
 
 ```{note}
-A caveat the book itself would insist on: its mechanisms assume that the *fundamentals* — the true data-generating process — are stable, so that all the action comes from the government's evolving beliefs. The 2021-2022 episode involved genuine supply shocks (pandemic disruptions, energy prices), which lie outside that assumption. Disentangling shifting beliefs from shifting fundamentals is exactly the identification problem that makes this history so hard, and so interesting.
+A caveat the book itself would insist on: its mechanisms assume that the *fundamentals* — the
+true data-generating process — are stable, so that all the action comes from the government's
+evolving beliefs.
+
+The 2021-2022 episode involved genuine supply shocks (pandemic disruptions, energy prices),
+which lie outside that assumption.
+
+Disentangling shifting beliefs from shifting fundamentals is exactly the identification problem
+that makes this history so hard, and so interesting.
 ```
 
 The tools built in the rest of this suite — self-confirming equilibria, drifting coefficients, and escape dynamics — remain a natural language for asking the question the new data pose: will a credible low-inflation equilibrium keep re-anchoring after each shock, or can a sequence of surprises still set beliefs drifting, as they did after 1965?
