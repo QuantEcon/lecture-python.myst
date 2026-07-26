@@ -27,6 +27,9 @@ kernelspec:
 
 # Drifts and Volatilities
 
+```{index} single: Phillips Curve; Drifts and Volatilities
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -82,10 +85,9 @@ for state-space models by MCMC in {doc}`ar1_bayes` and {doc}`ar1_turningpts`.
 We work through the data transformation, prior, sampler, and main empirical
 results.
 
-Let's start with some imports and the path to the data.
+Let's start with some imports and the URL for the data.
 
 ```{code-cell} ipython3
-from pathlib import Path
 import time
 
 import matplotlib.pyplot as plt
@@ -97,19 +99,11 @@ from scipy.special import expit
 from scipy.stats import invwishart
 
 
-def locate_data_assets():
-    """Find assets from either a MyST build or the repository root."""
-    relative = Path('_static/lecture_specific/phillips_drifts_volatilities')
-    candidates = (relative, Path('lectures') / relative)
-    for candidate in candidates:
-        if (candidate / 'NEWQDATA.csv').is_file():
-            return candidate
-    searched = ', '.join(str(path.resolve()) for path in candidates)
-    raise FileNotFoundError(f'NEWQDATA.csv was not found; searched {searched}')
-
-
-asset_path = locate_data_assets()
-data_path = asset_path / 'NEWQDATA.csv'
+data_url = (
+    'https://raw.githubusercontent.com/QuantEcon/lecture-python.myst/'
+    'main/lectures/_static/lecture_specific/phillips_drifts_volatilities/'
+    'NEWQDATA.csv'
+)
 ```
 
 ## Bad policy or bad luck?
@@ -155,13 +149,14 @@ changing volatility for coefficient drift.
 So Cogley and Sargent build a model that has room for *both* channels at once,
 and they let a Bayesian posterior sort out how much of each the data call for.
 
+(csdv-model)=
 ## A VAR with drifting coefficients and stochastic volatility
 
 Let the variables be ordered as nominal interest, transformed unemployment, and
 inflation,
 
 $$
-y_t = \begin{bmatrix} i_t & u_t & \pi_t \end{bmatrix}'.
+y_t = \begin{bmatrix} i_t & u_t & \pi_t \end{bmatrix}^\top.
 $$
 
 (Here $u_t$ is not the raw unemployment rate but its logit, we define this transformation in the data section below.)
@@ -170,9 +165,9 @@ The measurement equation is a VAR with two lags and date-specific coefficients,
 
 ```{math}
 :label: csdv_measurement
-y_t = X_t'\theta_t + \varepsilon_t,
+y_t = X_t^\top \theta_t + \varepsilon_t,
 \qquad
-X_t' = I_3 \otimes \begin{bmatrix} 1 & y_{t-1}' & y_{t-2}' \end{bmatrix}.
+X_t^\top = I_3 \otimes \begin{bmatrix} 1 & y_{t-1}^\top & y_{t-2}^\top \end{bmatrix}.
 ```
 
 Each equation has an intercept and six lag coefficients, so $\theta_t$ contains
@@ -358,7 +353,7 @@ directly from the series.
 ```{code-cell} ipython3
 def prepare_data(source, ordering=('i', 'u', 'pi')):
     """Transform a quarterly table and construct the VAR data."""
-    if isinstance(source, (str, Path)):
+    if isinstance(source, str):
         table = pd.read_csv(source)
     else:
         table = source.copy()
@@ -393,7 +388,7 @@ def prepare_data(source, ordering=('i', 'u', 'pi')):
     }
 
 
-data = prepare_data(data_path)
+data = prepare_data(data_url)
 
 data_summary = pd.Series(
     {
@@ -569,6 +564,7 @@ prior_summary = pd.Series(
 prior_summary.to_frame()
 ```
 
+(csdv-sampler)=
 ## A Metropolis-within-Gibbs sampler
 
 We simulate the posterior by cycling through five parameter blocks used by
@@ -899,7 +895,7 @@ Gaussian truncated to $\mathcal A$,
 $$
 \pi_{\mathcal A}(z\mid\lambda,Y^T)
 = \frac{N(z;m,C)\,\mathbb{1}_{\mathcal A}(z)}
-       {\Pr(z\in\mathcal A\mid\lambda,Y^T)}.
+       {\mathbb{P}\{z\in\mathcal A\mid\lambda,Y^T\}}.
 $$
 
 That normalizing probability is difficult to compute, but the elliptical
@@ -1174,10 +1170,11 @@ def validate_posterior_arrays(result, periods):
 expected_shapes = validate_posterior_arrays(posterior, len(data['dates']))
 ```
 
+(csdv-results)=
 ## What the data say
 
-We summarize the posterior by its mean coefficient path $E(\theta_t\mid T)$ and
-mean covariance path $E(R_t\mid T)$, and then interpret them 
+We summarize the posterior by its mean coefficient path $\mathbb{E}(\theta_t\mid T)$ and
+mean covariance path $\mathbb{E}(R_t\mid T)$, and then interpret them 
 in the context of the question we asked.
 
 ### The rate and structure of drift
@@ -1616,11 +1613,11 @@ f_{\pi\pi}(\omega,t)
 s_\pi
 (I-A_{t\mid T}e^{-i\omega})^{-1}
 \mathcal R_t
-(I-A_{t\mid T}'e^{i\omega})^{-1}
-s_\pi',
+(I-A_{t\mid T}^\top e^{i\omega})^{-1}
+s_\pi^\top,
 ```
 
-where $\mathcal R_t$ embeds $E(R_t\mid T)$ in the companion system.
+where $\mathcal R_t$ embeds $\mathbb{E}(R_t\mid T)$ in the companion system.
 
 Low-frequency power depends on both the autoregressive coefficients and the
 innovation covariance.
@@ -1921,8 +1918,8 @@ rule,
 ```{math}
 :label: csdv_policy_rule
 i_t = \beta_0
-+ \beta_1 E_t\bar\pi_{t,t+h_\pi}
-+ \beta_2 E_t\bar u_{t,t+h_u}
++ \beta_1 \mathbb{E}_t\bar\pi_{t,t+h_\pi}
++ \beta_2 \mathbb{E}_t\bar u_{t,t+h_u}
 + \beta_3 i_{t-1}
 + \nu_t.
 ```
@@ -2285,7 +2282,7 @@ if len(incomplete_quarters):
 else:
     complete_extension = quarterly_unfilled
 
-cs_sample = pd.read_csv(data_path)
+cs_sample = pd.read_csv(data_url)
 overlap_date = pd.Timestamp('2000-10-01')
 cs_sample_overlap = cs_sample.iloc[-1]
 latest_overlap = latest_quarterly.loc[overlap_date]
@@ -3251,6 +3248,7 @@ require a separate $Q=0$ model.
 The 2025Q3 natural-rate and policy-margin estimates remain imprecise, especially
 because not every posterior draw satisfies $|\beta_3|<1$.
 
+(csdv-verdict)=
 ## Bad policy or bad luck? A verdict
 
 The Bayesian VAR delivers a nuanced answer to the question that opened this

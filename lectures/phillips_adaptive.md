@@ -22,6 +22,9 @@ kernelspec:
 
 # Adaptive Expectations and the Phelps Problem
 
+```{index} single: Phillips Curve; Adaptive Expectations
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -46,6 +49,13 @@ In addition to what's in Anaconda, this lecture will use the following library:
 This lecture continues the study of Phillips curve tradeoffs begun in {doc}`phillips_credibility`.
 
 It follows chapter 5 of {cite}`Sargent1999`.
+
+{doc}`phillips_credible_policies` pursued better-than-Nash outcomes while keeping *everyone*
+rational, and found too many of them: a continuum of sustainable values, with nothing inside the
+theory to choose among them.
+
+Here we retreat from that perfection in the smallest way we can, by keeping the government
+rational and giving the public a mechanical forecasting rule.
 
 We describe
 
@@ -102,6 +112,12 @@ The weights $(1 - \lambda)\lambda^{i-1}$ sum to one, so a permanently maintained
 Let's confirm the induction property numerically.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Adaptive expectations converge to a constant inflation policy: the induction property"
+    name: fig-adapt-induction
+---
 def adaptive_forecast(y, λ, x0=0.0):
     "Simulate x_t = λ x_{t-1} + (1-λ) y_{t-1}."
     T = len(y)
@@ -155,26 +171,26 @@ Because expected inflation $x_t$ is predetermined at the start of period $t$, it
 
 The government's problem is therefore a discounted LQ control problem with
 
-* state $s_t = \begin{bmatrix} 1 & x_t \end{bmatrix}'$,
+* state $s_t = \begin{bmatrix} 1 & x_t \end{bmatrix}^\top$,
 * control $y_t$, and
 * transition $x_{t+1} = \lambda x_t + (1 - \lambda) y_t$.
 
 ### Casting the problem in LQ form
 
-Write $U_t = a' s_t - \theta y_t$ with $a = \begin{bmatrix} U^* & \theta \end{bmatrix}'$.
+Write $U_t = a^\top s_t - \theta y_t$ with $a = \begin{bmatrix} U^* & \theta \end{bmatrix}^\top$.
 
 The per-period loss $\tfrac{1}{2}(U_t^2 + y_t^2)$ then equals
 
 $$
-\frac{1}{2}\left[ s_t'(a a') s_t + (\theta^2 + 1) y_t^2 - 2 \theta \, y_t \, (a' s_t) \right] .
+\frac{1}{2}\left[ s_t^\top (a a^\top) s_t + (\theta^2 + 1) y_t^2 - 2 \theta \, y_t \, (a^\top s_t) \right] .
 $$
 
-Matching this to the QuantEcon LQ loss $s_t' R s_t + y_t' Q y_t + 2 y_t' N s_t$, and matching the transition to $s_{t+1} = A s_t + B y_t$, gives
+Matching this to the QuantEcon LQ loss $s_t^\top R s_t + y_t^\top Q y_t + 2 y_t^\top N s_t$, and matching the transition to $s_{t+1} = A s_t + B y_t$, gives
 
 $$
-R = \tfrac{1}{2} a a', \quad
+R = \tfrac{1}{2} a a^\top, \quad
 Q = \tfrac{1}{2}(\theta^2 + 1), \quad
-N = -\tfrac{1}{2}\theta\, a', \quad
+N = -\tfrac{1}{2}\theta\, a^\top, \quad
 A = \begin{bmatrix} 1 & 0 \\ 0 & \lambda \end{bmatrix}, \quad
 B = \begin{bmatrix} 0 \\ 1 - \lambda \end{bmatrix} .
 $$
@@ -277,6 +293,12 @@ In the undiscounted case ($\delta = 1$), inflation is driven all the way to the 
 Let's plot the full disinflation paths.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Optimal disinflation paths from the Phelps problem, discounted and undiscounted
+    name: fig-adapt-disinflation
+---
 fig, axes = plt.subplots(1, 2, figsize=(11, 4.5))
 
 for δ, ax in zip([0.96, 1.0], axes):
@@ -303,23 +325,23 @@ It is useful to state a more general version of the Phelps problem in which the 
 Define the vectors
 
 $$
-X_{U,t} = \begin{bmatrix} U_{t-1} & \cdots & U_{t-m_U} \end{bmatrix}',
+X_{U,t} = \begin{bmatrix} U_{t-1} & \cdots & U_{t-m_U} \end{bmatrix}^\top,
 \qquad
-X_{y,t} = \begin{bmatrix} y_{t-1} & \cdots & y_{t-m_y} \end{bmatrix}',
+X_{y,t} = \begin{bmatrix} y_{t-1} & \cdots & y_{t-m_y} \end{bmatrix}^\top,
 $$
 
-and the state vector $X_t = \begin{bmatrix} X_{U,t}' & X_{y,t}' & 1 \end{bmatrix}'$, which collects information dated $t-1$ and earlier.
+and the state vector $X_t = \begin{bmatrix} X_{U,t}^\top & X_{y,t}^\top & 1 \end{bmatrix}^\top$, which collects information dated $t-1$ and earlier.
 
 We can write two reduced-form Phillips curves that differ only in their *direction of fit*:
 
 $$
-\text{Classical:} \quad U_t = \gamma' X_{C,t} + \varepsilon_{C,t},
-\qquad X_{C,t} = \begin{bmatrix} y_t & X_{t-1}' \end{bmatrix}',
+\text{Classical:} \quad U_t = \gamma^\top X_{C,t} + \varepsilon_{C,t},
+\qquad X_{C,t} = \begin{bmatrix} y_t & X_{t-1}^\top \end{bmatrix}^\top,
 $$
 
 $$
-\text{Keynesian:} \quad y_t = \beta' X_{K,t} + \varepsilon_{K,t},
-\qquad X_{K,t} = \begin{bmatrix} U_t & X_{t-1}' \end{bmatrix}' .
+\text{Keynesian:} \quad y_t = \beta^\top X_{K,t} + \varepsilon_{K,t},
+\qquad X_{K,t} = \begin{bmatrix} U_t & X_{t-1}^\top \end{bmatrix}^\top.
 $$
 
 The subscripts $C$ and $K$ stand for *Classical* (regress $U$ on $y$) and *Keynesian* (regress $y$ on $U$).
@@ -341,7 +363,11 @@ Once that substitution is made, the state variable $x_t$ disappears from view.
 These objects — $\gamma$, $\beta$, $h(\gamma)$, and the two directions of fit — are exactly the ingredients we will need to define **self-confirming equilibria** in {doc}`phillips_self_confirming`.
 
 ```{note}
-The **induction hypothesis** is the restriction that, in the Keynesian Phillips curve $y_t = \beta' X_{K,t} + \varepsilon_{K,t}$, the weights on lagged $y$'s sum to unity (equivalently, in the classical form the weights on current and lagged $y$'s sum to zero). Under adaptive expectations this holds because the weights in {eq}`pa_geom` sum to one.
+The **induction hypothesis** is the restriction that, in the Keynesian Phillips curve $y_t = \beta^\top X_{K,t} + \varepsilon_{K,t}$,
+the weights on lagged $y$'s sum to unity (equivalently, in the classical form the weights on
+current and lagged $y$'s sum to zero).
+
+Under adaptive expectations this holds because the weights in {eq}`pa_geom` sum to one.
 ```
 
 ## Testing the natural-rate hypothesis
@@ -417,9 +443,10 @@ for δ in δ_grid:
     y_inf.append(y[-1])
 
 fig, ax = plt.subplots(figsize=(8, 4.5))
-ax.plot(δ_grid, y_inf, 'o-')
+ax.plot(δ_grid, y_inf, 'o-', lw=2)
 ax.set_xlabel(r'discount factor $\delta$')
 ax.set_ylabel(r'limiting inflation $y_\infty$')
+ax.set_title('Limiting inflation falls as patience rises')
 plt.show()
 ```
 

@@ -22,6 +22,9 @@ kernelspec:
 
 # Optimal Misspecified Beliefs
 
+```{index} single: Phillips Curve; Optimal Misspecified Beliefs
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -31,6 +34,16 @@ kernelspec:
 This lecture continues the study of Phillips curve tradeoffs.
 
 It follows chapter 6 of {cite}`Sargent1999`.
+
+In {doc}`phillips_adaptive` the public forecast inflation with a fixed adaptive rule whose
+parameter $\lambda$ we simply chose.
+
+That was unsatisfying in a way the *vindication* story of {doc}`phillips_two_stories` cannot
+afford: a free parameter describing expectations is exactly what rational expectations was meant
+to eliminate.
+
+Here we take the first step toward earning that parameter, by letting agents choose it to fit
+the data their own beliefs generate.
 
 We describe three conceptual issues that recur throughout this suite of lectures:
 
@@ -67,7 +80,7 @@ Following {cite}`Bray1982`, assume that
 p_t = a + b \, p_{t+1}^e + u_t ,
 ```
 
-where $u_t$ is i.i.d. with mean zero and variance $\sigma_u^2$, $a > 0$, $b \in (0, 1)$, $p_t$ is the market price, and $p_{t+1}^e$ is the market's expectation of next period's price.
+where $u_t$ is IID with mean zero and variance $\sigma_u^2$, $a > 0$, $b \in (0, 1)$, $p_t$ is the market price, and $p_{t+1}^e$ is the market's expectation of next period's price.
 
 The rational expectations equilibrium has $p_{t+1}^e = \frac{a}{1-b}$ and $p_t = \frac{a}{1-b} + u_t$.
 
@@ -271,14 +284,20 @@ print(f"actual one-step forecast error std  σ̄_ε = {σ_bar:.4f}")
 For the equilibrium $C$, we plot the equilibrium spectral densities of the true and approximating models.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Spectral densities of the true price process and of the agents' approximating model
+    name: fig-mis-spectra
+---
 F = bray.true_spectrum(C_star)
 σ_ε2 = fitted_sigma2(bray, C_star, c_star)
 G = bray.approx_spectrum(c_star, σ_ε2)
 
 half = bray.N // 2
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.plot(bray.ω[:half], np.log(F[:half]), 'C0', label='true model')
-ax.plot(bray.ω[:half], np.log(G[:half]), 'C1--', label='forecasting model')
+ax.plot(bray.ω[:half], np.log(F[:half]), 'C0', label='true model', lw=2)
+ax.plot(bray.ω[:half], np.log(G[:half]), 'C1--', label='forecasting model', lw=2)
 ax.set_xlabel(r'angular frequency $\omega$')
 ax.set_ylabel('log spectral density')
 ax.legend()
@@ -296,6 +315,12 @@ The true spectral density decreases sharply with frequency — Granger's "typica
 We compare the impulse response functions of the two models by feeding a unit shock through each moving-average representation.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Impulse responses of the true and approximating models
+    name: fig-mis-irf
+---
 def impulse_response(num_roots, den_roots, T=25):
     "IRF of (1 - num L)/(1 - den L): coefficients of the ratio of lag polys."
     h = np.empty(T)
@@ -311,8 +336,8 @@ irf_true = scale * impulse_response(1 - C_star, φ)          # f(L)
 irf_approx = impulse_response(1 - c_star, bray.ρ)           # g(L)
 
 fig, ax = plt.subplots(figsize=(8, 5))
-ax.plot(irf_true, 'C0o-', ms=4, label='true model')
-ax.plot(irf_approx, 'C1s--', ms=4, label='approximating model')
+ax.plot(irf_true, 'C0o-', ms=4, label='true model', lw=2)
+ax.plot(irf_approx, 'C1s--', ms=4, label='approximating model', lw=2)
 ax.set_xlabel('lag')
 ax.set_ylabel('response')
 ax.legend()
@@ -361,9 +386,10 @@ b_grid = np.arange(0.1, 0.85, 0.1)
 C_of_b = [solve_equilibrium(BrayModel(a=1.0, b=b, σ_u=1.0)) for b in b_grid]
 
 fig, ax = plt.subplots(figsize=(8, 4.5))
-ax.plot(b_grid, C_of_b, 'o-')
+ax.plot(b_grid, C_of_b, 'o-', lw=2)
 ax.set_xlabel('feedback parameter $b$')
 ax.set_ylabel('equilibrium belief $C$')
+ax.set_title('Equilibrium belief by expectational feedback')
 plt.show()
 ```
 
@@ -397,6 +423,7 @@ ax.annotate('equilibrium', (C_star, C_star),
             (C_star + 0.05, C_star - 0.03))
 ax.set_xlabel('$C$')
 ax.set_ylabel('$B(C)$')
+ax.set_title('The best-estimate map and its fixed point')
 ax.legend()
 plt.show()
 ```

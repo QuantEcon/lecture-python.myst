@@ -22,6 +22,9 @@ kernelspec:
 
 # The Rise and Fall of U.S. Inflation
 
+```{index} single: Phillips Curve; Rise and Fall of U.S. Inflation
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -51,13 +54,15 @@ In both stories, the Federal Reserve learns the natural-rate-of-unemployment the
 The stories differ in how that theory is cast:
 
 * **The triumph of natural-rate theory.** Academic economists discovered the natural-rate hypothesis, taught that any inflation-unemployment tradeoff is temporary, and eventually persuaded policy makers to pursue low inflation.
-* **The vindication of econometric policy evaluation.** Policy makers never abandoned the methods that Robert Lucas criticized in his famous Critique. Recurrently re-estimating a Phillips curve and using it to choose a target, they were led by the *data itself* — an adversely shifting empirical Phillips curve — toward lower inflation.
+* **The vindication of econometric policy evaluation.** Policy makers never abandoned the methods that Robert Lucas criticized in his famous Critique.
+  - Recurrently re-estimating a Phillips curve and using it to choose a target, they were led toward lower inflation by the *data itself*, an adversely shifting empirical Phillips curve.
 
 This lecture presents the facts that motivate both stories, sketches the two interpretations, and reviews the Lucas Critique that chapter 2 both invokes and modifies.
 
 The remaining lectures in the suite build the models:
 
 * {doc}`phillips_credibility` — the one-period Kydland-Prescott credibility problem (chapter 3).
+* {doc}`phillips_credible_policies` — reputation in the repeated economy, and why the theory of credible policy replaces pessimism with agnosticism (chapter 4).
 * {doc}`phillips_adaptive` — adaptive expectations and the Phelps problem (chapter 5).
 * {doc}`phillips_misspecified` — equilibrium under optimal misspecified beliefs (chapter 6).
 * {doc}`phillips_self_confirming` — self-confirming equilibria (chapter 7).
@@ -66,6 +71,47 @@ The remaining lectures in the suite build the models:
 * {doc}`phillips_priors` — how the government's prior about drifting coefficients shapes convergence, cycles, and escapes ({cite}`SargentWilliams2005`).
 * {doc}`phillips_lost_conquest` — the same tools turned on the 2020s inflation and the Fed's slow response ({cite}`SargentWilliams2025`).
 * {doc}`phillips_drifts_volatilities` — an empirical postscript that fits a drifting-coefficient, stochastic-volatility VAR to the data and asks whether the Great Inflation was bad policy or bad luck ({cite}`CogleySargent2005`).
+
+(phillips_notation)=
+### A note on notation
+
+The lectures follow the notation of the source each one is based on, and those sources do not
+agree with one another.
+
+Rather than impose a single scheme and diverge from the papers a reader may want to consult, we
+keep each lecture faithful to its source and record the translations here.
+
+| object | symbol | where |
+|---|---|---|
+| inflation | $y$ | {doc}`phillips_credibility` – {doc}`phillips_self_confirming` |
+| | $\pi$ | {doc}`phillips_escaping_nash` onward |
+| public's expected inflation | $x$ | {doc}`phillips_credibility`, {doc}`phillips_adaptive` |
+| government's systematic inflation | $x$ | {doc}`phillips_escaping_nash`, {doc}`phillips_priors` |
+| natural rate of unemployment | $U^*$ | {doc}`phillips_credibility` – {doc}`phillips_learning` |
+| | $u$ | {doc}`phillips_escaping_nash`, {doc}`phillips_priors` |
+| Phillips-curve slope | $\theta$ | {doc}`phillips_credibility` – {doc}`phillips_escaping_nash` |
+| government's beliefs | $\gamma$ | {doc}`phillips_adaptive` – {doc}`phillips_priors` |
+| | $\theta$ | {doc}`phillips_lost_conquest`, {doc}`phillips_drifts_volatilities` |
+| discount factor | $\delta$ | {doc}`phillips_credible_policies` – {doc}`phillips_learning` |
+| | $\beta$ | {doc}`phillips_lost_conquest`, {doc}`phillips_drifts_volatilities` |
+| learning gain | $\lambda$, $g_t$ | {doc}`phillips_adaptive`, {doc}`phillips_learning` |
+| | $\varepsilon$ | {doc}`phillips_escaping_nash`, {doc}`phillips_priors` |
+
+Three collisions are worth flagging in advance, because a reader carrying symbols forward will
+otherwise be caught by them.
+
+The letter $x$ changes sides: in {doc}`phillips_credibility` it is what the *public* expects,
+while from {doc}`phillips_escaping_nash` onward it is what the *government* sets.
+
+The two coincide in equilibrium, which is exactly what makes the switch easy to miss.
+
+The letter $\theta$ is the slope of the Phillips curve in the early lectures and the government's
+whole belief vector in the last two.
+
+And $\lambda$ works four shifts: the Cagan–Friedman adaptation parameter in
+{doc}`phillips_adaptive`, a forgetting factor in {doc}`phillips_learning`, a prior-tightening
+parameter in {doc}`phillips_priors`, and a measured persistence root in
+{doc}`phillips_lost_conquest`.
 
 Let's start with some imports:
 
@@ -79,9 +125,15 @@ from statsmodels.tsa.filters.bk_filter import bkfilter
 ```
 
 ```{note}
-The figures in the next two sections reproduce the ones in chapters 1 and 2 of {cite}`Sargent1999`, which were drawn from data available in the late 1990s.
-We download the underlying series from [FRED](https://fred.stlouisfed.org/) and restrict attention to the same historical window.
-The section {ref}`phillips_after_1999` then carries the most enlightening of these figures through to the present and asks what the additional quarter-century of data means for the two stories.
+The figures in the next two sections reproduce the ones in chapters 1 and 2 of
+{cite}`Sargent1999`, which were drawn from data available in the late 1990s.
+
+We download the underlying series from [FRED](https://fred.stlouisfed.org/) and restrict
+attention to the same historical window.
+
+The section {ref}`phillips_after_1999` then carries the most enlightening of these figures
+through to the present and asks what the additional quarter-century of data means for the two
+stories.
 ```
 
 ## Facts
@@ -101,6 +153,12 @@ inflation_ma = inflation.rolling(13, center=True).mean()
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Monthly CPI inflation, 13-month centered moving average, 1948-1999
+    name: fig-ts-inflation
+---
 fig, ax = plt.subplots(figsize=(9, 5))
 ax.plot(inflation_ma, lw=1.2)
 ax.axhline(0, color='k', lw=0.5)
@@ -136,6 +194,12 @@ data.head()
 Figure 1.2 plots the two raw series together.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Monthly unemployment (white men 20+) and inflation rates
+    name: fig-ts-raw-series
+---
 fig, ax = plt.subplots(figsize=(9, 5))
 ax.plot(data.index, data['inflation'], 'C0', lw=1, label='inflation (CPI)')
 ax.plot(data.index, data['unemployment'], 'C1:', lw=1.2,
@@ -159,6 +223,12 @@ bk.columns = ['inflation_cycle', 'unemployment_cycle']
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Business-cycle components of inflation and unemployment, Baxter-King bandpass filter
+    name: fig-ts-bandpass
+---
 fig, ax = plt.subplots(figsize=(9, 5))
 ax.plot(bk.index, bk['inflation_cycle'], 'C0', lw=1, label='inflation')
 ax.plot(bk.index, bk['unemployment_cycle'], 'C1:', lw=1.2,
@@ -179,6 +249,12 @@ We can see the tradeoff more directly in a scatter plot for the subperiod that i
 Figure 1.4 plots the raw series against each other, and Figure 1.5 the business-cycle components.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Inflation against unemployment, 1960-1982: raw series and business-cycle components"
+    name: fig-ts-scatter-6082
+---
 sub = slice('1960', '1982')
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
@@ -204,7 +280,14 @@ Focusing on the business-cycle components sharpens the apparent Phillips curve.
 Figure 1.5 reveals **Phillips loops**: inflation and unemployment trace out counter-clockwise loops rather than a single stable curve, a signature of the shifting expectations that the natural-rate theory places at the center of the story.
 
 ```{note}
-The book adjusts for demographic change by choosing a single unemployment series. A broader definition of unemployment would inject additional low-frequency demographic components, which one might model with a unit-root process. The essay instead puts a unit root into the inflation-unemployment process from a different source: the *drifting beliefs* of a monetary authority cut loose from the discipline of Bretton Woods.
+The book adjusts for demographic change by choosing a single unemployment series.
+
+A broader definition of unemployment would inject additional low-frequency demographic
+components, which one might model with a unit-root process.
+
+The essay instead puts a unit root into the inflation-unemployment process from a different
+source: the *drifting beliefs* of a monetary authority cut loose from the discipline of Bretton
+Woods.
 ```
 
 ## Two interpretations
@@ -284,7 +367,7 @@ Within a **self-confirming equilibrium** (developed in {doc}`phillips_self_confi
 
 Although the government's invariance assumption is wrong, it is not disappointed in outcomes, because those outcomes are statistically consistent with its beliefs.
 
-A self-confirming equilibrium is a rational expectations equilibrium with *fewer* free parameters than the models Lucas used — and precisely those lost parameters would be needed to represent regime changes.
+In a self-confirming equilibrium the government's beliefs are correct *along the equilibrium path*, so its forecasts satisfy the same cross-equation restrictions as a rational expectations equilibrium; but relative to the fully structural models Lucas used, the government's model carries *fewer* free parameters — and precisely those missing parameters would be needed to represent regime changes.
 
 To admit regime changes and drifting coefficients, convergence to a self-confirming equilibrium must be *resisted*.
 
@@ -316,6 +399,8 @@ We begin, in {doc}`phillips_credibility`, by imposing rationality on *both* side
 
 The one-period {cite}`KydlandPrescott1977` model delivers a pessimistic prediction — the high-inflation time-consistent (Nash) outcome — but a repeated-economy version of the theory of credible policy replaces that pessimism with *agnosticism*: so many outcomes become sustainable that the theory yields only weak predictions.
 
+{doc}`phillips_credible_policies` establishes this, computing the whole set of sustainable values with the recursive methods of {cite}`APS1990` and exhibiting three quite different equilibria that deliver an identical payoff.
+
 That weakness is the first reason to hesitate before declaring the triumph of natural-rate theory.
 
 We then turn back from the Lucas Critique and start again from the Phelps benchmark, but with one change: the government's model of the private sector is no longer arbitrary — it is *fit to historical data*.
@@ -328,7 +413,7 @@ Varying the details of that fitting problem generates the rest of the suite:
 
 These adaptive models are a *disciplined* retreat from rational expectations, not an abandonment of it.
 
-They carry no free parameters governing expectations; period by period they impose the same cross-equation restrictions as a rational expectations model; and — because a self-confirming equilibrium is the attractor of their *mean dynamics* — they converge back to rational expectations under tranquil conditions, satisfying a desideratum of {cite}`Kreps1998`.
+They carry no free parameters governing expectations; period by period they impose the same cross-equation restrictions as a rational expectations model; and — because a self-confirming equilibrium is the attractor of their *mean dynamics* — under tranquil conditions they converge back to it, and hence, on the equilibrium path, to rational expectations, satisfying a desideratum of {cite}`Kreps1998`.
 
 But, following {cite}`Sims1988`, our real interest is in the *recurrent* dynamics that adaptation adds.
 
@@ -404,6 +489,12 @@ Figure 1.1 showed inflation rising into the 1970s and falling under Volcker.
 Extending it to the present adds three chapters the book could not see: the *Great Moderation* of low, stable inflation from the mid-1980s; a long spell near — and briefly below — zero after the 2008 financial crisis; and a sudden surge in 2021-2022 to the highest rate since 1981, followed by a rapid decline.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Inflation extended to the present, with the book's window shaded
+    name: fig-ts-inflation-long
+---
 fig, ax = plt.subplots(figsize=(11, 5))
 ax.plot(inflation_ma_full, lw=1)
 ax.axhline(0, color='k', lw=0.5)
@@ -434,6 +525,12 @@ Figure 1.2 plotted the two series together for the post-war period.
 Extending it shows the two most dramatic macroeconomic events of the new data: the COVID unemployment spike of 2020 — briefly the highest since the Great Depression — and the inflation surge that followed.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Unemployment and inflation since 1990
+    name: fig-ts-recent
+---
 recent = slice('1990', None)
 
 fig, ax = plt.subplots(figsize=(11, 5))
@@ -462,6 +559,12 @@ The most striking post-1999 pattern is how *unstable* the inflation-unemployment
 We split the sample into the book's acceleration era, the Great Moderation, and the post-2008 period, and plot inflation against unemployment in each.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: The inflation-unemployment scatter across three eras
+    name: fig-ts-three-eras
+---
 scatter_data = pd.concat([inflation_yoy.rename('inflation'),
                           u_full.rename('unemployment')], axis=1).dropna()
 
@@ -480,8 +583,6 @@ axes[0].set_ylabel('inflation (year-over-year)')
 plt.tight_layout()
 plt.show()
 ```
-
-The three clouds could hardly look more different.
 
 In 1960-1983 the points sprawl across a wide range of inflation rates — the era of shifting expectations and Phillips *loops*.
 
@@ -508,12 +609,20 @@ The surge is also a reminder that the monetary authority's *model* can still mis
 The decade of near-zero inflation before 2020 — the apparently *flat* Phillips curve, with neither the "missing disinflation" of 2009-2013 nor the "missing inflation" of 2015-2019 fitting a stable curve — is precisely the kind of drifting empirical relationship whose changing slope and intercept the book's adaptive government tracks in real time.
 
 ```{note}
-A caveat the book itself would insist on: its mechanisms assume that the *fundamentals* — the true data-generating process — are stable, so that all the action comes from the government's evolving beliefs. The 2021-2022 episode involved genuine supply shocks (pandemic disruptions, energy prices), which lie outside that assumption. Disentangling shifting beliefs from shifting fundamentals is exactly the identification problem that makes this history so hard, and so interesting.
+A caveat the book itself would insist on: its mechanisms assume that the *fundamentals* — the
+true data-generating process — are stable, so that all the action comes from the government's
+evolving beliefs.
+
+The 2021-2022 episode involved genuine supply shocks (pandemic disruptions, energy prices),
+which lie outside that assumption.
+
+Disentangling shifting beliefs from shifting fundamentals is exactly the identification problem
+that makes this history so hard, and so interesting.
 ```
 
 The tools built in the rest of this suite — self-confirming equilibria, drifting coefficients, and escape dynamics — remain a natural language for asking the question the new data pose: will a credible low-inflation equilibrium keep re-anchoring after each shock, or can a sequence of surprises still set beliefs drifting, as they did after 1965?
 
-The final lecture, {doc}`phillips_lost_conquest`, turns exactly these tools on the 2021-2022 surge, and asks why the Federal Reserve was so slow to respond.
+{doc}`phillips_lost_conquest` turns exactly these tools on the 2021-2022 surge, and asks why the Federal Reserve was so slow to respond, while the closing lecture {doc}`phillips_drifts_volatilities` asks the data directly whether the coefficients of post-war macroeconomic dynamics really drifted.
 
 ## Exercises
 
