@@ -85,10 +85,9 @@ for state-space models by MCMC in {doc}`ar1_bayes` and {doc}`ar1_turningpts`.
 We work through the data transformation, prior, sampler, and main empirical
 results.
 
-Let's start with some imports and the path to the data.
+Let's start with some imports and the URL for the data.
 
 ```{code-cell} ipython3
-from pathlib import Path
 import time
 
 import matplotlib.pyplot as plt
@@ -100,19 +99,11 @@ from scipy.special import expit
 from scipy.stats import invwishart
 
 
-def locate_data_assets():
-    """Find assets from either a MyST build or the repository root."""
-    relative = Path('_static/lecture_specific/phillips_drifts_volatilities')
-    candidates = (relative, Path('lectures') / relative)
-    for candidate in candidates:
-        if (candidate / 'NEWQDATA.csv').is_file():
-            return candidate
-    searched = ', '.join(str(path.resolve()) for path in candidates)
-    raise FileNotFoundError(f'NEWQDATA.csv was not found; searched {searched}')
-
-
-asset_path = locate_data_assets()
-data_path = asset_path / 'NEWQDATA.csv'
+data_url = (
+    'https://raw.githubusercontent.com/QuantEcon/lecture-python.myst/'
+    'main/lectures/_static/lecture_specific/phillips_drifts_volatilities/'
+    'NEWQDATA.csv'
+)
 ```
 
 ## Bad policy or bad luck?
@@ -362,7 +353,7 @@ directly from the series.
 ```{code-cell} ipython3
 def prepare_data(source, ordering=('i', 'u', 'pi')):
     """Transform a quarterly table and construct the VAR data."""
-    if isinstance(source, (str, Path)):
+    if isinstance(source, str):
         table = pd.read_csv(source)
     else:
         table = source.copy()
@@ -397,7 +388,7 @@ def prepare_data(source, ordering=('i', 'u', 'pi')):
     }
 
 
-data = prepare_data(data_path)
+data = prepare_data(data_url)
 
 data_summary = pd.Series(
     {
@@ -2291,7 +2282,7 @@ if len(incomplete_quarters):
 else:
     complete_extension = quarterly_unfilled
 
-cs_sample = pd.read_csv(data_path)
+cs_sample = pd.read_csv(data_url)
 overlap_date = pd.Timestamp('2000-10-01')
 cs_sample_overlap = cs_sample.iloc[-1]
 latest_overlap = latest_quarterly.loc[overlap_date]
