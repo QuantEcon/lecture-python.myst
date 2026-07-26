@@ -501,12 +501,6 @@ Plot the three paths of $x_t - \theta U^*$ on one figure.
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Convergence of least squares learning for three values of the Phillips slope
-    name: fig-cred-theta
----
 fig, ax = plt.subplots(figsize=(9, 5))
 
 for θ in [0.5, 1.0, 2.0]:
@@ -517,6 +511,7 @@ for θ in [0.5, 1.0, 2.0]:
 ax.axhline(0, color='k', lw=0.8)
 ax.set_xlabel('$t$')
 ax.set_ylabel('$x_t - \\theta U^*$')
+ax.set_title('Least squares learning by Phillips slope')
 ax.legend()
 plt.show()
 ```

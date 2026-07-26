@@ -538,12 +538,6 @@ What happens as $\sigma_1 \to 0$, and why?
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Keynesian mean inflation as a function of the Phillips curve shock
-    name: fig-sce-sigma1
----
 σ1_grid = np.linspace(0.05, 1.0, 50)
 y_keynes = [SelfConfirmingStatic(σ1=σ1, σ2=0.3).keynesian()[2]
             for σ1 in σ1_grid]
@@ -553,6 +547,7 @@ ax.plot(σ1_grid, y_keynes, label='Keynesian mean inflation')
 ax.axhline(5.0, color='k', ls='--', lw=1, label='Nash')
 ax.set_xlabel(r'$\sigma_1$')
 ax.set_ylabel('mean inflation')
+ax.set_title('Keynesian mean inflation by shock size')
 ax.legend()
 plt.show()
 ```
@@ -580,12 +575,6 @@ For $\delta = 0.97$, plot the best-estimate map $C \mapsto B(C)$ against the 45-
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: The best-estimate map and the equilibrium gain
-    name: fig-sce-fixed-point
----
 mp = MisspecifiedPhillips(δ=0.97)
 C_grid = np.linspace(0.02, 0.3, 20)
 B_vals = [mp.best_estimate(C) for C in C_grid]
@@ -598,6 +587,7 @@ ax.plot(C_star, C_star, 'ko')
 ax.annotate('equilibrium', (C_star, C_star), (C_star + 0.03, C_star - 0.03))
 ax.set_xlabel('$C$')
 ax.set_ylabel('$B(C)$')
+ax.set_title('The best-estimate map and the equilibrium gain')
 ax.legend()
 plt.show()
 ```

@@ -640,12 +640,6 @@ Verify this by plotting the maximum real part of the eigenvalues of $\bar P(\lam
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Tightening the intercept prior leaves the self-confirming equilibrium stable
-    name: fig-pri-intercept
----
 def V_tighten_intercept(λ, V_star):
     V = V_star.copy()
     V[0, 0] = λ * V_star[0, 0]
@@ -664,6 +658,7 @@ ax.plot(λ_grid, max_re, ls='--', label='tighten slope (for comparison)')
 ax.axhline(0, color='k', lw=0.8)
 ax.set_xlabel(r'$\lambda$')
 ax.set_ylabel('max real part of eigenvalue')
+ax.set_title('Stability under a tighter intercept prior')
 ax.legend()
 plt.show()
 ```

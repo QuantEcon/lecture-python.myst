@@ -449,12 +449,6 @@ How does a larger smoothing penalty change the character of the recommended poli
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Phelps recommendations for three interest-smoothing weights
-    name: fig-lc-smoothing
----
 def recommend(η_val):
     "Phelps recommendations along the whole sample, for a given smoothing weight."
     θ, R = np.array([0.5, 0.9, 0.05]), np.diag([1.0, 10.0, 5.0])
@@ -475,6 +469,7 @@ for η_val in [0.1, 0.5, 2.0]:
 ax.plot(data['i'][w], 'k:', lw=1.5, label='actual')
 ax.set_xlabel('year')
 ax.set_ylabel('percent')
+ax.set_title('Phelps recommendations by smoothing weight')
 ax.legend()
 plt.show()
 ```

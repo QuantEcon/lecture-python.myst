@@ -436,12 +436,6 @@ Plot $y_\infty$ against $\delta$ and confirm that it declines toward zero as $\d
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Limiting inflation of the Phelps problem falls toward Ramsey as the government becomes patient
-    name: fig-adapt-limit
----
 δ_grid = np.arange(0.90, 0.995, 0.01)
 y_inf = []
 for δ in δ_grid:
@@ -452,6 +446,7 @@ fig, ax = plt.subplots(figsize=(8, 4.5))
 ax.plot(δ_grid, y_inf, 'o-', lw=2)
 ax.set_xlabel(r'discount factor $\delta$')
 ax.set_ylabel(r'limiting inflation $y_\infty$')
+ax.set_title('Limiting inflation falls as patience rises')
 plt.show()
 ```
 

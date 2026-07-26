@@ -382,12 +382,6 @@ How does stronger expectational feedback (larger $b$) affect the equilibrium amo
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: The equilibrium belief as a function of the strength of expectational feedback
-    name: fig-mis-C-of-b
----
 b_grid = np.arange(0.1, 0.85, 0.1)
 C_of_b = [solve_equilibrium(BrayModel(a=1.0, b=b, σ_u=1.0)) for b in b_grid]
 
@@ -395,6 +389,7 @@ fig, ax = plt.subplots(figsize=(8, 4.5))
 ax.plot(b_grid, C_of_b, 'o-', lw=2)
 ax.set_xlabel('feedback parameter $b$')
 ax.set_ylabel('equilibrium belief $C$')
+ax.set_title('Equilibrium belief by expectational feedback')
 plt.show()
 ```
 
@@ -417,12 +412,6 @@ Verify that the equilibrium is a genuine fixed point by plotting the best-estima
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: The best-estimate map and its fixed point
-    name: fig-mis-fixed-point
----
 C_grid = np.linspace(0.02, 0.4, 25)
 B_vals = [best_estimate(bray, C) for C in C_grid]
 
@@ -434,6 +423,7 @@ ax.annotate('equilibrium', (C_star, C_star),
             (C_star + 0.05, C_star - 0.03))
 ax.set_xlabel('$C$')
 ax.set_ylabel('$B(C)$')
+ax.set_title('The best-estimate map and its fixed point')
 ax.legend()
 plt.show()
 ```

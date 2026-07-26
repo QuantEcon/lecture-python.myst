@@ -810,12 +810,6 @@ of {doc}`phillips_self_confirming` before solving the Phelps problem.
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Sensitivity of the escape frequency to the constant gain
-    name: fig-learn-gain-sweep
----
 fig, ax = plt.subplots(figsize=(9, 4.5))
 for λ in [0.99, 0.975, 0.95]:
     sim = simulate(model, λ=λ, T_prior=300, n=1000, seed=1)
@@ -825,6 +819,7 @@ for λ in [0.99, 0.975, 0.95]:
 ax.axhline(0, color='k', lw=0.5)
 ax.set_xlabel('$t$')
 ax.set_ylabel('inflation $y_t$')
+ax.set_title('Escape frequency by constant gain')
 ax.legend()
 plt.show()
 ```

@@ -1035,12 +1035,6 @@ What happens to the set as $\delta \to 0$, and why is that the answer you should
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: The set of subgame perfect equilibrium values as a function of the discount factor
-    name: fig-cpol-value-set
----
 δs = np.linspace(0.02, 0.98, 49)
 lows, highs = [], []
 for δ in δs:
@@ -1056,6 +1050,7 @@ ax.axhline(r_keep(m, 0.0), color='C2', ls=':', lw=1.2, label='Ramsey $v^R$')
 ax.axhline(r_keep(m, y_nash(m)), color='k', ls='--', lw=1, label='Nash $v^N$')
 ax.set_xlabel(r'discount factor $\delta$')
 ax.set_ylabel('value')
+ax.set_title('SPE values by discount factor')
 ax.legend()
 plt.show()
 ```
