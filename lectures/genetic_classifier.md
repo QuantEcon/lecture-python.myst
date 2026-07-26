@@ -262,10 +262,10 @@ show = ['E', 'O', 'T']
 fig, axes = plt.subplots(len(show), 3, figsize=(6, 6))
 for row, letter in enumerate(show):
     i = letters.index(letter)
-    corrupt = sigma[i].copy()
+    corrupt = σ[i].copy()
     corrupt[rng.choice(25, 4, replace=False)] *= -1             # flip 4 pixels
     recovered = recall(w_hop, corrupt)
-    for col, (img, title) in enumerate([(sigma[i], "stored"),
+    for col, (img, title) in enumerate([(σ[i], "stored"),
                                         (corrupt, "corrupted"),
                                         (recovered, "recovered")]):
         axes[row, col].imshow(img.reshape(5, 5), cmap='binary', vmin=-1, vmax=1)
@@ -289,9 +289,9 @@ for n_flip in (3, 5, 7):
     correct = 0
     for i in range(len(letters)):
         for _ in range(40):
-            corrupt = sigma[i].copy()
+            corrupt = σ[i].copy()
             corrupt[rng.choice(25, n_flip, replace=False)] *= -1
-            if np.array_equal(recall(w_hop, corrupt), sigma[i]):
+            if np.array_equal(recall(w_hop, corrupt), σ[i]):
                 correct += 1
     print(f"{n_flip} pixels flipped: recovered exactly {correct}/{len(letters)*40}")
 ```
@@ -749,13 +749,13 @@ def recall_with_energy(w, s0, max_iter=30):
 
 rng = np.random.default_rng(1)
 i = letters.index('E')
-corrupt = sigma[i].copy()
+corrupt = σ[i].copy()
 corrupt[rng.choice(25, 5, replace=False)] *= -1
 final, trace = recall_with_energy(w_hop, corrupt)
 
 print(f"energy along the recall path: {[round(e, 2) for e in trace]}")
 print(f"monotonically non-increasing: {all(np.diff(trace) <= 1e-9)}")
-print(f"recovered the intended letter 'E': {np.array_equal(final, sigma[i])}")
+print(f"recovered the intended letter 'E': {np.array_equal(final, σ[i])}")
 ```
 
 The energy falls monotonically along every recall path: the dynamics can only move downhill, which
@@ -766,9 +766,9 @@ stored letter, and a spurious state that is a fixed point but was never taught.
 
 ```{code-cell} ipython3
 def classify_outcome(final, i):
-    if np.array_equal(final, sigma[i]):
+    if np.array_equal(final, σ[i]):
         return "intended"
-    if any(np.array_equal(final, sigma[k]) for k in range(len(letters))):
+    if any(np.array_equal(final, σ[k]) for k in range(len(letters))):
         return "wrong letter"
     return "spurious"
 
@@ -777,7 +777,7 @@ wrong_energy, spurious_energy = [], []
 for i in range(len(letters)):
     for seed in range(200):
         r = np.random.default_rng(1000*i + seed)
-        corrupt = sigma[i].copy()
+        corrupt = σ[i].copy()
         corrupt[r.choice(25, 7, replace=False)] *= -1
         final = recall(w_hop, corrupt)
         kind = classify_outcome(final, i)
@@ -788,7 +788,7 @@ for i in range(len(letters)):
             spurious_energy.append(energy(w_hop, final))
 
 print(f"7-pixel corruptions ({sum(counts.values())} trials): {counts}")
-print(f"stored patterns all have energy {energy(w_hop, sigma[0]):.1f}")
+print(f"stored patterns all have energy {energy(w_hop, σ[0]):.1f}")
 print(f"wrong-letter results: energy in [{min(wrong_energy):.1f}, {max(wrong_energy):.1f}]")
 print(f"spurious results:     energy in [{min(spurious_energy):.1f}, {max(spurious_energy):.1f}]")
 ```
