@@ -426,7 +426,7 @@ That is feasible here because there are only two states. It has two drawbacks th
 emphasizes.
 
 First, states that are rarely visited are learned about slowly, because the observations
-arrive slowly. Exercise {ref}`olg_ex1 <olg_ex1>` makes this concrete.
+arrive slowly. {ref}`olg_ex1` makes this concrete.
 
 Second, when the number of states is large, one parameter per state becomes unmanageable.
 
@@ -558,7 +558,7 @@ This matters because of how the two equilibria rank.
 The comparative statics of the low-inflation equilibrium are "classical": raising the deficit
 $G$ lowers $A_1$, which raises the low stationary inflation rate. The comparative statics of
 the high-inflation equilibrium are the reverse, because the economy is on the wrong side of
-an inflation-tax **Laffer curve**; see Exercise {ref}`olg_ex3 <olg_ex3>`.
+an inflation-tax **Laffer curve**; see {ref}`olg_ex3`.
 
 And the low-inflation equilibrium Pareto-dominates every other equilibrium of this model,
 stationary or not.
@@ -1009,7 +1009,7 @@ natural-rate hypothesis *without having to sit through a long inflation to do it
 How often the escapes happen depends on the gain — the government's degree of doubt about its
 own model — which is exactly the parameter {cite:t}`Sims1988` found to select between the two
 stories. A small gain keeps the economy near the inflation bias; a larger gain sends it toward
-the optimum more often (Exercise {ref}`olg_ex4 <olg_ex4>`).
+the optimum more often ({ref}`olg_ex4`).
 
 ### From escape dynamics to the *Conquest of American Inflation*
 

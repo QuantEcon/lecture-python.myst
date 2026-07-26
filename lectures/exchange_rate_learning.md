@@ -560,7 +560,7 @@ economy with no fundamental disturbances whatsoever.
 The gap between them is not about the economics, which is identical, but about the *adaptive
 machinery*. A device that stabilizes a single agent's learning — the election operator, which
 keeps only improving offspring — turns out, inside a self-referential market, to sustain
-volatility rather than damp it (Exercise {ref}`xr_ex2 <xr_ex2>`). Which learning model an
+volatility rather than damp it ({ref}`xr_ex2`). Which learning model an
 economist reaches for is, once again, one of the choices that the bounded-rationality program
 forces into the open.
 

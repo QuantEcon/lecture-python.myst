@@ -362,7 +362,7 @@ scarce, and the sup-norm error can tick back up even as the fit improves where a
 spend their time. That is the same phenomenon as the slowly-learned rare state in
 {doc}`olg_adaptive_money`, seen from the approximation side: a scheme fits well where the data
 is, and the cost of misfitting a rarely-visited region is small in terms of expected utility.
-Exercise {ref}`lae_ex1 <lae_ex1>` explores this.
+{ref}`lae_ex1` explores this.
 ```
 
 ## Learning is equilibrium computation
@@ -751,7 +751,7 @@ genuine curvature of $f(G)$, so the rule is pulled toward a straight line. This 
 end.
 
 The bandwidth is the non-parametric counterpart of the polynomial degree in
-Exercise {ref}`lae_ex1 <lae_ex1>`: both control how much structure the learner imposes, and both
+{ref}`lae_ex1`: both control how much structure the learner imposes, and both
 have a sweet spot that trades misfit-from-too-little-flexibility against
 noise-from-too-much. The bounded-rationality program does not tell us where that spot is; it
 is one more choice that replaces the single discipline of rational expectations with a menu of
