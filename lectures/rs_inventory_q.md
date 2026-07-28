@@ -332,13 +332,12 @@ We simulate inventory dynamics under the optimal policy for the baseline $\gamma
 
 ```{code-cell} ipython3
 @numba.jit(nopython=True)
-def sim_inventories(ts_length, σ, p, X_init=0, seed=0):
+def sim_inventories(ts_length, σ, p, rng, X_init=0):
     """Simulate inventory dynamics under policy σ."""
-    np.random.seed(seed)
     X = np.zeros(ts_length, dtype=np.int32)
     X[0] = X_init
     for t in range(ts_length - 1):
-        d = np.random.geometric(p) - 1
+        d = rng.geometric(p) - 1
         X[t+1] = max(X[t] - d, 0) + σ[X[t]]
     return X
 ```
@@ -354,7 +353,8 @@ K = len(x_values) - 1
 
 for i, γ in enumerate(γ_values):
     v, σ = results[γ]
-    X = sim_inventories(ts_length, σ, model.p, X_init=K // 2, seed=sim_seed)
+    X = sim_inventories(ts_length, σ, model.p,
+                        np.random.default_rng(sim_seed), X_init=K // 2)
     axes[i].plot(X, alpha=0.7)
     axes[i].set_ylabel("inventory")
     axes[i].set_title(f"$\\gamma = {γ}$")
@@ -588,8 +588,7 @@ the update target uses $\exp(-\gamma R_{t+1})
 ```{code-cell} ipython3
 @numba.jit(nopython=True)
 def q_learning_rs_kernel(K, p, c, κ, β, γ, n_steps, X_init,
-                         ε_init, ε_min, ε_decay, q_init, snapshot_steps, seed):
-    np.random.seed(seed)
+                         ε_init, ε_min, ε_decay, q_init, snapshot_steps, rng):
     q = np.full((K + 1, K + 1), q_init)  # optimistic initialization
     n = np.zeros((K + 1, K + 1))        # visit counts for learning rate
     ε = ε_init
@@ -600,7 +599,7 @@ def q_learning_rs_kernel(K, p, c, κ, β, γ, n_steps, X_init,
 
     # Initialize state and action
     x = X_init
-    a = np.random.randint(0, K - x + 1)
+    a = rng.integers(0, K - x + 1)
 
     for t in range(n_steps):
         # Record policy snapshot if needed
@@ -609,7 +608,7 @@ def q_learning_rs_kernel(K, p, c, κ, β, γ, n_steps, X_init,
             snap_idx += 1
 
         # === Draw D_{t+1} and observe outcome ===
-        d = np.random.geometric(p) - 1
+        d = rng.geometric(p) - 1
         reward = min(x, d) - c * a - κ * (a > 0)
         x_next = max(x - d, 0) + a
 
@@ -630,8 +629,8 @@ def q_learning_rs_kernel(K, p, c, κ, β, γ, n_steps, X_init,
 
         # === Behavior policy: ε-greedy (uses a_next, the argmin action) ===
         x = x_next
-        if np.random.random() < ε:
-            a = np.random.randint(0, K - x + 1)
+        if rng.random() < ε:
+            a = rng.integers(0, K - x + 1)
         else:
             a = a_next
         ε = max(ε_min, ε * ε_decay)
@@ -649,8 +648,9 @@ def q_learning_rs(model, n_steps=20_000_000, X_init=0,
     K = len(x_values) - 1
     if snapshot_steps is None:
         snapshot_steps = np.array([], dtype=np.int64)
+    rng = np.random.default_rng(seed)
     return q_learning_rs_kernel(K, p, c, κ, β, γ, n_steps, X_init,
-                                ε_init, ε_min, ε_decay, q_init, snapshot_steps, seed)
+                                ε_init, ε_min, ε_decay, q_init, snapshot_steps, rng)
 ```
 
 ### Running Q-learning
@@ -721,7 +721,8 @@ X_init = K // 2
 sim_seed = 5678
 
 # Optimal policy
-X_opt = sim_inventories(ts_length, σ_star, model.p, X_init, seed=sim_seed)
+X_opt = sim_inventories(ts_length, σ_star, model.p,
+                        np.random.default_rng(sim_seed), X_init)
 axes[0].plot(X_opt, alpha=0.7)
 axes[0].set_ylabel("inventory")
 axes[0].set_title("Optimal (VFI)")
@@ -730,7 +731,8 @@ axes[0].set_ylim(0, K + 2)
 # Q-learning snapshots
 for i in range(n_snaps):
     σ_snap = snapshots[i]
-    X = sim_inventories(ts_length, σ_snap, model.p, X_init, seed=sim_seed)
+    X = sim_inventories(ts_length, σ_snap, model.p,
+                        np.random.default_rng(sim_seed), X_init)
     axes[i + 1].plot(X, alpha=0.7)
     axes[i + 1].set_ylabel("inventory")
     axes[i + 1].set_title(f"Step {snap_steps[i]:,}")
