@@ -17,21 +17,23 @@ kernelspec:
 
 This lecture describes circulant matrices and some of their properties.
 
-Circulant matrices have a special structure that connects them to  useful concepts
-including
+Circulant matrices are useful because multiplying by them is closely connected to convolution, and their eigenvectors can be constructed using the Discrete Fourier Transform.
+
+We use circulant matrices to connect several useful concepts, including
 
   * convolution
   * Fourier transforms
   * permutation matrices
 
-Because of these connections, circulant matrices are widely used  in machine learning, for example, in image processing.
+For background on eigenvalues and eigenvectors, see {doc}`linear_algebra`; for another use of Fourier transforms and convolution, see {doc}`hoist_failure`.
+
+Circulant matrices are also widely used in machine learning, for example, in image processing.
 
 
 We begin by importing some Python packages
 
 ```{code-cell} ipython3
 import numpy as np
-from numba import jit
 import matplotlib.pyplot as plt
 ```
 
@@ -60,14 +62,28 @@ c_{1} & c_{2} & c_{3} & c_{4} & c_{5} & \cdots & c_{0}
 \end{array}\right]
 $$ (eqn:circulant)
 
+This pattern can be formalized as follows.
+
+```{prf:definition} Circulant matrix
+:label: def-circulant-matrix
+
+An $N \times N$ matrix $C$ is **circulant** if there are numbers $c_0, \ldots, c_{N-1}$ such that
+
+$$
+C_{ij} = c_{(j-i) \bmod N},
+\qquad 0 \leq i,j \leq N-1.
+$$
+
+Equivalently, each row is obtained from the previous row by shifting entries one step to the right.
+```
+
 It is also possible to construct a circulant matrix by creating the transpose of the above matrix, in which case only the
 first column needs to be specified.
 
 Let's write some Python code to generate a circulant matrix.
 
 ```{code-cell} ipython3
-@jit
-def construct_cirlulant(row):
+def construct_circulant(row):
 
     N = row.size
 
@@ -83,14 +99,16 @@ def construct_cirlulant(row):
 
 ```{code-cell} ipython3
 # a simple case when N = 3
-construct_cirlulant(np.array([1., 2., 3.]))
+construct_circulant(np.array([1., 2., 3.]))
 ```
 
 ### Some Properties of Circulant Matrices
 
 Here are some useful properties:
 
-Suppose that $A$ and $B$ are both circulant matrices. Then it can be verified that
+Suppose that $A$ and $B$ are both circulant matrices of the same order and constructed using the same cyclic shift convention.
+
+Then it can be verified that
 
  * The transpose of a circulant matrix is a circulant matrix.
 
@@ -111,16 +129,18 @@ Now consider a circulant matrix with first row
  The **convolution** of  vectors $c$ and $a$ is defined   as the vector $b = c * a $  with components
 
 $$
- b_k = \sum_{i=0}^{n-1} c_{k-i} a_i
+ b_k = \sum_{i=0}^{N-1} c_{k-i} a_i
 $$ (eqn:conv)
+
+Here and below, indices such as $k-i$ are interpreted modulo $N$.
 
 We use $*$ to denote **convolution** via the calculation described in equation {eq}`eqn:conv`.
 
 It can be verified that the vector $b$ satisfies
 
-$$ b = C^T a  $$
+$$ b = C^\top a  $$
 
-where $C^T$ is the transpose of the circulant matrix  defined in equation {eq}`eqn:circulant`.
+where $C^\top$ is the transpose of the circulant matrix  defined in equation {eq}`eqn:circulant`.
 
 
 
@@ -176,7 +196,7 @@ $$
 and solving
 
 $$
-\textrm{det}(P - \lambda I) = (-1)^N \lambda^{N}-1=0
+\textrm{det}(P - \lambda I) = (-1)^N(\lambda^N - 1)=0
 $$
 
 
@@ -189,7 +209,7 @@ Thus, **singular values** of the  permutation matrix $P$ defined in equation {eq
 It can be verified that permutation matrices are orthogonal matrices:
 
 $$
-P P' = I
+P P^\top = I
 $$
 
 
@@ -200,8 +220,7 @@ $$
 Let's write some Python code to illustrate these ideas.
 
 ```{code-cell} ipython3
-@jit
-def construct_P(N):
+def construct_cyclic_shift_matrix(N):
 
     P = np.zeros((N, N))
 
@@ -213,7 +232,7 @@ def construct_P(N):
 ```
 
 ```{code-cell} ipython3
-P4 = construct_P(4)
+P4 = construct_cyclic_shift_matrix(4)
 P4
 ```
 
@@ -224,7 +243,7 @@ P4
 
 ```{code-cell} ipython3
 for i in range(4):
-    print(f'𝜆{i} = {𝜆[i]:.1f} \nvec{i} = {Q[i, :]}\n')
+    print(f'𝜆{i} = {𝜆[i]:.1f} \nvec{i} = {Q[:, i]}\n')
 ```
 
 In graphs  below, we shall portray eigenvalues of a shift  permutation matrix   in the complex plane.
@@ -249,7 +268,7 @@ for i, N in enumerate([3, 4, 6, 8]):
     row_i = i // 2
     col_i = i % 2
 
-    P = construct_P(N)
+    P = construct_cyclic_shift_matrix(N)
     𝜆, Q = np.linalg.eig(P)
 
     circ = plt.Circle((0, 0), radius=1, edgecolor='b', facecolor='None')
@@ -287,7 +306,7 @@ F_{8}=\left[\begin{array}{ccccc}
 \end{array}\right]
 $$
 
-The matrix $F_8$ defines a  [Discete Fourier Transform](https://en.wikipedia.org/wiki/Discrete_Fourier_transform).
+The matrix $F_8$ defines a  [Discrete Fourier Transform](https://en.wikipedia.org/wiki/Discrete_Fourier_transform).
 
 To convert it into an orthogonal eigenvector matrix, we can simply normalize it by dividing every entry  by $\sqrt{8}$.
 
@@ -332,7 +351,7 @@ Q8 @ np.conjugate(Q8)
 Let's verify that $k$th column of $Q_{8}$ is an eigenvector of $P_{8}$ with an eigenvalue $w^{k}$.
 
 ```{code-cell} ipython3
-P8 = construct_P(8)
+P8 = construct_cyclic_shift_matrix(8)
 ```
 
 ```{code-cell} ipython3
@@ -353,14 +372,10 @@ Next, we execute calculations to verify that the circulant matrix $C$ defined  i
 
 
 $$
-C = c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}
+C = c_{0} I + c_{1} P + \cdots + c_{N-1} P^{N-1}
 $$
 
 and that every eigenvector of $P$ is also an eigenvector of $C$.
-
-```{code-cell} ipython3
-
-```
 
 We illustrate this for $N=8$ case.
 
@@ -373,10 +388,10 @@ c
 ```
 
 ```{code-cell} ipython3
-C8 = construct_cirlulant(c)
+C8 = construct_circulant(c)
 ```
 
-Compute $c_{0} I + c_{1} P + \cdots + c_{n-1} P^{n-1}$.
+Compute $c_{0} I + c_{1} P + \cdots + c_{N-1} P^{N-1}$.
 
 ```{code-cell} ipython3
 N = 8
@@ -403,7 +418,7 @@ Now let's compute the difference between two circulant matrices that we have  co
 np.abs(C - C8).max()
 ```
 
-The  $k$th column of $P_{8}$ associated with eigenvalue $w^{k-1}$ is an eigenvector of $C_{8}$ associated with an eigenvalue $\sum_{h=0}^{7} c_{j} w^{h k}$.
+The $j$th column of $Q_{8}$ is an eigenvector of $C_{8}$ associated with eigenvalue $\sum_{k=0}^{7} c_k w^{j k}$.
 
 ```{code-cell} ipython3
 𝜆_C8 = np.zeros(8, dtype=complex)
@@ -430,7 +445,7 @@ for j in range(8):
 
 The **Discrete Fourier Transform** (DFT) allows us to  represent a  discrete time sequence as a weighted sum of complex sinusoids.
 
-Consider a sequence of $N$ real number $\{x_j\}_{j=0}^{N-1}$.
+Consider a sequence of $N$ real numbers $\{x_j\}_{j=0}^{N-1}$.
 
 The **Discrete Fourier Transform** maps $\{x_j\}_{j=0}^{N-1}$ into a sequence of complex numbers $\{X_k\}_{k=0}^{N-1}$
 
@@ -498,7 +513,7 @@ def plot_magnitude(x=None, X=None):
     if (X is not None):
         data.append(X)
         names.append('X')
-        xs.append('j')
+        xs.append('k')
 
     num = len(data)
     for i in range(num):
@@ -526,7 +541,7 @@ x_{n} = \sum_{k=0}^{N-1} \frac{1}{N} X_{k} e^{2\pi\left(\frac{kn}{N}\right)i}, \
 $$
 
 ```{code-cell} ipython3
-def inverse_transform(X):
+def inverse_DFT(X):
 
     N = len(X)
     w = np.e ** (complex(0, 2*np.pi/N))
@@ -540,7 +555,7 @@ def inverse_transform(X):
 ```
 
 ```{code-cell} ipython3
-inverse_transform(X)
+inverse_DFT(X)
 ```
 
 Another example is
@@ -551,7 +566,7 @@ $$
 
 Since $N=20$, we cannot use an integer multiple of $\frac{1}{20}$ to represent a frequency $\frac{11}{40}$.
 
-To handle this,  we shall end up using all $N$ of the availble   frequencies in the DFT.
+To handle this,  we shall end up using all $N$ of the available   frequencies in the DFT.
 
 Since $\frac{11}{40}$ is in between $\frac{10}{40}$ and $\frac{12}{40}$ (each of which is an integer multiple of $\frac{1}{20}$), the complex coefficients in the DFT   have their  largest magnitudes at $k=5,6,15,16$, not just at a single frequency.
 
@@ -614,7 +629,7 @@ X = DFT(x)
 X
 ```
 
-Now let's evaluate the outcome  of postmultiplying  the eigenvector matrix  $F_{20}$ by the vector $x$, a product that we claim should equal the Fourier tranform of the sequence $\{x_n\}_{n=0}^{N-1}$.
+Now let's evaluate the outcome  of postmultiplying  the eigenvector matrix  $F_{20}$ by the vector $x$, a product that we claim should equal the Fourier transform of the sequence $\{x_n\}_{n=0}^{N-1}$.
 
 ```{code-cell} ipython3
 F20, _ = construct_F(20)
@@ -624,13 +639,9 @@ F20, _ = construct_F(20)
 F20 @ x
 ```
 
-Similarly, the inverse DFT can be expressed as a inverse DFT matrix $F^{-1}_{20}$.
+Similarly, the inverse DFT can be expressed as an inverse DFT matrix $F^{-1}_{20}$.
 
 ```{code-cell} ipython3
 F20_inv = np.linalg.inv(F20)
 F20_inv @ X
-```
-
-```{code-cell} ipython3
-
 ```

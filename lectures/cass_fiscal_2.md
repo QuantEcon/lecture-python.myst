@@ -498,7 +498,7 @@ This means that foreign households begin repaying part of their external debt by
 
 We now explore the impact of an increase in capital taxation in the domestic economy $10$ periods after its announcement at $t = 1$.
 
-Because the change is anticipated, households in both countries adjust immediately—even though the tax does not take effect until period $t = 11$.
+Because the change is anticipated, households in both countries adjust immediately--even though the tax does not take effect until period $t = 11$.
 
 ```{code-cell} ipython3
 shocks_global = {
