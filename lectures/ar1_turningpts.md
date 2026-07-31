@@ -505,7 +505,7 @@ def draw_from_posterior(data, size=10000, dis_plot=True, key=key):
     # Plot posterior distributions and trace plots
     if dis_plot:
         plot_data = az.from_numpyro(posterior=mcmc)
-        az.plot_trace_dist(plot_data, var_names=['ρ', 'σ'])
+        az.plot_trace(plot_data, var_names=['ρ', 'σ'])
 
     return post_sample
 
