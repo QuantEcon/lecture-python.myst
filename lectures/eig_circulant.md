@@ -380,7 +380,8 @@ and that every eigenvector of $P$ is also an eigenvector of $C$.
 We illustrate this for $N=8$ case.
 
 ```{code-cell} ipython3
-c = np.random.random(8)
+rng = np.random.default_rng()
+c = rng.random(8)
 ```
 
 ```{code-cell} ipython3

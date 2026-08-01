@@ -606,8 +606,8 @@ def simulate_samuelson(
     
     # Generate shocks if stochastic
     if σ > 0:
-        np.random.seed(seed)
-        ϵ = np.random.normal(0, 1, n)
+        rng = np.random.default_rng(seed)
+        ϵ = rng.normal(0, 1, n)
     
     # Simulate forward
     for t in range(2, n):
@@ -1190,7 +1190,8 @@ C[1] = σ  # Shock variance
 
 sam_t = LinearStateSpace(A, C, G, mu_0=μ_0)
 
-x, y = sam_t.simulate(ts_length=n)
+rng = np.random.default_rng()
+x, y = sam_t.simulate(ts_length=n, random_state=rng)
 
 fig, axes = plt.subplots(3, 1, sharex=True, figsize=(12, 8))
 titles = ["Output ($Y_t$)", "Consumption ($C_t$)", "Investment ($I_t$)"]
@@ -1303,8 +1304,8 @@ class SamuelsonLSS(LinearStateSpace):
             except ValueError:
                 print("Stationary distribution does not exist")
 
-        np.random.seed(seed)
-        x, y = self.simulate(ts_length)
+        rng = np.random.default_rng(seed)
+        x, y = self.simulate(ts_length, random_state=rng)
 
         fig, axes = plt.subplots(3, 1, sharex=True, figsize=(12, 8))
         titles = ["Output ($Y_t$)", 
