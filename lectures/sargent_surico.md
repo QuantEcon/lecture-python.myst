@@ -29,6 +29,9 @@ kernelspec:
 :depth: 2
 ```
 
+```{include} _admonition/gpu.md
+```
+
 In addition to what's in Anaconda, this lecture uses `pandas_datareader` to download
 macroeconomic data and `jax`, `numpyro` and `arviz` for the Hamiltonian Monte Carlo
 section at the end:
@@ -63,7 +66,7 @@ We do all of this from scratch in Python.
 
 We write our own solver for linear rational expectations models, our own Kalman filter, and our own Metropolis-Hastings sampler, so that every step is visible.
 
-A final section then uses the estimated model as a test bed for Hamiltonian Monte Carlo, which turns out to require replacing the model solver with a differentiable one.
+A final section then uses the estimated model as a test bed for Hamiltonian Monte Carlo, which turns out to require replacing the model solver with a differentiable one and, if a GPU is to be worth using, the Kalman filter with one that works on all dates at once.
 
 Along the way we flag several places where the published paper's statement or implementation of its model needs care, and we check each of them numerically.
 
@@ -1384,6 +1387,10 @@ $$ (eq:ss_fixedpoint)
 Iterating {eq}`eq:ss_fixedpoint` from $G = 0$ involves nothing but matrix products
 and linear solves, every one of them differentiable.
 
+We enable 64-bit precision, which Kalman filtering needs, and we let JAX use
+whatever hardware it finds; a later subsection reorganizes the filter so that a
+GPU, if one is present, is actually worth using.
+
 ```{code-cell} ipython3
 import jax
 import jax.numpy as jnp
@@ -1393,7 +1400,7 @@ from jax import lax
 from numpyro.infer import MCMC, NUTS
 
 jax.config.update('jax_enable_x64', True)
-jax.config.update('jax_platform_name', 'cpu')
+print(f'JAX backend: {jax.default_backend()}')
 
 U, NJ = 8, 9          # y = [pi, x, dm, R, e, a, chi, z, u]
 
@@ -1565,11 +1572,190 @@ whole point of reverse-mode differentiation.
 
 A finite-difference gradient would need at least nineteen likelihood evaluations.
 
+### Parallelizing the filter over time
+
+On a CPU the story could end here, but on a GPU the filter above is very slow, and
+the reason is worth understanding because it has nothing to do with arithmetic
+speed.
+
+A GPU is thousands of arithmetic units that want a few large array operations; what
+our `lax.scan` gives it is a chain of about a thousand tiny dependent ones per
+likelihood, since every date's handful of $11 \times 11$ products must wait for the
+date before it, and each little operation pays a fixed kernel launch overhead that
+dwarfs the arithmetic inside it.
+
+Multiply that chain by the hundreds of thousands of leapfrog steps in a NUTS run
+and the GPU spends nearly all of its time waiting rather than computing.
+
+Kalman filtering looks irreducibly sequential, but it is not.
+
+{cite:t}`SarkkaGarcia2021` showed that the filtering recursion is the repeated
+application of an *associative* binary operation, and any associative operation
+over $T$ items can be evaluated in a balanced tree of depth $\log_2 T$ rather than
+a chain of length $T$, which is the same observation that lets parallel hardware
+compute cumulative sums.
+
+`jax.lax.associative_scan` supplies the tree; our job is to supply the elements
+and the binary operation.
+
+The element for date $k$ packages what observation $Y_k$ says about the state
+given the previous state, as five arrays $(A_k, b_k, C_k, \eta_k, J_k)$ that
+encode the two densities
+
+$$
+p(S_k \mid S_{k-1}, Y_k) = \mathcal N\big( A_k S_{k-1} + b_k,\ C_k \big),
+\qquad
+p(Y_k \mid S_{k-1}) \propto
+\exp\big( \eta_k^\top S_{k-1} - \tfrac{1}{2} S_{k-1}^\top J_k S_{k-1} \big) .
+$$
+
+With $V = CQC^\top$ the innovation covariance and $K = QC^\top V^{-1}$ the gain,
+one Kalman update starting from a known $S_{k-1}$ gives, for every date $k \ge 2$,
+
+$$
+A_k = (I - KC)A, \quad b_k = K Y_k, \quad C_k = (I - KC)Q,
+\quad
+\eta_k = A^\top C^\top V^{-1} Y_k, \quad J_k = A^\top C^\top V^{-1} C A ,
+$$ (eq:ss_element)
+
+while the first element instead absorbs the prior $\mathcal N(0, P_0)$, storing
+the date-one filtered moments in $(b_1, C_1)$ with $A_1 = 0$, $\eta_1 = 0$ and
+$J_1 = 0$.
+
+Composing the elements of two adjacent blocks of dates means marginalizing out the
+state that joins them, and for Gaussians that has a closed form,
+
+$$
+\begin{aligned}
+A_{ij} &= A_j (I + C_i J_j)^{-1} A_i \\
+b_{ij} &= A_j (I + C_i J_j)^{-1} (b_i + C_i \eta_j) + b_j \\
+C_{ij} &= A_j (I + C_i J_j)^{-1} C_i A_j^\top + C_j \\
+\eta_{ij} &= A_i^\top (I + J_j C_i)^{-1} (\eta_j - J_j b_i) + \eta_i \\
+J_{ij} &= A_i^\top (I + J_j C_i)^{-1} J_j A_i + J_i .
+\end{aligned}
+$$ (eq:ss_combine)
+
+This operation is associative, and composing elements $1$ through $k$ delivers the
+filtered mean and covariance at date $k$ in the slots $b$ and $C$, for every $k$
+simultaneously.
+
+The likelihood then needs one more batched pass: given the filtered moments at
+$k-1$, the date-$k$ innovation and its covariance are one prediction away, and all
+$T$ Gaussian densities can be evaluated together with `vmap`.
+
+```{code-cell} ipython3
+def mv(M, v):
+    """Batched matrix-vector product."""
+    return (M @ v[..., None])[..., 0]
+
+
+def solve_vec(M, v):
+    """Batched linear solve with a vector right-hand side."""
+    return jnp.linalg.solve(M, v[..., None])[..., 0]
+
+
+def combine(elem_i, elem_j):
+    """The composition rule (SS-combine) of Sarkka and Garcia-Fernandez."""
+    A_i, b_i, C_i, eta_i, J_i = elem_i
+    A_j, b_j, C_j, eta_j, J_j = elem_j
+    I = jnp.eye(A_i.shape[-1])
+    M = I + C_i @ J_j
+    A_ij = A_j @ jnp.linalg.solve(M, A_i)
+    b_ij = mv(A_j, solve_vec(M, b_i + mv(C_i, eta_j))) + b_j
+    C_ij = A_j @ jnp.linalg.solve(M, C_i) @ jnp.swapaxes(A_j, -1, -2) + C_j
+    Mt = I + J_j @ C_i
+    A_iT = jnp.swapaxes(A_i, -1, -2)
+    eta_ij = mv(A_iT, solve_vec(Mt, eta_j - mv(J_j, b_i))) + eta_i
+    J_ij = A_iT @ jnp.linalg.solve(Mt, J_j) @ A_i + J_i
+    return A_ij, b_ij, C_ij, eta_ij, J_ij
+
+
+def loglik_parallel(p, Y):
+    """The same log likelihood, with the time recursion replaced by an
+    associative scan of depth log2(T)."""
+    A, B, C = state_space_jax(p)
+    n, T = A.shape[0], Y.shape[0]
+    Q = B @ B.T
+    P0 = jnp.linalg.solve(jnp.eye(n * n) - jnp.kron(A, A),
+                          Q.reshape(-1)).reshape(n, n)
+
+    # the generic element (SS-element) is the same at every date
+    V = C @ Q @ C.T
+    K = jnp.linalg.solve(V, C @ Q).T               # Q C' V^{-1}
+    W = jnp.linalg.solve(V, C @ A).T               # A' C' V^{-1}
+    A_g, C_g = (jnp.eye(n) - K @ C) @ A, (jnp.eye(n) - K @ C) @ Q
+
+    # the first element instead carries the prior N(0, P0)
+    P1 = A @ P0 @ A.T + Q
+    K1 = jnp.linalg.solve(C @ P1 @ C.T, C @ P1).T  # P1 C' V1^{-1}
+
+    elems = (
+        jnp.concatenate([jnp.zeros((1, n, n)),
+                         jnp.broadcast_to(A_g, (T - 1, n, n))]),
+        jnp.concatenate([(K1 @ Y[0])[None], Y[1:] @ K.T]),
+        jnp.concatenate([((jnp.eye(n) - K1 @ C) @ P1)[None],
+                         jnp.broadcast_to(C_g, (T - 1, n, n))]),
+        jnp.concatenate([jnp.zeros((1, n)), Y[1:] @ W.T]),
+        jnp.concatenate([jnp.zeros((1, n, n)),
+                         jnp.broadcast_to(W @ C @ A, (T - 1, n, n))]))
+
+    _, m_f, P_f, _, _ = lax.associative_scan(combine, elems)
+
+    # one-step-ahead predictive densities, all dates at once
+    m_prev = jnp.vstack([jnp.zeros((1, n)), m_f[:-1]])
+    P_prev = jnp.concatenate([P0[None], P_f[:-1]])
+    const = Y.shape[1] * jnp.log(2 * jnp.pi)
+
+    def predictive_ll(y, m, P):
+        F = C @ (A @ P @ A.T + Q) @ C.T
+        v = y - C @ (A @ m)
+        L = jnp.linalg.cholesky(F)
+        u = jax.scipy.linalg.solve_triangular(L, v, lower=True)
+        return -0.5 * (const + 2 * jnp.sum(jnp.log(jnp.diag(L))) + u @ u)
+
+    return jnp.sum(jax.vmap(predictive_ll)(Y, m_prev, P_prev))
+```
+
+The parallel filter has to agree with the sequential one, in value and in
+gradient, and it does.
+
+```{code-cell} ipython3
+print(f'log likelihood, sequential scan   {float(loglik_jax(p_check, Y_jax)):.8f}')
+print(f'log likelihood, associative scan  {float(loglik_parallel(p_check, Y_jax)):.8f}')
+
+grad_par = jax.jit(jax.grad(lambda q: loglik_parallel(q, Y_jax)))
+g_par = grad_par(p_check)
+print('largest difference across the 18 gradients:',
+      f'{max(abs(float(g[n] - g_par[n])) for n in FREE):.2e}')
+```
+
+```{code-cell} ipython3
+for name, fun in [('sequential ', grad_ll), ('associative', grad_par)]:
+    fun(p_check)                                  # ensure compiled
+    t0 = time.time()
+    for _ in range(20):
+        out = fun(p_check)
+    jax.block_until_ready(out)
+    print(f'one gradient, {name} filter {1000 * (time.time() - t0) / 20:7.2f} ms')
+```
+
+Depth, not total work, is what the reorganization buys: ninety-six dependent steps
+have become about seven rounds of batched linear algebra.
+
+On a CPU, which executes one operation at a time anyway, the tree only adds
+arithmetic, and the timings above will show the sequential filter winning.
+
+On a GPU each round is a single wide launch, the ordering reverses, and the gap is
+large; the timings above reflect whichever machine built this lecture.
+
 ### Sampling with NUTS
 
 We hand the same priors to NumPyro {cite}`PhanEtAl2019`, which supplies NUTS and
 handles the transformations to unconstrained space that Hamiltonian dynamics
 require.
+
+The likelihood inside the model is the parallel filter of the previous
+subsection.
 
 ```{code-cell} ipython3
 def beta_np(m, s):
@@ -1601,10 +1787,10 @@ PRIORS_NP = {
 
 def ss_model(Y):
     p = {n: numpyro.sample(n, PRIORS_NP[n]) for n in FREE}
-    numpyro.factor('loglik', loglik_jax(p, Y))
+    numpyro.factor('loglik', loglik_parallel(p, Y))
 ```
 
-Three settings matter.
+Four settings matter.
 
 We ask for a **dense mass matrix**, because the condition number reported above says
 the posterior has correlations that a diagonal preconditioner cannot absorb.
@@ -1612,17 +1798,24 @@ the posterior has correlations that a diagonal preconditioner cannot absorb.
 We cap the trajectory length, since without a cap NUTS spends most of its time on very
 long trajectories in the flattest directions.
 
+On a GPU we run the chains **vectorized**, batched into one program, so that every
+kernel launch carries every chain's arithmetic and the launch overhead is paid once
+rather than once per chain; on a CPU there is no launch overhead to amortize, and we
+run them one after another.
+
 And we run **four chains** rather than one, all started from the posterior mode.
 
 That last choice is the one that earns its keep.
 
 ```{code-cell} ipython3
+chain_method = 'vectorized' if jax.default_backend() == 'gpu' else 'sequential'
+
 kernel = NUTS(ss_model, target_accept_prob=0.8, dense_mass=True,
               max_tree_depth=8,
               init_strategy=numpyro.infer.init_to_value(
                   values={n: float(v) for n, v in zip(FREE, v_mode)}))
 mcmc = MCMC(kernel, num_warmup=400, num_samples=400, num_chains=4,
-            chain_method='sequential', progress_bar=False)
+            chain_method=chain_method, progress_bar=False)
 
 t0 = time.time()
 mcmc.run(jax.random.PRNGKey(1), Y_jax, extra_fields=('num_steps', 'diverging'))
@@ -1630,7 +1823,8 @@ jax.block_until_ready(mcmc.get_samples())
 nuts_seconds = time.time() - t0
 
 extra = mcmc.get_extra_fields()
-print(f'{nuts_seconds:.0f} seconds for 4 chains of 400 draws')
+print(f'{nuts_seconds:.0f} seconds for 4 {chain_method} chains of 400 draws '
+      f'on the {jax.default_backend()}')
 print(f'mean leapfrog steps per iteration  '
       f'{np.asarray(extra["num_steps"]).mean():.0f}')
 print(f'divergences                        '
@@ -1892,6 +2086,12 @@ Replacing an eigenvalue-sorting solver by a fixed point that uses only linear al
 buys exact gradients for about the cost of one extra likelihood evaluation, and that
 is enough to put NUTS within reach.
 
+A second obstacle appears on a GPU, and it too is algorithmic rather than
+statistical: a sequential filter over tiny matrices leaves massively parallel
+hardware idle, and the cure is again to reorganize the computation, across time by
+the associative scan of {cite:t}`SarkkaGarcia2021` and across chains by
+vectorizing them, so that every kernel launch carries real work.
+
 The payoff was not only speed.
 
 Cheap chains made it cheap to run several of them and inspect their diagnostics, and
@@ -1934,7 +2134,9 @@ On the computational side, the model turned out to be a useful test bed for Hami
 
 The barrier to using it on DSGE models is not statistical but algorithmic: the standard solvers sort eigenvalues, and sorting has no derivative.
 
-Swapping in a fixed-point solver that uses only linear algebra restores exact gradients, and the sampler that becomes available is far more efficient per unit of computing time on a posterior as badly scaled as this one.
+Swapping in a fixed-point solver that uses only linear algebra restores exact gradients, and a second swap, of the sequential Kalman recursion for an associative scan that a GPU can evaluate in $\log_2 T$ rounds, lets modern parallel hardware carry the sampler.
+
+The sampler that becomes available is far more efficient per unit of computing time on a posterior as badly scaled as this one.
 
 The larger dividend was a diagnostic one.
 
