@@ -1393,6 +1393,7 @@ from jax import lax
 from numpyro.infer import MCMC, NUTS
 
 jax.config.update('jax_enable_x64', True)
+jax.config.update('jax_platform_name', 'cpu')
 
 U, NJ = 8, 9          # y = [pi, x, dm, R, e, a, chi, z, u]
 
