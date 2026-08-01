@@ -13,6 +13,9 @@ kernelspec:
 
 # Mean of a Likelihood Ratio Process
 
+```{include} _admonition/gpu.md
+```
+
 ```{contents} Contents
 :depth: 2
 ```
@@ -27,11 +30,20 @@ To confront this challenge, this lecture puts __importance sampling__ to work to
 
 We use  importance sampling to estimate the mean of a cumulative likelihood ratio $L\left(\omega^t\right) = \prod_{i=1}^t \ell \left(\omega_i\right)$.
 
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install jax
+```
+
 We start by importing some Python packages.
 
 ```{code-cell} ipython3
 import jax
 import jax.numpy as jnp
+import numpy as np
 import matplotlib.pyplot as plt
 from jax.scipy.special import gammaln
 from typing import NamedTuple
@@ -95,11 +107,11 @@ def beta_pdf(w, a, b):
     return jnp.exp(log_pdf)
 
 @jax.jit
-def f(w, params=params):
+def f(w):
     return beta_pdf(w, params.F_a, params.F_b)
 
 @jax.jit
-def g(w, params=params):
+def g(w):
     return beta_pdf(w, params.G_a, params.G_b)
 ```
 
@@ -108,9 +120,9 @@ def g(w, params=params):
 mystnb:
   figure:
     caption: 'Beta density functions $f$ and $g$'
-    name: fig_imp_densities
+    name: fig-imp-densities
 ---
-w_range = jnp.linspace(1e-2, 1-1e-5, 1000)
+w_range = np.linspace(1e-2, 1-1e-5, 1000)
 
 plt.plot(w_range, g(w_range), lw=2, label='g')
 plt.plot(w_range, f(w_range), lw=2, label='f')
@@ -131,15 +143,26 @@ def l(w):
 ---
 mystnb:
   figure:
-    caption: 'Likelihood ratio $\ell(\omega)$'
-    name: fig_imp_likelihood_ratio
+    caption: 'Likelihood ratio $\ell(\omega)$, log scale'
+    name: fig-imp-likelihood-ratio
 ---
 plt.plot(w_range, l(w_range), lw=2)
+plt.yscale('log')
 plt.xlabel(r'$\omega$')
+plt.ylabel(r'$\ell(\omega)$')
 plt.show()
 ```
 
-The above plots shows that as $\omega \rightarrow 0$, $f \left(\omega\right)$ is unchanged and $g \left(\omega\right) \rightarrow 0$, so  the likelihood ratio approaches infinity.
+Note the log scale on the vertical axis: on a linear scale the entire curve
+would be flattened against zero by the spike at the left-hand edge.
+
+{numref}`fig-imp-densities` shows that as $\omega \rightarrow 0$, $f \left(\omega\right)$ is unchanged while $g \left(\omega\right) \rightarrow 0$.
+
+Hence the likelihood ratio in {numref}`fig-imp-likelihood-ratio` diverges to infinity, at rate $\omega^{-2}$.
+
+The same thing happens as $\omega \rightarrow 1$, since $G_b > 1$ also forces $g\left(\omega\right) \rightarrow 0$ there, which explains the upturn at the right-hand edge.
+
+But that divergence is far slower --- at rate $\left(1-\omega\right)^{-1/5}$ --- and it is the behavior near $\omega = 0$ that causes the trouble below.
 
 A Monte Carlo approximation of $\hat{E} \left[L\left(\omega^t\right)\right] = \hat{E} \left[\prod_{i=1}^t \ell \left(\omega_i\right)\right]$  would repeatedly draw $\omega$ from $g$, calculate the likelihood ratio $ \ell(\omega) = \frac{f(\omega)}{g(\omega)}$ for each draw, then average these over all draws.
 
@@ -199,9 +222,9 @@ h_a, h_b = 0.5, 0.5
 mystnb:
   figure:
     caption: 'Data and importance sampling distributions'
-    name: fig_imp_real
+    name: fig-imp-real
 ---
-w_range = jnp.linspace(1e-5, 1-1e-5, 1000)
+w_range = np.linspace(1e-5, 1-1e-5, 1000)
 
 plt.plot(w_range, g(w_range),
          lw=2, label=f'g=Beta({g_a}, {g_b})')
@@ -242,6 +265,10 @@ def estimate_single_path(key, p_a, p_b, q_a, q_b, T):
         key_state, subkey = jax.random.split(key_state)
         w = jax.random.beta(subkey, q_a, q_b)
 
+        # Keep draws off the boundary, where the log densities
+        # below produce the undefined form 0 * inf
+        w = jnp.clip(w, 1e-12, 1 - 1e-12)
+
         # Compute likelihood ratio using f/g functions
         likelihood_ratio = f(w) / g(w)
         L = L * likelihood_ratio
@@ -264,10 +291,10 @@ def estimate(key, p_a, p_b, q_a, q_b, T=1, N=10000):
     """Estimation of a batch of sample paths."""
     keys = jax.random.split(key, N)
 
-    # Use vmap for vectorized computation
+    # Vectorize over keys, holding the parameters fixed
     estimates = jax.vmap(
         estimate_single_path,
-        in_axes=(0, *[None]*5)
+        in_axes=(0, None, None, None, None, None)
     )(keys, p_a, p_b, q_a, q_b, T)
 
     return jnp.mean(estimates)
@@ -320,30 +347,21 @@ Importance sampling with $q = h$ fixes this by sampling more uniformly from regi
 
 We next study the bias and efficiency of the Monte Carlo and importance sampling approaches.
 
-The code  below produces distributions of estimates using both Monte Carlo and importance sampling methods.
+The code  below repeats the estimate `N_simu` times, so that we can look at the distribution of the estimates that each method produces.
 
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=['N_simu', 'N_samples'])
 def simulate(key, p_a, p_b, q_a, q_b, N_simu, T=1,
              N_samples=10000):
-    """Simulation for both Monte Carlo and importance sampling."""
-    keys = jax.random.split(key, 2 * N_simu)
-    keys_p = keys[:N_simu]
-    keys_q = keys[N_simu:]
-
-    def run_monte_carlo(key_batch):
-        return estimate(key_batch, p_a, p_b, p_a, p_b, T,
-                        N_samples)
-
-    def run_importance_sampling(key_batch):
-        return estimate(key_batch, p_a, p_b, q_a, q_b, T,
-                        N_samples)
-
-    μ_L_p = jax.vmap(run_monte_carlo)(keys_p)
-    μ_L_q = jax.vmap(run_importance_sampling)(keys_q)
-
-    return μ_L_p, μ_L_q
+    """Repeat the estimate N_simu times, drawing from q."""
+    keys = jax.random.split(key, N_simu)
+    return jax.vmap(
+        lambda k: estimate(k, p_a, p_b, q_a, q_b, T,
+                           N_samples)
+    )(keys)
 ```
+
+Setting $q = p$ recovers standard Monte Carlo, since every importance weight is then identically one.
 
 Again, we first consider estimating ${E} \left[\ell\left(\omega\right)\right]$ by setting T=1.
 
@@ -351,18 +369,20 @@ We simulate $1000$ times for each method.
 
 ```{code-cell} ipython3
 N_simu = 1000
-μ_L_p, μ_L_q = simulate(jax.random.key(4), g_a, g_b,
-                         h_a, h_b, N_simu)
+μ_L_g = simulate(jax.random.key(4), g_a, g_b,
+                 g_a, g_b, N_simu)
+μ_L_h = simulate(jax.random.key(5), g_a, g_b,
+                 h_a, h_b, N_simu)
 ```
 
 ```{code-cell} ipython3
-# standard Monte Carlo (mean and std)
-jnp.nanmean(μ_L_p), jnp.nanvar(μ_L_p)
+# standard Monte Carlo (mean and variance)
+jnp.mean(μ_L_g), jnp.var(μ_L_g)
 ```
 
 ```{code-cell} ipython3
-# importance sampling (mean and std)
-jnp.nanmean(μ_L_q), jnp.nanvar(μ_L_q)
+# importance sampling (mean and variance)
+jnp.mean(μ_L_h), jnp.var(μ_L_h)
 ```
 
 Although both methods tend to provide a mean estimate of ${E} \left[\ell\left(\omega\right)\right]$ close to $1$, the importance sampling estimates have  smaller variance.
@@ -370,24 +390,56 @@ Although both methods tend to provide a mean estimate of ${E} \left[\ell\left(\o
 Next, we present distributions of estimates for $\hat{E} \left[L\left(\omega^t\right)\right]$, in cases for $T=1, 5, 10, 20$.
 
 ```{code-cell} ipython3
-def simulate_multiple_T(key, p_a, p_b, q_a, q_b, N_simu,
-                        T_list, N_samples=10000):
-    """Simulation for multiple T values."""
-    n_T = len(T_list)
-    keys = jax.random.split(key, n_T)
+def simulate_multiple_T(key, p_a, p_b, q_a, q_b, T_values,
+                        N_simu, N_samples=10000):
+    """Run simulate once per T, returning a dict keyed by T."""
+    keys = jax.random.split(key, len(T_values))
+    return {T: simulate(keys[i], p_a, p_b, q_a, q_b,
+                        N_simu, T, N_samples)
+            for i, T in enumerate(T_values)}
+```
 
-    results = []
-    for i, T in enumerate(T_list):
-        result = simulate(keys[i],
-                          p_a, p_b, q_a, q_b, N_simu, T,
-                          N_samples)
-        results.append(result)
+The next function draws the histograms that we use to compare the two methods.
 
-    # Stack results into arrays for consistency
-    μ_L_p_all = jnp.stack([r[0] for r in results])
-    μ_L_q_all = jnp.stack([r[1] for r in results])
+```{code-cell} ipython3
+def plot_estimates(T_values, mc, imp, imp_label, n_rows=1):
+    """Compare Monte Carlo and importance sampling estimates."""
+    n_cols = len(T_values) // n_rows
+    fig, axs = plt.subplots(n_rows, n_cols,
+                            figsize=(14, 5 * n_rows))
+    μ_range = np.linspace(0, 2, 100)
 
-    return μ_L_p_all, μ_L_q_all
+    for ax, T in zip(np.ravel(axs), T_values):
+        μ_L_g, μ_L_h = np.asarray(mc[T]), np.asarray(imp[T])
+
+        ax.set_xlabel('$μ_L$')
+        ax.set_ylabel('frequency')
+        ax.set_title(f'$T$={T}')
+        ax.hist(μ_L_g, bins=μ_range,
+                color='r', alpha=0.5, label='$g$ generating')
+        ax.hist(μ_L_h, bins=μ_range,
+                color='b', alpha=0.5, label=imp_label)
+        ax.legend(loc=4)
+
+        # Summarize each distribution in an upper corner
+        for μ_L, color, x, ha in ((μ_L_g, 'r', 0.02, 'left'),
+                                  (μ_L_h, 'b', 0.98, 'right')):
+            ax.text(x, 0.98, transform=ax.transAxes, ha=ha,
+                    va='top', color=color, fontsize=9,
+                    s=r'$\hat{μ}$=' + f'{np.mean(μ_L):.3g}' +
+                      '\n' + 'med=' + f'{np.median(μ_L):.3g}' +
+                      '\n' + r'$\hat{σ}^2$=' + f'{np.var(μ_L):.3g}')
+
+    plt.show()
+```
+
+The Monte Carlo estimates do not depend on the importance distribution, so we compute them once and reuse them in each of the figures below.
+
+```{code-cell} ipython3
+T_values = [1, 5, 10, 20]
+
+mc = simulate_multiple_T(jax.random.key(6), g_a, g_b,
+                         g_a, g_b, T_values, N_simu)
 ```
 
 ```{code-cell} ipython3
@@ -395,62 +447,28 @@ def simulate_multiple_T(key, p_a, p_b, q_a, q_b, N_simu,
 mystnb:
   figure:
     caption: 'Monte Carlo and importance sampling estimates'
-    name: fig_imp_estimates
+    name: fig-imp-estimates
 ---
-T_values = [1, 5, 10, 20]
+imp_h1 = simulate_multiple_T(jax.random.key(7), g_a, g_b,
+                             h_a, h_b, T_values, N_simu)
 
-# Run all simulations at once
-all_results = simulate_multiple_T(jax.random.key(5),
-                                  g_a, g_b, h_a, h_b,
-                                  N_simu, T_values,
-                                  N_samples=10000)
-
-# Extract results
-μ_L_p_all, μ_L_q_all = all_results
-
-fig, axs = plt.subplots(2, 2, figsize=(14, 10))
-μ_range = jnp.linspace(0, 2, 100)
-
-for i, t in enumerate(T_values):
-    row = i // 2
-    col = i % 2
-
-    # Get results for this T value
-    μ_L_p = μ_L_p_all[i]
-    μ_L_q = μ_L_q_all[i]
-
-    μ_hat_p = jnp.nanmean(μ_L_p)
-    μ_hat_q = jnp.nanmean(μ_L_q)
-    σ_hat_p = jnp.nanvar(μ_L_p)
-    σ_hat_q = jnp.nanvar(μ_L_q)
-
-    axs[row, col].set_xlabel('$μ_L$')
-    axs[row, col].set_ylabel('frequency')
-    axs[row, col].set_title(f'$T$={t}')
-    n_p, bins_p, _ = axs[row, col].hist(
-        μ_L_p, bins=μ_range,
-        color='r', alpha=0.5, label='$g$ generating')
-    n_q, bins_q, _ = axs[row, col].hist(
-        μ_L_q, bins=μ_range,
-        color='b', alpha=0.5, label='$h$ generating')
-    axs[row, col].legend(loc=4)
-
-    for n, bins, μ_hat, σ_hat in [[n_p, bins_p, μ_hat_p,
-                                    σ_hat_p],
-                                   [n_q, bins_q, μ_hat_q,
-                                    σ_hat_q]]:
-        idx = jnp.argmax(n)
-        axs[row, col].text(
-            bins[idx], n[idx],
-            r'$\hat{μ}$=' + f'{μ_hat:.4g}' +
-            r', $\hat{σ}=$' + f'{σ_hat:.4g}')
-
-plt.show()
+plot_estimates(T_values, mc, imp_h1, '$h$ generating',
+               n_rows=2)
 ```
 
-The simulation exercises above show that the importance sampling estimates are unbiased under all $T$ while the standard Monte Carlo estimates are biased downwards.
+The simulation exercises above show that the importance sampling estimates stay centered on $1$ for every $T$, while the distribution of the standard Monte Carlo estimates drifts steadily to the left as $T$ increases.
 
-Evidently, the bias increases with increases in $T$.
+It is worth being careful about what is going wrong here.
+
+The Monte Carlo estimator is unbiased in population --- its expectation is exactly $1$ for every $T$.
+
+What deteriorates as $T$ grows is the *shape* of its sampling distribution: almost all of the mass collapses towards zero, while the expectation is sustained by rare, very large outliers.
+
+This is why each panel reports a median alongside the mean.
+
+The median falls steadily in $T$, whereas the reported mean $\hat{μ}$ is itself an unreliable statistic once $T$ is large --- at $T=20$ its variance across simulations exceeds $100$, so a different seed can move it substantially.
+
+Importance sampling repairs exactly this defect.
 
 ## Choosing a sampling distribution
 
@@ -471,13 +489,13 @@ $$
 $$
 
 ```{code-cell} ipython3
-μ_L_p, μ_L_q = simulate(jax.random.key(6), g_a, g_b,
-                         params.F_a, params.F_b, N_simu)
+μ_L_f = simulate(jax.random.key(8), g_a, g_b,
+                 params.F_a, params.F_b, N_simu)
 ```
 
 ```{code-cell} ipython3
-# importance sampling (mean and std)
-jnp.nanmean(μ_L_q), jnp.nanvar(μ_L_q)
+# importance sampling (mean and variance)
+jnp.mean(μ_L_f), jnp.var(μ_L_f)
 ```
 
 We could also use other distributions as our importance distribution.
@@ -494,9 +512,9 @@ b_list = [0.5, 1.2, 5.]
 mystnb:
   figure:
     caption: 'Comparison of importance sampling distributions'
-    name: fig_imp_sampling_distributions
+    name: fig-imp-sampling-distributions
 ---
-w_range = jnp.linspace(1e-5, 1-1e-5, 1000)
+w_range = np.linspace(1e-5, 1-1e-5, 1000)
 
 plt.plot(w_range, g(w_range),
          lw=2, label=f'g=Beta({g_a}, {g_b})')
@@ -528,59 +546,21 @@ Note how $h_3$ has zero mass at values very close to 0 and at values close to 1.
 Our hunch is that $h_3$ will  be a poor importance sampling distribution.
 
 
-We first simulate a plot the distribution of estimates for $\hat{E} \left[L\left(\omega^t\right)\right]$ using $h_2$ as the importance sampling distribution.
+We first simulate and plot the distribution of estimates for $\hat{E} \left[L\left(\omega^t\right)\right]$ using $h_2$ as the importance sampling distribution.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
     caption: 'Estimates using importance distribution $h_2$'
-    name: fig_imp_estimates_h2
+    name: fig-imp-estimates-h2
 ---
-h_a = a_list[1]
-h_b = b_list[1]
-
 T_values_h2 = [1, 20]
-all_results_h2 = simulate_multiple_T(jax.random.key(7),
-                                     g_a, g_b, h_a, h_b,
-                                     N_simu, T_values_h2,
-                                     N_samples=10000)
-μ_L_p_all_h2, μ_L_q_all_h2 = all_results_h2
+imp_h2 = simulate_multiple_T(jax.random.key(9), g_a, g_b,
+                             a_list[1], b_list[1],
+                             T_values_h2, N_simu)
 
-fig, axs = plt.subplots(1, 2, figsize=(14, 10))
-μ_range = jnp.linspace(0, 2, 100)
-
-for i, t in enumerate(T_values_h2):
-    μ_L_p = μ_L_p_all_h2[i]
-    μ_L_q = μ_L_q_all_h2[i]
-
-    μ_hat_p = jnp.nanmean(μ_L_p)
-    μ_hat_q = jnp.nanmean(μ_L_q)
-    σ_hat_p = jnp.nanvar(μ_L_p)
-    σ_hat_q = jnp.nanvar(μ_L_q)
-
-    axs[i].set_xlabel('$μ_L$')
-    axs[i].set_ylabel('frequency')
-    axs[i].set_title(f'$T$={t}')
-    n_p, bins_p, _ = axs[i].hist(
-        μ_L_p, bins=μ_range,
-        color='r', alpha=0.5, label='$g$ generating')
-    n_q, bins_q, _ = axs[i].hist(
-        μ_L_q, bins=μ_range,
-        color='b', alpha=0.5, label='$h_2$ generating')
-    axs[i].legend(loc=4)
-
-    for n, bins, μ_hat, σ_hat in [[n_p, bins_p, μ_hat_p,
-                                    σ_hat_p],
-                                   [n_q, bins_q, μ_hat_q,
-                                    σ_hat_q]]:
-        idx = jnp.argmax(n)
-        axs[i].text(
-            bins[idx], n[idx],
-            r'$\hat{μ}$=' + f'{μ_hat:.4g}' +
-            r', $\hat{σ}=$' + f'{σ_hat:.4g}')
-
-plt.show()
+plot_estimates(T_values_h2, mc, imp_h2, '$h_2$ generating')
 ```
 
 Our simulations suggest that indeed $h_2$ is a quite  good importance sampling distribution for our problem.
@@ -592,51 +572,14 @@ Even at $T=20$, the mean  is very close to $1$ and the  variance is small.
 mystnb:
   figure:
     caption: 'Estimates using importance distribution $h_3$'
-    name: fig_imp_estimates_h3
+    name: fig-imp-estimates-h3
 ---
-h_a = a_list[2]
-h_b = b_list[2]
-
 T_values_h3 = [1, 20]
-all_results_h3 = simulate_multiple_T(jax.random.key(8),
-                                     g_a, g_b, h_a, h_b,
-                                     N_simu, T_values_h3,
-                                     N_samples=10000)
-μ_L_p_all_h3, μ_L_q_all_h3 = all_results_h3
+imp_h3 = simulate_multiple_T(jax.random.key(10), g_a, g_b,
+                             a_list[2], b_list[2],
+                             T_values_h3, N_simu)
 
-fig, axs = plt.subplots(1, 2, figsize=(14, 10))
-μ_range = jnp.linspace(0, 2, 100)
-
-for i, t in enumerate(T_values_h3):
-    μ_L_p = μ_L_p_all_h3[i]
-    μ_L_q = μ_L_q_all_h3[i]
-    μ_hat_p = jnp.nanmean(μ_L_p)
-    μ_hat_q = jnp.nanmean(μ_L_q)
-    σ_hat_p = jnp.nanvar(μ_L_p)
-    σ_hat_q = jnp.nanvar(μ_L_q)
-
-    axs[i].set_xlabel('$μ_L$')
-    axs[i].set_ylabel('frequency')
-    axs[i].set_title(f'$T$={t}')
-    n_p, bins_p, _ = axs[i].hist(
-        μ_L_p, bins=μ_range,
-        color='r', alpha=0.5, label='$g$ generating')
-    n_q, bins_q, _ = axs[i].hist(
-        μ_L_q, bins=μ_range,
-        color='b', alpha=0.5, label='$h_3$ generating')
-    axs[i].legend(loc=4)
-
-    for n, bins, μ_hat, σ_hat in [[n_p, bins_p, μ_hat_p,
-                                    σ_hat_p],
-                                   [n_q, bins_q, μ_hat_q,
-                                    σ_hat_q]]:
-        idx = jnp.argmax(n)
-        axs[i].text(
-            bins[idx], n[idx],
-            r'$\hat{μ}$=' + f'{μ_hat:.4g}' +
-            r', $\hat{σ}=$' + f'{σ_hat:.4g}')
-
-plt.show()
+plot_estimates(T_values_h3, mc, imp_h3, '$h_3$ generating')
 ```
 
 However, $h_3$ is evidently a poor importance sampling distribution for our problem,
