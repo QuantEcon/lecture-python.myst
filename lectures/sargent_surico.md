@@ -1284,7 +1284,8 @@ A correlated chain of length $N$ is worth fewer than $N$ independent draws, and 
 ```{code-cell} ipython3
 import arviz as az
 
-rwmh_idata = az.from_dict({n: kept[:, j][None, :] for j, n in enumerate(FREE)})
+rwmh_idata = az.from_dict(
+    {'posterior': {n: kept[:, j][None, :] for j, n in enumerate(FREE)}})
 rwmh_summary = az.summary(rwmh_idata, var_names=FREE)
 print(rwmh_summary[['mean', 'sd', 'ess_bulk']].to_string())
 print(f'\n{len(kept)} retained draws out of {N_DRAWS}, in {rwmh_seconds:.0f} seconds')
@@ -1637,9 +1638,10 @@ print(f'divergences                        '
 
 ```{code-cell} ipython3
 nuts_idata = az.from_numpyro(mcmc)
-nuts_summary = az.summary(nuts_idata, var_names=FREE)
+nuts_summary = az.summary(nuts_idata, var_names=FREE,
+                          ci_kind='hdi', ci_prob=0.94)
 nuts_kept = np.column_stack([np.asarray(mcmc.get_samples()[n]) for n in FREE])
-nuts_summary[['mean', 'sd', 'hdi_3%', 'hdi_97%', 'ess_bulk', 'r_hat']]
+nuts_summary[['mean', 'sd', 'hdi94_lb', 'hdi94_ub', 'ess_bulk', 'r_hat']]
 ```
 
 ### A warning sign in the diagnostics
