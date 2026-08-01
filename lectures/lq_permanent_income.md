@@ -48,12 +48,13 @@ The model is useful for studying
 
 We derive the consumer's optimal consumption function, present two state-space representations of the optimal decision rule, and illustrate them with two classic examples.
 
-This is the first of three lectures on the LQ permanent income model.
+This is the first of four lectures on the LQ permanent income model.
 
 The two sequels build directly on the tools developed here.
 
 - {doc}`lq_bewley_complete_markets` studies the cross-section behavior of consumption and embeds the single consumer in closed economies with incomplete and complete markets.
 - {doc}`lq_robust_smoothing` studies a consumer who distrusts his model of income and engages in precautionary savings.
+- {doc}`lq_robust_bewley` combines the two, building a Bewley economy whose consumers differ in how much they distrust their income model.
 
 Let's begin with some imports.
 
@@ -509,6 +510,8 @@ The two representations and examples developed here are the foundation for the t
 {doc}`lq_bewley_complete_markets` uses the $(c_t, z_t)$ representation {eq}`eq:sprob16` to study how the cross-section distribution of consumption evolves in closed economies with incomplete and complete markets.
 
 {doc}`lq_robust_smoothing` studies a consumer who distrusts the endowment process {eq}`eq:sprob15` and engages in precautionary savings.
+
+{doc}`lq_robust_bewley` puts such consumers into a Bewley economy and shows that their concerns about misspecification leave no trace in quantity data.
 
 ## Exercises
 
