@@ -731,7 +731,7 @@ undiscounted limit to keep the Bellman equations tractable, comes from
 {cite:t}`BoltonHarris1999`, who were the first to study strategic experimentation in
 continuous time.
 
-A companion paper, {cite:t}`BergemannValimaki1996`, studies the same duopoly with a
+A companion paper, {cite:t}`BergemannValimaki2000`, studies the same duopoly with a
 continuum of *identical* consumers.
 
 Homogeneity there rules out market sharing, so the horizontal differentiation that
@@ -961,12 +961,6 @@ spreads, so the same logic applies to each firm.
 Here is one solution:
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: The value of information to each firm
-    name: fig-md-voi
----
 Ai = np.linspace(0.005, 0.995, 2001)
 voi_1 = v1(mkt, Ai) - (1 - n_eq(mkt, Ai)) * p1(mkt, Ai)
 voi_2 = v2(mkt, Ai) - n_eq(mkt, Ai) * p2(mkt, Ai)
@@ -986,6 +980,7 @@ axes[1].plot(Ai, V2pp, lw=2, label=r"$V_2''(\alpha)$")
 axes[1].set(xlabel=r'$\alpha$', yscale='log',
             title='second derivatives of the value functions')
 axes[1].legend(fontsize=9)
+fig.suptitle('The value of information to each firm')
 fig.tight_layout()
 plt.show()
 
