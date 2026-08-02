@@ -45,7 +45,7 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 import matplotlib.pyplot as plt
-from jax.scipy.special import gammaln
+from jax.scipy.stats import beta
 from typing import NamedTuple
 from functools import partial
 
@@ -97,22 +97,11 @@ class ImpSampleParams(NamedTuple):
 
 params = ImpSampleParams()
 
-@jax.jit
-def beta_pdf(w, a, b):
-    """Beta probability density function."""
-    log_beta_const = (gammaln(a) + gammaln(b) -
-                      gammaln(a + b))
-    log_pdf = ((a - 1) * jnp.log(w) + (b - 1) *
-               jnp.log(1 - w) - log_beta_const)
-    return jnp.exp(log_pdf)
-
-@jax.jit
 def f(w):
-    return beta_pdf(w, params.F_a, params.F_b)
+    return beta.pdf(w, params.F_a, params.F_b)
 
-@jax.jit
 def g(w):
-    return beta_pdf(w, params.G_a, params.G_b)
+    return beta.pdf(w, params.G_a, params.G_b)
 ```
 
 ```{code-cell} ipython3
@@ -134,7 +123,6 @@ plt.show()
 The likelihood ratio is `l(w)=f(w)/g(w)`.
 
 ```{code-cell} ipython3
-@jax.jit
 def l(w):
     return f(w) / g(w)
 ```
@@ -164,9 +152,11 @@ The same thing happens as $\omega \rightarrow 1$, since $G_b > 1$ also forces $g
 
 But that divergence is far slower --- at rate $\left(1-\omega\right)^{-1/5}$ --- and it is the behavior near $\omega = 0$ that causes the trouble below.
 
-A Monte Carlo approximation of $\hat{E} \left[L\left(\omega^t\right)\right] = \hat{E} \left[\prod_{i=1}^t \ell \left(\omega_i\right)\right]$  would repeatedly draw $\omega$ from $g$, calculate the likelihood ratio $ \ell(\omega) = \frac{f(\omega)}{g(\omega)}$ for each draw, then average these over all draws.
+A Monte Carlo approximation of $E \left[L\left(\omega^t\right)\right]$ would repeatedly draw a sequence $\omega^t = \left(\omega_1, \ldots, \omega_t\right)$ of $t$ independent observations from $g$, form the product $L\left(\omega^t\right) = \prod_{i=1}^t \ell \left(\omega_i\right)$ for each such sequence, then average these products across independently drawn sequences.
 
-Because $g(\omega) \rightarrow 0$ as $\omega \rightarrow 0$, such a simulation procedure  undersamples a part of the sample space $[0,1]$ that it is important to visit often in order to do a good job of approximating the mathematical expectation of the likelihood ratio $\ell(\omega)$.
+Because $g(\omega) \rightarrow 0$ as $\omega \rightarrow 0$, such a simulation procedure  undersamples a part of the sample space $[0,1]$ that it is important to visit often in order to do a good job of approximating the mathematical expectation of $\ell \left(\omega\right)$.
+
+Every one of the $t$ factors in $L\left(\omega^t\right)$ is distorted in the same way, so the problem compounds as $t$ grows.
 
 We illustrate this numerically below.
 
@@ -182,12 +172,12 @@ After we construct a sample in this way, we must then weight each realization by
 
 By doing this, we properly account for the fact that we are using $h$ and not  $g$ to simulate data.
 
-To illustrate, suppose were interested in ${E}\left[\ell\left(\omega\right)\right]$.
+To illustrate, suppose we were interested in ${E}\left[\ell\left(\omega\right)\right]$.
 
 We could simply compute:
 
 $$
-\hat{E}^g \left[\ell\left(\omega\right)\right] = \frac{1}{N} \sum_{i=1}^{N} \ell(w_i^g)
+\hat{E}^g \left[\ell\left(\omega\right)\right] = \frac{1}{N} \sum_{i=1}^{N} \ell\left(\omega_i^g\right)
 $$
 
 where $\omega_i^g$ indicates that  $\omega_i$ is drawn from $g$.
@@ -195,10 +185,10 @@ where $\omega_i^g$ indicates that  $\omega_i$ is drawn from $g$.
 But using our insight from importance sampling, we could instead calculate the object:
 
 $$
-\hat{E}^h \left[\ell\left(\omega\right) \frac{g(w)}{h(w)} \right] = \frac{1}{N} \sum_{i=1}^{N} \ell(w_i^h) \frac{g(w_i^h)}{h(w_i^h)}
+\hat{E}^h \left[\ell\left(\omega\right) \frac{g\left(\omega\right)}{h\left(\omega\right)} \right] = \frac{1}{N} \sum_{i=1}^{N} \ell\left(\omega_i^h\right) \frac{g\left(\omega_i^h\right)}{h\left(\omega_i^h\right)}
 $$
 
-where $w_i$ is now drawn from importance distribution $h$.
+where $\omega_i$ is now drawn from importance distribution $h$.
 
 Notice that the above two  are exactly the same population objects:
 
@@ -228,7 +218,7 @@ w_range = np.linspace(1e-5, 1-1e-5, 1000)
 
 plt.plot(w_range, g(w_range),
          lw=2, label=f'g=Beta({g_a}, {g_b})')
-plt.plot(w_range, beta_pdf(w_range, 0.5, 0.5),
+plt.plot(w_range, beta.pdf(w_range, 0.5, 0.5),
          lw=2, label=f'h=Beta({h_a}, {h_b})')
 plt.legend()
 plt.ylim([0., 3.])
@@ -238,23 +228,30 @@ plt.show()
 ## Approximating a cumulative likelihood ratio
 
 We now study how to use importance sampling to approximate
-${E} \left[L(\omega^t)\right] = \left[\prod_{i=1}^T \ell \left(\omega_i\right)\right]$.
+${E} \left[L\left(\omega^t\right)\right] = E \left[\prod_{i=1}^t \ell \left(\omega_i\right)\right]$.
 
-As above, our plan is to draw  sequences $\omega^t$ from $q$ and then re-weight the likelihood ratio appropriately:
+As above, our plan is to draw  sequences $\omega^t$ from $q$ and then re-weight the likelihood ratio appropriately.
+
+The change of distribution holds in population, exactly as it did for a single draw:
 
 $$
-\hat{E}^p \left[L\left(\omega^t\right)\right] = \hat{E}^p \left[\prod_{t=1}^T \ell \left(\omega_t\right)\right] = \hat{E}^q \left[\prod_{t=1}^T \ell \left(\omega_t\right) \frac{p\left(\omega_{t}\right)}{q\left(\omega_{t}\right)}\right] =
-\frac{1}{N} \sum_{i=1}^{N}\left( \prod_{t=1}^{T} \ell(\omega_{i,t}^h)\frac{p\left(\omega_{i,t}^h\right)}{q\left(\omega_{i,t}^h\right)}\right)
+E^p \left[L\left(\omega^t\right)\right] = E^p \left[\prod_{i=1}^t \ell \left(\omega_i\right)\right] = E^q \left[\prod_{i=1}^t \ell \left(\omega_i\right) \frac{p\left(\omega_i\right)}{q\left(\omega_i\right)}\right]
 $$
 
-where the last equality uses $\omega_{i,t}^h$ drawn from the importance distribution $q$.
+This suggests the estimator
 
-Here $\frac{p\left(\omega_{i,t}^q\right)}{q\left(\omega_{i,t}^q\right)}$ is the weight we assign to each data point $\omega_{i,t}^q$.
+$$
+\hat{E}^q \left[L\left(\omega^t\right)\right] =
+\frac{1}{N} \sum_{n=1}^{N}\left( \prod_{i=1}^{t} \ell\left(\omega_{n,i}^q\right)\frac{p\left(\omega_{n,i}^q\right)}{q\left(\omega_{n,i}^q\right)}\right)
+$$
+
+where $\omega_{n,i}^q$ is the $i$-th observation of the $n$-th sequence, drawn from the importance distribution $q$.
+
+Here $\frac{p\left(\omega_{n,i}^q\right)}{q\left(\omega_{n,i}^q\right)}$ is the weight we assign to each data point $\omega_{n,i}^q$.
 
 Below we prepare a Python function for computing the importance sampling estimates given any beta distributions $p$, $q$.
 
 ```{code-cell} ipython3
-@jax.jit
 def estimate_single_path(key, p_a, p_b, q_a, q_b, T):
     """
     Estimation for a single sample path.
@@ -273,9 +270,9 @@ def estimate_single_path(key, p_a, p_b, q_a, q_b, T):
         likelihood_ratio = f(w) / g(w)
         L = L * likelihood_ratio
 
-        # Importance sampling weight with beta_pdf
-        p_w = beta_pdf(w, p_a, p_b)
-        q_w = beta_pdf(w, q_a, q_b)
+        # Importance sampling weight
+        p_w = beta.pdf(w, p_a, p_b)
+        q_w = beta.pdf(w, q_a, q_b)
         weight = weight * (p_w / q_w)
 
         return (L, weight, key_state)
@@ -300,7 +297,7 @@ def estimate(key, p_a, p_b, q_a, q_b, T=1, N=10000):
     return jnp.mean(estimates)
 ```
 
-Consider the case when $T=1$, which amounts  to approximating $E_0\left[\ell\left(\omega\right)\right]$
+Consider the case when $T=1$, which amounts  to approximating $E\left[\ell\left(\omega\right)\right]$.
 
 For the standard Monte Carlo estimate, we can set $p=g$ and $q=g$.
 
@@ -318,7 +315,7 @@ estimate(jax.random.key(1), g_a, g_b, h_a, h_b,
 
 Evidently, even at $T=1$, our importance sampling  estimate is closer to $1$ than is the Monte Carlo estimate.
 
-Bigger differences arise when computing expectations over longer sequences, $E_0\left[L\left(\omega^t\right)\right]$.
+Bigger differences arise when computing expectations over longer sequences, $E\left[L\left(\omega^t\right)\right]$.
 
 Setting $T=10$, we find that the  Monte Carlo method severely underestimates the mean while importance sampling
 still produces an estimate close to its theoretical value of unity.
@@ -339,7 +336,25 @@ Most samples from $g$ produce small likelihood ratios, while the true mean requi
 
 In our case, since $g(\omega) \to 0$ as $\omega \to 0$ while $f(\omega)$ remains constant, the Monte Carlo procedure undersamples precisely where the likelihood ratio $\frac{f(\omega)}{g(\omega)}$ is largest.
 
-As $T$ increases, this problem worsens exponentially, making standard Monte Carlo increasingly unreliable.
+In fact the situation is worse than skewness --- the Monte Carlo estimator has **infinite variance**.
+
+To see this, note that the second moment of a single likelihood ratio is
+
+$$
+E^g \left[\ell\left(\omega\right)^2\right]
+= \int_0^1 \left(\frac{f\left(\omega\right)}{g\left(\omega\right)}\right)^2 g\left(\omega\right) d\omega
+= \int_0^1 \frac{f\left(\omega\right)^2}{g\left(\omega\right)} d\omega
+$$
+
+Here $f$ is the uniform density, while $g\left(\omega\right)$ vanishes like $\omega^{G_a - 1} = \omega^2$ as $\omega \to 0$.
+
+The integrand therefore behaves like $\omega^{-2}$ near the origin, and the integral diverges.
+
+So $\ell\left(\omega\right)$ has no finite variance, and since the draws are independent, neither does $L\left(\omega^t\right)$ for any $t$.
+
+This is the precise sense in which standard Monte Carlo fails here: no central limit theorem applies to its sample averages, so they carry none of the usual $\sqrt{N}$ guarantees.
+
+As $T$ increases, the problem worsens, making standard Monte Carlo increasingly unreliable.
 
 Importance sampling with $q = h$ fixes this by sampling more uniformly from regions important to both $f$ and $g$.
 
@@ -466,26 +481,24 @@ What deteriorates as $T$ grows is the *shape* of its sampling distribution: almo
 
 This is why each panel reports a median alongside the mean.
 
-The median falls steadily in $T$, whereas the reported mean $\hat{μ}$ is itself an unreliable statistic once $T$ is large --- at $T=20$ its variance across simulations exceeds $100$, so a different seed can move it substantially.
+The median falls steadily in $T$, whereas the reported mean $\hat{μ}$ is an unreliable statistic --- recall that the underlying variance is infinite, so the $\hat{σ}^2$ printed in each panel estimates a quantity that does not exist, and a different seed can move $\hat{μ}$ a long way.
 
 Importance sampling repairs exactly this defect.
 
 ## Choosing a sampling distribution
 
-+++
-
-Above, we arbitraily chose $h = Beta(0.5,0.5)$ as the importance distribution.
+Above, we arbitrarily chose $h = Beta(0.5,0.5)$ as the importance distribution.
 
 Is there an optimal importance distribution?
 
-In our particular case, since we  know in advance that $E_0 \left[ L\left(\omega^t\right) \right] = 1$, we can use that knowledge to our advantage.
+In our particular case, since we  know in advance that $E \left[ L\left(\omega^t\right) \right] = 1$, we can use that knowledge to our advantage.
 
 Thus, suppose that we simply use  $h = f$.
 
 When estimating the mean of the likelihood ratio (T=1), we get:
 
 $$
-\hat{E}^f \left[\ell(\omega) \frac{g(\omega)}{f(\omega)} \right] = \hat{E}^f \left[\frac{f(\omega)}{g(\omega)} \frac{g(\omega)}{f(\omega)} \right] = \frac{1}{N} \sum_{i=1}^{N} \ell(w_i^f) \frac{g(w_i^f)}{f(w_i^f)} = 1
+\hat{E}^f \left[\ell(\omega) \frac{g(\omega)}{f(\omega)} \right] = \hat{E}^f \left[\frac{f(\omega)}{g(\omega)} \frac{g(\omega)}{f(\omega)} \right] = \frac{1}{N} \sum_{i=1}^{N} \ell\left(\omega_i^f\right) \frac{g\left(\omega_i^f\right)}{f\left(\omega_i^f\right)} = 1
 $$
 
 ```{code-cell} ipython3
@@ -518,11 +531,11 @@ w_range = np.linspace(1e-5, 1-1e-5, 1000)
 
 plt.plot(w_range, g(w_range),
          lw=2, label=f'g=Beta({g_a}, {g_b})')
-plt.plot(w_range, beta_pdf(w_range, a_list[0], b_list[0]),
+plt.plot(w_range, beta.pdf(w_range, a_list[0], b_list[0]),
          lw=2, label=f'$h_1$=Beta({a_list[0]},{b_list[0]})')
-plt.plot(w_range, beta_pdf(w_range, a_list[1], b_list[1]),
+plt.plot(w_range, beta.pdf(w_range, a_list[1], b_list[1]),
          lw=2, label=f'$h_2$=Beta({a_list[1]},{b_list[1]})')
-plt.plot(w_range, beta_pdf(w_range, a_list[2], b_list[2]),
+plt.plot(w_range, beta.pdf(w_range, a_list[2], b_list[2]),
          lw=2, label=f'$h_3$=Beta({a_list[2]},{b_list[2]})')
 plt.legend()
 plt.ylim([0., 3.])
@@ -535,16 +548,29 @@ As a reminder $h_1$ is the original $Beta(0.5,0.5)$ distribution that we used ab
 
 $h_2$ is the $Beta(1,1.2)$ distribution.
 
-Note how $h_2$ has a similar shape to $g$ at higher values of distribution but more mass at lower values.
+Note how $h_2$ has a similar shape to $g$ at higher values of $\omega$ but more mass at lower values.
 
 Our hunch is that $h_2$ should be a good importance sampling distribution.
 
 $h_3$ is the $Beta(2,5)$ distribution.
 
-Note how $h_3$ has zero mass at values very close to 0 and at values close to 1.
+Note how $h_3$ has almost no mass at values very close to 0 and at values close to 1.
 
 Our hunch is that $h_3$ will  be a poor importance sampling distribution.
 
+The variance calculation above lets us make these hunches precise.
+
+Drawing from $h$ and reweighting gives each observation the value $\ell\left(\omega\right) g\left(\omega\right) / h\left(\omega\right) = f\left(\omega\right) / h\left(\omega\right)$, so the estimator has finite variance exactly when
+
+$$
+\int_0^1 \frac{f\left(\omega\right)^2}{h\left(\omega\right)} d\omega < \infty
+$$
+
+For $h_1$ and $h_2$ this integral converges.
+
+For $h_3$ it diverges at **both** endpoints, since $h_3$ vanishes like $\omega$ at the origin and like $\left(1-\omega\right)^4$ at one.
+
+So importance sampling with $h_3$ has infinite variance, just as standard Monte Carlo does --- which is what makes it a poor choice.
 
 We first simulate and plot the distribution of estimates for $\hat{E} \left[L\left(\omega^t\right)\right]$ using $h_2$ as the importance sampling distribution.
 
