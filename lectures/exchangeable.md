@@ -36,15 +36,14 @@ We touch foundations of Bayesian statistical inference invented by Bruno DeFinet
 The relevance of DeFinetti's work for economists is presented forcefully  by David Kreps
 in chapter 11 of {cite}`Kreps88`.
 
-An example  that we study in this lecture  is a key component of {doc}`this lecture <odu>` that augments the
-{doc}`classic <mccall_model>`  job search model of McCall
-{cite}`McCall1970` by presenting an unemployed worker with a statistical inference problem.
+An example that we study below is a key component of {doc}`odu`.
+
+That lecture augments the classic job search model of McCall {cite}`McCall1970`, studied in {doc}`mccall_model`, by presenting an unemployed worker with a statistical inference problem.
 
 Here we create  graphs that illustrate the role that  a  likelihood ratio
 plays in  Bayes' Law.
 
-We'll use such graphs to provide insights into  mechanics driving outcomes in {doc}`this lecture <odu>` about learning in an augmented McCall job
-search model.
+We'll use such graphs to provide insights into the mechanics driving outcomes in {doc}`odu`.
 
 Among other things, this lecture discusses  connections between the statistical concepts of sequences of random variables that are
 
@@ -71,21 +70,15 @@ Let’s start with some imports:
 ```{code-cell} ipython3
 :tags: [hide-output]
 
+from math import gamma
+
 import matplotlib.pyplot as plt
+import numpy as np
 import scipy.optimize as op
 from scipy.integrate import quad
-import numpy as np
-import jax.numpy as jnp
-from jax.scipy.special import gamma
-import jax
 ```
 
-```{code-cell} ipython3
-# Enable JAX to use 64-bit float operations
-jax.config.update("jax_enable_x64", True)
-```
-
-## Independently and Identically Distributed
+## Independently and identically distributed
 
 We begin by looking at the notion of an  **independently and identically  distributed sequence** of random variables.
 
@@ -114,9 +107,9 @@ $$
 
 so that the joint density is the product of a sequence of identical marginal densities.
 
-### IID Means Past Observations Don't Tell Us Anything About Future Observations
+### IID means past observations don't tell us anything about future observations
 
-If a sequence is random variables is IID, past information provides no information about future realizations.
+If a sequence of random variables is IID, past information provides no information about future realizations.
 
 Therefore, there is **nothing to learn** from the past  about the future.
 
@@ -160,7 +153,7 @@ We turn next to an instance of the general case in which the sequence is not IID
 
 Please watch for what can be  learned from the past and when.
 
-## A Setting in Which Past Observations Are Informative
+## A setting in which past observations are informative
 
 Let $\{W_t\}_{t=0}^\infty$ be a sequence of nonnegative
 scalar random variables with a joint probability distribution
@@ -207,7 +200,7 @@ To proceed, we want to know the decision maker's belief about the joint distribu
 
 We'll discuss that next and in the process describe the concept of **exchangeability**.
 
-## Relationship Between IID and Exchangeable
+## Relationship between IID and exchangeable
 
 Conditional on nature selecting $F$, the joint density of the
 sequence $W_0, W_1, \ldots$ is
@@ -296,7 +289,7 @@ Bernoulli parameter $\theta$.
 
 ## Bayes' Law
 
-We noted above that in our example model there is something to learn about about the future from past data drawn
+We noted above that in our example model there is something to learn about the future from past data drawn
 from our particular instance of a process that is exchangeable but not IID.
 
 But how can we learn?
@@ -363,7 +356,7 @@ $$
 \mathbb{P}\{W = w\} = \sum_{a \in \{f, g\}} \mathbb{P}\{W = w \,|\, q = a \} \mathbb{P}\{q = a \}
 $$
 
-## More Details about Bayesian Updating
+## More details about Bayesian updating
 
 Let's stare at and rearrange Bayes' Law as represented in equation {eq}`eq_Bayes102` with the aim of understanding
 how the **posterior** probability $\pi_{t+1}$ is influenced by the **prior** probability $\pi_t$ and the **likelihood ratio**
@@ -406,134 +399,169 @@ We’ll plot $l\left(w\right)$ as a way to enlighten us about how
 learning – i.e., Bayesian updating of the probability $\pi$ that
 nature has chosen distribution $f$ – works.
 
-To create the Python infrastructure to do our work for us,  we construct a wrapper function that displays informative graphs
-given parameters of $f$ and $g$.
+We build up the picture in three steps, each of which produces one graph.
+
+All three are built from the same ingredients: the densities $f$ and $g$, and the values of $w$ at which
+the likelihood ratio $l(w) = f(w)/g(w)$ crosses one.
+
+Both $f$ and $g$ are Beta densities, so we start with the general Beta density.
 
 ```{code-cell} ipython3
-@jax.jit
-def p(x, a, b):
-    """The general beta distribution function."""
+def p(w, a, b):
+    "The Beta density with parameters a and b."
     r = gamma(a + b) / (gamma(a) * gamma(b))
-    return r * x ** (a - 1) * (1 - x) ** (b - 1)
+    return r * w**(a - 1) * (1 - w)**(b - 1)
 ```
 
+The next function assembles the ingredients for a given pair of Beta distributions.
+
 ```{code-cell} ipython3
-def learning_example(F_a=1, F_b=1, G_a=3, G_b=1.2):
+def create_model(F_a=1, F_b=1, G_a=3, G_b=1.2):
     """
-    A wrapper function that displays the updating rule of belief π,
-    given the parameters which specify F and G distributions.
+    Build the densities f and g, along with the two values of w at which
+    the likelihood ratio l(w) = f(w) / g(w) equals one.
     """
+    f = lambda w: p(w, F_a, F_b)
+    g = lambda w: p(w, G_a, G_b)
 
-    f = jax.jit(lambda x: p(x, F_a, F_b))
-    g = jax.jit(lambda x: p(x, G_a, G_b))
-
-    # l(w) = f(w) / g(w)
-    l = lambda w: f(w) / g(w)
-    # objective function for solving l(w) = 1
-    obj = jax.jit(lambda w: l(w) - 1)
-
-    x_grid = np.linspace(0, 1, 100)
-    π_grid = np.linspace(1e-3, 1 - 1e-3, 100)
-
-    w_max = 1
-    w_grid = np.linspace(1e-12, w_max - 1e-12, 100)
-
-    # the mode of beta distribution
-    # use this to divide w into two intervals for root finding
+    # The mode of g divides [0, 1] into two intervals, each holding one root
     G_mode = (G_a - 1) / (G_a + G_b - 2)
-    roots = np.empty(2)
-    roots[0] = op.root_scalar(obj, bracket=[1e-10, G_mode]).root
-    roots[1] = op.root_scalar(obj, bracket=[G_mode, 1 - 1e-10]).root
+    obj = lambda w: f(w) / g(w) - 1
+    roots = np.array([op.root_scalar(obj, bracket=[1e-10, G_mode]).root,
+                      op.root_scalar(obj, bracket=[G_mode, 1 - 1e-10]).root])
+    return f, g, roots
+```
 
-    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 5))
+### The likelihood ratio
 
-    ax1.plot(l(w_grid), w_grid, label="$l$", lw=2)
-    ax1.vlines(1.0, 0.0, 1.0, linestyle="--")
-    ax1.hlines(roots, 0.0, 2.0, linestyle="--")
-    ax1.set_xlim([0.0, 2.0])
-    ax1.legend(loc=4)
-    ax1.set(xlabel="$l(w)=f(w)/g(w)$", ylabel="$w$")
+Our first graph plots the likelihood ratio $l(w)$ on the abscissa axis against $w$ on the ordinate axis.
 
-    ax2.plot(f(x_grid), x_grid, label="$f$", lw=2)
-    ax2.plot(g(x_grid), x_grid, label="$g$", lw=2)
-    ax2.vlines(1.0, 0.0, 1.0, linestyle="--")
-    ax2.hlines(roots, 0.0, 2.0, linestyle="--")
-    ax2.legend(loc=4)
-    ax2.set(xlabel="$f(w), g(w)$", ylabel="$w$")
+We orient it this way so that $w$ shares an axis with the two graphs that follow.
 
-    area1 = quad(f, 0, roots[0])[0]
-    area2 = quad(g, roots[0], roots[1])[0]
-    area3 = quad(f, roots[1], 1)[0]
+```{code-cell} ipython3
+def plot_likelihood_ratio(F_a=1, F_b=1, G_a=3, G_b=1.2):
+    f, g, roots = create_model(F_a, F_b, G_a, G_b)
+    w_grid = np.linspace(1e-12, 1 - 1e-12, 100)
 
-    ax2.text((f(0) + f(roots[0])) / 4, roots[0] / 2, f"{area1: .3g}")
-    ax2.fill_between([0, 1], 0, roots[0], color="blue", alpha=0.15)
-    ax2.text(np.mean(g(roots)) / 2, np.mean(roots), f"{area2: .3g}")
-    w_roots = np.linspace(roots[0], roots[1], 20)
-    ax2.fill_betweenx(w_roots, 0, g(w_roots), color="orange", alpha=0.15)
-    ax2.text((f(roots[1]) + f(1)) / 4, (roots[1] + 1) / 2, f"{area3: .3g}")
-    ax2.fill_between([0, 1], roots[1], 1, color="blue", alpha=0.15)
-
-    W = np.arange(0.01, 0.99, 0.08)
-    Π = np.arange(0.01, 0.99, 0.08)
-
-    ΔW = np.zeros((len(W), len(Π)))
-    ΔΠ = np.empty((len(W), len(Π)))
-    for i, w in enumerate(W):
-        for j, π in enumerate(Π):
-            lw = l(w)
-            ΔΠ[i, j] = π * (lw / (π * lw + 1 - π) - 1)
-
-    q = ax3.quiver(Π, W, ΔΠ, ΔW, scale=2, color="r", alpha=0.8)
-
-    ax3.fill_between(π_grid, 0, roots[0], color="blue", alpha=0.15)
-    ax3.fill_between(π_grid, roots[0], roots[1], color="green", alpha=0.15)
-    ax3.fill_between(π_grid, roots[1], w_max, color="blue", alpha=0.15)
-    ax3.hlines(roots, 0.0, 1.0, linestyle="--")
-    ax3.set(xlabel=r"$\pi$", ylabel="$w$")
-    ax3.grid()
-
+    fig, ax = plt.subplots(figsize=(6, 5))
+    ax.plot(f(w_grid) / g(w_grid), w_grid, label='$l$', lw=2)
+    ax.vlines(1, 0, 1, linestyle='--')
+    ax.hlines(roots, 0, 2, linestyle='--')
+    ax.set_xlim(0, 2)
+    ax.legend(loc=4)
+    ax.set(xlabel='$l(w) = f(w) / g(w)$', ylabel='$w$')
     plt.show()
 ```
 
-Now we'll create a group of graphs that illustrate  dynamics induced by Bayes' Law.
-
-We'll begin with Python function default values of various objects, then change them in a subsequent example.
+We begin with $f$ uniform on $[0,1]$ --- that is, Beta with $F_a=1, F_b=1$ --- and $g$ Beta with $G_a=3, G_b=1.2$.
 
 ```{code-cell} ipython3
-learning_example()
+plot_likelihood_ratio()
 ```
 
-Please look at the three graphs above created for an instance in which $f$ is a uniform distribution on $[0,1]$
-(i.e., a Beta distribution with parameters $F_a=1, F_b=1$), while  $g$ is a Beta distribution with the default parameter values $G_a=3, G_b=1.2$.
+The two horizontal dashed lines mark the values of $w$ at which $l(w) = 1$.
 
-The graph on the left  plots the likelihood ratio $l(w)$ as the abscissa  axis against $w$ as the ordinate.
+Between them the likelihood ratio is below one, so by {eq}`eq_Bayes103` a draw in that region pushes $\pi$ down.
 
-The middle graph plots both $f(w)$ and $g(w)$  against $w$, with the horizontal dotted lines showing values
-of $w$ at which the likelihood ratio equals $1$.
+Outside them it exceeds one, so a draw there pushes $\pi$ up.
 
-The graph on the right plots arrows to the right that show when Bayes' Law  makes $\pi$ increase and arrows
-to the left that show when Bayes' Law makes $\pi$ decrease.
+### The densities and the probabilities of moving in each direction
 
-Lengths of the arrows  show  magnitudes of the force from Bayes' Law impelling $\pi$ to change.
+Our second graph plots $f(w)$ and $g(w)$ against $w$, and shades the regions delineated by those same two values of $w$.
 
-These lengths depend on both the prior probability $\pi$ on the abscissa axis and the evidence in the form of the current draw of
-$w$ on the ordinate axis.
+Shading them lets us attach a probability to each direction of movement, which we compute by integrating the relevant density over the region.
 
-The fractions in the colored areas of the middle graphs are probabilities under $F$ and $G$, respectively,
-that  realizations of $w$ fall
-into the interval that updates the belief $\pi$ in a correct direction (i.e., toward $0$ when $G$ is the true
-distribution, and toward $1$ when $F$ is the true distribution).
+```{code-cell} ipython3
+def plot_densities(F_a=1, F_b=1, G_a=3, G_b=1.2):
+    f, g, roots = create_model(F_a, F_b, G_a, G_b)
+    w_grid = np.linspace(0, 1, 100)
 
-For example,
-in the above  example, under true distribution $F$,  $\pi$ will  be updated toward $0$ if $w$ falls into the interval
+    fig, ax = plt.subplots(figsize=(6, 5))
+    ax.plot(f(w_grid), w_grid, label='$f$', lw=2)
+    ax.plot(g(w_grid), w_grid, label='$g$', lw=2)
+    ax.vlines(1, 0, 1, linestyle='--')
+    ax.hlines(roots, 0, 2, linestyle='--')
+    ax.legend(loc=4)
+    ax.set(xlabel='$f(w), g(w)$', ylabel='$w$')
+
+    # Probability of landing in each region, under whichever density is shaded
+    area_lower = quad(f, 0, roots[0])[0]
+    area_middle = quad(g, roots[0], roots[1])[0]
+    area_upper = quad(f, roots[1], 1)[0]
+
+    ax.fill_between([0, 1], 0, roots[0], color='blue', alpha=0.15)
+    ax.text((f(0) + f(roots[0])) / 4, roots[0] / 2, f"{area_lower: .3g}")
+    w_middle = np.linspace(roots[0], roots[1], 20)
+    ax.fill_betweenx(w_middle, 0, g(w_middle), color='orange', alpha=0.15)
+    ax.text(np.mean(g(roots)) / 2, np.mean(roots), f"{area_middle: .3g}")
+    ax.fill_between([0, 1], roots[1], 1, color='blue', alpha=0.15)
+    ax.text((f(roots[1]) + f(1)) / 4, (roots[1] + 1) / 2, f"{area_upper: .3g}")
+    plt.show()
+```
+
+Let's look at the same pair of distributions as before.
+
+```{code-cell} ipython3
+plot_densities()
+```
+
+The fractions in the colored areas are probabilities that a realization of $w$ falls into the region beside them.
+
+The blue regions are integrals of $f$ and the orange region is an integral of $g$.
+
+For example, under true distribution $F$, $\pi$ will be updated toward $0$ if $w$ falls into the interval
 $[0.524, 0.999]$, which occurs with probability $1 - .524 = .476$ under $F$.
 
-But this
-would occur with probability
-$0.816$ if $G$ were the true distribution.
+But this would occur with probability $0.816$ if $G$ were the true distribution.
 
-The fraction $0.816$
-in the orange region is the integral of $g(w)$ over this interval.
+### Dynamics of the belief
+
+Our third graph attaches an arrow to each point in the $(\pi, w)$ plane showing the change in $\pi$ that
+Bayes' Law induces when the current belief is $\pi$ and the new draw is $w$.
+
+```{code-cell} ipython3
+def plot_belief_dynamics(F_a=1, F_b=1, G_a=3, G_b=1.2):
+    f, g, roots = create_model(F_a, F_b, G_a, G_b)
+    π_grid = np.linspace(1e-3, 1 - 1e-3, 100)
+
+    # Change in π at each point of a coarse grid over (π, w)
+    W = np.arange(0.01, 0.99, 0.08)
+    Π = np.arange(0.01, 0.99, 0.08)
+    lw = (f(W) / g(W))[:, None]     # likelihood ratio at each w, as a column
+    ΔΠ = Π * (lw / (Π * lw + 1 - Π) - 1)
+    ΔW = np.zeros_like(ΔΠ)
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+    ax.quiver(Π, W, ΔΠ, ΔW, scale=2, color='r', alpha=0.8)
+    ax.fill_between(π_grid, 0, roots[0], color='blue', alpha=0.15)
+    ax.fill_between(π_grid, roots[0], roots[1], color='green', alpha=0.15)
+    ax.fill_between(π_grid, roots[1], 1, color='blue', alpha=0.15)
+    ax.hlines(roots, 0, 1, linestyle='--')
+    ax.set(xlabel=r'$\pi$', ylabel='$w$')
+    ax.grid()
+    plt.show()
+```
+
+Again we use the same pair of distributions.
+
+```{code-cell} ipython3
+plot_belief_dynamics()
+```
+
+Arrows pointing right show when Bayes' Law makes $\pi$ increase and arrows pointing left show when it makes $\pi$ decrease.
+
+Lengths of the arrows show magnitudes of the force from Bayes' Law impelling $\pi$ to change.
+
+These lengths depend on both the prior probability $\pi$ on the abscissa axis and the evidence in the form
+of the current draw of $w$ on the ordinate axis.
+
+Arrows point right in the blue regions, where $l(w) > 1$, and left in the green region between the
+dashed lines, where $l(w) < 1$.
+
+For these parameters the upper blue region is a thin sliver just below $w = 1$, since $l(w)$ returns above
+one only for draws very close to the upper limit.
+
+### Another instance
 
 Next we use our code to create graphs for another instance of our model.
 
@@ -541,14 +569,16 @@ We keep $F$ the same as in the preceding instance, namely a uniform distribution
 is a Beta distribution with parameters $G_a=2, G_b=1.6$.
 
 ```{code-cell} ipython3
-learning_example(G_a=2, G_b=1.6)
+plot_likelihood_ratio(G_a=2, G_b=1.6)
+plot_densities(G_a=2, G_b=1.6)
+plot_belief_dynamics(G_a=2, G_b=1.6)
 ```
 
-Notice how the likelihood ratio, the middle graph, and the arrows compare with the previous instance of our example.
+Notice how the likelihood ratio, the densities, and the arrows compare with the previous instance of our example.
 
 ## Appendix
 
-### Sample Paths of $\pi_t$
+### Sample paths of $\pi_t$
 
 Now we'll have some fun by plotting multiple realizations of sample paths of $\pi_t$ under two possible
 assumptions about nature's choice of distribution, namely
@@ -557,75 +587,68 @@ assumptions about nature's choice of distribution, namely
 - that nature permanently draws from $G$
 
 Outcomes depend on a peculiar property of likelihood ratio processes  discussed in
-[this lecture](https://python-advanced.quantecon.org/additive_functionals.html).
+{doc}`advanced:additive_functionals`.
 
-The simulation has two dimensions: recursion over time and repetition across independent paths. In JAX, we use `lax.scan` for the time recursion and `vmap` to apply the path simulator across many independent key sequences.
+Before simulating, it pays to rewrite Bayes' Law in terms of **odds** rather than probabilities.
 
-```{code-cell} ipython3
-def function_factory(F_a=1, F_b=1, G_a=3, G_b=1.2):
+In terms of the odds $\pi / (1 - \pi)$, the updating rule {eq}`eq_Bayes102` becomes
 
-    # define f and g
-    f = jax.jit(lambda x: p(x, F_a, F_b))
-    g = jax.jit(lambda x: p(x, G_a, G_b))
+```{math}
+:label: eq_odds
 
-    @jax.jit
-    def update(key, a, b, π):
-        """Update π by drawing from beta distribution with parameters a and b"""
-        # Draw
-        w = jax.random.beta(key, a, b)
-        # Update belief
-        π = 1 / (1 + ((1 - π) * g(w)) / (π * f(w)))
-        return π
-
-    @jax.jit
-    def simulate_path(keys, a, b):
-        """Simulates a path of beliefs π with length T"""
-
-        # Use one random key for each date
-        def scan_fn(π_prev, subkey):
-            π_new = update(subkey, a, b, π_prev)
-            return π_new, π_new
-
-        # Scan over the keys
-        _, π_path = jax.lax.scan(scan_fn, 0.5, keys)
-        # Prepend initial condition
-        return jnp.concatenate([jnp.array([0.5]), π_path])
-
-    def simulate(a=1, b=1, T=50, N=200, seed=42, display=True):
-        "Simulates N paths of beliefs π with length T"
-        # vectorize over the first argument of the function
-        simulate_path_vmap = jax.vmap(simulate_path, in_axes=(0, None, None))
-        keys = jax.random.split(jax.random.key(seed), (N, T))
-        # Call the vectorized function over the first axis of keys
-        π_paths = simulate_path_vmap(keys, a, b)
-
-        if display:
-            fig = plt.figure()
-            for i in range(N):
-                plt.plot(
-                    range(T + 1), π_paths[i], color="b", lw=0.8, alpha=0.5
-                )
-
-            plt.show()
-        return π_paths
-
-    return simulate
+\frac{\pi_{t+1}}{1 - \pi_{t+1}} = l(w_{t+1}) \frac{\pi_{t}}{1 - \pi_{t}}
 ```
 
+So Bayes' Law is *multiplicative* in the odds, and iterating {eq}`eq_odds` back to the prior $\pi_{-1}$ yields
+
+```{math}
+:label: eq_odds_product
+
+\frac{\pi_{t}}{1 - \pi_{t}} = \frac{\pi_{-1}}{1 - \pi_{-1}} \prod_{s=0}^{t} l(w_{s})
+```
+
+The belief path is thus a running product of likelihood ratios, which is why properties of likelihood
+ratio processes govern its behavior.
+
+It also means that we can simulate an entire ensemble of paths with a cumulative product, with no
+iteration over dates.
+
 ```{code-cell} ipython3
-simulate = function_factory()
+def simulate(rng, a, b, T=50, N=1000, π_init=0.5,
+             F_a=1, F_b=1, G_a=3, G_b=1.2):
+    """
+    Simulate N paths of the belief π over T periods, when nature draws IID
+    from Beta(a, b).  Returns an array of shape (N, T+1) whose first column
+    holds the common prior π_init.
+    """
+    w = rng.beta(a, b, size=(N, T))
+    l = p(w, F_a, F_b) / p(w, G_a, G_b)
+    odds = (π_init / (1 - π_init)) * np.cumprod(l, axis=1)
+    return np.column_stack([np.full(N, π_init), odds / (1 + odds)])
+```
+
+The paths are plotted by the next function.
+
+```{code-cell} ipython3
+def plot_paths(π_paths):
+    fig, ax = plt.subplots()
+    ax.plot(π_paths.T, color='b', lw=0.8, alpha=0.5)
+    ax.set(xlabel='$t$', ylabel=r'$\pi_t$')
+    plt.show()
 ```
 
 We begin by generating $N$ simulated $\{\pi_t\}$ paths with $T$
 periods when the sequence is truly IID draws from $F$. We set an initial prior $\pi_{-1} = .5$.
 
 ```{code-cell} ipython3
+rng = np.random.default_rng(42)
 T = 50
 ```
 
 ```{code-cell} ipython3
 # when nature selects F
-π_paths_F = simulate(a=1, b=1, T=T, N=1000)
+π_paths_F = simulate(rng, a=1, b=1, T=T, N=1000)
+plot_paths(π_paths_F)
 ```
 
 In the above example,  for most paths $\pi_t \rightarrow 1$.
@@ -638,7 +661,8 @@ periods when the sequence is truly IID draws from $G$. Again, we set the initial
 
 ```{code-cell} ipython3
 # when nature selects G
-π_paths_G = simulate(a=3, b=1.2, T=T, N=1000)
+π_paths_G = simulate(rng, a=3, b=1.2, T=T, N=1000)
+plot_paths(π_paths_G)
 ```
 
 In the above graph we observe that now  most paths $\pi_t \rightarrow 0$.
@@ -655,15 +679,17 @@ $1 - \sum_{i=1}^{N}\pi_{i,t}$ at each $t$ when the data are generated as draws f
 and compute $\sum_{i=1}^{N}\pi_{i,t}$ when the data are generated as draws from $G$.
 
 ```{code-cell} ipython3
-plt.plot(range(T + 1), 1 - np.mean(π_paths_F, 0), label="F generates")
-plt.plot(range(T + 1), np.mean(π_paths_G, 0), label="G generates")
-plt.legend()
-plt.title("convergence");
+fig, ax = plt.subplots()
+ax.plot(range(T + 1), 1 - np.mean(π_paths_F, axis=0), label='F generates')
+ax.plot(range(T + 1), np.mean(π_paths_G, axis=0), label='G generates')
+ax.set(xlabel='$t$', title='convergence')
+ax.legend()
+plt.show()
 ```
 
 From the above graph, rates of convergence appear not to depend on whether $F$ or $G$ generates the data.
 
-### Graph of Ensemble Dynamics of $\pi_t$
+### Graph of ensemble dynamics of $\pi_t$
 
 More insights about the dynamics of $\{\pi_t\}$ can be gleaned by computing
 conditional expectations of $\frac{\pi_{t+1}}{\pi_{t}}$ as functions of $\pi_t$ via integration with respect
@@ -681,29 +707,22 @@ where $a =f,g$.
 The following code approximates the integral above:
 
 ```{code-cell} ipython3
-def expected_ratio(F_a=1, F_b=1, G_a=3, G_b=1.2):
-
-    # define f and g
-    f = jax.jit(lambda x: p(x, F_a, F_b))
-    g = jax.jit(lambda x: p(x, G_a, G_b))
-
-    l = jax.jit(lambda w: f(w) / g(w))
-    integrand_f = jax.jit(lambda w, π: f(w) * l(w) / (π * l(w) + 1 - π))
-    integrand_g = jax.jit(lambda w, π: g(w) * l(w) / (π * l(w) + 1 - π))
-
+def plot_expected_ratio(F_a=1, F_b=1, G_a=3, G_b=1.2):
+    # Build f and g directly: here they can coincide, so l(w) = 1 has no root
+    f = lambda w: p(w, F_a, F_b)
+    g = lambda w: p(w, G_a, G_b)
+    l = lambda w: f(w) / g(w)
     π_grid = np.linspace(0.02, 0.98, 100)
 
-    expected_ratio = np.empty(len(π_grid))
-    for q, inte in zip(["f", "g"], [integrand_f, integrand_g]):
-        for i, π in enumerate(π_grid):
-            expected_ratio[i] = quad(inte, 0, 1, args=(π,))[0]
-        plt.plot(π_grid, expected_ratio, label=f"{q} generates")
+    fig, ax = plt.subplots()
+    for label, a in [('f', f), ('g', g)]:
+        integrand = lambda w, π: a(w) * l(w) / (π * l(w) + 1 - π)
+        ratios = [quad(integrand, 0, 1, args=(π,))[0] for π in π_grid]
+        ax.plot(π_grid, ratios, label=f'{label} generates')
 
-    plt.hlines(1, 0, 1, linestyle="--")
-    plt.xlabel(r"$\pi_t$")
-    plt.ylabel(r"$E[\pi_{t+1}/\pi_t]$")
-    plt.legend()
-
+    ax.hlines(1, 0, 1, linestyle='--')
+    ax.set(xlabel=r'$\pi_t$', ylabel=r'$E[\pi_{t+1} / \pi_t]$')
+    ax.legend()
     plt.show()
 ```
 
@@ -711,7 +730,7 @@ First, consider the case where $F_a=F_b=1$ and
 $G_a=3, G_b=1.2$.
 
 ```{code-cell} ipython3
-expected_ratio()
+plot_expected_ratio()
 ```
 
 The above graph shows that when $F$ generates the data, $\pi_t$ on average always heads north, while
@@ -724,7 +743,7 @@ In a sense, here  there
 is nothing to learn.
 
 ```{code-cell} ipython3
-expected_ratio(F_a=3, F_b=1.2)
+plot_expected_ratio(F_a=3, F_b=1.2)
 ```
 
 The above graph says that $\pi_t$ is inert and  remains at its initial value.
@@ -734,15 +753,15 @@ different nor identical, in particular one in which  $F_a=2, F_b=1$ and
 $G_a=3, G_b=1.2$.
 
 ```{code-cell} ipython3
-expected_ratio(F_a=2, F_b=1, G_a=3, G_b=1.2)
+plot_expected_ratio(F_a=2, F_b=1, G_a=3, G_b=1.2)
 ```
 
 ## Sequels
 
 We'll apply and dig deeper into some of the ideas presented in this lecture:
 
-* {doc}`this lecture <likelihood_ratio_process>` describes **likelihood ratio processes**
+* {doc}`likelihood_ratio_process` describes **likelihood ratio processes**
   and their role in frequentist and Bayesian statistical theories
-* {doc}`this lecture <navy_captain>` studies  whether a World War II US Navy Captain's hunch that a (frequentist) decision rule that the Navy had told
+* {doc}`navy_captain` studies  whether a World War II US Navy Captain's hunch that a (frequentist) decision rule that the Navy had told
   him to use was  inferior to a sequential rule that Abraham
   Wald had not yet designed.
