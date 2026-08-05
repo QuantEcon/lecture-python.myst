@@ -18,7 +18,7 @@ kernelspec:
 </div>
 ```
 
-# Job Search VI: Modeling Career Choice
+# Job Search VII: Modeling Career Choice
 
 ```{index} single: Modeling; Career Choice
 ```
