@@ -50,14 +50,14 @@ These themes appear repeatedly below.
 
 Mathematically, LQ control problems are closely related to {doc}`the Kalman filter <kalman>`
 
-* Recursive formulations of linear-quadratic control problems and Kalman filtering problems both involve matrix **Riccati equations**.
-* Classical formulations of linear control and linear filtering problems make use of similar matrix decompositions (see for example [this lecture](https://python-advanced.quantecon.org/lu_tricks.html) and [this lecture](https://python-advanced.quantecon.org/classical_filtering.html)).
+* Recursive formulations of linear-quadratic control problems and Kalman filtering problems both involve matrix [Riccati equations](https://en.wikipedia.org/wiki/Riccati_equation).
+* Classical formulations of linear control and linear filtering problems make use of similar matrix decompositions (see for example {doc}`advanced:lu_tricks` and {doc}`advanced:classical_filtering`).
 
 In reading what follows, it will be useful to have some familiarity with
 
 * matrix manipulations
 * vectors of random variables
-* dynamic programming and the Bellman equation (see for example {doc}`this lecture <intro:short_path>` and {doc}`this lecture <optgrowth>`)
+* dynamic programming and the Bellman equation (see for example {doc}`intro:short_path` and {doc}`os_stochastic`)
 
 For additional reading on LQ control, see, for example,
 
@@ -73,6 +73,7 @@ Let's start with some imports:
 import matplotlib.pyplot as plt
 import numpy as np
 from quantecon import LQ
+from typing import NamedTuple
 ```
 
 ## Introduction
@@ -81,7 +82,7 @@ The "linear" part of LQ is a linear law of motion for the state, while the "quad
 
 Let's begin with the former, move on to the latter, and then put them together into an optimization problem.
 
-### The Law of Motion
+### The law of motion
 
 Let $x_t$ be a vector describing the state of some economic system.
 
@@ -97,7 +98,7 @@ x_{t+1} = A x_t + B u_t + C w_{t+1},
 Here
 
 * $u_t$ is a "control" vector, incorporating choices available to a decision-maker confronting the current state $x_t$
-* $\{w_t\}$ is an uncorrelated zero mean shock process satisfying $\mathbb E w_t w_t' = I$, where the right-hand side is the identity matrix
+* $\{w_t\}$ is a sequence of uncorrelated zero mean shocks satisfying $\mathbb E w_t w_t^\top = I$, where the right-hand side is the identity matrix
 
 Regarding the dimensions
 
@@ -116,8 +117,8 @@ $$
 Here $a_t$ is assets, $r$ is a fixed interest rate, $c_t$ is
 current consumption, and $y_t$ is current non-financial income.
 
-If we suppose that $\{ y_t \}$ is serially uncorrelated and $N(0,
-\sigma^2)$, then, taking $\{ w_t \}$ to be standard normal, we can write
+If we suppose that $\{y_t\}$ is serially uncorrelated and $N(0,
+\sigma^2)$, then, taking $\{w_t\}$ to be standard normal, we can write
 the system as
 
 $$
@@ -166,37 +167,27 @@ In particular, if we write
 ```{math}
 :label: lq_lowmc
 
-\left(
-\begin{array}{c}
+\begin{bmatrix}
 a_{t+1} \\
 1
-\end{array}
-\right) =
-\left(
-\begin{array}{cc}
+\end{bmatrix} =
+\begin{bmatrix}
 1 + r & -\bar c + \mu \\
 0     & 1
-\end{array}
-\right)
-\left(
-\begin{array}{c}
+\end{bmatrix}
+\begin{bmatrix}
 a_t \\
 1
-\end{array}
-\right) +
-\left(
-\begin{array}{c}
+\end{bmatrix} +
+\begin{bmatrix}
 -1 \\
 0
-\end{array}
-\right)
+\end{bmatrix}
 u_t +
-\left(
-\begin{array}{c}
+\begin{bmatrix}
 \sigma \\
 0
-\end{array}
-\right)
+\end{bmatrix}
 w_{t+1}
 ```
 
@@ -209,36 +200,28 @@ Moreover, the model is now linear and can be written in the form of
 :label: lq_lowmc2
 
 x_t :=
-\left(
-\begin{array}{c}
+\begin{bmatrix}
 a_t \\
 1
-\end{array}
-\right),
+\end{bmatrix},
 \quad
 A :=
-\left(
-\begin{array}{cc}
+\begin{bmatrix}
 1 + r & -\bar c + \mu \\
 0     & 1
-\end{array}
-\right),
+\end{bmatrix},
 \quad
 B :=
-\left(
-\begin{array}{c}
+\begin{bmatrix}
 -1 \\
 0
-\end{array}
-\right),
+\end{bmatrix},
 \quad
 C :=
-\left(
-\begin{array}{c}
+\begin{bmatrix}
 \sigma \\
 0
-\end{array}
-\right)
+\end{bmatrix}
 ```
 
 In effect, we've bought ourselves linearity by adding another state.
@@ -250,8 +233,10 @@ In the LQ model, the aim is to minimize flow of losses, where time-$t$ loss is g
 ```{math}
 :label: lq_pref_flow
 
-x_t' R x_t + u_t' Q u_t
+x_t^\top R x_t + u_t^\top Q u_t
 ```
+
+The entries in $R$ and $Q$ are chosen to match the specific problem being studied.
 
 Here
 
@@ -260,6 +245,8 @@ Here
 
 ```{note}
 In fact, for many economic problems, the definiteness conditions on $R$ and $Q$ can be relaxed.  It is sufficient that certain submatrices of $R$ and $Q$ be nonnegative definite. See {cite}`HansenSargent2008` for details.
+
+Note also that this notation is not universal: some authors let $Q$ be the matrix associated with the state and $R$ the matrix associated with the control.
 ```
 
 #### Example 1
@@ -268,7 +255,7 @@ A very simple example that satisfies these assumptions is to take $R$
 and $Q$ to be identity matrices so that current loss is
 
 $$
-x_t' I x_t + u_t' I u_t = \| x_t \|^2 + \| u_t \|^2
+x_t^\top I x_t + u_t^\top I u_t = \| x_t \|^2 + \| u_t \|^2
 $$
 
 Thus, for both the state and the control, loss is measured as squared distance from the origin.
@@ -290,19 +277,19 @@ In the household problem {ref}`studied above <lq_hhp>`, setting $R=0$
 and $Q=1$ yields preferences
 
 $$
-x_t' R x_t + u_t' Q u_t = u_t^2 = (c_t - \bar c)^2
+x_t^\top R x_t + u_t^\top Q u_t = u_t^2 = (c_t - \bar c)^2
 $$
 
 Under this specification, the household's current loss is the squared deviation of consumption from the ideal level $\bar c$.
 
-## Optimality -- Finite Horizon
+## Optimality -- finite horizon
 
 ```{index} single: LQ Control; Optimality (Finite Horizon)
 ```
 
 Let's now be precise about the optimization problem we wish to consider, and look at how to solve it.
 
-### The Objective
+### The objective
 
 We will begin with the finite horizon case, with terminal time $T \in \mathbb N$.
 
@@ -313,7 +300,7 @@ In this case, the aim is to choose a sequence of controls $\{u_0, \ldots, u_{T-1
 
 \mathbb E \,
 \left\{
-    \sum_{t=0}^{T-1} \beta^t (x_t' R x_t + u_t' Q u_t) + \beta^T x_T' R_f x_T
+    \sum_{t=0}^{T-1} \beta^t (x_t^\top R x_t + u_t^\top Q u_t) + \beta^T x_T^\top R_f x_T
 \right\}
 ```
 
@@ -321,13 +308,13 @@ subject to the law of motion {eq}`lq_lom` and initial state $x_0$.
 
 The new objects introduced here are $\beta$ and the matrix $R_f$.
 
-The scalar $\beta$ is the discount factor, while $x' R_f x$ gives terminal loss associated with state $x$.
+The scalar $\beta$ is the discount factor, while $x^\top R_f x$ gives terminal loss associated with state $x$.
 
 Comments:
 
 * We assume $R_f$ to be $n \times n$, symmetric and nonnegative definite.
 * We allow $\beta = 1$, and hence include the undiscounted case.
-* $x_0$ may itself be random, in which case we require it to be independent of the shock sequence $w_1, \ldots, w_T$.
+* $x_0$ may itself be random, in which case we require it to be independent of the shock sequence $\{w_1, \ldots, w_T\}$.
 
 (lq_cp)=
 ### Information
@@ -368,9 +355,9 @@ What's special about the LQ case is that -- as we shall soon see ---  the optima
 ### Solution
 
 To solve the finite horizon LQ problem we can use a dynamic programming
-strategy based on backward induction that is conceptually similar to the approach adopted in {doc}`this lecture <intro:short_path>`.
+strategy based on backward induction that is conceptually similar to the approach adopted in {doc}`intro:short_path`.
 
-For reasons that will soon become clear, we first introduce the notation $J_T(x) = x' R_f x$.
+For reasons that will soon become clear, we first introduce the notation $J_T(x) = x^\top R_f x$.
 
 Now consider the problem of the decision-maker in the second to last period.
 
@@ -382,10 +369,12 @@ solves
 
 $$
 \min_u \{
-x_{T-1}' R x_{T-1} + u' Q u + \beta \,
+x_{T-1}^\top R x_{T-1} + u^\top Q u + \beta \,
 \mathbb E J_T(A x_{T-1} + B u + C w_T)
 \}
 $$
+
+We use $u$ instead of $u_{T-1}$ here to simplify notation.
 
 At this stage, it is convenient to define the function
 
@@ -394,7 +383,7 @@ At this stage, it is convenient to define the function
 
 J_{T-1} (x) =
 \min_u \{
-x' R x + u' Q u + \beta \,
+x^\top R x + u^\top Q u + \beta \,
 \mathbb E J_T(A x + B u + C w_T)
 \}
 ```
@@ -403,7 +392,7 @@ The function $J_{T-1}$ will be called the $T-1$ value function, and $J_{T-1}(x)$
 
 Now let's step back to $T-2$.
 
-For a decision-maker at $T-2$, the value $J_{T-1}(x)$ plays a role analogous to that played by the terminal loss $J_T(x) = x' R_f x$ for the decision-maker at $T-1$.
+For a decision-maker at $T-2$, the value $J_{T-1}(x)$ plays a role analogous to that played by the terminal loss $J_T(x) = x^\top R_f x$ for the decision-maker at $T-1$.
 
 That is, $J_{T-1}(x)$ summarizes the future loss associated with moving to state $x$.
 
@@ -417,7 +406,7 @@ Her problem is therefore
 $$
 \min_u
 \{
-x_{T-2}' R x_{T-2} + u' Q u + \beta \,
+x_{T-2}^\top R x_{T-2} + u^\top Q u + \beta \,
 \mathbb E J_{T-1}(Ax_{T-2} + B u + C w_{T-1})
 \}
 $$
@@ -428,7 +417,7 @@ $$
 J_{T-2} (x)
 = \min_u
 \{
-x' R x + u' Q u + \beta \,
+x^\top R x + u^\top Q u + \beta \,
 \mathbb E J_{T-1}(Ax + B u + C w_{T-1})
 \}
 $$
@@ -441,11 +430,11 @@ $$
 J_{t-1} (x)
 = \min_u
 \{
-x' R x + u' Q u + \beta \,
+x^\top R x + u^\top Q u + \beta \,
 \mathbb E J_{t}(Ax + B u + C w_t)
 \}
 \quad \text{and} \quad
-J_T(x) = x' R_f x
+J_T(x) = x^\top R_f x
 $$
 
 The first equality is the Bellman equation from dynamic programming theory specialized to the finite horizon LQ problem.
@@ -454,7 +443,7 @@ Now that we have $\{J_0, \ldots, J_T\}$, we can obtain the optimal controls.
 
 As a first step, let's find out what the value functions look like.
 
-It turns out that every $J_t$ has the form $J_t(x) = x' P_t x + d_t$ where $P_t$ is a $n \times n$ matrix and $d_t$ is a constant.
+It turns out that every $J_t$ has the form $J_t(x) = x^\top P_t x + d_t$ where $P_t$ is a $n \times n$ matrix and $d_t$ is a constant.
 
 We can show this by induction, starting from $P_T := R_f$ and $d_T = 0$.
 
@@ -465,8 +454,8 @@ Using this notation, {eq}`lq_lsm` becomes
 
 J_{T-1} (x) =
 \min_u \{
-x' R x + u' Q u + \beta \,
-\mathbb E (A x + B u + C w_T)' P_T (A x + B u + C w_T)
+x^\top R x + u^\top Q u + \beta \,
+\mathbb E (A x + B u + C w_T)^\top P_T (A x + B u + C w_T)
 \}
 ```
 
@@ -477,13 +466,13 @@ Applying the relevant rules of {ref}`matrix calculus <la_mcalc>`, this gives
 ```{math}
 :label: lq_oc0
 
-u  = - (Q + \beta B' P_T B)^{-1} \beta B' P_T A x
+u  = - (Q + \beta B^\top P_T B)^{-1} \beta B^\top P_T A x
 ```
 
 Plugging this back into {eq}`lq_fswb` and rearranging yields
 
 $$
-J_{T-1} (x) = x' P_{T-1} x + d_{T-1}
+J_{T-1} (x) = x^\top P_{T-1} x + d_{T-1}
 $$
 
 where
@@ -491,8 +480,8 @@ where
 ```{math}
 :label: lq_finr
 
-P_{T-1} = R - \beta^2 A' P_T B (Q + \beta B' P_T B)^{-1} B' P_T A +
-\beta A' P_T A
+P_{T-1} = R - \beta^2 A^\top P_T B (Q + \beta B^\top P_T B)^{-1} B^\top P_T A +
+\beta A^\top P_T A
 ```
 
 and
@@ -500,18 +489,18 @@ and
 ```{math}
 :label: lq_finrd
 
-d_{T-1} := \beta \mathop{\mathrm{trace}}(C' P_T C)
+d_{T-1} := \beta \mathop{\mathrm{trace}}(C^\top P_T C)
 ```
 
 (The algebra is a good exercise --- we'll leave it up to you.)
 
-If we continue working backwards in this manner, it soon becomes clear that $J_t (x) = x' P_t x + d_t$ as claimed, where $\{P_t\}$ and $\{d_t\}$ satisfy the recursions
+If we continue working backwards in this manner, it soon becomes clear that $J_t (x) = x^\top P_t x + d_t$ as claimed, where $P_t$ and $d_t$ satisfy the recursions
 
 ```{math}
 :label: lq_pr
 
-P_{t-1} = R - \beta^2 A' P_t B (Q + \beta B' P_t B)^{-1} B' P_t A +
-\beta A' P_t A
+P_{t-1} = R - \beta^2 A^\top P_t B (Q + \beta B^\top P_t B)^{-1} B^\top P_t A +
+\beta A^\top P_t A
 \quad \text{with } \quad
 P_T = R_f
 ```
@@ -521,7 +510,7 @@ and
 ```{math}
 :label: lq_dd
 
-d_{t-1} = \beta (d_t + \mathop{\mathrm{trace}}(C' P_t C))
+d_{t-1} = \beta (d_t + \mathop{\mathrm{trace}}(C^\top P_t C))
 \quad \text{with } \quad
 d_T = 0
 ```
@@ -533,14 +522,14 @@ Recalling {eq}`lq_oc0`, the minimizers from these backward steps are
 
 u_t  = - F_t x_t
 \quad \text{where} \quad
-F_t := (Q + \beta B' P_{t+1} B)^{-1} \beta B' P_{t+1} A
+F_t := (Q + \beta B^\top P_{t+1} B)^{-1} \beta B^\top P_{t+1} A
 ```
 
 These are the linear optimal control policies we {ref}`discussed above <lq_cp>`.
 
 In particular,  the sequence of controls given by {eq}`lq_oc` and {eq}`lq_lom` solves our finite horizon LQ problem.
 
-Rephrasing this more precisely, the sequence $u_0, \ldots, u_{T-1}$ given by
+Rephrasing this more precisely, the sequence $\{u_0, \ldots, u_{T-1}\}$ given by
 
 ```{math}
 :label: lq_xud
@@ -555,7 +544,7 @@ for $t = 0, \ldots, T-1$ attains the minimum of {eq}`lq_object` subject to our c
 ## Implementation
 
 We will use code from [lqcontrol.py](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lqcontrol.py)
-in [QuantEcon.py](https://quantecon.org/quantecon-py)
+in [QuantEcon.py](https://quantecon.org/quantecon-py/)
 to solve finite and infinite horizon linear quadratic control problems.
 
 In the module, the various updating, simulation and fixed point methods
@@ -574,7 +563,7 @@ are wrapped in a class  called `LQ`, which includes
     * `compute_sequence` ---- simulates the dynamics of $x_t, u_t, w_t$ given $x_0$ and assuming standard normal shocks
 
 (lq_mfpa)=
-### An Application
+### An application
 
 Early Keynesian models assumed that households have a constant marginal
 propensity to consume from current income.
@@ -610,7 +599,7 @@ Here $q$ is a large positive constant, the role of which is to induce the consum
 As before we set $y_t = \sigma w_{t+1} + \mu$ and $u_t := c_t - \bar c$, after which the constraint can be written as in {eq}`lq_lomwc`.
 
 We saw how this constraint could be manipulated into the LQ formulation $x_{t+1} =
-Ax_t + Bu_t + Cw_{t+1}$ by setting $x_t = (a_t \; 1)'$ and using the definitions in {eq}`lq_lowmc2`.
+Ax_t + Bu_t + Cw_{t+1}$ by setting $x_t = (a_t \; 1)^\top$ and using the definitions in {eq}`lq_lowmc2`.
 
 To match with this state and control, the objective function {eq}`lq_pio` can
 be written in the form of {eq}`lq_object` by choosing
@@ -619,26 +608,22 @@ $$
 Q := 1,
 \quad
 R :=
-\left(
-\begin{array}{cc}
+\begin{bmatrix}
 0 & 0 \\
 0 & 0
-\end{array}
-\right),
+\end{bmatrix},
 \quad \text{and} \quad
 R_f :=
-\left(
-\begin{array}{cc}
+\begin{bmatrix}
 q & 0 \\
 0 & 0
-\end{array}
-\right)
+\end{bmatrix}
 $$
 
 Now that the problem is expressed in LQ form, we can proceed to the solution
 by applying {eq}`lq_pr` and {eq}`lq_oc`.
 
-After generating shocks $w_1, \ldots, w_T$, the dynamics for assets and
+After generating shocks $\{w_1, \ldots, w_T\}$, the dynamics for assets and
 consumption can be simulated via {eq}`lq_xud`.
 
 The following figure was computed using $r = 0.05, \beta = 1 / (1+ r),
@@ -647,62 +632,88 @@ The following figure was computed using $r = 0.05, \beta = 1 / (1+ r),
 The shocks $\{w_t\}$ were taken to be IID and standard normal.
 
 ```{code-cell} python3
-# Model parameters
-r = 0.05
-β = 1/(1 + r)
-T = 45
-c_bar = 2
-σ = 0.25
-μ = 1
-q = 1e6
+class LQModel(NamedTuple):
+    r: float              # interest rate
+    β: float              # discount factor
+    T: int                # time horizon
+    c_bar: float          # target consumption level
+    σ: float              # income shock standard deviation
+    μ: float              # mean income level
+    q: float              # terminal penalty weight
+    Q: float              # control penalty matrix
+    R: np.ndarray         # state penalty matrix
+    Rf: np.ndarray        # terminal state penalty matrix
+    A: np.ndarray         # state transition matrix
+    B: np.ndarray         # control matrix
+    C: np.ndarray         # shock matrix
 
-# Formulate as an LQ problem
-Q = 1
-R = np.zeros((2, 2))
-Rf = np.zeros((2, 2))
-Rf[0, 0] = q
-A = [[1 + r, -c_bar + μ],
-    [0,              1]]
-B = [[-1],
-    [ 0]]
-C = [[σ],
-    [0]]
 
-# Compute solutions and simulate
-lq = LQ(Q, R, A, B, C, beta=β, T=T, Rf=Rf)
-x0 = (0, 1)
-xp, up, wp = lq.compute_sequence(x0)
+def create_lq_model(r=0.05,
+                    T=45,
+                    c_bar=2,
+                    σ=0.25,
+                    μ=1,
+                    q=1e6):
+    β = 1 / (1 + r)
 
-# Convert back to assets, consumption and income
-assets = xp[0, :]           # a_t
-c = up.flatten() + c_bar    # c_t
-income = σ * wp[0, 1:] + μ  # y_t
+    # Formulate as an LQ problem
+    Q = 1
+    R = np.zeros((2, 2))
+    Rf = np.zeros((2, 2))
+    Rf[0, 0] = q
+    A = np.array([[1 + r, -c_bar + μ],
+                  [0,      1]])
+    B = np.array([[-1],
+                  [ 0]])
+    C = np.array([[σ],
+                  [0]])
 
-# Plot results
-n_rows = 2
-fig, axes = plt.subplots(n_rows, 1, figsize=(12, 10))
+    return LQModel(r=r, β=β, T=T, c_bar=c_bar, σ=σ, μ=μ,
+                   q=q, Q=Q, R=R, Rf=Rf, A=A, B=B, C=C)
 
-plt.subplots_adjust(hspace=0.5)
+def simulate_and_plot(model):
+    # Unpack model
+    r, β, T, c_bar, σ, μ, q, Q, R, Rf, A, B, C = model
 
-bbox = (0., 1.02, 1., .102)
-legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
-p_args = {'lw': 2, 'alpha': 0.7}
+    # Compute solutions and simulate
+    lq = LQ(Q, R, A, B, C, beta=β, T=T, Rf=Rf)
+    x0 = (0, 1)
+    xp, up, wp = lq.compute_sequence(x0)
 
-axes[0].plot(list(range(1, T+1)), income, 'g-', label="non-financial income",
-            **p_args)
-axes[0].plot(list(range(T)), c, 'k-', label="consumption", **p_args)
+    # Convert back to assets, consumption and income
+    assets = xp[0, :]           # a_t
+    c = up.flatten() + c_bar    # c_t
+    income = σ * wp[0, 1:] + μ  # y_t
 
-axes[1].plot(list(range(1, T+1)), np.cumsum(income - μ), 'r-',
-            label="cumulative unanticipated income", **p_args)
-axes[1].plot(list(range(T+1)), assets, 'b-', label="assets", **p_args)
-axes[1].plot(list(range(T)), np.zeros(T), 'k-')
+    # Plot results
+    n_rows = 2
+    fig, axes = plt.subplots(n_rows, 1, figsize=(12, 10))
 
-for ax in axes:
-    ax.grid()
-    ax.set_xlabel('Time')
-    ax.legend(ncol=2, **legend_args)
+    plt.subplots_adjust(hspace=0.5)
 
-plt.show()
+    bbox = (0., 1.02, 1., .102)
+    legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
+    p_args = {'lw': 2, 'alpha': 0.7}
+
+    axes[0].plot(range(1, T+1), income, 'g-', label="non-financial income",
+                **p_args)
+    axes[0].plot(range(T), c, 'k-', label="consumption", **p_args)
+
+    axes[1].plot(range(1, T+1), np.cumsum(income - μ), 'r-',
+                label="cumulative unanticipated income", **p_args)
+    axes[1].plot(range(T+1), assets, 'b-', label="assets", **p_args)
+    axes[1].plot(range(T), np.zeros(T), 'k-')
+
+    for ax in axes:
+        ax.grid()
+        ax.set_xlabel('Time')
+        ax.legend(ncol=2, **legend_args)
+
+    plt.show()
+
+# Create model instance and simulate
+model = create_lq_model()
+simulate_and_plot(model)
 ```
 
 The top panel shows the time path of consumption $c_t$ and income $y_t$ in the simulation.
@@ -732,45 +743,13 @@ For example, let's increase $\beta$ from $1 / (1 + r) \approx 0.952$ to $0.96$ w
 This consumer is slightly more patient than the last one, and hence puts
 relatively more weight on later consumption values.
 
+Since `LQModel` is a `NamedTuple`, we can obtain the new model by copying the old one with a single field changed.
+
 ```{code-cell} python3
 ---
 tags: [output_scroll]
 ---
-# Compute solutions and simulate
-lq = LQ(Q, R, A, B, C, beta=0.96, T=T, Rf=Rf)
-x0 = (0, 1)
-xp, up, wp = lq.compute_sequence(x0)
-
-# Convert back to assets, consumption and income
-assets = xp[0, :]           # a_t
-c = up.flatten() + c_bar    # c_t
-income = σ * wp[0, 1:] + μ  # y_t
-
-# Plot results
-n_rows = 2
-fig, axes = plt.subplots(n_rows, 1, figsize=(12, 10))
-
-plt.subplots_adjust(hspace=0.5)
-
-bbox = (0., 1.02, 1., .102)
-legend_args = {'bbox_to_anchor': bbox, 'loc': 3, 'mode': 'expand'}
-p_args = {'lw': 2, 'alpha': 0.7}
-
-axes[0].plot(list(range(1, T+1)), income, 'g-', label="non-financial income",
-             **p_args)
-axes[0].plot(list(range(T)), c, 'k-', label="consumption", **p_args)
-
-axes[1].plot(list(range(1, T+1)), np.cumsum(income - μ), 'r-',
-             label="cumulative unanticipated income", **p_args)
-axes[1].plot(list(range(T+1)), assets, 'b-', label="assets", **p_args)
-axes[1].plot(list(range(T)), np.zeros(T), 'k-')
-
-for ax in axes:
-    ax.grid()
-    ax.set_xlabel('Time')
-    ax.legend(ncol=2, **legend_args)
-
-plt.show()
+simulate_and_plot(model._replace(β=0.96))
 ```
 
 We now have a slowly rising consumption stream and a hump-shaped build-up
@@ -778,11 +757,11 @@ of assets in the middle periods to fund rising consumption.
 
 However, the essential features are the same: consumption is smooth relative to income, and assets are strongly positively correlated with cumulative unanticipated income.
 
-## Extensions and Comments
+## Extensions and comments
 
 Let's now consider a number of standard extensions to the LQ problem treated above.
 
-### Time-Varying Parameters
+### Time-varying parameters
 
 In some settings, it can be desirable to allow $A, B, C, R$ and $Q$ to depend on $t$.
 
@@ -797,16 +776,16 @@ One illustration is given {ref}`below <lq_nsi>`.
 For further examples and a more systematic treatment, see {cite}`HansenSargent2013`, section 2.4.
 
 (lq_cpt)=
-### Adding a Cross-Product Term
+### Adding a cross-product term
 
-In some LQ problems, preferences include a cross-product term $u_t' N x_t$, so that the objective function becomes
+In some LQ problems, preferences include a cross-product term $u_t^\top N x_t$, so that the objective function becomes
 
 ```{math}
 :label: lq_object_cp
 
 \mathbb E \,
 \left\{
-    \sum_{t=0}^{T-1} \beta^t (x_t' R x_t + u_t' Q u_t + 2 u_t' N x_t) + \beta^T x_T' R_f x_T
+    \sum_{t=0}^{T-1} \beta^t (x_t^\top R x_t + u_t^\top Q u_t + 2 u_t^\top N x_t) + \beta^T x_T^\top R_f x_T
 \right\}
 ```
 
@@ -817,9 +796,9 @@ The sequence $\{P_t\}$ from {eq}`lq_pr` becomes
 ```{math}
 :label: lq_pr_cp
 
-P_{t-1} = R - (\beta B' P_t A + N)'
-(Q + \beta B' P_t B)^{-1} (\beta B' P_t A + N) +
-\beta A' P_t A
+P_{t-1} = R - (\beta B^\top P_t A + N)^\top
+(Q + \beta B^\top P_t B)^{-1} (\beta B^\top P_t A + N) +
+\beta A^\top P_t A
 \quad \text{with } \quad
 P_T = R_f
 ```
@@ -831,7 +810,7 @@ The policies in {eq}`lq_oc` are modified to
 
 u_t  = - F_t x_t
 \quad \text{where} \quad
-F_t := (Q + \beta B' P_{t+1} B)^{-1} (\beta B' P_{t+1} A + N)
+F_t := (Q + \beta B^\top P_{t+1} B)^{-1} (\beta B^\top P_{t+1} A + N)
 ```
 
 The sequence $\{d_t\}$ is unchanged from {eq}`lq_dd`.
@@ -839,7 +818,7 @@ The sequence $\{d_t\}$ is unchanged from {eq}`lq_dd`.
 We leave interested readers to confirm these results (the calculations are long but not overly difficult).
 
 (lq_ih)=
-### Infinite Horizon
+### Infinite horizon
 
 ```{index} single: LQ Control; Infinite Horizon
 ```
@@ -852,7 +831,7 @@ objective function given by
 
 \mathbb E \,
 \left\{
-    \sum_{t=0}^{\infty} \beta^t (x_t' R x_t + u_t' Q u_t + 2 u_t' N x_t)
+    \sum_{t=0}^{\infty} \beta^t (x_t^\top R x_t + u_t^\top Q u_t + 2 u_t^\top N x_t)
 \right\}
 ```
 
@@ -874,9 +853,9 @@ The stationary matrix $P$ is the solution to the
 ```{math}
 :label: lq_pr_ih
 
-P = R - (\beta B' P A + N)'
-(Q + \beta B' P B)^{-1} (\beta B' P A + N) +
-\beta A' P A
+P = R - (\beta B^\top P A + N)^\top
+(Q + \beta B^\top P B)^{-1} (\beta B^\top P A + N) +
+\beta A^\top P A
 ```
 
 Equation {eq}`lq_pr_ih` is also called the *LQ Bellman equation*, and the map
@@ -890,7 +869,7 @@ The stationary optimal policy for this model is
 
 u  = - F x
 \quad \text{where} \quad
-F = (Q + \beta B' P B)^{-1} (\beta B' P A + N)
+F = (Q + \beta B^\top P B)^{-1} (\beta B^\top P A + N)
 ```
 
 The sequence $\{d_t\}$ from {eq}`lq_dd` is replaced by the constant value
@@ -899,7 +878,7 @@ The sequence $\{d_t\}$ from {eq}`lq_dd` is replaced by the constant value
 :label: lq_dd_ih
 
 d
-:= \mathop{\mathrm{trace}}(C' P C) \frac{\beta}{1 - \beta}
+:= \mathop{\mathrm{trace}}(C^\top P C) \frac{\beta}{1 - \beta}
 ```
 
 The state evolves according to the time-homogeneous process $x_{t+1} = (A - BF) x_t + C w_{t+1}$.
@@ -907,7 +886,7 @@ The state evolves according to the time-homogeneous process $x_{t+1} = (A - BF) 
 An example infinite horizon problem is treated {ref}`below <lqc_mwac>`.
 
 (lq_cert_eq)=
-### Certainty Equivalence
+### Certainty equivalence
 
 Linear quadratic control problems of the class discussed above have the property of *certainty equivalence*.
 
@@ -917,10 +896,10 @@ This can be confirmed by inspecting {eq}`lq_oc_ih` or {eq}`lq_oc_cp`.
 
 It follows that we can ignore uncertainty when solving for optimal behavior, and plug it back in when examining optimal state dynamics.
 
-## Further Applications
+## Further applications
 
 (lq_nsi)=
-### Application 1: Age-Dependent Income Process
+### Application 1: Age-dependent income process
 
 {ref}`Previously <lq_mfpa>` we studied a permanent income model that generated consumption smoothing.
 
@@ -972,44 +951,36 @@ Thus, for the dynamics we set
 :label: lq_lowmc3
 
 x_t :=
-\left(
-\begin{array}{c}
+\begin{bmatrix}
 a_t \\
 1 \\
 t \\
 t^2
-\end{array}
-\right),
+\end{bmatrix},
 \quad
 A :=
-\left(
-\begin{array}{cccc}
+\begin{bmatrix}
 1 + r & -\bar c & m_1 & m_2 \\
 0     & 1       & 0   & 0   \\
 0     & 1       & 1   & 0   \\
 0     & 1       & 2   & 1
-\end{array}
-\right),
+\end{bmatrix},
 \quad
 B :=
-\left(
-\begin{array}{c}
+\begin{bmatrix}
 -1 \\
 0 \\
 0 \\
 0
-\end{array}
-\right),
+\end{bmatrix},
 \quad
 C :=
-\left(
-\begin{array}{c}
+\begin{bmatrix}
 \sigma \\
 0 \\
 0 \\
 0
-\end{array}
-\right)
+\end{bmatrix}
 ```
 
 If you expand the expression $x_{t+1} = A x_t + B u_t + C w_{t+1}$ using
@@ -1024,24 +995,20 @@ To implement preference specification {eq}`lq_pip` we take
 Q := 1,
 \quad
 R :=
-\left(
-\begin{array}{cccc}
+\begin{bmatrix}
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0
-\end{array}
-\right)
+\end{bmatrix}
 \quad \text{and} \quad
 R_f :=
-\left(
-\begin{array}{cccc}
+\begin{bmatrix}
 q & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0 \\
 0 & 0 & 0 & 0
-\end{array}
-\right)
+\end{bmatrix}
 ```
 
 The next figure shows a simulation of consumption and assets computed using
@@ -1059,7 +1026,7 @@ The asset path exhibits dynamics consistent with standard life cycle theory.
 {ref}`lqc_ex1` gives the full set of parameters used here and asks you to replicate the figure.
 
 (lq_nsi2)=
-### Application 2: A Permanent Income Model with Retirement
+### Application 2: A permanent income model with retirement
 
 In the {ref}`previous application <lq_nsi>`, we generated income dynamics with an inverted U shape using polynomials and placed them in an LQ framework.
 
@@ -1133,7 +1100,7 @@ in life followed by later saving.
 Assets peak at retirement and subsequently decline.
 
 (lqc_mwac)=
-### Application 3: Monopoly with Adjustment Costs
+### Application 3: Monopoly with adjustment costs
 
 Consider a monopolist facing stochastic inverse demand function
 
@@ -1210,7 +1177,7 @@ To produce these figures we converted the monopolist problem into an LQ problem.
 
 The key to this conversion is to choose the right state --- which can be a bit of an art.
 
-Here we take $x_t = (\bar q_t \;\, q_t \;\, 1)'$, while the control is chosen as $u_t = q_{t+1} - q_t$.
+Here we take $x_t = (\bar q_t \;\, q_t \;\, 1)^\top$, while the control is chosen as $u_t = q_{t+1} - q_t$.
 
 We also manipulated the profit function slightly.
 
@@ -1263,11 +1230,12 @@ The parameters are $r = 0.05, \beta = 1 / (1 + r), \bar c = 1.5,  \mu = 2, \sigm
 
 ```{solution-start} lqc_ex1
 :class: dropdown
+:label: lqc_ex1_solution
 ```
 
 Here’s one solution.
 
-We use some fancy plot commands to get a certain style — feel free to
+We use some fancy plot commands to get a certain style -- feel free to
 use simpler ones.
 
 The model is an LQ permanent income / life-cycle model with hump-shaped
@@ -1392,6 +1360,7 @@ together the simulations from these two separate models.
 
 ```{solution-start} lqc_ex2
 :class: dropdown
+:label: lqc_ex2_solution
 ```
 
 This is a permanent income / life-cycle model with polynomial growth in
@@ -1515,12 +1484,13 @@ For parameters, use $a_0 = 5, a_1 = 0.5, \sigma = 0.15, \rho = 0.9,
 
 ```{solution-start} lqc_ex3
 :class: dropdown
+:label: lqc_ex3_solution
 ```
 
 The first task is to find the matrices $A, B, C, Q, R$ that define
 the LQ problem.
 
-Recall that $x_t = (\bar q_t \;\, q_t \;\, 1)'$, while
+Recall that $x_t = (\bar q_t \;\, q_t \;\, 1)^\top$, while
 $u_t = q_{t+1} - q_t$.
 
 Letting $m_0 := (a_0 - c) / 2a_1$ and $m_1 := 1 / 2 a_1$, we

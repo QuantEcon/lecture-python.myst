@@ -129,8 +129,8 @@ $$
 where we use the conventions 
 that $f(w^t) = f(w_1) f(w_2) \ldots f(w_t)$ and $g(w^t) = g(w_1) g(w_2) \ldots g(w_t)$.
 
-Notice that the likelihood process satisfies the *recursion* or
-*multiplicative decomposition*
+Notice that the likelihood process satisfies the **recursion** or
+**multiplicative decomposition**
 
 $$
 L(w^t) = \ell (w_t) L (w^{t-1}) .

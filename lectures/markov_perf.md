@@ -140,7 +140,10 @@ v_i(q_i, q_{-i}) = \max_{\hat q_i}
    \left\{\pi_i (q_i, q_{-i}, \hat q_i) + \beta v_i(\hat q_i, f_{-i}(q_{-i}, q_i)) \right\}
 ```
 
-**Definition**  A *Markov perfect equilibrium* of the duopoly model is a pair of value functions $(v_1, v_2)$ and a pair of policy functions $(f_1, f_2)$ such that, for each $i \in \{1, 2\}$ and each possible state,
+```{prf:definition} Markov Perfect Equilibrium
+:label: def-markov-perfect-equilibrium
+
+A **Markov perfect equilibrium** of the duopoly model is a pair of value functions $(v_1, v_2)$ and a pair of policy functions $(f_1, f_2)$ such that, for each $i \in \{1, 2\}$ and each possible state,
 
 * The value function $v_i$ satisfies  Bellman equation {eq}`game4`.
 * The maximizer on the right side of {eq}`game4`  equals $f_i(q_i, q_{-i})$.
@@ -150,6 +153,7 @@ The adjective "Markov" denotes that the equilibrium decision rules depend only o
 "Perfect" means complete, in the sense that the equilibrium is constructed by backward induction and hence builds in optimizing behavior for each firm at all possible future states.
 
 * These include many states that will not be reached when we iterate forward on the pair of equilibrium strategies $f_i$ starting from a given initial state.
+```
 
 ### Computation
 
@@ -335,7 +339,7 @@ This is the approach we adopt in the next section.
 
 ### Implementation
 
-We use the function [nnash](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lqnash.py) from [QuantEcon.py](https://quantecon.org/quantecon-py) that computes a Markov perfect equilibrium of the infinite horizon linear-quadratic dynamic game in the manner described above.
+We use the function [nnash](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/lqnash.py) from [QuantEcon.py](https://quantecon.org/quantecon-py/) that computes a Markov perfect equilibrium of the infinite horizon linear-quadratic dynamic game in the manner described above.
 
 ## Application
 
@@ -439,15 +443,16 @@ From these, we compute the infinite horizon MPE using the preceding code
 
 Running the code produces the following output.
 
-One way to see that $F_i$ is indeed optimal for firm $i$ taking $F_2$ as given is to use [QuantEcon.py](https://quantecon.org/quantecon-py)'s LQ class.
+One way to see that $F_i$ is indeed optimal for firm $i$ taking $F_2$ as given is to use [QuantEcon.py](https://quantecon.org/quantecon-py/)'s LQ class.
 
 In particular, let's take F2 as computed above, plug it into {eq}`eq_mpe_p1p` and {eq}`eq_mpe_p1d` to get firm 1's problem and solve it using LQ.
 
 We hope that the resulting policy will agree with F1 as computed above
 
 ```{code-cell} ipython3
+beta = 0.96
 Λ1 = A - B2 @ F2
-lq1 = qe.LQ(Q1, R1, Λ1, B1, beta=β)
+lq1 = qe.LQ(Q1, R1, Λ1, B1, beta=beta)
 P1_ih, F1_ih, d = lq1.stationary_values()
 F1_ih
 ```
@@ -520,7 +525,7 @@ Replicate the {ref}`pair of figures <mpe_vs_monopolist>` showing the comparison 
 
 Parameters are as in duopoly_mpe.py and you can use that code to compute MPE policies under duopoly.
 
-The optimal policy in the monopolist case can be computed using [QuantEcon.py](https://quantecon.org/quantecon-py)'s LQ class.
+The optimal policy in the monopolist case can be computed using [QuantEcon.py](https://quantecon.org/quantecon-py/)'s LQ class.
 ```
 
 ```{solution-start} mp_ex1

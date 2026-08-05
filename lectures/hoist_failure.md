@@ -27,10 +27,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon tabulate
 ```
 
@@ -205,15 +204,21 @@ We generate samples of size 25,000 from three independent lognormal random varia
 We then compare histograms of the samples with histograms of the discretized distributions.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Sample histogram of one lognormal
+    name: fig-hoist-hist-1
+---
 # Set parameters for lognormal distributions
 μ, σ = 5.0, 1.0
 n_samples = 25000
 
 # Generate samples
-np.random.seed(1234)
-s1 = np.random.lognormal(μ, σ, n_samples)
-s2 = np.random.lognormal(μ, σ, n_samples)
-s3 = np.random.lognormal(μ, σ, n_samples)
+rng = np.random.default_rng(1234)
+s1 = rng.lognormal(μ, σ, n_samples)
+s2 = rng.lognormal(μ, σ, n_samples)
+s3 = rng.lognormal(μ, σ, n_samples)
 
 # Compute sums
 ssum2 = s1 + s2
@@ -228,6 +233,12 @@ plt.show()
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Histogram of a sum of two lognormals
+    name: fig-hoist-hist-2
+---
 # Plot histogram of sum of two lognormal distributions
 fig, ax = plt.subplots()
 ax.hist(ssum2, 1000, density=True, alpha=0.6)
@@ -237,6 +248,12 @@ plt.show()
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Histogram of a sum of three lognormals
+    name: fig-hoist-hist-3
+---
 # Plot histogram of sum of three lognormal distributions
 fig, ax = plt.subplots()
 ax.hist(ssum3, 1000, density=True, alpha=0.6)
@@ -295,6 +312,12 @@ m = 0.1   # Increment size
 Let's visualize how well the discretized distribution approximates the continuous lognormal distribution:
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Discretized density against sample
+    name: fig-hoist-discretized
+---
 # Compute discretized PDF
 pdf, pdf_norm, x = discretize_lognormal(μ, σ, I, m)
 
@@ -395,6 +418,12 @@ The Fast Fourier Transform provides orders of magnitude speedup.
 Now let’s plot our computed probability mass function approximation for the sum of two log normal random variables against the histogram of the sample that we formed above
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Convolution against sample, two components
+    name: fig-hoist-conv-2
+---
 # Compute convolution of two distributions for comparison
 conv2 = fftconvolve(pmf1, pmf2)
 
@@ -411,6 +440,12 @@ plt.show()
 Now we present the plot for the sum of three lognormal random variables:
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Convolution against sample, three components
+    name: fig-hoist-conv-3
+---
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.plot(x, conv_fft[:len(x)] / m, 'r-', lw=2, label='convolution (FFT)')
 ax.hist(ssum3, 1000, density=True, alpha=0.6, label='sample histogram')
@@ -635,6 +670,12 @@ print(f"Time for 13 convolutions: {timer.elapsed:.4f} seconds")
 We now plot a counterpart to the cumulative distribution function (CDF) in  figure 5 on page 29 of {cite:t}`Greenfield_Sargent_1993`
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: CDF of the system failure rate
+    name: fig-hoist-cdf
+---
 # Compute cumulative distribution function
 cdf = np.cumsum(system_pmf)
 
