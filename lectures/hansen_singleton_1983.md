@@ -511,8 +511,7 @@ def simulate_restricted_var(
     """
     Simulate [log consumption growth, log return] from the restricted model.
     """
-    if seed is not None:
-        np.random.seed(seed)
+    rng = np.random.default_rng(seed)
 
     if len(params) != 6 + 2 * n_lags:
         raise ValueError("Parameter vector length must be 6 + 2 * n_lags.")
@@ -547,7 +546,7 @@ def simulate_restricted_var(
         for lag in range(1, n_lags + 1):
             lag_stack.append(y[t - lag, :])
         lag_vec = np.concatenate(lag_stack)
-        shock = np.random.multivariate_normal(np.zeros(2), Σ_v)
+        shock = rng.multivariate_normal(np.zeros(2), Σ_v)
         y[t, :] = np.linalg.solve(A0, A1 @ lag_vec + μ + shock)
 
     return y[burn_in:, :]

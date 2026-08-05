@@ -280,6 +280,8 @@ Let's do an example.
 import numpy as np
 import numpy.linalg as LA
 import matplotlib.pyplot as plt
+
+rng = np.random.default_rng()
 ```
 
 Having imported these modules, let's do the example.
@@ -424,7 +426,7 @@ First, let's study a case in which $m = 5 > n = 2$.
 
 ```{code-cell} ipython3
 import numpy as np
-X = np.random.rand(5,2)
+X = rng.random((5, 2))
 U, S, V = np.linalg.svd(X,full_matrices=True)  # full SVD
 Uhat, Shat, Vhat = np.linalg.svd(X,full_matrices=False) # economy SVD
 print('U, S, V =')
@@ -486,7 +488,7 @@ To illustrate this case,  we'll set $m = 2 < 5 = n $ and compute both full and r
 
 ```{code-cell} ipython3
 import numpy as np
-X = np.random.rand(2,5)
+X = rng.random((2, 5))
 U, S, V = np.linalg.svd(X,full_matrices=True)  # full SVD
 Uhat, Shat, Vhat = np.linalg.svd(X,full_matrices=False) # economy SVD
 print('U, S, V = ')

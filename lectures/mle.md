@@ -28,6 +28,14 @@ kernelspec:
 :depth: 2
 ```
 
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install jax
+```
+
 ## Overview
 
 In {doc}`ols`, we estimated the relationship between
