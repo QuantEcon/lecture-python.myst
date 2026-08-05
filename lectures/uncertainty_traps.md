@@ -278,15 +278,15 @@ class UncertaintyTrapEcon:
         """
         self.θ = self.ρ * self.θ + self.σ_θ * w
 
-    def gen_aggregates(self):
+    def gen_aggregates(self, rng):
         """
         Generate aggregates based on current beliefs (μ, γ). This
         is a simulation step that depends on the draws for F.
         """
-        F_vals = self.σ_F * np.random.randn(self.num_firms)
+        F_vals = self.σ_F * rng.standard_normal(self.num_firms)
         M = np.sum(self.ψ(F_vals) > 0)  # Counts number of active firms
         if M > 0:
-            x_vals = self.θ + self.σ_x * np.random.randn(M)
+            x_vals = self.θ + self.σ_x * rng.standard_normal(M)
             X = x_vals.mean()
         else:
             X = 0
@@ -323,7 +323,7 @@ at once, for a given set of shocks
 
 Notice how the traps only take hold after a sequence of bad draws for the fundamental.
 
-Thus, the model gives us a *propagation mechanism* that maps bad random draws into long downturns in economic activity.
+Thus, the model gives us a **propagation mechanism** that maps bad random draws into long downturns in economic activity.
 
 ## Exercises
 
@@ -444,10 +444,11 @@ M_vec = np.empty(sim_length)
 γ_vec[0] = econ.γ
 θ_vec[0] = 0
 
-w_shocks = np.random.randn(sim_length)
+rng = np.random.default_rng()
+w_shocks = rng.standard_normal(sim_length)
 
 for t in range(sim_length-1):
-    X, M = econ.gen_aggregates()
+    X, M = econ.gen_aggregates(rng)
     X_vec[t] = X
     M_vec[t] = M
 
@@ -459,7 +460,7 @@ for t in range(sim_length-1):
     θ_vec[t+1] = econ.θ
 
 # Record final values of aggregates
-X, M = econ.gen_aggregates()
+X, M = econ.gen_aggregates(rng)
 X_vec[-1] = X
 M_vec[-1] = M
 ```

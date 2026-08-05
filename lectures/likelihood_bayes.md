@@ -109,7 +109,7 @@ That means that under the $g$ density,  $\ell (w_t)=
 \frac{f\left(w_{t}\right)}{g\left(w_{t}\right)}$
 is evidently a nonnegative  random variable with mean $1$.
 
-A likelihood ratio process for sequence
+A **likelihood ratio process** for sequence
 $\left\{ w_{t}\right\} _{t=1}^{\infty}$ is defined as
 
 $$
@@ -128,8 +128,8 @@ $$
 where we use the conventions 
 that $f(w^t) = f(w_1) f(w_2) \ldots f(w_t)$ and $g(w^t) = g(w_1) g(w_2) \ldots g(w_t)$.
 
-Notice that the likelihood process satisfies the *recursion* or
-*multiplicative decomposition*
+Notice that the likelihood process satisfies the **recursion** or
+**multiplicative decomposition**
 
 $$
 L(w^t) = \ell (w_t) L (w^{t-1}) .
