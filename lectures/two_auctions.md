@@ -201,7 +201,7 @@ plt.rcParams.update({"text.usetex": True, 'font.size': 14})
 colors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
 # ensure the notebook generates the same randomness
-np.random.seed(1337)
+rng = np.random.default_rng(1337)
 ```
 
 We repeat an auction with 5 bidders for 100,000 times.
@@ -212,7 +212,7 @@ The valuations of each bidder is distributed $U(0,1)$.
 N = 5
 R = 100_000
 
-v = np.random.uniform(0, 1, (N, R))
+v = rng.uniform(0, 1, (N, R))
 
 # BNE in first-price sealed bid
 
@@ -424,13 +424,14 @@ def evaluate_largest(v_hat, array, order=1):
 
 We can check the accuracy of our `evaluate_largest` method by comparing it with an analytical solution.
 
-We find that despite small discrepancy, the evaluate_largest method functions well.
-
-Furthermore, if we take a very large number of auctions, say 1 million, the discrepancy disappears.
+We find that the `evaluate_largest` method functions well
 
 ```{code-cell} ipython3
-v_grid = np.linspace(0.3,1,8)
-bid_analytical = b_star(v_grid,N)
+v_grid = np.linspace(0.3, 1, 8)
+bid_analytical = b_star(v_grid, N)
+
+# Redraw valuations
+v = rng.uniform(0, 1, (N, R))
 bid_simulated = [evaluate_largest(ii, v) for ii in v_grid]
 
 fig, ax = plt.subplots(figsize=(6, 4))
@@ -452,8 +453,8 @@ Let's try an example in which the distribution of private values is a $\chi^2$ d
 We'll start by taking a look at a $\chi^2$ distribution with the help of the following Python code:
 
 ```{code-cell} ipython3
-np.random.seed(1337)
-v = np.random.chisquare(df=2, size=(N * R,))
+rng = np.random.default_rng(1337)
+v = rng.chisquare(df=2, size=(N * R,))
 
 plt.hist(v, bins=50, edgecolor='w')
 plt.xlabel('Values: $v$')
@@ -463,8 +464,8 @@ plt.show()
 Now we'll get Python to construct a bid price function
 
 ```{code-cell} ipython3
-np.random.seed(1337)
-v = np.random.chisquare(df=2, size=(N, R))
+rng = np.random.default_rng(1337)
+v = rng.chisquare(df=2, size=(N, R))
 
 # we compute the quantile of v as our grid
 pct_quantile = np.linspace(0, 100, 101)[1:-1]
@@ -662,8 +663,8 @@ class bid_price_solution:
 ```
 
 ```{code-cell} ipython3
-np.random.seed(1337)
-v = np.random.chisquare(df=2, size=(N, R))
+rng = np.random.default_rng(1337)
+v = rng.chisquare(df=2, size=(N, R))
 
 chi_squ_case = bid_price_solution(v)
 ```

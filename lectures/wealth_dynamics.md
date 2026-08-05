@@ -96,8 +96,9 @@ The package [QuantEcon.py](https://github.com/QuantEcon/QuantEcon.py), already i
 To illustrate, suppose that
 
 ```{code-cell} ipython3
+rng = np.random.default_rng()
 n = 10_000                      # size of sample
-w = np.exp(np.random.randn(n))  # lognormal draws
+w = np.exp(rng.standard_normal(n))  # lognormal draws
 ```
 
 is data representing the wealth of 10,000 households.
@@ -137,7 +138,7 @@ a_vals = (1, 2, 5)              # Pareto tail index
 n = 10_000                      # size of each sample
 fig, ax = plt.subplots()
 for a in a_vals:
-    u = np.random.uniform(size=n)
+    u = rng.uniform(size=n)
     y = u**(-1/a)               # distributed as Pareto with tail index a
     f_vals, l_vals = qe.lorenz_curve(y)
     ax.plot(f_vals, l_vals, label=f'$a = {a}$')
@@ -177,7 +178,7 @@ n = 100
 
 fig, ax = plt.subplots()
 for a in a_vals:
-    y = np.random.weibull(a, size=n)
+    y = rng.weibull(a, size=n)
     ginis.append(qe.gini_coefficient(y))
     ginis_theoretical.append(1 - 2**(-1/a))
 ax.plot(a_vals, ginis, label='estimated gini coefficient')
@@ -561,13 +562,14 @@ Here is one solution, which produces a good match between theory and
 simulation.
 
 ```{code-cell} ipython3
+rng = np.random.default_rng()
 a_vals = np.linspace(1, 10, 25)  # Pareto tail index
 ginis = np.empty_like(a_vals)
 
 n = 1000                         # size of each sample
 fig, ax = plt.subplots()
 for i, a in enumerate(a_vals):
-    y = np.random.uniform(size=n)**(-1/a)
+    y = rng.uniform(size=n)**(-1/a)
     ginis[i] = qe.gini_coefficient(y)
 ax.plot(a_vals, ginis, label='sampled')
 ax.plot(a_vals, 1/(2*a_vals - 1), label='theoretical')

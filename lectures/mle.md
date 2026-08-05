@@ -21,8 +21,19 @@ kernelspec:
 
 # Maximum Likelihood Estimation
 
+```{include} _admonition/gpu.md
+```
+
 ```{contents} Contents
 :depth: 2
+```
+
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install jax
 ```
 
 ## Overview
@@ -183,7 +194,7 @@ In Treisman's paper, the dependent variable --- the number of billionaires $y_i$
 
 Hence, the distribution of $y_i$ needs to be conditioned on the vector of explanatory variables $\mathbf{x}_i$.
 
-The standard formulation --- the so-called *Poisson regression* model --- is as follows:
+The standard formulation --- the so-called **Poisson regression** model --- is as follows:
 
 ```{math}
 :label: poissonreg
@@ -861,7 +872,7 @@ f(y_i; \boldsymbol{\beta}) = \mu_i^{y_i} (1-\mu_i)^{1-y_i}, \quad y_i = 0,1 \\
 \end{aligned}
 $$
 
-$\Phi$ represents the *cumulative normal distribution* and
+$\Phi$ represents the **cumulative normal distribution** and
 constrains the predicted $y_i$ to be between 0 and 1 (as required
 for a probability).
 
