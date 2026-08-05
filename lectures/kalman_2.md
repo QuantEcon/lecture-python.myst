@@ -58,7 +58,7 @@ To conduct simulations, we bring in these imports, as in {doc}`kalman`.
 import matplotlib.pyplot as plt
 import numpy as np
 from quantecon import Kalman, LinearStateSpace
-from collections import namedtuple
+from typing import NamedTuple
 from scipy.stats import multivariate_normal
 import matplotlib as mpl
 mpl.rcParams['text.usetex'] = True
@@ -161,11 +161,17 @@ x_t  = \begin{bmatrix} h_{t} \cr u_{t} \end{bmatrix} , \quad
                      0 & \sigma_{u,0}^2 \end{bmatrix}
 ```
 
-To compute the firm's wage setting policy, we first create a `namedtuple` to store the parameters of the model
+To compute the firm's wage setting policy, we first create a `NamedTuple` to store the parameters of the model
 
 ```{code-cell} ipython3
-WorkerModel = namedtuple("WorkerModel", 
-                ('A', 'C', 'G', 'R', 'xhat_0', 'Σ_0'))
+class WorkerModel(NamedTuple):
+    A: np.ndarray
+    C: np.ndarray
+    G: np.ndarray
+    R: float
+    xhat_0: np.ndarray
+    Σ_0: np.ndarray
+
 
 def create_worker(α=.8, β=.2, c=.2,
                   R=.5, g=1.0, hhat_0=4, uhat_0=4, 
@@ -188,7 +194,7 @@ def create_worker(α=.8, β=.2, c=.2,
     return WorkerModel(A=A, C=C, G=G, R=R, xhat_0=xhat_0, Σ_0=Σ_0)
 ```
 
-Please note how the `WorkerModel` namedtuple creates all of the objects required to compute an associated
+Please note how the `WorkerModel` NamedTuple creates all of the objects required to compute an associated
 state-space representation {eq}`ssrepresent`.
 
 This is handy, because in order to  simulate a history $\{y_t, h_t\}$ for a worker, we'll want to form 
@@ -466,7 +472,7 @@ plt.show()
 ```
 
 More generally, we can change some or all of the parameters defining a worker in our `create_worker`
-namedtuple.
+factory function.
 
 Here is an example.
 
