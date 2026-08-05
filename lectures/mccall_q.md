@@ -25,7 +25,7 @@ The Q-learning algorithm combines ideas from
 
 * a recursive version of least squares known as [temporal difference learning](https://en.wikipedia.org/wiki/Temporal_difference_learning).
 
-This lecture applies a Q-learning algorithm to the situation faced by  a   McCall worker.
+This lecture applies a Q-learning algorithm to the situation faced by a McCall worker.
 
 This lecture also considers the case where a McCall worker is given an option to quit the current job.
 
@@ -82,7 +82,7 @@ import matplotlib.pyplot as plt
 rng = np.random.default_rng(123)
 ```
 
-## Review of McCall Model
+## Review of McCall model
 
 We begin by reviewing the McCall model described in {doc}`this quantecon lecture <mccall_model>`.
 
@@ -239,10 +239,10 @@ We'll use this value function as a benchmark later after we have done some Q-lea
 print(valfunc_VFI)
 ```
 
-## Implied Quality Function  $Q$
+## Implied quality function $Q$
 
 
-A **quality function** $Q$ map  state-action pairs into optimal values.
+A **quality function** $Q$ maps state-action pairs into optimal values.
 
 They are tightly linked to optimal  value functions.
 
@@ -275,7 +275,7 @@ Q\left(w,\text{reject}\right) & =c+\beta\int\max_{\text{accept, reject}}\left\{ 
 $$ (eq:impliedq)
 
 
-Note that the first equation of system {eq}`eq:impliedq` presumes that after  the agent has  accepted an offer, he will not have the objection to reject that same offer in the future.
+Note that the first equation of system {eq}`eq:impliedq` presumes that after  the agent has  accepted an offer, he will not have the option to reject that same offer in the future.
 
 These equations are aligned with the Bellman equation for the worker's  optimal value function that we studied in {doc}`this quantecon lecture <mccall_model>`.
 
@@ -313,7 +313,7 @@ $$
 
 +++
 
-## From Probabilities  to Samples
+## From probabilities to samples
 
 We noted  above that  the optimal Q function for our McCall worker satisfies the Bellman equations
 
@@ -326,7 +326,7 @@ $$ (eq:probtosample1)
 
 Notice the integral over $F(w')$ on the second line.
 
-Erasing the integral sign sets the stage for an illegitmate argument that can get us started thinking about  Q-learning.
+Erasing the integral sign sets the stage for an illegitimate argument that can get us started thinking about  Q-learning.
 
 Thus, construct a difference  equation system that keeps the first equation of {eq}`eq:probtosample1`
 but replaces the second by removing integration over $F (w')$:
@@ -370,7 +370,7 @@ to  objects in equation system {eq}`eq:old105`.
 
 This informal argument takes us to the threshold of Q-learning.
 
-## Q-Learning
+## Q-learning
 
 Let's first describe  a $Q$-learning algorithm precisely.
 
@@ -456,7 +456,7 @@ pseudo-code for   our McCall worker to do Q-learning:
 
 4. Update the state associated with the chosen action and compute $\widetilde{TD}$ according to {eq}`eq:old4` and update $\widetilde{Q}$ according to {eq}`eq:old3`.
 
-5.  Either draw a new state  $w'$ if required or else take existing wage if and update the Q-table again according to {eq}`eq:old3`.
+5.  Either draw a new state  $w'$ if required or else take the existing wage and update the Q-table again according to {eq}`eq:old3`.
 
 6. Stop when the old and new Q-tables are close enough, i.e., $\lVert\tilde{Q}^{new}-\tilde{Q}^{old}\rVert_{\infty}\leq\delta$ for given $\delta$ or if the worker keeps accepting for $T$ periods for a prescribed $T$.
 
@@ -474,7 +474,7 @@ The Q-table is updated via temporal difference learning.
 
 We iterate this until convergence of the Q-table or the maximum length of an episode is reached.
 
-Multiple episodes allow the agent to start afresh and visit states that she was less likely to visit from the terminal state of a previos episode.
+Multiple episodes allow the agent to start afresh and visit states that she was less likely to visit from the terminal state of a previous episode.
 
 For example, an agent who has accepted a wage offer based on her Q-table will be less likely to draw a new offer from other parts of the wage distribution.
 
@@ -588,7 +588,7 @@ def run_epochs(N, qlmc, qtable, rng):
     """
 
     for n in range(N):
-        if n%(N/10)==0:
+        if n % max(1, N // 10) == 0:
             print(f"Progress: EPOCHs = {n}")
         new_qtable = qlmc.run_one_epoch(qtable, rng)
         qtable = new_qtable
@@ -651,10 +651,6 @@ ax.set_xlabel('wages')
 ax.set_ylabel('probabilities')
 
 plt.show()
-
-# VFI
-mcm = McCallModel(w=w_new, q=q_new)
-valfunc_VFI, flag = mcm.VFI()
 ```
 
 ```{code-cell} ipython3
@@ -676,13 +672,14 @@ def plot_epochs(epochs_to_plot, quit_allowed=1):
     max_epochs = np.max(epochs_to_plot)
     # iterate on epoch numbers
     for n in range(max_epochs + 1):
-        if n%(max_epochs/10)==0:
+        if n % max(1, max_epochs // 10) == 0:
             print(f"Progress: EPOCHs = {n}")
         if n in epochs_to_plot:
             valfunc_qlr = valfunc_from_qtable(qtable)
             error = compute_error(valfunc_qlr, valfunc_VFI)
 
-            ax.plot(w_new, valfunc_qlr, '-o', label=f'QL:epochs={n}, mean error={error}')
+            ax.plot(w_new, valfunc_qlr, '-o',
+                    label=f'QL: epochs={n}, mean error={error:.2f}')
 
 
         new_qtable = qlmc_new.run_one_epoch(qtable, rng)
@@ -690,7 +687,8 @@ def plot_epochs(epochs_to_plot, quit_allowed=1):
 
     ax.set_xlabel('wages')
     ax.set_ylabel('optimal value')
-    ax.legend(loc='lower right')
+    ax.legend(bbox_to_anchor=(0.5, -0.15), loc='upper center', ncol=2)
+    plt.subplots_adjust(bottom=0.25)
     plt.show()
 ```
 
@@ -704,7 +702,7 @@ The above graphs indicates that
 
 * the quality of approximation to the "true" value function computed by value function iteration improves for longer epochs
 
-## Employed Worker Can't Quit
+## Employed worker can't quit
 
 
 The preceding version of temporal difference Q-learning described in  equation system  {eq}`eq:old4` lets an employed  worker quit, i.e., reject her wage as an incumbent and instead receive unemployment compensation this period
@@ -715,7 +713,7 @@ This is an option that the McCall worker described in {doc}`this quantecon lectu
 See {cite}`Ljungqvist2012`, chapter 6 on search, for a proof.
 
 But in the context of Q-learning, giving the worker the option to quit and get unemployment compensation while
-unemployed turns out to accelerate the learning process by promoting experimentation vis a vis premature
+unemployed turns out to accelerate the learning process by promoting experimentation versus premature
 exploitation only.
 
 To illustrate this, we'll amend our formulas for temporal differences to forbid an employed worker from quitting a job she had accepted earlier.
@@ -731,7 +729,7 @@ $$ (eq:temp-diff)
 
 It turns out that formulas {eq}`eq:temp-diff` combined with our Q-learning recursion {eq}`eq:old3` can lead our agent to eventually learn the optimal value function as well as in the case where an option to redraw can be exercised.
 
-But learning is slower because  an agent who ends up accepting a wage offer prematurally loses the option to explore new states in the same episode and to adjust the value associated with that state.
+But learning is slower because  an agent who ends up accepting a wage offer prematurely loses the option to explore new states in the same episode and to adjust the value associated with that state.
 
 This can lead to inferior outcomes when the number of epochs/episodes is low.
 
@@ -744,9 +742,9 @@ We illustrate these possibilities with the following code and graph.
 plot_epochs(epochs_to_plot=[100, 1000, 10000, 100000, 200000], quit_allowed=0)
 ```
 
-## Possible Extensions
+## Possible extensions
 
-To extend the algorthm to handle problems with continuous state spaces,
+To extend the algorithm to handle problems with continuous state spaces,
 a typical approach is to restrict Q-functions and policy functions to take particular
 functional forms.
 
