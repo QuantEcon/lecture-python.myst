@@ -9,22 +9,66 @@ jobs:
     name: Link Checking
     runs-on: "ubuntu-latest"
     permissions:
+      contents: read  # read latest release assets via gh api
       issues: write # required for peter-evans/create-issue-from-file
     steps:
-      # Checkout the live site (html)
-      - name: Checkout
-        uses: actions/checkout@v5
-        with:
-          ref: gh-pages
+      # Download the live site (html) from the latest release archive
+      # (permanent, not subject to artifact expiry) instead of the gh-pages
+      # branch, which no longer exists after the artifact-based Pages migration.
+      - name: Get latest release asset URL
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          ASSET_URL=$(gh api repos/${{ github.repository }}/releases/latest \
+            --jq '[.assets[] | select(.name | endswith(".tar.gz")) | .browser_download_url] | first // ""')
+          if [ -z "$ASSET_URL" ]; then
+            echo "::error::No .tar.gz asset found on the latest release"
+            exit 1
+          fi
+          echo "asset-url=$ASSET_URL" >> "$GITHUB_OUTPUT"
+      - name: Download and extract release HTML
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          curl -fsSL "${{ steps.release.outputs.asset-url }}" | tar -xzf - -C _site
       - name: Link Checker
         id: lychee
         uses: lycheeverse/lychee-action@v2
         with:
           fail: false
-          args: --accept 200,403,503 *.html
+          # --root-dir resolves root-relative links (e.g. /_notebooks/*.ipynb,
+          # /_pdf/quantecon-python.pdf) against the extracted site so they are
+          # not reported as errors. See QuantEcon/lecture-python.myst#906.
+          #
+          # The flags below clear the residual false positives reported in
+          # QuantEcon/lecture-python.myst#933. Configuration is kept inline (rather
+          # than a lychee.toml) because lychee runs against the extracted release
+          # archive in _site, which does not contain repo-root config files.
+          #   --accept 202        IEEE Xplore returns "202 Accepted" (anti-bot) for
+          #                       valid links, e.g. doi.org/10.1109/TAC.1977.1101561
+          #   --exclude-path ...  genindex / search / prf-prf are auto-generated
+          #                       utility pages with no source notebook, so the
+          #                       theme's "Download Notebook" button points at a
+          #                       nonexistent _notebooks/<page>.ipynb (and renders a
+          #                       second button with href="None"). They carry no
+          #                       unique content links, so skipping them loses no
+          #                       coverage.
+          #   --exclude <doi>     Journal of Derivatives DOI redirects into a
+          #                       login/paywall loop (exceeds max-redirects); the
+          #                       citation itself is valid.
+          args: >-
+            --root-dir ${{ github.workspace }}/_site
+            --accept 200,202,403,503
+            --exclude-path 'genindex\.html$'
+            --exclude-path 'search\.html$'
+            --exclude-path 'prf-prf\.html$'
+            --exclude '10\.3905/jod\.2012\.20\.1\.038'
+            _site/*.html
       - name: Create Issue From File
         if: steps.lychee.outputs.exit_code != 0
-        uses: peter-evans/create-issue-from-file@v5
+        uses: peter-evans/create-issue-from-file@v6
         with:
           title: Link Checker Report
           content-filepath: ./lychee/out.md

@@ -209,7 +209,7 @@ Units of the rental rates are:
 * for $r_t$,  output at time $t$  per unit of capital at time $t$ 
 
 
-We take output at time $t$ as *numeraire*, so the price of output at time $t$ is one.
+We take output at time $t$ as **numeraire**, so the price of output at time $t$ is one.
 
 The firm's profits at time $t$ are 
 
@@ -226,7 +226,7 @@ r_t & = \alpha K_t^\alpha L_t^{1-\alpha}
 \end{aligned}
 $$  (eq:firmfonc)
 
-Output can  be consumed either by old people or young people; or sold to young people who use it  to augment the capital stock;  or  sold to  the government for  uses that do not generate utility for the people in the model  (i.e., ``it is thrown into the ocean'').  
+Output can  be consumed either by old people or young people; or sold to young people who use it  to augment the capital stock;  or  sold to  the government for  uses that do not generate utility for the people in the model  (i.e., "it is thrown into the ocean").  
 
 
 The firm  thus sells output to old people, young people, and the government.

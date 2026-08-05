@@ -74,11 +74,13 @@ $$
 Let's use Python  draw observations from the distribution and compare the sample mean and variance with the theoretical results.
 
 ```{code-cell} ipython3
+rng = np.random.default_rng()
+
 # specify parameters
 p, n = 0.3, 1_000_000
 
 # draw observations from the distribution
-x = np.random.geometric(p, n)
+x = rng.geometric(p, n)
 
 # compute sample mean and variance
 μ_hat = np.mean(x)
@@ -126,7 +128,7 @@ $$
 r, p, n = 10, 0.3, 1_000_000
 
 # draw observations from the distribution
-x = np.random.negative_binomial(r, p, n)
+x = rng.negative_binomial(r, p, n)
 
 # compute sample mean and variance
 μ_hat = np.mean(x)
@@ -217,7 +219,7 @@ In the below example, we set $\mu = 0, \sigma = 0.1$.
 n = 1_000_000
 
 # draw observations from the distribution
-x = np.random.normal(μ, σ, n)
+x = rng.normal(μ, σ, n)
 
 # compute sample mean and variance
 μ_hat = np.mean(x)
@@ -259,7 +261,7 @@ a, b = 10, 20
 n = 1_000_000
 
 # draw observations from the distribution
-x = a + (b-a)*np.random.rand(n)
+x = a + (b-a)*rng.random(n)
 
 # compute sample mean and variance
 μ_hat = np.mean(x)
@@ -296,9 +298,9 @@ $$
 Let's start by generating a random sample and computing sample moments.
 
 ```{code-cell} ipython3
-x = np.random.rand(1_000_000)
+x = rng.random(1_000_000)
 # x[x > 0.95] = 100*x[x > 0.95]+300
-x[x > 0.95] = 100*np.random.rand(len(x[x > 0.95]))+300
+x[x > 0.95] = 100*rng.random(len(x[x > 0.95]))+300
 x[x <= 0.95] = 0
 
 μ_hat = np.mean(x)
@@ -441,13 +443,13 @@ Let's check with `numpy`.
 n, λ = 1_000_000, 0.3
 
 # draw uniform numbers
-u = np.random.rand(n)
+u = rng.random(n)
 
 # transform
 x = -np.log(1-u)/λ
 
 # draw geometric distributions
-x_g = np.random.exponential(1 / λ, n)
+x_g = rng.exponential(1 / λ, n)
 
 # plot and compare
 plt.hist(x, bins=100, density=True)
@@ -517,13 +519,13 @@ The exponential distribution is the continuous analog of geometric distribution.
 n, λ = 1_000_000, 0.8
 
 # draw uniform numbers
-u = np.random.rand(n)
+u = rng.random(n)
 
 # transform
 x = np.ceil(np.log(1-u)/np.log(λ) - 1)
 
 # draw geometric distributions
-x_g = np.random.geometric(1-λ, n)
+x_g = rng.geometric(1-λ, n)
 
 # plot and compare
 plt.hist(x, bins=150, density=True)
@@ -531,7 +533,7 @@ plt.show()
 ```
 
 ```{code-cell} ipython3
-np.random.geometric(1-λ, n).max()
+rng.geometric(1-λ, n).max()
 ```
 
 ```{code-cell} ipython3

@@ -38,6 +38,7 @@ sphinx:
     linkcheck_ignore: ['https://online.stat.psu.edu/stat415/book/export/html/834']
     bibtex_reference_style: author_year
     suppress_warnings: ["mystnb.unknown_mime_type"]
+    nb_merge_streams: true
     nb_mime_priority_overrides: [
        # HTML
        ['html', 'application/vnd.jupyter.widget-view+json', 10],
@@ -82,6 +83,7 @@ sphinx:
       header_organisation: QuantEcon
       repository_url: https://github.com/QuantEcon/lecture-python.myst
       nb_repository_url: https://github.com/QuantEcon/lecture-python.notebooks
+      path_to_docs: lectures
       twitter: quantecon
       twitter_logo_url: https://assets.quantecon.org/img/qe-twitter-logo.png
       og_logo_url: https://assets.quantecon.org/img/qe-og-logo.png
@@ -89,6 +91,7 @@ sphinx:
       keywords: Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski
       analytics:
         google_analytics_id: G-J0SMYR4SG3
+      sticky_contents: true
       launch_buttons:
         colab_url                 : https://colab.research.google.com
     intersphinx_mapping: 
@@ -96,7 +99,7 @@ sphinx:
         - "https://intro.quantecon.org/"
         - null
       advanced:
-        - "https://python-advanced.quantecon.org"
+        - "https://python-advanced.quantecon.org/"
         - null
       jax:
         - "https://jax.quantecon.org/"
@@ -104,8 +107,9 @@ sphinx:
     mathjax3_config:
       tex:
         macros:
-          "argmax" : "arg\\,max"
-          "argmin" : "arg\\,min"
+          "argmax" : ["\\operatorname*{argmax}", 0]
+          "argmin" : ["\\operatorname*{argmin}", 0]
+          "EE" : "\\mathbb{E}"
     mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     # Local Redirects
     rediraffe_redirects:
@@ -120,6 +124,13 @@ sphinx:
       schelling:     https://intro.quantecon.org/schelling.html
       scalar_dynam:  https://intro.quantecon.org/scalar_dynam.html
       complex_and_trig: https://intro.quantecon.org/complex_and_trig.html
+      doubts_or_variability: https://python-advanced.quantecon.org/doubts_or_variability.html
+      risk_aversion_or_mistaken_beliefs: https://python-advanced.quantecon.org/risk_aversion_or_mistaken_beliefs.html
+    # sphinx-proof
+    proof_minimal_theme: true
+    # sphinx-exercise
+    exercise_style: "solution_follow_exercise"
+    # sphinx-tojupyter
     tojupyter_static_file_path: ["source/_static", "_static"]
     tojupyter_target_html: true
     tojupyter_urlpath: "https://python.quantecon.org/"
