@@ -35,7 +35,7 @@ In the lecture we'll learn about
 * using a Monte Carlo simulation of a multivariate normal distribution to evaluate the quality of a normal approximation
 * the administrator's problem and why the multivariate hypergeometric distribution is the right tool
 
-## The Administrator's Problem
+## The administrator's problem
 
 An administrator in charge of allocating research grants is in the following situation.
 
@@ -62,7 +62,7 @@ The $n$ balls drawn represent  successful proposals and are  awarded research fu
 
 The remaining $N-n$ balls receive no research funds.
 
-### Details of the Awards Procedure Under Study
+### Details of the awards procedure under study
 
 Let $k_i$ be the number of balls of color $i$ that are drawn.
 
@@ -106,11 +106,11 @@ the population of $N$ balls.
 
 The right tool for the administrator's job is the **multivariate hypergeometric distribution**.
 
-### Multivariate Hypergeometric Distribution
+### Multivariate hypergeometric distribution
 
 Let's start with some imports.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.special import comb
@@ -159,7 +159,7 @@ $$
 
 To do our work for us, we'll write an `Urn` class.
 
-```{code-cell} python3
+```{code-cell} ipython3
 class Urn:
 
     def __init__(self, K_arr):
@@ -209,20 +209,14 @@ class Urn:
             number of draws.
         """
 
-        K_arr, N, c = self.K_arr, self.N, self.c
+        K_arr, N = self.K_arr, self.N
 
         # mean
         μ = n * K_arr / N
 
         # variance-covariance matrix
-        Σ = np.full((c, c), n * (N - n) / (N - 1) / N ** 2)
-        for i in range(c-1):
-            Σ[i, i] *= K_arr[i] * (N - K_arr[i])
-            for j in range(i+1, c):
-                Σ[i, j] *= - K_arr[i] * K_arr[j]
-                Σ[j, i] = Σ[i, j]
-
-        Σ[-1, -1] *= K_arr[-1] * (N - K_arr[-1])
+        p = K_arr / N
+        Σ = n * (N - n) / (N - 1) * (np.diag(p) - np.outer(p, p))
 
         return μ, Σ
 
@@ -265,7 +259,7 @@ $$
 P(2{\text{ black}},2{\text{ white}},2{\text{ red}})={{{5 \choose 2}{10 \choose 2}{15 \choose 2}} \over {30 \choose 6}}=0.079575596816976
 $$
 
-```{code-cell} python3
+```{code-cell} ipython3
 # construct the urn
 K_arr = [5, 10, 15]
 urn = Urn(K_arr)
@@ -273,7 +267,7 @@ urn = Urn(K_arr)
 
 Now use the Urn Class method `pmf` to compute the probability of the outcome $X = \begin{bmatrix} 2 & 2 & 2 \end{bmatrix}$
 
-```{code-cell} python3
+```{code-cell} ipython3
 k_arr = [2, 2, 2] # array of number of observed successes
 urn.pmf(k_arr)
 ```
@@ -283,27 +277,27 @@ constructing  a 2-dimensional
 array `k_arr` and `pmf` will return an array of probabilities for
 observing each case.
 
-```{code-cell} python3
+```{code-cell} ipython3
 k_arr = [[2, 2, 2], [1, 3, 2]]
 urn.pmf(k_arr)
 ```
 
 Now let's compute the mean vector and variance-covariance matrix.
 
-```{code-cell} python3
+```{code-cell} ipython3
 n = 6
 μ, Σ = urn.moments(n)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 μ
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 Σ
 ```
 
-### Back to The Administrator's Problem
+### Back to the administrator's problem
 
 Now let's turn to the grant administrator's problem.
 
@@ -311,14 +305,14 @@ Here the array of
 numbers of $i$ objects in the urn is
 $\left(157, 11, 46, 24\right)$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 K_arr = [157, 11, 46, 24]
 urn = Urn(K_arr)
 ```
 
 Let's compute the probability of the outcome $\left(10, 1, 4, 0 \right)$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 k_arr = [10, 1, 4, 0]
 urn.pmf(k_arr)
 ```
@@ -326,56 +320,56 @@ urn.pmf(k_arr)
 We can compute probabilities of three possible outcomes by constructing a 3-dimensional
 arrays `k_arr` and utilizing the method `pmf` of the `Urn` class.
 
-```{code-cell} python3
+```{code-cell} ipython3
 k_arr = [[5, 5, 4 ,1], [10, 1, 2, 2], [13, 0, 2, 0]]
 urn.pmf(k_arr)
 ```
 
 Now let's compute the mean and variance-covariance matrix of $X$ when $n=6$.
 
-```{code-cell} python3
+```{code-cell} ipython3
 n = 6 # number of draws
 μ, Σ = urn.moments(n)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 # mean
 μ
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 # variance-covariance matrix
 Σ
 ```
 
 We can simulate a large sample and verify that sample means and covariances closely approximate the population means and covariances.
 
-```{code-cell} python3
+```{code-cell} ipython3
 size = 10_000_000
 sample = urn.simulate(n, size=size)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 # mean
 np.mean(sample, 0)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 # variance covariance matrix
 np.cov(sample.T)
 ```
 
 Evidently, the sample means and covariances approximate their population counterparts well.
 
-### Quality of Normal Approximation
+### Quality of normal approximation
 
 To judge the quality of a multivariate normal approximation to the multivariate hypergeometric distribution, we draw a large sample from a multivariate normal distribution with the mean vector  and covariance matrix for the corresponding multivariate hypergeometric distribution and compare the simulated distribution with the population multivariate hypergeometric distribution.
 
-```{code-cell} python3
+```{code-cell} ipython3
 sample_normal = np.random.multivariate_normal(μ, Σ, size=size)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 def bivariate_normal(x, y, μ, Σ, i, j):
 
     μ_x, μ_y = μ[i], μ[j]
@@ -392,7 +386,7 @@ def bivariate_normal(x, y, μ, Σ, i, j):
     return np.exp(-z / (2 * (1 - ρ**2))) / denom
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jit
 def count(vec1, vec2, n):
     size = sample.shape[0]
@@ -404,7 +398,7 @@ def count(vec1, vec2, n):
     return count_mat
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
 c = urn.c
 fig, axs = plt.subplots(c, c, figsize=(14, 14))
 
@@ -454,7 +448,7 @@ The null hypothesis is that the sample follows normal distribution.
 
 > `normaltest` returns an array of p-values associated with tests for each $k_i$ sample.
 
-```{code-cell} python3
+```{code-cell} ipython3
 test_multihyper = normaltest(sample)
 test_multihyper.pvalue
 ```
@@ -463,7 +457,7 @@ As we can see, all the p-values are almost $0$ and the null hypothesis is soundl
 
 By contrast, the sample from normal distribution does not reject the null hypothesis.
 
-```{code-cell} python3
+```{code-cell} ipython3
 test_normal = normaltest(sample_normal)
 test_normal.pvalue
 ```

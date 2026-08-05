@@ -1,0 +1,46 @@
+# Sync Translations — Simplified Chinese
+# On merged PR, translate changed lectures into the zh-cn target repo.
+# Comment \translate-resync on a merged PR to re-trigger sync.
+name: Sync Translations (Simplified Chinese)
+
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - 'lectures/**/*.md'
+      - 'lectures/_toc.yml'
+  issue_comment:
+    types: [created]
+
+jobs:
+  sync:
+    # The issue_comment path requires: a comment on a PR (not a bare issue), the
+    # resync command, and a trusted author — anyone else could otherwise fire a
+    # secrets-bearing run (Anthropic spend + PAT) from any comment.
+    if: >
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true) ||
+      (github.event_name == 'issue_comment' &&
+       github.event.issue.pull_request &&
+       contains(github.event.comment.body, '\translate-resync') &&
+       contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association))
+    runs-on: ubuntu-latest
+
+    # The action authenticates with QUANTECON_SERVICES_PAT; the ambient
+    # GITHUB_TOKEN is unused beyond checkout, so keep it read-only.
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - uses: QuantEcon/action-translation@v0
+        with:
+          mode: sync
+          target-repo: QuantEcon/lecture-python.zh-cn
+          target-language: zh-cn
+          source-language: en
+          docs-folder: lectures
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github-token: ${{ secrets.QUANTECON_SERVICES_PAT }}

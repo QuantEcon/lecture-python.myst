@@ -444,7 +444,7 @@ $Y_5$
 ```{code-cell} python3
 beta_dist = beta(2, 2)
 
-def gen_x_draws(k):
+def gen_x_draws(k, rng):
     """
     Returns a flat array containing k independent draws from the
     distribution of X, the underlying random variable.  This distribution
@@ -456,7 +456,7 @@ def gen_x_draws(k):
     bdraws[1, :] += 0.6
     bdraws[2, :] -= 1.1
     # Set X[i] = bdraws[j, i], where j is a random draw from {0, 1, 2}
-    js = np.random.randint(0, 2, size=k)
+    js = rng.integers(0, 2, size=k)
     X = bdraws[js, np.arange(k)]
     # Rescale, so that the random variable is zero mean
     m, sigma = X.mean(), X.std()
@@ -465,11 +465,12 @@ def gen_x_draws(k):
 nmax = 5
 reps = 100000
 ns = list(range(1, nmax + 1))
+rng = np.random.default_rng()
 
 # Form a matrix Z such that each column is reps independent draws of X
 Z = np.empty((reps, nmax))
 for i in range(nmax):
-    Z[:, i] = gen_x_draws(reps)
+    Z[:, i] = gen_x_draws(reps, rng)
 # Take cumulative sum across columns
 S = Z.cumsum(axis=1)
 # Multiply j-th column by sqrt j
