@@ -440,9 +440,11 @@ Indeed, there is no guarantee that direct iterations on $\Phi$ converge [^fn_im]
 
 There are examples in which these iterations diverge.
 
-To see this intuively from Blackwell's sufficient condition, let us assume there are two beliefs $H_a(Y) > H_b(Y)$ for any $Y$.
+To see this intuitively, consider Blackwell's sufficient condition and suppose there are two beliefs with $H_a(Y) > H_b(Y)$ for every $Y$.
 
-Then by Euler equation {eq}`ree_comp7`, the optimal $y_{t+1} = h(Y_t, Y_t)$ decreases as $H$ increases, which indicates the monotoncity required in the Blackwell's condition is not satisfied.
+By the Euler equation {eq}`ree_comp7`, the actual law of motion $Y_{t+1} = h(Y_t, Y_t)$ decreases as $H$ increases, so $\Phi$ reverses the ordering of beliefs.
+
+Hence the monotonicity required by Blackwell's condition fails.
 
 Fortunately,  another method  works here.
 
@@ -528,7 +530,9 @@ equation
 
 Return to equation {eq}`ree_comp7` and set $y_t = Y_t$ for all $t$.
 
-A small amount of algebra will convince you that when $y_t=Y_t$, equations {eq}`comp16` and {eq}`ree_comp7` are identical.
+In a rational expectations equilibrium the perceived and actual laws of motion agree, so $H(Y_t) = Y_{t+1}$.
+
+Imposing this alongside $y_t = Y_t$, a small amount of algebra will convince you that equations {eq}`comp16` and {eq}`ree_comp7` are identical.
 
 Thus, the Euler equation for the planning problem matches the second-order difference equation
 that we derived by
@@ -600,7 +604,7 @@ If there were a unit measure of  identical competitive firms all behaving accord
 :class: dropdown
 ```
 
-To map a problem into a {doc}`discounted optimal linear control problem<lqcontrol>`, we need to define
+To map a problem into a {doc}`discounted optimal linear control problem <lqcontrol>`, we need to define
 
 - state vector $x_t$ and control vector $u_t$
 - matrices $A, B, Q, R$ that define preferences and the law of
@@ -710,13 +714,16 @@ Y_{t+1}
 $$
 
 For the case of a unit measure of firms,
+
 $$
 \begin{aligned}
-\int_0^1 y_{t+1}(\omega)\, d\omega &= h_0 + h_1 \int_0^1 y_{t}(\omega)\, dω + h_2 Y_t \\
+\int_0^1 y_{t+1}(\omega)\, d\omega
+    &= h_0 + h_1 \int_0^1 y_{t}(\omega)\, d\omega + h_2 Y_t \\
 Y_{t+1} &= h_0 + h_1 Y_t + h_2 Y_t \\
 Y_{t+1} &= 96.949 + (1 - 0.046) Y_t
 \end{aligned}
 $$
+
 ```{solution-end}
 ```
 
