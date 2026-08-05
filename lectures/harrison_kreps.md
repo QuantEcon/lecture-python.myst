@@ -3,10 +3,12 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.17.1
 kernelspec:
-  display_name: Python 3
-  language: python
   name: python3
+  display_name: Python 3 (ipykernel)
+  language: python
 ---
 
 (harrison_kreps)=
@@ -29,10 +31,9 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture uses following libraries:
 
-```{code-cell} ipython
----
-tags: [hide-output]
----
+```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -51,7 +52,7 @@ The model features
 
 Let's start with some standard imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import numpy as np
 import quantecon as qe
 import scipy.linalg as la
@@ -329,8 +330,8 @@ $$
 The marginal investor is of type  $b$ if
 
 $$
-P_a(s,1)  \bar p(0) + P_a(s,1) ( 1 +  \bar  p(1)) <
-P_b(s,1)  \bar p(0) + P_b(s,1) ( 1 +  \bar  p(1))
+P_a(s,0)  \bar p(0) + P_a(s,1) ( 1 +  \bar  p(1)) <
+P_b(s,0)  \bar p(0) + P_b(s,1) ( 1 +  \bar  p(1))
 $$
 
 *Thus the marginal investor is the (temporarily) optimistic type*.
@@ -444,8 +445,8 @@ Instead of equation {eq}`hakr2`, the equilibrium price satisfies
 \check p(s)
 = \beta \min
 \left\{
-    P_a(s,1)  \check  p(0) + P_a(s,1) ( 1 +   \check  p(1)) ,\;
-    P_b(s,1)  \check p(0) + P_b(s,1) ( 1 + \check p(1))
+    P_a(s,0)  \check  p(0) + P_a(s,1) ( 1 +   \check  p(1)) ,\;
+    P_b(s,0)  \check p(0) + P_b(s,1) ( 1 + \check p(1))
 \right\}
 ```
 

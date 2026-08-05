@@ -91,7 +91,7 @@ These variables and other data used in the paper are available for download on D
 We will use pandas' `.read_stata()` function to read in data contained in the `.dta` files to dataframes
 
 ```{code-cell} python3
-df1 = pd.read_stata('https://github.com/QuantEcon/lecture-python/blob/master/source/_static/lecture_specific/ols/maketable1.dta?raw=true')
+df1 = pd.read_stata('https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/ols/maketable1.dta')
 df1.head()
 ```
 
@@ -323,7 +323,7 @@ Let's estimate some of the extended models considered in the paper
 (Table 2) using data from `maketable2.dta`
 
 ```{code-cell} python3
-df2 = pd.read_stata('https://github.com/QuantEcon/lecture-python/blob/master/source/_static/lecture_specific/ols/maketable2.dta?raw=true')
+df2 = pd.read_stata('https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/ols/maketable2.dta')
 
 # Add constant term to dataset
 df2['const'] = 1
@@ -475,7 +475,7 @@ used for estimation)
 
 ```{code-cell} python3
 # Import and select the data
-df4 = pd.read_stata('https://github.com/QuantEcon/lecture-python/blob/master/source/_static/lecture_specific/ols/maketable4.dta?raw=true')
+df4 = pd.read_stata('https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/ols/maketable4.dta')
 df4 = df4[df4['baseco'] == 1]
 
 # Add a constant variable

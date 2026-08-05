@@ -169,6 +169,8 @@ Now let's write some homemade Python code to implement a QR decomposition by dep
 ```{code-cell} ipython3
 import numpy as np
 from scipy.linalg import qr
+
+rng = np.random.default_rng()
 ```
 
 ```{code-cell} ipython3
@@ -354,7 +356,7 @@ Here goes
 
 ```{code-cell} ipython3
 # experiment this with one random A matrix
-A = np.random.random((3, 3))
+A = rng.random((3, 3))
 ```
 
 ```{code-cell} ipython3
@@ -396,14 +398,14 @@ k = 5
 n = 1000
 
 # generate some random moments
-𝜇 = np.random.random(size=k)
-C = np.random.random((k, k))
+𝜇 = rng.random(size=k)
+C = rng.random((k, k))
 Σ = C.T @ C
 ```
 
 ```{code-cell} ipython3
 # X is random matrix where each column follows multivariate normal dist.
-X = np.random.multivariate_normal(𝜇, Σ, size=n)
+X = rng.multivariate_normal(𝜇, Σ, size=n)
 ```
 
 ```{code-cell} ipython3
