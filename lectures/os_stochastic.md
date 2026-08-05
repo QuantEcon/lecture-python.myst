@@ -505,8 +505,8 @@ def create_model(
     x_grid = np.linspace(1e-4, grid_max, grid_size)
 
     # Store shocks (with a seed, so results are reproducible)
-    np.random.seed(seed)
-    shocks = np.exp(μ + ν * np.random.randn(shock_size))
+    rng = np.random.default_rng(seed)
+    shocks = np.exp(μ + ν * rng.standard_normal(shock_size))
 
     return Model(u, f, β, μ, ν, x_grid, shocks)
 ```

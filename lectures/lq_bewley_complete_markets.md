@@ -39,7 +39,7 @@ kernelspec:
 
 This lecture studies how the cross-section distribution of consumption evolves when many consumers each solve the LQ permanent income problem.
 
-It is the second of three lectures on the LQ permanent income model and builds directly on {doc}`lq_permanent_income`.
+It is the second of four lectures on the LQ permanent income model and builds directly on {doc}`lq_permanent_income`.
 
 We first show that the unit root in individual consumption causes the cross-section variance of consumption to grow linearly with time.
 
@@ -48,6 +48,8 @@ We then embed the individual consumer in a **closed economy** with a continuum o
 Finally, we replace the single risk-free bond with a complete set of Arrow securities and show how complete markets deliver a time-invariant cross-section distribution of consumption.
 
 The third lecture, {doc}`lq_robust_smoothing`, relaxes the assumption that the consumer fully trusts his income model.
+
+The fourth, {doc}`lq_robust_bewley`, returns to the Bewley economy of this lecture and populates it with consumers who differ in how much they trust that model.
 
 Let's begin with some imports.
 
@@ -438,6 +440,8 @@ perfectly), while under **incomplete markets**  distributions spread out over ti
 So far the consumer fully trusts his stochastic income model.
 
 In {doc}`lq_robust_smoothing` we relax that assumption and let the consumer seek decision rules that are robust to plausible misspecifications.
+
+{doc}`lq_robust_bewley` then returns to the Bewley economy studied here and shows that a cross-section of consumers with different concerns about misspecification can reproduce exactly the equilibrium of this lecture.
 
 The optimal robust rule takes the same form as the rule above, but under a distorted model of the income process that looks more persistent than the approximating one.
 
