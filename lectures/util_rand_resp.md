@@ -12,13 +12,13 @@ kernelspec:
 ---
 
 
-# Expected utilities of random responses
+# Expected Utilities of Random Responses
 
 
 ## Overview
 
 
-{doc}`This QuantEcon lecture <rand_resp>` describes randomized response surveys in the tradition of Warner {cite}`warner1965randomized` that are designed to protect respondents' privacy.
+{doc}`This QuantEcon lecture <rand_resp>` describes randomized response surveys in the tradition of {cite:t}`warner1965randomized` that are designed to protect respondents' privacy.
 
 Lars Ljungqvist {cite}`ljungqvist1993unified` analyzed how a respondent's decision about whether to answer truthfully depends on **expected utility**.
 
@@ -75,7 +75,7 @@ $$
 \frac{\text{Pr}(A|r)}{\text{Pr}(A^{'}|r)}\times \frac{(1-\pi_A)}{\pi_A} = \frac{\text{Pr}(r|A)}{\text{Pr}(r|A^{'})}
 $$ (eq:util-rand-three)
 
-If this expression is greater (less) than unity, it follows that $r$ is jeopardizing with respect to $A$ ($A^{'}$). 
+If this expression is greater (less) than unity, it follows that $r$ is jeopardizing with respect to $A$ ($A^{'}$).
 
 Then, the natural measure of jeopardy will be:
 
@@ -126,11 +126,11 @@ $$
 \max \left\{ \text{Pr}(A|\text{yes}) , \text{Pr}(A|\text{no}) \right\}
 $$ (eq:util-rand-five-a)
 
-Holding this measure constant, he explained under what conditions the smallest variance of the estimate was achieved with the unrelated question model or {cite:t}`warner1965randomized` original model.
+Holding this measure constant, he explained under what conditions the smallest variance of the estimate was achieved with the unrelated question model or the original model of {cite:t}`warner1965randomized`.
 
 ### Fligner et al. (1977)
 
-{cite:t}`fligner1977comparison` reached a similar conclusion as {cite:t}`lanke1976degree`.
+{cite:t}`fligner1977comparison` reached a conclusion similar to that of {cite:t}`lanke1976degree`.
 
 They measured "private protection" as
 
@@ -177,13 +177,19 @@ This measure is just the first term in {eq}`eq:util-rand-seven-a`, i.e., the pro
 
 Key assumptions that underlie a randomized response technique for estimating the fraction of a population that belongs to $A$ are
 
-```{prf:assumption}
+```{prf:assumption} discomfort
+:label: as:util-rand-discomfort
 
-- *Assumption 1*: Respondents feel discomfort from being thought of as belonging to $A$.
+Respondents feel discomfort from being thought of as belonging to $A$.
+```
 
-- *Assumption 2*: Respondents prefer to answer questions truthfully than to lie, so long as the cost of doing so is not too high.
+```{prf:assumption} preference for truth
+:label: as:util-rand-truth
 
-  - The cost is taken to be the discomfort in 1.
+Respondents prefer to answer questions truthfully than to lie, so long as the
+cost of doing so is not too high.
+
+The cost is taken to be the discomfort in {prf:ref}`as:util-rand-discomfort`.
 ```
 
 Let $r_i$ denote individual $i$'s response to the randomized question.
@@ -273,25 +279,23 @@ The source of the positive relationship is:
 
 We can deduce two things about the truth border:
 
-- The truth border divides the space of conditional probabilities into two subsets: "truth telling" and "lying". 
+- The truth border divides the space of conditional probabilities into two subsets: "truth telling" and "lying".
 
   - Thus, sufficient privacy elicits a truthful answer, whereas insufficient privacy results in a lie.
 
   - The truth border depends on a respondent's utility function.
 
-- Assumptions in {eq}`eq:util-rand-nine-a` and {eq}`eq:util-rand-nine-a` are sufficient only to guarantee a positive slope of the truth border.
+- Assumptions in {eq}`eq:util-rand-nine-a` and {eq}`eq:util-rand-nine-b` are sufficient only to guarantee a positive slope of the truth border.
 
-The truth border can have either a concave or a convex shape.
+  - The truth border can have either a concave or a convex shape.
 
-We can draw some truth borders with the following Python code:
+We can draw some truth borders in {numref}`fig-truth-borders` with the following Python code:
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: 'Three types of truth border
-
-      '
+    caption: Three types of truth border
     name: fig-truth-borders
 ---
 x1 = np.arange(0, 1, 0.001)
@@ -346,9 +350,7 @@ and plot the "truth telling" and "lying area" of individual $i$ in {numref}`fig-
 ---
 mystnb:
   figure:
-    caption: 'Truth telling and lying areas of individual $i$
-
-      '
+    caption: Truth telling and lying areas
     name: fig-truth-lying-areas
 ---
 x1 = np.arange(0, 1, 0.001)
@@ -388,7 +390,7 @@ A statistician's objective is
 
 - to find a randomized response survey design that minimizes the bias and the variance of the estimator.
 
-Given a design that ensures truthful answers by all respondents, Anderson (1976, Theorem 1) {cite}`anderson1976estimation` showed that the minimum variance estimate in the two-response model has variance
+Given a design that ensures truthful answers by all respondents, {cite:t}`anderson1976estimation` (Theorem 1) showed that the minimum variance estimate in the two-response model has variance
 
 $$
 \begin{aligned}
@@ -421,13 +423,13 @@ From expression {eq}`eq:util-rand-thirteen`, {eq}`eq:util-rand-fourteen-a` and {
 
 We use Python code to draw iso-variance curves.
 
-The pairs of conditional probabilities can be attained using {cite:t}`warner1965randomized` model.
+The pairs of conditional probabilities can be attained using the model of {cite:t}`warner1965randomized`.
 
 Note that:
 
 - Any point on the iso-variance curves can be attained with the unrelated question model as long as the statistician can completely control the model design.
 
-- {cite:t}`warner1965randomized` original randomized response model is less  flexible than the unrelated question model.
+- The original randomized response model of {cite:t}`warner1965randomized` is less flexible than the unrelated question model.
 
 ```{code-cell} ipython3
 class Iso_Variance:
@@ -439,15 +441,13 @@ class Iso_Variance:
         π = self.π
         n = self.n
 
-        nv = np.array([0.27, 0.34, 0.49, 0.74, 0.92, 1.1,
-                       1.47, 2.94, 14.7])
+        nv = np.array([0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7])
         x = np.arange(0, 1, 0.001)
         x0 = np.arange(π, 1, 0.001)
         x2 = np.arange(0, π, 0.001)
         y1 = [π for i in x0]
         y2 = [π for i in x2]
-        y0 = 1 / (1 + (x0 * (1 - π)**2) /
-                       ((1 - x0) * π**2))
+        y0 = 1 / (1 + (x0 * (1 - π)**2) / ((1 - x0) * π**2))
 
         plt.figure(figsize=(12, 10))
         plt.plot(x0, y0, 'm-', label='Warner')
@@ -455,10 +455,8 @@ class Iso_Variance:
         plt.plot(x0, y1, 'c:', linewidth=2)
         plt.plot(y2, x2, 'c:', linewidth=2)
         for i in range(len(nv)):
-            y = π - (π**2 * (1 - π)**2) / \
-                (n * (nv[i] / n) * (x0 - π + 1e-8))
-            plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i,
-                     label=f'V{i+1}')
+            y = π - (π**2 * (1 - π)**2) / (n * (nv[i] / n) * (x0 - π + 1e-8))
+            plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
         plt.xlim([0, 1])
         plt.ylim([0, 0.5])
         plt.xlabel('Pr(A|yes)')
@@ -489,9 +487,7 @@ Then we can plot the iso-variance curve in {numref}`fig-iso-variance`:
 ---
 mystnb:
   figure:
-    caption: 'Iso-variance curves for randomized response survey design
-
-      '
+    caption: Iso-variance curves
     name: fig-iso-variance
 ---
 var = Iso_Variance(π=0.3, n=100)
@@ -560,16 +556,12 @@ However, as shown in {numref}`fig-lanke-analysis`, point $Z$ offers a smaller va
 ---
 mystnb:
   figure:
-    caption: 'Analysis of Lanke''s privacy protection method showing optimal design
-      points
-
-      '
+    caption: Optimal design under Lanke's criterion
     name: fig-lanke-analysis
 ---
 π = 0.3
 n = 100
-nv = [0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94,
-      14.7]
+nv = [0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7]
 x = np.arange(0, 1, 0.001)
 y = x - 0.4
 z = x
@@ -588,14 +580,10 @@ plt.fill_between(x, y, z, facecolor='blue', alpha=0.05,
 plt.fill_between(x, 0, y, facecolor='green', alpha=0.05,
                  label='lying')
 for i in range(len(nv)):
-    y = π - (π**2 * (1 - π)**2) / \
-        (n * (nv[i] / n) * (x0 - π + 1e-8))
-    plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i,
-             label=f'V{i+1}')
+    y = π - (π**2 * (1 - π)**2) / (n * (nv[i] / n) * (x0 - π + 1e-8))
+    plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
 
-
-plt.scatter(0.498, 0.1, c='b', marker='*', label='Z',
-            s=150)
+plt.scatter(0.498, 0.1, c='b', marker='*', label='Z', s=150)
 plt.scatter(0.4, 0, c='y', label='X', s=150)
 plt.xlim([0, 1])
 plt.ylim([0, 0.5])
@@ -630,7 +618,7 @@ This is not an optimal choice under a utilitarian approach.
 
 ### Analysis of the method of Chaudhuri and Mukerjee (1988)
 
-{cite:t}`Chadhuri_Mukerjee_88` argued that since "yes" may sometimes relate to the sensitive group A, a clever respondent may falsely but safely always be inclined to respond "no". 
+{cite:t}`Chadhuri_Mukerjee_88` argued that since "yes" may sometimes relate to the sensitive group A, a clever respondent may falsely but safely always be inclined to respond "no".
 
 In this situation, the truth border is such that individuals choose to lie whenever the truthful answer is "yes" and
 
@@ -668,53 +656,45 @@ def f(x):
 ---
 mystnb:
   figure:
-    caption: 'Optimal survey design under utilitarian approach showing computed point
-      $Q$
-
-      '
+    caption: Optimal design under a utilitarian approach
     name: fig-optimal-design
 ---
 π = 0.3
 n = 100
-nv = [0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94,
-      14.7]
+nv = [0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7]
 x = np.arange(0, 1, 0.001)
-y = x - 0.4
+y = [f(i) for i in x]
 z = x
 x0 = np.arange(π, 1, 0.001)
 x2 = np.arange(0, π, 0.001)
 y1 = [π for i in x0]
 y2 = [π for i in x2]
+x3 = np.arange(0.16, 1, 0.001)
+y3 = (pow(x3, 0.5) - 0.4)**2
 
 plt.figure(figsize=(12, 10))
 plt.plot(x, x, 'c:', linewidth=2)
 plt.plot(x0, y1, 'c:', linewidth=2)
 plt.plot(y2, x2, 'c:', linewidth=2)
-plt.plot(x, y, 'r-', label='Truth Border')
+plt.plot(x3, y3, 'b-', label='Truth Border')
 plt.fill_between(x, y, z, facecolor='blue', alpha=0.05,
                  label='truth telling')
-plt.fill_between(x, 0, y, facecolor='green', alpha=0.05,
+plt.fill_between(x3, 0, y3, facecolor='green', alpha=0.05,
                  label='lying')
 for i in range(len(nv)):
-    y = π - (π**2 * (1 - π)**2) / \
-        (n * (nv[i] / n) * (x0 - π + 1e-8))
-    plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i,
-             label=f'V{i+1}')
-
-
-plt.scatter(0.498, 0.1, c='b', marker='*', label='Q',
-            s=150)
-plt.scatter(0.4, 0, c='y', label='X', s=150)
+    y = π - (π**2 * (1 - π)**2) / (n * (nv[i] / n) * (x0 - π + 1e-8))
+    plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
+plt.scatter(0.61, 0.146, c='r', marker='*', label='Q', s=150)
 plt.xlim([0, 1])
 plt.ylim([0, 0.5])
 plt.xlabel('Pr(A|yes)')
 plt.ylabel('Pr(A|no)')
 plt.text(0.45, 0.35, "Truth Telling",
          fontdict={'size': 28, 'style': 'italic'})
-plt.text(0.85, 0.35, "Lying",
+plt.text(0.8, 0.1, "Lying",
          fontdict={'size': 28, 'style': 'italic'})
-plt.text(0.515, 0.095, "Optimal Design",
-         fontdict={'size': 16, 'color': 'b'})
+plt.text(0.63, 0.141, "Optimal Design",
+         fontdict={'size': 16, 'color': 'r'})
 plt.legend(loc=0, fontsize='large')
 plt.show()
 ```
