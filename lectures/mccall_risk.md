@@ -161,19 +161,19 @@ mystnb:
 e_θ = μ_grid + (θ * σ_grid**2) / 2
 
 # Create contour plot
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots()
 contour = ax.contour(
     μ_grid, σ_grid, e_θ, levels=20, colors='black', linewidths=0.5
 )
 contourf = ax.contourf(
     μ_grid, σ_grid, e_θ, levels=20, cmap='viridis'
 )
-ax.clabel(contour, inline=True, fontsize=8)
+ax.clabel(contour, inline=True)
 cbar = plt.colorbar(contourf, ax=ax)
-cbar.set_label(r'$e_\theta$', rotation=0, fontsize=12)
+cbar.set_label(r'$e_\theta$', rotation=0)
 
-ax.set_xlabel(r'$\mu$ (mean)', fontsize=12)
-ax.set_ylabel(r'$\sigma$ (standard deviation)', fontsize=12)
+ax.set_xlabel(r'$\mu$ (mean)')
+ax.set_ylabel(r'$\sigma$ (standard deviation)')
 plt.tight_layout()
 plt.show()
 ```
@@ -227,13 +227,13 @@ compute_e_θ_vec = jax.vmap(compute_e_θ)
 e_θ_values = compute_e_θ_vec(θ_grid)
 
 # Plot results
-fig, ax = plt.subplots(figsize=(10, 6))
-ax.plot(θ_grid, e_θ_values, linewidth=2)
-ax.set_xlabel(r'$\theta$', fontsize=14)
-ax.set_ylabel(r'$e_\theta$', fontsize=14)
+fig, ax = plt.subplots()
+ax.plot(θ_grid, e_θ_values, lw=2)
+ax.set_xlabel(r'$\theta$')
+ax.set_ylabel(r'$e_\theta$')
 ax.axhline(y=0.5, color='black', linestyle='--',
            linewidth=1, label=r'$\mathbb{E}[Y] = 0.5$')
-ax.legend(fontsize=12)
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
@@ -317,14 +317,14 @@ compute_e_θ_vec = jax.vmap(compute_e_θ)
 e_θ_values = compute_e_θ_vec(σ_grid)
 
 # Plot results
-fig, ax = plt.subplots(figsize=(10, 6))
-ax.plot(σ_grid, e_θ_values, linewidth=2.5, label=r'$e_\theta(\sigma)$')
-ax.set_xlabel(r'$\sigma$ (noise level)', fontsize=14)
-ax.set_ylabel(r'$e_\theta$', fontsize=14)
-ax.set_title(r'Risk-adjusted evaluation as noise increases', fontsize=14)
+fig, ax = plt.subplots()
+ax.plot(σ_grid, e_θ_values, lw=2, label=r'$e_\theta(\sigma)$')
+ax.set_xlabel(r'$\sigma$ (noise level)')
+ax.set_ylabel(r'$e_\theta$')
+ax.set_title(r'Risk-adjusted evaluation as noise increases')
 ax.axhline(y=e_θ_values[0], color='black', linestyle='--', linewidth=1,
            label=f'No noise: $e_\\theta$ = {e_θ_values[0]:.3f}')
-ax.legend(fontsize=12)
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
@@ -608,14 +608,14 @@ compute_res_wages_vec = jax.vmap(compute_res_wage_for_theta)
 reservation_wages = compute_res_wages_vec(θ_grid)
 
 # Plot the results
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots()
 ax.plot(θ_grid, reservation_wages,
-        lw=2.5, marker='o', markersize=4)
-ax.set_xlabel(r'$\theta$ (risk aversion parameter)', fontsize=14)
-ax.set_ylabel('Reservation wage', fontsize=14)
+        lw=2, marker='o', markersize=4)
+ax.set_xlabel(r'$\theta$ (risk aversion parameter)')
+ax.set_ylabel('Reservation wage')
 ax.axvline(x=-1.5, color='black', ls='--',
            linewidth=1, label=r'Default $\theta = -1.5$')
-ax.legend(fontsize=12)
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
@@ -747,14 +747,14 @@ compute_u_rates_vec = jax.vmap(compute_u_rate_for_theta)
 unemployment_rates = compute_u_rates_vec(θ_grid)
 
 # Plot the results
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots()
 ax.plot(θ_grid, unemployment_rates * 100,
-        lw=2.5, marker='s', markersize=4)
-ax.set_xlabel(r'$\theta$ (risk aversion parameter)', fontsize=14)
-ax.set_ylabel('Long-run unemployment rate (%)', fontsize=14)
-ax.set_title('Unemployment rate as a function of risk aversion', fontsize=14)
+        lw=2, marker='s', markersize=4)
+ax.set_xlabel(r'$\theta$ (risk aversion parameter)')
+ax.set_ylabel('Long-run unemployment rate (%)')
+ax.set_title('Unemployment rate as a function of risk aversion')
 ax.axvline(x=-1.5, color='black', ls='--', linewidth=1, label=r'Default $\theta = -1.5$')
-ax.legend(fontsize=12)
+ax.legend()
 plt.tight_layout()
 plt.show()
 ```
