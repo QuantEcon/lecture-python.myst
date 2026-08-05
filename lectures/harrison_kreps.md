@@ -276,11 +276,14 @@ def price_single_beliefs(transition, dividend_payoff, β=.75):
     """
     Function to Solve Single Beliefs
     """
-    # First compute inverse piece
-    imbq_inv = la.inv(np.eye(transition.shape[0]) - β * transition)
+    # First compute (I - βQ)
+    A = np.eye(transition.shape[0]) - β * transition
 
-    # Next compute prices
-    prices = β * imbq_inv @ transition @ dividend_payoff
+    # Next compute βQd
+    b = β * (transition @ dividend_payoff)
+
+    # Solve linear system
+    prices = la.solve(A, b)
 
     return prices
 ```
