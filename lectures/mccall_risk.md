@@ -66,15 +66,15 @@ Here we show how this can be done and study what effects it has on agent choices
 
 We'll use JAX and the QuantEcon library:
 
-```{code-cell} python
+```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install quantecon jax
+!pip install quantecon
 ```
 
 We use the following imports.
 
-```{code-cell} python
+```{code-cell} ipython3
 import jax
 import jax.numpy as jnp
 from jax import lax
@@ -145,22 +145,28 @@ In particular, $e_\theta$ decreases as risk increases.
 
 Here is a visualization of $e_\theta$ as a function of $\mu$ and $\sigma$ using a contour plot, with $\theta=-1$.
 
-```{code-cell} python
-theta = -1
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Entropic risk-adjusted expectation, Gaussian case
+    name: fig-mcr-gaussian
+---
+θ = -1
 
-mu_vals = np.linspace(-2, 5, 200)
-sigma_vals = np.linspace(0.1, 3, 200)
-mu_grid, sigma_grid = np.meshgrid(mu_vals, sigma_vals)
+μ_vals = np.linspace(-2, 5, 200)
+σ_vals = np.linspace(0.1, 3, 200)
+μ_grid, σ_grid = np.meshgrid(μ_vals, σ_vals)
 
-e_theta = mu_grid + (theta * sigma_grid**2) / 2
+e_θ = μ_grid + (θ * σ_grid**2) / 2
 
 # Create contour plot
 fig, ax = plt.subplots(figsize=(10, 8))
 contour = ax.contour(
-    mu_grid, sigma_grid, e_theta, levels=20, colors='black', linewidths=0.5
+    μ_grid, σ_grid, e_θ, levels=20, colors='black', linewidths=0.5
 )
 contourf = ax.contourf(
-    mu_grid, sigma_grid, e_theta, levels=20, cmap='viridis'
+    μ_grid, σ_grid, e_θ, levels=20, cmap='viridis'
 )
 ax.clabel(contour, inline=True, fontsize=8)
 cbar = plt.colorbar(contourf, ax=ax)
@@ -194,36 +200,37 @@ We do this for $\theta$ in a grid of 100 points between $-2$ and $-0.1$.
 
 Here is a plot of $e_{\theta}$ against $\theta$.
 
-```{code-cell} python
-import jax
-import jax.numpy as jnp
-import matplotlib.pyplot as plt
-
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Risk-adjusted evaluation against risk aversion
+    name: fig-mcr-beta
+---
 # Set parameters
 a, b = 2.0, 2.0
 mc_size = 1_000_000  # Large number of Monte Carlo samples
-theta_grid = jnp.linspace(-2, -0.1, 100)
+θ_grid = jnp.linspace(-2, -0.1, 100)
 
 # Draw samples from Beta(2, 2) distribution using JAX
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 Y_samples = jax.random.beta(key, a, b, shape=(mc_size,))
 
-# Define function to compute e_theta for a single theta value
-def compute_e_theta(theta):
-    """Compute e_theta = (1/theta) * ln(E[exp(theta * Y)])"""
-    expectation = jnp.mean(jnp.exp(theta * Y_samples))
-    return (1 / theta) * jnp.log(expectation)
+# Define function to compute e_θ for a single θ value
+def compute_e_θ(θ):
+    """Compute e_θ = (1/θ) * ln(E[exp(θ * Y)])"""
+    expectation = jnp.mean(jnp.exp(θ * Y_samples))
+    return (1 / θ) * jnp.log(expectation)
 
-# Vectorize over theta_grid using vmap
-compute_e_theta_vec = jax.vmap(compute_e_theta)
-e_theta_values = compute_e_theta_vec(theta_grid)
+# Vectorize over θ_grid using vmap
+compute_e_θ_vec = jax.vmap(compute_e_θ)
+e_θ_values = compute_e_θ_vec(θ_grid)
 
 # Plot results
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.plot(theta_grid, e_theta_values, linewidth=2)
+ax.plot(θ_grid, e_θ_values, linewidth=2)
 ax.set_xlabel(r'$\theta$', fontsize=14)
 ax.set_ylabel(r'$e_\theta$', fontsize=14)
-ax.set_title(r'$e_\theta$ for $Y \sim \text{Beta}(2, 2)$', fontsize=14)
 ax.axhline(y=0.5, color='black', linestyle='--',
            linewidth=1, label=r'$\mathbb{E}[Y] = 0.5$')
 ax.legend(fontsize=12)
@@ -277,46 +284,46 @@ Use a plot to illustrate your results.
 
 Here's our solution.
 
-```{code-cell} python
+```{code-cell} ipython3
 a, b = 2.0, 2.0
-theta = -2.0
+θ = -2.0
 mc_size = 1_000_000  # Large number of Monte Carlo samples
-sigma_grid = jnp.linspace(0.0, 1.0, 50)
+σ_grid = jnp.linspace(0.0, 1.0, 50)
 
 # Set random seed for reproducibility
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 key_y, key_z = jax.random.split(key)
 
 # Draw samples from Beta(2, 2) distribution
 Y_samples = jax.random.beta(key_y, a, b, shape=(mc_size,))
 
-# Draw standard normal samples (reused for all sigma values)
+# Draw standard normal samples (reused for all σ values)
 Z_samples = jax.random.normal(key_z, shape=(mc_size,))
 
-# Define function to compute e_theta for a single sigma value
-def compute_e_theta(sigma):
-    """Compute e_theta for X = Y + sigma * Z"""
-    # Compute X = Y + sigma * Z
-    X_samples = Y_samples + sigma * Z_samples
+# Define function to compute e_θ for a single σ value
+def compute_e_θ(σ):
+    """Compute e_θ for X = Y + σ * Z"""
+    # Compute X = Y + σ * Z
+    X_samples = Y_samples + σ * Z_samples
 
-    # Calculate E[exp(theta * X)] using Monte Carlo
-    expectation = jnp.mean(jnp.exp(theta * X_samples))
+    # Calculate E[exp(θ * X)] using Monte Carlo
+    expectation = jnp.mean(jnp.exp(θ * X_samples))
 
-    # Calculate e_theta
-    return (1 / theta) * jnp.log(expectation)
+    # Calculate e_θ
+    return (1 / θ) * jnp.log(expectation)
 
-# Vectorize over sigma_grid using vmap
-compute_e_theta_vec = jax.vmap(compute_e_theta)
-e_theta_values = compute_e_theta_vec(sigma_grid)
+# Vectorize over σ_grid using vmap
+compute_e_θ_vec = jax.vmap(compute_e_θ)
+e_θ_values = compute_e_θ_vec(σ_grid)
 
 # Plot results
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.plot(sigma_grid, e_theta_values, linewidth=2.5, label=r'$e_\theta(\sigma)$')
+ax.plot(σ_grid, e_θ_values, linewidth=2.5, label=r'$e_\theta(\sigma)$')
 ax.set_xlabel(r'$\sigma$ (noise level)', fontsize=14)
 ax.set_ylabel(r'$e_\theta$', fontsize=14)
 ax.set_title(r'Risk-adjusted evaluation as noise increases', fontsize=14)
-ax.axhline(y=e_theta_values[0], color='black', linestyle='--', linewidth=1,
-           label=f'No noise: $e_\\theta$ = {e_theta_values[0]:.3f}')
+ax.axhline(y=e_θ_values[0], color='black', linestyle='--', linewidth=1,
+           label=f'No noise: $e_\\theta$ = {e_θ_values[0]:.3f}')
 ax.legend(fontsize=12)
 plt.tight_layout()
 plt.show()
@@ -347,7 +354,7 @@ This is why the valuation of the random payoff goes down.
 ```{solution-end}
 ```
 
-## Back to Job Search
+## Back to job search
 
 In the lecture {doc}`mccall_fitted_vfi` we studied a job search model with
 separation, Markov wage draws and fitted value function iteration.
@@ -390,7 +397,7 @@ reservation wage.
 
 Here's a class to store parameters and default parameter values.
 
-```{code-cell} python
+```{code-cell} ipython3
 
 class Model(NamedTuple):
     c: float              # unemployment compensation
@@ -415,7 +422,7 @@ def create_mccall_model(
     ):
     """Factory function to create a McCall model instance."""
 
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     z_draws = jax.random.normal(key, (mc_size,))
 
     # Discretize just to get a suitable wage grid for interpolation
@@ -454,7 +461,7 @@ Then we compute the optimal policy: accept if $v_e(w) ≥ u(c) + β(P_\theta v_u
 
 Here's the Bellman operator that updates $v_u$.
 
-```{code-cell} python
+```{code-cell} ipython3
 def T(model, v):
     # Unpack model parameters
     c, α, β, ρ, ν, θ, w_grid, z_draws = model
@@ -478,7 +485,7 @@ def T(model, v):
 
 Here's the solver:
 
-```{code-cell} python
+```{code-cell} ipython3
 @jax.jit
 def vfi(
         model: Model,
@@ -509,7 +516,7 @@ def vfi(
 The next function computes the optimal policy under the assumption that $v$ is
 the value function:
 
-```{code-cell} python
+```{code-cell} ipython3
 def get_greedy(v: jnp.ndarray, model: Model) -> jnp.ndarray:
     """Get a v-greedy policy."""
     c, α, β, ρ, ν, θ, w_grid, z_draws = model
@@ -535,7 +542,7 @@ def get_greedy(v: jnp.ndarray, model: Model) -> jnp.ndarray:
 Here's a function that takes an instance of `Model`
 and returns the associated reservation wage.
 
-```{code-cell} python
+```{code-cell} ipython3
 @jax.jit
 def get_reservation_wage(σ: jnp.ndarray, model: Model) -> float:
     """
@@ -561,7 +568,7 @@ def get_reservation_wage(σ: jnp.ndarray, model: Model) -> float:
 
 Let's solve the model at the default parameters:
 
-```{code-cell} python
+```{code-cell} ipython3
 # First, let's solve for the default θ = -1.5
 model = create_mccall_model()
 c, α, β, ρ, ν, θ, w_grid, z_draws = model
@@ -577,30 +584,35 @@ print(f"Reservation wage at default parameters: {w_bar:.4f}")
 
 Now let's examine how the reservation wage changes as we vary the risk aversion parameter.
 
-```{code-cell} python
-# Create a grid of theta values (all negative for risk aversion)
-theta_grid = jnp.linspace(-3.0, -0.1, 25)
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Reservation wage against risk aversion
+    name: fig-mcr-reservation
+---
+# Create a grid of θ values (all negative for risk aversion)
+θ_grid = jnp.linspace(-3.0, -0.1, 25)
 
-# Define function to compute reservation wage for a single theta value
+# Define function to compute reservation wage for a single θ value
 def compute_res_wage_for_theta(θ):
-    """Compute reservation wage for a given theta value"""
+    """Compute reservation wage for a given θ value"""
     model = create_mccall_model(θ=θ)
     v = vfi(model)
     σ = get_greedy(v, model)
     w_bar = get_reservation_wage(σ, model)
     return w_bar
 
-# Vectorize over theta_grid using vmap
+# Vectorize over θ_grid using vmap
 compute_res_wages_vec = jax.vmap(compute_res_wage_for_theta)
-reservation_wages = compute_res_wages_vec(theta_grid)
+reservation_wages = compute_res_wages_vec(θ_grid)
 
 # Plot the results
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.plot(theta_grid, reservation_wages,
+ax.plot(θ_grid, reservation_wages,
         lw=2.5, marker='o', markersize=4)
 ax.set_xlabel(r'$\theta$ (risk aversion parameter)', fontsize=14)
 ax.set_ylabel('Reservation wage', fontsize=14)
-ax.set_title('Reservation wage as a function of risk aversion', fontsize=14)
 ax.axvline(x=-1.5, color='black', ls='--',
            linewidth=1, label=r'Default $\theta = -1.5$')
 ax.legend(fontsize=12)
@@ -636,7 +648,7 @@ You can use code for simulation from {doc}`mccall_fitted_vfi`, suitably modified
 To compute the long-run unemployment rate, we first write a function to update a
 single agent.
 
-```{code-cell} python
+```{code-cell} ipython3
 @jax.jit
 def simulate_single_agent(key, model, w_star, num_periods=200):
     """
@@ -701,7 +713,7 @@ def compute_unemployment_rate(model, w_star, num_agents=1000, num_periods=200, s
     the fraction unemployed at the end.
     """
     # Create keys for each agent
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     keys = jax.random.split(key, num_agents)
 
     # Vectorize simulation across agents (parallelization!)
@@ -718,9 +730,9 @@ def compute_unemployment_rate(model, w_star, num_agents=1000, num_periods=200, s
     return unemployment_rate
 
 
-# Define function to compute unemployment rate for a single theta value
+# Define function to compute unemployment rate for a single θ value
 def compute_u_rate_for_theta(θ):
-    """Compute unemployment rate for a given theta value"""
+    """Compute unemployment rate for a given θ value"""
     model = create_mccall_model(θ=θ)
     v = vfi(model)
     σ = get_greedy(v, model)
@@ -730,13 +742,13 @@ def compute_u_rate_for_theta(θ):
     )
     return u_rate
 
-# Vectorize over theta_grid using vmap
+# Vectorize over θ_grid using vmap
 compute_u_rates_vec = jax.vmap(compute_u_rate_for_theta)
-unemployment_rates = compute_u_rates_vec(theta_grid)
+unemployment_rates = compute_u_rates_vec(θ_grid)
 
 # Plot the results
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.plot(theta_grid, unemployment_rates * 100,
+ax.plot(θ_grid, unemployment_rates * 100,
         lw=2.5, marker='s', markersize=4)
 ax.set_xlabel(r'$\theta$ (risk aversion parameter)', fontsize=14)
 ax.set_ylabel('Long-run unemployment rate (%)', fontsize=14)
