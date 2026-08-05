@@ -34,7 +34,7 @@ Let $X$ be an $m \times n$ matrix of rank $p$.
 
 Necessarily, $p \leq \min(m,n)$.
 
-In  much of this lecture, we'll think of $X$ as a matrix of **data** in which
+In  much of this lecture, we'll think of $X$ as a matrix of data in which
 
 * each column is an **individual** -- a time period or person, depending on the application
 
@@ -52,11 +52,11 @@ We'll apply a **singular value decomposition** of $X$ in both situations.
 
 In the $ m < < n$ case  in which there are many more individuals $n$ than attributes $m$, we can calculate sample moments of  a joint distribution  by taking averages  across observations of functions of the observations.
 
-In this $ m < < n$ case,  we'll look for **patterns** by using a **singular value decomposition** to do a **principal components analysis** (PCA).
+In this $ m < < n$ case,  we'll look for patterns by using a singular value decomposition to do a principal components analysis (PCA).
 
 In the $m > > n$  case in which there are many more attributes $m$ than individuals $n$ and when we are in a time-series setting in which $n$ equals the number of time periods covered in the data set $X$, we'll proceed in a different way.
 
-We'll again use a **singular value decomposition**,  but now to construct a **dynamic mode decomposition** (DMD)
+We'll again use a singular value decomposition,  but now to construct a **dynamic mode decomposition** (DMD)
 
 ## Singular Value Decomposition
 
@@ -280,6 +280,8 @@ Let's do an example.
 import numpy as np
 import numpy.linalg as LA
 import matplotlib.pyplot as plt
+
+rng = np.random.default_rng()
 ```
 
 Having imported these modules, let's do the example.
@@ -424,7 +426,7 @@ First, let's study a case in which $m = 5 > n = 2$.
 
 ```{code-cell} ipython3
 import numpy as np
-X = np.random.rand(5,2)
+X = rng.random((5, 2))
 U, S, V = np.linalg.svd(X,full_matrices=True)  # full SVD
 Uhat, Shat, Vhat = np.linalg.svd(X,full_matrices=False) # economy SVD
 print('U, S, V =')
@@ -486,7 +488,7 @@ To illustrate this case,  we'll set $m = 2 < 5 = n $ and compute both full and r
 
 ```{code-cell} ipython3
 import numpy as np
-X = np.random.rand(2,5)
+X = rng.random((2, 5))
 U, S, V = np.linalg.svd(X,full_matrices=True)  # full SVD
 Uhat, Shat, Vhat = np.linalg.svd(X,full_matrices=False) # economy SVD
 print('U, S, V = ')
