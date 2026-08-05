@@ -289,7 +289,7 @@ We can deduce two things about the truth border:
 
   - The truth border can have either a concave or a convex shape.
 
-We can draw some truth borders in {numref}`fig-truth-borders` with the following Python code:
+We can draw some truth borders in {numref}`fig-truth-borders` with the following Python code, writing $p$ for $\text{Pr}(A|r_i)$:
 
 ```{code-cell} ipython3
 ---
@@ -304,37 +304,20 @@ x2 = np.arange(0.4**2, 1, 0.001)
 y2 = (pow(x2, 0.5) - 0.4)**2
 x3 = np.arange(0.4**0.5, 1, 0.001)
 y3 = pow(x3**2 - 0.4, 0.5)
-plt.figure(figsize=(12, 10))
-plt.plot(
-    x1, y1, 'r-',
-    label=r'Truth Border of: $U_i(Pr(A|r_i),\phi_i)='
-          r'-Pr(A|r_i)+f(\phi_i)$'
-)
-plt.fill_between(x1, 0, y1, facecolor='red', alpha=0.05)
-plt.plot(
-    x2, y2, 'b-',
-    label=r'Truth Border of: $U_i(Pr(A|r_i),\phi_i)='
-          r'-Pr(A|r_i)^{2}+f(\phi_i)$'
-)
-plt.fill_between(x2, 0, y2, facecolor='blue', alpha=0.05)
-plt.plot(
-    x3, y3, 'y-',
-    label=r'Truth Border of: $U_i(Pr(A|r_i),\phi_i)='
-          r'-\sqrt{Pr(A|r_i)}+f(\phi_i)$'
-)
-plt.fill_between(x3, 0, y3, facecolor='green', alpha=0.05)
-plt.plot(x1, x1, ':', linewidth=2)
-plt.xlim([0, 1])
-plt.ylim([0, 1])
 
-plt.xlabel('Pr(A|yes)')
-plt.ylabel('Pr(A|no)')
-plt.text(0.42, 0.3, "Truth Telling",
-         fontdict={'size': 28, 'style': 'italic'})
-plt.text(0.8, 0.1, "Lying",
-         fontdict={'size': 28, 'style': 'italic'})
-
-plt.legend(loc=0, fontsize='large')
+fig, ax = plt.subplots()
+ax.plot(x1, y1, 'r-', lw=2, label=r'$U_i = -p + f(\phi_i)$')
+ax.fill_between(x1, 0, y1, facecolor='red', alpha=0.05)
+ax.plot(x2, y2, 'b-', lw=2, label=r'$U_i = -p^2 + f(\phi_i)$')
+ax.fill_between(x2, 0, y2, facecolor='blue', alpha=0.05)
+ax.plot(x3, y3, 'y-', lw=2, label=r'$U_i = -\sqrt{p} + f(\phi_i)$')
+ax.fill_between(x3, 0, y3, facecolor='green', alpha=0.05)
+ax.plot(x1, x1, ':', lw=2)
+ax.set(xlim=(0, 1), ylim=(0, 1),
+       xlabel='Pr(A|yes)', ylabel='Pr(A|no)')
+ax.text(0.42, 0.3, "truth telling")
+ax.text(0.8, 0.1, "lying")
+ax.legend(loc='upper left')
 plt.show()
 ```
 
@@ -357,28 +340,19 @@ x1 = np.arange(0, 1, 0.001)
 y1 = x1 - 0.4
 z1 = x1
 z2 = 0
-plt.figure(figsize=(12, 10))
-plt.plot(
-    x1, y1, 'r-',
-    label=r'Truth Border of: $U_i(Pr(A|r_i),\phi_i)='
-          r'-Pr(A|r_i)+f(\phi_i)$'
-)
-plt.plot(x1, x1, ':', linewidth=2)
-plt.fill_between(x1, y1, z1, facecolor='blue', alpha=0.05,
-                 label='truth telling')
-plt.fill_between(x1, z2, y1, facecolor='green', alpha=0.05,
-                 label='lying')
-plt.xlim([0, 1])
-plt.ylim([0, 1])
 
-plt.xlabel('Pr(A|yes)')
-plt.ylabel('Pr(A|no)')
-plt.text(0.5, 0.4, "Truth Telling",
-         fontdict={'size': 28, 'style': 'italic'})
-plt.text(0.8, 0.2, "Lying",
-         fontdict={'size': 28, 'style': 'italic'})
-
-plt.legend(loc=0, fontsize='large')
+fig, ax = plt.subplots()
+ax.plot(x1, y1, 'r-', lw=2, label='truth border')
+ax.plot(x1, x1, ':', lw=2)
+ax.fill_between(x1, y1, z1, facecolor='blue', alpha=0.05,
+                label='truth telling')
+ax.fill_between(x1, z2, y1, facecolor='green', alpha=0.05,
+                label='lying')
+ax.set(xlim=(0, 1), ylim=(0, 1),
+       xlabel='Pr(A|yes)', ylabel='Pr(A|no)')
+ax.text(0.5, 0.4, "truth telling")
+ax.text(0.8, 0.2, "lying")
+ax.legend(loc='upper left')
 plt.show()
 ```
 
@@ -432,48 +406,37 @@ Note that:
 - The original randomized response model of {cite:t}`warner1965randomized` is less flexible than the unrelated question model.
 
 ```{code-cell} ipython3
-class Iso_Variance:
-    def __init__(self, π, n):
-        self.π = π
-        self.n = n
+def plot_iso_variance_curves(π, n):
+    nv = np.array([0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7])
+    x = np.arange(0, 1, 0.001)
+    x0 = np.arange(π, 1, 0.001)
+    x2 = np.arange(0, π, 0.001)
+    y1 = [π for i in x0]
+    y2 = [π for i in x2]
+    y0 = 1 / (1 + (x0 * (1 - π)**2) / ((1 - x0) * π**2))
 
-    def plotting_iso_variance_curve(self):
-        π = self.π
-        n = self.n
-
-        nv = np.array([0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7])
-        x = np.arange(0, 1, 0.001)
-        x0 = np.arange(π, 1, 0.001)
-        x2 = np.arange(0, π, 0.001)
-        y1 = [π for i in x0]
-        y2 = [π for i in x2]
-        y0 = 1 / (1 + (x0 * (1 - π)**2) / ((1 - x0) * π**2))
-
-        plt.figure(figsize=(12, 10))
-        plt.plot(x0, y0, 'm-', label='Warner')
-        plt.plot(x, x, 'c:', linewidth=2)
-        plt.plot(x0, y1, 'c:', linewidth=2)
-        plt.plot(y2, x2, 'c:', linewidth=2)
-        for i in range(len(nv)):
-            y = π - (π**2 * (1 - π)**2) / (n * (nv[i] / n) * (x0 - π + 1e-8))
-            plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
-        plt.xlim([0, 1])
-        plt.ylim([0, 0.5])
-        plt.xlabel('Pr(A|yes)')
-        plt.ylabel('Pr(A|no)')
-        plt.legend(loc=0, fontsize='large')
-        plt.text(0.32, 0.28, "High Var",
-                 fontdict={'size': 15, 'style': 'italic'})
-        plt.text(0.91, 0.01, "Low Var",
-                 fontdict={'size': 15, 'style': 'italic'})
-        plt.show()
+    fig, ax = plt.subplots()
+    ax.plot(x0, y0, 'm-', lw=2, label='Warner')
+    ax.plot(x, x, 'c:', lw=2)
+    ax.plot(x0, y1, 'c:', lw=2)
+    ax.plot(y2, x2, 'c:', lw=2)
+    for i in range(len(nv)):
+        y = π - (π**2 * (1 - π)**2) / (n * (nv[i] / n) * (x0 - π + 1e-8))
+        ax.plot(x0, y, 'k--', alpha=1 - 0.07 * i,
+                label='iso-variance curves' if i == 0 else None)
+    ax.set(xlim=(0, 1), ylim=(0, 0.5),
+           xlabel='Pr(A|yes)', ylabel='Pr(A|no)')
+    ax.text(0.42, 0.32, "high variance")
+    ax.text(0.83, 0.01, "low variance")
+    ax.legend(loc='upper left')
+    plt.show()
 ```
 
-Properties of  iso-variance curves  are:
+Properties of iso-variance curves are:
 
 - All points on one iso-variance curve share the same variance
 
-- From $V_1$ to $V_9$, the variance of the iso-variance curve increases monotonically, as colors brighten monotonically
+- Variance increases as the curves move up and to the left, and the curves lighten as variance increases
 
 Suppose the parameters of the iso-variance model follow those in Ljungqvist {cite}`ljungqvist1993unified`, which are:
 
@@ -490,8 +453,7 @@ mystnb:
     caption: Iso-variance curves
     name: fig-iso-variance
 ---
-var = Iso_Variance(π=0.3, n=100)
-var.plotting_iso_variance_curve()
+plot_iso_variance_curves(π=0.3, n=100)
 ```
 
 ### Optimal survey
@@ -570,32 +532,27 @@ x2 = np.arange(0, π, 0.001)
 y1 = [π for i in x0]
 y2 = [π for i in x2]
 
-plt.figure(figsize=(12, 10))
-plt.plot(x, x, 'c:', linewidth=2)
-plt.plot(x0, y1, 'c:', linewidth=2)
-plt.plot(y2, x2, 'c:', linewidth=2)
-plt.plot(x, y, 'r-', label='Truth Border')
-plt.fill_between(x, y, z, facecolor='blue', alpha=0.05,
-                 label='truth telling')
-plt.fill_between(x, 0, y, facecolor='green', alpha=0.05,
-                 label='lying')
+fig, ax = plt.subplots()
+ax.plot(x, x, 'c:', lw=2)
+ax.plot(x0, y1, 'c:', lw=2)
+ax.plot(y2, x2, 'c:', lw=2)
+ax.plot(x, y, 'r-', lw=2, label='truth border')
+ax.fill_between(x, y, z, facecolor='blue', alpha=0.05,
+                label='truth telling')
+ax.fill_between(x, 0, y, facecolor='green', alpha=0.05,
+                label='lying')
 for i in range(len(nv)):
     y = π - (π**2 * (1 - π)**2) / (n * (nv[i] / n) * (x0 - π + 1e-8))
-    plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
-
-plt.scatter(0.498, 0.1, c='b', marker='*', label='Z', s=150)
-plt.scatter(0.4, 0, c='y', label='X', s=150)
-plt.xlim([0, 1])
-plt.ylim([0, 0.5])
-plt.xlabel('Pr(A|yes)')
-plt.ylabel('Pr(A|no)')
-plt.text(0.45, 0.35, "Truth Telling",
-         fontdict={'size': 28, 'style': 'italic'})
-plt.text(0.85, 0.35, "Lying",
-         fontdict={'size': 28, 'style': 'italic'})
-plt.text(0.515, 0.095, "Optimal Design",
-         fontdict={'size': 16, 'color': 'b'})
-plt.legend(loc=0, fontsize='large')
+    ax.plot(x0, y, 'k--', alpha=1 - 0.07 * i,
+            label='iso-variance curves' if i == 0 else None)
+ax.scatter(0.498, 0.1, c='b', marker='*', s=150, label='Z')
+ax.scatter(0.4, 0, c='y', s=150, label='X')
+ax.set(xlim=(0, 1), ylim=(0, 0.5),
+       xlabel='Pr(A|yes)', ylabel='Pr(A|no)')
+ax.text(0.45, 0.4, "truth telling")
+ax.text(0.85, 0.4, "lying")
+ax.text(0.515, 0.095, "optimal design", color='b')
+ax.legend(loc='upper left')
 plt.show()
 ```
 
@@ -646,10 +603,8 @@ We can use Python to show the optimal model design.
 
 ```{code-cell} ipython3
 def f(x):
-    if x < 0.16:
-        return 0
-    else:
-        return (pow(x, 0.5) - 0.4)**2
+    "Truth border under the Chaudhuri and Mukerjee assumption."
+    return np.where(x < 0.16, 0.0, (np.sqrt(x) - 0.4)**2)
 ```
 
 ```{code-cell} ipython3
@@ -663,39 +618,34 @@ mystnb:
 n = 100
 nv = [0.27, 0.34, 0.49, 0.74, 0.92, 1.1, 1.47, 2.94, 14.7]
 x = np.arange(0, 1, 0.001)
-y = [f(i) for i in x]
+y = f(x)
 z = x
 x0 = np.arange(π, 1, 0.001)
 x2 = np.arange(0, π, 0.001)
 y1 = [π for i in x0]
 y2 = [π for i in x2]
 x3 = np.arange(0.16, 1, 0.001)
-y3 = (pow(x3, 0.5) - 0.4)**2
 
-plt.figure(figsize=(12, 10))
-plt.plot(x, x, 'c:', linewidth=2)
-plt.plot(x0, y1, 'c:', linewidth=2)
-plt.plot(y2, x2, 'c:', linewidth=2)
-plt.plot(x3, y3, 'b-', label='Truth Border')
-plt.fill_between(x, y, z, facecolor='blue', alpha=0.05,
-                 label='truth telling')
-plt.fill_between(x3, 0, y3, facecolor='green', alpha=0.05,
-                 label='lying')
+fig, ax = plt.subplots()
+ax.plot(x, x, 'c:', lw=2)
+ax.plot(x0, y1, 'c:', lw=2)
+ax.plot(y2, x2, 'c:', lw=2)
+ax.plot(x3, f(x3), 'b-', lw=2, label='truth border')
+ax.fill_between(x, y, z, facecolor='blue', alpha=0.05,
+                label='truth telling')
+ax.fill_between(x3, 0, f(x3), facecolor='green', alpha=0.05,
+                label='lying')
 for i in range(len(nv)):
     y = π - (π**2 * (1 - π)**2) / (n * (nv[i] / n) * (x0 - π + 1e-8))
-    plt.plot(x0, y, 'k--', alpha=1 - 0.07 * i, label=f'V{i+1}')
-plt.scatter(0.61, 0.146, c='r', marker='*', label='Q', s=150)
-plt.xlim([0, 1])
-plt.ylim([0, 0.5])
-plt.xlabel('Pr(A|yes)')
-plt.ylabel('Pr(A|no)')
-plt.text(0.45, 0.35, "Truth Telling",
-         fontdict={'size': 28, 'style': 'italic'})
-plt.text(0.8, 0.1, "Lying",
-         fontdict={'size': 28, 'style': 'italic'})
-plt.text(0.63, 0.141, "Optimal Design",
-         fontdict={'size': 16, 'color': 'r'})
-plt.legend(loc=0, fontsize='large')
+    ax.plot(x0, y, 'k--', alpha=1 - 0.07 * i,
+            label='iso-variance curves' if i == 0 else None)
+ax.scatter(0.61, 0.146, c='r', marker='*', s=150, label='Q')
+ax.set(xlim=(0, 1), ylim=(0, 0.5),
+       xlabel='Pr(A|yes)', ylabel='Pr(A|no)')
+ax.text(0.45, 0.4, "truth telling")
+ax.text(0.85, 0.1, "lying")
+ax.text(0.63, 0.141, "optimal design", color='r')
+ax.legend(loc='upper left')
 plt.show()
 ```
 
