@@ -52,7 +52,7 @@ We'll begin by loading some Python modules.
 
 import matplotlib.pyplot as plt
 import numpy as np
-from numba import vectorize, jit, prange
+from numba import vectorize, jit
 from math import gamma
 import pandas as pd
 from scipy.integrate import quad
@@ -61,10 +61,7 @@ from scipy.integrate import quad
 import seaborn as sns
 colors = sns.color_palette()
 
-@jit
-def set_seed():
-    np.random.seed(142857)
-set_seed()
+rng = np.random.default_rng(142857)
 ```
 
 ## The setting
@@ -162,7 +159,7 @@ g = jit(lambda x: p(x, G_a, G_b))
 
 ```{code-cell} ipython3
 @jit
-def simulate(a, b, T=50, N=500):
+def simulate(a, b, rng, T=50, N=500):
     '''
     Generate N sets of T observations of the likelihood ratio,
     return as N x T matrix.
@@ -173,7 +170,7 @@ def simulate(a, b, T=50, N=500):
     for i in range(N):
 
         for j in range(T):
-            w = np.random.beta(a, b)
+            w = rng.beta(a, b)
             l_arr[i, j] = f(w) / g(w)
 
     return l_arr
@@ -182,12 +179,12 @@ def simulate(a, b, T=50, N=500):
 We'll also use the following Python code to prepare some informative simulations
 
 ```{code-cell} ipython3
-l_arr_g = simulate(G_a, G_b, N=50000)
+l_arr_g = simulate(G_a, G_b, rng, N=50000)
 l_seq_g = np.cumprod(l_arr_g, axis=1)
 ```
 
 ```{code-cell} ipython3
-l_arr_f = simulate(F_a, F_b, N=50000)
+l_arr_f = simulate(F_a, F_b, rng, N=50000)
 l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```
 
@@ -492,16 +489,16 @@ First, let's create a function to simulate data under the mixture timing protoco
 
 ```{code-cell} ipython3
 @jit
-def simulate_mixture_path(x_true, T):
+def simulate_mixture_path(x_true, T, rng):
     """
     Simulate T observations under mixture timing protocol.
     """
     w = np.empty(T)
     for t in range(T):
-        if np.random.rand() < x_true:
-            w[t] = np.random.beta(F_a, F_b)
+        if rng.random() < x_true:
+            w[t] = rng.beta(F_a, F_b)
         else:
-            w[t] = np.random.beta(G_a, G_b)
+            w[t] = rng.beta(G_a, G_b)
     return w
 ```
 
@@ -522,8 +519,8 @@ prior_params = [(1, 3), (1, 1), (3, 1)]
 prior_means = [a/(a+b) for a, b in prior_params]
 
 # Generate one path of observations from the mixture
-set_seed()
-w_mix = simulate_mixture_path(x_true, T_mix)
+rng = np.random.default_rng(142857)
+w_mix = simulate_mixture_path(x_true, T_mix, rng)
 ```
 
 ### Behavior of $\pi_t$ under wrong model
@@ -830,7 +827,7 @@ We'll plot a large sample of paths.
 
 ```{code-cell} ipython3
 @jit
-def martingale_simulate(π0, N=5000, T=200):
+def martingale_simulate(π0, rng, N=5000, T=200):
 
     π_path = np.empty((N,T+1))
     w_path = np.empty((N,T))
@@ -840,29 +837,27 @@ def martingale_simulate(π0, N=5000, T=200):
         π = π0
         for t in range(T):
             # draw w
-            if np.random.rand() <= π:
-                w = np.random.beta(F_a, F_b)
+            if rng.random() <= π:
+                w = rng.beta(F_a, F_b)
             else:
-                w = np.random.beta(G_a, G_b)
+                w = rng.beta(G_a, G_b)
             π = π*f(w)/g(w)/(π*f(w)/g(w) + 1 - π)
             π_path[n,t+1] = π
             w_path[n,t] = w
 
     return π_path, w_path
 
-def fraction_0_1(π0, N, T, decimals):
+def fraction_0_1(π0, rng, N, T, decimals):
 
-    π_path, w_path = martingale_simulate(π0, N=N, T=T)
-    values, counts = np.unique(
-        np.round(π_path[:,-1], decimals=decimals), 
-        return_counts=True)
+    π_path, w_path = martingale_simulate(π0, rng, N=N, T=T)
+    values, counts = np.unique(np.round(π_path[:,-1], decimals=decimals), return_counts=True)
     return values, counts
 
-def create_table(π0s, N=10000, T=500, decimals=2):
+def create_table(π0s, rng, N=10000, T=500, decimals=2):
 
     outcomes = []
     for π0 in π0s:
-        values, counts = fraction_0_1(π0, N=N, T=T, decimals=decimals)
+        values, counts = fraction_0_1(π0, rng, N=N, T=T, decimals=decimals)
         freq = counts/N
         outcomes.append(dict(zip(values, freq)))
     table = pd.DataFrame(outcomes).sort_index(axis=1).fillna(0)
@@ -873,7 +868,7 @@ def create_table(π0s, N=10000, T=500, decimals=2):
 T = 200
 π0 = .5
 
-π_path, w_path = martingale_simulate(π0=π0, T=T, N=10000)
+π_path, w_path = martingale_simulate(π0=π0, rng=rng, T=T, N=10000)
 ```
 
 ```{code-cell} ipython3
@@ -928,7 +923,7 @@ $\pi_t$'s for various $t$'s.
 T = 200
 π0 = .3
 
-π_path3, w_path3 = martingale_simulate(π0=π0, T=T, N=10000)
+π_path3, w_path3 = martingale_simulate(π0=π0, rng=rng, T=T, N=10000)
 ```
 
 ```{code-cell} ipython3
@@ -982,8 +977,8 @@ The second column reports the fraction of $N = 10000$ simulations for which $\pi
 The third column reports the fraction of $N = 10000$ simulations for which $\pi_{t}$  had converged to $1$ at the terminal date $T=500$ for each simulation.
 
 ```{code-cell} ipython3
-# Create table
-table = create_table(list(np.linspace(0,1,11)), N=10000, T=500)
+# create table
+table = create_table(list(np.linspace(0,1,11)), rng, N=10000, T=500)
 table
 ```
 
@@ -1009,15 +1004,15 @@ Then we'll plot it.
 
 ```{code-cell} ipython3
 @jit
-def compute_cond_var(π, mc_size=int(1e6)):
+def compute_cond_var(π, rng, mc_size=int(1e6)):
     # Create Monte Carlo draws
     mc_draws = np.zeros(mc_size)
 
-    for i in prange(mc_size):
-        if np.random.rand() <= π:
-            mc_draws[i] = np.random.beta(F_a, F_b)
+    for i in range(mc_size):
+        if rng.random() <= π:
+            mc_draws[i] = rng.beta(F_a, F_b)
         else:
-            mc_draws[i] = np.random.beta(G_a, G_b)
+            mc_draws[i] = rng.beta(G_a, G_b)
 
     dev = π*f(mc_draws)/(π*f(mc_draws) + (1-π)*g(mc_draws)) - π
     return np.mean(dev**2)
@@ -1026,7 +1021,7 @@ def compute_cond_var(π, mc_size=int(1e6)):
 cond_var_array = []
 
 for π in π_array:
-    cond_var_array.append(compute_cond_var(π))
+    cond_var_array.append(compute_cond_var(π, rng))
 
 fig, ax = plt.subplots()
 ax.plot(π_array, cond_var_array, lw=2)
