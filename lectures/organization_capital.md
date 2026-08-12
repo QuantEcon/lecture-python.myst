@@ -188,13 +188,13 @@ mystnb:
     caption: Posterior mean convergence and uncertainty
     name: fig-posterior-evolution
 ---
-np.random.seed(0)
+rng = np.random.default_rng(0)
 
 θ_true = 0.8
 π = 1.0
 
 T = 20
-ε = np.random.randn(T)
+ε = rng.standard_normal(T)
 z_signals = θ_true + ε
 
 posterior_means = []

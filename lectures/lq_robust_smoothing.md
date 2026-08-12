@@ -36,49 +36,48 @@ kernelspec:
 
 This lecture studies a robust version of the LQ permanent income model due to {cite:t}`HST_1999` and {cite:t}`HansenSargent2008`.
 
-It is the third of three lectures on the LQ permanent income model.
+A consumer who distrusts his specification of the labor income process engages in a form of precautionary savings.
+
+This is the third of four lectures on the LQ permanent income model.
 
 It builds on {doc}`lq_permanent_income`, which develops the standard model, and {doc}`lq_bewley_complete_markets`, which studies its cross-section and market-structure implications.
 
-A consumer who distrusts his specification of the labor income process engages in a form of precautionary savings.
+The sequel, {doc}`lq_robust_bewley`, uses the results developed here to build a Bewley economy populated by consumers who differ in how much they distrust their income model.
 
 Our description of the model with concerns about robustness includes
 
-- how (for quantities) a concern for robustness is observationally equivalent to an increase in
-  impatience
+- how, for quantities, a concern for robustness is observationally equivalent to an increase in impatience
 - how the worst-case model that the consumer uses to shape his decision rule distorts the baseline model's endowment process toward greater persistence
+- a **breakdown point** beyond which the robust control problem ceases to have a solution
 - a frequency-domain representation of the effects of concerns about misspecification of the endowment process
 - a detection-error-probability characterization of the amount of model uncertainty
 
-The lecture concludes by combining the Bewley economy of {doc}`lq_bewley_complete_markets` with the robustness machinery.
-
-Using tools from {cite:t}`HansenSargent2008`, we show:
-
-- how a continuum of consumers $i$ who use identical decision rules can nevertheless differ in their robustness parameters $\sigma_i \leq 0$ and
-  their discount factors $\beta_i$, provided that the  pair $(\sigma_i, \beta_i)$ lies on an observational-equivalence locus
-  derived below
-- how every such consumer chooses the **same consumption-saving rule** as a baseline
-  plain-vanilla $(\sigma = 0, \beta)$ agent with no concerns about misspecification of the endowment process
-- how the equilibrium interest rate $R = \beta^{-1}$ and all aggregate dynamics therefore
-  coincide with those of a benchmark Bewley model
-- how distinct $(\sigma_i, \beta_i)$ agents act as if they have  different subjective  models of their non-financial income process
-
-We first present the HST model in its general form, which includes physical capital and investment $i_t$.
-
-When we return to the Bewley economy of {doc}`lq_bewley_complete_markets`, we specialise to a pure endowment economy with no capital, so investment plays no role there.
+A recurring theme is that a single scalar $\alpha^2$, the variance of the innovation to the consumer's marginal utility, summarises everything about the endowment process that matters for robustness.
 
 Let's begin with some imports.
 
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.stats import norm
-
 ```
 
 ## A brief review
 
 We recall the essentials from {doc}`lq_permanent_income` and {doc}`lq_bewley_complete_markets`.
+
+### Notation
+
+Because a robust decision maker guards against distortions to the mean of a shock, we need separate symbols for the shock and for the distortion.
+
+We therefore adopt the following conventions, which differ in three places from the two preceding lectures.
+
+```{note}
+- $w_{t+1}$ is the baseline IID shock, as in {doc}`lq_permanent_income`, and $v_{t+1}$ is a **distortion** to its conditional mean, as in {doc}`robust_permanent_income`.
+- $\sigma \leq 0$ is the **robustness parameter**. The standard deviations of the two endowment shocks, written $\sigma_1$ and $\sigma_2$ in the preceding lectures, are renamed $\eta_1$ and $\eta_2$ here so that $\sigma$ is free.
+- $a_t$ denotes the consumer's **net assets**, equal to minus the debt $b_t$ of {doc}`lq_permanent_income`. This frees $b_t$ for the preference shifter of {cite:t}`HST_1999`.
+```
+
+### The model
 
 A consumer with quadratic utility and discount factor $\beta$ faces the endowment process
 
@@ -87,18 +86,18 @@ $$
 z_{t+1} &= \check{A}\, z_t + \check{C}\, w_{t+1} \\
 y_t &= \check{G}\, z_t
 \end{aligned}
-$$ (eq:rs-endowment)
+$$ (eq:rcs-endowment)
 
 The optimal decision rule has a state-space representation in which the state is current consumption $c_t$ and the exogenous endowment state $z_t$:
 
 $$
 \begin{aligned}
 c_{t+1} &= c_t + (1-\beta)\,\check{G}(I-\beta\check{A})^{-1}\check{C}\, w_{t+1} \\
-b_t &= \check{G}(I-\beta\check{A})^{-1} z_t - \frac{1}{1-\beta}\,c_t \\
+a_t &= \frac{1}{1-\beta}\,c_t - \check{G}(I-\beta\check{A})^{-1} z_t \\
 y_t &= \check{G}\, z_t \\
 z_{t+1} &= \check{A}\, z_t + \check{C}\, w_{t+1}
 \end{aligned}
-$$ (eq:rs-crep)
+$$ (eq:rcs-crep)
 
 We again use the two-factor endowment $y_t = z_{1t} + z_{2t}$,
 
@@ -108,48 +107,88 @@ $$
 \begin{pmatrix}1 & 0\\0 & 0\end{pmatrix}
 \begin{pmatrix}z_{1t}\\z_{2t}\end{pmatrix}
 +
-\begin{pmatrix}\sigma_1 & 0\\0 & \sigma_2\end{pmatrix}
+\begin{pmatrix}\eta_1 & 0\\0 & \eta_2\end{pmatrix}
 \begin{pmatrix}w_{1,t+1}\\w_{2,t+1}\end{pmatrix}
-$$ (eq:pi-twofactor)
+$$ (eq:rcs-twofactor)
 
 with $z_{1t}$ a permanent component and $z_{2t}$ a purely transitory component.
+
+### The consumption innovation
+
+One scalar built from {eq}`eq:rcs-crep` will do all of the work below.
+
+The first line of {eq}`eq:rcs-crep` says that consumption is a random walk whose innovation is $h\, w_{t+1}$, where
+
+$$
+h = (1-\beta)\,\check{G}(I-\beta\check{A})^{-1}\check{C}
+$$ (eq:rcs-h)
+
+Define $\alpha^2$ to be the variance of that innovation,
+
+$$
+\alpha^2 = h h^\top
+= (1-\beta)^2\,\check{G}(I-\beta\check{A})^{-1}\check{C}\check{C}^\top(I-\beta\check{A}^\top)^{-1}\check{G}^\top
+$$ (eq:rcs-alpha)
+
+For the two-factor endowment {eq}`eq:rcs-twofactor` we have $\check A = \mathrm{diag}(1,0)$, $\check C = \mathrm{diag}(\eta_1,\eta_2)$ and $\check G = \begin{pmatrix}1 & 1\end{pmatrix}$, so that $(I-\beta\check A)^{-1} = \mathrm{diag}\bigl((1-\beta)^{-1},1\bigr)$ and
+
+$$
+h = \begin{pmatrix}\eta_1 & (1-\beta)\eta_2\end{pmatrix},
+\qquad
+\alpha^2 = \eta_1^2 + (1-\beta)^2\,\eta_2^2
+$$ (eq:rcs-alpha2)
+
+The permanent shock variance $\eta_1^2$ enters with coefficient $1$ because a unit permanent shock is *fully* capitalised into consumption.
+
+The transitory shock variance $\eta_2^2$ enters with the small coefficient $(1-\beta)^2$ because only its annuity value is consumed.
+
+This scalar does triple duty across the three lectures of this suite.
+
+```{note}
+$\alpha^2$ is simultaneously
+
+- the variance of the consumption innovation in {doc}`lq_permanent_income`,
+- the rate at which the cross-section variance of consumption grows with age in {doc}`lq_bewley_complete_markets`, and
+- the quantity that, multiplied by $\sigma$, governs every robustness result in this lecture.
+
+{doc}`robust_permanent_income` writes the same object as $\theta^2$.
+```
 
 The following cell fixes the calibration used below.
 
 ```{code-cell} ipython3
-# Parameters (as in the preceding lectures)
-β = 0.95       # discount factor
-σ1 = 0.15      # std of permanent shock
-σ2 = 0.30      # std of transitory shock
+β = 0.95        # discount factor, so R = 1/β
+η1 = 0.15       # std of permanent shock
+η2 = 0.30       # std of transitory shock
+
+R = 1 / β
+α2 = η1**2 + (1 - β)**2 * η2**2
+α = np.sqrt(α2)
+
+print(f"α^2 = {α2:.6f}")
+print(f"  permanent  η1^2         = {η1**2:.6f} "
+      f"({100 * η1**2 / α2:5.1f}% of α^2)")
+print(f"  transitory (1-β)^2 η2^2 = {(1 - β)**2 * η2**2:.6f} "
+      f"({100 * (1 - β)**2 * η2**2 / α2:5.1f}% of α^2)")
 ```
+
+Permanent shocks account for almost all of $\alpha^2$ in this calibration.
 
 ## A robust permanent income model
-
-```{index} single: Robust Control; permanent income
-```
-
-```{index} single: Precautionary Savings; robustness
-```
 
 ### Robustness and precautionary savings
 
 We now study a consumer who *distrusts* his specification of the stochastic process governing his labor income.
 
-The model is due to {cite:t}`HST_1999` (HST), who estimated
-it on US quarterly consumption and investment data.
+The model is due to {cite:t}`HST_1999` (HST), who estimated it on US quarterly consumption and investment data.
 
 For a fuller treatment of the HST model and its asset-pricing implications, see {doc}`robust_permanent_income`.
 
-A consumer who fears model misspecification engages in a form of **precautionary savings** that is
-distinct from the usual precautionary motive (which requires a convex marginal utility).
+A consumer who fears model misspecification engages in a form of **precautionary savings** that is distinct from the usual precautionary motive, which requires a convex marginal utility.
 
-Here, the
-precautionary motive arises because the consumer wants to protect against misspecification of the
-**conditional means** of income shocks, and it operates even with quadratic preferences.
+Here, the precautionary motive arises because the consumer wants to protect against misspecification of the **conditional means** of income shocks, and it operates even with quadratic preferences.
 
-HST showed an important **observational equivalence** result: for quantities $(c_t, i_t)$ alone,
-a concern for robustness is indistinguishable from an increase in impatience (a decrease in
-$\beta$).
+HST showed an important **observational equivalence** result: for quantities $(c_t, i_t)$ alone, a concern for robustness is indistinguishable from an increase in impatience, that is, a decrease in $\beta$.
 
 We develop this result carefully below.
 
@@ -161,17 +200,16 @@ We develop this result carefully below.
 ```{index} single: Hansen Sargent Tallarini; model
 ```
 
-HST's model features a planner with preferences over consumption streams $\{c_t\}$, mediated
-through **service streams** $\{s_t\}$.
+HST's model features a planner with preferences over consumption streams $\{c_t\}$, mediated through **service streams** $\{s_t\}$.
 
-Let $b$ be a preference shifter (utility bliss point).
+Let $b$ be a preference shifter, or utility bliss point.
 
 The **Bellman equation for the robust planner** is
 
 $$
 -x^\top P x - p =
-\sup_c \inf_w \Bigl\{-(s-b)^2 + \beta\bigl(\theta (w^*)^\top w^* - \mathbb{E}\,(x^*)^\top P x^* - p\bigr)\Bigr\}
-$$ (eq:income1)
+\sup_c \inf_{v^*} \Bigl\{-(s-b)^2 + \beta\bigl(\theta\, (v^*)^\top v^* - \mathbb{E}\,(x^*)^\top P x^* - p\bigr)\Bigr\}
+$$ (eq:rcs-bellman)
 
 subject to the household technology, capital accumulation, endowment dynamics, and the state law:
 
@@ -182,70 +220,55 @@ h^* &= \delta_h h + (1-\delta_h) c \\
 k^* &= \delta_k k + i \\
 c + i &= \gamma k + d \\
 \begin{pmatrix}d\\b\end{pmatrix} &= U z \\
-z^* &= A_{22} z + C_2(\epsilon^* + w^*)
+z^* &= A_{22} z + C_2(w^* + v^*)
 \end{aligned}
-$$ (eq:income1a)
+$$ (eq:rcs-tech)
 
-Here $^*$ denotes the next-period value; $c$ is consumption; $s$ is the scalar service measure;
-$h$ is a habit stock; $k$ is the capital stock; $i$ is investment; $d$ is an endowment/technology
-shock; $b$ is a **preference shock** (bliss-point shifter, distinct from the bond/debt variable
-$b_t$ used above); $\epsilon^* \sim N(0,I)$ is the baseline shock; and
-$w^*$ is a **distortion** to the conditional mean of $\epsilon^*$ chosen by a minimizing agent.
+Here $^*$ denotes the next-period value; $c$ is consumption; $s$ is the scalar service measure; $h$ is a habit stock; $k$ is the capital stock; $i$ is investment; $d$ is an endowment shock; $b$ is a **preference shock**; $\gamma$ is the marginal product of capital; $w^* \sim N(0,I)$ is the baseline shock; and $v^*$ is a **distortion** to the conditional mean of $w^*$ chosen by a minimizing agent.
 
-The penalty parameter $\theta > 0$ governs the consumer's concern about robustness.
+The penalty parameter $\theta$ governs the consumer's concern about robustness.
+
+A large $\theta$ makes distortions expensive and so restrains the minimizing agent.
 
 We use the transformation
 
 $$
-\sigma = -\theta^{-1} \leq 0
-$$
+\sigma = -\theta^{-1} \leq 0,
+\qquad \theta \in (0,\infty]
+$$ (eq:rcs-sigma)
 
-so $\sigma = 0$ corresponds to no robustness concern and $\sigma < 0$ to an increasing concern.
+so that $\sigma = 0$, equivalently $\theta = \infty$, corresponds to no robustness concern, and $\sigma < 0$ to an increasing concern.
 
-When $\lambda > 0$ and $\delta_h \in (0,1)$, the technology
-{eq}`eq:income1a` accommodates **habit persistence** (positive $\lambda$) or durability.
+When $\lambda > 0$ and $\delta_h \in (0,1)$, the technology {eq}`eq:rcs-tech` accommodates **habit persistence** or durability, and the stock $h_t$ is a geometric weighted average of current and past consumption.
 
-The stock
-$h_t$ is a geometric weighted average of current and past consumption.
-
-Equation $c_t + k_t = Rk_{t-1} + d_t$ with
-$R = \delta_k + \gamma$ combines capital accumulation with a linear production technology.
-
-$R$ is
-the physical gross return on capital.
+Equation $c_t + k_t = R k_{t-1} + d_t$ with $R = \delta_k + \gamma$ combines capital accumulation with a linear production technology, so $R$ is the physical gross return on capital.
 
 Let $x_t^\top = [h_{t-1},\, k_{t-1},\, z_t^\top]$.
 
-The state transition equations are:
+The state transition equation is
 
 $$
-x_{t+1} = A\, x_t + B\, u_t + C(\epsilon_{t+1} + w_{t+1})
-$$ (eq:law0)
+x_{t+1} = A\, x_t + B\, u_t + C(w_{t+1} + v_{t+1})
+$$ (eq:rcs-law)
 
-where $u_t = c_t$ and $w_{t+1}$ is the distortion to the conditional mean of $\epsilon_{t+1}$.
+where $u_t = c_t$ and $v_{t+1}$ is the distortion to the conditional mean of $w_{t+1}$.
 
-HST estimated the model on U.S. quarterly data (1970Q1-1996Q3) using
-nondurables plus services for consumption and durable consumption plus gross private investment for
-investment.
+HST estimated the model on US quarterly data from 1970Q1 to 1996Q3, using nondurables plus services for consumption and durable consumption plus gross private investment for investment.
 
-Key estimates are summarised in the following table (reported in Appendix A of HST):
+They imposed $\beta R = 1$ and $\delta_k = 0.975$, so $\gamma$ is pinned down once $\beta$ is estimated.
 
-| Parameter | Habit | No Habit |
+Two of their preference estimates are worth recording.
+
+| Parameter | Habit | No habit |
 |-----------|-------|----------|
-| Risk-free rate | 0.025 | 0.025 |
 | $\beta$ | 0.997 | 0.997 |
 | $\delta_h$ | 0.682 | — |
 | $\lambda$ | 2.443 | 0 |
-| $\alpha_1$ | 0.813 | 0.900 |
-| $\alpha_2$ | 0.189 | 0.241 |
-| $\phi_1$ | 0.998 | 0.995 |
-| $\phi_2$ | 0.704 | 0.450 |
 | $2 \times \log L$ | 779.05 | 762.55 |
 
-HST imposed $\beta R = 1$ and $\delta_k = 0.975$, so $\gamma$ is pinned down once $\beta$ is
-estimated.
+At a quarterly frequency, $\beta = 0.997$ implies an annual real interest rate of $\beta^{-4} - 1 \approx 1.2\%$.
 
-An annual real interest rate of 2.5% corresponds to $\beta = 0.997$.
+The remaining estimated parameters govern the exogenous $d_t$ and $b_t$ processes and are reported in Appendix A of {cite:t}`HST_1999`.
 
 ### Solution when $\sigma = 0$
 
@@ -253,9 +276,9 @@ When $\sigma = 0$ the objective reduces to
 
 $$
 \mathbb{E}_0\sum_{t=0}^{\infty}\beta^t\bigl\{-(s_t - b_t)^2\bigr\}
-$$ (eq:income5)
+$$ (eq:rcs-obj)
 
-Formulating a Lagrangian and deriving first-order conditions yields:
+Forming a Lagrangian and deriving first-order conditions yields
 
 $$
 \begin{aligned}
@@ -264,18 +287,15 @@ $$
 \mu_{ht} &= \beta \mathbb{E}_t[\delta_h \mu_{h,t+1} - \lambda \mu_{s,t+1}] \\
 \mu_{ct} &= \beta R\, \mathbb{E}_t\mu_{c,t+1}
 \end{aligned}
-$$ (eq:foc)
+$$ (eq:rcs-foc)
 
-Here $\mu_{st}$ is the **marginal valuation of consumption services**, which summarises the
-endogenous state variables $h_{t-1}$ and $k_{t-1}$.
+Here $\mu_{st}$ is the **marginal valuation of consumption services**, which summarises the endogenous state variables $h_{t-1}$ and $k_{t-1}$.
 
-Equation {eq}`eq:foc` (last line) implies
-$\mathbb{E}_t\mu_{c,t+1} = (\beta R)^{-1}\mu_{ct}$, so $\mu_{st}$ is a martingale
-when $\beta R = 1$:
+The last line of {eq}`eq:rcs-foc` implies $\mathbb{E}_t\mu_{c,t+1} = (\beta R)^{-1}\mu_{ct}$, so $\mu_{st}$ is a martingale when $\beta R = 1$:
 
 $$
-\mu_{st} = \mu_{s,t-1} + \nu^\top \epsilon_t
-$$ (eq:martingale)
+\mu_{st} = \mu_{s,t-1} + \nu^\top w_t
+$$ (eq:rcs-martingale)
 
 for some vector $\nu$.
 
@@ -284,108 +304,111 @@ Solving forward and substituting gives
 $$
 \mu_{st} = \Psi_1 k_{t-1} + \Psi_2 h_{t-1} + \Psi_3\sum_{j=0}^{\infty} R^{-j} \mathbb{E}_t b_{t+j}
             + \Psi_4\sum_{j=0}^{\infty} R^{-j} \mathbb{E}_t d_{t+j}
-$$ (eq:income10)
+$$ (eq:rcs-mus)
 
 where
 
 $$
 \Psi_1 = -(1+\lambda)R(1-R^{-2}\beta^{-1})\!\left[\frac{1-R^{-1}\tilde\delta_h}{1-R^{-1}\tilde\delta_h+\lambda(1-\tilde\delta_h)}\right], \quad
 \Psi_4 = R^{-1}\Psi_1
-$$ (eq:income100a)
+$$ (eq:rcs-psi)
 
 and $\tilde\delta_h = (\delta_h + \lambda)/(1+\lambda)$.
 
-In the widely-studied special case $\lambda = \delta_h = 0$, so $s_t = c_t$ and
-$\mu_{st} = b_t - c_t$, the marginal propensity to consume out of **non-human wealth** $Rk_{t-1}$
-equals that out of **human wealth** $\sum_{j=0}^{\infty}R^{-j}\mathbb{E}_t d_{t+j}$, a well-known feature of
-the LQ model.
+In the widely-studied special case $\lambda = \delta_h = 0$, we have $s_t = c_t$ and $\mu_{st} = b_t - c_t$, and the marginal propensity to consume out of **non-human wealth** $Rk_{t-1}$ equals that out of **human wealth** $\sum_{j=0}^{\infty}R^{-j}\mathbb{E}_t d_{t+j}$, a well-known feature of the LQ model.
 
-The formula for $\mu_{st}$ can be written as $\mu_{st} = M_s x_t$ where $x_t$ follows {eq}`eq:law0`.
+The formula for $\mu_{st}$ can be written as $\mu_{st} = M_s x_t$ where $x_t$ follows {eq}`eq:rcs-law`.
 
 It follows that
 
 $$
 \nu^\top = M_s C, \qquad \alpha = \sqrt{\nu^\top \nu} = \sqrt{M_s C C^\top M_s^\top}
-$$ (eq:hsoffset2)
+$$ (eq:rcs-nu)
 
-The scalar $\alpha$ plays a central role in the observational equivalence result below.
+This $\alpha$ is the same scalar we met in {eq}`eq:rcs-alpha`.
 
-### Observational equivalence
+To see why, set $\lambda = \delta_h = 0$ and hold $b_t$ fixed, so that $\mu_{st} = b - c_t$ and the innovation to $\mu_{st}$ is minus the innovation to $c_t$.
+
+Hence $\nu^\top = -h$ and $\alpha^2 = \nu^\top\nu = h h^\top$, exactly as in {eq}`eq:rcs-alpha`.
+
+The sign is irrelevant because only $\alpha^2$ ever appears.
+
+## Observational equivalence
 
 ```{index} single: Observational Equivalence; Theorem 1
 ```
 
 HST state an observational-equivalence theorem.
 
-````{prf:theorem} Observational Equivalence, I
-:label: thm-lqcs-oe1
+````{prf:theorem} Observational equivalence, I
+:label: thm-rcs-oe1
 
 Fix all parameters except $(\sigma, \beta)$ and suppose $\beta R = 1$ when $\sigma = 0$.
 
-There exists $\underline\sigma < 0$ such that for any
-$\sigma \in (\underline\sigma, 0)$, the optimal consumption-investment plan for $(0,\beta)$ is also
-chosen by a robust decision maker with parameters $(\sigma, \hat\beta(\sigma))$, where
+There exists $\underline\sigma < 0$ such that for any $\sigma \in (\underline\sigma, 0)$, the optimal consumption-investment plan for $(0,\beta)$ is also chosen by a robust decision maker with parameters $(\sigma, \hat\beta(\sigma))$, where
 
 $$
 \hat\beta(\sigma) = \frac{1}{R} + \frac{\sigma\alpha^2}{R-1}
-$$ (eq:obseq)
+= \beta + \frac{\sigma\alpha^2\beta}{1-\beta}
+$$ (eq:rcs-oe)
 
 and $\hat\beta(\sigma) < \beta$.
 ````
 
-Since $R > 1$ and $\alpha^2 > 0$, a more negative $\sigma$ (stronger robustness
-concern) lowers $\hat\beta$.
+The second equality in {eq}`eq:rcs-oe` uses $R = \beta^{-1}$ and will be the form we use in computations.
+
+Since $R > 1$ and $\alpha^2 > 0$, a more negative $\sigma$, meaning a stronger robustness concern, lowers $\hat\beta$.
 
 A robust consumer wants to save more because his alter ego, a utility-minimizing agent, makes future income look worse than the approximating model predicts.
 
 A lower discount factor makes a consumer less patient and therefore reduces saving.
 
-When these two forces are balanced according to {eq}`eq:obseq`, consumption plans are identical across $(\sigma, \hat\beta(\sigma))$ pairs.
+When these two forces are balanced according to {eq}`eq:rcs-oe`, consumption plans are identical across $(\sigma, \hat\beta(\sigma))$ pairs.
 
 ````{prf:proof}
 When $\beta R = 1$ and $\sigma = 0$, the marginal utility $\mu_{st}$ obeys the martingale
 
 $$
-\mu_{st} = \mu_{s,t-1} + \alpha\,\tilde\epsilon_t
-$$ (eq:reversee1)
+\mu_{st} = \mu_{s,t-1} + \alpha\,\tilde w_t
+$$ (eq:rcs-scalar-approx)
 
-where $\tilde\epsilon_t$ is scalar IID with mean zero and unit variance.
+where $\tilde w_t$ is scalar IID with mean zero and unit variance.
 
-Activating a concern about robustness ($\sigma < 0$) implies the utility minimizing alter ego sets 
-
-$$
-\tilde w_t = K(\sigma,\hat\beta)\,\mu_{s,t-1}
-$$
-
-making the worst-case model for $\mu_{st}$:
+Activating a concern about robustness, $\sigma < 0$, leads the utility-minimizing alter ego to set
 
 $$
-\mu_{st} = (1 + \alpha\,K(\sigma,\hat\beta))\,\mu_{s,t-1} + \alpha\,\tilde\epsilon_t
-$$ (eq:reversee3)
+\tilde v_t = K(\sigma,\hat\beta)\,\mu_{s,t-1}
+$$ (eq:rcs-K)
 
-For the allocation to remain the same, we require the robust Euler equation
-$\hat\beta R\,\hat{\mathbb{E}}_t\mu_{s,t+1} = \mu_{st}$ to hold under the worst-case model, which gives
+making the worst-case model for $\mu_{st}$
 
 $$
-(\hat\beta R)^{-1} = 1 + \alpha\, K(\sigma,\hat\beta)
-$$ (eq:eulerdist)
+\mu_{st} = \zeta\,\mu_{s,t-1} + \alpha\,\tilde w_t,
+\qquad \zeta \equiv 1 + \alpha\,K(\sigma,\hat\beta)
+$$ (eq:rcs-scalar-worst)
+
+For the allocation to remain the same, we require the robust Euler equation $\hat\beta R\,\hat{\mathbb{E}}_t\mu_{s,t+1} = \mu_{st}$ to hold under the worst-case model, which gives
+
+$$
+\zeta = (\hat\beta R)^{-1}
+$$ (eq:rcs-eulerdist)
 
 The minimizing agent's Bellman equation, a pure forecasting problem, yields
 
 $$
-\hat\zeta(\hat\beta) \equiv 1 + \alpha K(\sigma,\hat\beta) = \frac{1}{1 - \sigma\alpha^2 P(\hat\beta)}
-$$ (eq:distort2)
+\zeta = \frac{1}{1 - \sigma\alpha^2 P(\hat\beta)}
+$$ (eq:rcs-zetaP)
 
-where $P(\hat\beta)$ solves the scalar Bellman equation:
+where $P(\hat\beta)$ solves the scalar Bellman equation
 
 $$
--P(\hat\beta) = \frac{\hat\beta - 1 + \sigma\alpha^2 + \sqrt{(\hat\beta-1+\sigma\alpha^2)^2 + 4\sigma\alpha^2}}{-2\sigma\alpha^2}
-$$ (eq:distortcons)
+P(\hat\beta) = \frac{\hat\beta - 1 + \sigma\alpha^2 + \sqrt{(\hat\beta-1+\sigma\alpha^2)^2 + 4\sigma\alpha^2}}{-2\sigma\alpha^2}
+$$ (eq:rcs-riccati)
 
-Solving {eq}`eq:eulerdist`-{eq}`eq:distortcons` for $\hat\beta$ gives exactly {eq}`eq:obseq`.
+Solving {eq}`eq:rcs-eulerdist`-{eq}`eq:rcs-riccati` for $\hat\beta$ gives exactly {eq}`eq:rcs-oe`.
 ````
 
-Equation {eq}`eq:obseq` is the useful numerical object because it gives a straight-line map from the robustness parameter to the observationally equivalent discount factor.
+Equation {eq}`eq:rcs-oe` is the useful numerical object because it gives a straight-line map from the robustness parameter to the observationally equivalent discount factor.
 
 ### Precautionary savings interpretation
 
@@ -405,34 +428,27 @@ In the special case $\lambda = \delta_h = 0$, $s_t = c_t$ and the consumption ru
 $$
 c_t = (1 - R^{-2}\beta^{-1})\!\left[Rk_{t-1} + \mathbb{E}_t\sum_{j=0}^{\infty}R^{-j}d_{t+j}\right]
       + \left(\frac{(R\beta)^{-1}-1}{R-1}\right)\!b
-$$ (eq:consfunction)
+$$ (eq:rcs-consfunction)
 
-The **marginal propensity to consume** out of non-human wealth $Rk_{t-1}$ *equals* that out of
-human wealth $\mathbb{E}_t\sum R^{-j}d_{t+j}$.
+The **marginal propensity to consume** out of non-human wealth $Rk_{t-1}$ *equals* that out of human wealth $\mathbb{E}_t\sum R^{-j}d_{t+j}$.
 
 This equal-propensity property is a hallmark of the LQ model and *persists* when a concern for robustness is present, in contrast to usual precautionary-savings models with convex marginal utility.
 
-{prf:ref}`thm-lqcs-oe1` says that with $\sigma < 0$, the observationally equivalent
-$\hat\beta$ satisfies $\hat\beta < \beta$.
+{prf:ref}`thm-rcs-oe1` says that with $\sigma < 0$, the observationally equivalent $\hat\beta$ satisfies $\hat\beta < \beta$.
 
-If the starting point has $\beta R = 1$, then
-$\hat\beta R < 1$.
+If the starting point has $\beta R = 1$, then $\hat\beta R < 1$.
 
-For a non-robust consumer with discount factor $\hat\beta$ at the same
-interest rate, the Euler equation implies $\mathbb{E}_t c_{t+1} < c_t$: expected consumption
-declines over time.
+For a non-robust consumer with discount factor $\hat\beta$ at the same interest rate, the Euler equation implies $\mathbb{E}_t c_{t+1} < c_t$, so expected consumption declines over time.
 
-This downward drift is the impatience offset in {prf:ref}`thm-lqcs-oe1`.
+This downward drift is the impatience offset in {prf:ref}`thm-rcs-oe1`.
 
 It cancels the robust consumer's precautionary-savings motive, leaving the consumption and investment quantities unchanged.
 
-The upward-drift comparison appears in {prf:ref}`thm-lqcs-oe2`, which asks the reverse observational-equivalence question.
-
-The classical precautionary motive arises because:
+The classical precautionary motive arises because
 
 $$
 u'''(c) > 0 \;\Rightarrow\; \mathbb{E}_t u'(c_{t+1}) > u'(\mathbb{E}_t c_{t+1}) \;\Rightarrow\; \mathbb{E}_t c_{t+1} > c_t
-$$
+$$ (eq:rcs-prudence)
 
 This channel requires *convexity of marginal utility* and is absent with quadratic preferences.
 
@@ -445,149 +461,55 @@ In contrast, the robustness-based precautionary motive operates through distorti
 
 The observational-equivalence result can be interpreted using a **Stackelberg multiplier game**.
 
-After the minimizing agent has committed to a distortion process $\{w_{t+1}\}$, the maximizing consumer faces the following worst-case law of motion for the state $X_t$:
+After the minimizing agent has committed to a distortion process $\{v_{t+1}\}$, the maximizing consumer faces the following worst-case law of motion for the state $X_t$:
 
 $$
 \begin{aligned}
-X_{t+1} &= \bigl(A - BF(\sigma,\hat\beta) + CK(\sigma,\hat\beta)\bigr) X_t + C\tilde\epsilon_{t+1} \\
+X_{t+1} &= \bigl(A - BF(\sigma,\hat\beta) + CK(\sigma,\hat\beta)\bigr) X_t + C\,w_{t+1} \\
 \begin{pmatrix}b_t\\d_t\end{pmatrix} &= S X_t
 \end{aligned}
-$$ (eq:sys2)
+$$ (eq:rcs-worstcase-law)
 
-A robust consumer with concerns about possible misspecification of the approximating model's stochastic process for non-financial income forms expectations of future income using the **distorted transition matrix**
-$A - BF + CK$ rather than the approximating transition matrix $A - BF$.
+A robust consumer forms expectations of future income using the **distorted transition matrix** $A - BF + CK$ rather than the approximating transition matrix $A - BF$.
 
 The distorted expectations operator $\hat{\mathbb{E}}_t$ satisfies
 
 $$
 \hat{\mathbb{E}}_t X_{t+j} = (A - BF(\sigma,\hat\beta) + CK(\sigma,\hat\beta))^j X_t
-$$
+$$ (eq:rcs-Ehat)
 
 Observational equivalence requires that the modified human-wealth formula
 
 $$
 \hat\Psi_4 \sum_{j=0}^{\infty} R^{-j}\hat{\mathbb{E}}_t d_{t+j}
-$$
+$$ (eq:rcs-humanwealth)
 
 equals its benchmark counterpart $\Psi_4 \sum_{j=0}^{\infty} R^{-j} \mathbb{E}_t d_{t+j}$.
 
-This is achieved by a mutual adjustment of the coefficients $\hat\Psi_j$ through $\hat\beta$ and the distorted expectation operator $\hat{\mathbb{E}}_t$ through $\sigma$.
+This is achieved by a mutual adjustment of the coefficients $\hat\Psi_j$ through $\hat\beta$ and of the distorted expectation operator $\hat{\mathbb{E}}_t$ through $\sigma$.
 
 The worst-case eigenvalue of $A - BF + CK$ exceeds that of $A - BF$ in modulus, so the worst-case distortions make the income process *more persistent* than under the approximating model.
 
 This is the precautionary motive in state-space form: the minimizing agent makes future income look more risky by introducing low-frequency persistence.
 
-### Frequency domain interpretation
-
-```{index} single: Frequency Domain; permanent income model
-```
-
-The LQ permanent income framework has a natural frequency-domain interpretation.
-
-The consumer's concave utility makes him dislike **high-frequency** fluctuations in consumption, which he smooths by adjusting savings.
-
-High-frequency fluctuations are easier to smooth, so the consumer is automatically robust to misspecification of high-frequency features of the income process.
-
-**Low-frequency** fluctuations are harder to smooth because they are more persistent.
-
-In the frequency-domain notation of HST, the transfer function from shocks $\epsilon_t$ to the
-target $s_t - b_t$ is $G(\zeta)$, and the frequency decomposition of the $H_2$ criterion is
-
-$$
-H_2 = -\frac{1}{2\pi}\int_{-\pi}^{\pi} \operatorname{trace}\!\bigl[G(\sqrt\beta\, e^{i\omega})^\top\,G(\sqrt\beta\, e^{i\omega})\bigr]\, d\omega
-$$
-
-The integrand $G^\top G$ is *largest at low frequencies* $\omega \approx 0$, where the consumer's welfare is most sensitive to income variability.
-
-Recognizing this, the minimizing agent concentrates the worst-case distortions at low frequencies.
-
-The distortion process has spectral density $W(\zeta)^\top W(\zeta)$ that is concentrated near $\omega = 0$.
-
-The variance of the worst-case shocks grows as $|\sigma|$ increases.
-
-### Detection error probabilities
-
-```{index} single: Detection Error Probabilities
-```
-
-A natural way to discipline the choice of $\sigma$ (or $\theta$) is to ask: **how difficult would
-it be to statistically distinguish the approximating model from the worst-case model?**
-
-For a sample of length $T$, one can use a **log-likelihood ratio test** to compare the two
-hypotheses.
-
-The **detection error probability** (DEP) is the probability of making the wrong
-decision using the log-likelihood ratio statistic when one does not know which model generated the
-data.
-
-Specifically:
-
-$$
-\text{DEP}(\sigma) = \frac{1}{2}\bigl[\mathbb{P}\{\text{prefer approx.} \mid \text{worst-case is true}\}
-                                    + \mathbb{P}\{\text{prefer worst-case} \mid \text{approx. is true}\}\bigr]
-$$
-
-When $\sigma = 0$ the two models are identical and DEP $= 0.5$.
-
-As $|\sigma|$ increases the
-models diverge and the DEP falls toward zero.
-
-The full DEP calculation requires a specified approximating model, its worst-case counterpart, and the sample length used in the likelihood-ratio experiment.
-
-We compute such a DEP for a robust Bewley model below.
-
-```{note}
-HST suggested that a DEP above 0.2 is "plausible", meaning the models are still hard enough to distinguish statistically that a concern for robustness is warranted.
-
-Values of $\sigma$ corresponding to DEP $\geq 0.2$ define a set of plausible worst-case models.
-```
-
-### Robustness of decision rules
-
-```{index} single: Robustness; payoff evaluation
-```
-
-To evaluate whether robust decision rules perform better than the non-robust rule when the data are
-generated by a distorted model, define the **payoff** when the decision rule is designed for
-robustness parameter $\sigma_2$ and the data are generated by the distorted model associated with
-$\sigma_1$:
-
-$$
-\pi(\sigma_1;\sigma_2) = -\mathbb{E}_{0,\sigma_1}\sum_{t=0}^{\infty}\beta^t\, x_t^\top H(\sigma_2)^\top H(\sigma_2)\, x_t
-$$ (eq:soln3)
-
-where the state evolves under decision rule $F(\sigma_2)$ and worst-case shocks $K(\sigma_1)$:
-
-$$
-x_{t+1} = \bigl(A - BF(\sigma_2) + CK(\sigma_1)\bigr)x_t + C\epsilon_{t+1}
-$$ (eq:soln2)
-
-For $\sigma_1 = 0$ (approximating model generates data), the non-robust rule ($\sigma_2 = 0$) is
-optimal by construction.
-
-As $\sigma_1$ decreases (the data are generated by increasingly
-distorted models), the payoff of the $\sigma_2 = 0$ rule deteriorates faster than that of robust
-rules.
-
-Computing the payoff comparison requires solving the full HST matrix problem for $F(\sigma_2)$ and $K(\sigma_1)$.
+In the scalar reduction of the next section, this eigenvalue is $\zeta$, and we verify that $\zeta > 1$ while the approximating model has a unit root.
 
 ### Another observational equivalence result
 
 ```{index} single: Observational Equivalence; Theorem 2
 ```
 
-````{prf:theorem} Observational Equivalence, II
-:label: thm-lqcs-oe2
+````{prf:theorem} Observational equivalence, II
+:label: thm-rcs-oe2
 
 Fix all parameters except $(\sigma,\beta)$ and consider a consumption-investment allocation for $(\hat\sigma, \hat\beta)$ where $\hat\beta R = 1$ and $\hat\sigma < 0$.
 
 Then there exists $\tilde\beta > \hat\beta$ such that the $(\hat\sigma, \hat\beta)$ allocation also solves the $(0, \tilde\beta)$ problem.
 ````
 
-{prf:ref}`thm-lqcs-oe1` showed that starting from a benchmark with $\beta R = 1$, activating
-robustness ($\sigma < 0$) is equivalent to *reducing* $\beta$.
+{prf:ref}`thm-rcs-oe1` showed that starting from a benchmark with $\beta R = 1$, activating robustness is equivalent to *reducing* $\beta$.
 
-{prf:ref}`thm-lqcs-oe2` goes in the opposite direction: it shows that the effects of activating a concern for robustness from a starting point with $\beta R = 1$ are replicated by *increasing* $\beta$ while setting $\sigma = 0$.
+{prf:ref}`thm-rcs-oe2` goes in the opposite direction: the effects of activating a concern for robustness from a starting point with $\beta R = 1$ are replicated by *increasing* $\beta$ while setting $\sigma = 0$.
 
 In other words, when $\beta R = 1$, a concern for robustness operates like an *increase* in the discount factor, pushing $\beta R > 1$ and imparting an *upward drift* to the expected consumption profile.
 
@@ -596,81 +518,69 @@ With $\hat\beta R = 1$ and $\hat\sigma < 0$, the robust Euler equation implies
 
 $$
 \hat{\mathbb{E}}_t \mu_{c,t+1} = \mu_{ct}
-$$
+$$ (eq:rcs-euler2)
 
-One seeks $\tilde\beta > \hat\beta$ and $\sigma = 0$ such that the same allocation solves the
-non-robust problem with discount factor $\tilde\beta$.
+One seeks $\tilde\beta > \hat\beta$ and $\sigma = 0$ such that the same allocation solves the non-robust problem with discount factor $\tilde\beta$.
 
-The key step is to observe that the worst-case distortion $K(\hat\sigma, \hat\beta)$ introduces a
-drift in the marginal utility process that is equivalent to the drift produced by raising the
-discount factor above $\hat\beta$.
+The key step is to observe that the worst-case distortion $K(\hat\sigma, \hat\beta)$ introduces a drift in the marginal utility process that is equivalent to the drift produced by raising the discount factor above $\hat\beta$.
 
 Equating the two drifts and solving the scalar Bellman equation for $K$ yields
 
 $$
 \tilde\beta(\hat\sigma) = \frac{\hat\beta(1+\hat\beta)}{2(1+\hat\sigma\alpha^2)}
 \left[1 + \sqrt{1 - 4\hat\beta\,\frac{1+\hat\sigma\alpha^2}{(1+\hat\beta)^2}}\right]
-$$ (eq:obsequivn2)
+$$ (eq:rcs-oe2)
 
-The solution satisfies $\tilde\beta > \hat\beta$ when $\hat\sigma < 0$.
+Setting $\hat\sigma = 0$ makes the square root equal $(1-\hat\beta)/(1+\hat\beta)$, so that $\tilde\beta = \hat\beta$.
+
+Since $1 + \hat\sigma\alpha^2$ decreases as $\hat\sigma$ falls below zero, both the prefactor and the square root increase, so $\tilde\beta > \hat\beta$ whenever $\hat\sigma < 0$.
 ````
 
-The map {eq}`eq:obsequivn2` is a closed form, so we can plot it directly.
+### Comparing the two loci
 
-The next figure compares the two observational-equivalence loci for the two-factor calibration, using $\alpha^2 = \sigma_1^2 + (1-\beta)^2\sigma_2^2$ (derived below in {eq}`eq:bew_alpha2`).
+Both {eq}`eq:rcs-oe` and {eq}`eq:rcs-oe2` are closed forms, so we can plot them directly.
 
-We start from a benchmark with $\hat\beta R = 1$, so $\hat\beta = \beta$.
+We start from a benchmark with $\beta R = 1$.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
     caption: |
-      Two observational-equivalence experiments. Locus I (below $\beta$) holds the
-      *non-robust* agent fixed at $\beta R=1$ and reports the *robust* twin's
-      discount factor $\hat\beta(\sigma)$; locus II (above $\beta$) holds the
-      *robust* agent fixed at $\beta R=1$ and reports the *non-robust* twin's
-      discount factor $\tilde\beta(\hat\sigma)$.
-    name: fig-lqcs-oe-loci
+      Two observational-equivalence experiments. Locus I holds the *non-robust*
+      agent fixed at $\beta R = 1$ and reports the *robust* twin's discount
+      factor $\hat\beta(\sigma)$; locus II holds the *robust* agent fixed at
+      $\beta R = 1$ and reports the *non-robust* twin's discount factor
+      $\tilde\beta(\hat\sigma)$.
+    name: fig-rcs-oe-loci
 ---
-β_bench = β  # benchmark with β R = 1
-α2 = σ1**2 + (1 - β)**2 * σ2**2  # two-factor α^2 (see eq:bew_alpha2)
+σ_grid = np.linspace(0.0, -0.16, 60)
 
-σ_hat_vals = np.linspace(0.0, -0.16, 60)
+# locus I: non-robust agent fixed at βR=1, report the robust twin's β̂(σ)
+β_hat = β + σ_grid * α2 * β / (1 - β)
 
-# Locus I (eq:obseq / eq:bew_locus): non-robust agent fixed at βR=1;
-# report the robust twin's discount factor β̂(σ) < β
-β_hat = β_bench + σ_hat_vals * α2 * β_bench / (1 - β_bench)
-
-# Locus II (eq:obsequivn2): robust agent fixed at βR=1;
-# report the non-robust twin's discount factor β̃(σ̂) > β
-disc = 1 - 4 * β_bench * (1 + σ_hat_vals * α2) / (1 + β_bench)**2
-β_tilde = (β_bench * (1 + β_bench)) / (2 * (1 + σ_hat_vals * α2)) \
-          * (1 + np.sqrt(disc))
+# locus II: robust agent fixed at βR=1, report the non-robust twin's β̃(σ̂)
+q = 1 + σ_grid * α2
+β_tilde = β * (1 + β) / (2 * q) * (1 + np.sqrt(1 - 4 * β * q / (1 + β)**2))
 
 fig, ax = plt.subplots()
-ax.plot(-σ_hat_vals, β_hat, lw=2, color='C3',
-        label=r'locus I: robust twin $\hat\beta(\sigma)<\beta$'
-              '\n(non-robust agent fixed at $\\beta R=1$)')
-ax.plot(-σ_hat_vals, β_tilde, lw=2, color='C0',
-        label=r'locus II: non-robust twin $\tilde\beta(\hat\sigma)>\beta$'
-              '\n(robust agent fixed at $\\beta R=1$)')
-ax.axhline(β_bench, color='k', linestyle=':', lw=1,
+ax.plot(-σ_grid, β_hat, lw=2, color='C3',
+        label=r'locus I: robust twin $\hat\beta(\sigma) < \beta$')
+ax.plot(-σ_grid, β_tilde, lw=2, color='C0',
+        label=r'locus II: non-robust twin $\tilde\beta(\hat\sigma) > \beta$')
+ax.axhline(β, color='k', linestyle=':', lw=1,
            label=r'benchmark $\beta$ ($\beta R = 1$)')
 ax.set_xlabel(r'robustness concern $|\sigma|$')
 ax.set_ylabel('discount factor of the equivalent agent')
-ax.legend(fontsize=8.5)
+ax.legend()
 plt.show()
-
-print(f"at σ̂ = {σ_hat_vals[-1]:.3f}:  β̃ = {β_tilde[-1]:.4f} > β = {β_bench}")
-print(f"                       β̂ = {β_hat[-1]:.4f} < β = {β_bench}")
 ```
 
 Both loci pass through the benchmark $\beta$ at $\sigma = 0$ and separate as the robustness concern grows.
 
-The key to reading the figure is that the two loci hold *different* agents fixed, so the discount factor plotted on the vertical axis refers to a different agent on each curve.
+The key to reading {numref}`fig-rcs-oe-loci` is that the two loci hold *different* agents fixed, so the discount factor plotted on the vertical axis refers to a different agent on each curve.
 
-Locus I, from {prf:ref}`thm-lqcs-oe1`, holds the **non-robust** agent fixed at the benchmark $(\sigma = 0, \beta)$ with $\beta R = 1$ and reports the discount factor $\hat\beta(\sigma) < \beta$ of the **robust** agent that mimics it.
+Locus I, from {prf:ref}`thm-rcs-oe1`, holds the **non-robust** agent fixed at the benchmark $(\sigma = 0, \beta)$ with $\beta R = 1$ and reports the discount factor $\hat\beta(\sigma) < \beta$ of the **robust** agent that mimics it.
 
 This is the sense in which HST call a concern for robustness observationally equivalent to a *lower* discount factor: because robustness already makes the agent save more, its discount factor must be lowered to hold the allocation at the benchmark.
 
@@ -680,488 +590,640 @@ The robust twin chooses the identical consumption process, so it too satisfies $
 
 The lower $\hat\beta$, which has $\hat\beta R < 1$, would on its own impart a downward drift, but the robust agent's precautionary saving offsets it exactly, leaving expected consumption flat.
 
-Locus II, from {prf:ref}`thm-lqcs-oe2`, instead holds the **robust** agent fixed at $(\hat\sigma, \beta)$ with $\beta R = 1$ and reports the discount factor $\tilde\beta(\hat\sigma) > \beta$ of the **non-robust** agent that mimics it.
+Locus II, from {prf:ref}`thm-rcs-oe2`, instead holds the **robust** agent fixed at $(\hat\sigma, \beta)$ with $\beta R = 1$ and reports the discount factor $\tilde\beta(\hat\sigma) > \beta$ of the **non-robust** agent that mimics it.
 
 Here there is no impatience offset, so the common allocation inherits the robust agent's precautionary *upward* drift, which the non-robust twin reproduces through $\tilde\beta R > 1$.
 
 The two experiments encode the *same* economics: a concern for robustness adds precautionary saving that acts like extra patience.
 
-They differ only in which agent is anchored at $\beta R = 1$, and hence in whether the common saving motive shows up as an exactly-offsetting impatience adjustment (locus I, expected consumption flat) or as an upward drift in expected consumption (locus II).
+They differ only in which agent is anchored at $\beta R = 1$, and hence in whether the common saving motive shows up as an exactly-offsetting impatience adjustment, as in locus I where expected consumption is flat, or as an upward drift in expected consumption, as in locus II.
 
-### A robust LQ Bewley model
+(rcs-scalar)=
+## The scalar worst-case model
 
-```{index} single: Robust Bewley Model
+```{index} single: Robust Control; breakdown point
 ```
 
-We now synthesise the lecture by embedding the Bewley economy of {doc}`lq_bewley_complete_markets` into the HST framework and applying the observational-equivalence theorem.
+The proof of {prf:ref}`thm-rcs-oe1` reduced the robust problem to a scalar forecasting problem in the marginal utility $\mu_{st}$.
 
-We shall construct a family of **robust Bewley economies**, parameterised by a robustness level $\sigma \leq 0$, whose equilibrium quantities are identical to those of the plain vanilla Bewley model.
+That scalar problem can be solved in closed form, which is worth doing because it makes the worst-case dynamics, the breakdown point, and the frequency-domain results all transparent.
 
-We first map the Bewley economy into HST notation, specialising the robust model to
-$\lambda = \delta_h = 0$ (no habits, no durable goods) and to a
-pure endowment economy (no physical capital, $k_t = 0$).
+### A closed-form solution
 
-In this case:
-
-Services equal consumption: $s_t = c_t$.
-
-The only traded security is the one-period risk-free bond, and we write the household's net asset position as $a_t=-b_t$ so that positive $a_t$ denotes wealth rather than debt.
-
-The endowment process follows the state-space representation {eq}`eq:rs-endowment`.
-
-The household's augmented state vector is $x_t = [a_t,\; z_t^\top]^\top$, and the law of motion
-{eq}`eq:law0` specialises to
+Combining {eq}`eq:rcs-eulerdist` with {eq}`eq:rcs-oe` and $R = \beta^{-1}$ gives the worst-case persistence directly:
 
 $$
-\begin{pmatrix} a_{t+1} \\ z_{t+1} \end{pmatrix}
-=
-\underbrace{\begin{pmatrix} R & R\check{G} \\ 0 & \check{A} \end{pmatrix}}_{A}
-\begin{pmatrix} a_t \\ z_t \end{pmatrix}
-+
-\underbrace{\begin{pmatrix} -R \\ 0 \end{pmatrix}}_{B}
-c_t
-+
-\underbrace{\begin{pmatrix} 0 \\ \check{C} \end{pmatrix}}_{C}
-\epsilon_{t+1}
-$$ (eq:bew_law)
+\zeta(\sigma) = \frac{1}{\hat\beta(\sigma) R} = \frac{\beta}{\hat\beta(\sigma)}
+= \left[1 + \frac{\sigma\alpha^2}{1-\beta}\right]^{-1}
+$$ (eq:rcs-zeta)
 
-The objective is $\mathbb{E}_0 \sum_{t=0}^\infty \beta^t [-(c_t - \gamma)^2/2]$, which is the HST
-criterion {eq}`eq:income5` with $\sigma = 0$ and $b_t \equiv \gamma$ (a fixed bliss level).
+This is the central formula of the lecture.
 
-The robust Bellman equation {eq}`eq:income1` with $\sigma = 0$ therefore reduces exactly to
-the LQ problem of {doc}`lq_permanent_income`, confirming that the HST framework nests the Bewley model.
+**The worst-case persistence of marginal utility is exactly the ratio of the two discount factors.**
 
-We next compute the robustness parameter $\alpha^2$.
+Since $\hat\beta(\sigma) < \beta$ for $\sigma<0$, we have $\zeta(\sigma) > 1$: the approximating model for $\mu_{st}$ has a unit root, and the worst-case model is mildly explosive.
 
-From the $(c_t,z_t)$ representation {eq}`eq:rs-crep`, the consumption innovation is
+That is the scalar counterpart of the statement in {eq}`eq:rcs-worstcase-law` that the worst-case transition matrix has a larger eigenvalue than the approximating one.
+
+We can also solve {eq}`eq:rcs-riccati` explicitly.
+
+Write $u = \sigma\alpha^2$ and $\delta = 1-\beta$, so that {eq}`eq:rcs-oe` reads $\hat\beta - 1 + u = (u - \delta^2)/\delta$.
+
+The discriminant in {eq}`eq:rcs-riccati` is then a **perfect square**:
 
 $$
-c_{t+1} - c_t = h\, w_{t+1}, \qquad
-h = (1-\beta)\,\check{G}(I-\beta\check{A})^{-1}\check{C}
-$$ (eq:bew_cinno)
+(\hat\beta - 1 + u)^2 + 4u = \frac{(u-\delta^2)^2}{\delta^2} + 4u = \left(\frac{u+\delta^2}{\delta}\right)^2
+$$ (eq:rcs-disc)
 
-The vector $h$ plays the role of $\nu^\top = M_s C$ in the HST scalar $\alpha$ formula
-{eq}`eq:hsoffset2`.
-
-Consequently,
+so the two roots of {eq}`eq:rcs-riccati` are available in closed form:
 
 $$
-\alpha^2 = h h^\top = (1-\beta)^2\,
-\check{G}(I-\beta\check{A})^{-1}\check{C}\check{C}^\top(I-\beta\check{A}^\top)^{-1}\check{G}^\top
-$$ (eq:bew_alpha)
+P = -\frac{1}{1-\beta}
+\qquad\text{and}\qquad
+P = \frac{1-\beta}{\sigma\alpha^2}
+$$ (eq:rcs-roots)
 
-For the two-factor model {eq}`eq:pi-twofactor` with $\check{A} = \mathrm{diag}(1,0)$ and
-$\check{C} = \mathrm{diag}(\sigma_1,\sigma_2)$ this simplifies to
+Substituting into {eq}`eq:rcs-zetaP`, the first root reproduces {eq}`eq:rcs-zeta` while the second gives the constant $\zeta = R$, which violates the Euler equation {eq}`eq:rcs-eulerdist` except at the single point where the two roots coincide.
 
-$$
-\alpha^2 = \sigma_1^2 + (1-\beta)^2\,\sigma_2^2
-$$ (eq:bew_alpha2)
+So the economically relevant root is the constant $P = -(1-\beta)^{-1}$, independent of $\sigma$.
 
-The permanent shock variance $\sigma_1^2$ enters with coefficient 1 because a unit permanent
-shock is *fully* capitalised into consumption.
+```{note}
+Selecting the root numerically, by taking whichever of the two is closer to the target $(\hat\beta R)^{-1}$, is treacherous.
 
-The transitory shock variance $\sigma_2^2$
-enters with the small coefficient $(1-\beta)^2$ because only its annuity value is consumed.
+Because {eq}`eq:rcs-disc` is a perfect square, the square root is $|u+\delta^2|/\delta$, and the *sign* in front of it that selects $P = -(1-\beta)^{-1}$ flips as $u$ crosses $-\delta^2$.
 
-Applying {prf:ref}`thm-lqcs-oe1` {eq}`eq:obseq` with equilibrium interest rate $R = \beta_0^{-1}$ and
-$\alpha^2$ from {eq}`eq:bew_alpha2` gives the **Bewley observational equivalence locus**:
+A solver that picks the root by a distance criterion will silently switch branches there.
+```
 
-$$
-\hat\beta(\sigma) = \beta_0 + \frac{\sigma\,\alpha^2\,\beta_0}{1-\beta_0}
-$$ (eq:bew_locus)
+### The breakdown point
 
-For $\sigma < 0$, we have $\hat\beta(\sigma) < \beta_0$.
+{prf:ref}`thm-rcs-oe1` asserts the existence of a lower bound $\underline\sigma < 0$ without saying what it is.
 
-An agent with the pair
-$(\sigma, \hat\beta(\sigma))$ on this locus is more concerned about model misspecification
-(lower $\sigma$) but also more impatient (lower $\hat\beta$); the two forces cancel exactly,
-leaving the consumption decision rule unchanged.
+The scalar model tells us.
 
-These ingredients combine into a robust Bewley equilibrium.
+The minimizing agent's problem has a finite value only if the discounted worst-case state is square summable, that is, only if $\hat\beta\,\zeta^2 < 1$.
 
-````{prf:proposition}
-:label: prop-lqcs-bewley
+Using $\hat\beta = \beta/\zeta$ from {eq}`eq:rcs-zeta`, this condition is $\beta\zeta < 1$, or equivalently $\zeta < R$.
 
-Suppose all agents in the Bewley economy share a common pair
-$(\sigma, \hat\beta(\sigma))$ lying on the locus {eq}`eq:bew_locus`, with $R = \beta_0^{-1}$.
-
-Then every agent's optimal consumption plan is identical to that of the plain vanilla
-$(\sigma = 0,\, \beta_0)$ economy, and the equilibrium interest rate remains $R = \beta_0^{-1}$.
-````
-
-````{prf:proof}
-By {prf:ref}`thm-lqcs-oe1`, each agent's consumption-saving rule is identical to the benchmark.
-
-The goods-market clearing condition $\int c_t^i\, di = Y$ is therefore satisfied at
-$R = \beta_0^{-1}$ for the same reason as in the benchmark Bewley economy.
-````
-
-#### Heterogeneous $(\beta_i, \sigma_i)$ preferences
-
-A richer extension populates the economy with a **continuum of types**, each indexed by a
-robustness parameter $\sigma_i \in [\underline\sigma, 0]$, with discount factor
+Substituting {eq}`eq:rcs-zeta` and solving gives the **breakdown point**
 
 $$
-\beta_i = \hat\beta(\sigma_i) = \beta_0 + \frac{\sigma_i\,\alpha^2\,\beta_0}{1-\beta_0}
-$$ (eq:bew_heterog)
+\underline\sigma = -\frac{(1-\beta)^2}{\alpha^2}
+$$ (eq:rcs-breakdown)
 
-Since all pairs $(\sigma_i, \beta_i)$ lie on {eq}`eq:bew_locus`, every agent adopts the **same consumption rule** as the benchmark.
+At $\sigma = \underline\sigma$ three things happen at once.
 
-Aggregate dynamics are unchanged because the cross-section mean of consumption equals $Y$ and the cross-section variance grows at rate $\alpha^2$ per period.
+- The discriminant {eq}`eq:rcs-disc` has a double root, so the two roots in {eq}`eq:rcs-roots` coincide.
+- The worst-case persistence reaches $\zeta = R$, so $\hat\beta\zeta^2 = 1$ exactly.
+- The observationally equivalent discount factor reaches $\hat\beta = \beta^2$.
 
-The equilibrium interest rate is unchanged: $R = \beta_0^{-1}$.
+For $\sigma < \underline\sigma$ the robust control problem has no solution, and any numerical answer reported there is meaningless.
 
-Agents are observationally indistinguishable to an outside econometrician because data on $(c_t^i, a_t^i)$ cannot reveal whether agent $i$ has $\sigma_i = 0$ or $\sigma_i < 0$.
+We therefore restrict every plot below to $\sigma \in (\underline\sigma, 0]$.
 
-Agents differ in their internal model because an agent with $\sigma_i < 0$ applies a worst-case distortion $w_{t+1}^i = K(\sigma_i, \beta_i)\,\mu_{s,t}^i$ to her conditional expectations, while an agent with $\sigma_i = 0$ takes the approximating model at face value.
+### Verifying the closed form
 
-This sets the stage for a Bewley model with **heterogeneous ambiguity aversion**: although
-every agent acts identically in terms of observable choices, they hold different subjective
-models of the income process and have different attitudes toward model uncertainty.
-
-#### Computation
+The following cell solves the quadratic {eq}`eq:rcs-riccati` numerically and checks it against the closed forms {eq}`eq:rcs-zeta` and {eq}`eq:rcs-roots`.
 
 ```{code-cell} ipython3
-# Bewley parameters
-β0_bew = β       # 0.95
-σ1_bew = σ1      # 0.15
-σ2_bew = σ2      # 0.30
-R_bew = 1.0 / β0_bew
+def worst_case_persistence(σ, β, α2):
+    """
+    Worst-case persistence ζ(σ) of marginal utility on the
+    observational-equivalence locus, from eq:rcs-zeta.
+    """
+    return 1 / (1 + σ * α2 / (1 - β))
 
-# Two-factor Bewley α^2
-α2_bew = σ1_bew**2 + (1 - β0_bew)**2 * σ2_bew**2
 
-print(f"α^2  (Bewley, two-factor)        = {α2_bew:.6f}")
-print(f"  permanent component  σ1^2     = {σ1_bew**2:.6f}  "
-      f"({100*σ1_bew**2/α2_bew:.1f} % of α^2)")
-print(f"  transitory component (1-β)^2σ2^2= {(1-β0_bew)**2*σ2_bew**2:.6f}  "
-      f"({100*(1-β0_bew)**2*σ2_bew**2/α2_bew:.1f} % of α^2)")
+def solve_scalar_riccati(σ, β, α2):
+    """
+    Solve the scalar Bellman equation eq:rcs-riccati by brute force and
+    return both roots together with the implied persistence ζ = 1/(1-σα²P).
+    """
+    β_hat = β + σ * α2 * β / (1 - β)
+    u = σ * α2
+    disc = (β_hat - 1 + u)**2 + 4 * u
+    roots = np.array([(β_hat - 1 + u + s * np.sqrt(disc)) / (-2 * u)
+                      for s in (1.0, -1.0)])
+    return roots, 1 / (1 - u * roots)
+
+
+σ_lo = -(1 - β)**2 / α2               # breakdown point, eq:rcs-breakdown
+print(f"breakdown point  σ̲  = {σ_lo:.6f}")
+print(f"there            β̂  = {β + σ_lo * α2 * β / (1 - β):.6f} "
+      f"(β² = {β**2:.6f})")
+print(f"                 ζ   = {worst_case_persistence(σ_lo, β, α2):.6f} "
+      f"(R = {R:.6f})")
+
+print(f"\n{'σ':>10}{'P (numerical roots)':>28}{'-1/(1-β)':>12}"
+      f"{'ζ (num)':>12}{'ζ (closed)':>12}")
+for σ in [-0.02, -0.05, -0.09, -0.105]:
+    roots, ζs = solve_scalar_riccati(σ, β, α2)
+    keep = np.argmin(np.abs(roots + 1 / (1 - β)))
+    print(f"{σ:10.3f}{str(np.round(roots, 4)):>28}{-1 / (1 - β):12.4f}"
+          f"{ζs[keep]:12.6f}{worst_case_persistence(σ, β, α2):12.6f}")
 ```
 
-The calculation shows why permanent shocks dominate $\alpha^2$ in this calibration.
+One root is pinned at $-(1-\beta)^{-1} = -20$ for every $\sigma$, exactly as {eq}`eq:rcs-roots` predicts, and the implied $\zeta$ agrees with the closed form to displayed precision.
 
-We now solve the scalar robust forecasting problem attached to this $\alpha^2$.
+Notice also that the two roots approach each other as $\sigma$ falls toward $\underline\sigma \approx -0.11$.
 
-The solution selects the Bellman-equation root that satisfies the observational-equivalence Euler equation.
-
-```{code-cell} ipython3
-def robust_scalar_solution(σ, β0, α2):
-    """
-    Solve the scalar robust marginal-utility problem on the
-    observational-equivalence locus.
-    """
-    α = np.sqrt(α2)
-    R = 1.0 / β0
-
-    if np.isclose(σ, 0.0):
-        return β0, np.nan, 1.0, 0.0
-
-    β_hat = β0 + σ * α2 * β0 / (1 - β0)
-    disc = (β_hat - 1 + σ * α2)**2 + 4 * σ * α2
-    root_disc = np.sqrt(max(disc, 0.0))
-    target_ζ = 1 / (β_hat * R)
-
-    candidates = []
-    for sign in (1.0, -1.0):
-        P = (β_hat - 1 + σ * α2 + sign * root_disc) / (-2 * σ * α2)
-        ζ = 1 / (1 - σ * α2 * P)
-        K = (ζ - 1) / α
-        candidates.append((abs(ζ - target_ζ), P, ζ, K))
-
-    _, P, ζ, K = min(candidates, key=lambda x: x[0])
-    return β_hat, P, ζ, K
-
-
-def log_likelihood_ratio(paths, ζ, α):
-    """
-    Return log p_worst(path) - log p_approx(path).
-    """
-    lag = paths[:, :-1]
-    lead = paths[:, 1:]
-    ll_worst = -0.5 * np.sum(((lead - ζ * lag) / α)**2, axis=1)
-    ll_approx = -0.5 * np.sum(((lead - lag) / α)**2, axis=1)
-    return ll_worst - ll_approx
-
-
-def simulate_scalar_paths(ζ, α, T, n_paths, seed):
-    rng = np.random.default_rng(seed)
-    paths = np.zeros((n_paths, T + 1))
-    shocks = rng.standard_normal((n_paths, T))
-
-    for t in range(T):
-        paths[:, t + 1] = ζ * paths[:, t] + α * shocks[:, t]
-
-    return paths
-
-
-def detection_error_probability(ζ, α, T=40, n_paths=10_000, seed=1234):
-    """
-    Finite-sample DEP for the approximating and worst-case scalar laws.
-    """
-    if np.isclose(ζ, 1.0):
-        return 0.5
-
-    approx_paths = simulate_scalar_paths(1.0, α, T, n_paths, seed)
-    worst_paths = simulate_scalar_paths(ζ, α, T, n_paths, seed + 1)
-
-    llr_approx = log_likelihood_ratio(approx_paths, ζ, α)
-    llr_worst = log_likelihood_ratio(worst_paths, ζ, α)
-
-    return 0.5 * (np.mean(llr_worst < 0) + np.mean(llr_approx > 0))
-```
-
-The next figure reports worst-case dynamics and model-detection probabilities implied by this solved scalar problem.
+The next figure plots the worst-case impulse response $\zeta^h$ over the admissible range.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Solved robust scalar model
-    name: fig-lqcs-robust-scalar
+    caption: |
+      Worst-case impulse response of marginal utility. The approximating model
+      has a unit root; the worst-case model is increasingly explosive as
+      $\sigma$ falls toward the breakdown point $\underline\sigma$.
+    name: fig-rcs-irf
 ---
-α_bew = np.sqrt(α2_bew)
-β_min = 0.88
-σ_min = (β_min - β0_bew) * (1 - β0_bew) / (α2_bew * β0_bew)
-σ_vals = np.linspace(0.0, σ_min, 31)
-
-solutions = np.array([robust_scalar_solution(σ, β0_bew, α2_bew) for σ in σ_vals])
-β_hat_vals = solutions[:, 0]
-ζ_vals = solutions[:, 2]
-K_vals = solutions[:, 3]
-dep_vals = np.array([
-    detection_error_probability(ζ, α_bew)
-    for ζ in ζ_vals
-])
-
-fig, axes = plt.subplots(1, 2, figsize=(11.2, 4.1))
-
 horizons = np.arange(31)
-for σ in [0.0, σ_vals[10], σ_vals[20]]:
-    β_hat, P, ζ, K = robust_scalar_solution(σ, β0_bew, α2_bew)
-    label = rf'$\sigma={σ:.3f}$, $\zeta={ζ:.3f}$'
-    axes[0].plot(horizons, ζ**horizons, lw=2, label=label)
 
-axes[0].set_xlabel('horizon')
-axes[0].set_ylabel(r'response of $\mu_{s,t+h}$')
-axes[0].set_title('worst-case impulse response')
-axes[0].legend(fontsize=8.5)
+fig, ax = plt.subplots()
+for frac in [0.0, 0.4, 0.8, 0.98]:
+    σ = frac * σ_lo
+    ζ = worst_case_persistence(σ, β, α2)
+    ax.plot(horizons, ζ**horizons, lw=2,
+            label=rf'$\sigma={σ:.3f}$, $\zeta={ζ:.3f}$')
 
-axes[1].plot(-σ_vals, dep_vals, lw=2, color='C0')
-axes[1].axhline(0.2, color='C3', linestyle='--', lw=1.2,
-                label='DEP = 0.2')
-axes[1].set_xlabel(r'robustness concern $-\sigma$')
-axes[1].set_ylabel('detection error probability')
-axes[1].set_ylim(0.0, 0.52)
-axes[1].set_title('finite-sample detectability')
-axes[1].legend(fontsize=8.5)
+ax.set_xlabel('horizon $h$')
+ax.set_ylabel(r'response of $\mu_{s,t+h}$')
+ax.legend()
+plt.show()
+```
+
+{numref}`fig-rcs-irf` shows that as $\sigma$ falls, the minimizing agent converts the unit root of the approximating model into mild explosiveness.
+
+At the breakdown point the response would grow at the gross interest rate $R$, so that the discounted worst-case state ceases to be square summable.
+
+## Frequency domain interpretation
+
+```{index} single: Frequency Domain; permanent income model
+```
+
+The LQ permanent income framework has a natural frequency-domain interpretation.
+
+The consumer's concave utility makes him dislike **high-frequency** fluctuations in consumption, which he smooths by adjusting savings.
+
+High-frequency fluctuations are easy to smooth, so the consumer is automatically robust to misspecification of high-frequency features of the income process.
+
+**Low-frequency** fluctuations are harder to smooth because they are more persistent.
+
+In the frequency-domain notation of HST, the transfer function from shocks $w_t$ to the target $s_t - b_t$ is $G(\cdot)$, and the frequency decomposition of the $H_2$ criterion is
+
+$$
+H_2 = -\frac{1}{2\pi}\int_{-\pi}^{\pi} \operatorname{trace}\!\bigl[G(\sqrt\beta\, e^{i\omega})^\top\,G(\sqrt\beta\, e^{i\omega})\bigr]\, d\omega
+$$ (eq:rcs-h2)
+
+The evaluation at $\sqrt{\beta}\,e^{i\omega}$ rather than at $e^{i\omega}$ is essential and not merely conventional.
+
+Both the approximating model and the worst-case model for $\mu_{st}$ are non-stationary, the first with a unit root and the second explosive, so neither has an ordinary spectral density.
+
+Discounting by $\sqrt\beta$ is exactly what makes the object in {eq}`eq:rcs-h2` finite.
+
+In the scalar model of {ref}`rcs-scalar`, the target is $s_t - b_t = -\mu_{st}$, and from {eq}`eq:rcs-scalar-worst` we can read off the transfer function and the discounted spectral density
+
+$$
+G(z) = \frac{\alpha}{1-\zeta z},
+\qquad
+S(\omega;\sigma) = \bigl|G(\sqrt{\hat\beta}\, e^{i\omega})\bigr|^2
+= \frac{\alpha^2}{\bigl|1 - \zeta\sqrt{\hat\beta}\, e^{i\omega}\bigr|^2}
+$$ (eq:rcs-spectrum)
+
+This is finite precisely when $\zeta\sqrt{\hat\beta} < 1$, which is the condition $\hat\beta\zeta^2<1$ that defines the breakdown point {eq}`eq:rcs-breakdown`.
+
+So the frequency-domain object and the breakdown point are two views of the same restriction.
+
+At $\sigma = 0$ we have $\zeta = 1$ and $\hat\beta = \beta$, and {eq}`eq:rcs-spectrum` reduces to the discounted spectral density of a random walk.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Left: the discounted spectral density of the robust consumer's target.
+      Right: the same densities relative to the approximating model. The
+      minimizing agent concentrates its distortion at low frequencies, where
+      the permanent income consumer is least able to smooth.
+    name: fig-rcs-spectrum
+---
+ω = np.linspace(0, np.pi, 400)
+
+
+def spectrum(σ, β, α2):
+    ζ = worst_case_persistence(σ, β, α2)
+    β_hat = β / ζ
+    return α2 / np.abs(1 - ζ * np.sqrt(β_hat) * np.exp(1j * ω))**2
+
+
+S0 = spectrum(0.0, β, α2)
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4))
+
+for frac in [0.0, 0.4, 0.8, 0.95]:
+    σ = frac * σ_lo
+    S = spectrum(σ, β, α2)
+    axes[0].plot(ω, S, lw=2, label=rf'$\sigma={σ:.3f}$')
+    axes[1].plot(ω, S / S0, lw=2, label=rf'$\sigma={σ:.3f}$')
+
+axes[0].set_yscale('log')
+axes[0].set_xlabel(r'frequency $\omega$')
+axes[0].set_ylabel(r'$S(\omega;\sigma)$')
+axes[0].set_title('discounted spectral density')
+axes[0].legend()
+
+axes[1].set_yscale('log')
+axes[1].set_xlabel(r'frequency $\omega$')
+axes[1].set_ylabel(r'$S(\omega;\sigma)\,/\,S(\omega;0)$')
+axes[1].set_title('relative to the approximating model')
+axes[1].legend()
 
 fig.tight_layout()
 plt.show()
 ```
 
-The left panel shows that the solved worst-case law makes marginal utility more persistent as $\sigma$ becomes more negative.
+The left panel of {numref}`fig-rcs-spectrum` shows that $S(\omega;\sigma)$ is largest at $\omega \approx 0$, where the consumer's welfare is most sensitive to income variability.
 
-The right panel computes the DEP from the exact likelihood ratio between the approximating scalar law $\mu_{t+1}=\mu_t+\alpha\epsilon_{t+1}$ and the solved worst-case law $\mu_{t+1}=\zeta(\sigma)\mu_t+\alpha\epsilon_{t+1}$.
+The right panel makes the key point: the ratio $S(\omega;\sigma)/S(\omega;0)$ is sharply decreasing in $\omega$.
 
-### Concluding remarks
+Recognizing where the consumer is vulnerable, the minimizing agent concentrates the worst-case distortions at low frequencies, and it does so more aggressively as $|\sigma|$ grows.
 
-We close with a summary of the key messages from all three lectures.
+The peak at $\omega = 0$ equals $\alpha^2/(1-\sqrt{\beta\zeta})^2$ and diverges as $\sigma \to \underline\sigma$, which is another way of seeing the breakdown point.
 
-The LQ permanent income model, a rational-expectations version of Friedman's permanent income hypothesis, has two complementary state-space representations:
+Because the distortion is $v_t = K\mu_{s,t-1}$ by {eq}`eq:rcs-K`, the spectral density of the distortion process is $K^2$ times the density of $\mu_{s,t-1}$, so it inherits the same low-frequency concentration.
 
-1. **$(b_t, z_t)$ representation**: emphasises that the consumer's optimal borrowing is history
-   dependent and cointegrated with consumption.
+## Detection error probabilities
 
-2. **$(c_t, z_t)$ representation**: emphasises that consumption is a martingale (random walk)
-   and that assets $b_t$ are encoded in consumption, so the impulse response function of
-   consumption is "box-shaped": a permanent shift in the level.
+```{index} single: Detection Error Probabilities
+```
 
-We embedded this single-agent model in a Bewley equilibrium with a continuum of ex-post
-heterogeneous consumers.
+A natural way to discipline the choice of $\sigma$ is to ask: **how difficult would it be to distinguish the approximating model from the worst-case model statistically?**
 
-The equilibrium gross interest rate $R = \beta^{-1}$ is supported by
-constant average consumption, though the cross-section variance of consumption grows linearly with
-age.
+For a sample of length $T$, one can use a **log-likelihood ratio test** to compare the two hypotheses.
 
-A complete-markets version of the same model achieves full risk sharing and a time-invariant
-consumption distribution at the cost of more complex financial arrangements (Arrow securities).
+The **detection error probability** (DEP) is the probability of making the wrong decision using the log-likelihood ratio statistic when one does not know which model generated the data:
 
-A concern for model misspecification, parameterised by $\sigma = -\theta^{-1} \leq 0$, alters the permanent income model.
+$$
+\mathrm{DEP}(\sigma) = \frac{1}{2}\bigl[\mathbb{P}\{\text{prefer approximating} \mid \text{worst-case is true}\}
+                                    + \mathbb{P}\{\text{prefer worst-case} \mid \text{approximating is true}\}\bigr]
+$$ (eq:rcs-dep)
 
-A concern for robustness generates a precautionary savings motive even under quadratic preferences by distorting the conditional means of income shocks.
+When $\sigma = 0$ the two models are identical and $\mathrm{DEP} = 0.5$.
 
-The distorted worst-case model makes the income process **more persistent**, shifting power toward low frequencies where the permanent income consumer is most vulnerable.
+As $|\sigma|$ increases the models diverge and the DEP falls toward zero.
 
-The observational equivalence theorem {prf:ref}`thm-lqcs-oe1` shows that for quantities $(c_t, i_t)$ alone, a concern for robustness is indistinguishable from a reduction in $\beta$.
+In the scalar model the two hypotheses are fully explicit:
 
-The reverse theorem {prf:ref}`thm-lqcs-oe2` shows that, starting from $\beta R = 1$, robustness is observationally equivalent to an *increase* in $\beta$, which imparts an upward drift to expected consumption.
+$$
+\text{approximating:}\quad \mu_{t+1} = \mu_t + \alpha w_{t+1},
+\qquad
+\text{worst-case:}\quad \mu_{t+1} = \zeta(\sigma)\,\mu_t + \alpha w_{t+1}
+$$ (eq:rcs-hypotheses)
 
-Detection error probabilities provide a principled way to calibrate $\sigma$: choose $|\sigma|$ small enough that the approximating and worst-case models remain difficult to distinguish statistically.
+Both have Gaussian innovations with the same variance $\alpha^2$, so the log-likelihood ratio is a difference of sums of squares.
 
-The observationally equivalent $(\sigma, \hat\beta)$ pairs **do** have different implications for asset prices, a point explored further by HST in the asset-pricing context.
+```{code-cell} ipython3
+def simulate_paths(ζ, α, T, n_paths, seed):
+    "Simulate n_paths draws of μ_{t+1} = ζ μ_t + α w_{t+1} from μ_0 = 0."
+    rng = np.random.default_rng(seed)
+    paths = np.zeros((n_paths, T + 1))
+    shocks = rng.standard_normal((n_paths, T))
+    for t in range(T):
+        paths[:, t + 1] = ζ * paths[:, t] + α * shocks[:, t]
+    return paths
 
-The robust Bewley economy shows how agents can have the same consumption decision rule and support the same equilibrium interest rate $R = \beta_0^{-1}$ while differing in their worst-case subjective income dynamics.
+
+def log_likelihood_ratio(paths, ζ, α):
+    "Return log p_worst(path) - log p_approx(path)."
+    lag, lead = paths[:, :-1], paths[:, 1:]
+    return 0.5 * (np.sum(((lead - lag) / α)**2, axis=1)
+                  - np.sum(((lead - ζ * lag) / α)**2, axis=1))
+
+
+def detection_error_probability(ζ, α, T=40, n_paths=10_000, seed=1234):
+    "Finite-sample DEP for the approximating and worst-case scalar laws."
+    if np.isclose(ζ, 1.0):
+        return 0.5
+    approx = simulate_paths(1.0, α, T, n_paths, seed)
+    worst = simulate_paths(ζ, α, T, n_paths, seed + 1)
+    return 0.5 * (np.mean(log_likelihood_ratio(worst, ζ, α) < 0)
+                  + np.mean(log_likelihood_ratio(approx, ζ, α) > 0))
+```
+
+We use $T = 40$, which is ten years of quarterly data.
+
+Before plotting, it is worth noting a property that makes the DEP the right way to report a robustness concern.
+
+The parameter $\sigma$ is *not* scale free: it always enters through the product $\sigma\alpha^2$, and $\alpha^2$ has the units of consumption squared.
+
+Doubling the units in which consumption is measured therefore changes the numerical value of $\sigma$ that represents a given concern for robustness.
+
+The DEP has no such problem, because $\alpha$ cancels from the likelihood ratio in {eq}`eq:rcs-hypotheses`.
+
+```{code-cell} ipython3
+ζ_test = worst_case_persistence(0.6 * σ_lo, β, α2)
+for scale in [0.5, 1.0, 2.0]:
+    dep = detection_error_probability(ζ_test, scale * α)
+    print(f"α scaled by {scale:>4}:  DEP = {dep:.4f}")
+```
+
+The DEP depends only on $\zeta$ and on the sample size $T$.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: |
+      Finite-sample detection error probability against the robustness
+      concern, over the admissible range $(\underline\sigma, 0]$, for two
+      sample lengths. Values below the dashed line are the ones HST regard as
+      implausible, because the approximating and worst-case models would then
+      be too easy to tell apart.
+    name: fig-rcs-dep
+---
+σ_vals = np.linspace(0.0, 0.999 * σ_lo, 31)
+ζ_vals = worst_case_persistence(σ_vals, β, α2)
+
+fig, ax = plt.subplots()
+for T, color in [(40, 'C0'), (160, 'C2')]:
+    dep_vals = np.array([detection_error_probability(ζ, α, T=T)
+                         for ζ in ζ_vals])
+    ax.plot(-σ_vals, dep_vals, lw=2, color=color, label=f'$T = {T}$')
+
+ax.axhline(0.2, color='C3', linestyle='--', lw=1.2, label='DEP = 0.2')
+ax.axvline(-σ_lo, color='k', linestyle=':', lw=1,
+           label='breakdown point')
+ax.set_xlabel(r'robustness concern $|\sigma|$')
+ax.set_ylabel('detection error probability')
+ax.set_ylim(0.0, 0.52)
+ax.legend()
+plt.show()
+```
+
+```{note}
+HST suggested that a DEP above 0.2 is "plausible", meaning the models are still hard enough to distinguish statistically that a concern for robustness is warranted.
+
+Values of $\sigma$ with $\mathrm{DEP} \geq 0.2$ therefore define a set of plausible worst-case models.
+```
+
+{numref}`fig-rcs-dep` shows that the two disciplines interact in an interesting way.
+
+At $T = 40$ the DEP curve reaches the $0.2$ threshold essentially exactly at the breakdown point.
+
+In other words, with ten years of quarterly data, every robustness concern that this model can represent at all is also statistically plausible: the mathematical limit binds first, and the statistical one is slack.
+
+```{code-cell} ipython3
+for frac in [0.6, 0.9, 0.999]:
+    ζ = worst_case_persistence(frac * σ_lo, β, α2)
+    print(f"σ = {frac * σ_lo:.5f} (= {frac:.3f} σ̲):  "
+          f"DEP = {detection_error_probability(ζ, α):.4f}")
+```
+
+That near-coincidence is a property of this calibration and of $T = 40$, not a theorem.
+
+At $T = 160$ the ordering reverses, and statistical detectability binds well before the breakdown point.
+
+```{code-cell} ipython3
+σ_report = 0.6 * σ_lo
+ζ_report = worst_case_persistence(σ_report, β, α2)
+print(f"at σ = {σ_report:.4f}  (ζ = {ζ_report:.4f}):")
+for T in [20, 40, 80, 160]:
+    print(f"  T = {T:>3}:  DEP = "
+          f"{detection_error_probability(ζ_report, α, T=T):.4f}")
+```
+
+The lesson is that the plausible amount of model uncertainty depends on how much data the econometrician is imagined to have.
+
+## Robustness of decision rules
+
+```{index} single: Robustness; payoff evaluation
+```
+
+A natural follow-up question is whether robust decision rules perform better than the non-robust rule when the data are in fact generated by a distorted model.
+
+Define the **payoff** when the decision rule is designed for robustness parameter $\sigma^r$ and the data are generated by the distorted model associated with $\sigma^d$:
+
+$$
+\pi(\sigma^d;\sigma^r) = -\mathbb{E}_{0,\sigma^d}\sum_{t=0}^{\infty}\beta^t\, x_t^\top H(\sigma^r)^\top H(\sigma^r)\, x_t
+$$ (eq:rcs-payoff)
+
+where the state evolves under decision rule $F(\sigma^r)$ and worst-case shocks $K(\sigma^d)$:
+
+$$
+x_{t+1} = \bigl(A - BF(\sigma^r) + CK(\sigma^d)\bigr)x_t + C\,w_{t+1}
+$$ (eq:rcs-payoff-law)
+
+There is an important caveat about *which* family of rules to compare, and it follows directly from {prf:ref}`thm-rcs-oe1`.
+
+Along the observational-equivalence locus $(\sigma, \hat\beta(\sigma))$, every agent chooses the *same* decision rule.
+
+So $F(\sigma^r)$ does not vary along the locus, and $\pi(\sigma^d;\sigma^r)$ is constant in $\sigma^r$ there.
+
+A meaningful comparison of rules must therefore move *off* the locus, for example by holding $\beta$ fixed at the benchmark and varying $\sigma^r$ alone.
+
+That experiment requires solving the full HST matrix problem rather than the scalar reduction of {ref}`rcs-scalar`, because once we leave the locus the marginal-utility process no longer summarises the decision rule.
+
+{doc}`robust_permanent_income` carries out that computation with the QuantEcon `LQ` and robust-control routines.
+
+## Concluding remarks
+
+A concern for model misspecification, parameterised by $\sigma = -\theta^{-1} \leq 0$, alters the permanent income model in ways that are subtle rather than dramatic.
+
+A concern for robustness generates a precautionary savings motive even under quadratic preferences, by distorting the conditional means of income shocks.
+
+The distorted worst-case model makes the income process **more persistent**, shifting power toward the low frequencies where the permanent income consumer is most vulnerable.
+
+The observational equivalence theorem {prf:ref}`thm-rcs-oe1` shows that for quantities $(c_t, i_t)$ alone, a concern for robustness is indistinguishable from a reduction in $\beta$.
+
+The reverse theorem {prf:ref}`thm-rcs-oe2` shows that, starting from $\beta R = 1$, robustness is observationally equivalent to an *increase* in $\beta$, which imparts an upward drift to expected consumption.
+
+Two disciplines bound how large a robustness concern can sensibly be.
+
+The breakdown point {eq}`eq:rcs-breakdown` is a hard mathematical limit beyond which no solution exists.
+
+Detection error probabilities provide a softer and scale-free statistical discipline: choose $|\sigma|$ small enough that the approximating and worst-case models remain difficult to distinguish.
+
+The observationally equivalent $(\sigma, \hat\beta)$ pairs **do** have different implications for asset prices, a point pursued in {doc}`robust_permanent_income`.
+
+They also have different implications for the *beliefs* that agents hold, which is the subject of {doc}`lq_robust_bewley`.
 
 ## Exercises
 
 ```{exercise-start}
-:label: lqcs_ex1
+:label: rcs_ex1
 ```
 
-We translate from the benchmark Bewley economy to HST notation.
+This exercise derives the breakdown point {eq}`eq:rcs-breakdown`.
 
-Specialise the robust-control setup to the no-habit, no-capital LQ Bewley environment
-($\lambda = \delta_h = 0$, $k_t = 0$), and let the endowment process be the two-factor model in
-{eq}`eq:pi-twofactor`.
+1. Using {eq}`eq:rcs-zeta`, show that $\hat\beta(\sigma)\,\zeta(\sigma)^2 = \beta\,\zeta(\sigma)$.
 
-1. Write the household state as $x_t = [a_t, z_t^\top]^\top$, where $a_t=-b_t$ is net assets, and derive matrices $(A, B, C)$ for the law of motion {eq}`eq:law0`.
+2. The minimizing agent's problem has a finite value only if $\hat\beta\zeta^2 < 1$. Use part 1 to show that this is equivalent to $\zeta < R$, and hence that
+   $\underline\sigma = -(1-\beta)^2/\alpha^2$.
 
-2. Show that when $\sigma = 0$, the Bellman problem coincides with the LQ permanent-income
-  problem.
+3. Verify that $\hat\beta(\underline\sigma) = \beta^2$.
 
-3. Derive $\alpha^2$ and verify
-
-$$
-\alpha^2 = \sigma_1^2 + (1-\beta)^2\sigma_2^2.
-$$
-
-Interpret economically why the permanent and transitory components enter with different weights.
+4. Explain why the breakdown point moves toward zero when the endowment becomes more volatile.
 
 ```{exercise-end}
 ```
 
-```{solution-start} lqcs_ex1
+```{solution-start} rcs_ex1
 :class: dropdown
 ```
 
-Here is one solution:
+Here is one solution.
 
-1. With $x_t = [a_t, z_t^\top]^\top$ and budget law $a_{t+1} = R(a_t + y_t - c_t)$, $y_t = \check G z_t$, and $z_{t+1} = \check A z_t + \check C \epsilon_{t+1}$, the stacked law is
+1. From {eq}`eq:rcs-zeta`, $\zeta = \beta/\hat\beta$, so $\hat\beta = \beta/\zeta$ and therefore $\hat\beta\zeta^2 = (\beta/\zeta)\zeta^2 = \beta\zeta$.
 
-$$
-\begin{pmatrix} a_{t+1} \\ z_{t+1} \end{pmatrix}
-=
-\underbrace{\begin{pmatrix} R & R\check G \\ 0 & \check A \end{pmatrix}}_{A}
-\begin{pmatrix} a_t \\ z_t \end{pmatrix}
-+
-\underbrace{\begin{pmatrix} -R \\ 0 \end{pmatrix}}_{B} c_t
-+
-\underbrace{\begin{pmatrix} 0 \\ \check C \end{pmatrix}}_{C}\epsilon_{t+1}.
-$$
+2. By part 1 the condition $\hat\beta\zeta^2 < 1$ is $\beta\zeta < 1$, that is, $\zeta < \beta^{-1} = R$.
 
-  The sign of $B$ is negative because higher $c_t$ reduces asset accumulation $a_{t+1}$.
+   Substituting the closed form {eq}`eq:rcs-zeta` gives
 
-2. At $\sigma=0$, the robust Bellman problem collapses to the ordinary LQ objective with no minimizing distortion term, so the planner/consumer problem is exactly the permanent-income problem with quadratic utility and linear constraints.
+   $$
+   \left[1 + \frac{\sigma\alpha^2}{1-\beta}\right]^{-1} < \frac{1}{\beta}
+   \iff 1 + \frac{\sigma\alpha^2}{1-\beta} > \beta
+   \iff \sigma\alpha^2 > -(1-\beta)^2 ,
+   $$
 
-3. From the $(c_t,z_t)$ representation,
+   which is $\sigma > -(1-\beta)^2/\alpha^2 = \underline\sigma$.
 
-$$
-\Delta c_{t+1} = h\,\epsilon_{t+1},
-\qquad h = (1-\beta)\check G (I-\beta\check A)^{-1}\check C.
-$$
+3. At $\sigma = \underline\sigma$ we have $\sigma\alpha^2 = -(1-\beta)^2$, so $\zeta = [1-(1-\beta)]^{-1} = \beta^{-1} = R$ and $\hat\beta = \beta/\zeta = \beta^2$.
 
-  In HST notation, $\alpha^2 = h h^\top$, and for the two-factor calibration $\check A=\mathrm{diag}(1,0)$ and $\check C=\mathrm{diag}(\sigma_1,\sigma_2)$, so
+4. A more volatile endowment raises $\alpha^2$, and $\underline\sigma = -(1-\beta)^2/\alpha^2$ is therefore closer to zero.
 
-$$
-\alpha^2 = \sigma_1^2 + (1-\beta)^2\sigma_2^2.
-$$
-
-  Permanent shocks get unit weight because they shift lifetime resources one-for-one, while
-  transitory shocks are annuitised and therefore scaled by $(1-\beta)$ in consumption growth.
+   The economics is that $\sigma$ only ever matters through $\sigma\alpha^2$, so when the consumer faces more income risk a *smaller* $|\sigma|$ already buys a given amount of pessimism.
 
 ```{solution-end}
 ```
 
 ```{exercise-start}
-:label: lqcs_ex2
+:label: rcs_ex2
 ```
 
-This exercise studies a continuum of robust but observationally equivalent Bewley consumers.
+This exercise explains why a naive numerical solver for {eq}`eq:rcs-riccati` misbehaves.
 
-Fix a benchmark pair $(\beta_0, \sigma = 0)$ with $R = \beta_0^{-1}$ and define
+1. Verify algebraically that on the locus {eq}`eq:rcs-oe` the discriminant of {eq}`eq:rcs-riccati` equals $\bigl[(\sigma\alpha^2+(1-\beta)^2)/(1-\beta)\bigr]^2$.
 
-$$
-\beta(\sigma) = \beta_0 + \frac{\sigma\alpha^2\beta_0}{1-\beta_0},
-\qquad \sigma \in [-\bar\sigma, 0].
-$$
+2. Conclude that the square root equals $|\sigma\alpha^2+(1-\beta)^2|/(1-\beta)$ and hence that the two roots are those in {eq}`eq:rcs-roots`.
 
-Suppose a unit interval of consumers is indexed by $i$ with type $\sigma_i \in [-\bar\sigma, 0]$
-and discount factor $\beta_i = \beta(\sigma_i)$.
+3. Write code that, for a grid of $\sigma$ in $(\underline\sigma,0)$, records which *sign* in front of the square root in {eq}`eq:rcs-riccati` yields the economically relevant root $P=-(1-\beta)^{-1}$.
 
-1. Use {prf:ref}`thm-lqcs-oe1` to show that each type has the same consumption rule as the benchmark
-  $(\beta_0, 0)$ agent.
-
-2. Prove that aggregate consumption and bond-market clearing imply the same equilibrium interest
-  rate $R = \beta_0^{-1}$ as in the plain-vanilla Bewley model.
-
-3. Explain why agents can be observationally equivalent in quantities while still holding different
-  worst-case subjective models.
+   Confirm that the answer flips at $\sigma = \underline\sigma$.
 
 ```{exercise-end}
 ```
 
-```{solution-start} lqcs_ex2
+```{solution-start} rcs_ex2
 :class: dropdown
 ```
 
-Here is one solution:
+Here is one solution.
 
-1. {prf:ref}`thm-lqcs-oe1` implies that if $(\sigma_i, \beta_i)$ lies on
+1. With $u = \sigma\alpha^2$ and $\delta = 1-\beta$, equation {eq}`eq:rcs-oe` gives $\hat\beta - 1 = -\delta + u/\delta \cdot \beta/\beta$, more directly $\hat\beta-1+u = (u-\delta^2)/\delta$.
 
-$$
-\beta_i = \beta_0 + \frac{\sigma_i\alpha^2\beta_0}{1-\beta_0},
-$$
+   Hence the discriminant is
 
-  then type $i$ chooses the same decision rule as the benchmark $(0,\beta_0)$ agent and all types share the same consumption policy function $c_t = \mathcal C(a_t,z_t)$.
+   $$
+   \frac{(u-\delta^2)^2}{\delta^2} + 4u
+   = \frac{(u-\delta^2)^2 + 4u\delta^2}{\delta^2}
+   = \frac{(u+\delta^2)^2}{\delta^2} .
+   $$
 
-2. Since all individual policy rules coincide with benchmark Bewley policies, aggregating over consumers gives the same goods- and bond-market clearing conditions and supports the same equilibrium $R=\beta_0^{-1}$.
+2. Taking the square root gives $|u+\delta^2|/\delta$, and substituting the two signs into {eq}`eq:rcs-riccati` gives $P = -1/\delta$ and $P = \delta/u$.
 
-3. Observational equivalence concerns quantities generated by optimal rules, so distinct $(\sigma_i,\beta_i)$ can generate the same $\{c_t^i,a_t^i\}$ while implying different internal worst-case beliefs.
+3. The sign flips exactly where $u + \delta^2$ changes sign, that is at $u = -\delta^2$, which is $\sigma = \underline\sigma$.
+
+```{code-cell} ipython3
+σ_test = np.linspace(-0.01, 1.4 * σ_lo, 40)
+signs = []
+for σ in σ_test:
+    roots, _ = solve_scalar_riccati(σ, β, α2)
+    signs.append('+' if np.argmin(np.abs(roots + 1 / (1 - β))) == 0 else '-')
+
+print(''.join(signs))
+flip = next(i for i in range(1, len(signs)) if signs[i] != signs[i - 1])
+print(f"sign flips between σ = {σ_test[flip - 1]:.5f} "
+      f"and σ = {σ_test[flip]:.5f}")
+print(f"breakdown point σ̲ = {σ_lo:.5f}")
+```
 
 ```{solution-end}
 ```
 
 ```{exercise-start}
-:label: lqcs_ex3
+:label: rcs_ex3
 ```
 
-This exercise separates quantities from beliefs without introducing an additional calibration.
+This exercise calibrates $\sigma$ using the detection error probability.
 
-Consider two agents $a$ and $b$ in the robust Bewley economy with $\sigma^a < \sigma^b \leq 0$ and
-$\beta^j = \beta_0 + \sigma^j\alpha^2\beta_0/(1-\beta_0)$ for $j \in \{a,b\}$.
+Write a bisection that finds the $\sigma$ at which $\mathrm{DEP}(\sigma) = 0.2$, and report the associated $\hat\beta$, $\zeta$, and the ratio $\sigma/\underline\sigma$.
 
-1. Use {eq}`eq:bew_cinno` and {eq}`eq:bew_locus` to show that the two agents have the same consumption innovation $h\epsilon_{t+1}$.
+Run it for $T = 40$ and $T = 160$.
 
-2. Show that if the two agents start from the same $(a_t,z_t)$ and observe the same shock
-  $\epsilon_{t+1}$, then their next-period choices of consumption and assets coincide.
-
-3. Explain why the two agents can nevertheless disagree about the worst-case conditional mean of
-  $\epsilon_{t+1}$.
-
-Summarise what is and is not identified by data on quantities alone.
+Take care: the target need not be attained on the admissible range $(\underline\sigma, 0]$, and your code should say so rather than silently return an endpoint.
 
 ```{exercise-end}
 ```
 
-```{solution-start} lqcs_ex3
+```{solution-start} rcs_ex3
 :class: dropdown
 ```
 
-Here is one solution:
+The DEP is decreasing in $|\sigma|$, so a bisection works, but we must first check that the target lies within reach.
 
-1. Equation {eq}`eq:bew_locus` places both agents on the observational-equivalence locus, so
-{prf:ref}`thm-lqcs-oe1` implies that both use the benchmark consumption rule and therefore the same
-innovation vector $h$ in {eq}`eq:bew_cinno`.
+```{code-cell} ipython3
+def σ_for_target_dep(target, T, β, α2, tol=1e-5):
+    """
+    Find σ ∈ (σ̲, 0) with DEP(σ) = target by bisection.
 
-2. With a common state and common shock, both agents apply the same policy function and the same law
-of motion, so $c_{t+1}^a=c_{t+1}^b$ and $a_{t+1}^a=a_{t+1}^b$.
+    Returns None if the DEP never falls to the target on the admissible
+    range, which happens when the breakdown point binds before statistical
+    detectability does.
+    """
+    α_loc = np.sqrt(α2)
+    lo, hi = 0.999 * (-(1 - β)**2 / α2), 0.0     # lo is the more negative end
 
-3. The minimizing feedback $K(\sigma^j,\beta^j)$ can differ across $j$, so the agents can attach
-different worst-case conditional means to the same shock process even though their observable
-choices coincide.
+    def dep_at(σ):
+        return detection_error_probability(
+            worst_case_persistence(σ, β, α2), α_loc, T=T)
 
-Conclusion: quantities identify the equilibrium decision rule but not the decomposition between
-impatience ($\beta$) and robustness ($\sigma$) along the observational-equivalence locus.
+    if dep_at(lo) > target:
+        return None
+
+    while hi - lo > tol:
+        mid = 0.5 * (lo + hi)
+        if dep_at(mid) < target:
+            lo = mid                # too easy to detect, move toward zero
+        else:
+            hi = mid
+    return 0.5 * (lo + hi)
+
+
+for T in [40, 160]:
+    σ_star = σ_for_target_dep(0.2, T, β, α2)
+    if σ_star is None:
+        print(f"T = {T:>3}:  DEP stays above 0.2 on the whole admissible "
+              f"range; the breakdown point binds first")
+    else:
+        ζ_star = worst_case_persistence(σ_star, β, α2)
+        print(f"T = {T:>3}:  σ = {σ_star:.5f}   β̂ = {β / ζ_star:.5f}   "
+              f"ζ = {ζ_star:.5f}   σ/σ̲ = {σ_star / σ_lo:.3f}")
+```
+
+A longer sample makes the two models easier to distinguish, so the $\sigma$ that keeps the DEP at $0.2$ moves closer to zero.
+
+At $T = 40$ no admissible $\sigma$ has a DEP as low as $0.2$, so the breakdown point is the binding constraint.
+
+At $T = 160$ statistical detectability binds first, at about a quarter of the way to the breakdown point.
 
 ```{solution-end}
 ```
+
+## Related lectures
+
+- {doc}`lq_permanent_income` develops the standard LQ permanent income model used here.
+- {doc}`lq_bewley_complete_markets` studies the cross-section of consumption and the market structures that support it.
+- {doc}`lq_robust_bewley` applies the observational-equivalence results of this lecture to build a Bewley economy with heterogeneous concerns about misspecification.
+- {doc}`robust_permanent_income` treats risk-sensitive preferences, estimation, and asset pricing in the HST model.
