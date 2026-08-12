@@ -356,7 +356,7 @@ def create_ifp(
     assert β * ER < 1, "Stability condition failed."
 
     # Generate random draws using JAX
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     subkey1, subkey2 = jax.random.split(key)
     η_draws = jax.random.normal(subkey1, (shock_draw_size,))
     ζ_draws = jax.random.normal(subkey2, (shock_draw_size,))
@@ -586,7 +586,7 @@ def compute_asset_stationary(
     z_idx_0_vector = jnp.zeros(num_households).astype(jnp.int32)
 
     # Vectorize over many households
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     keys = jax.random.split(key, num_households)
     # Vectorize simulate_household in (key, a_0, z_idx_0)
     sim_all_households = jax.vmap(

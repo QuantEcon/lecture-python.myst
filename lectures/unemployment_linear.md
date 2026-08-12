@@ -197,7 +197,7 @@ def run_nuts(model, data, seed=0, num_warmup=1000, num_samples=2000, num_chains=
                 num_warmup=num_warmup, num_samples=num_samples,
                 num_chains=num_chains, chain_method="vectorized",
                 progress_bar=False)
-    mcmc.run(random.PRNGKey(seed), jnp.asarray(data))
+    mcmc.run(random.key(seed), jnp.asarray(data))
     return mcmc
 ```
 

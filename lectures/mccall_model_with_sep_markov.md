@@ -605,7 +605,7 @@ def simulate_employment_path(
     Simulate employment path for T periods starting from unemployment.
 
     """
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     # Unpack model
     n, w_vals, P, P_cumsum, β, c, α, γ = model
 
@@ -813,7 +813,7 @@ def simulate_cross_section(
 
     Returns the cross-sectional unemployment rate.
     """
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
 
     # Solve for optimal reservation wage
     v_u = vfi(model)
@@ -848,7 +848,7 @@ def plot_cross_sectional_unemployment(
 
     """
     # Get final employment state directly
-    key = jax.random.PRNGKey(42)
+    key = jax.random.key(42)
     v_u = vfi(model)
     w_bar = get_reservation_wage(v_u, model)
 

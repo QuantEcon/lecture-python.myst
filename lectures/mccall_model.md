@@ -802,7 +802,7 @@ class McCallModelContinuous(NamedTuple):
 def create_mccall_continuous(
         c=25, β=0.99, σ=0.5, μ=2.5, mc_size=1000, seed=1234
     ):
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     s = jax.random.normal(key, (mc_size,))
     w_draws = jnp.exp(μ + σ * s)
     return McCallModelContinuous(c, β, σ, μ, w_draws)
@@ -970,7 +970,7 @@ def simulate_lifetime_value(key, model, w_bar, n_periods=100):
 
     Parameters:
     -----------
-    key : jax.random.PRNGKey
+    key : jax.random.key
         Random key for JAX
     model : McCallModelContinuous
         The model containing parameters
@@ -1018,7 +1018,7 @@ def compute_mean_lifetime_value(model, w_bar, num_reps=10000, seed=1234):
     Compute mean lifetime value across many simulations.
 
     """
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     keys = jax.random.split(key, num_reps)
 
     # Vectorize the simulation across all replications
@@ -1096,7 +1096,7 @@ def compute_stopping_time_continuous(w_bar, key, model):
     -----------
     w_bar : float
         The reservation wage
-    key : jax.random.PRNGKey
+    key : jax.random.key
         Random key for JAX
     model : McCallModelContinuous
         The model containing wage draws
@@ -1148,7 +1148,7 @@ def compute_mean_stopping_time_continuous(w_bar, model, num_reps=100000, seed=12
         Average stopping time across all replications
     """
     # Generate a key for each MC replication
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     keys = jax.random.split(key, num_reps)
 
     # Vectorize compute_stopping_time_continuous and evaluate across keys

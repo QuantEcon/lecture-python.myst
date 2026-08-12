@@ -282,7 +282,7 @@ def create_mccall_model(
     ):
     """Factory function to create a McCall model instance."""
 
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     z_draws = jax.random.normal(key, (mc_size,))
 
     # Discretize just to get a suitable wage grid for interpolation
@@ -529,7 +529,7 @@ def simulate_employment_path(
     Simulate employment path for T periods starting from unemployment.
 
     """
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     c, α, β, ρ, ν, γ, w_grid, z_draws = model
 
     # Initial conditions: start unemployed with initial wage draw
@@ -678,7 +678,7 @@ def simulate_cross_section(
     """
     c, α, β, ρ, ν, γ, w_grid, z_draws = model
 
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
 
     # Solve for optimal reservation wage
     w_bar = get_reservation_wage(model)
@@ -750,7 +750,7 @@ def plot_cross_sectional_unemployment(
     c, α, β, ρ, ν, γ, w_grid, z_draws = model
 
     # Get final employment state directly
-    key = jax.random.PRNGKey(42)
+    key = jax.random.key(42)
     w_bar = get_reservation_wage(model)
 
     # Initialize arrays
