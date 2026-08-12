@@ -18,7 +18,7 @@ kernelspec:
 </div>
 ```
 
-# Job Search VIII: Search with Learning
+# Job Search IX: Search with Learning
 
 ```{contents} Contents
 :depth: 2

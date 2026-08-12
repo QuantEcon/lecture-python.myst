@@ -62,6 +62,8 @@ import quantecon as qe
 from numba import jit
 from typing import NamedTuple, Optional, Tuple
 from collections import namedtuple
+
+rng = np.random.default_rng()
 ```
 
 ## VAR model setup
@@ -217,7 +219,7 @@ def log_likelihood_path(X, model):
         
     return log_L
 
-def simulate_var(model, T, N_paths=1):
+def simulate_var(model, T, rng, N_paths=1):
     """
     Simulate paths from the VAR model
     """
@@ -227,13 +229,13 @@ def simulate_var(model, T, N_paths=1):
     
     for i in range(N_paths):
         # Draw initial state
-        x = mvn.rvs(mean=model.μ_0, cov=model.Σ_0)
+        x = mvn.rvs(mean=model.μ_0, cov=model.Σ_0, random_state=rng)
         x = np.atleast_1d(x)
         paths[i, 0] = x
         
         # Simulate forward
         for t in range(T):
-            w = np.random.randn(m)
+            w = rng.standard_normal(m)
             x = model.A @ x + model.C @ w
             paths[i, t+1] = x
             
@@ -322,7 +324,7 @@ Let's generate 100 paths of length 200 from model $f$ and compute the likelihood
 # Simulate from model f
 T = 200
 N_paths = 100
-paths_from_f = simulate_var(model_f, T, N_paths)
+paths_from_f = simulate_var(model_f, T, rng, N_paths)
 
 L_ratios_f = compute_likelihood_ratio_var(paths_from_f, model_f, model_g)
 
@@ -384,8 +386,8 @@ Let's generate 50 paths of length 50 from both models and compute the likelihood
 T = 50
 N_paths = 50
 
-paths_from_f = simulate_var(model2_f, T, N_paths)
-paths_from_g = simulate_var(model2_g, T, N_paths)
+paths_from_f = simulate_var(model2_f, T, rng, N_paths)
+paths_from_g = simulate_var(model2_g, T, rng, N_paths)
 
 # Compute likelihood ratios
 L_ratios_ff = compute_likelihood_ratio_var(paths_from_f, model2_f, model2_g)
@@ -453,11 +455,11 @@ def model_selection_analysis(T_values, model_f, model_g, N_sim=500):
     
     for T in T_values:
         # Simulate from model f
-        paths_f = simulate_var(model_f, T, N_sim//2)
+        paths_f = simulate_var(model_f, T, rng, N_sim//2)
         L_ratios_f = compute_likelihood_ratio_var(paths_f, model_f, model_g)
         
         # Simulate from model g
-        paths_g = simulate_var(model_g, T, N_sim//2)
+        paths_g = simulate_var(model_g, T, rng, N_sim//2)
         L_ratios_g = compute_likelihood_ratio_var(paths_g, model_f, model_g)
         
         # Decision rule: choose f if log L_T >= 0
@@ -683,12 +685,12 @@ def create_samuelson_var_model(a, b, γ, G, σ, stationary_init=False,
     
     return model, G_obs, info
 
-def simulate_samuelson(model, G_obs, T, N_paths=1):
+def simulate_samuelson(model, G_obs, T, rng, N_paths=1):
     """
     Simulate Samuelson model
     """
     # Simulate state paths
-    states = simulate_var(model, T, N_paths)
+    states = simulate_var(model, T, rng, N_paths)
     
     # Extract observables using G matrix
     if N_paths == 1:
@@ -731,8 +733,8 @@ T = 50
 N_paths = 50
 
 # Get both states and observables
-states_f, obs_f = simulate_samuelson(model_sam_f, G_obs_f, T, N_paths)
-states_g, obs_g = simulate_samuelson(model_sam_g, G_obs_g, T, N_paths)
+states_f, obs_f = simulate_samuelson(model_sam_f, G_obs_f, T, rng, N_paths)
+states_g, obs_g = simulate_samuelson(model_sam_g, G_obs_g, T, rng, N_paths)
 
 output_paths_f = obs_f[:, :, 0] 
 output_paths_g = obs_g[:, :, 0]

@@ -642,7 +642,7 @@ mystnb:
     caption: Standard vs robust consumption paths
     name: fig-std-vs-robust-paths
 ---
-np.random.seed(0)
+rng = np.random.default_rng(0)
 T_sim = 100
 
 def simulate_ar1(φ, ν, shocks, mu0=0.0):
@@ -652,7 +652,7 @@ def simulate_ar1(φ, ν, shocks, mu0=0.0):
         path[t] = φ * path[t-1] + ν * ε
     return path
 
-shock_path = np.random.randn(T_sim - 1)
+shock_path = rng.standard_normal(T_sim - 1)
 mu0_init = 10.0
 mu_std_path = simulate_ar1(φ_std, ν_std, shock_path, mu0=mu0_init)
 mu_rob_path = simulate_ar1(φ_rob, ν_rob, shock_path, mu0=mu0_init)

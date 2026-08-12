@@ -584,3 +584,7 @@ A simple rule of thumb:
 
 - use the conditioning assumption when early observations look transient or the starting point may be atypical;
 - use the stationary assumption when you are confident the process has been running near its long-run behaviour.
+
+```{seealso}
+{doc}`ar1_turningpts` builds on the posterior computed here to forecast nonlinear sample-path statistics of an AR(1) process, such as the time until the next turning point.
+```
