@@ -1424,16 +1424,12 @@ While Hansen-Singleton use CRSP value-weighted NYSE returns, we use the Ken Fren
 
 The consumption series is constructed from consumption of nondurables (`ND`) with the nondurables deflator.
 
-The hidden cell below loads a vendored monthly dataset of returns and consumption series. The data are built from the [FRED](https://fred.stlouisfed.org/) and [Ken French](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) data libraries by the maintenance script at [`_static/lecture_specific/hansen_singleton_1983/make_data.py`](https://github.com/QuantEcon/lecture-python.myst/blob/main/lectures/_static/lecture_specific/hansen_singleton_1983/make_data.py) and read here directly from GitHub.
+The hidden cell below loads a monthly dataset of returns and consumption series from [QuantEcon/data-lectures](https://github.com/QuantEcon/data-lectures). The data are built from the [FRED](https://fred.stlouisfed.org/) and [Ken French](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html) data libraries by the maintenance script at [`builders/hansen_singleton_1983_data.py`](https://github.com/QuantEcon/data-lectures/blob/main/builders/hansen_singleton_1983_data.py) and read here directly from GitHub.
 
 ```{code-cell} ipython3
 :tags: [hide-cell]
 
-DATA_URL = (
-    "https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/"
-    "lectures/_static/lecture_specific/hansen_singleton_1983/"
-    "hansen_singleton_1983_data.csv"
-)
+DATA_URL = "https://github.com/QuantEcon/data-lectures/raw/main/lectures/hansen_singleton_1983_data.csv"
 
 # Read the vendored snapshot once; load_hs_monthly_data just slices it.
 _data = pd.read_csv(DATA_URL, index_col=0, parse_dates=True)
@@ -1445,9 +1441,9 @@ def load_hs_monthly_data(start="1959-02-01", end="1978-12-01"):
     gross consumption growth, gross consumption inflation, per capita real
     consumption, and gross real T-bill return.
 
-    The data are a vendored snapshot built by the maintenance script at
-    ``_static/lecture_specific/hansen_singleton_1983/make_data.py``, which
-    constructs them from FRED and the Ken French data library.
+    The data are a snapshot built by the maintenance script at
+    ``builders/hansen_singleton_1983_data.py`` in QuantEcon/data-lectures,
+    which constructs them from FRED and the Ken French data library.
     """
     start = pd.Timestamp(start).to_period("M").to_timestamp("M")
     end = pd.Timestamp(end).to_period("M").to_timestamp("M")
