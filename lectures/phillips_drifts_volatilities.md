@@ -99,11 +99,7 @@ from scipy.special import expit
 from scipy.stats import invwishart
 
 
-data_url = (
-    'https://raw.githubusercontent.com/QuantEcon/lecture-python.myst/'
-    'main/lectures/_static/lecture_specific/phillips_drifts_volatilities/'
-    'NEWQDATA.csv'
-)
+data_url = 'https://github.com/QuantEcon/data-lectures/raw/main/lectures/NEWQDATA.csv'
 ```
 
 ## Bad policy or bad luck?

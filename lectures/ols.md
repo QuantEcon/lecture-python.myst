@@ -91,7 +91,7 @@ These variables and other data used in the paper are available for download on D
 We will use pandas' `.read_stata()` function to read in data contained in the `.dta` files to dataframes
 
 ```{code-cell} python3
-df1 = pd.read_stata('https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/ols/maketable1.dta')
+df1 = pd.read_stata('https://github.com/QuantEcon/data-lectures/raw/main/lectures/maketable1.dta')
 df1.head()
 ```
 
@@ -323,7 +323,7 @@ Let's estimate some of the extended models considered in the paper
 (Table 2) using data from `maketable2.dta`
 
 ```{code-cell} python3
-df2 = pd.read_stata('https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/ols/maketable2.dta')
+df2 = pd.read_stata('https://github.com/QuantEcon/data-lectures/raw/main/lectures/maketable2.dta')
 
 # Add constant term to dataset
 df2['const'] = 1
@@ -475,7 +475,7 @@ used for estimation)
 
 ```{code-cell} python3
 # Import and select the data
-df4 = pd.read_stata('https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/ols/maketable4.dta')
+df4 = pd.read_stata('https://github.com/QuantEcon/data-lectures/raw/main/lectures/maketable4.dta')
 df4 = df4[df4['baseco'] == 1]
 
 # Add a constant variable
@@ -603,7 +603,7 @@ results.
 
 ```{code-cell} python3
 # Load in data
-df4 = pd.read_stata('https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/ols/maketable4.dta')
+df4 = pd.read_stata('https://github.com/QuantEcon/data-lectures/raw/main/lectures/maketable4.dta')
 
 # Add a constant term
 df4['const'] = 1
@@ -676,7 +676,7 @@ using `numpy` - your results should be the same as those in the
 
 ```{code-cell} python3
 # Load in data
-df1 = pd.read_stata('https://github.com/QuantEcon/lecture-python.myst/raw/refs/heads/main/lectures/_static/lecture_specific/ols/maketable1.dta')
+df1 = pd.read_stata('https://github.com/QuantEcon/data-lectures/raw/main/lectures/maketable1.dta')
 df1 = df1.dropna(subset=['logpgp95', 'avexpr'])
 
 # Add a constant term

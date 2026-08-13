@@ -1,0 +1,49 @@
+# A dataset read that points at the wrong host fails in the reader's notebook,
+# not in CI. The data-audit dashboard that would catch it lives in
+# QuantEcon/data-lectures, runs on that repo's pushes and a weekly cron, and
+# never on a pull request here — so its detection lag is up to seven days.
+# This is the only check that fires at the moment of the change.
+#
+# It is also the only check here that fires on a PROSE edit. `ci.yml` executes
+# the book, but jupyter-cache hashes code cells only and restores a warm shared
+# cache, so a markdown link or a {download} role that points at a dead URL
+# cache-hits and goes green. Do not read a green `ci.yml` as evidence that a
+# prose link resolves.
+#
+# See QuantEcon/data-lectures PLAN.md, repoint rule 6.
+
+name: Data URL guard
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  data-url-guard:
+    runs-on: ubuntu-latest
+    # This job greps a checkout and writes nothing. The repo default is
+    # `write`, so without this it would receive a token that can also approve
+    # pull request reviews.
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+      - name: No data-lectures read on the LFS media host
+        run: |
+          # media.githubusercontent.com is the LFS *media* endpoint and routes
+          # per path: it serves a file only where that path is LFS-tracked in
+          # the repo the URL names, and 404s otherwise. Everything data-lectures
+          # publishes is plain git, so this host never resolves for it — and a
+          # mechanical org/repo swap that preserves the host breaks every read.
+          #
+          # grep -r walks lectures/_static/** too. Nothing under _static is
+          # executed by this repo's build (it is an asset path, and
+          # `only_build_toc_files: true` builds exactly _toc.yml), and the
+          # data-lectures audit excludes _static by design — so a bad URL in a
+          # vendored notebook or script there is invisible everywhere else.
+          if grep -rnF 'media.githubusercontent.com/media/QuantEcon/data-lectures' lectures/; then
+            echo "::error::Read data-lectures over raw.githubusercontent.com (or the github.com/.../raw/ redirect), never media.githubusercontent.com — that host is LFS-only and 404s every file data-lectures publishes."
+            exit 1
+          fi
+          echo "OK — no data-lectures read on the media host."
