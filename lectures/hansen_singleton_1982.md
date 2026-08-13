@@ -992,7 +992,7 @@ The hidden cell below loads a monthly dataset of gross real returns and gross co
 
 DATA_URL = "https://github.com/QuantEcon/data-lectures/raw/main/lectures/hansen_singleton_1982_data.csv"
 
-# Read the vendored snapshot once; load_hs_monthly_data just slices it.
+# Fetch the snapshot once; load_hs_monthly_data just slices it.
 _data = pd.read_csv(DATA_URL, index_col=0, parse_dates=True)
 
 
