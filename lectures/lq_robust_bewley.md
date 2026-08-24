@@ -96,7 +96,9 @@ c_t
 (w_{t+1} + v_{t+1})
 $$ (eq:rbew-law)
 
-The objective is $\mathbb{E}_0 \sum_{t=0}^\infty \beta^t\bigl[-(c_t - b)^2/2\bigr]$, which is the HST criterion with $\sigma = 0$ and a constant bliss level $b_t \equiv b$.
+The objective is $\mathbb{E}_0 \sum_{t=0}^\infty \beta^t\bigl[-(c_t - b)^2\bigr]$, which is the HST criterion with $\sigma = 0$ and a constant bliss level $b_t \equiv b$.
+
+The period return is written without a factor of $\tfrac12$, and that choice is not cosmetic: it fixes the scale of the robustness parameter $\sigma$ used throughout, since rescaling the return rescales $\sigma$ by the same factor.
 
 The robust Bellman equation with $\sigma = 0$ therefore reduces exactly to the LQ problem of {doc}`lq_permanent_income`, confirming that the HST framework nests the Bewley model.
 
@@ -142,6 +144,20 @@ $$ (eq:rbew-breakdown)
 
 Below $\underline\sigma$ the individual robust control problem has no solution, so there is no economy to describe.
 
+The bound has a transparent reading in terms of the worst-case dynamics derived below.
+
+Since $\zeta(\sigma) = \beta/\hat\beta(\sigma)$ is the growth rate that agent $\sigma$ fears for its own marginal utility, the breakdown point is exactly the $\sigma$ at which
+
+$$
+\zeta(\underline\sigma) = \frac{1}{\beta} = R,
+\qquad\text{equivalently}\qquad
+\beta\,\zeta(\underline\sigma) = 1
+$$ (eq:rbew-breakdown2)
+
+So $\underline\sigma$ is the robustness level at which the feared growth in marginal utility just reaches the gross interest rate, and the agent's discounted worst-case objective ceases to converge.
+
+Any stronger concern for robustness would have the agent guarding against a future it cannot value.
+
 ## Equilibrium with heterogeneous types
 
 We can now populate the economy with a continuum of types that differ in their concern for robustness.
@@ -160,7 +176,7 @@ so that every pair $(\sigma_i,\beta_i)$ lies on the locus {eq}`eq:rbew-locus`.
 Then
 
 1. every agent's optimal consumption plan is identical to that of the plain-vanilla $(\sigma = 0,\, \beta)$ agent,
-2. the equilibrium gross interest rate is $R = \beta^{-1}$, independently of $\Phi$, and
+2. $R = \beta^{-1}$ is an equilibrium gross interest rate, independently of $\Phi$, and
 3. the aggregate and cross-section dynamics coincide with those of the benchmark Bewley economy of {doc}`lq_bewley_complete_markets`.
 ````
 
@@ -171,7 +187,9 @@ This holds agent by agent and does not require the $\sigma_i$ to be equal, which
 
 Since all individual rules coincide with the benchmark rule, the goods-market clearing condition $\int c_t^i\, di = Y$ and the bond-market condition $\int a_t^i\, di = 0$ are the benchmark conditions, so they are satisfied at $R = \beta^{-1}$ for exactly the reason given in {doc}`lq_bewley_complete_markets`.
 
-Because market clearing never refers to $\Phi$, the equilibrium interest rate does not either, which gives part 2.
+Because market clearing never refers to $\Phi$, neither does the rate that clears the market, which gives part 2.
+
+The argument is a verification: the locus {eq}`eq:rbew-locus` is itself constructed at $R = \beta^{-1}$, so what we have shown is that this rate reproduces itself as an equilibrium for any $\Phi$, not that no other rate could.
 
 Part 3 follows because aggregate and cross-section objects are integrals of individual paths, and the individual paths are the benchmark paths.
 ````
@@ -179,6 +197,16 @@ Part 3 follows because aggregate and cross-section objects are integrals of indi
 The distribution $\Phi$ of robustness types is therefore completely unidentified by quantity data.
 
 An econometrician who observes $\{c_t^i, a_t^i\}$ for every agent and every date cannot tell whether the economy is populated entirely by $\sigma_i = 0$ agents, entirely by $\sigma_i$ near $\underline\sigma$ agents, or by any mixture.
+
+One feature of this equilibrium deserves comment, because it runs against a familiar result.
+
+In a model with heterogeneous discount factors and a common interest rate, the most patient type ordinarily comes to hold all of the wealth, and the long-run distribution degenerates.
+
+Here every type with $\sigma_i < 0$ has $\beta_i R < 1$ and so is impatient at the market rate, yet no type decumulates relative to any other.
+
+The reason is that impatience and the precautionary motive are offset at every date, not merely on average, so asset paths as well as consumption paths coincide across types.
+
+Robustness type is therefore uncorrelated with wealth at every horizon, and the usual sorting force is exactly neutralized rather than merely slowed.
 
 ## Where the agents genuinely differ
 
@@ -191,8 +219,10 @@ From {doc}`lq_robust_smoothing`, the worst-case law for agent $i$'s marginal uti
 $$
 \mu_{s,t+1}^i = \zeta_i\, \mu_{st}^i + \alpha\, w_{t+1},
 \qquad
-\zeta_i = \frac{\beta}{\beta_i} = \left[1 + \frac{\sigma_i\alpha^2}{1-\beta}\right]^{-1} > 1
+\zeta_i = \frac{\beta}{\beta_i} = \left[1 + \frac{\sigma_i\alpha^2}{1-\beta}\right]^{-1} \geq 1
 $$ (eq:rbew-zeta)
+
+with equality only for the fully trusting type $\sigma_i = 0$.
 
 With $\lambda = \delta_h = 0$ and a constant bliss point we have $\mu_{st} = b - c_t$, so agent $i$'s **worst-case expected consumption path** is
 
@@ -281,7 +311,97 @@ These four types differ substantially in patience and in the pessimism of their 
 
 We now confirm that they nonetheless behave identically.
 
-Each type faces the same shocks and starts from the same initial consumption, and each consumes according to the benchmark rule $c_{t+1} = c_t + h\,w_{t+1}$.
+{prf:ref}`prop-rbew-types` asserts that each type, solving *its own* problem at
+$(\sigma_i, \beta_i)$, arrives at the benchmark decision rule.
+
+Testing that claim means solving each type's robust problem separately and comparing the rules that come out.
+
+Assuming the common rule and then reporting that the resulting paths coincide would establish nothing.
+
+We reuse the risk-sensitive LQ solver of {doc}`robust_permanent_income`, renaming its state-cost argument to `Rc` because $R$ is the gross interest rate here.
+
+The period return below is $-(c_t-b)^2$, matching the normalization of $\sigma$ fixed above.
+
+```{code-cell} ipython3
+def solve_rslq(A, B, C, Q, Rc, β, σ, N=None, tol=1e-12, max_iter=50_000):
+    "Risk-sensitive LQ regulator; returns F in the rule c = -F x."
+    A, B, C, Q, Rc = map(np.atleast_2d, (A, B, C, Q, Rc))
+    n, kw = A.shape[0], C.shape[1]
+    if N is None:
+        N = np.zeros((B.shape[1], n))
+    Ω, Iw = -np.eye(n), np.eye(kw)
+    for _ in range(max_iter):
+        M = Iw - σ * C.T @ Ω @ C
+        D = Ω + σ * Ω @ C @ np.linalg.solve(M, C.T @ Ω)
+        F = np.linalg.solve(Q - β * B.T @ D @ B, N - β * B.T @ D @ A)
+        Acl = A - B @ F
+        Ω_new = -Rc - F.T @ Q @ F + (F.T @ N + N.T @ F) + β * Acl.T @ D @ Acl
+        if np.max(np.abs(Ω_new - Ω)) < tol:
+            return F
+        Ω = Ω_new
+    raise RuntimeError('risk-sensitive Riccati iteration did not converge')
+```
+
+Write the agent's problem with state $x_t = \begin{pmatrix}1 & a_t & z_{1t} & z_{2t}\end{pmatrix}'$ and control $c_t$, matching the timing of {eq}`eq:rbew-law`.
+
+The constant carries the bliss point, and every agent faces the same market rate $R = \beta^{-1}$; only $\beta_i$ and $\sigma_i$ differ across types.
+
+```{code-cell} ipython3
+def bewley_lq(b, η1, η2, R):
+    "State-space matrices for the agent's problem, period return -(c-b)^2."
+    A_x = np.array([[1, 0, 0, 0],
+                    [0, R, R, R],
+                    [0, 0, 1, 0],
+                    [0, 0, 0, 0]], float)
+    B_x = np.array([[0.], [-R], [0.], [0.]])
+    C_x = np.array([[0, 0], [0, 0], [η1, 0], [0, η2]], float)
+    Q_x = np.array([[1.0]])
+    Rc_x = np.zeros((4, 4))
+    Rc_x[0, 0] = b**2
+    N_x = np.array([[-b, 0, 0, 0]], float)
+    return A_x, B_x, C_x, Q_x, Rc_x, N_x
+
+
+A_x, B_x, C_x, Q_x, Rc_x, N_x = bewley_lq(b, η1, η2, R)
+F_bench = solve_rslq(A_x, B_x, C_x, Q_x, Rc_x, β, 0.0, N_x)
+
+print("benchmark rule  c = "
+      + " + ".join(f"{v:.4f}·{n}" for v, n in
+                   zip(-F_bench.ravel(), ["1", "a", "z1", "z2"])))
+print(f"implied consumption innovation  {np.round((-F_bench @ C_x).ravel(), 6)}")
+print(f"analytic h                      {np.round(h, 6)}")
+```
+
+The benchmark rule reproduces the analytic innovation loadings $h$, which checks that the state-space setup is the one the algebra describes.
+
+Now solve each type's own problem and compare.
+
+```{code-cell} ipython3
+F_types = [solve_rslq(A_x, B_x, C_x, Q_x, Rc_x, β_i, σ_i, N_x)
+           for σ_i, β_i in zip(σ_types, β_types)]
+
+print(f"{'σ_i':>10}{'β_i':>10}{'max |F_i - F_bench|':>22}")
+for σ_i, β_i, F_i in zip(σ_types, β_types, F_types):
+    print(f"{σ_i:10.4f}{β_i:10.4f}{np.max(np.abs(F_i - F_bench)):22.2e}")
+```
+
+Every coefficient of every type's rule agrees with the benchmark to eleven decimal places or better, which is {prf:ref}`prop-rbew-types` part 1.
+
+To see that this test has power, move each discount factor one percent off the locus, keeping $\sigma_i$ fixed, and solve again.
+
+```{code-cell} ipython3
+print(f"{'σ_i':>10}{'on locus':>12}{'+1% off':>12}{'-1% off':>12}")
+for σ_i, β_i in zip(σ_types[1:], β_types[1:]):
+    devs = []
+    for mult in (1.0, 1.01, 0.99):
+        F_off = solve_rslq(A_x, B_x, C_x, Q_x, Rc_x, β_i * mult, σ_i, N_x)
+        devs.append(np.max(np.abs(F_off - F_bench)))
+    print(f"{σ_i:10.4f}" + "".join(f"{d:12.1e}" for d in devs))
+```
+
+A one percent departure from the locus moves the rule in the first decimal place, so the agreement above is not an artifact of the comparison.
+
+Finally, simulate each type using **its own** solved rule, with common shocks.
 
 ```{code-cell} ipython3
 T = 60
@@ -289,15 +409,20 @@ rng = np.random.default_rng(42)
 shocks = rng.standard_normal((T, 2))          # common shocks for all types
 
 c_paths = np.zeros((len(σ_types), T + 1))
-for i in range(len(σ_types)):
-    for t in range(T):
-        c_paths[i, t + 1] = c_paths[i, t] + h @ shocks[t]
+for i, F_i in enumerate(F_types):
+    x = np.array([1.0, 0.0, 0.0, 0.0])        # [1, a_t, z_1, z_2]
+    for t in range(T + 1):
+        c_paths[i, t] = -(F_i @ x).item()
+        if t < T:
+            x = A_x @ x + B_x.ravel() * c_paths[i, t] + C_x @ shocks[t]
 
 print("max absolute difference across types:"
       f" {np.abs(c_paths - c_paths[0]).max():.2e}")
+print("max deviation from the random walk with innovation h:"
+      f" {np.abs(c_paths[0] - np.concatenate([[0], np.cumsum(shocks @ h)])).max():.2e}")
 ```
 
-The paths agree exactly, which is {prf:ref}`prop-rbew-types` part 1 in action.
+The paths coincide, and each reproduces the random walk with innovation $h$ that the algebra predicts.
 
 The next figure contrasts what the types do with what they believe.
 
@@ -351,25 +476,42 @@ Every robust agent guards against a future in which consumption drifts away from
 
 Finally we check part 3 of {prf:ref}`prop-rbew-types`, that the cross-section behaves as in the benchmark Bewley economy.
 
-We simulate a large population in which each agent draws its own type and its own shocks, and compare the cross-section variance of consumption to the benchmark prediction $t\,\alpha^2$.
+We simulate a large population spread over the admissible range of types, giving each agent its own shocks and solving each type's own problem, and compare the cross-section variance of consumption to the benchmark prediction $t\,\alpha^2$.
 
 ```{code-cell} ipython3
-n_agents, T = 20_000, 40
+n_agents, T_pop = 20_000, 40
 rng = np.random.default_rng(1234)
 
-# each agent draws a robustness type; types do not affect behaviour
-σ_i = rng.uniform(σ_lo, 0.0, size=n_agents)
+# a population spread over the admissible range, each solving its own problem
+σ_pop = np.linspace(0.99 * σ_lo, 0.0, 12)
+β_pop = β + σ_pop * α2 * β / (1 - β)
+F_pop = [solve_rslq(A_x, B_x, C_x, Q_x, Rc_x, β_j, σ_j, N_x)
+         for σ_j, β_j in zip(σ_pop, β_pop)]
 
-shocks = rng.standard_normal((n_agents, T, 2))
-c = np.zeros((n_agents, T + 1))
-c[:, 1:] = np.cumsum(shocks @ h, axis=1)
+type_of = rng.integers(0, len(σ_pop), size=n_agents)
+pop_shocks = rng.standard_normal((n_agents, T_pop, 2))
+c_pop = np.zeros((n_agents, T_pop + 1))
+
+for j, F_j in enumerate(F_pop):
+    m = type_of == j
+    x = np.zeros((m.sum(), 4))
+    x[:, 0] = 1.0                                    # the constant
+    for t in range(T_pop + 1):
+        c_pop[m, t] = -(x @ F_j.ravel())
+        if t < T_pop:
+            x = (x @ A_x.T + np.outer(c_pop[m, t], B_x.ravel())
+                 + pop_shocks[m, t] @ C_x.T)
 
 print(f"{'t':>5}{'cross-section var':>20}{'t·α²':>12}")
 for t in [10, 20, 30, 40]:
-    print(f"{t:5d}{c[:, t].var():20.5f}{t * α2:12.5f}")
+    print(f"{t:5d}{c_pop[:, t].var():20.5f}{t * α2:12.5f}")
+print(f"\ncorrelation between σ_i and c_T: "
+      f"{np.corrcoef(σ_pop[type_of], c_pop[:, T_pop])[0, 1]:+.4f}")
 ```
 
-The cross-section variance grows linearly at rate $\alpha^2$, exactly as in {doc}`lq_bewley_complete_markets`, and the distribution of robustness types leaves no trace in the data.
+The cross-section variance grows linearly at rate $\alpha^2$, exactly as in {doc}`lq_bewley_complete_markets`.
+
+Robustness type and consumption are uncorrelated, so the distribution of types leaves no trace in the data even though each agent has genuinely solved a different problem.
 
 ## Concluding remarks
 
@@ -431,7 +573,7 @@ $$
 
   The sign of $B$ is negative because higher $c_t$ reduces asset accumulation.
 
-2. At $\sigma = 0$ the minimizing agent is absent, the distortion term drops out of the Bellman equation, and the objective is $\mathbb{E}_0\sum \beta^t[-(c_t-b)^2/2]$ subject to a linear law of motion.
+2. At $\sigma = 0$ the minimizing agent is absent, the distortion term drops out of the Bellman equation, and the objective is $\mathbb{E}_0\sum \beta^t[-(c_t-b)^2]$ subject to a linear law of motion.
 
   That is precisely the LQ permanent-income problem.
 
@@ -546,7 +688,7 @@ Here is one solution.
 
 This exercise asks how much belief heterogeneity is statistically plausible.
 
-Restrict attention to types whose worst-case model has a detection error probability of at least $0.2$ in a sample of $T = 40$.
+Restrict attention to types whose worst-case model has a detection error probability of at least $0.25$ in a sample of $T = 40$.
 
 1. Find the most robust admissible type $\sigma^{\min}$ by bisection.
 
@@ -593,7 +735,7 @@ def σ_for_target_dep(target, T, β, α2, tol=1e-5):
 
 
 for T in [40, 160]:
-    σ_min = σ_for_target_dep(0.2, T, β, α2)
+    σ_min = σ_for_target_dep(0.25, T, β, α2)
     if σ_min is None:
         σ_min = 0.999 * σ_lo        # breakdown binds before detectability
         note = ' (breakdown point binds)'
@@ -605,11 +747,17 @@ for T in [40, 160]:
           f"{np.log(2) / np.log(ζ_min):.1f} quarters{note}")
 ```
 
-At $T = 40$ the DEP never falls to $0.2$ within the admissible range, so the most robust plausible type is the one at the breakdown point itself.
+At $T = 40$ statistical detectability binds before the breakdown point does, so the most robust plausible type is interior.
 
-At $T = 160$ statistical detectability binds first and the plausible set of types shrinks sharply toward $\sigma = 0$.
+At $T = 160$ it binds far sooner and the plausible set of types shrinks sharply toward $\sigma = 0$.
 
 The doubling horizon lengthens correspondingly: with more data, only agents whose pessimism accumulates slowly remain statistically credible.
+
+```{note}
+The detection error probability is estimated by simulation, so a target close to the value attained at $\underline\sigma$ makes the answer sensitive to the random seed.
+
+At $T = 40$ the DEP at the breakdown point is almost exactly $0.2$, which is why the target here is $0.25$.
+```
 
 ```{solution-end}
 ```
