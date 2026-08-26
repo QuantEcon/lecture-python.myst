@@ -43,15 +43,15 @@ The matrix $R$ has zeros below its main diagonal.
 
 Hence, $R$ is upper triangular when $m = n$ and upper trapezoidal when $m > n$.
 
-We'll use a **Gram-Schmidt process** to compute a  QR decomposition.
+We'll use a *Gram-Schmidt process* to compute a  QR decomposition.
 
 Because doing so is so educational, we'll  write our own Python code to do the job.
 
 ## Gram-Schmidt process
 
-We'll start with a **square** matrix $A$.
+We'll start with a *square* matrix $A$.
 
-If a square matrix $A$ is nonsingular, then a QR factorization is unique.
+If a square matrix $A$ is nonsingular, then a QR factorization is unique up to signs.
 
 We'll deal with a rectangular matrix $A$ later.
 
@@ -59,15 +59,15 @@ Actually, our algorithm will work with a rectangular $A$ that is not square.
 
 ### Gram-Schmidt process for square $A$
 
-Here we apply a Gram-Schmidt  process to the  **columns**  of matrix $A$.
+Here we apply a Gram-Schmidt  process to the  *columns*  of matrix $A$.
 
 In particular, let
 
 $$
-A= \left[ \begin{array}{c|c|c|c} a_1 & a_2 & \cdots & a_n \end{array} \right]
+A= \begin{bmatrix} a_1 & a_2 & \cdots & a_n \end{bmatrix}
 $$
 
-Let $|| · ||$ denote the L2 norm.
+Let $|| \cdot ||$ denote the L2 norm.
 
 The Gram-Schmidt algorithm repeatedly combines the following  two steps in a particular order
 
@@ -75,16 +75,16 @@ The Gram-Schmidt algorithm repeatedly combines the following  two steps in a par
 
 *  **orthogonalize** the next vector
 
-To begin, we set $u_1 = a_1$ and then **normalize**:
+To begin, we set $u_1 = a_1$ and then *normalize*:
 
 $$
 u_1=a_1, \ \ \ e_1=\frac{u_1}{||u_1||}
 $$
 
-We **orthogonalize** first to compute $u_2$ and then **normalize** to create $e_2$:
+We *orthogonalize* first to compute $u_2$ and then *normalize* to create $e_2$:
 
 $$
-u_2=a_2-(a_2· e_1)e_1, \ \ \  e_2=\frac{u_2}{||u_2||}
+u_2=a_2-(a_2\cdot e_1)e_1, \ \ \  e_2=\frac{u_2}{||u_2||}
 $$
 
 We invite the reader to verify that $e_1$ is orthogonal to $e_2$ by checking that
@@ -95,28 +95,28 @@ The Gram-Schmidt procedure continues iterating.
 Thus,  for $k= 2, \ldots, n-1$ we construct
 
 $$
-u_{k+1}=a_{k+1}-(a_{k+1}· e_1)e_1-\cdots-(a_{k+1}· e_k)e_k, \ \ \ e_{k+1}=\frac{u_{k+1}}{||u_{k+1}||}
+u_{k+1}=a_{k+1}-(a_{k+1}\cdot e_1)e_1-\cdots-(a_{k+1}\cdot e_k)e_k, \ \ \ e_{k+1}=\frac{u_{k+1}}{||u_{k+1}||}
 $$
 
 
-Here $(a_j \cdot e_i)$ can be interpreted as the linear least squares **regression coefficient** of $a_j$ on $e_i$ 
+Here $(a_j \cdot e_i)$ can be interpreted as the linear least squares *regression coefficient* of $a_j$ on $e_i$
 
 * it is the inner product of $a_j$ and $e_i$ divided by the inner product of $e_i$ where 
     $e_i \cdot e_i = 1$, as *normalization* has assured us.
     
-* this regression coefficient has an interpretation as being  a **covariance** divided by a **variance**
+* this regression coefficient has an interpretation as being  a *covariance* divided by a *variance*
    
 
 It can  be verified that
 
 $$
-A= \left[ \begin{array}{c|c|c|c} a_1 & a_2 & \cdots & a_n \end{array} \right]=
-\left[ \begin{array}{c|c|c|c} e_1 & e_2 & \cdots & e_n \end{array} \right]
-\left[ \begin{matrix} a_1·e_1 & a_2·e_1 & \cdots & a_n·e_1\\ 0 & a_2·e_2 & \cdots & a_n·e_2 
-\\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & a_n·e_n \end{matrix} \right]
+A= \begin{bmatrix} a_1 & a_2 & \cdots & a_n \end{bmatrix}=
+\begin{bmatrix} e_1 & e_2 & \cdots & e_n \end{bmatrix}
+\begin{bmatrix} a_1\cdot e_1 & a_2\cdot e_1 & \cdots & a_n\cdot e_1\\ 0 & a_2\cdot e_2 & \cdots & a_n\cdot e_2
+\\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & a_n\cdot e_n \end{bmatrix}
 $$
 
-Thus, we have constructed the decomposision
+Thus, we have constructed the decomposition
 
 $$ 
 A = Q R
@@ -125,15 +125,14 @@ $$
 where 
 
 $$ 
-Q = \left[ \begin{array}{c|c|c|c} a_1 & a_2 & \cdots & a_n \end{array} \right]=
-\left[ \begin{array}{c|c|c|c} e_1 & e_2 & \cdots & e_n \end{array} \right]
+Q = \begin{bmatrix} e_1 & e_2 & \cdots & e_n \end{bmatrix}
 $$
 
 and 
 
 $$
-R = \left[ \begin{matrix} a_1·e_1 & a_2·e_1 & \cdots & a_n·e_1\\ 0 & a_2·e_2 & \cdots & a_n·e_2 
-\\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & a_n·e_n \end{matrix} \right]
+R = \begin{bmatrix} a_1\cdot e_1 & a_2\cdot e_1 & \cdots & a_n\cdot e_1\\ 0 & a_2\cdot e_2 & \cdots & a_n\cdot e_2
+\\ \vdots & \vdots & \ddots & \vdots \\ 0 & 0 & \cdots & a_n\cdot e_n \end{bmatrix}
 $$
 
 ### $A$ not square 
@@ -143,10 +142,10 @@ Now suppose that $A$ is an $n \times m$ matrix where $m > n$.
 Then a QR decomposition is
 
 $$
-A= \left[ \begin{array}{c|c|c|c} a_1 & a_2 & \cdots & a_m \end{array} \right]=\left[ \begin{array}{c|c|c|c} e_1 & e_2 & \cdots & e_n \end{array} \right]
-\left[ \begin{matrix} a_1·e_1 & a_2·e_1 & \cdots & a_n·e_1 & a_{n+1}\cdot e_1 & \cdots & a_{m}\cdot e_1 \\
-0 & a_2·e_2 & \cdots & a_n·e_2 & a_{n+1}\cdot e_2 & \cdots & a_{m}\cdot e_2 \\ \vdots & \vdots & \ddots & \quad  \vdots & \vdots & \ddots & \vdots
-\\ 0 & 0 & \cdots & a_n·e_n & a_{n+1}\cdot e_n & \cdots & a_{m}\cdot e_n \end{matrix} \right]
+A= \begin{bmatrix} a_1 & a_2 & \cdots & a_m \end{bmatrix}=\begin{bmatrix} e_1 & e_2 & \cdots & e_n \end{bmatrix}
+\begin{bmatrix} a_1\cdot e_1 & a_2\cdot e_1 & \cdots & a_n\cdot e_1 & a_{n+1}\cdot e_1 & \cdots & a_{m}\cdot e_1 \\
+0 & a_2\cdot e_2 & \cdots & a_n\cdot e_2 & a_{n+1}\cdot e_2 & \cdots & a_{m}\cdot e_2 \\ \vdots & \vdots & \ddots & \quad  \vdots & \vdots & \ddots & \vdots
+\\ 0 & 0 & \cdots & a_n\cdot e_n & a_{n+1}\cdot e_n & \cdots & a_{m}\cdot e_n \end{bmatrix}
 $$
 
 which implies that
@@ -301,8 +300,8 @@ Q_scipy, R_scipy
 
 Now for a useful  fact about the QR algorithm.  
 
-The following iterations on the QR decomposition can be used to compute **eigenvalues**
-of a **square** matrix $A$.
+The following iterations on the QR decomposition can be used to compute *eigenvalues*
+of a *square* matrix $A$.
 
 Here is the algorithm:
 
