@@ -28,21 +28,20 @@ We'll write some Python code to help consolidate our understandings.
 
 ## Matrix Factorization
 
-The QR decomposition (also called the QR factorization) of a matrix is a decomposition of a matrix into the product of  an orthogonal matrix and a triangular matrix.
+In this lecture, we consider a real matrix $A \in \mathbb{R}^{n \times m}$ with $m \geq n$.
 
-A QR decomposition of a real  matrix $A$ 
-takes the form 
+A QR decomposition (also called a QR factorization) of $A$ takes the form
 
 $$
-A=QR
+A = QR, \qquad
+Q \in \mathbb{R}^{n \times n}, \qquad
+R \in \mathbb{R}^{n \times m}, \qquad
+Q^\top Q = I_n.
 $$
 
-where 
+The matrix $R$ has zeros below its main diagonal.
 
-* $Q$ is an orthogonal matrix (so that  $Q^TQ = I$)
-
-* $R$ is an upper triangular matrix 
-
+Hence, $R$ is upper triangular when $m = n$ and upper trapezoidal when $m > n$.
 
 We'll use a **Gram-Schmidt process** to compute a  QR decomposition 
 
