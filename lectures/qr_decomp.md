@@ -43,15 +43,15 @@ The matrix $R$ has zeros below its main diagonal.
 
 Hence, $R$ is upper triangular when $m = n$ and upper trapezoidal when $m > n$.
 
-We'll use a **Gram-Schmidt process** to compute a  QR decomposition 
+We'll use a **Gram-Schmidt process** to compute a  QR decomposition.
 
-Because doing so is so educational, we'll  write our own Python code to do the job
+Because doing so is so educational, we'll  write our own Python code to do the job.
 
 ## Gram-Schmidt process
 
 We'll start with a **square** matrix $A$.
 
-If a square matrix $A$ is nonsingular, then a $QR$ factorization is unique.
+If a square matrix $A$ is nonsingular, then a QR factorization is unique.
 
 We'll deal with a rectangular matrix $A$ later.
 
@@ -140,7 +140,7 @@ $$
 
 Now suppose that $A$ is an $n \times m$ matrix where $m > n$.  
 
-Then a $QR$ decomposition is
+Then a QR decomposition is
 
 $$
 A= \left[ \begin{array}{c|c|c|c} a_1 & a_2 & \cdots & a_m \end{array} \right]=\left[ \begin{array}{c|c|c|c} e_1 & e_2 & \cdots & e_n \end{array} \right]
@@ -310,7 +310,7 @@ Here is the algorithm:
 
 2. Form $A_1 = R_0 Q_0 $ . Note that $A_1$ is similar to $A_0$ (easy to verify) and so has the same eigenvalues.
 
-3. Form $A_1 = Q_1 R_1$ (i.e., form the $QR$ decomposition of $A_1$).
+3. Form $A_1 = Q_1 R_1$ (i.e., form the QR decomposition of $A_1$).
 
 4. Form $ A_2 = R_1 Q_1 $ and then $A_2 = Q_2 R_2$  .
 
@@ -370,7 +370,7 @@ sorted(np.linalg.eigvals(A))
 
 ## QR and PCA
 
-There are interesting connections between the $QR$ decomposition and principal components analysis (PCA).
+There are interesting connections between the QR decomposition and principal components analysis (PCA).
 
 Here are  some.
 
