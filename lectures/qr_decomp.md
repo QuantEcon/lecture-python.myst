@@ -26,7 +26,7 @@ This lecture describes the QR decomposition and how it relates to
 
 We'll write some Python code to help consolidate our understandings.
 
-## Matrix Factorization
+## Matrix factorization
 
 In this lecture, we consider a real matrix $A \in \mathbb{R}^{n \times m}$ with $m \geq n$.
 
@@ -161,7 +161,7 @@ a_{n+1} & = (a_{n+1}\cdot e_1) e_1 + (a_{n+1}\cdot e_2) e_2 + \cdots + (a_{n+1}\
 a_m & = (a_m\cdot e_1) e_1 + (a_m\cdot e_2) e_2 + \cdots + (a_m \cdot e_n) e_n  \cr
 \end{align*}
 
-## Some Code
+## Some code
 
 Now let's write some homemade Python code to implement a QR decomposition by deploying the  Gram-Schmidt process described above.
 
@@ -297,7 +297,7 @@ Q_scipy, R_scipy = adjust_sign(*qr(A))
 Q_scipy, R_scipy
 ```
 
-## Using QR Decomposition to Compute Eigenvalues
+## Using QR decomposition to compute eigenvalues
 
 Now for a useful  fact about the QR algorithm.  
 
@@ -368,7 +368,7 @@ Compare with the `scipy` package.
 sorted(np.linalg.eigvals(A))
 ```
 
-## $QR$ and PCA
+## QR and PCA
 
 There are interesting connections between the $QR$ decomposition and principal components analysis (PCA).
 
