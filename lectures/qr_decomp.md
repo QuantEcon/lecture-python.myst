@@ -209,27 +209,28 @@ There can be sign differences between the $Q$ and $R$ matrices produced by diffe
 
 All of these are valid QR decompositions because of how the  sign differences cancel out when we compute $QR$.
 
-However, to make the results from  our homemade function and the QR module in SciPy comparable, let's require that $Q$ have positive diagonal entries.
+To make the results from our homemade function and the QR module in SciPy comparable, we'll require the diagonal entries of $R$ to be nonnegative.
 
-We do this by adjusting  the signs of the columns in $Q$ and the rows in $R$ appropriately.
+We do this by adjusting the signs of the columns in $Q$ and the corresponding rows in $R$ appropriately.
 
 To accomplish this we'll define a pair of functions.
 
 ```{code-cell} ipython3
 def diag_sign(A):
-    "Compute the signs of the diagonal of matrix A"
+    """Compute a diagonal sign matrix, mapping zero signs to one."""
 
-    D = np.diag(np.sign(np.diag(A)))
+    signs = np.where(np.diag(A) < 0, -1.0, 1.0)
+    D = np.diag(signs)
 
     return D
 
 def adjust_sign(Q, R):
     """
-    Adjust the signs of the columns in Q and rows in R to
-    impose positive diagonal of Q
+    Adjust the signs of the columns of Q and rows of R
+    so that R has a nonnegative diagonal.
     """
 
-    D = diag_sign(Q)
+    D = diag_sign(R)
 
     Q[:, :] = Q @ D
     R[:, :] = D @ R
