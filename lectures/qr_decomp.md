@@ -332,8 +332,8 @@ Let's write some Python code to try out the algorithm
 def qr_eigvals(A, tol=1e-12, maxiter=1000):
     "Find the eigenvalues of A using QR decomposition."
 
-    A_old = np.copy(A)
-    A_new = np.copy(A)
+    A_old = np.array(A, dtype=float, copy=True)
+    A_new = np.array(A, dtype=float, copy=True)
 
     diff = np.inf
     i = 0
