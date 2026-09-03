@@ -71,27 +71,27 @@ In the version of the SEIR model we will analyze there are four states.
 
 All individuals in the population are assumed to be in one of these four states.
 
-The states are: susceptible (S), exposed (E), infected (I) and removed (R).
+The states are: susceptible ($S$), exposed ($E$), infected ($I$), and removed ($R$).
 
-Comments:
-
+```{prf:assumption}
 * Those in state R have been infected and either recovered or died.
 * Those who have recovered are assumed to have acquired immunity.
 * Those in the exposed group are not yet infectious.
+```
 
 ### Time path
 
 The flow across states follows the path $S \to E \to I \to R$.
 
-All individuals in the population are eventually infected when
-the transmission rate is positive and $i(0) > 0$.
+When the effective reproduction number exceeds one, infections initially
+increase but eventually decline as the susceptible population falls.
 
 The interest is primarily in
 
 * the number of infections at a given time (which determines whether or not the health care system is overwhelmed) and
 * how long the caseload can be deferred (hopefully until a vaccine arrives)
 
-Using lower case letters for the fraction of the population in each state, the
+Using lowercase letters for the fraction of the population in each state, the
 dynamics are
 
 ```{math}
@@ -100,18 +100,18 @@ dynamics are
 \begin{aligned}
      \dot s(t)  & = - \beta(t) \, s(t) \,  i(t)
      \\
-     \dot e(t)  & = \beta(t) \,  s(t) \,  i(t)  - σ e(t)
+     \dot e(t)  & = \beta(t) \,  s(t) \,  i(t)  - \sigma e(t)
      \\
-     \dot i(t)  & = σ e(t)  - γ i(t)
+     \dot i(t)  & = \sigma e(t)  - \gamma i(t)
 \end{aligned}
 ```
 
 In these equations,
 
 * $\beta(t)$ is called the **transmission rate** (the rate at which individuals bump into others and expose them to the virus).
-* $\sigma$ is called the **infection rate** (the rate at which those who are exposed become infected)
-* $\gamma$ is called the **recovery rate** (the rate at which infected people recover or die).
-* the dot symbol $\dot y$ represents the time derivative $dy/dt$.
+* $\sigma$ is called the **infection rate** (the rate at which those who are exposed become infected).
+* $\gamma$ is called the **removal rate** (the rate at which infected people recover or die).
+* The dot symbol $\dot y$ represents the time derivative $dy/dt$.
 
 We do not need to model the fraction $r$ of the population in state $R$ separately because the states form a partition.
 
@@ -128,7 +128,7 @@ The system {eq}`sir_system` can be written in vector form as
 \dot x = F(x, t),  \qquad x := (s, e, i)
 ```
 
-for suitable definition of $F$ (see the code below).
+for a suitable definition of $F$ (see the code below).
 
 ### Parameters
 
