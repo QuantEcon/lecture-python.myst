@@ -17,7 +17,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`Modeling COVID 19 <single: Modeling COVID 19>`
+# {index}`Modeling COVID-19 <single: Modeling COVID-19>`
 
 ```{contents} Contents
 :depth: 2
@@ -31,12 +31,12 @@ provided by [Andrew Atkeson](https://sites.google.com/site/andyatkeson/).
 See, in particular
 
 * [NBER Working Paper No. 26867](https://www.nber.org/papers/w26867)
-* [COVID-19 Working papers and code](https://sites.google.com/site/andyatkeson/home?authuser=0)
+* [COVID-19 Working papers and code](https://sites.google.com/site/andyatkeson/home/covid-work)
 
 The purpose of his notes is to introduce economists to quantitative modeling
 of infectious disease dynamics.
 
-Dynamics are modeled using a standard SIR (Susceptible-Infected-Removed) model
+Dynamics are modeled using a standard SEIR (Susceptible-Exposed-Infected-Removed) model
 of disease spread.
 
 The model dynamics are represented by a system of ordinary differential
@@ -65,9 +65,9 @@ from scipy.integrate import odeint
 
 This routine calls into compiled code from the FORTRAN library odepack.
 
-## The SIR Model
+## The SEIR model
 
-In the version of the SIR model we will analyze there are four states.
+In the version of the SEIR model we will analyze there are four states.
 
 All individuals in the population are assumed to be in one of these four states.
 
@@ -79,7 +79,7 @@ Comments:
 * Those who have recovered are assumed to have acquired immunity.
 * Those in the exposed group are not yet infectious.
 
-### Time Path
+### Time path
 
 The flow across states follows the path $S \to E \to I \to R$.
 
@@ -233,7 +233,7 @@ grid_size = 1000
 t_vec = np.linspace(0, t_length, grid_size)
 ```
 
-### Experiment 1: Constant R0 Case
+### Experiment 1: constant R0 case
 
 Let's start with the case where `R0` is constant.
 
@@ -281,7 +281,7 @@ Here are cumulative cases, as a fraction of population:
 plot_paths(c_paths, labels)
 ```
 
-### Experiment 2: Changing Mitigation
+### Experiment 2: changing mitigation
 
 Let's look at a scenario where mitigation (e.g., social distancing) is
 successively imposed.
@@ -344,7 +344,7 @@ Here are cumulative cases, as a fraction of population:
 plot_paths(c_paths, labels)
 ```
 
-## Ending Lockdown
+## Ending lockdown
 
 The following replicates [additional results](https://drive.google.com/file/d/1uS7n-7zq5gfSgrL3S0HByExmpq4Bn3oh/view) by Andrew Atkeson on the timing of lifting lockdown.
 
