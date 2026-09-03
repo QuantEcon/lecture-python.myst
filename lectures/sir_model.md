@@ -189,7 +189,13 @@ def F(x, t, R0=1.6):
 
 Note that `R0` can be either constant or a given function of time.
 
-The initial conditions are set to
+The initial conditions are calibrated to a population of 330 million.
+
+The value $i_0 = 10^{-7}$ represents 33 initially infected people, while
+$e_0 = 4i_0$ represents 132 exposed people.
+
+Setting $s_0 = 1 - i_0 - e_0$ assigns the remaining population to the
+susceptible state and sets the initial removed fraction to zero.
 
 ```{code-cell} ipython3
 # initial conditions of s, e, i
@@ -204,7 +210,7 @@ In vector form the initial condition is
 x_0 = s_0, e_0, i_0
 ```
 
-We solve for the time path numerically using odeint, at a sequence of dates
+We solve for the time path numerically using `odeint`, at a sequence of dates
 `t_vec`.
 
 ```{code-cell} ipython3
@@ -241,7 +247,7 @@ We calculate the time path of infected people under different assumptions for `R
 
 ```{code-cell} ipython3
 R0_vals = np.linspace(1.6, 3.0, 6)
-labels = [f'$R0 = {r:.2f}$' for r in R0_vals]
+labels = [f'$R_0 = {r:.2f}$' for r in R0_vals]
 i_paths, c_paths = [], []
 
 for r in R0_vals:
@@ -253,13 +259,15 @@ for r in R0_vals:
 Here's some code to plot the time paths.
 
 ```{code-cell} ipython3
-def plot_paths(paths, labels, times=t_vec):
+def plot_paths(paths, labels, ylabel, times=t_vec):
 
     fig, ax = plt.subplots()
 
     for path, label in zip(paths, labels):
-        ax.plot(times, path, label=label)
+        ax.plot(times, path, lw=2, label=label)
 
+    ax.set_xlabel('days')
+    ax.set_ylabel(ylabel)
     ax.legend(loc='upper left')
 
     plt.show()
@@ -268,7 +276,7 @@ def plot_paths(paths, labels, times=t_vec):
 Let's plot current cases as a fraction of the population.
 
 ```{code-cell} ipython3
-plot_paths(i_paths, labels)
+plot_paths(i_paths, labels, ylabel='current cases (fraction of the population)')
 ```
 
 As expected, lower effective transmission rates defer the peak of infections.
@@ -278,7 +286,7 @@ They also lead to a lower peak in current cases.
 Here are cumulative cases, as a fraction of population:
 
 ```{code-cell} ipython3
-plot_paths(c_paths, labels)
+plot_paths(c_paths, labels, ylabel='cumulative cases (fraction of the population)')
 ```
 
 ### Experiment 2: changing mitigation
@@ -301,7 +309,11 @@ This is due to progressive adoption of stricter mitigation measures.
 The parameter `η` controls the rate, or the speed at which restrictions are
 imposed.
 
-We consider several different rates:
+Since $t$ is measured in days, $\eta$ is measured per day, and its reciprocal,
+$1/\eta$, is the adjustment period.
+
+The values below correspond to adjustment periods of 5, 10, 20, 50, and 100
+days:
 
 ```{code-cell} ipython3
 η_vals = 1/5, 1/10, 1/20, 1/50, 1/100
@@ -314,8 +326,10 @@ This is what the time path of `R0` looks like at these alternative rates:
 fig, ax = plt.subplots()
 
 for η, label in zip(η_vals, labels):
-    ax.plot(t_vec, R0_mitigating(t_vec, η=η), label=label)
+    ax.plot(t_vec, R0_mitigating(t_vec, η=η), lw=2, label=label)
 
+ax.set_xlabel('days')
+ax.set_ylabel('$R_0$')
 ax.legend()
 plt.show()
 ```
@@ -335,14 +349,17 @@ for η in η_vals:
 These are current cases under the different scenarios:
 
 ```{code-cell} ipython3
-plot_paths(i_paths, labels)
+plot_paths(i_paths, labels, ylabel='current cases (fraction of the population)')
 ```
 
 Here are cumulative cases, as a fraction of population:
 
 ```{code-cell} ipython3
-plot_paths(c_paths, labels)
+plot_paths(c_paths, labels, ylabel='cumulative cases (fraction of the population)')
 ```
+
+Faster implementation of mitigation mainly delays the infection peak, with a
+smaller effect on its height.
 
 ## Ending lockdown
 
@@ -383,7 +400,7 @@ for R0 in R0_paths:
 Here is the number of active infections:
 
 ```{code-cell} ipython3
-plot_paths(i_paths, labels)
+plot_paths(i_paths, labels, ylabel='active infections (fraction of the population)')
 ```
 
 What kind of mortality can we expect under these scenarios?
@@ -398,14 +415,14 @@ This is the cumulative number of deaths:
 
 ```{code-cell} ipython3
 paths = [path * ν * pop_size for path in c_paths]
-plot_paths(paths, labels)
+plot_paths(paths, labels, ylabel='cumulative deaths')
 ```
 
 This is the daily death rate:
 
 ```{code-cell} ipython3
 paths = [path * ν * γ * pop_size for path in i_paths]
-plot_paths(paths, labels)
+plot_paths(paths, labels, ylabel='deaths per day')
 ```
 
 Pushing the peak of curve further into the future may reduce cumulative deaths
