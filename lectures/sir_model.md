@@ -397,15 +397,18 @@ for R0 in R0_paths:
     c_paths.append(c_path)
 ```
 
-Here is the number of active infections:
+Here is the fraction of the population with an active infection:
 
 ```{code-cell} ipython3
 plot_paths(i_paths, labels, ylabel='active infections (fraction of the population)')
 ```
 
+Both scenarios produce approximately the same infection peak, but the longer
+lockdown delays it.
+
 What kind of mortality can we expect under these scenarios?
 
-Suppose that 1% of cases result in death
+Suppose that 1% of cases result in death.
 
 ```{code-cell} ipython3
 ν = 0.01
@@ -414,16 +417,17 @@ Suppose that 1% of cases result in death
 This is the cumulative number of deaths:
 
 ```{code-cell} ipython3
-paths = [path * ν * pop_size for path in c_paths]
+paths = [(c_path - i_path) * ν * pop_size
+         for c_path, i_path in zip(c_paths, i_paths)]
 plot_paths(paths, labels, ylabel='cumulative deaths')
 ```
 
-This is the daily death rate:
+This is the number of deaths per day:
 
 ```{code-cell} ipython3
 paths = [path * ν * γ * pop_size for path in i_paths]
 plot_paths(paths, labels, ylabel='deaths per day')
 ```
 
-Pushing the peak of curve further into the future may reduce cumulative deaths
+Pushing the peak of the curve further into the future may reduce cumulative deaths
 if a vaccine is found.
