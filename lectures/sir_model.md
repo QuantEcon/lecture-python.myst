@@ -276,7 +276,7 @@ def plot_paths(paths, labels, ylabel, times=t_vec):
 Let's plot current cases as a fraction of the population.
 
 ```{code-cell} ipython3
-plot_paths(i_paths, labels, ylabel='current cases (fraction of the population)')
+plot_paths(i_paths, labels, ylabel='fraction of the population')
 ```
 
 As expected, lower effective transmission rates defer the peak of infections.
@@ -286,7 +286,7 @@ They also lead to a lower peak in current cases.
 Here are cumulative cases, as a fraction of population:
 
 ```{code-cell} ipython3
-plot_paths(c_paths, labels, ylabel='cumulative cases (fraction of the population)')
+plot_paths(c_paths, labels, ylabel='fraction of the population')
 ```
 
 ### Experiment 2: changing mitigation
@@ -349,13 +349,13 @@ for η in η_vals:
 These are current cases under the different scenarios:
 
 ```{code-cell} ipython3
-plot_paths(i_paths, labels, ylabel='current cases (fraction of the population)')
+plot_paths(i_paths, labels, ylabel='fraction of the population')
 ```
 
 Here are cumulative cases, as a fraction of population:
 
 ```{code-cell} ipython3
-plot_paths(c_paths, labels, ylabel='cumulative cases (fraction of the population)')
+plot_paths(c_paths, labels, ylabel='fraction of the population')
 ```
 
 Faster implementation of mitigation mainly delays the infection peak, with a
@@ -400,7 +400,7 @@ for R0 in R0_paths:
 Here is the fraction of the population with an active infection:
 
 ```{code-cell} ipython3
-plot_paths(i_paths, labels, ylabel='active infections (fraction of the population)')
+plot_paths(i_paths, labels, ylabel='fraction of the population')
 ```
 
 Both scenarios produce approximately the same infection peak, but the longer
