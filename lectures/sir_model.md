@@ -17,7 +17,7 @@ kernelspec:
 </div>
 ```
 
-# {index}`Modeling COVID 19 <single: Modeling COVID 19>`
+# {index}`Modeling COVID-19 <single: Modeling COVID-19>`
 
 ```{contents} Contents
 :depth: 2
@@ -31,12 +31,12 @@ provided by [Andrew Atkeson](https://sites.google.com/site/andyatkeson/).
 See, in particular
 
 * [NBER Working Paper No. 26867](https://www.nber.org/papers/w26867)
-* [COVID-19 Working papers and code](https://sites.google.com/site/andyatkeson/home?authuser=0)
+* [COVID-19 Working papers and code](https://sites.google.com/site/andyatkeson/home/covid-work)
 
 The purpose of his notes is to introduce economists to quantitative modeling
 of infectious disease dynamics.
 
-Dynamics are modeled using a standard SIR (Susceptible-Infected-Removed) model
+Dynamics are modeled using a standard SEIR (Susceptible-Exposed-Infected-Removed) model
 of disease spread.
 
 The model dynamics are represented by a system of ordinary differential
@@ -65,33 +65,33 @@ from scipy.integrate import odeint
 
 This routine calls into compiled code from the FORTRAN library odepack.
 
-## The SIR Model
+## The SEIR model
 
-In the version of the SIR model we will analyze there are four states.
+In the version of the SEIR model we will analyze there are four states.
 
 All individuals in the population are assumed to be in one of these four states.
 
-The states are: susceptible (S), exposed (E), infected (I) and removed (R).
+The states are: susceptible ($S$), exposed ($E$), infected ($I$), and removed ($R$).
 
-Comments:
-
+```{prf:assumption}
 * Those in state R have been infected and either recovered or died.
 * Those who have recovered are assumed to have acquired immunity.
 * Those in the exposed group are not yet infectious.
+```
 
-### Time Path
+### Time path
 
 The flow across states follows the path $S \to E \to I \to R$.
 
-All individuals in the population are eventually infected when
-the transmission rate is positive and $i(0) > 0$.
+When the effective reproduction number exceeds one, infections initially
+increase but eventually decline as the susceptible population falls.
 
 The interest is primarily in
 
 * the number of infections at a given time (which determines whether or not the health care system is overwhelmed) and
 * how long the caseload can be deferred (hopefully until a vaccine arrives)
 
-Using lower case letters for the fraction of the population in each state, the
+Using lowercase letters for the fraction of the population in each state, the
 dynamics are
 
 ```{math}
@@ -100,18 +100,18 @@ dynamics are
 \begin{aligned}
      \dot s(t)  & = - \beta(t) \, s(t) \,  i(t)
      \\
-     \dot e(t)  & = \beta(t) \,  s(t) \,  i(t)  - σ e(t)
+     \dot e(t)  & = \beta(t) \,  s(t) \,  i(t)  - \sigma e(t)
      \\
-     \dot i(t)  & = σ e(t)  - γ i(t)
+     \dot i(t)  & = \sigma e(t)  - \gamma i(t)
 \end{aligned}
 ```
 
 In these equations,
 
 * $\beta(t)$ is called the **transmission rate** (the rate at which individuals bump into others and expose them to the virus).
-* $\sigma$ is called the **infection rate** (the rate at which those who are exposed become infected)
-* $\gamma$ is called the **recovery rate** (the rate at which infected people recover or die).
-* the dot symbol $\dot y$ represents the time derivative $dy/dt$.
+* $\sigma$ is called the **infection rate** (the rate at which those who are exposed become infected).
+* $\gamma$ is called the **removal rate** (the rate at which infected people recover or die).
+* The dot symbol $\dot y$ represents the time derivative $dy/dt$.
 
 We do not need to model the fraction $r$ of the population in state $R$ separately because the states form a partition.
 
@@ -128,7 +128,7 @@ The system {eq}`sir_system` can be written in vector form as
 \dot x = F(x, t),  \qquad x := (s, e, i)
 ```
 
-for suitable definition of $F$ (see the code below).
+for a suitable definition of $F$ (see the code below).
 
 ### Parameters
 
@@ -189,7 +189,13 @@ def F(x, t, R0=1.6):
 
 Note that `R0` can be either constant or a given function of time.
 
-The initial conditions are set to
+The initial conditions are calibrated to a population of 330 million.
+
+The value $i_0 = 10^{-7}$ represents 33 initially infected people, while
+$e_0 = 4i_0$ represents 132 exposed people.
+
+Setting $s_0 = 1 - i_0 - e_0$ assigns the remaining population to the
+susceptible state and sets the initial removed fraction to zero.
 
 ```{code-cell} ipython3
 # initial conditions of s, e, i
@@ -204,7 +210,7 @@ In vector form the initial condition is
 x_0 = s_0, e_0, i_0
 ```
 
-We solve for the time path numerically using odeint, at a sequence of dates
+We solve for the time path numerically using `odeint`, at a sequence of dates
 `t_vec`.
 
 ```{code-cell} ipython3
@@ -233,7 +239,7 @@ grid_size = 1000
 t_vec = np.linspace(0, t_length, grid_size)
 ```
 
-### Experiment 1: Constant R0 Case
+### Experiment 1: constant R0 case
 
 Let's start with the case where `R0` is constant.
 
@@ -241,7 +247,7 @@ We calculate the time path of infected people under different assumptions for `R
 
 ```{code-cell} ipython3
 R0_vals = np.linspace(1.6, 3.0, 6)
-labels = [f'$R0 = {r:.2f}$' for r in R0_vals]
+labels = [f'$R_0 = {r:.2f}$' for r in R0_vals]
 i_paths, c_paths = [], []
 
 for r in R0_vals:
@@ -253,13 +259,15 @@ for r in R0_vals:
 Here's some code to plot the time paths.
 
 ```{code-cell} ipython3
-def plot_paths(paths, labels, times=t_vec):
+def plot_paths(paths, labels, ylabel, times=t_vec):
 
     fig, ax = plt.subplots()
 
     for path, label in zip(paths, labels):
-        ax.plot(times, path, label=label)
+        ax.plot(times, path, lw=2, label=label)
 
+    ax.set_xlabel('days')
+    ax.set_ylabel(ylabel)
     ax.legend(loc='upper left')
 
     plt.show()
@@ -268,7 +276,7 @@ def plot_paths(paths, labels, times=t_vec):
 Let's plot current cases as a fraction of the population.
 
 ```{code-cell} ipython3
-plot_paths(i_paths, labels)
+plot_paths(i_paths, labels, ylabel='fraction of the population')
 ```
 
 As expected, lower effective transmission rates defer the peak of infections.
@@ -278,10 +286,10 @@ They also lead to a lower peak in current cases.
 Here are cumulative cases, as a fraction of population:
 
 ```{code-cell} ipython3
-plot_paths(c_paths, labels)
+plot_paths(c_paths, labels, ylabel='fraction of the population')
 ```
 
-### Experiment 2: Changing Mitigation
+### Experiment 2: changing mitigation
 
 Let's look at a scenario where mitigation (e.g., social distancing) is
 successively imposed.
@@ -301,7 +309,11 @@ This is due to progressive adoption of stricter mitigation measures.
 The parameter `η` controls the rate, or the speed at which restrictions are
 imposed.
 
-We consider several different rates:
+Since $t$ is measured in days, $\eta$ is measured per day, and its reciprocal,
+$1/\eta$, is the adjustment period.
+
+The values below correspond to adjustment periods of 5, 10, 20, 50, and 100
+days:
 
 ```{code-cell} ipython3
 η_vals = 1/5, 1/10, 1/20, 1/50, 1/100
@@ -314,8 +326,10 @@ This is what the time path of `R0` looks like at these alternative rates:
 fig, ax = plt.subplots()
 
 for η, label in zip(η_vals, labels):
-    ax.plot(t_vec, R0_mitigating(t_vec, η=η), label=label)
+    ax.plot(t_vec, R0_mitigating(t_vec, η=η), lw=2, label=label)
 
+ax.set_xlabel('days')
+ax.set_ylabel('$R_0$')
 ax.legend()
 plt.show()
 ```
@@ -335,16 +349,19 @@ for η in η_vals:
 These are current cases under the different scenarios:
 
 ```{code-cell} ipython3
-plot_paths(i_paths, labels)
+plot_paths(i_paths, labels, ylabel='fraction of the population')
 ```
 
 Here are cumulative cases, as a fraction of population:
 
 ```{code-cell} ipython3
-plot_paths(c_paths, labels)
+plot_paths(c_paths, labels, ylabel='fraction of the population')
 ```
 
-## Ending Lockdown
+Faster implementation of mitigation mainly delays the infection peak, with a
+smaller effect on its height.
+
+## Ending lockdown
 
 The following replicates [additional results](https://drive.google.com/file/d/1uS7n-7zq5gfSgrL3S0HByExmpq4Bn3oh/view) by Andrew Atkeson on the timing of lifting lockdown.
 
@@ -380,15 +397,18 @@ for R0 in R0_paths:
     c_paths.append(c_path)
 ```
 
-Here is the number of active infections:
+Here is the fraction of the population with an active infection:
 
 ```{code-cell} ipython3
-plot_paths(i_paths, labels)
+plot_paths(i_paths, labels, ylabel='fraction of the population')
 ```
+
+Both scenarios produce approximately the same infection peak, but the longer
+lockdown delays it.
 
 What kind of mortality can we expect under these scenarios?
 
-Suppose that 1% of cases result in death
+Suppose that 1% of cases result in death.
 
 ```{code-cell} ipython3
 ν = 0.01
@@ -397,16 +417,17 @@ Suppose that 1% of cases result in death
 This is the cumulative number of deaths:
 
 ```{code-cell} ipython3
-paths = [path * ν * pop_size for path in c_paths]
-plot_paths(paths, labels)
+paths = [(c_path - i_path) * ν * pop_size
+         for c_path, i_path in zip(c_paths, i_paths)]
+plot_paths(paths, labels, ylabel='cumulative deaths')
 ```
 
-This is the daily death rate:
+This is the number of deaths per day:
 
 ```{code-cell} ipython3
 paths = [path * ν * γ * pop_size for path in i_paths]
-plot_paths(paths, labels)
+plot_paths(paths, labels, ylabel='deaths per day')
 ```
 
-Pushing the peak of curve further into the future may reduce cumulative deaths
+Pushing the peak of the curve further into the future may reduce cumulative deaths
 if a vaccine is found.
