@@ -101,12 +101,10 @@ the point.
 The following figure represents three vectors in this manner
 
 ```{code-cell} ipython
-fig, ax = plt.subplots(figsize=(10, 8))
-# Set the axes through the origin
-for spine in ['left', 'bottom']:
-    ax.spines[spine].set_position('zero')
-for spine in ['right', 'top']:
-    ax.spines[spine].set_color('none')
+fig, ax = plt.subplots()
+# Draw the axes through the origin
+ax.axhline(0, color='black', lw=0.8)
+ax.axvline(0, color='black', lw=0.8)
 
 ax.set(xlim=(-5, 5), ylim=(-5, 5))
 ax.grid()
@@ -171,12 +169,10 @@ Scalar multiplication is illustrated in the next figure
 ---
 tags: [output_scroll]
 ---
-fig, ax = plt.subplots(figsize=(10, 8))
-# Set the axes through the origin
-for spine in ['left', 'bottom']:
-    ax.spines[spine].set_position('zero')
-for spine in ['right', 'top']:
-    ax.spines[spine].set_color('none')
+fig, ax = plt.subplots()
+# Draw the axes through the origin
+ax.axhline(0, color='black', lw=0.8)
+ax.axvline(0, color='black', lw=0.8)
 
 ax.set(xlim=(-5, 5), ylim=(-5, 5))
 x = (2, 2)
@@ -295,7 +291,7 @@ The span is a two-dimensional plane passing through these two points and the ori
 ---
 tags: [output_scroll]
 ---
-ax = plt.figure(figsize=(10, 8)).add_subplot(projection='3d')
+ax = plt.figure().add_subplot(projection='3d')
 
 x_min, x_max = -5, 5
 y_min, y_max = -5, 5
@@ -692,14 +688,13 @@ x = np.linspace(xmin, xmax, 160)
 y = f(x)
 ya, yb = np.min(y), np.max(y)
 
+# Extra height keeps the labels clear of the axes in both panels.
 fig, axes = plt.subplots(2, 1, figsize=(10, 10))
 
 for ax in axes:
-    # Set the axes through the origin
-    for spine in ['left', 'bottom']:
-        ax.spines[spine].set_position('zero')
-    for spine in ['right', 'top']:
-        ax.spines[spine].set_color('none')
+    # Draw the axes through the origin
+    ax.axhline(0, color='black', lw=0.8)
+    ax.axvline(0, color='black', lw=0.8)
 
     ax.set(ylim=(-0.6, 3.2), xlim=(xmin, xmax),
            yticks=(), xticks=())
@@ -948,12 +943,10 @@ A = np.array(A)
 evals, evecs = eig(A)
 evecs = evecs[:, 0], evecs[:, 1]
 
-fig, ax = plt.subplots(figsize=(10, 8))
-# Set the axes through the origin
-for spine in ['left', 'bottom']:
-    ax.spines[spine].set_position('zero')
-for spine in ['right', 'top']:
-    ax.spines[spine].set_color('none')
+fig, ax = plt.subplots()
+# Draw the axes through the origin
+ax.axhline(0, color='black', lw=0.8)
+ax.axvline(0, color='black', lw=0.8)
 ax.grid(alpha=0.4)
 
 xmin, xmax = -3, 3
