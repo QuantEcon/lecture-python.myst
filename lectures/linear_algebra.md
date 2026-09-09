@@ -850,7 +850,7 @@ In this case there are either no solutions or infinitely many --- in other words
 
 For example, consider the case where $k=3$ and $n=2$.
 
-Thus, the columns of $A$ consists of 3 vectors in $\mathbb R ^2$.
+Thus, the columns of $A$ consist of 3 vectors in $\mathbb R ^2$.
 
 This set can never be linearly independent, since it is possible to find two vectors that span
 $\mathbb R ^2$.
@@ -901,9 +901,9 @@ A @ x          # Should equal y
 solve(A, y)  # Produces the same solution
 ```
 
-Observe how we can solve for $x = A^{-1} y$ by either via `inv(A) @ y`, or using `solve(A, y)`.
+Observe how we can solve for $x = A^{-1} y$ either via `inv(A) @ y`, or using `solve(A, y)`.
 
-The latter method uses a different algorithm (LU decomposition) that is numerically more stable, and hence should almost always be preferred.
+To solve $Ax = y$, we generally prefer `solve(A, y)` because it avoids the unnecessary step of computing the inverse of $A$.
 
 To obtain the least-squares solution $\hat x = (A^\top A)^{-1}A^\top y$, use `scipy.linalg.lstsq(A, y)`.
 
@@ -1021,7 +1021,7 @@ evecs
 
 Note that the *columns* of `evecs` are the eigenvectors.
 
-Since any scalar multiple of an eigenvector is an eigenvector with the same
+Since any nonzero scalar multiple of an eigenvector is an eigenvector with the same
 eigenvalue (check it), the eig routine normalizes the length of each eigenvector
 to one.
 
@@ -1158,7 +1158,7 @@ Then
 
 The documentation of the `scipy.linalg` submodule can be found [here](https://docs.scipy.org/doc/scipy/reference/linalg.html).
 
-Chapters 2 and 3 of the [Econometric Theory](https://johnstachurski.net/emet.html) contains
+Chapters 2 and 3 of [A Primer in Econometric Theory](https://johnstachurski.net/emet) contain
 a discussion of linear algebra along the same lines as above, with solved exercises.
 
 If you don't mind a slightly abstract approach, a nice intermediate-level text on linear algebra
