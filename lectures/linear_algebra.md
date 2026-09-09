@@ -342,7 +342,7 @@ plt.show()
 
 #### Examples
 
-If $A$ contains only one vector $a_1 \in \mathbb R ^2$, then its
+If $A$ contains only one nonzero vector $a_1 \in \mathbb R ^2$, then its
 span is just the scalar multiples of $a_1$, which is the unique line passing through both $a_1$ and the origin.
 
 If $A = \{e_1, e_2, e_3\}$ consists of the **canonical basis vectors** of $\mathbb R ^3$, that is
@@ -414,7 +414,7 @@ $m > n$ vectors in $\mathbb R ^n$ must be linearly dependent.
 The following statements are equivalent to linear independence of $A := \{a_1, \ldots, a_k\} \subset \mathbb R ^n$
 
 1. No vector in $A$ can be formed as a linear combination of the other elements.
-1. If $\beta_1 a_1 + \cdots \beta_k a_k = 0$ for scalars $\beta_1, \ldots, \beta_k$, then $\beta_1 = \cdots = \beta_k = 0$.
+1. If $\beta_1 a_1 + \cdots + \beta_k a_k = 0$ for scalars $\beta_1, \ldots, \beta_k$, then $\beta_1 = \cdots = \beta_k = 0$.
 
 (The zero in the first expression is the origin of $\mathbb R ^n$)
 
@@ -427,13 +427,13 @@ In other words, if $A := \{a_1, \ldots, a_k\} \subset \mathbb R ^n$ is
 linearly independent and
 
 $$
-y = \beta_1 a_1 + \cdots \beta_k a_k
+y = \beta_1 a_1 + \cdots + \beta_k a_k
 $$
 
 then no other coefficient sequence $\gamma_1, \ldots, \gamma_k$ will produce
 the same vector $y$.
 
-Indeed, if we also have $y = \gamma_1 a_1 + \cdots \gamma_k a_k$,
+Indeed, if we also have $y = \gamma_1 a_1 + \cdots + \gamma_k a_k$,
 then
 
 $$
@@ -473,7 +473,7 @@ The matrix formed by replacing $a_{ij}$ by $a_{ji}$ for every $i$ and $j$ is cal
 
 If $A = A^\top$, then $A$ is called **symmetric**.
 
-For a square matrix $A$, the $i$ elements of the form $a_{ii}$ for $i=1,\ldots,n$ are called the **principal diagonal**.
+For an $n \times n$ matrix $A$, the $n$ entries $a_{11}, \ldots, a_{nn}$ form the **principal diagonal**.
 
 $A$ is called **diagonal** if the only nonzero entries are on the principal diagonal.
 
@@ -578,7 +578,7 @@ If $I$ is the $n \times n$ identity matrix, then $IA = A$.
 
 ### Matrices in NumPy
 
-```{index} single: Matrix; Numpy
+```{index} single: Matrix; NumPy
 ```
 
 NumPy arrays are also used as matrices, and have fast, efficient functions and methods for all the standard matrix operations [^fn_mdt].
