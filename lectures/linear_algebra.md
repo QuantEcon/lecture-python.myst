@@ -1187,6 +1187,7 @@ Here
 * $P$ is an $n \times n$ matrix and $Q$ is an $m \times m$ matrix
 * $A$ is an $n \times n$ matrix and $B$ is an $n \times m$ matrix
 * both $P$ and $Q$ are symmetric and positive semidefinite
+* $H := Q + B^\top P B$ is positive definite
 
 (What must the dimensions of $y$ and $u$ be to make this a well-posed problem?)
 
@@ -1235,12 +1236,14 @@ $$
 
 with primitives
 
-- $P$ be a symmetric and positive semidefinite $n \times n$
+- $P$ is a symmetric and positive semidefinite $n \times n$
   matrix
-- $Q$ be a symmetric and positive semidefinite $m \times m$
+- $Q$ is a symmetric and positive semidefinite $m \times m$
   matrix
-- $A$ an $n \times n$ matrix
-- $B$ an $n \times m$ matrix
+- $A$ is an $n \times n$ matrix
+- $B$ is an $n \times m$ matrix
+
+Assume that $H := Q + B^\top P B$ is positive definite.
 
 The associated Lagrangian is:
 
@@ -1271,7 +1274,7 @@ Differentiating Lagrangian equation w.r.t. u and setting its derivative
 equal to zero yields
 
 $$
-\frac{ \partial L}{\partial u} = - (Q + Q^\top) u - B^\top\lambda = - 2Qu + B^\top\lambda = 0 \:
+\frac{ \partial L}{\partial u} = - (Q + Q^\top) u + B^\top\lambda = - 2Qu + B^\top\lambda = 0 \:
 $$
 
 Substituting $\lambda = -2 P y$ gives
@@ -1280,7 +1283,7 @@ $$
 Qu + B^\top Py = 0 \:
 $$
 
-Substituting the linear constraint $y = Ax + Bu$ into above
+Substituting the linear constraint $y = Ax + Bu$ into the above
 equation gives
 
 $$
@@ -1315,7 +1318,7 @@ Since we know the optimal choice of u satisfies $u = -(Q +
 B^\top PB)^{-1}B^\top PAx$, then
 
 $$
-v(x) =  -(Ax+ B u)^\top P(Ax+B u) - u^\top Q u  \,\,\,\, with \,\,\,\, u = -(Q + B^\top PB)^{-1}B^\top PAx
+v(x) =  -(Ax+ B u)^\top P(Ax+B u) - u^\top Q u \quad \text{with} \quad u = -(Q + B^\top PB)^{-1}B^\top PAx
 $$
 
 To evaluate the function
@@ -1329,13 +1332,13 @@ v(x) &=  -(Ax+ B u)^\top P(Ax+Bu) - u^\top Q u \\
 \end{aligned}
 $$
 
-For simplicity, denote by $S := (Q + B^\top PB)^{-1} B^\top PA$, then $u = -Sx$.
+For simplicity, set $S := (Q + B^\top PB)^{-1} B^\top PA$, so that $u = -Sx$.
 
 Regarding the second term $- 2u^\top B^\top PAx$,
 
 $$
 \begin{aligned}
--2u^\top B^\top PAx &= -2 x^\top S^\top B^\top PAx  \\
+-2u^\top B^\top PAx &= +2 x^\top S^\top B^\top PAx  \\
 & = 2 x^\top A^\top PB( Q + B^\top PB)^{-1} B^\top PAx
 \end{aligned}
 $$
