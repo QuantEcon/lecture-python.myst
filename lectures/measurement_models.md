@@ -41,9 +41,9 @@ If accurate observations on these time series are available, one can
 use that mapping to implement parameter estimation methods based
 either on the likelihood function or on the method of moments.
 
-```{note} This is why econometrics estimation is often called an ''inverse'' problem, while
-simulating a model for given parameter values is called a ''direct problem''. The direct problem
-refers to the mapping we have just described, while the inverse problem involves somehow applying an ''inverse'' of that mapping to a data set that is treated as if it were one draw from the joint probability distribution described by the mapping.
+```{note} This is why econometric estimation is often called an "inverse" problem, while
+simulating a model for given parameter values is called a "direct" problem. The direct problem
+refers to the mapping we have just described, while the inverse problem involves somehow applying an "inverse" of that mapping to a data set that is treated as if it were one draw from the joint probability distribution described by the mapping.
 ```
 
 However, if only error-ridden data exist for the variables of interest,
@@ -65,7 +65,7 @@ investment accelerator, the mechanism studied in these two quantecon lectures --
 
 - In Model 1, the data collecting agency simply reports the
   error-ridden data that it collects.
-- In Model 2, the data collection agents first collects error-ridden data that satisfy
+- In Model 2, the data collection agency first collects error-ridden data that satisfy
   a classical errors-in-variables model, then filters the data,  and reports the filtered objects.
 
 Although the two models have the same "deep parameters," they produce
@@ -156,7 +156,7 @@ and $\theta_t$ is an endowment or technology shock following
 :label: shock_process
 a(L)\,\theta_t = \varepsilon_t,
 ```
-where $L$ is the backward shift (or 'lag') operator and  $a(z) = 1 - a_1 z - a_2 z^2 - \cdots - a_r z^r$ having all its zeroes 
+where $L$ is the backward shift (or 'lag') operator, $\varepsilon_t$ is a scalar white noise, and  $a(z) = 1 - a_1 z - a_2 z^2 - \cdots - a_r z^r$ has all its zeroes 
 outside the unit circle.
 
 ### Optimal decision rule
@@ -167,8 +167,10 @@ The  optimal decision rule for $c_t$ is
 :label: opt_decision
 c_t = \frac{-\alpha}{f-1}
       + \left(1 - \frac{1}{\beta f^2}\right)
+        \left[
         \frac{L - f^{-1} a(f^{-1})^{-1} a(L)}{L - f^{-1}}\,\theta_t
-      + f k_t,
+      + f k_t
+        \right],
 \qquad
 k_{t+1} = f k_t + \theta_t - c_t,
 ```
@@ -177,7 +179,7 @@ where $\alpha = u_1[1-(\beta f)^{-1}]/u_2$.
 
 Equations {eq}`shock_process` and {eq}`opt_decision` exhibit the
 cross-equation restrictions characteristic of rational expectations
-models.
+models: the parameters $a_1, \ldots, a_r$ of the shock process also appear in the decision rule for consumption.
 
 ### Net income and the accelerator
 
@@ -211,12 +213,14 @@ measurement error.
 
 Assumption 2 is less important, affecting only various constants.
 
-Under both assumptions, {eq}`opt_decision` simplifies to
+Under both assumptions, $\alpha = 0$ and {eq}`opt_decision` simplifies to
 
 ```{math}
 :label: simple_crule
-c_t = (1-f^{-1})\,\theta_t + (f-1)\,k_t.
+c_t = (1-f^{-1})\,\theta_t + (f-1)\,k_t,
 ```
+
+so that the capital stock obeys $k_{t+1} = k_t + f^{-1} \theta_t$.
 
 When {eq}`simple_crule`, {eq}`net_income`, and
 {eq}`tech_constraint` are combined, the optimal plan satisfies
@@ -247,17 +251,21 @@ of income.
 This is the same mechanism that {cite:t}`Chow1968` documented
 empirically (see {doc}`chow_business_cycles`).
 
-Equation {eq}`income_process` states that the first difference of disposable income is a
+Equation {eq}`income_process` states that the first difference of net income, $y_{nt} - y_{n,t-1} = \theta_t - \beta \theta_{t-1}$, is a
 first-order moving average process with innovation equal to the innovation of the endowment shock $\theta_t$.
 
 As {cite:t}`Muth1960` showed, such a process is optimally forecast
 via a geometric distributed lag or "adaptive expectations" scheme.
 
+Consumption itself is a martingale: {eq}`simple_crule` and $k_t - k_{t-1} = f^{-1}\theta_{t-1}$ imply $c_t - c_{t-1} = (1 - \beta)\theta_t$, the random walk property of consumption emphasized by {cite:t}`Hall1978`.
+
+So consumption, the capital stock, and net income all have unit roots, while investment $k_{t+1} - k_t = f^{-1}\theta_t$ is serially uncorrelated.
+
 ### The accelerator puzzle
 
 When all variables are measured accurately and are driven by
-the single shock $\theta_t$, the spectral density matrix of
-$(c_t,\, k_{t+1}-k_t,\, y_{nt})$ has rank one at all frequencies.
+the single shock $\theta_t$, the spectral density matrix of the covariance-stationary vector
+$(c_t - c_{t-1},\, k_{t+1}-k_t,\, y_{nt} - y_{n,t-1})$ has rank one at all frequencies.
 
 Each variable is an invertible one-sided distributed lag of the
 same white noise, so no variable Granger-causes any other.
@@ -288,10 +296,7 @@ series.  Then
   + (v_{k,t+1} - v_{kt}),
 ```
 
-```{math}
-:label: income_process_ma
-y_{nt} = \theta_t + (1-\beta)(\theta_{t-1} + \theta_{t-2} + \cdots).
-```
+where $y_{nt}$ is given by {eq}`income_process`.
 
 In this case income Granger-causes consumption and investment
 but is not Granger-caused by them.
@@ -306,8 +311,7 @@ variances of the measurement errors.
 In this case, each observed series mixes the common signal $\theta_t$
 with idiosyncratic measurement noise.
 
-A series with lower measurement
-error variance tracks $\theta_t$ more closely, so its innovations
+A series whose measurement error is small **relative to the variation in the true series** tracks $\theta_t$ more closely, so its innovations
 contain more information about future values of the other series.
 
 Accordingly, in a forecast-error-variance decomposition, shocks to
@@ -335,18 +339,20 @@ x_t = \begin{bmatrix} k_t \\ \theta_t \end{bmatrix},
 z_t = \begin{bmatrix} y_{nt} \\ c_t \\ \Delta k_t \end{bmatrix},
 ```
 
-so that the error-free data are described by  the state-space system
+where $\Delta k_t \equiv k_{t+1} - k_t$ denotes investment at time $t$.
+
+The error-free data are described by  the state-space system
 
 ```{math}
 :label: true_ss
 \begin{aligned}
-x_{t+1} &= A x_t + \varepsilon_t, \\
-z_t &= C x_t.
+x_{t+1} &= A x_t + w_t, \\
+z_t &= C x_t,
 \end{aligned}
 ```
 
-where $\varepsilon_t = \begin{bmatrix} 0 \\ \theta_t \end{bmatrix}$ has
-covariance $E \varepsilon_t \varepsilon_t^\top = Q$ and the matrices are
+where $w_t = \begin{bmatrix} 0 \\ \theta_{t+1} \end{bmatrix}$ has
+covariance $E w_t w_t^\top = Q$ and the matrices are
 
 ```{math}
 A = \begin{bmatrix}
@@ -366,9 +372,13 @@ Q = \begin{bmatrix}
 \end{bmatrix}.
 ```
 
+Here we date the shock $w_t$ that arrives between $t$ and $t+1$ by $t$; this matches the timing convention for the measurement errors below.
+
 $Q$ is singular because there is only one source of randomness
 $\theta_t$; the capital stock $k_t$ evolves deterministically
 given $\theta_t$.
+
+Notice that the rows of $C$ satisfy $C_c + C_{\Delta k} = C_y$, which is the national income identity $c_t + \Delta k_t = y_{nt}$.
 
 ```{code-cell} ipython3
 # Baseline structural matrices for the true economy
@@ -405,7 +415,7 @@ The response shows the investment accelerator clearly: the full impact on
 net income $y_n$ occurs at lag 0, while consumption adjusts by only
 $1 - f^{-1} \approx 0.048$ and investment absorbs the remainder.
 
-From lag 1 onward the economy is in its new steady state
+From lag 1 onward the economy is in its new steady state, with permanently higher capital, income, and consumption
 
 ```{code-cell} ipython3
 def table2_irf(A, C, n_lags=6):
@@ -439,14 +449,14 @@ v_{t+1} = D v_t + \eta_t,
 
 where $\eta_t$ is a vector white noise with
 $E \eta_t \eta_t^\top = \Sigma_\eta$ and
-$E \varepsilon_t v_s^\top = 0$ for all $t, s$.
+$E w_t v_s^\top = 0$ for all $t, s$.
 
 The parameters are
 
 ```{math}
-D = \operatorname{diag}(0.6, 0.7, 0.3),
+D = \operatorname{diag}(\rho_y, \rho_c, \rho_{\Delta k}) = \operatorname{diag}(0.6, 0.7, 0.3),
 \qquad
-\sigma_\eta = (0.05, 0.035, 0.65),
+\Sigma_\eta = \operatorname{diag}(\sigma_{\eta}^2), \quad \sigma_\eta = (0.05, 0.035, 0.65),
 ```
 
 so the unconditional covariance of $v_t$ is
@@ -455,14 +465,15 @@ so the unconditional covariance of $v_t$ is
 R = \operatorname{diag}\!\left(\frac{\sigma_{\eta,i}^2}{1 - \rho_i^2}\right).
 ```
 
-The innovation variances are smallest for consumption
-($\sigma_\eta = 0.035$), next for income ($\sigma_\eta = 0.05$),
-and largest for investment ($\sigma_\eta = 0.65$).
+The innovation standard deviations $\sigma_\eta$ are smallest for consumption
+($0.035$), next for income ($0.05$),
+and largest for investment ($0.65$).
 
-As in {cite:t}`Sargent1989` and our discussion above, what matters for Granger-causality
-asymmetries is the overall measurement quality in the full system:
-output is relatively well measured while investment is relatively
-poorly measured.
+What matters for Granger-causality asymmetries, however, is the size of each measurement error **relative to the signal** in the corresponding true series.
+
+The innovations to the true series are $\theta_t$ for income (standard deviation $1$), $(1-\beta)\theta_t$ for consumption (standard deviation $0.048$), and $\beta \theta_t$ for investment (standard deviation $0.95$).
+
+Relative to these, income is very well measured (a ratio of about $0.05$), while consumption and investment are both poorly measured (ratios of about $0.7$).
 
 ```{code-cell} ipython3
 ρ = np.array([0.6, 0.7, 0.3])
@@ -548,7 +559,7 @@ autoregressions for $\bar z_t$.
 Constructing the vector autoregression is also useful as an
 intermediate step in computing the likelihood of a sample of
 $\bar z_t$'s as a function of the free parameters
-$\{A, C, D, Q, R\}$.
+$\{A, C, D, Q, \Sigma_\eta\}$.
 
 The particular method that will be used to construct the vector
 autoregressive representation also proves useful as an intermediate
@@ -576,7 +587,7 @@ Define
 ```{math}
 :label: model1_qd
 \tilde z_t = \bar z_{t+1} - D \bar z_t, \qquad
-\bar\nu_t = C \varepsilon_t + \eta_t, \qquad
+\bar\nu_t = C w_t + \eta_t, \qquad
 \bar C = CA - DC.
 ```
 
@@ -587,21 +598,23 @@ imply the state-space system
 ```{math}
 :label: model1_transformed
 \begin{aligned}
-x_{t+1} &= A x_t + \varepsilon_t, \\
+x_{t+1} &= A x_t + w_t, \\
 \tilde z_t &= \bar C\, x_t + \bar\nu_t,
 \end{aligned}
 ```
 
-where $(\varepsilon_t, \bar\nu_t)$ is a white noise process with
+where $(w_t, \bar\nu_t)$ is a white noise process with
 
 ```{math}
 :label: model1_covs
-E \begin{bmatrix} \varepsilon_t \end{bmatrix}
-\begin{bmatrix} \varepsilon_t^\top & \bar\nu_t^\top \end{bmatrix}
+E \begin{bmatrix} w_t \\ \bar\nu_t \end{bmatrix}
+\begin{bmatrix} w_t \\ \bar\nu_t \end{bmatrix}^\top
 = \begin{bmatrix} Q & W_1 \\ W_1^\top & R_1 \end{bmatrix},
 \qquad
-R_1 = C Q C^\top + R, \quad W_1 = Q C^\top.
+R_1 = C Q C^\top + \Sigma_\eta, \quad W_1 = Q C^\top.
 ```
+
+Notice that $R_1$ involves the covariance matrix $\Sigma_\eta$ of the **innovations** $\eta_t$ to the measurement errors, not the unconditional covariance matrix $R$ of the measurement errors themselves: quasi-differencing removes the serially correlated part of $v_t$.
 
 System {eq}`model1_transformed` with covariances {eq}`model1_covs` is
 characterized by the five matrices
@@ -667,7 +680,7 @@ Below we compute $K_1$, $S_1$, and $V_1$ numerically
 
 ```{code-cell} ipython3
 C_bar = C @ A - D @ C
-R1 = C @ Q @ C.T + R
+R1 = C @ Q @ C.T + Σ_η
 W1 = Q @ C.T
 
 K1, S1, V1 = steady_state_kalman(A, C_bar, Q, R1, W1)
@@ -686,9 +699,9 @@ r_t = \begin{bmatrix} \hat x_{t-1} \\ \bar z_{t-1} \end{bmatrix},
 with dynamics
 
 ```{math}
-r_{t+1} = F_1 r_t + G_1 u_t,
+r_{t+1} = F_1 r_t + G_1 u_{t-1},
 \qquad
-\bar z_t = H_1 r_t + u_t,
+\bar z_t = H_1 r_t + u_{t-1},
 ```
 
 where
@@ -708,6 +721,8 @@ I
 \quad
 H_1 = [\bar C \;\; D].
 ```
+
+(Recall that $u_{t-1}$ is the innovation to $\bar z_t$.)
 
 The moving average  coefficients are then $\psi_0 = I$ and
 $\psi_j = H_1 F_1^{j-1} G_1$ for $j \geq 1$.
@@ -759,12 +774,12 @@ $\hat x_0$, can be represented as
 
 ```{math}
 :label: model1_loglik
-\mathcal{L}^* = -T\ln 2\pi - \tfrac{1}{2}T\ln|V_1|
+\mathcal{L}^* = -\tfrac{3}{2}T\ln 2\pi - \tfrac{1}{2}T\ln|V_1|
   - \tfrac{1}{2}\sum_{t=0}^{T-1} u_t^\top V_1^{-1} u_t,
 ```
 
 where $u_t$ is a function of $\{\bar z_t\}$ defined by
-{eq}`model1_recursion` below.
+{eq}`model1_recursion` below and the $3$ in the first term is the number of measured series.
 
 To use {eq}`model1_innov` to compute $\{u_t\}$, it is useful to
 represent it as
@@ -792,7 +807,7 @@ $\{\bar z_t\}$.
 To measure the relative importance of each innovation, we decompose
 the $j$-step-ahead forecast-error variance of each measured variable.
 
-Write $\bar z_{t+j} - E_t \bar z_{t+j} = \sum_{i=0}^{j-1} \psi_i u_{t+j-i}$.
+Write $\bar z_{t+j} - E_t \bar z_{t+j} = \sum_{i=0}^{j-1} \psi_i u_{t+j-i}$, where, to lighten notation, here $u_{t+j-i}$ denotes the innovation to $\bar z_{t+j-i}$.
 
 Let $P$ be the lower-triangular Cholesky factor of $V_1$ so that the
 orthogonalized innovations are $e_t = P^{-1} u_t$.
@@ -800,6 +815,10 @@ orthogonalized innovations are $e_t = P^{-1} u_t$.
 Then the contribution of orthogonalized innovation $k$ to the
 $j$-step-ahead variance of variable $m$ is
 $\sum_{i=0}^{j-1} (\psi_i P)_{mk}^2$.
+
+We order the variables as $y_n$, $c$, $\Delta k$.
+
+With this ordering, the first orthogonalized innovation is the innovation in $y_n$, the second is the part of the innovation in $c$ that is orthogonal to the innovation in $y_n$, and the third is the part of the innovation in $\Delta k$ that is orthogonal to the first two.
 
 The table below shows the cumulative contribution of each orthogonalized
 innovation to the forecast-error variance of $y_n$, $c$, and $\Delta k$
@@ -846,6 +865,10 @@ Granger-cause consumption and investment, but not vice versa.
 This matches the paper's message that, in a one-common-index model,
 the relatively best measured series has the strongest predictive content.
 
+Because income is ordered first, the decomposition attributes to the income innovation all of the variance that it shares with the other innovations.
+
+Below we confirm the Granger-causality pattern with a calculation that does not depend on an ordering.
+
 Let's look at the covariance matrix of the innovations
 
 ```{code-cell} ipython3
@@ -865,6 +888,54 @@ print(np.sort(np.linalg.eigvalsh(V1))[::-1].round(4))
 
 The first eigenvalue is much larger than the others, consistent with
 the presence of a dominant common shock $\theta_t$
+
+### Granger causality without an ordering
+
+The population vector autoregression for $\bar z_t$ gives a direct view of Granger causality.
+
+Iterating on {eq}`model1_recursion` gives
+
+$$
+\tilde z_t = \sum_{j=1}^\infty \bar C (A - K_1 \bar C)^{j-1} K_1 \tilde z_{t-j} + u_t .
+$$
+
+Let $B_j = \bar C (A - K_1 \bar C)^{j-1} K_1$.
+
+Substituting $\tilde z_t = \bar z_{t+1} - D \bar z_t$ and collecting terms gives the vector autoregression
+
+$$
+\bar z_{t+1} = \sum_{j=1}^\infty \Pi_j \bar z_{t+1-j} + u_t,
+\qquad
+\Pi_1 = D + B_1, \quad \Pi_j = B_j - B_{j-1} D \ \ (j \geq 2).
+$$
+
+Variable $i$ fails to Granger-cause variable $m$ if and only if the $(m, i)$ entries of all the $\Pi_j$ are zero.
+
+Here are the first two coefficient matrices; rows are equations and columns are lagged variables.
+
+```{code-cell} ipython3
+M_filter = A - K1 @ C_bar
+print("eigenvalues of A - K1 C_bar:", np.linalg.eigvals(M_filter).round(4))
+
+B_coef = [C_bar @ np.linalg.matrix_power(M_filter, j) @ K1 for j in range(3)]
+Π = [D + B_coef[0]] + [B_coef[j] - B_coef[j-1] @ D for j in range(1, 3)]
+
+eq_labels = [r'\text{eq. } ' + lab for lab in labels]
+for j in range(2):
+    df = pd.DataFrame(Π[j], index=eq_labels, columns=labels)
+    display(Latex(r'$\Pi_' + str(j + 1) + ' = '
+                  + df_to_latex_array(df).strip('$') + '$'))
+```
+
+The eigenvalues of $A - K_1 \bar C$ are inside the unit circle, so the vector autoregression converges.
+
+In the investment equation, the coefficient on lagged income is large (about $-0.28$).
+
+In the income equation, the coefficient on lagged investment is tiny (about $-0.004$).
+
+Lagged income helps to predict investment, but lagged investment barely helps to predict income, which is the Granger-causality pattern that {cite:t}`Sargent1989` set out to explain.
+
+{ref}`meas_ex2` computes an ordering-free measure of the strength of Granger causality due to {cite:t}`Geweke1982`.
 
 ### Wold impulse responses
 
@@ -913,7 +984,7 @@ series, its innovation is dominated by the true permanent shock
 $\theta_t$.
 
 The consumption and investment innovations produce responses that
-decay according to the AR(1) structure of their respective
+decay at rates close to the autoregressive coefficients of their respective
 measurement errors ($\rho_c = 0.7$, $\rho_{\Delta k} = 0.3$),
 with little spillover to other variables.
 
@@ -948,10 +1019,10 @@ To prepare its estimates, the reporting agency itself computes the
 Kalman filter to obtain the innovations representation {eq}`model1_innov`.
 
 Rather than reporting the error-corrupted data $\bar z_t$, the agency
-reports $\tilde z_t = G \hat x_t$, where $G$ is a "selection matrix,"
+reports $\hat z_t = G \hat x_t$, where $G$ is a "selection matrix,"
 possibly equal to $C$, for the data reported by the agency.
 
-The data $G \hat x_t = E[G x_t \mid \bar z_t, \bar z_{t-1}, \ldots, \hat x_0]$.
+The reported data are $\hat z_t = G \hat x_t = E[G x_t \mid \bar z_t, \bar z_{t-1}, \ldots, \hat x_0]$.
 
 The state-space representation for the reported data is then
 
@@ -959,7 +1030,7 @@ The state-space representation for the reported data is then
 :label: model2_state
 \begin{aligned}
 \hat x_{t+1} &= A \hat x_t + K_1 u_t, \\
-\tilde z_t &= G \hat x_t,
+\hat z_t &= G \hat x_t,
 \end{aligned}
 ```
 
@@ -967,10 +1038,10 @@ where the first line of {eq}`model2_state` is from the innovations
 representation {eq}`model1_innov`.
 
 Note that $u_t$ is the innovation to $\bar z_{t+1}$ and is *not* the
-innovation to $\tilde z_t$.
+innovation to $\hat z_t$.
 
-To obtain a Wold representation for $\tilde z_t$ and the likelihood
-function for a sample of $\tilde z_t$ requires that we obtain an
+To obtain a Wold representation for $\hat z_t$ and the likelihood
+function for a sample of $\hat z_t$ requires that we obtain an
 innovations representation for {eq}`model2_state`.
 
 ### Innovations representation for filtered data
@@ -981,19 +1052,19 @@ To add a little generality to {eq}`model2_state` we amend it to the system
 :label: model2_obs
 \begin{aligned}
 \hat x_{t+1} &= A \hat x_t + K_1 u_t, \\
-\tilde z_t &= G \hat x_t + \eta_t,
+\hat z_t &= G \hat x_t + \zeta_t,
 \end{aligned}
 ```
 
-where $\eta_t$ is a type 2 white-noise measurement error process
+where $\zeta_t$ is a type 2 white-noise measurement error process
 ("typos") with presumably very small covariance matrix $R_2$.
 
 The covariance matrix of the joint noise is
 
 ```{math}
 :label: model2_Q
-E \begin{bmatrix} K_1 u_t \\ \eta_t \end{bmatrix}
-  \begin{bmatrix} K_1 u_t \\ \eta_t \end{bmatrix}^\top
+E \begin{bmatrix} K_1 u_t \\ \zeta_t \end{bmatrix}
+  \begin{bmatrix} K_1 u_t \\ \zeta_t \end{bmatrix}^\top
 = \begin{bmatrix} Q_2 & 0 \\ 0 & R_2 \end{bmatrix},
 ```
 
@@ -1013,7 +1084,7 @@ representation is
 :label: model2_innov
 \begin{aligned}
 \check{x}_{t+1} &= A \check{x}_t + K_2 a_t, \\
-\tilde z_t &= G \check{x}_t + a_t,
+\hat z_t &= G \check{x}_t + a_t,
 \end{aligned}
 ```
 
@@ -1022,15 +1093,15 @@ where
 ```{math}
 :label: model2_innov_defs
 \begin{aligned}
-a_t &= \tilde z_t - E[\tilde z_t \mid \tilde z_{t-1}, \tilde z_{t-2}, \ldots], \\
-\check{x}_t &= E[\hat x_t \mid \tilde z_{t-1}, \tilde z_{t-2}, \ldots, \check{x}_0], \\
+a_t &= \hat z_t - E[\hat z_t \mid \hat z_{t-1}, \hat z_{t-2}, \ldots], \\
+\check{x}_t &= E[\hat x_t \mid \hat z_{t-1}, \hat z_{t-2}, \ldots, \check{x}_0], \\
 S_2 &= E[(\hat x_t - \check{x}_t)(\hat x_t - \check{x}_t)^\top], \\
 [K_2, S_2] &= \text{kalmanfilter}(A, G, Q_2, R_2, 0).
 \end{aligned}
 ```
 
 Thus $\{a_t\}$ is the innovation process for the reported data
-$\tilde z_t$, with innovation covariance
+$\hat z_t$, with innovation covariance
 
 ```{math}
 :label: model2_V2
@@ -1039,12 +1110,12 @@ V_2 = E\, a_t a_t^\top = G\, S_2\, G^\top + R_2.
 
 ### Wold representation
 
-A Wold moving average representation for $\tilde z_t$ is found from
+A Wold moving average representation for $\hat z_t$ is found from
 {eq}`model2_innov` to be
 
 ```{math}
 :label: model2_wold
-\tilde z_t = \bigl[G(I - AL)^{-1} K_2 L + I\bigr] a_t,
+\hat z_t = \bigl[G(I - AL)^{-1} K_2 L + I\bigr] a_t,
 ```
 
 with coefficients $\psi_0 = I$ and $\psi_j = G A^{j-1} K_2$ for
@@ -1057,23 +1128,23 @@ to undo.
 ### Gaussian likelihood
 
 When a method analogous to Model 1 is used, a Gaussian log-likelihood
-for $\tilde z_t$ can be computed by first computing an $\{a_t\}$ sequence
-from observations on $\tilde z_t$ by using
+for $\hat z_t$ can be computed by first computing an $\{a_t\}$ sequence
+from observations on $\hat z_t$ by using
 
 ```{math}
 :label: model2_recursion
 \begin{aligned}
-\check{x}_{t+1} &= (A - K_2 G)\,\check{x}_t + K_2 \tilde z_t, \\
-a_t &= -G\,\check{x}_t + \tilde z_t.
+\check{x}_{t+1} &= (A - K_2 G)\,\check{x}_t + K_2 \hat z_t, \\
+a_t &= -G\,\check{x}_t + \hat z_t.
 \end{aligned}
 ```
 
 The likelihood function for a sample of $T$ observations
-$\{\tilde z_t\}$ is then
+$\{\hat z_t\}$ is then
 
 ```{math}
 :label: model2_loglik
-\mathcal{L}^{**} = -T\ln 2\pi - \tfrac{1}{2}T\ln|V_2|
+\mathcal{L}^{**} = -\tfrac{3}{2}T\ln 2\pi - \tfrac{1}{2}T\ln|V_2|
   - \tfrac{1}{2}\sum_{t=0}^{T-1} a_t^\top V_2^{-1} a_t.
 ```
 
@@ -1098,6 +1169,10 @@ The agency need not use Kalman filter {eq}`model2_innov_defs` because
 it does not need the Wold representation for the filtered data.
 
 In our parameterization $G = C$.
+
+Because the rows of $C$ satisfy the national income identity, the reported data satisfy $\hat c_t + \Delta \hat k_t = \hat y_{nt}$ exactly.
+
+So when $R_2 = 0$, the innovation covariance matrix $V_2$ is singular, and the likelihood {eq}`model2_loglik` of all three reported series is degenerate; {ref}`meas_ex3` explores this "stochastic singularity."
 
 ```{code-cell} ipython3
 Q2 = K1 @ V1 @ K1.T
@@ -1160,6 +1235,12 @@ display(Latex(df_to_latex_matrix(df_v2)))
 print('Eigenvalues of covariance matrix:')
 print(np.sort(np.linalg.eigvalsh(V2))[::-1].round(4))
 ```
+
+One eigenvalue is large.
+
+A second eigenvalue is positive but tiny: it reflects revisions to the agency's estimate of the capital stock, which enter the reported data only through the small coefficient $f - 1$.
+
+The third eigenvalue equals $\epsilon$ and would be exactly zero if $R_2 = 0$, because of the national income identity.
 
 As {cite:t}`Sargent1989` emphasizes, the two models of measurement
 produce quite different inferences about the economy's dynamics despite
@@ -1250,7 +1331,7 @@ def simulate_series(seed=7909, T=80, k0=10.0):
 
     # Filtered data via Model 1 transformed filter
     xhat_prev = np.array([k0, 0.0])
-    z_prev = np.zeros(3)
+    z_prev = C @ xhat_prev    # model-implied value of the unobserved z̄_{-1}
     z_filt = np.empty((T, 3))
     k_filt = np.empty(T)
 
@@ -1398,13 +1479,15 @@ plot_true_vs_other(t, sim["k_true"], sim["k_filt"],
 Indeed, Kalman-filtered estimates from Model 1 remove much of the
 measurement noise and track the truth closely.
 
+The improvement is largest for investment, the series whose measurement error is largest; income was already well measured.
+
 In the true model the national income identity
 $c_t + \Delta k_t = y_{n,t}$ holds exactly.
 
 Independent measurement errors break this accounting identity
 in the measured data.
 
-The Kalman filter approximately restores it.
+Because the filtered series are all of the form $C \hat x_t$, and the rows of $C$ satisfy the identity, the filtered data satisfy it exactly.
 
 The following figure confirms this by showing the residual $c_t + \Delta k_t - y_{n,t}$ for
 both measured and filtered data
@@ -1432,7 +1515,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-As we have predicted, the residual for the measured data is large and volatile, while the residual for the filtered data is numerically 0.
+As we have predicted, the residual for the measured data is large and volatile, while the residual for the filtered data is zero up to rounding error.
 
 ## Summary
 
@@ -1452,6 +1535,8 @@ the empirical accelerator literature: income appears to Granger-cause
 consumption and investment, a result {cite:t}`Sargent1989` attributes
 to measurement error and signal extraction in raw reported data.
 
+What matters for this pattern is how large each series' measurement error is relative to the variation in the true series.
+
 Model 2, working with filtered data, attributes nearly all variance
 to the single structural shock $\theta_t$ and *cannot* reproduce
 the Granger causality pattern.
@@ -1460,5 +1545,179 @@ The {doc}`Kalman filter <kalman>` effectively strips measurement
 noise from the data, so the filtered series track the truth closely.
 
 Raw measurement error breaks the national income accounting identity,
-but the near-zero residual shows that the filter approximately
-restores it.
+while the filtered data satisfy it exactly, which makes the three reported series stochastically singular.
+
+## Exercises
+
+```{exercise}
+:label: meas_ex1
+
+Under the assumptions $a(L) = 1$ and $\beta f = 1$, use the decision rule {eq}`simple_crule` and the law of motion $k_{t+1} = k_t + f^{-1} \theta_t$ to show that
+
+1. $c_t - c_{t-1} = (1 - \beta)\theta_t$, so that consumption is a martingale
+1. $c_t - \beta c_{t-1} = (1-\beta) y_{nt}$, which is Friedman's consumption function {eq}`friedman_consumption`
+1. $y_{nt} - y_{n,t-1} = \theta_t - \beta \theta_{t-1}$, which is equation {eq}`income_process`
+1. $(k_{t+1} - k_t) - \beta (k_t - k_{t-1}) = \beta (y_{nt} - y_{n,t-1})$, which is the accelerator {eq}`mm_accelerator`
+
+Then verify all four identities numerically using the true series in `sim`, recovering $\theta_t$ from $\theta_t = y_{nt} - (f-1)k_t$.
+```
+
+```{solution-start} meas_ex1
+:class: dropdown
+```
+
+From $k_t - k_{t-1} = \beta \theta_{t-1}$ and {eq}`simple_crule`,
+
+$$
+c_t - c_{t-1} = (f-1)\beta\theta_{t-1} + (1-\beta)(\theta_t - \theta_{t-1}) = (1-\beta)\theta_t
+$$
+
+because $(f-1)\beta = 1 - \beta$.
+
+Similarly, $y_{nt} - y_{n,t-1} = (f-1)\beta \theta_{t-1} + \theta_t - \theta_{t-1} = \theta_t - \beta\theta_{t-1}$.
+
+For the third claim, substitute $k_t = k_{t-1} + \beta\theta_{t-1}$ into {eq}`simple_crule` and {eq}`net_income`:
+
+$$
+\begin{aligned}
+c_t - \beta c_{t-1} & = (f-1)(1-\beta) k_{t-1} + (1-\beta)\theta_t + \left[(f-1)\beta - \beta(1-\beta)\right]\theta_{t-1} \\
+(1-\beta) y_{nt} & = (1-\beta)(f-1) k_{t-1} + (1-\beta)\theta_t + (1-\beta)(f-1)\beta\,\theta_{t-1}
+\end{aligned}
+$$
+
+and use $(f-1)\beta = 1 - \beta$ to see that the two right sides are equal.
+
+Finally, $k_{t+1} - k_t = \beta\theta_t$ implies $(1 - \beta L)(k_{t+1} - k_t) = \beta(\theta_t - \beta\theta_{t-1}) = \beta (y_{nt} - y_{n,t-1})$.
+
+```{code-cell} ipython3
+y, c, dk, k = sim["y_true"], sim["c_true"], sim["dk_true"], sim["k_true"]
+θ = y - (f - 1) * k
+
+print("martingale:  ", np.allclose(np.diff(c), (1 - β) * θ[1:]))
+print("Friedman:    ", np.allclose(c[1:] - β * c[:-1], (1 - β) * y[1:]))
+print("MA(1):       ", np.allclose(np.diff(y), θ[1:] - β * θ[:-1]))
+print("accelerator: ", np.allclose(dk[1:] - β * dk[:-1], β * np.diff(y)))
+```
+
+```{solution-end}
+```
+
+```{exercise}
+:label: meas_ex2
+
+Forecast-error-variance decompositions based on a Cholesky factorization depend on how the variables are ordered.
+
+{cite:t}`Geweke1982` proposed a measure of Granger causality that does not depend on an ordering.
+
+For measured series $i$ and $j$, let $\sigma^2_{j}$ be the one-step-ahead prediction error variance of $\bar z_{j,t+1}$ given its own past only, and let $\sigma^2_{j \mid i}$ be its prediction error variance given the past of both $\bar z_{i}$ and $\bar z_{j}$.
+
+Then $F_{i \to j} = \log(\sigma^2_j / \sigma^2_{j \mid i}) \geq 0$, with equality if and only if $\bar z_i$ does not Granger-cause $\bar z_j$.
+
+Because the measurement errors are mutually independent AR(1) processes, both variances can be computed by applying `steady_state_kalman` to the quasi-differenced system {eq}`model1_transformed` using only the rows of $\bar C$, $R_1$, and the columns of $W_1$ that correspond to the included series.
+
+1. Compute $F_{y \to \Delta k}$, $F_{\Delta k \to y}$, $F_{y \to c}$, and $F_{c \to y}$ for the baseline measurement-error parameters.
+1. Recompute them after swapping the measurement-error innovation standard deviations of income and investment, so that $\sigma_\eta = (0.65, 0.035, 0.05)$.
+1. Recompute them with $\sigma_\eta = (0.3, 0.3, 0.3)$ and explain why equal measurement error variances do **not** produce symmetric Granger causality.
+```
+
+```{solution-start} meas_ex2
+:class: dropdown
+```
+
+Here is one solution.
+
+```{code-cell} ipython3
+def geweke(σ_η, ρ=np.array([0.6, 0.7, 0.3]), pair=(0, 2)):
+    """
+    Return (F_{i->j}, F_{j->i}) for the measured series pair = (i, j).
+    """
+    D = np.diag(ρ)
+    Σ = np.diag(np.asarray(σ_η)**2)
+    C_bar = C @ A - D @ C
+    R1 = C @ Q @ C.T + Σ
+    W1 = Q @ C.T
+
+    def pev(idx):
+        idx = list(idx)
+        return steady_state_kalman(A, C_bar[idx], Q,
+                                   R1[np.ix_(idx, idx)], W1[:, idx])[2]
+
+    i, j = pair
+    V_i, V_j, V_ij = pev([i])[0, 0], pev([j])[0, 0], pev([i, j])
+    return np.log(V_j / V_ij[1, 1]), np.log(V_i / V_ij[0, 0])
+
+
+cases = {"baseline": (0.05, 0.035, 0.65),
+         "swapped y and Δk": (0.65, 0.035, 0.05),
+         "equal": (0.3, 0.3, 0.3)}
+
+for name, σ in cases.items():
+    F_yk, F_ky = geweke(σ, pair=(0, 2))
+    F_yc, F_cy = geweke(σ, pair=(0, 1))
+    print(f"{name:18s} y→Δk {F_yk:.4f}  Δk→y {F_ky:.4f}  "
+          f"y→c {F_yc:.4f}  c→y {F_cy:.4f}")
+```
+
+In the baseline, income Granger-causes both investment and consumption, while neither Granger-causes income.
+
+Swapping the measurement errors of income and investment reverses the direction of Granger causality between them.
+
+With equal measurement error variances, investment Granger-causes income more than income Granger-causes investment, and income strongly Granger-causes consumption.
+
+What matters is not the variance of the measurement error but its size **relative to the signal** in each series.
+
+The innovation to true investment $\beta \theta_t$ has standard deviation $0.95$, while the innovation to true consumption $(1-\beta)\theta_t$ has standard deviation only $0.048$.
+
+So a measurement error with innovation standard deviation $0.3$ obscures investment much less than it swamps consumption.
+
+In the baseline, consumption's measurement error innovation ($0.035$) is small in absolute terms but not relative to the tiny innovation in true consumption, which is why income Granger-causes consumption.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: meas_ex3
+
+In Model 2, the agency reports $\hat z_t = C \hat x_t$.
+
+1. Show that the reported data satisfy the national income identity $\hat c_t + \Delta \hat k_t - \hat y_{nt} = 0$ **exactly**, for any estimate $\hat x_t$.
+1. Explain why this implies that the innovation covariance matrix $V_2$ of the reported data is singular when $R_2 = 0$.
+1. Compute the eigenvalues of $V_2$ for $R_2 = \epsilon I$ with $\epsilon = 10^{-2}, 10^{-4}, 10^{-6}$ and interpret them.
+1. What does this "stochastic singularity" imply for an econometrician who wants to compute the likelihood {eq}`model2_loglik` from all three reported series?
+```
+
+```{solution-start} meas_ex3
+:class: dropdown
+```
+
+The rows of $C$ satisfy $C_{c} + C_{\Delta k} - C_{y} = [(f-1) + 0 - (f-1), \; (1 - f^{-1}) + f^{-1} - 1] = [0, 0]$.
+
+So $\hat c_t + \Delta \hat k_t - \hat y_{nt} = (C_c + C_{\Delta k} - C_y)\hat x_t = 0$ for every $\hat x_t$.
+
+Because the vector $b = [-1, 1, 1]$ satisfies $b\, C \hat x_t = 0$ for all $t$, it also satisfies $b\, a_t = 0$ when $R_2 = 0$, so $b V_2 b^\top = 0$ and $V_2$ is singular.
+
+```{code-cell} ipython3
+print("C_c + C_Δk - C_y =", C[1] + C[2] - C[0])
+print("max |identity residual| in reported data:",
+      np.max(np.abs(sim['c_filt'] + sim['dk_filt'] - sim['y_filt'])))
+
+for ε_R in (1e-2, 1e-4, 1e-6):
+    _, _, V2_ε = steady_state_kalman(A, C, Q2, ε_R * np.eye(3))
+    print(f"ε = {ε_R:.0e}:  eigenvalues of V2 = "
+          f"{np.sort(np.linalg.eigvalsh(V2_ε))[::-1]}")
+```
+
+One eigenvalue of $V_2$ is large: it reflects news about the permanent shock $\theta_t$.
+
+A second eigenvalue is tiny but positive: it reflects revisions to the agency's estimate of the capital stock, which enter the reported data only through the small coefficient $f - 1$.
+
+The third eigenvalue is approximately $\epsilon$ and vanishes as $\epsilon \to 0$ because of the identity.
+
+An econometrician who tries to compute the Gaussian likelihood of all three reported series with $R_2 = 0$ faces a degenerate distribution: $\ln |V_2| = -\infty$.
+
+In practice, one must either drop one of the three series, or add "type 2" reporting errors with $R_2 > 0$ as in {eq}`model2_obs`.
+
+In the raw data of Model 1, by contrast, independent measurement errors break the identity, so the three measured series have a nonsingular innovation covariance matrix.
+
+```{solution-end}
+```
