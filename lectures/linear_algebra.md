@@ -199,7 +199,7 @@ plt.show()
 ```
 
 In Python, a vector can be represented as a list or tuple, such as `x = (2, 4, 6)`, but is more commonly
-represented as a [NumPy array](https://python-programming.quantecon.org/numpy.html#numpy-arrays).
+represented as a {ref}`NumPy array <programming:numpy_array>`.
 
 One advantage of NumPy arrays is that scalar multiplication and addition have very natural syntax
 
@@ -603,13 +603,13 @@ A.shape
 ```
 
 The `shape` attribute is a tuple giving the number of rows and columns ---
-see [here](https://python-programming.quantecon.org/numpy.html#shape-and-dimension)
+see {ref}`here <programming:numpy_shape_dim>`
 for more discussion.
 
 To get the transpose of `A`, use `A.transpose()` or, more simply, `A.T`.
 
 There are many convenient functions for creating common matrices (matrices of zeros,
-ones, etc.) --- see [here](https://python-programming.quantecon.org/numpy.html#creating-arrays).
+ones, etc.) --- see {ref}`here <programming:creating_arrays>`.
 
 Since operations are performed elementwise by default, scalar multiplication and addition have very natural syntax
 
