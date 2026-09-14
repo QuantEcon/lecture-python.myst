@@ -6,6 +6,10 @@ name: Sync Translations (Simplified Chinese)
 on:
   pull_request:
     types: [closed]
+    # Only PRs merged into main trigger a sync. Without this, a PR merged into
+    # any branch (a long-lived migration branch, say) opens translation PRs for
+    # content the published edition does not carry.
+    branches: [main]
     paths:
       - 'lectures/**/*.md'
       - 'lectures/_toc.yml'
