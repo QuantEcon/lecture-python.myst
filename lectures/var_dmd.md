@@ -56,7 +56,7 @@ $$
 X_{t+1} = A X_t + C \epsilon_{t+1}, \quad \epsilon_{t+1} \perp X_t
 $$ (eq:VARfirstorder)
 
-where $\epsilon_{t+1}$ is the time $t+1$ component of a sequence of i.i.d. $m \times 1$ random vectors with mean vector zero and identity covariance matrix and where the $m \times 1$ vector $X_t$ is
+where $\epsilon_{t+1}$ is the time $t+1$ component of a sequence of IID $m \times 1$ random vectors with mean vector zero and identity covariance matrix and where the $m \times 1$ vector $X_t$ is
 
 $$
 X_t = \begin{bmatrix}  X_{1,t} & X_{2,t} & \cdots & X_{m,t} \end{bmatrix}^\top

@@ -503,7 +503,7 @@ innovation covariance $V$
 def steady_state_kalman(A, C_obs, Q, R, W=None, tol=1e-13, max_iter=200_000):
     """
     Solve steady-state Kalman equations for
-        x_{t+1} = A x_t + w_{t+1}
+        x_{t+1} = A x_t + w_t
         y_t     = C_obs x_t + v_t
     with cov(w)=Q, cov(v)=R, cov(w,v)=W.
     """
@@ -1233,7 +1233,8 @@ display(Latex(df_to_latex_matrix(df_v2)))
 
 ```{code-cell} ipython3
 print('Eigenvalues of covariance matrix:')
-print(np.sort(np.linalg.eigvalsh(V2))[::-1].round(4))
+print(np.array2string(np.sort(np.linalg.eigvalsh(V2))[::-1],
+                      formatter={'float': '{:.2e}'.format}))
 ```
 
 One eigenvalue is large.
@@ -1576,7 +1577,7 @@ because $(f-1)\beta = 1 - \beta$.
 
 Similarly, $y_{nt} - y_{n,t-1} = (f-1)\beta \theta_{t-1} + \theta_t - \theta_{t-1} = \theta_t - \beta\theta_{t-1}$.
 
-For the third claim, substitute $k_t = k_{t-1} + \beta\theta_{t-1}$ into {eq}`simple_crule` and {eq}`net_income`:
+For the second claim, substitute $k_t = k_{t-1} + \beta\theta_{t-1}$ into {eq}`simple_crule` and {eq}`net_income`:
 
 $$
 \begin{aligned}
@@ -1704,7 +1705,7 @@ print("max |identity residual| in reported data:",
 for ε_R in (1e-2, 1e-4, 1e-6):
     _, _, V2_ε = steady_state_kalman(A, C, Q2, ε_R * np.eye(3))
     print(f"ε = {ε_R:.0e}:  eigenvalues of V2 = "
-          f"{np.sort(np.linalg.eigvalsh(V2_ε))[::-1]}")
+          f"{np.array2string(np.sort(np.linalg.eigvalsh(V2_ε))[::-1], formatter={'float': '{:.2e}'.format})}")
 ```
 
 One eigenvalue of $V_2$ is large: it reflects news about the permanent shock $\theta_t$.

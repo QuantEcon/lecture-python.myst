@@ -29,7 +29,7 @@ In a sequel to this lecture, {doc}`VARs and DMDs <var_dmd>`, we'll describe how 
 
 Like principal components analysis, DMD can be thought of as a data-reduction procedure that represents salient patterns by projecting data onto a limited set of factors.
 
-## The Setting
+## The setting
 
 Let $X$ be an $m \times n$ matrix of rank $p$.
 
@@ -59,7 +59,7 @@ In the $m \gg n$ case in which there are many more attributes $m$ than individua
 
 In the sequel {doc}`VARs and DMDs <var_dmd>`, we'll again use a singular value decomposition, but now to construct a **dynamic mode decomposition** (DMD).
 
-## Singular Value Decomposition
+## Singular value decomposition
 
 A **singular value decomposition** of an $m \times n$ matrix $X$ of rank $p \leq \min(m,n)$ is
 
@@ -115,7 +115,7 @@ Thus,
 
 We'll apply this circle of ideas in the sequel {doc}`VARs and DMDs <var_dmd>` when we study dynamic mode decompositions.
 
-**Road Ahead**
+**Road ahead**
 
 What we have described above is called a **full** SVD.
 
@@ -125,7 +125,7 @@ Later we'll also describe an **economy** or **reduced** SVD.
 
 Before we study a **reduced** SVD we'll say a little more about properties of a **full** SVD.
 
-## Four Fundamental Subspaces
+## Four fundamental subspaces
 
 Let ${\mathcal C}$ denote a column space, ${\mathcal N}$ denote a null space, and ${\mathcal R}$ denote a row space.
 
@@ -331,7 +331,7 @@ print("col_space ⟂ left_null_space:", np.allclose(col_space.T @ left_null_spac
 print("row_space ⟂ null_space:    ", np.allclose(row_space.T @ null_space, 0))
 ```
 
-## Eckart-Young Theorem
+## Eckart-Young theorem
 
 Suppose that we want to construct the best rank $r$ approximation of an $m \times n$ matrix $X$.
 
@@ -387,7 +387,7 @@ of the approximation $\hat X_r$ is a key ingredient of a dynamic mode decomposit
 
 {ref}`svd_ex2` and {ref}`svd_ex3` explore these ideas.
 
-## Full and Reduced SVD's
+## Full and reduced SVD's
 
 Up to now we have described properties of a **full** SVD in which shapes of $U$, $\Sigma$, and $V$ are $\left(m, m\right)$, $\left(m, n\right)$, $\left(n, n\right)$, respectively.
 
@@ -536,7 +536,7 @@ SShat=np.diag(Shat)
 np.allclose(X, Uhat@SShat@Vhat)
 ```
 
-## Polar Decomposition
+## Polar decomposition
 
 A **reduced** singular value decomposition (SVD) of $X$ is related to a **polar decomposition** of $X$
 
@@ -566,7 +566,7 @@ Here
 * $S$ is an $m \times m$ **symmetric positive semidefinite** matrix
 * $Q$ is an $m \times n$ matrix with $Q Q^\top = U U^\top$; so when $p = m$, as for a short-fat $X$ with full row rank, $Q Q^\top = I$ and $Q$ has orthonormal rows
 
-## Application: Principal Components Analysis (PCA)
+## Application: principal components analysis (PCA)
 
 Let's begin with a case in which $n \gg m$, so that we have many more individuals $n$ than attributes $m$.
 
@@ -659,7 +659,7 @@ $$
 
 By the Eckart-Young theorem, one minus this ratio is also the squared relative Frobenius-norm error $||B - \hat B_r||_F^2 / ||B||_F^2$ of the best rank $r$ approximation $\hat B_r$ of $B$.
 
-**Step 5: Create the Score Matrix:**
+**Step 5: Create the score matrix:**
 
 The matrix of **principal components** (or **scores**) is
 
@@ -717,7 +717,7 @@ is a vector of **loadings** of variables $X_i$ on the $k$th principal component,
 
 * $\sigma_k $ for each $k=1, \ldots, p$ is the strength of the $k$th **principal component**, where strength means contribution to the overall covariance of $X$: the $k$th principal component contributes $\sigma_k^2 / n$ to the sum of the sample variances of the $m$ variables
 
-## PCA with Eigenvalues and Eigenvectors
+## PCA with eigenvalues and eigenvectors
 
 We now use an eigen decomposition of a sample covariance matrix to do PCA.
 
