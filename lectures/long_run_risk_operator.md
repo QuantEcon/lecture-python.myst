@@ -31,7 +31,7 @@ kernelspec:
 Standard short-horizon asset pricing tells us how equilibrium prices compensate investors
 for tiny, instantaneous exposures to shocks.
 
-That is, they tell us about  the *short end* of the term
+That is, they tell us about the *short end* of the term
 structure of risk prices.
 
 But many of the most interesting asset pricing questions (e.g., the equity
@@ -41,15 +41,15 @@ options) concern the *long end* of the term structure of risk prices.
 This lecture studies the long end using the operator approach of
 {cite:t}`HansenScheinkman2009`.
 
-At  center stage will be  a stochastic discount factor process and a  return process that are
+At center stage will be a stochastic discount factor process and a return process that are
 multiplicative across time in the sense that conditional expectations define a *semigroup* of
 valuation operators indexed by horizon $t$.
 
-Long-horizon behaviour of the semigroup is controlled by a single eigenvalue
+Long-horizon behavior of the semigroup is controlled by a single eigenvalue
 problem on the state space.
 
 By solving that eigenvalue problem and selecting an appropriate eigenfunction, we can factor the
-multiplicative functional $M_t$  into three economically meaningful
+multiplicative functional $M_t$ into three economically meaningful
 pieces: a deterministic exponential trend, a non-negative martingale that changes
 probability measure, and a transient state-dependent component.
 
@@ -80,7 +80,7 @@ We will refer to {eq}`eq:hs-factorization` as the **multiplicative
 factorization** associated with $(\rho,\phi,\hat M)$.
 
 {cite:t}`AlvarezJermann2005` applied a related permanent-transitory
-decomposition to stochastic discount factors. 
+decomposition to stochastic discount factors.
 
 The operator approach links
 that decomposition to an explicit eigenvalue problem.
@@ -104,7 +104,7 @@ The plan of this lecture is to:
    stochastic growth) and the valuation semigroups they generate.
 
 2. Introduce the **generator** of a semigroup, a local operator whose
-   eigenvalue problem controls long-run behaviour.
+   eigenvalue problem controls long-run behavior.
 
 3. Find the principal eigenfunction $\phi$ and derive the factorization.
 
@@ -118,7 +118,7 @@ The plan of this lecture is to:
 
 A recurring theme is that shocks to persistent state variables drive a wedge between local and long-run risk prices.
 
-Generating that  wedge is the mechanism through which long-run risk models like {cite:t}`Bansal_Yaron_2004`
+Generating that wedge is the mechanism through which long-run risk models like {cite:t}`Bansal_Yaron_2004`
 generate large equity premia.
 
 We start with the following imports
@@ -140,7 +140,7 @@ history.
 We will work with a strong Markov process whose sample paths are càdlàg
 (defined below).
 
-To arrive at  the explicit formulas presented later we will specialize to a semimartingale that 
+To arrive at the explicit formulas presented later we will specialize to a semimartingale that
  decomposes into a continuous component $X^c$ and a pure-jump
 component $X^j$:
 
@@ -176,7 +176,7 @@ We also impose two simplifying assumptions:
   occur on any bounded interval; this keeps integrals against the jump
   measure well-defined and finite.
 * **Sufficient rank in $\Gamma$** so that the Brownian shocks relevant for
-  pricing can be recovered from the state history; this  makes the
+  pricing can be recovered from the state history; this makes the
   Markov state $X$ "rich enough" to describe valuation.
 
 These assumptions let us write the generator
@@ -210,7 +210,7 @@ $$
 and the left limit $M_{t-}(\omega) := \lim_{s \uparrow t} M_s(\omega)$ exists
 and is finite for all $t > 0$.
 
-Thus,  paths can jump, but each jump $\Delta M_t := M_t - M_{t-}$ occurs
+Thus, paths can jump, but each jump $\Delta M_t := M_t - M_{t-}$ occurs
 instantaneously.
 
 At the jump time $t$, the value is the post-jump value,
@@ -245,7 +245,7 @@ $$ (eq:multiplicative)
 where $\theta_t$ shifts the underlying Markov path forward by $t$ units.
 ```
 
-Why is this a useful  condition to require?
+Why is this a useful condition to require?
 
 Think of $M_t = S_t$, a stochastic discount factor.
 
@@ -260,7 +260,7 @@ $$
 
 For the price to depend only on the current Markov state $X_\tau$ (and not on
 the entire history up to $\tau$), the ratio $S_t/S_\tau$ must be a function
-only of the Markov path *after* $\tau$. 
+only of the Markov path *after* $\tau$.
 
 Thus,
 $S_{\tau+u}/S_\tau = S_u(\theta_\tau)$, which is exactly
@@ -392,7 +392,7 @@ Four positive multiplicative functionals will appear often below.
 | $G$ | stochastic growth in cash flows | $\{\mathbb G_t\}$ |
 | $Q=GS$ | valuation of growing cash flows | $\{\mathbb Q_t\}$ |
 
-The first three are primitives. 
+The first three are primitives.
 
 The fourth combines discounting and growth to
 value cash flows that grow stochastically over time.
@@ -441,7 +441,7 @@ The **cash-flow valuation semigroup** is the multiplicative semigroup
 generated by $Q=GS$.
 ```
 
-The long-horizon behaviour of $\mathbb Q_t$ is the central object of the
+The long-horizon behavior of $\mathbb Q_t$ is the central object of the
 lecture: it tells us how current prices value cash-flow growth risk that
 materializes far in the future.
 
@@ -479,7 +479,7 @@ That is the standard instantaneous risk-return relation.
 This will give us a benchmark against which to compare long-run risk prices.
 
 For a textbook discrete-time treatment of the same SDF-based asset-pricing
-ideas, see {doc}`advanced:asset_pricing_lph`. 
+ideas, see {doc}`advanced:asset_pricing_lph`.
 
 For an estimation perspective
 on Euler-equation-based asset pricing, see {doc}`hansen_singleton_1982`.
@@ -572,7 +572,7 @@ the same exposure units as $\gamma^v(x)$.
 
 Jump risk is priced through the function $\kappa^s$.
 
-This local relation is one end of the term structure of risk prices. 
+This local relation is one end of the term structure of risk prices.
 
 The eigenvalue calculations below describe the other end.
 
@@ -583,7 +583,7 @@ horizon $t$.
 
 That is more information than we can use directly.
 
-What we care about is the long-run behaviour: how $\mathbb M_t \psi$ grows as $t \to \infty$.
+What we care about is the long-run behavior: how $\mathbb M_t \psi$ grows as $t \to \infty$.
 
 The **generator** $\mathbb A$ compresses the entire semigroup into one
 time-independent operator on the state space.
@@ -707,7 +707,7 @@ $$
 Without that upgrade we get only the supermartingale inequality $\mathbb
 M_t \phi \le \exp(\rho t)\, \phi$, which we will revisit below.
 
-So the long-run behaviour of $\mathbb M_t$ is encoded in an eigenvalue
+So the long-run behavior of $\mathbb M_t$ is encoded in an eigenvalue
 problem for the local operator $\mathbb A$, together with the
 martingale property of $\hat M$.
 
@@ -723,7 +723,7 @@ functions, where the semigroup is a contraction.
 But the functions we care about most are the principal eigenfunctions
 $\phi$ solving $\mathbb A\phi = \rho\phi$, and these typically *grow* with
 the state $X$ (in the affine-Gaussian benchmark, $\phi$ is
-exponential-affine in $x$). 
+exponential-affine in $x$).
 
 So they do not lie in this space, and the
 limit need not converge for them.
@@ -746,8 +746,9 @@ Concretely:
 
 Fix a Borel function $\psi$, and look for a second Borel function $\chi$ that
 will play the role of "the instantaneous rate of change of $M_t \psi(X_t)$
-at the current state". We ask whether there exists $\chi$ such
-that
+at the current state".
+
+We ask whether there exists $\chi$ such that
 
 $$
     N_t
@@ -897,7 +898,9 @@ denominators throughout: it has to be safe to divide by it.
 Why does an eigenfunction of $\mathbb A$ give us the multiplicative
 factorization {eq}`eq:hs-factorization`?
 
-The discrete-time analogy points the way. If $K\phi = \lambda\phi$, then
+The discrete-time analogy points the way.
+
+If $K\phi = \lambda\phi$, then
 
 $$
     \lambda^{-n}\, M_n\, \frac{\phi(X_n)}{\phi(X_0)}
@@ -924,7 +927,7 @@ $$
     dZ_t = M_t\, \mathbb A\phi(X_t)\, dt + dN_t ,
 $$
 
-where $N$ is a local martingale. 
+where $N$ is a local martingale.
 
 The eigenvalue equation
 $\mathbb A\phi = \rho\phi$ replaces the drift by $\rho Z_t\, dt$, and
@@ -959,7 +962,7 @@ $$
 $$
 ```
 
-The verification establishes only  that $\hat M$ is a *local* martingale, but
+The verification establishes only that $\hat M$ is a *local* martingale, but
 the definition above (and the change-of-measure interpretation of
 $\hat M$) require it to be a martingale.
 
@@ -999,8 +1002,8 @@ $$ (eq:semigroup-eigen)
 We now have a factorization {eq}`eq:hs-factorization` for *any* principal
 eigenfunction.
 
-But for $(\rho,\phi)$ to  describe **long-run** behaviour of
-$\mathbb M_t$  the twisted
+But for $(\rho,\phi)$ to describe **long-run** behavior of
+$\mathbb M_t$ the twisted
 process must settle into a stationary regime as $t \to \infty$.
 
 If it doesn't, the transient factor $\phi(X_0)/\phi(X_t)$ will not vanish,
@@ -1052,7 +1055,7 @@ $$
 
 Without it, the long-run distribution could depend on the
 starting state; different basins of attraction would give different
-limits. 
+limits.
 
 *Condition 3: every important region is visited infinitely often.*
 
@@ -1160,7 +1163,7 @@ We now apply the framework to a concrete example.
 We start with the simplest case: a finite-state Markov chain.
 
 For background on finite Markov chains in discrete time, see
-{doc}`finite_markov`. 
+{doc}`finite_markov`.
 
 For the asset-pricing applications of finite-state
 chains that motivate the construction here, see {doc}`markov_asset`.
@@ -1235,10 +1238,10 @@ $$
     \hat A = D_\phi^{-1} A D_\phi - \rho I,
 $$
 
-where $D_\phi = \operatorname{diag}(\phi)$. 
+where $D_\phi = \operatorname{diag}(\phi)$.
 
 The row sums of $\hat A$ vanish,
-so $\hat A$ is itself a valid intensity matrix. 
+so $\hat A$ is itself a valid intensity matrix.
 
 The stationary distribution
 $\hat\varsigma$ solves $\hat\varsigma^\top \hat A = 0$.
@@ -1312,7 +1315,8 @@ at rate $\lambda_1 = 0.30$).
 State 2 is a *recession* (lower short rate $r_2=0.02$, switching to boom
 at rate $\lambda_2 = 0.50$).
 
-For now we set the jump multipliers to zero, so the SDF only changes
+For now we set the log jump multipliers $\kappa$ to zero --- equivalently,
+the jump multipliers $\exp[\kappa]$ to one --- so the SDF only changes
 continuously through the in-state decay rates.
 
 ```{code-cell} ipython3
@@ -1428,7 +1432,7 @@ and the dashed horizontal lines mark the limits predicted by
 {eq}`eq:long-run-limit`.
 
 Both curves settle onto their predicted limits, confirming that the
-long-run behaviour depends on the starting state only through $\phi$.
+long-run behavior depends on the starting state only through $\phi$.
 
 ```{note}
 The asymptotic exponential rate of convergence is governed by the gap
@@ -1445,7 +1449,7 @@ checked directly.
 ### Adding jumps
 
 State transitions in this chain are discontinuous, so it is natural to allow
-the multiplicative functional to jump at the transition times. 
+the multiplicative functional to jump at the transition times.
 
 These
 jumps are the analogue of the $\kappa$ function in the jump-diffusion
@@ -1454,7 +1458,7 @@ parameterization.
 A natural example arises with a stochastic discount factor that jumps
 *down* when the economy moves from recession into boom and *up* on the reverse transition.
 
-The matrix `κ_jump` below encodes this. 
+The matrix `κ_jump` below encodes this.
 
 We use the convention
 `κ[j, i]` = log jump multiplier of $M$ for the transition $i \to j$, with
@@ -1476,40 +1480,62 @@ print(φ_jump)
 ```
 
 To see how the long-run rate $\rho$ responds to jump risk, we hold the
-boom-to-recession multiplier fixed and trace out $\rho$ as the
-recession-to-boom multiplier varies.
+boom-to-recession log multiplier fixed at its calibrated value and trace out
+$\rho$ as the recession-to-boom log multiplier varies.
+
+The right benchmark to compare against is therefore the eigenvalue at
+$\kappa(\text{rec} \to \text{boom}) = 0$ with the boom-to-recession jump
+still switched on, which the black dot marks.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Jumps and the long-run growth rate
+    caption: Jumps and the long-run growth rate, holding the boom-to-recession
+      log multiplier fixed
     name: fig-lrr-jumps-eigenvalue
 ---
+κ_boom_to_rec = κ_jump[1, 0]
+
 κ_grid = np.linspace(-0.5, 0.5, 100)
 ρ_grid = np.empty_like(κ_grid)
 
 for n, k in enumerate(κ_grid):
     κ_temp = np.array([[0.0, k],
-                       [0.30, 0.0]])
+                       [κ_boom_to_rec, 0.0]])
     A_temp = build_generator(U, r, κ_temp)
     ρ_grid[n], _ = principal_eigenpair(A_temp)
 
+ρ_no_up_jump, _ = principal_eigenpair(
+    build_generator(U, r, np.array([[0.0, 0.0],
+                                    [κ_boom_to_rec, 0.0]]))
+)
+
 fig, ax = plt.subplots()
 ax.plot(κ_grid, ρ_grid, lw=2)
-ax.axhline(ρ, color="black", ls="--", lw=1)
+ax.plot([0.0], [ρ_no_up_jump], "o", color="black",
+        label="no recession-to-boom jump")
 ax.axvline(0, color="black", ls=":", lw=1)
 ax.set_xlabel("jump log multiplier for recession to boom")
 ax.set_ylabel("principal eigenvalue")
+ax.legend()
 plt.show()
+
+print(f"ρ at κ(rec -> boom) = 0 = {ρ_no_up_jump:.6f}")
 ```
 
 The principal eigenvalue is monotonically increasing in the recession-to-boom
 log multiplier: as that multiplier rises, $M$ jumps less downward (or more
 upward) on good news, which mechanically pushes $\rho$ up.
 
-The economically sensible SDF region is to the left of zero, where the
-multiplier is negative.
+The black dot sits at $\rho = 0.022934$.
+
+Switching the recession-to-boom jump on at the calibrated $\kappa = -0.20$
+moves $\rho$ down to $-0.019067$, the value printed above.
+
+The economically sensible region for a stochastic discount factor is to the
+left of zero, where the log multiplier is negative and $M$ jumps down on
+good news.
 
 ## The affine diffusion example
 
@@ -1581,10 +1607,10 @@ and proportional to $\sqrt{X^f}$ in the $B^f$ direction.
 ### Why exponential-affine eigenfunctions work
 
 When the state is affine and the drift of $A$ is affine, applying the
-generator to an exponential-affine function 
+generator to an exponential-affine function
 $\phi(x^f,x^o) = \exp(c_f x^f + c_o x^o)$ returns another exponential-affine function.
 
-This closure property turns the eigenvalue equation 
+This closure property turns the eigenvalue equation
 $\mathbb A\phi = \rho\phi$ into a small system of algebraic equations in $(c_f, c_o, \rho)$.
 
 ```{prf:definition} Exponential-Affine Eigenfunction
@@ -1786,7 +1812,7 @@ preferences in a different setting is
 {doc}`survival_recursive_preferences`.
 
 This section derives the SDF coefficients for the unit-elasticity
-recursive specification. 
+recursive specification.
 
 You can skip on a first read and come back later
 --- the numerical example uses the simpler Breeden parameters above.
@@ -1901,10 +1927,18 @@ same operator calculation applies once the SDF parameters are replaced by
 
 Let's set up parameters and solve for the principal eigenpair.
 
-We use parameters in the standard long-run-risk neighbourhood: a
-mean-reverting volatility factor $X^f$ with mean $0.04$, a slower-moving
+We use illustrative parameters loosely in the long-run-risk family: a
+mean-reverting volatility factor $X^f$ with mean $0.04$, a more persistent
 predictable-growth factor $X^o$ with mean $0.02$, risk aversion $a=4$, and
 a time discount rate $b=0.03$.
+
+These are chosen to make the operator calculations transparent, not to match
+asset-price moments.
+
+With time-separable CRRA preferences and $a=4$ they imply an instantaneous
+riskless rate of about $10.6\%$ at the state means and a long zero-coupon
+yield of $9.6\%$ (printed below), which is the familiar risk-free rate
+puzzle rather than a resolution of it.
 
 ```{code-cell} ipython3
 params_state = {
@@ -2229,17 +2263,17 @@ state component.
 We will see *two* related ways to vary risk exposure, each leading to a
 slightly different long-run risk price:
 
-1. **Valuation-functional frontier:** 
+1. **Valuation-functional frontier:**
    - Hold the SDF $S$ fixed and vary the
-   asset's Brownian exposures $(\gamma^v_f, \gamma^v_o)$. 
-   
+   asset's Brownian exposures $(\gamma^v_f, \gamma^v_o)$.
+
    - Use the local
    pricing restriction to determine the drift $\beta^v$, then compute
    $\rho^v$ for the $V$-semigroup.
 
-2. **Cash-flow frontier:** 
+2. **Cash-flow frontier:**
    - Hold the SDF $S$ fixed and vary the cash-flow's
-   growth exposures $(\gamma^g_f, \gamma^g_o)$. 
+   growth exposures $(\gamma^g_f, \gamma^g_o)$.
    - Set $M = GS$ and compute
    the principal eigenvalue $\rho$ of the cash-flow valuation semigroup.
 
@@ -2247,7 +2281,9 @@ In simple log-normal examples, these two frontiers coincide.
 
 But they can differ with stochastic volatility, nonlinear dynamics, or jump risk.
 
-We will work out both types of examples in the affine model below.
+We will work out both types of examples in the affine model below: in the
+$B^o$ direction the two frontiers agree exactly, while in the $B^f$
+direction stochastic volatility pulls them apart.
 
 ### Stochastic discount factor decomposition
 
@@ -2265,7 +2301,7 @@ $$
 $$
 
 This is the **permanent-transitory decomposition** of
-{cite:t}`AlvarezJermann2005`, linked now  to a concrete eigenfunction
+{cite:t}`AlvarezJermann2005`, linked now to a concrete eigenfunction
 construction.
 
 The factor $\exp(\rho t)$ is the deterministic trend in the SDF and the
@@ -2541,29 +2577,56 @@ The last line is the Itô compensator that makes
 $\exp(A_t^g-\delta t) = \hat G_t$ a *local* martingale, with $\delta$ the
 constant trend growth rate.
 
-Stochastic stability of the growth-twisted process needs three conditions.
+In this affine setting the three abstract conditions of
+{prf:ref}`lrr-def-stochastic-stability` --- a stationary distribution, an
+irreducible skeleton, and Harris recurrence --- all follow once the twisted
+$X^f$ is mean reverting and does not hit zero.
 
-The **Feller-type nonattainment** inequality
+Alongside them sits the separate requirement that $\hat G$ itself be a
+martingale, the Assumption-6.1 analogue for the growth twist.
+
+Take nonattainment first.
+
+Under the twist the drift of $X^f$ becomes
 
 $$
-    2(\xi_f+\sigma_f\gamma_f^g)\bar x_f \geq \sigma_f^2
+    \xi_f \bar x_f
+    - \bigl[\xi_f-\sigma_f(\gamma_f+c_f\sigma_f)\bigr] x^f ,
+    \qquad
+    \gamma_f = \gamma_f^s+\gamma_f^g ,
 $$
 
-keeps the twisted $X^f$ from hitting zero.
+while Girsanov leaves the diffusion coefficient $\sqrt{x^f}\sigma_f$
+unchanged.
 
-*Mean reversion* of the twisted $X^f$ is picked by the same root-selection
-argument we used for the SDF in {eq}`eq:cf-roots`.
+Writing this drift in the canonical square-root form
+$\hat\kappa(\hat\theta-x^f)$, the twist rescales the mean-reversion speed
+$\hat\kappa$ and the long-run mean $\hat\theta$, but it leaves their
+*product* $\hat\kappa\hat\theta=\xi_f\bar x_f$ fixed.
 
-$\hat G$ itself must be a martingale, the Assumption-6.1 analogue for the
-growth twist.
+Since the **Feller-type nonattainment** inequality sees only that product,
+it is the same one that governs the original process,
 
-The Feller inequality is necessary but not sufficient on its own.
+$$
+    2\xi_f\bar x_f \geq \sigma_f^2 ,
+$$
+
+with no exposure parameter in it at all.
+
+*Mean reversion* of the twisted $X^f$, i.e. $\hat\kappa>0$, is a genuinely
+separate requirement, and it is picked by the same root-selection argument we
+used for the SDF in {eq}`eq:cf-roots`.
+
+Neither condition is sufficient on its own.
 
 ```{note}
-This Feller restriction is a concrete instance of a general point we
-flagged earlier: changing growth risk can violate stability and invalidate
-the long-run approximation, so the choice of $(\gamma_f^g, \gamma_o^g)$
-isn't free.
+Nonattainment is free here, but stability overall is not: changing growth
+risk can still violate it and invalidate the long-run approximation, so the
+choice of $(\gamma_f^g, \gamma_o^g)$ isn't free.
+
+At this calibration, for instance, a large negative $\gamma_f^g$ drives the
+discriminant in {eq}`eq:cf-roots` below zero, so no real exponential-affine
+eigenfunction exists at all.
 ```
 
 To price the cash flow $D_t=D_0G_t\psi(X_t)$, use the semigroup generated by
@@ -2652,6 +2715,51 @@ print(f"finite-difference slope = {finite_difference:.6f}")
 print(f"formula                 = {long_run_price_o:.6f}")
 ```
 
+### Where the two frontiers come apart
+
+We promised above that the valuation-functional and cash-flow frontiers
+can differ.
+
+In the $B^o$ direction they do not: the two finite differences just computed
+agree to six decimals, because $\gamma_o$ enters the eigenvalue
+{eq}`eq:affine-rho` linearly.
+
+The $B^f$ direction is the interesting one, because there the exposure feeds
+through $c_f$, which solves the quadratic {eq}`eq:cf-eq`.
+
+```{code-cell} ipython3
+def central_difference(f, h=1e-5):
+    return (f(h) - f(-h)) / (2 * h)
+
+valuation_price_f = central_difference(
+    lambda g: valuation_eigenvalue_for_exposure(0.0, g)
+)
+cashflow_price_f = central_difference(
+    lambda g: required_return_for_growth_exposure(0.0, g)
+)
+local_price_f = -params_sdf["γ_f"] * params_sdf["xbar_f"]
+
+print(f"B^f local price (at x^f = xbar_f) = {local_price_f:.6f}")
+print(f"B^f valuation-functional frontier = {valuation_price_f:.6f}")
+print(f"B^f cash-flow frontier            = {cashflow_price_f:.6f}")
+```
+
+The three numbers differ in the third decimal place.
+
+The local price evaluated at $x^f=\bar x_f$ is the smallest, the
+valuation-functional frontier is slightly larger, and the cash-flow frontier
+is larger still.
+
+The reason is that a $B^f$ exposure shifts $c_f$ nonlinearly, and the two
+frontiers load that nonlinearity differently: the valuation frontier also
+adjusts $\beta_f^v$ through the local pricing restriction
+{eq}`eq:valuation-local-restriction-affine`, whereas the cash-flow frontier
+adjusts $\beta_f$ through the Itô compensator in {eq}`eq:growth-functional`.
+
+This is the discrepancy anticipated in the discussion of the two frontiers
+above, and it is absent in the $B^o$ direction precisely because $X^o$ has
+constant volatility.
+
 ## Assumptions behind the scenes
 
 The examples above make the eigenfunction calculation look routine.
@@ -2703,7 +2811,7 @@ $$
     \frac{\mathbb A V}{V} \leq a_0 .
 $$
 
-Roughly: $V$ doesn't grow too fast under the semigroup. 
+Roughly: $V$ doesn't grow too fast under the semigroup.
 
 With this in hand,
 for any $\alpha > a_0$ define the **resolvent operator**
@@ -2743,12 +2851,12 @@ The existence proof then proceeds in three steps:
 3. **Eigenfunction extraction.** The minorization, combined with additional
    boundedness or strengthened drift assumptions, identifies a critical
    spectral value for $F_\alpha$ and an associated positive
-   eigenfunction. 
-   
+   eigenfunction.
+
    - Inverting the resolvent transform produces a positive
    eigenfunction for the original semigroup.
 
-These steps are all nontrivial and are out of scope for this lecture. 
+These steps are all nontrivial and are out of scope for this lecture.
 
 The details are in Section 9 of {cite:t}`HansenScheinkman2009`.
 
@@ -2763,7 +2871,9 @@ We can summarize the chain of conditions as:
 
 In the finite-state case, all four follow from one Perron-Frobenius
 calculation; in the affine model, they reduce to picking the right root of
-a quadratic. In general, each must be checked separately.
+a quadratic.
+
+In general, each must be checked separately.
 
 The full theory in {cite:t}`HansenScheinkman2009` also delivers stronger
 $L^p$ approximation results and Lyapunov criteria for stochastic stability,
@@ -2782,10 +2892,12 @@ The main steps are:
 2. Build the semigroup
    $\mathbb M_t\psi(x)=\mathbb{E}[M_t\psi(X_t)\mid X_0=x]$.
 
-3. When $M = VS$ is the product of a valuation functional and an SDF,
-   impose the local pricing restriction that $VS$ is a martingale; for
-   cash-flow valuation semigroups $\mathbb Q_t = GS$, the pricing
-   restriction is on $S$ alone, and $G$ enters only as a growth twist.
+3. When $V$ is a valuation functional, use the local pricing restriction
+   that $VS$ is a martingale to determine the drift of $V$ from its
+   Brownian and jump exposures, and then apply the eigenvalue problem to
+   $M = V$; for cash-flow valuation take $M = Q = GS$, the functional
+   generating the semigroup $\{\mathbb Q_t\}$, where the pricing restriction
+   falls on $S$ alone and $G$ enters only as a growth twist.
 
 4. Solve the principal eigenvalue problem
    $\mathbb A\phi=\rho\phi$.
@@ -2914,29 +3026,38 @@ The principal eigenvalue is the larger root, so $-r_1<\rho<0$.
 ```{exercise}
 :label: lrr_ex2
 
-In the affine model, compute the local and long-run prices of exposure to
-$B^o$ for
+{numref}`fig-lrr-persistence-risk-prices` shows the long-run price of $B^o$
+exposure falling towards the local price as the mean-reversion speed
+$\xi_o$ rises.
+
+This exercise asks you to pin down the *rate* at which it falls.
+
+Define the **persistence wedge**
 
 $$
-    \xi_o \in \{0.1, 0.2, 0.5, 1, 2, 5\}.
-$$
-
-Use the formulas
-
-$$
-    \text{local price} = -\gamma_o^s
-$$
-
-and
-
-$$
-    \text{long-run price}
+    w(\xi_o)
     =
-    -\gamma_o^s
-    - \frac{\beta_o^s}{\xi_o}\sigma_o .
+    \text{long-run price of } B^o
+    -
+    \text{local price of } B^o .
 $$
 
-Explain why the two prices converge as $\xi_o \to \infty$.
+1. Using {eq}`eq:long-run-price-o` together with the Breeden coefficients
+{eq}`eq:breeden-sdf-params`, show analytically that
+
+$$
+    w(\xi_o) = \frac{a\sigma_o}{\xi_o} ,
+$$
+
+so the wedge is exactly proportional to $1/\xi_o$ and, in particular, does
+not depend on the consumption loading $\vartheta_o$.
+
+2. Verify this numerically on the grid
+$\xi_o \in \{0.1, 0.2, 0.5, 1, 2, 5\}$ by checking that the product
+$\xi_o\, w(\xi_o)$ is constant across the grid and equal to $a\sigma_o$.
+
+3. Plot $w$ against $\xi_o$ on log-log axes and confirm that the fitted
+slope is $-1$, the signature of exactly hyperbolic decay.
 ```
 
 ```{solution-start} lrr_ex2
@@ -2945,31 +3066,58 @@ Explain why the two prices converge as $\xi_o \to \infty$.
 
 Here is one solution:
 
+*1.* The local price is $-\gamma_o^s$ and, by {eq}`eq:long-run-price-o`, the
+long-run price is $-\gamma_o^s - (\beta_o^s/\xi_o)\sigma_o$.
+
+Subtracting, the common term $-\gamma_o^s$ cancels and only the persistence
+correction survives:
+
+$$
+    w(\xi_o) = -\frac{\beta_o^s}{\xi_o}\sigma_o .
+$$
+
+The Breeden coefficients {eq}`eq:breeden-sdf-params` set $\beta_o^s = -a$,
+which gives $w(\xi_o) = a\sigma_o/\xi_o$.
+
+Because $\vartheta_o$ enters only through $\gamma_o^s = -a\vartheta_o$, which
+appears identically in both prices, it cancels and cannot affect the wedge.
+
+*2.* and *3.* Numerically:
+
 ```{code-cell} ipython3
 ξ_vals = np.array([0.1, 0.2, 0.5, 1.0, 2.0, 5.0])
-local_vals = np.full_like(ξ_vals, -params_sdf["γ_o"])
-long_vals = (-params_sdf["γ_o"]
-             - (params_sdf["β_o"] / ξ_vals) * params_sdf["σ_o"])
+wedge = -(params_sdf["β_o"] / ξ_vals) * params_sdf["σ_o"]
 
-for ξ, lp, lrp in zip(ξ_vals, local_vals, long_vals):
-    print(f"ξ_o = {ξ:3.1f}: local = {lp:.4f}, long-run = {lrp:.4f}")
+print(f"a * σ_o = {a * params_sdf['σ_o']:.6f}\n")
+for ξ, w in zip(ξ_vals, wedge):
+    print(f"ξ_o = {ξ:3.1f}: wedge = {w:.6f}, ξ_o * wedge = {ξ * w:.6f}")
+
+slope, _ = np.polyfit(np.log(ξ_vals), np.log(wedge), 1)
+print(f"\nlog-log slope = {slope:.6f}")
 
 fig, ax = plt.subplots()
-ax.plot(ξ_vals, local_vals, "--", lw=2, label="local")
-ax.plot(ξ_vals, long_vals, "o-", lw=2, label="long-run")
-ax.set_xscale("log")
+ax.loglog(ξ_vals, wedge, "o-", lw=2, label="persistence wedge $w$")
+ax.loglog(ξ_vals, a * params_sdf["σ_o"] / ξ_vals, "--", lw=2,
+          label="$a\\sigma_o/\\xi_o$")
 ax.set_xlabel("$\\xi_o$")
-ax.set_ylabel("risk price")
+ax.set_ylabel("wedge")
 ax.legend()
 plt.show()
 ```
 
-As $\xi_o$ increases, $X^o$ mean reverts faster.
+The product $\xi_o\, w(\xi_o)$ prints as $0.040000$ at every grid point,
+matching $a\sigma_o = 4 \times 0.01$, and the fitted log-log slope is
+$-1.000000$.
 
-A shock to $B^o$ then has a shorter-lived effect on future expected growth.
+So the two prices do not merely converge: the wedge decays at the exact
+hyperbolic rate $a\sigma_o/\xi_o$.
 
-The persistence term $(\beta_o^s/\xi_o)\sigma_o$ converges to zero, so the
-long-run price converges to the local price.
+The economics behind the rate is that a $B^o$ shock displaces $X^o$ by
+$\sigma_o$ on impact, and that displacement decays at rate $\xi_o$, so its
+cumulative effect on expected growth is $\sigma_o/\xi_o$.
+
+Each unit of that cumulative effect is priced by the SDF's loading $a$ on
+$X^o$.
 
 ```{solution-end}
 ```
@@ -2990,7 +3138,9 @@ U =
 $$
 
 decay-rate vector $r = (0.06, 0.04, 0.01)$, and no jumps in the
-multiplicative functional. Let $\psi=(3,1,2)$.
+multiplicative functional.
+
+Let $\psi=(3,1,2)$.
 
 1. Compute the principal eigenpair $(\rho,\phi)$ and twisted stationary
 distribution $\hat\varsigma$, and report the theoretical limit
@@ -3059,15 +3209,29 @@ ax.semilogy(t_vals, errors, lw=2)
 ax.set_xlabel("$t$")
 ax.set_ylabel("error")
 plt.show()
+```
 
-print(f"spectral gap = {gap:.6f}")
+For part 3 we estimate the empirical decay rate by fitting a straight line to
+$\log(\text{error})$ over a window in which the leading correction term
+dominates, and compare the fitted slope to the gap.
+
+```{code-cell} ipython3
+mask = (t_vals > 20) & (t_vals < 40)
+fitted_slope, _ = np.polyfit(t_vals[mask], np.log(errors[mask]), 1)
+
+print(f"empirical decay rate = {-fitted_slope:.6f}")
+print(f"spectral gap         = {gap:.6f}")
 ```
 
 The normalized semigroup converges at an exponential rate governed by the
 separation between the dominant eigenvalue and the remaining eigenvalues.
 
-In this finite-state example, that separation is the spectral gap computed
-above.
+In this finite-state example, that separation is the spectral gap, and the
+two numbers printed above agree to three decimal places.
+
+The small remaining discrepancy is the contribution of the third eigenvalue,
+which has not yet died out completely; fitting over a later window shrinks
+it further.
 
 ```{solution-end}
 ```
@@ -3121,7 +3285,7 @@ $$
 $$
 
 *2.* For $f(a) = e^a$ we have $f'(a) = f''(a) = e^a$, so $f'(A_{t-}) =
-f''(A_{t-}) = M_{t-}$. 
+f''(A_{t-}) = M_{t-}$.
 
 The [(generalized) Itô's formula](https://almostsuremath.com/2010/01/25/the-generalized-ito-formula/) for a semimartingale gives
 
@@ -3212,7 +3376,9 @@ $$
     N_t = M_t\phi(X_t) - \phi(X_0) - \int_0^t M_s \chi(X_s)\, ds
 $$
 
-is a local martingale. The task therefore has two pieces: identify the
+is a local martingale.
+
+The task therefore has two pieces: identify the
 predictable drift of $M_t\phi(X_t)$ to read off a candidate $\chi$, and
 verify that the residual $N_t$ really is a local martingale.
 
@@ -3265,7 +3431,7 @@ $\chi(x)$, and check that it matches the closed form
 
 (4) Identify the continuous Itô
 integrand from part (1) as a local martingale $N^c_t$ and the compensated
-jump sum from part (2) as a local martingale $N^j_t$. 
+jump sum from part (2) as a local martingale $N^j_t$.
 
 Show that the
 semimartingale decomposition of $Y_t = M_t\phi(X_t)$ implies
@@ -3275,7 +3441,9 @@ $$
     = N^c_t + N^j_t ,
 $$
 
-which is a local martingale. Conclude via
+which is a local martingale.
+
+Conclude via
 {prf:ref}`lrr-def-extended-generator` that $\mathbb A \phi = \chi$.
 ```
 

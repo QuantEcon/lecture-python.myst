@@ -63,7 +63,7 @@ If the pricing kernel also satisfies a structural restriction called **transitio
 independence**, then state prices uniquely determine both the natural probability
 transition matrix and the transition pricing kernel.
 
-No historical return data or assumed utility function is needed if some assumptions 
+No historical return data or assumed utility function is needed if some assumptions
 about the structure of the pricing kernel hold.
 
 This is the **Recovery Theorem**.
@@ -71,7 +71,7 @@ This is the **Recovery Theorem**.
 It has several important implications:
 
 * It shows how state-price transition data can identify the market's forward-looking
-  natural distribution when the assumption holds
+  natural distribution when the assumption holds.
 * It provides tests of the efficient market hypothesis.
 * It sheds light on the "dark matter" of finance: the probability of rare
   catastrophic events embedded in market prices.
@@ -82,9 +82,9 @@ This lecture covers
   the pricing kernel, and natural probabilities,
 * Ross's Recovery Theorem and its proof via the Perron–Frobenius theorem,
 * an implementation that recovers the natural distribution from a
-  simulated state-price matrix, and
+  simulated state-price matrix,
 * how option prices and forward equations can be used to estimate transition
-  state prices,
+  state prices, and
 * comparisons between risk-neutral and recovered natural densities.
 
 Let's import the packages we'll need.
@@ -221,7 +221,7 @@ equations.
 The system is under-identified by $m^2 - m$ parameters, so some structural
 restriction on the kernel is needed to pin down $\phi$ and $f$ separately.
 
-Transition independence restriction does the job, as we will see in the next section.
+The transition independence restriction does the job, as we will see in the next section.
 
 ### Transition independence
 
@@ -405,13 +405,13 @@ the kernel $\beta z_i/z_j$ is decreasing in $z_j$.
 When $h$ represents marginal utility and states are ordered by consumption or
 payoff, larger $z_j$ corresponds to lower marginal utility -- "good times" that
 require less insurance and so receive less pricing weight per unit of natural
-probability. 
+probability.
 
 The same eigenvector argument also yields a useful limiting case.
 
-If the one-period
-bond price is identical in every current state, then the vector of ones is already the
-Perron vector, so recovery has no state-dependent change of measure left to perform.
+If the one-period bond price is identical in every current state, then the vector of ones
+is already the Perron vector, so recovery has no state-dependent change of measure left
+to perform.
 
 
 ```{prf:corollary}
@@ -484,11 +484,17 @@ $$
 where $Z \geq 0$ captures the downward shift induced by risk adjustment and
 $\epsilon$ is a residual satisfying $E[\epsilon \mid R-Z]=0$.
 
-Taking expectations gives
+Because $R^*$ is the market return under the risk-neutral measure, its expectation is the
+riskless return: $E[R^*] = R_f$.
+
+Taking expectations of the representation above therefore gives
 
 $$
-E[R] = R_f + E[Z] > R_f.
+E[R] = E[R^*] + E[Z] = R_f + E[Z],
 $$
+
+which strictly exceeds $R_f$ whenever $Z$ is positive with positive probability -- that
+is, whenever the two densities genuinely differ.
 
 ## Numerical example
 
@@ -566,7 +572,7 @@ Following Ross's Table I, we represent the distribution on a finite grid of stat
 This example is Ross-inspired rather than an exact reproduction of Ross's Table I.
 
 Ross's Table I uses a fixed future payoff distribution, so its rows of $F$ are
-identical. 
+identical.
 
 Here the same CRRA/lognormal pricing logic is embedded in a finite Markov
 transition matrix whose rows shift with the current state.
@@ -576,8 +582,8 @@ the same range below.
 
 The truncation is an essential part of the finite-state model: it is what brings the example into the Perron--Frobenius setting.
 
-In the
-unbounded continuous lognormal growth model, Ross shows that recovery is not unique.
+In the unbounded continuous lognormal growth model, Ross shows that recovery is not
+unique.
 
 On the finite grid, the natural transition probabilities and state prices are
 
@@ -589,8 +595,9 @@ f_{ij} \propto
 p_{ij} = e^{-\rho T} e^{-\gamma(s_j - s_i)} f_{ij},
 $$
 
-where $s_i = \ln S_i$, $s_j = \ln S_j$, $n(\cdot)$ is the standard normal density, and
-the discretized probabilities $f_{ij}$ are normalized row by row.
+where $s_i = \ln (S_i/S_0)$ and $s_j = \ln (S_j/S_0)$ are log states measured relative to
+today's index level, $n(\cdot)$ is the standard normal density, and the discretized
+probabilities $f_{ij}$ are normalized row by row.
 
 The next cell constructs this finite grid and builds $P$.
 
@@ -647,9 +654,15 @@ print(f"Middle-state risk-free rate: {-np.log(P[5].sum()):.4f}")
 
 The row sums are the model-implied one-period bond prices in each current state.
 
-They
-vary near the boundaries because the finite grid truncates and renormalizes the
+They vary near the boundaries because the finite grid truncates and renormalizes the
 conditional transition probabilities.
+
+The middle-state rate printed above happens to equal $\rho$ only because this calibration
+satisfies $\mu = \tfrac{1}{2}\sigma^2(1+\gamma)$, which holds at $\mu = 0.08$,
+$\sigma = 0.2$ and $\gamma = 3$.
+
+It is a coincidence of the numbers chosen here, not a check on the code or a general
+property.
 
 ### Applying the recovery theorem
 
@@ -684,7 +697,13 @@ def recover_natural_distribution(P, tol=1e-10):
         if np.mean(z_candidate) < 0:
             z_candidate = -z_candidate
 
-        if β_candidate > 0 and np.all(z_candidate > tol):
+        # eig returns eigenvectors of unit Euclidean norm, so the smallest entry
+        # of a legitimately positive z can be far below any absolute threshold
+        # (it is of order e^{-2γ n_σ σ√T} here). We therefore rescale and test
+        # the sign, which makes the test invariant to the eigenvector's scale.
+        z_candidate = z_candidate / np.max(np.abs(z_candidate))
+
+        if β_candidate > 0 and np.all(z_candidate > 0):
             β_recovered = β_candidate
             z = z_candidate
             break
@@ -777,7 +796,7 @@ probabilities overweight bad states and underweight good states relative to the 
 measure.
 
 We first plot the natural distribution against the risk-neutral one and the recovered
-relative pricing kernel
+relative pricing kernel.
 
 ```{code-cell} ipython3
 mid = len(states) // 2
@@ -808,7 +827,7 @@ axes[1].set_title('recovered relative pricing kernel')
 plt.show()
 ```
 
-The CDF clearly shows the first-order stochastic dominance
+The CDF clearly shows the first-order stochastic dominance.
 
 ```{code-cell} ipython3
 cdf_nat = np.cumsum(f_nat)
@@ -826,10 +845,10 @@ print(f"Natural CDF <= Risk-neutral CDF at all states: "
       f"{np.all(cdf_nat <= cdf_rn + 1e-10)}")
 ```
 
-The gap between the two CDFs is generated by the slope of the pricing kernel. 
+The gap between the two CDFs is generated by the slope of the pricing kernel.
 
-In the
-CRRA benchmark, this slope is controlled by the risk-aversion coefficient $\gamma$.
+In the CRRA benchmark, this slope is controlled by the risk-aversion coefficient
+$\gamma$.
 
 We next vary $\gamma$ to see how the recovered kernel and the natural/risk-neutral
 wedge change.
@@ -841,6 +860,14 @@ probabilities, depends on the coefficient of risk aversion $\gamma$.
 
 We illustrate this by plotting the relative pricing kernel $1/z$ and the gap between
 the natural and risk-neutral densities for a range of values of $\gamma$.
+
+The left panel uses a logarithmic vertical axis because $1/z$ spans about seven orders of
+magnitude across these values of $\gamma$, so on a linear axis the curves for small
+$\gamma$ would be flat against the horizontal axis and invisible.
+
+On the log axis the economic content is immediate: since $1/z_j = e^{-\gamma s_j}$
+exactly, $\log (1/z_j)$ is linear in the log state $s_j$ with slope $-\gamma$, so the
+recovered kernel is log-linear and $\gamma$ is simply its slope.
 
 ```{code-cell} ipython3
 γs = [1.0, 2.0, 3.0, 5.0, 8.0]
@@ -864,6 +891,7 @@ for γ_val, color in zip(γs, colors):
     axes[1].plot(gross, f_nat_g - f_rn_g, color=color, lw=2,
                  label=f'$\\gamma={γ_val:.0f}$')
 
+axes[0].set_yscale('log')
 axes[0].set_xlabel('gross return')
 axes[0].set_ylabel('relative kernel $1/z$')
 axes[0].set_title('relative pricing kernel vs risk aversion')
@@ -884,6 +912,16 @@ returns below some threshold $v$, risk-neutral probability exceeds natural
 probability; above $v$ the natural probability dominates.
 
 A higher $\gamma$ amplifies this wedge.
+
+A caution about the large-$\gamma$ cases: the one-period bond price in the middle state
+rises to $1.1972$ at $\gamma = 5$ and $2.1815$ at $\gamma = 8$, implied riskless rates of
+$-18\%$ and $-78\%$, and the largest row sum of $P$ reaches $3.63$.
+
+This is the usual CRRA precautionary-savings blow-up rather than a defect of the
+recovery calculation, whose Perron root remains $e^{-\rho T}$ for every $\gamma$.
+
+We include these values to make the shape of the kernel visible across a wide range, not
+as plausible calibrations of an actual economy.
 
 ## Recovering the discount rate
 
@@ -929,8 +967,8 @@ One of the most striking applications of the Recovery Theorem is its ability to 
 the market's recovered natural probability of catastrophes from the risk premium
 attached to them.
 
-{cite:t}`barro2006rare` and {cite:t}`MehraPrescott1985` discuss how rare disasters might
-explain the equity premium puzzle.
+{cite:t}`MehraPrescott1985` posed the equity premium puzzle, and {cite:t}`barro2006rare`
+argues that a small probability of rare macroeconomic disasters can help account for it.
 
 The risk-neutral probability of a large decline is elevated both because (a) the market
 assigns a high natural probability to such events and (b) the pricing kernel upweights
@@ -983,9 +1021,8 @@ This is a simulation illustrating Ross's decomposition.
 The risk-neutral density assigns higher probability to large drops than the recovered
 natural density.
 
-In this CRRA
-simulation, increasing risk aversion makes the risk-neutral crash probability rise
-faster than the recovered natural crash probability.
+In this CRRA simulation, increasing risk aversion makes the risk-neutral crash
+probability rise faster than the recovered natural crash probability.
 
 We will say more in {ref}`rt_ex3`.
 
@@ -1059,17 +1096,17 @@ If a trading strategy has a very high Sharpe ratio, then some pricing kernel mus
 volatile enough to price that payoff.
 
 The Hansen--Jagannathan bound {cite}`Hansen_Jagannathan_1991` says that, for any excess
-return with mean $\mu_\text{excess}$ and standard deviation $\sigma_\text{asset}$,
+return with mean $\mu_\text{excess}$ and standard deviation $\sigma_\text{excess}$,
 
 $$
-\frac{|\mu_\text{excess}|}{\sigma_\text{asset}} \leq e^{rT}\, \sigma(M),
+\frac{|\mu_\text{excess}|}{\sigma_\text{excess}} \leq e^{rT}\, \sigma(\phi),
 $$
 
-where $M$ is the one-period stochastic discount factor and $r$ is the
+where $\phi$ is the one-period pricing kernel of {eq}`eq:canon_ge` and $r$ is the
 continuously compounded riskless rate over horizon $T$.
 
 Ross's point is that recovery gives an estimate of the relevant volatility
-$\sigma(M)$.
+$\sigma(\phi)$.
 
 Hence it gives an upper bound on the Sharpe ratio of any strategy based on the same
 stock-market information used in recovery.
@@ -1093,7 +1130,7 @@ Then the $R^2$ of a forecasting regression based on $I_t$ is bounded above by th
 variance of the recovered kernel:
 
 $$
-R^2 \leq e^{2rT} \, \sigma^2(M).
+R^2 \leq e^{2rT} \, \sigma^2(\phi).
 $$
 
 Only the component of the kernel projected on this information set is relevant.
@@ -1108,8 +1145,10 @@ practice.
 
 *Finite state space:*
 
-Ross's theorem is proved for a finite-state irreducible Markov chain; bounded
-continuous-state recovery requires additional results in {doc}`misspecified_recovery`.
+Ross's theorem is proved for a finite-state irreducible Markov chain.
+
+Recovery on a continuous state space requires a boundedness or compactness restriction:
+{cite:t}`CarrYu2012`, discussed below, establish recovery for a bounded diffusion.
 
 In continuous, unbounded state spaces (e.g., a lognormal diffusion), uniqueness fails
 because any exponential $e^{\alpha x}$ satisfies the characteristic equation.
@@ -1151,11 +1190,22 @@ unique positive eigenvector.
 
 If the kernel is not transition independent, recovery is not guaranteed.
 
-{cite:t}`BorovickaHansenScheinkman2016` show that the Ross recovery can confound the
+{cite:t}`BorovickaHansenScheinkman2016` show that Ross recovery can confound the
 long-run risk component of the kernel with the natural probability distribution,
 yielding an incorrect decomposition.
 
 We discuss this in the sequel lecture {doc}`misspecified_recovery`.
+
+```{seealso}
+{doc}`long_run_risk_operator` develops the general operator treatment of this problem,
+in which the principal eigenfunction of the pricing operator and the resulting
+multiplicative martingale factorization of the stochastic discount factor are precisely
+what transition independence assumes away.
+
+Be warned that the symbol $\phi$ denotes the pricing kernel in the present lecture but
+the principal eigenfunction there; it is this lecture's eigenvector $z$ that plays the
+role of that lecture's $\phi$.
+```
 
 *Empirical estimation:*
 
@@ -1253,7 +1303,7 @@ print(f"Decreasing: {φ_relative_ex[0] > φ_relative_ex[1] > φ_relative_ex[2]}"
 
 **Stochastic dominance.**
 
-Using the recovered $F$ and the normalised risk-neutral matrix $Q = P / \text{row sums}$
+Using the recovered $F$ and the normalized risk-neutral matrix $Q = P / \text{row sums}$
 from the exercise above:
 
 1. Compute the one-step marginal distributions $f_j = F_{2,j}$ and $q_j = Q_{2,j}$

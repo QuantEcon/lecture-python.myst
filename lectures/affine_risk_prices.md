@@ -37,7 +37,7 @@ $$
 m_{t+1} = \exp\left(-r_t - \frac{1}{2}\sigma_c^2 \gamma^2 - \gamma\sigma_c\varepsilon_{t+1}\right)
 $$
 
-where $r_t = \rho + \gamma\mu - \frac{1}{2}\sigma_c^2\gamma^2$.
+where $\rho$ is the rate of time preference, $\gamma$ is the coefficient of relative risk aversion, log consumption growth is $g + \sigma_c \varepsilon_{t+1}$, and $r_t = \rho + \gamma g - \frac{1}{2}\sigma_c^2\gamma^2$.
 
 This model asserts that exposure to the random part of aggregate consumption growth,
 $\sigma_c\varepsilon_{t+1}$, is the *only* priced risk, the sole source of discrepancies
@@ -73,6 +73,10 @@ Key applications we study include:
 4. *Distorted beliefs*: reinterpreting risk price estimates when agents hold systematically
    biased forecasts ({cite:t}`piazzesi2015trend`); see also {doc}`advanced:risk_aversion_or_mistaken_beliefs`.
 
+The lecture uses lognormal pricing tools that also appear in {doc}`markov_asset` and {doc}`hansen_singleton_1983`.
+
+The change-of-measure arguments rely on likelihood ratios of the kind studied in {doc}`likelihood_ratio_process` and {doc}`divergence_measures`.
+
 We start with the following imports:
 
 ```{code-cell} ipython3
@@ -80,6 +84,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from collections import namedtuple
 from numpy.linalg import eigvals
+from scipy.linalg import solve_discrete_lyapunov
+from scipy.stats import norm
 ```
 
 ## The model
@@ -265,6 +271,14 @@ The second equation says that the conditional standard deviation of the SDF
 is approximately the magnitude of the vector of risk prices, a measure of overall
 **market price of risk**.
 
+The approximation comes from an exact formula: because $m_{t+1}$ is conditionally lognormal,
+
+$$
+\frac{\text{std}_t(m_{t+1})}{\mathbb{E}_t(m_{t+1})} = \sqrt{\exp(\lambda_t^\top\lambda_t) - 1}
+$$
+
+By the Hansen–Jagannathan bound {cite}`Hansen_Jagannathan_1991`, this ratio bounds the conditional Sharpe ratio of every excess return, so $\|\lambda_t\|$ tells us how large Sharpe ratios can be.
+
 ## Pricing risky assets
 
 ### Lognormal returns
@@ -353,6 +367,70 @@ Each component of $\lambda_t$ prices the corresponding component of $\varepsilon
 An asset that loads heavily on a risk component with a large risk price earns a
 correspondingly high expected return.
 
+```{exercise}
+:label: arp_ex3
+
+Suppose that a representative agent has CRRA utility with risk aversion $\gamma$ and discount factor $\beta = e^{-\rho}$, and that log consumption growth is $\log(c_{t+1}/c_t) = g + \sigma_c^\top \varepsilon_{t+1}$, where $\sigma_c$ is an $m \times 1$ vector.
+
+1. Show that $m_{t+1} = \beta (c_{t+1}/c_t)^{-\gamma}$ has the form {eq}`eq_sdf` with a constant risk price vector $\lambda_t = \gamma \sigma_c$, and find $r_t$.
+2. Define the conditional Sharpe ratio of the log return on asset $j$ as $(\nu_t(j) - r_t)/\|\alpha_t(j)\|$. Use {eq}`eq_excess` and the Cauchy–Schwarz inequality to show that the largest such Sharpe ratio is $\|\lambda_t\|$, and that it is attained by returns whose exposure vector is proportional to $\lambda_t$.
+3. Suppose that $\|\sigma_c\| = 0.02$ per year and that some asset has an annual Sharpe ratio of $0.4$. Using the exact bound $\sqrt{\exp(\lambda^\top\lambda) - 1} \geq 0.4$, compute the smallest $\gamma$ consistent with the CRRA model, and compare it with the first-order answer $\gamma \geq 0.4 / 0.02$.
+```
+
+```{solution-start} arp_ex3
+:class: dropdown
+```
+
+*Part 1.* Taking logs,
+
+$$
+\log m_{t+1} = -\rho - \gamma g - \gamma \sigma_c^\top \varepsilon_{t+1}
+$$
+
+Matching the shock term with {eq}`eq_sdf` gives $\lambda_t = \gamma \sigma_c$.
+
+Matching the constant gives $-r_t - \frac{1}{2}\gamma^2 \sigma_c^\top\sigma_c = -\rho - \gamma g$, so
+
+$$
+r_t = \rho + \gamma g - \frac{1}{2}\gamma^2 \sigma_c^\top \sigma_c
+$$
+
+This is the CRRA model from the overview, now written as a special case of the affine model with $\lambda_z = 0$.
+
+*Part 2.* By {eq}`eq_excess`, the Sharpe ratio is $\alpha_t(j)^\top\lambda_t / \|\alpha_t(j)\|$.
+
+The Cauchy–Schwarz inequality gives $\alpha_t(j)^\top\lambda_t \leq \|\alpha_t(j)\| \, \|\lambda_t\|$, with equality exactly when $\alpha_t(j)$ is a positive multiple of $\lambda_t$.
+
+The following check maximizes the Sharpe ratio over many random exposure vectors.
+
+```{code-cell} ipython3
+rng = np.random.default_rng(1234)
+λ_example = np.array([0.3, 0.1])
+α_draws = rng.standard_normal((20_000, 2))
+sharpe = α_draws @ λ_example / np.linalg.norm(α_draws, axis=1)
+print(f"largest Sharpe ratio over draws: {sharpe.max():.5f}")
+print(f"||λ||:                           {np.linalg.norm(λ_example):.5f}")
+```
+
+*Part 3.*
+
+```{code-cell} ipython3
+σ_c_norm, target_sr = 0.02, 0.4
+λ_norm_required = np.sqrt(np.log(1 + target_sr**2))
+print(f"required ||λ|| (exact bound): {λ_norm_required:.4f}")
+print(f"implied γ (exact bound):      {λ_norm_required / σ_c_norm:.1f}")
+print(f"implied γ (first order):      {target_sr / σ_c_norm:.1f}")
+```
+
+Either way, the CRRA model needs a coefficient of relative risk aversion near $20$.
+
+This is the equity premium puzzle expressed in the language of this lecture.
+
+The affine model sidesteps the puzzle by treating $\lambda_t$ as free parameters to be estimated from asset returns rather than tying them to consumption growth.
+
+```{solution-end}
+```
+
 ## Affine term structure of yields
 
 One of the most important applications is the **affine term structure model** studied
@@ -411,7 +489,7 @@ where the scalar $\bar A_n$ and the $m \times 1$ vector $\bar B_n$ satisfy the
 with initial conditions $\bar A_1 = -\delta_0$ and $\bar B_1 = -\delta_1$.
 
 ```{exercise}
-:label: arp_ex3
+:label: arp_ex4
 
 Derive the Riccati difference equations {eq}`eq_riccati_a` and {eq}`eq_riccati_b`
 by substituting the conjectured bond price {eq}`eq_bondprice` into the pricing
@@ -426,7 +504,7 @@ $\varepsilon_{t+1}$, then evaluate the conditional expectation using the
 lognormal moment generating function.
 ```
 
-```{solution-start} arp_ex3
+```{solution-start} arp_ex4
 :class: dropdown
 ```
 
@@ -571,7 +649,7 @@ mystnb:
     caption: Yield curves under the one-factor affine model
     name: fig-yield-curves-1f
 ---
-n_max_1f = 60
+n_max_1f = 200
 maturities_1f = np.arange(1, n_max_1f + 1)
 
 z_low  = np.array([-5.0])
@@ -614,7 +692,7 @@ ax.set_xlim(1, n_max_1f)
 
 ax2 = ax.twiny()
 ax2.set_xlim(ax.get_xlim())
-year_ticks = [4, 20, 40, 60]
+year_ticks = [4, 40, 80, 120, 160, 200]
 ax2.set_xticks(year_ticks)
 ax2.set_xticklabels([f"{t/4:.0f}y" for t in year_ticks])
 ax2.set_xlabel("Maturity (years)")
@@ -626,12 +704,16 @@ plt.show()
 When the short rate is low, the yield curve is
 upward-sloping, while when the short rate is high, it is downward-sloping.
 
-All three curves converge to the same long-run yield $y_\infty$ at long
-maturities, and the long-run yield lies above the mean short rate
-$\delta_0$.
+All three curves approach the same long-run yield $y_\infty$, which lies above the mean short rate $\delta_0$.
+
+The approach is slow.
+
+Because $\bar B_n$ converges to a finite limit, the state enters $y_t(n)$ through $\bar B_n^\top z_t / n$, so gaps between curves shrink only at rate $1/n$.
+
+That is why we plot maturities out to 50 years: at 15 years the three curves are still spread between about 3.5% and 5.0%, while at 50 years they lie between about 4.1% and 4.6%.
 
 ````{exercise}
-:label: arp_ex4
+:label: arp_ex5
 
 Show that the long-run yield satisfies
 
@@ -650,11 +732,12 @@ is the fixed point of the recursion {eq}`eq_riccati_b`.
 Then explain why $y_\infty > \delta_0$ under this parameterization.
 
 *Hint:* Use {eq}`eq_yield` and the Riccati equations
-{eq}`eq_riccati_a`--{eq}`eq_riccati_b`.  For the inequality, consider
-each subtracted term separately.
+{eq}`eq_riccati_a`--{eq}`eq_riccati_b`.
+
+For the inequality, consider each subtracted term separately.
 ````
 
-```{solution-start} arp_ex4
+```{solution-start} arp_ex5
 :class: dropdown
 ```
 
@@ -677,7 +760,9 @@ The quadratic term $\tfrac{1}{2}\bar B_\infty^\top CC^\top \bar B_\infty = \tfra
 
 This is a **convexity effect** from Jensen's inequality that pushes $y_\infty$ below $\delta_0$.
 
-The linear term $\bar B_\infty^\top(\mu - C\lambda_0)$ is negative because $\bar B_\infty < 0$ (since $\delta_1 > 0$) while $\mu - C\lambda_0 > 0$ (since $\lambda_0 < 0$).  Subtracting this negative quantity raises $y_\infty$ above $\delta_0$. 
+The linear term $\bar B_\infty^\top(\mu - C\lambda_0)$ is negative because $\bar B_\infty < 0$ (since $\delta_1 > 0$) while $\mu - C\lambda_0 > 0$ (since $\lambda_0 < 0$).
+
+Subtracting this negative quantity raises $y_\infty$ above $\delta_0$.
 
 This is a **risk-premium effect**: positive term premiums tilt the average yield curve upward.
 
@@ -716,6 +801,21 @@ ax.legend(fontsize=11)
 plt.tight_layout()
 plt.show()
 ```
+
+Because $r_t$ is an affine function of a Gaussian state, a Gaussian affine model assigns positive probability to negative short rates.
+
+Under the stationary distribution of the one-factor model, $r_t$ is normal with mean $\delta_0$ and standard deviation $\delta_1 \sigma_z$, which lets us compute that probability.
+
+```{code-cell} ipython3
+σ_z = model_1f.C[0, 0] / np.sqrt(1 - model_1f.φ[0, 0]**2)
+σ_r = model_1f.δ_1[0] * σ_z
+print(f"Stationary std of r_t: {σ_r * 4 * 100:.2f}% p.a.")
+print(f"P(r_t < 0):            {norm.cdf(-model_1f.δ_0 / σ_r):.2e}")
+```
+
+The probability is small in this calibration, but it can be substantial in calibrations fit to periods of low interest rates.
+
+Square-root models such as {cite:t}`CIR1985` and shadow-rate models such as {cite:t}`Black1995` are two ways of keeping nominal rates non-negative, at the cost of some of the tractability that the Gaussian specification delivers.
 
 ### A two-factor model
 
@@ -834,7 +934,17 @@ plt.tight_layout()
 plt.show()
 ```
 
-We can see that the level factor dominates at long maturities.
+The right panel shows how yields at different maturities respond to the two factors.
+
+The level loading $B_{n,1}$ declines gradually with maturity, from $0.002$ at one quarter to about half that at 15 years, so the persistent factor moves yields at all maturities.
+
+The slope loading $B_{n,2}$ starts at $0.001$, decays quickly, and turns slightly negative beyond about 30 quarters.
+
+The sign change reflects the off-diagonal entry $\phi_{12} = -0.03$: a high $z_{2t}$ raises the short rate today but pushes the level factor, and hence future short rates, down.
+
+As a result, the level factor dominates yields at long maturities, while the slope factor matters mainly at the short end.
+
+As in the one-factor case, the curves in the left panel are still approaching their common long-run yield at 60 quarters.
 
 ## Risk premiums
 
@@ -850,6 +960,16 @@ $$
 
 The term premium equals the inner product of the bond's shock exposure
 $\bar B_n^\top C$ with the risk price vector $\lambda_t$.
+
+This formula measures the premium as the log of an expected gross return.
+
+The expected log excess return is smaller by a Jensen's inequality term:
+
+$$
+\mathbb{E}_t \log R_{t+1}^{(n+1)} - r_t = \bar B_n^\top C \lambda_t - \tfrac{1}{2}\bar B_n^\top CC^\top \bar B_n
+$$
+
+Only the first term depends on the state, so the two measures differ by a maturity-specific constant that does not affect how term premiums vary over time.
 
 Because the term premium equals $\bar B_n^\top C \lambda_t$, its sign
 depends on the *current* risk-price vector $\lambda_t$, which is
@@ -872,13 +992,14 @@ are risky and carry a positive term premium.
 Algebraically, $\bar B_n < 0$ and $C\lambda_t < 0$ combine
 to give $\bar B_n^\top C \lambda_t > 0$.
 
-In other states, however, $\lambda_t$ may change sign (e.g. the
-first component flips in the low-rate regime of our two-state
-calibration), and long-bond term premiums can become negative at
-longer maturities.
+In other states, however, components of $\lambda_t$ can change sign.
+
+With $\lambda_z < 0$, a low value of the level factor $z_{1t}$ pushes the first component of $\lambda_t$ above zero.
+
+Since long bonds load mainly on the level shock, their term premiums then turn negative.
 
 ```{exercise}
-:label: arp_ex5
+:label: arp_ex6
 
 Derive the term premium formula above by computing the one-period holding
 return on an $(n+1)$-period bond and identifying its shock loading.
@@ -889,7 +1010,7 @@ dynamics {eq}`eq_var`, and apply the Riccati equations
 {eq}`eq_riccati_a`--{eq}`eq_riccati_b` to simplify.
 ```
 
-```{solution-start} arp_ex5
+```{solution-start} arp_ex6
 :class: dropdown
 ```
 
@@ -963,7 +1084,12 @@ mystnb:
     name: fig-term-premiums-2f
 ---
 def term_premiums(model, z, n_max):
-    """Compute term premiums for maturities 1 to n_max."""
+    """
+    Compute one-period term premiums on bonds of maturity 1, ..., n_max.
+
+    An n-period bond held for one period becomes an (n-1)-period bond,
+    so its premium is B_bar_{n-1}^⊤ C λ_t (and zero for n = 1).
+    """
     A_bar, B_bar = bond_coefficients(model, n_max + 1)
     λ_t = risk_prices(model, z)
     return np.array([B_bar[n-1] @ model.C @ λ_t
@@ -1026,7 +1152,105 @@ plt.tight_layout()
 plt.show()
 ```
 
-We see that the term premium is positive at all maturities in the low-rate state, but becomes negative at longer maturities in the high-rate state.
+The left panel shows that the sign of the term premium depends on the state.
+
+In the high-rate state, $\lambda_t \approx (-0.025, 0.001)$, and the term premium is positive and rises with maturity, reaching about 0.6% per year at 15 years.
+
+In the low-rate state, the first component of $\lambda_t$ has turned positive, $\lambda_t \approx (0.005, -0.011)$, and the term premium is negative at every maturity, falling to about $-0.15$% per year at 15 years.
+
+Investors in the low-rate state accept a lower expected return on long bonds than on rolling over short bonds because long bonds pay off well in the states that they value most.
+
+The right panel decomposes the term premium at $z_t = 0$, where both components of $\lambda_t$ are negative.
+
+The level factor accounts for almost all of the premium at long maturities.
+
+The slope contribution is small and turns negative beyond about 30 quarters, mirroring the sign change in the slope loading shown earlier.
+
+```{exercise}
+:label: arp_ex7
+
+The expectations hypothesis says that expected excess returns on long bonds are constant over time, so that they cannot be forecast by the yield spread.
+
+1. Simulate the two-factor model `model_2f` for $T = 200{,}000$ quarters.
+   Regress the one-quarter excess holding return on a 20-quarter bond,
+   $\log p_{t+1}(19) - \log p_t(20) - r_t$, on a constant and the spread $y_t(20) - r_t$.
+2. Compute the population regression slope implied by the model, using $\bar B_n$ and the stationary covariance matrix $\Sigma_z$ of $z_t$, and compare it with your estimate.
+3. Repeat both steps with $\lambda_z = 0$ and explain the result.
+4. In U.S. data, {cite:t}`FamaBliss1987` and {cite:t}`CampbellShiller1991` find that high spreads forecast *high* excess returns on long bonds.
+   Does `model_2f` reproduce this pattern? What happens if you flip the sign of $\lambda_z$?
+```
+
+```{solution-start} arp_ex7
+:class: dropdown
+```
+
+From {eq}`eq_excess` and the term-premium formula, the log excess holding return on a 20-quarter bond is
+
+$$
+x_{t+1} = \bar B_{19}^\top C \lambda_t - \tfrac{1}{2}\bar B_{19}^\top CC^\top \bar B_{19} + \bar B_{19}^\top C \varepsilon_{t+1}
+$$
+
+Its conditional mean is a constant plus $a^\top z_t$ with $a = \lambda_z^\top C^\top \bar B_{19}$.
+
+The spread is $s_t = y_t(20) - r_t = \text{constant} + b^\top z_t$ with $b = -\bar B_{20}/20 - \delta_1$.
+
+Because $\varepsilon_{t+1}$ is orthogonal to $z_t$, the population slope is
+
+$$
+\beta = \frac{a^\top \Sigma_z b}{b^\top \Sigma_z b}
+$$
+
+where $\Sigma_z$ solves $\Sigma_z = \phi \Sigma_z \phi^\top + CC^\top$.
+
+```{code-cell} ipython3
+def eh_regression(model, n=20, T=200_000, seed=1):
+    """OLS and population slopes of excess returns on the yield spread."""
+    A_bar, B_bar = bond_coefficients(model, n)
+    z_bar = np.linalg.solve(np.eye(model.m) - model.φ, model.μ)
+    Z = simulate(model, z_bar, T, rng=np.random.default_rng(seed))
+
+    r = model.δ_0 + Z[:-1] @ model.δ_1
+    log_p = lambda k, z: A_bar[k] + z @ B_bar[k]
+    excess = log_p(n - 1, Z[1:]) - log_p(n, Z[:-1]) - r
+    spread = -log_p(n, Z[:-1]) / n - r
+
+    X = np.column_stack([np.ones(T), spread])
+    coef = np.linalg.lstsq(X, excess, rcond=None)[0]
+    resid = excess - X @ coef
+    se = np.sqrt(resid.var() / (T * spread.var()))
+
+    Σ_z = solve_discrete_lyapunov(model.φ, model.C @ model.C.T)
+    a = model.λ_z.T @ model.C.T @ B_bar[n - 1]
+    b = -B_bar[n] / n - model.δ_1
+    β_pop = (a @ Σ_z @ b) / (b @ Σ_z @ b)
+    return coef[1], se, β_pop
+
+cases = {
+    "λ_z as calibrated": λ_z_2,
+    "λ_z = 0":           np.zeros((2, 2)),
+    "λ_z sign flipped":  -λ_z_2,
+}
+print(f"{'case':>20}  {'OLS slope':>10}  {'s.e.':>7}  {'population':>10}")
+for label, lz in cases.items():
+    mod = create_affine_model(μ_2, φ_2, C_2, δ_0_2, δ_1_2, λ_0_2, lz)
+    b_ols, se, b_pop = eh_regression(mod)
+    print(f"{label:>20}  {b_ols:>10.4f}  {se:>7.4f}  {b_pop:>10.4f}")
+```
+
+With the calibrated $\lambda_z$, the OLS slope is close to the population slope of about $-0.17$ and is many standard errors from zero, so the expectations hypothesis fails in simulated data.
+
+With $\lambda_z = 0$, the vector $a$ is zero, so expected excess returns are constant and the population slope is exactly zero.
+
+The OLS estimate is then within sampling error of zero.
+
+The expectations hypothesis holds in an affine model exactly when risk prices do not vary with the state.
+
+The calibrated model gets the *sign* of the Fama–Bliss and Campbell–Shiller finding wrong: a high spread forecasts a low excess return.
+
+Flipping the sign of $\lambda_z$ reverses the sign of the slope, which shows that the regression evidence is informative about $\lambda_z$ and not just about the size of average term premiums.
+
+```{solution-end}
+```
 
 ## Risk-neutral probabilities
 
@@ -1065,7 +1289,17 @@ This is a log-normal random variable with mean 1, so it is a valid
 likelihood ratio that can be used to twist the conditional distribution of
 $z_{t+1}$.
 
-Multiplying the physical conditional distribution by this likelihood ratio
+To see what the twist does to the shocks, multiply the standard normal density of $\varepsilon_{t+1}$ by {eq}`eq_rn_ratio`:
+
+$$
+(2\pi)^{-m/2}\exp\!\left(-\tfrac{1}{2}\varepsilon^\top\varepsilon\right)
+\exp\!\left(-\tfrac{1}{2}\lambda_t^\top\lambda_t - \lambda_t^\top\varepsilon\right)
+= (2\pi)^{-m/2}\exp\!\left(-\tfrac{1}{2}(\varepsilon + \lambda_t)^\top(\varepsilon + \lambda_t)\right)
+$$
+
+So under $Q$ the shock is $\varepsilon_{t+1} \sim \mathcal{N}(-\lambda_t, I)$: the twist shifts its mean by $-\lambda_t$ and leaves its covariance matrix unchanged.
+
+Substituting $\varepsilon_{t+1} = -\lambda_t + \varepsilon^Q_{t+1}$ into {eq}`eq_var` shows that multiplying the physical conditional distribution by this likelihood ratio
 transforms it into the **risk-neutral conditional distribution**
 
 $$
@@ -1089,6 +1323,87 @@ The adjustments $-C\lambda_0$ (constant) and $-C\lambda_z$
 (state-dependent) encode how the pricing equation
 $\mathbb{E}^P_t m_{t+1} R_{j,t+1} = 1$ adjusts expected returns for
 exposure to the risks $\varepsilon_{t+1}$.
+
+```{exercise}
+:label: arp_ex8
+
+How different are the risk-neutral and physical measures?
+
+A natural measure is relative entropy (Kullback–Leibler divergence), discussed in {doc}`divergence_measures`.
+
+1. Show that the conditional relative entropy of $Q$ with respect to $P$, $\mathbb{E}^Q_t\left[\log(\xi^Q_{t+1}/\xi^Q_t)\right]$, and the conditional relative entropy of $P$ with respect to $Q$, $\mathbb{E}^P_t\left[-\log(\xi^Q_{t+1}/\xi^Q_t)\right]$, both equal $\tfrac{1}{2}\lambda_t^\top\lambda_t$.
+2. Suppose that $z_0$ is drawn from the stationary distribution of $z_t$ under $P$. Show that the relative entropy of $P$ with respect to $Q$ for a sample $z_1, \ldots, z_T$ equals $T$ times
+   $$
+   \tfrac{1}{2}\left(\bar\lambda^\top\bar\lambda + \operatorname{tr}(\lambda_z \Sigma_z \lambda_z^\top)\right)
+   $$
+   where $\bar z = (I - \phi)^{-1}\mu$, $\bar\lambda = \lambda_0 + \lambda_z \bar z$, and $\Sigma_z$ solves $\Sigma_z = \phi\Sigma_z\phi^\top + CC^\top$.
+3. Evaluate this formula for `model_2f`, verify it by simulation, and use Pinsker's inequality to bound how well any test based on 100 years of quarterly data on $z_t$ could distinguish $P$ from $Q$.
+```
+
+```{solution-start} arp_ex8
+:class: dropdown
+```
+
+*Part 1.* We showed above that $\varepsilon_{t+1} \sim \mathcal{N}(-\lambda_t, I)$ under $Q$, while $\varepsilon_{t+1} \sim \mathcal{N}(0, I)$ under $P$.
+
+Hence
+
+$$
+\mathbb{E}^Q_t\left[-\tfrac{1}{2}\lambda_t^\top\lambda_t - \lambda_t^\top\varepsilon_{t+1}\right]
+= -\tfrac{1}{2}\lambda_t^\top\lambda_t + \lambda_t^\top\lambda_t
+= \tfrac{1}{2}\lambda_t^\top\lambda_t
+$$
+
+and
+
+$$
+\mathbb{E}^P_t\left[\tfrac{1}{2}\lambda_t^\top\lambda_t + \lambda_t^\top\varepsilon_{t+1}\right]
+= \tfrac{1}{2}\lambda_t^\top\lambda_t
+$$
+
+The two divergences coincide because the two conditional distributions are normal with the same covariance matrix.
+
+*Part 2.* When $C$ is invertible, the path $z_1, \ldots, z_T$ and the shocks $\varepsilon_1, \ldots, \varepsilon_T$ determine each other given $z_0$.
+
+The log likelihood ratio of the path is therefore the sum of the one-period log likelihood ratios, and by the law of iterated expectations its expectation under $P$ is $\sum_{t=0}^{T-1} \mathbb{E}^P\left[\tfrac{1}{2}\lambda_t^\top\lambda_t\right]$.
+
+Under the stationary distribution, $\lambda_t = \bar\lambda + \lambda_z(z_t - \bar z)$ with $\mathbb{E}(z_t - \bar z) = 0$ and $\text{Var}(z_t) = \Sigma_z$.
+
+Therefore $\mathbb{E}(\lambda_t^\top\lambda_t) = \bar\lambda^\top\bar\lambda + \operatorname{tr}(\lambda_z\Sigma_z\lambda_z^\top)$ for every $t$, which gives the formula.
+
+*Part 3.* Pinsker's inequality says that the total variation distance between two distributions is at most $\sqrt{D/2}$, where $D$ is their relative entropy.
+
+With equal prior probabilities on $P$ and $Q$, the smallest achievable probability of choosing the wrong model is $(1 - \text{TV})/2$, so it is at least $(1 - \sqrt{D/2})/2$.
+
+```{code-cell} ipython3
+z_bar_2 = np.linalg.solve(np.eye(2) - model_2f.φ, model_2f.μ)
+Σ_z_2 = solve_discrete_lyapunov(model_2f.φ, model_2f.C @ model_2f.C.T)
+λ_bar_2 = risk_prices(model_2f, z_bar_2)
+entropy = 0.5 * (λ_bar_2 @ λ_bar_2
+                 + np.trace(model_2f.λ_z @ Σ_z_2 @ model_2f.λ_z.T))
+
+Z_sim = simulate(model_2f, z_bar_2, 200_000, rng=np.random.default_rng(7))
+Λ_sim = model_2f.λ_0 + Z_sim @ model_2f.λ_z.T
+entropy_sim = 0.5 * np.mean(np.sum(Λ_sim**2, axis=1))
+
+T_years = 100
+D = 4 * T_years * entropy
+print(f"relative entropy per quarter (formula):    {entropy:.6f}")
+print(f"relative entropy per quarter (simulation): {entropy_sim:.6f}")
+print(f"relative entropy over {T_years} years:           {D:.4f}")
+print(f"lower bound on error probability:          {(1 - np.sqrt(D / 2)) / 2:.3f}")
+```
+
+Even with a century of quarterly data, no test can push the average probability of choosing the wrong model below about 37%.
+
+Yet the gap between these two hard-to-distinguish measures is exactly what generates the term premiums plotted above.
+
+Time-series data on the state alone therefore say little about risk prices, which is why estimates of $\lambda_0$ and $\lambda_z$ rely heavily on the cross-section of bond yields.
+
+This echoes the detection-error calculations of {doc}`advanced:doubts_or_variability`, where plausible amounts of model uncertainty are calibrated in the same way.
+
+```{solution-end}
+```
 
 ### Asset pricing in a nutshell
 
@@ -1133,7 +1448,7 @@ Below we confirm this numerically
 
 ```{code-cell} ipython3
 def bond_price_mc_Q(model, z0, n, n_sims=50_000, rng=None):
-    """Estimate p_t(n) by Monte Carlo under Q."""
+    """Estimate p_t(n) by Monte Carlo under Q; return estimate and std. error."""
     if rng is None:
         rng = np.random.default_rng(0)
     m = len(z0)
@@ -1143,28 +1458,34 @@ def bond_price_mc_Q(model, z0, n, n_sims=50_000, rng=None):
         disc += model.δ_0 + Z @ model.δ_1
         ε = rng.standard_normal((n_sims, m))
         Z = model.μ_rn + Z @ model.φ_rn.T + ε @ model.C.T
-    return np.mean(np.exp(-disc))
+    payoffs = np.exp(-disc)
+    return payoffs.mean(), payoffs.std() / np.sqrt(n_sims)
 
 z_test = np.array([0.01, 0.005])
 p_analytic = bond_prices(model_2f, z_test, 40)
 
 rng = np.random.default_rng(0)
 maturities_check = [4, 12, 24, 40]
-mc_prices = [bond_price_mc_Q(model_2f, z_test, n, n_sims=100_000, rng=rng)
-             for n in maturities_check]
+mc_results = [bond_price_mc_Q(model_2f, z_test, n, n_sims=100_000, rng=rng)
+              for n in maturities_check]
 
-header = (f"{'Maturity':>10}  {'Analytic':>12}"
-          f"  {'Monte Carlo':>12}  {'Error (bps)':>12}")
+header = (f"{'Maturity':>10}  {'Analytic':>10}  {'Monte Carlo':>11}"
+          f"  {'Error (bps)':>11}  {'s.e. (bps)':>10}  {'z-score':>8}")
 print(header)
-print("-" * 52)
-for n, mc in zip(maturities_check, mc_prices):
+print("-" * len(header))
+for n, (mc, se) in zip(maturities_check, mc_results):
     analytic = p_analytic[n - 1]
-    error_bp = abs(analytic - mc) / analytic * 10_000
-    print(f"{n:>10}  {analytic:>12.6f}  {mc:>12.6f}  {error_bp:>12.2f}")
+    error_bp = (mc - analytic) / analytic * 10_000
+    se_bp = se / analytic * 10_000
+    print(f"{n:>10}  {analytic:>10.6f}  {mc:>11.6f}"
+          f"  {error_bp:>11.2f}  {se_bp:>10.2f}  {error_bp / se_bp:>8.2f}")
 ```
 
-The analytical and Monte Carlo bond prices agree closely, validating the
-Riccati recursion {eq}`eq_riccati_a`–{eq}`eq_riccati_b`.
+The table reports each Monte Carlo error alongside its standard error, both in basis points of the analytical price.
+
+All the z-scores are within $\pm 2$, so the differences between analytical and simulated prices are consistent with pure simulation noise.
+
+This validates the Riccati recursion {eq}`eq_riccati_a`–{eq}`eq_riccati_b`.
 
 ## Distorted beliefs
 
@@ -1230,25 +1551,38 @@ $$
 where $\mathbb{E}^S_t$ is the conditional expectation under the subjective
 $S$ measure and $m^\star_{t+1}$ is the SDF of an agent with these beliefs.
 
-In particular, the agent's SDF is
+To express the agent's SDF, define the **subjective shocks**
 
 $$
-m^\star_{t+1} = \exp\!\left(-r^\star_t
+\varepsilon^S_{t+1} = \varepsilon_{t+1} + \kappa_t
+$$
+
+By the same argument we used for the risk-neutral measure, $\varepsilon^S_{t+1} \sim \mathcal{N}(0, I)$ under $S$, and the state evolves as
+
+$$
+z_{t+1} = (\mu - C\kappa_0) + (\phi - C\kappa_z) z_t + C\varepsilon^S_{t+1}
+$$
+
+The agent's SDF is exponential quadratic in these subjective shocks:
+
+$$
+m^\star_{t+1} = \exp\!\left(-r_t
   - \tfrac{1}{2}\lambda_t^{\star\top}\lambda^\star_t
-  - \lambda_t^{\star\top}\varepsilon_{t+1}\right)
+  - \lambda_t^{\star\top}\varepsilon^S_{t+1}\right)
 $$
 
-where $r^\star_t$ is the short rate and $\lambda^\star_t$ is the agent's
-vector of risk prices.
+where $\lambda^\star_t = \lambda^\star_0 + \lambda^\star_z z_t$ is the agent's vector of risk prices.
+
+Because $\mathbb{E}^S_t m^\star_{t+1} = \exp(-r_t)$, the short rate in this SDF is the market short rate $r_t$ that we observe.
 
 Using {eq}`eq_srat` to convert to the physical measure, the subjective
 pricing equation becomes
 
 $$
 \mathbb{E}^P_t\!\left[
-  \exp\!\left(-r^\star_t
+  \exp\!\left(-r_t
     - \tfrac{1}{2}\lambda_t^{\star\top}\lambda^\star_t
-    - \lambda_t^{\star\top}\varepsilon_{t+1}
+    - \lambda_t^{\star\top}(\varepsilon_{t+1} + \kappa_t)
   \right)
   \exp\!\left(
     - \tfrac{1}{2}\kappa_t^\top\kappa_t
@@ -1258,7 +1592,8 @@ $$
 \right] = 1
 $$
 
-Combining the two exponentials gives
+The constant terms in the combined exponent are
+$-r_t - \tfrac{1}{2}\lambda_t^{\star\top}\lambda^\star_t - \lambda_t^{\star\top}\kappa_t - \tfrac{1}{2}\kappa_t^\top\kappa_t = -r_t - \tfrac{1}{2}(\lambda^\star_t + \kappa_t)^\top(\lambda^\star_t + \kappa_t)$, so the two exponentials combine exactly into
 
 $$
 \mathbb{E}^P_t\!\left[
@@ -1268,8 +1603,6 @@ $$
   \right) R_{j,t+1}
 \right] = 1
 $$
-
-where $r_t = r^\star_t - \lambda_t^{\star\top}\kappa_t$.
 
 Comparing this with the rational-expectations econometrician's pricing
 equation
@@ -1284,20 +1617,47 @@ $$
 $$
 
 we see that what the econometrician interprets as $\lambda_t$ is actually
-$\lambda^\star_t + \kappa_t$.
 
-Because the econometrician's estimates partly reflect systematic
-distortions in subjective beliefs, they can overstate the representative
-agent's true risk prices $\lambda^\star_t$ in this calibration.
+$$
+\hat\lambda_t = \lambda^\star_t + \kappa_t
+$$
 
-Below we construct a numerical example to illustrate this point.
+### What bond prices can and cannot reveal
 
-We keep the same physical state dynamics and short-rate specification as above, but choose a separate true risk-price process $(\lambda_t^\star)$ and a distorted-belief econometrician process $(\hat\lambda_t)$ to illustrate the decomposition.
+The decomposition has a simple interpretation in terms of the risk-neutral measure.
 
-We then set the subjective parameters $\check\mu, \check\phi$ to match the evidence in
+Starting from the physical measure, the econometrician reaches $Q$ by twisting with $\hat\lambda_t$:
+
+$$
+\mu - C\hat\lambda_0 = (\mu - C\kappa_0) - C\lambda^\star_0,
+\qquad
+\phi - C\hat\lambda_z = (\phi - C\kappa_z) - C\lambda^\star_z
+$$
+
+The right sides show that the agent reaches the *same* $Q$ by twisting the subjective measure with $\lambda^\star_t$.
+
+Since bond prices depend only on $Q$, the econometrician and the agent agree about every bond price.
+
+They disagree about expected returns.
+
+The term premium measured by the econometrician is $\bar B_n^\top C\hat\lambda_t$, while the premium that the agent expects is $\bar B_n^\top C\lambda^\star_t$.
+
+The difference, $\bar B_n^\top C\kappa_t$, is the part of measured excess returns that the agent does not expect and that therefore shows up as predictable forecast errors.
+
+Bond prices and data on $z_t$ identify $\hat\lambda_t$, but they cannot split it into $\lambda^\star_t$ and $\kappa_t$.
+
+Splitting it requires direct evidence on beliefs, such as the survey forecasts used by {cite:t}`piazzesi2015trend`.
+
+The same identification problem is central to {doc}`ross_recovery` and {doc}`misspecified_recovery`, which ask when risk-neutral prices alone can reveal subjective beliefs.
+
+### A numerical illustration
+
+We keep the same physical state dynamics and short-rate specification as above, choose the agent's risk prices $\lambda^\star_t$, and deduce the econometrician's risk prices $\hat\lambda_t = \lambda^\star_t + \kappa_t$.
+
+We set the subjective parameters $\check\mu, \check\phi$ to match the evidence in
 {cite:t}`piazzesi2015trend` that experts behave as if the level and slope of the yield curve are more persistent than under the physical measure.
 
-In particular, we use 
+In particular, we use
 
 $$
 \check\phi = \begin{pmatrix} 0.985 & -0.025 \\ 0.00 & 0.94 \end{pmatrix}
@@ -1311,43 +1671,63 @@ $$
 φ_S = np.array([[0.985, -0.025], [0.00, 0.94]])
 μ_S = np.array([0.005, 0.0])
 
+# κ_t = κ_0 + κ_z z_t twists P into S
 κ_z = np.linalg.solve(C_2, φ_P - φ_S)
 κ_0 = np.linalg.solve(C_2, μ_P - μ_S)
 
+# Agent's risk prices, which price subjective shocks ε^S
 λ_star_0 = np.array([-0.03, -0.015])
 λ_star_z = np.array([[-0.006, 0.0], [0.0, -0.004]])
 
+# Econometrician's risk prices, which price physical shocks ε
 λ_hat_0 = λ_star_0 + κ_0
 λ_hat_z = λ_star_z + κ_z
 ```
+
+The agent's model pairs the subjective dynamics with $\lambda^\star_t$, and the econometrician's model pairs the physical dynamics with $\hat\lambda_t$.
+
+We first confirm that the two models imply the same risk-neutral dynamics and hence the same bond prices.
+
+```{code-cell} ipython3
+# Agent: subjective dynamics, risk prices λ*
+model_subj = create_affine_model(
+    μ_S, φ_S, C_2, δ_0_2, δ_1_2, λ_star_0, λ_star_z)
+# Econometrician: physical dynamics, risk prices λ̂ = λ* + κ
+model_econ = create_affine_model(
+    μ_P, φ_P, C_2, δ_0_2, δ_1_2, λ_hat_0, λ_hat_z)
+
+print("Same risk-neutral dynamics:",
+      np.allclose(model_subj.φ_rn, model_econ.φ_rn)
+      and np.allclose(model_subj.μ_rn, model_econ.μ_rn))
+print("Same yields at z = (1, -1):",
+      np.allclose(compute_yields(model_subj, np.array([1.0, -1.0]), 60),
+                  compute_yields(model_econ, np.array([1.0, -1.0]), 60)))
+```
+
+Now we compare the term premium the agent expects with the term premium the econometrician measures.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: True vs. distorted-belief term premiums and overstatement ratio
+    caption: Subjective vs. measured term premiums and overstatement ratio
     name: fig-distorted-beliefs
 ---
-model_true = create_affine_model(
-    μ_2, φ_2, C_2, δ_0_2, δ_1_2, λ_star_0, λ_star_z)
-model_econ = create_affine_model(
-    μ_2, φ_2, C_2, δ_0_2, δ_1_2, λ_hat_0, λ_hat_z)
-
 z_ref = np.array([0.0, 0.0])
 n_max_db = 60
 maturities_db = np.arange(1, n_max_db + 1)
 
-tp_true = term_premiums(model_true, z_ref, n_max_db) * 4 * 100
+tp_subj = term_premiums(model_subj, z_ref, n_max_db) * 4 * 100
 tp_econ = term_premiums(model_econ, z_ref, n_max_db) * 4 * 100
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5.5))
 
-ax1.plot(maturities_db, tp_true, lw=2.2,
-         label=r"True risk prices $\lambda^\star_t$")
+ax1.plot(maturities_db, tp_subj, lw=2.2,
+         label=r"Agent's expected premium, $\lambda^\star_t$")
 line_econ, = ax1.plot(maturities_db, tp_econ, lw=2.2, ls="--",
-         label=(r"RE econometrician"
+         label=(r"Measured by RE econometrician,"
                 r" $\hat\lambda_t = \lambda^\star_t + \kappa_t$"))
-ax1.fill_between(maturities_db, tp_true, tp_econ,
+ax1.fill_between(maturities_db, tp_subj, tp_econ,
                  alpha=0.15, color=line_econ.get_color(),
                  label="Belief distortion component")
 ax1.axhline(0, color="black", lw=0.8, ls=":")
@@ -1356,9 +1736,9 @@ ax1.set_ylabel("Term premium (% p.a.)")
 ax1.legend(fontsize=9.5)
 ax1.set_xlim(1, n_max_db)
 
-mask = np.abs(tp_true) > 1e-8
-ratio = np.full_like(tp_true, np.nan)
-ratio[mask] = tp_econ[mask] / tp_true[mask]
+mask = np.abs(tp_subj) > 1e-8
+ratio = np.full_like(tp_subj, np.nan)
+ratio[mask] = tp_econ[mask] / tp_subj[mask]
 
 ax2.plot(maturities_db[mask], ratio[mask], lw=2.2)
 ax2.axhline(1, color="black", lw=0.8, ls="--",
@@ -1377,15 +1757,35 @@ for ax in (ax1, ax2):
 
 plt.tight_layout()
 plt.show()
+
+for n in [4, 20, 40, 60]:
+    print(f"n = {n:>2}: agent {tp_subj[n-1]:.3f}%, "
+          f"econometrician {tp_econ[n-1]:.3f}%, "
+          f"ratio {tp_econ[n-1] / tp_subj[n-1]:.2f}")
 ```
 
-When expert beliefs are overly persistent ($\check\phi$ has larger eigenvalues
-than $\phi$), the rational-expectations econometrician attributes too much of
-the observed risk premium to risk aversion.
+At $z_t = 0$, the distortion is $\kappa_t = \kappa_0 = (-0.005, 0)$, which comes from the experts' upward bias $\check\mu_1 = 0.005$ in forecasting the level factor.
 
-Disentangling belief distortions from genuine risk prices requires additional
-data, for example, the survey forecasts used by
-{cite:t}`piazzesi2015trend`.
+Experts who expect higher future interest rates expect lower returns on long bonds than the returns that actually materialize on average.
+
+The econometrician therefore overstates the term premium that the agent requires, by 14 to 18 percent in this calibration.
+
+The persistence distortion $\kappa_z$ makes the size and even the sign of the gap depend on the state.
+
+```{code-cell} ipython3
+for label, z in [("High rate", np.array([3.0, -2.0])),
+                 ("Low rate",  np.array([-3.0, 2.0]))]:
+    gap = (term_premiums(model_econ, z, n_max_db)
+           - term_premiums(model_subj, z, n_max_db)) * 4 * 100
+    print(f"{label}: belief-distortion gap at 5 and 15 years = "
+          f"{gap[19]:.2f}%, {gap[59]:.2f}%")
+```
+
+When rates are high, experts extrapolate them too far into the future, so the econometrician's measured premium exceeds the agent's premium by almost 2 percentage points at 15 years.
+
+When rates are low, the gap reverses sign.
+
+A rational-expectations econometrician therefore attributes to time-varying risk prices movements in measured excess returns that actually come from the agent's systematic forecast errors.
 
 Our {doc}`advanced:risk_aversion_or_mistaken_beliefs` lecture
 explores this confounding in greater depth.
@@ -1407,6 +1807,7 @@ Key features are:
 4. **Belief distortions:** The framework naturally accommodates non-rational beliefs via
    likelihood-ratio twists of the physical measure, as in
    {cite:t}`piazzesi2015trend`.
+5. **Limits to identification:** Bond prices reveal only the risk-neutral measure, so separating risk prices from belief distortions requires additional evidence, such as survey forecasts; see also {doc}`ross_recovery` and {doc}`misspecified_recovery`.
 
 The model also connects directly to the Hansen–Jagannathan bounds studied in
 {doc}`advanced:doubts_or_variability` and to robust
