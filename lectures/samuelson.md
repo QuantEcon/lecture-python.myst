@@ -976,7 +976,7 @@ class Samuelson:
 
     .. math::
 
-        Y_t = \alpha (1 + \beta) Y_{t-1} - \alpha \beta Y_{t-2}
+        Y_t = (\alpha + \beta) Y_{t-1} - \beta Y_{t-2} + (\gamma + G_t)
 
     Parameters
     ----------
