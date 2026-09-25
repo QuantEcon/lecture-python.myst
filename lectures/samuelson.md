@@ -684,17 +684,17 @@ def y_nonstochastic(y_0=100, y_1=80, α=0.92, β=0.5, γ=10, n=80):
     discriminant = ρ1**2 + 4 * ρ2
 
     if discriminant == 0:
-        roots.append(-ρ1 / 2)
+        roots.append(ρ1 / 2)
         print("Single real root: ")
         print("".join(f"{r:.2f}" for r in roots))
     elif discriminant > 0:
-        roots.append((-ρ1 + sqrt(discriminant).real) / 2)
-        roots.append((-ρ1 - sqrt(discriminant).real) / 2)
+        roots.append((ρ1 + sqrt(discriminant).real) / 2)
+        roots.append((ρ1 - sqrt(discriminant).real) / 2)
         print("Two real roots: ")
         print(" ".join(f"{r:.2f}" for r in roots))
     else:
-        roots.append((-ρ1 + sqrt(discriminant)) / 2)
-        roots.append((-ρ1 - sqrt(discriminant)) / 2)
+        roots.append((ρ1 + sqrt(discriminant)) / 2)
+        roots.append((ρ1 - sqrt(discriminant)) / 2)
         print("Two complex roots: ")
         print(" ".join(f"{r.real:.2f}{r.imag:+.2f}j" for r in roots))
 
