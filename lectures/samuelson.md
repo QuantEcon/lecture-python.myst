@@ -965,7 +965,7 @@ for the Samuelson model
 
 ```{code-cell} ipython3
 class Samuelson:
-    """
+    r"""
     This class represents the Samuelson model, otherwise known as the
     multiplier-accelerator model. 
     The model combines the Keynesian multiplier
@@ -976,7 +976,7 @@ class Samuelson:
 
     .. math::
 
-        Y_t = (\alpha + \beta) Y_{t-1} - \beta Y_{t-2} + (\gamma + G_t)
+        Y_t = (\alpha + \beta) Y_{t-1} - \beta Y_{t-2} + (\gamma + G_t) + \sigma \epsilon_t
 
     Parameters
     ----------
