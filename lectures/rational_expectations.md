@@ -46,6 +46,14 @@ due to Lucas and Prescott {cite}`Lucas_Prescott_1971`.
 
 That 1971 paper is one of a small number of research articles that ignited a *rational expectations revolution*.
 
+You can regard the present lecture as a "baby" version of that paper, and as an introduction to ideas that two sequels study in more general settings.
+
+{doc}`lucas_prescott_investment` describes the model that Lucas and Prescott actually built, in which demand is shifted by a Markov process, so that the equilibrium is a stochastic process rather than a deterministic path.
+
+{doc}`optimal_growth_uncertainty` studies a one-sector optimal growth model with random shocks to production, and uses it to think about Tobin's $q$.
+
+Both sequels ask a question that cannot arise here, because this lecture has no uncertainty: does the equilibrium have an invariant probability distribution to which it converges from any initial condition?
+
 We follow Lucas and Prescott by employing a setting that is readily "Bellmanized" (i.e., susceptible to  being formulated as a dynamic programming problems.
 
 Because we use linear quadratic setups for demand and costs, we can deploy the LQ programming techniques described in {doc}`this lecture <lqcontrol>`.
@@ -206,6 +214,8 @@ References for this lecture include
 * {cite}`Lucas_Prescott_1971`
 * {cite}`Sargent1987`, chapter XIV
 * {cite}`Ljungqvist2012`, chapter 7
+
+The two sequels to this lecture are {doc}`lucas_prescott_investment` and {doc}`optimal_growth_uncertainty`.
 
 ## Rational expectations equilibrium
 
@@ -577,6 +587,30 @@ y_{t+1} = h_0 + h_1 y_t + h_2 Y_t
 
 Hence a rational expectations equilibrium will be defined by the parameters
 $(\kappa_0, \kappa_1, h_0, h_1, h_2)$ in {eq}`ree_hlom2`--{eq}`ree_ex5`.
+
+## Concluding remarks
+
+Three ideas from this lecture recur throughout macroeconomics.
+
+The first is the equilibrium concept itself: a **perceived** law of motion for a market-wide object must coincide with the **actual** law of motion that the resulting decisions generate.
+
+The second is the "Big $Y$, little $y$" device that lets a price-taking firm be representative.
+
+The third is the computational strategy: because the mapping from perceived to actual laws of motion is not a contraction, we found an equilibrium by solving a **planning problem** instead, and then read off equilibrium prices as shadow prices.
+
+The two sequels take these ideas into settings with uncertainty.
+
+{doc}`lucas_prescott_investment` returns to {cite}`Lucas_Prescott_1971` itself.
+
+There, demand is shifted by a Markov process, firms face a nonlinear technology for converting investment into capacity, and the equilibrium is proved to exist, to be unique, and to solve a planning problem that maximizes discounted consumer surplus.
+
+Because the equilibrium is a Markov process, one can ask whether it converges to an invariant distribution, and whether time averages computed from a single realization converge to population moments.
+
+Affirmative answers are what make such models usable in econometrics.
+
+{doc}`optimal_growth_uncertainty` pursues the same questions in the one-sector optimal growth model of {cite}`BrockMirman1972`, and then follows {cite}`Sargent1980q` in adding irreversible investment.
+
+That small change makes the shadow price of installed capital -- Tobin's $q$ -- diverge from the price of new capital, and it turns the planner's value function into the object on which a theory of investment rests.
 
 ## Exercises
 
