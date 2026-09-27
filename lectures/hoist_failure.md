@@ -165,13 +165,13 @@ This computes the probability mass function of the sum of two discrete random va
 Consider two probability mass functions:
 
 $$
-f_j = \Pr(X = j), \quad j = 0, 1
+f_j = \mathbb{P}\{X = j\}, \quad j = 0, 1
 $$
 
 and
 
 $$
-g_j = \Pr(Y = j), \quad j = 0, 1, 2, 3
+g_j = \mathbb{P}\{Y = j\}, \quad j = 0, 1, 2, 3
 $$
 
 The distribution of $Z = X + Y$ is given by the convolution $h = f * g$.
@@ -312,8 +312,8 @@ def discretize_lognormal(μ, σ, I, m):
 
 Two separate choices govern the quality of this approximation, and it pays to keep them straight.
 
-* $I$ fixes where the grid **stops**, so it controls how much of the right tail we throw away
-* $m$ fixes the **spacing** between grid points, so it controls resolution
+* $I$ fixes where the grid *stops*, so it controls how much of the right tail we throw away
+* $m$ fixes the *spacing* between grid points, so it controls resolution
 
 The grid has $I/m$ points, so raising $I$ at fixed $m$ buys range, while lowering $m$ at fixed $I$ buys accuracy.
 
@@ -372,11 +372,11 @@ Now let's use the convolution theorem to compute the probability distribution of
 
 We'll also compute the probability distribution of a sum of three log normal distributions constructed above.
 
-For long sequences, `scipy.signal.fftconvolve` is much faster than `numpy.convolve` because it uses Fast Fourier Transforms.
+For long sequences, `scipy.signal.fftconvolve` is much faster than `numpy.convolve` because it uses fast Fourier transforms.
 
 Let's define the Fourier transform and the inverse Fourier transform first
 
-### The Fast Fourier Transform
+### The fast Fourier transform
 
 The **Fourier transform** of a sequence $\{x_t\}_{t=0}^{T-1}$ is
 
@@ -416,7 +416,7 @@ Let's do a warmup calculation that compares the times taken by `numpy.convolve` 
 Our three components are identically distributed, so a single discretization serves for all of them.
 
 ```{code-cell} ipython3
-# Discretize the lognormal distribution; the three components are i.i.d.
+# Discretize the lognormal distribution; the three components are IID
 _, pmf1, x = discretize_lognormal(μ, σ, I, m)
 pmf2 = pmf3 = pmf1
 
@@ -439,7 +439,7 @@ print(f"  speedup:     {time_numpy / time_fft:.0f}x")
 
 The gap widens rapidly with the length of the sequences, because direct convolution costs $O(N^2)$ operations while the FFT approach costs $O(N \log N)$.
 
-On the full grid used below, the direct method is slower by more than two orders of magnitude.
+On the full grid used below, the direct method would be far slower still.
 
 ```{code-cell} ipython3
 # The full calculation, done the fast way
@@ -856,7 +856,7 @@ Our discretization involves two separate choices: where the grid stops, $I = 2^p
 
 Investigate what each one controls.
 
-1. Holding $m = 0.05$ fixed, compute the median, the 95th percentile and the 99.78th percentile of the system failure rate for $p = 10, 11, \ldots, 15$. For each $p$, also compute how much probability mass the truncation discards, using $\sum_i \Pr(P(A_i) > I)$.
+1. Holding $m = 0.05$ fixed, compute the median, the 95th percentile and the 99.78th percentile of the system failure rate for $p = 10, 11, \ldots, 15$. For each $p$, also compute how much probability mass the truncation discards, using $\sum_i \mathbb{P}\{P(A_i) > I\}$.
 1. Holding $p = 14$ fixed, repeat for $m = 0.4, 0.2, 0.1, 0.05, 0.025$.
 1. Which statistic is sensitive to which choice, and why? Are the values $p = 15$, $m = 0.05$ used in the lecture well chosen?
 ```
@@ -921,11 +921,19 @@ print(tabulate(rows, headers=['m', 'grid points', 'median', '95th', '99.78th'],
 
 The two choices do quite different jobs.
 
-Truncation governs the **far tail**. At $p = 10$ the 99.78th percentile is badly understated, and it keeps rising until about $p = 14$, by which point the discarded mass has fallen to roughly $10^{-6}$. The median, by contrast, has settled by $p = 12$: throwing away the extreme right tail of each component hardly moves the middle of the distribution of their sum.
+Truncation governs the *far tail*.
 
-Resolution governs **overall precision**. Halving $m$ shifts every quantile slightly and uniformly, and the shifts are small: going from $m = 0.4$ to $m = 0.025$ moves the median by about 1.5 per cent.
+At $p = 10$ the 99.78th percentile is badly understated, and it keeps rising until about $p = 14$, by which point the discarded mass has fallen to roughly $10^{-6}$.
 
-The lecture's choices are sensible. With $p = 15$ the discarded mass is around $10^{-7}$, so even the 99.78th percentile is accurate, and $m = 0.05$ is fine enough that further refinement changes little.
+The median, by contrast, has settled by $p = 12$: throwing away the extreme right tail of each component hardly moves the middle of the distribution of their sum.
+
+Resolution governs *overall precision*.
+
+Halving $m$ shifts every quantile slightly and uniformly, and the shifts are small: going from $m = 0.4$ to $m = 0.025$ moves the median by about 1.5 per cent.
+
+The lecture's choices are sensible.
+
+With $p = 15$ the discarded mass is around $10^{-7}$, so even the 99.78th percentile is accurate, and $m = 0.05$ is fine enough that further refinement changes little.
 
 The moral is that a grid that looks adequate for the median can be badly inadequate for the upper tail, which is exactly the region a safety regulator cares about.
 
@@ -1085,7 +1093,7 @@ Monte Carlo error is largest exactly where the analysis matters most: the 99.78t
 
 The convolution, by contrast, computes the whole distribution at once and its error comes from the grid rather than from sampling noise, so it is equally accurate in the tail as in the middle.
 
-It is also far quicker: thirteen fast convolutions take a couple of seconds, and the answer does not change when you rerun it with a different seed.
+It is also deterministic: the answer does not change when you rerun it with a different seed.
 
 ```{solution-end}
 ```
