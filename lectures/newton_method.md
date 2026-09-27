@@ -377,7 +377,7 @@ plot_trajectories(params)
 We can see that Newton's method converges faster than successive approximation.
 
 
-## Root-Finding in one dimension
+## Root-finding in one dimension
 
 In the previous section we computed fixed points.
 
@@ -399,7 +399,7 @@ Suppose we have a guess $x_0$ and we want to update it to a new point $x_1$.
 As a first step, we take the first-order approximation of $f$ around $x_0$:
 
 $$
-\hat f(x) \approx f\left(x_0\right) + f^{\prime}\left(x_0\right)\left(x - x_0\right)
+\hat f(x) := f\left(x_0\right) + f^{\prime}\left(x_0\right)\left(x - x_0\right)
 $$
 
 Now we solve for the zero of $\hat f$.  
@@ -418,6 +418,8 @@ Generalizing the formula above, for one-dimensional zero-finding problems, Newto
 x_{t+1} = x_t - \frac{ f(x_t) }{ f'(x_t) },
 \quad x_0 \text{ given}
 ```
+
+Each update requires $f'(x_t) \neq 0$.
 
 The following code implements the iteration [](oneD-newton)
 
@@ -459,7 +461,7 @@ to implement Newton's method ourselves.)
 Now consider again the Solow fixed-point calculation, where we solve for $k$
 satisfying $g(k) = k$.
 
-We can convert to this to a zero-finding problem by setting $f(x) := g(x) - x$.
+We can convert this to a zero-finding problem by setting $f(x) := g(x) - x$.
 
 Any zero of $f$ is clearly a fixed point of $g$.
 
