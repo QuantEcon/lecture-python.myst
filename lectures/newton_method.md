@@ -120,7 +120,7 @@ Here
 
 - $k_t$ is capital stock per worker,
 - $A, \alpha>0$ are production parameters with $\alpha < 1$
-- $s>0$ is a savings rate, and
+- $s \in (0,1)$ is a savings rate, and
 - $\delta \in(0,1)$ is a rate of depreciation
 
 In this example, we wish to calculate the unique strictly positive fixed point
@@ -287,7 +287,7 @@ the function
 ```{math}
 :label: motivation
 
-\hat g(x) \approx g(x_0) + g'(x_0)(x - x_0)
+\hat g(x) := g(x_0) + g'(x_0)(x - x_0)
 ```
 
 We solve for the fixed point of $\hat g$ by calculating the $x_1$ that solves
@@ -305,6 +305,7 @@ x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
 \quad x_0 \text{ given}
 ```
 
+This update requires $1 - g'(x_t) \neq 0$.
 
 To implement Newton's method we observe that the derivative of the law of motion for capital [](motion_law) is
 
@@ -341,6 +342,7 @@ def plot_trajectories(
     fs=14,     # fontsize
 ):
 
+    k_star = exact_fixed_point(params)
     fig, axes = plt.subplots(2, 1, figsize=(10, 6))
     ax1, ax2 = axes
 
