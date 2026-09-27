@@ -922,9 +922,9 @@ Solve for the fixed point using Newton's method with the following initial value
 
 $$
 \begin{aligned}
-    k1_{0} &= (1, 1, 1) \\
-    k2_{0} &= (3, 5, 5) \\
-    k3_{0} &= (50, 50, 50)
+    k_0^{(1)} &= (1, 1, 1) \\
+    k_0^{(2)} &= (3, 5, 5) \\
+    k_0^{(3)} &= (50, 50, 50)
 \end{aligned}
 $$
 
@@ -950,7 +950,8 @@ with $s = 0.3$, $\alpha = 0.3$, and $\delta = 0.4$ and starting value:
 k_0 = (1, 1, 1)
 ```
 
-The result should converge to the [analytical solution](solved_k).
+The result should converge to $(k^*, k^*, k^*)^\top$, where $k^*$ denotes
+the scalar [analytical solution](solved_k).
 ````
 
 ```{exercise-end}
