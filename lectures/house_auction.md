@@ -13,14 +13,14 @@ kernelspec:
 
 # Multiple Good Allocation Mechanisms
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ---
 tags: [hide-output]
 ---
 !pip install "prettytable<3.18"
 ```
 
-##  Overview
+## Overview
 
 This lecture describes two mechanisms for allocating $n$ private goods ("houses")  to $m$ people ("buyers").
 
@@ -41,7 +41,7 @@ We describe two distinct mechanisms
 
  * A multiple rounds, ascending bid auction
 
- * A special case of a Groves-Clarke {cite}`Groves_73`, {cite}`Clarke_71` mechanism with a benevolent social planner
+ * A sequential, "greedy" second-price mechanism administered by a benevolent social planner, inspired by the ideas of {cite:t}`Groves_73` and {cite:t}`Clarke_71`
 
 ```{note}
 In 1994, the multiple rounds, ascending bid auction was actually used by Stanford University to sell leases to 9 lots on the Stanford campus to eligible faculty members.
@@ -49,7 +49,7 @@ In 1994, the multiple rounds, ascending bid auction was actually used by Stanfor
 
 We begin with  overviews of the two mechanisms.
 
-## Ascending Bids Auction for Multiple Goods
+## Ascending bids auction for multiple goods
 
 An auction is administered by an **auctioneer**
 
@@ -77,14 +77,14 @@ There are multiple **rounds**
 
  - all $n$ houses are allocated after the final round
 
- - house $i$  is retained by the auctioneer if not prospective buyer offers more that $r_i$ for the house
+ - house $i$  is retained by the auctioneer if no prospective buyer offers more than $r_i$ for the house
 
 In this auction,  person $j$ never tells anyone else his/her private values $v_{ij}$
 
 
 
 
-## A Benevolent Planner
+## A benevolent planner
 
 This mechanism is designed so that all prospective buyers voluntarily choose to reveal their private values to a **social planner** who uses them to construct a socially optimal allocation.
 
@@ -92,18 +92,25 @@ Among all feasible allocations,  a **socially optimal allocation** maximizes the
 
 The planner tells everyone in advance how he/she will allocate houses based on the matrix of values that prospective buyers report.
 
-The mechanism provide every prospective buyer an incentive to reveal his vector of private values to the planner.
+The mechanism is intended to give every prospective buyer an incentive to reveal his vector of private values to the planner.
 
 After the planner receives everyone's vector of private values, the planner deploys a **sequential** algorithm to determine an **allocation** of houses and a set of **fees** that he charges awardees  for the negative **externality** that their presence impose on other prospective buyers.
 
 
 
 
-## Equivalence of Allocations
+## Comparing the two mechanisms
 
 Remarkably, these two mechanisms can produce virtually identical allocations.
 
-We construct Python code for both mechanism.
+But "virtually identical" is not "identical", and the differences turn out to be instructive.
+
+We'll discover that
+
+* the ascending bid auction maximizes the total value of the allocation, and, as the bid increment $\epsilon$ becomes small, the prices that it sets converge to the payments prescribed by the **Vickrey-Clarke-Groves** (VCG) mechanism
+* the greedy mechanism of the benevolent planner does *not* always maximize total value, and the prices that it charges are *not* VCG payments, so truthful reporting is not always in a buyer's interest
+
+We construct Python code for both mechanisms.
 
 We also work out some examples by hand or almost by hand.
 
@@ -111,10 +118,10 @@ We also work out some examples by hand or almost by hand.
 Next, let's dive down into the details.
 
 
-## Ascending Bid Auction
+## Ascending bid auction
 
 
-### Basic Setting
+### Basic setting
 
 
 We start with  a more detailed description of the setting.
@@ -201,24 +208,34 @@ person $j$ bought house $i$, in which case $S_{ij} = v_{ij} - p_i$
 
 **Proposed buyer strategy:**
 
-In this pseudo code and the actual Python code below, we'll assume that all buyers choose to use the following  strategy
-
-   * The strategy is optimal  for each buyer
+In this pseudo code and the actual Python code below, we'll assume that all buyers choose to use the following  strategy, often called **straightforward bidding**: in each round, bid on the house that currently offers the buyer the largest surplus.
 
 Each buyer $j = 1, \ldots, m$ uses the same strategy.
+
+Straightforward bidding is *myopic*: a buyer looks only at prevailing prices and ignores how his bid today might affect prices tomorrow.
+
+That myopia is less restrictive than it might sound.
+
+Our setting is an **assignment market** of the kind studied by {cite:t}`ShapleyShubik1971`: each buyer wants at most one house, and values are private.
+
+For such markets, {cite:t}`CrawfordKnoer1981` and {cite:t}`DemangeGaleSotomayor1986` showed that an ascending auction like ours, in which all buyers bid straightforwardly, converges to a competitive equilibrium of the assignment market.
+
+It converges in particular to the *minimum* competitive equilibrium price vector, the one most favorable to buyers.
+
+We'll return below to a striking consequence of this fact.
 
 The strategy has the form:
 - Let $\check p^t$ be the $n \times 1$ vector of  prevailing highest-bid prices  at the beginning of round $t$
 - Let $\epsilon>0$ be the minimum bid increment specified by the seller
 - For each prospective buyer $j$, compute the index of the best house to bid on during round $t$, namely
 $\hat i_t = \textrm{argmax}_i\{  [  v_{ij} - \check p^t_i - \epsilon  ]\}$
-- If $\max_i\{  [  v_{ij} - \check p^t_i - \epsilon  ]\} $  $\leq$</font> $0$, person $j$ permanently drops out of the auction at round $t$
-- If  $v_{\hat i_t, j} - \check p^t_i - \epsilon>0$, person $j$ bids $\check p^t_i + \epsilon$ on house $j$
+- If $\max_i\{  [  v_{ij} - \check p^t_i - \epsilon  ]\} \leq 0$, person $j$ permanently drops out of the auction at round $t$
+- If  $v_{\hat i_t, j} - \check p^t_{\hat i_t} - \epsilon>0$, person $j$ bids $\check p^t_{\hat i_t} + \epsilon$ on house $\hat i_t$
 
 
 **Resolving ambiguities**: The protocols  we have described so far leave open two possible sources of ambiguity.
 
-(1) **The optimal bid choice for buyers in each round.** It is possible that a buyer has the same surplus value for multiple houses. The  argmax function in Python always returns the first argmax element. We instead  prefer to randomize among such winner. For that reason,  we write our own argmax function below.
+(1) **The optimal bid choice for buyers in each round.** It is possible that a buyer has the same surplus value for multiple houses. The  argmax function in Python always returns the first argmax element. We instead  prefer to randomize among such houses. For that reason,  we write our own argmax function below.
 
 (2) **Seller's choice of winner if same price bid cast by several buyers.** To resolve  this ambiguity, we use the np.random.choice function below.
 
@@ -238,7 +255,7 @@ np.random.seed(100)
 np.set_printoptions(precision=3, suppress=True)
 ```
 
-## An Example
+## An example
 
 +++
 
@@ -281,8 +298,8 @@ r
 ```{code-cell} ipython3
 def find_argmax_with_randomness(v):
     """
-    We build our own verion of argmax function such that the argmax index will be returned randomly
-    when there are multiple maximum values. This function is similiar to np.argmax(v,axis=0)
+    We build our own version of argmax function such that the argmax index will be returned randomly
+    when there are multiple maximum values. This function is similar to np.argmax(v,axis=0)
 
     Parameters:
     ----------
@@ -332,9 +349,11 @@ def check_kick_off_condition(v, r, ϵ):
 
     r: the reservation price
 
-    ϵ: the minimun price increment in each round
+    ϵ: the minimum price increment in each round
 
     """
+
+    n, m = v.shape
 
     # we convert the price vector to a matrix in the same shape as value matrix to facilitate subtraction
     p_start = (ϵ+r)[:,None] @ np.ones(m)[None,:]
@@ -348,7 +367,7 @@ def check_kick_off_condition(v, r, ϵ):
 check_kick_off_condition(v, r, ϵ)
 ```
 
-### round 1
+### Round 1
 
 +++
 
@@ -365,7 +384,7 @@ def submit_initial_bid(p_initial, ϵ, v):
 
     v: the value matrix
 
-    ϵ: the minimun price increment in each round
+    ϵ: the minimum price increment in each round
 
     Returns:
     ----------
@@ -375,11 +394,14 @@ def submit_initial_bid(p_initial, ϵ, v):
 
     """
 
+    n, m = v.shape
+    buyer_list = np.arange(m)
+
     p = p_initial.copy()
     p_start_mat = (ϵ + p)[:,None] @ np.ones(m)[None,:]
     surplus_value = v - p_start_mat
 
-    # we only care about active buyers who have positve surplus values
+    # we only care about active buyers who have positive surplus values
     active_buyer_diagnosis = (surplus_value > 0).any(axis = 0)
     active_buyer_list = buyer_list[active_buyer_diagnosis]
     active_buyer_surplus_value = surplus_value[:,active_buyer_diagnosis]
@@ -428,7 +450,7 @@ In this case, buyer 0 has to bid one more time with a higher price, which crowds
 Therefore, final price could be 3 or 4, depending on the winner in the last round.
 
 ```{code-cell} ipython3
-def check_terminal_condition(bid_info, p, v):
+def check_terminal_condition(bid_info, p, v, ϵ):
     """
     A function that checks whether the auction ends.
 
@@ -443,15 +465,20 @@ def check_terminal_condition(bid_info, p, v):
 
     v: value matrix
 
+    ϵ: the minimum price increment in each round
+
     Returns:
     ----------
-    allocation: a dictionary that descirbe how the houses bid are assigned.
+    allocation: a dictionary that describes how the houses bid are assigned.
 
     winner_list: a list of winners
 
     loser_list: a list of losers
 
     """
+
+    n, m = v.shape
+    buyer_list = np.arange(m)
 
     # there may be several buyers bidding one house, we choose a winner randomly
     winner_list=[np.random.choice(bid_info[ii]) for ii in bid_info.keys()]
@@ -470,13 +497,13 @@ def check_terminal_condition(bid_info, p, v):
     loser_surplus_value = v[:,loser_list] - p_mat
     loser_decision = (loser_surplus_value > 0).any(axis = 0)
 
-    print(~(loser_decision.any()))
+    print('auction ends:', not loser_decision.any())
 
     return allocation,winner_list,loser_list
 ```
 
 ```{code-cell} ipython3
-allocation,winner_list,loser_list = check_terminal_condition(bid_info, p, v)
+allocation,winner_list,loser_list = check_terminal_condition(bid_info, p, v, ϵ)
 ```
 
 ```{code-cell} ipython3
@@ -491,7 +518,7 @@ winner_list
 loser_list
 ```
 
-### round 2
+### Round 2
 
 
 +++
@@ -567,81 +594,35 @@ present_dict(bid_info)
 ```
 
 ```{code-cell} ipython3
-allocation,winner_list,loser_list = check_terminal_condition(bid_info, p, v)
+allocation,winner_list,loser_list = check_terminal_condition(bid_info, p, v, ϵ)
 ```
 
 ```{code-cell} ipython3
 present_dict(allocation)
 ```
 
-### round 3
+### Later rounds
+
+Every remaining round repeats exactly the same two steps, so rather than writing them out one at a time we iterate until no price changes.
+
+Watch for two things as the rounds unfold: a buyer who is outbid switches to whichever house now offers him the largest surplus, and the auction stops as soon as a round passes in which no losing buyer is willing to raise any price.
 
 ```{code-cell} ipython3
-p,bid_info = submit_bid(loser_list, p, ϵ, v, bid_info)
-```
+round_number = 2
 
-```{code-cell} ipython3
-p
-```
+while True:
+    round_number += 1
+    p_previous = p.copy()
 
-```{code-cell} ipython3
-present_dict(bid_info)
-```
+    p, bid_info = submit_bid(loser_list, p, ϵ, v, bid_info)
+    allocation, winner_list, loser_list = check_terminal_condition(bid_info, p, v, ϵ)
 
-```{code-cell} ipython3
-allocation,winner_list,loser_list = check_terminal_condition(bid_info, p, v)
-```
+    print(f'round {round_number}: prices {p}')
+    present_dict(allocation)
 
-```{code-cell} ipython3
-present_dict(allocation)
-```
-
-### round 4
-
-```{code-cell} ipython3
-p,bid_info = submit_bid(loser_list, p, ϵ, v, bid_info)
-```
-
-```{code-cell} ipython3
-p
-```
-
-```{code-cell} ipython3
-present_dict(bid_info)
-```
-
-Notice that  Buyer 3 now switches  to bid for house 1 having recongized that  house 2 is no longer his best option.
-
-```{code-cell} ipython3
-allocation,winner_list,loser_list = check_terminal_condition(bid_info, p, v)
-```
-
-```{code-cell} ipython3
-present_dict(allocation)
-```
-
-### round 5
-
-```{code-cell} ipython3
-p,bid_info = submit_bid(loser_list, p, ϵ, v, bid_info)
-```
-
-```{code-cell} ipython3
-p
-```
-
-```{code-cell} ipython3
-present_dict(bid_info)
-```
-
-Now Buyer 1 bids for house 1 again with price at 4, which crowds out Buyer 3, marking the end of the auction.
-
-```{code-cell} ipython3
-allocation,winner_list,loser_list = check_terminal_condition(bid_info, p, v)
-```
-
-```{code-cell} ipython3
-present_dict(allocation)
+    if np.array_equal(p, p_previous):
+        print('no price changed during this round, so the auction ends')
+        break
 ```
 
 ```{code-cell} ipython3
@@ -656,7 +637,7 @@ total_revenue = p[list(allocation.keys())].sum()
 total_revenue
 ```
 
-## A Python Class
+## A Python class
 
 +++
 
@@ -690,11 +671,13 @@ class ascending_bid_auction:
 
         self.v = v.copy()
         self.n,self.m = self.v.shape
-        self.r = r
+        # prices are stored as floats so that a bid increment ϵ < 1 is allowed
+        self.r = np.asarray(r, dtype=float)
         self.ϵ = ϵ
-        self.p = r.copy()
+        self.p = self.r.copy()
         self.buyer_list = np.arange(self.m)
         self.house_list = np.arange(self.n)
+        self.log = print          # replaced by a no-op when verbose=False
         self.bid_info_history = []
         self.allocation_history = []
         self.winner_history = []
@@ -726,7 +709,7 @@ class ascending_bid_auction:
         p_start_mat = (self.ϵ + self.p)[:,None] @ np.ones(self.m)[None,:]
         self.surplus_value = self.v - p_start_mat
 
-        # we only care about active buyers who have positve surplus values
+        # we only care about active buyers who have positive surplus values
         active_buyer_diagnosis = (self.surplus_value > 0).any(axis = 0)
         active_buyer_list = self.buyer_list[active_buyer_diagnosis]
         active_buyer_surplus_value = self.surplus_value[:,active_buyer_diagnosis]
@@ -741,17 +724,17 @@ class ascending_bid_auction:
             bid_info[house_num] = active_buyer_list[active_buyer_choice == house_num]
         self.bid_info_history.append(bid_info)
 
-        print('The bid information is')
+        self.log('The bid information is')
         ymtb = pt.PrettyTable()
         ymtb.field_names = ['House Number', *bid_info.keys()]
         ymtb.add_row(['Buyer', *bid_info.values()])
-        print(ymtb)
+        self.log(ymtb)
 
-        print('The bid prices for houses are')
+        self.log('The bid prices for houses are')
         ymtb = pt.PrettyTable()
         ymtb.field_names = ['House Number', *self.house_list]
         ymtb.add_row(['Price', *self.p])
-        print(ymtb)
+        self.log(ymtb)
 
         self.winner_list=[np.random.choice(bid_info[ii]) for ii in bid_info.keys()]
         self.winner_history.append(self.winner_list)
@@ -763,20 +746,20 @@ class ascending_bid_auction:
         self.loser_list = list(loser_set)
         self.loser_history.append(self.loser_list)
 
-        print('The winners are')
-        print(self.winner_list)
+        self.log('The winners are')
+        self.log(self.winner_list)
 
-        print('The losers are')
-        print(self.loser_list)
-        print('\n')
+        self.log('The losers are')
+        self.log(self.loser_list)
+        self.log('\n')
 
 
     def check_terminal_condition(self):
         loser_num = len(self.loser_list)
 
         if loser_num == 0:
-            print('The auction ends because every buyer gets one house.')
-            print('\n')
+            self.log('The auction ends because every buyer gets one house.')
+            self.log('\n')
             return True
 
         p_mat = (self.ϵ + self.p)[:,None] @ np.ones(loser_num)[None,:]
@@ -812,17 +795,17 @@ class ascending_bid_auction:
             bid_info[house_num] = bid_info_active_loser[house_num]
         self.bid_info_history.append(bid_info)
 
-        print('The bid information is')
+        self.log('The bid information is')
         ymtb = pt.PrettyTable()
         ymtb.field_names = ['House Number', *bid_info.keys()]
         ymtb.add_row(['Buyer', *bid_info.values()])
-        print(ymtb)
+        self.log(ymtb)
 
-        print('The bid prices for houses are')
+        self.log('The bid prices for houses are')
         ymtb = pt.PrettyTable()
         ymtb.field_names = ['House Number', *self.house_list]
         ymtb.add_row(['Price', *self.p])
-        print(ymtb)
+        self.log(ymtb)
 
         self.winner_list=[np.random.choice(bid_info[ii]) for ii in bid_info.keys()]
         self.winner_history.append(self.winner_list)
@@ -834,79 +817,81 @@ class ascending_bid_auction:
         self.loser_list = list(loser_set)
         self.loser_history.append(self.loser_list)
 
-        print('The winners are')
-        print(self.winner_list)
+        self.log('The winners are')
+        self.log(self.winner_list)
 
-        print('The losers are')
-        print(self.loser_list)
-        print('\n')
+        self.log('The losers are')
+        self.log(self.loser_list)
+        self.log('\n')
 
 
-    def start_auction(self):
-        print('The Ascending Bid Auction for Houses')
-        print('\n')
+    def start_auction(self, verbose=True):
+        # set verbose=False to run the auction without printing a report
+        self.log = print if verbose else (lambda *args, **kwargs: None)
+        self.log('The Ascending Bid Auction for Houses')
+        self.log('\n')
 
-        print('Basic Information: %d houses, %d buyers'%(self.n, self.m))
+        self.log('Basic Information: %d houses, %d buyers'%(self.n, self.m))
 
-        print('The valuation matrix is as follows')
+        self.log('The valuation matrix is as follows')
         ymtb = pt.PrettyTable()
         ymtb.field_names = ['Buyer Number', *(np.arange(self.m))]
         for ii in range(self.n):
             ymtb.add_row(['House %d'%(ii), *self.v[ii,:]])
-        print(ymtb)
+        self.log(ymtb)
 
-        print('The reservation prices for houses are')
+        self.log('The reservation prices for houses are')
         ymtb = pt.PrettyTable()
         ymtb.field_names = ['House Number', *self.house_list]
         ymtb.add_row(['Price', *self.r])
-        print(ymtb)
-        print('The minimum increment of bid price is %.2f' % self.ϵ)
-        print('\n')
+        self.log(ymtb)
+        self.log('The minimum increment of bid price is %.2f' % self.ϵ)
+        self.log('\n')
 
         ctr = 1
         if self.check_kick_off_condition():
-            print('Auction starts successfully')
-            print('\n')
-            print('Round %d'% ctr)
+            self.log('Auction starts successfully')
+            self.log('\n')
+            self.log('Round %d'% ctr)
 
             self.submit_initial_bid()
 
             while True:
                 if self.check_terminal_condition():
-                    print('Auction ends')
-                    print('\n')
+                    self.log('Auction ends')
+                    self.log('\n')
 
-                    print('The final result is as follows')
-                    print('\n')
-                    print('The allocation plan is')
+                    self.log('The final result is as follows')
+                    self.log('\n')
+                    self.log('The allocation plan is')
                     ymtb = pt.PrettyTable()
                     ymtb.field_names = ['House Number', *self.allocation.keys()]
                     ymtb.add_row(['Buyer', *self.allocation.values()])
-                    print(ymtb)
+                    self.log(ymtb)
 
-                    print('The bid prices for houses are')
+                    self.log('The bid prices for houses are')
                     ymtb = pt.PrettyTable()
                     ymtb.field_names = ['House Number', *self.house_list]
                     ymtb.add_row(['Price', *self.p])
-                    print(ymtb)
+                    self.log(ymtb)
 
-                    print('The winners are')
-                    print(self.winner_list)
+                    self.log('The winners are')
+                    self.log(self.winner_list)
 
-                    print('The losers are')
-                    print(self.loser_list)
+                    self.log('The losers are')
+                    self.log(self.loser_list)
 
                     self.house_unsold_list = list(set(self.house_list).difference(set(self.allocation.keys())))
-                    print('The houses unsold are')
-                    print(self.house_unsold_list)
+                    self.log('The houses unsold are')
+                    self.log(self.house_unsold_list)
 
                     self.total_revenue = self.p[list(self.allocation.keys())].sum()
-                    print('The total revenue is %.2f' % self.total_revenue)
+                    self.log('The total revenue is %.2f' % self.total_revenue)
 
                     break
 
                 ctr += 1
-                print('Round %d'% ctr)
+                self.log('Round %d'% ctr)
                 self.submit_bid()
 
             # we compute the surplus matrix S and the quantity matrix X as required in 1.1
@@ -930,7 +915,7 @@ class ascending_bid_auction:
             self.allocation = dict_temp
 
         else:
-            print('The auction can not start because of high reservation prices')
+            self.log('The auction can not start because of high reservation prices')
 ```
 
 Let's use our class to conduct the auction described in one of the above examples.
@@ -957,7 +942,7 @@ auction_1.S
 auction_1.Q
 ```
 
-## Robustness Checks
+## Robustness checks
 
 Let's do some stress testing of our code by applying it to  auctions characterized by different matrices of private values.
 
@@ -971,7 +956,7 @@ auction_2 = ascending_bid_auction(v2, r, ϵ)
 auction_2.start_auction()
 ```
 
-**2. multilple excess buyers**
+**2. multiple excess buyers**
 
 ```{code-cell} ipython3
 v3 = np.array([[8,5,9,4,3],[4,11,7,4,6],[9,7,6,4,2]])
@@ -1017,11 +1002,11 @@ auction_6.start_auction()
 
 +++
 
-## A Groves-Clarke Mechanism
+## A Groves-Clarke mechanism
 
 +++
 
-We now decribe an alternative way for society to allocate $n$  houses to $m$ possible buyers in a way that maximizes
+We now describe an alternative way for society to allocate $n$  houses to $m$ possible buyers in a way that maximizes
  total value across all potential buyers.
 
 We continue to assume that each buyer can purchase at most one house.
@@ -1030,7 +1015,7 @@ The mechanism  is a very special case of a Groves-Clarke mechanism {cite}`Groves
 
 Its special structure substantially simplifies writing Python code to find an optimal allocation.
 
-Our mechanims works like this.
+Our mechanism works like this.
 
 * The values $V_{ij}$ are private information to person $j$
 
@@ -1040,9 +1025,9 @@ Our mechanims works like this.
 
 * The social planner tells no one these, but uses them to allocate houses and set prices
 
-* The mechanism is designed in a way that makes all prospective buyers want to tell the planner their private values
+* The mechanism is *intended* to make all prospective buyers want to tell the planner their private values
 
-   - truth telling is a dominant strategy for each potential buyer
+   - we shall put this intention to a test below, and find that it is not achieved
 
 * The planner finds a house, bidder pair with highest private value by computing
    $(\tilde i, \tilde j) = \operatorname{argmax} (V_{ij})$
@@ -1061,7 +1046,7 @@ Our mechanims works like this.
 
 +++
 
-## An Example Solved by Hand
+## An example solved by hand
 
 +++
 
@@ -1079,7 +1064,7 @@ $$
 ```{code-cell} ipython3
 np.random.seed(666)
 
-V_orig = np.array([[10, 9, 8, 7, 6],  # record the origianl values
+V_orig = np.array([[10, 9, 8, 7, 6],  # record the original values
                    [9, 9, 7, 6, 6],
                    [8, 6, 6, 9, 4],
                    [7, 5, 6, 4, 9]])
@@ -1206,9 +1191,9 @@ S = V_orig*Q - np.diag(p)@Q
 p, Q, V, S
 ```
 
-##  Another Python Class
+## Another Python class
 
-It is efficient to assemble our calculations in a single Python Class.
+It is efficient to assemble our calculations in a single Python class.
 
 ```{code-cell} ipython3
 class GC_Mechanism:
@@ -1235,12 +1220,12 @@ class GC_Mechanism:
         Find the house-buyer pair with the highest value.
         When the highest private value corresponds to more than one house, bidder pairs,
         we choose the pair with the highest sale price.
-        Moreoever, if the highest sale price corresponds to two or more pairs with highest private value,
+        Moreover, if the highest sale price corresponds to two or more pairs with highest private value,
         We randomly choose one.
 
         Parameters:
         ----------
-        V: 2 dimensional private value matrix with -1 indicating revomed rows and columns
+        V: 2 dimensional private value matrix with -1 indicating removed rows and columns
 
         Returns:
         ----------
@@ -1265,7 +1250,12 @@ class GC_Mechanism:
         return i, j
 
     def update_status(self, i, j):
-        self.p[i] = np.max(np.delete(self.V[i, :], j))
+        # the price is the best forgone value of a rival buyer for the same house;
+        # entries equal to -1 mark buyers and houses already dealt with, and if no
+        # rival remains there is no competing bid, so the price is zero
+        rivals = np.delete(self.V[i, :], j)
+        rivals = rivals[rivals >= 0]
+        self.p[i] = rivals.max() if rivals.size > 0 else 0.0
         self.Q[i, j] = 1
         self.V[i, :] = -1
         self.V[:, j] = -1
@@ -1273,18 +1263,19 @@ class GC_Mechanism:
     def calculate_surplus(self):
         self.S = self.V_orig*self.Q - np.diag(self.p)@self.Q
 
-    def start(self):
+    def start(self, verbose=True):
+        log = print if verbose else (lambda *args, **kwargs: None)
         while (np.max(self.V)>=0):
             i, j = self.find_argmax()
             self.update_status(i, j)
-            print("House %i is sold to buyer %i at price %i"%(i[0], j[0], self.p[i[0]]))
-            print("\n")
+            log("House %i is sold to buyer %i at price %i"%(i[0], j[0], self.p[i[0]]))
+            log("\n")
         self.calculate_surplus()
-        print("Prices of house:\n", self.p)
-        print("\n")
-        print("The status matrix:\n", self.Q)
-        print("\n")
-        print("The surplus matrix:\n", self.S)
+        log("Prices of house:\n", self.p)
+        log("\n")
+        log("The status matrix:\n", self.Q)
+        log("\n")
+        log("The surplus matrix:\n", self.S)
 
 ```
 
@@ -1305,7 +1296,7 @@ Here we use some additional notation designed to conform with standard notation 
 
 We want to verify that our pseudo code is indeed a **pivot mechanism**, also called a **VCG** (Vickrey-Clarke-Groves) mechanism.
 
-  * The mechanism is named after {cite}`Groves_73`, {cite}`Clarke_71`, and {cite}`Vickrey_61`.
+  * The mechanism is named after {cite:t}`Groves_73`, {cite:t}`Clarke_71`, and {cite:t}`Vickrey_61`.
 
 To prepare for verifying this, we add some notation.
 
@@ -1337,16 +1328,19 @@ In our setting, equation {eq}`eq:GC2` says that the mechanism charges people for
 
 Thus, notice that according to equation {eq}`eq:GC2`:
 
-- unsuccessful prospective buyers pay $0$ because removing  them from "society" would not affect the allocation chosen by the mechanim
+- unsuccessful prospective buyers pay $0$ because removing  them from "society" would not affect the allocation chosen by the mechanism
 
 - successful prospective buyers pay the difference between the total value society could achieve without them present and the total value that others present in society do achieve under the mechanism.
 
-The generalized second-price auction described in our pseudo code above does indeed satisfy (1).
-We want to compute $\check t_j$ for $j = 1, \ldots, m$ and compare with $p_j$ from the second price auction.
+It is natural to ask whether the greedy mechanism that we coded above satisfies {eq}`eq:GC1` and {eq}`eq:GC2`.
+
+We shall compute $\check t_j$ for $j = 1, \ldots, m$ and compare it with the price $p_j$ that the greedy mechanism actually charges.
+
+The answer, which we develop in the next two sections, is that it satisfies neither requirement in general.
 
 +++
 
-###  Social Cost
+### Social cost
 
 Using the GC_Mechanism class, we can  calculate the social cost of each buyer.
 
@@ -1409,4 +1403,295 @@ gc_mechanism_exc_2.start()
 
 print("\nThe social cost of buyer 2:",
      np.sum(gc_mechanism_exc_2.Q*gc_mechanism_exc_2.V_orig)-np.sum(np.delete(gc_mechanism.Q*gc_mechanism.V_orig, 2, axis=1)))
+```
+
+## Is the greedy mechanism a VCG mechanism?
+
+The mechanism that our benevolent planner runs is **greedy**: it repeatedly grabs the largest remaining entry of the value matrix.
+
+A genuine VCG mechanism must do two things, namely, satisfy {eq}`eq:GC1` and {eq}`eq:GC2`.
+
+Let's check them one at a time.
+
+We'll need a way to compute the value-maximizing allocation, which is a classic **assignment problem** that can be solved by linear programming.
+
+```{code-cell} ipython3
+from scipy.optimize import linear_sum_assignment
+
+def optimal_assignment(V):
+    """
+    Solve the assignment problem: allocate at most one house to each buyer
+    so as to maximize the total value.
+    Returns the total value and a dictionary mapping buyer -> house.
+    """
+    rows, cols = linear_sum_assignment(-V)
+    return V[rows, cols].sum(), {int(c): int(r) for r, c in zip(rows, cols)}
+
+def greedy_outcome(V):
+    "Run the planner's greedy mechanism quietly and report what it achieves."
+    gc = GC_Mechanism(V.copy())
+    gc.start(verbose=False)
+    return (gc.Q * gc.V_orig).sum(), gc
+```
+
+### Does the greedy allocation maximize total value?
+
+Consider this simple matrix of private values for two houses and two buyers.
+
+```{code-cell} ipython3
+V_trap = np.array([[10, 9],
+                   [9, 1]])
+
+greedy_value, _ = greedy_outcome(V_trap)
+best_value, best_alloc = optimal_assignment(V_trap)
+
+print(f"greedy total value:  {greedy_value:.0f}")
+print(f"optimal total value: {best_value:.0f}   (buyer -> house: {best_alloc})")
+```
+
+The greedy rule starts from the largest entry, $V_{00} = 10$, and gives house 0 to buyer 0.
+
+That leaves only $V_{11} = 1$, for a total of $11$.
+
+But assigning house 0 to buyer 1 and house 1 to buyer 0 yields $9 + 9 = 18$.
+
+The largest entry was a trap: grabbing it destroyed a better pair of assignments.
+
+So the greedy mechanism does *not* satisfy {eq}`eq:GC1`.
+
+{ref}`ha_ex1` asks you to investigate how often this happens.
+
+The value matrices used earlier in this lecture happen to be ones for which greedy does find the best allocation, which is why the difficulty did not show up before.
+
+### Are the prices VCG payments?
+
+Now let's compare the prices that the greedy mechanism charges with the social costs {eq}`eq:GC2`.
+
+```{code-cell} ipython3
+def vcg_payments(V):
+    """
+    The social cost of each buyer:
+    the total value others could achieve without this buyer,
+    minus the total value others do achieve when this buyer is present.
+    """
+    total, alloc = optimal_assignment(V)
+    payments = np.zeros(V.shape[1])
+
+    for j in range(V.shape[1]):
+        total_without_j, _ = optimal_assignment(np.delete(V, j, axis=1))
+        value_of_others = total - (V[alloc[j], j] if j in alloc else 0.0)
+        payments[j] = total_without_j - value_of_others
+
+    return payments
+```
+
+```{code-cell} ipython3
+t_vcg = vcg_payments(V_orig)
+
+print(f"{'buyer':>6}{'house':>7}{'greedy price':>15}{'VCG payment':>14}")
+for j in range(V_orig.shape[1]):
+    house = [i for i in range(V_orig.shape[0]) if gc_mechanism.Q[i, j] == 1]
+    if house:
+        print(f"{j:>6}{house[0]:>7}{gc_mechanism.p[house[0]]:>15.1f}{t_vcg[j]:>14.1f}")
+```
+
+The prices differ from the VCG payments.
+
+Notice that the VCG payments are exactly the social costs that we computed in the previous section by excluding one buyer at a time.
+
+So the planner's mechanism collects *more* than the externality that a winning buyer imposes on others.
+
+A mechanism that assigns objects greedily and charges each winner the best forgone offer for the same object is known as a **generalized second-price** mechanism.
+
+Generalized second-price mechanisms are widely used -- they are how search engines sell advertising slots -- and it is well known that they are *not* VCG mechanisms {cite}`EdelmanOstrovskySchwarz2007`.
+
+### Is truthful reporting a dominant strategy?
+
+Because the mechanism is not VCG, the argument that makes truth telling a dominant strategy does not apply.
+
+In fact truth telling is *not* a dominant strategy here, and {ref}`ha_ex2` asks you to demonstrate that by finding a profitable lie.
+
+### What about the ascending bid auction?
+
+Here is the striking fact promised earlier.
+
+Our setting is an assignment market in which each buyer wants at most one house.
+
+For such markets, {cite:t}`Leonard1983` and {cite:t}`DemangeGaleSotomayor1986` showed that the **minimum competitive equilibrium prices** coincide with the payments prescribed by the VCG mechanism.
+
+Since an ascending auction with straightforward bidding converges to those minimum competitive equilibrium prices, it follows that our ascending bid auction implements the VCG outcome as the bid increment $\epsilon$ becomes small.
+
+It is the auctioneer, not the benevolent planner, who runs a VCG mechanism here.
+
+{ref}`ha_ex3` asks you to verify this numerically.
+
+## Exercises
+
+```{exercise}
+:label: ha_ex1
+
+We saw that the greedy mechanism can fail to maximize total value.
+
+How often does it fail?
+
+Draw many random value matrices with integer entries, run both the greedy mechanism and `optimal_assignment`, and report
+
+1. the fraction of matrices for which greedy is suboptimal
+1. the largest percentage shortfall that you find
+
+Then explain in words why a greedy rule goes wrong.
+```
+
+```{solution-start} ha_ex1
+:class: dropdown
+```
+
+```{code-cell} ipython3
+rng_ha = np.random.default_rng(0)
+trials = 200
+failures, worst = 0, 0.0
+
+for _ in range(trials):
+    n_h, m_b = rng_ha.integers(2, 5), rng_ha.integers(2, 6)
+    if m_b < n_h:
+        n_h, m_b = m_b, n_h
+    V_rand = rng_ha.integers(0, 12, size=(n_h, m_b))
+
+    greedy_value, _ = greedy_outcome(V_rand)
+    best_value, _ = optimal_assignment(V_rand)
+
+    if greedy_value < best_value - 1e-9:
+        failures += 1
+        worst = max(worst, (best_value - greedy_value)/best_value)
+
+print(f"greedy was suboptimal in {failures} of {trials} matrices")
+print(f"largest shortfall: {100*worst:.1f} per cent of the attainable total value")
+```
+
+Greedy fails often, and sometimes badly.
+
+The reason is that the largest entry of the value matrix need not belong to the best assignment.
+
+Taking it removes a house *and* a buyer from further consideration, and that can destroy two good matches in order to secure one very good one.
+
+Choosing the best assignment requires weighing all pairings simultaneously, which is what the linear programming routine does.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ha_ex2
+
+Show that truthful reporting is not a dominant strategy under the planner's greedy mechanism.
+
+Use the value matrix `V_orig` of the previous section, and consider buyer 0, whose true values for the three houses are $(10, 9, 8)$.
+
+1. What surplus does buyer 0 receive when everyone reports truthfully?
+1. Search over reports $(a, b, c)$ with integer entries between 0 and 10 that buyer 0 might submit instead, holding fixed the reports of all other buyers, and find the report that maximizes buyer 0's *true* surplus.
+1. Explain what the manipulation accomplishes.
+```
+
+```{solution-start} ha_ex2
+:class: dropdown
+```
+
+```{code-cell} ipython3
+def surplus_of_buyer_0(V_true, V_reported):
+    "True surplus of buyer 0 when the mechanism is run on the reported values."
+    gc = GC_Mechanism(V_reported.copy())
+    gc.start(verbose=False)
+    for i in range(V_true.shape[0]):
+        if gc.Q[i, 0] == 1:
+            return V_true[i, 0] - gc.p[i], i, gc.p[i]
+    return 0.0, None, None      # buyer 0 wins nothing
+
+np.random.seed(0)
+truth_surplus, house, price = surplus_of_buyer_0(V_orig, V_orig)
+print(f"truthful report: buyer 0 wins house {house} at price {price:.0f}, "
+      f"surplus {truth_surplus:.0f}")
+
+best = (truth_surplus, None)
+for a in range(11):
+    for b in range(11):
+        for c in range(11):
+            V_lie = V_orig.copy()
+            V_lie[:, 0] = [a, b, c]
+            surplus, h, pr = surplus_of_buyer_0(V_orig, V_lie)
+            if surplus > best[0] + 1e-9:
+                best = (surplus, (a, b, c, h, pr))
+
+report = best[1]
+print(f"best misreport found: {report[:3]} wins house {report[3]} "
+      f"at price {report[4]:.0f}, surplus {best[0]:.0f}")
+```
+
+By reporting that he places no value on the two expensive houses, buyer 0 steps out of the competition for them.
+
+The mechanism then awards him a cheaper house, and charges him the best forgone offer for *that* house, which is much less than what he paid when he told the truth.
+
+His true value for the house he ends up with is high enough that this is a profitable deviation.
+
+Under a genuine VCG mechanism this could not happen: a buyer's payment never depends on his own report, only on the harm he does to others.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ha_ex3
+
+Verify that the ascending bid auction implements the VCG outcome.
+
+Use the value matrix
+
+$$
+v =\begin{bmatrix} 8 & 5 & 9 & 4 \cr
+                   4 & 11 & 7 & 4 \cr
+                   9 & 7 & 6 & 4 \end{bmatrix}
+$$
+
+with reservation prices of zero, so that prices are free to settle at their competitive levels.
+
+1. Compute the VCG payments and the value-maximizing allocation.
+1. Run the ascending bid auction for $\epsilon = 1, 0.5, 0.25, 0.1, 0.05$ and record what each winning buyer pays.
+1. Does the auction maximize total value? Do its payments approach the VCG payments?
+```
+
+```{solution-start} ha_ex3
+:class: dropdown
+```
+
+```{code-cell} ipython3
+v_ex = np.array([[8, 5, 9, 4],
+                 [4, 11, 7, 4],
+                 [9, 7, 6, 4]])
+
+t_vcg_ex = vcg_payments(v_ex)
+best_value_ex, best_alloc_ex = optimal_assignment(v_ex)
+
+print(f"VCG payments by buyer: {t_vcg_ex}")
+print(f"value-maximizing allocation (buyer -> house): {best_alloc_ex}")
+print(f"maximum total value: {best_value_ex:.0f}\n")
+
+print(f"{'ε':>7}{'total value':>14}   payments by buyer")
+for ϵ_try in (1.0, 0.5, 0.25, 0.1, 0.05):
+    np.random.seed(0)
+    auction = ascending_bid_auction(v_ex, np.zeros(3), ϵ_try)
+    auction.start_auction(verbose=False)
+
+    payments = {j: round(float(auction.p[i]), 3)
+                for i in range(v_ex.shape[0])
+                for j in range(v_ex.shape[1]) if auction.Q[i, j] == 1}
+    total_value = (auction.Q[:, :v_ex.shape[1]] * v_ex).sum()
+    print(f"{ϵ_try:>7}{total_value:>14.0f}   {payments}")
+```
+
+The auction always attains the maximum total value.
+
+As $\epsilon$ shrinks, each winner's payment approaches that buyer's VCG payment.
+
+This illustrates the theorem of {cite:t}`Leonard1983` and {cite:t}`DemangeGaleSotomayor1986`: in an assignment market, the minimum competitive equilibrium prices are exactly the VCG payments.
+
+The auctioneer never asks anyone to reveal a private value, yet the ascending auction arrives at the outcome that a correctly designed planner would compute from full information.
+
+```{solution-end}
 ```
