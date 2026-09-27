@@ -165,13 +165,13 @@ This computes the probability mass function of the sum of two discrete random va
 Consider two probability mass functions:
 
 $$
-f_j = \Pr(X = j), \quad j = 0, 1
+f_j = \mathbb{P}\{X = j\}, \quad j = 0, 1
 $$
 
 and
 
 $$
-g_j = \Pr(Y = j), \quad j = 0, 1, 2, 3
+g_j = \mathbb{P}\{Y = j\}, \quad j = 0, 1, 2, 3
 $$
 
 The distribution of $Z = X + Y$ is given by the convolution $h = f * g$.
@@ -276,6 +276,8 @@ print(f"Sample mean: {samp_mean:.3f}")
 
 We define helper functions to create discretized versions of lognormal probability density functions.
 
+We write out the density by hand to keep the formula {eq}`lognormal_pdf` in view; `scipy.stats.lognorm(s=σ, scale=np.exp(μ)).pdf(x)` computes the same thing.
+
 ```{code-cell} ipython3
 def lognormal_pdf(x, μ, σ):
     """
@@ -288,7 +290,19 @@ def lognormal_pdf(x, μ, σ):
 
 def discretize_lognormal(μ, σ, I, m):
     """
-    Create discretized lognormal probability mass function.
+    Discretize a lognormal distribution on the grid 0, m, 2m, ..., up to I.
+
+    Parameters
+    ----------
+    μ, σ : parameters of the lognormal distribution
+    I    : upper end of the grid, which truncates the right tail
+    m    : spacing between grid points, which sets the resolution
+
+    Returns
+    -------
+    p_array      : the density evaluated on the grid
+    p_array_norm : the implied probability mass function, summing to one
+    x            : the grid itself, with I / m points
     """
     x = np.arange(1e-7, I, m)
     p_array = lognormal_pdf(x, μ, σ)
@@ -296,17 +310,26 @@ def discretize_lognormal(μ, σ, I, m):
     return p_array, p_array_norm, x
 ```
 
-We set the grid length $I$ to a power of 2 to enable efficient Fast Fourier Transform computation.
+Two separate choices govern the quality of this approximation, and it pays to keep them straight.
+
+* $I$ fixes where the grid *stops*, so it controls how much of the right tail we throw away
+* $m$ fixes the *spacing* between grid points, so it controls resolution
+
+The grid has $I/m$ points, so raising $I$ at fixed $m$ buys range, while lowering $m$ at fixed $I$ buys accuracy.
+
+Once $I$ is large enough that almost no probability mass lies beyond it, further increases change nothing, and only $m$ matters.
+
+{ref}`hoist_ex1` asks you to verify this.
 
 ```{note}
-Increasing the power $p$ (e.g., from 12 to 15) improves the approximation quality but increases computational cost.
+`scipy.signal.fftconvolve` pads its inputs to a convenient length internally, so there is no need to choose $I/m$ to be a power of two.
 ```
 
 ```{code-cell} ipython3
 # Set grid parameters
 p = 15
-I = 2**p  # Truncation value (power of 2 for FFT efficiency)
-m = 0.1   # Increment size
+I = 2**p  # where the grid stops: truncates the right tail
+m = 0.1   # spacing between grid points: sets the resolution
 ```
 
 Let's visualize how well the discretized distribution approximates the continuous lognormal distribution:
@@ -347,13 +370,13 @@ print(f"Discretized mean: {mean_discrete:.3f}")
 
 Now let's use the convolution theorem to compute the probability distribution of a sum of the two lognormal random variables we have parameterized above.
 
-We'll also compute the probability of a sum of three log normal distributions constructed above.
+We'll also compute the probability distribution of a sum of three log normal distributions constructed above.
 
-For long sequences, `scipy.signal.fftconvolve` is much faster than `numpy.convolve` because it uses Fast Fourier Transforms.
+For long sequences, `scipy.signal.fftconvolve` is much faster than `numpy.convolve` because it uses fast Fourier transforms.
 
 Let's define the Fourier transform and the inverse Fourier transform first
 
-### The Fast Fourier Transform
+### The fast Fourier transform
 
 The **Fourier transform** of a sequence $\{x_t\}_{t=0}^{T-1}$ is
 
@@ -390,30 +413,39 @@ This is the algorithm used by `fftconvolve`.
 
 Let's do a warmup calculation that compares the times taken by `numpy.convolve` and `scipy.signal.fftconvolve`
 
-```{code-cell} ipython3
-# Discretize three lognormal distributions
-_, pmf1, x = discretize_lognormal(μ, σ, I, m)
-_, pmf2, x = discretize_lognormal(μ, σ, I, m)
-_, pmf3, x = discretize_lognormal(μ, σ, I, m)
+Our three components are identically distributed, so a single discretization serves for all of them.
 
-# Time numpy.convolve
+```{code-cell} ipython3
+# Discretize the lognormal distribution; the three components are IID
+_, pmf1, x = discretize_lognormal(μ, σ, I, m)
+pmf2 = pmf3 = pmf1
+
+# Direct convolution costs O(N²), so we time it on a short prefix
+short = pmf1[:20_000]
+
 with qe.Timer() as timer_numpy:
-    conv_np = np.convolve(pmf1, pmf2)
-    conv_np = np.convolve(conv_np, pmf3)
+    np.convolve(short, short)
 time_numpy = timer_numpy.elapsed
 
-# Time fftconvolve
 with qe.Timer() as timer_fft:
-    conv_fft = fftconvolve(pmf1, pmf2)
-    conv_fft = fftconvolve(conv_fft, pmf3)
+    fftconvolve(short, short)
 time_fft = timer_fft.elapsed
 
-print(f"Time with np.convolve: {time_numpy:.4f} seconds")
-print(f"Time with fftconvolve: {time_fft:.4f} seconds")
-print(f"Speedup factor: {time_numpy / time_fft:.1f}x")
+print(f"On {len(short):,} points:")
+print(f"  np.convolve: {time_numpy:.4f} seconds")
+print(f"  fftconvolve: {time_fft:.4f} seconds")
+print(f"  speedup:     {time_numpy / time_fft:.0f}x")
 ```
 
-The Fast Fourier Transform provides orders of magnitude speedup.
+The gap widens rapidly with the length of the sequences, because direct convolution costs $O(N^2)$ operations while the FFT approach costs $O(N \log N)$.
+
+On the full grid used below, the direct method would be far slower still.
+
+```{code-cell} ipython3
+# The full calculation, done the fast way
+conv_fft = fftconvolve(fftconvolve(pmf1, pmf2), pmf3)
+print(f"grid points per component: {len(pmf1):,}")
+```
 
 Now let’s plot our computed probability mass function approximation for the sum of two log normal random variables against the histogram of the sample that we formed above
 
@@ -482,7 +514,7 @@ print(f"  Computed mean: {mean_conv3:.3f}")
 
 We shall soon apply the convolution theorem to compute the probability of a **top event** in a failure tree analysis.
 
-Before applying the convolution theorem, we first describe the model that connects constituent events to the *top* end whose failure rate we seek to quantify.
+Before applying the convolution theorem, we first describe the model that connects constituent events to the *top event* whose failure rate we seek to quantify.
 
 Fault tree analysis is a widely used technique for assessing system reliability, as described by {cite:t}`Ardron_2018`.
 
@@ -521,7 +553,7 @@ We assume:
 * The failure probability $P(A_i)$ of each component $A_i$ is small
 * Component failures are statistically independent
 
-We repeatedly apply a **rare event approximation** to obtain the following formula for the problem of a system failure:
+We repeatedly apply a **rare event approximation** to obtain the following formula for the probability of a system failure:
 
 $$ 
 P(F) \approx P(A_1) + P (A_2) + \cdots + P (A_n) 
@@ -539,6 +571,14 @@ where $P(F)$ is the system failure probability.
 
 Probabilities for each event are recorded as failure rates per year.
 
+```{note}
+Strictly speaking, a failure *rate* per year and a failure *probability* within a year are different objects.
+
+For rare events they nearly coincide, because $1 - e^{-\lambda} \approx \lambda$ when $\lambda$ is small.
+
+The same approximation that lets us add probabilities across components also lets us move between rates and probabilities, so we follow the reliability literature in using the two words interchangeably here.
+```
+
 ## Failure rates unknown
 
 Now we come to the problem that really interests us, following  {cite:t}`Ardron_2018` and
@@ -551,13 +591,25 @@ We address this problem by specifying **probabilities of probabilities** that  c
 
 Thus, we assume that a system analyst is uncertain about  the failure rates $P(A_i), i =1, \ldots, n$ for components of a system.
 
-The analyst copes with this situation by regarding the systems failure probability $P(F)$ and each of the component probabilities $P(A_i)$ as  random variables.
+The analyst copes with this situation by regarding the system's failure probability $P(F)$ and each of the component probabilities $P(A_i)$ as  random variables.
 
   * dispersions of the probability distribution of $P(A_i)$ characterizes the analyst's uncertainty about the failure probability $P(A_i)$
 
   * the dispersion of the implied probability distribution of $P(F)$ characterizes his uncertainty about the probability of a system's failure.
 
 This leads to what is sometimes called a **hierarchical** model in which the analyst has  probabilities about the probabilities $P(A_i)$.
+
+```{note}
+Two distinct kinds of randomness appear in this model, and it is worth keeping them apart.
+
+*Aleatory* uncertainty is the randomness in whether a component fails during a given year; it is described by the failure rate $P(A_i)$.
+
+*Epistemic* uncertainty is the analyst's ignorance about the value of that rate; it is described by the lognormal distribution that he places over $P(A_i)$.
+
+The distribution that we compute below is an epistemic object: it describes what the analyst knows about a failure rate, not how often the system fails.
+
+Separating the two is the central recommendation of {cite:t}`apostolakis1990`.
+```
 
 The analyst formalizes his uncertainty by assuming that
 
@@ -570,8 +622,18 @@ The analyst assumes that such  information about the observed dispersion of annu
 
 The analyst  assumes that the random variables $P(A_i)$   are  statistically mutually independent.
 
+```{warning}
+Independence is a strong assumption and it is the one that reliability analysts worry about most.
+
+A design flaw, a shared power supply, a common maintenance crew, or a single environmental shock can push many components toward failure at once.
+
+Such **common-cause** failures make the upper tail of the distribution of $P(F)$ much fatter than the independent calculation suggests, which is precisely the region that a safety regulator cares about.
+
+{ref}`hoist_ex5` quantifies how much difference this makes.
+```
+
 The analyst wants to approximate a probability mass function and cumulative distribution function
-of the systems failure probability $P(F)$.
+of the system's failure probability $P(F)$.
 
   * We say probability mass function because of how we discretize each random variable, as described earlier.
 
@@ -587,12 +649,6 @@ The application estimates the annual failure rate of a critical hoist at a nucle
 A regulatory agency requires the system to be designed so that the top event failure rate is small with high probability.
 
 ### Model specification
-
-We'll take close to a real world example by assuming that $n = 14$.
-
-The example estimates the annual failure rate of a critical  hoist at a nuclear waste facility.
-
-A regulatory agency wants the system to be designed in a way that makes the failure rate of the top event small with high probability.
 
 This example is Design Option B-2 (Case I) described in Table 10 on page 27 of {cite:t}`Greenfield_Sargent_1993`.
 
@@ -628,7 +684,12 @@ We define a helper function to find array indices:
 ```{code-cell} ipython3
 def find_nearest(array, value):
     """
-    Find the index of the array element nearest to the given value.
+    Index of the array element nearest to the given value.
+
+    Applied to a cumulative distribution function, this returns the grid point
+    whose cumulative probability is closest to a target, which for a finely
+    discretized distribution is indistinguishable from the usual definition of
+    a quantile as the smallest x with CDF(x) >= q.
     """
     array = np.asarray(array)
     idx = (np.abs(array - value)).argmin()
@@ -665,7 +726,32 @@ with qe.Timer() as timer:
         system_pmf = fftconvolve(system_pmf, pmf)
 
 print(f"Time for 13 convolutions: {timer.elapsed:.4f} seconds")
+
+# the convolution lives on the same grid spacing, but extends much further
+system_grid = np.arange(len(system_pmf)) * m
+print(f"grid points in the answer: {len(system_pmf):,}")
 ```
+
+Before plotting the cumulative distribution function, let's look at the density itself.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Density of the system failure rate
+    name: fig-hoist-pdf
+---
+fig, ax = plt.subplots(figsize=(10, 6))
+upper = 2000
+ax.plot(system_grid[:int(upper/m)], system_pmf[:int(upper/m)] / m, 'b-', lw=2)
+ax.set_xlabel(r'failure rate ($\times 10^{-9}$ per year)')
+ax.set_ylabel('density')
+plt.show()
+```
+
+The density is strongly skewed to the right: a long upper tail stretches far beyond the bulk of the distribution.
+
+This asymmetry is what makes a single point estimate of a failure rate a poor summary, and it is why the analyst reports quantiles instead.
 
 We now plot a counterpart to the cumulative distribution function (CDF) in  figure 5 on page 29 of {cite:t}`Greenfield_Sargent_1993`
 
@@ -700,136 +786,381 @@ We also present a counterpart to their Table 11 on page 28 of {cite:t}`Greenfiel
 
 
 ```{code-cell} ipython3
-# Find quantiles
-quantiles = [0.01, 0.05, 0.10, 0.50, 0.665, 0.85, 0.90, 0.95, 0.99, 0.9978]
-quantile_values = [x[find_nearest(cdf, q)] for q in quantiles]
+# Percentiles reported in Table 11 of Greenfield and Sargent (1993),
+# together with their published values, in units of 10^-9 per year
+reference = {1.0: 77, 10.0: 130, 50.0: 263, 66.5: 341,
+             85.0: 513, 95.0: 811, 99.0: 1480, 99.78: 2490}
 
-# Create table
-table_data = [[f"{100*q:.2f}%", f"{val:.3f}"]
-              for q, val in zip(quantiles, quantile_values)]
+table_data = []
+for pc, published in reference.items():
+    ours = system_grid[find_nearest(cdf, pc/100)]
+    table_data.append([f"{pc}%", f"{ours:.1f}", published,
+                       f"{100*(ours - published)/published:+.1f}%"])
 
 print("\nSystem failure rate quantiles (×10^-9 per year):")
-print(tabulate(table_data, 
-      headers=['Percentile', 'Failure rate'], tablefmt='grid'))
+print(tabulate(table_data,
+      headers=['Percentile', 'Computed here', 'Greenfield-Sargent', 'Difference'],
+      tablefmt='grid'))
 ```
 
-The computed quantiles agree closely with column 2 of Table 11 on page 28 of {cite}`Greenfield_Sargent_1993`.
+Our quantiles reproduce the published ones to within one and a half per cent, and slightly understate each of them.
 
-Minor discrepancies may be due to differences in:
-* Numerical precision of input parameters $\mu_i, \sigma_i$
-* Number of grid points in the discretization
-* Grid increment size
+The small discrepancies reflect the precision of the reported parameters $\mu_i, \sigma_i$, the grid spacing $m$, and the point at which the grid is truncated.
+
+### Reading the answer
+
+The numbers in this table, rather than any single one of them, are the output of the analysis.
+
+The median failure rate is about $261 \times 10^{-9}$ per year, while the 95th percentile is about $808 \times 10^{-9}$, three times larger.
+
+That spread is not a statement about how often the hoist fails; it is a statement about how little the analyst knows about how often the hoist fails.
+
+Notice also where the *mean* of the distribution falls.
+
+```{code-cell} ipython3
+mean_rate = np.sum(system_grid * system_pmf)
+mean_percentile = 100 * cdf[find_nearest(system_grid, mean_rate)]
+
+print(f"mean failure rate: {mean_rate:.1f} × 10⁻⁹ per year")
+print(f"the mean sits at the {mean_percentile:.1f}th percentile")
+```
+
+Because the distribution is skewed, the mean lies well above the median, at about the 66th percentile.
+
+This is why Table 11 of {cite:t}`Greenfield_Sargent_1993` records the mean alongside the 66.5th percentile.
+
+The practical implication is the one that motivated the original study.
+
+```{code-cell} ipython3
+# The point estimate used in the U.S. Department of Energy's 1990 risk
+# assessment, expressed in the same units
+doe_estimate = 220    # 2.2 × 10^-7 per year
+
+pct = 100 * cdf[find_nearest(system_grid, doe_estimate)]
+print(f"the DOE point estimate of {doe_estimate} × 10⁻⁹ lies at "
+      f"the {pct:.0f}th percentile")
+print(f"so the analyst assigns probability {100-pct:.0f}% to the "
+      f"true rate exceeding it")
+```
+
+An analysis that reports a single number in place of a distribution conveys none of this.
+
+{cite:t}`Greenfield_Sargent_1993` made exactly this point: reading their figure, they put the Department of Energy's point estimate at the 36th percentile and concluded that there was roughly a 64 per cent chance that the true failure rate was higher.
 
 ## Exercises
 
-```{exercise-start}
+```{exercise}
 :label: hoist_ex1
-```
 
-Experiment with different values of the power parameter $p$ (which determines the grid size as $I = 2^p$).
+Our discretization involves two separate choices: where the grid stops, $I = 2^p$, and how finely it is spaced, $m$.
 
-Try $p \in \{12, 13, 14, 15, 16\}$ and compare:
-1. Computation time
-2. Accuracy of the median (50th percentile) compared to the reference value
-3. Memory usage implications
+Investigate what each one controls.
 
-What trade-offs do you observe?
-```{exercise-end}
+1. Holding $m = 0.05$ fixed, compute the median, the 95th percentile and the 99.78th percentile of the system failure rate for $p = 10, 11, \ldots, 15$. For each $p$, also compute how much probability mass the truncation discards, using $\sum_i \mathbb{P}\{P(A_i) > I\}$.
+1. Holding $p = 14$ fixed, repeat for $m = 0.4, 0.2, 0.1, 0.05, 0.025$.
+1. Which statistic is sensitive to which choice, and why? Are the values $p = 15$, $m = 0.05$ used in the lecture well chosen?
 ```
 
 ```{solution-start} hoist_ex1
 :class: dropdown
 ```
 
-Here is one solution:
+```{code-cell} ipython3
+from scipy.stats import norm
+
+def system_distribution(p_grid, m_grid):
+    "Failure rate distribution of the whole system on a given grid."
+    I_grid = 2**p_grid
+    pmfs = []
+    for μ_i, σ_i in params[:6]:
+        _, pmf_i, _ = discretize_lognormal(μ_i, σ_i, I_grid, m_grid)
+        pmfs.append(pmf_i)
+    μ7, σ7 = params[6]
+    _, pmf7, _ = discretize_lognormal(μ7, σ7, I_grid, m_grid)
+    pmfs.extend([pmf7] * 8)
+
+    total = pmfs[0]
+    for pmf_i in pmfs[1:]:
+        total = fftconvolve(total, pmf_i)
+    return total, np.arange(len(total)) * m_grid
+
+
+def quantiles_of(pmf, grid, levels=(0.5, 0.95, 0.9978)):
+    cdf_local = np.cumsum(pmf)
+    return [grid[find_nearest(cdf_local, q)] for q in levels]
+
+
+def discarded_mass(I_grid):
+    "Probability that a component's rate exceeds the end of the grid."
+    lost = sum(norm.sf((np.log(I_grid) - μ_i)/σ_i) for μ_i, σ_i in params[:6])
+    μ7, σ7 = params[6]
+    return lost + 8 * norm.sf((np.log(I_grid) - μ7)/σ7)
+
+
+rows = []
+for p_test in range(10, 16):
+    pmf_t, grid_t = system_distribution(p_test, 0.05)
+    med, q95, q9978 = quantiles_of(pmf_t, grid_t)
+    rows.append([p_test, 2**p_test, f"{discarded_mass(2**p_test):.1e}",
+                 f"{med:.2f}", f"{q95:.2f}", f"{q9978:.2f}"])
+
+print(tabulate(rows, headers=['p', 'I', 'mass discarded',
+                              'median', '95th', '99.78th'], tablefmt='grid'))
+```
 
 ```{code-cell} ipython3
-# Test different grid sizes
-p_values = [12, 13, 14, 15, 16]
-results = []
+rows = []
+for m_test in (0.4, 0.2, 0.1, 0.05, 0.025):
+    pmf_t, grid_t = system_distribution(14, m_test)
+    med, q95, q9978 = quantiles_of(pmf_t, grid_t)
+    rows.append([m_test, len(grid_t), f"{med:.3f}", f"{q95:.2f}", f"{q9978:.2f}"])
 
-for p_test in p_values:
-    I_test = 2**p_test
-    m_test = 0.05
-
-    # Discretize distributions
-    pmfs_test = []
-    for μ, σ in params[:6]:
-        _, pmf, x_test = discretize_lognormal(μ, σ, I_test, m_test)
-        pmfs_test.append(pmf)
-
-    # Add 8 copies of component type 7
-    μ7, σ7 = params[6]
-    _, pmf7, x_test = discretize_lognormal(μ7, σ7, I_test, m_test)
-    pmfs_test.extend([pmf7] * 8)
-
-    # Time the convolutions
-    with qe.Timer() as timer_test:
-        system_test = pmfs_test[0]
-        for pmf in pmfs_test[1:]:
-            system_test = fftconvolve(system_test, pmf)
-
-    # Compute median
-    cdf_test = np.cumsum(system_test)
-    median = x_test[find_nearest(cdf_test, 0.5)]
-
-    results.append([p_test, I_test,
-        f"{timer_test.elapsed:.4f}", f"{median:.7f}"])
-
-print(tabulate(results,
-               headers=['p', 'Grid size (2^p)', 'Time (s)', 'Median'],
+print(tabulate(rows, headers=['m', 'grid points', 'median', '95th', '99.78th'],
                tablefmt='grid'))
 ```
-The results typically show the following trade-offs:
 
-- Larger grid sizes provide better accuracy but increase computation time
-- The relationship between $p$ and computation time is roughly linear for FFT-based convolution
-- Beyond $p = 13$, the accuracy gains diminish while computational cost continues to grow
-- For this application, $p = 13$ provides a good balance between accuracy and efficiency
+The two choices do quite different jobs.
+
+Truncation governs the *far tail*.
+
+At $p = 10$ the 99.78th percentile is badly understated, and it keeps rising until about $p = 14$, by which point the discarded mass has fallen to roughly $10^{-6}$.
+
+The median, by contrast, has settled by $p = 12$: throwing away the extreme right tail of each component hardly moves the middle of the distribution of their sum.
+
+Resolution governs *overall precision*.
+
+Halving $m$ shifts every quantile slightly and uniformly, and the shifts are small: going from $m = 0.4$ to $m = 0.025$ moves the median by about 1.5 per cent.
+
+The lecture's choices are sensible.
+
+With $p = 15$ the discarded mass is around $10^{-7}$, so even the 99.78th percentile is accurate, and $m = 0.05$ is fine enough that further refinement changes little.
+
+The moral is that a grid that looks adequate for the median can be badly inadequate for the upper tail, which is exactly the region a safety regulator cares about.
 
 ```{solution-end}
 ```
 
-```{exercise-start}
+```{exercise}
 :label: hoist_ex2
+
+The rare event approximation replaces $P(A \cup B)$ by $P(A) + P(B)$, discarding $P(A \cap B)$.
+
+Assess how good it is here.
+
+1. Using the *mean* failure rate of each of the fourteen components as a representative value, compare $\sum_i p_i$ with the exact probability that at least one component fails, $1 - \prod_i (1 - p_i)$.
+1. Repeat with all the rates multiplied by $10^3$, $10^6$ and $10^7$, and report the relative error in each case.
+1. At what order of magnitude does the approximation start to matter?
 ```
-
-The rare event approximation assumes that $P(A_i) P(A_j)$ is negligible compared to $P(A_i) + P(A_j)$.
-
-Using the computed distribution, calculate the expected value of the system failure rate and compare it to the sum of the expected values of the individual component failure rates.
-
-How good is the rare event approximation in this case?
-```{exercise-end}
-```
-
 
 ```{solution-start} hoist_ex2
 :class: dropdown
 ```
 
-Here is one solution:
-
 ```{code-cell} ipython3
-# Create extended grid for the convolution result
-x_extended = np.arange(0, len(system_pmf) * m, m)
-E_system = np.sum(x_extended * system_pmf)
-
-# Compute sum of individual expected values
-component_means = [np.exp(μ + 0.5 * σ**2) for μ, σ in params[:6]]
-# Add 8 components of type 7
+# representative rate for each of the 14 components
+component_means = [np.exp(μ_i + 0.5*σ_i**2) for μ_i, σ_i in params[:6]]
 μ7, σ7 = params[6]
-component_means.extend([np.exp(μ7 + 0.5 * σ7**2)] * 8)
+component_means.extend([np.exp(μ7 + 0.5*σ7**2)] * 8)
+component_means = np.array(component_means)
 
-E_sum = sum(component_means)
+rows = []
+for factor, label in ((1e-9, 'as calibrated'), (1e-6, '× 10³'),
+                      (1e-3, '× 10⁶'), (1e-2, '× 10⁷')):
+    probs = component_means * factor
+    approx = probs.sum()
+    exact = 1 - np.prod(1 - probs)
+    rows.append([label, f"{approx:.6e}", f"{exact:.6e}",
+                 f"{100*(approx - exact)/exact:.4f}%"])
 
-print(f"Expected system failure rate: {E_system:.3f} × 10^-9")
-print(f"Sum of component expected failure rates: {E_sum:.3f} × 10^-9")
-print(f"Relative difference: {100 * abs(E_system - E_sum) / E_sum:.2f}%")
+print(tabulate(rows, headers=['failure rates', 'Σ pᵢ', '1 - Π(1-pᵢ)',
+                              'relative error'], tablefmt='grid'))
 ```
 
-The rare event approximation works well when failure probabilities are small. 
+At the calibrated magnitudes, around $3 \times 10^{-7}$ per year in total, the approximation is exact to the precision shown: the neglected term is of order $p_i p_j \approx 10^{-14}$.
 
-The expected value of the sum equals the sum of the expected values (by linearity of expectation), so these should match closely regardless of the rare event approximation.
+Multiplying every rate by a thousand still leaves an error of about one part in ten thousand.
+
+The approximation only becomes consequential once individual failure probabilities reach the order of a per cent, where it overstates the system failure probability by more than ten per cent, and it fails completely when $\sum_i p_i$ approaches or exceeds one, where it can return a "probability" greater than one.
+
+Note that a naive check of this approximation -- comparing the mean of the computed distribution of $\sum_i P(A_i)$ with the sum of the component means -- reveals nothing, because those two quantities are equal by linearity of expectation whatever the quality of the approximation.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: hoist_ex3
+
+A regulator who learns that the 95th percentile of the failure rate is too high will ask which components to improve.
+
+Answer that question by computing, for each of the seven component types, the 95th percentile of the system failure rate when that type is removed from the system entirely.
+
+Rank the component types by how much they contribute to the upper tail, and compare the ranking with the components' mean failure rates.
+```
+
+```{solution-start} hoist_ex3
+:class: dropdown
+```
+
+```{code-cell} ipython3
+def system_without(drop):
+    "System failure rate distribution with component type `drop` removed."
+    pmfs = []
+    for k, (μ_i, σ_i) in enumerate(params[:6]):
+        if k == drop:
+            continue
+        _, pmf_i, _ = discretize_lognormal(μ_i, σ_i, I, m)
+        pmfs.append(pmf_i)
+    if drop != 6:
+        μ7, σ7 = params[6]
+        _, pmf7, _ = discretize_lognormal(μ7, σ7, I, m)
+        pmfs.extend([pmf7] * 8)
+
+    total = pmfs[0]
+    for pmf_i in pmfs[1:]:
+        total = fftconvolve(total, pmf_i)
+    return total, np.arange(len(total)) * m
+
+
+base_q95 = system_grid[find_nearest(cdf, 0.95)]
+
+rows = []
+for k in range(7):
+    pmf_k, grid_k = system_without(k)
+    q95 = grid_k[find_nearest(np.cumsum(pmf_k), 0.95)]
+    μ_k, σ_k = params[k]
+    n_units = 8 if k == 6 else 1
+    rows.append([f"type {k+1}", n_units, f"{np.exp(μ_k + 0.5*σ_k**2):.1f}",
+                 f"{q95:.1f}", f"{100*(base_q95 - q95)/base_q95:.1f}%"])
+
+rows.sort(key=lambda r: -float(r[4].rstrip('%')))
+print(f"95th percentile with all components: {base_q95:.1f}\n")
+print(tabulate(rows, headers=['removed', 'units', 'mean rate each',
+                              '95th pct without it', 'reduction'],
+               tablefmt='grid'))
+```
+
+Component type 1 dominates: removing that single unit cuts the 95th percentile by almost half, far more than any other change available to the designer.
+
+The ranking follows the components' mean rates closely here, because all seven types have similar dispersions.
+
+It need not do so in general: a component with a modest mean but a large $\sigma$ contributes disproportionately to the upper tail, which is why the analyst works with the whole distribution rather than with means.
+
+Note also that type 7, which appears eight times, matters less than type 1, which appears once.
+
+Counting components is no guide to where the risk lies.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: hoist_ex4
+
+We could have computed the distribution of the system failure rate by simulation instead of by convolution.
+
+Draw samples of all fourteen component rates, sum them, and compare the resulting quantiles with those from the convolution, for sample sizes $10^4$, $10^5$ and $10^6$.
+
+Compare the median, the 95th percentile and the 99.78th percentile.
+
+Which method would you prefer, and why?
+```
+
+```{solution-start} hoist_ex4
+:class: dropdown
+```
+
+```{code-cell} ipython3
+all_params = list(params[:6]) + [params[6]] * 8
+rng_mc = np.random.default_rng(0)
+levels = (50, 95, 99.78)
+
+rows = []
+for N in (10_000, 100_000, 1_000_000):
+    draws = sum(rng_mc.lognormal(μ_i, σ_i, N) for μ_i, σ_i in all_params)
+    rows.append([f"{N:,}"] + [f"{np.percentile(draws, pc):.1f}" for pc in levels])
+
+rows.append(['convolution'] +
+            [f"{system_grid[find_nearest(cdf, pc/100)]:.1f}" for pc in levels])
+
+print(tabulate(rows, headers=['method', 'median', '95th', '99.78th'],
+               tablefmt='grid'))
+```
+
+Simulation converges to the same answer, which is a useful check on both calculations.
+
+The two methods differ in where their errors lie.
+
+Monte Carlo error is largest exactly where the analysis matters most: the 99.78th percentile is pinned down by roughly one draw in five hundred, so with $10^4$ draws only about twenty observations inform it, and the estimate is visibly off.
+
+The convolution, by contrast, computes the whole distribution at once and its error comes from the grid rather than from sampling noise, so it is equally accurate in the tail as in the middle.
+
+It is also deterministic: the answer does not change when you rerun it with a different seed.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: hoist_ex5
+
+The entire calculation assumes that the fourteen component failure rates are statistically independent.
+
+Investigate what happens when they are not.
+
+Suppose that
+
+$$
+\log P(A_i) = \mu_i + \sigma_i \left( \sqrt{\rho}\, z_0 + \sqrt{1-\rho}\, z_i \right),
+$$
+
+where $z_0$ is a shock common to all components and $z_1, \ldots, z_{14}$ are idiosyncratic, all standard normal.
+
+Each component still has exactly its original marginal distribution, but any two of them now have correlation $\rho$ in logs.
+
+Simulate the system failure rate for $\rho = 0, 0.2, 0.5, 0.8$ and report the median, the 95th, the 99th and the 99.9th percentiles.
+
+Explain what happens and why it matters for a safety analysis.
+```
+
+```{solution-start} hoist_ex5
+:class: dropdown
+```
+
+```{code-cell} ipython3
+μ_vec = np.array([q[0] for q in all_params])
+σ_vec = np.array([q[1] for q in all_params])
+
+N_sim = 400_000
+rng_cc = np.random.default_rng(1)
+
+rows = []
+for ρ in (0.0, 0.2, 0.5, 0.8):
+    z0 = rng_cc.normal(size=(N_sim, 1))
+    zi = rng_cc.normal(size=(N_sim, len(all_params)))
+    logs = μ_vec + σ_vec * (np.sqrt(ρ)*z0 + np.sqrt(1-ρ)*zi)
+    totals = np.exp(logs).sum(axis=1)
+    rows.append([ρ] + [f"{np.percentile(totals, pc):.0f}"
+                       for pc in (50, 95, 99, 99.9)])
+
+print(tabulate(rows, headers=['ρ', 'median', '95th', '99th', '99.9th'],
+               tablefmt='grid'))
+```
+
+Correlation leaves each component's marginal distribution untouched, and it leaves the mean of the sum untouched as well.
+
+What it changes is the shape of the distribution of the sum.
+
+With independent components, a high draw for one is typically offset by ordinary draws for the others, and the fourteen-fold averaging produces a relatively concentrated total.
+
+A common shock removes that diversification: when $z_0$ is large every component is bad at once.
+
+The result is a distribution with a *lower* median and a much *heavier* upper tail.
+
+At $\rho = 0.8$ the median falls by about a third while the 99.9th percentile rises by roughly three quarters.
+
+For a safety analysis this is the dangerous direction of error.
+
+Assuming independence when a common cause is present makes the system look both typically safer and much less likely to suffer a very bad year than it really is.
+
+This is why reliability studies devote so much attention to identifying shared power supplies, shared maintenance procedures, common design faults, and other mechanisms that defeat the independence assumption.
 
 ```{solution-end}
 ```
