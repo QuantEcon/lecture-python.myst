@@ -29,7 +29,7 @@ kernelspec:
 
 A **mean field game** describes a continuum of small agents, each of whom solves a dynamic optimization problem whose payoff depends on what everybody else is doing, summarized by the cross-sectional distribution of states.
 
-The framework was introduced by {cite}`LasryLions2007` and, independently, by {cite}`HuangMalhameCaines2006`.
+The framework was introduced by {cite:t}`LasryLions2007` and, independently, by {cite:t}`HuangMalhameCaines2006`.
 
 It pairs two partial differential equations:
 
@@ -38,23 +38,23 @@ It pairs two partial differential equations:
 
 An equilibrium requires that the aggregates that agents take as given are the ones that their own decisions generate.
 
-The same pair of equations is the workhorse of continuous-time heterogeneous-agent macroeconomics; see {cite}`AchdouEtAl2022`.
+The same pair of equations is the workhorse of continuous-time heterogeneous-agent macroeconomics; see {cite:t}`AchdouEtAl2022`.
 
 Readers of {doc}`rational_expectations` will recognize that requirement.
 
 It is the "Big $Y$, little $y$" idea, now applied to an entire distribution rather than to a single number.
 
-This lecture studies a tractable special case in which the payoff is quadratic and the state evolves linearly, following {cite}`AlvarezArgente2026`.
+This lecture studies a tractable special case in which the payoff is quadratic and the state evolves linearly, following {cite:t}`AlvarezArgente2026`.
 
 Two kinds of interaction appear:
 
-* agents care about the cross-sectional average **state** $X$, through a matrix $\Theta_X$
-* agents care about the cross-sectional average **action** $\mathcal A$, through a matrix $\Theta_{\mathcal A}$
+* agents care about the cross-sectional average *state* $X$, through a matrix $\Theta_X$
+* agents care about the cross-sectional average *action* $\mathcal A$, through a matrix $\Theta_{\mathcal A}$
 
 The main result is a striking simplification:
 
 ```{note}
-The equilibrium of the mean field game solves the algebraic Riccati equation of a **single-agent** linear quadratic regulator problem, in which the curvature matrices $Q$ and $\Gamma$ are replaced by
+The equilibrium of the mean field game solves the algebraic Riccati equation of a *single-agent* linear quadratic regulator problem, in which the curvature matrices $Q$ and $\Gamma$ are replaced by
 
 $$
 Q + \Theta_X \qquad\text{and}\qquad \Gamma + \Theta_{\mathcal A} .
@@ -63,7 +63,7 @@ $$
 
 Everything we know about the linear regulator can therefore be brought to bear on the equilibrium: existence conditions, uniqueness, comparative statics, and numerical methods.
 
-We then put the framework to work on two economic examples from {cite}`AlvarezArgente2026`: an industry equilibrium with capital accumulation, and a multiproduct pricing problem with Kimball demand.
+We then put the framework to work on two economic examples from {cite:t}`AlvarezArgente2026`: an industry equilibrium with capital accumulation, and a multiproduct pricing problem with Kimball demand.
 
 Riccati equations appear in several other QuantEcon lectures:
 
@@ -74,10 +74,10 @@ Riccati equations appear in several other QuantEcon lectures:
 
 Let's start with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.linalg import solve_continuous_are
+from scipy.linalg import solve_continuous_are, expm
 ```
 
 ## The environment
@@ -100,8 +100,8 @@ The period return is quadratic in all four objects:
 ```{math}
 :label: mfg_return
 F(x,X) + R(\alpha, \mathcal A)
-= -\tfrac12 x' Q x - X'\Theta_X x
-  -\tfrac12 \alpha' \Gamma \alpha - \mathcal A' \Theta_{\mathcal A}\alpha .
+= -\tfrac12 x^\top Q x - X^\top\Theta_X x
+  -\tfrac12 \alpha^\top \Gamma \alpha - \mathcal A^\top \Theta_{\mathcal A}\alpha .
 ```
 
 The individual state follows
@@ -131,7 +131,7 @@ and similarly for actions.
 In the Loewner ordering, *smaller* $\Theta$ means *more* complementarity.
 
 ```{note}
-The monotonicity condition that {cite}`LasryLions2007` impose to obtain uniqueness corresponds here to $-\Theta_X$ being negative semi-definite, that is, to strategic *substitutability* in states.
+The monotonicity condition that {cite:t}`LasryLions2007` impose to obtain uniqueness corresponds here to $-\Theta_X$ being negative semi-definite, that is, to strategic *substitutability* in states.
 
 We will not need it: in this linear quadratic setting there is at most one equilibrium whether interactions are complements or substitutes.
 ```
@@ -142,7 +142,7 @@ Taking the paths $\{X(t), \mathcal A(t)\}$ as given, an agent's value function s
 
 ```{math}
 :label: mfg_hjb
-\rho u(x,t) = -\tfrac12 x'Qx - X(t)'\Theta_X x
+\rho u(x,t) = -\tfrac12 x^\top Qx - X(t)^\top\Theta_X x
  + H(u_x(x,t), x, \mathcal A(t))
  + \tfrac12 \operatorname{tr}(\Sigma u_{xx}(x,t)) + u_t(x,t) ,
 ```
@@ -151,11 +151,11 @@ where the Hamiltonian is
 
 $$
 H(p, x, \mathcal A) = \max_{\alpha}
-\left\{ -\tfrac12\alpha'\Gamma\alpha - \mathcal A'\Theta_{\mathcal A}\alpha
-+ p'(B\alpha - Ax) \right\} ,
+\left\{ -\tfrac12\alpha^\top\Gamma\alpha - \mathcal A^\top\Theta_{\mathcal A}\alpha
++ p^\top(B\alpha - Ax) \right\} ,
 $$
 
-with maximizer $\alpha_*(p,\mathcal A) = \Gamma^{-1}(B'p - \Theta_{\mathcal A}\mathcal A)$.
+with maximizer $\alpha_*(p,\mathcal A) = \Gamma^{-1}(B^\top p - \Theta_{\mathcal A}\mathcal A)$.
 
 The density evolves according to the Kolmogorov forward equation
 
@@ -172,7 +172,7 @@ and an **equilibrium** is a value function, a density, and paths for $X$ and $\m
 Given the aggregate paths, an individual faces a time-varying linear quadratic regulator problem, so her value function is quadratic:
 
 $$
-u(x,t) = \beta_0(t) + \beta_1(t)'x + \tfrac12 x'\beta_2(t)x .
+u(x,t) = \beta_0(t) + \beta_1(t)^\top x + \tfrac12 x^\top\beta_2(t)x .
 $$
 
 Substituting into {eq}`mfg_hjb` and matching terms of each order gives three differential equations.
@@ -181,7 +181,7 @@ The one for $\beta_2$ is
 
 ```{math}
 :label: mfg_beta2_ode
-\dot\beta_2 = Q - \beta_2 B\Gamma^{-1}B'\beta_2 + \beta_2 A + A'\beta_2 + \rho\beta_2 .
+\dot\beta_2 = Q - \beta_2 B\Gamma^{-1}B^\top\beta_2 + \beta_2 A + A^\top\beta_2 + \rho\beta_2 .
 ```
 
 Notice what is *absent* from {eq}`mfg_beta2_ode`: neither interaction matrix appears.
@@ -192,7 +192,7 @@ Because the individual problem is concave and stationary, $\beta_2(t)$ equals th
 
 ```{math}
 :label: mfg_beta2
-\bar\beta_2 B\Gamma^{-1}B'\bar\beta_2 = Q + \rho\bar\beta_2 + \bar\beta_2 A + A'\bar\beta_2 .
+\bar\beta_2 B\Gamma^{-1}B^\top\bar\beta_2 = Q + \rho\bar\beta_2 + \bar\beta_2 A + A^\top\bar\beta_2 .
 ```
 
 This is the familiar algebraic Riccati equation of {doc}`lqcontrol`, written in continuous time.
@@ -200,14 +200,14 @@ This is the familiar algebraic Riccati equation of {doc}`lqcontrol`, written in 
 The optimal action is
 
 $$
-\alpha_*(x,t) = \Gamma^{-1}\left[B'(\beta_1(t) + \bar\beta_2 x) - \Theta_{\mathcal A}\mathcal A(t)\right] .
+\alpha_*(x,t) = \Gamma^{-1}\left[B^\top(\beta_1(t) + \bar\beta_2 x) - \Theta_{\mathcal A}\mathcal A(t)\right] .
 $$
 
 Averaging across agents and solving the resulting fixed point in $\mathcal A$ gives
 
 ```{math}
 :label: mfg_aggregate_action
-\mathcal A(t) = (\Gamma + \Theta_{\mathcal A})^{-1} B' \left(\beta_1(t) + \bar\beta_2 X(t)\right) .
+\mathcal A(t) = (\Gamma + \Theta_{\mathcal A})^{-1} B^\top \left(\beta_1(t) + \bar\beta_2 X(t)\right) .
 ```
 
 Equation {eq}`mfg_aggregate_action` is where the action interaction first bites: each agent responds to the average action, and solving for the average that is consistent with everyone doing so replaces $\Gamma$ by $\Gamma + \Theta_{\mathcal A}$.
@@ -225,7 +225,7 @@ Differentiating and aggregating gives a pair of linear differential equations,
 \qquad
 \mathcal H =
 \begin{bmatrix}
-\rho I + A' - \bar\beta_2 \Lambda & \Theta_X + \bar\beta_2(B\Gamma^{-1}B' - \Lambda)\bar\beta_2 \\
+\rho I + A^\top - \bar\beta_2 \Lambda & \Theta_X + \bar\beta_2(B\Gamma^{-1}B^\top - \Lambda)\bar\beta_2 \\
 \Lambda & -A + \Lambda\bar\beta_2
 \end{bmatrix},
 ```
@@ -233,7 +233,7 @@ Differentiating and aggregating gives a pair of linear differential equations,
 where we abbreviate
 
 $$
-\Lambda \equiv B(\Gamma + \Theta_{\mathcal A})^{-1}B' .
+\Lambda \equiv B(\Gamma + \Theta_{\mathcal A})^{-1}B^\top .
 $$
 
 This is a **state-costate** system of exactly the kind studied in {doc}`lagrangian_lqdp`.
@@ -242,7 +242,7 @@ The aggregate state $X$ has an initial condition, namely the mean of the initial
 
 The costate $\beta_1$ does not: it must be chosen so that the solution does not violate the agent's transversality condition, which here requires the eigenvalues governing the path to have real parts below $\rho/2$.
 
-Because $\Theta_X$, $B\Gamma^{-1}B'$ and $\Lambda$ are symmetric, $\mathcal H - \tfrac\rho2 I$ is a Hamiltonian matrix, so its eigenvalues are symmetric about the origin.
+Because $\Theta_X$, $B\Gamma^{-1}B^\top$ and $\Lambda$ are symmetric, $\mathcal H - \tfrac\rho2 I$ is a Hamiltonian matrix, so its eigenvalues are symmetric about the origin.
 
 Equivalently:
 
@@ -254,7 +254,7 @@ If $\lambda$ is an eigenvalue of $\mathcal H$, then so are $\rho - \lambda$, $\b
 
 Exactly $n$ eigenvalues can therefore have real parts below $\rho/2$, which pins down a unique stable invariant subspace and hence at most one equilibrium.
 
-This is the standard connection between algebraic Riccati equations and invariant subspaces of Hamiltonian matrices, treated at length by {cite}`LancasterRodman1995`.
+This is the standard connection between algebraic Riccati equations and invariant subspaces of Hamiltonian matrices, treated at length by {cite:t}`LancasterRodman1995`.
 
 ## The equilibrium Riccati equation
 
@@ -276,14 +276,14 @@ $$
 An equilibrium is characterized by a matrix $P$ solving
 
 $$
-P \, B(\Gamma+\Theta_{\mathcal A})^{-1}B' \, P
-= Q + \Theta_X + \rho P + PA + A'P ,
+P \, B(\Gamma+\Theta_{\mathcal A})^{-1}B^\top \, P
+= Q + \Theta_X + \rho P + PA + A^\top P ,
 $$
 
 with aggregate dynamics
 
 $$
-\dot X = \left(B(\Gamma+\Theta_{\mathcal A})^{-1}B'P - A\right) X .
+\dot X = \left(B(\Gamma+\Theta_{\mathcal A})^{-1}B^\top P - A\right) X .
 $$
 
 The equilibrium requires all eigenvalues of the closed-loop matrix to have real parts below $\rho/2$.
@@ -291,7 +291,7 @@ The equilibrium requires all eigenvalues of the closed-loop matrix to have real 
 
 Compare this with the single-agent equation {eq}`mfg_beta2`.
 
-They have **the same form**.
+They have *the same form*.
 
 The only difference is that $Q$ has become $Q + \Theta_X$ and $\Gamma$ has become $\Gamma + \Theta_{\mathcal A}$.
 
@@ -315,22 +315,22 @@ Define
 
 ```{math}
 :label: mfg_E
-E \equiv Q + \Theta_X + \left(A' + \tfrac\rho2 I\right)
-\left[B(\Gamma+\Theta_{\mathcal A})^{-1}B'\right]^{-1}
+E \equiv Q + \Theta_X + \left(A^\top + \tfrac\rho2 I\right)
+\left[B(\Gamma+\Theta_{\mathcal A})^{-1}B^\top\right]^{-1}
 \left(A + \tfrac\rho2 I\right) .
 ```
 
 ```{prf:proposition}
 :label: mfg_prop_existence
 
-Suppose $B(\Gamma+\Theta_{\mathcal A})^{-1}B'$ is invertible.
+Suppose $B(\Gamma+\Theta_{\mathcal A})^{-1}B^\top$ is invertible.
 
 1. A necessary condition for an equilibrium is that $E$ be positive semi-definite.
 1. If $Q + \Theta_X$ and $\Gamma + \Theta_{\mathcal A}$ are positive definite, an equilibrium exists and is unique.
 1. There is at most one equilibrium.
 ```
 
-The sufficient condition has a clean reading: **effective** curvature must remain positive in both states and actions.
+The sufficient condition has a clean reading: *effective* curvature must remain positive in both states and actions.
 
 Complementarity is therefore permissible, but only up to a point.
 
@@ -338,10 +338,10 @@ Notice also that the two interactions enter $E$ additively, so substitutability 
 
 ## Computing equilibria
 
-`scipy.linalg.solve_continuous_are(A, B, Q, R)` returns the stabilizing solution $X$ of
+`scipy.linalg.solve_continuous_are(A, B, Q, R)` returns the stabilizing solution $\tilde P$ of
 
 $$
-A'X + XA - XBR^{-1}B'X + Q = 0 .
+A^\top \tilde P + \tilde P A - \tilde P B R^{-1} B^\top \tilde P + Q = 0 .
 $$
 
 Our equation differs in two ways: our $P$ is negative definite, and we discount.
@@ -350,7 +350,7 @@ Writing $P = -\tilde P$ and collecting terms shows that our equation is the stan
 
 The discount rate enters exactly as it does in the "$\rho/2$ shift" familiar from continuous-time control.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def mfg_riccati(A, B, Q, Γ, ρ):
     """
     Solve  P B Γ^{-1} B' P = Q + ρ P + P A + A' P  for the negative
@@ -367,9 +367,9 @@ def closed_loop(A, B, Γ_eff, P):
     return B @ np.linalg.solve(Γ_eff, B.T) @ P - A
 ```
 
-Let's set up a two-dimensional example with complementarity in states and substitutability in actions, the configuration that {cite}`AlvarezArgente2026` obtain from an industry equilibrium with capital accumulation.
+Let's set up a two-dimensional example with complementarity in states and substitutability in actions, the configuration that {cite:t}`AlvarezArgente2026` obtain from an industry equilibrium with capital accumulation.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ρ = 0.05
 A = np.array([[0.4, 0.1],
               [0.0, 0.3]])
@@ -392,7 +392,7 @@ print("\nequilibrium matrix P =\n", P.round(4))
 
 Let's verify that $P$ really does solve the equilibrium Riccati equation, and compare the aggregate dynamics with what a lone agent would choose.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 Λ = B @ np.linalg.solve(Γ + Θ_A, B.T)
 residual = P @ Λ @ P - (Q + Θ_X + ρ*P + P @ A + A.T @ P)
 print(f"Riccati residual: {np.abs(residual).max():.2e}")
@@ -412,7 +412,7 @@ The equilibrium eigenvalues are closer to zero, so aggregate adjustment is slowe
 
 Let's check both claims.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 BΓB = B @ np.linalg.solve(Γ, B.T)
 n = A.shape[0]
 
@@ -461,13 +461,13 @@ q + \theta_X + a(a+\rho)\frac{\gamma+\theta_{\mathcal A}}{b^2} > 0 .
 
 Formula {eq}`mfg_scalar_lambda` displays the two comparative statics at a glance.
 
-More complementarity in **states** (a smaller $\theta_X$) raises $\lambda$ and makes aggregate dynamics **more** persistent: when others stay away from the steady state, each agent has less reason to return to it.
+More complementarity in *states* (a smaller $\theta_X$) raises $\lambda$ and makes aggregate dynamics *more* persistent: when others stay away from the steady state, each agent has less reason to return to it.
 
-More complementarity in **actions** (a smaller $\theta_{\mathcal A}$) lowers $\lambda$ and makes dynamics **less** persistent: when others adjust, each agent wants to adjust too.
+More complementarity in *actions* (a smaller $\theta_{\mathcal A}$) lowers $\lambda$ and makes dynamics *less* persistent: when others adjust, each agent wants to adjust too.
 
 Let's confirm that our solver reproduces {eq}`mfg_scalar_lambda`.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def scalar_lambda(ρ, a, b, q, γ, θ_X, θ_A):
     "Closed-form aggregate eigenvalue in the scalar case."
     return ρ/2 - np.sqrt((ρ/2 + a)**2 + b**2*(q + θ_X)/(γ + θ_A))
@@ -487,7 +487,7 @@ for θ_X, θ_A in ((0.0, 0.0), (-0.5, 0.0), (0.0, 0.5), (-0.5, 0.5)):
 
 The scalar model is not a toy.
 
-{cite}`AlvarezArgente2026` show that it describes an industry equilibrium with capital accumulation in which **both** kinds of interaction appear, with opposite signs.
+{cite:t}`AlvarezArgente2026` show that it describes an industry equilibrium with capital accumulation in which *both* kinds of interaction appear, with opposite signs.
 
 There is a continuum of monopolistically competitive firms.
 
@@ -547,15 +547,15 @@ q + \theta_X &= \frac{\eta-1}{\eta}\nu(1-\nu) > 0 .
 
 Three features of {eq}`mfg_capital_coeffs` deserve emphasis.
 
-First, $\theta_X < 0$: capital stocks are strategic **complements**, because a larger industry capital stock raises the demand shifter $Y^{1/\eta}$ and hence the marginal profitability of a firm's own capital.
+First, $\theta_X < 0$: capital stocks are strategic *complements*, because a larger industry capital stock raises the demand shifter $Y^{1/\eta}$ and hence the marginal profitability of a firm's own capital.
 
-Second, if the supply of investment goods slopes upward then $\mathcal P'(\bar i) > 0$ and so $\theta_{\mathcal A} > 0$: investment rates are strategic **substitutes**, because everyone investing at once bids up the price of capital goods.
+Second, if the supply of investment goods slopes upward then $\mathcal P'(\bar i) > 0$ and so $\theta_{\mathcal A} > 0$: investment rates are strategic *substitutes*, because everyone investing at once bids up the price of capital goods.
 
 Third, $q + \theta_X > 0$ for every $\eta > 1$ and every $\nu \in (0,1)$, so by {prf:ref}`mfg_prop_existence` an equilibrium exists and is unique no matter how strong market power is and no matter how close returns to scale come to constant.
 
 Let's put these formulas into code, and check them against numerical derivatives of the profit function itself.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def cap_q(η, ν):
     "Own-state curvature in the capital accumulation example."
     return ν*(η - 1)/η**2*(η*(1 - ν) + ν)
@@ -587,7 +587,7 @@ For the two curvatures that the technology does not pin down we set $\gamma = 0.
 
 {ref}`mfg_ex5` derives both numbers from an adjustment cost function and an investment supply curve.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ρ_c, δ_c = 0.05, 0.10
 γ_c, θ_A_c = 0.05, 0.09
 
@@ -614,7 +614,7 @@ print(f"half-life of aggregate capital = {half_life(λ_c):.2f} years")
 
 Because {eq}`mfg_scalar_lambda` depends on $\theta_X$ and $\theta_{\mathcal A}$ separately, we can switch each interaction off and read the answer.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 cases = {'no interactions':            (0.0,     0.0),
          'state complementarity only': (θ_X_c,   0.0),
          'action substitutability only': (0.0,   θ_A_c),
@@ -641,7 +641,7 @@ The planner, who internalizes both externalities, is slower still.
 
 A distinctive prediction of the model is that individual capital reverts to the mean faster than aggregate capital does, because {eq}`mfg_beta2` contains no interaction matrix.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 β2_c = mfg_riccati(np.array([[δ_c]]), np.array([[δ_c]]),
                    np.array([[q_c]]), np.array([[γ_c]]), ρ_c)
 λ_micro = closed_loop(np.array([[δ_c]]), np.array([[δ_c]]),
@@ -662,7 +662,13 @@ How does the industry's adjustment speed depend on the two technological paramet
 
 Both enter only through $q + \theta_X = \frac{\eta-1}{\eta}\nu(1-\nu)$, which rises with $\eta$ and is maximized at $\nu = 1/2$.
 
-```{code-cell} ipython
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Half-lives of industry and firm capital
+    name: fig-mfg-half-lives
+---
 η_grid = np.linspace(1.2, 12, 200)
 ν_grid = np.linspace(0.05, 0.995, 200)
 
@@ -710,7 +716,7 @@ Since the technology delivers $q + \theta_X > 0$ and an upward sloping investmen
 
 The thresholds show how much room there is to spare.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 mθ_star = q_c + δ_c*(δ_c + ρ_c)*(γ_c + θ_A_c)/δ_c**2
 mθ_2star = q_c + (ρ_c/2 + δ_c)**2*(γ_c + θ_A_c)/δ_c**2
 
@@ -727,7 +733,13 @@ Finally, let's trace out the industry's response to a capital stock that starts 
 
 Aggregate investment follows from {eq}`mfg_aggregate_action`, which in the scalar case gives $\mathcal A(t) = \frac{\lambda + \delta}{\delta}X(t)$.
 
-```{code-cell} ipython
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Transition paths of capital and investment
+    name: fig-mfg-transition
+---
 t_c = np.linspace(0, 25, 300)
 X0_c = 0.10
 
@@ -764,13 +776,13 @@ How do the interactions change aggregate adjustment when $n > 1$?
 
 Stronger complementarity of either kind makes the stabilizing solution $P$ less negative definite.
 
-That ordering is not enough to sign the change in every eigenvalue of the closed-loop matrix, but it does sign the change in their **sum**.
+That ordering is not enough to sign the change in every eigenvalue of the closed-loop matrix, but it does sign the change in their *sum*.
 
 Stronger complementarity in states raises the trace of the closed-loop matrix, while stronger complementarity in actions lowers it.
 
 The trace measures the rate at which a set of initial aggregate states contracts in volume as each point follows its equilibrium path, so in a stable equilibrium the first force slows the collapse toward the steady state and the second speeds it up.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 print(f"{'scale on Θ_X':>14}{'trace':>10}   eigenvalues")
 for scale in (0.0, 0.5, 1.0, 1.5):
     P_s = mfg_riccati(A, B, Q + scale*Θ_X, Γ + Θ_A, ρ)
@@ -794,8 +806,8 @@ When $\Theta_X$ and $\Theta_{\mathcal A}$ are symmetric, differentiating the pla
 The planner's allocation coincides with the decentralized equilibrium of an economy whose interaction matrices are $2\Theta_X$ and $2\Theta_{\mathcal A}$, so the planner's Riccati equation is
 
 $$
-P^{*} B(\Gamma + 2\Theta_{\mathcal A})^{-1}B'P^{*}
-= Q + 2\Theta_X + \rho P^{*} + P^{*}A + A'P^{*} .
+P^{*} B(\Gamma + 2\Theta_{\mathcal A})^{-1}B^\top P^{*}
+= Q + 2\Theta_X + \rho P^{*} + P^{*}A + A^\top P^{*} .
 $$
 ```
 
@@ -803,7 +815,7 @@ Internalizing state complementarity makes the allocation *more* persistent, whil
 
 When both are present the comparison is ambiguous, as {ref}`mfg_ex3` explores.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 P_planner = mfg_riccati(A, B, Q + 2*Θ_X, Γ + 2*Θ_A, ρ)
 JG_planner = closed_loop(A, B, Γ + 2*Θ_A, P_planner)
 
@@ -813,9 +825,13 @@ print("planner eigenvalues:    ", np.linalg.eigvals(JG_planner).real.round(4))
 
 Let's see what this means for the path of the aggregate state.
 
-```{code-cell} ipython
-from scipy.linalg import expm
-
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Path of the aggregate state
+    name: fig-mfg-planner-path
+---
 X0 = np.array([1.0, 0.5])
 times = np.linspace(0, 12, 200)
 
@@ -836,7 +852,7 @@ plt.show()
 
 Our second example is multidimensional, and it delivers a surprise.
 
-{cite}`AlvarezArgente2026` study a continuum of "stores", each selling $n$ products with constant marginal costs $z_j$.
+{cite:t}`AlvarezArgente2026` study a continuum of "stores", each selling $n$ products with constant marginal costs $z_j$.
 
 Products within a store are aggregated by a CES price index with elasticity $\bar\eta_d$, and stores are aggregated by a symmetric Kimball aggregator {cite}`Kimball1995`.
 
@@ -844,7 +860,7 @@ Let $\eta_D(y)$ be the elasticity of a store's demand with respect to its relati
 
 The derivative $\bar\eta_D'$ is the **superelasticity** of demand, and it is the reason Kimball demand is so widely used in models of price setting: a positive superelasticity means that a store which raises its prices above the average faces a more elastic demand, which discourages it from moving away from the crowd.
 
-That is strategic complementarity in prices, and it is the mechanism that {cite}`KlenowWillis2016` and much of the subsequent literature rely on for real rigidity.
+That is strategic complementarity in prices, and it is the mechanism that {cite:t}`KlenowWillis2016` and much of the subsequent literature rely on for real rigidity.
 
 Writing $x$ and $X$ for log deviations of a store's prices and of the average store's prices from the flexible-price level $\bar p_i = \bar z_i \bar\eta_D/(\bar\eta_D-1)$, and $\bar s$ for the vector of steady-state expenditure shares, the curvature matrices are
 
@@ -852,27 +868,27 @@ Writing $x$ and $X$ for log deviations of a store's prices and of the average st
 :label: mfg_kimball_Q
 \begin{aligned}
 Q &= (\bar\eta_D - 1)\left[\left(\bar\eta_D - \bar\eta_d
-+ \frac{\bar\eta_D'}{\bar\eta_D-1}\right)\bar s\bar s'
++ \frac{\bar\eta_D'}{\bar\eta_D-1}\right)\bar s\bar s^\top
 + \bar\eta_d \operatorname{diag}(\bar s)\right] , \\
-\Theta_X &= -\bar\eta_D' \, \bar s \bar s' , \\
-Q + \Theta_X &= (\bar\eta_D-1)\left[(\bar\eta_D - \bar\eta_d)\bar s \bar s'
+\Theta_X &= -\bar\eta_D' \, \bar s \bar s^\top , \\
+Q + \Theta_X &= (\bar\eta_D-1)\left[(\bar\eta_D - \bar\eta_d)\bar s \bar s^\top
 + \bar\eta_d \operatorname{diag}(\bar s)\right] .
 \end{aligned}
 ```
 
 Stare at the third line.
 
-The superelasticity appears in $Q$ and in $\Theta_X$, but it **cancels** from $Q + \Theta_X$.
+The superelasticity appears in $Q$ and in $\Theta_X$, but it *cancels* from $Q + \Theta_X$.
 
 By {prf:ref}`mfg_prop_riccati`, the sum $Q+\Theta_X$ is the only channel through which either matrix reaches aggregate dynamics.
 
 Actions are the rates of change of prices, and stores pay quadratic Rotemberg costs of changing them.
 
-The matrix $\Gamma$ lets that cost depend on which bundle of prices is changed, with negative off-diagonal elements representing economies of scope in repricing of the kind emphasized by {cite}`Midrigan2011` and {cite}`AlvarezLippi2014`.
+The matrix $\Gamma$ lets that cost depend on which bundle of prices is changed, with negative off-diagonal elements representing economies of scope in repricing of the kind emphasized by {cite:t}`Midrigan2011` and {cite:t}`AlvarezLippi2014`.
 
 There is no interaction through aggregate actions, so $\Theta_{\mathcal A} = 0$, and a nonzero rate of cost inflation makes $A$ diagonal.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def kimball(η_d, η_D, η_D_prime, s):
     "Curvature and state-interaction matrices under Kimball demand."
     s = np.asarray(s, dtype=float)
@@ -898,7 +914,7 @@ print("\neigenvalues of Γ:", np.linalg.eigvalsh(Γ_K).round(4))
 
 Now sweep the superelasticity across a wide range, including a negative value, and watch what changes and what does not.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 print(f"{'η_D′':>6}  {'eigenvalues of Q':>28}  {'eigenvalues of Q + Θ_X':>28}")
 for η_Dp in (-3.0, 0.0, 3.0, 10.0):
     Q_K, Θ_K = kimball(η_d, η_D, η_Dp, s_bar)
@@ -910,7 +926,7 @@ The own-curvature matrix $Q$ moves a great deal, and $\Theta_X$ moves with it, b
 
 Aggregate price dynamics are therefore invariant to the superelasticity.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 print(f"{'η_D′':>6}  {'aggregate eigenvalues':>34}  {'individual eigenvalues':>34}")
 for η_Dp in (-3.0, 0.0, 3.0, 10.0):
     Q_K, Θ_K = kimball(η_d, η_D, η_Dp, s_bar)
@@ -933,7 +949,7 @@ The remaining modes, which involve relative prices within the store, barely move
 
 It is worth seeing how much static complementarity we are varying.
 
-Maximizing the static profit function gives the best response $x^{*}(X) = -Q^{-1}\Theta_X X$, and {cite}`AlvarezArgente2026` show that
+Maximizing the static profit function gives the best response $x^{*}(X) = -Q^{-1}\Theta_X X$, and {cite:t}`AlvarezArgente2026` show that
 
 ```{math}
 :label: mfg_kimball_br
@@ -942,7 +958,7 @@ Maximizing the static profit function gives the best response $x^{*}(X) = -Q^{-1
 \kappa \equiv \frac{\bar\eta_D'}{(\bar\eta_D-1)\bar\eta_D} .
 ```
 
-```{code-cell} ipython
+```{code-cell} ipython3
 print(f"{'η_D′':>6}{'pass-through':>14}   best response matrix, first row")
 for η_Dp in (-3.0, 0.0, 3.0, 10.0):
     Q_K, Θ_K = kimball(η_d, η_D, η_Dp, s_bar)
@@ -960,7 +976,7 @@ Static pass-through runs from $-33\%$ to $+45\%$ across these rows, and it chang
 
 An intuition that reads stronger static complementarity as more aggregate propagation is therefore unreliable.
 
-Notice also that the best response matrix is **not** symmetric, because shares differ across products, while $\Theta_X$ always is.
+Notice also that the best response matrix is *not* symmetric, because shares differ across products, while $\Theta_X$ always is.
 
 Symmetry of $\Theta_X$ is what {prf:ref}`mfg_prop_planner` needs, and it survives even when the static game looks asymmetric.
 
@@ -972,7 +988,7 @@ $$
 \lambda_i = \frac\rho2 - \sqrt{\left(\frac\rho2 + a\right)^2 + \omega_i} .
 $$
 
-```{code-cell} ipython
+```{code-cell} ipython3
 Q_K, Θ_K = kimball(η_d, η_D, 3.0, s_bar)
 P_K = mfg_riccati(A_K, B_K, Q_K + Θ_K, Γ_K, ρ_K)
 JG_K = closed_loop(A_K, B_K, Γ_K, P_K)
@@ -994,9 +1010,13 @@ The first follows the equilibrium matrix $P$, the second the single-agent matrix
 
 So the invariance we found should show up as identical paths for the industry and different paths for a store that is out of line.
 
-```{code-cell} ipython
-from scipy.linalg import expm
-
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Industry and store price paths
+    name: fig-mfg-kimball-paths
+---
 t_K = np.linspace(0, 8, 200)
 shock = 0.10*np.ones(n_K)      # ten percent above target, all products
 
@@ -1014,8 +1034,8 @@ for k, η_Dp in enumerate((-3.0, 0.0, 3.0, 10.0)):
     axes[0].plot(t_K, 100*agg, lw=6 - 1.5*k, label=label)
     axes[1].plot(t_K, 100*dev, lw=2, label=label)
 
-axes[0].set_title('industry price index, $\\bar s\\,\'X(t)$')
-axes[1].set_title("one store's deviation, $\\bar s\\,'z(t)$")
+axes[0].set_title('industry price index, $\\bar s^\\top X(t)$')
+axes[1].set_title("one store's deviation, $\\bar s^\\top z(t)$")
 for ax in axes:
     ax.set_xlabel('years')
     ax.set_ylabel('percent above target')
@@ -1032,9 +1052,9 @@ Micro and macro price flexibility are governed by different objects, and only th
 
 ### The planner does care
 
-Doubling the interaction gives the planner the effective curvature $Q + 2\Theta_X = (Q + \Theta_X) - \bar\eta_D' \bar s\bar s'$, which *does* depend on the superelasticity.
+Doubling the interaction gives the planner the effective curvature $Q + 2\Theta_X = (Q + \Theta_X) - \bar\eta_D' \bar s\bar s^\top$, which *does* depend on the superelasticity.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 print(f"{'η_D′':>6}  {'eig(Q + 2Θ_X)':>26}  {'planner eigenvalues':>32}")
 for η_Dp in (-3.0, 0.0, 3.0, 10.0, 20.0):
     Q_K, Θ_K = kimball(η_d, η_D, η_Dp, s_bar)
@@ -1070,7 +1090,7 @@ Nevertheless, matching coefficients in the recursive HJB equation delivers a res
 ```{prf:proposition}
 :label: mfg_prop_common_noise
 
-With common noise, the matrix $P$ governing aggregate dynamics solves the **same** equilibrium Riccati equation as before.
+With common noise, the matrix $P$ governing aggregate dynamics solves the *same* equilibrium Riccati equation as before.
 ```
 
 This is a certainty-equivalence result of the kind familiar from linear quadratic control.
@@ -1083,14 +1103,14 @@ Writing $z = x - X$ for an agent's deviation from the cross-sectional mean,
 :label: mfg_decomposition
 \begin{aligned}
 dX &= \left(\Lambda P - A\right) X dt + \Upsilon d\mathcal J , \\
-dz &= \left(B\Gamma^{-1}B'\bar\beta_2 - A\right) z \, dt + \Sigma^{1/2}dW , \\
-\alpha &= (\Gamma+\Theta_{\mathcal A})^{-1}B'P X + \Gamma^{-1}B'\bar\beta_2 z .
+dz &= \left(B\Gamma^{-1}B^\top\bar\beta_2 - A\right) z \, dt + \Sigma^{1/2}dW , \\
+\alpha &= (\Gamma+\Theta_{\mathcal A})^{-1}B^\top P X + \Gamma^{-1}B^\top\bar\beta_2 z .
 \end{aligned}
 ```
 
 Look carefully at the second line.
 
-The dynamics of an agent's deviation from the mean involve $\bar\beta_2$, the solution of the **single-agent** Riccati equation, and neither interaction matrix appears.
+The dynamics of an agent's deviation from the mean involve $\bar\beta_2$, the solution of the *single-agent* Riccati equation, and neither interaction matrix appears.
 
 The same is true of the part of the action that responds to $z$.
 
@@ -1106,7 +1126,7 @@ Removing time effects from micro data -- a standard way to control for aggregate
 
 Aggregate data, by contrast, do carry that information, and can be combined with micro data to recover it.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 # reduced-form matrices that an econometrician could estimate
 U_XX = closed_loop(A, B, Γ + Θ_A, P)            # drift of the aggregate state
 U_zz = closed_loop(A, B, Γ, β2)                 # drift of the deviation from the mean
@@ -1152,7 +1172,7 @@ Take $\rho = 0.5$, $a = 0.3$, $b = 1$, $q = 1$, $\gamma = 1$, $\theta_{\mathcal 
 :class: dropdown
 ```
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ρ_e, a_e, b_e, q_e, γ_e, θA_e = 0.5, 0.3, 1.0, 1.0, 1.0, 0.0
 
 θ_star = -(q_e + a_e*(a_e + ρ_e)*(γ_e + θA_e)/b_e**2)
@@ -1164,7 +1184,7 @@ print(f"gap = {θ_star - θ_ss:.4f}, "
       f"(ρ/2)²(γ+θ_A)/b² = {(ρ_e/2)**2*(γ_e + θA_e)/b_e**2:.4f}")
 ```
 
-```{code-cell} ipython
+```{code-cell} ipython3
 for θ_X in (0.5, -0.5, θ_star, -1.27, -1.31):
     inside = (ρ_e/2 + a_e)**2 + b_e**2*(q_e + θ_X)/(γ_e + θA_e)
     if inside < 0:
@@ -1182,7 +1202,7 @@ for θ_X in (0.5, -0.5, θ_star, -1.27, -1.31):
 
 Below $\theta^{**}$ there is no real root, and the solver reports failure rather than returning a spurious answer.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 try:
     mfg_riccati(np.array([[a_e]]), np.array([[b_e]]),
                 np.array([[q_e - 1.31]]), np.array([[γ_e]]), ρ_e)
@@ -1190,7 +1210,7 @@ except Exception as e:
     print(f"solver raises {type(e).__name__} when no equilibrium exists")
 ```
 
-```{code-cell} ipython
+```{code-cell} ipython3
 θ_grid = np.linspace(-1.30, 0.5, 400)
 inside = (ρ_e/2 + a_e)**2 + b_e**2*(q_e + θ_grid)/(γ_e + θA_e)
 λ_grid = np.where(inside >= 0, ρ_e/2 - np.sqrt(np.maximum(inside, 0)), np.nan)
@@ -1218,7 +1238,7 @@ Persistence rises smoothly until $\theta^{*}$, where the aggregate state stops c
 ```{exercise}
 :label: mfg_ex2
 
-The lecture showed that stronger complementarity in states raises the **trace** of the closed-loop matrix.
+The lecture showed that stronger complementarity in states raises the *trace* of the closed-loop matrix.
 
 Does it also raise every eigenvalue?
 
@@ -1233,7 +1253,7 @@ Report how often the trace rises and how often *every* eigenvalue rises.
 :class: dropdown
 ```
 
-```{code-cell} ipython
+```{code-cell} ipython3
 rng = np.random.default_rng(3)
 trace_rose = eig_rose = kept = 0
 
@@ -1270,7 +1290,7 @@ The trace result holds in every draw, as the theory says it must.
 
 Eigenvalue-by-eigenvalue monotonicity fails in a noticeable minority of cases.
 
-The reason is that $Q+\Theta_X$ and $B(\Gamma+\Theta_{\mathcal A})^{-1}B'$ need not commute, so the problem does not separate into independent one-dimensional problems, and a change that slows adjustment overall can still speed it up along some direction.
+The reason is that $Q+\Theta_X$ and $B(\Gamma+\Theta_{\mathcal A})^{-1}B^\top$ need not commute, so the problem does not separate into independent one-dimensional problems, and a change that slows adjustment overall can still speed it up along some direction.
 
 Additional restrictions -- for instance a scalar drift matrix $A = a I$ -- restore monotonicity mode by mode.
 
@@ -1296,7 +1316,7 @@ In which cases is the planner's allocation more persistent than the equilibrium?
 :class: dropdown
 ```
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def eigen_pair(Θ_X_use, Θ_A_use):
     "Closed-loop eigenvalues for the equilibrium and for the planner."
     P_eq = mfg_riccati(A, B, Q + Θ_X_use, Γ + Θ_A_use, ρ)
@@ -1322,7 +1342,7 @@ With only complementarity in states, the planner's allocation is more persistent
 
 The planner recognizes that when one agent stays away from the steady state, others are content to stay away too, so there is less reason to hurry back.
 
-With only complementarity in **actions**, the comparison reverses and the planner adjusts faster: the planner internalizes that when one agent adjusts, others want to adjust as well.
+With only complementarity in *actions*, the comparison reverses and the planner adjusts faster: the planner internalizes that when one agent adjusts, others want to adjust as well.
 
 The case of substitutability in actions is the mirror image of the last one, and again makes the planner slower.
 
@@ -1347,9 +1367,9 @@ This exercise works through {prf:ref}`mfg_prop_identification` and its consequen
 :class: dropdown
 ```
 
-For part 1, the deviation drift is $B\Gamma^{-1}B'\bar\beta_2 - A$, and $\bar\beta_2$ solves the single-agent Riccati equation {eq}`mfg_beta2`, in which no interaction matrix appears.
+For part 1, the deviation drift is $B\Gamma^{-1}B^\top\bar\beta_2 - A$, and $\bar\beta_2$ solves the single-agent Riccati equation {eq}`mfg_beta2`, in which no interaction matrix appears.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 for label, (tx, ta) in {'baseline': (Θ_X, Θ_A),
                         'very different': (3*Θ_X, -0.1*np.eye(2))}.items():
     β2_case = mfg_riccati(A, B, Q, Γ, ρ)        # does not depend on tx, ta
@@ -1361,10 +1381,10 @@ For part 2, invert the definition of the closed-loop matrix to get $P$, then rea
 $$
 P = \Lambda^{-1}\left(U_{\dot X, X} + A\right),
 \qquad
-\Theta_X = P\Lambda P - Q - \rho P - PA - A'P .
+\Theta_X = P\Lambda P - Q - \rho P - PA - A^\top P .
 $$
 
-```{code-cell} ipython
+```{code-cell} ipython3
 U_obs = closed_loop(A, B, Γ + Θ_A, P)      # what the econometrician estimates
 
 P_hat = np.linalg.solve(Λ, U_obs + A)
@@ -1381,7 +1401,7 @@ Holding that ratio fixed traces out a one-parameter family of observationally eq
 
 The policy coefficient cannot break the tie, because $\lambda = b\,U_{\alpha,X} - a$ ties it to $\lambda$.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ratio = (q + (-0.4))/(γ + 0.3)       # baseline θ_X = -0.4, θ_A = 0.3
 
 print(f"{'θ_A':>7}{'θ_X':>12}{'λ':>12}{'policy coeff':>15}")
@@ -1444,7 +1464,7 @@ $$
 \frac{1}{\varepsilon_s \delta\bar k} = \frac{\delta\bar k^{1-\nu}}{\varepsilon_s} .
 $$
 
-```{code-cell} ipython
+```{code-cell} ipython3
 scale_c = δ_c*ν_c*(η_c - 1)/(η_c*(ρ_c + δ_c))      # δ k̄^{1-ν}
 
 print(f"δ k̄^(1-ν) = {scale_c:.4f}")
@@ -1458,7 +1478,7 @@ For part 3, $\gamma + \theta_{\mathcal A} = \delta\bar k^{1-\nu}(\phi + 1/\varep
 
 But the individual's Riccati equation {eq}`mfg_beta2` involves $\gamma$ alone, and the planner's involves $\gamma + 2\theta_{\mathcal A}$, so both separate the pairs.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 print(f"{'φ':>6}{'1/ε_s':>8}{'aggregate':>12}{'individual':>12}{'planner':>10}")
 for φ, inv_ε in ((0.40, 0.00), (0.30, 0.10), (1/7, 0.257143), (0.05, 0.35)):
     γ_case, θ_A_case = φ*scale_c, inv_ε*scale_c
@@ -1497,7 +1517,7 @@ $$
 
 For part 2, the scalar version of {eq}`mfg_aggregate_action` gives $\mathcal A = \frac{\lambda+\delta}{\delta}X$, which vanishes as $\lambda \to -\delta$.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 print(f"{'ν':>8}{'q + θ_X':>10}{'λ':>10}{'half-life':>11}{'A/X':>9}")
 for ν in (0.7, 0.9, 0.99, 0.999, 0.99999):
     λ_ν = scalar_lambda(ρ_c, δ_c, δ_c, cap_q(η_c, ν), γ_c, cap_θ_X(η_c, ν), θ_A_c)
@@ -1521,9 +1541,9 @@ Effective curvature is zero, the economy sits exactly on the boundary of the exi
 
 In the Kimball example, the equilibrium's effective curvature $Q + \Theta_X$ is positive definite for every superelasticity, but the planner's, $Q + 2\Theta_X$, is not.
 
-1. Using $Q + 2\Theta_X = (Q+\Theta_X) - \bar\eta_D'\,\bar s\bar s'$, show that it is positive definite if and only if
-$\bar\eta_D'\,\bar s'(Q+\Theta_X)^{-1}\bar s < 1$.
-1. Show that $(Q+\Theta_X)\mathbf 1 = (\bar\eta_D-1)\bar\eta_D\,\bar s$, where $\mathbf 1$ is a vector of ones, and hence that the condition is $\bar\eta_D' < (\bar\eta_D-1)\bar\eta_D$.
+1. Using $Q + 2\Theta_X = (Q+\Theta_X) - \bar\eta_D'\,\bar s\bar s^\top$, show that it is positive definite if and only if
+$\bar\eta_D'\,\bar s^\top(Q+\Theta_X)^{-1}\bar s < 1$.
+1. Show that $(Q+\Theta_X)\mathbb{1} = (\bar\eta_D-1)\bar\eta_D\,\bar s$, where $\mathbb{1}$ is a vector of ones, and hence that the condition is $\bar\eta_D' < (\bar\eta_D-1)\bar\eta_D$.
 1. Show that this is exactly the condition that static pass-through in {eq}`mfg_kimball_br` be below one half, and verify the threshold numerically.
 ```
 
@@ -1533,20 +1553,20 @@ $\bar\eta_D'\,\bar s'(Q+\Theta_X)^{-1}\bar s < 1$.
 
 For part 1, if $\bar\eta_D' \leq 0$ the rank-one term is added rather than subtracted and positive definiteness is immediate.
 
-If $\bar\eta_D' > 0$, then for $M \succ 0$ the matrix $M - c vv'$ with $c>0$ is positive definite if and only if $c\, v'M^{-1}v < 1$, which follows from the determinant identity $\det(M - cvv') = \det(M)(1 - c\,v'M^{-1}v)$ applied to every leading block, or directly from the Schur complement of the bordered matrix.
+If $\bar\eta_D' > 0$, then for $M \succ 0$ the matrix $M - c vv^\top$ with $c>0$ is positive definite if and only if $c\, v^\top M^{-1}v < 1$, which follows from the determinant identity $\det(M - cvv^\top) = \det(M)(1 - c\,v^\top M^{-1}v)$ applied to every leading block, or directly from the Schur complement of the bordered matrix.
 
-For part 2, using $\bar s'\mathbf 1 = 1$ in the third line of {eq}`mfg_kimball_Q`,
+For part 2, using $\bar s^\top\mathbb{1} = 1$ in the third line of {eq}`mfg_kimball_Q`,
 
 $$
-(Q+\Theta_X)\mathbf 1
+(Q+\Theta_X)\mathbb{1}
 = (\bar\eta_D-1)\left[(\bar\eta_D-\bar\eta_d)\bar s + \bar\eta_d \bar s\right]
 = (\bar\eta_D-1)\bar\eta_D\,\bar s .
 $$
 
-So $(Q+\Theta_X)^{-1}\bar s = \mathbf 1/[(\bar\eta_D-1)\bar\eta_D]$ and therefore
+So $(Q+\Theta_X)^{-1}\bar s = \mathbb{1}/[(\bar\eta_D-1)\bar\eta_D]$ and therefore
 
 $$
-\bar s'(Q+\Theta_X)^{-1}\bar s = \frac{1}{(\bar\eta_D-1)\bar\eta_D} ,
+\bar s^\top(Q+\Theta_X)^{-1}\bar s = \frac{1}{(\bar\eta_D-1)\bar\eta_D} ,
 $$
 
 which turns the condition in part 1 into $\bar\eta_D' < (\bar\eta_D-1)\bar\eta_D$.
@@ -1555,7 +1575,7 @@ For part 3, that inequality says precisely that $\kappa < 1$, and $\kappa/(1+\ka
 
 Total static pass-through is $\sum_j \partial x_i^{*}/\partial X_j = \kappa/(1+\kappa)$ because the shares sum to one, so the planner's problem is well behaved exactly when a store would pass less than half of an industry-wide price increase into its own prices.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 lo, hi = 0.0, 100.0
 for _ in range(60):
     mid = (lo + hi)/2
@@ -1583,7 +1603,7 @@ The closed-form eigenvalues in the Kimball example used $A = \pi I$.
 Replace it by $A = \operatorname{diag}(0.00, 0.02, 0.06)$, so that the three products face different rates of cost inflation.
 
 1. Check that the closed-form formula fails.
-1. Check that the trace comparative static of the **Persistence** section still holds, by scaling $\Theta_X$ and recording the trace and the eigenvalues of the closed-loop matrix.
+1. Check that the trace comparative static of the *Persistence* section still holds, by scaling $\Theta_X$ and recording the trace and the eigenvalues of the closed-loop matrix.
 1. Does the invariance of aggregate dynamics to the superelasticity survive?
 ```
 
@@ -1591,7 +1611,7 @@ Replace it by $A = \operatorname{diag}(0.00, 0.02, 0.06)$, so that the three pro
 :class: dropdown
 ```
 
-```{code-cell} ipython
+```{code-cell} ipython3
 A_het = np.diag([0.00, 0.02, 0.06])
 Q_h, Θ_h = kimball(η_d, η_D, 3.0, s_bar)
 
@@ -1610,7 +1630,7 @@ The errors are modest here because the three inflation rates are close together,
 
 The trace result, on the other hand, requires no such restriction.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 print(f"{'scale on Θ_X':>14}{'trace':>10}   eigenvalues")
 for scale in (0.0, 0.5, 1.0, 1.5):
     P_s = mfg_riccati(A_het, B_K, Q_h + scale*Θ_h, Γ_K, ρ_K)
@@ -1623,7 +1643,7 @@ Raising the scale strengthens complementarity and raises the trace, exactly as i
 
 For part 3, the invariance has nothing to do with $A$: it comes from the cancellation of $\bar\eta_D'$ in $Q + \Theta_X$, and {prf:ref}`mfg_prop_riccati` shows that only $Q+\Theta_X$ and $\Gamma+\Theta_{\mathcal A}$ enter the equilibrium Riccati equation.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 for η_Dp in (-3.0, 0.0, 3.0, 10.0):
     Q_i, Θ_i = kimball(η_d, η_D, η_Dp, s_bar)
     P_i = mfg_riccati(A_het, B_K, Q_i + Θ_i, Γ_K, ρ_K)
@@ -1637,8 +1657,8 @@ for η_Dp in (-3.0, 0.0, 3.0, 10.0):
 
 ## Further reading
 
-{cite}`AlvarezArgente2026` develop the results in this lecture, along with the two economic examples that we implemented above.
+{cite:t}`AlvarezArgente2026` develop the results in this lecture, along with the two economic examples that we implemented above.
 
 They also extend the analysis to interactions through higher moments of the cross-sectional distribution.
 
-{cite}`CarmonaDelarue2018` give a comprehensive probabilistic treatment of mean field games, and {cite}`AchdouEtAl2022` describe the numerical methods used to solve the coupled partial differential equations when the model is not linear quadratic.
+{cite:t}`CarmonaDelarue2018` give a comprehensive probabilistic treatment of mean field games, and {cite:t}`AchdouEtAl2022` describe the numerical methods used to solve the coupled partial differential equations when the model is not linear quadratic.
