@@ -1072,9 +1072,9 @@ For this exercise, use the following extreme price vectors as initial values:
 
 $$
 \begin{aligned}
-    p1_{0} &= (5, 5, 5) \\
-    p2_{0} &= (1, 1, 1) \\
-    p3_{0} &= (4.5, 0.1, 4)
+    p_0^{(1)} &= (5, 5, 5) \\
+    p_0^{(2)} &= (1, 1, 1) \\
+    p_0^{(3)} &= (4.5, 0.1, 4)
 \end{aligned}
 $$
 
