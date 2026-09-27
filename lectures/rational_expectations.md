@@ -30,7 +30,7 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ---
 tags: [hide-output]
 ---
@@ -74,14 +74,14 @@ Except that for us
 
 Let's start with some standard imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
 ```
 
 We'll also use the LQ class from `QuantEcon.py`.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 from quantecon import LQ
 ```
 
@@ -207,7 +207,7 @@ Thus, a $Y$ that solves {eq}`staticY` is a competitive equilibrium output as wel
 
 This type of outcome provides an intellectual justification for liking a competitive equilibrium.
 
-### Further Reading
+### Further reading
 
 References for this lecture include
 
@@ -592,15 +592,15 @@ $(\kappa_0, \kappa_1, h_0, h_1, h_2)$ in {eq}`ree_hlom2`--{eq}`ree_ex5`.
 
 Three ideas from this lecture recur throughout macroeconomics.
 
-The first is the equilibrium concept itself: a **perceived** law of motion for a market-wide object must coincide with the **actual** law of motion that the resulting decisions generate.
+The first is the equilibrium concept itself: a *perceived* law of motion for a market-wide object must coincide with the *actual* law of motion that the resulting decisions generate.
 
 The second is the "Big $Y$, little $y$" device that lets a price-taking firm be representative.
 
-The third is the computational strategy: because the mapping from perceived to actual laws of motion is not a contraction, we found an equilibrium by solving a **planning problem** instead, and then read off equilibrium prices as shadow prices.
+The third is the computational strategy: because the mapping from perceived to actual laws of motion is not a contraction, we found an equilibrium by solving a *planning problem* instead, and then read off equilibrium prices as shadow prices.
 
 The two sequels take these ideas into settings with uncertainty.
 
-{doc}`lucas_prescott_investment` returns to {cite}`Lucas_Prescott_1971` itself.
+{doc}`lucas_prescott_investment` returns to {cite:t}`Lucas_Prescott_1971` itself.
 
 There, demand is shifted by a Markov process, firms face a nonlinear technology for converting investment into capacity, and the equilibrium is proved to exist, to be unique, and to solve a planning problem that maximizes discounted consumer surplus.
 
@@ -608,7 +608,7 @@ Because the equilibrium is a Markov process, one can ask whether it converges to
 
 Affirmative answers are what make such models usable in econometrics.
 
-{doc}`optimal_growth_uncertainty` pursues the same questions in the one-sector optimal growth model of {cite}`BrockMirman1972`, and then follows {cite}`Sargent1980q` in adding irreversible investment.
+{doc}`optimal_growth_uncertainty` pursues the same questions in the one-sector optimal growth model of {cite:t}`BrockMirman1972`, and then follows {cite:t}`Sargent1980q` in adding irreversible investment.
 
 That small change makes the shadow price of installed capital -- Tobin's $q$ -- diverge from the price of new capital, and it turns the planner's value function into the object on which a theory of investment rests.
 
@@ -698,7 +698,7 @@ $$
 
 Here's our solution
 
-```{code-cell} python3
+```{code-cell} ipython3
 # Model parameters
 
 a0 = 100
@@ -807,7 +807,7 @@ $\kappa_1 = h_1 + h_2$.
 
 The following code implements this test
 
-```{code-cell} python3
+```{code-cell} ipython3
 candidates = ((94.0886298678, 0.923409232937),
               (93.2119845412, 0.984323478873),
               (95.0818452486, 0.952459076301))
@@ -905,7 +905,7 @@ $\kappa_0 = -F_1$ and $\kappa_1 = 1-F_0$.
 
 The Python code to solve this problem is below:
 
-```{code-cell} python3
+```{code-cell} ipython3
 # Formulate the planner's LQ problem
 
 A = np.array([[1, 0], [0, 1]])
@@ -969,7 +969,7 @@ $$
 
 The problem can be solved as follows
 
-```{code-cell} python3
+```{code-cell} ipython3
 A = np.array([[1, 0], [0, 1]])
 B = np.array([[1], [0]])
 R = np.array([[a1, -a0 / 2], [-a0 / 2, 0]])
@@ -1009,7 +1009,7 @@ who learn can converge  to rational expectations equilibria features
 iterations on a modification of the mapping $\Phi$ that can be
 approximated as $\gamma \Phi + (1-\gamma)I$. Here $I$ is the
 identity operator and $\gamma \in (0,1)$ is a *relaxation parameter*.
-See {cite}`MarcetSargent1989` and {cite}`EvansHonkapohja2001` for statements
+See {cite:t}`MarcetSargent1989` and {cite:t}`EvansHonkapohja2001` for statements
 and applications of this approach to establish conditions under which
 collections of adaptive agents who use least squares learning to converge to a
 rational expectations equilibrium.

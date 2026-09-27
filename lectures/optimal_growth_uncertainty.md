@@ -29,30 +29,30 @@ kernelspec:
 
 This lecture studies two papers.
 
-The first is {cite}`BrockMirman1972`, a classic analysis of optimal one-sector growth when the production function is hit by random shocks.
+The first is {cite:t}`BrockMirman1972`, a classic analysis of optimal one-sector growth when the production function is hit by random shocks.
 
-The second is {cite}`Sargent1980q`, which adds one small ingredient -- **irreversible investment** -- and uses the result to think about James Tobin's $q$ theory of investment.
+The second is {cite:t}`Sargent1980q`, which adds one small ingredient -- **irreversible investment** -- and uses the result to think about James Tobin's $q$ theory of investment.
 
 The lecture {doc}`lucas_prescott_investment` studied a competitive industry whose equilibrium is the solution of a planning problem, and whose equilibrium is a Markov process with an invariant distribution.
 
 Brock and Mirman ask the same questions about a one-sector growth model:
 
 * does the planning problem have a well-behaved solution, with continuous and monotone policy functions?
-* the optimal policy makes capital a Markov process; does that process have an **invariant distribution**?
+* the optimal policy makes capital a Markov process; does that process have an *invariant distribution*?
 * does the distribution of capital converge to it from *any* initial condition?
-* do **time averages** computed from a single realization converge to population moments?
+* do *time averages* computed from a single realization converge to population moments?
 
 The last two questions are the reason both papers matter for econometrics.
 
 A model that answers them affirmatively delivers a stationary, ergodic stochastic process for observable time series.
 
-Sample moments computed from one long realization then estimate population moments, which is exactly what the rational expectations econometrics of {cite}`HansenSargent1980` requires.
+Sample moments computed from one long realization then estimate population moments, which is exactly what the rational expectations econometrics of {cite:t}`HanSar1980` requires.
 
-{cite}`Sargent1980q` puts the Brock-Mirman apparatus to work on a question in macroeconomics: when, and in what sense, is there an investment demand schedule relating investment to Tobin's $q$?
+{cite:t}`Sargent1980q` puts the Brock-Mirman apparatus to work on a question in macroeconomics: when, and in what sense, is there an investment demand schedule relating investment to Tobin's $q$?
 
 Along the way, this lecture pauses over a technical issue that turns out to be central:
 
-* the derivative of the planner's value function with respect to capital **is** the competitive price of used capital, i.e. it is essentially Tobin's $q$
+* the derivative of the planner's value function with respect to capital *is* the competitive price of used capital, i.e. it is essentially Tobin's $q$
 * so the analysis stands or falls on whether that derivative exists
 * irreversible investment creates a **corner**, and at a corner the standard argument for differentiability breaks down
 
@@ -60,7 +60,7 @@ We'll describe the difficulty, note a gap in the published argument, and give a 
 
 Let's start with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import namedtuple
@@ -72,7 +72,7 @@ A planner chooses consumption to maximize
 
 ```{math}
 :label: bm_objective
-E_0 \sum_{t=0}^\infty \beta^t u(c_t), \qquad 0 < \beta < 1,
+\mathbb{E}_0 \sum_{t=0}^\infty \beta^t u(c_t), \qquad 0 < \beta < 1,
 ```
 
 subject to
@@ -136,22 +136,22 @@ and Brock and Mirman devote most of their paper to the long-run behavior of this
 
 The strategy resembles the one used in {doc}`lucas_prescott_investment`.
 
-Consider the deterministic difference equations obtained by fixing the shock at its lowest possible value $\alpha$ and at its highest possible value $\beta_r$:
+Consider the deterministic difference equations obtained by fixing the shock at its lowest possible value $\underline r$ and at its highest possible value $\bar r$:
 
 $$
-k_{t+1} = h(f(k_t, \alpha)), \qquad k_{t+1} = h(f(k_t, \beta_r)) .
+k_{t+1} = h(f(k_t, \underline r)), \qquad k_{t+1} = h(f(k_t, \bar r)) .
 $$
 
-Let $k_a$ be a positive fixed point of the first and $k_b$ a positive fixed point of the second.
+Let $\underline k$ be a positive fixed point of the first and $\bar k$ a positive fixed point of the second.
 
-Because $f$ is increasing in the shock and $h$ is increasing, $k_a \leq k_b$.
+Because $f$ is increasing in the shock and $h$ is increasing, $\underline k \leq \bar k$.
 
-Brock and Mirman say that the model has a **stable configuration of fixed points** when $k_a$ and $k_b$ are positive and $k_a < k_b$.
+Brock and Mirman say that the model has a **stable configuration of fixed points** when $\underline k$ and $\bar k$ are positive and $\underline k < \bar k$.
 
 They then show that
 
-* the sets of capital stocks below $k_a$ and above $k_b$ are **transient**: the process leaves them and does not return
-* the interval $[k_a, k_b]$ is where the process eventually lives
+* the sets of capital stocks below $\underline k$ and above $\bar k$ are **transient**: the process leaves them and does not return
+* the interval $[\underline k, \bar k]$ is where the process eventually lives
 
 ```{prf:theorem}
 :label: bm_theorem
@@ -172,14 +172,14 @@ What an econometrician needs in addition is a **mean-ergodic theorem**: a guaran
 \frac{1}{T}\sum_{t=1}^T \phi(k_t) \to \int \phi \, dF \qquad \text{with probability one} .
 ```
 
-For Markov processes with a unique invariant distribution and a stable configuration of fixed points, such laws of large numbers are available; {cite}`Sargent1980q` invokes the version in Doob's book to justify computing population moments of his model and comparing them with sample moments.
+For Markov processes with a unique invariant distribution and a stable configuration of fixed points, such laws of large numbers are available; {cite:t}`Sargent1980q` invokes the version in Doob's book to justify computing population moments of his model and comparing them with sample moments.
 
 This is the bridge from Brock and Mirman's theory to the rational expectations econometrics developed in the late 1970s and early 1980s.
 
 Without {prf:ref}`bm_theorem` and {eq}`bm_ergodic`, a likelihood function computed from a single time series would have no firm justification.
 
 ```{note}
-{cite}`BrockMirman1972` study the case in which the shocks are independent and identically distributed.
+{cite:t}`BrockMirman1972` study the case in which the shocks are independent and identically distributed.
 
 The lecture {doc}`lucas_prescott_investment` describes a parallel set of results for a model in which the shock is serially correlated.
 
@@ -188,7 +188,7 @@ In both cases the economics is the same: the state must eventually wander inside
 
 ## Irreversible investment and Tobin's q
 
-{cite}`Sargent1980q` modifies the model in one respect: capital, once installed, cannot be eaten.
+{cite:t}`Sargent1980q` modifies the model in one respect: capital, once installed, cannot be eaten.
 
 Output can be consumed or added to the capital stock, but the conversion does not run backwards,
 
@@ -211,7 +211,7 @@ The irreversibility constraint is a **friction** that lets the price of installe
 
 Sargent describes a competitive economy in which households own capital, rent it to firms, and trade claims to installed capital at a relative price $p_{Kt}$, which is Tobin's $q$.
 
-Following {cite}`Lucas_Prescott_1971` -- exactly the strategy of {doc}`lucas_prescott_investment` -- he studies the competitive equilibrium indirectly, through the planning problem that generates it.
+Following {cite:t}`Lucas_Prescott_1971` -- exactly the strategy of {doc}`lucas_prescott_investment` -- he studies the competitive equilibrium indirectly, through the planning problem that generates it.
 
 The planner solves
 
@@ -219,7 +219,7 @@ The planner solves
 :label: q_bellman
 v(K, \theta, e) = \max_{K' \geq (1-\delta)K}
 \left\{ u\bigl(f(K)\theta + (1-\delta)K - K', e\bigr)
-+ \beta E\bigl[v(K', \theta', e')\bigr] \right\} .
++ \beta \mathbb{E}\bigl[v(K', \theta', e')\bigr] \right\} .
 ```
 
 Let $\lambda \geq 0$ be the multiplier on the irreversibility constraint.
@@ -228,7 +228,7 @@ The first-order condition is
 
 ```{math}
 :label: q_foc
-u_c(c, e) = \beta E\bigl[v_K(K', \theta', e')\bigr] + \lambda ,
+u_c(c, e) = \beta \mathbb{E}\bigl[v_K(K', \theta', e')\bigr] + \lambda ,
 \qquad \lambda \geq 0, \quad \lambda I = 0 ,
 ```
 
@@ -236,7 +236,7 @@ and the price of installed capital is
 
 ```{math}
 :label: q_definition
-q = \frac{\beta E\bigl[v_K(K', \theta', e')\bigr]}{u_c(c,e)} = 1 - \frac{\lambda}{u_c(c,e)} .
+q = \frac{\beta \mathbb{E}\bigl[v_K(K', \theta', e')\bigr]}{u_c(c,e)} = 1 - \frac{\lambda}{u_c(c,e)} .
 ```
 
 So this model implies
@@ -245,7 +245,7 @@ So this model implies
 * $q = 1$ exactly when investment is positive
 * $q < 1$ exactly when the irreversibility constraint binds, which is when investment is zero
 
-Notice what {eq}`q_definition` says: **Tobin's $q$ is the derivative of the planner's value function**, normalized by marginal utility.
+Notice what {eq}`q_definition` says: *Tobin's $q$ is the derivative of the planner's value function*, normalized by marginal utility.
 
 Everything therefore depends on whether $v_K$ exists.
 
@@ -253,7 +253,7 @@ Everything therefore depends on whether $v_K$ exists.
 
 Here is the difficulty.
 
-The standard tool for differentiability of a value function is the theorem of {cite}`BenvenisteScheinkman1979`.
+The standard tool for differentiability of a value function is the theorem of {cite:t}`BenvenisteScheinkman1979`.
 
 ```{prf:theorem} Benveniste-Scheinkman
 :label: bs_theorem
@@ -265,11 +265,11 @@ Suppose $W$ is concave, differentiable at $K_0$, and satisfies $W(K) \leq v(K)$ 
 Then $v$ is differentiable at $K_0$ and $v'(K_0) = W'(K_0)$.
 ```
 
-The usual way to build such a $W$ is to take the optimal plan at $K_0$, **freeze** next period's capital at its optimal value $K_0'$, and let consumption absorb the change in $K$:
+The usual way to build such a $W$ is to take the optimal plan at $K_0$, *freeze* next period's capital at its optimal value $K_0'$, and let consumption absorb the change in $K$:
 
 ```{math}
 :label: q_W1
-W_1(K) = u\bigl(f(K)\theta + (1-\delta)K - K_0', e\bigr) + \beta E\bigl[v(K_0', \theta', e')\bigr] .
+W_1(K) = u\bigl(f(K)\theta + (1-\delta)K - K_0', e\bigr) + \beta \mathbb{E}\bigl[v(K_0', \theta', e')\bigr] .
 ```
 
 This is a feasible plan, so $W_1 \leq v$, with equality at $K_0$, and it is differentiable.
@@ -278,7 +278,7 @@ But feasibility requires $K_0' \geq (1-\delta)K$, that is $K \leq K_0'/(1-\delta
 
 When investment is positive, $K_0' > (1-\delta)K_0$ and the plan is feasible on a full neighborhood of $K_0$.
 
-When investment is **zero**, $K_0' = (1-\delta)K_0$ exactly, and the plan is infeasible for every $K > K_0$.
+When investment is *zero*, $K_0' = (1-\delta)K_0$ exactly, and the plan is infeasible for every $K > K_0$.
 
 At a corner, the standard support function is available only from the left.
 
@@ -287,13 +287,13 @@ This is precisely where the published argument becomes delicate, and in our read
 ```{note}
 Two specific difficulties.
 
-First, {cite}`Sargent1980q` states the derivative of the value function in the form
+First, {cite:t}`Sargent1980q` states the derivative of the value function in the form
 
 $$
 v_K(K,\theta,e) = u_c(c,e)\bigl[f'(K)\theta + (1-\delta)\bigr] ,
 $$
 
-which is obtained by substituting the first-order condition {eq}`q_foc` **with equality** into the envelope condition.
+which is obtained by substituting the first-order condition {eq}`q_foc` *with equality* into the envelope condition.
 
 That substitution is legitimate only where investment is positive.
 
@@ -310,7 +310,7 @@ The appendix in turn justifies this by differentiating the first-order condition
 
 Fortunately the conclusion is true, and there is a route to it that avoids the induction on iterates entirely.
 
-The key observation is that at a corner a **different** feasible plan supplies the needed support function: investing nothing is feasible at *every* capital stock, so it works on both sides.
+The key observation is that at a corner a *different* feasible plan supplies the needed support function: investing nothing is feasible at *every* capital stock, so it works on both sides.
 
 ````{prf:proposition}
 :label: q_differentiability
@@ -321,7 +321,7 @@ Then for each $(\theta, e)$ the value function $v(\cdot,\theta,e)$ defined by {e
 
 ```{math}
 :label: q_envelope
-v_K(K,\theta,e) = u_c(c,e) f'(K)\theta + \beta(1-\delta) E\bigl[v_K(K',\theta',e')\bigr] ,
+v_K(K,\theta,e) = u_c(c,e) f'(K)\theta + \beta(1-\delta) \mathbb{E}\bigl[v_K(K',\theta',e')\bigr] ,
 ```
 
 where $c$ and $K'$ are optimal at $(K,\theta,e)$.
@@ -346,17 +346,17 @@ $$
 v_K(K_0,\theta,e) = u_c(c,e)\bigl[f'(K_0)\theta + (1-\delta)\bigr] .
 $$
 
-Because the first-order condition holds with equality here, $\beta E[v_K(K_0',\cdot)] = u_c(c,e)$, and substituting gives {eq}`q_envelope`.
+Because the first-order condition holds with equality here, $\beta \mathbb{E}[v_K(K_0',\cdot)] = u_c(c,e)$, and substituting gives {eq}`q_envelope`.
 
 **Step 2 (investment zero, conditional on a smaller capital stock).** Suppose $I(K_0,\theta,e) = 0$, so that $K_0' = (1-\delta)K_0$ and investing nothing is optimal at $K_0$.
 
 Consider instead the plan that invests nothing this period and behaves optimally thereafter:
 
 $$
-W_2(K) = u\bigl(f(K)\theta, e\bigr) + \beta E\bigl[v\bigl((1-\delta)K, \theta', e'\bigr)\bigr] .
+W_2(K) = u\bigl(f(K)\theta, e\bigr) + \beta \mathbb{E}\bigl[v\bigl((1-\delta)K, \theta', e'\bigr)\bigr] .
 $$
 
-Investing nothing is feasible at **every** capital stock, so $W_2 \leq v$ everywhere, with $W_2(K_0) = v(K_0)$, and $W_2$ is concave.
+Investing nothing is feasible at *every* capital stock, so $W_2 \leq v$ everywhere, with $W_2(K_0) = v(K_0)$, and $W_2$ is concave.
 
 Suppose that $v(\cdot,\theta',e')$ is differentiable at $(1-\delta)K_0$ for every $(\theta',e')$.
 
@@ -365,7 +365,7 @@ Then $W_2$ is differentiable at $K_0$; differentiation under the expectation is 
 {prf:ref}`bs_theorem` then gives differentiability of $v$ at $K_0$, with
 
 $$
-v_K(K_0,\theta,e) = u_c(c,e) f'(K_0)\theta + \beta(1-\delta) E\bigl[v_K((1-\delta)K_0, \theta', e')\bigr] ,
+v_K(K_0,\theta,e) = u_c(c,e) f'(K_0)\theta + \beta(1-\delta) \mathbb{E}\bigl[v_K((1-\delta)K_0, \theta', e')\bigr] ,
 $$
 
 which is {eq}`q_envelope`.
@@ -376,7 +376,7 @@ The intuition is that the marginal product of capital becomes arbitrarily large 
 
 Making this precise requires comparing the rates at which the two sides of {eq}`q_foc` diverge as $K \downarrow 0$, since with, say, logarithmic utility both sides become unbounded.
 
-{cite}`Sargent1980q` proves the statement in his Appendix A (his Proposition A2), under an explicit restriction on $u$ and $f$ that he imposes for this purpose.
+{cite:t}`Sargent1980q` proves the statement in his Appendix A (his Proposition A2), under an explicit restriction on $u$ and $f$ that he imposes for this purpose.
 
 That result is the one ingredient of his appendix that the argument below borrows, and it is independent of the differentiability question at issue here.
 
@@ -402,7 +402,7 @@ Since $1/(1-\delta) > 1$, iterating the claim gives $(0, \eta (1-\delta)^{-n}) \
 
 **Step 5 (continuity).** A concave function that is differentiable on an open interval has a continuous derivative there, so $v(\cdot,\theta,e)$ is continuously differentiable.
 
-Finally, where investment is zero the first-order condition holds with $\lambda > 0$, so $\beta E[v_K(K',\cdot)] < u_c$, and {eq}`q_envelope` gives $v_K < u_c[f'(K)\theta + (1-\delta)]$.
+Finally, where investment is zero the first-order condition holds with $\lambda > 0$, so $\beta \mathbb{E}[v_K(K',\cdot)] < u_c$, and {eq}`q_envelope` gives $v_K < u_c[f'(K)\theta + (1-\delta)]$.
 ````
 
 The corrected formula has a natural reading.
@@ -411,7 +411,7 @@ Iterating {eq}`q_envelope` forward gives
 
 ```{math}
 :label: q_envelope_sum
-v_K(K_t,\theta_t,e_t) = E_t \sum_{j=0}^\infty \beta^j (1-\delta)^j \,
+v_K(K_t,\theta_t,e_t) = \mathbb{E}_t \sum_{j=0}^\infty \beta^j (1-\delta)^j \,
 u_c(c_{t+j}, e_{t+j}) \, f'(K_{t+j})\theta_{t+j} .
 ```
 
@@ -435,9 +435,9 @@ One numerical detail matters a great deal.
 
 The irreversibility constraint says $K' \geq (1-\delta)K$, so we want $(1-\delta)K$ to be a point of the capital grid whenever $K$ is.
 
-Following {cite}`Sargent1980q`, we use a **geometric** grid with ratio $(1-\delta)^{1/z}$ for an integer $z$, so that $(1-\delta)K_i = K_{i-z}$ exactly.
+Following {cite:t}`Sargent1980q`, we use a *geometric* grid with ratio $(1-\delta)^{1/z}$ for an integer $z$, so that $(1-\delta)K_i = K_{i-z}$ exactly.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 Model = namedtuple("Model", "β δ a z K θ e W nθ ne")
 
 def create_model(β=0.95, δ=0.05, a=0.25, z=10, n_K=500, K_hi=20.0,
@@ -455,7 +455,7 @@ f_prime = lambda m, K: m.a * K**(m.a - 1)
 
 The planner chooses next period's capital from the grid, subject to positive consumption and to irreversibility.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def solve_model(m, irreversible=True, tol=1e-10, maxit=5000, howard=50):
     "Value function iteration with Howard policy improvement steps."
     nK = len(m.K)
@@ -499,7 +499,7 @@ def solve_model(m, irreversible=True, tol=1e-10, maxit=5000, howard=50):
 
 To compute $q$ we need $v_K$, and {prf:ref}`q_differentiability` tells us how to get it: equation {eq}`q_envelope` is a linear fixed point problem in $v_K$ given the optimal policy, and it is a contraction with modulus $\beta(1-\delta)$.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def marginal_value(m, idx, C_pol, tol=1e-13, maxit=50_000):
     "Solve the envelope equation v_K = u_c f'(K)θ + β(1-δ) E v_K(K')."
     vK = np.zeros_like(C_pol)
@@ -526,7 +526,7 @@ print(f"share of states with zero investment: {corner.mean():.3f}")
 
 Let's check {prf:ref}`q_differentiability` numerically, by comparing the envelope formula with a finite-difference derivative of the computed value function.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 vK_fd = np.gradient(v, m.K, axis=0)
 naive = u_c * (f_prime(m, m.K)[:, None, None] * m.θ[None, :, None] + (1 - m.δ))
 mid = ((m.K > 2.2) & (m.K < 7.0))[:, None, None] & np.ones_like(corner)
@@ -549,7 +549,7 @@ This is the practical content of the correction: at corners the two expressions 
 
 We can also verify Step 3 of the proof, which asserts a region of small capital stocks where the corner never binds.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 m_wide = create_model(n_K=700)        # a grid reaching lower capital stocks
 _, idx_w, _, I_w, _ = solve_model(m_wide)
 frac_corner = (I_w <= 1e-12).reshape(len(m_wide.K), -1).mean(axis=1)
@@ -560,7 +560,13 @@ print(f"investment is positive for every shock when K < {m_wide.K[first]:.3f}")
 
 ### Policies and the price of installed capital
 
-```{code-cell} ipython
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Law of motion and Tobin's q
+    name: fig-ogu-policy-q
+---
 fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
 show = (m.K > 1.5) & (m.K < 9)
 
@@ -588,7 +594,7 @@ Exactly on that region, $q$ falls below one.
 
 As in {doc}`lucas_prescott_investment`, we check that the long-run distribution does not depend on where the economy starts.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def simulate(m, idx, K0, T=50_000, seed=0, burn=500):
     "Simulate the equilibrium Markov process."
     rng = np.random.default_rng(seed)
@@ -609,7 +615,13 @@ print(f"mean capital starting from K0 = 15: {m.K[p_hi].mean():.4f}")
 print(f"capital visited: [{m.K[p_lo].min():.2f}, {m.K[p_lo].max():.2f}]")
 ```
 
-```{code-cell} ipython
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Invariant distribution and investment against q
+    name: fig-ogu-invariant-q
+---
 fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
 
 axes[0].hist(m.K[p_lo], bins=60, density=True, alpha=0.5, label='from $K_0 = 2$')
@@ -629,11 +641,11 @@ plt.show()
 
 The two histograms coincide, as {prf:ref}`bm_theorem` leads us to expect.
 
-The scatter plot on the right reproduces the central picture of {cite}`Sargent1980q`.
+The scatter plot on the right reproduces the central picture of {cite:t}`Sargent1980q`.
 
 Investment is positive only when $q$ equals one; when $q$ is below one, investment is exactly zero.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 print(f"q when I > 0: [{q_sim[I_sim > 1e-12].min():.4f}, {q_sim[I_sim > 1e-12].max():.4f}]")
 print(f"q when I = 0: [{q_sim[I_sim <= 1e-12].min():.4f}, {q_sim[I_sim <= 1e-12].max():.4f}]")
 ```
@@ -655,7 +667,7 @@ It is a **mongrel relation** that mixes together preferences, technology and the
 ```{exercise}
 :label: ogu_ex1
 
-{cite}`BrockMirman1972` is famous partly for a special case that can be solved by hand.
+{cite:t}`BrockMirman1972` is famous partly for a special case that can be solved by hand.
 
 Let $u(c) = \ln c$, let $f(k, r) = r k^\alpha$ with $0 < \alpha < 1$, and let capital depreciate fully each period, so that $k_{t+1} = f(k_t, r_t) - c_t$.
 
@@ -673,13 +685,13 @@ Guess that a constant fraction of resources is saved, $k_{t+1} = s\, r_t k_t^\al
 The Euler equation for this problem is
 
 $$
-\frac{1}{c_t} = \beta E_t \left[ \frac{1}{c_{t+1}} \alpha r_{t+1} k_{t+1}^{\alpha - 1} \right] .
+\frac{1}{c_t} = \beta \mathbb{E}_t \left[ \frac{1}{c_{t+1}} \alpha r_{t+1} k_{t+1}^{\alpha - 1} \right] .
 $$
 
 With $c_t = (1-s) r_t k_t^\alpha$ and $k_{t+1} = s r_t k_t^\alpha$, the right side becomes
 
 $$
-\beta E_t \left[\frac{\alpha r_{t+1}k_{t+1}^{\alpha-1}}{(1-s) r_{t+1} k_{t+1}^{\alpha}}\right]
+\beta \mathbb{E}_t \left[\frac{\alpha r_{t+1}k_{t+1}^{\alpha-1}}{(1-s) r_{t+1} k_{t+1}^{\alpha}}\right]
 = \frac{\beta \alpha}{(1-s) k_{t+1}}
 = \frac{\beta\alpha}{(1-s) s r_t k_t^{\alpha}} ,
 $$
@@ -704,7 +716,7 @@ $$
 \text{variance} = \frac{\sigma^2}{1 - \alpha^2} .
 $$
 
-```{code-cell} ipython
+```{code-cell} ipython3
 α, β_d, μ, σ = 0.4, 0.95, 0.0, 0.1
 T = 200_000
 rng = np.random.default_rng(0)
@@ -750,7 +762,7 @@ Then
 :class: dropdown
 ```
 
-The second formula is what you get by substituting the first-order condition {eq}`q_foc` into the envelope condition **as though** $\lambda = 0$.
+The second formula is what you get by substituting the first-order condition {eq}`q_foc` into the envelope condition *as though* $\lambda = 0$.
 
 Since $\lambda \geq 0$, dropping it can only raise the expression, so
 
@@ -761,7 +773,7 @@ $$
 
 with equality exactly when $\lambda = 0$, that is, when investment is positive.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 gap = np.abs(naive - vK_fd)/np.abs(vK_fd)
 env = np.abs(vK - vK_fd)/np.abs(vK_fd)
 
@@ -805,7 +817,7 @@ Comment on what this implies for an econometrician who estimates an "investment 
 
 Here is one solution.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def q_regression(**kwargs):
     "Solve an economy, simulate it, and regress I on q."
     mm = create_model(**kwargs)
@@ -836,7 +848,7 @@ The slope and the fit both move around substantially across economies that share
 
 Nothing in the regression is invariant, so it cannot be used to predict what investment would do under a policy that changed any of these features.
 
-This is the message of {cite}`Sargent1980q`, and it is a concrete instance of the Lucas critique: the very friction that makes $q$ interesting -- the occasionally binding irreversibility constraint -- also makes the relationship between $I$ and $q$ a reduced-form artifact rather than a decision rule.
+This is the message of {cite:t}`Sargent1980q`, and it is a concrete instance of the Lucas critique: the very friction that makes $q$ interesting -- the occasionally binding irreversibility constraint -- also makes the relationship between $I$ and $q$ a reduced-form artifact rather than a decision rule.
 
 ```{solution-end}
 ```
