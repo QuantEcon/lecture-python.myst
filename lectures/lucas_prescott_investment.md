@@ -27,7 +27,7 @@ kernelspec:
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ---
 tags: [hide-output]
 ---
@@ -36,20 +36,20 @@ tags: [hide-output]
 
 ## Overview
 
-This lecture studies {cite}`Lucas_Prescott_1971`, a paper that helped to ignite a *rational expectations revolution*.
+This lecture studies {cite:t}`Lucas_Prescott_1971`, a paper that helped to ignite a *rational expectations revolution*.
 
 Lucas and Prescott studied a competitive industry in which
 
 * demand shifts randomly each period
 * firms face costs of adjusting their capital stocks
 * firms must forecast future prices in order to decide how much to invest
-* the probability distribution that firms use to forecast prices **equals** the probability distribution that their investment decisions actually generate
+* the probability distribution that firms use to forecast prices *equals* the probability distribution that their investment decisions actually generate
 
-That last bullet point is what {cite}`muth1961` called **rational expectations**.
+That last bullet point is what {cite:t}`muth1961` called **rational expectations**.
 
 The QuantEcon lecture {doc}`rational_expectations` presents what we might call a "baby" version of the Lucas-Prescott model.
 
-That lecture studies a linear-quadratic industry **without uncertainty**.
+That lecture studies a linear-quadratic industry *without uncertainty*.
 
 The present lecture describes the more ambitious structure that Lucas and Prescott actually built.
 
@@ -57,24 +57,24 @@ Relative to the baby version, Lucas and Prescott
 
 * let demand be shifted by a Markov process $\{u_t\}$, so that the equilibrium is a stochastic process rather than a deterministic path
 * allow a nonlinear technology for converting investment into capacity
-* prove that a competitive equilibrium **exists** and is **unique**
-* show that the equilibrium is the solution of a **planning problem** that maximizes discounted consumer surplus
-* show that the equilibrium is a **Markov process** in the state $(k_t, u_t)$
-* provide conditions under which that Markov process has an **invariant probability distribution** to which it converges from any initial condition
+* prove that a competitive equilibrium *exists* and is *unique*
+* show that the equilibrium is the solution of a *planning problem* that maximizes discounted consumer surplus
+* show that the equilibrium is a *Markov process* in the state $(k_t, u_t)$
+* provide conditions under which that Markov process has an *invariant probability distribution* to which it converges from any initial condition
 
 The last item is the part of the paper that most influenced later work.
 
 A model whose equilibrium is a Markov process with an invariant distribution is a model that can be taken to time series data.
 
-That observation set the stage for the *rational expectations econometrics* subsequently developed by Lars Peter Hansen and Thomas Sargent {cite}`HansenSargent1980`.
+That observation set the stage for the *rational expectations econometrics* subsequently developed by Lars Peter Hansen and Thomas Sargent {cite}`HanSar1980`.
 
-Along the way we'll describe how {cite}`PrescottMehra1980` later distilled the Lucas-Prescott structure into a general definition of a **recursive competitive equilibrium**.
+Along the way we'll describe how {cite:t}`PrescottMehra1980` later distilled the Lucas-Prescott structure into a general definition of a **recursive competitive equilibrium**.
 
-The sequel {doc}`optimal_growth_uncertainty` studies a paper that asks the same questions about a one-sector optimal growth model, {cite}`BrockMirman1972`, and a paper that uses that model to think about Tobin's $q$, {cite}`Sargent1980q`.
+The sequel {doc}`optimal_growth_uncertainty` studies a paper that asks the same questions about a one-sector optimal growth model, {cite:t}`BrockMirman1972`, and a paper that uses that model to think about Tobin's $q$, {cite:t}`Sargent1980q`.
 
 Let's start with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 import quantecon as qe
@@ -105,7 +105,7 @@ Capacity next period is related to capacity this period and investment by
 k_{t+1} = k_t \, h\!\left(\frac{x_t}{k_t}\right),
 ```
 
-where $h$ is bounded, continuously differentiable, increasing, and strictly **concave**.
+where $h$ is bounded, continuously differentiable, increasing, and strictly *concave*.
 
 The strict concavity of $h$ is what creates **costs of adjustment**: doubling the rate of investment per unit of capital less than doubles the resulting increment to capacity.
 
@@ -180,7 +180,7 @@ It needs only to know the value that securities markets place on a unit of insta
 
 Readers will recognize a version of what later became known as Tobin's $q$ theory of investment.
 
-But equation {eq}`lp_investment_fn` is a **consistency requirement**, not yet a theory of capital accumulation, because the path of $w_t$ is still unknown.
+But equation {eq}`lp_investment_fn` is a *consistency requirement*, not yet a theory of capital accumulation, because the path of $w_t$ is still unknown.
 
 To determine $w_t$ we have to study equilibrium.
 
@@ -190,9 +190,9 @@ Firms must forecast future prices.
 
 Lucas and Prescott describe the usual approach as postulating a forecasting rule -- for example "adaptive expectations" -- that generates investment behavior, which in conjunction with demand generates an actual price process.
 
-They object that if the underlying disturbance has a regular stochastic character, then, except by coincidence, forecast prices and actual prices will have **different probability distributions**, and the difference will be persistent, costly, and easy to correct.
+They object that if the underlying disturbance has a regular stochastic character, then, except by coincidence, forecast prices and actual prices will have *different probability distributions*, and the difference will be persistent, costly, and easy to correct.
 
-So they go to the opposite extreme and assume that the actual and anticipated prices have the **same probability distribution**.
+So they go to the opposite extreme and assume that the actual and anticipated prices have the *same probability distribution*.
 
 To say this precisely, fix an initial state $(k_0, u_0)$.
 
@@ -209,10 +209,10 @@ An **industry equilibrium** for a fixed initial state $(k_0, u_0)$ is a triple o
 1. the plan $\{q^0_t, x^0_t\}$ maximizes expected present value
 
    $$
-   E \left\{ \sum_{t=0}^\infty \beta^t \left[ p^0_t q_t - x_t \right] \right\}
+   \mathbb{E} \left\{ \sum_{t=0}^\infty \beta^t \left[ p^0_t q_t - x_t \right] \right\}
    $$
 
-   over all plans $\{q_t, x_t\}$ that satisfy {eq}`lp_production` and {eq}`lp_accumulation`, **given** the price process $\{p^0_t\}$.
+   over all plans $\{q_t, x_t\}$ that satisfy {eq}`lp_production` and {eq}`lp_accumulation`, *given* the price process $\{p^0_t\}$.
 ```
 
 The rational expectations requirement is hiding in plain sight in {prf:ref}`lp_equilibrium_def`.
@@ -247,7 +247,7 @@ and define discounted consumer surplus net of investment costs by
 
 ```{math}
 :label: lp_surplus
-S = E \left\{ \sum_{t=0}^\infty \beta^t \left[ s(q_t, u_t) - x_t \right] \right\} .
+S = \mathbb{E} \left\{ \sum_{t=0}^\infty \beta^t \left[ s(q_t, u_t) - x_t \right] \right\} .
 ```
 
 Associated with the problem of maximizing $S$ is the functional equation
@@ -293,7 +293,7 @@ and verify that $T$ is monotone and satisfies a discounting property, so that by
 They also show that $T$ preserves concavity and monotonicity in $k$, which delivers a unique and continuous policy function $x(k,u)$.
 
 ```{note}
-These arguments are now standard and are treated at length in {cite}`StokeyLucas1989`.
+These arguments are now standard and are treated at length in {cite:t}`StokeyLucas1989`.
 
 In 1971 they were not standard, which is one reason the paper is hard to read.
 
@@ -304,17 +304,17 @@ Two features of {prf:ref}`lp_theorem1` deserve emphasis.
 
 First, the equilibrium is **recursive**: the pair $(k_t, u_t)$ is a Markov process, and equilibrium prices and quantities are time-invariant functions of it.
 
-Second, the equilibrium is computed **without ever iterating on a mapping from beliefs to outcomes**.
+Second, the equilibrium is computed *without ever iterating on a mapping from beliefs to outcomes*.
 
-The lecture {doc}`rational_expectations` explains why that matters: the mapping $\Phi$ from a perceived law of motion to an actual law of motion is **not a contraction**, and iterating on it can diverge.
+The lecture {doc}`rational_expectations` explains why that matters: the mapping $\Phi$ from a perceived law of motion to an actual law of motion is *not a contraction*, and iterating on it can diverge.
 
 The planning problem replaces an unreliable fixed point calculation with a dynamic program that is a contraction.
 
 ## Recursive competitive equilibrium
 
-{cite}`PrescottMehra1980` later extracted the general structure that Lucas and Prescott had exploited.
+{cite:t}`PrescottMehra1980` later extracted the general structure that Lucas and Prescott had exploited.
 
-Their goal was to replace a search for equilibrium *sequences of contingency functions*, in the style of Arrow and Debreu, with a search for equilibrium **decision rules**.
+Their goal was to replace a search for equilibrium *sequences of contingency functions*, in the style of Arrow and Debreu, with a search for equilibrium *decision rules*.
 
 Such rules specify current actions as functions of a small number of **state variables** that summarize the effects of past decisions and current information.
 
@@ -383,7 +383,7 @@ $$
 x = k \left[ \left(\frac{k'}{k}\right)^{1/\alpha} - (1 - \delta) \right] .
 $$
 
-```{code-cell} ipython
+```{code-cell} ipython3
 Model = namedtuple("Model", "r β δ α a0 a1 k u P X feasible s")
 
 def create_model(r=0.05, δ=0.10, α=0.70, a0=1.0, a1=0.01,
@@ -402,7 +402,7 @@ def create_model(r=0.05, δ=0.10, α=0.70, a0=1.0, a1=0.01,
 
 We solve the planner's Bellman equation {eq}`lp_bellman` by value function iteration, with Howard policy improvement steps to speed convergence.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def solve_model(m, tol=1e-8, maxit=1000, howard=30):
     "Solve the planning problem; return value function and policies."
     n_k, n_u = len(m.k), len(m.u)
@@ -436,7 +436,13 @@ print(f"grid: {len(m.k)} capital points, {len(m.u)} demand states")
 
 Let's look at the equilibrium investment policy and the law of motion for capital.
 
-```{code-cell} ipython
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Investment policy and law of motion
+    name: fig-lp-policy
+---
 fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
 
 for j in [0, len(m.u)//2, len(m.u)-1]:
@@ -468,14 +474,14 @@ Let $z = x/k$ denote the investment rate.
 Differentiating the Bellman equation {eq}`lp_bellman` and using the envelope condition gives
 
 $$
-w(k,u) = v_k(k, u) = D(k,u) + \beta E\left[ v_k(k', u') \mid u \right] \left[ h(z) - z h'(z) \right],
+w(k,u) = v_k(k, u) = D(k,u) + \beta \mathbb{E}\left[ v_k(k', u') \mid u \right] \left[ h(z) - z h'(z) \right],
 $$
 
 while the first-order condition for $x$ is
 
 ```{math}
 :label: lp_planner_foc
-\beta E\left[ v_k(k', u') \mid u \right] = \frac{1}{h'(z)} .
+\beta \mathbb{E}\left[ v_k(k', u') \mid u \right] = \frac{1}{h'(z)} .
 ```
 
 Combining them expresses the shadow price in closed form,
@@ -487,11 +493,11 @@ w(k,u) = D(k,u) + \frac{h(z)}{h'(z)} - z .
 
 The marginal value of installed capital equals the current price of output plus the value of the capacity that the unit carries into the future.
 
-Notice that {eq}`lp_planner_foc` is the planner's counterpart of the firm's first-order condition {eq}`lp_firmfoc`, with $w^* = E[v_k(k',u') \mid u]$.
+Notice that {eq}`lp_planner_foc` is the planner's counterpart of the firm's first-order condition {eq}`lp_firmfoc`, with $w^* = \mathbb{E}[v_k(k',u') \mid u]$.
 
 That correspondence is the "big $K$, little $k$" logic of the lecture {doc}`rational_expectations` in its Lucas-Prescott form.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 h = lambda z, m: (1 - m.δ + z)**m.α
 h_prime = lambda z, m: m.α * (1 - m.δ + z)**(m.α - 1)
 
@@ -521,11 +527,11 @@ Lucas and Prescott next ask what happens in the long run.
 
 They treat two cases, and the first is the special case in which $u_t$ and $u_s$ are independent for $s \neq t$.
 
-Inspecting the Bellman equation {eq}`lp_bellman` when $p(dz,u)$ does not depend on $u$ shows that the optimal investment rate $x(k,u)$ **does not depend on $u$**.
+Inspecting the Bellman equation {eq}`lp_bellman` when $p(dz,u)$ does not depend on $u$ shows that the optimal investment rate $x(k,u)$ *does not depend on $u$*.
 
 A demand shift is then a pure windfall: it tells firms nothing about future demand, so it does not change investment.
 
-Consequently the capital stock evolves **deterministically**, according to $k_{t+1} = k_t h(x(k_t)/k_t)$, while output is supplied inelastically and demand shocks move only prices.
+Consequently the capital stock evolves *deterministically*, according to $k_{t+1} = k_t h(x(k_t)/k_t)$, while output is supplied inelastically and demand shocks move only prices.
 
 ````{prf:theorem}
 :label: lp_theorem2
@@ -563,7 +569,7 @@ In the long run, demand fluctuations play no role at all: capacity is determined
 
 Let's verify this numerically by setting $\rho = 0$.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 m_iid = create_model(ρ=0.0)
 v_iid, idx_iid, k_next_iid, x_iid = solve_model(m_iid)
 
@@ -592,7 +598,13 @@ The stationary capital stock equates the expected price to the user cost of capi
 
 Now let's confirm that capital approaches $k^c$ monotonically, and from either direction.
 
-```{code-cell} ipython
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Capital paths under IID demand
+    name: fig-lp-iid-paths
+---
 def capital_path(m, idx, k0, T=60, u_index=None):
     "Simulate capital, holding the demand state fixed if u_index is given."
     ki = np.abs(m.k - k0).argmin()
@@ -627,7 +639,7 @@ In words, they assume that
 
 * from any current $u$, next period's shock lands in any non-degenerate interval with positive probability
 * $u_t$ has a limiting distribution that does not depend on the initial $u_0$ and that puts positive probability on every non-degenerate interval
-* $\text{Prob}\{u_{t+1} \geq x \mid u_t\}$ is strictly increasing in $u_t$, so high demand today always signals high demand tomorrow
+* $\mathbb{P}\{u_{t+1} \geq x \mid u_t\}$ is strictly increasing in $u_t$, so high demand today always signals high demand tomorrow
 * consumer surplus $s(k,u)$ converges uniformly as $u \to \pm\infty$
 
 A Gaussian AR(1) process with $0 < \rho < 1$ satisfies these conditions, which is the example they give and the one we simulate.
@@ -645,7 +657,7 @@ These are the capital stocks that would be sustained under permanently maximal a
 Lucas and Prescott then prove that
 
 * the sets $(0, \underline k)$ and $(\bar k, \infty)$, paired with any demand state, are **transient**: once the industry leaves them it does not return, and from any starting point it enters $(\underline k, \bar k)$ with probability approaching one
-* the set $B = (\underline k, \bar k) \times E$ is a **single ergodic set**
+* the set $B = (\underline k, \bar k) \times E$, where $E$ is the set of possible values of $u$, is a **single ergodic set**
 
 ```{prf:theorem}
 :label: lp_theorem3
@@ -653,10 +665,10 @@ Lucas and Prescott then prove that
 If $B$ is non-empty, then for all $(k,u)$ and every initial state $(k_0, u_0)$,
 
 $$
-\lim_{t \to \infty} \text{Prob}\{ k_t \leq k, u_t \leq u \mid k_0, u_0 \} = P(k,u)
+\lim_{t \to \infty} \mathbb{P}\{ k_t \leq k, u_t \leq u \mid k_0, u_0 \} = P(k,u)
 $$
 
-exists and **does not depend on $(k_0, u_0)$**.
+exists and *does not depend on $(k_0, u_0)$*.
 
 The function $P$ is a probability distribution that assigns probability zero to the transient sets and positive probability to every subset of $B$ with positive area.
 ```
@@ -690,7 +702,7 @@ The second says that sample averages computed from a single long realization con
 
 Let's compute the bounds $\underline k$ and $\bar k$ for our parameterization and check that simulations behave as the theorems say.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 bounds = np.array([stationary_k(x[:, j], m) for j in range(len(m.u))])
 k_lo_star, k_hi_star = bounds.min(), bounds.max()
 print(f"conditional stationary capital, lowest demand state:  {k_lo_star:.2f}")
@@ -700,7 +712,13 @@ print(f"ergodic set for capital: ({k_lo_star:.2f}, {k_hi_star:.2f})")
 
 Now we simulate the equilibrium Markov process from two very different initial capital stocks, using the *same* sequence of demand shocks.
 
-```{code-cell} ipython
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Capital paths entering the ergodic set
+    name: fig-lp-ergodic-paths
+---
 def simulate(m, idx, k0, T=20_000, seed=0):
     "Simulate the equilibrium Markov process for (k, u)."
     mc = qe.MarkovChain(m.P, m.u)
@@ -731,7 +749,13 @@ Both paths are drawn into the ergodic set and then fluctuate inside it forever.
 
 The next figure compares the long-run distributions of capital computed from the two simulations, after discarding a burn-in sample.
 
-```{code-cell} ipython
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Invariant distributions of capital and price
+    name: fig-lp-invariant
+---
 burn = 2000
 fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
 
@@ -757,7 +781,13 @@ The two histograms coincide, as {prf:ref}`lp_theorem3` promises, and the capital
 
 Finally, here is {prf:ref}`lp_theorem4` in action: time averages from a single realization converge to the mean of the invariant distribution.
 
-```{code-cell} ipython
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Time average of capital
+    name: fig-lp-time-average
+---
 running_mean = np.cumsum(k_low) / np.arange(1, len(k_low) + 1)
 
 fig, ax = plt.subplots(figsize=(8, 4.5))
@@ -795,13 +825,13 @@ The lecture {doc}`rational_expectations` verifies this correspondence by matchin
 
 {prf:ref}`lp_theorem1` is the general statement: for this class of economies, the set of competitive equilibria and the set of solutions of the planning problem coincide, and both are singletons.
 
-What the baby version cannot show, because it has no uncertainty, is the payoff that Lucas and Prescott were after: an equilibrium that is a **stationary stochastic process**, with an invariant distribution and ergodic time averages.
+What the baby version cannot show, because it has no uncertainty, is the payoff that Lucas and Prescott were after: an equilibrium that is a *stationary stochastic process*, with an invariant distribution and ergodic time averages.
 
 That is what makes it possible to confront such a model with data, and what led on to rational expectations econometrics.
 
 The companion lecture {doc}`optimal_growth_uncertainty` pursues exactly this theme in a one-sector growth model.
 
-{cite}`BrockMirman1972` prove there the counterparts of {prf:ref}`lp_theorem3` and {prf:ref}`lp_theorem4`: the distribution of capital converges to an invariant distribution that does not depend on initial conditions, and time averages along a single realization converge to population moments.
+{cite:t}`BrockMirman1972` prove there the counterparts of {prf:ref}`lp_theorem3` and {prf:ref}`lp_theorem4`: the distribution of capital converges to an invariant distribution that does not depend on initial conditions, and time averages along a single realization converge to population moments.
 
 That lecture also shows what the shadow price of capital in such a planning problem becomes in a competitive equilibrium -- namely Tobin's $q$ -- and examines a subtle question about the differentiability of the value function that the answer depends on.
 
@@ -812,7 +842,7 @@ That lecture also shows what the shadow price of capital in such a planning prob
 
 The user cost of capital in {eq}`lp_kc` depends on the curvature parameter $\alpha$ of the adjustment technology through $h'(\delta) = \alpha$.
 
-1. Explain why a **lower** $\alpha$ -- meaning stronger adjustment costs -- should reduce the long-run capital stock.
+1. Explain why a *lower* $\alpha$ -- meaning stronger adjustment costs -- should reduce the long-run capital stock.
 1. For the serially independent case, compute the stationary capital stock $k^c$ for $\alpha \in \{0.4, 0.6, 0.8, 1.0\}$ and verify in each case that the marginal condition {eq}`lp_kc` holds.
 1. Confirm that when $\alpha = 1$ the accumulation equation is $k_{t+1} = (1-\delta)k_t + x_t$ and the user cost is the textbook $\delta + r$.
 ```
@@ -827,7 +857,7 @@ Since $h'(\delta) = \alpha$, the interest component of the user cost, $r / h'(\d
 
 A higher user cost must be matched by a higher expected price, and since demand slopes down, that means a smaller capital stock.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 print(f"{'α':>5} {'k^c':>10} {'E[price]':>12} {'user cost':>12}")
 for α in (0.4, 0.6, 0.8, 1.0):
     m_α = create_model(ρ=0.0, α=α, k_lo=5.0, k_hi=160.0, n_k=600)
@@ -848,7 +878,7 @@ With $\alpha = 1$ we have $h(z) = 1 - \delta + z$, so $k' = k(1 - \delta + x/k) 
 ```{exercise}
 :label: lp_ex2
 
-{prf:ref}`lp_theorem1` says that the planner's policy **is** the competitive equilibrium.
+{prf:ref}`lp_theorem1` says that the planner's policy *is* the competitive equilibrium.
 
 Verify this numerically, using the "big $K$, little $k$" logic of {doc}`rational_expectations`.
 
@@ -871,14 +901,14 @@ The firm's Bellman equation is
 
 $$
 v_i(k_i, K, u) = \max_{k_i'} \left\{ p(K,u) k_i - x(k_i, k_i')
-  + \beta E\left[ v_i(k_i', K', u') \mid u \right] \right\}
+  + \beta \mathbb{E}\left[ v_i(k_i', K', u') \mid u \right] \right\}
 $$
 
 where $K' $ follows the planner's law of motion.
 
 Note that the firm's own capital affects its revenue but not the price.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 def firm_problem(m, idx_agg, n_i=80, tol=1e-8, maxit=1000, howard=20):
     "Solve an individual firm's problem taking the aggregate law of motion as given."
     sub = np.linspace(0, len(m.k) - 1, n_i).astype(int)   # firm grid ⊂ aggregate grid
@@ -953,7 +983,7 @@ Investigate how serial correlation in demand affects the ergodic set.
 
 Here is one solution.
 
-```{code-cell} ipython
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(9, 4.5))
 print(f"{'ρ':>6} {'k_lo':>9} {'k_hi':>9} {'width':>9} {'std(k)':>9}")
 
