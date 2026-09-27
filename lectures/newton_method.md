@@ -63,12 +63,12 @@ convergence is often fast when compared to other methods.
 The lecture will apply Newton's method in one-dimensional and
 multidimensional settings to solve fixed-point and zero-finding problems. 
 
-* When finding the fixed point of a function $f$, Newton's method updates
-  an existing guess of the fixed point by solving for the fixed point of a
+* When finding a fixed point of a function $f$, Newton's method updates
+  an existing guess of a fixed point by solving for a fixed point of a
   linear approximation to the function $f$.
 
-* When finding the zero of a function $f$, Newton's method updates
-  an existing guess by solving for the zero of a linear approximation to
+* When finding a zero of a function $f$, Newton's method updates
+  an existing guess by solving for a zero of a linear approximation to
   the function $f$.
 
 To build intuition, we first consider an easy, one-dimensional fixed point
