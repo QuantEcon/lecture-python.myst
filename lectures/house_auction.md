@@ -13,14 +13,14 @@ kernelspec:
 
 # Multiple Good Allocation Mechanisms
 
-```{code-cell} ipython
+```{code-cell} ipython3
 ---
 tags: [hide-output]
 ---
 !pip install "prettytable<3.18"
 ```
 
-##  Overview
+## Overview
 
 This lecture describes two mechanisms for allocating $n$ private goods ("houses")  to $m$ people ("buyers").
 
@@ -41,7 +41,7 @@ We describe two distinct mechanisms
 
  * A multiple rounds, ascending bid auction
 
- * A sequential, "greedy" second-price mechanism administered by a benevolent social planner, inspired by the ideas of {cite}`Groves_73` and {cite}`Clarke_71`
+ * A sequential, "greedy" second-price mechanism administered by a benevolent social planner, inspired by the ideas of {cite:t}`Groves_73` and {cite:t}`Clarke_71`
 
 ```{note}
 In 1994, the multiple rounds, ascending bid auction was actually used by Stanford University to sell leases to 9 lots on the Stanford campus to eligible faculty members.
@@ -49,7 +49,7 @@ In 1994, the multiple rounds, ascending bid auction was actually used by Stanfor
 
 We begin with  overviews of the two mechanisms.
 
-## Ascending Bids Auction for Multiple Goods
+## Ascending bids auction for multiple goods
 
 An auction is administered by an **auctioneer**
 
@@ -84,7 +84,7 @@ In this auction,  person $j$ never tells anyone else his/her private values $v_{
 
 
 
-## A Benevolent Planner
+## A benevolent planner
 
 This mechanism is designed so that all prospective buyers voluntarily choose to reveal their private values to a **social planner** who uses them to construct a socially optimal allocation.
 
@@ -99,7 +99,7 @@ After the planner receives everyone's vector of private values, the planner depl
 
 
 
-## Comparing the Two Mechanisms
+## Comparing the two mechanisms
 
 Remarkably, these two mechanisms can produce virtually identical allocations.
 
@@ -108,7 +108,7 @@ But "virtually identical" is not "identical", and the differences turn out to be
 We'll discover that
 
 * the ascending bid auction maximizes the total value of the allocation, and, as the bid increment $\epsilon$ becomes small, the prices that it sets converge to the payments prescribed by the **Vickrey-Clarke-Groves** (VCG) mechanism
-* the greedy mechanism of the benevolent planner does **not** always maximize total value, and the prices that it charges are **not** VCG payments, so truthful reporting is not always in a buyer's interest
+* the greedy mechanism of the benevolent planner does *not* always maximize total value, and the prices that it charges are *not* VCG payments, so truthful reporting is not always in a buyer's interest
 
 We construct Python code for both mechanisms.
 
@@ -118,10 +118,10 @@ We also work out some examples by hand or almost by hand.
 Next, let's dive down into the details.
 
 
-## Ascending Bid Auction
+## Ascending bid auction
 
 
-### Basic Setting
+### Basic setting
 
 
 We start with  a more detailed description of the setting.
@@ -216,11 +216,11 @@ Straightforward bidding is *myopic*: a buyer looks only at prevailing prices and
 
 That myopia is less restrictive than it might sound.
 
-Our setting is an **assignment market** of the kind studied by {cite}`ShapleyShubik1971`: each buyer wants at most one house, and values are private.
+Our setting is an **assignment market** of the kind studied by {cite:t}`ShapleyShubik1971`: each buyer wants at most one house, and values are private.
 
-For such markets, {cite}`CrawfordKnoer1981` and {cite}`DemangeGaleSotomayor1986` showed that an ascending auction like ours, in which all buyers bid straightforwardly, converges to a competitive equilibrium of the assignment market.
+For such markets, {cite:t}`CrawfordKnoer1981` and {cite:t}`DemangeGaleSotomayor1986` showed that an ascending auction like ours, in which all buyers bid straightforwardly, converges to a competitive equilibrium of the assignment market.
 
-It converges in particular to the **minimum** competitive equilibrium price vector, the one most favorable to buyers.
+It converges in particular to the *minimum* competitive equilibrium price vector, the one most favorable to buyers.
 
 We'll return below to a striking consequence of this fact.
 
@@ -255,7 +255,7 @@ np.random.seed(100)
 np.set_printoptions(precision=3, suppress=True)
 ```
 
-## An Example
+## An example
 
 +++
 
@@ -367,7 +367,7 @@ def check_kick_off_condition(v, r, ϵ):
 check_kick_off_condition(v, r, ϵ)
 ```
 
-### round 1
+### Round 1
 
 +++
 
@@ -518,7 +518,7 @@ winner_list
 loser_list
 ```
 
-### round 2
+### Round 2
 
 
 +++
@@ -601,7 +601,7 @@ allocation,winner_list,loser_list = check_terminal_condition(bid_info, p, v, ϵ)
 present_dict(allocation)
 ```
 
-### later rounds
+### Later rounds
 
 Every remaining round repeats exactly the same two steps, so rather than writing them out one at a time we iterate until no price changes.
 
@@ -637,7 +637,7 @@ total_revenue = p[list(allocation.keys())].sum()
 total_revenue
 ```
 
-## A Python Class
+## A Python class
 
 +++
 
@@ -942,7 +942,7 @@ auction_1.S
 auction_1.Q
 ```
 
-## Robustness Checks
+## Robustness checks
 
 Let's do some stress testing of our code by applying it to  auctions characterized by different matrices of private values.
 
@@ -1002,7 +1002,7 @@ auction_6.start_auction()
 
 +++
 
-## A Groves-Clarke Mechanism
+## A Groves-Clarke mechanism
 
 +++
 
@@ -1046,7 +1046,7 @@ Our mechanism works like this.
 
 +++
 
-## An Example Solved by Hand
+## An example solved by hand
 
 +++
 
@@ -1191,9 +1191,9 @@ S = V_orig*Q - np.diag(p)@Q
 p, Q, V, S
 ```
 
-##  Another Python Class
+## Another Python class
 
-It is efficient to assemble our calculations in a single Python Class.
+It is efficient to assemble our calculations in a single Python class.
 
 ```{code-cell} ipython3
 class GC_Mechanism:
@@ -1296,7 +1296,7 @@ Here we use some additional notation designed to conform with standard notation 
 
 We want to verify that our pseudo code is indeed a **pivot mechanism**, also called a **VCG** (Vickrey-Clarke-Groves) mechanism.
 
-  * The mechanism is named after {cite}`Groves_73`, {cite}`Clarke_71`, and {cite}`Vickrey_61`.
+  * The mechanism is named after {cite:t}`Groves_73`, {cite:t}`Clarke_71`, and {cite:t}`Vickrey_61`.
 
 To prepare for verifying this, we add some notation.
 
@@ -1340,7 +1340,7 @@ The answer, which we develop in the next two sections, is that it satisfies neit
 
 +++
 
-###  Social Cost
+### Social cost
 
 Using the GC_Mechanism class, we can  calculate the social cost of each buyer.
 
@@ -1405,7 +1405,7 @@ print("\nThe social cost of buyer 2:",
      np.sum(gc_mechanism_exc_2.Q*gc_mechanism_exc_2.V_orig)-np.sum(np.delete(gc_mechanism.Q*gc_mechanism.V_orig, 2, axis=1)))
 ```
 
-## Is the Greedy Mechanism a VCG Mechanism?
+## Is the greedy mechanism a VCG mechanism?
 
 The mechanism that our benevolent planner runs is **greedy**: it repeatedly grabs the largest remaining entry of the value matrix.
 
@@ -1457,7 +1457,7 @@ But assigning house 0 to buyer 1 and house 1 to buyer 0 yields $9 + 9 = 18$.
 
 The largest entry was a trap: grabbing it destroyed a better pair of assignments.
 
-So the greedy mechanism does **not** satisfy {eq}`eq:GC1`.
+So the greedy mechanism does *not* satisfy {eq}`eq:GC1`.
 
 {ref}`ha_ex1` asks you to investigate how often this happens.
 
@@ -1470,7 +1470,7 @@ Now let's compare the prices that the greedy mechanism charges with the social c
 ```{code-cell} ipython3
 def vcg_payments(V):
     """
-    The social cost of each buyer, as defined in {eq}`eq:GC2`:
+    The social cost of each buyer:
     the total value others could achieve without this buyer,
     minus the total value others do achieve when this buyer is present.
     """
@@ -1499,7 +1499,7 @@ The prices differ from the VCG payments.
 
 Notice that the VCG payments are exactly the social costs that we computed in the previous section by excluding one buyer at a time.
 
-So the planner's mechanism collects **more** than the externality that a winning buyer imposes on others.
+So the planner's mechanism collects *more* than the externality that a winning buyer imposes on others.
 
 A mechanism that assigns objects greedily and charges each winner the best forgone offer for the same object is known as a **generalized second-price** mechanism.
 
@@ -1517,7 +1517,7 @@ Here is the striking fact promised earlier.
 
 Our setting is an assignment market in which each buyer wants at most one house.
 
-For such markets, {cite}`Leonard1983` and {cite}`DemangeGaleSotomayor1986` showed that the **minimum competitive equilibrium prices** coincide with the payments prescribed by the VCG mechanism.
+For such markets, {cite:t}`Leonard1983` and {cite:t}`DemangeGaleSotomayor1986` showed that the **minimum competitive equilibrium prices** coincide with the payments prescribed by the VCG mechanism.
 
 Since an ascending auction with straightforward bidding converges to those minimum competitive equilibrium prices, it follows that our ascending bid auction implements the VCG outcome as the bid increment $\epsilon$ becomes small.
 
@@ -1587,7 +1587,7 @@ Show that truthful reporting is not a dominant strategy under the planner's gree
 Use the value matrix `V_orig` of the previous section, and consider buyer 0, whose true values for the three houses are $(10, 9, 8)$.
 
 1. What surplus does buyer 0 receive when everyone reports truthfully?
-1. Search over reports $(a, b, c)$ with integer entries between 0 and 10 that buyer 0 might submit instead, holding fixed the reports of all other buyers, and find the report that maximizes buyer 0's **true** surplus.
+1. Search over reports $(a, b, c)$ with integer entries between 0 and 10 that buyer 0 might submit instead, holding fixed the reports of all other buyers, and find the report that maximizes buyer 0's *true* surplus.
 1. Explain what the manipulation accomplishes.
 ```
 
@@ -1689,7 +1689,7 @@ The auction always attains the maximum total value.
 
 As $\epsilon$ shrinks, each winner's payment approaches that buyer's VCG payment.
 
-This illustrates the theorem of {cite}`Leonard1983` and {cite}`DemangeGaleSotomayor1986`: in an assignment market, the minimum competitive equilibrium prices are exactly the VCG payments.
+This illustrates the theorem of {cite:t}`Leonard1983` and {cite:t}`DemangeGaleSotomayor1986`: in an assignment market, the minimum competitive equilibrium prices are exactly the VCG payments.
 
 The auctioneer never asks anyone to reveal a private value, yet the ascending auction arrives at the outcome that a correctly designed planner would compute from full information.
 
