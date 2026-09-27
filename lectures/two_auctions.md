@@ -106,7 +106,7 @@ Because the equilibrium bidding strategy is strictly increasing, the bidder with
 The optimal  bid of buyer $i$ is
 
 $$
-\mathbf{E}[y_{i} | y_{i} < v_{i}]
+\mathbb{E}[y_{i} | y_{i} < v_{i}]
 $$ (eq:optbid1)
 
 where $v_{i}$ is  the valuation of bidder $i$ and  $y_{i}$ is the maximum valuation of all other bidders:
@@ -117,7 +117,7 @@ $$ (eq:optbid2)
 
 
 
-For a derivation, see the [Wikipedia page](https://en.wikipedia.org/wiki/First-price_sealed-bid_auction) about first-price sealed-bid auctions, or {cite}`Krishna2009`, chapter 2.
+For a derivation, see the [Wikipedia page](https://en.wikipedia.org/wiki/First-price_sealed-bid_auction) about first-price sealed-bid auctions, or {cite:t}`Krishna2009`, chapter 2.
 
 We'll verify this formula by simulation below, and {ref}`ta_ex2` asks you to derive an equivalent expression that is easy to evaluate for any distribution $F$.
 
@@ -148,13 +148,13 @@ A proof is provided at [the Wikipedia
 
 +++
 
-We assume valuation $v_{i}$  of bidder $i$ is distributed $v_{i} \stackrel{\text{i.i.d.}}{\sim} U(0,1)$.
+We assume valuation $v_{i}$  of bidder $i$ is distributed $v_{i} \stackrel{\text{IID}}{\sim} U(0,1)$.
 
 Under this assumption, we can analytically compute probability  distributions of  prices bid in both  FPSB and SPSB.
 
 We'll  simulate outcomes and, by using  a law of large numbers, verify that the simulated outcomes agree with analytical ones.
 
-We can use our  simulation to illustrate   a  **Revenue Equivalence Theorem** that asserts that on average first-price and second-price sealed bid auctions  provide a seller the same revenue.
+We can use our  simulation to illustrate   a  **revenue equivalence theorem** that asserts that on average first-price and second-price sealed bid auctions  provide a seller the same revenue.
 
 The theorem requires hypotheses that both of our auctions satisfy:
 
@@ -182,12 +182,12 @@ Each bidder knows that there are $n-1$ other bidders.
 
 An optimal bid  for bidder $i$ in a **FPSB**  is described by equations {eq}`eq:optbid1` and {eq}`eq:optbid2`.
 
-When bids are i.i.d. draws from a uniform distribution, the CDF of $y_{i}$ is
+When bids are IID draws from a uniform distribution, the CDF of $y_{i}$ is
 
 $$
 \begin{aligned}
-\tilde{F}_{n-1}(y) = \mathbf{P}(y_{i} \leq y) &= \mathbf{P}(\max_{j \neq i} v_{j} \leq y) \\
-&= \prod_{j \neq i} \mathbf{P}(v_{j} \leq y) \\
+\tilde{F}_{n-1}(y) = \mathbb{P}\{y_{i} \leq y\} &= \mathbb{P}\{\max_{j \neq i} v_{j} \leq y\} \\
+&= \prod_{j \neq i} \mathbb{P}\{v_{j} \leq y\} \\
 &= y^{n-1}
 \end{aligned}
 $$
@@ -198,7 +198,7 @@ Then bidder $i$'s   optimal bid in a **FPSB** auction is:
 
 $$
 \begin{aligned}
-\mathbf{E}(y_{i} | y_{i} < v_{i}) &= \frac{\int_{0}^{v_{i}} y_{i}\tilde{f}_{n-1}(y_{i})dy_{i}}{\int_{0}^{v_{i}} \tilde{f}_{n-1}(y_{i})dy_{i}} \\
+\mathbb{E}[y_{i} | y_{i} < v_{i}] &= \frac{\int_{0}^{v_{i}} y_{i}\tilde{f}_{n-1}(y_{i})dy_{i}}{\int_{0}^{v_{i}} \tilde{f}_{n-1}(y_{i})dy_{i}} \\
 &= \frac{\int_{0}^{v_{i}}(n-1)y_{i}^{n-1}dy_{i}}{\int_{0}^{v_{i}}(n-1)y_{i}^{n-2}dy_{i}} \\
 &= \frac{n-1}{n}y_{i}\bigg{|}_{0}^{v_{i}} \\
 &= \frac{n-1}{n}v_{i}
@@ -301,14 +301,14 @@ We now compare  FPSB and a SPSB auctions from the point of view of the  revenues
 
 **Expected Revenue FPSB:**
 
-The winner with valuation $y$ pays $\frac{n-1}{n}*y$, where n is the number of bidders.
+The winner with valuation $y$ pays $\frac{n-1}{n} y$, where n is the number of bidders.
 
 Above we computed that the  CDF is $F_{n}(y) = y^{n}$ and  the PDF is $f_{n} = ny^{n-1}$.
 
 Consequently,  expected revenue is
 
 $$
-\mathbf{R} = \int_{0}^{1}\frac{n-1}{n}v_{i}\times n v_{i}^{n-1}dv_{i} = \frac{n-1}{n+1}
+R = \int_{0}^{1}\frac{n-1}{n}v_{i}\times n v_{i}^{n-1}dv_{i} = \frac{n-1}{n+1}
 $$
 
 **Expected Revenue SPSB:**
@@ -319,10 +319,10 @@ Computing this we get
 
 $$
 \begin{aligned}
-\mathbf{TR} &= n\mathbf{E_{v_i}}\left[\mathbf{E_{y_i}}[y_{i}|y_{i} < v_{i}]\mathbf{P}(y_{i} < v_{i}) + 0\times\mathbf{P}(y_{i} > v_{i})\right] \\
-&= n\mathbf{E_{v_i}}\left[\mathbf{E_{y_i}}[y_{i}|y_{i} < v_{i}]\tilde{F}_{n-1}(v_{i})\right] \\
-&= n\mathbf{E_{v_i}}[\frac{n-1}{n} \times v_{i} \times v_{i}^{n-1}] \\
-&= (n-1)\mathbf{E_{v_i}}[v_{i}^{n}] \\
+\mathrm{TR} &= n\mathbb{E}_{v_i}\left[\mathbb{E}_{y_i}[y_{i}|y_{i} < v_{i}]\mathbb{P}\{y_{i} < v_{i}\} + 0\times\mathbb{P}\{y_{i} > v_{i}\}\right] \\
+&= n\mathbb{E}_{v_i}\left[\mathbb{E}_{y_i}[y_{i}|y_{i} < v_{i}]\tilde{F}_{n-1}(v_{i})\right] \\
+&= n\mathbb{E}_{v_i}[\frac{n-1}{n} \times v_{i} \times v_{i}^{n-1}] \\
+&= (n-1)\mathbb{E}_{v_i}[v_{i}^{n}] \\
 &= \frac{n-1}{n+1}
 \end{aligned}
 $$
@@ -363,7 +363,7 @@ sns.despine()
 
 **Detour: Computing a Bayesian Nash Equibrium for  FPSB**
 
-The Revenue Equivalence Theorem lets us find an optimal bidding strategy for  a  FPSB auction  from outcomes of a SPSB auction.
+The revenue equivalence theorem lets us find an optimal bidding strategy for  a  FPSB auction  from outcomes of a SPSB auction.
 
 Let  $b(v_{i})$ be the optimal bid in a FPSB auction.
 
@@ -372,10 +372,10 @@ The revenue equivalence  theorem tells us that a bidder agent with value $v_{i}$
 Consequently,
 
 $$
-b(v_{i})\mathbf{P}(y_{i} < v_{i}) + 0 * \mathbf{P}(y_{i} \ge v_{i}) = \mathbf{E}_{y_{i}}[y_{i} | y_{i} < v_{i}]\mathbf{P}(y_{i} < v_{i}) + 0 * \mathbf{P}(y_{i} \ge v_{i})
+b(v_{i})\mathbb{P}\{y_{i} < v_{i}\} + 0 \cdot \mathbb{P}\{y_{i} \ge v_{i}\} = \mathbb{E}_{y_{i}}[y_{i} | y_{i} < v_{i}]\mathbb{P}\{y_{i} < v_{i}\} + 0 \cdot \mathbb{P}\{y_{i} \ge v_{i}\}
 $$
 
-It follows that an optimal bidding strategy in a FPSB auction is $b(v_{i}) = \mathbf{E}_{y_{i}}[y_{i} | y_{i} < v_{i}]$.
+It follows that an optimal bidding strategy in a FPSB auction is $b(v_{i}) = \mathbb{E}_{y_{i}}[y_{i} | y_{i} < v_{i}]$.
 
 +++
 
@@ -384,10 +384,10 @@ It follows that an optimal bidding strategy in a FPSB auction is $b(v_{i}) = \ma
 +++
 
 In equations {eq}`eq:optbid1` and {eq}`eq:optbid2`, we displayed formulas for
-optimal bids in a symmetric Bayesian Nash Equilibrium of a FPSB auction.
+optimal bids in a symmetric Bayesian Nash equilibrium of a FPSB auction.
 
 $$
-\mathbf{E}[y_{i} | y_{i} < v_{i}]
+\mathbb{E}[y_{i} | y_{i} < v_{i}]
 $$
 
 where
@@ -410,7 +410,7 @@ def evaluate_largest(v_hat, array, order=1):
 
     We estimate E[y | y < v_hat], where y is the highest valuation among the
     other bidders.  We do this by taking bidder 1 as the reference bidder
-    (valuations are i.i.d., so the choice does not matter), discarding her row,
+    (valuations are IID, so the choice does not matter), discarding her row,
     and averaging the highest remaining valuation over those auctions in which
     every other bidder's valuation falls below v_hat.
 
@@ -706,7 +706,7 @@ chi_squ_case.plot_winner_payment_distribution()
 ```{exercise}
 :label: ta_ex1
 
-Verify the Revenue Equivalence Theorem by simulation.
+Verify the revenue equivalence theorem by simulation.
 
 For $n = 2, 3, 5, 10$ bidders with valuations drawn independently from $U(0,1)$, simulate many auctions and compute
 
@@ -744,7 +744,7 @@ Notice that the two auctions raise the same revenue on average even though the *
 ```{exercise}
 :label: ta_ex2
 
-Equation {eq}`eq:optbid1` says that an optimal bid in a FPSB auction is $\mathbf{E}[y_i \mid y_i < v_i]$.
+Equation {eq}`eq:optbid1` says that an optimal bid in a FPSB auction is $\mathbb{E}[y_i \mid y_i < v_i]$.
 
 1. Show that this can be written
 
@@ -768,7 +768,7 @@ The distribution function of $y_i = \max_{j \neq i} v_j$ is $\tilde F_{n-1}(y) =
 Hence
 
 $$
-\mathbf{E}[y \mid y < v] = \frac{1}{F(v)^{n-1}} \int_0^v y \, d\left[F(y)^{n-1}\right] .
+\mathbb{E}[y \mid y < v] = \frac{1}{F(v)^{n-1}} \int_0^v y \, d\left[F(y)^{n-1}\right] .
 $$
 
 Integrating by parts,
@@ -875,7 +875,7 @@ The FPSB curve peaks strictly below it, and bidding one's valuation in a FPSB au
 ```{exercise}
 :label: ta_ex4
 
-The Revenue Equivalence Theorem requires bidders to be **risk neutral**.
+The revenue equivalence theorem requires bidders to be *risk neutral*.
 
 Suppose instead that each bidder has utility $u(x) = x^\rho$ with $0 < \rho \leq 1$, so that $\rho < 1$ means risk aversion, and that valuations are $U(0,1)$.
 
@@ -922,7 +922,7 @@ for ρ in (1.0, 0.6, 0.3):
 
 With risk neutrality ($\rho = 1$) the two auctions raise the same revenue, as the theorem says.
 
-With risk aversion ($\rho < 1$) the FPSB auction raises **more**.
+With risk aversion ($\rho < 1$) the FPSB auction raises *more*.
 
 The intuition is that in a FPSB auction, shading one's bid is a gamble: it raises the surplus conditional on winning but lowers the probability of winning.
 
@@ -935,12 +935,12 @@ In a SPSB auction the winner's payment does not depend on her own bid, so risk a
 
 ## Further reading
 
-The second-price sealed-bid auction was proposed by {cite}`Vickrey_61`.
+The second-price sealed-bid auction was proposed by {cite:t}`Vickrey_61`.
 
-For textbook treatments of the material in this lecture, see {cite}`Krishna2009` and {cite}`Milgrom2004`.
+For textbook treatments of the material in this lecture, see {cite:t}`Krishna2009` and {cite:t}`Milgrom2004`.
 
-{cite}`Klemperer1999` surveys the literature.
+{cite:t}`Klemperer1999` surveys the literature.
 
-The revenue equivalence theorem in the general form sketched above is due to {cite}`Myerson1981` and {cite}`RileySamuelson1981`.
+The revenue equivalence theorem in the general form sketched above is due to {cite:t}`Myerson1981` and {cite:t}`RileySamuelson1981`.
 
-Both auctions studied here are naturally described in terms of order statistics of bidders' valuations, a subject treated at length by {cite}`DavidNagaraja2003`.
+Both auctions studied here are naturally described in terms of order statistics of bidders' valuations, a subject treated at length by {cite:t}`DavidNagaraja2003`.
