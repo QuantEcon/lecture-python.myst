@@ -113,7 +113,8 @@ jobs:
         uses: quantecon/actions/publish-gh-pages@v0
         with:
           build-dir: _build/html
-          cname: python.quantecon.org
+          # Custom domain (python.quantecon.org): set in Settings → Pages. The Actions Pages
+          # deploy ignores a CNAME file, so publish-gh-pages' cname input has no effect.
           create-release-assets: 'true'
           asset-name: 'lecture-python-html'
           github-token: ${{ secrets.GITHUB_TOKEN }}
