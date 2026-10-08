@@ -86,7 +86,9 @@ jax.config.update("jax_enable_x64", True)
 
 The economy consists of overlapping generations of finitely lived individuals who may live up to $T_0+1$ years and an infinitely lived government.
 
-Individual consumers and the government can invest at a constant risk-free gross rate of return.
+Individual consumers and the government can invest at a common risk-free gross rate of return.
+
+That rate is constant when we treat the economy as a small open economy, and it varies over time when we close the economy and let marginal products determine factor prices.
 
 During the first $T_1+1$ periods of life, consumers receive labor income that  they allocate among  consumption, taxes, and asset accumulation.
 
@@ -95,6 +97,20 @@ During the final $T_0-T_1$ periods of life (retirement), consumers receive socia
 The government taxes income from capital and labor, issues debt, purchases goods, and pays retirement benefits.
 
 For any variable $z$, we use subscript $t$ to denote age, argument $s$ in parentheses to denote calendar time, and superscript $s-t$ to denote date of birth, so that $z^{s-t}(s) \equiv z_t(s) \equiv z^{s-t}_t(s)$.
+
+Several symbols are close cousins, so we record them here.
+
+| Symbol | Meaning |
+|---|---|
+| $t$, $T_0$, $T_1$ | age, maximum age, retirement age |
+| $s$, $s_1$, $s_2$, $s_3$ | calendar time and the dates that bound the reform |
+| $\alpha_t$ | probability of surviving from age $t$ to $t+1$ |
+| $\tilde{\alpha}$, $\tilde{A}$ | capital's share and the scale factor in the production function |
+| $\sigma$, $\sigma_d$ | risk-sensitivity parameter and the standard deviation of the income shock |
+| $\gamma_t$ | preference shock in the one-period return function |
+| $\varepsilon_t$, $\epsilon_{t+1}$ | age-efficiency of labor and the random shock |
+| $T_t(s)$ | taxes paid by an age-$t$ person at time $s$ |
+| $\mathcal{T}_t$, $\mathcal{D}_t$, $\mathcal{S}_t$ | the three operators in the risk-sensitive Riccati recursion |
 
 ### Demographics
 
@@ -182,6 +198,20 @@ $$
 
 where $g(s)$ is per capita government purchases, $K(s-1)$ is physical capital, $R(s-1) = 1 + r(s-1) - \delta$ is the gross return on assets, $\varepsilon_t$ is the exogenous efficiency endowment of age-$t$ people, $w(s)$ is the base wage rate, $N_0(s) \cdot k_{-1}(s)$ is capital brought by newborns, and $\delta$ is the depreciation rate.
 
+Dividing by the population $N(s)$ and writing $k(s) = K(s)/N(s)$, $\bar{c}(s) = \sum_t \mu_{ct}(s) f_t$, and $\bar{\varepsilon} = \sum_t \varepsilon_t f_t$ puts the constraint in the per capita form that our code iterates on:
+
+```{math}
+:label: two_comp_percapita
+
+k(s) = R(s-1)\left[\frac{k(s-1)}{n} + f_0 k_{-1}\right] + w(s)\bar{\varepsilon} - g(s) - \bar{c}(s)
+```
+
+We also report two ratios below, each built from GDP measured as the sum of capital and labor income,
+
+$$
+\text{GDP}(s) = r(s-1)\left[\frac{k(s-1)}{n} + f_0 k_{-1}\right] + w(s)\bar{\varepsilon}
+$$
+
 ### Factor prices
 
 We consider two alternative assumptions about factor prices:
@@ -228,7 +258,13 @@ where $\mathcal{R}_t(U_{t+1}) = (2/\sigma) \cdot \log E[\exp(\sigma \cdot U_{t+1
 
 This preference specification delivers linear decision rules while  allowing a form of risk-sensitivity that induces a type of precautionary savings.
 
-When $\sigma < 0$, the consumer prefers early resolution of uncertainty, and decision rules depend partly on noise statistics.
+When $\sigma = 0$, the recursion collapses to $U_t = -(\pi c_t - \gamma_t)^2/2 + \beta_t E_t U_{t+1}$, an ordinary discounted quadratic objective whose decision rules satisfy **certainty equivalence**: they do not depend on the volatility $\sigma_d$ of the income shock.
+
+When $\sigma < 0$, the operator $\mathcal{R}_t$ puts extra weight on bad continuation outcomes, so the consumer behaves as if pessimistic about future shocks.
+
+Certainty equivalence then fails, decision rules depend on the noise statistics $CC'$, and the consumer saves more.
+
+{ref}`two_comp_ex2` measures how much more.
 
 ### Government
 
@@ -266,9 +302,15 @@ We define the following objects:
 
 An **equilibrium** is an allocation, a price system, and a government policy such that 
 
-1. given the price sequence and government policy, the allocation solves households' optimum problems, and 
+1. given the price sequence and government policy, the allocation solves households' optimum problems, 
    
-2. the allocation and government policy satisfy the government budget constraint at each date $s$.
+2. the allocation and government policy satisfy the government budget constraint at each date $s$,
+
+3. the asset market clears, so that household assets equal physical capital plus government debt, $\sum_t a_t(s) N^{s-t}_t = K(s) + \sum_t b_t(s) N^{s-t}_t$, and
+
+4. the goods market clears, which is the resource constraint {eq}`two_comp_percapita`.
+
+In the closed economy, condition 4 together with the firm's first-order conditions determines factor prices; in the small open economy, factor prices are given and condition 4 determines how much the economy borrows from or lends to the rest of the world.
 
 In a **stationary equilibrium**, all variables are independent of calendar time $s$, which simplifies the government budget constraint to
 
@@ -338,7 +380,7 @@ In experiment 1, the government terminates social security benefits but compensa
 
 In experiment 2, the government retains social security benefits but temporarily raises taxes to accumulate physical capital, the returns from which eventually finance social security payments.
 
-Both proposals finance a transition to fully funded social security while maintaining welfare across generations, but they entail  different amounts of intergenerational risk-sharing.
+Both proposals aim to finance a transition to fully funded social security without leaving existing generations worse off, but they entail  different amounts of intergenerational risk-sharing.
 
 We compute both experiments under fixed and endogenous factor prices and compare outcomes below.
 
@@ -364,20 +406,22 @@ We deploy two operators
 
 $$
 \begin{gathered}
-T_t(P)=P+\sigma P C_t\left(I-\sigma C_t^{\prime} P C_t\right)^{-1} C_t^{\prime} P \\
-D_t(W)=R_t+A_t^{\prime}\left[\beta_t W-\beta_t^2 W B_t\left(Q_t+\beta_t B_t^{\prime} W B_t\right)^{-1} B_t^{\prime} W\right] A_t \\
+\mathcal{T}_t(P)=P+\sigma P C_t\left(I-\sigma C_t^{\prime} P C_t\right)^{-1} C_t^{\prime} P \\
+\mathcal{D}_t(W)=R_t+A_t^{\prime}\left[\beta_t W-\beta_t^2 W B_t\left(Q_t+\beta_t B_t^{\prime} W B_t\right)^{-1} B_t^{\prime} W\right] A_t \\
 \mathcal{S}_t(k, P)=\beta_t k-\left(\beta_t / \sigma\right) \log \operatorname{det}\left(I-\sigma C_t^{\prime} P C_t\right)
 \end{gathered}
 $$
 
-that we use to construct a value function recursion $P_t = (D_t \circ T_t) P_{t+1}$, $\xi_t = \mathcal{S}_t(\xi_{t+1}, P_{t+1})$, and an optimal control
+that we use to construct a value function recursion $P_t = (\mathcal{D}_t \circ \mathcal{T}_t) P_{t+1}$, $\xi_t = \mathcal{S}_t(\xi_{t+1}, P_{t+1})$, and an optimal control
 
 $$
 u_t = -F_t x_t, \qquad
-F_t = \beta_t \left[Q_t + \beta_t B'_t T_t(P_{t+1}) B_t \right]^{-1} B'_t T_t(P_{t+1}) A_t.
+F_t = \beta_t \left[Q_t + \beta_t B'_t \mathcal{T}_t(P_{t+1}) B_t \right]^{-1} B'_t \mathcal{T}_t(P_{t+1}) A_t.
 $$
 
-Operators $T_t$, $D_t$, $\mathcal{S}_t$ and  decision rule $F_t$ are constructed in `solve_riccati_step`.
+The operator $\mathcal{T}_t$ is where risk sensitivity enters: at $\sigma = 0$ it is the identity, so the decision rule $F_t$ ignores $C_t$ and certainty equivalence holds.
+
+Operators $\mathcal{T}_t$, $\mathcal{D}_t$, $\mathcal{S}_t$ and  decision rule $F_t$ are constructed in `solve_riccati_step`.
 
 Given value function parameters $(P_{t+1}, \xi_{t+1})$ at the next age, it constructs the state-space matrix $A_t$, applies the cross-product trick, evaluates the Riccati operators, and returns the optimal decision rule $F_t$, the closed-loop matrix $A^o_t = A_t - B F_t$, and the updated $(P_t, \xi_t)$
 
@@ -405,7 +449,7 @@ def solve_riccati_step(
     # Cross-product trick: A* = A - B Q^{-1} H
     A = A - B @ Q_inv @ H
 
-    # T_t operator
+    # 𝒯_t operator
     CTP = C.T @ P_next @ C
     PP_scalar = 1.0 - σ * CTP[0, 0]
     PP_inv_scalar = 1.0 / PP_scalar
@@ -413,7 +457,7 @@ def solve_riccati_step(
     CP = C.T @ P_next
     TP = P_next + σ * PP_inv_scalar * (PC @ CP)
 
-    # D_t operator and decision rule F_t
+    # 𝒟_t operator and decision rule F_t
     BTB_scalar = (B.T @ TP @ B)[0, 0]
     Q_BTB_scalar = Q_scalar + β_t * BTB_scalar
     Q_BTB_inv_scalar = 1.0 / Q_BTB_scalar
@@ -427,7 +471,7 @@ def solve_riccati_step(
               * (TP_B @ BT_TP))
     P = R + A.T @ middle @ A
 
-    # S_t operator
+    # 𝒮_t operator
     log_det_PP = jnp.log(PP_scalar)
     ξ = jnp.where(
         σ != 0.0,
@@ -1138,6 +1182,33 @@ print(f"  Capital/GDP = {ss0.k2gdp:.4f}")
 print(f"  Debt/GDP = {ss0.debt2gdp:.4f}")
 ```
 
+The equilibrium labor tax rate reproduces the calibration target $\tau_\ell = 0.3385$ reported in the table above, which is a useful check on the steady-state solver.
+
+The calibration has a second property that matters for everything that follows.
+
+The production parameters $\tilde{A}$ and $\tilde{\alpha}$ have been chosen so that, at the capital-labor ratio of this initial steady state, the Cobb-Douglas marginal products equal the exogenous prices $(r, w)$ that the small open economy takes as given.
+
+```{code-cell} ipython3
+ε_bar_check = float(jnp.sum(hh.frac * hh.ε_arr))
+K_eff_check = ss0.k_bar / hh.n + float(hh.frac[0] * hh.x0[0])
+k_per_eff = K_eff_check / ε_bar_check
+
+print(f"capital share implied by (r, w, K/L): "
+      f"{tech.r * K_eff_check / (tech.r * K_eff_check + tech.w * ε_bar_check):.4f}"
+      f"   (calibrated α̃ = {tech.α_tilde})")
+print(f"A implied by the r equation:  "
+      f"{tech.r / (tech.α_tilde * k_per_eff ** (tech.α_tilde - 1)):.4f}")
+print(f"A implied by the w equation:  "
+      f"{tech.w / ((1 - tech.α_tilde) * k_per_eff ** tech.α_tilde):.4f}"
+      f"   (calibrated A = {tech.A})")
+```
+
+The two price regimes therefore coincide at the initial steady state.
+
+That is what makes our fixed-price and endogenous-price experiments comparable, and it is why we may reuse the household objects computed at fixed prices when we construct the initial steady state of the closed economy below.
+
+{ref}`two_comp_ex1` asks you to verify that these parameters are implied by the price targets rather than free.
+
 The following figure traces how the equilibrium labor tax rate varies with government debt in the terminal steady state (no social security)
 
 ```{code-cell} ipython3
@@ -1610,16 +1681,11 @@ def _compute_compensation(
     age_at_0 = T0 - death_time
 
     time_mask = indices < n_periods
-    age_mask = indices >= age_at_0
 
     τ_l_cohort = jnp.where(time_mask, τ_l_seq[:T0 + 1], 0.0)
     τ_a_cohort = jnp.where(time_mask, τ_a_seq[:T0 + 1], 0.0)
     RR_cohort = jnp.where(time_mask, RR_seq[:T0 + 1], 1.0)
     w_cohort = jnp.where(time_mask, w_seq[:T0 + 1], 0.0)
-
-    ε_masked = jnp.where(age_mask, ε_arr, 0.0)
-    benef_masked = jnp.where(age_mask, benef_diff, 0.0)
-    benef_masked = jnp.where(ε_masked != 0, 0.0, benef_masked)
 
     age_idx = jnp.clip(age_at_0 + indices, 0, T0)
     ε_cohort = jnp.where(
@@ -1945,9 +2011,14 @@ The associated labor tax is $\tau_{\ell,2}$.
 *Step 4.* Solve the transition path: at $s = 0 = s_1$, all cohorts alive lose benefits and a cohort of age $t$ receives a one-time compensation equal to the present value of lost benefits, discounted at the after-tax return $\tilde{R}(s) = R(s)[1-\tau_a(s)]+\tau_a(s)$:
 
 $$
-\operatorname{comp}_t = S \sum_{j=\max(T_1-t,\,0)}^{T_0-t}
-  \prod_{i=0}^{j} \tilde{R}(s+i)^{-1}.
+\operatorname{comp}_t = \sum_{j=0}^{T_0-t}
+  \left[S_{t+j} + w \varepsilon_{t+j}\left(\tau_{\ell,1} - \tau_{\ell,0}\right)\right]
+  \prod_{i=0}^{j} \tilde{R}(s+i)^{-1},
 $$
+
+where $S_{t+j}$ is the benefit that an age-$(t+j)$ person would have received under the old regime, and zero while that person is still working.
+
+The second term inside the brackets compensates a cohort for the change in labor taxes that it faces during the transition, so that the buy-out leaves the present value of each cohort's lifetime resources unchanged.
 
 The government sets $\tau_{\ell,1}$ during $[s_1, s_2)$ and $\tau_{\ell,2}$ from $s_2$ onwards, with a one-time expenditure increase of $\sum f_t \operatorname{comp}_t$ at $s_1$.
 
@@ -1974,25 +2045,11 @@ benef_diff_exp1 = jnp.zeros(hh.T0 + 1)
 benef_diff_exp1 = benef_diff_exp1.at[hh.T1 + 1:].set(ss0.benef)
 ```
 
-The function `buyout_compensation_exp1_exo` computes the present-value compensation for each cohort alive at the reform date and adds it to their initial assets.
+Passing `compensation_data` to `find_transition_exo` turns the buy-out on, since it sets `comp_mult` to one inside `apply_compensation`.
 
-We then solve for the transition tax rate with and without the buy-out, so that we can compare the two paths.
+We solve for the transition tax rate with and without the buy-out, so that we can compare the two paths.
 
 ```{code-cell} ipython3
-def buyout_compensation_exp1_exo(τ_l_trans, policy_seq_base, price_seq):
-    """Compute buy-out compensation under exogenous prices."""
-
-    policy_seq = policy_seq_base.copy()
-    policy_seq[S1 + 1:S2 + 1, 0] = τ_l_trans
-    return apply_compensation(
-        ss0.μx_arr, ss0.Σx_arr,
-        policy_seq[:, 0], policy_seq[:, 1], benef_diff_exp1,
-        price_seq[:, 0], price_seq[:, 1], hh.ε_arr, ss0.τ_l,
-        AGE_INDICES, AGE_INDICES[:-1],
-        hh.x0, hh.Σ0,
-        1.0  # comp_mult = 1.0 for full compensation
-    )
-
 # Solve with buyout
 τ_l_exp1_exo_bo, results_exp1_exo_bo = find_transition_exo(
     price_seq_exp1_exo, policy_seq_exp1_exo, ss0, ss1_exp1_exo,
@@ -2038,12 +2095,12 @@ fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 # Asset profiles
 ages = np.arange(1, hh.T0 + 2)
-axes[0].plot(ages, μa_bo, 'b-', linewidth=2, label='With Buyout')
-axes[0].plot(ages, μa_nb, 'r--', linewidth=2, label='Without Buyout')
+axes[0].plot(ages, μa_bo, 'b-', linewidth=2, label='With buy-out')
+axes[0].plot(ages, μa_nb, 'r--', linewidth=2, label='Without buy-out')
 axes[0].axvline(hh.T1 + 1, color='gray', linestyle=':', label='Retirement')
 axes[0].set_xlabel('Age (t)')
-axes[0].set_ylabel('Mean Assets')
-axes[0].set_title('Asset Holdings by Age at s=0')
+axes[0].set_ylabel('Mean assets')
+axes[0].set_title('Asset holdings by age at $s=0$')
 axes[0].legend()
 
 
@@ -2060,8 +2117,8 @@ axes[1].bar(retired_ages, comp_retired,
 axes[1].axhline(0, color='k', linewidth=0.5)
 axes[1].axvline(hh.T1 + 1, color='gray', linestyle=':', label='Retirement')
 axes[1].set_xlabel('Age (t)')
-axes[1].set_ylabel('Compensation Amount')
-axes[1].set_title('Compensation by Age (Added to Initial Assets)')
+axes[1].set_ylabel('Compensation')
+axes[1].set_title('Compensation by age, added to initial assets')
 axes[1].legend()
 
 
@@ -2096,47 +2153,47 @@ ss1_exp1 = exp1_exo['ss1']
 fig, axes = plt.subplots(2, 2, figsize=(14, 10))
 
 # τ_l comparison
-axes[0, 0].plot(τ_l_seq_bo, 'b-', linewidth=2, label='With Buyout')
-axes[0, 0].plot(τ_l_seq_nb, 'r--', linewidth=2, label='Without Buyout')
+axes[0, 0].plot(τ_l_seq_bo, 'b-', linewidth=2, label='With buy-out')
+axes[0, 0].plot(τ_l_seq_nb, 'r--', linewidth=2, label='Without buy-out')
 axes[0, 0].axvspan(S1, S2, alpha=0.1, color='yellow')
 axes[0, 0].set_xlabel('Time (s)')
-axes[0, 0].set_ylabel('Labor Tax Rate')
-axes[0, 0].set_title('Labor Tax Rate Path')
+axes[0, 0].set_ylabel(r'$\tau_\ell$')
+axes[0, 0].set_title('Labor tax rate path')
 axes[0, 0].legend()
 
 # Gb comparison
-axes[0, 1].plot(Gb_seq_bo, 'b-', linewidth=2, label='With Buyout')
-axes[0, 1].plot(Gb_seq_nb, 'r--', linewidth=2, label='Without Buyout')
+axes[0, 1].plot(Gb_seq_bo, 'b-', linewidth=2, label='With buy-out')
+axes[0, 1].plot(Gb_seq_nb, 'r--', linewidth=2, label='Without buy-out')
 axes[0, 1].axhline(ss1_exp1.Gb, color='k', linestyle=':', alpha=0.7)
 axes[0, 1].axvspan(S1, S2, alpha=0.1, color='yellow')
 axes[0, 1].set_xlabel('Time (s)')
-axes[0, 1].set_ylabel('Government Debt')
-axes[0, 1].set_title('Government Debt Path')
+axes[0, 1].set_ylabel(r'$G_b$')
+axes[0, 1].set_title('Government debt path')
 axes[0, 1].legend()
 
 # Capital path
-axes[1, 0].plot(k_seq_bo, 'b-', linewidth=2, label='With Buyout')
-axes[1, 0].plot(k_seq_nb, 'r--', linewidth=2, label='Without Buyout')
+axes[1, 0].plot(k_seq_bo, 'b-', linewidth=2, label='With buy-out')
+axes[1, 0].plot(k_seq_nb, 'r--', linewidth=2, label='Without buy-out')
 axes[1, 0].axvspan(S1, S2, alpha=0.1, color='yellow')
 axes[1, 0].set_xlabel('Time (s)')
-axes[1, 0].set_ylabel('Capital Stock')
-axes[1, 0].set_title('Capital Accumulation Path')
+axes[1, 0].set_ylabel(r'$K$')
+axes[1, 0].set_title('Capital accumulation path')
 axes[1, 0].legend()
 
 # Aggregate consumption
 c_agg_bo = np.array(μc_seq_bo[:S_exo + 1]) @ np.array(hh.frac)
 c_agg_nb = np.array(μc_seq_nb[:S_exo + 1]) @ np.array(hh.frac)
 
-axes[1, 1].plot(c_agg_bo, 'b-', linewidth=2, label='With Buyout')
-axes[1, 1].plot(c_agg_nb, 'r--', linewidth=2, label='Without Buyout')
+axes[1, 1].plot(c_agg_bo, 'b-', linewidth=2, label='With buy-out')
+axes[1, 1].plot(c_agg_nb, 'r--', linewidth=2, label='Without buy-out')
 axes[1, 1].axvspan(S1, S2, alpha=0.1, color='yellow')
 axes[1, 1].set_xlabel('Time (s)')
-axes[1, 1].set_ylabel('Aggregate Consumption')
-axes[1, 1].set_title('Aggregate Consumption Path')
+axes[1, 1].set_ylabel('Aggregate consumption')
+axes[1, 1].set_title('Aggregate consumption path')
 axes[1, 1].legend()
 
 plt.suptitle(
-    'Experiment 1: Compensation on Transition Paths',
+    'Experiment 1: compensation and transition paths',
     fontsize=14, y=1.02
 )
 plt.show()
@@ -2166,16 +2223,16 @@ for idx, age_at_0 in enumerate(selected_ages):
             for s in range(max_time)
             if age_at_0 + s <= hh.T0]
     
-    ax.plot(c_bo, 'b-', linewidth=2, label='With Buyout')
-    ax.plot(c_nb, 'r--', linewidth=2, label='Without Buyout')
+    ax.plot(c_bo, 'b-', linewidth=2, label='With buy-out')
+    ax.plot(c_nb, 'r--', linewidth=2, label='Without buy-out')
     ax.set_xlabel('Time since s=0')
-    ax.set_ylabel('Mean Consumption')
+    ax.set_ylabel('Mean consumption')
     ax.set_title(f'Cohort age {age_at_0} at s=0')
     ax.legend(fontsize=9)
     
 
 plt.suptitle(
-    'Consumption Paths by Cohort (Experiment 1)',
+    'Consumption paths by cohort, Experiment 1',
     fontsize=14, y=1.02
 )
 plt.show()
@@ -2509,63 +2566,63 @@ w_fixed = tech.w
 fig, axes = plt.subplots(2, 2, figsize=(14, 10))
 
 # Labor tax comparison
-axes[0, 0].plot(τ_l_seq_fixed, 'b-', linewidth=2, label='Fixed Prices')
+axes[0, 0].plot(τ_l_seq_fixed, 'b-', linewidth=2, label='Fixed prices')
 axes[0, 0].plot(τ_l_seq_endo[:len(τ_l_seq_fixed)],
                 'r--', linewidth=2,
-                label='Endogenous Prices')
+                label='Endogenous prices')
 axes[0, 0].axvspan(S1, S2, alpha=0.1, color='yellow')
 axes[0, 0].set_xlabel('Time (s)')
-axes[0, 0].set_ylabel('Labor Tax Rate (τ_l)')
-axes[0, 0].set_title('Labor Tax Rate Path')
+axes[0, 0].set_ylabel(r'$\tau_\ell$')
+axes[0, 0].set_title('Labor tax rate path')
 axes[0, 0].legend()
 
 # Government debt comparison
 Gb_seq_fixed = Gb_seq_bo
 Gb_seq_endo_exp1 = exp1_endo['Gb_seq']
-axes[0, 1].plot(Gb_seq_fixed, 'b-', linewidth=2, label='Fixed Prices')
+axes[0, 1].plot(Gb_seq_fixed, 'b-', linewidth=2, label='Fixed prices')
 axes[0, 1].plot(
     Gb_seq_endo_exp1[:len(Gb_seq_fixed)],
     'r--', linewidth=2,
-    label='Endogenous Prices'
+    label='Endogenous prices'
 )
 axes[0, 1].axvspan(S1, S2, alpha=0.1, color='yellow')
 axes[0, 1].set_xlabel('Time (s)')
-axes[0, 1].set_ylabel('Government Debt (Gb)')
-axes[0, 1].set_title('Government Debt Path')
+axes[0, 1].set_ylabel(r'$G_b$')
+axes[0, 1].set_title('Government debt path')
 axes[0, 1].legend()
 
 # Interest rate comparison
 r_fixed = np.full(S_exo + 1, tech.r - tech.δ)
 r_endo = price_seq_endo[:-1, 0] - 1  # RR - 1 = r - δ
-axes[1, 0].plot(r_fixed, 'b-', linewidth=2, label='Fixed Prices')
+axes[1, 0].plot(r_fixed, 'b-', linewidth=2, label='Fixed prices')
 axes[1, 0].plot(
     r_endo[:len(r_fixed)],
     'r--', linewidth=2,
-    label='Endogenous Prices'
+    label='Endogenous prices'
 )
 axes[1, 0].axvspan(S1, S2, alpha=0.1, color='yellow')
 axes[1, 0].set_xlabel('Time (s)')
-axes[1, 0].set_ylabel('Interest Rate (r - δ)')
-axes[1, 0].set_title('Interest Rate Path')
+axes[1, 0].set_ylabel(r'$r - \delta$')
+axes[1, 0].set_title('Interest rate path')
 axes[1, 0].legend()
 
 # Wage rate comparison
 w_fixed_seq = np.full(S_exo + 1, tech.w)
 w_endo = price_seq_endo[:-1, 1]
-axes[1, 1].plot(w_fixed_seq, 'b-', linewidth=2, label='Fixed Prices')
+axes[1, 1].plot(w_fixed_seq, 'b-', linewidth=2, label='Fixed prices')
 axes[1, 1].plot(
     w_endo[:len(w_fixed_seq)],
     'r--', linewidth=2,
-    label='Endogenous Prices'
+    label='Endogenous prices'
 )
 axes[1, 1].axvspan(S1, S2, alpha=0.1, color='yellow')
 axes[1, 1].set_xlabel('Time (s)')
-axes[1, 1].set_ylabel('Wage Rate (w)')
-axes[1, 1].set_title('Wage Rate Path')
+axes[1, 1].set_ylabel(r'$w$')
+axes[1, 1].set_title('Wage rate path')
 axes[1, 1].legend()
 
 plt.suptitle(
-    'Experiment 1: Fixed vs Endogenous Prices',
+    'Experiment 1: fixed versus endogenous prices',
     fontsize=14, y=1.02
 )
 plt.show()
@@ -2600,6 +2657,27 @@ Step 4 is the same root-finding procedure over $\tau_{\ell,1}$, but without comp
 ```
 
 We first compute the terminal steady state under fixed prices, targeting a negative debt-to-GDP ratio that makes the government a net creditor.
+
+The target is chosen so that the income on the government's assets is enough to pay for social security benefits forever.
+
+In the stationary equilibrium the government's net asset income per capita is $[R/n - 1](-\bar{b})$, and the benefit bill is $\sum_{t > T_1} S_t f_t$, so a first guess at the required asset position solves
+
+$$
+\left[\frac{R}{n} - 1\right](-\bar{b}) = \sum_{t > T_1} S_t f_t
+$$
+
+```{code-cell} ipython3
+benefit_bill = float(jnp.sum(benef_0 * hh.frac * (1.0 - hh.Ind_work)))
+Rn_net = tech.RR / hh.n - 1.0
+
+print(f"benefit bill per capita        = {benefit_bill:.4f}")
+print(f"net asset income per unit debt = {Rn_net:.4f}")
+print(f"implied asset position b_bar   = {-benefit_bill / Rn_net:.4f}")
+```
+
+The targets below ask for a slightly larger asset position than this calculation, which leaves some room for the government to keep financing its purchases $g$ with distorting taxes.
+
+{ref}`two_comp_ex3` compares the two numbers.
 
 ```{code-cell} ipython3
 debt2gdp_target_exp2_exo = -1.1785
@@ -2727,8 +2805,8 @@ T_plot = min(len(Gb_buyout_fixed), len(Gb_buyout_endo),
 fig, axes = plt.subplots(2, 3, figsize=(18, 10))
 
 # Labels for four scenarios
-lb = ['Buyout (Fixed)', 'Buyout (Endo)',
-      'Gov Funding (Fixed)', 'Gov Funding (Endo)']
+lb = ['Buy-out (fixed)', 'Buy-out (endogenous)',
+      'Gov funding (fixed)', 'Gov funding (endogenous)']
 ls = ['b-', 'b--', 'r-', 'r--']
 
 # Government Debt paths
@@ -2742,8 +2820,8 @@ for d, s, l in zip(
 ax.axhline(0, color='k', linestyle=':', alpha=0.5)
 ax.axvspan(0, 40, alpha=0.1, color='yellow')
 ax.set_xlabel('Time (s)')
-ax.set_ylabel('Government Debt (Gb)')
-ax.set_title('Government Debt Paths')
+ax.set_ylabel(r'$G_b$')
+ax.set_title('Government debt paths')
 ax.legend(fontsize=9)
 
 
@@ -2757,8 +2835,8 @@ for d, s, l in zip(
     ax.plot(d[:T_plot], s, linewidth=2, label=l)
 ax.axvspan(0, 40, alpha=0.1, color='yellow')
 ax.set_xlabel('Time (s)')
-ax.set_ylabel('Capital Stock (K)')
-ax.set_title('Capital Accumulation Paths')
+ax.set_ylabel(r'$K$')
+ax.set_title('Capital accumulation paths')
 ax.legend(fontsize=9)
 
 
@@ -2792,19 +2870,19 @@ for d, s, l in zip(
     ax.plot(d[:T_plot], s, linewidth=2, label=l)
 axes[0, 2].axvspan(0, 40, alpha=0.1, color='yellow')
 axes[0, 2].set_xlabel('Time (s)')
-axes[0, 2].set_ylabel('Aggregate Consumption')
-axes[0, 2].set_title('Aggregate Consumption Paths')
+axes[0, 2].set_ylabel('Aggregate consumption')
+axes[0, 2].set_title('Aggregate consumption paths')
 axes[0, 2].legend(fontsize=9)
 
 # Bar chart: Transition tax rates
-cases = ['Buyout\n(Fixed)', 'Buyout\n(Endo)',
-         'Gov Fund\n(Fixed)', 'Gov Fund\n(Endo)']
+cases = ['Buy-out\n(fixed)', 'Buy-out\n(endog.)',
+         'Gov fund\n(fixed)', 'Gov fund\n(endog.)']
 τ_l_values = [exp1_exo['τ_l_buyout'], exp1_endo['τ_l_buyout'], 
               exp2_exo['τ_l_trans'], exp2_endo['τ_l_trans']]
 colors = ['blue', 'lightblue', 'red', 'lightcoral']
 axes[1, 0].bar(cases, τ_l_values, color=colors, edgecolor='black')
-axes[1, 0].set_ylabel('Transition Tax Rate (τ_l)')
-axes[1, 0].set_title('Transition Labor Tax Rates')
+axes[1, 0].set_ylabel(r'transition $\tau_\ell$')
+axes[1, 0].set_title('Transition labor tax rates')
 axes[1, 0].grid(True, alpha=0.3, axis='y')
 for i, v in enumerate(τ_l_values):
     axes[1, 0].text(i, v + 0.005, f'{v:.4f}', ha='center', fontsize=9)
@@ -2814,8 +2892,8 @@ debt2gdp_values = [exp1_exo['ss1'].debt2gdp, exp1_endo['ss1'].debt2gdp,
                    exp2_exo['ss1'].debt2gdp, exp2_endo['ss1'].debt2gdp]
 axes[1, 1].bar(cases, debt2gdp_values, color=colors, edgecolor='black')
 axes[1, 1].axhline(0, color='k', linestyle='-', linewidth=0.5)
-axes[1, 1].set_ylabel('Terminal Debt/GDP')
-axes[1, 1].set_title('Terminal Steady State Debt/GDP')
+axes[1, 1].set_ylabel('Terminal debt/GDP')
+axes[1, 1].set_title('Terminal steady state debt/GDP')
 axes[1, 1].grid(True, alpha=0.3, axis='y')
 for i, v in enumerate(debt2gdp_values):
     y = v + 0.05 if v > 0 else v - 0.15
@@ -2828,13 +2906,13 @@ for i, v in enumerate(debt2gdp_values):
 r_values = [exp1_exo['ss1'].r - tech.δ, exp1_endo['ss1'].r - tech.δ,
             exp2_exo['ss1'].r - tech.δ, exp2_endo['ss1'].r - tech.δ]
 axes[1, 2].bar(cases, r_values, color=colors, edgecolor='black')
-axes[1, 2].set_ylabel('Terminal Interest Rate (r - δ)')
-axes[1, 2].set_title('Terminal Steady State Interest Rates')
+axes[1, 2].set_ylabel(r'terminal $r - \delta$')
+axes[1, 2].set_title('Terminal steady state interest rates')
 axes[1, 2].grid(True, alpha=0.3, axis='y')
 for i, v in enumerate(r_values):
     axes[1, 2].text(i, v + 0.002, f'{v:.4f}', ha='center', fontsize=9)
 
-plt.suptitle('Comparison of All Four Reform Scenarios', fontsize=14, y=1.02)
+plt.suptitle('Comparison of all four reform scenarios', fontsize=14, y=1.02)
 plt.show()
 ```
 
@@ -2844,9 +2922,53 @@ The bottom-left bar chart shows that government funding requires higher transiti
 
 Under endogenous pricing, the larger capital stock reduces the marginal product of capital and hence interest rates, as shown in the bottom-right panel.
 
-The government-funded scheme (Experiment 2) delivers larger long-run efficiency gains because it preserves insurance against life span risk and labor income volatility that would be lost under privatization.
+To compare the two reforms we need numbers, not only paths.
 
-Higher labor income tax rates during the transition also provide implicit insurance against earnings risk, amplifying the efficiency advantage under endogenous prices.
+The first summary collects the transition tax rate and the terminal steady state of each scenario.
+
+```{code-cell} ipython3
+summary = [
+    ('buy-out, fixed prices',    exp1_exo['τ_l_buyout'],  exp1_exo['ss1']),
+    ('buy-out, endogenous',      exp1_endo['τ_l_buyout'], exp1_endo['ss1']),
+    ('gov funding, fixed',       exp2_exo['τ_l_trans'],   exp2_exo['ss1']),
+    ('gov funding, endogenous',  exp2_endo['τ_l_trans'],  exp2_endo['ss1']),
+]
+
+print(f"{'scenario':>24}  {'τ_l trans':>9}  {'τ_l final':>9}"
+      f"  {'K/GDP':>7}  {'debt/GDP':>8}  {'r - δ':>7}")
+for name, τ_trans, ss in summary:
+    print(f"{name:>24}  {τ_trans:>9.4f}  {ss.τ_l:>9.4f}"
+          f"  {ss.k2gdp:>7.4f}  {ss.debt2gdp:>8.4f}  {ss.r - tech.δ:>7.4f}")
+```
+
+The second summary asks which reform a person born into the terminal steady state would prefer.
+
+Because the value function is $U_t = x_t' P_t x_t + \xi_t$, the welfare of a newborn follows directly from objects that we have already computed.
+
+```{code-cell} ipython3
+def newborn_welfare(ss):
+    "Expected lifetime utility of an agent born into a steady state."
+
+    return float(hh.x0 @ ss.P_arr[0] @ hh.x0 + ss.ξ_arr[0])
+
+print(f"{'steady state':>34}  {'U of a newborn':>14}")
+for name, ss in [
+    ('initial, pay-as-you-go', ss0),
+    ('terminal, buy-out (no benefits)', exp1_exo['ss1']),
+    ('terminal, government funding', exp2_exo['ss1']),
+]:
+    print(f"{name:>34}  {newborn_welfare(ss):>14.2f}")
+```
+
+A newborn prefers either reform to the pay-as-you-go system that we started from, because both reforms raise the capital stock and hence wages.
+
+Between the two reforms, a newborn prefers government funding.
+
+That scheme ends with about the same capital stock as the buy-out, but it keeps paying social security benefits, which continue to insure against life span risk and to provide partial insurance against labor income risk.
+
+This comparison ranks steady states.
+
+It says nothing about the generations alive during the transition, whose fortunes the cohort consumption paths plotted above describe.
 
 ## Distribution surfaces
 
@@ -2909,8 +3031,8 @@ def compute_variances(results, ss0, hh):
 )
 
 case_names = [
-    'Buyout (Fixed)', 'Buyout (Endo)',
-    'Gov Funding (Fixed)', 'Gov Funding (Endo)'
+    'Buy-out (fixed)', 'Buy-out (endogenous)',
+    'Gov funding (fixed)', 'Gov funding (endogenous)'
 ]
 
 
@@ -2943,8 +3065,8 @@ The mean asset surfaces display the hump-shaped life-cycle profile of asset hold
 ```{code-cell} ipython3
 plot_surface_grid(
     [μa_bf, μa_be, μa_af, μa_ae],
-    case_names, 'Mean Assets',
-    'Mean Asset Holdings by Age and Time'
+    case_names, 'Mean assets',
+    'Mean asset holdings by age and time'
 )
 ```
 
@@ -2953,8 +3075,8 @@ The asset variance surfaces show how cumulative income shocks cause dispersion t
 ```{code-cell} ipython3
 plot_surface_grid(
     [Va_bf, Va_be, Va_af, Va_ae],
-    case_names, 'Std Dev Assets',
-    'Asset Std Dev by Age and Time',
+    case_names, 'Std. dev. of assets',
+    'Asset std. dev. by age and time',
     cmap='plasma', transform=np.sqrt
 )
 ```
@@ -2964,19 +3086,197 @@ The mean consumption surfaces reflect the optimal consumption path, which should
 ```{code-cell} ipython3
 plot_surface_grid(
     [μc_bf, μc_be, μc_af, μc_ae],
-    case_names, 'Mean Consumption',
-    'Mean Consumption by Age and Time',
+    case_names, 'Mean consumption',
+    'Mean consumption by age and time',
     cmap='coolwarm'
 )
 ```
 
-The consumption variance surfaces reveal how the certainty-equivalence property of the LQ framework shapes the within-cohort distribution of consumption over time.
+The consumption variance surfaces show how within-cohort consumption dispersion builds up with age as income shocks accumulate, and how it is reshaped along the transition.
+
+Note that consumption dispersion is not a by-product of certainty equivalence: with $\sigma = -0.05$ the decision rules themselves depend on the volatility of income, as {ref}`two_comp_ex2` confirms.
 
 ```{code-cell} ipython3
 plot_surface_grid(
     [Vc_bf, Vc_be, Vc_af, Vc_ae],
-    case_names, 'Std Dev Consumption',
-    'Consumption Std Dev by Age and Time',
+    case_names, 'Std. dev. of consumption',
+    'Consumption std. dev. by age and time',
     cmap='magma', transform=np.sqrt
 )
+```
+
+
+## Concluding remarks
+
+We set out to compare two ways of moving from an unfunded to a fully funded social security system, following {cite:t}`huang1997two`.
+
+Both reforms raise the capital stock substantially, lifting capital relative to GDP from about $3.2$ to about $4.2$ when factor prices are fixed, and to about $3.9$ when they are endogenous.
+
+Both also cut the equilibrium labor tax rate, from $0.34$ to between $0.08$ and $0.23$ depending on the reform and the price regime.
+
+They differ in who bears the cost and in what is preserved.
+
+The buy-out of Experiment 1 settles the government's obligations to existing generations by issuing debt, which keeps those generations whole but leaves future ones without social insurance.
+
+The government funding of Experiment 2 keeps paying benefits and accumulates assets instead, which requires higher taxes during the transition but preserves insurance against life span risk and against labor income risk.
+
+A newborn in the terminal steady state prefers the second reform.
+
+Three features of the model do most of the work in these calculations.
+
+Risk-sensitive preferences make saving respond to the volatility of labor income, so that the precautionary motive, rather than the life-cycle motive alone, shapes the aggregate capital stock.
+
+Life span uncertainty gives social security an insurance role that a pure pay-as-you-go transfer scheme would not have.
+
+And the linearity of the decision rules lets us track entire distributions of consumption and wealth, both across cohorts and over calendar time, which is what the surfaces plotted above display.
+
+Readers who want the same questions posed in simpler settings can compare {doc}`ak2`, where transitions can be computed by hand, and {doc}`ak_aiyagari`, where precautionary saving arises from a borrowing constraint rather than from risk-sensitive preferences.
+
+## Exercises
+
+```{exercise}
+:label: two_comp_ex1
+
+The calibration table lists $\tilde{A} = 2.2625$ and $\tilde{\alpha} = 0.40$ for the closed economy, and $r = 0.1275$ and $w = 5.0147$ for the small open economy.
+
+This exercise shows that the first pair is implied by the second.
+
+1. Let $K_{\text{eff}} = \bar{k}/n + f_0 k_{-1}$ be the capital available for production per capita in the initial steady state, and $\bar{\varepsilon} = \sum_t \varepsilon_t f_t$ aggregate labor in efficiency units.
+   Explain why $\tilde{\alpha} = r K_{\text{eff}} / (r K_{\text{eff}} + w \bar{\varepsilon})$.
+
+2. Given $\tilde{\alpha}$, compute $\tilde{A}$ from the marginal product of capital, and then again from the marginal product of labor.
+
+3. Suppose instead that we wanted a capital share of $\tilde{\alpha} = 0.33$ while keeping the same $(r, w)$ targets. What goes wrong?
+```
+
+```{solution-start} two_comp_ex1
+:class: dropdown
+```
+
+*Part 1.* With a Cobb-Douglas technology and constant returns to scale, payments to capital and labor exhaust output, so $Y = rK + wL$.
+
+Capital's share of income is then $rK/Y = rK/(rK + wL)$, and for Cobb-Douglas production that share equals the exponent $\tilde\alpha$.
+
+*Parts 2 and 3.*
+
+```{code-cell} ipython3
+ε_bar_ex = float(jnp.sum(hh.frac * hh.ε_arr))
+K_eff_ex = ss0.k_bar / hh.n + float(hh.frac[0] * hh.x0[0])
+k_pe_ex = K_eff_ex / ε_bar_ex
+
+α_implied = tech.r * K_eff_ex / (tech.r * K_eff_ex + tech.w * ε_bar_ex)
+print(f"K_eff = {K_eff_ex:.4f},  ε̄ = {ε_bar_ex:.4f},  K/L = {k_pe_ex:.4f}")
+print(f"implied capital share = {α_implied:.4f}  (calibrated {tech.α_tilde})")
+
+for α_try in [tech.α_tilde, 0.33]:
+    A_from_r = tech.r / (α_try * k_pe_ex ** (α_try - 1))
+    A_from_w = tech.w / ((1 - α_try) * k_pe_ex ** α_try)
+    print(f"α̃ = {α_try:.2f}: A from r = {A_from_r:.4f}, "
+          f"A from w = {A_from_w:.4f}")
+```
+
+At $\tilde\alpha = 0.40$ the two values of $\tilde{A}$ agree with each other and with the calibrated $2.2625$.
+
+At $\tilde\alpha = 0.33$ they disagree: no single scale factor can reproduce both prices, because the capital-labor ratio of the initial steady state and the two price targets already determine the capital share.
+
+Pinning down $(r, w)$ and the steady-state capital stock therefore leaves no freedom in $(\tilde{A}, \tilde{\alpha})$, which is exactly why the small open economy and the closed economy start from the same place.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: two_comp_ex2
+
+How much saving does risk sensitivity induce?
+
+Recompute the initial steady state for $\sigma \in \{0, -0.05, -0.1\}$, holding all other parameters at their calibrated values, and report the per capita capital stock, the equilibrium labor tax rate, and capital relative to GDP.
+
+Explain why the case $\sigma = 0$ deserves the name certainty equivalence.
+```
+
+```{solution-start} two_comp_ex2
+:class: dropdown
+```
+
+```{code-cell} ipython3
+print(f"{'σ':>7}  {'k_bar':>8}  {'τ_l':>7}  {'K/GDP':>7}")
+for σ_try in [0.0, -0.05, -0.1]:
+    hh_try = create_household(σ=σ_try)
+    ss_try = find_ss_exo(
+        (tech.RR, tech.w),
+        (τ_a_0, τ_0_0, benef_0, G_0, Gb_0),
+        hh_try, tech
+    )
+    print(f"{σ_try:>7.2f}  {ss_try.k_bar:>8.4f}  {ss_try.τ_l:>7.4f}"
+          f"  {ss_try.k2gdp:>7.4f}")
+```
+
+Moving from $\sigma = 0$ to the calibrated $\sigma = -0.05$ raises the capital stock by about a third, and a further doubling of risk sensitivity raises it by another third.
+
+The extra capital widens the tax base, so the labor tax rate that balances the same budget falls by about four percentage points between the first two rows.
+
+At $\sigma = 0$ the operator $\mathcal{T}_t$ is the identity, so $P_t$ and the decision rule $F_t$ never see the shock loading $C_t$.
+
+Consumption then responds only to the conditional mean of future income, which is the certainty equivalence property of ordinary linear-quadratic problems.
+
+At $\sigma < 0$ the term $\sigma P C_t(I - \sigma C_t' P C_t)^{-1} C_t' P$ makes $F_t$ depend on $C_t C_t'$, and the consumer accumulates a buffer against income risk.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: two_comp_ex3
+
+This exercise examines the debt target behind Experiment 2 and the long-run welfare ranking of the two reforms.
+
+1. Compute the per capita benefit bill $\sum_{t > T_1} S_t f_t$ and the asset position $\bar{b}$ at which the government's net asset income $[R/n - 1](-\bar{b})$ exactly pays for it.
+
+2. Compare that number with the asset position that the lecture's target of $-1.1785$ for debt relative to GDP actually delivers, and report the net asset income and the labor tax rate in that steady state.
+
+3. Compute the welfare of a newborn in the initial steady state and in the two terminal steady states under fixed prices. Which reform does a newborn prefer, and why?
+```
+
+```{solution-start} two_comp_ex3
+:class: dropdown
+```
+
+```{code-cell} ipython3
+benefit_bill_ex = float(jnp.sum(benef_0 * hh.frac * (1.0 - hh.Ind_work)))
+Rn_ex = tech.RR / hh.n - 1.0
+
+print(f"benefit bill               = {benefit_bill_ex:.4f}")
+print(f"R/n - 1                    = {Rn_ex:.4f}")
+print(f"b_bar that just funds it   = {-benefit_bill_ex / Rn_ex:.4f}\n")
+
+ss_exp2 = exp2_exo['ss1']
+print(f"lecture target -1.1785 gives b_bar = {ss_exp2.Gb:.4f}")
+print(f"  net asset income = {-Rn_ex * ss_exp2.Gb:.4f}"
+      f"  versus benefits = {benefit_bill_ex:.4f}")
+print(f"  labor tax τ_l = {ss_exp2.τ_l:.4f}"
+      f"  versus {ss0.τ_l:.4f} initially")
+```
+
+The asset position that exactly funds benefits is about $-9.1$, while the target used in the lecture delivers about $-10.2$.
+
+The government therefore accumulates a little more than social security alone requires, and the surplus lets it cut the labor tax rate from $0.34$ to about $0.14$ even though it is still paying benefits and still buying goods.
+
+```{code-cell} ipython3
+print(f"{'steady state':>34}  {'U of a newborn':>14}")
+for name, ss_w in [
+    ('initial, pay-as-you-go', ss0),
+    ('terminal, buy-out (no benefits)', exp1_exo['ss1']),
+    ('terminal, government funding', exp2_exo['ss1']),
+]:
+    print(f"{name:>34}  {newborn_welfare(ss_w):>14.2f}")
+```
+
+A newborn ranks government funding first, the buy-out second, and the initial pay-as-you-go system last.
+
+Both reforms raise the capital stock and hence the wage, which is what lifts welfare above the initial steady state.
+
+Government funding then does better than the buy-out because it finances the same capital accumulation while continuing to pay benefits that insure against outliving one's assets and against low labor income draws.
+
+Remember that this ranking compares steady states, so it leaves out the transition costs borne by generations alive at the time of the reform.
+
+```{solution-end}
 ```

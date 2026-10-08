@@ -11,6 +11,15 @@ kernelspec:
   name: python3
 ---
 
+(ak2)=
+```{raw} jupyter
+<div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div>
+```
+
 # Transitions in an Overlapping Generations Model
 
 In addition to what’s in Anaconda, this lecture will need the following libraries:
@@ -20,7 +29,7 @@ In addition to what’s in Anaconda, this lecture will need the following librar
 !pip install --upgrade quantecon
 ```
 
-## Introduction
+## Overview
 
 
 This lecture presents a  life-cycle model consisting of overlapping generations of two-period lived people proposed  by Peter Diamond
@@ -35,7 +44,7 @@ Their model of two-period lived overlapping generations is a useful starting poi
 
 * it sets forth the structure of interactions between generations of different agents who are alive at a given date
 * it activates forces and tradeoffs confronting the government and successive generations of people
-* it is good laboratory for studying connections between government tax and subsidy programs and for policies for issuing and servicing government debt
+* it is a good laboratory for studying connections between government tax and subsidy programs and for policies for issuing and servicing government debt
 * some interesting experiments involving transitions from one steady state to another can be computed by hand
 * it is a good setting for illustrating  a **shooting method** for solving a system of non-linear difference equations with  initial and terminal condition
  
@@ -63,7 +72,7 @@ We assume that the population size is constant over time.
 
 A young person works, saves, and consumes.
 
-An old person dissaves and consumes, but does not work, 
+An old person dissaves and consumes, but does not work.
 
 A government lives forever, i.e., at $t=0, 1, 2, \ldots $.
 
@@ -116,7 +125,11 @@ A **price system** is a pair of sequences $\{W_t, r_t\}_{t=0}^\infty$; constitue
 
 There are two factors of production, physical capital $K_t$ and labor $L_t$.  
 
-Capital does not depreciate.  
+Capital does not depreciate, so $r_t$ below is a net rate of return.
+
+Because each young person supplies one unit of labor inelastically and the population is constant, labor supply satisfies $L_t = 1$ for all $t$.
+
+We use that fact to simplify formulas below.
 
 The initial capital stock $K_0$ is owned by the representative  initial old person, who rents it to the firm at time $0$.
 
@@ -146,7 +159,7 @@ At time  $t-1$, the government    issues one-period risk-free debt that promises
 
 Young people at time $t$ purchase government debt $D_{t+1}$ that matures at time $t+1$. 
 
-Government debt issued at $t$ bears a before-tax net rate of interest rate of $r_{t}$ at time $t+1$.
+Government debt issued at $t$ bears a before-tax net rate of interest $r_{t+1}$ that is paid at time $t+1$.
 
 The government budget constraint at time $t \geq 0$ is
 
@@ -170,10 +183,12 @@ $$
 T_t = \tau_t W_t L_t + \tau_t r_t (D_t + K_t) + \delta_{yt} + \delta_{ot}
 $$
 
+Because one young person and one old person are alive at each date, the two lump sum taxes enter $T_t$ with unit weights.
 
 
 
-## Activities in Factor Markets
+
+## Activities in factor markets
 
 **Old people:**  At each  $t \geq 0$, a representative  old person 
 
@@ -187,7 +202,7 @@ $$
   **Young people:** At each $t \geq 0$, a representative  young person 
    * sells one unit of labor services to a representative firm for $W_t$ in wages,
    * pays  taxes $\tau_t W_t$ on its labor earnings
-   * pays a lump sum  tax $\delta_{yt}$ to the goverment, 
+   * pays a lump sum  tax $\delta_{yt}$ to the government, 
    * spends $C_{yt}$ on consumption,
    * acquires non-negative assets $A_{t+1}$ consisting of a sum of physical capital $K_{t+1}$ and one-period government bonds $D_{t+1}$  that mature at $t+1$.
 
@@ -222,7 +237,7 @@ To maximize profits a firm equates marginal products to rental rates:
 $$
 \begin{aligned}
 W_t & = (1-\alpha) K_t^\alpha L_t^{-\alpha} \\
-r_t & = \alpha K_t^\alpha L_t^{1-\alpha}
+r_t & = \alpha K_t^{\alpha-1} L_t^{1-\alpha}
 \end{aligned}
 $$  (eq:firmfonc)
 
@@ -243,17 +258,17 @@ The firm  thus sells output to old people, young people, and the government.
 
 ### Initial old person
 
-At time $t=0$, a representative initial old person is endowed with  $(1 + r_0(1 - \tau_0)) A_0$ in initial assets.
+At time $t=0$, a representative initial old person is endowed with  $(1 + r_0(1 - \tau_0)) A_0$ in initial assets, where $A_0 = K_0 + D_0$.
 
 It  must pay a lump sum tax to (if positive) or receive a subsidy from  (if negative)
-$\delta_{ot}$ the government. 
+$\delta_{o0}$ the government. 
 
 An old   person's budget constraint is
 
 
 
 $$
-C_{o0} = (1 + r_0 (1 - \tau_0)) A_0 - \delta_{ot} .
+C_{o0} = (1 + r_0 (1 - \tau_0)) A_0 - \delta_{o0} .
 $$ (eq:hbudgetold)
 
 An initial old person's utility function is $C_{o0}$, so the person's optimal consumption plan
@@ -278,7 +293,7 @@ subject to the following  budget constraints at times $t$ and $t+1$:
 $$
 \begin{aligned}
 C_{yt} + A_{t+1} & =  W_t (1 - \tau_t) - \delta_{yt} \\
-C_{ot+1} & = (1+ r_{t+1} (1 - \tau_{t+1}))A_{t+1} - \delta_{ot}
+C_{ot+1} & = (1+ r_{t+1} (1 - \tau_{t+1}))A_{t+1} - \delta_{o,t+1}
 \end{aligned}
 $$ (eq:twobudgetc)
 
@@ -286,18 +301,18 @@ $$ (eq:twobudgetc)
 Solving the second equation of {eq}`eq:twobudgetc` for savings  $A_{t+1}$ and substituting it into the first equation implies the present value budget constraint
 
 $$
-C_{yt} + \frac{C_{ot+1}}{1 + r_{t+1}(1 - \tau_{t+1})} = W_t (1 - \tau_t) - \delta_{yt} - \frac{\delta_{ot}}{1 + r_{t+1}(1 - \tau_{t+1})}
+C_{yt} + \frac{C_{ot+1}}{1 + r_{t+1}(1 - \tau_{t+1})} = W_t (1 - \tau_t) - \delta_{yt} - \frac{\delta_{o,t+1}}{1 + r_{t+1}(1 - \tau_{t+1})}
 $$ (eq:onebudgetc)
 
 To solve the young person's choice problem, form a Lagrangian 
 
 $$ 
 \begin{aligned}
-{\mathcal L}  & = C_{yt}^\beta C_{o,t+1}^{1-\beta} \\ &  + \lambda \Bigl[ C_{yt} + \frac{C_{ot+1}}{1 + r_{t+1}(1 - \tau_{t+1})} - W_t (1 - \tau_t) + \delta_{yt} + \frac{\delta_{ot}}{1 + r_{t+1}(1 - \tau_{t+1})}\Bigr],
+{\mathcal L}  & = C_{yt}^\beta C_{o,t+1}^{1-\beta} \\ &  + \lambda \Bigl[ W_t (1 - \tau_t) - \delta_{yt} - \frac{\delta_{o,t+1}}{1 + r_{t+1}(1 - \tau_{t+1})} - C_{yt} - \frac{C_{ot+1}}{1 + r_{t+1}(1 - \tau_{t+1})} \Bigr],
 \end{aligned}
 $$ (eq:lagC)
 
-where $\lambda$ is a Lagrange multiplier on the intertemporal budget constraint {eq}`eq:onebudgetc`.
+where $\lambda \geq 0$ is a Lagrange multiplier on the intertemporal budget constraint {eq}`eq:onebudgetc`.
 
 
 After several lines of algebra, the intertemporal budget constraint {eq}`eq:onebudgetc` and the first-order conditions for maximizing ${\mathcal L}$ with respect to $C_{yt}, C_{ot+1}$ 
@@ -305,21 +320,21 @@ imply that an optimal consumption plan satisfies
 
 $$
 \begin{aligned}
-C_{yt} & = \beta \Bigl[ W_t (1 - \tau_t) - \delta_{yt} - \frac{\delta_{ot}}{1 + r_{t+1}(1 - \tau_{t+1})}\Bigr] \\
-\frac{C_{0t+1}}{1 + r_{t+1}(1-\tau_{t+1})  } & = (1-\beta)   \Bigl[ W_t (1 - \tau_t) - \delta_{yt} - \frac{\delta_{ot}}{1 + r_{t+1}(1 - \tau_{t+1})}\Bigr] 
+C_{yt} & = \beta \Bigl[ W_t (1 - \tau_t) - \delta_{yt} - \frac{\delta_{o,t+1}}{1 + r_{t+1}(1 - \tau_{t+1})}\Bigr] \\
+\frac{C_{o,t+1}}{1 + r_{t+1}(1-\tau_{t+1})  } & = (1-\beta)   \Bigl[ W_t (1 - \tau_t) - \delta_{yt} - \frac{\delta_{o,t+1}}{1 + r_{t+1}(1 - \tau_{t+1})}\Bigr] 
 \end{aligned}
 $$ (eq:optconsplan)
 
-The first-order condition for minimizing Lagrangian {eq}`eq:lagC` with respect to the Lagrange multipler $\lambda$ recovers the budget constraint {eq}`eq:onebudgetc`,
+The first-order condition for the Lagrangian {eq}`eq:lagC` with respect to the Lagrange multiplier $\lambda$ recovers the budget constraint {eq}`eq:onebudgetc`,
 which, using {eq}`eq:optconsplan` gives the optimal savings plan
 
 $$
-A_{t+1} = (1-\beta) [ (1- \tau_t) W_t - \delta_{yt}] + \beta \frac{\delta_{ot}}{1 + r_{t+1}(1 - \tau_{t+1})} 
+A_{t+1} = (1-\beta) [ (1- \tau_t) W_t - \delta_{yt}] + \beta \frac{\delta_{o,t+1}}{1 + r_{t+1}(1 - \tau_{t+1})} 
 $$ (eq:optsavingsplan)
 
 
 (sec-equilibrium)=
-## Equilbrium 
+## Equilibrium 
 
 **Definition:** An equilibrium is an allocation,  a government policy, and a price system with the properties that
 * given the price system and the government policy, the allocation solves
@@ -362,8 +377,10 @@ $$
 Using  {eq}`eq:firmfonc` and  $A_t = K_t + D_t$, we obtain the following closed form transition law for capital:
 
 $$
-K_{t+1}=K_{t}^{\alpha}\left(1-\tau_{t}\right)\left(1-\alpha\right)\left(1-\beta\right) - D_{t}\\
+K_{t+1}=K_{t}^{\alpha}\left(1-\tau_{t}\right)\left(1-\alpha\right)\left(1-\beta\right) - D_{t+1}
 $$ (eq:Klawclosed)
+
+The debt term is dated $t+1$ because the assets $A_{t+1}$ that a young person carries into time $t+1$ consist of physical capital $K_{t+1}$ *and* the government bonds $D_{t+1}$ that mature at $t+1$.
 
 ### Steady states
 
@@ -380,11 +397,16 @@ $$ (eq:steadystates)
 These imply
 
 $$
-\begin{aligned}
-\hat{K} &= \left[\left(1-\hat{\tau}\right)\left(1-\alpha\right)\left(1-\beta\right)\right]^{\frac{1}{1-\alpha}} \\
-\hat{\tau} &= \frac{\hat{G} + \hat{r} \hat{D}}{\hat{Y} + \hat{r} \hat{D}}
-\end{aligned}
+\hat{\tau} = \frac{\hat{G} + \hat{r} \hat{D}}{\hat{Y} + \hat{r} \hat{D}}
 $$
+
+When $\hat D = 0$, the first equation of {eq}`eq:steadystates` can be solved in closed form for
+
+$$
+\hat{K} = \left[\left(1-\hat{\tau}\right)\left(1-\alpha\right)\left(1-\beta\right)\right]^{\frac{1}{1-\alpha}}
+$$
+
+When $\hat D \neq 0$, that equation must be solved numerically, a task that {ref}`ak2_ex1` takes up.
 
 Let's take an example in which
 
@@ -469,6 +491,10 @@ Y_hat, r_hat, W_hat = K_to_Y(K_hat, α), K_to_r(K_hat, α), K_to_W(K_hat, α)
 Y_hat, r_hat, W_hat
 ```
 
+The steady state net rate of return $\hat r$ is close to one, i.e., about $100$ percent.
+
+That is not a mistake: a period in this model is half of a lifetime, so $\hat r$ cumulates returns over a generation.
+
 Since  steady state government debt $\hat{D}$ is  $0$, all taxes are  used to pay for government expenditures
 
 ```{code-cell} ipython3
@@ -494,10 +520,6 @@ init_ss = np.array([K_hat, Y_hat, Cy_hat, Co_hat,     # quantities
 
 
 ### Transitions
-
-<!--
-%<font color='red'>Zejin: I tried to edit the following part to describe the fiscal policy %experiment and the objects we are interested in computing. </font>
--->
 
 We have computed a steady state in which the government policy sequences are each constant over time.
 
@@ -640,6 +662,7 @@ class ClosedFormTrans:
             policy_seq[t+1, 1] = D_next
             policy_seq[t, 2] = G
 
+        self.T, self.init_ss = T, init_ss
         self.quant_seq = quant_seq
         self.price_seq = price_seq
         self.policy_seq = policy_seq
@@ -648,6 +671,7 @@ class ClosedFormTrans:
 
     def plot(self):
 
+        T, init_ss = self.T, self.init_ss
         quant_seq = self.quant_seq
         price_seq = self.price_seq
         policy_seq = self.policy_seq
@@ -687,7 +711,7 @@ closed = ClosedFormTrans(α, β)
 ```
 
 (exp-tax-cut)=
-### Experiment 1: Tax cut
+### Experiment 1: a tax cut
 
 To illustrate the power of `ClosedFormTrans`, let's first experiment with the following fiscal policy change:
 
@@ -809,7 +833,7 @@ closed.simulate(T, init_ss, τ_pol=τ_seq, G_pol=G_seq);
 closed.plot()
 ```
 
-As the government accumulates the asset and uses it in production, the  rental rate on capital falls and  private investment falls.
+As the government accumulates assets, it supplies funds that would otherwise have been supplied by private savers, so the capital stock rises and the rental rate on capital falls.
 
 As a result,  the ratio  $-\frac{D_t}{K_t}$ of the  government asset to  physical capital used in production will increase over time
 
@@ -823,7 +847,13 @@ We want to know how this policy experiment affects individuals.
 
 In the long run,  future cohorts will enjoy higher consumption throughout their lives because they will earn  higher labor income when they work.
 
-However, in the short run, old people  suffer because increases in their labor income are not big enough to offset  their losses of capital income.
+In the short run, early cohorts lose.
+
+The representative old person at $t=0$ is unaffected, because $K_0$, $r_0$, and $\tau_0$ are all unchanged at $t=0$.
+
+But the cohorts that are young at $t=0$ and $t=1$ save at wages that the policy has not yet raised, and they collect their returns at the much lower interest rates that the larger capital stock brings.
+
+{ref}`ak2_ex2` computes these gains and losses cohort by cohort.
 
 Such distinct long run and short run effects motivate us  to study transition paths.
 
@@ -834,11 +864,11 @@ Although the consumptions in the new steady state are strictly higher, it is at 
 
 ### Experiment 3: Temporary expenditure cut
 
-Let's now investigate a   scenario in which  the government also cuts its spending by  half and accumulates the asset.
+Let's now investigate a   scenario in which  the government again accumulates assets by cutting its spending.
 
-But now let  the government cut its  expenditures only  at $t=0$.
+But now the cut lasts for one period only: the government sets $G_0 = 0$ and returns its purchases to $\hat G$ from $t=1$ onwards.
 
-From $t \geq 1$, the government expeditures  return to  $\hat{G}$  and  $\tau_t$ adjusts to maintain the   asset level $-D_t = -D_1$.
+From $t \geq 1$, government expenditures  return to  $\hat{G}$  and  $\tau_t$ adjusts to maintain the   asset level $-D_t = -D_1$.
 
 ```{code-cell} ipython3
 # sequence of government purchase
@@ -858,12 +888,12 @@ The economy quickly converges to a new steady state with higher physical capital
 
 Even though government expenditure $G_t$ returns to its high initial level from $t \geq 1$, the government can balance the budget at a lower tax rate because  it gathers  additional revenue $-r_t D_t$ from the asset accumulated during  the temporary cut in the spendings.
 
-As in {ref}`exp-expen-cut`, old perople  early in the transition  periods suffer from this policy shock.
+As in {ref}`exp-expen-cut`, the cohorts that are young early in the transition lose from this policy shock, because they save before wages rise and earn the lower interest rates that follow.
 
 
 ## A computational strategy
 
-With the preceding caluations, we studied  dynamic transitions  instigated by alternative  fiscal policies.
+With the preceding calculations, we studied  dynamic transitions  instigated by alternative  fiscal policies.
 
 In  all these experiments, we maintained the assumption that lump sum taxes were  absent  so that $\delta_{yt}=0, \delta_{ot}=0$.
 
@@ -887,7 +917,7 @@ To set the stage for the entry  of the mapping whose  fixed point we seek, we re
 * sequences of optimal consumptions $\{C_{yt}, C_{ot}\}$
 * sequences of prices $\{W_t, r_t\}$
 * sequences of capital stock and output $\{K_t, Y_t\}$
-* sequences of tax rates, government assets (debt), government purchases $\{\tau_t, D_t, G_t\, \delta_{yt}, \delta_{ot}\}$
+* sequences of tax rates, government assets (debt), government purchases, and lump sum taxes $\{\tau_t, D_t, G_t, \delta_{yt}, \delta_{ot}\}$
 
 with the properties that
 
@@ -1065,10 +1095,12 @@ class AK2():
                 # transition of K
                 K_next = A_next - D_next
                 Y_next = K_to_Y(K_next, α)
-                W_next, r_next = K_to_W(K_next, α), K_to_r(K_next, α)
+
+                # implied next-period prices
+                W_imp, r_imp = K_to_W(K_next, α), K_to_r(K_next, α)
 
                 quant_seq[t+1, :2] = K_next, Y_next
-                price_seq[t+1, :] = W_next, r_next
+                price_seq[t+1, :] = W_imp, r_imp
 
             i_iter += 1
 
@@ -1083,6 +1115,7 @@ class AK2():
                     print(f"Fail to converge using {i_iter} iterations")
                 break
         
+        self.T, self.init_ss = T, init_ss
         self.quant_seq = quant_seq
         self.price_seq = price_seq
         self.policy_seq = policy_seq
@@ -1091,6 +1124,7 @@ class AK2():
 
     def plot(self):
 
+        T, init_ss = self.T, self.init_ss
         quant_seq = self.quant_seq
         price_seq = self.price_seq
         policy_seq = self.policy_seq
@@ -1207,7 +1241,7 @@ for i, name in enumerate(['τ', 'D', 'G']):
 Comparing to {ref}`exp-tax-cut`, the government raises lump-sum taxes to finance the increasing debt interest payment, which is less distortionary comparing to raising the capital income tax rate.
 
 
-### Experiment 4: Unfunded Social Security System
+### Experiment 4: an unfunded social security system
 
 In this experiment,  lump-sum taxes are of equal magnitudes for old and the young, but of opposite signs.
 
@@ -1269,12 +1303,182 @@ for i, name in enumerate(['τ', 'D', 'G']):
     ax.set_xlabel('t')
 ```
 
-An initial old person   benefits  especially when  the social security system is launched because he  receives a transfer but pays nothing for it.
+An initial old person   benefits  especially when  the social security system is launched because they  receive a transfer but pay nothing for it.
 
-But in the long run, consumption rates of both  young and  old people decrease  because the the social security system decreases incentives to save.
+But in the long run, consumption of both  young and  old people decreases  because the social security system reduces incentives to save.
 
 That  lowers the stock of  physical capital and consequently lowers output. 
 
 The government must  then  raise tax rate in order to pay for its expenditures.
 
 The higher rate on  capital income  further distorts incentives to save.
+
+
+## Exercises
+
+```{exercise}
+:label: ak2_ex1
+
+This exercise studies how government debt affects the steady state capital stock.
+
+1. Explain why the law of motion {eq}`eq:Klawclosed` contains $D_{t+1}$ rather than $D_t$.
+
+2. Show that a steady state with a constant debt level $\hat D$ satisfies
+
+$$
+\hat{K} = c\, \hat{K}^{\alpha} - \hat{D},
+\qquad c \equiv \left(1-\hat{\tau}\right)\left(1-\alpha\right)\left(1-\beta\right)
+$$
+
+3. Holding $\hat\tau = 0.15$, compute $\hat K$ for $\hat D \in \{0, 0.02, 0.05, 0.07\}$.
+
+4. Find the largest $\hat D$ for which a steady state exists, and count the number of steady states when $0 < \hat D < \hat D_{\max}$.
+```
+
+```{solution-start} ak2_ex1
+:class: dropdown
+```
+
+*Part 1.* A young person at $t$ saves $A_{t+1} = (1-\beta)(1-\tau_t) W_t$.
+
+Those savings are held as physical capital $K_{t+1}$ plus the government bonds $D_{t+1}$ that mature at $t+1$, so $K_{t+1} = A_{t+1} - D_{t+1}$.
+
+*Part 2.* Set $K_{t+1} = K_t = \hat K$, $\tau_t = \hat\tau$, and $D_{t+1} = \hat D$ in {eq}`eq:Klawclosed`, and use $W_t = (1-\alpha)\hat K^\alpha$.
+
+*Parts 3 and 4.* The function $c K^\alpha - K$ is strictly concave in $K$, equals zero at $K=0$, and attains its maximum at $K^\star = (\alpha c)^{1/(1-\alpha)}$.
+
+So the steady state equation $c K^\alpha - K = \hat D$ has two solutions when $0 < \hat D < \hat D_{\max} \equiv c (K^\star)^{\alpha} - K^\star$, one solution when $\hat D = \hat D_{\max}$, and none when $\hat D > \hat D_{\max}$.
+
+```{code-cell} ipython3
+from scipy.optimize import brentq
+
+c = (1 - τ_hat) * (1 - α) * (1 - β)
+K_star = (α * c) ** (1 / (1 - α))
+D_max = c * K_star ** α - K_star
+
+def K_ss(D, high=True):
+    "Steady state K solving c K^α - D - K = 0."
+    f = lambda K: c * K ** α - D - K
+    return brentq(f, K_star, 10) if high else brentq(f, 1e-12, K_star)
+
+print(f"D_max = {D_max:.5f} at K = {K_star:.5f}\n")
+print(f"{'D':>6}  {'K (high)':>9}  {'K (low)':>9}  {'r (high)':>9}")
+for D in [0.0, 0.02, 0.05, 0.07]:
+    K_high = K_ss(D)
+    K_low = K_ss(D, high=False) if D > 0 else 0.0
+    print(f"{D:>6.2f}  {K_high:>9.5f}  {K_low:>9.5f}  {K_to_r(K_high, α):>9.4f}")
+```
+
+Government debt crowds out capital: at $\hat D = 0.05$ the high-capital steady state holds only a little more than half of the capital that it holds when $\hat D = 0$.
+
+Beyond $\hat D_{\max} \approx 0.074$, the young simply cannot save enough to absorb the debt, and no steady state exists.
+
+The debt level $\bar D$ created by the tax cut in {ref}`exp-tax-cut` is well inside this limit.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ak2_ex2
+
+In {ref}`exp-expen-cut`, the government permanently halves its purchases and accumulates assets while holding $\tau_t = \hat\tau$.
+
+Compute the consumption of the representative old person at $t=0$ and the lifetime utility
+
+$$
+U_t = C_{yt}^\beta C_{o,t+1}^{1-\beta}
+$$
+
+of the cohorts that are young at $t = 0, 1, \ldots, 7$, each measured relative to its initial steady state value.
+
+Which generations gain, which lose, and why?
+```
+
+```{solution-start} ak2_ex2
+:class: dropdown
+```
+
+```{code-cell} ipython3
+G_seq_ex = τ_hat * 0.5 * Y_hat * np.ones(T+1)
+τ_seq_ex = τ_hat * np.ones(T+1)
+quant_ex, price_ex, policy_ex = closed.simulate(T, init_ss,
+                                                τ_pol=τ_seq_ex,
+                                                G_pol=G_seq_ex)
+
+U = lambda Cy, Co: Cy ** β * Co ** (1 - β)
+U_hat = U(Cy_hat, Co_hat)
+
+print(f"initial old: Co_0 = {quant_ex[0, 3]:.5f}, "
+      f"steady state Co_hat = {Co_hat:.5f}\n")
+print(f"{'cohort young at t':>18}  {'Cy':>7}  {'Co next':>8}  {'r next':>7}  {'U/U_hat - 1':>12}")
+for t in range(8):
+    gain = U(quant_ex[t, 2], quant_ex[t+1, 3]) / U_hat - 1
+    print(f"{t:>18}  {quant_ex[t, 2]:>7.4f}  {quant_ex[t+1, 3]:>8.4f}"
+          f"  {price_ex[t+1, 1]:>7.4f}  {gain:>11.2%}")
+```
+
+The representative old person at $t=0$ is unaffected to the last digit.
+
+That person's consumption is $(1 + r_0(1-\tau_0))(K_0 + D_0)$, and the policy changes none of $K_0$, $r_0$, $\tau_0$, or $D_0$.
+
+The cohorts that are young at $t=0$ and $t=1$ lose about $3.4$ and $1.7$ percent of lifetime utility.
+
+They save out of wages that the policy has barely raised, and they earn the much lower interest rates that the rising capital stock produces, with $r$ falling from $1.01$ to $0.86$ and then to $0.67$.
+
+From $t=2$ onwards every cohort gains, by $4.6$ percent and then by steadily more, because by then the wage increases dominate the interest rate declines.
+
+This is the sense in which the policy redistributes from early to later generations.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ak2_ex3
+
+This exercise uses the lump sum taxes to study an unfunded social security system in the **steady state**, complementing the transition computed in {ref}`exp-tax-cut`.
+
+Set $\delta_{yt} = -\delta_{ot} = d$ for all $t$, with $D_t = 0$ and $G_t = \hat G$.
+
+1. Use {eq}`eq:optsavingsplan` to show that
+
+$$
+A_{t+1} = (1-\beta)\left[(1-\tau_t) W_t - d\right] - \beta \frac{d}{1 + r_{t+1}(1-\tau_{t+1})}
+$$
+
+2. Use the class `AK2` to compute the new steady state for $d \in \{0,\ 0.05 \hat C_y,\ 0.1 \hat C_y,\ 0.2 \hat C_y\}$, reporting $K$, $r$, $\tau$, $C_y$, and $C_o$ at the end of the transition.
+
+3. The transfer scheme is balanced period by period. Why does it nevertheless lower both consumptions in the steady state?
+```
+
+```{solution-start} ak2_ex3
+:class: dropdown
+```
+
+*Part 1.* Substitute $\delta_{yt} = d$ and $\delta_{o,t+1} = -d$ into {eq}`eq:optsavingsplan`.
+
+*Part 2.*
+
+```{code-cell} ipython3
+D_pol_ex = np.zeros(T+2)
+G_pol_ex = np.ones(T+2) * G_hat
+
+print(f"{'d / Cy_hat':>10}  {'K':>8}  {'r':>7}  {'τ':>7}  {'Cy':>7}  {'Co':>7}")
+for frac in [0.0, 0.05, 0.1, 0.2]:
+    d = frac * Cy_hat
+    δy_ex, δo_ex = np.ones(T+2) * d, -np.ones(T+2) * d
+    q_ex, p_ex, pol_ex = ak2.simulate(T, init_ss, δy_ex, δo_ex,
+                                      D_pol=D_pol_ex, G_pol=G_pol_ex)
+    print(f"{frac:>10.2f}  {q_ex[T, 0]:>8.5f}  {p_ex[T, 1]:>7.4f}"
+          f"  {pol_ex[T, 0]:>7.5f}  {q_ex[T, 2]:>7.4f}  {q_ex[T, 3]:>7.4f}")
+```
+
+*Part 3.* The system pays the old out of taxes on the young, so it promises old-age income that a young person does not have to save to obtain.
+
+Both terms in the savings rule of part 1 fall with $d$: the young have less after-tax income, and the prospect of a transfer when old reduces the saving that they want to do with what remains.
+
+Lower savings mean a lower capital stock, which lowers the wage and raises the interest rate.
+
+Lower output then requires a higher flat rate tax $\tau$ to pay for the unchanged purchases $\hat G$, which depresses saving further.
+
+```{solution-end}
+```
