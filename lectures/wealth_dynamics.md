@@ -24,7 +24,7 @@ kernelspec:
 ```
 
 ```{seealso}
-A version of this lecture using [JAX](https://github.com/jax-ml/jax) is {doc}`available here <jax:wealth_dynamics>`
+A version of this lecture using [JAX](https://github.com/jax-ml/jax) is {doc}`available here <jax:wealth_dynamics_jax>`
 ```
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
