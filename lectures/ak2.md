@@ -681,7 +681,7 @@ class ClosedFormTrans:
         # quantities
         for i, name in enumerate(['K', 'Y', 'Cy', 'Co']):
             ax = axs[i//3, i%3]
-            ax.plot(range(T+1), quant_seq[:T+1, i], label=name)
+            ax.plot(range(T+1), quant_seq[:T+1, i], label=name, lw=2)
             ax.hlines(init_ss[i], 0, T+1, color='r', linestyle='--')
             ax.legend()
             ax.set_xlabel('t')
@@ -689,7 +689,7 @@ class ClosedFormTrans:
         # prices
         for i, name in enumerate(['W', 'r']):
             ax = axs[(i+4)//3, (i+4)%3]
-            ax.plot(range(T+1), price_seq[:T+1, i], label=name)
+            ax.plot(range(T+1), price_seq[:T+1, i], label=name, lw=2)
             ax.hlines(init_ss[i+4], 0, T+1, color='r', linestyle='--')
             ax.legend()
             ax.set_xlabel('t')
@@ -697,7 +697,7 @@ class ClosedFormTrans:
         # policies
         for i, name in enumerate(['τ', 'D', 'G']):
             ax = axs[(i+6)//3, (i+6)%3]
-            ax.plot(range(T+1), policy_seq[:T+1, i], label=name)
+            ax.plot(range(T+1), policy_seq[:T+1, i], label=name, lw=2)
             ax.hlines(init_ss[i+6], 0, T+1, color='r', linestyle='--')
             ax.legend()
             ax.set_xlabel('t')
@@ -756,6 +756,12 @@ Let's use the `simulate` method of `closed` to compute dynamic transitions.
 Note that we leave `τ_pol` as `None`, since the tax rates need to be determined to satisfy the government budget constraint.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Transition after a tax cut
+    name: ak2_exp1_tax_cut
+---
 quant_seq1, price_seq1, policy_seq1 = closed.simulate(T, init_ss,
                                                       D_pol=D_seq,
                                                       G_pol=G_seq)
@@ -779,13 +785,19 @@ quant_seq2, price_seq2, policy_seq2 = closed.simulate(T, init_ss,
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Tax cut transitions for two tax rates
+    name: ak2_exp1_two_rates
+---
 fig, axs = plt.subplots(3, 3, figsize=(14, 10))
 
 # quantities
 for i, name in enumerate(['K', 'Y', 'Cy', 'Co']):
     ax = axs[i//3, i%3]
-    ax.plot(range(T+1), quant_seq1[:T+1, i], label=f'{name}, 1/3')
-    ax.plot(range(T+1), quant_seq2[:T+1, i], label=f'{name}, 0.2')
+    ax.plot(range(T+1), quant_seq1[:T+1, i], label=f'{name}, 1/3', lw=2)
+    ax.plot(range(T+1), quant_seq2[:T+1, i], label=f'{name}, 0.2', lw=2)
     ax.hlines(init_ss[i], 0, T+1, color='r', linestyle='--')
     ax.legend()
     ax.set_xlabel('t')
@@ -793,8 +805,8 @@ for i, name in enumerate(['K', 'Y', 'Cy', 'Co']):
 # prices
 for i, name in enumerate(['W', 'r']):
     ax = axs[(i+4)//3, (i+4)%3]
-    ax.plot(range(T+1), price_seq1[:T+1, i], label=f'{name}, 1/3')
-    ax.plot(range(T+1), price_seq2[:T+1, i], label=f'{name}, 0.2')
+    ax.plot(range(T+1), price_seq1[:T+1, i], label=f'{name}, 1/3', lw=2)
+    ax.plot(range(T+1), price_seq2[:T+1, i], label=f'{name}, 0.2', lw=2)
     ax.hlines(init_ss[i+4], 0, T+1, color='r', linestyle='--')
     ax.legend()
     ax.set_xlabel('t')
@@ -802,8 +814,8 @@ for i, name in enumerate(['W', 'r']):
 # policies
 for i, name in enumerate(['τ', 'D', 'G']):
     ax = axs[(i+6)//3, (i+6)%3]
-    ax.plot(range(T+1), policy_seq1[:T+1, i], label=f'{name}, 1/3')
-    ax.plot(range(T+1), policy_seq2[:T+1, i], label=f'{name}, 0.2')
+    ax.plot(range(T+1), policy_seq1[:T+1, i], label=f'{name}, 1/3', lw=2)
+    ax.plot(range(T+1), policy_seq2[:T+1, i], label=f'{name}, 0.2', lw=2)
     ax.hlines(init_ss[i+6], 0, T+1, color='r', linestyle='--')
     ax.legend()
     ax.set_xlabel('t')
@@ -823,6 +835,12 @@ The government targets  the same tax rate $\tau_t=\hat{\tau}$ and to accumulate 
 To conduct this experiment, we pass `τ_seq` and `G_seq` as inputs and let `D_pol` be determined along the path by satisfying the government budget constraint.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Transition after a permanent expenditure cut
+    name: ak2_exp2_expenditure_cut
+---
 # government expenditure cut by a half
 G_seq = τ_hat * 0.5 * Y_hat * np.ones(T+1)
 
@@ -844,7 +862,7 @@ mystnb:
     caption: Ratio of government assets to capital
     name: ak2_asset_capital_ratio
 ---
-plt.plot(range(T+1), -closed.policy_seq[:-1, 1] / closed.quant_seq[:, 0])
+plt.plot(range(T+1), -closed.policy_seq[:-1, 1] / closed.quant_seq[:, 0], lw=2)
 plt.xlabel('t')
 plt.ylabel('-D/K')
 plt.show()
@@ -878,6 +896,12 @@ But now the cut lasts for one period only: the government sets $G_0 = 0$ and ret
 From $t \geq 1$, government expenditures  return to  $\hat{G}$  and  $\tau_t$ adjusts to maintain the   asset level $-D_t = -D_1$.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Transition after a temporary expenditure cut
+    name: ak2_exp3_temporary_cut
+---
 # sequence of government purchase
 G_seq = τ_hat * Y_hat * np.ones(T+1)
 G_seq[0] = 0
@@ -1059,11 +1083,11 @@ class AK2():
             if verbose:
                 # plot current prices at ith iteration
                 for i, name in enumerate(['W', 'r']):
-                    axs[i].plot(range(T+1), price_seq[:T+1, i])
+                    axs[i].plot(range(T+1), price_seq[:T+1, i], lw=2)
                     axs[i].set_title(name)
                     axs[i].set_xlabel('t')
                 axs[2].plot(range(T+1), policy_seq[:T+1, 0],
-                            label=f'{i_iter}th iteration')
+                            label=f'{i_iter}th iteration', lw=2)
                 axs[2].legend(bbox_to_anchor=(1.05, 1), loc='upper left')
                 axs[2].set_title('τ')
                 axs[2].set_xlabel('t')
@@ -1141,7 +1165,7 @@ class AK2():
         # quantities
         for i, name in enumerate(['K', 'Y', 'Cy', 'Co']):
             ax = axs[i//3, i%3]
-            ax.plot(range(T+1), quant_seq[:T+1, i], label=name)
+            ax.plot(range(T+1), quant_seq[:T+1, i], label=name, lw=2)
             ax.hlines(init_ss[i], 0, T+1, color='r', linestyle='--')
             ax.legend()
             ax.set_xlabel('t')
@@ -1149,7 +1173,7 @@ class AK2():
         # prices
         for i, name in enumerate(['W', 'r']):
             ax = axs[(i+4)//3, (i+4)%3]
-            ax.plot(range(T+1), price_seq[:T+1, i], label=name)
+            ax.plot(range(T+1), price_seq[:T+1, i], label=name, lw=2)
             ax.hlines(init_ss[i+4], 0, T+1, color='r', linestyle='--')
             ax.legend()
             ax.set_xlabel('t')
@@ -1157,7 +1181,7 @@ class AK2():
         # policies
         for i, name in enumerate(['τ', 'D', 'G']):
             ax = axs[(i+6)//3, (i+6)%3]
-            ax.plot(range(T+1), policy_seq[:T+1, i], label=name)
+            ax.plot(range(T+1), policy_seq[:T+1, i], label=name, lw=2)
             ax.hlines(init_ss[i+6], 0, T+1, color='r', linestyle='--')
             ax.legend()
             ax.set_xlabel('t')
@@ -1186,6 +1210,12 @@ D_pol[1:] = D1
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Price iterations of the fixed point algorithm
+    name: ak2_fixed_point_iterations
+---
 quant_seq3, price_seq3, policy_seq3 = ak2.simulate(T, init_ss,
                                                    δy_seq, δo_seq,
                                                    D_pol=D_pol, G_pol=G_pol,
@@ -1193,6 +1223,12 @@ quant_seq3, price_seq3, policy_seq3 = ak2.simulate(T, init_ss,
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Tax cut transition computed with AK2
+    name: ak2_exp1_ak2
+---
 ak2.plot()
 ```
 
@@ -1215,13 +1251,19 @@ quant_seq4, price_seq4, policy_seq4 = ak2.simulate(T, init_ss,
 Note how "crowding out" has been mitigated.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Transitions with and without lump sum taxes
+    name: ak2_exp1_lump_sum
+---
 fig, axs = plt.subplots(3, 3, figsize=(14, 10))
 
 # quantities
 for i, name in enumerate(['K', 'Y', 'Cy', 'Co']):
     ax = axs[i//3, i%3]
-    ax.plot(range(T+1), quant_seq3[:T+1, i], label=rf'{name}, $\delta$s=0')
-    ax.plot(range(T+1), quant_seq4[:T+1, i], label=rf'{name}, $\delta$s=0.005')
+    ax.plot(range(T+1), quant_seq3[:T+1, i], label=rf'{name}, $\delta$s=0', lw=2)
+    ax.plot(range(T+1), quant_seq4[:T+1, i], label=rf'{name}, $\delta$s=0.005', lw=2)
     ax.hlines(init_ss[i], 0, T+1, color='r', linestyle='--')
     ax.legend()
     ax.set_xlabel('t')
@@ -1229,8 +1271,8 @@ for i, name in enumerate(['K', 'Y', 'Cy', 'Co']):
 # prices
 for i, name in enumerate(['W', 'r']):
     ax = axs[(i+4)//3, (i+4)%3]
-    ax.plot(range(T+1), price_seq3[:T+1, i], label=rf'{name}, $\delta$s=0')
-    ax.plot(range(T+1), price_seq4[:T+1, i], label=rf'{name}, $\delta$s=0.005')
+    ax.plot(range(T+1), price_seq3[:T+1, i], label=rf'{name}, $\delta$s=0', lw=2)
+    ax.plot(range(T+1), price_seq4[:T+1, i], label=rf'{name}, $\delta$s=0.005', lw=2)
     ax.hlines(init_ss[i+4], 0, T+1, color='r', linestyle='--')
     ax.legend()
     ax.set_xlabel('t')
@@ -1238,8 +1280,8 @@ for i, name in enumerate(['W', 'r']):
 # policies
 for i, name in enumerate(['τ', 'D', 'G']):
     ax = axs[(i+6)//3, (i+6)%3]
-    ax.plot(range(T+1), policy_seq3[:T+1, i], label=rf'{name}, $\delta$s=0')
-    ax.plot(range(T+1), policy_seq4[:T+1, i], label=rf'{name}, $\delta$s=0.005')
+    ax.plot(range(T+1), policy_seq3[:T+1, i], label=rf'{name}, $\delta$s=0', lw=2)
+    ax.plot(range(T+1), policy_seq4[:T+1, i], label=rf'{name}, $\delta$s=0.005', lw=2)
     ax.hlines(init_ss[i+6], 0, T+1, color='r', linestyle='--')
     ax.legend()
     ax.set_xlabel('t')
@@ -1281,13 +1323,19 @@ quant_seq5, price_seq5, policy_seq5 = ak2.simulate(T, init_ss,
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Tax cut versus social security transfer
+    name: ak2_exp4_social_security
+---
 fig, axs = plt.subplots(3, 3, figsize=(14, 10))
 
 # quantities
 for i, name in enumerate(['K', 'Y', 'Cy', 'Co']):
     ax = axs[i//3, i%3]
-    ax.plot(range(T+1), quant_seq3[:T+1, i], label=f'{name}, tax cut')
-    ax.plot(range(T+1), quant_seq5[:T+1, i], label=f'{name}, transfer')
+    ax.plot(range(T+1), quant_seq3[:T+1, i], label=f'{name}, tax cut', lw=2)
+    ax.plot(range(T+1), quant_seq5[:T+1, i], label=f'{name}, transfer', lw=2)
     ax.hlines(init_ss[i], 0, T+1, color='r', linestyle='--')
     ax.legend()
     ax.set_xlabel('t')
@@ -1295,8 +1343,8 @@ for i, name in enumerate(['K', 'Y', 'Cy', 'Co']):
 # prices
 for i, name in enumerate(['W', 'r']):
     ax = axs[(i+4)//3, (i+4)%3]
-    ax.plot(range(T+1), price_seq3[:T+1, i], label=f'{name}, tax cut')
-    ax.plot(range(T+1), price_seq5[:T+1, i], label=f'{name}, transfer')
+    ax.plot(range(T+1), price_seq3[:T+1, i], label=f'{name}, tax cut', lw=2)
+    ax.plot(range(T+1), price_seq5[:T+1, i], label=f'{name}, transfer', lw=2)
     ax.hlines(init_ss[i+4], 0, T+1, color='r', linestyle='--')
     ax.legend()
     ax.set_xlabel('t')
@@ -1304,8 +1352,8 @@ for i, name in enumerate(['W', 'r']):
 # policies
 for i, name in enumerate(['τ', 'D', 'G']):
     ax = axs[(i+6)//3, (i+6)%3]
-    ax.plot(range(T+1), policy_seq3[:T+1, i], label=f'{name}, tax cut')
-    ax.plot(range(T+1), policy_seq5[:T+1, i], label=f'{name}, transfer')
+    ax.plot(range(T+1), policy_seq3[:T+1, i], label=f'{name}, tax cut', lw=2)
+    ax.plot(range(T+1), policy_seq5[:T+1, i], label=f'{name}, transfer', lw=2)
     ax.hlines(init_ss[i+6], 0, T+1, color='r', linestyle='--')
     ax.legend()
     ax.set_xlabel('t')
