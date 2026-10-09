@@ -61,6 +61,14 @@ jobs:
           branch: main
           name: build-cache
           path: _build
+      # The cache is extracted after the checkout, so its HTML files carry a newer
+      # mtime than every source file and Sphinx's HTML builder sees nothing to
+      # rewrite ("no targets are out of date"). Drop the cached HTML and the pickled
+      # environment so the HTML build renders every page from the current sources.
+      # Executed notebook outputs live in _build/.jupyter_cache and are kept.
+      - name: Clear cached HTML and stale Sphinx environment
+        shell: bash -l {0}
+        run: rm -rf _build/html _build/.doctrees
       # Build Assets (Download Notebooks, PDF via LaTeX)
       - name: Build PDF from LaTeX
         shell: bash -l {0}
