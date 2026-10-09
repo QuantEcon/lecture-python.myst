@@ -48,7 +48,7 @@ This situation has led some of today's policy makers and policy advisors to thin
 
 But starting from where we are today, a transition to a fully funded system creates distributional challenges because older generations who contributed to the unfunded system could lose benefits.
 
-To study possibilities quantitatively, this lecture employs a general equilibrium overlapping generations model that modifies  the {cite:t}`auerbach1987dynamic` environment by incorporating
+To study possibilities quantitatively, this lecture employs a general equilibrium overlapping generations model that modifies the {cite:t}`auerbach1987dynamic` environment by incorporating
 
 * risk-sensitive preferences
 * uncertainty about lifetimes
@@ -256,7 +256,7 @@ $$
 
 where $\mathcal{R}_t(U_{t+1}) = (2/\sigma) \cdot \log E[\exp(\sigma \cdot U_{t+1}/2) | J_t]$, $\sigma$ is the risk-sensitivity parameter, and $\beta_t = \bar{\beta} \cdot \alpha_t$ is the survival-adjusted discount factor.
 
-This preference specification delivers linear decision rules while  allowing a form of risk-sensitivity that induces a type of precautionary savings.
+This preference specification delivers linear decision rules while allowing a form of risk-sensitivity that induces a type of precautionary savings.
 
 When $\sigma = 0$, the recursion collapses to $U_t = -(\pi c_t - \gamma_t)^2/2 + \beta_t E_t U_{t+1}$, an ordinary discounted quadratic objective whose decision rules satisfy **certainty equivalence**: they do not depend on the volatility $\sigma_d$ of the income shock.
 
@@ -340,8 +340,8 @@ birth_range = np.arange(-60, 41, 5)
 ax.hlines(birth_range, birth_range, birth_range + 60, 'k', linewidth=1)
 ax.vlines([0, 40], -60, 40, 'k', linestyle='--', linewidth=0.5)
 
-ax.set_ylabel("Date born")
-ax.set_xlabel("Time")
+ax.set_ylabel("date born")
+ax.set_xlabel("time")
 
 ax.text(-20, 25, r"$s_1=0$")
 ax.text(43, -50, r"$s_2$")
@@ -380,7 +380,7 @@ In experiment 1, the government terminates social security benefits but compensa
 
 In experiment 2, the government retains social security benefits but temporarily raises taxes to accumulate physical capital, the returns from which eventually finance social security payments.
 
-Both proposals aim to finance a transition to fully funded social security without leaving existing generations worse off, but they entail  different amounts of intergenerational risk-sharing.
+Both proposals aim to finance a transition to fully funded social security without leaving existing generations worse off, but they entail different amounts of intergenerational risk-sharing.
 
 We compute both experiments under fixed and endogenous factor prices and compare outcomes below.
 
@@ -644,11 +644,11 @@ fig, axs = plt.subplots(1, 2, figsize=(10, 6))
 
 axs[0].plot(ε_arr)
 axs[0].set_title("Working efficiency")
-axs[0].set_xlabel("Age")
+axs[0].set_xlabel("age")
 
 axs[1].plot(α_arr)
 axs[1].set_title("Survival probability")
-axs[1].set_xlabel("Age")
+axs[1].set_xlabel("age")
 
 plt.tight_layout()
 plt.show()
@@ -750,9 +750,8 @@ mystnb:
 ---
 fig, ax = plt.subplots()
 ax.plot(hh.frac)
-ax.set_xlabel("Age")
-ax.set_ylabel("Population fraction")
-ax.set_title("Population distribution over age")
+ax.set_xlabel("age")
+ax.set_ylabel("population fraction")
 plt.show()
 ```
 
@@ -1235,7 +1234,7 @@ ax.scatter(ss0.τ_l, ss0.debt2gdp)
 ax.text(ss0.τ_l * 0.95, ss0.debt2gdp * 0.95, "ss0")
 ax.text(0.07, 0.4, r"ss1($G_b$)")
 ax.set_xlabel(r'$\tau_\ell$')
-ax.set_ylabel('Debt/GDP')
+ax.set_ylabel('debt/GDP')
 plt.show()
 ```
 
@@ -1654,8 +1653,8 @@ ax.plot(Gb_seq2, 'r-', linewidth=2,
 ax.axhline(ss1.Gb, color='k', linestyle='--',
            label=f'Target $G_b$ = {ss1.Gb:.2f}')
 ax.axvspan(S1, S2, alpha=0.1, color='yellow', label='Transition period')
-ax.set_xlabel('Time')
-ax.set_ylabel('Government debt')
+ax.set_xlabel('time')
+ax.set_ylabel('government debt')
 ax.legend()
 plt.show()
 ```
@@ -1956,8 +1955,8 @@ axes[0].axhline(ss0.τ_l, color='r', linestyle=':',
 axes[0].axhline(ss1.τ_l, color='g', linestyle=':',
                 label=f'Terminal $\\tau_\\ell$ = {ss1.τ_l:.4f}')
 axes[0].axvspan(S1, S2, alpha=0.1, color='yellow')
-axes[0].set_xlabel('Time')
-axes[0].set_ylabel('Labor tax rate')
+axes[0].set_xlabel('time')
+axes[0].set_ylabel('labor tax rate')
 axes[0].set_title('Labor tax rate path')
 axes[0].legend()
 
@@ -1968,8 +1967,8 @@ axes[1].axhline(ss0.Gb, color='r', linestyle=':',
 axes[1].axhline(ss1.Gb, color='g', linestyle=':',
                 label=f'Terminal $G_b$ = {ss1.Gb:.2f}')
 axes[1].axvspan(S1, S2, alpha=0.1, color='yellow')
-axes[1].set_xlabel('Time')
-axes[1].set_ylabel('Government debt')
+axes[1].set_xlabel('time')
+axes[1].set_ylabel('government debt')
 axes[1].set_title('Government debt path')
 axes[1].legend()
 
@@ -2098,8 +2097,8 @@ ages = np.arange(1, hh.T0 + 2)
 axes[0].plot(ages, μa_bo, 'b-', linewidth=2, label='With buy-out')
 axes[0].plot(ages, μa_nb, 'r--', linewidth=2, label='Without buy-out')
 axes[0].axvline(hh.T1 + 1, color='gray', linestyle=':', label='Retirement')
-axes[0].set_xlabel('Age (t)')
-axes[0].set_ylabel('Mean assets')
+axes[0].set_xlabel('age (t)')
+axes[0].set_ylabel('mean assets')
 axes[0].set_title('Asset holdings by age at $s=0$')
 axes[0].legend()
 
@@ -2116,8 +2115,8 @@ axes[1].bar(retired_ages, comp_retired,
             color='red', alpha=0.7, label='Retirees')
 axes[1].axhline(0, color='k', linewidth=0.5)
 axes[1].axvline(hh.T1 + 1, color='gray', linestyle=':', label='Retirement')
-axes[1].set_xlabel('Age (t)')
-axes[1].set_ylabel('Compensation')
+axes[1].set_xlabel('age (t)')
+axes[1].set_ylabel('compensation')
 axes[1].set_title('Compensation by age, added to initial assets')
 axes[1].legend()
 
@@ -2156,7 +2155,7 @@ fig, axes = plt.subplots(2, 2, figsize=(14, 10))
 axes[0, 0].plot(τ_l_seq_bo, 'b-', linewidth=2, label='With buy-out')
 axes[0, 0].plot(τ_l_seq_nb, 'r--', linewidth=2, label='Without buy-out')
 axes[0, 0].axvspan(S1, S2, alpha=0.1, color='yellow')
-axes[0, 0].set_xlabel('Time (s)')
+axes[0, 0].set_xlabel('time (s)')
 axes[0, 0].set_ylabel(r'$\tau_\ell$')
 axes[0, 0].set_title('Labor tax rate path')
 axes[0, 0].legend()
@@ -2166,7 +2165,7 @@ axes[0, 1].plot(Gb_seq_bo, 'b-', linewidth=2, label='With buy-out')
 axes[0, 1].plot(Gb_seq_nb, 'r--', linewidth=2, label='Without buy-out')
 axes[0, 1].axhline(ss1_exp1.Gb, color='k', linestyle=':', alpha=0.7)
 axes[0, 1].axvspan(S1, S2, alpha=0.1, color='yellow')
-axes[0, 1].set_xlabel('Time (s)')
+axes[0, 1].set_xlabel('time (s)')
 axes[0, 1].set_ylabel(r'$G_b$')
 axes[0, 1].set_title('Government debt path')
 axes[0, 1].legend()
@@ -2175,7 +2174,7 @@ axes[0, 1].legend()
 axes[1, 0].plot(k_seq_bo, 'b-', linewidth=2, label='With buy-out')
 axes[1, 0].plot(k_seq_nb, 'r--', linewidth=2, label='Without buy-out')
 axes[1, 0].axvspan(S1, S2, alpha=0.1, color='yellow')
-axes[1, 0].set_xlabel('Time (s)')
+axes[1, 0].set_xlabel('time (s)')
 axes[1, 0].set_ylabel(r'$K$')
 axes[1, 0].set_title('Capital accumulation path')
 axes[1, 0].legend()
@@ -2187,8 +2186,8 @@ c_agg_nb = np.array(μc_seq_nb[:S_exo + 1]) @ np.array(hh.frac)
 axes[1, 1].plot(c_agg_bo, 'b-', linewidth=2, label='With buy-out')
 axes[1, 1].plot(c_agg_nb, 'r--', linewidth=2, label='Without buy-out')
 axes[1, 1].axvspan(S1, S2, alpha=0.1, color='yellow')
-axes[1, 1].set_xlabel('Time (s)')
-axes[1, 1].set_ylabel('Aggregate consumption')
+axes[1, 1].set_xlabel('time (s)')
+axes[1, 1].set_ylabel('aggregate consumption')
 axes[1, 1].set_title('Aggregate consumption path')
 axes[1, 1].legend()
 
@@ -2225,8 +2224,8 @@ for idx, age_at_0 in enumerate(selected_ages):
     
     ax.plot(c_bo, 'b-', linewidth=2, label='With buy-out')
     ax.plot(c_nb, 'r--', linewidth=2, label='Without buy-out')
-    ax.set_xlabel('Time since s=0')
-    ax.set_ylabel('Mean consumption')
+    ax.set_xlabel('time since s=0')
+    ax.set_ylabel('mean consumption')
     ax.set_title(f'Cohort age {age_at_0} at s=0')
     ax.legend(fontsize=9)
     
@@ -2571,7 +2570,7 @@ axes[0, 0].plot(τ_l_seq_endo[:len(τ_l_seq_fixed)],
                 'r--', linewidth=2,
                 label='Endogenous prices')
 axes[0, 0].axvspan(S1, S2, alpha=0.1, color='yellow')
-axes[0, 0].set_xlabel('Time (s)')
+axes[0, 0].set_xlabel('time (s)')
 axes[0, 0].set_ylabel(r'$\tau_\ell$')
 axes[0, 0].set_title('Labor tax rate path')
 axes[0, 0].legend()
@@ -2586,7 +2585,7 @@ axes[0, 1].plot(
     label='Endogenous prices'
 )
 axes[0, 1].axvspan(S1, S2, alpha=0.1, color='yellow')
-axes[0, 1].set_xlabel('Time (s)')
+axes[0, 1].set_xlabel('time (s)')
 axes[0, 1].set_ylabel(r'$G_b$')
 axes[0, 1].set_title('Government debt path')
 axes[0, 1].legend()
@@ -2601,7 +2600,7 @@ axes[1, 0].plot(
     label='Endogenous prices'
 )
 axes[1, 0].axvspan(S1, S2, alpha=0.1, color='yellow')
-axes[1, 0].set_xlabel('Time (s)')
+axes[1, 0].set_xlabel('time (s)')
 axes[1, 0].set_ylabel(r'$r - \delta$')
 axes[1, 0].set_title('Interest rate path')
 axes[1, 0].legend()
@@ -2616,7 +2615,7 @@ axes[1, 1].plot(
     label='Endogenous prices'
 )
 axes[1, 1].axvspan(S1, S2, alpha=0.1, color='yellow')
-axes[1, 1].set_xlabel('Time (s)')
+axes[1, 1].set_xlabel('time (s)')
 axes[1, 1].set_ylabel(r'$w$')
 axes[1, 1].set_title('Wage rate path')
 axes[1, 1].legend()
@@ -2819,7 +2818,7 @@ for d, s, l in zip(
     ax.plot(d[:T_plot], s, linewidth=2, label=l)
 ax.axhline(0, color='k', linestyle=':', alpha=0.5)
 ax.axvspan(0, 40, alpha=0.1, color='yellow')
-ax.set_xlabel('Time (s)')
+ax.set_xlabel('time (s)')
 ax.set_ylabel(r'$G_b$')
 ax.set_title('Government debt paths')
 ax.legend(fontsize=9)
@@ -2834,7 +2833,7 @@ for d, s, l in zip(
 ):
     ax.plot(d[:T_plot], s, linewidth=2, label=l)
 ax.axvspan(0, 40, alpha=0.1, color='yellow')
-ax.set_xlabel('Time (s)')
+ax.set_xlabel('time (s)')
 ax.set_ylabel(r'$K$')
 ax.set_title('Capital accumulation paths')
 ax.legend(fontsize=9)
@@ -2869,8 +2868,8 @@ for d, s, l in zip(
 ):
     ax.plot(d[:T_plot], s, linewidth=2, label=l)
 axes[0, 2].axvspan(0, 40, alpha=0.1, color='yellow')
-axes[0, 2].set_xlabel('Time (s)')
-axes[0, 2].set_ylabel('Aggregate consumption')
+axes[0, 2].set_xlabel('time (s)')
+axes[0, 2].set_ylabel('aggregate consumption')
 axes[0, 2].set_title('Aggregate consumption paths')
 axes[0, 2].legend(fontsize=9)
 
@@ -2892,7 +2891,7 @@ debt2gdp_values = [exp1_exo['ss1'].debt2gdp, exp1_endo['ss1'].debt2gdp,
                    exp2_exo['ss1'].debt2gdp, exp2_endo['ss1'].debt2gdp]
 axes[1, 1].bar(cases, debt2gdp_values, color=colors, edgecolor='black')
 axes[1, 1].axhline(0, color='k', linestyle='-', linewidth=0.5)
-axes[1, 1].set_ylabel('Terminal debt/GDP')
+axes[1, 1].set_ylabel('terminal debt/GDP')
 axes[1, 1].set_title('Terminal steady state debt/GDP')
 axes[1, 1].grid(True, alpha=0.3, axis='y')
 for i, v in enumerate(debt2gdp_values):
@@ -3051,8 +3050,8 @@ def plot_surface_grid(
         X, Y = np.meshgrid(np.arange(n_age), np.arange(n_time))
         ax = fig.add_subplot(2, 2, i + 1, projection='3d')
         ax.plot_surface(X, Y, Z, cmap=cmap, edgecolor='none', alpha=0.8)
-        ax.set_xlabel('Age (t)')
-        ax.set_ylabel('Time (s)')
+        ax.set_xlabel('age (t)')
+        ax.set_ylabel('time (s)')
         ax.set_zlabel(zlabel)
         ax.set_title(name)
     plt.suptitle(suptitle, fontsize=14, y=1.02)

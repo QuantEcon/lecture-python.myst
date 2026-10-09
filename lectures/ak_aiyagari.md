@@ -27,11 +27,11 @@ In addition to what's in Anaconda, this lecture will need the following library
 
 ## Overview
 
-This lecture describes an  overlapping generations model with these features:
+This lecture describes an overlapping generations model with these features:
 
 - A competitive equilibrium with incomplete markets determines prices and quantities
-- Agents live many periods as in   {cite}`auerbach1987dynamic`
-- Agents receive idiosyncratic labor productivity shocks that cannot be fully insured as in  {cite}`Aiyagari1994`
+- Agents live many periods as in {cite}`auerbach1987dynamic`
+- Agents receive idiosyncratic labor productivity shocks that cannot be fully insured as in {cite}`Aiyagari1994`
 - Government fiscal policy instruments include tax rates, debt, and transfers as in chapter 2 of {cite}`auerbach1987dynamic` and {doc}`Transitions in an Overlapping Generations Model<ak2>`
 - Among other equilibrium objects, a competitive equilibrium determines a sequence of cross-section densities of heterogeneous agents' consumptions, labor incomes, and savings
 
@@ -41,7 +41,7 @@ We use the model to study:
 - How fiscal policies affect different generations
 - How market incompleteness promotes precautionary savings
 - How life-cycle savings and buffer-stock savings motives interact
-- How fiscal policies  redistribute resources across and within generations
+- How fiscal policies redistribute resources across and within generations
 
 
 As prerequisites for this lecture, we recommend two quantecon lectures:
@@ -102,7 +102,7 @@ Initial idiosyncratic productivities are drawn from distribution $\pi$.
 
 Agents leave no bequests and have  terminal value function $V_J(a) = 0$.
 
-##  Production
+## Production
 
 A representative firm operates a constant returns to scale Cobb-Douglas production:
 
@@ -200,7 +200,7 @@ $$
 r_t = \alpha Z_t(K_t/L_t)^{\alpha-1}
 $$
 
-##  Households' problems
+## Households' problems
 
 A household's value function satisfies a Bellman equation
 
@@ -258,14 +258,14 @@ An equilibrium consists of:
 
 that satisfy the following conditions
 
-- Given prices and government policies, value and policy functions solve  households' problems
+- Given prices and government policies, value and policy functions solve households' problems
 - Given prices, the representative firm maximizes profits
 - Government budget constraints are satisfied
 - Markets clear:
    - Asset market: $K_t = \frac{1}{J}\sum_j \int a \mu_{j,t}(a,\gamma)d(a,\gamma) - D_t$
    - Labor market: $L_t = \frac{1}{J}\sum_j \int l(j)\gamma \mu_{j,t}(a,\gamma)d(a,\gamma)$
    
-Relative to the  model presented in {doc}`Transitions in an Overlapping Generations Model<ak2>`, the present  model adds
+Relative to the model presented in {doc}`Transitions in an Overlapping Generations Model<ak2>`, the present model adds
 - Heterogeneity within generations due to productivity shocks
 - A precautionary savings motive
 - More re-distributional effects
@@ -273,9 +273,9 @@ Relative to the  model presented in {doc}`Transitions in an Overlapping Generati
 
 ## Implementation
 
-Using tools in  {doc}`advanced:discrete_dp`, we solve our model by combining value function iteration with equilibrium price determination.
+Using tools in {doc}`advanced:discrete_dp`, we solve our model by combining value function iteration with equilibrium price determination.
 
-A sensible  approach is  to nest a discrete DP solver inside an outer loop that searches for market-clearing prices.
+A sensible approach is to nest a discrete DP solver inside an outer loop that searches for market-clearing prices.
 
 For a candidate sequence  of prices interest rates $r_t$ and wages $w_t$, we can solve individual households' dynamic programming problems using either value function iteration or policy iteration to obtain optimal policy functions.
 
@@ -283,7 +283,7 @@ We then deduce associated stationary joint probability distributions of asset ho
 
 This will give us an aggregate capital supply (from household savings) and a labor supply (from the age-efficiency profile and productivity shocks).
 
-We can then compare these with capital and labor demand from firms, compute deviations between factor market supplies and demands, then  update  price guesses until we find market-clearing prices.
+We can then compare these with capital and labor demand from firms, compute deviations between factor market supplies and demands, then update price guesses until we find market-clearing prices.
 
 To construct transition dynamics, we can compute sequences of time-varying prices by using _backward induction_ to compute value and policy functions, and _forward iteration_ for the distributions of agents across states:
 
@@ -317,7 +317,7 @@ To construct transition dynamics, we can compute sequences of time-varying price
      - Solve for price sequences
      - Update until all markets clear in all periods
 
-We  start coding by defining helper functions that describe preferences, firms, and  government budget constraints.
+We start coding by defining helper functions that describe preferences, firms, and government budget constraints.
 
 ```{code-cell} ipython3
 ϕ, k_bar = 0., 0.
@@ -478,7 +478,7 @@ def populate_R(j, r, w, τ, δ, household):
 
 We first compute a steady state.
 
-Given  guesses of prices and taxes, we can use backwards induction to solve for  value functions and optimal consumption and saving policies  at all  ages.
+Given guesses of prices and taxes, we can use backwards induction to solve for value functions and optimal consumption and saving policies at all ages.
 
 The function `backwards_opt` solves for optimal values by applying the discretized bellman operator backwards.
 
@@ -574,17 +574,22 @@ Let's time the computation
 %time popu_dist(σ, hh, Q)[0].block_until_ready();
 ```
 
-Below we plot the marginal  distribution of  savings for  each age group.
+Below we plot the marginal distribution of savings for each age group.
 
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Marginal distribution of assets by age
+    name: ak_aiy_asset_dist
+---
 for j in [0, 5, 20, 45, 49]:
     plt.plot(hh.a_grid, jnp.sum(μ[j].reshape((hh.a_grid.size, hh.γ_grid.size)), axis=1), label=f'j={j}')
 
 plt.legend()
 plt.xlabel('a')
-
-plt.title(r'marginal distribution over a, $\sum_\gamma \mu_j(a, \gamma)$')
+plt.ylabel(r'$\sum_\gamma \mu_j(a, \gamma)$')
 
 plt.show()
 ```
@@ -612,16 +617,16 @@ As agents age, at first they gradually accumulate assets.
   * the green $j=20$ distribution puts positive mass on a much wider range of asset levels. 
   * the red $j=45$ distribution is even wider
   
-At a later   age, they gradually  deplete their asset holdings.
+At a later age, they gradually deplete their asset holdings.
 
 * the purple $j=49$ distribution illustrates this
 
 At the end of life, they will have drawn down all of their assets.
 
-Let's now look at age-specific  optimal saving policies  that generate the preceding marginal
+Let's now look at age-specific optimal saving policies that generate the preceding marginal
 distributions of assets at different ages.
 
-We'll  plot  some saving functions with the following Python code.
+We'll plot some saving functions with the following Python code.
 
 ```{code-cell} ipython3
 σ_reshaped = σ.reshape(hh.j_grid.size, hh.a_grid.size, hh.γ_grid.size)
@@ -813,9 +818,9 @@ In an outer loop, we iterate over guesses of prices and taxes.
 
 In an inner loop, we  compute the optimal consumption and saving choices by each cohort $j$ in each time $t$, then find the implied  evolution of the joint distribution of assets and productivities.
 
-We then  update our  guesses of prices and taxes given the aggregate labor supply and capital stock in the economy.
+We then update our guesses of prices and taxes given the aggregate labor supply and capital stock in the economy.
 
-We use `solve_backwards` to solve for optimal saving choices given  price and tax sequences and `simulate_forward` to compute the  evolution of the joint distributions.
+We use `solve_backwards` to solve for optimal saving choices given price and tax sequences and `simulate_forward` to compute the evolution of the joint distributions.
 
 We require two steady states as inputs: the initial steady state to provide the initial condition for `simulate_forward`, and the final steady state to provide continuation values for `solve_backwards`.
 
@@ -1080,7 +1085,7 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4,
             τ_seq, D_seq, G_seq, δ_seq
 ```
 
-We can now   compute  equilibrium transitions that are  ignited by fiscal policy reforms.
+We can now compute equilibrium transitions that are ignited by fiscal policy reforms.
 
 ## Experiment 1: an immediate tax cut
 
@@ -1163,11 +1168,17 @@ c = inc - ap
 c_mean0 = (c * μ_seq[t]).sum(axis=1)
 ```
 
-We care about how the policy change affects  consumption across   cohorts and across time.
+We care about how the policy change affects consumption across cohorts and across time.
 
-We can study  age-specific average consumption levels.
+We can study age-specific average consumption levels.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Change in mean consumption by age
+    name: ak_aiy_cons_change
+---
 for t in [1, 10, 20, 50, 149]:
 
     ap = hh.a_grid[σ_seq[t]]
@@ -1184,7 +1195,7 @@ for t in [1, 10, 20, 50, 149]:
 
 plt.legend()
 plt.xlabel(r'j')
-plt.title(r'$\Delta mean(C(j))$')
+plt.ylabel(r'$\Delta$ mean $C(j)$')
 plt.show()
 ```
 
@@ -1406,18 +1417,29 @@ Notice how prices and quantities respond immediately, well before the policy is 
 
 Agents who foresee the coming tax cut, and the permanently higher tax rate that follows it, adjust their savings right away.
 
-Let's zoom in on how the capital stock  responds.
+Let's zoom in on how the capital stock responds.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Capital stock around the tax cut
+    name: ak_aiy_K_zoom
+---
 # K
 i_var = 3
+K_path = paths[i_var][:25]
 
-plt.plot(paths[i_var][:25])
+K_lo = min(float(K_path.min()), float(ss1[i_var]))
+K_hi = max(float(K_path.max()), float(ss1[i_var]))
+pad = 0.1 * (K_hi - K_lo)
+
+plt.plot(K_path)
 plt.hlines(ss1[i_var], 0, 25, color='r', linestyle='--')
-plt.vlines(20, 6, 7, color='k', linestyle='--', linewidth=0.5)
-plt.text(17, 6.56, r'tax cut')
-plt.ylim([6.52, 6.65])
-plt.title("K")
+plt.axvline(20, color='k', linestyle='--', linewidth=0.5)
+plt.text(17, K_lo - 0.5 * pad, r'tax cut')
+plt.ylim([K_lo - pad, K_hi + pad])
+plt.ylabel("K")
 plt.xlabel("t")
 plt.show()
 ```

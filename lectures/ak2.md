@@ -32,13 +32,13 @@ In addition to what’s in Anaconda, this lecture will need the following librar
 ## Overview
 
 
-This lecture presents a  life-cycle model consisting of overlapping generations of two-period lived people proposed  by Peter Diamond
+This lecture presents a life-cycle model consisting of overlapping generations of two-period lived people proposed by Peter Diamond
 {cite}`diamond1965national`.
 
-We'll present the version  that was   analyzed  in chapter 2 of Auerbach and 
+We'll present the version that was analyzed in chapter 2 of Auerbach and 
 Kotlikoff (1987) {cite}`auerbach1987dynamic`.
 
-Auerbach and Kotlikoff (1987) used their  two period model as a warm-up for their analysis of  overlapping generation models of long-lived people that is the main topic of their book.
+Auerbach and Kotlikoff (1987) used their two period model as a warm-up for their analysis of overlapping generation models of long-lived people that is the main topic of their book.
 
 Their model of two-period lived overlapping generations is a useful starting point because 
 
@@ -46,7 +46,7 @@ Their model of two-period lived overlapping generations is a useful starting poi
 * it activates forces and tradeoffs confronting the government and successive generations of people
 * it is a good laboratory for studying connections between government tax and subsidy programs and for policies for issuing and servicing government debt
 * some interesting experiments involving transitions from one steady state to another can be computed by hand
-* it is a good setting for illustrating  a **shooting method** for solving a system of non-linear difference equations with  initial and terminal condition
+* it is a good setting for illustrating a **shooting method** for solving a system of non-linear difference equations with initial and terminal condition
  
  ```{note}
 Auerbach and Kotlikoff use computer code to calculate transition paths for their models with long-lived people.
@@ -54,15 +54,15 @@ Auerbach and Kotlikoff use computer code to calculate transition paths for their
 
 We take the liberty of extending Auerbach and Kotlikoff's chapter 2 model to study some arrangements for redistributing resources across generations
 
-  * these take the form of a sequence of  age-specific lump sum taxes and transfers
+  * these take the form of a sequence of age-specific lump sum taxes and transfers
 
-We  study how  these  arrangements affect capital accumulation and government debt 
+We study how these arrangements affect capital accumulation and government debt 
 
 ## Setting
 
 Time is discrete and is indexed by $t=0, 1, 2, \ldots$.  
 
-The economy lives forever, but the people  inside  it do not.  
+The economy lives forever, but the people inside it do not.  
 
 At each time $ t \geq 0$ a representative old person and a representative young person are alive.
 
@@ -111,7 +111,7 @@ and also
 * $K_{t+1} - K_t \equiv I_t $ -- investment in physical capital at time $t \geq 0$
 * $G_t$ -- government purchases
 
-National income and product accounts consist of  a sequence of equalities
+National income and product accounts consist of a sequence of equalities
 
 * $Y_t = C_{yt} + C_{ot} + (K_{t+1} - K_t) + G_t, \quad t \geq 0$ 
 
@@ -241,10 +241,10 @@ r_t & = \alpha K_t^{\alpha-1} L_t^{1-\alpha}
 \end{aligned}
 $$  (eq:firmfonc)
 
-Output can  be consumed either by old people or young people; or sold to young people who use it  to augment the capital stock;  or  sold to  the government for  uses that do not generate utility for the people in the model  (i.e., "it is thrown into the ocean").  
+Output can be consumed either by old people or young people; or sold to young people who use it to augment the capital stock; or sold to the government for uses that do not generate utility for the people in the model (i.e., "it is thrown into the ocean").  
 
 
-The firm  thus sells output to old people, young people, and the government.
+The firm thus sells output to old people, young people, and the government.
 
 
 
@@ -260,10 +260,10 @@ The firm  thus sells output to old people, young people, and the government.
 
 At time $t=0$, a representative initial old person is endowed with  $(1 + r_0(1 - \tau_0)) A_0$ in initial assets, where $A_0 = K_0 + D_0$.
 
-It  must pay a lump sum tax to (if positive) or receive a subsidy from  (if negative)
+It must pay a lump sum tax to (if positive) or receive a subsidy from (if negative)
 $\delta_{o0}$ the government. 
 
-An old   person's budget constraint is
+An old person's budget constraint is
 
 
 
@@ -336,7 +336,7 @@ $$ (eq:optsavingsplan)
 (sec-equilibrium)=
 ## Equilibrium 
 
-**Definition:** An equilibrium is an allocation,  a government policy, and a price system with the properties that
+**Definition:** An equilibrium is an allocation, a government policy, and a price system with the properties that
 * given the price system and the government policy, the allocation solves
     * representative firms' problems for $t \geq 0$
     * individual persons' problems for $t \geq 0$
@@ -346,16 +346,16 @@ $$ (eq:optsavingsplan)
 ## Next steps
 
 
-To begin our analysis of  equilibrium outcomes, we'll study the special case of the model with which  Auerbach and 
+To begin our analysis of equilibrium outcomes, we'll study the special case of the model with which Auerbach and 
 Kotlikoff (1987) {cite}`auerbach1987dynamic` began their analysis in chapter 2.
 
 It can be solved by hand. 
 
 We shall do that next. 
 
-After we derive a closed form solution, we'll pretend that we don't know and will compute  equilibrium outcome  paths.
+After we derive a closed form solution, we'll pretend that we don't know and will compute equilibrium outcome paths.
 
-We'll do that  by first formulating an equilibrium  as a fixed point of a mapping from  sequences of factor prices and tax rates to sequences of factor prices and tax rates.
+We'll do that by first formulating an equilibrium as a fixed point of a mapping from sequences of factor prices and tax rates to sequences of factor prices and tax rates.
 
 We'll compute an equilibrium by iterating to convergence on that mapping.
 
@@ -413,7 +413,7 @@ Let's take an example in which
 1. there is no initial government debt, $D_t=0$,
 2. government consumption $G_t$ equals $15\%$ of output $Y_t$
 
-Our formulas for steady-state values  tell us that
+Our formulas for steady-state values tell us that
 
 $$
 \begin{aligned}
@@ -452,7 +452,7 @@ K_hat
 ```
 Knowing $\hat K$, we can calculate other equilibrium objects. 
 
-Let's first define  some Python helper functions.
+Let's first define some Python helper functions.
 
 ```{code-cell} ipython3
 @jit
@@ -502,7 +502,7 @@ G_hat = τ_hat * Y_hat
 G_hat
 ```
 
-We use the optimal consumption plans to find  steady state consumptions for  young and  old
+We use the optimal consumption plans to find steady state consumptions for young and old
 
 ```{code-cell} ipython3
 Cy_hat, Co_hat = K_to_C(K_hat, D_hat, τ_hat, r_hat, α, β)
@@ -528,7 +528,7 @@ We'll use this steady state as  an initial condition at time $t=0$ for another e
 
 To make sense of our calculation, we'll treat  $t=0$ as  time when a huge unanticipated shock occurs in the form of
 
-  *  a time-varying government policy sequences that disrupts an original  steady state 
+  * a time-varying government policy sequences that disrupts an original steady state 
   *  new government policy sequences are eventually time-invariant in the sense that after some date $T >0$,  each sequence is constant over time.  
   *  sudden revelation of a new government policy in the form of sequences starting at time $t=0$
 
@@ -537,7 +537,7 @@ We assume that everyone,  including old people at time $t=0$, knows  the new gov
 
 
 
-As the capital stock and other  aggregates adjust to the fiscal policy change over time, the economy will approach a new steady state.
+As the capital stock and other aggregates adjust to the fiscal policy change over time, the economy will approach a new steady state.
 
 We can find a transition path from an old steady state to a new steady state by employing a fixed-point algorithm in a space of sequences. 
 
@@ -550,9 +550,9 @@ We choose $T$ large  enough so that we have gotten very close  to a new steady s
 
 The class takes three keyword arguments, `τ_pol`, `D_pol`, and `G_pol`. 
 
-These are  sequences of tax rate, government debt level, and government purchases, respectively.
+These are sequences of tax rate, government debt level, and government purchases, respectively.
 
-In each policy experiment below, we will pass two out of three as inputs required to  depict a fiscal policy.
+In each policy experiment below, we will pass two out of three as inputs required to depict a fiscal policy.
 
 We'll then compute the single remaining undetermined policy variable from the government budget constraint.
 
@@ -732,7 +732,7 @@ $$
 
 We can simulate the transition  for $20$ periods, after which the economy will be close to a new steady state.
 
-The first step is to prepare sequences of policy variables that describe  fiscal policy.
+The first step is to prepare sequences of policy variables that describe fiscal policy.
 
 We must define  sequences of government expenditure $\{G_t\}_{t=0}^{T}$ and debt level $\{D_t\}_{t=0}^{T+1}$ in advance, then pass them  to the solver.
 
@@ -812,7 +812,7 @@ for i, name in enumerate(['τ', 'D', 'G']):
 The economy with lower tax cut rate at $t=0$ has the same transitional pattern, but is less distorted, and it converges to a new steady state with higher physical capital stock.
 
 (exp-expen-cut)=
-### Experiment 2: Government asset accumulation
+### Experiment 2: government asset accumulation
 
 Assume that the economy is initially in the same steady state.
 
@@ -820,7 +820,7 @@ Now the government promises to cut its spending on services and goods by  half $
 
 The government targets  the same tax rate $\tau_t=\hat{\tau}$ and to accumulate assets $-D_t$ over time.
 
-To conduct  this experiment, we pass `τ_seq` and `G_seq` as inputs  and let `D_pol`  be determined along the path by satisfying the government budget constraint.
+To conduct this experiment, we pass `τ_seq` and `G_seq` as inputs and let `D_pol` be determined along the path by satisfying the government budget constraint.
 
 ```{code-cell} ipython3
 # government expenditure cut by a half
@@ -838,14 +838,21 @@ As the government accumulates assets, it supplies funds that would otherwise hav
 As a result,  the ratio  $-\frac{D_t}{K_t}$ of the  government asset to  physical capital used in production will increase over time
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Ratio of government assets to capital
+    name: ak2_asset_capital_ratio
+---
 plt.plot(range(T+1), -closed.policy_seq[:-1, 1] / closed.quant_seq[:, 0])
 plt.xlabel('t')
-plt.title('-D/K');
+plt.ylabel('-D/K')
+plt.show()
 ```
 
 We want to know how this policy experiment affects individuals.
 
-In the long run,  future cohorts will enjoy higher consumption throughout their lives because they will earn  higher labor income when they work.
+In the long run, future cohorts will enjoy higher consumption throughout their lives because they will earn higher labor income when they work.
 
 In the short run, early cohorts lose.
 
@@ -855,16 +862,16 @@ But the cohorts that are young at $t=0$ and $t=1$ save at wages that the policy 
 
 {ref}`ak2_ex2` computes these gains and losses cohort by cohort.
 
-Such distinct long run and short run effects motivate us  to study transition paths.
+Such distinct long run and short run effects motivate us to study transition paths.
 
 ```{note}
 Although the consumptions in the new steady state are strictly higher, it is at a cost of fewer public services and goods.
 ``` 
 
 
-### Experiment 3: Temporary expenditure cut
+### Experiment 3: temporary expenditure cut
 
-Let's now investigate a   scenario in which  the government again accumulates assets by cutting its spending.
+Let's now investigate a scenario in which the government again accumulates assets by cutting its spending.
 
 But now the cut lasts for one period only: the government sets $G_0 = 0$ and returns its purchases to $\hat G$ from $t=1$ onwards.
 
@@ -893,22 +900,22 @@ As in {ref}`exp-expen-cut`, the cohorts that are young early in the transition l
 
 ## A computational strategy
 
-With the preceding calculations, we studied  dynamic transitions  instigated by alternative  fiscal policies.
+With the preceding calculations, we studied dynamic transitions instigated by alternative fiscal policies.
 
 In  all these experiments, we maintained the assumption that lump sum taxes were  absent  so that $\delta_{yt}=0, \delta_{ot}=0$.
 
 In this section, we investigate the transition dynamics when the lump sum taxes are present.
 
-The government will use  lump sum taxes and transfers  to redistribute resources across successive 
+The government will use lump sum taxes and transfers to redistribute resources across successive 
 generations.
 
-Including  lump sum taxes disrupts closed form solution because of how they make  optimal consumption and saving plans   depend on future prices and tax rates. 
+Including lump sum taxes disrupts closed form solution because of how they make optimal consumption and saving plans depend on future prices and tax rates. 
 
-Therefore, we compute  equilibrium  transitional paths by finding a fixed point of a  mapping from sequences to sequences.
+Therefore, we compute equilibrium transitional paths by finding a fixed point of a mapping from sequences to sequences.
 
   * that fixed point pins down an equilibrium
 
-To set the stage for the entry  of the mapping whose  fixed point we seek, we return to concepts introduced in 
+To set the stage for the entry of the mapping whose fixed point we seek, we return to concepts introduced in 
  section {ref}`sec-equilibrium`.
 
 
@@ -921,10 +928,10 @@ To set the stage for the entry  of the mapping whose  fixed point we seek, we re
 
 with the properties that
 
-* given the price system and government fiscal policy,  consumption plans are optimal
+* given the price system and government fiscal policy, consumption plans are optimal
 * the government budget constraints are satisfied for all $t$
 
-An equilibrium transition path can be computed  by "guessing and verifying" some endogenous sequences.
+An equilibrium transition path can be computed by "guessing and verifying" some endogenous sequences.
 
 In our {ref}`exp-tax-cut` example, sequences $\{D_t\}_{t=0}^{T}$ and $\{G_t\}_{t=0}^{T}$ are exogenous. 
 
@@ -979,9 +986,9 @@ Cy_opt, U_opt, _ = brent_max(Cy_val,            # maximand
 Cy_opt, U_opt
 ```
 
-Let's define a Python class `AK2` that  computes the transition paths  with the fixed-point algorithm.
+Let's define a Python class `AK2` that computes the transition paths with the fixed-point algorithm.
 
-It can handle   nonzero lump sum taxes
+It can handle nonzero lump sum taxes
 
 ```{code-cell} ipython3
 class AK2():
@@ -1189,7 +1196,7 @@ quant_seq3, price_seq3, policy_seq3 = ak2.simulate(T, init_ss,
 ak2.plot()
 ```
 
-Next, we  activate  lump sum taxes. 
+Next, we activate lump sum taxes. 
 
 Let's alter  our  {ref}`exp-tax-cut`  fiscal policy experiment by assuming that  the government also increases  lump sum taxes for both  young and old  people $\delta_{yt}=\delta_{ot}=0.005, t\geq0$. 
 
@@ -1205,7 +1212,7 @@ quant_seq4, price_seq4, policy_seq4 = ak2.simulate(T, init_ss,
                                                    D_pol=D_pol, G_pol=G_pol)
 ```
 
-Note how   "crowding out"  has been  mitigated.
+Note how "crowding out" has been mitigated.
 
 ```{code-cell} ipython3
 fig, axs = plt.subplots(3, 3, figsize=(14, 10))
@@ -1244,13 +1251,13 @@ Comparing to {ref}`exp-tax-cut`, the government raises lump-sum taxes to finance
 (exp-social-security)=
 ### Experiment 4: an unfunded social security system
 
-In this experiment,  lump-sum taxes are of equal magnitudes for old and the young, but of opposite signs.
+In this experiment, lump-sum taxes are of equal magnitudes for old and the young, but of opposite signs.
 
 A negative lump-sum tax is a subsidy.
 
 Thus, in this experiment we tax the young and subsidize the old.
 
-We start  the economy at the same initial steady state that we assumed in several earlier  experiments.
+We start the economy at the same initial steady state that we assumed in several earlier experiments.
 
 The government sets the lump sum taxes $\delta_{y,t}=-\delta_{o,t}=10\% \hat{C}_{y}$ starting from $t=0$.
 
@@ -1258,7 +1265,7 @@ It keeps debt levels and expenditures at their steady state levels $\hat{D}$ and
 
 In effect, this experiment amounts to launching an unfunded social security system.
 
-We can  use our code to compute the transition ignited by  launching this system.
+We can use our code to compute the transition ignited by launching this system.
 
 Let's compare the results to the {ref}`exp-tax-cut`.
 
@@ -1304,15 +1311,15 @@ for i, name in enumerate(['τ', 'D', 'G']):
     ax.set_xlabel('t')
 ```
 
-An initial old person   benefits  especially when  the social security system is launched because they  receive a transfer but pay nothing for it.
+An initial old person benefits especially when the social security system is launched because they receive a transfer but pay nothing for it.
 
-But in the long run, consumption of both  young and  old people decreases  because the social security system reduces incentives to save.
+But in the long run, consumption of both young and old people decreases because the social security system reduces incentives to save.
 
-That  lowers the stock of  physical capital and consequently lowers output. 
+That lowers the stock of physical capital and consequently lowers output. 
 
-The government must  then  raise tax rate in order to pay for its expenditures.
+The government must then raise tax rate in order to pay for its expenditures.
 
-The higher rate on  capital income  further distorts incentives to save.
+The higher rate on capital income further distorts incentives to save.
 
 
 ## Exercises
