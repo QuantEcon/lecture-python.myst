@@ -2012,13 +2012,13 @@ The associated labor tax is $\tau_{\ell,2}$.
 
 $$
 \operatorname{comp}_t = \sum_{j=0}^{T_0-t}
-  \left[S_{t+j} + w \varepsilon_{t+j}\left(\tau_{\ell,1} - \tau_{\ell,0}\right)\right]
+  \left[S_{t+j} + w \varepsilon_{t+j}\left(\tau_\ell(s+j) - \tau_{\ell,0}\right)\right]
   \prod_{i=0}^{j} \tilde{R}(s+i)^{-1},
 $$
 
 where $S_{t+j}$ is the benefit that an age-$(t+j)$ person would have received under the old regime, and zero while that person is still working.
 
-The second term inside the brackets compensates a cohort for the change in labor taxes that it faces during the transition, so that the buy-out leaves the present value of each cohort's lifetime resources unchanged.
+The second term inside the brackets compensates a cohort for the change in labor taxes that it faces over the rest of its life, with $\tau_\ell(s+j)$ equal to $\tau_{\ell,1}$ during $[s_1, s_2)$ and $\tau_{\ell,2}$ thereafter, so that the buy-out leaves the present value of each cohort's lifetime resources unchanged.
 
 The government sets $\tau_{\ell,1}$ during $[s_1, s_2)$ and $\tau_{\ell,2}$ from $s_2$ onwards, with a one-time expenditure increase of $\sum f_t \operatorname{comp}_t$ at $s_1$.
 
@@ -2045,7 +2045,7 @@ benef_diff_exp1 = jnp.zeros(hh.T0 + 1)
 benef_diff_exp1 = benef_diff_exp1.at[hh.T1 + 1:].set(ss0.benef)
 ```
 
-Passing `compensation_data` to `find_transition_exo` turns the buy-out on, since it sets `comp_mult` to one inside `apply_compensation`.
+Passing `compensation_data` to `find_transition_exo` turns the buy-out on: that function sets `comp_mult` to one and passes it to `apply_compensation`, which scales each cohort's compensation by it.
 
 We solve for the transition tax rate with and without the buy-out, so that we can compare the two paths.
 
@@ -2960,11 +2960,13 @@ for name, ss in [
     print(f"{name:>34}  {newborn_welfare(ss):>14.2f}")
 ```
 
-A newborn prefers either reform to the pay-as-you-go system that we started from, because both reforms raise the capital stock and hence wages.
+A newborn prefers either reform to the pay-as-you-go system that we started from.
+
+These are fixed-price steady states, so the wage is the same in all three rows; what lifts welfare is the labor tax rate, which falls from $0.34$ to $0.08$ under the buy-out and to $0.14$ under government funding.
 
 Between the two reforms, a newborn prefers government funding.
 
-That scheme ends with about the same capital stock as the buy-out, but it keeps paying social security benefits, which continue to insure against life span risk and to provide partial insurance against labor income risk.
+That scheme taxes labor more heavily than the buy-out does, but it keeps paying social security benefits, which continue to insure against life span risk and to provide partial insurance against labor income risk, and a newborn values those benefits more than the extra taxes cost.
 
 This comparison ranks steady states.
 
@@ -3272,9 +3274,9 @@ for name, ss_w in [
 
 A newborn ranks government funding first, the buy-out second, and the initial pay-as-you-go system last.
 
-Both reforms raise the capital stock and hence the wage, which is what lifts welfare above the initial steady state.
+Because these are fixed-price steady states, the wage is the same in all three; what lifts welfare above the initial steady state is the lower labor tax rate that both reforms deliver.
 
-Government funding then does better than the buy-out because it finances the same capital accumulation while continuing to pay benefits that insure against outliving one's assets and against low labor income draws.
+Government funding then does better than the buy-out, despite its higher labor tax, because it continues to pay benefits that insure against outliving one's assets and against low labor income draws.
 
 Remember that this ranking compares steady states, so it leaves out the transition costs borne by generations alive at the time of the reform.
 

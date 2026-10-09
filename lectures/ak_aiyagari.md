@@ -1574,7 +1574,7 @@ This is one reason for the iteration cap in `find_ss`.
 ```{exercise}
 :label: ak_aiy_ex3
 
-This exercise builds an unfunded social security system like the one studied in {ref}`Experiment 4 of the two-period model <ak2>`.
+This exercise builds an unfunded social security system like the one studied in {ref}`Experiment 4 of the two-period model <exp-social-security>`.
 
 Let the government tax each young agent and pay each old agent, with
 
@@ -1627,7 +1627,7 @@ Even so, it contracts the economy: capital falls from $9.5$ to $8.7$ as $d$ rise
 
 The young consume less because they are taxed, and the old consume more because they are subsidized, but the young also save less, both because their income is lower and because the promised transfer substitutes for their own saving.
 
-This is the same crowding out that {ref}`Experiment 4 of the two-period model <ak2>` displays.
+This is the same crowding out that {ref}`Experiment 4 of the two-period model <exp-social-security>` displays.
 
 What the long-lived model adds is the observation that the transfer is collected from exactly those agents whose precautionary motive is strongest, namely the young, who hold the fewest assets with which to buffer labor income risk.
 

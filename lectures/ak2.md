@@ -1241,6 +1241,7 @@ for i, name in enumerate(['τ', 'D', 'G']):
 Comparing to {ref}`exp-tax-cut`, the government raises lump-sum taxes to finance the increasing debt interest payment, which is less distortionary comparing to raising the capital income tax rate.
 
 
+(exp-social-security)=
 ### Experiment 4: an unfunded social security system
 
 In this experiment,  lump-sum taxes are of equal magnitudes for old and the young, but of opposite signs.
@@ -1435,7 +1436,7 @@ This is the sense in which the policy redistributes from early to later generati
 ```{exercise}
 :label: ak2_ex3
 
-This exercise uses the lump sum taxes to study an unfunded social security system in the **steady state**, complementing the transition computed in {ref}`exp-tax-cut`.
+This exercise uses the lump sum taxes to study an unfunded social security system in the **steady state**, complementing the transition computed in {ref}`exp-social-security`.
 
 Set $\delta_{yt} = -\delta_{ot} = d$ for all $t$, with $D_t = 0$ and $G_t = \hat G$.
 
