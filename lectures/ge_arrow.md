@@ -79,6 +79,7 @@ Let's start with some imports.
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.optimize import root
 
 np.set_printoptions(suppress=True)
 ```
@@ -1502,8 +1503,6 @@ Since $V_i$ is increasing in $y$ and concave, and $G_i$ depends on $\bar p_s$, a
 *Parts 2 to 5.*
 
 ```{code-cell} ipython3
-from scipy.optimize import root
-
 π = np.array([0.4, 0.6])                 # probabilities of the two states
 A = np.array([[2.0, 1.0],                # taste parameters a_{ic}
               [1.0, 3.0]])
@@ -1514,17 +1513,17 @@ S, C = Ω.shape
 
 def spot_demand(p_s, y, a):
     "Within-state demands given spot prices p_s and spending y."
-    w = a ** 2 / p_s ** 2
+    w = a**2 / p_s**2
     return w * y / (w * p_s).sum()
 
 def G(p_s, a):
     "Indirect utility coefficient: V = sqrt(y) G(p_s)."
-    return np.sqrt((a ** 2 / p_s).sum())
+    return np.sqrt((a**2 / p_s).sum())
 
 def spending_shares(p, a):
     "Shares of time 0 wealth spent in each state."
     g = np.array([π[s] * G(p[s], a) for s in range(S)])
-    return g ** 2 / (g ** 2).sum()
+    return g**2 / (g**2).sum()
 
 def cc_excess_demand(p_flat):
     "Excess demand in the SC contingent claims markets."
@@ -1591,9 +1590,10 @@ def realized_spot_prices(y):
     "Spot prices that clear each state's goods markets given dollar wealth y."
     out = np.zeros((S, C))
     for s in range(S):
-        f = lambda p_s: sum(spot_demand(p_s, y[i, s], A[i])
-                            for i in range(len(A))) - Ω[s]
-        out[s] = root(f, np.ones(C), tol=1e-13).x
+        def excess(p_s):
+            return sum(spot_demand(p_s, y[i, s], A[i])
+                       for i in range(len(A))) - Ω[s]
+        out[s] = root(excess, np.ones(C), tol=1e-13).x
     return out
 
 def portfolios(forecast):
@@ -1601,7 +1601,7 @@ def portfolios(forecast):
     y = np.zeros((len(A), S))
     for i in range(len(A)):
         g = np.array([π[s] * G(forecast[s], A[i]) for s in range(S)])
-        y[i] = M[i] * (g / q) ** 2 / (((g / q) ** 2) * q).sum()
+        y[i] = M[i] * (g / q)**2 / ((g / q)**2 * q).sum()
     return y
 
 print("correct forecast reproduces itself:",
@@ -1683,12 +1683,14 @@ The aggregate endowment of each good is $3$ in each state, so all risk is idiosy
 *Part 1.*
 
 ```{code-cell} ipython3
-a = np.array([[2 ** 2.5, 2.0],      # consumer 1
-              [2.0, 2 ** 2.5]])     # consumer 2
+a = np.array([[2**2.5, 2.0],      # consumer 1
+              [2.0, 2**2.5]])     # consumer 2
 ω_h = np.array([[[5 / 2, 50 / 21], [13 / 21, 1 / 2]],      # consumer 1, by state
                 [[1 / 2, 13 / 21], [50 / 21, 5 / 2]]])     # consumer 2, by state
 Ω_h = ω_h.sum(axis=0)
-u = lambda x, a_i: a_i @ np.sqrt(x)
+def u(x, a_i):
+    "Expected utility of the bundle x for a consumer with tastes a_i."
+    return a_i @ np.sqrt(x)
 
 print("aggregate endowment by state:\n", Ω_h.round(6))
 
@@ -1750,7 +1752,7 @@ print("\nallocation clears:", np.allclose(x_cm.sum(axis=0), Ω_h[0]))
 for i in range(2):
     ratio = x_cm[i, 1] / x_cm[i, 0]
     print(f"  consumer {i+1}: x_2/x_1 = {ratio:.4f}, "
-          f"(a_2/a_1)^2 = {(a[i, 1] / a[i, 0]) ** 2:.4f}")
+          f"(a_2/a_1)^2 = {(a[i, 1] / a[i, 0])**2:.4f}")
 
 EU_cm = [u(x_cm[i], a[i]) for i in range(2)]
 print(f"\nexpected utilities with complete markets: {EU_cm[0]:.4f}, {EU_cm[1]:.4f}")
@@ -1809,9 +1811,13 @@ for name, forecast, implied in [
 
 With these dividends the payoff vectors are $(\hat p_{11}, \hat p_{21})$ and $(\hat p_{12}, \hat p_{22})$, so the securities span if and only if the two states' price vectors are not proportional.
 
-Suppose a forecast makes them proportional. Then no risk can be traded, so the realized spot prices are those of part 1, which are *not* proportional, and the forecast is wrong.
+Suppose a forecast makes them proportional.
 
-Suppose instead that a forecast makes them non-proportional. Then the securities span, so the allocation is the complete markets allocation of part 3, whose spot prices *are* proportional, and again the forecast is wrong.
+Then no risk can be traded, so the realized spot prices are those of part 1, which are *not* proportional, and the forecast is wrong.
+
+Suppose instead that a forecast makes them non-proportional.
+
+Then the securities span, so the allocation is the complete markets allocation of part 3, whose spot prices *are* proportional, and again the forecast is wrong.
 
 So no rational expectations equilibrium exists, even though preferences are strictly concave, endowments are strictly positive, and there are no transaction costs.
 
