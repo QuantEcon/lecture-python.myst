@@ -62,6 +62,16 @@ In the course of presenting the model we shall encounter these important ideas:
 
 The lecture implements a Python version of the model presented in section 9.3.3 of {cite}`Ljungqvist2012`.
 
+The material is older than it might appear.
+
+Both the sequential trading arrangement studied here and the time $0$ arrangement with a complete set of history-contingent claims, as well as the proof that the two support the same allocation, appear in a paper that Kenneth Arrow read in Paris in May 1952 and published in French in 1953 {cite}`arrow1964`.
+
+Arrow's sequential arrangement deserves a second name as well.
+
+Because a household that trades securities today must act on a forecast of the prices at which goods will trade tomorrow, and because the equivalence of the two arrangements holds only when markets confirm that forecast, Arrow's sequential equilibrium is a **rational expectations** equilibrium in the sense that {cite:t}`muth1961` gave the term almost a decade later.
+
+We develop this reading, which we learned from {cite:t}`kihlstrom2019`, in the section on {ref}`sec-rational-expectations` below.
+
 Readers will find it helpful to know the finite-state Markov asset pricing formulas of {doc}`markov_asset` and the Markov chain concepts of {doc}`finite_markov`.
 
 Let's start with some imports.
@@ -69,6 +79,7 @@ Let's start with some imports.
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.optimize import root
 
 np.set_printoptions(suppress=True)
 ```
@@ -333,6 +344,91 @@ $$
 The third condition asserts that goods markets clear and that there are zero net aggregate claims in all Markov states.
 
 The fourth condition asserts that the economy is closed and starts from a situation in which there are zero net aggregate claims.
+
+(sec-rational-expectations)=
+## A rational expectations equilibrium
+
+The equilibrium that we have just defined asks each consumer to choose a portfolio $\hat a(s')$ of claims today while knowing the pricing kernel $Q(s' \mid s)$ at which those claims trade.
+
+But the value of a portfolio to a consumer depends on what goods will cost tomorrow.
+
+So an equilibrium of this kind embeds a forecast, and it is an equilibrium only when markets confirm that forecast.
+
+That is what {cite:t}`radner1972` later formalized as an equilibrium of plans, prices, and price expectations.
+
+### What a single good conceals
+
+In our economy the only price that a sequential trader must forecast is the one-period pricing kernel $Q(s' \mid s)$.
+
+Within a date and Markov state there are no relative prices left to forecast, because one good is the numeraire by default.
+
+In Arrow's economy with $C > 1$ goods, a household choosing a portfolio must forecast the entire vector of spot prices $\bar p_s = (\bar p_{s1}, \ldots, \bar p_{sC})$ that will prevail in each state $s$, because only those prices tell it what a dollar delivered in state $s$ will be worth.
+
+The equivalence of the two trading arrangements then holds *if and only if those forecasts are correct*, state by state.
+
+That is the precise sense in which Arrow's sequential equilibrium is a rational expectations equilibrium, and it is a requirement that our one-good formulation satisfies vacuously.
+
+{ref}`ge_arrow_ex4` asks you to verify the equivalence in a two-period economy with several goods, where the requirement has content.
+
+### Securities denominated in a unit of account
+
+That Arrow's equivalence turns *only* on the correctness of those forecasts is itself a consequence of his having denominated securities in a unit of account.
+
+Because a unit of security $s$ pays one dollar if state $s$ occurs, the set of state-contingent wealth distributions that a portfolio can deliver is settled before any forecast is made.
+
+{cite:t}`hart1975` asked what happens when securities instead pay *goods*.
+
+If security $f$ delivers the bundle $a_f(s)$ in state $s$, its payoff in dollars is $\bar p_s \cdot a_f(s)$, so the forecast $\bar p$ determines the span of the asset market, the span determines consumers' budget sets, and those budget sets determine the prices being forecast.
+
+Completeness becomes an equilibrium object rather than an assumption.
+
+Two things can then go wrong that cannot go wrong in our one-good economy.
+
+There can be several equilibria, all of them with correct forecasts, that differ in which markets are *effectively* open and that are strictly Pareto ranked.
+
+And there can be no equilibrium at all, even with strictly concave utility functions, strictly positive endowments, and no transaction costs.
+
+{ref}`ge_arrow_ex5` works through Hart's examples of both.
+
+```{note}
+{cite:t}`hart1975` also delimits when things go right.
+
+An equilibrium of the kind defined by {cite:t}`radner1972` is Pareto optimal when the market structure is complete, and it is Pareto optimal relative to the set of such equilibria when there is one good and the market structure is complete up to the next-to-last date, which generalizes a result of {cite:t}`diamond1967`.
+
+Outside those two cases, utility functions and endowments can generally be chosen so that an equilibrium fails even that weaker test.
+
+Both of Hart's examples are knife edge, so small perturbations of preferences, endowments, or dividends destroy them.
+```
+
+### Beliefs about nature versus expectations of prices
+
+Arrow drew a distinction here that is worth preserving.
+
+His consumers act on *subjective* probabilities that are allowed to differ across people, and nothing in his theorems requires agreement about how likely the states are.
+
+What his sequential arrangement does require is that consumers agree, and be right, about something else: the prices that will rule in each state.
+
+Beliefs about exogenous nature may be heterogeneous; expectations about endogenous prices may not.
+
+This lecture imposes the stronger assumption of common beliefs, which lets us write a single probability $\pi(s' \mid s)$ in each consumer's Euler equation.
+
+{doc}`harrison_kreps` and {doc}`likelihood_ratio_process_2` relax that assumption while keeping the expectations of prices correct.
+
+### Economizing on markets
+
+Arrow observed that the sequential arrangement *permits economizing on markets*.
+
+In our infinite-horizon economy, time $0$ trading requires a market in a claim for every date and every history, while sequential trading requires only $n$ one-period markets at each date.
+
+In the two-period, $S$-state, $C$-good economy of {ref}`ge_arrow_ex4`, time $0$ trading requires $SC$ contingent claims markets, while the sequential arrangement requires $S$ security markets followed by $C$ spot markets in whichever state occurs.
+
+No counting of markets, however, would reveal the extra assumption that the sequential arrangement needs, which is that the forecasts of spot prices are correct.
+
+```{note}
+{cite:t}`kihlstrom2019` remarks that when Arrow presented this material in 1952, the dynamic programming machinery that makes the equivalence transparent did not yet exist, because Bellman was in the midst of creating it.
+
+The step that decomposes a household's once-and-for-all problem into a portfolio choice followed by a sequence of within-period problems is exactly the argument that we used to Bellmanize the equilibrium above.
+```
 
 ## State variable degeneracy
 
@@ -1126,9 +1222,23 @@ Complete markets, identical CRRA preferences, and common beliefs together are wh
 
 Relaxing any of them breaks at least one of these properties, which is the subject of several of the lectures listed below.
 
+### How old this is
+
+Before leaving the model, it is worth recording how much of it was in place at the start.
+
+Both trading arrangements, the proof that they support the same allocation, and the observation that the sequential one presumes correct forecasts of future spot prices all appear in the paper that Arrow read in 1952, nine years before {cite:t}`muth1961` named the hypothesis that such forecasts embody.
+
+Arrow did not use the term, and the dynamic programming arguments that make the equivalence transparent were not yet available to him.
+
+His argument also has a knife edge that his unit of account conceals and that {cite:t}`hart1975` exposed: when securities pay goods rather than dollars, consumers' forecasts determine which risks the asset market can carry, and correct forecasts no longer pin down a unique, or even an existing, equilibrium.
+
+The single good per date and history that we assumed throughout is exactly the case in which the forecasting requirement has no bite.
+
 ## Related lectures
 
-This lecture assumes that all agents share beliefs.
+This lecture assumes that all agents share beliefs about nature, and that their expectations of prices are correct.
+
+Arrow's distinction between those two uses of probability organizes the first two entries below.
 
 * {doc}`harrison_kreps` studies an economy in which agents disagree about probabilities and short sales are constrained.
 * {doc}`likelihood_ratio_process_2` studies complete markets when agents hold different beliefs, in which case wealth shares drift with likelihood ratios instead of staying constant at $\alpha$.
@@ -1319,6 +1429,403 @@ plt.show()
 ```
 
 The gap shrinks geometrically, at a rate governed by the spectral radius of $Q$, which equals $\beta$.
+
+```{solution-end}
+```
+
+```{exercise-start}
+:label: ge_arrow_ex4
+```
+
+This exercise asks you to verify, in a setting with more than one good, the equivalence that {ref}`sec-rational-expectations` describes for our one-good economy.
+
+Following {cite:t}`arrow1964`, consider a two-period pure exchange economy with $n$ consumers, $S$ states, and $C$ goods.
+
+Consumer $i$ is endowed with the state-contingent vector $\omega_i = (\omega_{i1}, \ldots, \omega_{iS})$ and ranks state-contingent consumption plans $x_i$ by
+
+$$
+U_i(x_i) = \sum_{s=1}^S u_i(x_{is})\, \pi_s,
+\qquad
+u_i(x) = a_{i1}\sqrt{x_1} + a_{i2}\sqrt{x_2}
+$$
+
+In a **contingent claims equilibrium**, a price vector $p^*$ for claims to goods in states and an allocation $\{x_i^*\}$ are such that each consumer maximizes $U_i$ subject to $p^* \cdot x_i = p^* \cdot \omega_i$ and all $SC$ markets clear.
+
+In the **sequential** arrangement, consumer $i$ enters a securities market with an endowment $M_i$ of dollars, a unit of security $s$ pays one dollar if state $s$ occurs and sells for $q_s$, and after the state is realized goods trade on spot markets at prices $\bar p_s$.
+
+1. Show that consumer $i$'s spot problem has indirect utility $V_i(y, \bar p_s) = \sqrt{y}\, G_i(\bar p_s)$ with $G_i(\bar p_s) = \bigl(\sum_c a_{ic}^2/\bar p_{sc}\bigr)^{1/2}$, and derive the within-state demands. At which point does the definition of a **rational expectations equilibrium** require consumers to forecast $\bar p_s$ correctly?
+
+2. Compute the contingent claims equilibrium of the two-state, two-good, two-consumer economy specified in the solution below.
+
+3. Define
+
+$$
+M_i = p^* \cdot \omega_i,
+\qquad
+q_s^* = \frac{\sum_i p_s^* \cdot x_{is}^*}{\sum_\sigma \sum_i p_\sigma^* \cdot x_{i\sigma}^*},
+\qquad
+\bar p_s = \frac{p_s^*}{q_s^*},
+\qquad
+y_{is}^* = \bar p_s \cdot x_{is}^*
+$$
+
+   and verify that $\{y_i^*, x_i^*\}, q^*, \bar p$ is a rational expectations equilibrium: check that $\sum_s q_s^* y_{is}^* = M_i$, that $\sum_i y_{is}^* = \sum_i M_i$ for every $s$, that the spot demands reproduce $x_i^*$, and that the portfolio satisfies its own first-order conditions.
+
+4. Verify that $\sum_s q_s^* = 1$, and explain why a consumer who could hold cash instead of securities would arbitrage against any price system that violated this equality.
+
+5. Going the other way, define $p_s^* = q_s^* \bar p_s$ and verify that you recover the contingent claims equilibrium.
+
+6. Finally, show that an incorrect forecast is not an equilibrium: perturb the forecast of relative prices in state $1$, recompute portfolios, and compare the spot prices that then clear the goods markets with the forecast.
+
+```{exercise-end}
+```
+
+```{solution-start} ge_arrow_ex4
+:class: dropdown
+```
+
+*Part 1.* With $u_i(x) = \sum_c a_{ic}\sqrt{x_c}$ and a spot budget $\bar p_s \cdot x = y$, the first-order conditions give $x_c \propto a_{ic}^2/\bar p_{sc}^2$, so
+
+$$
+x_{c} = \frac{a_{ic}^2/\bar p_{sc}^2}{\sum_{c'} a_{ic'}^2/\bar p_{sc'}} \, y,
+\qquad
+V_i(y, \bar p_s) = \sqrt{y}\,\Bigl(\sum_c a_{ic}^2/\bar p_{sc}\Bigr)^{1/2}
+$$
+
+The portfolio problem is $\max \sum_s \pi_s V_i(y_{is}, \bar p_s)$ subject to $\sum_s q_s y_{is} = M_i$.
+
+The forecast $\bar p_s$ enters here, through $G_i(\bar p_s)$, before any state is realized.
+
+The definition of equilibrium requires the forecast used in this portfolio problem to be the price vector that later clears the spot market in state $s$.
+
+Since $V_i$ is increasing in $y$ and concave, and $G_i$ depends on $\bar p_s$, a consumer who misforecasts relative prices chooses a portfolio that is optimal for prices that never materialize.
+
+*Parts 2 to 5.*
+
+```{code-cell} ipython3
+π = np.array([0.4, 0.6])                 # probabilities of the two states
+A = np.array([[2.0, 1.0],                # taste parameters a_{ic}
+              [1.0, 3.0]])
+ω = np.array([[[2.0, 0.5], [0.5, 1.5]],  # consumer 1, by state
+              [[1.0, 1.5], [1.0, 1.0]]]) # consumer 2, by state
+Ω = ω.sum(axis=0)                        # aggregate endowment by state
+S, C = Ω.shape
+
+def spot_demand(p_s, y, a):
+    "Within-state demands given spot prices p_s and spending y."
+    w = a**2 / p_s**2
+    return w * y / (w * p_s).sum()
+
+def G(p_s, a):
+    "Indirect utility coefficient: V = sqrt(y) G(p_s)."
+    return np.sqrt((a**2 / p_s).sum())
+
+def spending_shares(p, a):
+    "Shares of time 0 wealth spent in each state."
+    g = np.array([π[s] * G(p[s], a) for s in range(S)])
+    return g**2 / (g**2).sum()
+
+def cc_excess_demand(p_flat):
+    "Excess demand in the SC contingent claims markets."
+    p = p_flat.reshape((S, C))
+    exc = np.zeros((S, C))
+    for i in range(len(A)):
+        M_i = (p * ω[i]).sum()
+        share = spending_shares(p, A[i])
+        for s in range(S):
+            exc[s] += spot_demand(p[s], share[s] * M_i, A[i])
+    return (exc - Ω).ravel()
+
+sol = root(cc_excess_demand, np.ones(S * C), tol=1e-13)
+p_star = sol.x.reshape((S, C))
+p_star = p_star / p_star[0, 0]           # numeraire: good 1 in state 1
+
+M = np.array([(p_star * ω[i]).sum() for i in range(len(A))])
+x_star = np.array([[spot_demand(p_star[s], spending_shares(p_star, A[i])[s] * M[i],
+                                A[i]) for s in range(S)] for i in range(len(A))])
+
+print("p* =\n", p_star.round(5))
+print("largest excess demand:", np.abs(cc_excess_demand(p_star.ravel())).max())
+print("M =", M.round(5))
+print("x1* =\n", x_star[0].round(5), "\nx2* =\n", x_star[1].round(5))
+```
+
+Now build the sequential arrangement from these objects.
+
+```{code-cell} ipython3
+q = np.array([(p_star[s] * Ω[s]).sum() for s in range(S)]) / M.sum()
+p_bar = p_star / q[:, None]
+y_star = np.array([[p_bar[s] @ x_star[i, s] for s in range(S)]
+                   for i in range(len(A))])
+
+print("q* =", q.round(5), " and Σ_s q*_s =", q.sum().round(10))
+print("p_bar =\n", p_bar.round(5))
+print("y* =\n", y_star.round(5))
+
+print("\nΣ_s q*_s y*_is = M_i:          ", np.allclose(y_star @ q, M))
+print("Σ_i y*_is = Σ_i M_i for each s:", np.allclose(y_star.sum(axis=0), M.sum()))
+print("spot demands reproduce x*:     ",
+      all(np.allclose(spot_demand(p_bar[s], y_star[i, s], A[i]), x_star[i, s])
+          for i in range(len(A)) for s in range(S)))
+
+# portfolio first-order condition: sqrt(y_is) q_s / (π_s G_i) is constant across s
+for i in range(len(A)):
+    ratio = np.sqrt(y_star[i]) * q / np.array([π[s] * G(p_bar[s], A[i])
+                                               for s in range(S)])
+    print(f"consumer {i+1} portfolio FOC, across states:", ratio.round(8))
+
+print("\nq*_s p_bar_s recovers p*:", np.allclose(q[:, None] * p_bar, p_star))
+```
+
+The securities prices sum to one because a unit of each security, bought in equal numbers, pays one dollar for sure.
+
+A portfolio of one unit of every security is therefore a riskless claim to one dollar, so it must cost one dollar.
+
+If $\sum_s q_s < 1$, a consumer could buy that bundle and hold a sure dollar for less than a dollar; if $\sum_s q_s > 1$, selling the bundle and holding cash would do the same in reverse.
+
+*Part 6.*
+
+```{code-cell} ipython3
+def realized_spot_prices(y):
+    "Spot prices that clear each state's goods markets given dollar wealth y."
+    out = np.zeros((S, C))
+    for s in range(S):
+        def excess(p_s):
+            return sum(spot_demand(p_s, y[i, s], A[i])
+                       for i in range(len(A))) - Ω[s]
+        out[s] = root(excess, np.ones(C), tol=1e-13).x
+    return out
+
+def portfolios(forecast):
+    "Optimal portfolios when consumers forecast the spot prices in forecast."
+    y = np.zeros((len(A), S))
+    for i in range(len(A)):
+        g = np.array([π[s] * G(forecast[s], A[i]) for s in range(S)])
+        y[i] = M[i] * (g / q)**2 / ((g / q)**2 * q).sum()
+    return y
+
+print("correct forecast reproduces itself:",
+      np.allclose(realized_spot_prices(y_star), p_bar))
+
+p_wrong = p_bar.copy()
+p_wrong[0] = p_bar[0] * np.array([1.5, 1.0])     # misforecast relative prices
+p_realized = realized_spot_prices(portfolios(p_wrong))
+
+print(f"\nforecast relative price in state 1: "
+      f"{p_wrong[0, 0] / p_wrong[0, 1]:.4f}")
+print(f"realized relative price in state 1: "
+      f"{p_realized[0, 0] / p_realized[0, 1]:.4f}")
+```
+
+With the correct forecast, the prices that clear the spot markets are the prices that consumers used when choosing portfolios, so the forecast is confirmed and the sequential allocation is the contingent claims allocation.
+
+With the incorrect forecast, consumers carry the wrong dollar wealth into each state, and the prices that then clear the spot markets are not the prices they forecast.
+
+The plans are feasible and the securities market clears, but the economy is not in a rational expectations equilibrium.
+
+Note that only *relative* prices within a state need to be forecast correctly.
+
+Scaling all of state $s$'s spot prices by a constant is absorbed by the security price $q_s$, which is why the normalization of $\bar p_s$ is harmless.
+
+```{solution-end}
+```
+
+```{exercise-start}
+:label: ge_arrow_ex5
+```
+
+In {ref}`ge_arrow_ex4` the securities pay dollars, so the set of state-contingent wealth distributions that a portfolio can deliver does not depend on what consumers forecast.
+
+This exercise, which follows {cite:t}`hart1975`, asks what happens when securities pay *goods* instead.
+
+There are two dates.
+
+Securities trade at the first date; at the second date a state $s \in \{1,2\}$ is realized and $C=2$ goods trade on spot markets.
+
+Two consumers care only about consumption at the second date and assign probability $1/2$ to each state, with
+
+$$
+u^1(x) = 2^{2.5} \sqrt{x_1} + 2 \sqrt{x_2},
+\qquad
+u^2(x) = 2 \sqrt{x_1} + 2^{2.5} \sqrt{x_2}
+$$
+
+and endowments
+
+$$
+\omega_{11} = \left( \tfrac{5}{2}, \tfrac{50}{21} \right), \quad
+\omega_{21} = \left( \tfrac{1}{2}, \tfrac{13}{21} \right), \quad
+\omega_{12} = \left( \tfrac{13}{21}, \tfrac{1}{2} \right), \quad
+\omega_{22} = \left( \tfrac{50}{21}, \tfrac{5}{2} \right)
+$$
+
+where $\omega_{is}$ is consumer $i$'s endowment in state $s$.
+
+The aggregate endowment of each good is $3$ in each state, so all risk is idiosyncratic, and the two consumers and the two states are mirror images of each other.
+
+1. Suppose first that no securities are available. Compute the spot market equilibrium in each state.
+
+2. Now let two securities trade at the first date. A unit of security $1$ delivers one unit of good $1$ if state $1$ occurs and two units of good $1$ if state $2$ occurs; a unit of security $2$ delivers two units of good $2$ if state $1$ occurs and one unit of good $2$ if state $2$ occurs. Show that if consumers forecast the spot prices of part 1, the two securities become perfect substitutes, so that no portfolio of them can move wealth between states. Conclude that this is a rational expectations equilibrium, and compute each consumer's expected utility.
+
+3. Show that the forecast $\hat p_1 = \hat p_2 = (1,1)$ instead makes the two securities span, so that the equilibrium allocation is the contingent claims allocation $x_{1s} = (8/3, 1/3)$, $x_{2s} = (1/3, 8/3)$. Verify that this forecast is also confirmed, compute expected utilities, and find the portfolio that consumer $1$ uses.
+
+4. Compare the two equilibria, and explain why no market force selects the better one.
+
+5. Change only the dividends: let security $1$ deliver one unit of good $1$ in *both* states and security $2$ one unit of good $2$ in both states. Show that now no rational expectations equilibrium exists.
+
+```{exercise-end}
+```
+
+```{solution-start} ge_arrow_ex5
+:class: dropdown
+```
+
+*Part 1.*
+
+```{code-cell} ipython3
+a = np.array([[2**2.5, 2.0],      # consumer 1
+              [2.0, 2**2.5]])     # consumer 2
+ω_h = np.array([[[5 / 2, 50 / 21], [13 / 21, 1 / 2]],      # consumer 1, by state
+                [[1 / 2, 13 / 21], [50 / 21, 5 / 2]]])     # consumer 2, by state
+Ω_h = ω_h.sum(axis=0)
+def u(x, a_i):
+    "Expected utility of the bundle x for a consumer with tastes a_i."
+    return a_i @ np.sqrt(x)
+
+print("aggregate endowment by state:\n", Ω_h.round(6))
+
+p_hat = np.array([[2.0, 1.0], [1.0, 2.0]])      # conjectured spot prices
+x_auto = np.array([[spot_demand(p_hat[s], p_hat[s] @ ω_h[i, s], a[i])
+                    for s in range(2)] for i in range(2)])
+
+print("\nno securities, state by state:")
+for s in range(2):
+    print(f"  state {s+1}: p = {p_hat[s]}, "
+          f"x_1 = {(21 * x_auto[0, s]).round(4)}/21, "
+          f"x_2 = {(21 * x_auto[1, s]).round(4)}/21, "
+          f"markets clear: {np.allclose(x_auto[:, s].sum(axis=0), Ω_h[s])}")
+```
+
+The spot equilibrium in state $1$ has prices proportional to $(2,1)$ and in state $2$ proportional to $(1,2)$.
+
+Each consumer eats mostly the good that it likes more.
+
+In each state the good favored by the richer consumer is the expensive one, because the aggregate endowment is the same in both states and only the distribution of wealth differs.
+
+*Part 2.* The dollar payoff of a security is the forecast price of the good it delivers, times the quantity delivered.
+
+```{code-cell} ipython3
+def payoff_matrix(forecast, dividends):
+    """
+    Dollar payoffs of securities, given forecast spot prices.
+
+    dividends[f, s] is the bundle that security f delivers in state s.
+    """
+    return np.array([[forecast[s] @ dividends[f, s] for s in range(2)]
+                     for f in range(2)])
+
+div_b = np.array([[[1.0, 0.0], [2.0, 0.0]],     # security 1: good 1, 1 then 2 units
+                  [[0.0, 2.0], [0.0, 1.0]]])    # security 2: good 2, 2 then 1 unit
+
+Z = payoff_matrix(p_hat, div_b)
+print("payoff matrix with the part 1 forecast:\n", Z)
+print("rank:", np.linalg.matrix_rank(Z))
+
+EU_auto = [sum(0.5 * u(x_auto[i, s], a[i]) for s in range(2)) for i in range(2)]
+print(f"\nexpected utilities with no risk sharing: {EU_auto[0]:.4f}, {EU_auto[1]:.4f}")
+```
+
+Both securities pay $(2,2)$, so they are perfect substitutes and must bear the same price.
+
+No portfolio of them can move wealth between the two states, so no securities trade, the realized spot prices are those of part 1, and the forecast is confirmed.
+
+This is a rational expectations equilibrium in which the asset market is effectively incomplete.
+
+*Part 3.*
+
+```{code-cell} ipython3
+p_span = np.array([[1.0, 1.0], [1.0, 1.0]])
+Z_span = payoff_matrix(p_span, div_b)
+print("payoff matrix with the forecast (1,1):\n", Z_span)
+print("rank:", np.linalg.matrix_rank(Z_span))
+
+x_cm = np.array([[8 / 3, 1 / 3], [1 / 3, 8 / 3]])    # complete markets allocation
+print("\nallocation clears:", np.allclose(x_cm.sum(axis=0), Ω_h[0]))
+for i in range(2):
+    ratio = x_cm[i, 1] / x_cm[i, 0]
+    print(f"  consumer {i+1}: x_2/x_1 = {ratio:.4f}, "
+          f"(a_2/a_1)^2 = {(a[i, 1] / a[i, 0])**2:.4f}")
+
+EU_cm = [u(x_cm[i], a[i]) for i in range(2)]
+print(f"\nexpected utilities with complete markets: {EU_cm[0]:.4f}, {EU_cm[1]:.4f}")
+
+wealth = np.array([p_span[s] @ ω_h[0, s] for s in range(2)])
+z1 = np.linalg.solve(Z_span.T, p_span[0] @ x_cm[0] - wealth)
+print(f"\nconsumer 1 state-contingent wealth: {(42 * wealth).round(3)}/42")
+print(f"consumer 1 portfolio: {(42 * z1).round(3)}/42")
+```
+
+With this forecast the payoff vectors $(1,2)$ and $(2,1)$ are linearly independent, so the securities span and the allocation must be the contingent claims allocation.
+
+Because each consumer's demands satisfy $x_2/x_1 = (a_2/a_1)^2$ at prices proportional to $(1,1)$, those are indeed the spot prices that clear the markets, so this forecast is confirmed too.
+
+Consumer $1$ reaches the allocation by buying $79/42$ units of security $1$ and selling $79/42$ units of security $2$, a swap that costs nothing because the two securities bear the same price, and that converts its state-contingent wealth of $(205/42, 47/42)$ into $(3,3)$.
+
+Consumer $2$ holds the mirror-image portfolio.
+
+*Part 4.*
+
+```{code-cell} ipython3
+print(f"{'':12}{'no risk sharing':>18}{'complete markets':>19}")
+for i in range(2):
+    print(f"consumer {i+1}: {EU_auto[i]:>17.4f}{EU_cm[i]:>19.4f}")
+```
+
+Both consumers strictly prefer the second equilibrium, so it Pareto dominates the first.
+
+Yet both are rational expectations equilibria: in each, consumers forecast correctly and markets clear.
+
+Hart's point is that no market force selects the better one, because the trading opportunities available to a consumer depend on forecasts of spot prices, and a competitive consumer takes those forecasts as given.
+
+A consumer cannot unilaterally make the two securities span, since spanning is a property of prices that no individual chooses.
+
+*Part 5.*
+
+```{code-cell} ipython3
+div_e = np.array([[[1.0, 0.0], [1.0, 0.0]],     # security 1: one unit of good 1
+                  [[0.0, 1.0], [0.0, 1.0]]])    # security 2: one unit of good 2
+
+# each candidate forecast implies a span, the span implies an allocation,
+# and the allocation implies the spot prices that actually clear markets
+for name, forecast, implied in [
+    ("(2,1) and (1,2)", p_hat,  p_span),
+    ("(1,1) and (1,1)", p_span, p_hat),
+]:
+    Z_e = payoff_matrix(forecast, div_e)
+    rank = np.linalg.matrix_rank(Z_e)
+    spans = "spans" if rank == 2 else "does not span"
+    allocation = "complete markets" if rank == 2 else "no risk sharing"
+    print(f"forecast {name}: rank {rank}, {spans}")
+    print(f"  implied allocation: {allocation}")
+    print(f"  spot prices it implies: {implied[0]} and {implied[1]}")
+    print(f"  forecast confirmed: {np.allclose(forecast, implied)}\n")
+```
+
+With these dividends the payoff vectors are $(\hat p_{11}, \hat p_{21})$ and $(\hat p_{12}, \hat p_{22})$, so the securities span if and only if the two states' price vectors are not proportional.
+
+Suppose a forecast makes them proportional.
+
+Then no risk can be traded, so the realized spot prices are those of part 1, which are *not* proportional, and the forecast is wrong.
+
+Suppose instead that a forecast makes them non-proportional.
+
+Then the securities span, so the allocation is the complete markets allocation of part 3, whose spot prices *are* proportional, and again the forecast is wrong.
+
+So no rational expectations equilibrium exists, even though preferences are strictly concave, endowments are strictly positive, and there are no transaction costs.
+
+Nothing like parts 2 to 5 can happen in the sequential economy of this lecture, where there is one good per date and history and the one-period Arrow securities are denominated in that good.
+
+There the span of the asset market is $n$-dimensional whatever consumers forecast, and the only forecast that matters is of the pricing kernel $Q$ itself.
 
 ```{solution-end}
 ```
