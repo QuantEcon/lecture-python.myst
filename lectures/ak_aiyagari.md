@@ -27,11 +27,11 @@ In addition to what's in Anaconda, this lecture will need the following library
 
 ## Overview
 
-This lecture describes an  overlapping generations model with these features:
+This lecture describes an overlapping generations model with these features:
 
 - A competitive equilibrium with incomplete markets determines prices and quantities
-- Agents live many periods as in   {cite}`auerbach1987dynamic`
-- Agents receive idiosyncratic labor productivity shocks that cannot be fully insured as in  {cite}`Aiyagari1994`
+- Agents live many periods as in {cite}`auerbach1987dynamic`
+- Agents receive idiosyncratic labor productivity shocks that cannot be fully insured as in {cite}`Aiyagari1994`
 - Government fiscal policy instruments include tax rates, debt, and transfers as in chapter 2 of {cite}`auerbach1987dynamic` and {doc}`Transitions in an Overlapping Generations Model<ak2>`
 - Among other equilibrium objects, a competitive equilibrium determines a sequence of cross-section densities of heterogeneous agents' consumptions, labor incomes, and savings
 
@@ -41,7 +41,7 @@ We use the model to study:
 - How fiscal policies affect different generations
 - How market incompleteness promotes precautionary savings
 - How life-cycle savings and buffer-stock savings motives interact
-- How fiscal policies  redistribute resources across and within generations
+- How fiscal policies redistribute resources across and within generations
 
 
 As prerequisites for this lecture, we recommend two quantecon lectures:
@@ -72,7 +72,11 @@ We work in discrete time indexed by $t = 0, 1, 2, ...$.
 
 Each agent lives for $J = 50$ periods and faces no mortality risk. 
 
-We index age by $j = 0, 1, ..., 49$, and the population size remains fixed at $1/J$.
+We index age by $j = 0, 1, ..., 49$.
+
+Each cohort has mass $1/J$ and total population is one, so a cross-section average equals $\frac{1}{J}\sum_j$ of cohort averages.
+
+Throughout, we normalize each cohort's density $\mu_{j,t}$ to integrate to one, so that population weights $1/J$ appear explicitly in aggregates.
 
 ### Individuals' state variables
 
@@ -98,7 +102,7 @@ Initial idiosyncratic productivities are drawn from distribution $\pi$.
 
 Agents leave no bequests and have  terminal value function $V_J(a) = 0$.
 
-##  Production
+## Production
 
 A representative firm operates a constant returns to scale Cobb-Douglas production:
 
@@ -109,6 +113,8 @@ where:
 - $L_t$ is aggregate efficiency units of  labor
 - $Z_t$ is total factor productivity
 - $\alpha$ is the capital share
+
+Capital does not depreciate, so the rental rate $r_t$ below is a net rate of return.
 
 ## Government
 
@@ -129,8 +135,10 @@ $$
 where total tax revenues $T_t$ satisfy
 
 $$
-T_t = \tau_t w_t L_t + \tau_t r_t(D_t + K_t) + \sum_j \delta_{j,t}
+T_t = \tau_t w_t L_t + \tau_t r_t(D_t + K_t) + \frac{1}{J}\sum_j \delta_{j,t}
 $$
+
+All quantities here are per capita, which is why the age-specific lump sum taxes enter with the population weights $1/J$.
 
 ## Activities in factor markets
 
@@ -156,7 +164,9 @@ Summarizing activities in the asset market, all agents, regardless of age $j \in
 
 *Lifecycle patterns* shape economic behavior across ages:
 
-  - Labor productivity varies systematically with age according to the profile $l(j)$, while asset holdings typically follow a lifecycle pattern of accumulation during working years and decumulation during retirement.
+  - Labor productivity varies systematically with age according to the profile $l(j)$, while asset holdings follow a lifecycle pattern of accumulation during the first part of life and decumulation late in life.
+
+  - There is no retirement in this model, since $l(j) > 0$ at every age, so agents draw down assets late in life because they approach the end of life and not because they stop working.
 
   - Age-specific fiscal transfers $\delta_{j,t}$ redistribute resources across generations.
 
@@ -190,7 +200,7 @@ $$
 r_t = \alpha Z_t(K_t/L_t)^{\alpha-1}
 $$
 
-##  Households' problems
+## Households' problems
 
 A household's value function satisfies a Bellman equation
 
@@ -204,11 +214,15 @@ $$
 c + a' = (1 + r_t(1-\tau_t))a + (1-\tau_t)w_t l(j)\gamma - \delta_{j,t}
 $$
 $$
-c \geq 0
+c \geq 0, \qquad a' \geq 0
 $$
 
 and a terminal condition
 $V_{J,t}(a, \gamma) = 0$
+
+The constraint $a' \geq 0$ rules out borrowing, so an agent can self-insure only by accumulating assets.
+
+That is the sense in which markets are incomplete here.
 
 ## Population dynamics
 
@@ -223,6 +237,7 @@ $$
 		 \end{cases}
 $$
 
+Each cohort density integrates to one, so this density carries the cohort weight $1/J$ in the aggregates below.
 
 - For other cohorts:
 
@@ -243,14 +258,14 @@ An equilibrium consists of:
 
 that satisfy the following conditions
 
-- Given prices and government policies, value and policy functions solve  households' problems
+- Given prices and government policies, value and policy functions solve households' problems
 - Given prices, the representative firm maximizes profits
 - Government budget constraints are satisfied
 - Markets clear:
-   - Asset market: $K_t = \sum_j \int a \mu_{j,t}(a,\gamma)d(a,\gamma) - D_t$
-   - Labor market: $L_t = \sum_j \int l(j)\gamma \mu_{j,t}(a,\gamma)d(a,\gamma)$
+   - Asset market: $K_t = \frac{1}{J}\sum_j \int a \mu_{j,t}(a,\gamma)d(a,\gamma) - D_t$
+   - Labor market: $L_t = \frac{1}{J}\sum_j \int l(j)\gamma \mu_{j,t}(a,\gamma)d(a,\gamma)$
    
-Relative to the  model presented in {doc}`Transitions in an Overlapping Generations Model<ak2>`, the present  model adds
+Relative to the model presented in {doc}`Transitions in an Overlapping Generations Model<ak2>`, the present model adds
 - Heterogeneity within generations due to productivity shocks
 - A precautionary savings motive
 - More re-distributional effects
@@ -258,9 +273,9 @@ Relative to the  model presented in {doc}`Transitions in an Overlapping Generati
 
 ## Implementation
 
-Using tools in  {doc}`advanced:discrete_dp`, we solve our model by combining value function iteration with equilibrium price determination.
+Using tools in {doc}`advanced:discrete_dp`, we solve our model by combining value function iteration with equilibrium price determination.
 
-A sensible  approach is  to nest a discrete DP solver inside an outer loop that searches for market-clearing prices.
+A sensible approach is to nest a discrete DP solver inside an outer loop that searches for market-clearing prices.
 
 For a candidate sequence  of prices interest rates $r_t$ and wages $w_t$, we can solve individual households' dynamic programming problems using either value function iteration or policy iteration to obtain optimal policy functions.
 
@@ -268,7 +283,7 @@ We then deduce associated stationary joint probability distributions of asset ho
 
 This will give us an aggregate capital supply (from household savings) and a labor supply (from the age-efficiency profile and productivity shocks).
 
-We can then compare these with capital and labor demand from firms, compute deviations between factor market supplies and demands, then  update  price guesses until we find market-clearing prices.
+We can then compare these with capital and labor demand from firms, compute deviations between factor market supplies and demands, then update price guesses until we find market-clearing prices.
 
 To construct transition dynamics, we can compute sequences of time-varying prices by using _backward induction_ to compute value and policy functions, and _forward iteration_ for the distributions of agents across states:
 
@@ -302,7 +317,7 @@ To construct transition dynamics, we can compute sequences of time-varying price
      - Solve for price sequences
      - Update until all markets clear in all periods
 
-We  start coding by defining helper functions that describe preferences, firms, and  government budget constraints.
+We start coding by defining helper functions that describe preferences, firms, and government budget constraints.
 
 ```{code-cell} ipython3
 ϕ, k_bar = 0., 0.
@@ -374,7 +389,9 @@ def find_τ(policy, price, aggs):
     r, w = price
     K, L = aggs
 
-    num = r * D + G - D_next + D - δ.sum(axis=-1)
+    # each cohort has mass 1/J, so per capita transfers are δ.sum()/J
+    J = δ.shape[-1]
+    num = r * D + G - D_next + D - δ.sum(axis=-1) / J
     denom = w * L + r * (D + K)
 
     return num / denom
@@ -387,7 +404,7 @@ Household = namedtuple("Household", ("j_grid", "a_grid", "γ_grid",
                                      "Π", "β", "init_μ", "VJ"))
 
 def create_household(
-        a_min=0., a_max=10, a_size=200,
+        a_min=0., a_max=40, a_size=200,
         Π=[[0.9, 0.1], [0.1, 0.9]],
         γ_grid=[0.5, 1.5],
         β=0.96, J=50
@@ -461,7 +478,7 @@ def populate_R(j, r, w, τ, δ, household):
 
 We first compute a steady state.
 
-Given  guesses of prices and taxes, we can use backwards induction to solve for  value functions and optimal consumption and saving policies  at all  ages.
+Given guesses of prices and taxes, we can use backwards induction to solve for value functions and optimal consumption and saving policies at all ages.
 
 The function `backwards_opt` solves for optimal values by applying the discretized bellman operator backwards.
 
@@ -557,22 +574,37 @@ Let's time the computation
 %time popu_dist(σ, hh, Q)[0].block_until_ready();
 ```
 
-Below we plot the marginal  distribution of  savings for  each age group.
+Below we plot the marginal distribution of savings for each age group.
 
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Marginal distribution of assets by age
+    name: ak_aiy_asset_dist
+---
 for j in [0, 5, 20, 45, 49]:
     plt.plot(hh.a_grid, jnp.sum(μ[j].reshape((hh.a_grid.size, hh.γ_grid.size)), axis=1), label=f'j={j}')
 
 plt.legend()
 plt.xlabel('a')
-
-plt.title(r'marginal distribution over a, $\sum_\gamma \mu_j(a, \gamma)$')
-plt.xlim([0, 8])
-plt.ylim([0, 0.1])
+plt.ylabel(r'$\sum_\gamma \mu_j(a, \gamma)$')
 
 plt.show()
 ```
+
+A grid that is too narrow would distort these distributions by piling probability mass on the highest asset level.
+
+Let's verify that this does not happen here.
+
+```{code-cell} ipython3
+top_mass = μ.reshape((hh.j_grid.size, hh.a_grid.size,
+                      hh.γ_grid.size))[:, -1, :].sum() / hh.j_grid.size
+print(f"population share at a_max = {hh.a_grid[-1]:.0f}: {top_mass:.3%}")
+```
+
+{ref}`ak_aiy_ex1` asks what happens when the upper bound binds.
 
 
 These marginal distributions confirm that new agents enter the economy with no asset holdings.
@@ -585,16 +617,16 @@ As agents age, at first they gradually accumulate assets.
   * the green $j=20$ distribution puts positive mass on a much wider range of asset levels. 
   * the red $j=45$ distribution is even wider
   
-At a later   age, they gradually  deplete their asset holdings.
+At a later age, they gradually deplete their asset holdings.
 
 * the purple $j=49$ distribution illustrates this
 
 At the end of life, they will have drawn down all of their assets.
 
-Let's now look at age-specific  optimal saving policies  that generate the preceding marginal
+Let's now look at age-specific optimal saving policies that generate the preceding marginal
 distributions of assets at different ages.
 
-We'll  plot  some saving functions with the following Python code.
+We'll plot some saving functions with the following Python code.
 
 ```{code-cell} ipython3
 σ_reshaped = σ.reshape(hh.j_grid.size, hh.a_grid.size, hh.γ_grid.size)
@@ -666,7 +698,7 @@ This is our outer loop.
 
 ```{code-cell} ipython3
 @jax.jit
-def find_ss(household, firm, pol_target, Q, tol=1e-6, verbose=False):
+def find_ss(household, firm, pol_target, Q, tol=1e-6, max_iter=200):
 
     j_grid, a_grid, γ_grid, Π, β, init_μ, VJ = household
     J = j_grid.size
@@ -683,17 +715,17 @@ def find_ss(household, firm, pol_target, Q, tol=1e-6, verbose=False):
     def cond_fn(state):
         "The convergence criteria."
 
-        V, σ, μ, K, L, r, w, τ, D, G, δ, r_old, w_old = state
+        V, σ, μ, K, L, r, w, τ, D, G, δ, r_old, w_old, i = state
 
         error = (r - r_old) ** 2 + (w - w_old) ** 2
 
-        return error > tol
+        return (error > tol) & (i < max_iter)
 
     def body_fn(state):
         "The main body of iteration."
 
-        V, σ, μ, K, L, r, w, τ, D, G, δ, r_old, w_old = state
-        r_old, w_old, τ_old = r, w, τ
+        V, σ, μ, K, L, r, w, τ, D, G, δ, r_old, w_old, i = state
+        r_old, w_old = r, w
 
         # Household optimal decisions and values
         V, σ = backwards_opt([r, w], [τ, δ], household, Q)
@@ -717,7 +749,7 @@ def find_ss(household, firm, pol_target, Q, tol=1e-6, verbose=False):
         r = (r + r_old) / 2
         w = (w + w_old) / 2
 
-        return V, σ, μ, K, L, r, w, τ, D, G, δ, r_old, w_old
+        return V, σ, μ, K, L, r, w, τ, D, G, δ, r_old, w_old, i + 1
 
     # Initial state
     V = jnp.empty((J, num_state), dtype=float)
@@ -725,15 +757,18 @@ def find_ss(household, firm, pol_target, Q, tol=1e-6, verbose=False):
     μ = jnp.empty((J, num_state), dtype=float)
 
     K, L = 1., 1.
-    initial_state = (V, σ, μ, K, L, r, w, τ, D, G, δ, r-1, w-1)
-    V, σ, μ, K, L, r, w, τ, D, G, δ, _, _ = jax.lax.while_loop(
+    initial_state = (V, σ, μ, K, L, r, w, τ, D, G, δ, r-1, w-1, 0)
+    V, σ, μ, K, L, r, w, τ, D, G, δ, _, _, i = jax.lax.while_loop(
                                     cond_fn, body_fn, initial_state)
 
-    return V, σ, μ, K, L, r, w, τ, D, G, δ
+    # i equals max_iter if the loop stopped before converging
+    return V, σ, μ, K, L, r, w, τ, D, G, δ, i
 ```
 
 ```{code-cell} ipython3
-ss1 = find_ss(hh, firm, [0, 0.1, np.zeros(hh.j_grid.size)], Q, verbose=True)
+ss1 = find_ss(hh, firm, [0, 0.1, np.zeros(hh.j_grid.size)], Q)
+
+print(f"iterations used: {ss1[-1]}")
 ```
 
 Let's time the computation
@@ -783,9 +818,9 @@ In an outer loop, we iterate over guesses of prices and taxes.
 
 In an inner loop, we  compute the optimal consumption and saving choices by each cohort $j$ in each time $t$, then find the implied  evolution of the joint distribution of assets and productivities.
 
-We then  update our  guesses of prices and taxes given the aggregate labor supply and capital stock in the economy.
+We then update our guesses of prices and taxes given the aggregate labor supply and capital stock in the economy.
 
-We use `solve_backwards` to solve for optimal saving choices given  price and tax sequences and `simulate_forward` to compute the  evolution of the joint distributions.
+We use `solve_backwards` to solve for optimal saving choices given price and tax sequences and `simulate_forward` to compute the evolution of the joint distributions.
 
 We require two steady states as inputs: the initial steady state to provide the initial condition for `simulate_forward`, and the final steady state to provide continuation values for `solve_backwards`.
 
@@ -926,7 +961,7 @@ The following algorithm describes the path iteration procedure:
    - $(r, w, \tau) \leftarrow initialize\_prices(T)$ *(Linear interpolation)*
    - $error \leftarrow \infty$, $i \leftarrow 0$
 
-2. **While** $error > \varepsilon$ or $i \leq max\_iter$:
+2. **While** $error > \varepsilon$ and $i \leq max\_iter$:
 
    1. $i \leftarrow i + 1$
    2. $(r_{\text{old}}, w_{\text{old}}, \tau_{\text{old}}) \leftarrow (r, w, \tau)$
@@ -956,7 +991,8 @@ The following algorithm describes the path iteration procedure:
 ```
 
 ```{code-cell} ipython3
-def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=False):
+def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4,
+                   max_iter=100, verbose=False):
 
     # Starting point: initial steady state
     V_ss1, σ_ss1, μ_ss1 = ss1[:3]
@@ -990,8 +1026,8 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=F
         axs[1].plot(jnp.arange(T), w_seq)
         axs[2].plot(jnp.arange(T), τ_seq, label=f'iter {num_iter}')
 
-    while error > tol:
-        # Repeat until finding the fixed point
+    while (error > tol) and (num_iter < max_iter):
+        # Repeat until finding the fixed point, or until max_iter
 
         r_old, w_old, τ_old = r_seq, w_seq, τ_seq
 
@@ -1031,6 +1067,9 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=F
         w_seq = (w_seq + w_old) / 2
         τ_seq = (τ_seq + τ_old) / 2
 
+    if error > tol:
+        print(f"Warning: stopped at {num_iter} iterations with error {error:.2e}")
+
     if verbose:
         axs[0].set_xlabel('t')
         axs[1].set_xlabel('t')
@@ -1046,21 +1085,21 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4, verbose=F
             τ_seq, D_seq, G_seq, δ_seq
 ```
 
-We can now   compute  equilibrium transitions that are  ignited by fiscal policy reforms.
+We can now compute equilibrium transitions that are ignited by fiscal policy reforms.
 
-## Experiment 1: Immediate tax cut
+## Experiment 1: an immediate tax cut
 
-Assume that the government cuts the tax rate and immediately balances its budget by issuing debt.
+At $t=0$, the government unexpectedly announces that it will issue debt.
 
-At $t=0$, the government unexpectedly announces an immediate tax cut.
-
-From $t=0$ to $19$, the government  issues debt, so debt  $D_{t+1}$  increases linearly for $20$ periods.
-
-The government sets a target for its new debt level $D_{20} =D_0 + 1 = \bar{D} + 1$.
+From $t=0$ to $19$, debt $D_{t+1}$ increases linearly for $20$ periods, reaching the new target level $D_{20} = D_0 + 1 = \bar{D} + 1$.
 
 Government spending $\bar{G}$ and transfers $\bar{\delta}_j$ remain constant.
 
-The government adjusts $\tau_t$ to balance the budget along the transition.
+The debt path is the policy; the flat rate tax $\tau_t$ is then whatever balances the government budget at each date.
+
+At the announcement the residual tax rate drops well below its initial value, which is why we call this an immediate tax cut.
+
+It then climbs steadily as debt accumulates, and once debt stops growing it settles permanently above its initial value, because the government must service the larger debt forever.
 
 We want to compute the equilibrium transition path.
 
@@ -1129,11 +1168,17 @@ c = inc - ap
 c_mean0 = (c * μ_seq[t]).sum(axis=1)
 ```
 
-We care about how the policy change affects  consumption across   cohorts and across time.
+We care about how the policy change affects consumption across cohorts and across time.
 
-We can study  age-specific average consumption levels.
+We can study age-specific average consumption levels.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Change in mean consumption by age
+    name: ak_aiy_cons_change
+---
 for t in [1, 10, 20, 50, 149]:
 
     ap = hh.a_grid[σ_seq[t]]
@@ -1150,7 +1195,7 @@ for t in [1, 10, 20, 50, 149]:
 
 plt.legend()
 plt.xlabel(r'j')
-plt.title(r'$\Delta mean(C(j))$')
+plt.ylabel(r'$\Delta$ mean $C(j)$')
 plt.show()
 ```
 
@@ -1273,9 +1318,11 @@ ax2.set_ylabel(r"j")
 plt.show()
 ```
 
-## Experiment 2: Preannounced tax cut
+## Experiment 2: a preannounced tax cut
 
-Now the government announces a permanent tax rate cut at time $0$ but implements it only after 20 periods.
+Now the government announces at time $0$ that it will issue the same amount of debt, but will start doing so only after 20 periods.
+
+As in Experiment 1, the tax rate is residual: it falls while the debt is being issued, from $t=20$ to $t=40$, and settles permanently above its initial level thereafter.
 
 We will use the same key toolkit `path_iteration`.
 
@@ -1366,31 +1413,46 @@ axs[2, 2].set_ylim([ss1[9]-0.1, ss1[9]+0.1])
 plt.show()
 ```
 
-Notice how prices and quantities  respond immediately to the anticipated tax rate increase.
+Notice how prices and quantities respond immediately, well before the policy is implemented at $t=20$.
 
-Let's zoom in on how the capital stock  responds.
+Agents who foresee the coming tax cut, and the permanently higher tax rate that follows it, adjust their savings right away.
+
+Let's zoom in on how the capital stock responds.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Capital stock around the tax cut
+    name: ak_aiy_K_zoom
+---
 # K
 i_var = 3
+K_path = paths[i_var][:25]
 
-plt.plot(paths[i_var][:25])
+K_lo = min(float(K_path.min()), float(ss1[i_var]))
+K_hi = max(float(K_path.max()), float(ss1[i_var]))
+pad = 0.1 * (K_hi - K_lo)
+
+plt.plot(K_path)
 plt.hlines(ss1[i_var], 0, 25, color='r', linestyle='--')
-plt.vlines(20, 6, 7, color='k', linestyle='--', linewidth=0.5)
-plt.text(17, 6.56, r'tax cut')
-plt.ylim([6.52, 6.65])
-plt.title("K")
+plt.axvline(20, color='k', linestyle='--', linewidth=0.5)
+plt.text(17, K_lo - 0.5 * pad, r'tax cut')
+plt.ylim([K_lo - pad, K_hi + pad])
+plt.ylabel("K")
 plt.xlabel("t")
 plt.show()
 ```
 
-After the tax cut policy is implemented at $t=20$, the aggregate capital will decrease because of the crowding out effect.
+After the tax cut is implemented at $t=20$, aggregate capital decreases because government debt crowds out private capital.
 
-Having foreseen an increase in the interest rate, individuals a few periods before $t=20$ start saving more.
+In the few periods just before $t=20$, individuals save more.
 
-Because that increases the capital, a temporary decrease in the interest rate ensues.
+The reason is that the tax cut raises the *after-tax* return $r_t(1-\tau_t)$ at $t=20$, even though the pre-tax return $r_t$ is falling then, so saving into $t=20$ becomes more attractive.
 
-For agents living in much earlier periods, that lower interest rate causes them to save less.
+Because that extra saving raises the capital stock, the pre-tax interest rate dips, reaching its lowest value just before the policy takes effect.
+
+In the first few periods after the announcement the two forces nearly cancel and the capital stock is almost flat, with the saving response building up as the implementation date approaches.
 
 
 
@@ -1436,4 +1498,160 @@ ax2.set_xlabel(r"t")
 ax2.set_ylabel(r"j")
 
 plt.show()
+```
+
+
+## Exercises
+
+```{exercise}
+:label: ak_aiy_ex1
+
+Our asset grid runs from $0$ to $a_{\max} = 40$.
+
+A grid whose upper bound binds would make the computed equilibrium an artifact of the grid rather than a property of the model.
+
+1. Re-solve the steady state with $a_{\max} \in \{10, 20\}$, holding the number of grid points fixed at $200$.
+
+2. For each case report aggregate capital $K$, the interest rate $r$, the flat rate tax $\tau$, and the share of the population at the top grid point.
+
+3. What do you conclude about using $a_{\max} = 10$?
+```
+
+```{solution-start} ak_aiy_ex1
+:class: dropdown
+```
+
+```{code-cell} ipython3
+def ss_for_a_max(a_max):
+    "Solve the steady state for a given upper bound on assets."
+    h = create_household(a_max=a_max)
+    Q_h = populate_Q(h)
+    out = find_ss(h, firm, [0, 0.1, np.zeros(h.j_grid.size)], Q_h)
+    μ_h = out[2].reshape((h.j_grid.size, h.a_grid.size, h.γ_grid.size))
+    top = float(μ_h[:, -1, :].sum() / h.j_grid.size)
+    return float(out[3]), float(out[5]), float(out[7]), top
+
+print(f"{'a_max':>6}  {'K':>7}  {'r':>7}  {'τ':>7}  {'mass at a_max':>14}")
+for a_max in [10, 20, 40]:
+    K_a, r_a, τ_a, top = ss_for_a_max(a_max)
+    print(f"{a_max:>6}  {K_a:>7.3f}  {r_a:>7.4f}  {τ_a:>7.4f}  {top:>13.1%}")
+```
+
+With $a_{\max} = 10$, roughly thirty percent of the population is pinned at the upper bound.
+
+Those agents would like to hold more assets than the grid permits, so measured capital is far too low and the interest rate far too high.
+
+Raising the bound to $40$ empties the top of the grid and moves $K$ up by about forty percent and $r$ down by nearly two percentage points.
+
+The lesson is that an upper bound must be checked, not assumed: a grid is wide enough only when almost no probability mass reaches its edge.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ak_aiy_ex2
+
+How much of the capital stock is accounted for by precautionary saving against idiosyncratic labor productivity risk?
+
+Hold the mean of $\gamma$ at one and shrink the spread, comparing $\gamma \in \{0.9, 1.1\}$ and $\gamma \in \{0.75, 1.25\}$ with the baseline $\gamma \in \{0.5, 1.5\}$.
+
+Report $K$, $L$, $r$, and $\tau$ in each case, and explain the direction of the effect.
+```
+
+```{solution-start} ak_aiy_ex2
+:class: dropdown
+```
+
+```{code-cell} ipython3
+print(f"{'γ_grid':>16}  {'K':>7}  {'L':>7}  {'r':>7}  {'τ':>7}")
+for γ_grid in [[0.9, 1.1], [0.75, 1.25], [0.5, 1.5]]:
+    h = create_household(γ_grid=γ_grid)
+    Q_h = populate_Q(h)
+    out = find_ss(h, firm, [0, 0.1, np.zeros(h.j_grid.size)], Q_h)
+    print(f"{str(γ_grid):>16}  {float(out[3]):>7.3f}  {float(out[4]):>7.4f}"
+          f"  {float(out[5]):>7.4f}  {float(out[7]):>7.4f}")
+```
+
+Aggregate labor $L$ is the same in all three economies, because the productivity chain is symmetric and its mean is one in each case.
+
+Capital nevertheless rises with the spread, from about $9.1$ to about $9.5$, and the interest rate falls by roughly twenty basis points.
+
+The extra capital is precautionary saving: an agent who cannot borrow and cannot insure labor income holds a buffer stock of assets against a run of low productivity draws, and a wider spread calls for a bigger buffer.
+
+The effect is non-linear, since most of it appears when we move from $\{0.75, 1.25\}$ to $\{0.5, 1.5\}$.
+
+```{note}
+It is tempting to shut down risk completely by setting $\gamma_l = \gamma_h$.
+
+Doing so is numerically treacherous.
+
+Without idiosyncratic risk, every agent of a given age chooses the same point on the asset grid, so aggregate asset supply becomes a step function of $r$ and the price iteration can cycle rather than converge.
+
+This is one reason for the iteration cap in `find_ss`.
+```
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ak_aiy_ex3
+
+This exercise builds an unfunded social security system like the one studied in {ref}`Experiment 4 of the two-period model <exp-social-security>`.
+
+Let the government tax each young agent and pay each old agent, with
+
+$$
+\delta_{j} = \begin{cases} d & j < 25 \\ -d & j \geq 25 \end{cases}
+$$
+
+so that $\sum_j \delta_j = 0$ and the scheme is balanced period by period.
+
+1. Compute steady states for $d \in \{0, 0.1, 0.25\}$ and report $K$, $r$, $w$, and $\tau$.
+
+2. Report mean consumption of the young half and the old half of the population.
+
+3. Compare your findings with the two-period model.
+```
+
+```{solution-start} ak_aiy_ex3
+:class: dropdown
+```
+
+```{code-cell} ipython3
+a_vec = hh.a_grid.reshape((1, hh.a_grid.size, 1))
+γ_vec = hh.γ_grid.reshape((1, 1, hh.γ_grid.size))
+l_vec = l(hh.j_grid).reshape((hh.j_grid.size, 1, 1))
+J = hh.j_grid.size
+
+print(f"{'d':>5}  {'K':>7}  {'r':>7}  {'w':>7}  {'τ':>7}"
+      f"  {'c young':>8}  {'c old':>7}")
+for d in [0.0, 0.1, 0.25]:
+    δ_ss = np.zeros(J)
+    δ_ss[:J//2], δ_ss[J//2:] = d, -d
+    out = find_ss(hh, firm, [0, 0.1, δ_ss], Q)
+    σ_d, μ_d = out[1], out[2]
+    K_d, r_d, w_d, τ_d = (float(out[3]), float(out[5]),
+                          float(out[6]), float(out[7]))
+
+    ap_d = hh.a_grid[σ_d].reshape((J, hh.a_grid.size, hh.γ_grid.size))
+    c_d = ((1 + r_d * (1 - τ_d)) * a_vec
+           + (1 - τ_d) * w_d * l_vec * γ_vec
+           - δ_ss.reshape((J, 1, 1)) - ap_d)
+    c_mean = (c_d * μ_d.reshape(ap_d.shape)).sum(axis=(1, 2))
+
+    print(f"{d:>5.2f}  {K_d:>7.3f}  {r_d:>7.4f}  {w_d:>7.4f}  {τ_d:>7.4f}"
+          f"  {c_mean[:J//2].mean():>8.4f}  {c_mean[J//2:].mean():>7.4f}")
+```
+
+The transfer scheme is balanced at every date, so it collects no net revenue and the flat rate tax $\tau$ barely moves.
+
+Even so, it contracts the economy: capital falls from $9.5$ to $8.7$ as $d$ rises to $0.25$, the interest rate rises, and the wage falls.
+
+The young consume less because they are taxed, and the old consume more because they are subsidized, but the young also save less, both because their income is lower and because the promised transfer substitutes for their own saving.
+
+This is the same crowding out that {ref}`Experiment 4 of the two-period model <exp-social-security>` displays.
+
+What the long-lived model adds is the observation that the transfer is collected from exactly those agents whose precautionary motive is strongest, namely the young, who hold the fewest assets with which to buffer labor income risk.
+
+```{solution-end}
 ```
