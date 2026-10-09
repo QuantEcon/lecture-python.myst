@@ -1226,7 +1226,7 @@ Relaxing any of them breaks at least one of these properties, which is the subje
 
 Before leaving the model, it is worth recording how much of it was in place at the start.
 
-Both trading arrangements, the proof that they support the same allocation, and the observation that the sequential one presumes correct forecasts of future spot prices all appear in the paper that Arrow read in 1952, eight years before {cite:t}`muth1961` named the hypothesis that such forecasts embody.
+Both trading arrangements, the proof that they support the same allocation, and the observation that the sequential one presumes correct forecasts of future spot prices all appear in the paper that Arrow read in 1952, nine years before {cite:t}`muth1961` named the hypothesis that such forecasts embody.
 
 Arrow did not use the term, and the dynamic programming arguments that make the equivalence transparent were not yet available to him.
 
@@ -1708,7 +1708,9 @@ for s in range(2):
 
 The spot equilibrium in state $1$ has prices proportional to $(2,1)$ and in state $2$ proportional to $(1,2)$.
 
-Each consumer eats mostly the good that it is endowed with and that it likes less, because its own endowment makes that good cheap for the economy as a whole.
+Each consumer eats mostly the good that it likes more.
+
+In each state the good favored by the richer consumer is the expensive one, because the aggregate endowment is the same in both states and only the distribution of wealth differs.
 
 *Part 2.* The dollar payoff of a security is the forecast price of the good it delivers, times the quantity delivered.
 
