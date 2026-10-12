@@ -288,7 +288,7 @@ At $\rho = \rho^0$ the structural model generated the data, the two projections 
 Consistency and asymptotic normality hold under weak regularity conditions,
 
 $$
-\sqrt{n} \, (\hat \rho_n - \rho^0) \to \mathcal{N}
+\sqrt{n} \, (\hat \rho_n - \rho^0) \to N
    \Bigl( 0, \bigl[ (M^0)^\top (\mathcal{I}^0)^{-1} M^0 \bigr]^{-1} \Bigr) ,
 \qquad M^0 = \frac{\partial}{\partial \rho^\top} m(\rho^0, \theta^0) ,
 $$
@@ -331,7 +331,7 @@ Write $G^0 = \partial g(\rho^0) / \partial \rho^\top$.
 Their Theorem 2 states that smooth embedding implies
 
 $$
-\sqrt{n} \, (\hat \rho_n - \rho^0) \to \mathcal{N}
+\sqrt{n} \, (\hat \rho_n - \rho^0) \to N
    \Bigl( 0, \bigl[ (G^0)^\top \mathcal{I}^0 G^0 \bigr]^{-1} \Bigr) ,
 $$
 
@@ -393,7 +393,7 @@ Lacking one, Gallant and Tauchen recommend two general purpose families.
 
 The **seminonparametric** or SNP density of {cite:t}`GallantNychka1987` and {cite:t}`GallantTauchen1989` multiplies a Gaussian density by a squared Hermite polynomial whose coefficients depend on lagged values.
 
-Tuning parameters nest an i.i.d. Gaussian, a Gaussian VAR, Gaussian ARCH and GARCH, and fully nonlinear nonparametric specifications, so a specification search selects the auxiliary model from the data {cite}`GallantTauchen2010`.
+Tuning parameters nest an IID Gaussian, a Gaussian VAR, Gaussian ARCH and GARCH, and fully nonlinear nonparametric specifications, so a specification search selects the auxiliary model from the data {cite}`GallantTauchen2010`.
 
 The **neural net** score approximates any nonlinear autoregression, including deterministic chaos.
 
@@ -420,7 +420,7 @@ An example in which we *can* compute the maximum likelihood estimator lets us ch
 Take as the structural model a Gaussian first-order autoregression,
 
 $$
-y_t = \rho_1 y_{t-1} + \sigma \epsilon_t , \qquad \epsilon_t \sim \mathcal{N}(0,1) ,
+y_t = \rho_1 y_{t-1} + \sigma \epsilon_t , \qquad \epsilon_t \sim N(0,1) ,
 $$
 
 with $\rho = (\rho_1, \sigma)^\top$.
@@ -428,7 +428,7 @@ with $\rho = (\rho_1, \sigma)^\top$.
 Take as the auxiliary model a Gaussian second-order autoregression,
 
 $$
-y_t = \theta_1 y_{t-1} + \theta_2 y_{t-2} + \varsigma e_t , \qquad e_t \sim \mathcal{N}(0,1) ,
+y_t = \theta_1 y_{t-1} + \theta_2 y_{t-2} + \varsigma e_t , \qquad e_t \sim N(0,1) ,
 $$
 
 with $\theta = (\theta_1, \theta_2, \varsigma)^\top$.
@@ -534,6 +534,12 @@ The next figure evaluates the criterion on a grid of $\rho_1$ values with $\sigm
 One curve uses the common random numbers `ε_sim`, and the other draws fresh shocks at each grid point.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Criterion with common and fresh shocks
+    name: fig-gt-common-random-numbers
+---
 rng_fresh = np.random.default_rng(1)
 ρ1_grid = np.linspace(0.77, 0.83, 61)
 σ_hat = res.x[1]
@@ -547,9 +553,9 @@ def criterion_fresh(ρ):
 crn = [criterion_ar1(np.array([r1, σ_hat])) for r1 in ρ1_grid]
 fresh = [criterion_fresh(np.array([r1, σ_hat])) for r1 in ρ1_grid]
 
-fig, ax = plt.subplots(figsize=(10, 4))
-ax.plot(ρ1_grid, crn, label='common random numbers')
-ax.plot(ρ1_grid, fresh, label='fresh shocks at each point')
+fig, ax = plt.subplots()
+ax.plot(ρ1_grid, crn, lw=2, label='common random numbers')
+ax.plot(ρ1_grid, fresh, lw=2, label='fresh shocks at each point')
 ax.set_xlabel(r'$\rho_1$')
 ax.set_ylabel('criterion')
 ax.legend()
@@ -662,7 +668,7 @@ y_t = \mu + u_t , \qquad u_t = \sigma_t \nu_t , \qquad
 \sigma_t^2 = \omega + \alpha u_{t-1}^2 + \beta \sigma_{t-1}^2 ,
 $$
 
-with $\theta = (\mu, \omega, \alpha, \beta)^\top$ and $\nu_t \sim \mathcal{N}(0,1)$.
+with $\theta = (\mu, \omega, \alpha, \beta)^\top$ and $\nu_t \sim N(0,1)$.
 
 The GARCH conditional density depends on the entire past of $y_t$ through the recursion for $\sigma_t^2$, so here $x_t$ is the whole history.
 
@@ -754,7 +760,13 @@ The population kurtosis of $y_t$ is $3 \exp\bigl( 4 r_w^2 / (1 - a^2) \bigr) = 4
 The sample kurtosis understates it, as sample kurtoses of heavy-tailed series often do.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(10, 3.5))
+---
+mystnb:
+  figure:
+    caption: Simulated returns from the SV model
+    name: fig-gt-sv-returns
+---
+fig, ax = plt.subplots()
 ax.plot(y_sv, lw=0.6)
 ax.set_xlabel('$t$')
 ax.set_ylabel('$y_t$')
@@ -951,7 +963,7 @@ $$
   = - \, m(\rho, \theta) ,
 $$
 
-where $m(\rho,\theta) = E_{p(\cdot \mid \rho)} \bigl[ \partial \ln f(\cdot \mid \theta) / \partial\theta \bigr]$.
+where $m(\rho,\theta) = \mathbb{E}_{p(\cdot \mid \rho)} \bigl[ \partial \ln f(\cdot \mid \theta) / \partial\theta \bigr]$.
 
 b. Conclude that the pseudo-true value $\theta^0(\rho)$ satisfies $m\bigl(\rho, \theta^0(\rho)\bigr) = 0$.
 
@@ -1063,7 +1075,7 @@ print(f"\ncorrelation across replications: ρ1 "
 ```
 
 ```{code-cell} ipython3
-fig, axes = plt.subplots(1, 2, figsize=(11, 4))
+fig, axes = plt.subplots(1, 2)
 for j, name in enumerate([r'$\rho_1$', r'$\sigma$']):
     axes[j].scatter(mle_draws[:, j], emm_draws[:, j], s=18)
     lo = min(mle_draws[:, j].min(), emm_draws[:, j].min())
@@ -1182,7 +1194,7 @@ $$
 All three depend on $\rho$ only through $\gamma_0$, the variance
 
 $$
-\operatorname{Var}(y_t) = r_y^2 \exp\!\left( \frac{2 r_w^2}{1 - a^2} \right) ,
+\mathbb{V}(y_t) = r_y^2 \exp\!\left( \frac{2 r_w^2}{1 - a^2} \right) ,
 $$
 
 so one equation must determine three parameters.
