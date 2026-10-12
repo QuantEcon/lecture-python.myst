@@ -11,7 +11,6 @@ kernelspec:
   name: python3
 ---
 
-(ppd)=
 ```{raw} jupyter
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
@@ -20,18 +19,31 @@ kernelspec:
 </div>
 ```
 
+(ppd)=
 # {index}`Pandas for Panel Data <single: Pandas for Panel Data>`
 
 ```{index} single: Python; Pandas
 ```
 
-```{contents} Contents
-:depth: 2
+In addition to what’s in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install --upgrade seaborn
+```
+
+We use the following imports.
+
+```{code-cell} ipython3
+import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set_theme()
 ```
 
 ## Overview
 
-In an [earlier lecture on pandas](https://python-programming.quantecon.org/pandas.html), we looked at working with simple data sets.
+In an {doc}`earlier lecture on pandas <pandas>`, we looked at working with simple data sets.
 
 Econometricians often need to work with more complex data sets, such as panels.
 
@@ -65,7 +77,7 @@ countries and assign it to `realwage`.
 The dataset can be accessed with the following link:
 
 ```{code-cell} ipython3
-url1 = 'https://github.com/QuantEcon/data-lectures/raw/main/lectures/realwage.csv'
+url1 = 'https://raw.githubusercontent.com/QuantEcon/data-lectures/main/lectures/realwage.csv'
 ```
 
 ```{code-cell} ipython3
@@ -138,14 +150,14 @@ the row index (`.unstack()` works in the opposite direction - try it
 out)
 
 ```{code-cell} ipython3
-realwage.stack(future_stack=True).head()
+realwage.stack().head()
 ```
 
 We can also pass in an argument to select the level we would like to
 stack
 
 ```{code-cell} ipython3
-realwage.stack(level='Country', future_stack=True).head()
+realwage.stack(level='Country').head()
 ```
 
 Using a `DatetimeIndex` makes it easy to select a particular time
@@ -155,7 +167,7 @@ Selecting one year and stacking the two lower levels of the
 `MultiIndex` creates a cross-section of our panel data
 
 ```{code-cell} ipython3
-realwage.loc['2015'].stack(level=(1, 2), future_stack=True).transpose().head()
+realwage.loc['2015'].stack(level=(1, 2)).transpose().head()
 ```
 
 For the rest of lecture, we will work with a dataframe of the hourly
@@ -185,7 +197,7 @@ function.
 The dataset can be accessed with the following link:
 
 ```{code-cell} ipython3
-url2 = 'https://github.com/QuantEcon/data-lectures/raw/main/lectures/countries.csv'
+url2 = 'https://raw.githubusercontent.com/QuantEcon/data-lectures/main/lectures/countries.csv'
 ```
 
 ```{code-cell} ipython3
@@ -232,7 +244,6 @@ a corresponding data entry `realwage_f`.
 This is illustrated by the red shading in the following diagram
 
 ```{figure} /_static/lecture_specific/pandas_panel/venn_diag.png
-
 ```
 
 We will also need to specify where the country name is located in each
@@ -294,14 +305,11 @@ merged[merged['Country'] == 'Korea']
 
 We will also combine the Americas into a single continent - this will make our visualization nicer later on.
 
-To do this, we will use `.replace()` and loop through a list of the continent values we want to replace
+To do this, we will use `.replace()` with a list of the continent values we want to replace.
 
 ```{code-cell} ipython3
 replace = ['Central America', 'North America', 'South America']
-
-for country in replace:
-    merged.Continent = merged.Continent.replace(to_replace=country,
-                                value='America')
+merged['Continent'] = merged['Continent'].replace(to_replace=replace, value='America')
 ```
 
 Now that we have all the data we want in a single `DataFrame`, we will
@@ -362,12 +370,6 @@ Using this series, we can plot the average real minimum wage over the
 past decade for each country in our data set
 
 ```{code-cell} ipython3
-import matplotlib.pyplot as plt
-import seaborn as sns
-sns.set_theme()
-```
-
-```{code-cell} ipython3
 merged.mean().sort_values(ascending=False).plot(kind='bar',
                                                 title="Average real minimum wage 2006 - 2016")
 
@@ -397,10 +399,12 @@ plt.show()
 ```
 
 We can also specify a level of the `MultiIndex` (in the column axis)
-to aggregate over
+to aggregate over. 
+
+In the case of `groupby`, we need to use `.T` to transpose the columns into rows, as `pandas` has removed support for `axis=1` in the `groupby` method.
 
 ```{code-cell} ipython3
-merged.T.groupby(level='Continent').mean().T.head()
+merged.T.groupby(level='Continent').mean().head()
 ```
 
 We can plot the average minimum wages in each continent as a time series
@@ -428,7 +432,7 @@ plt.show()
 summary statistics
 
 ```{code-cell} ipython3
-merged.stack(future_stack=True).describe()
+merged.stack().describe()
 ```
 
 This is a simplified way to use `groupby`.
@@ -502,7 +506,7 @@ in Europe by age and sex from [Eurostat](https://ec.europa.eu/eurostat/data/data
 The dataset can be accessed with the following link:
 
 ```{code-cell} ipython3
-url3 = 'https://github.com/QuantEcon/data-lectures/raw/main/lectures/employ.csv'
+url3 = 'https://raw.githubusercontent.com/QuantEcon/data-lectures/main/lectures/employ.csv'
 ```
 
 Reading in the CSV file returns a panel dataset in long format. Use `.pivot_table()` to construct
@@ -617,4 +621,4 @@ plt.show()
 ```
 
 ```{solution-end}
- ```
+```
