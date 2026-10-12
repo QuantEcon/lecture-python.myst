@@ -305,7 +305,7 @@ merged[merged['Country'] == 'Korea']
 
 We will also combine the Americas into a single continent - this will make our visualization nicer later on.
 
-To do this, we will use `.replace()` and loop through a list of the continent values we want to replace
+To do this, we will use `.replace()` with a list of the continent values we want to replace.
 
 ```{code-cell} ipython3
 replace = ['Central America', 'North America', 'South America']
