@@ -38,11 +38,11 @@ We can solve "the direct problem," which maps a parameter vector into a probabil
 
 We cannot use maximum likelihood to solve "the inverse problem," which maps an observed data set into an estimate of the parameter vector.
 
-Researchers with such models turn to the generalized method of moments of {cite}`Hansen1982` and compute the moments by simulation {cite}`McFadden1989,PakesPollard1989,DuffieSingleton1993`.
+Researchers with such models turn to the generalized method of moments of {cite:t}`Hansen1982` and compute the moments by simulation {cite}`McFadden1989,PakesPollard1989,DuffieSingleton1993`.
 
 They must decide which moments to match.
 
-A. Ronald Gallant and George Tauchen studied this question in {cite}`GallantTauchen1996`.
+A. Ronald Gallant and George Tauchen studied this question in {cite:t}`GallantTauchen1996`.
 
 They put two models on the table:
 
@@ -87,7 +87,7 @@ They argue that if the auxiliary model closely approximates the distribution of 
 
 Practitioners call their method the **efficient method of moments**, or EMM.
 
-{cite}`GallantTauchen2010` surveys the method and its applications.
+{cite:t}`GallantTauchen2010` surveys the method and its applications.
 
 Let's start with some imports.
 
@@ -203,7 +203,7 @@ Each evaluation requires a simulation and no optimization.
 :label: eq:gt_estimator
 
 \hat \rho_n = \arg\min_{\rho \in \mathcal{R}} \;
-   m(\rho, \tilde \theta_n)' \, (\tilde{\mathcal{I}}_n)^{-1} \, m(\rho, \tilde \theta_n) ,
+   m(\rho, \tilde \theta_n)^\top \, (\tilde{\mathcal{I}}_n)^{-1} \, m(\rho, \tilde \theta_n) ,
 ```
 
 where
@@ -212,7 +212,7 @@ where
 :label: eq:gt_weight
 
 \tilde{\mathcal{I}}_n = \frac{1}{n} \sum_{t=1}^n
-   s(\tilde y_t, \tilde x_t, \tilde \theta_n) \, s(\tilde y_t, \tilde x_t, \tilde \theta_n)' .
+   s(\tilde y_t, \tilde x_t, \tilde \theta_n) \, s(\tilde y_t, \tilde x_t, \tilde \theta_n)^\top .
 ```
 
 The weighting matrix {eq}`eq:gt_weight` is the outer product of the auxiliary scores at the data.
@@ -227,7 +227,7 @@ An auxiliary model that describes the conditional distribution of the data corre
 
 Gaussian quasi-maximum likelihood scores are also serially uncorrelated when the auxiliary model specifies the conditional mean and variance correctly {cite}`BollerslevWooldridge1992`.
 
-Otherwise Gallant and Tauchen recommend a heteroskedasticity and autocorrelation consistent estimate with Parzen weights {cite}`Gallant1987`, and they cite {cite}`Andrews1991` for alternatives.
+Otherwise Gallant and Tauchen recommend a heteroskedasticity and autocorrelation consistent estimate with Parzen weights {cite}`Gallant1987`, and they cite {cite:t}`Andrews1991` for alternatives.
 
 {ref}`gt_ex4` shows how far the outer product can understate $\mathcal{I}^0$ when the scores are serially correlated.
 
@@ -289,11 +289,11 @@ Consistency and asymptotic normality hold under weak regularity conditions,
 
 $$
 \sqrt{n} \, (\hat \rho_n - \rho^0) \to \mathcal{N}
-   \Bigl( 0, \bigl[ (M^0)' (\mathcal{I}^0)^{-1} M^0 \bigr]^{-1} \Bigr) ,
-\qquad M^0 = \frac{\partial}{\partial \rho'} m(\rho^0, \theta^0) ,
+   \Bigl( 0, \bigl[ (M^0)^\top (\mathcal{I}^0)^{-1} M^0 \bigr]^{-1} \Bigr) ,
+\qquad M^0 = \frac{\partial}{\partial \rho^\top} m(\rho^0, \theta^0) ,
 $$
 
-which is Theorem 1 of {cite}`GallantTauchen1996`.
+which is Theorem 1 of {cite:t}`GallantTauchen1996`.
 
 Here $\mathcal{I}^0$ is the variance of the auxiliary score that $\tilde{\mathcal{I}}_n$ in {eq}`eq:gt_weight` estimates.
 
@@ -302,7 +302,7 @@ The formula assumes that the weighting matrix converges to $(\mathcal{I}^0)^{-1}
 With any other limiting weighting matrix $W$, the asymptotic variance takes the sandwich form
 
 $$
-\bigl[ (M^0)' W M^0 \bigr]^{-1} (M^0)' W \, \mathcal{I}^0 \, W M^0 \bigl[ (M^0)' W M^0 \bigr]^{-1} .
+\bigl[ (M^0)^\top W M^0 \bigr]^{-1} (M^0)^\top W \, \mathcal{I}^0 \, W M^0 \bigl[ (M^0)^\top W M^0 \bigr]^{-1} .
 $$
 
 {ref}`gt_ex4` uses it.
@@ -326,13 +326,13 @@ The function $\theta^0(\rho)$ always exists.
 
 Under smooth embedding $\theta^0(\rho) = g(\rho)$.
 
-Write $G^0 = \partial g(\rho^0) / \partial \rho'$.
+Write $G^0 = \partial g(\rho^0) / \partial \rho^\top$.
 
 Their Theorem 2 states that smooth embedding implies
 
 $$
 \sqrt{n} \, (\hat \rho_n - \rho^0) \to \mathcal{N}
-   \Bigl( 0, \bigl[ (G^0)' \mathcal{I}^0 G^0 \bigr]^{-1} \Bigr) ,
+   \Bigl( 0, \bigl[ (G^0)^\top \mathcal{I}^0 G^0 \bigr]^{-1} \Bigr) ,
 $$
 
 which is the asymptotic distribution of the maximum likelihood estimator of $\rho$.
@@ -351,15 +351,15 @@ Gallant and Tauchen read this as instruction about how to choose the auxiliary m
 
 Indirect inference names the class of estimators that compare observed and simulated data through an auxiliary model.
 
-{cite}`GourierouxMonfortRenault1993` and {cite}`Smith1993` match the auxiliary parameters.
+{cite:t}`GourierouxMonfortRenault1993` and {cite:t}`Smith1993` match the auxiliary parameters.
 
-{cite}`GourierouxMonfortRenault1993` call $\theta^0(\rho)$ the **binding function**.
+{cite:t}`GourierouxMonfortRenault1993` call $\theta^0(\rho)$ the **binding function**.
 
 Their estimator is
 
 $$
 \hat \rho_{II} = \arg\min_{\rho} \;
-  \bigl[ \tilde\theta_n - \theta^0(\rho) \bigr]' \, \Omega \, \bigl[ \tilde\theta_n - \theta^0(\rho) \bigr]
+  \bigl[ \tilde\theta_n - \theta^0(\rho) \bigr]^\top \, \Omega \, \bigl[ \tilde\theta_n - \theta^0(\rho) \bigr]
 $$
 
 for a weighting matrix $\Omega$.
@@ -380,7 +380,7 @@ The advantage of matching scores is computational.
 
 Finite-sample behavior can differ.
 
-{cite}`DuffeeStanton2008` study highly persistent Gaussian autoregressions and find that score matching yields confidence intervals that are wider than those of parameter matching yet less likely to cover the true value.
+{cite:t}`DuffeeStanton2008` study highly persistent Gaussian autoregressions and find that score matching yields confidence intervals that are wider than those of parameter matching yet less likely to cover the true value.
 
 They trace the problem to the large role that the population variance plays in the score moment conditions.
 
@@ -391,7 +391,7 @@ A model known to describe the data accurately should be the auxiliary model.
 
 Lacking one, Gallant and Tauchen recommend two general purpose families.
 
-The **seminonparametric** or SNP density of {cite}`GallantNychka1987` and {cite}`GallantTauchen1989` multiplies a Gaussian density by a squared Hermite polynomial whose coefficients depend on lagged values.
+The **seminonparametric** or SNP density of {cite:t}`GallantNychka1987` and {cite:t}`GallantTauchen1989` multiplies a Gaussian density by a squared Hermite polynomial whose coefficients depend on lagged values.
 
 Tuning parameters nest an i.i.d. Gaussian, a Gaussian VAR, Gaussian ARCH and GARCH, and fully nonlinear nonparametric specifications, so a specification search selects the auxiliary model from the data {cite}`GallantTauchen2010`.
 
@@ -423,7 +423,7 @@ $$
 y_t = \rho_1 y_{t-1} + \sigma \epsilon_t , \qquad \epsilon_t \sim \mathcal{N}(0,1) ,
 $$
 
-with $\rho = (\rho_1, \sigma)'$.
+with $\rho = (\rho_1, \sigma)^\top$.
 
 Take as the auxiliary model a Gaussian second-order autoregression,
 
@@ -431,7 +431,7 @@ $$
 y_t = \theta_1 y_{t-1} + \theta_2 y_{t-2} + \varsigma e_t , \qquad e_t \sim \mathcal{N}(0,1) ,
 $$
 
-with $\theta = (\theta_1, \theta_2, \varsigma)'$.
+with $\theta = (\theta_1, \theta_2, \varsigma)^\top$.
 
 The AR(2) nests the AR(1) through $g(\rho_1, \sigma) = (\rho_1, 0, \sigma)$, so the structural model is smoothly embedded and $k_\theta = 3$ exceeds $k_\rho = 2$.
 
@@ -622,7 +622,7 @@ The weighting matrix $\tilde{\mathcal{I}}_n$ accounts for the rest: it estimates
 
 Now we turn to a model whose likelihood function is intractable.
 
-Section 4.2 of {cite}`GallantTauchen1996` discusses a stochastic volatility model whose mean equation also contains an intercept and a lagged return.
+Section 4.2 of {cite:t}`GallantTauchen1996` discusses a stochastic volatility model whose mean equation also contains an intercept and a lagged return.
 
 We drop those two terms and study
 
@@ -633,7 +633,7 @@ w_t &= a \, w_{t-1} + r_w \, \eta_t ,
 \end{aligned}
 $$
 
-with $z_t$ and $\eta_t$ independent standard normals and $\rho = (a, r_w, r_y)'$.
+with $z_t$ and $\eta_t$ independent standard normals and $\rho = (a, r_w, r_y)^\top$.
 
 The observed return $y_t$ has a volatility $\exp(w_t) r_y$ driven by a latent autoregression $w_t$.
 
@@ -651,9 +651,9 @@ Simulating the model takes two lines of code.
 
 The model generates fat tails and persistent volatility.
 
-{cite}`GallantHsiehTauchen1997` fit the full model and extensions of it to 16,127 daily observations on the Standard and Poor's composite index, using SNP score generators.
+{cite:t}`GallantHsiehTauchen1997` fit the full model and extensions of it to 16,127 daily observations on the Standard and Poor's composite index, using SNP score generators.
 
-Section 4.1 of {cite}`GallantTauchen1996` notes that ARCH and GARCH models fit returns data well.
+Section 4.1 of {cite:t}`GallantTauchen1996` notes that ARCH and GARCH models fit returns data well.
 
 We choose as the auxiliary model a Gaussian GARCH(1,1),
 
@@ -662,7 +662,7 @@ y_t = \mu + u_t , \qquad u_t = \sigma_t \nu_t , \qquad
 \sigma_t^2 = \omega + \alpha u_{t-1}^2 + \beta \sigma_{t-1}^2 ,
 $$
 
-with $\theta = (\mu, \omega, \alpha, \beta)'$ and $\nu_t \sim \mathcal{N}(0,1)$.
+with $\theta = (\mu, \omega, \alpha, \beta)^\top$ and $\nu_t \sim \mathcal{N}(0,1)$.
 
 The GARCH conditional density depends on the entire past of $y_t$ through the recursion for $\sigma_t^2$, so here $x_t$ is the whole history.
 
@@ -693,7 +693,8 @@ def simulate_sv(a, r_w, r_y, z, η):
     n = z.size
     y = np.empty(n)
     w = r_w * η[0] / np.sqrt(1.0 - a * a)
-    for t in range(n):
+    y[0] = np.exp(w) * r_y * z[0]
+    for t in range(1, n):
         w = a * w + r_w * η[t]
         y[t] = np.exp(w) * r_y * z[t]
     return y
@@ -869,7 +870,7 @@ The asymptotic variance of $\sqrt{n}\, m(\hat\rho_n, \tilde\theta_n)$ is
 
 $$
 \Bigl(1 + \frac{n}{N}\Bigr)
-\Bigl[ \mathcal{I}^0 - M^0 \bigl( (M^0)' (\mathcal{I}^0)^{-1} M^0 \bigr)^{-1} (M^0)' \Bigr] .
+\Bigl[ \mathcal{I}^0 - M^0 \bigl( (M^0)^\top (\mathcal{I}^0)^{-1} M^0 \bigr)^{-1} (M^0)^\top \Bigr] .
 $$
 
 Estimating $\rho$ removes the variance in the directions that the columns of $M^0$ span.
@@ -896,17 +897,17 @@ Each negative sign says that, holding the other auxiliary parameters fixed, data
 
 The constant volatility model matches the mean of returns and fails to reproduce the dependence of today's variance on yesterday's squared return.
 
-{cite}`GallantHsiehTauchen1997` use the score vector of a rejected stochastic volatility model to diagnose its defects, and they then repair the model by thickening the tails of $z_t$ and lengthening the memory of the volatility equation.
+{cite:t}`GallantHsiehTauchen1997` use the score vector of a rejected stochastic volatility model to diagnose its defects, and they then repair the model by thickening the tails of $z_t$ and lengthening the memory of the volatility equation.
 
 ## Applications
 
-{cite}`GallantTauchen2010` collects applications of the method to continuous-time models in finance.
+{cite:t}`GallantTauchen2010` collects applications of the method to continuous-time models in finance.
 
-{cite}`AndersenBenzoniLund2002` estimate stochastic volatility diffusions for the Standard and Poor's 500 index and reject them, and jump diffusions pass the same tests.
+{cite:t}`AndersenBenzoniLund2002` estimate stochastic volatility diffusions for the Standard and Poor's 500 index and reject them, and jump diffusions pass the same tests.
 
 Other applications fit multifactor stochastic volatility models, term structure models of interest rates, and exchange rate models.
 
-{cite}`BansalGallantHusseyTauchen1995` fit a two-country general equilibrium monetary model to high-frequency currency market data, and {cite}`GallantTauchen1996` propose fitting a one-sector stochastic growth model to consumption and stock returns.
+{cite:t}`BansalGallantHusseyTauchen1995` fit a two-country general equilibrium monetary model to high-frequency currency market data, and {cite:t}`GallantTauchen1996` propose fitting a one-sector stochastic growth model to consumption and stock returns.
 
 Empirical auction models form another class of applications.
 
@@ -1002,7 +1003,7 @@ It preserves consistency.
 ```{exercise}
 :label: gt_ex2
 
-Theorem 2 of {cite}`GallantTauchen1996` says that the score matching estimator and the maximum likelihood estimator have the same asymptotic distribution when the structural model is smoothly embedded within the auxiliary model and simulation error is negligible.
+Theorem 2 of {cite:t}`GallantTauchen1996` says that the score matching estimator and the maximum likelihood estimator have the same asymptotic distribution when the structural model is smoothly embedded within the auxiliary model and simulation error is negligible.
 
 Check this claim by Monte Carlo in the AR(1) and AR(2) example.
 
@@ -1239,13 +1240,13 @@ Compare the diagonals of the three estimates.
 
 c. Re-estimate $\rho$ with each estimate of $\mathcal{I}^0$, and compare the Theorem 1 standard errors.
 
-The Theorem 1 formula $\bigl[ M' W M \bigr]^{-1}$ assumes that the weighting matrix $W$ equals $(\mathcal{I}^0)^{-1}$.
+The Theorem 1 formula $\bigl[ M^\top W M \bigr]^{-1}$ assumes that the weighting matrix $W$ equals $(\mathcal{I}^0)^{-1}$.
 
 For the outer-product and Parzen estimators, also compute the sandwich standard errors
 
 $$
 \Bigl(1 + \frac{n}{N}\Bigr) \frac{1}{n}
-\bigl( M' W M \bigr)^{-1} M' W \, \mathcal{I} \, W M \bigl( M' W M \bigr)^{-1} ,
+\bigl( M^\top W M \bigr)^{-1} M^\top W \, \mathcal{I} \, W M \bigl( M^\top W M \bigr)^{-1} ,
 $$
 
 with the simulated estimate of $\mathcal{I}^0$ in place of $\mathcal{I}$.
@@ -1344,19 +1345,19 @@ for label, ρ, se, sw in [('outer product', ρ_op, se_op, sw_op),
         print(f"{'   sandwich std error':24}" + "".join(f"{x:9.4f}" for x in sw))
 ```
 
-The $\alpha$ and $\beta$ components of the score have autocorrelations between 0.16 and 0.36 at lags 1 to 3.
+The $\alpha$ and $\beta$ components of the score have autocorrelations between 0.16 and 0.37 at lags 1 to 3.
 
 A Gaussian GARCH model is a misspecified score generator for these data, and its scores are not martingale differences.
 
 The outer product omits the autocovariances that the long-run variance $\mathcal{I}^0$ contains.
 
-The simulated estimate of $\mathcal{I}^0$ is three to four times the outer product for the $\omega$, $\alpha$ and $\beta$ components.
+The simulated estimate of $\mathcal{I}^0$ is two to four times the outer product for the $\omega$, $\alpha$ and $\beta$ components.
 
-The Parzen estimate closes only a small part of that gap.
+The Parzen estimate closes less than half of that gap.
 
-With $n = 2000$ its lag truncation is $\ell = 4$, and the Parzen weights at lags 1, 2 and 3 are 0.72, 0.25 and 0.03, so it discards most of the persistent autocovariance.
+With $n = 2000$ its lag truncation is $\ell = 4$, and the Parzen weights at lags 1, 2 and 3 are 0.72, 0.25 and 0.03, so it discards much of the persistent autocovariance.
 
-With the outer product as $W$, the Theorem 1 formula understates the standard errors of $a$ and $r_y$ by a factor of almost two.
+With the outer product as $W$, the Theorem 1 formula understates the standard errors of $a$ and $r_y$ by about a third.
 
 The Parzen estimate raises those two standard errors by about a fifth.
 
