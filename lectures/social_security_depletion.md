@@ -48,12 +48,29 @@ Those decisions determine taxable payroll and the scheduled benefit bill, which 
 
 This lecture studies that fixed point, following {cite:t}`SargentShi2026`.
 
-We write down the trust fund law of current law, define the map from a path for the payable factor into another path for the payable factor, and compute its fixed point in a quantitative overlapping generations model with
+We write down the ledger that current law prescribes, define the map that sends a path for the payable factor into another path for the payable factor, and compute its fixed point in a quantitative overlapping generations model with
 
 * a life cycle from age $20$ to age $100$ with projected mortality
 * permanent heterogeneity in earnings ability and in the taste for work
 * the statutory benefit formula, the actuarial adjustment for the claim age, the taxable maximum, and the taxation of benefits
 * retirement and benefit claiming as **separate** irreversible decisions
+
+The exercises then put the machinery to work: on the oscillation that a decreasing map produces, on raising the full retirement age, on what it would cost to guarantee scheduled benefits instead, and on how much of the long-run cut is the work of rising life expectancy.
+
+Several symbols recur, so we record them here.
+
+| Symbol | Meaning |
+|---|---|
+| $\phi_t$ | payable factor: the common fraction of scheduled benefits actually paid |
+| $F_t$, $r^F$ | trust fund balance and the rate credited on it |
+| $\mathit{Pay}_t$, $B^{sch}_t$ | per capita taxable payroll and the per capita scheduled benefit bill |
+| $\tau^{ss}$, $\kappa_b$, $\bar y$ | payroll tax rate, tax rate on benefits received, taxable maximum |
+| $\mathrm{AIME}$, $\mathrm{PIA}$, $\psi$ | the earnings record, the benefit it buys, and the rate at which the record accrues |
+| $\mathrm{AF}(\chi)$, FRA | actuarial factor at claim age $\chi$, and the full retirement age |
+| $R$, $\chi$ | a worker's retirement age and claim age |
+| $j$, $t$ | age index ($0$ at age $20$) and calendar year |
+| $e$, $h$ | permanent earnings ability and taste for work |
+| $\ell_j$, $\Omega$ | survival from age $20$ to age $20+j$, and $\sum_j \beta^j\ell_j$ |
 
 This lecture is a companion to {doc}`two_computation`, which studies two ways of moving from an unfunded to a fully funded system in the model of {cite:t}`huang1997two`.
 
@@ -191,7 +208,11 @@ What survives is the part this lecture is about: an endogenous payable factor, a
 
 Units are the average wage index of $2025$, so one model unit is $\$72{,}025$ and mean earnings per worker are one.
 
-The statutory amounts (the taxable maximum, the two bend points of the benefit formula, the payroll tax rate, the actuarial factors) take their legislated $2025$ values.
+The statutory amounts -- the taxable maximum, the two bend points of the benefit formula, the payroll tax rate, the actuarial factors, the trust fund balance -- take their legislated or recorded $2025$ values.
+
+The tax rates on labor, capital and consumption follow {cite:t}`kitao2014`, and the discount factor, the interest rate, the dispersion of earnings ability and the rate credited on the fund are those of {cite:t}`SargentShi2026`.
+
+Two parameters are chosen inside this model, and we say which below.
 
 ```{code-cell} ipython3
 AWI = 72025.07          # average wage index, 2025: dollars per model unit
@@ -258,6 +279,36 @@ print("AF(χ) at FRA 67", claim_factors(67))
 print("AF(χ) at FRA 69", claim_factors(69))
 ```
 
+The left panel below is the progressivity of the program, and the right panel is its price of waiting.
+
+```{code-cell} ipython3
+fig, axes = plt.subplots(1, 2, figsize=(11, 4))
+
+grid = np.linspace(0, 3, 400)
+axes[0].plot(grid, pia(grid, par), lw=2)
+for b in par.bend:
+    axes[0].axvline(b, color='k', ls=':', lw=1)
+axes[0].set_xlabel('AIME, multiples of the average wage')
+axes[0].set_ylabel('primary insurance amount')
+axes[0].set_title('the benefit formula, with its bend points')
+
+axes[1].plot(X_GRID, claim_factors(67), 'o-', lw=2, label='full retirement age 67')
+axes[1].plot(X_GRID, claim_factors(69), 's-', lw=2, label='full retirement age 69')
+axes[1].axhline(1.0, color='k', lw=0.8)
+axes[1].set_xlabel('claim age $\\chi$')
+axes[1].set_ylabel('actuarial factor $\\mathrm{AF}(\\chi)$')
+axes[1].set_title('the reward for waiting')
+axes[1].legend()
+plt.tight_layout()
+plt.show()
+```
+
+A worker whose earnings record is below the first bend point replaces $90$ cents of every dollar; one above the second replaces $15$.
+
+Waiting from $62$ to $70$ raises the benefit by $77$ percent, and the schedule is statutory: it does not move when mortality improves, and it does not move when the payable factor falls.
+
+{ref}`ssd_ex2` raises the full retirement age, which is the orange line.
+
 ### Demography
 
 Mortality follows a Gompertz--Makeham force of mortality that improves at $0.7$ percent a year until $2085$ and is frozen afterwards, so that the economy settles into a stationary equilibrium inside the horizon.
@@ -310,6 +361,37 @@ print(f"   life expectancy at 20 of the cohort of 2026: "
       f"{20 + cohort_survival([2026], par)[0].sum():.1f}")
 ```
 
+This is the engine of everything that follows, so it is worth looking at.
+
+```{code-cell} ipython3
+span = np.arange(2000, 2121)
+fig, axes = plt.subplots(1, 2, figsize=(11, 4))
+
+axes[0].plot(span, [dependency(g_pop, t, par) for t in span], lw=2)
+axes[0].plot([2025, 2085], [0.32, 0.50], 'o', ms=7, color='C1',
+             label='trustees')
+axes[0].set_xlabel('year')
+axes[0].set_ylabel('people 65 and over per person 20 to 64')
+axes[0].legend()
+
+for t, style in ((2026, '-'), (2085, '--')):
+    n_t = population(g_pop, [t], par)[:, 0]
+    axes[1].plot(AGE0 + np.arange(J), n_t/n_t.sum(), style, lw=2, label=str(t))
+axes[1].set_xlabel('age')
+axes[1].set_ylabel('share of the population')
+axes[1].legend()
+plt.tight_layout()
+plt.show()
+```
+
+Two forces push the dependency ratio up, and the model carries both.
+
+Cohorts entering the labor force stopped growing, so the base of the pyramid stops widening.
+
+Mortality keeps improving, so its top keeps filling in.
+
+{ref}`ssd_ex4` separates them.
+
 ### Earnings and types
 
 Earnings are the wage times a hump shaped age-efficiency profile that peaks at age $50$, times a permanent ability draw.
@@ -351,9 +433,22 @@ A worker chooses when to stop working and when to file for benefits.
 
 Both decisions are irreversible, and they are separate: {cite:t}`coileDiamondGruberJousten2002` and the literature that follows them establish that leaving the labor force and claiming a benefit are distinct events.
 
-Write $R$ for the retirement age and $\chi$ for the claim age, and let $\ell_j$ be the probability of surviving from age $20$ to age $20+j$.
+Write $R$ for the retirement age, $\chi$ for the claim age, and $\ell_j$ for the probability of surviving from age $20$ to age $20+j$.
 
-While working, a worker earns $y_j = w\varepsilon_j e$, pays the labor tax and the payroll tax on earnings up to the taxable maximum $\bar y$, and accumulates the earnings record
+A worker of type $(e, h)$ ranks plans by
+
+```{math}
+:label: ssd_utility
+\sum_{j} \beta^j \ell_j
+\big[\log c_j - \eta\, h\, n_j \big],
+\qquad n_j = \mathbf 1\{j < R - 20\} ,
+```
+
+where $e$ is permanent earnings ability, $h$ is the taste for work, and $\eta h$ is therefore the worker's own disutility of a year of work.
+
+We normalize the wage to one.
+
+While working, a worker earns $y_j = \varepsilon_j e$, pays the labor tax and the payroll tax on earnings up to the taxable maximum $\bar y$, and accumulates the earnings record
 
 $$
 \mathrm{AIME}_{j+1} = \mathrm{AIME}_j
@@ -366,16 +461,34 @@ Once filed, the worker collects $\phi_t \mathrm{AF}(\chi)\mathrm{PIA}(\mathrm{AI
 
 With complete annuity markets and log utility the consumption problem has a closed form.
 
-The Euler equation is $c_{j+1} = \beta \tilde R c_j$ with $\tilde R = 1 + r(1-\tau_k)$, the lifetime budget constraint is
+Annuities pay the gross return $\tilde R/s_j$ to a survivor, where $\tilde R = 1 + r(1-\tau_k)$ and $s_j$ is the one-period survival probability, because the balances of those who die are shared among those who live.
 
-$$
+Compounding those returns turns survival into a discount factor: a unit of income received at age $20+j$ is worth $\ell_j \tilde R^{-j}$ at age $20$, and the lifetime budget constraint is
+
+```{math}
+:label: ssd_budget
 (1+\tau_c)\sum_j \ell_j \tilde R^{-j} c_j
-= a_0 + \sum_j \ell_j \tilde R^{-j} n_j(R, \chi) \equiv \mathcal W(R,\chi) ,
+= a_0 + \sum_j \ell_j \tilde R^{-j} m_j(R, \chi) \equiv \mathcal W(R,\chi) ,
+```
+
+where $m_j$ is net income at age $j$: earnings net of the two taxes while working, and the payable benefit net of its own tax once filed.
+
+Because the annuity return and the survival probability cancel, the Euler equation is the one from a model without mortality,
+
+$$
+c_j = c_0 (\beta \tilde R)^j .
 $$
 
-where $n_j$ is net income at age $j$, and therefore $(1+\tau_c)c_0 \Omega = \mathcal W$ with $\Omega = \sum_j \beta^j \ell_j$.
+Substituting it into {eq}`ssd_budget` gives $(1+\tau_c)c_0\Omega = \mathcal W$ with $\Omega = \sum_j \beta^j\ell_j$, and substituting it into {eq}`ssd_utility` gives
 
-Substituting into lifetime utility and dropping terms that do not depend on the plan leaves a two-dimensional discrete choice:
+$$
+\sum_j \beta^j \ell_j \log c_j
+= \Omega \log c_0 + \log(\beta\tilde R)\sum_j j\,\beta^j \ell_j .
+$$
+
+The second term does not depend on the plan, and neither does the $\log[(1+\tau_c)\Omega]$ that comes out of $c_0 = \mathcal W/[(1+\tau_c)\Omega]$.
+
+Dropping both leaves a two-dimensional discrete choice:
 
 ```{math}
 :label: ssd_objective
@@ -390,11 +503,17 @@ The second is the cost of the extra years of work.
 ```{note}
 The paper also models the **retirement earnings test**, which withholds the benefits of a claimant who keeps working before the full retirement age and then credits them back by advancing the effective claim age.
 
-Because the credit matches the withholding one for one here, filing before leaving work is payoff neutral in this deterministic model.
+For a worker who leaves work at or before the full retirement age the credit matches the withholding one for one, so filing earlier than retirement is payoff neutral in this deterministic model.
 
 We therefore impose $\chi \ge \min(R, 70)$ and drop the test.
 
-Claiming is still a separate decision: a worker may file at retirement or wait, up to age $70$.
+Claiming remains a separate decision: a worker may file at retirement or wait, up to age $70$.
+
+The restriction does bind on one margin.
+
+A worker who means to work past the full retirement age could file at $62$, have the benefits withheld until the test stops applying, and then collect at the credited factor while still working.
+
+That option is not quite equivalent to filing later, and this model rules it out.
 ```
 
 ```{code-cell} ipython3
@@ -419,7 +538,7 @@ class World:
     "Demography, types, survival and discounting: fixed across experiments."
 
     def __init__(self, p, g):
-        self.p, self.g = p, g
+        self.p = p
         e, h, w = types(p)
         self.NE = len(e)
         self.C = NC*self.NE
@@ -583,10 +702,10 @@ def pre_transition(W):
         a = (after_tax_R(p)/np.maximum(s, 1e-12))*(
             a + inc[j] - (1+p.τ_c)*c0*(p.β*after_tax_R(p))**j)
     A[J-1] = a
-    return R, X, A[W.j0, np.arange(W.C)], Pay, Ben
+    return R, X, A[W.j0, np.arange(W.C)], Pay, Ben, wealth, Om
 
 W = World(par, g_pop)
-R_pre, X_pre, a26, Pay_pre, Ben_pre = pre_transition(W)
+R_pre, X_pre, a26, Pay_pre, Ben_pre, wealth_pre, Om_pre = pre_transition(W)
 
 mask = W.entry == 2026
 wts = W.w[mask]/W.w[mask].sum()
@@ -614,10 +733,9 @@ The step length starts at one half and anneals toward a floor, as in the solver 
 
 ```{code-cell} ipython3
 def transition(W, F0, plan0, a0, iters=40, tol=1e-4,
-               ν0=0.5, anneal=0.92, floor=0.08, φ0=None, verbose=True):
+               ν0=0.5, anneal=0.92, floor=0.08, verbose=True):
     "Damped iteration on the payable path."
-    φ = np.ones(T+1) if φ0 is None else φ0.copy()
-    hist = []
+    φ = np.ones(T+1)
     for k in range(iters):
         R, X, _, _, _ = solve_plans(W, φ, W.j0, plan0=plan0,
                                     a0=a0.reshape(W.C, 1))
@@ -625,14 +743,13 @@ def transition(W, F0, plan0, a0, iters=40, tol=1e-4,
         Pay, Ben = aggregate(W, pay, ben)
         F, φ_new = fund_and_phi(W, Pay, Ben, F0)
         gap = np.abs(φ_new - φ).max()
-        hist.append(gap)
         ν = max(ν0*anneal**k, floor)
         φ = (1-ν)*φ + ν*φ_new
         if verbose and k % 5 == 0:
             print(f"   iteration {k:>3}   step {ν:.3f}   gap {gap:.2e}")
         if gap < tol:
             break
-    return dict(φ=φ, F=F, R=R, X=X, Pay=Pay, Ben=Ben, hist=np.array(hist))
+    return dict(φ=φ, F=F, R=R, X=X, Pay=Pay, Ben=Ben)
 
 F0 = par.F_ratio*W.Npop[0]*Ben_pre[0]
 base = transition(W, F0, (R_pre, X_pre), a26)
@@ -680,7 +797,7 @@ print(f"τ_ss/[(1-κ_b)·cost rate] = {par.τ_ss/((1-par.κ_b)*cost[-1]):.4f}"
 
 ## Claiming and retirement along the transition
 
-The two decisions respond to the path of $\phi_t$, and they do so in opposite directions on either side of the cut.
+Both decisions respond to the path of $\phi_t$, and both reverse direction at the cut.
 
 ```{code-cell} ipython3
 def flow_ages(W, R, X):
@@ -747,11 +864,109 @@ Later filing lowers the scheduled bill immediately, by reducing the number of cl
 
 The cost rate therefore bumps up in the years before the cut, as the rush adds claimants, and then falls back for a year or two afterwards, as filing is deferred again, before resuming its climb.
 
-Once the fund is empty, {eq}`ssd_phiflow` makes the payable factor exactly proportional to the inverse of the cost rate, so that dip is a benefit cut that does not happen: the first full-year cut is smaller than the cost rate of $2031$ would have implied.
+Once the fund is empty, {eq}`ssd_phiflow` makes the payable factor exactly proportional to the inverse of the cost rate, so that dip is a benefit cut that does not happen.
+
+At the cost rate of $2031$ the formula would pay $\phi = 0.702$; what workers' own responses deliver in $2033$ is $0.755$.
 
 {cite:t}`SargentShi2026` find the asymmetry strong enough that the payable factor recovers for a few years after the cut before resuming its decline.
 
 Here the recovery shows up in the cost rate but not in $\phi_t$ itself: the dip is not large enough to outrun a dependency ratio that is still rising.
+
+### Who rushes
+
+The flow means hide who is doing the rushing, so it is worth looking at the decisions one cohort at a time.
+
+The figure plots, against a worker's age in $2026$, the plan it had made before the news and the plan it chooses after.
+
+```{code-cell} ipython3
+ages26 = np.arange(21, 91)
+
+def by_age26(vals):
+    "Weighted mean of a decision across the types of each cohort alive in 2026."
+    out = np.zeros(len(ages26))
+    for i, a in enumerate(ages26):
+        m = W.entry == Y0 - (a - AGE0)
+        out[i] = (vals[m]*W.w[m]).sum()/W.w[m].sum()
+    return out
+
+fig, axes = plt.subplots(1, 2, figsize=(11, 4))
+for ax, before, after, title in (
+        (axes[0], R_pre, base['R'], 'retirement age'),
+        (axes[1], X_pre, base['X'], 'claim age')):
+    ax.plot(ages26, by_age26(before), lw=2, label='planned before the news')
+    ax.plot(ages26, by_age26(after), lw=2, ls='--', label='chosen after')
+    ax.set_xlabel('age in 2026')
+    ax.set_ylabel('age')
+    ax.set_title(title)
+axes[0].legend()
+plt.tight_layout()
+plt.show()
+```
+
+Three groups appear.
+
+Workers who have already retired and filed by $2026$ sit on top of their old plans, because both decisions are irreversible: the two lines coincide at the right of each panel.
+
+Workers in or near the claiming window move first and move earliest: they file sooner than they had meant to, and some of them leave work sooner too, to collect while benefits are still paid in full.
+
+Workers in their forties and younger go the other way on one margin and with the crowd on the other.
+
+They work longer, because their pension is smaller.
+
+But they file **sooner** than they had planned, by more than a year: with the payable factor falling from one year to the next, a benefit deferred is a benefit collected at a lower factor, and that headwind works against the actuarial reward for waiting.
+
+### A worker's life cycle
+
+What the news does to one worker is easier to see than what it does to an aggregate.
+
+The figure follows the median type of the cohort entering in $2026$ through its whole life, before and after.
+
+```{code-cell} ipython3
+R_b, X_b, wealth_b, Om_b, _ = solve_plans(W, φ, W.j0, plan0=(R_pre, X_pre),
+                                          a0=a26.reshape(W.C, 1))
+
+def life_profile(W_, φ_, R, X, wealth, Om, row):
+    "Net income, consumption and assets by age for a single worker."
+    p = W_.p
+    m = income_path(W_, φ_, R, X)[:, row]
+    c = wealth[row]/((1+p.τ_c)*Om[row])*(p.β*after_tax_R(p))**np.arange(J)
+    a = np.zeros(J)
+    for j in range(J-1):
+        s = W_.ell[row, j+1]/W_.ell[row, j]
+        a[j+1] = (after_tax_R(p)/s)*(a[j] + m[j] - (1+p.τ_c)*c[j])
+    return m, c, a
+
+row = np.where(W.entry == 2026)[0][12]          # the median type
+before = life_profile(W, np.ones(T+1), R_pre, X_pre, wealth_pre, Om_pre, row)
+after = life_profile(W, φ, R_b, X_b, wealth_b, Om_b, row)
+
+age = AGE0 + np.arange(J)
+fig, axes = plt.subplots(1, 3, figsize=(13, 3.8))
+for k, ttl in enumerate(('net income', 'consumption', 'assets')):
+    axes[k].plot(age, before[k], lw=2, label='before the news')
+    axes[k].plot(age, after[k], lw=2, ls='--', label='after')
+    axes[k].set_title(ttl)
+    axes[k].set_xlabel('age')
+    axes[k].set_xlim(20, 90)
+axes[0].legend()
+plt.tight_layout()
+plt.show()
+
+print(f"retirement age {R_pre[row]} -> {R_b[row]},  claim age {X_pre[row]} -> {X_b[row]}")
+print(f"peak assets    {before[2].max():.2f} -> {after[2].max():.2f}")
+```
+
+This worker's retirement age does not move -- the choice is an integer, and an aggregate that moves by a year moves because different workers switch at different dates -- but it files a year earlier, it consumes less at every age, and it carries about a third more assets into retirement.
+
+The income panel shows one more thing that the plan before the news was willing to pay for.
+
+Retiring at $65$ and filing at $66$ leaves a year with no income at all, bridged out of savings, in exchange for a permanently higher actuarial factor.
+
+That bridge is the first thing the news takes away.
+
+The upward tilt of consumption is $\beta\tilde R > 1$: this worker is patient enough, at an after-tax return of $4.2$ percent, to want a rising profile.
+
+The third panel is the saving response that, in general equilibrium, would deepen the capital stock and raise the wage, and with it taxable payroll: the channel this lecture shuts off and the paper keeps.
 
 ## How this compares with the full model
 
@@ -1059,6 +1274,76 @@ The crossover is a little above age $50$.
 {cite:t}`SargentShi2026` find the same pattern with a smaller spread, because their wage tax is a broader instrument than a doubled payroll tax, and because their general equilibrium prices move.
 
 What the lecture model cannot say is which instrument is cheapest, because that comparison runs through those prices and through the taxes the guarantee displaces.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ssd_ex4
+
+Two forces raise the dependency ratio in this model: cohorts entering the labor force stopped growing, and mortality keeps improving.
+
+Separate them.
+
+Hold the birth path fixed and switch the mortality improvement off, `par._replace(g_m=0.0)`, so that the life table of $2025$ applies forever.
+
+1. What happens to the dependency ratio in $2085$, and to the long-run payable factor?
+1. What happens to the depletion year? Explain why it moves so much less than the long-run cut does.
+1. What happens to the claim age, and what does that tell you about why claiming drifts later in the baseline?
+```
+
+```{solution-start} ssd_ex4
+:class: dropdown
+```
+
+```{code-cell} ipython3
+W0 = World(par._replace(g_m=0.0), g_pop)       # same cohorts, the 2025 life table forever
+flat = transition(W0, F0, (R_pre, X_pre), a26, verbose=False)
+dep0 = YEARS[np.argmax(flat['F'][:-1] <= 1e-12)]
+mR0, mX0 = flow_ages(W0, flat['R'], flat['X'])
+
+print(f"{'':28}{'baseline':>11}{'no gains':>11}")
+print(f"{'life expectancy at 20, 2086':28}"
+      f"{20+cohort_survival([2086], par)[0].sum():>11.1f}"
+      f"{20+cohort_survival([2086], par._replace(g_m=0.0))[0].sum():>11.1f}")
+print(f"{'dependency ratio, 2085':28}{dependency(g_pop, 2085, par):>11.3f}"
+      f"{dependency(g_pop, 2085, par._replace(g_m=0.0)):>11.3f}")
+print(f"{'depletion year':28}{depletion:>11}{dep0:>11}")
+print(f"{'φ in the long run':28}{φ[-1]:>11.3f}{flat['φ'][-1]:>11.3f}")
+print(f"{'cost rate in the long run':28}{cost[-1]:>11.3f}"
+      f"{(flat['Ben']/flat['Pay'])[-1]:>11.3f}")
+print(f"{'mean claim age, long run':28}{mean_X[-1]:>11.2f}{mX0[-1]:>11.2f}")
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(YEARS, φ, lw=2, label='baseline')
+ax.plot(YEARS, flat['φ'], lw=2, label='no mortality improvement')
+ax.set_xlabel('year')
+ax.set_ylabel('payable factor $\\phi_t$')
+ax.set_xlim(Y0, 2120)
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+Longer lives are a large part of the long-run problem.
+
+Holding the birth path fixed, they account for about a quarter of the long-run benefit cut: the payable factor settles at $0.60$ rather than $0.48$.
+
+The depletion year hardly moves, and the reason is visible in {eq}`ssd_phi`.
+
+The date at which the reserves run out is set by the cash flow of the next few years, which the cohorts already alive determine; improvements in mortality accumulate slowly, and most of what they will do to the cost rate still lies decades ahead when the fund empties.
+
+The long run is where they do their work.
+
+The claim age settles at $65.0$ rather than $66.6$.
+
+That is the mechanism the lecture asserted for later claiming and had not tested.
+
+The actuarial schedule $\mathrm{AF}(\chi)$ is statutory and frozen, so when mortality improves, waiting buys the higher benefit for more years, and workers wait.
+
+Switch the improvement off and the drift disappears.
 
 ```{solution-end}
 ```
