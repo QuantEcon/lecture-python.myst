@@ -28,7 +28,7 @@ kernelspec:
 
 ## Overview
 
-The Social Security trustees project that the Old-Age and Survivors Insurance trust fund will be exhausted in $2032$ {cite}`Trustees2026`.
+The Social Security trustees project that the reserves of the Old-Age and Survivors Insurance trust fund will run out during $2032$ {cite}`Trustees2026`.
 
 The program cannot borrow.
 
@@ -63,14 +63,16 @@ Several symbols recur, so we record them here.
 |---|---|
 | $\phi_t$ | payable factor: the common fraction of scheduled benefits actually paid |
 | $F_t$, $r^F$ | trust fund balance and the rate credited on it |
+| $N_t$ | population; every other aggregate is per capita |
 | $\mathit{Pay}_t$, $B^{sch}_t$ | per capita taxable payroll and the per capita scheduled benefit bill |
 | $\tau^{ss}$, $\kappa_b$, $\bar y$ | payroll tax rate, tax rate on benefits received, taxable maximum |
 | $\mathrm{AIME}$, $\mathrm{PIA}$, $\psi$ | the earnings record, the benefit it buys, and the rate at which the record accrues |
-| $\mathrm{AF}(\chi)$, FRA | actuarial factor at claim age $\chi$, and the full retirement age |
+| $\mathrm{AF}(\chi)$, FRA, $\varsigma$ | actuarial factor at claim age $\chi$, the full retirement age, and a benefit scale |
 | $R$, $\chi$ | a worker's retirement age and claim age |
 | $j$, $t$ | age index ($0$ at age $20$) and calendar year |
 | $e$, $h$ | permanent earnings ability and taste for work |
 | $\ell_j$, $\Omega$ | survival from age $20$ to age $20+j$, and $\sum_j \beta^j\ell_j$ |
+| $\tilde R$, $a_0$, $\mathcal W$ | after-tax gross return, assets on hand, and lifetime resources |
 
 This lecture is a companion to {doc}`two_computation`, which studies two ways of moving from an unfunded to a fully funded system in the model of {cite:t}`huang1997two`.
 
@@ -240,7 +242,7 @@ par = Params(
     σ_a=0.315,           # dispersion of earnings ability
     σ_η=0.16,            # dispersion of the taste for work
     g_m=0.007,           # annual mortality improvement
-    bscale=1.145,        # benefit scale (calibrated)
+    bscale=1.145,        # benefit scale ς (calibrated)
     F_ratio=1.6255)      # 2025 reserves relative to benefit payments
 
 def after_tax_R(p):
@@ -457,7 +459,15 @@ $$
 
 an exponentially weighted moving average whose effective window of $2/\psi - 1 \approx 35$ years approximates the statutory highest-35-years rule.
 
-Once filed, the worker collects $\phi_t \mathrm{AF}(\chi)\mathrm{PIA}(\mathrm{AIME}_j)$, taxed at $\kappa_b$.
+Once filed, the worker collects
+
+$$
+b_j = \varsigma\,\phi_t\, \mathrm{AF}(\chi)\,\mathrm{PIA}(\mathrm{AIME}_j) ,
+$$
+
+taxed at $\kappa_b$, where $\varsigma$ is a benefit scale that the calibration below sets.
+
+It stands in for the spousal and survivor benefits that a model of single workers leaves out.
 
 With complete annuity markets and log utility the consumption problem has a closed form.
 
@@ -500,6 +510,14 @@ The first term is the present value of everything the plan delivers, including t
 
 The second is the cost of the extra years of work.
 
+A worker who is already alive when the news arrives solves the same problem from where it stands.
+
+Write $j_0$ for its age index in $2026$.
+
+Then both sums in {eq}`ssd_objective` run from $j_0$ rather than from $0$, with $\ell_j$ and $\beta^j$ measured from $j_0$; $a_0$ in {eq}`ssd_budget` is the wealth it has accumulated by then; and the decisions it has already taken are not up for reconsideration.
+
+That is what the arguments `j0`, `a0` and `plan0` carry in the code below.
+
 ```{note}
 The paper also models the **retirement earnings test**, which withholds the benefits of a claimant who keeps working before the full retirement age and then credits them back by advancing the effective claim age.
 
@@ -531,11 +549,17 @@ IDX = np.array([[ENT_IX[t-j] for t in YEARS] for j in range(J)])
 print(f"{NP} admissible plans, {NC} cohorts")
 ```
 
+The retirement grid runs from $58$ to $72$, and it binds for the two most extreme tastes for work, which carry $1.1$ percent of the population each.
+
+Widening it to $50$ to $80$ moves those two types to $56$ and $73$ and moves nothing else: the depletion year, both mean ages, and the payable factor to four decimals are the same.
+
+We keep the narrow grid, which is about twice as fast.
+
 Everything that does not depend on the payable path is built once.
 
 ```{code-cell} ipython3
 class World:
-    "Demography, types, survival and discounting: fixed across experiments."
+    "Demography, types, survival and discounting: fixed along the iteration."
 
     def __init__(self, p, g):
         self.p = p
@@ -665,7 +689,9 @@ Workers alive in $2026$ made their plans expecting benefits to be paid in full f
 
 We solve that economy first.
 
-It supplies three things that the transition needs: the retirement and claim decisions that cohorts have **already executed** by $2026$, the assets they carry into $2026$, and the trust fund balance, which we set to the recorded end-of-$2025$ reserves of $1.63$ times annual benefit payments.
+It supplies two things that the transition needs: the retirement and claim decisions that cohorts have **already executed** by $2026$, and the assets they carry into $2026$.
+
+It also supplies the scale for the third, the opening trust fund balance, which we set below to the recorded end-of-$2025$ reserves of $1.63$ times annual benefit payments.
 
 ```{code-cell} ipython3
 def income_path(W, φ, R, X):
@@ -717,11 +743,13 @@ print(f"cost rate in 2026: {Ben_pre[0]/Pay_pre[0]:.4f}"
 
 Two parameters were chosen to make those two numbers come out.
 
-The disutility of work $\eta$ sets the retirement age, which we match to the median retirement age of $64.5$ that {cite:t}`SargentShi2026` target.
+The disutility of work $\eta$ sets the retirement age: the cohort entering in $2026$ retires at $64.8$ on average, against the median retirement age of $64.5$ that {cite:t}`SargentShi2026` target.
 
-A benefit scale sets the cost rate; it stands in for the spousal and survivor benefits that this model does not have, and which account for most of the gap between a model of single workers and the program's recorded outlays.
+The benefit scale $\varsigma$ sets the cost rate, and brings it within about a tenth of a percentage point of the trustees' $2025$ figure.
 
-The mean claim age is not targeted, and at $66.5$ for this cohort it is close to the $65.0$ that the paper matches.
+The claim age is not targeted, and the model misses it by more: this cohort files at $66.5$ on average, a year and a half later than the $65.0$ the paper matches.
+
+Claiming later than the data is a bias to keep in mind when reading the transition below, where the claim age is one of the two margins doing the work.
 
 ## Solving for the equilibrium payable path
 
@@ -746,7 +774,8 @@ def transition(W, F0, plan0, a0, iters=40, tol=1e-4,
         ν = max(ν0*anneal**k, floor)
         φ = (1-ν)*φ + ν*φ_new
         if verbose and k % 5 == 0:
-            print(f"   iteration {k:>3}   step {ν:.3f}   gap {gap:.2e}")
+            print(f"   iteration {k:>3}   step {ν:.3f}   gap {gap:.2e}"
+                  f"   φ in 2033 {φ[2033-Y0]:.4f}")
         if gap < tol:
             break
     return dict(φ=φ, F=F, R=R, X=X, Pay=Pay, Ben=Ben)
@@ -988,15 +1017,21 @@ for name, mine, theirs in rows:
     print(f"{name:34}{mine:>14}{theirs:>12}")
 ```
 
-The dates agree, the direction of every response agrees, and the long-run cut is deeper here.
+The dates agree and the direction of every response agrees.
 
-The retirement ages are the one comparison to read with care: the paper's $62.7$ is a *mean* pulled down by a left tail of early retirements that idiosyncratic earnings shocks produce, and its median retirement age, which is what the calibration here was matched to, is $64.5$.
+Two things do not, and both are worth seeing plainly.
 
-Two differences account for most of the gap.
+The long-run cut is deeper here, $0.482$ against $0.546$.
 
-Prices are fixed in this lecture, so the capital deepening that raises the wage, and with it taxable payroll, is missing.
+Prices are fixed in this lecture, so the capital deepening that raises the wage, and with it taxable payroll, is missing; and the demography here is a smooth stylization rather than the trustees' projection.
 
-And the demography here is a smooth stylization rather than the trustees' projection.
+The behavioral responses are also **smaller** here than in the paper, not merely centered differently.
+
+Over the transition the mean retirement age rises by $0.9$ years against the paper's $3.5$, and the mean claim age by $1.9$ against $4.2$.
+
+Three features of the stripped-down model mute them: workers face no idiosyncratic earnings risk, so nobody is pushed across a threshold by a bad draw; each worker's choice is an integer, so a type responds only when the gain crosses a whole year; and prices do not move, so the wage never rewards the longer careers.
+
+The retirement *levels* need one more caution: the paper's $62.7$ is a mean pulled down by a left tail of early retirements that idiosyncratic shocks produce, and its median, which is what the calibration here was matched to, is $64.5$.
 
 ```{admonition} What the general equilibrium model adds
 :class: tip
@@ -1029,7 +1064,7 @@ Because the period is a year, the iteration can cycle between two adjacent first
 
 Our own iteration stalls in the same way, for a related reason: retirement and claim ages are integers, so a mass of workers switches discontinuously, and $\Phi$ is not continuous.
 
-Watch the gap in the output above stop falling at about $10^{-2}$ while the path itself stops moving in the fourth decimal.
+In the output above, the gap stops falling at about $10^{-2}$ while the payable factor printed beside it settles to the fourth decimal.
 ```
 
 ## Exercises
@@ -1126,7 +1161,7 @@ Of the reforms that {cite:t}`SargentShi2026` study, only one moves the depletion
 
 The reform is announced in $2026$ and applies to everyone at once, current beneficiaries included.
 
-It works entirely through the actuarial factor: at a full retirement age of $69$ the factor is about $13$ percent lower at every claim age, as the table printed earlier shows, and the claim window still closes at $70$, so a worker can recover only part of the cut by filing later.
+It works entirely through the actuarial factor: at a full retirement age of $69$ the factor is about $13$ percent lower at every claim age, which is the gap between the two lines in the right panel of the benefit formula figure, and the claim window still closes at $70$, so a worker can recover only part of the cut by filing later.
 
 Compute the reformed transition and report the depletion year and the long-run payable factor.
 
@@ -1165,7 +1200,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-The reform cuts the scheduled bill at once, for current beneficiaries as well as future ones, so the fund lasts longer and the cash flow condition {eq}`ssd_phiflow` clears at a higher payable factor forever after.
+Depletion is delayed by seven years, from $2033$ to $2040$, against the ten years the paper reports.
+
+The long-run cut falls from $51.8$ to $43.2$ percent of scheduled benefits, so the reform undoes about a sixth of it.
+
+It does that work because it cuts the scheduled bill at once, for current beneficiaries as well as future ones, so the fund lasts longer and the cash flow condition {eq}`ssd_phiflow` clears at a higher payable factor forever after.
 
 It does not restore scheduled benefits; it lowers them.
 
