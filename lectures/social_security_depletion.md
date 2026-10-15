@@ -80,7 +80,7 @@ Here nobody moves to a funded system: we ask what current law does on its own, a
 
 Two other lectures supply background: {doc}`ak2` introduces the {cite:t}`auerbach1987dynamic` overlapping generations framework, and {doc}`ak_aiyagari` adds uninsurable idiosyncratic risk to it.
 
-We use the following imports
+We use the following imports.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -284,6 +284,12 @@ print("AF(χ) at FRA 69", claim_factors(69))
 The left panel below is the progressivity of the program, and the right panel is its price of waiting.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Benefit formula and actuarial factors
+    name: fig-ssd-benefit-rules
+---
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
 
 grid = np.linspace(0, 3, 400)
@@ -366,6 +372,12 @@ print(f"   life expectancy at 20 of the cohort of 2026: "
 This is the engine of everything that follows, so it is worth looking at.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Dependency ratio and age distribution
+    name: fig-ssd-demography
+---
 span = np.arange(2000, 2121)
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
 
@@ -403,6 +415,12 @@ Workers also differ in their taste for work.
 Both are five point discretizations of lognormal distributions, so there are $25$ types.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Age-efficiency profile
+    name: fig-ssd-efficiency
+---
 def efficiency():
     "Age-efficiency profile, normalized to mean one over ages 20 to 64."
     j = np.arange(J)
@@ -534,6 +552,8 @@ A worker who means to work past the full retirement age could file at $62$, have
 That option is not quite equivalent to filing later, and this model rules it out.
 ```
 
+We enumerate the admissible plans and index every cohort alive along the transition.
+
 ```{code-cell} ipython3
 R_GRID = np.arange(58, 73)
 # a worker files no earlier than it stops working, and no later than 70
@@ -621,7 +641,7 @@ def lifecycle(W, φ, Rj, Xa, j0, disc, keep=False):
     return (S, np.array(pay), np.array(ben)) if keep else S
 
 def solve_plans(W, φ, j0, plan0=None, a0=0.0):
-    """The plan that maximizes {eq}`ssd_objective`, for every cohort and type."""
+    """The plan that maximizes the worker's objective, for every cohort and type."""
     p, C = W.p, W.C
     j0 = np.asarray(j0)
     S = lifecycle(W, φ, (R_P-AGE0).reshape(1, NP), X_P.reshape(1, NP),
@@ -784,6 +804,8 @@ F0 = par.F_ratio*W.Npop[0]*Ben_pre[0]
 base = transition(W, F0, (R_pre, X_pre), a26)
 ```
 
+The converged path gives the two dates and the size of the cut.
+
 ```{code-cell} ipython3
 φ, F = base['φ'], base['F']
 depletion = YEARS[np.argmax(F[:-1] <= 1e-12)]
@@ -797,6 +819,12 @@ print(f"φ in {shortfall}: {φ[shortfall-Y0]:.3f},  in {depletion}: {φ[depletio
 The dates are the trustees' dates, and the first full-year cut is close to theirs: they project that continuing income will cover about $78$ percent of scheduled benefits in the first year the fund is empty.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Trust fund and payable factor
+    name: fig-ssd-fund-phi
+---
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
 axes[0].plot(YEARS, F[:-1]/(W.Npop*base['Ben']), lw=2)
 axes[0].set_title('trust fund reserves / annual scheduled benefits')
@@ -829,6 +857,12 @@ print(f"τ_ss/[(1-κ_b)·cost rate] = {par.τ_ss/((1-par.κ_b)*cost[-1]):.4f}"
 Both decisions respond to the path of $\phi_t$, and both reverse direction at the cut.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Mean ages of new retirees and claimants
+    name: fig-ssd-flow-ages
+---
 def flow_ages(W, R, X):
     "Population weighted mean age of new retirees and of new claimants."
     wt = W.w.reshape(NC, W.NE)[0]
@@ -870,6 +904,12 @@ The pension is smaller, so careers lengthen; and mortality keeps improving while
 Past about $2075$ the mean claim age chatters between two adjacent integers, which is why the figure stops there; the note on computation below explains why.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Payroll, benefits and the cost rate
+    name: fig-ssd-cost-rate
+---
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
 axes[0].plot(YEARS, base['Pay'], lw=2, label='taxable payroll')
 axes[0].plot(YEARS, base['Ben'], lw=2, label='scheduled benefits')
@@ -908,6 +948,12 @@ The flow means hide who is doing the rushing, so it is worth looking at the deci
 The figure plots, against a worker's age in $2026$, the plan it had made before the news and the plan it chooses after.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Plans before and after the news
+    name: fig-ssd-who-rushes
+---
 ages26 = np.arange(21, 91)
 
 def by_age26(vals):
@@ -951,6 +997,12 @@ What the news does to one worker is easier to see than what it does to an aggreg
 The figure follows the median type of the cohort entering in $2026$ through its whole life, before and after.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Life cycle of the median worker
+    name: fig-ssd-life-cycle
+---
 R_b, X_b, wealth_b, Om_b, _ = solve_plans(W, φ, W.j0, plan0=(R_pre, X_pre),
                                           a0=a26.reshape(W.C, 1))
 
@@ -1161,7 +1213,7 @@ Of the reforms that {cite:t}`SargentShi2026` study, only one moves the depletion
 
 The reform is announced in $2026$ and applies to everyone at once, current beneficiaries included.
 
-It works entirely through the actuarial factor: at a full retirement age of $69$ the factor is about $13$ percent lower at every claim age, which is the gap between the two lines in the right panel of the benefit formula figure, and the claim window still closes at $70$, so a worker can recover only part of the cut by filing later.
+It works entirely through the actuarial factor: at a full retirement age of $69$ the factor is about $13$ percent lower at every claim age, which is the gap between the two lines in the right panel of {numref}`fig-ssd-benefit-rules`, and the claim window still closes at $70$, so a worker can recover only part of the cut by filing later.
 
 Compute the reformed transition and report the depletion year and the long-run payable factor.
 
@@ -1187,6 +1239,8 @@ print(f"{'φ in the long run':28}{φ[-1]:>10.3f}{φ69[-1]:>10.3f}")
 print(f"{'cost rate in the long run':28}"
       f"{cost[-1]:>10.3f}{(base69['Ben']/base69['Pay'])[-1]:>10.3f}")
 ```
+
+The figure compares the two payable paths.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(8, 4))
@@ -1335,6 +1389,8 @@ Hold the birth path fixed and switch the mortality improvement off, `par._replac
 :class: dropdown
 ```
 
+We rerun the transition in a `World` that keeps the 2025 life table forever.
+
 ```{code-cell} ipython3
 W0 = World(par._replace(g_m=0.0), g_pop)       # same cohorts, the 2025 life table forever
 flat = transition(W0, F0, (R_pre, X_pre), a26, verbose=False)
@@ -1353,6 +1409,8 @@ print(f"{'cost rate in the long run':28}{cost[-1]:>11.3f}"
       f"{(flat['Ben']/flat['Pay'])[-1]:>11.3f}")
 print(f"{'mean claim age, long run':28}{mean_X[-1]:>11.2f}{mX0[-1]:>11.2f}")
 ```
+
+The figure compares the two payable paths.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(8, 4))
