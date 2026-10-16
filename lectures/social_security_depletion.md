@@ -541,6 +541,8 @@ Then both sums in {eq}`ssd_objective` run from $j_0$ rather than from $0$, with 
 
 That is what the arguments `j0`, `a0` and `plan0` carry in the code below.
 
+Nothing there is special to $2026$: {ref}`ssd_ex5` uses the same code to let workers re-plan in the year a surprise arrives.
+
 ```{note}
 The paper also models the **retirement earnings test**, which withholds the benefits of a claimant who keeps working before the full retirement age and then credits them back by advancing the effective claim age.
 
@@ -645,8 +647,12 @@ def lifecycle(W, φ, Rj, Xa, j0, disc, keep=False):
         aime = aime + p.ψ*work*(capped - aime)
     return (S, np.array(pay), np.array(ben)) if keep else S
 
-def solve_plans(W, φ, j0, plan0=None, a0=0.0):
-    """The plan that maximizes the worker's objective, for every cohort and type."""
+def solve_plans(W, φ, j0, plan0=None, a0=0.0, at_year=Y0):
+    """The plan that maximizes the worker's objective, for every cohort and type.
+
+    Workers re-plan in at_year, from the age index j0 they have reached, holding
+    the wealth a0 they carry and the decisions in plan0 they cannot undo.
+    """
     p, C = W.p, W.C
     j0 = np.asarray(j0)
     S = lifecycle(W, φ, (R_P-AGE0).reshape(1, NP), X_P.reshape(1, NP),
@@ -660,16 +666,16 @@ def solve_plans(W, φ, j0, plan0=None, a0=0.0):
     V = (Om[:, None]*np.log(np.maximum(wealth, 1e-9))
          - (p.η*W.η)[:, None]*np.maximum(Dw, 0.0))
     if plan0 is not None:
-        # decisions already taken by 2026 cannot be undone
+        # decisions already executed by at_year cannot be undone
         R0, X0 = plan0
-        age26 = W.j0 + AGE0
-        alive = W.entry < Y0
-        ok = np.where((alive & (R0 <= age26))[:, None],
+        age_now = np.asarray(j0) + AGE0
+        alive = W.entry < at_year
+        ok = np.where((alive & (R0 <= age_now))[:, None],
                       R_P[None, :] == R0[:, None],
-                      R_P[None, :] >= np.where(alive, age26, 0)[:, None])
-        ok &= np.where((alive & (X0 <= age26))[:, None],
+                      R_P[None, :] >= np.where(alive, age_now, 0)[:, None])
+        ok &= np.where((alive & (X0 <= age_now))[:, None],
                        X_P[None, :] == X0[:, None],
-                       X_P[None, :] >= np.where(alive, np.maximum(62, age26), 62)[:, None])
+                       X_P[None, :] >= np.where(alive, np.maximum(62, age_now), 62)[:, None])
         V = np.where(ok, V, -np.inf)
     k = V.argmax(axis=1)
     return R_P[k], X_P[k], wealth[np.arange(C), k], Om, Dw[np.arange(C), k]
@@ -1501,6 +1507,234 @@ That is the mechanism the lecture asserted for later claiming and had not tested
 The actuarial schedule $\mathrm{AF}(\chi)$ is statutory and frozen, so when mortality improves, waiting buys the higher benefit for more years, and workers wait.
 
 Switch the improvement off and the drift disappears.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ssd_ex5
+
+{ref}`ssd_ex3` guaranteed scheduled benefits from $2026$, with workers told in $2026$ and taxed from $2026$.
+
+{cite:t}`SargentShi2026` also study the opposite timing, which they call the **unanticipated** scenario.
+
+The government says nothing and does nothing.
+
+Workers believe current law, plan against the cut they expect, and save against it.
+
+Then, in the year the reserves are spent, the government announces the guarantee and raises the financing tax at once.
+
+The cut that workers had expected never happens.
+
+Reproduce that experiment here, and compare it with the immediate bailout of {ref}`ssd_ex3`.
+
+1. Roll the baseline economy forward to the first shortfall year and collect the state it carries there: the assets each worker has accumulated and the retirement and claim decisions it has already executed.
+1. Let workers re-plan in that year under $\phi_t = 1$ and the payroll tax $\tau^{*}$, using the `at_year` argument of `solve_plans`.
+1. Value the three economies for the workers alive in $2026$ and report the consumption equivalent variation of each bailout against the depletion baseline. Who prefers the surprise?
+```
+
+```{solution-start} ssd_ex5
+:class: dropdown
+```
+
+Consumption is $c_0(\beta\tilde R)^{j-j_0}$ from whenever a worker last re-planned, so assets follow a one-line recursion along the baseline path.
+
+```{code-cell} ipython3
+t_star = shortfall                       # the year the reserves are spent
+j_star = np.clip(t_star - W.entry, 0, J-1)
+
+c0_b = wealth_b/((1+par.τ_c)*Om_b)       # the baseline plan, re-optimized in 2026
+m_b = income_path(W, φ, R_b, X_b)
+
+a, A = np.zeros(W.C), np.zeros((J, W.C))
+for j in range(J-1):
+    a = np.where(j == W.j0, a26, a)      # the 2026 cross-section enters here
+    A[j] = a
+    surv = W.ell[:, j+1]/np.maximum(W.ell[:, j], 1e-12)
+    c = c0_b*(par.β*after_tax_R(par))**np.maximum(j - W.j0, 0)
+    a = np.where(j >= W.j0,
+                 (after_tax_R(par)/np.maximum(surv, 1e-12))
+                 * (a + m_b[j] - (1+par.τ_c)*c), 0.0)
+A[J-1] = a
+a_star = A[j_star, np.arange(W.C)]
+
+old = W.entry == Y0 - 40                 # the cohort aged 60 in 2026
+print(f"assets of a worker aged 60 in 2026: {a26[old].mean():.2f} in 2026,"
+      f" {a_star[old].mean():.2f} in {t_star}")
+```
+
+Now the surprise.
+
+The same `solve_plans` re-plans at `t_star`, freezing the decisions already executed by then.
+
+```{code-cell} ipython3
+R_n, X_n, wealth_n, Om_n, _ = solve_plans(
+    W_bail, np.ones(T+1), j_star, plan0=(R_b, X_b),
+    a0=a_star.reshape(W.C, 1), at_year=t_star)
+c0_n = wealth_n/((1+par.τ_c)*Om_n)
+
+R_i, X_i, wealth_i, Om_i, _ = solve_plans(          # the immediate bailout again
+    W_bail, np.ones(T+1), W.j0, plan0=(R_pre, X_pre), a0=a26.reshape(W.C, 1))
+c0_i = wealth_i/((1+par.τ_c)*Om_i)
+```
+
+We value the three economies directly, by summing utility along each worker's actual consumption and work path rather than by the closed form of {ref}`ssd_ex3`.
+
+```{code-cell} ipython3
+ages_j = np.arange(J)
+βR = par.β*after_tax_R(par)
+
+def consumption(c0, j0, j_switch=None, c0_new=None):
+    "Consumption at every age, with an optional replan at j_switch."
+    c = c0[None, :]*βR**np.maximum(ages_j[:, None] - j0[None, :], 0)
+    if j_switch is not None:
+        c_new = c0_new[None, :]*βR**np.maximum(ages_j[:, None] - j_switch[None, :], 0)
+        c = np.where(ages_j[:, None] >= j_switch[None, :], c_new, c)
+    return c
+
+def working(R, R_new=None, j_switch=None):
+    w = (ages_j[:, None] < (R - AGE0)[None, :]).astype(float)
+    if R_new is not None:
+        w = np.where(ages_j[:, None] >= j_switch[None, :],
+                     (ages_j[:, None] < (R_new - AGE0)[None, :]).astype(float), w)
+    return w
+
+def lifetime_value(W, c, work, j0):
+    "Σ_{j≥j0} β^{j-j0} ℓ_{j|j0} [log c_j − η h n_j], for every row."
+    p = W.p
+    wt = (p.β**ages_j)[:, None]*W.ell.T
+    u = np.log(np.maximum(c, 1e-12)) - (p.η*W.η)[None, :]*work
+    keep = ages_j[:, None] >= j0[None, :]
+    return (np.where(keep, wt*u, 0.0).sum(axis=0)
+            / ((p.β**j0)*W.ell[np.arange(W.C), j0]))
+
+V_dep = lifetime_value(W, consumption(c0_b, W.j0), working(R_b), W.j0)
+V_imm = lifetime_value(W, consumption(c0_i, W.j0), working(R_i), W.j0)
+V_sur = lifetime_value(W, consumption(c0_b, W.j0, j_star, c0_n),
+                       working(R_b, R_n, j_star), W.j0)
+
+def cev_age(V1, V0, age):
+    m = W.entry == Y0 - (age - AGE0)
+    wts = W.w[m]/W.w[m].sum()
+    return np.exp(((V1 - V0)[m]*wts).sum()/Om_b[m][0]) - 1
+```
+
+Before reading the answer, it is worth checking the machinery against {ref}`ssd_ex3`, which computed the immediate bailout a different way.
+
+```{code-cell} ipython3
+print(f"{'age in 2026':>12}{'this exercise':>15}{'exercise 3':>12}")
+for a in (25, 45, 60, 80):
+    print(f"{a:>12}{100*cev_age(V_imm, V_dep, a):>15.2f}"
+          f"{100*λ_old[a-21]:>12.2f}")
+```
+
+The two agree, so we can compare the timings.
+
+```{code-cell} ipython3
+ages_alive = np.arange(21, 91)
+λ_imm = np.array([cev_age(V_imm, V_dep, a) for a in ages_alive])
+λ_sur = np.array([cev_age(V_sur, V_dep, a) for a in ages_alive])
+
+fig, ax = plt.subplots(figsize=(8, 4.2))
+ax.plot(ages_alive, 100*λ_imm, lw=2, label='announced and taxed in 2026')
+ax.plot(ages_alive, 100*λ_sur, lw=2, ls='--', label=f'surprise in {t_star}')
+ax.axhline(0, color='k', lw=0.8)
+ax.set_xlabel('age in 2026')
+ax.set_ylabel('consumption equivalent variation, %')
+ax.legend()
+plt.tight_layout()
+plt.show()
+
+print(f"{'age in 2026':>12}{'immediate':>11}{'surprise':>10}{'gain':>8}")
+for a in (25, 35, 45, 55, 65, 75, 85):
+    i, u = 100*λ_imm[a-21], 100*λ_sur[a-21]
+    print(f"{a:>12}{i:>11.2f}{u:>10.2f}{u-i:>8.2f}")
+```
+
+Everyone with working years left prefers the surprise, and those in middle age prefer it by a lot.
+
+The reason is arithmetic: both economies end up paying every scheduled benefit in full, and the surprise collects six fewer years of the higher tax.
+
+The age at which a worker stops losing from the guarantee falls from $53$ to $46$.
+
+Nobody is ever actually cut, because the rescue lands in the year the reserves are spent, the year before the first full cut would have fallen.
+
+The gain is largest in middle age, $5.6$ percent at $45$, where many taxed years lie ahead and retirement is near enough that the mis-planning costs little.
+
+It is smaller for the young, who pay the higher tax for most of their lives either way.
+
+For workers in their seventies and beyond, who have already retired and filed, the surprise is very slightly **worse**.
+
+They pay no payroll tax under either timing, so deferring it gains them nothing, and they spent six years consuming as though their benefits were about to be cut.
+
+That consumption they did not take is a loss that the announcement would have spared them.
+
+{cite:t}`SargentShi2026` find the same ranking under wage-tax financing, with one addition this model cannot produce: in general equilibrium the assets that workers accumulate against a cut that never comes *are* the economy's capital stock when the rescue arrives, so waiting also leaves a higher wage behind it.
+
+Here prices do not move, and the whole gain is the deferred tax.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ssd_ex6
+
+Everything in this lecture rests on one calibration.
+
+Two of its numbers deserve a sensitivity check: the demographic target, and the interest rate at which workers discount.
+
+1. Recalibrate the birth path to an aged dependency ratio in $2085$ of $0.45$ and of $0.55$, instead of the trustees' $0.50$, and recompute the long run.
+1. Recompute it at interest rates of $5$ and $7$ percent, holding the preference parameters at their calibrated values.
+1. Which of the two moves the long-run benefit cut, and which moves behavior? Explain what you find using {eq}`ssd_longrun`.
+```
+
+```{solution-start} ssd_ex6
+:class: dropdown
+```
+
+Each case is a fresh economy: new demography or new prices change the plans made before the news as well as the transition, so we re-solve both.
+
+Twenty-five damped steps are enough for three decimals here.
+
+```{code-cell} ipython3
+def long_run(p, g, label):
+    "Solve one economy end to end and report its long run."
+    W_ = World(p, g)
+    R0_, X0_, a0_, _, Ben0_, _, _ = pre_transition(W_)
+    res = transition(W_, p.F_ratio*W_.Npop[0]*Ben0_[0], (R0_, X0_), a0_,
+                     iters=25, verbose=False)
+    mR_, mX_ = flow_ages(W_, res['R'], res['X'])
+    print(f"{label:26}{YEARS[np.argmax(res['F'][:-1] <= 1e-12)]:>7}"
+          f"{res['φ'][-1]:>8.3f}{(res['Ben']/res['Pay'])[-1]:>8.3f}"
+          f"{res['Pay'][-1]:>9.3f}{res['Ben'][-1]:>10.4f}{mR_[-1]:>8.1f}")
+
+print(f"{'':26}{'deplete':>7}{'φ_∞':>8}{'cost':>8}{'payroll':>9}{'benefits':>10}{'retire':>8}")
+long_run(par, g_pop, "baseline")
+for target in (0.45, 0.55):
+    g_t = fsolve(lambda g: [dependency(g, 2025, par) - 0.32,
+                            dependency(g, 2085, par) - target], [0.02, 0.0])
+    long_run(par, g_t, f"dependency 2085 = {target}")
+for r_alt in (0.05, 0.07):
+    long_run(par._replace(r=r_alt), g_pop, f"interest rate = {r_alt}")
+```
+
+Demography moves the long-run cut, and the interest rate essentially does not.
+
+Five points of the dependency ratio are worth about five points of the payable factor, in the opposite direction.
+
+The interest rate moves the payable factor by one or two points while moving the average retirement age by **six and a half years**, from $68.5$ at five percent to $62.0$ at seven.
+
+Equation {eq}`ssd_longrun` says why.
+
+The long-run cut depends on behavior only through the cost rate, the ratio of the scheduled bill to taxable payroll, and the two columns beside it show what each experiment does to the numerator and the denominator.
+
+A higher dependency ratio pushes them in opposite directions: fewer workers to tax, more retirees to pay.
+
+A higher interest rate pushes them in the same direction, and by almost the same proportion: shorter careers shrink taxable payroll, and the earlier claiming that comes with them buys a lower actuarial factor, so the scheduled bill shrinks too.
+
+The ratio hardly notices.
+
+This is the two-clock structure of the benefit formula seen from the long run rather than from the transition: the same career decision that sets what a worker contributes also sets what the worker is owed, and in a stationary economy the two very nearly cancel.
 
 ```{solution-end}
 ```
