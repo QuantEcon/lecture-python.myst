@@ -63,12 +63,12 @@ convergence is often fast when compared to other methods.
 The lecture will apply Newton's method in one-dimensional and
 multidimensional settings to solve fixed-point and zero-finding problems. 
 
-* When finding the fixed point of a function $f$, Newton's method updates
-  an existing guess of the fixed point by solving for the fixed point of a
+* When finding a fixed point of a function $f$, Newton's method updates
+  an existing guess of a fixed point by solving for a fixed point of a
   linear approximation to the function $f$.
 
-* When finding the zero of a function $f$, Newton's method updates
-  an existing guess by solving for the zero of a linear approximation to
+* When finding a zero of a function $f$, Newton's method updates
+  an existing guess by solving for a zero of a linear approximation to
   the function $f$.
 
 To build intuition, we first consider an easy, one-dimensional fixed point
@@ -120,7 +120,7 @@ Here
 
 - $k_t$ is capital stock per worker,
 - $A, \alpha>0$ are production parameters with $\alpha < 1$
-- $s>0$ is a savings rate, and
+- $s \in (0,1)$ is a savings rate, and
 - $\delta \in(0,1)$ is a rate of depreciation
 
 In this example, we wish to calculate the unique strictly positive fixed point
@@ -287,7 +287,7 @@ the function
 ```{math}
 :label: motivation
 
-\hat g(x) \approx g(x_0) + g'(x_0)(x - x_0)
+\hat g(x) := g(x_0) + g'(x_0)(x - x_0)
 ```
 
 We solve for the fixed point of $\hat g$ by calculating the $x_1$ that solves
@@ -305,6 +305,7 @@ x_{t+1} = \frac{g(x_t) - g'(x_t) x_t}{ 1 - g'(x_t) },
 \quad x_0 \text{ given}
 ```
 
+This update requires $1 - g'(x_t) \neq 0$.
 
 To implement Newton's method we observe that the derivative of the law of motion for capital [](motion_law) is
 
@@ -341,6 +342,7 @@ def plot_trajectories(
     fs=14,     # fontsize
 ):
 
+    k_star = exact_fixed_point(params)
     fig, axes = plt.subplots(2, 1, figsize=(10, 6))
     ax1, ax2 = axes
 
@@ -375,7 +377,7 @@ plot_trajectories(params)
 We can see that Newton's method converges faster than successive approximation.
 
 
-## Root-Finding in one dimension
+## Root-finding in one dimension
 
 In the previous section we computed fixed points.
 
@@ -397,7 +399,7 @@ Suppose we have a guess $x_0$ and we want to update it to a new point $x_1$.
 As a first step, we take the first-order approximation of $f$ around $x_0$:
 
 $$
-\hat f(x) \approx f\left(x_0\right) + f^{\prime}\left(x_0\right)\left(x - x_0\right)
+\hat f(x) := f\left(x_0\right) + f^{\prime}\left(x_0\right)\left(x - x_0\right)
 $$
 
 Now we solve for the zero of $\hat f$.  
@@ -416,6 +418,8 @@ Generalizing the formula above, for one-dimensional zero-finding problems, Newto
 x_{t+1} = x_t - \frac{ f(x_t) }{ f'(x_t) },
 \quad x_0 \text{ given}
 ```
+
+Each update requires $f'(x_t) \neq 0$.
 
 The following code implements the iteration [](oneD-newton)
 
@@ -457,7 +461,7 @@ to implement Newton's method ourselves.)
 Now consider again the Solow fixed-point calculation, where we solve for $k$
 satisfying $g(k) = k$.
 
-We can convert to this to a zero-finding problem by setting $f(x) := g(x) - x$.
+We can convert this to a zero-finding problem by setting $f(x) := g(x) - x$.
 
 Any zero of $f$ is clearly a fixed point of $g$.
 
@@ -482,14 +486,14 @@ In this section, we introduce a two-good problem, present a
 visualization of the problem, and solve for the equilibrium of the two-good market
 using both a zero finder in `SciPy` and Newton's method.
 
-We then expand the idea to a larger market with 5,000 goods and compare the
+We then expand the idea to a larger market with 3,000 goods and compare the
 performance of the two methods again.
 
 We will see a significant performance gain when using Newton's method.
 
 
 (two_goods_market)=
-### A two-goods market equilibrium
+### A two-good market equilibrium
 
 Let's start by computing the market equilibrium of a two-good problem.
 
@@ -510,7 +514,9 @@ $$
 
 Here $c_i$, $b_i$ and $a_{ij}$ are parameters.
 
-For example, the two goods might be computer components that are typically used together, in which case they are complements. Hence demand depends on the price of both components.
+For example, the two goods might be computer components that are typically used together, in which case they are complements.
+
+Hence demand depends on the price of both components.
 
 The excess demand function is
 
@@ -589,6 +595,7 @@ $$
 A = jnp.array([[0.5, 0.4], [0.8, 0.2]])
 b = jnp.ones(2)
 c = jnp.ones(2)
+two_good_params = (A, b, c)
 ```
 
 At a price level of $p = (1, 0.5)$, the excess demand is
@@ -603,7 +610,9 @@ print(
 )
 ```
 
-To increase the efficiency of computation, we will use the power of vectorization using [`jax.vmap`](https://docs.jax.dev/en/latest/_autosummary/jax.vmap.html). This is much faster than the python loops.
+To increase the efficiency of computation, we will use the power of vectorization using [`jax.vmap`](https://docs.jax.dev/en/latest/_autosummary/jax.vmap.html).
+
+This is much faster than the Python loops.
 
 ```{code-cell} ipython3
 # Create vectorization on the first axis of p.
@@ -618,10 +627,12 @@ Next we plot the two functions $e_0$ and $e_1$ on a grid of $(p_0, p_1)$ values,
 We will use the following function to build the contour plots
 
 ```{code-cell} ipython3
-def plot_excess_demand(ax, good=0, grid_size=100, grid_max=4, surface=True):
+def plot_excess_demand(
+    ax, A, b, c, good=0, grid_size=100, grid_max=4, surface=True
+):
     p_grid = jnp.linspace(0, grid_max, grid_size)
 
-    # Create meshgrid for all combinations of p_1 and p_2
+    # Create meshgrid for all combinations of p_0 and p_1
     P1, P2 = jnp.meshgrid(p_grid, p_grid, indexing="ij")
 
     # Stack to create array of shape (grid_size, grid_size, 2)
@@ -635,10 +646,9 @@ def plot_excess_demand(ax, good=0, grid_size=100, grid_max=4, surface=True):
         cs1 = ax.contourf(p_grid, p_grid, z.T, alpha=0.5)
         plt.colorbar(cs1, ax=ax, format="%.6f")
 
-    ctr1 = ax.contour(p_grid, p_grid, z.T, levels=[0.0])
+    ctr1 = ax.contour(p_grid, p_grid, z.T, levels=[0.0], colors="black")
     ax.set_xlabel("$p_0$")
     ax.set_ylabel("$p_1$")
-    ax.set_title(f"Excess demand for good {good}")
     plt.clabel(ctr1, inline=1, fontsize=13)
 ```
 
@@ -646,7 +656,7 @@ Here's our plot of $e_0$:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-plot_excess_demand(ax, good=0)
+plot_excess_demand(ax, *two_good_params, good=0)
 plt.show()
 ```
 
@@ -654,7 +664,7 @@ Here's our plot of $e_1$:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-plot_excess_demand(ax, good=1)
+plot_excess_demand(ax, *two_good_params, good=1)
 plt.show()
 ```
 
@@ -667,7 +677,7 @@ If these two contour lines cross at some price vector $p^*$, then $p^*$ is an eq
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 5.7))
 for good in (0, 1):
-    plot_excess_demand(ax, good=good, surface=False)
+    plot_excess_demand(ax, *two_good_params, good=good, surface=False)
 plt.show()
 ```
 
@@ -698,7 +708,9 @@ p = solution.x
 p
 ```
 
-This looks close to our guess from observing the figure. We can plug it back into $e$ to test that $e(p) \approx 0$:
+This looks close to our guess from observing the figure.
+
+We can plug it back into $e$ to test that $e(p) \approx 0$:
 
 ```{code-cell} ipython3
 e_p = jnp.max(jnp.abs(e(p, A, b, c)))
@@ -727,10 +739,15 @@ def jacobian_e(p, A, b, c):
     p_0, p_1 = p
     a_00, a_01 = A[0, :]
     a_10, a_11 = A[1, :]
-    j_00 = -a_00 * jnp.exp(-a_00 * p_0) - (b[0] / 2) * p_0 ** (-1 / 2)
-    j_01 = -a_01 * jnp.exp(-a_01 * p_1)
-    j_10 = -a_10 * jnp.exp(-a_10 * p_0)
-    j_11 = -a_11 * jnp.exp(-a_11 * p_1) - (b[1] / 2) * p_1 ** (-1 / 2)
+
+    exp_0 = jnp.exp(-(a_00 * p_0 + a_01 * p_1))
+    exp_1 = jnp.exp(-(a_10 * p_0 + a_11 * p_1))
+
+    j_00 = -a_00 * exp_0 - (b[0] / 2) * p_0 ** (-1 / 2)
+    j_01 = -a_01 * exp_0
+    j_10 = -a_10 * exp_1
+    j_11 = -a_11 * exp_1 - (b[1] / 2) * p_1 ** (-1 / 2)
+
     J = [[j_00, j_01], [j_10, j_11]]
     return jnp.array(J)
 ```
@@ -763,6 +780,8 @@ Now let's use Newton's method to compute the equilibrium price using the multiva
 p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)
 ```
 
+This update requires $J_e(p_n)$ to be nonsingular.
+
 This is a multivariate version of [](oneD-newton)
 
 (Here $J_e(p_n)$ is the Jacobian of $e$ evaluated at $p_n$.)
@@ -774,7 +793,7 @@ Here, instead of coding Jacobian by hand, we use the `jacobian()` function in th
 With only slight modification, we can generalize [our previous attempt](first_newton_attempt) to multidimensional problems
 
 ```{code-cell} ipython3
-def newton(f, x_0, tol=1e-5, max_iter=10):
+def newton_nd(f, x_0, tol=1e-5, max_iter=10):
     x = x_0
     f_jac = jax.jacobian(f)
 
@@ -802,7 +821,7 @@ We find the algorithm terminates in 4 steps
 
 ```{code-cell} ipython3
 %%time
-p = newton(lambda p: e(p, A, b, c), init_p)
+p = newton_nd(lambda p: e(p, A, b, c), init_p)
 ```
 
 ```{code-cell} ipython3
@@ -845,7 +864,7 @@ init_p = jnp.ones(dim)
 
 ```{code-cell} ipython3
 %%time
-p = newton(lambda p: e(p, A, b, c), init_p)
+p = newton_nd(lambda p: e(p, A, b, c), init_p)
 ```
 
 ```{code-cell} ipython3
@@ -903,9 +922,9 @@ Solve for the fixed point using Newton's method with the following initial value
 
 $$
 \begin{aligned}
-    k1_{0} &= (1, 1, 1) \\
-    k2_{0} &= (3, 5, 5) \\
-    k3_{0} &= (50, 50, 50)
+    k_0^{(1)} &= (1, 1, 1) \\
+    k_0^{(2)} &= (3, 5, 5) \\
+    k_0^{(3)} &= (50, 50, 50)
 \end{aligned}
 $$
 
@@ -931,7 +950,8 @@ with $s = 0.3$, $\alpha = 0.3$, and $\delta = 0.4$ and starting value:
 k_0 = (1, 1, 1)
 ```
 
-The result should converge to the [analytical solution](solved_k).
+The result should converge to $(k^*, k^*, k^*)^\top$, where $k^*$ denotes
+the scalar [analytical solution](solved_k).
 ````
 
 ```{exercise-end}
@@ -968,7 +988,7 @@ Let's run through each starting value and see the output
 attempt = 1
 for init in initLs:
     print(f'Attempt {attempt}: Starting value is {init} \n')
-    %time k = newton(lambda k: multivariate_solow(k) - k, \
+    %time k = newton_nd(lambda k: multivariate_solow(k) - k, \
                     init)
     print('-'*64)
     attempt += 1
@@ -1001,7 +1021,7 @@ init = jnp.repeat(1.0, 3)
 ```{code-cell} ipython3
 %%time
 
-k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, init)
+k = newton_nd(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, init)
 ```
 
 The result is very close to the ground truth but still slightly different.
@@ -1009,7 +1029,7 @@ The result is very close to the ground truth but still slightly different.
 ```{code-cell} ipython3
 %%time
 
-k = newton(
+k = newton_nd(
     lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, init, tol=1e-7
 )
 ```
@@ -1052,9 +1072,9 @@ For this exercise, use the following extreme price vectors as initial values:
 
 $$
 \begin{aligned}
-    p1_{0} &= (5, 5, 5) \\
-    p2_{0} &= (1, 1, 1) \\
-    p3_{0} &= (4.5, 0.1, 4)
+    p_0^{(1)} &= (5, 5, 5) \\
+    p_0^{(2)} &= (1, 1, 1) \\
+    p_0^{(3)} &= (4.5, 0.1, 4)
 \end{aligned}
 $$
 
@@ -1084,7 +1104,7 @@ Let's run through each initial guess and check the output
 
 for attempt, init in enumerate(initLs, start=1):
     print(f"Attempt {attempt}: Starting value is {init} \n")
-    %time p = newton(lambda p: e(p, A, b, c), init, tol=1e-15, max_iter=15)
+    %time p = newton_nd(lambda p: e(p, A, b, c), init, tol=1e-15, max_iter=15)
     print("-" * 64)
 ```
 
@@ -1095,7 +1115,9 @@ Sometimes it may take a few initial guesses to achieve convergence.
 Substitute the result back to the formula to check our result using the second initial guess which converges
 
 ```{code-cell} ipython3
-p_solution = newton(lambda p: e(p, A, b, c), initLs[1], tol=1e-15, max_iter=15)
+p_solution = newton_nd(
+    lambda p: e(p, A, b, c), initLs[1], tol=1e-15, max_iter=15
+)
 e(p_solution, A, b, c)
 ```
 
