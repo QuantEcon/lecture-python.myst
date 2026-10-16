@@ -642,11 +642,11 @@ mystnb:
 
 fig, axs = plt.subplots(1, 2, figsize=(10, 6))
 
-axs[0].plot(ε_arr)
+axs[0].plot(ε_arr, lw=2)
 axs[0].set_title("Working efficiency")
 axs[0].set_xlabel("age")
 
-axs[1].plot(α_arr)
+axs[1].plot(α_arr, lw=2)
 axs[1].set_title("Survival probability")
 axs[1].set_xlabel("age")
 
@@ -749,7 +749,7 @@ mystnb:
     name: two_comp_pop_dist
 ---
 fig, ax = plt.subplots()
-ax.plot(hh.frac)
+ax.plot(hh.frac, lw=2)
 ax.set_xlabel("age")
 ax.set_ylabel("population fraction")
 plt.show()
@@ -1227,7 +1227,7 @@ for i, Gb in enumerate(Gb_arr):
     debt2gdp_arr[i] = ss.debt2gdp
 
 fig, ax = plt.subplots()
-ax.plot(τl_arr, debt2gdp_arr)
+ax.plot(τl_arr, debt2gdp_arr, lw=2)
 ax.hlines(ss0.debt2gdp, τl_arr.min(),
           np.maximum(τl_arr.max(), ss0.τ_l), linestyle='--', color='r')
 ax.scatter(ss0.τ_l, ss0.debt2gdp)
@@ -2078,6 +2078,12 @@ exp1_exo = {
 The following figure shows how the buy-out reshapes initial asset holdings across cohorts.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Assets and compensation by age at the reform
+    name: two_comp_exp1_compensation
+---
 # Extract results
 _, μx_seq_bo, μc_seq_bo, k_seq_bo, Gb_seq_bo, _, _ = exp1_exo['results_buyout']
 results_nb = exp1_exo['results_no_buyout']
@@ -2134,6 +2140,12 @@ The declining profile among retirees reflects the actuarial calculation: older r
 We now plot the aggregate transition paths for the labor tax, government debt, capital, and consumption under both schemes.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Experiment 1 paths with and without the buy-out
+    name: two_comp_exp1_paths
+---
 # hh, tech, ss0, ss1 already in scope -- just alias from dict for readability
 ss0_exp1 = exp1_exo['ss0']
 ss1_exp1 = exp1_exo['ss1']
@@ -2205,6 +2217,12 @@ Both schemes converge to the same terminal steady state.
 We now examine consumption paths for cohorts at different ages when the reform occurs.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Cohort consumption paths in Experiment 1
+    name: two_comp_exp1_cohorts
+---
 fig, axes = plt.subplots(2, 2, figsize=(14, 10))
 
 selected_ages = [0, 20, 40, 60]  # Cohorts at different ages at s=0
@@ -2542,6 +2560,12 @@ exp1_endo = {
 The following figure compares the transition paths under fixed and endogenous factor prices, showing how general equilibrium effects alter the tax, debt, interest rate, and wage paths.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Experiment 1 under fixed and endogenous prices
+    name: two_comp_exp1_prices
+---
 # Get endogenous price sequences
 price_seq_endo = exp1_endo['price_seq']
 S_endo = price_seq_endo.shape[0] - 2
@@ -2785,6 +2809,12 @@ exp2_endo = {
 We now compare all four reform scenarios: the buy-out scheme and the government funding scheme, each under fixed and endogenous factor prices.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Comparison of the four reform scenarios
+    name: two_comp_four_scenarios
+---
 # Get debt sequences for all cases
 Gb_buyout_fixed = Gb_seq_bo
 Gb_buyout_endo = exp1_endo['Gb_seq']
@@ -3064,6 +3094,12 @@ Each surface shows the joint distribution across age ($t$) and calendar time ($s
 The mean asset surfaces display the hump-shaped life-cycle profile of asset holdings, with peak assets shifting as working generations increase their saving in response to the reform.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Mean assets by age and time
+    name: two_comp_surf_assets
+---
 plot_surface_grid(
     [μa_bf, μa_be, μa_af, μa_ae],
     case_names, 'Mean assets',
@@ -3074,6 +3110,12 @@ plot_surface_grid(
 The asset variance surfaces show how cumulative income shocks cause dispersion to increase with age, with the transition potentially altering the rate of dispersion growth.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Asset dispersion by age and time
+    name: two_comp_surf_asset_sd
+---
 plot_surface_grid(
     [Va_bf, Va_be, Va_af, Va_ae],
     case_names, 'Std. dev. of assets',
@@ -3085,6 +3127,12 @@ plot_surface_grid(
 The mean consumption surfaces reflect the optimal consumption path, which should be smooth across ages due to the permanent income hypothesis underlying the model.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Mean consumption by age and time
+    name: two_comp_surf_cons
+---
 plot_surface_grid(
     [μc_bf, μc_be, μc_af, μc_ae],
     case_names, 'Mean consumption',
@@ -3098,6 +3146,12 @@ The consumption variance surfaces show how within-cohort consumption dispersion 
 Note that consumption dispersion is not a by-product of certainty equivalence: with $\sigma = -0.05$ the decision rules themselves depend on the volatility of income, as {ref}`two_comp_ex2` confirms.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Consumption dispersion by age and time
+    name: two_comp_surf_cons_sd
+---
 plot_surface_grid(
     [Vc_bf, Vc_be, Vc_af, Vc_ae],
     case_names, 'Std. dev. of consumption',
