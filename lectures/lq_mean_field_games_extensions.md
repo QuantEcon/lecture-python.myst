@@ -489,7 +489,7 @@ The first matrix moves the industry's average price after a common cost shock, a
 ---
 mystnb:
   figure:
-    caption: Pass-through of common and idiosyncratic cost shocks
+    caption: Common and idiosyncratic cost pass-through
     name: fig-mfgx-pass-through
 ---
 t_f = np.linspace(0, 6, 200)
@@ -584,7 +584,7 @@ When $\sigma > 0$, $\lambda_{\text{ind}} < 0$, and $\theta_0 = -\sum_{r\ \mathrm
 
 Its odd moments vanish and its even moments are $\bar M_r = (r-1)!!\, v^{r/2}$; as $\sigma \to 0$ it collapses to a point mass at zero, which we include below as a limiting case.
 
-Linearizing the system around this steady state gives $\dot{\mathbf y} = \tilde{\mathcal H}\mathbf y$ for $\mathbf y = (\hat\beta_1, \hat M_1, \ldots, \hat M_{\bar r})$, where hats denote deviations from the steady state.
+Linearizing the system around this steady state gives $\dot y = \tilde{\mathcal H} y$ for $y = (\hat\beta_1, \hat M_1, \ldots, \hat M_{\bar r})$, where hats denote deviations from the steady state.
 
 ```{prf:proposition}
 :label: mfgx_prop_moments
@@ -675,7 +675,7 @@ The next figure shows the path of the mean for several levels of idiosyncratic v
 ---
 mystnb:
   figure:
-    caption: Idiosyncratic risk and the persistence of the mean
+    caption: Idiosyncratic risk and mean persistence
     name: fig-mfgx-moments
 ---
 t_m = np.linspace(0, 6, 200)

@@ -629,7 +629,7 @@ The next figure shades the four regions and draws contours of the half-life of t
 ---
 mystnb:
   figure:
-    caption: Equilibrium regions and half-lives in the scalar model
+    caption: Scalar model regions and half-lives
     name: fig-mfg-regions
 ---
 θ_X_grid = np.linspace(-2.0, 1.0, 400)
@@ -815,7 +815,7 @@ The third line will matter when we come to the planner.
 ---
 mystnb:
   figure:
-    caption: Marginal returns to capital when one firm or all firms move
+    caption: Marginal returns to capital
     name: fig-mfg-marginal-returns
 ---
 Π_k = lambda k, K: ν_c*(1 - 1/η_c)*k**(ν_c*(1 - 1/η_c) - 1)*K**(ν_c/η_c)
@@ -1692,7 +1692,7 @@ The next figure shows the corresponding paths of investment.
 ---
 mystnb:
   figure:
-    caption: Industry investment in equilibrium and under the planner
+    caption: Equilibrium and planner investment paths
     name: fig-mfg-planner-investment
 ---
 fig, ax = plt.subplots(figsize=(8, 4.5))
