@@ -765,7 +765,7 @@ $$
 
 over $\theta \in \Theta$, where $s_\theta = s(\cdot|\theta)$.
 
-Berk {cite}`Berk1966` established this for Bayesian posterior distributions, and White {cite}`White1982` established it for maximum likelihood estimators.
+{cite:t}`Berk1966` established this for Bayesian posterior distributions, and {cite:t}`White1982` established it for maximum likelihood estimators.
 
 When the minimizer $\theta^*$ is unique, the posterior concentrates on $\theta^*$ and the maximum likelihood estimator converges to $\theta^*$.
 
@@ -773,7 +773,7 @@ When several values of $\theta$ attain the minimum, the posterior concentrates o
 
 Our type 1 agent at $\alpha = \alpha^*$ is an instance.
 
-The section "KL divergence and maximum-likelihood estimation" of {doc}`divergence_measures` shows that maximum likelihood minimizes the cross-entropy of the model relative to the empirical distribution of the data, the sample analogue of the KL divergence from the data-generating distribution to the model.
+The section on {ref}`KL divergence and maximum-likelihood estimation <dm_kl_mle>` in {doc}`divergence_measures` shows that maximum likelihood minimizes the cross-entropy of the model relative to the empirical distribution of the data, the sample analogue of the KL divergence from the data-generating distribution to the model.
 
 Exercise {ref}`mix_model_ex4` studies a type 2 agent whose model is misspecified.
 
@@ -1141,7 +1141,7 @@ plt.show()
 
 The posterior concentrates at the pseudo-true value $\tilde \alpha$, not at the true $\alpha = 0.5$.
 
-As Berk {cite}`Berk1966` showed, a Bayesian with a misspecified model learns the member of his family of models that is closest to the truth in Kullback–Leibler divergence.
+As {cite:t}`Berk1966` showed, a Bayesian with a misspecified model learns the member of his family of models that is closest to the truth in Kullback–Leibler divergence.
 
 ```{solution-end}
 ```

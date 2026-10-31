@@ -198,6 +198,7 @@ l_arr_f = simulate(F_a, F_b, rng, N=50000)
 l_seq_f = np.cumprod(l_arr_f, axis=1)
 ```
 
+(lb_bayes_law)=
 ## Likelihood ratio processes and Bayes’ law
 
 Let $\pi_{-1} \in [0,1]$ be a Bayesian statistician's prior probability that nature generates $w^t$ as a sequence of IID draws from

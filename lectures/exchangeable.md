@@ -31,7 +31,7 @@ kernelspec:
 This lecture studies  learning
 via Bayes' Law.
 
-We touch foundations of Bayesian statistical inference invented by Bruno de Finetti {cite}`definetti`.
+We touch foundations of Bayesian statistical inference invented by {cite:t}`definetti`.
 
 The relevance of de Finetti's work for economists is presented forcefully  by David Kreps
 in chapter 11 of {cite}`Kreps88`.
@@ -295,7 +295,7 @@ A Bayesian statistician interprets the mixing parameter $\tilde \pi \in (0,1)$ a
 
 ### De Finetti's theorem
 
-De Finetti {cite}`definetti` proved that every infinite exchangeable sequence is a mixture of IID sequences.
+As {cite:t}`definetti` proved, every infinite exchangeable sequence is a mixture of IID sequences.
 
 For binary random variables $W_t \in \{0, 1\}$, de Finetti's theorem states that the infinite sequence $W_0, W_1, \ldots$ is exchangeable if and only if there is a probability measure $\mu$ on $[0,1]$ such that
 
@@ -325,7 +325,7 @@ A Bayesian statistician interprets $\mu$ as a prior probability distribution ove
 
 The measure $\mu$ need not have a density; it can put positive probability on finitely many points.
 
-Hewitt and Savage {cite}`HewittSavage1955` extended de Finetti's theorem to sequences that take values in more general spaces.
+{cite:t}`HewittSavage1955` extended de Finetti's theorem to sequences that take values in more general spaces.
 
 In their version the mixing measure is a probability distribution over probability distributions of $W$, and the conditioning variable is the limiting empirical distribution of $W_0, W_1, \ldots$.
 
@@ -1061,13 +1061,19 @@ This exercise studies identity {eq}`eq_conv_identity` and rates of convergence o
 
 4. Compute the slope over $t$ of $\log(1 - E_f[\pi_t])$ and compare it with $-C(f, g)$, where $C(f, g)$ is the Chernoff entropy.
 
-Hint for part 4: rare paths dominate $1 - E_f[\pi_t]$, so plain Monte Carlo estimates of it are imprecise for large $t$. Let $A(s) = \int f(w)^s g(w)^{1-s} dw$, let $s^*$ minimize $A(s)$ on $[0,1]$, and let $m(w) = f(w)^{s^*} g(w)^{1-s^*} / A(s^*)$. Then $f(w) / m(w) = A(s^*) \ell(w)^{1 - s^*}$, so
+Hint for part 4: rare paths dominate $1 - E_f[\pi_t]$, so plain Monte Carlo estimates of it are imprecise for large $t$.
+
+Let $A(s) = \int f(w)^s g(w)^{1-s} dw$, let $s^*$ minimize $A(s)$ on $[0,1]$, and let $m(w) = f(w)^{s^*} g(w)^{1-s^*} / A(s^*)$.
+
+Then $f(w) / m(w) = A(s^*) \ell(w)^{1 - s^*}$, so
 
 $$
 E_f[\phi(w^t)] = A(s^*)^{t+1} E_m\bigl[\phi(w^t) L_t^{1-s^*}\bigr] .
 $$
 
-Draw from $m$ to estimate the expectation on the right. With $f$ uniform, $m$ is the Beta$(3 - 2 s^*, 1.2 - 0.2 s^*)$ density.
+Draw from $m$ to estimate the expectation on the right.
+
+With $f$ uniform, $m$ is the Beta$(3 - 2 s^*, 1.2 - 0.2 s^*)$ density.
 ```
 
 ```{solution-start} exchangeable_ex2

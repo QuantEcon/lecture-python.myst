@@ -42,9 +42,9 @@ In  {doc}`an earlier lecture<wald_friedman>`, we described how  Abraham Wald {ci
 ```{note}
 Wald's idea of formulating the problem sequentially created links to the **dynamic programming** that Richard Bellman developed in the 1950s.
 
-Arrow, Blackwell, and Girshick {cite}`ArrowBlackwellGirshick1949` computed Bayes solutions of sequential decision problems by backward induction, anticipating Bellman's methods.
+{cite:t}`ArrowBlackwellGirshick1949` computed Bayes solutions of sequential decision problems by backward induction, anticipating Bellman's methods.
 
-Wald and Wolfowitz {cite}`WaldWolfowitz1948` used Bayes solutions to prove that Wald's sequential probability ratio test is optimal.
+{cite:t}`WaldWolfowitz1948` used Bayes solutions to prove that Wald's sequential probability ratio test is optimal.
 
 {ref}`A section below <wald_friedman_2_sprt>` shows that the Bayesian decision rule studied in this lecture is a sequential probability ratio test.
 ```
@@ -709,13 +709,13 @@ The Bayesian decision rule is Wald's sequential probability ratio test from {doc
 
 The thresholds do not depend on $k$ because $J$ and $h$ do not depend on time.
 
-Wald and Wolfowitz {cite}`WaldWolfowitz1948` used this connection in the other direction.
+{cite:t}`WaldWolfowitz1948` used this connection in the other direction.
 
 They showed that every sequential probability ratio test is a Bayes rule for a problem of this kind with suitably chosen losses and cost per draw.
 
 They used that fact to prove that no other test with the same or smaller error probabilities has a smaller expected number of draws under $f_0$ or under $f_1$.
 
-Arrow, Blackwell, and Girshick {cite}`ArrowBlackwellGirshick1949` characterized Bayes and minimax solutions of more general sequential decision problems.
+{cite:t}`ArrowBlackwellGirshick1949` characterized Bayes and minimax solutions of more general sequential decision problems.
 
 For our default parameters and $\pi_{-1} = 0.5$, the thresholds are
 

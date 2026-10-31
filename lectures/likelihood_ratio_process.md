@@ -483,7 +483,7 @@ The experiment that reveals $w^t$ is more informative in Blackwell's sense than 
 
 When there are only two hypotheses, one experiment is more informative than another in Blackwell's sense if and only if its receiver operating characteristic curve, defined below, lies everywhere above the other's.
 
-{doc}`blackwell_kihlstrom` describes Blackwell's ordering of experiments; its section "Relation to Bayesian likelihood-ratio learning" applies it to the setting of this lecture.
+{doc}`blackwell_kihlstrom` describes Blackwell's ordering of experiments; its section on {ref}`Bayesian likelihood-ratio learning <bk_lr_learning>` applies it to the setting of this lecture.
 
 Below we plot some informative figures that illustrate this.
 
@@ -984,7 +984,8 @@ $$
 
 For shorthand we'll write $L_t =  L(w^t)$.
 
-### Model selection mistake probability 
+(lrp_model_selection)=
+### Model selection mistake probability
 
 We first study  a problem that assumes  timing protocol 1.  
 

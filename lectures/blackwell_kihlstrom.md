@@ -1168,6 +1168,7 @@ This is the unconditional implication of the posterior martingale property.
 
 {doc}`merging_of_opinions` studies the almost-sure convergence of such belief martingales and the Blackwell–Dubins theorem on the merging of opinions.
 
+(bk_data_processing)=
 ## The Data Processing Inequality and Coarse-Graining
 
 Blackwell's condition that $\nu = \mu Q$ for some Markov kernel $Q$ is the same mathematical operation that underlies the **data processing inequality** (DPI) and the **coarse-graining theorem** in information theory, information geometry, and machine learning.
@@ -1320,6 +1321,7 @@ The table below collects the precise correspondence between Blackwell's framewor
 | Information bottleneck $I(T;Y) \leq I(X;Y)$ | DPI for mutual information applied to Markov chain $Y{-}X{-}T$ |
 
 
+(bk_lr_learning)=
 ## Relation to Bayesian likelihood-ratio learning
 
 The lecture {doc}`likelihood_bayes` is a dynamic two-state special case of the framework developed here.

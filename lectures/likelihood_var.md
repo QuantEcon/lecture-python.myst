@@ -156,12 +156,12 @@ We write $p$ for a generic density and reserve $f$ and $g$ for the names of two 
 
 Given the Gaussian structure, the conditional distribution $p(x_{t+1} | x_t)$ is Gaussian with:
 - Mean: $A x_t$
-- Covariance: $CC'$
+- Covariance: $CC^\top$
 
 The log conditional density is
 
 $$
-\log p(x_{t+1} | x_t) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log \det(CC') - \frac{1}{2} (x_{t+1} - A x_t)' (CC')^{-1} (x_{t+1} - A x_t)
+\log p(x_{t+1} | x_t) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log \det(CC^\top) - \frac{1}{2} (x_{t+1} - A x_t)^\top (CC^\top)^{-1} (x_{t+1} - A x_t)
 $$ (eq:cond_den)
 
 ```{code-cell} ipython3
@@ -180,7 +180,7 @@ def log_likelihood_transition(x_next, x_curr, model):
 The log density of the initial state is:
 
 $$
-\log p(x_0) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log \det(\Sigma_0) - \frac{1}{2} (x_0 - \mu_0)' \Sigma_0^{-1} (x_0 - \mu_0)
+\log p(x_0) = -\frac{n}{2} \log(2\pi) - \frac{1}{2} \log \det(\Sigma_0) - \frac{1}{2} (x_0 - \mu_0)^\top \Sigma_0^{-1} (x_0 - \mu_0)
 $$ (eq:init_den)
 
 ```{code-cell} ipython3
@@ -401,7 +401,7 @@ For paths generated from model $f$, the log likelihood ratio processes tend to g
 
 The paths fall faster under $g$ than they rise under $f$; the section {ref}`var_kl_rate` explains why.
 
-Let's apply the decision rule described in the section "Model selection mistake probability" of {doc}`likelihood_ratio_process`: select model $f$ when $\log L_T \geq 0$ and model $g$ when $\log L_T < 0$.
+Let's apply the decision rule described in the section on {ref}`model selection mistake probability <lrp_model_selection>` in {doc}`likelihood_ratio_process`: select model $f$ when $\log L_T \geq 0$ and model $g$ when $\log L_T < 0$.
 
 This rule is a likelihood ratio test with threshold $L_T = 1$.
 
@@ -493,10 +493,10 @@ They are VAR counterparts of the {ref}`KL divergence rate for Markov chains <lrp
 
 {doc}`divergence_measures` describes Kullback–Leibler divergence.
 
-Let $\Sigma_f = C_f C_f'$ and $\Sigma_g = C_g C_g'$, and let $V_f$ solve the discrete Lyapunov equation
+Let $\Sigma_f = C_f C_f^\top$ and $\Sigma_g = C_g C_g^\top$, and let $V_f$ solve the discrete Lyapunov equation
 
 $$
-V_f = A_f V_f A_f' + \Sigma_f
+V_f = A_f V_f A_f^\top + \Sigma_f
 $$
 
 so that $\mathcal{N}(0, V_f)$ is the stationary distribution of $x_t$ under model $f$.
@@ -510,7 +510,7 @@ $$
 h_{KL}(f, g) & = E_f \left[ \log \frac{p_f(x_t | x_{t-1})}{p_g(x_t | x_{t-1})} \right] \\
 & = \frac{1}{2} \left[ \operatorname{tr}(\Sigma_g^{-1} \Sigma_f) - n 
      + \log \frac{\det \Sigma_g}{\det \Sigma_f} 
-     + \operatorname{tr}\left( \Sigma_g^{-1} (A_f - A_g) V_f (A_f - A_g)' \right) \right]
+     + \operatorname{tr}\left( \Sigma_g^{-1} (A_f - A_g) V_f (A_f - A_g)^\top \right) \right]
 \end{aligned}
 $$ (eq:var_kl_rate)
 
@@ -658,10 +658,10 @@ When $\sigma = 0$, $Y_t$ converges to the steady state $Y^*$, where investment i
 
 To fit into our discussion, we write it into state-space representation.
 
-To handle the constant term properly, we use an augmented state vector $\mathbf{x}_t = [1, Y_t, Y_{t-1}]'$:
+To handle the constant term properly, we use an augmented state vector $x_t = [1, Y_t, Y_{t-1}]^\top$:
 
 $$
-\mathbf{x}_{t+1} = \begin{bmatrix} 
+x_{t+1} = \begin{bmatrix} 
 1 \\ 
 Y_{t+1} \\ 
 Y_t 
@@ -683,7 +683,7 @@ $$
 The observation equation extracts the economic variables:
 
 $$
-\mathbf{y}_t = \begin{bmatrix} 
+y_t = \begin{bmatrix} 
 Y_t \\ 
 C_t \\ 
 I_t 
@@ -706,17 +706,17 @@ This gives us:
 
 The third row uses the national income identity to recover $I_t$ from $Y_t$ and $Y_{t-1}$, so the state vector need not include $Y_{t-2}$.
 
-The matrix $CC'$ has rank one: given $\mathbf{x}_t$, the first and third components of $\mathbf{x}_{t+1}$ are known and only $Y_{t+1}$ is random.
+The matrix $CC^\top$ has rank one: given $x_t$, the first and third components of $x_{t+1}$ are known and only $Y_{t+1}$ is random.
 
 Consequently {eq}`eq:cond_den` is not a density with respect to Lebesgue measure on $\mathbb{R}^3$.
 
-`create_var_model` replaces $(CC')^{-1}$ with a pseudo-inverse and adds $10^{-10} I$ to $CC'$ before taking the log determinant.
+`create_var_model` replaces $(CC^\top)^{-1}$ with a pseudo-inverse and adds $10^{-10} I$ to $CC^\top$ before taking the log determinant.
 
-The regularization terms cancel in $\ell_{t+1}$, which equals the log ratio of the conditional densities of $Y_{t+1}$ given $\mathbf{x}_t$ under the two models.
+The regularization terms cancel in $\ell_{t+1}$, which equals the log ratio of the conditional densities of $Y_{t+1}$ given $x_t$ under the two models.
 
-The same device handles the singular covariance matrix $\Sigma_0$ of $\mathbf{x}_0$, whose first component is always $1$.
+The same device handles the singular covariance matrix $\Sigma_0$ of $x_0$, whose first component is always $1$.
 
-An econometrician who observes $Y_t$ and $Y_{t-1}$ observes the state $\mathbf{x}_t$.
+An econometrician who observes $Y_t$ and $Y_{t-1}$ observes the state $x_t$.
 
 When an econometrician observes only some components of a state vector, or observes them with error, a Kalman filter produces innovations from which to compute the likelihood, as in {doc}`kalman` and {doc}`kalman_filter_var`.
 
@@ -757,7 +757,7 @@ def samuelson_to_var(a, b, γ, G, σ):
 
 We define functions in the code cell below to get the initial conditions and check stability 
 
-With `stationary_init=True`, the initial state $[1, Y_0, Y_{-1}]'$ has the stationary distribution: $(Y_0, Y_{-1})$ has mean $(Y^*, Y^*)$ and a covariance matrix that solves a discrete Lyapunov equation.
+With `stationary_init=True`, the initial state $[1, Y_0, Y_{-1}]^\top$ has the stationary distribution: $(Y_0, Y_{-1})$ has mean $(Y^*, Y^*)$ and a covariance matrix that solves a discrete Lyapunov equation.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -978,16 +978,16 @@ Their forecasts of $Y_{t+1}$ differ by $(b_f - b_g)(Y_t - Y_{t-1}) = 0.05 \, \De
 Because the two models share $\sigma$, the expected increment of $\log L_t$ under $f$ is
 
 $$
-E_f [\ell_{t+1} | \mathbf{x}_t] = \frac{(b_f - b_g)^2 (\Delta Y_t)^2}{2 \sigma^2}
+E_f [\ell_{t+1} | x_t] = \frac{(b_f - b_g)^2 (\Delta Y_t)^2}{2 \sigma^2}
 $$
 
-and $E_g [-\ell_{t+1} | \mathbf{x}_t]$ is given by the same formula.
+and $E_g [-\ell_{t+1} | x_t]$ is given by the same formula.
 
 Along the transient, $|\Delta Y_t|$ is large relative to $\sigma = 0.5$.
 
 In the stationary distribution, $\Delta Y_t$ is small, and the KL divergence rate is $h_{KL}(f, g) = (b_f - b_g)^2 E_f[(\Delta Y_t)^2] / (2\sigma^2)$.
 
-The function below computes this rate from the stationary distribution of $\mathbf{x}_t$ for a model created with `stationary_init=True`.
+The function below computes this rate from the stationary distribution of $x_t$ for a model created with `stationary_init=True`.
 
 ```{code-cell} ipython3
 def samuelson_kl_rate(model_f, model_g):
@@ -1029,9 +1029,9 @@ print(f"largest mean expected increment: "
 
 fig, ax = plt.subplots()
 ax.semilogy(t_grid, inc_f, color='C0', lw=2, 
-            label=r'$E_f[\ell_t | \mathbf{x}_{t-1}]$, mean over paths')
+            label=r'$E_f[\ell_t | x_{t-1}]$, mean over paths')
 ax.semilogy(t_grid, inc_g, color='C1', lw=2, 
-            label=r'$E_g[-\ell_t | \mathbf{x}_{t-1}]$, mean over paths')
+            label=r'$E_g[-\ell_t | x_{t-1}]$, mean over paths')
 ax.axhline(h_fg, color='C0', ls='--', lw=2, label=r'$h_{KL}(f, g)$')
 ax.axhline(h_gf, color='C1', ls='--', lw=2, label=r'$h_{KL}(g, f)$')
 ax.set_xlabel('$t$')
@@ -1062,7 +1062,7 @@ Use the formula for the Kullback–Leibler divergence of two multivariate normal
 $$
 KL\bigl(\mathcal{N}(\mu_1, \Sigma_1), \mathcal{N}(\mu_2, \Sigma_2)\bigr)
 = \frac{1}{2} \left[ \operatorname{tr}(\Sigma_2^{-1} \Sigma_1) - n 
-  + (\mu_1 - \mu_2)' \Sigma_2^{-1} (\mu_1 - \mu_2) 
+  + (\mu_1 - \mu_2)^\top \Sigma_2^{-1} (\mu_1 - \mu_2) 
   + \log \frac{\det \Sigma_2}{\det \Sigma_1} \right]
 $$
 
@@ -1084,17 +1084,17 @@ Setting $\mu_1 - \mu_2 = (A_f - A_g) x_{t-1}$ in the formula above gives
 $$
 E_f [\ell_t | x_{t-1}] = \frac{1}{2} \left[ \operatorname{tr}(\Sigma_g^{-1} \Sigma_f) - n 
   + \log \frac{\det \Sigma_g}{\det \Sigma_f}
-  + x_{t-1}' (A_f - A_g)' \Sigma_g^{-1} (A_f - A_g) x_{t-1} \right]
+  + x_{t-1}^\top (A_f - A_g)^\top \Sigma_g^{-1} (A_f - A_g) x_{t-1} \right]
 $$
 
 Under $f$, $x_{t-1} \sim \mathcal{N}(0, V_f)$.
 
-For any matrix $M$, $E [x_{t-1}' M x_{t-1}] = \operatorname{tr}(M V_f)$.
+For any matrix $M$, $E [x_{t-1}^\top M x_{t-1}] = \operatorname{tr}(M V_f)$.
 
-With $M = (A_f - A_g)' \Sigma_g^{-1} (A_f - A_g)$ and the cyclic property of the trace,
+With $M = (A_f - A_g)^\top \Sigma_g^{-1} (A_f - A_g)$ and the cyclic property of the trace,
 
 $$
-E_f [x_{t-1}' M x_{t-1}] = \operatorname{tr}\left( \Sigma_g^{-1} (A_f - A_g) V_f (A_f - A_g)' \right)
+E_f [x_{t-1}^\top M x_{t-1}] = \operatorname{tr}\left( \Sigma_g^{-1} (A_f - A_g) V_f (A_f - A_g)^\top \right)
 $$
 
 Taking expectations of $E_f [\ell_t | x_{t-1}]$ over $x_{t-1}$ gives {eq}`eq:var_kl_rate`.

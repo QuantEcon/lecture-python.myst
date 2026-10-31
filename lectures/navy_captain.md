@@ -58,8 +58,8 @@ Milton Friedman recognized the Captain's conjecture as posing a challenging stat
 A member of the group, the great mathematician and economist Abraham Wald, soon solved the problem.
 
 A good way to formulate the problem is to use some ideas from Bayesian statistics that we describe in
-this lecture {doc}`Exchangeability and Bayesian Updating <exchangeable>` and in the section "Likelihood ratio processes and Bayes' law" of this lecture
-{doc}`Likelihood Ratio Processes and Bayesian Learning <likelihood_bayes>`, which describes the link between Bayesian
+{doc}`exchangeable` and in the section on {ref}`likelihood ratio processes and Bayes' law <lb_bayes_law>` of
+{doc}`likelihood_bayes`, which describes the link between Bayesian
 updating and likelihood ratio processes.
 
 The present lecture uses Python to generate simulations that evaluate expected losses under  the Neyman-Pearson **frequentist** procedure that the Navy captain questioned  and  the **Bayesian** decision rule described in  {doc}`A Bayesian Formulation of Friedman and Wald's Problem <wald_friedman_2>`.
@@ -72,9 +72,9 @@ The Bayesian rule chooses its sample size sequentially.
 
 A rule with a fixed sample size is a special sequential rule, so the best sequential rule has an expected loss no larger than the best fixed-sample rule.
 
-Wald and Wolfowitz {cite}`WaldWolfowitz1948` proved that, among all tests with given probabilities of type I and type II errors, Wald's sequential probability ratio test minimizes the expected number of draws under both hypotheses.
+{cite:t}`WaldWolfowitz1948` proved that, among all tests with given probabilities of type I and type II errors, Wald's sequential probability ratio test minimizes the expected number of draws under both hypotheses.
 
-Arrow, Blackwell, and Girshick {cite}`ArrowBlackwellGirshick1949` showed how to compute Bayes solutions of sequential decision problems by backward induction.
+{cite:t}`ArrowBlackwellGirshick1949` showed how to compute Bayes solutions of sequential decision problems by backward induction.
 
 Our simulations illustrate these theorems and measure how much the Navy Captain's hunch was worth.
 
@@ -1059,7 +1059,7 @@ To begin, let’s look at simulations of the Bayesian’s beliefs over time.
 
 We can compute  updated beliefs at any time $t$ using
 the one-to-one mapping from $L_{t}$ to $\pi_{t}$ given
-$\pi_0$ described in the section "Likelihood ratio processes and Bayes' law" of {doc}`Likelihood Ratio Processes and Bayesian Learning <likelihood_bayes>`.
+$\pi_0$ described in the section on {ref}`likelihood ratio processes and Bayes' law <lb_bayes_law>` of {doc}`likelihood_bayes`.
 
 ```{code-cell} ipython3
 π0_arr = π_star * L0_arr / (π_star * L0_arr + 1 - π_star)
@@ -1468,7 +1468,7 @@ It draws $5.42$ observations on average under $f_0$ and $6.84$ under $f_1$, agai
 
 The sequential test has smaller error probabilities and fewer expected draws under both hypotheses, so it dominates the Navy's rule without any appeal to a prior.
 
-Wald and Wolfowitz {cite}`WaldWolfowitz1948` proved that no test whose error probabilities are no larger than those of a sequential probability ratio test has a smaller expected number of draws under either hypothesis.
+{cite:t}`WaldWolfowitz1948` proved that no test whose error probabilities are no larger than those of a sequential probability ratio test has a smaller expected number of draws under either hypothesis.
 
 ```{solution-end}
 ```

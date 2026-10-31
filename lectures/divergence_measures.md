@@ -99,7 +99,7 @@ Entropy $H(f)$ for the uniform distribution equals $\log n$.
 
 
 
-Kullback and Leibler {cite}`kullback1951information` define the amount of information that a single draw $x = i$ provides for distinguishing $f$ from $g$  as the log likelihood ratio 
+{cite:t}`kullback1951information` define the amount of information that a single draw $x = i$ provides for distinguishing $f$ from $g$  as the log likelihood ratio 
 
 $$
 \log \frac{f_i}{g_i}
@@ -229,7 +229,7 @@ It has several important properties:
 
 The data processing inequality says that garbling data cannot make $f$ and $g$ easier to tell apart.
 
-The section "The Data Processing Inequality and Coarse-Graining" of {doc}`blackwell_kihlstrom` connects it to Blackwell's ordering of experiments.
+The section on {ref}`the data processing inequality and coarse-graining <bk_data_processing>` in {doc}`blackwell_kihlstrom` connects it to Blackwell's ordering of experiments.
 
 JS divergence and Chernoff entropy, defined below, also satisfy the data processing inequality.
 
@@ -619,6 +619,8 @@ def plot_dist_diff(para_grid):
 
 divergence_data = plot_dist_diff(param_grid)
 ```
+
+(dm_kl_mle)=
 ## KL divergence and maximum-likelihood estimation
 
 Let $x_1, x_2, \ldots, x_N$ be IID draws from a density $p_0$.

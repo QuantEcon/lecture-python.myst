@@ -1555,7 +1555,7 @@ A driftless random walk with small steps hits $\log A$ before $\log B$ with prob
 ```{exercise}
 :label: wald_friedman_ex3
 
-Wald and Wolfowitz {cite}`WaldWolfowitz1948` proved that among all tests, sequential or not, whose type I and type II error probabilities do not exceed those of an SPRT, the SPRT minimizes both $E_0[N]$ and $E_1[N]$.
+{cite:t}`WaldWolfowitz1948` proved that among all tests, sequential or not, whose type I and type II error probabilities do not exceed those of an SPRT, the SPRT minimizes both $E_0[N]$ and $E_1[N]$.
 
 This exercise compares the SPRT with the fixed-sample Neyman–Pearson test that the Navy told Captain Schuyler to use.
 
