@@ -349,7 +349,7 @@ Because $f$ is the uniform density, $E\left[\ell \left(w_{t}\right)\bigm|q=f\rig
 
 As $w \rightarrow 0$, $g(w)$ vanishes like $w^{G_a - 1} = w^2$, so the integral diverges.
 
-{ref}`lr_ex4` shows that $E\left[\ell \left(w_{t}\right)\bigm|q=f\right] = B(G_a, G_b) B(2-G_a, 2-G_b)$ when $G_a < 2$ and $G_b < 2$, where $B$ is the Beta function, and that it is infinite otherwise.
+{ref}`lr_ex_lmean` shows that $E\left[\ell \left(w_{t}\right)\bigm|q=f\right] = B(G_a, G_b) B(2-G_a, 2-G_b)$ when $G_a < 2$ and $G_b < 2$, where $B$ is the Beta function, and that it is infinite otherwise.
 
 Because the $w_t$'s are IID, $E\left[L\left(w^{t}\right)\bigm|q=f\right] = +\infty$ for every $t \geq 1$.
 
@@ -2013,7 +2013,7 @@ Therefore by similar reasoning $L_t \to 0$ almost surely.
 ```
 
 ```{exercise}
-:label: lr_ex3
+:label: lr_ex_markov
 
 This exercise extends the Chernoff bound {eq}`eq:chernoff_bound` to the Markov chains of {ref}`this section <lrp_markov>`.
 
@@ -2035,7 +2035,7 @@ For $\phi \in [0,1]$, let $Q_\phi$ be the $n \times n$ matrix with entries $Q_\p
 4. Set $\pi_0^{(f)} = \pi^{(f)}$ and $\pi_0^{(g)} = \pi^{(g)}$. Use `compute_markov_selection_error` to simulate the error probability for several values of $T$, and plot it together with the bound in part 1.
 ```
 
-```{solution-start} lr_ex3
+```{solution-start} lr_ex_markov
 :class: dropdown
 ```
 
@@ -2121,7 +2121,7 @@ On the log scale they decline roughly in parallel with the bound, a little faste
 ```
 
 ```{exercise}
-:label: lr_ex4
+:label: lr_ex_lmean
 
 Let $f = \text{Beta}(1,1)$ and $g = \text{Beta}(G_a, G_b)$.
 
@@ -2136,7 +2136,7 @@ Let $f = \text{Beta}(1,1)$ and $g = \text{Beta}(G_a, G_b)$.
 3. For each $g$, draw $w_1, w_2, \ldots, w_N$ from $f$ and plot the running sample average $\frac{1}{n} \sum_{i=1}^n \ell(w_i)$ against $n$. Explain the difference between the two plots.
 ```
 
-```{solution-start} lr_ex4
+```{solution-start} lr_ex_lmean
 :class: dropdown
 ```
 

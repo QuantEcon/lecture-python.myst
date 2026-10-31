@@ -1183,7 +1183,7 @@ for label, log_L_f, log_L_g in [
           f"average error = {0.5 * (α + β):.3f}")
 ```
 
-From the stationary distributions, the medians of $\log L_{50}$ are within $0.5$ of zero, $\alpha_{50}$ exceeds $0.4$, and the likelihood ratio test selects the wrong model in about a third of the samples.
+From the stationary distributions, the medians of $\log L_{50}$ are within $0.5$ of zero, $\alpha_{50}$ is about $0.4$, and the likelihood ratio test selects the wrong model in about a third of the samples.
 
 From $Y_0 \approx 100$, it selects the correct model in all $50$ samples from each model.
 
@@ -1239,7 +1239,7 @@ plt.show()
 print(f"at t = {t_star}: α = {α_t[-1]:.3f}, β = {β_t[-1]:.3f}")
 ```
 
-Even after about $750$ periods, both error probabilities remain near $0.1$.
+Even after about $750$ periods, both error probabilities remain roughly $0.1$.
 
 ```{solution-end}
 ```

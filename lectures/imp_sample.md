@@ -661,7 +661,7 @@ Because $h_3 > 0$ on $(0,1)$, the importance sampling estimator with $h_3$ is un
 
 The trouble lies in the shape of its sampling distribution.
 
-Even at $T = 1$, the estimates under $h_3$ are more skewed than the Monte Carlo estimates under $g$, and the median estimate lies farther below $1$.
+Even at $T = 1$, the estimates under $h_3$ are more dispersed than the Monte Carlo estimates under $g$, and the median estimate lies farther below $1$.
 
 Near $\omega = 1$, $h_3$ vanishes like $(1-\omega)^4$ while $f = 1$, so the weight $f/h_3$ has tail index $5/4$ under $h_3$, smaller than the tail index $3/2$ of $f/g$ under $g$.
 

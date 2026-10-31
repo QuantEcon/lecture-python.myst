@@ -479,7 +479,7 @@ whether this equation admits a unique posterior $\mu$.
 :label: ime_lemma_unique_posterior
 
 Assume that the first partial derivatives of $u^1$ exist and that $u^1$ is
-quasi-concave.
+strictly quasi-concave.
 
 Also assume that agent 1 always consumes positive quantities of both goods.
 

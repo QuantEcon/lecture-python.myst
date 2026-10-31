@@ -920,7 +920,7 @@ perfectly reveals it, while signal $s_2$ leaves the buyer uncertain.
 
 Types $\theta \in [0.175, 0.550]$ buy it.
 
-That interval contains $\theta^* = 1/2$, the least-informed type, who values
+That interval contains $\theta^* = 1/2$, the type least sure what to do, who values
 information most.
 
 The type indifferent between the two informative items is $\theta \approx 0.55$.

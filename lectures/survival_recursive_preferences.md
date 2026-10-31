@@ -1480,7 +1480,7 @@ for t in [200, 500, 1000, 2000]:
     print(f"{t:>6}{share:>32.2f}{prob:>16.3f}")
 ```
 
-This figure simulates 20 sample paths of the Pareto share $\upsilon_t$ under separable CRRA preferences ($\gamma = \rho$) with $\omega^1 = 0.10$ and $\omega^2 = 0$.
+This figure simulates 50 sample paths of the Pareto share $\upsilon_t$ under separable CRRA preferences ($\gamma = \rho$) with $\omega^1 = 0.10$ and $\omega^2 = 0$.
 
 Agent 2 has correct beliefs, so $\vartheta$ has drift $-\frac{1}{2}(\omega^1)^2 = -0.005$ and $\upsilon_t \to 0$ almost surely.
 
@@ -1741,7 +1741,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-The left panel shows 20 sample paths of the Pareto share $\upsilon_t$ under parameters inside the coexistence region ($\omega^1 = 0.25$, $\omega^2 = 0$, $\gamma = 5$, IES $\approx 1.49$).
+The left panel shows 50 sample paths of the Pareto share $\upsilon_t$ under parameters inside the coexistence region ($\omega^1 = 0.25$, $\omega^2 = 0$, $\gamma = 5$, IES $\approx 1.49$).
 
 Unlike the separable case in {numref}`fig-crra-pareto-paths`, the paths do not drift to zero -- they repeatedly visit a wide range of values, bouncing between the two repelling boundaries.
 

@@ -748,7 +748,7 @@ def V_q(wf, A, B, flag, tol=1e-5, max_iter=10_000):
         V_old = V_cont.copy()
 
         for i in prange(n_cont):
-            total = 0.0                 # local to iteration i
+            total = 0.0
             for j in range(m):
                 π_next = wf.κ(z_arr[j], π_cont[i])
                 if π_next >= A:
@@ -924,6 +924,8 @@ Evidently, there is no sample size $t$ at which the Neyman-Pearson
 decision rule attains a lower loss function than does the Bayesian rule.
 
 At $\pi^{*}=0.5$, the best fixed-sample rule draws $8$ observations and has expected loss $18.33$; the Bayesian rule has expected loss $11.36$.
+
+The Bayesian value is computed with the $1{,}000$ Monte Carlo draws stored in `wf.z0` and `wf.z1`, so its last digits are not reliable; the simulation in a later section puts the Bayesian loss near $12.3$, still far below $18.33$.
 
 The following graph compares the two rules for all values of $\pi^{*}$.
 

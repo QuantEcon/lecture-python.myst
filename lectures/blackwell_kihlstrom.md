@@ -1316,7 +1316,7 @@ The table below collects the precise correspondence between Blackwell's framewor
 | DeGroot value $I(\mu; U_H)$ | Mutual information $I(\tilde{x}_\mu;\, \tilde{s})$ (Shannon DPI) |
 | Posterior spreads under $\mu$ vs $\nu$ | $D_f$ between rows larger under $\mu$ |
 | Blackwell theorem for two states | $D_f$ dominance for every $f$ $\Leftrightarrow$ a single Markov kernel witnesses dominance |
-| Chentsov's uniqueness theorem | Fisher information is the unique coarse-graining-contracting metric |
+| Chentsov's uniqueness theorem | Fisher information is the unique metric invariant under Markov embeddings (sufficient statistics); it also contracts under Markov kernels |
 | Information bottleneck $I(T;Y) \leq I(X;Y)$ | DPI for mutual information applied to Markov chain $Y{-}X{-}T$ |
 
 
