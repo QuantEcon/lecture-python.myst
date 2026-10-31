@@ -41,6 +41,12 @@ In  {doc}`an earlier lecture<wald_friedman>`, we described how  Abraham Wald {ci
 
 ```{note}
 Wald's idea of formulating the problem sequentially created links to the **dynamic programming** that Richard Bellman developed in the 1950s.
+
+Arrow, Blackwell, and Girshick {cite}`ArrowBlackwellGirshick1949` computed Bayes solutions of sequential decision problems by backward induction, anticipating Bellman's methods.
+
+Wald and Wolfowitz {cite}`WaldWolfowitz1948` used Bayes solutions to prove that Wald's sequential probability ratio test is optimal.
+
+{ref}`A section below <wald_friedman_2_sprt>` shows that the Bayesian decision rule studied in this lecture is a sequential probability ratio test.
 ```
 
 As we learned in {doc}`prob_matrix` and  {doc}`prob_meaning`, a frequentist statistician views a probability distribution as measuring relative frequencies of a statistic that he anticipates constructing  from a very long sequence of i.i.d. draws from a known probability distribution.  
@@ -75,7 +81,7 @@ In our {doc}`previous frequentist version <wald_friedman>`, key ideas in play we
 - Abraham Wald's **sequential probability ratio test**
 - The **power** of a statistical test
 - The **critical region** of a statistical test
-- A **uniformly most powerful test**
+- A **most powerful test**
 
 In this lecture about a Bayesian reformulation of the problem, additional  ideas at work are
 - an initial prior probability $\pi_{-1}$ that model $f_1$ generates the data 
@@ -85,6 +91,10 @@ In this lecture about a Bayesian reformulation of the problem, additional  ideas
 
 
 This lecture uses ideas studied in the lectures on {doc}`likelihood ratio processes<likelihood_ratio_process>`, {doc}`their roles in Bayesian learning<likelihood_bayes>`, and {doc}`this lecture on exchangeability<exchangeable>`.
+
+{doc}`blackwell_kihlstrom` studies a complementary question: how to rank experiments by their informativeness.
+
+Here the experiment is fixed, and the decision maker chooses when to stop sampling from it.
 
 
 We'll begin with some imports:
@@ -99,7 +109,7 @@ from math import gamma
 
 ## A Dynamic Programming Approach
 
-The following presentation of the problem closely follows Dmitri
+The following presentation of the problem closely follows Dimitri
 Bertsekas's treatment in **Dynamic Programming and Stochastic Control** {cite}`Bertsekas75`. 
 
 A decision-maker can observe a sequence of draws of a random variable $z$.
@@ -114,7 +124,7 @@ random variables is also independently and identically distributed (IID).
 
 But the observer does not know which of the two distributions generated the sequence.
 
-For reasons explained in  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the sequence is not
+For reasons explained in  {doc}`exchangeable`, this means that the sequence is not
 IID.
 
 The observer has something to learn, namely, whether the observations are drawn from  $f_0$ or from $f_1$.
@@ -196,7 +206,7 @@ for π in 0.25, 0.5, 0.75:
 
 for ax in axes:
     ax.legend()
-    ax.set(xlabel="$z$ values", ylabel="probability of $z_k$")
+    ax.set(xlabel="$z$ values", ylabel="density")
 
 plt.tight_layout()
 plt.show()
@@ -266,7 +276,7 @@ parameter such as $c$ or $L_0$ on $A$ or $B$.
 
 Let $J(\pi)$ be the total loss for a decision-maker with current belief $\pi$ who chooses optimally.
 
-Principles of **dynamic programming** teach  us that an optimal loss function  $J$ satisfies the following  the Bellman functional  equation
+Principles of **dynamic programming** teach  us that an optimal loss function  $J$ satisfies the following Bellman functional  equation
 
 ```{math}
 :label: new1
@@ -315,16 +325,16 @@ where $\pi \in [0,1]$ and
 - $h(\pi) :=  c + \mathbb E [J(\pi')]$; this is the continuation value; i.e.,
   the expected cost associated with drawing one more $z$.
 
-The optimal decision rule is characterized by two numbers $A, B \in (0,1) \times (0,1)$ that satisfy
+The optimal decision rule is characterized by two numbers $0 < B \leq A < 1$ that satisfy
 
 $$
-\pi L_0 < \min \{ (1-\pi) L_1, c + \mathbb E [J(\pi')] \}  \textrm { if } \pi \leq B
+\pi L_0 \leq \min \{ (1-\pi) L_1, c + \mathbb E [J(\pi')] \}  \textrm { if } \pi \leq B
 $$
 
 and
 
 $$
-(1- \pi) L_1 < \min \{ \pi L_0,  c + \mathbb E [J(\pi')] \} \textrm { if } \pi \geq A
+(1- \pi) L_1 \leq \min \{ \pi L_0,  c + \mathbb E [J(\pi')] \} \textrm { if } \pi \geq A
 $$
 
 The optimal decision rule is then
@@ -336,6 +346,38 @@ $$
 \textrm { draw another }  z \textrm{ if }  B < \pi < A
 \end{aligned}
 $$
+
+The two-threshold form of this rule follows from three properties of $h$ and of the stopping loss $S(\pi) = \min \{ \pi L_0, (1-\pi) L_1 \}$.
+
+First, $h(0) = h(1) = c$.
+
+When $\pi \in \{0, 1\}$, Bayes' law sets $\pi' = \pi$, and $J(0) = J(1) = 0$.
+
+Second, $h$ is concave.
+
+Write $\mathbb E [J(\pi')] = \int f_\pi(z') J \left( \pi f_1(z') / f_\pi(z') \right) dz'$.
+
+For each $z'$, the integrand is the perspective $t J(x/t)$ of $J$ evaluated at $x = \pi f_1(z')$ and $t = f_\pi(z')$, both linear in $\pi$.
+
+The perspective of a concave function is concave, so $\mathbb E [J(\pi')]$ is concave in $\pi$ whenever $J$ is.
+
+$J$ is the minimum of $h$ and two linear functions, so $J$ is concave whenever $h$ is.
+
+Therefore the operator $Q$ defined below maps concave functions into concave functions, and its fixed point $h$, a limit of iterates that start from $h = 0$, is concave.
+
+Third, $S$ is linear on each side of $\hat \pi = L_1/(L_0 + L_1)$.
+
+On $[0, \hat \pi]$, accepting $f_0$ is optimal where $\pi L_0 - h(\pi) \leq 0$.
+
+The function $\pi L_0 - h(\pi)$ is convex and equals $-c < 0$ at $\pi = 0$, so this set is an interval $[0, B]$ with $B > 0$.
+
+On $[\hat \pi, 1]$, the same argument applied to $(1-\pi) L_1 - h(\pi)$ gives an interval $[A, 1]$ with $A < 1$ on which accepting $f_1$ is optimal.
+
+The decision maker draws again on the interval $(B, A)$ between them.
+
+That interval is empty, and $B = A = \hat \pi$, when $h(\hat \pi) \geq S(\hat \pi)$.
+
+Because $h \geq c$, this happens whenever $c \geq L_0 L_1/(L_0 + L_1)$.
 
 Our aim is to compute the cost function $J$ as well as  the associated cutoffs $A$
 and $B$.
@@ -380,6 +422,16 @@ Q h(\pi) =
 c + \int \min \{ \kappa(z', \pi) L_0, (1 - \kappa(z', \pi) ) L_1, h(\kappa(z', \pi) ) \} f_\pi (z') dz'
 $$
 
+The operator $Q$ is monotone: $h \leq g$ implies $Q h \leq Q g$.
+
+The decision maker does not discount future losses, so $Q$ is not a contraction in the sup norm.
+
+We start from $h = 0$.
+
+Then $Q h \geq h$, and monotonicity makes the iterates $Q^n h$ increase with $n$.
+
+The iterates are bounded above by $c + L_0 L_1/(L_0 + L_1)$, so they converge, and the limit solves {eq}`funceq`.
+
 ## Implementation
 
 First, we will construct a `jitclass` to store the parameters of the model
@@ -412,7 +464,8 @@ class WaldFriedman:
                  L0=25,
                  L1=25,
                  π_grid_size=200,
-                 mc_size=1000):
+                 mc_size=1000,
+                 seed=1234):
 
         self.a0, self.b0 = a0, b0
         self.a1, self.b1 = a1, b1
@@ -421,6 +474,7 @@ class WaldFriedman:
         self.π_grid = np.linspace(0, 1, π_grid_size)
         self.mc_size = mc_size
 
+        np.random.seed(seed)   # Monte Carlo draws used to compute E[J(π')]
         self.z0 = np.random.beta(a0, b0, mc_size)
         self.z1 = np.random.beta(a1, b1, mc_size)
 
@@ -528,10 +582,11 @@ We will be using the default parameterization with distributions like so
 ```{code-cell} ipython3
 wf = WaldFriedman()
 
+z_grid = np.linspace(0, 1, 200)
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.plot(wf.f0(wf.π_grid), label="$f_0$")
-ax.plot(wf.f1(wf.π_grid), label="$f_1$")
-ax.set(ylabel="probability of $z_k$", xlabel="$z_k$", title="Distributions")
+ax.plot(z_grid, wf.f0(z_grid), label="$f_0$")
+ax.plot(z_grid, wf.f1(z_grid), label="$f_1$")
+ax.set(ylabel="density", xlabel="$z$", title="Distributions")
 ax.legend()
 
 plt.show()
@@ -622,19 +677,81 @@ probability assigned to $f_1$ is in the indecisive region $\pi \in (B, A)$.
 The decision-maker continues to sample until the probability that he attaches to
 model $f_1$ falls below $B$ or above $A$.
 
+(wald_friedman_2_sprt)=
+### The Bayesian rule is a sequential probability ratio test
+
+Let 
+
+$$
+\Lambda_k = \prod_{j=0}^{k} \frac{f_1(z_j)}{f_0(z_j)}
+$$
+
+be the likelihood ratio after the $k+1$ observations $z_0, \ldots, z_k$.
+
+We write $\Lambda_k$ rather than $L_k$ because $L_0$ and $L_1$ denote losses in this lecture.
+
+Iterating on Bayes' law, as in {doc}`likelihood_bayes`, gives
+
+$$
+\pi_k = \frac{\pi_{-1} \Lambda_k}{\pi_{-1} \Lambda_k + 1 - \pi_{-1}}
+$$
+
+The posterior $\pi_k$ is a strictly increasing function of $\Lambda_k$.
+
+Therefore $\pi_k \geq A$ if and only if $\Lambda_k \geq A_\Lambda$, and $\pi_k \leq B$ if and only if $\Lambda_k \leq B_\Lambda$, where
+
+$$
+A_\Lambda = \frac{1 - \pi_{-1}}{\pi_{-1}} \frac{A}{1 - A}, \qquad
+B_\Lambda = \frac{1 - \pi_{-1}}{\pi_{-1}} \frac{B}{1 - B}
+$$ (eq:wf2_LR_thresholds)
+
+The Bayesian decision rule is Wald's sequential probability ratio test from {doc}`wald_friedman` with thresholds $A_\Lambda$ and $B_\Lambda$ on the likelihood ratio.
+
+The thresholds do not depend on $k$ because $J$ and $h$ do not depend on time.
+
+Wald and Wolfowitz {cite}`WaldWolfowitz1948` used this connection in the other direction.
+
+They showed that every sequential probability ratio test is a Bayes rule for a problem of this kind with suitably chosen losses and cost per draw.
+
+They used that fact to prove that no other test with the same or smaller error probabilities has a smaller expected number of draws under $f_0$ or under $f_1$.
+
+Arrow, Blackwell, and Girshick {cite}`ArrowBlackwellGirshick1949` characterized Bayes and minimax solutions of more general sequential decision problems.
+
+For our default parameters and $\pi_{-1} = 0.5$, the thresholds are
+
+```{code-cell} ipython3
+def LR_thresholds(B, A, π_minus_1=0.5):
+    """Map thresholds on π into thresholds on the likelihood ratio."""
+    prior_odds = (1 - π_minus_1) / π_minus_1
+    return prior_odds * B / (1 - B), prior_odds * A / (1 - A)
+
+B_Λ, A_Λ = LR_thresholds(B, A)
+print(f"B = {B:.3f}, A = {A:.3f}")
+print(f"B_Λ = {B_Λ:.2f}, A_Λ = {A_Λ:.2f}")
+```
+
+{ref}`wald_friedman_2_ex1` compares the error probabilities of this test with the ones that Wald's formulas in {doc}`wald_friedman` imply.
+
 ### Simulations
 
 The next figure shows the outcomes of 500 simulations of the decision process.
 
+In all 500 simulations, $f_0$ generates the data, and the decision maker starts from the prior $\pi_{-1} = 0.5$.
+
 On the left is a histogram of **stopping times**, i.e.,  the number of draws of $z_k$ required to make a decision.
 
-The average number of draws is around 6.6.
+The average number of draws is 2.82.
 
 On the right is the fraction of correct decisions at the stopping time.
 
-In this case, the decision-maker is correct 80% of the time
+In this case, the decision-maker is correct 80% of the time.
 
 ```{code-cell} ipython3
+@jit
+def seed_numba(seed):
+    """Seed the random number generator used by numba-compiled code."""
+    np.random.seed(seed)
+
 def simulate(wf, true_dist, h_star, π_0=0.5):
 
     """
@@ -664,10 +781,10 @@ def simulate(wf, true_dist, h_star, π_0=0.5):
         z = f_rvs()
         t = t + 1
         π = κ(z, π)
-        if π < B:
+        if π <= B:
             decision_made = True
             decision = 0
-        elif π > A:
+        elif π >= A:
             decision_made = True
             decision = 1
 
@@ -685,13 +802,14 @@ def simulate(wf, true_dist, h_star, π_0=0.5):
 
     return correct, π, t
 
-def stopping_dist(wf, h_star, ndraws=250, true_dist="f0"):
+def stopping_dist(wf, h_star, ndraws=250, true_dist="f0", seed=0):
 
     """
     Simulates repeatedly to get distributions of time needed to make a
     decision and how often they are correct
     """
 
+    seed_numba(seed)
     tdist = np.empty(ndraws, int)
     cdist = np.empty(ndraws, bool)
 
@@ -709,15 +827,15 @@ def simulation_plot(wf):
 
     fig, ax = plt.subplots(1, 2, figsize=(16, 5))
 
-    ax[0].hist(tdist, bins=np.max(tdist))
+    counts, _, _ = ax[0].hist(tdist, bins=np.arange(1, np.max(tdist) + 2) - 0.5)
     ax[0].set_title(f"Stopping times over {ndraws} replications")
     ax[0].set(xlabel="time", ylabel="number of stops")
-    ax[0].annotate(f"mean = {np.mean(tdist)}", xy=(max(tdist) / 2,
-                   max(np.histogram(tdist, bins=max(tdist))[0]) / 2))
+    ax[0].annotate(f"mean = {np.mean(tdist):.2f}", 
+                   xy=(max(tdist) / 2, max(counts) / 2))
 
     ax[1].hist(cdist.astype(int), bins=2)
     ax[1].set_title(f"Correct decisions over {ndraws} replications")
-    ax[1].annotate(f"% correct = {np.mean(cdist)}",
+    ax[1].annotate(f"% correct = {100 * np.mean(cdist):.1f}",
                    xy=(0.05, ndraws / 2))
 
     plt.show()
@@ -747,18 +865,259 @@ Because he decides with fewer draws, the percentage of time he is correct drops.
 
 This leads to him having a higher expected loss when he puts equal weight on both models.
 
-To facilitate comparative statics, we invite you to adjust the parameters of the model 
-and investigate
+The code below computes $J(0.5)$ and the mean number of draws $\mathbb E[N]$ when $\pi_{-1} = 0.5$ for both values of $c$.
 
-* effects on the smoothness of the value function in the indecisive middle range
-  as we increase the number of grid points in the piecewise linear  approximation.
-* effects of different settings for the cost parameters $L_0, L_1, c$, the
-  parameters of two beta distributions $f_0$ and $f_1$, and the number
-  of points and linear functions $m$ to use in the piecewise continuous approximation to the value function.
-* various simulations from $f_0$ and associated distributions of waiting times to making a decision.
-* associated histograms of correct and incorrect decisions.
+Because the prior puts equal weight on $f_0$ and $f_1$, $\mathbb E[N]$ averages simulated mean stopping times under $f_0$ and under $f_1$.
+
+```{code-cell} ipython3
+def J_and_mean_N(c, ndraws=5000):
+    """J(0.5) and the mean number of draws when π_{-1} = 0.5."""
+    wf_c = WaldFriedman(c=c)
+    h_c = solve_model(wf_c)
+    S = np.minimum(wf_c.π_grid * wf_c.L0, (1 - wf_c.π_grid) * wf_c.L1)
+    J_half = np.interp(0.5, wf_c.π_grid, np.minimum(S, h_c))
+    _, t0 = stopping_dist(wf_c, h_c, ndraws, "f0", seed=1)
+    _, t1 = stopping_dist(wf_c, h_c, ndraws, "f1", seed=2)
+    return J_half, 0.5 * (t0.mean() + t1.mean())
+
+for c in (1.25, 2.5):
+    J_half, mean_N = J_and_mean_N(c)
+    print(f"c = {c}: J(0.5) = {J_half:.2f}, E[N] = {mean_N:.2f}")
+```
+
+Doubling $c$ raises $J(0.5)$ from 7.56 to 10.42.
+
+The envelope theorem accounts for the size of the increase.
+
+For a fixed decision rule, the expected loss equals $c \, \mathbb E[N]$ plus the expected loss from wrong decisions, a linear function of $c$ with slope $\mathbb E[N]$.
+
+$J$ is the minimum of these linear functions over decision rules, so $dJ/dc = \mathbb E[N^*]$ at every $c$ where $J$ is differentiable; $N^*$ is the number of draws under the optimal rule.
+
+$\mathbb E[N^*]$ falls from 3.34 to 1.49 as $c$ rises from 1.25 to 2.5, so the increase in $J(0.5)$ lies between $1.25 \times 1.49 = 1.86$ and $1.25 \times 3.34 = 4.17$.
+
+The exercises below study how $c$, $L_0$, and $L_1$ shape the thresholds $B$ and $A$ and the error probabilities of the Bayesian decision rule.
+
+## Exercises
+
+```{exercise}
+:label: wald_friedman_2_ex1
+
+Use the default parameters, $\pi_{-1} = 0.5$, and the thresholds $B_\Lambda$ and $A_\Lambda$ that we computed {ref}`above <wald_friedman_2_sprt>`.
+
+1. Simulate the Bayesian decision rule 20,000 times under $f_0$ and 20,000 times under $f_1$, and estimate its type I error probability $\alpha$ (accepting $f_1$ when $f_0$ generates the data) and its type II error probability $\beta$ (accepting $f_0$ when $f_1$ generates the data).
+2. In {doc}`wald_friedman`, Wald's inequalities $\alpha \leq (1-\beta)/A$ and $\beta \leq B(1-\alpha)$ hold with equality when the likelihood ratio never jumps past its thresholds. Use those equalities with $A = A_\Lambda$ and $B = B_\Lambda$ to compute the error probabilities that the test would have without overshoot, and compare them with your estimates.
+3. Record $\log \Lambda_N$ at the stopping time $N$ and plot its distribution under $f_0$ and under $f_1$. Use the plot to explain the comparison in step 2.
+```
+
+```{solution-start} wald_friedman_2_ex1
+:class: dropdown
+```
+
+Without overshoot, $\alpha = (1-\beta)/A_\Lambda$ and $\beta = B_\Lambda (1-\alpha)$.
+
+Solving these two equations gives
+
+$$
+\alpha = \frac{1 - B_\Lambda}{A_\Lambda - B_\Lambda}, \qquad
+\beta = \frac{B_\Lambda (A_\Lambda - 1)}{A_\Lambda - B_\Lambda}
+$$
+
+With $\pi_{-1} = 0.5$, $\Lambda_N$ equals the posterior odds $\pi_N / (1 - \pi_N)$ at the stopping time.
+
+```{code-cell} ipython3
+def simulate_many(wf, h_star, ndraws, true_dist, seed):
+    """Correctness, terminal posterior, and stopping time of ndraws runs."""
+    seed_numba(seed)
+    correct = np.empty(ndraws, bool)
+    π_N = np.empty(ndraws)
+    N = np.empty(ndraws, int)
+    for i in range(ndraws):
+        correct[i], π_N[i], N[i] = simulate(wf, true_dist, h_star)
+    return correct, π_N, N
+
+wf = WaldFriedman()
+h_star = solve_model(wf)
+B, A = find_cutoff_rule(wf, h_star)
+B_Λ, A_Λ = LR_thresholds(B, A)
+
+correct_0, π_N0, N0 = simulate_many(wf, h_star, 20_000, "f0", seed=1)
+correct_1, π_N1, N1 = simulate_many(wf, h_star, 20_000, "f1", seed=2)
+α_hat, β_hat = 1 - correct_0.mean(), 1 - correct_1.mean()
+
+α_wald = (1 - B_Λ) / (A_Λ - B_Λ)
+β_wald = B_Λ * (A_Λ - 1) / (A_Λ - B_Λ)
+
+print(f"simulated:           α = {α_hat:.3f}, β = {β_hat:.3f}")
+print(f"without overshoot:   α = {α_wald:.3f}, β = {β_wald:.3f}")
+
+log_Λ0 = np.log(π_N0 / (1 - π_N0))
+log_Λ1 = np.log(π_N1 / (1 - π_N1))
+log_Λ = np.concatenate((log_Λ0, log_Λ1))
+above = log_Λ >= np.log(A_Λ)
+print(f"mean of log Λ_N - log A_Λ when the test accepts f1: "
+      f"{np.mean(log_Λ[above] - np.log(A_Λ)):.2f}")
+print(f"mean of log B_Λ - log Λ_N when the test accepts f0: "
+      f"{np.mean(np.log(B_Λ) - log_Λ[~above]):.2f}")
+print(f"runs with log Λ_N < -8: {np.sum(log_Λ0 < -8)} under f0, "
+      f"{np.sum(log_Λ1 < -8)} under f1")
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4), sharey=True)
+for ax, x, title in zip(axes, (log_Λ0, log_Λ1), 
+                        ("data from $f_0$", "data from $f_1$")):
+    ax.hist(x, bins=np.linspace(-8, 3, 111), density=True, alpha=0.7)
+    ax.axvline(np.log(A_Λ), color='C1', linestyle='--', 
+               label=r'$\log A_\Lambda$')
+    ax.axvline(np.log(B_Λ), color='C2', linestyle='--', 
+               label=r'$\log B_\Lambda$')
+    ax.set_title(title)
+    ax.set_xlabel(r'$\log \Lambda_N$')
+    ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+The histograms omit the 494 runs under $f_0$ in which $\log \Lambda_N < -8$.
+
+The simulated $\beta$ is far below the value without overshoot, and the simulated $\alpha$ is somewhat below it.
+
+On average, $\log \Lambda_N$ exceeds $\log A_\Lambda$ by 0.29 when the test accepts $f_1$ and falls short of $\log B_\Lambda$ by 1.83 when the test accepts $f_0$.
+
+Because $f_0$ is uniform, the likelihood ratio of a single draw is $f_1(z)$.
+
+The density $f_1(z)$ never exceeds 2.16, so one draw raises $\log \Lambda$ by at most $\log 2.16 = 0.77$, and $\log \Lambda_N$ lands only a little above $\log A_\Lambda$.
+
+The density $f_1(z)$ goes to zero as $z \to 0$, so one draw can lower $\log \Lambda$ by an arbitrarily large amount, and $\log \Lambda_N$ often lands far below $\log B_\Lambda$.
+
+The change of measure in {doc}`wald_friedman` gives $\beta = E_0[\Lambda_N \mathbf{1}\{\Lambda_N \leq B_\Lambda\}]$, so the further $\Lambda_N$ falls below $B_\Lambda$, the smaller $\beta$ is relative to $B_\Lambda (1 - \alpha)$.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: wald_friedman_2_ex2
+
+Let $S(\pi) = \min \{ \pi L_0, (1-\pi) L_1 \}$ be the stopping loss.
+
+1. Holding the other parameters at their defaults, solve the model for values of $c$ between 0.5 and 5, and plot $B(c)$ and $A(c)$.
+2. Show that the continuation region is empty if and only if $c \geq \bar c = \max_\pi \{ S(\pi) - \mathbb E [S(\pi')] \}$, the largest expected reduction in the stopping loss that one more draw delivers.
+3. Compute $\bar c$ and compare it with the values of $c$ at which your solutions in step 1 have an empty continuation region.
+```
+
+```{solution-start} wald_friedman_2_ex2
+:class: dropdown
+```
+
+Suppose that $c < S(\pi) - \mathbb E [S(\pi')]$ for some $\pi$.
+
+Since $J \leq S$, $h(\pi) = c + \mathbb E [J(\pi')] \leq c + \mathbb E [S(\pi')] < S(\pi)$, so drawing again is optimal at $\pi$.
+
+Suppose instead that $c \geq S(\pi) - \mathbb E [S(\pi')]$ for every $\pi$.
+
+Let $p_n$ be the posterior probability of $f_1$ after $n$ draws, with $p_0 = \pi_{-1}$.
+
+Then $\mathbb E [c (n+1) + S(p_{n+1}) | p_n] \geq c n + S(p_n)$, so $c n + S(p_n)$ is a submartingale under the decision maker's beliefs.
+
+By the optional stopping theorem, $\mathbb E [c N + S(p_N)] \geq S(p_0)$ for every stopping rule $N$ with finite mean.
+
+No rule improves on stopping immediately, so the continuation region is empty.
+
+```{code-cell} ipython3
+def one_draw_value(wf):
+    """S(π) - E[S(π')] on the grid, using the Monte Carlo draws in wf."""
+    S = lambda π: np.minimum(π * wf.L0, (1 - π) * wf.L1)
+    values = np.empty(len(wf.π_grid))
+    for i, π in enumerate(wf.π_grid):
+        ES = ((1 - π) * S(wf.κ(wf.z0, π)).mean() 
+              + π * S(wf.κ(wf.z1, π)).mean())
+        values[i] = S(π) - ES
+    return values
+
+c_bar = one_draw_value(WaldFriedman()).max()
+print(f"c̄ = {c_bar:.2f}")
+
+c_grid = np.linspace(0.5, 5, 10)
+B_c, A_c, empty = [], [], []
+for c in c_grid:
+    wf_c = WaldFriedman(c=c)
+    h_c = solve_model(wf_c)
+    B_val, A_val = find_cutoff_rule(wf_c, h_c)
+    S_grid = np.minimum(wf_c.π_grid * wf_c.L0, (1 - wf_c.π_grid) * wf_c.L1)
+    B_c.append(B_val)
+    A_c.append(A_val)
+    empty.append(not np.any(h_c < S_grid))
+
+print("c values with an empty continuation region:", 
+      np.round(c_grid[np.array(empty)], 2))
+
+fig, ax = plt.subplots()
+ax.plot(c_grid, B_c, 'o-', lw=2, label='$B(c)$')
+ax.plot(c_grid, A_c, 's-', lw=2, label='$A(c)$')
+ax.fill_between(c_grid, B_c, A_c, alpha=0.2, label='draw again')
+ax.axvline(c_bar, color='black', linestyle='--', lw=1, label=r'$\bar c$')
+ax.set_xlabel('$c$')
+ax.set_ylabel(r'$\pi$')
+ax.legend(loc='upper right')
+plt.tight_layout()
+plt.show()
+```
+
+As $c$ rises, $B(c)$ rises and $A(c)$ falls, and the continuation region shrinks.
+
+The region vanishes at $\bar c = 4.24$, far below the bound $L_0 L_1 / (L_0 + L_1) = 12.5$ that we derived from $h \geq c$.
+
+When the region is empty, `find_cutoff_rule` returns the two grid points next to $\hat \pi = 0.5$.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: wald_friedman_2_ex3
+
+Set $(L_0, L_1)$ to $(50, 25)$, $(25, 25)$, and $(25, 50)$ in turn, holding the other parameters at their defaults.
+
+For each setting, compute $B$, $A$, $B_\Lambda$, and $A_\Lambda$ with $\pi_{-1} = 0.5$, and estimate $\alpha$, $\beta$, and the mean stopping times under $f_0$ and under $f_1$ by simulation.
+
+Explain how the thresholds and the error probabilities respond to $L_0$ and $L_1$.
+```
+
+```{solution-start} wald_friedman_2_ex3
+:class: dropdown
+```
+
+We reuse `simulate_many` from the solution to {ref}`wald_friedman_2_ex1`.
+
+```{code-cell} ipython3
+for L0, L1 in [(50, 25), (25, 25), (25, 50)]:
+    wf_L = WaldFriedman(L0=L0, L1=L1)
+    h_L = solve_model(wf_L)
+    B_val, A_val = find_cutoff_rule(wf_L, h_L)
+    B_Λ_val, A_Λ_val = LR_thresholds(B_val, A_val)
+    correct_0, _, N0 = simulate_many(wf_L, h_L, 20_000, "f0", seed=1)
+    correct_1, _, N1 = simulate_many(wf_L, h_L, 20_000, "f1", seed=2)
+    print(f"L0 = {L0}, L1 = {L1}: B = {B_val:.3f}, A = {A_val:.3f}, "
+          f"B_Λ = {B_Λ_val:.2f}, A_Λ = {A_Λ_val:.2f}, "
+          f"α = {1 - correct_0.mean():.3f}, β = {1 - correct_1.mean():.3f}, "
+          f"E_0[N] = {N0.mean():.2f}, E_1[N] = {N1.mean():.2f}")
+```
+
+Raising $L_1$ from 25 to 50 makes accepting $f_1$ when $f_0$ is true costlier.
+
+The decision maker requires more evidence before accepting $f_1$: $A$ rises from 0.794 to 0.899, and $A_\Lambda$ rises from 3.85 to 8.95.
+
+He also accepts $f_0$ on weaker evidence: $B$ rises from 0.256 to 0.302, and $B_\Lambda$ rises from 0.34 to 0.43.
+
+The type I error probability $\alpha$ falls from 0.176 to 0.070, and the type II error probability $\beta$ rises from 0.095 to 0.136.
+
+Raising $L_0$ from 25 to 50 works in the opposite direction.
+
+$B$ falls from 0.256 to 0.116 and $A$ falls from 0.794 to 0.774, so $\beta$ falls to 0.035 and $\alpha$ rises to 0.214.
+
+In both cases the mean stopping times rise because a larger loss from one kind of error makes evidence more valuable.
+
+```{solution-end}
+```
 
 
 [^f1]: The decision maker acts as if he believes that the sequence of random variables
-$[z_{0}, z_{1}, \ldots]$ is *exchangeable*. See [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html) and
+$[z_{0}, z_{1}, \ldots]$ is *exchangeable*. See {doc}`exchangeable` and
 {cite}`Kreps88` chapter 11, for discussions of exchangeability.

@@ -33,7 +33,7 @@ kernelspec:
 
 ## Overview
 
-This is the first of two lectures about  a statistical decision problem that a US Navy Captain  presented to Milton
+This is the first of three lectures about  a statistical decision problem that a US Navy Captain  presented to Milton
 Friedman and W. Allen Wallis during World War II when they were analysts at the U.S. Government's  Statistical Research Group at Columbia University.
 
 This problem led Abraham Wald {cite}`Wald47` to formulate **sequential analysis**,
@@ -41,8 +41,8 @@ an approach to statistical decision problems that is  intimately related to dyna
 
 In the spirit of {doc}`this earlier lecture <prob_meaning>`, the present lecture and its {doc}`sequel <wald_friedman_2>` approach the problem from two distinct points of view, one frequentist, the other Bayesian. 
 
-In this lecture, we describe  Wald's formulation of the problem from the perspective of a  statistician
-working within the Neyman-Pearson tradition of a frequentist statistician who thinks about testing  hypotheses and consequently  use  laws of large numbers to  investigate limiting properties of particular statistics under a given  **hypothesis**, i.e., a vector of **parameters** that pins down a  particular member of a manifold of statistical models that interest the statistician.   
+In this lecture, we describe  Wald's formulation of the problem from the perspective of a  frequentist statistician
+working within the Neyman-Pearson tradition who thinks about testing  hypotheses and consequently  uses  laws of large numbers to  investigate limiting properties of particular statistics under a given  **hypothesis**, i.e., a vector of **parameters** that pins down a  particular member of a manifold of statistical models that interest the statistician.   
 
   * From {doc}`this lecture on frequentist and bayesian statistics<prob_meaning>`, please remember that a  frequentist statistician routinely calculates functions of sequences of random variables, conditioning on a vector of parameters.
 
@@ -57,7 +57,7 @@ alternative **hypotheses**, key ideas in this lecture
 - The **power** of a frequentist statistical test
 - The **size** of a frequentist statistical test 
 - The **critical region** of a statistical test
-- A **uniformly most powerful test**
+- A **most powerful test**
 - The role of a Law of Large Numbers (LLN) in interpreting **power** and **size** of a frequentist statistical test
 - Abraham Wald's **sequential probability ratio test**
 
@@ -69,7 +69,7 @@ import matplotlib.pyplot as plt
 from numba import njit, prange, vectorize, jit
 from numba.experimental import jitclass
 from math import gamma
-from scipy.integrate import quad
+from scipy.special import betaln, digamma
 from scipy.stats import beta
 from collections import namedtuple
 import pandas as pd
@@ -127,7 +127,7 @@ That set  Wald on a path that led him  to create  *Sequential Analysis* {cite}`W
 ##  Neyman-Pearson formulation
 
 It is useful to begin by describing the theory underlying the test
-that the U.S. Navy told  Captain G. S. Schuyler to use.
+that the U.S. Navy told  Captain Garret L. Schuyler to use.
 
 Captain Schuyler's doubts  motivated  him to tell  Milton Friedman and Allen Wallis his conjecture
 that superior practical procedures existed.
@@ -201,7 +201,7 @@ Let's listen to Wald longer:
 > included in the critical region $W$. The probability of
 > committing an error of the second kind is equal to the probability,
 > determined on the assumption that $H_1$ is true, that the
-> probability will fall outside the critical region $W$. For any
+> observed sample will fall outside the critical region $W$. For any
 > given critical region $W$ we shall denote the probability of an
 > error of the first kind by $\alpha$ and the probability of an
 > error of the second kind by $\beta$.
@@ -259,6 +259,8 @@ Wald summarizes Neyman and Pearson's setup as follows:
 Wald goes on to discuss Neyman and Pearson's concept of *uniformly most
 powerful* test. 
 
+Our $H_0$ and $H_1$ each specify a single distribution, so the most powerful test above is all that we need.
+
 Here is how Wald introduces the notion of a sequential test
 
 > A rule is given for making one of the following three decisions at any stage of
@@ -293,7 +295,9 @@ He (or she) wants to know which of two probability distributions $f_0$ or $f_1$ 
 
 We use beta distributions as examples.
 
-We will also work with Jensen-Shannon divergence introduced in {doc}`divergence_measures`.
+We will also work with the Kullback–Leibler divergence introduced in {doc}`divergence_measures`.
+
+For two beta densities, Kullback–Leibler divergence has a closed form.
 
 ```{code-cell} ipython3
 @vectorize
@@ -306,19 +310,11 @@ def create_beta_density(a, b):
     """Create a beta density function with specified parameters."""
     return jit(lambda x: p(x, a, b))
 
-def compute_KL(f, g):
-    """Compute KL divergence KL(f, g)"""
-    integrand = lambda w: f(w) * np.log(f(w) / g(w))
-    val, _ = quad(integrand, 1e-5, 1-1e-5)
-    return val
-
-def compute_JS(f, g):
-    """Compute Jensen-Shannon divergence"""
-    def m(w):
-        return 0.5 * (f(w) + g(w))
-    
-    js_div = 0.5 * compute_KL(f, m) + 0.5 * compute_KL(g, m)
-    return js_div
+def compute_KL(a1, b1, a2, b2):
+    """KL divergence KL(f, g) for f = Beta(a1, b1) and g = Beta(a2, b2)."""
+    return (betaln(a2, b2) - betaln(a1, b1)
+            + (a1 - a2) * digamma(a1) + (b1 - b2) * digamma(b1)
+            + (a2 - a1 + b2 - b1) * digamma(a1 + b1))
 ```
 
 The next figure shows two beta distributions
@@ -332,7 +328,7 @@ fig, ax = plt.subplots()
 ax.plot(grid, f0(grid), lw=2, label="$f_0$")
 ax.plot(grid, f1(grid), lw=2, label="$f_1$")
 ax.legend()
-ax.set(xlabel="$z$ values", ylabel="probability of $z_k$")
+ax.set(xlabel="$z$ values", ylabel="density")
 plt.tight_layout()
 plt.show()
 ```
@@ -345,7 +341,7 @@ random variables is also independently and identically distributed (IID).
 
 But the observer does not know which of the two distributions generated the sequence.
 
-For reasons explained in  [Exchangeability and Bayesian Updating](https://python.quantecon.org/exchangeable.html), this means that the observer thinks that the sequence is not IID.
+For reasons explained in  {doc}`exchangeable`, this means that the observer thinks that the sequence is not IID.
 
 Consequently, the observer has something to learn, namely, whether the observations are drawn from  $f_0$ or from $f_1$.
 
@@ -382,9 +378,11 @@ Wald  defines
 - $p_{1m} = f_1(z_1) \cdots f_1(z_m)$
 - $L_{m} = \frac{p_{1m}}{p_{0m}}$
 
+for $m \geq 1$ and sets $L_0 = 1$.
+
 Here $\{L_m\}_{m=0}^\infty$ is a **likelihood ratio process**.
 
-Wald's sequential  decision rule is parameterized by  real numbers $B < A$.
+Wald's sequential  decision rule is parameterized by  real numbers $0 < B < 1 < A$.
 
 For a given pair $A, B$, the decision rule is 
 
@@ -396,6 +394,11 @@ $$
 \end{aligned}
 $$
 
+```{note}
+The sequel {doc}`wald_friedman_2` uses $A$ and $B$ for thresholds on the posterior probability $\pi_k$ that $f = f_1$, and $L_0$ and $L_1$ for losses from wrong decisions.
+
+There we write $\Lambda_k$ for the likelihood ratio and $A_\Lambda$, $B_\Lambda$ for the thresholds on it that correspond to Wald's $A$ and $B$ here.
+```
 
 The following figure illustrates aspects of Wald's procedure.
 
@@ -414,6 +417,32 @@ $$
 \end{aligned}
 $$
 
+These inequalities follow from a change of measure.
+
+Let $P_i$ and $E_i$ denote probabilities and mathematical expectations computed under the assumption that $f_i$ generates the data.
+
+Let $N$ be the random number of draws at which the test stops, and assume that $P_0\{N < \infty\} = P_1\{N < \infty\} = 1$.
+
+On the event $\{N = n\}$, the factor $L_n^{-1} = p_{0n}/p_{1n}$ converts the joint density $p_{1n}$ of $z_1, \ldots, z_n$ into the joint density $p_{0n}$.
+
+The test rejects $H_0$ when $L_N \geq A$, so
+
+$$
+\alpha = P_0\{L_N \geq A\} = E_1\left[L_N^{-1} \mathbf{1}\{L_N \geq A\}\right] \leq \frac{1}{A} P_1\{L_N \geq A\} = \frac{1-\beta}{A}
+$$
+
+The test accepts $H_0$ when $L_N \leq B$, so
+
+$$
+\beta = P_1\{L_N \leq B\} = E_0\left[L_N \mathbf{1}\{L_N \leq B\}\right] \leq B \, P_0\{L_N \leq B\} = B (1-\alpha)
+$$
+
+The same change of measure underlies importance sampling in {doc}`imp_sample`.
+
+Both inequalities hold with equality when $L_N$ lands exactly on $A$ or on $B$.
+
+They are strict when $L_N$ can jump past $A$ or $B$ at the stopping time.
+
 His analysis of these inequalities leads Wald to recommend the following approximations as rules for setting 
 $A$ and $B$ that come close to attaining a decision maker's target values for probabilities $\alpha$ of
 a  type I  and $\beta$ of a type II error:
@@ -431,14 +460,35 @@ In particular, Wald constructs a mathematical argument that leads him to conclud
  {eq}`eq:Waldrule` rather than the true functions $A (\alpha, \beta), B(\alpha,\beta)$ for setting $A$ and $B$
  
  > $\ldots$ cannot result in any appreciable increase in the value of either $\alpha$ or $\beta$. In other words,
- > for all practical purposes the test corresponding to $A = a(\alpha, \beta), B = b(\alpha,\beta)$ provides as
+ > for all practical purposes the test corresponding to $A = a(\alpha, \beta), B = b(\alpha,\beta)$ provides at
  > least the same protection against wrong decisions as the test corresponding to $A = A(\alpha, \beta)$ and 
- > $B = b(\alpha, \beta)$.
+ > $B = B(\alpha, \beta)$.
 
  > Thus, the only disadvantage that may arise from using $ a(\alpha, \beta),  b(\alpha,\beta)$ instead of
  > $ A(\alpha, \beta),  B(\alpha,\beta)$, respectively, is that it may result in an appreciable increase in
  > the  number of observations required by the test. 
 
+Wald's argument runs as follows.
+
+Let $\alpha'$ and $\beta'$ be the error probabilities of the test that sets $A = a(\alpha,\beta)$ and $B = b(\alpha,\beta)$.
+
+Applying the inequalities above to that test gives
+
+$$
+\frac{\alpha'}{1-\beta'} \leq \frac{\alpha}{1-\beta}, \quad \frac{\beta'}{1-\alpha'} \leq \frac{\beta}{1-\alpha}
+$$
+
+These imply
+
+$$
+\alpha' \leq \frac{\alpha}{1-\beta}, \quad \beta' \leq \frac{\beta}{1-\alpha}, \quad \alpha' + \beta' \leq \alpha + \beta
+$$ (eq:Wald_bounds)
+
+The third inequality comes from cross-multiplying the two inequalities above and adding them.
+
+When $\alpha$ and $\beta$ are small, $\alpha/(1-\beta)$ and $\beta/(1-\alpha)$ are close to $\alpha$ and $\beta$.
+
+The test attains $\alpha' = \alpha$ and $\beta' = \beta$ only when $L_N$ never jumps past $A$ or $B$.
 
 We'll write some Python code to help us illustrate Wald's claims about how $\alpha$ and $\beta$ are related to the parameters $A$ and $B$
 that characterize his sequential probability ratio test.
@@ -585,6 +635,12 @@ $a(\alpha, \beta), b(\alpha, \beta)$ given in approximation {eq}`eq:Waldrule`,
 we find that the algorithm actually gives 
 **lower** type I and type II error rates than the target values.
 
+The empirical error rates satisfy Wald's bounds {eq}`eq:Wald_bounds`, which here are $\alpha' \leq 0.05/0.90 \approx 0.056$, $\beta' \leq 0.10/0.95 \approx 0.105$, and $\alpha' + \beta' \leq 0.15$.
+
+The bounds are far from tight because $f_0 = \text{Beta}(2,5)$ and $f_1 = \text{Beta}(5,2)$ are far apart.
+
+A single draw often carries $\log L_m$ far past $\log A$ or $\log B$, and that overshoot pushes $\alpha'$ and $\beta'$ below $\alpha$ and $\beta$.
+
 ```{note}
 For recent work on the quality of approximation {eq}`eq:Waldrule`, see, e.g., {cite}`fischer2024improving`.
 ```
@@ -593,13 +649,6 @@ The following code creates a few graphs that illustrate the results of our simul
 
 ```{code-cell} ipython3
 :tags: [hide-input]
-
-@njit
-def compute_wald_thresholds(α, β):
-    """Compute Wald's recommended thresholds."""
-    A = (1 - β) / α
-    B = β / (1 - α)
-    return A, B, np.log(A), np.log(B)
 
 def plot_sprt_results(results, params, title=""):
     """Plot SPRT results."""
@@ -625,7 +674,7 @@ def plot_sprt_results(results, params, title=""):
     
     # Stopping times
     max_n = min(results['stopping_times'].max(), 101)
-    bins = np.arange(1, max_n) - 0.5
+    bins = np.arange(1, max_n + 2) - 0.5
     axes[1].hist(results['stopping_times'], bins=bins, 
                  color="steelblue", alpha=0.8, edgecolor="black")
     axes[1].set_title(f'stopping times (μ={results["stopping_times"].mean():.1f})', 
@@ -676,7 +725,7 @@ Let's plot the results of our simulation
 plot_sprt_results(results, params)
 ```
 
-In this example, the stopping time stays below 10.
+In this example, the stopping time never exceeds 10, and the mean stopping time is 1.59.
 
 We  can construct a $2 \times 2$  "confusion matrix" whose  diagonal elements 
 count the number of times that Wald's  decision rule  correctly  accepts and 
@@ -722,78 +771,121 @@ This makes sense.
 
 When two distributions are "far apart", it should not take too long to decide which one is generating the data.
 
-When two distributions are "close", it should  takes longer to decide which one is generating the data.
+When two distributions are "close", it should take longer to decide which one is generating the data.
 
-It is tempting to link this pattern to our discussion of [Kullback–Leibler divergence](rel_entropy) in {doc}`likelihood_ratio_process`.
+The [Kullback–Leibler divergence](rel_entropy) described in {doc}`divergence_measures` measures how far apart two distributions are.
 
-While, KL divergence is larger when two distributions differ more, KL divergence is not symmetric, meaning that the KL divergence of distribution $f$ from distribution $g$  is not necessarily equal to the KL
-divergence of $g$ from $f$.  
+Wald linked it to the expected number of draws that his test requires.
 
-If we want a symmetric measure of divergence that actually a metric, we can instead use  [Jensen-Shannon distance](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.jensenshannon.html).
+Under $H_0$, $\log L_N = \sum_{i=1}^N \log \frac{f_1(z_i)}{f_0(z_i)}$ is a sum of a random number $N$ of IID terms, each with mean $E_0 \log \frac{f_1(z)}{f_0(z)} = -KL(f_0, f_1)$.
 
-That is what we shall do now. 
+Under $H_1$, each term has mean $E_1 \log \frac{f_1(z)}{f_0(z)} = KL(f_1, f_0)$.
 
-We shall compute Jensen-Shannon distance  and plot it against the average stopping times.
+Because $N$ is a stopping time with finite mean, **Wald's identity** gives
+
+$$
+E_0 [\log L_N] = - E_0[N] \, KL(f_0, f_1), \qquad E_1 [\log L_N] = E_1[N] \, KL(f_1, f_0)
+$$ (eq:Wald_identity)
+
+{ref}`This section <KL_link>` of {doc}`likelihood_ratio_process` describes the link between KL divergence and the expected log likelihood ratio for a fixed number of draws.
+
+Wald ignored overshoot: he approximated $\log L_N$ by $\log A$ when the test rejects $H_0$ and by $\log B$ when it accepts $H_0$.
+
+Setting $P_0\{L_N \geq A\} \approx \alpha$ and $P_1\{L_N \leq B\} \approx \beta$ in {eq}`eq:Wald_identity` then gives Wald's approximations to the **average sample numbers**
+
+$$
+E_0[N] \approx \frac{(1-\alpha)\log(1/B) - \alpha \log A}{KL(f_0, f_1)}, \qquad
+E_1[N] \approx \frac{(1-\beta)\log A - \beta \log(1/B)}{KL(f_1, f_0)}
+$$ (eq:ASN)
+
+KL divergence is not symmetric, so {eq}`eq:ASN` divides by $KL(f_0, f_1)$ under $H_0$ and by $KL(f_1, f_0)$ under $H_1$.
+
+In the experiments below, $f_0 = \text{Beta}(a, b)$ and $f_1 = \text{Beta}(b, a)$, so $f_1(z) = f_0(1-z)$ and $KL(f_0, f_1) = KL(f_1, f_0)$.
+
+Half of our replications draw from $f_0$ and half from $f_1$, so {eq}`eq:ASN` makes the mean stopping time proportional to $1/KL(f_0, f_1)$.
+
+We compute $KL(f_0, f_1)$ and the mean stopping time for 100 such pairs and compare the mean stopping time with {eq}`eq:ASN`.
 
 ```{code-cell} ipython3
-def js_dist(a0, b0, a1, b1):
-    """Jensen–Shannon distance"""
-    f0 = create_beta_density(a0, b0)
-    f1 = create_beta_density(a1, b1)
-
-    # Mixture
-    m = lambda w: 0.5*(f0(w) + f1(w))
-    return np.sqrt(0.5*compute_KL(m, f0) + 0.5*compute_KL(m, f1))
-    
 def generate_β_pairs(N=100, T=10.0, d_min=0.5, d_max=9.5):
     ds = np.linspace(d_min, d_max, N)
     a0 = (T - ds) / 2
     b0 = (T + ds) / 2
     return list(zip(a0, b0, b0, a0))
 
+def wald_asn(α, β, KL_01, KL_10):
+    """Wald's approximations to E_0[N] and E_1[N]."""
+    A, B, logA, logB = compute_wald_thresholds(α, β)
+    E0_N = ((1 - α) * (-logB) - α * logA) / KL_01
+    E1_N = ((1 - β) * logA - β * (-logB)) / KL_10
+    return E0_N, E1_N
+
 param_comb = generate_β_pairs()
 
-# Run simulations for each parameter combination
-js_dists = []
+KL_divs = []
 mean_stopping_times = []
+asn_approx = []
 param_list = []
 
 for a0, b0, a1, b1 in param_comb:
-    # Compute KL divergence
-    js_div = js_dist(a1, b1, a0, b0)
+    KL_01 = compute_KL(a0, b0, a1, b1)
+    KL_10 = compute_KL(a1, b1, a0, b0)
     
-    # Run SPRT simulation with a fixed set of parameters d d
-    params = SPRTParams(α=0.05, β=0.10, a0=a0, b0=b0, 
-                        a1=a1, b1=b1, N=5000, seed=42)
-    results = run_sprt(params)
+    params_d = SPRTParams(α=0.05, β=0.10, a0=a0, b0=b0, 
+                          a1=a1, b1=b1, N=5000, seed=42)
+    results_d = run_sprt(params_d)
+    E0_N, E1_N = wald_asn(params_d.α, params_d.β, KL_01, KL_10)
     
-    js_dists.append(js_div)
-    mean_stopping_times.append(results['stopping_times'].mean())
+    KL_divs.append(KL_01)
+    mean_stopping_times.append(results_d['stopping_times'].mean())
+    asn_approx.append(0.5 * (E0_N + E1_N))
     param_list.append((a0, b0, a1, b1))
 
-# Create the plot
+KL_divs = np.array(KL_divs)
+mean_stopping_times = np.array(mean_stopping_times)
+asn_approx = np.array(asn_approx)
+
 fig, ax = plt.subplots()
-
-scatter = ax.scatter(js_dists, mean_stopping_times, 
-                    s=80, alpha=0.7, linewidth=0.5)
-
-ax.set_xlabel('Jensen–Shannon distance', fontsize=14)
+ax.scatter(KL_divs, mean_stopping_times, s=40, alpha=0.7, 
+           label='simulated mean stopping time')
+ax.plot(KL_divs, asn_approx, color='C1', lw=2, 
+        label="Wald's approximation")
+ax.axhline(1, color='black', linestyle='--', lw=1, label='$N = 1$')
+ax.set_xscale('log')
+ax.set_yscale('log')
+ax.set_xlabel('$KL(f_0, f_1)$', fontsize=14)
 ax.set_ylabel('mean stopping time', fontsize=14)
-
+ax.legend()
 plt.tight_layout()
 plt.show()
+
+ratio = mean_stopping_times / asn_approx
+print(f"corr(mean stopping time, 1/KL) = "
+      f"{np.corrcoef(mean_stopping_times, 1 / KL_divs)[0, 1]:.4f}")
+print(f"simulated / approximate mean stopping time: "
+      f"{ratio.min():.2f} (closest pair) to {ratio.max():.1f} (farthest pair)")
 ```
 
-The plot demonstrates a clear negative correlation between relative entropy and mean stopping time. 
+On log scales, Wald's approximation is a straight line with slope $-1$.
 
-As  Jensen-Shannon divergence increases (distributions become more separated), the mean stopping time decreases exponentially.
+Across the 100 pairs, the correlation between the mean stopping time and $1/KL(f_0, f_1)$ is 0.9999.
+
+The mean stopping time is close to a linear function of $1/KL(f_0, f_1)$.
+
+The simulated mean stopping times lie above Wald's approximation for two reasons.
+
+Overshoot makes $|\log L_N|$ larger than $\log A$ or $\log(1/B)$, so by {eq}`eq:Wald_identity` it makes $E_0[N]$ and $E_1[N]$ larger than {eq}`eq:ASN`.
+
+The test always takes at least one draw, so the mean stopping time cannot fall below 1, while {eq}`eq:ASN` goes to zero as $KL(f_0, f_1)$ grows.
+
+{ref}`wald_friedman_ex4` asks you to study these two sources of discrepancy.
 
 Below are sampled examples from the experiments we have above
 
 ```{code-cell} ipython3
-def plot_beta_distributions_grid(param_list, js_dists, mean_stopping_times, 
+def plot_beta_distributions_grid(param_list, KL_divs, mean_stopping_times, 
                                 selected_indices=None):
-    """Plot grid of beta distributions with JS distance and stopping times."""
+    """Plot grid of beta distributions with KL divergence and stopping times."""
     if selected_indices is None:
         selected_indices = [0, len(param_list)//6, len(param_list)//3, 
                           len(param_list)//2, 2*len(param_list)//3, -1]
@@ -814,7 +906,7 @@ def plot_beta_distributions_grid(param_list, js_dists, mean_stopping_times,
                                   np.minimum(f0(z_grid), f1(z_grid)), 
                                   alpha=0.3, color='purple')
         
-        axes[row, col].set_title(f'JS dist: {js_dists[idx]:.3f}'
+        axes[row, col].set_title(f'KL divergence: {KL_divs[idx]:.3f}'
                                f'\nMean time: {mean_stopping_times[idx]:.1f}', 
                                fontsize=12)
         axes[row, col].set_xlabel('z', fontsize=10)
@@ -825,11 +917,11 @@ def plot_beta_distributions_grid(param_list, js_dists, mean_stopping_times,
     plt.tight_layout()
     plt.show()
 
-plot_beta_distributions_grid(param_list, js_dists, mean_stopping_times)
+plot_beta_distributions_grid(param_list, KL_divs, mean_stopping_times)
 ```
 
 Again, we find that the stopping time is shorter when the distributions are more separated, as
-measured by Jensen-Shannon distance.
+measured by KL divergence.
 
 Let's visualize individual likelihood ratio processes to see how they evolve toward the decision boundaries.
 
@@ -995,7 +1087,7 @@ When we multiply $B$ by a factor greater than 1 (making $B$ larger), we are maki
 
 This increases the probability of Type II errors.
 
-The table confirms this intuition: as $A$ decreases and $B$ increases from their optimal Wald values, both Type I and Type II error rates increase, while the mean stopping time decreases.
+The table confirms this intuition: as $A$ decreases and $B$ increases from Wald's approximate values {eq}`eq:Waldrule`, both Type I and Type II error rates increase, while the mean stopping time decreases.
 
 ## Related lectures
 
@@ -1009,7 +1101,7 @@ We'll dig deeper into some of the ideas used here in the following earlier and l
 
 ## Exercises
 
-In the two exercises below, please try to rewrite the entire SPRT suite in this lecture.
+In the first two exercises below, please try to rewrite the entire SPRT suite in this lecture.
 
 ```{exercise}
 :label: wald_friedman_ex1
@@ -1218,7 +1310,7 @@ $$
 Tasks:
 1. Implement the VAR likelihood ratio using the functions from the VAR lecture
 2. Implement Wald's sequential test with $\alpha = 0.05$ and $\beta = 0.10$
-3. Analyze performance under both hypotheses and with model misspecification
+3. Analyze performance under both hypotheses and with model misspecification, when a third VAR(1) model generates the data
 4. Compare with the Markov chain case in terms of stopping times and accuracy
 
 ```
@@ -1368,6 +1460,285 @@ ax2.legend()
 plt.tight_layout() 
 plt.show()
 ```
+
+Both tests keep their empirical error rates below the targets, and the VAR test stops much sooner than the Markov chain test.
+
+Now we turn to misspecification.
+
+Suppose that a third VAR(1) model $h$ with
+
+$$
+A^{(h)} = (1-\lambda) A^{(0)} + \lambda A^{(1)}, \quad C^{(h)} = (1-\lambda) C^{(0)} + \lambda C^{(1)}, \quad \lambda \in [0, 1]
+$$
+
+generates the data.
+
+Let $f_i(x_{t+1} | x_t)$ be the conditional density of model $i$.
+
+Under $h$, the expected increment of $\log L_t$ per period is 
+
+$$
+E_h\left[\log \frac{f_1(x_{t+1} | x_t)}{f_0(x_{t+1} | x_t)}\right] = KL(h, f_0) - KL(h, f_1)
+$$
+
+where $KL(h, f_i)$ is the KL divergence of $f_i(\cdot | x_t)$ from the conditional density of $h$, averaged over the stationary distribution of $x_t$ under $h$.
+
+This is the formula in {ref}`this section <KL_link>` of {doc}`likelihood_ratio_process`, applied to conditional densities.
+
+When $KL(h, f_0) > KL(h, f_1)$, $\log L_t$ drifts up and the test tends to reject $H_0$.
+
+When $KL(h, f_0) < KL(h, f_1)$, $\log L_t$ drifts down and the test tends to accept $H_0$.
+
+Either way, the test tends to select the model that is closer to $h$ in KL divergence.
+
+Let $\Sigma_i = C^{(i)} C^{(i)\top}$ and let $V_h$ be the stationary covariance matrix of $x_t$ under $h$.
+
+For our Gaussian models,
+
+$$
+E_h[\log f_i(x_{t+1} | x_t)] = -\frac{1}{2}\left[ 2 \log 2\pi + \log\det \Sigma_i + \operatorname{tr}(\Sigma_i^{-1} \Sigma_h) + \operatorname{tr}\left((A^{(h)} - A^{(i)})^\top \Sigma_i^{-1} (A^{(h)} - A^{(i)}) V_h\right) \right]
+$$
+
+The code below computes $KL(h, f_0) - KL(h, f_1)$ with this formula and runs the test on 1000 paths from $h$ for several values of $\lambda$.
+
+```{code-cell} ipython3
+def var_drift(A_h, C_h, model_0, model_1):
+    """KL(h, f_0) - KL(h, f_1) per period under the stationary law of h."""
+    n = A_h.shape[0]
+    Σ_h = C_h @ C_h.T
+    V_h = sp.linalg.solve_discrete_lyapunov(A_h, Σ_h)
+    
+    def expected_loglik(model):
+        D = A_h - model['A']
+        quad_form = (np.trace(model['CC_inv'] @ Σ_h) 
+                     + np.trace(D.T @ model['CC_inv'] @ D @ V_h))
+        return -0.5 * (n * np.log(2 * np.pi) + model['log_det_CC'] 
+                       + quad_form)
+    
+    return expected_loglik(model_1) - expected_loglik(model_0)
+
+model_0 = create_var_model(A_0, C_0)
+model_1 = create_var_model(A_1, C_1)
+_, _, logA, logB = compute_wald_thresholds(0.05, 0.10)
+
+rows = []
+for λ in [0.0, 0.25, 0.4, 0.5, 0.75, 1.0]:
+    A_h = (1 - λ) * A_0 + λ * A_1
+    C_h = (1 - λ) * C_0 + λ * C_1
+    model_h = create_var_model(A_h, C_h)
+    runs = [var_sprt_single_run(model_0, model_1, model_h, 
+                                logA, logB, 42 + i) 
+            for i in range(1000)]
+    n_stop = np.array([run[0] for run in runs])
+    accept_h0 = np.array([run[1] for run in runs])
+    rows.append([λ, var_drift(A_h, C_h, model_0, model_1), 
+                 1 - accept_h0.mean(), n_stop.mean()])
+
+df_misspec = pd.DataFrame(rows, columns=['λ', 'KL(h,f0) - KL(h,f1)', 
+                                         'share rejecting H0', 
+                                         'mean stop time'])
+df_misspec.set_index('λ').round(3)
+```
+
+At $\lambda = 0$ and $\lambda = 1$, $h$ coincides with one of the two models.
+
+As $\lambda$ rises, $KL(h, f_0) - KL(h, f_1)$ rises and changes sign between $\lambda = 0.25$ and $\lambda = 0.4$; the share of runs that reject $H_0$ rises with it.
+
+Near the sign change, $\log L_t$ has little drift, and the test takes the most draws.
+
+A driftless random walk with small steps hits $\log A$ before $\log B$ with probability close to $\log(1/B)/(\log A - \log B) = 0.44$, close to the share of runs that reject $H_0$ at $\lambda = 0.4$.
+
+```{solution-end}
+```
+
+
+```{exercise}
+:label: wald_friedman_ex3
+
+Wald and Wolfowitz {cite}`WaldWolfowitz1948` proved that among all tests, sequential or not, whose type I and type II error probabilities do not exceed those of an SPRT, the SPRT minimizes both $E_0[N]$ and $E_1[N]$.
+
+This exercise compares the SPRT with the fixed-sample Neyman–Pearson test that the Navy told Captain Schuyler to use.
+
+Use `results_2`, which we computed above for $f_0 = \text{Beta}(4, 5)$ and $f_1 = \text{Beta}(5, 4)$.
+
+1. Compute the empirical error probabilities $\hat \alpha$ and $\hat \beta$ of the SPRT and its mean stopping times under $f_0$ and under $f_1$.
+2. For each $n = 1, \ldots, 40$, construct the most powerful test of size $\hat \alpha$ based on a fixed sample of $n$ draws, and compute its type II error probability $\beta(n)$.
+3. Find the smallest $n$ with $\beta(n) \leq \hat \beta$ and compare it with the SPRT's mean stopping times.
+
+Hint: for these two densities, $\log \left( f_1(z)/f_0(z) \right) = \log \left( z/(1-z) \right)$.
+```
+
+```{solution-start} wald_friedman_ex3
+:class: dropdown
+```
+
+By the Neyman–Pearson lemma, the most powerful test based on $n$ draws rejects $H_0$ when $S_n = \sum_{i=1}^n \log \left( f_1(z_i)/f_0(z_i) \right) \geq k_n$, where $k_n$ sets $P_0\{S_n \geq k_n\} = \hat \alpha$.
+
+We compute the distributions of $S_n$ under $f_0$ and $f_1$ by Monte Carlo.
+
+```{code-cell} ipython3
+truth_h0 = results_2['truth_h0']
+stops = results_2['stopping_times']
+α_hat, β_hat = results_2['type_I'], results_2['type_II']
+E0_N_sprt = stops[truth_h0].mean()
+E1_N_sprt = stops[~truth_h0].mean()
+
+print(f"SPRT: α̂ = {α_hat:.3f}, β̂ = {β_hat:.3f}, "
+      f"E_0[N] = {E0_N_sprt:.1f}, E_1[N] = {E1_N_sprt:.1f}")
+
+rng = np.random.default_rng(1234)
+M, n_max = 100_000, 40
+
+def llr_partial_sums(a, b):
+    """Paths of S_n = sum of log(f_1/f_0), n = 1, ..., n_max."""
+    z = rng.beta(a, b, size=(M, n_max))
+    return np.cumsum(np.log(z / (1 - z)), axis=1)
+
+S0 = llr_partial_sums(params_2.a0, params_2.b0)
+S1 = llr_partial_sums(params_2.a1, params_2.b1)
+
+ns = np.arange(1, n_max + 1)
+k_n = np.quantile(S0, 1 - α_hat, axis=0)   # critical values
+β_n = (S1 < k_n).mean(axis=0)              # type II error probabilities
+n_star = ns[np.argmax(β_n <= β_hat)]
+
+print(f"smallest fixed n with β(n) <= β̂: {n_star}")
+
+fig, ax = plt.subplots()
+ax.plot(ns, β_n, 'o-', lw=2, label=r'fixed-sample test: $\beta(n)$')
+ax.axhline(β_hat, color='C1', linestyle='--', label=r'SPRT: $\hat\beta$')
+ax.axvline(E0_N_sprt, color='C2', linestyle=':', label='SPRT: $E_0[N]$')
+ax.axvline(E1_N_sprt, color='C3', linestyle=':', label='SPRT: $E_1[N]$')
+ax.set_xlabel('$n$')
+ax.set_ylabel('type II error probability')
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+To match the SPRT's error probabilities, the fixed-sample test needs 23 draws.
+
+The SPRT needs 10.1 draws on average under $f_0$ and 12.0 under $f_1$.
+
+On average, the SPRT uses 44 percent as many draws as the fixed-sample test under $f_0$ and 52 percent as many under $f_1$.
+
+The theorem of Wald and Wolfowitz implies that no test with error probabilities at most $\hat \alpha$ and $\hat \beta$ does better on either count.
+
+```{solution-end}
+```
+
+
+```{exercise}
+:label: wald_friedman_ex4
+
+Wald's approximation {eq}`eq:ASN` ignores overshoot and the fact that $N \geq 1$.
+
+1. Modify `sprt_single_run` so that it also returns $\log L_N$.
+2. For every fifth beta pair generated by `generate_β_pairs`, simulate 50,000 replications under $f_0$ and 50,000 under $f_1$ and estimate $E_0[N]$, $E_1[N]$, $E_0[\log L_N]$, and $E_1[\log L_N]$.
+3. Verify Wald's identity {eq}`eq:Wald_identity`.
+4. Plot the ratios of simulated $E_0[N]$ and $E_1[N]$ to Wald's approximations {eq}`eq:ASN` against $KL(f_0, f_1)$ and explain the pattern.
+```
+
+```{solution-start} wald_friedman_ex4
+:class: dropdown
+```
+
+We work with log densities to avoid underflow when a shape parameter is small.
+
+```{code-cell} ipython3
+from math import lgamma
+
+@njit
+def log_p(z, a, b):
+    """Log of the beta density."""
+    return (lgamma(a + b) - lgamma(a) - lgamma(b) 
+            + (a - 1) * np.log(z) + (b - 1) * np.log(1 - z))
+
+@njit
+def sprt_single_run_log_L(a0, b0, a1, b1, logA, logB, true_f0, seed):
+    """Run a single SPRT and return N and log L_N."""
+    log_L = 0.0
+    n = 0
+    np.random.seed(seed)
+    
+    while True:
+        z = np.random.beta(a0, b0) if true_f0 else np.random.beta(a1, b1)
+        n += 1
+        log_L += log_p(z, a1, b1) - log_p(z, a0, b0)
+        if log_L >= logA or log_L <= logB:
+            return n, log_L
+
+@njit(parallel=True)
+def simulate_N_log_L(a0, b0, a1, b1, α, β, M, true_f0, seed):
+    """Draws of N and log L_N from M replications under one hypothesis."""
+    A, B, logA, logB = compute_wald_thresholds(α, β)
+    N_draws = np.empty(M)
+    log_L_draws = np.empty(M)
+    for i in prange(M):
+        n, log_L = sprt_single_run_log_L(a0, b0, a1, b1, 
+                                         logA, logB, true_f0, seed + i)
+        N_draws[i] = n
+        log_L_draws[i] = log_L
+    return N_draws, log_L_draws
+
+def t_stat(d):
+    """Sample mean of d divided by its standard error."""
+    return d.mean() / (d.std() / np.sqrt(len(d)))
+
+α, β, M = 0.05, 0.10, 50_000
+rows, t_stats = [], []
+for a0, b0, a1, b1 in param_comb[::5]:
+    KL_01 = compute_KL(a0, b0, a1, b1)
+    KL_10 = compute_KL(a1, b1, a0, b0)
+    N0, log_L0 = simulate_N_log_L(a0, b0, a1, b1, α, β, M, True, 0)
+    N1, log_L1 = simulate_N_log_L(a0, b0, a1, b1, α, β, M, False, M)
+    E0_N_asn, E1_N_asn = wald_asn(α, β, KL_01, KL_10)
+    rows.append([KL_01, N0.mean(), -log_L0.mean() / KL_01, E0_N_asn, 
+                 N1.mean(), log_L1.mean() / KL_10, E1_N_asn])
+    # Wald's identity says that these differences have mean zero
+    t_stats += [t_stat(N0 + log_L0 / KL_01), t_stat(N1 - log_L1 / KL_10)]
+
+cols = ['KL', 'E0_N', 'E0_N_identity', 'E0_N_asn', 
+        'E1_N', 'E1_N_identity', 'E1_N_asn']
+df_asn = pd.DataFrame(rows, columns=cols)
+
+print(f"largest |t|-statistic for Wald's identity "
+      f"across {len(t_stats)} checks: {np.max(np.abs(t_stats)):.2f}")
+
+fig, ax = plt.subplots()
+ax.plot(df_asn['KL'], df_asn['E0_N'] / df_asn['E0_N_asn'], 'o-', lw=2,
+        label=r'$E_0[N]$ / approximation')
+ax.plot(df_asn['KL'], df_asn['E1_N'] / df_asn['E1_N_asn'], 's-', lw=2,
+        label=r'$E_1[N]$ / approximation')
+ax.axhline(1, color='black', linestyle='--', lw=1)
+ax.set_xscale('log')
+ax.set_yscale('log')
+ax.set_xlabel('$KL(f_0, f_1)$')
+ax.set_ylabel('simulated / approximate')
+ax.legend()
+plt.tight_layout()
+plt.show()
+
+df_asn.iloc[[0, 5, 10, 15, 19]].round(3)
+```
+
+The columns `E0_N_identity` and `E1_N_identity` compute $E_0[N]$ and $E_1[N]$ from simulated $E_i[\log L_N]$ and {eq}`eq:Wald_identity`.
+
+They agree with the direct estimates up to Monte Carlo error: the largest of the 40 $t$-statistics is 1.61 in absolute value.
+
+All of the gap between the simulated $E_i[N]$ and {eq}`eq:ASN` therefore comes from Wald's approximation of $E_i[\log L_N]$, which ignores overshoot.
+
+At the stopping time, $\log L_N$ lies beyond the threshold that it crosses.
+
+Overshoot also pushes the error probabilities below $\alpha$ and $\beta$.
+
+Both effects make $|E_i[\log L_N]|$ larger than the value that Wald's approximation assigns to it, so {eq}`eq:ASN` understates $E_i[N]$.
+
+For the closest pair, each draw moves $\log L_m$ by a small amount, the overshoot is small relative to $\log A$ and $\log(1/B)$, and the ratio is about 1.1.
+
+As $KL(f_0, f_1)$ grows, a single draw often moves $\log L_m$ by more than the distance between $\log B$ and $\log A$.
+
+Then the test stops after one or two draws, the overshoot dominates, and the ratio grows because {eq}`eq:ASN` goes to zero while $N \geq 1$.
 
 ```{solution-end}
 ```
