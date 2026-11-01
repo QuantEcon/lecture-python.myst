@@ -64,20 +64,28 @@ market share early on.
 Second, equilibrium experimentation is **excessive** when beliefs are pessimistic and
 **insufficient** when they are optimistic, with a single crossing in between.
 
-Third, the diffusion path of a successful new product is **S-shaped**, matching a
-long empirical tradition, and the inflection occurs at a belief we can pin down
-exactly.
+Third, the noise-free diffusion path of a successful new product is **S-shaped**,
+matching a long empirical tradition, and its inflection occurs at a belief we can pin
+down exactly.
 
 ```{note}
 The connection to the rest of this section runs through the *value of information*.
 
-{doc}`blackwell_kihlstrom` shows that a decision maker benefits from a more
-informative experiment exactly when the value of the decision problem is convex in the
-belief, since a more informative experiment spreads the posterior in the convex order.
+{doc}`blackwell_kihlstrom` shows that a more informative experiment spreads the
+posterior in the convex order.
+
+A single decision maker's value is a maximum of functions that are linear in the
+belief, so it is convex, and every decision maker weakly gains from a more informative
+experiment.
+
+A player's equilibrium value in a game need not be convex, because the other players'
+strategies also move with the belief.
 
 Here beliefs are a martingale and experimentation controls how fast they spread, so
-each firm's gain from experimentation is governed by the convexity of its value
-function.
+each firm's gain from experimentation is governed by the convexity of its equilibrium
+value function.
+
+Both equilibrium value functions are convex.
 
 The belief itself is driven by a log-likelihood-ratio process of the kind studied in
 {doc}`likelihood_ratio_process`, now run in continuous time.
@@ -197,6 +205,9 @@ $$ (eq:md_variance)
 This is the standard filtering result for a two-point prior observed through a
 diffusion; see {cite:t}`LiptserShiryaev1977`.
 
+{doc}`likelihood_bayes` and {doc}`wald_friedman_2` study the same two-point learning
+problem in discrete time.
+
 Two features of {eq}`eq:md_variance` drive everything.
 
 The variance is **linear in $n$**, so information arrives in proportion to the size of
@@ -220,8 +231,8 @@ $$
 = \frac{(\mu_H - \mu_L)\,\Delta X - \tfrac12 n \Delta (\mu_H^2 - \mu_L^2)}{\sigma^2} .
 $$ (eq:md_loglr)
 
-Beliefs then follow from Bayes' rule in its log-odds form, exactly as in the discrete
-time lectures,
+Beliefs then follow from Bayes' rule in its log-odds form, exactly as in
+{doc}`likelihood_bayes`,
 
 $$
 \log\frac{\alpha_{t+\Delta}}{1 - \alpha_{t+\Delta}}
@@ -310,6 +321,14 @@ speed of learning $\Sigma^2$ times the shadow price $V''$.
 
 Because the belief is a martingale, no first-derivative term appears.
 
+Every policy we consider keeps $n$ bounded away from zero, so information accumulates
+without bound.
+
+The prior puts positive probability on each of the two possible values of $\mu$, so
+the truth is absolutely continuous with respect to the prior predictive distribution,
+and the posterior converges to the truth almost surely; see the discussion of Bayesian
+learning with a finite parameter space in {doc}`merging_of_opinions`.
+
 Since $\mu$ is eventually learned, $v$ is just the linear interpolation of the two
 full-information values,
 
@@ -371,15 +390,40 @@ for a, mu_i in [(0.0, mkt.mu_L), (1.0, mkt.mu_H)]:
 
 A = np.linspace(1e-6, 1 - 1e-6, 4001)          # full grid, for plotting
 A_int = np.linspace(0.05, 0.95, 1801)          # strictly interior grid
-
-gap_myopic = n_star(mkt, A_int) - m_star(mkt, A_int)
-print(f'\nn*(alpha) - m*(alpha) on [0.05, 0.95]:  '
-      f'min {gap_myopic.min():.5f},  at alpha = 0.5 it is '
-      f'{float(n_star(mkt, 0.5) - m_star(mkt, 0.5)):.5f}')
 ```
 
-The planner always experiments **more** than the myopic benchmark, which is the
-intertemporal value of information showing up as extra sales of the new product.
+The planner always experiments **more** than the myopic benchmark.
+
+Let $m_i = (\mu_i - s + h)/(2h)$ be the efficient full-information share when
+$\mu = \mu_i$, and let $E_\alpha$ average over $i \in \{L, H\}$ with weights
+$1 - \alpha$ and $\alpha$.
+
+Substituting $m_i$ into {eq}`eq:md_vsocial` gives
+$v(\alpha) - s - \frac h2 = h E_\alpha[m_i^2]$, so
+
+$$
+n^*(\alpha) = \sqrt{E_\alpha[m_i^2]} \geq E_\alpha[m_i] = m^*(\alpha)
+$$
+
+by Jensen's inequality, with strict inequality for $\alpha \in (0, 1)$ because
+$m_L \neq m_H$.
+
+The gap is the intertemporal value of information showing up as extra sales of the new
+product.
+
+```{code-cell} ipython3
+def E_alpha(f_L, f_H, a):
+    """Average of full-information quantities under belief a."""
+    return (1 - a) * f_L + a * f_H
+
+
+m_L, m_H = [(mu_i - mkt.s + mkt.h) / (2 * mkt.h) for mu_i in (mkt.mu_L, mkt.mu_H)]
+print(f'max |n*(alpha)^2 - E[m_i^2]|  '
+      f'{np.abs(n_star(mkt, A) ** 2 - E_alpha(m_L ** 2, m_H ** 2, A)).max():.1e}')
+print(f'max |m*(alpha) - E[m_i]|      '
+      f'{np.abs(m_star(mkt, A) - E_alpha(m_L, m_H, A)).max():.1e}')
+print(f'n*(0.5) - m*(0.5) = {float(n_star(mkt, 0.5) - m_star(mkt, 0.5)):.5f}')
+```
 
 ## Equilibrium
 
@@ -448,11 +492,31 @@ def n_myopic(mkt, a):
 Comparing the dynamic equilibrium with the static one played period by period reveals
 the asymmetry at the heart of the paper.
 
+In the static game at belief $\alpha$, the share of the new firm is
+$(\mu(\alpha) - s + h + p_1 - p_2)/(2h)$, and the first-order conditions of the two
+revenue-maximizing firms form a linear system in $(p_1, p_2)$.
+
+We solve that system directly and compare its solution with the dynamic equilibrium.
+
 ```{code-cell} ipython3
+def static_equilibrium(mkt, a):
+    """Prices and share in the one-shot Hotelling game at belief a."""
+    d = mkt.mu(a) - mkt.s
+    # firm 1:  -2 p1 + p2 = d - h;   firm 2:  p1 - 2 p2 = -(d + h)
+    coef = np.array([[-2.0, 1.0], [1.0, -2.0]])
+    p1_s, p2_s = np.linalg.solve(coef, np.stack([d - mkt.h, -(d + mkt.h)]))
+    n_s = (d + mkt.h + p1_s - p2_s) / (2 * mkt.h)
+    return p1_s, p2_s, n_s
+
+
+p1_s, p2_s, n_s = static_equilibrium(mkt, A_int)
+print('checking the static formulas, on [0.05, 0.95]')
+print(f'  max |p1_myopic - p1_static|  {np.abs(p1_myopic(mkt, A_int) - p1_s).max():.1e}')
+print(f'  max |n_myopic - n_static|    {np.abs(n_myopic(mkt, A_int) - n_s).max():.1e}')
 print('comparing the dynamic equilibrium with the static one, on [0.05, 0.95]')
-print(f'  max |p2 - p2_myopic|   {np.abs(p2(mkt, A_int) - p2(mkt, A_int)).max():.2e}')
-print(f'  min (p1 - p1_myopic)   {(p1(mkt, A_int) - p1_myopic(mkt, A_int)).min():.5f}')
-print(f'  min (n_eq - n_myopic)  {(n_eq(mkt, A_int) - n_myopic(mkt, A_int)).min():.5f}')
+print(f'  max |p2 - p2_static|         {np.abs(p2(mkt, A_int) - p2_s).max():.1e}')
+print(f'  min (p1 - p1_static)         {(p1(mkt, A_int) - p1_s).min():.5f}')
+print(f'  min (n_eq - n_static)        {(n_eq(mkt, A_int) - n_s).min():.5f}')
 ```
 
 The new firm's price is *exactly* its myopic price, a knife-edge consequence of the
@@ -486,11 +550,37 @@ That is the {doc}`blackwell_kihlstrom` logic at work: beliefs are a martingale, 
 experimentation spreads them further, and a firm with a convex value function gains
 from the spread.
 
-More surprisingly, the ratio is exactly $2$ at every belief.
+More surprisingly, the ratio is exactly $2$ at every belief: the **established** firm
+values information twice as much as the entrant.
 
-The **established** firm values information twice as much as the entrant, because in
-equilibrium it is the incumbent that has given up current revenue relative to what it
-would earn once uncertainty is resolved.
+Let $n_i$ be the full-information equilibrium share when $\mu = \mu_i$ and let
+$\bar n(\alpha) = E_\alpha[n_i]$, which equals the static equilibrium share
+`n_myopic`.
+
+Full-information prices are $p_{1,i} = 2h(1 - n_i)$ and $p_{2,i} = 2h n_i$, so
+$v_2 = 2h E_\alpha[n_i^2] = 2h n^2$ and $v_1 = 2h E_\alpha[(1 - n_i)^2] = 2h(1 - 2\bar n + n^2)$.
+
+The entrant charges its static price $p_2 = 2h\bar n$, while the incumbent charges
+$p_1 = 2h(1 - \bar n) + 2h(n - \bar n)$, above its static price by $2h(n - \bar n)$.
+
+Substituting,
+
+$$
+v_2 - n p_2 = 2h\, n (n - \bar n),
+\qquad
+v_1 - (1 - n) p_1 = 4h\, n (n - \bar n) .
+$$
+
+Jensen's inequality, $n = \sqrt{E_\alpha[n_i^2]} > E_\alpha[n_i] = \bar n$ for
+$\alpha \in (0, 1)$, makes both gaps positive.
+
+```{code-cell} ipython3
+n_bar = n_myopic(mkt, A)
+print(f'max |voi_2 - 2h n (n - n_bar)|  '
+      f'{np.abs(voi_2 - 2 * mkt.h * n_eq(mkt, A) * (n_eq(mkt, A) - n_bar)).max():.1e}')
+print(f'max |voi_1 - 4h n (n - n_bar)|  '
+      f'{np.abs(voi_1 - 4 * mkt.h * n_eq(mkt, A) * (n_eq(mkt, A) - n_bar)).max():.1e}')
+```
 
 ## Too much experimentation, then too little
 
@@ -528,9 +618,20 @@ axes[1].set(xlabel=r'$\alpha$', ylabel=r'$n^*(\alpha) - n(\alpha)$',
 fig.tight_layout()
 plt.show()
 
-print(f'gap is monotone increasing: {np.all(np.diff(gap) > 0)}')
-print(f'number of sign changes:     {int(np.sum(np.diff(np.sign(gap)) != 0))}')
+n_L, n_H = n_eq(mkt, 0.0), n_eq(mkt, 1.0)
+print(f'n*^2 - n^2 at alpha = 0:  m_L^2 - n_L^2 = {m_L ** 2 - n_L ** 2:+.4f}')
+print(f'n*^2 - n^2 at alpha = 1:  m_H^2 - n_H^2 = {m_H ** 2 - n_H ** 2:+.4f}')
 ```
+
+The single crossing follows from the affine structure already used.
+
+Both $n^*(\alpha)^2 = E_\alpha[m_i^2]$ and $n(\alpha)^2 = E_\alpha[n_i^2]$ are affine in
+$\alpha$, so $n^*(\alpha)^2 - n(\alpha)^2$ is affine and changes sign at most once.
+
+The gap $n^* - n$ has the same sign.
+
+Condition {eq}`eq:md_condition4` makes $m_L < n_L$ and $m_H > n_H$, so the gap is
+negative at $\alpha = 0$, positive at $\alpha = 1$, and crosses zero exactly once.
 
 The intuition is about who has to cut price to gain a buyer.
 
@@ -558,11 +659,36 @@ d\alpha = \frac{n(\alpha)(\mu_H - \mu_L)^2 \alpha (1-\alpha)^2}{\sigma^2}\, dt
 + \frac{(\mu_H - \mu_L)\alpha(1-\alpha)\sqrt{n(\alpha)}}{\sigma}\, dB .
 $$ (eq:md_conditional)
 
-Stripping out the noise gives a deterministic path for the mean belief.
+Equivalently, the log odds $\log(\alpha/(1-\alpha))$ drift up at rate
+$n(\alpha)(\mu_H - \mu_L)^2/(2\sigma^2)$.
+
+The factor $(\mu_H - \mu_L)^2/(2\sigma^2)$ is the Kullback–Leibler divergence per unit
+of time between the signal distributions under $\mu_H$ and under $\mu_L$ (see
+{ref}`rel_entropy`), and $n(\alpha)$ scales it by the size of the experiment;
+{ref}`md_ex5` derives this drift and uses it to bound the expected time needed to learn.
+
+Following {cite:t}`BergemannValimaki1997`, we drop the noise term.
+
+The belief path $\hat\alpha(t)$ then solves the ordinary differential equation
+
+$$
+\frac{d\hat\alpha}{dt} = \frac{n(\hat\alpha)(\mu_H - \mu_L)^2 \hat\alpha (1-\hat\alpha)^2}{\sigma^2},
+\qquad \hat\alpha(0) = \alpha_0 ,
+$$ (eq:md_ode)
+
+and $\hat n(t) = n(\hat\alpha(t))$ is the corresponding market share.
+
+{cite:t}`BergemannValimaki1997` call $\hat\alpha$ the mean posterior.
+
+Because the drift in {eq}`eq:md_conditional` is nonlinear in $\alpha$, $\hat\alpha(t)$
+is not the conditional mean $E[\alpha_t \mid \mu = \mu_H]$, and $\hat n(t)$ is not
+$E[n(\alpha_t) \mid \mu = \mu_H]$.
+
+We call $\hat\alpha$ and $\hat n$ the noise-free paths.
 
 ```{code-cell} ipython3
-def mean_belief_path(mkt, alpha0, T, dt, policy):
-    """Deterministic path of the mean posterior when mu = mu_H."""
+def noise_free_belief_path(mkt, alpha0, T, dt, policy):
+    """Euler solution of the noise-free belief equation when mu = mu_H."""
     steps = int(T / dt)
     a = np.empty(steps + 1)
     a[0] = alpha0
@@ -576,18 +702,40 @@ def mean_belief_path(mkt, alpha0, T, dt, policy):
 ```{prf:proposition} S-shaped diffusion
 :label: md_prop_sshape
 
-Conditional on the product being good, the mean market share $\hat n(t)$ is increasing
-over time.
+Let $\hat\alpha(t)$ solve {eq}`eq:md_ode` with $\alpha_0 \in (0, 1)$ and let
+$\hat n(t) = n(\hat\alpha(t))$.
 
-Its rate of increase is itself increasing while $\hat\alpha(t) \leq 1/3$ and
-decreasing thereafter.
+The noise-free market share $\hat n(t)$ is increasing over time.
+
+Its rate of increase is itself increasing while $\hat\alpha(t) < 1/3$ and decreasing
+thereafter.
 ```
+
+The proof uses the affine structure again.
+
+Because $n(\alpha)^2 = n_L^2 + (n_H^2 - n_L^2)\alpha$, the product $n(\alpha)n'(\alpha)$
+equals the constant $(n_H^2 - n_L^2)/2$, and
+
+$$
+\frac{d\hat n}{dt} = n'(\hat\alpha)\frac{d\hat\alpha}{dt}
+= \frac{(n_H^2 - n_L^2)(\mu_H - \mu_L)^2}{2\sigma^2}\, \hat\alpha (1 - \hat\alpha)^2 .
+$$
+
+Since $\hat\alpha$ increases with $t$ and $\alpha(1-\alpha)^2$ increases in $\alpha$
+exactly when $\alpha < 1/3$, the rate $d\hat n/dt$ rises until $\hat\alpha = 1/3$ and
+falls thereafter.
 
 The composition of two forces produces the S.
 
 Learning accelerates as beliefs move away from zero, which speeds up the growth of the
 entrant's share; but the equilibrium share $n(\alpha)$ is concave, so further belief
 improvements translate into ever smaller share gains.
+
+The S-shape and the inflection at $\hat\alpha = 1/3$ are properties of the noise-free
+path.
+
+{ref}`md_ex4` computes $E[\alpha_t \mid \mu = \mu_H]$ and $E[n_t \mid \mu = \mu_H]$ by
+Monte Carlo and compares them with $\hat\alpha$ and $\hat n$.
 
 ```{code-cell} ipython3
 ---
@@ -599,8 +747,8 @@ mystnb:
 T, dt, alpha0 = 8.0, 1e-3, 0.03
 policy = lambda a: n_eq(mkt, a)
 
-a_mean = mean_belief_path(mkt, alpha0, T, dt, policy)
-t_grid = np.linspace(0, T, len(a_mean))
+a_hat = noise_free_belief_path(mkt, alpha0, T, dt, policy)
+t_grid = np.linspace(0, T, len(a_hat))
 
 rng = np.random.default_rng(12)
 paths = simulate_beliefs(mkt, alpha0, T, dt, np.full(6, mkt.mu_H), rng, policy)
@@ -608,14 +756,14 @@ paths = simulate_beliefs(mkt, alpha0, T, dt, np.full(6, mkt.mu_H), rng, policy)
 fig, axes = plt.subplots(1, 2, figsize=(12, 4.2))
 for pth in paths:
     axes[0].plot(t_grid, pth, lw=0.7, alpha=0.55, color='C0')
-axes[0].plot(t_grid, a_mean, lw=2.5, color='C3', label='mean path')
+axes[0].plot(t_grid, a_hat, lw=2.5, color='C3', label='noise-free path')
 axes[0].axhline(1 / 3, color='0.5', ls=':', lw=1.5)
 axes[0].set(xlabel='time', ylabel=r'$\alpha(t)$', title='beliefs')
 axes[0].legend(fontsize=9)
 
 for pth in paths:
     axes[1].plot(t_grid, n_eq(mkt, pth), lw=0.7, alpha=0.55, color='C0')
-axes[1].plot(t_grid, n_eq(mkt, a_mean), lw=2.5, color='C3', label='mean path')
+axes[1].plot(t_grid, n_eq(mkt, a_hat), lw=2.5, color='C3', label='noise-free path')
 axes[1].set(xlabel='time', ylabel=r'$n(t)$',
             title='market share of the new firm')
 axes[1].legend(fontsize=9)
@@ -623,14 +771,15 @@ fig.tight_layout()
 plt.show()
 ```
 
-The inflection point is exactly where {prf:ref}`md_prop_sshape` says it is.
+The inflection point of the noise-free path is exactly where {prf:ref}`md_prop_sshape`
+says it is.
 
 ```{code-cell} ipython3
-n_mean = n_eq(mkt, a_mean)
-growth = np.gradient(n_mean, t_grid)
+n_hat = n_eq(mkt, a_hat)
+growth = np.gradient(n_hat, t_grid)
 k = np.argmax(growth)
-print(f'share grows fastest at t = {t_grid[k]:.3f}, '
-      f'where alpha = {a_mean[k]:.4f}   (theory: 1/3)')
+print(f'noise-free share grows fastest at t = {t_grid[k]:.3f}, '
+      f'where alpha_hat = {a_hat[k]:.4f}   (theory: 1/3)')
 
 drift = policy(A) * (mkt.mu_H - mkt.mu_L) ** 2 * A * (1 - A) ** 2
 print(f'belief drift peaks at alpha = {A[np.argmax(drift)]:.4f}   '
@@ -650,9 +799,10 @@ fig, ax = plt.subplots()
 for pth in paths:
     ax.plot(t_grid, p1(mkt, pth), lw=0.7, alpha=0.5, color='C0')
     ax.plot(t_grid, p2(mkt, pth), lw=0.7, alpha=0.5, color='C1')
-ax.plot(t_grid, p1(mkt, a_mean), lw=2.5, color='C0',
-        label=r'$p_1$, established firm')
-ax.plot(t_grid, p2(mkt, a_mean), lw=2.5, color='C1', label=r'$p_2$, new firm')
+ax.plot(t_grid, p1(mkt, a_hat), lw=2.5, color='C0',
+        label=r'$p_1$, established firm (noise-free path)')
+ax.plot(t_grid, p2(mkt, a_hat), lw=2.5, color='C1',
+        label=r'$p_2$, new firm (noise-free path)')
 ax.set(xlabel='time', ylabel='price',
        title='the incumbent retreats as the entrant is vindicated')
 ax.legend()
@@ -712,9 +862,12 @@ interesting economics comes from the fact that Blackwell's order is incomplete.
 Here nobody prices information at all, and the interesting economics comes from the
 fact that only one firm's sales produce it.
 
-Both rest on the same foundation from {doc}`blackwell_kihlstrom`: information is
-valuable to a decision maker exactly to the extent that the value of the decision
-problem is convex in the belief.
+Both rest on the same foundation from {doc}`blackwell_kihlstrom`: more informative
+experiments spread posterior beliefs in the convex order, and a decision maker whose
+value is convex in the belief gains from the spread.
+
+A single decision maker's value is always convex in the belief, but an equilibrium
+value in a game need not be.
 
 The distinctive lesson of {cite:t}`BergemannValimaki1997` is that this convexity is
 shared by *competitors*.
@@ -911,19 +1064,45 @@ motive, does not keep up except at the most pessimistic beliefs.
 Raising $h$ works in the opposite direction, since strongly attached buyers blunt the
 price instrument and let the entrant expand more freely than a planner would choose.
 
-The symmetry is essential.
+The symmetric formula does not survive a move of the midpoint, but a general closed
+form does.
+
+Let $d_i = (\mu_i - s)/h$.
+
+The efficient and equilibrium full-information shares are $m_i = (1 + d_i)/2$ and
+$n_i = (1 + d_i/3)/2$, so $m_i^2 - n_i^2 = \varphi(d_i)/9$ with
+$\varphi(d) = d(3 + 2d)$.
+
+Because $n^*(\alpha)^2 - n(\alpha)^2 = E_\alpha[m_i^2 - n_i^2]$ is affine in $\alpha$,
+it vanishes at
+
+$$
+\alpha^{\mathrm{cross}} = \frac{\varphi(d_L)}{\varphi(d_L) - \varphi(d_H)} .
+$$
+
+Condition {eq}`eq:md_condition4` gives $d_L \in (-1, 0)$ and $d_H \in (0, 1)$, so
+$\varphi(d_L) < 0 < \varphi(d_H)$ and $\alpha^{\mathrm{cross}} \in (0, 1)$.
+
+When $d_H = -d_L = (\mu_H - \mu_L)/(2h)$, the formula reduces to
+$\frac12 - (\mu_H - \mu_L)/(6h)$.
 
 ```{code-cell} ipython3
+def crossing_formula(mkt):
+    φ = lambda d: d * (3 + 2 * d)
+    d_L, d_H = (mkt.mu_L - mkt.s) / mkt.h, (mkt.mu_H - mkt.s) / mkt.h
+    return φ(d_L) / (φ(d_L) - φ(d_H))
+
+
 print('moving the quality midpoint away from s, with mu = (3.4, 4.6), h = 1')
 for s_ in [3.9, 4.0, 4.1]:
     m_ = Market(s=s_, h=1, mu_L=3.4, mu_H=4.6)
-    mid = (3.4 + 4.6) / 2
-    print(f'   s = {s_}  (midpoint {mid}):  crossing = {crossing(m_):.6f}'
-          f'   formula = {0.5 - 1.2 / 6:.6f}')
+    print(f'   s = {s_}:  bisection = {crossing(m_):.6f}'
+          f'   general formula = {crossing_formula(m_):.6f}'
+          f'   symmetric formula = {0.5 - 1.2 / 6:.6f}')
 ```
 
-Once the midpoint no longer equals $s$ the formula fails, so it is a knife-edge result
-rather than a general one.
+The general formula matches the bisection at every $s$; the symmetric formula matches
+only at $s = 4$.
 
 ```{solution-end}
 ```
@@ -934,12 +1113,12 @@ rather than a general one.
 
 This exercise makes the link with {doc}`blackwell_kihlstrom` precise.
 
-In that lecture, a decision maker gains from a more informative experiment exactly when
-the value of the decision problem is convex in the belief, because a more informative
-experiment produces a mean-preserving spread of the posterior.
+In that lecture, a more informative experiment produces a mean-preserving spread of the
+posterior, and a decision maker whose value is convex in the belief gains from it.
 
 Here the belief is a martingale and experimentation controls the speed at which it
-spreads, so the same logic applies to each firm.
+spreads, so the same logic applies to each firm, provided its equilibrium value
+function is convex.
 
 1. Plot each firm's value of information, $v_i(\alpha)$ minus its current equilibrium
    revenue, against $\alpha$.
@@ -1001,9 +1180,321 @@ And the speed of learning $\Sigma^2(\alpha) \propto \alpha^2(1-\alpha)^2$ vanish
 well, so even a convex value function earns nothing from an experiment that reveals
 nothing.
 
-The second derivatives do *not* vanish at the endpoints, which is exactly the
-{doc}`blackwell_kihlstrom` point: the *willingness* to pay for information stays
-positive, but the *supply* of information dries up as beliefs become degenerate.
+The second derivatives do not vanish at the endpoints; they diverge.
+
+Near $\alpha = 0$ the value of information of the new firm is approximately
+$h(n_H - n_L)^2\alpha$, while $\Sigma^2(\alpha) \approx (\mu_H - \mu_L)^2\alpha^2/\sigma^2$.
+
+Hence $V_2''(\alpha) \approx 2h(n_H - n_L)^2\sigma^2/\bigl(n_L(\mu_H - \mu_L)^2\alpha\bigr)$,
+so $\alpha V_2''(\alpha)$ converges to a positive constant, and the same holds for
+$V_1''$ and at $\alpha = 1$ with $1 - \alpha$ in place of $\alpha$.
+
+The shadow value $V_i''$ of spreading beliefs grows like $1/\alpha$, but the speed
+$\Sigma^2$ at which experimentation spreads them falls like $\alpha^2$.
+
+Their product, the value of information, therefore vanishes linearly.
+
+```{code-cell} ipython3
+n_L, n_H = n_eq(mkt, 0.0), n_eq(mkt, 1.0)
+limit = 2 * mkt.h * (n_H - n_L) ** 2 * mkt.sigma ** 2 / (
+    n_L * (mkt.mu_H - mkt.mu_L) ** 2)
+for a in [1e-2, 1e-3, 1e-4]:
+    voi_2a = v2(mkt, a) - n_eq(mkt, a) * p2(mkt, a)
+    V2pp_a = 2 * voi_2a / (n_eq(mkt, a) * Sigma2(mkt, a))
+    print(f'alpha = {a:.0e}:  alpha * V2\'\' = {a * V2pp_a:.4f}')
+print(f'limit:            {limit:.4f}')
+```
+
+```{solution-end}
+```
+
+```{exercise-start}
+:label: md_ex4
+```
+
+{prf:ref}`md_prop_sshape` describes the noise-free path $\hat\alpha(t)$, not the
+conditional mean of the belief.
+
+1. Use `simulate_beliefs` to estimate $E[\alpha_t \mid \mu = \mu_H]$ and
+   $E[n(\alpha_t) \mid \mu = \mu_H]$ for $t \in [0, 8]$, starting from
+   $\alpha_0 = 0.03$, and plot them against $\hat\alpha(t)$ and $\hat n(t)$.
+
+2. Find the time at which $E[n(\alpha_t) \mid \mu = \mu_H]$ grows fastest and the
+   value of $E[\alpha_t \mid \mu = \mu_H]$ at that time.
+
+3. Explain why the noise-free path runs ahead of the conditional mean.
+
+*Hint:* Differentiating a Monte Carlo average with respect to time amplifies sampling
+noise.
+
+Instead use $\frac{d}{dt}E[n(\alpha_t)] = E[\mathcal{G}n(\alpha_t)]$, where
+$\mathcal{G}n = n' \times \text{drift} + \frac12 n'' \times \text{variance}$ is the
+generator of the belief process {eq}`eq:md_conditional` applied to $n$.
+
+```{exercise-end}
+```
+
+```{solution-start} md_ex4
+:class: dropdown
+```
+
+Here is one solution.
+
+Write $n(\alpha)^2 = n_L^2 + b\alpha$ with $b = n_H^2 - n_L^2$, and let
+$k = (\mu_H - \mu_L)^2/\sigma^2$.
+
+Then $n' = b/(2n)$ and $n'' = -b^2/(4n^3)$, and the coefficients of
+{eq}`eq:md_conditional` give
+
+$$
+\mathcal{G}n(\alpha) = \frac{bk}{2}\,\alpha(1-\alpha)^2\left[1 - \frac{b\alpha}{4n(\alpha)^2}\right] .
+$$
+
+The first term is the rate $d\hat n/dt$ along the noise-free path; the second is an Itô
+correction that comes from the concavity of $n$.
+
+We simulate 10,000 paths in five batches to save memory.
+
+```{code-cell} ipython3
+alpha0, T4, dt4 = 0.03, 8.0, 5e-3
+n_L, n_H = n_eq(mkt, 0.0), n_eq(mkt, 1.0)
+b = n_H ** 2 - n_L ** 2
+k2 = (mkt.mu_H - mkt.mu_L) ** 2 / mkt.sigma ** 2
+
+
+def generator_n(a):
+    """Generator of the belief process under mu_H applied to n(alpha)."""
+    n = n_eq(mkt, a)
+    return 0.5 * b * k2 * a * (1 - a) ** 2 * (1 - b * a / (4 * n ** 2))
+
+
+rng = np.random.default_rng(2024)
+M_batch, n_batches = 2_000, 5
+sum_a = sum_n = sum_g = 0.0
+for _ in range(n_batches):
+    pth = simulate_beliefs(mkt, alpha0, T4, dt4, np.full(M_batch, mkt.mu_H),
+                           rng, policy)
+    sum_a = sum_a + pth.sum(axis=0)
+    sum_n = sum_n + n_eq(mkt, pth).sum(axis=0)
+    sum_g = sum_g + generator_n(pth).sum(axis=0)
+M_total = M_batch * n_batches
+E_a, E_n, E_g = sum_a / M_total, sum_n / M_total, sum_g / M_total
+
+t4 = np.linspace(0, T4, len(E_a))
+a_hat4 = noise_free_belief_path(mkt, alpha0, T4, dt4, policy)
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4.2))
+axes[0].plot(t4, a_hat4, lw=2, color='C3', label=r'noise-free $\hat\alpha(t)$')
+axes[0].plot(t4, E_a, lw=2, color='C0', label=r'$E[\alpha_t \mid \mu_H]$')
+axes[0].axhline(1 / 3, color='0.5', ls=':', lw=1.5)
+axes[0].set(xlabel='time', ylabel='belief', title='beliefs')
+axes[0].legend(fontsize=9)
+axes[1].plot(t4, n_eq(mkt, a_hat4), lw=2, color='C3',
+             label=r'noise-free $\hat n(t)$')
+axes[1].plot(t4, E_n, lw=2, color='C0', label=r'$E[n(\alpha_t) \mid \mu_H]$')
+axes[1].set(xlabel='time', ylabel='market share of the new firm',
+            title='market shares')
+axes[1].legend(fontsize=9)
+fig.tight_layout()
+plt.show()
+
+print(f'{"t":>4}{"alpha_hat":>11}{"E[alpha]":>10}{"n_hat":>8}{"E[n]":>8}')
+for t in [2, 4, 6, 8]:
+    j = int(round(t / dt4))
+    print(f'{t:>4}{a_hat4[j]:11.3f}{E_a[j]:10.3f}'
+          f'{n_eq(mkt, a_hat4[j]):8.3f}{E_n[j]:8.3f}')
+
+j = np.argmax(E_g)
+near = t4[E_g > 0.99 * E_g.max()]
+print(f'\nE[n_t] grows fastest at t = {t4[j]:.2f}, where E[alpha_t] = {E_a[j]:.3f}')
+print(f'its growth rate is within 1% of the maximum for t in '
+      f'[{near.min():.2f}, {near.max():.2f}]')
+
+A_c = np.linspace(1e-3, 1 - 1e-3, 9_999)
+drift_c = n_eq(mkt, A_c) * A_c * (1 - A_c) ** 2
+curv = np.gradient(np.gradient(drift_c, A_c), A_c)
+print(f'the belief drift is concave for alpha below {A_c[np.argmax(curv > 0)]:.2f}')
+```
+
+The noise-free path runs well ahead of the conditional mean: at $t = 4$ it puts the
+belief at 0.64 and the share at 0.561, while the conditional means are about 0.38 and
+0.48.
+
+The conditional mean share is also S-shaped.
+
+It grows fastest at about the same date as the noise-free share, near $t = 2.4$, but the
+conditional mean belief there is about 0.21, not 1/3.
+
+The growth rate of $E[n_t \mid \mu_H]$ is within one percent of its maximum between
+$t \approx 2.0$ and $t \approx 2.8$, so the date of fastest growth is imprecisely located.
+
+Two forces hold the mean back.
+
+The drift in {eq}`eq:md_conditional` is concave in $\alpha$ for $\alpha$ below about
+0.72, so while most paths lie in that region the average drift across paths falls short
+of the drift at the average belief.
+
+Paths that receive bad news early sink toward $\alpha = 0$, where both the drift and the
+volatility vanish and learning nearly stops; those paths hold the average down.
+
+```{solution-end}
+```
+
+```{exercise-start}
+:label: md_ex5
+```
+
+Let $\ell_t = \log\bigl(\alpha_t/(1-\alpha_t)\bigr)$ and
+$\kappa = (\mu_H - \mu_L)^2/(2\sigma^2)$.
+
+1. Use {eq}`eq:md_signal` and {eq}`eq:md_loglr` to show that, conditional on
+   $\mu = \mu_H$,
+
+   $$
+   d\ell = \kappa\, n(\alpha)\, dt + \frac{\mu_H - \mu_L}{\sigma}\sqrt{n(\alpha)}\, dB ,
+   $$
+
+   and that conditional on $\mu = \mu_L$ the drift is $-\kappa\, n(\alpha)$.
+   Interpret $\kappa$ as a Kullback–Leibler divergence rate.
+
+2. When $\mu = \mu_H$, let $\tau$ be the first time the belief reaches 0.9, starting
+   from $\alpha_0 = 0.03$.
+   Use part 1, the optional stopping theorem, and $n(\alpha) \in (1/3, 2/3)$ to bound
+   $E[\tau]$, and check the bounds by simulation.
+
+3. Repeat conditional on $\mu = \mu_L$.
+   Explain why the expected time for the belief to rise from 0.03 to 0.9 is now
+   infinite, and bound instead the expected time for it to fall from 0.97 to 0.1.
+   Explain why the two simulated expected times differ although the bounds are the
+   same.
+
+```{exercise-end}
+```
+
+```{solution-start} md_ex5
+:class: dropdown
+```
+
+Here is one solution.
+
+*Part 1.*
+In continuous time {eq}`eq:md_loglr` becomes
+$d\ell = \bigl[(\mu_H - \mu_L)\,dX - \frac12 n(\mu_H^2 - \mu_L^2)\,dt\bigr]/\sigma^2$.
+
+Conditional on $\mu = \mu_H$, $dX = n\mu_H\,dt + \sigma\sqrt{n}\,dB$, so the drift of
+$\ell$ is
+
+$$
+\frac{n}{\sigma^2}\left[(\mu_H - \mu_L)\mu_H - \tfrac12(\mu_H - \mu_L)(\mu_H + \mu_L)\right]
+= \frac{n(\mu_H - \mu_L)^2}{2\sigma^2} = \kappa n
+$$
+
+and its diffusion coefficient is $(\mu_H - \mu_L)\sqrt{n}/\sigma$.
+
+Conditional on $\mu = \mu_L$, replacing $\mu_H$ by $\mu_L$ in the first term of the
+bracket gives drift $-\kappa n$.
+
+Over an interval of length $\Delta$ with $n = 1$, the increment $\Delta X$ is
+$N(\mu_H\Delta, \sigma^2\Delta)$ under $\mu_H$ and $N(\mu_L\Delta, \sigma^2\Delta)$ under
+$\mu_L$.
+
+The Kullback–Leibler divergence between these two distributions, in either direction,
+is $(\mu_H - \mu_L)^2\Delta/(2\sigma^2) = \kappa\Delta$ (see {ref}`rel_entropy`).
+
+So the log odds drift toward the truth at $n$ times the KL divergence rate, the
+continuous-time version of the link between expected log likelihood ratios and KL
+divergence in {doc}`likelihood_ratio_process`.
+
+*Part 2.*
+The process $\ell_t - \ell_0 - \kappa\int_0^t n(\alpha_s)\,ds$ is a martingale.
+
+Because $n \geq n_L > 0$, the drift of $\ell$ is bounded below by a positive constant
+and $E[\tau] < \infty$, so optional stopping applies.
+
+Because $\ell$ has continuous paths, $\ell_\tau = \ell^* = \log 9$.
+
+Hence
+
+$$
+\kappa\, E\left[\int_0^\tau n(\alpha_s)\,ds\right] = \ell^* - \ell_0 ,
+$$
+
+and $\frac13 E[\tau] < E\left[\int_0^\tau n(\alpha_s)\,ds\right] < \frac23 E[\tau]$ gives
+
+$$
+\frac{3}{2}\,\frac{\ell^* - \ell_0}{\kappa} < E[\tau] < 3\,\frac{\ell^* - \ell_0}{\kappa} .
+$$
+
+With the lecture's parameters, $n$ actually stays in $[n_L, n_H] = [0.35, 0.65]$, which
+tightens the bounds to $(\ell^* - \ell_0)/(\kappa n_H) \le E[\tau] \le (\ell^* - \ell_0)/(\kappa n_L)$.
+
+*Part 3.*
+Conditional on $\mu = \mu_L$, Itô's lemma and part 1 show that the odds
+$e^{\ell_t} = \alpha_t/(1-\alpha_t)$ form a martingale: the drift of $\ell$, $-\kappa n$,
+is minus one half of its instantaneous variance, $2\kappa n$.
+
+The odds are the prior odds times a likelihood ratio process of the kind studied in
+{doc}`likelihood_ratio_process`.
+
+Stopped when the belief first reaches 0.9, the odds are bounded by 9, and $\ell_t \to -\infty$
+on paths that never get there.
+
+Optional stopping gives a probability $(0.03/0.97)/9 \approx 0.0034$ that the belief
+ever reaches 0.9 from 0.03, so with probability close to one it never does, and the
+expected hitting time is infinite.
+
+The time for the belief to fall from 0.97 to 0.1 obeys the argument of part 2 applied
+to $-\ell$, with the same distance $|\ell^* - \ell_0| = \log 9 + \log(0.97/0.03)$, so the
+bounds are identical.
+
+```{code-cell} ipython3
+def first_passage_times(mkt, alpha0, alpha_target, mu_true, M, dt, T, rng):
+    """First times at which the belief reaches alpha_target (nan if not by T)."""
+    dmu, half = mkt.mu_H - mkt.mu_L, (mkt.mu_H ** 2 - mkt.mu_L ** 2) / 2
+    ell = np.full(M, np.log(alpha0 / (1 - alpha0)))
+    ell_target = np.log(alpha_target / (1 - alpha_target))
+    up = alpha_target > alpha0
+    tau = np.full(M, np.nan)
+    alive = np.ones(M, dtype=bool)
+    for j in range(int(T / dt)):
+        n = policy(1 / (1 + np.exp(-ell[alive])))
+        dX = (n * mu_true * dt
+              + mkt.sigma * np.sqrt(n * dt) * rng.standard_normal(alive.sum()))
+        ell[alive] += (dmu * dX - n * dt * half) / mkt.sigma ** 2
+        hit = alive & ((ell >= ell_target) if up else (ell <= ell_target))
+        tau[hit] = (j + 1) * dt
+        alive &= ~hit
+        if not alive.any():
+            break
+    return tau
+
+
+κ = (mkt.mu_H - mkt.mu_L) ** 2 / (2 * mkt.sigma ** 2)
+rng = np.random.default_rng(7)
+cases = [('good product, 0.03 -> 0.9', 0.03, 0.9, mkt.mu_H),
+         ('bad product,  0.97 -> 0.1', 0.97, 0.1, mkt.mu_L)]
+print(f'{"":27}{"bounds (1/3, 2/3)":>20}{"bounds (n_L, n_H)":>20}{"simulated":>16}')
+for name, a_start, a_end, mu_true in cases:
+    dist = abs(np.log(a_end / (1 - a_end)) - np.log(a_start / (1 - a_start)))
+    tau = first_passage_times(mkt, a_start, a_end, mu_true, 4_000, 5e-3, 100.0, rng)
+    print(f'{name:27}{1.5 * dist / κ:9.2f},{3 * dist / κ:9.2f} '
+          f'{dist / (κ * n_H):9.2f},{dist / (κ * n_L):9.2f} '
+          f'{np.nanmean(tau):9.2f} ({np.nanstd(tau) / np.sqrt(len(tau)):.2f})')
+```
+
+Both simulated means lie inside the bounds.
+
+Optional stopping pins down $E\left[\int_0^\tau n(\alpha_s)\,ds\right]$, the expected
+cumulative size of the experiment, not $E[\tau]$ itself.
+
+A good product that starts from a pessimistic belief is sold to a small share of
+buyers, near $n_L$, while the market learns about it.
+
+A bad product that starts from an optimistic belief is sold to a large share, near
+$n_H$.
+
+The market therefore learns faster that a popular product is bad than that an
+unpopular product is good.
 
 ```{solution-end}
 ```

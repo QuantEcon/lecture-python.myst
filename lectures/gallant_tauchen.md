@@ -242,7 +242,7 @@ The order condition is necessary but not sufficient, and {ref}`gt_ex3` construct
 (gt_why_score)=
 ## Why the score is the right thing to match
 
-{doc}`divergence_measures` shows that maximum likelihood minimizes the KL divergence from the empirical distribution of the data to the parametric model.
+{doc}`divergence_measures` shows that maximum likelihood minimizes the cross-entropy of the parametric model relative to the empirical distribution of the data, the sample analogue of the KL divergence from the data-generating distribution to the model.
 
 Step 1 projects the data onto the auxiliary family by minimizing KL divergence.
 

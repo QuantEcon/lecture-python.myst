@@ -42,7 +42,7 @@ We'll study the same setting that is also used in {doc}`this lecture on exchange
 Among the things that we'll learn are
 
 * How a likelihood ratio process is a key ingredient in frequentist hypothesis testing
-* How a **receiver operator characteristic curve** summarizes information about a false alarm probability and power in frequentist hypothesis testing
+* How a **receiver operating characteristic curve** summarizes information about a false alarm probability and power in frequentist hypothesis testing
 * How a statistician can combine frequentist probabilities of type I and type II errors to form posterior probabilities of mistakes in a model selection or in an individual-classification problem
 * How to use a Kullback-Leibler divergence to quantify the difference between two probability distributions with the same support 
 * How during World War II the United States Navy devised a decision rule for doing quality control on lots of ammunition, a topic that sets the stage for {doc}`this lecture <wald_friedman>`
@@ -60,6 +60,7 @@ from math import gamma
 from scipy.integrate import quad
 from scipy.optimize import brentq, minimize_scalar
 from scipy.stats import beta as beta_dist
+from scipy.special import betaln, digamma
 import pandas as pd
 from IPython.display import display, Math
 import quantecon as qe
@@ -191,7 +192,7 @@ def plot_likelihood_paths(l_seq, title="Likelihood ratio paths",
     
     plt.figure(figsize=(10, 6))
     for i in range(n_show):
-        plt.plot(range(T), l_seq[i, :], color='b', lw=0.8, alpha=0.5)
+        plt.plot(np.arange(1, T+1), l_seq[i, :], color='b', lw=0.8, alpha=0.5)
     
     if ylim:
         plt.ylim(ylim)
@@ -216,7 +217,7 @@ plot_likelihood_paths(l_seq_g,
 ```
 
 Evidently, as sample length $T$ grows, most probability mass
-shifts toward zero
+shifts toward zero.
 
 To see this more clearly, we plot over time the fraction of
 paths $L\left(w^{t}\right)$ that fall in the interval
@@ -224,7 +225,8 @@ $\left[0, 0.01\right]$.
 
 ```{code-cell} ipython3
 N, T = l_arr_g.shape
-plt.plot(range(T), np.sum(l_seq_g <= 0.01, axis=0) / N)
+plt.plot(np.arange(1, T+1), np.sum(l_seq_g <= 0.01, axis=0) / N)
+plt.xlabel('t')
 plt.show()
 ```
 
@@ -255,7 +257,7 @@ E\left[L\left(w^{1}\right)\bigm|q=g\right]  &=E\left[\ell \left(w_{1}\right)\big
 $$
 
 Because $L(w^t) = \ell(w_t) L(w^{t-1})$ and
-$\{w_t\}_{t=1}^t$ is an IID sequence, we have
+$\{w_t\}_{t=1}^\infty$ is an IID sequence, we have
 
 $$
 \begin{aligned}
@@ -284,6 +286,18 @@ enough mass shifts to larger and larger values of $L_t$ to make
 the mean of $L_t$ continue to be one despite most of the probability mass piling up
 near $0$.
 
+Under $g$, the process $\{L_t\}$ is a nonnegative martingale with mean $1$.
+
+By the strong law of large numbers, $\frac{1}{t} \log L_t \rightarrow E_g \log \ell(w) = -D_{KL}(g\|f) < 0$ almost surely, so $L_t \rightarrow 0$ almost surely.
+
+Thus $E[L_t \mid q=g] = 1$ for every $t$ while $E[\lim_{t \rightarrow \infty} L_t \mid q=g] = 0$.
+
+The martingale $\{L_t\}$ converges almost surely but not in mean, because it is not uniformly integrable.
+
+{doc}`merging_of_opinions` studies this likelihood-ratio martingale.
+
+Kakutani's theorem there states that when $\int \sqrt{f g} \, dw < 1$, the distributions of infinite sequences of IID draws from $f$ and from $g$ are mutually singular, which is another way of saying that $L_t \rightarrow 0$ almost surely under $g$.
+
 To illustrate this peculiar property, we simulate many paths and
 calculate the unconditional mean of $L\left(w^t\right)$ by
 averaging across these many paths at each $t$.
@@ -308,6 +322,7 @@ We explain the problem in more detail in {doc}`this lecture <imp_sample>`.
 There we describe an alternative way to compute the mean of a likelihood ratio by computing the mean of a _different_ random variable by sampling from a _different_ probability distribution.
 
 
+(nature_likeli_f)=
 ## Nature permanently draws from density f
 
 Now suppose that before time $0$ nature permanently decided to draw repeatedly from density $f$.
@@ -328,12 +343,23 @@ E\left[\ell \left(w_{t}\right)\bigm|q=f\right]  &=\int\frac{f\left(w_{t}\right)}
        \end{aligned}
 $$
 
-This in turn implies that the unconditional mean of the likelihood ratio process $L(w^t)$
-diverges toward $+ \infty$.
+For the $f$ and $g$ in our example, $E\left[\ell \left(w_{t}\right)\bigm|q=f\right]$ is infinite.
 
-Simulations below confirm this conclusion.
+Because $f$ is the uniform density, $E\left[\ell \left(w_{t}\right)\bigm|q=f\right] = \int_0^1 1/g(w) \, dw$.
 
-Please note the scale of the $y$ axis.
+As $w \rightarrow 0$, $g(w)$ vanishes like $w^{G_a - 1} = w^2$, so the integral diverges.
+
+{ref}`lr_ex_lmean` shows that $E\left[\ell \left(w_{t}\right)\bigm|q=f\right] = B(G_a, G_b) B(2-G_a, 2-G_b)$ when $G_a < 2$ and $G_b < 2$, where $B$ is the Beta function, and that it is infinite otherwise.
+
+Because the $w_t$'s are IID, $E\left[L\left(w^{t}\right)\bigm|q=f\right] = +\infty$ for every $t \geq 1$.
+
+A sample average of $L\left(w^{t}\right)$ across simulated paths therefore does not settle down as the number of paths grows.
+
+{doc}`imp_sample` encounters the same divergent integral as the infinite variance of $\ell(w_t)$ under $g$, since $E\left[\ell \left(w_{t}\right)^2\bigm|q=g\right] = E\left[\ell \left(w_{t}\right)\bigm|q=f\right]$.
+
+The logarithm of $L\left(w^{t}\right)$ behaves well.
+
+Under $f$, $E\left[\log L\left(w^{t}\right)\bigm|q=f\right] = t \, D_{KL}(f\|g)$, and by the strong law of large numbers $\frac{1}{t} \log L\left(w^{t}\right) \rightarrow D_{KL}(f\|g) > 0$ almost surely, so $L\left(w^{t}\right) \rightarrow + \infty$ almost surely.
 
 ```{code-cell} ipython3
 # Simulate when nature draws from f
@@ -341,10 +367,22 @@ l_arr_f, l_seq_f = simulate_sequences('f', f, g, rng,
                         (F_a, F_b), (G_a, G_b), N=50000)
 ```
 
+The next figure plots the mean and the median across paths of $\log L\left(w^{t}\right)$, together with the line $t \, D_{KL}(f\|g)$.
+
 ```{code-cell} ipython3
 N, T = l_arr_f.shape
-plt.plot(range(T), np.mean(l_seq_f, axis=0))
+t_grid = np.arange(1, T+1)
+KL_fg, _ = quad(lambda w: f(w) * np.log(f(w) / g(w)), 0, 1)
+log_l_seq_f = np.log(l_seq_f)
+
+plt.plot(t_grid, np.mean(log_l_seq_f, axis=0), label=r'mean of $\log L_t$')
+plt.plot(t_grid, np.median(log_l_seq_f, axis=0), label=r'median of $\log L_t$')
+plt.plot(t_grid, KL_fg * t_grid, 'k--', label=r'$t \, D_{KL}(f\|g)$')
+plt.xlabel('t')
+plt.legend()
 plt.show()
+
+print(f"D_KL(f||g) = {KL_fg:.4f}")
 ```
 
 We also plot the probability that $L\left(w^t\right)$ falls into
@@ -352,7 +390,8 @@ the interval $[10000, \infty)$ as a function of time and watch how
 fast probability mass diverges to $+\infty$.
 
 ```{code-cell} ipython3
-plt.plot(range(T), np.sum(l_seq_f > 10000, axis=0) / N)
+plt.plot(t_grid, np.sum(l_seq_f > 10000, axis=0) / N)
+plt.xlabel('t')
 plt.show()
 ```
 
@@ -385,9 +424,11 @@ where $c$ is a given discrimination threshold.
 
 Setting $c =1$ is a common choice.
 
+When $f$ and $g$ have equal prior probabilities, $c = 1$ selects the model with the larger posterior probability, which minimizes the probability of selecting the wrong model.
+
 We'll discuss consequences of other choices of $c$ below.  
 
-This test is *best* in the sense that it is **uniformly most powerful**.
+This test is *best* in the sense that it is **most powerful**.
 
 To understand what this means, we have to define probabilities of two important events that
 allow us to characterize a test associated with a given
@@ -408,22 +449,9 @@ The two probabilities are:
   \beta \equiv \Pr\left\{ L\left(w^{t}\right)>c\mid q=g\right\}
   $$
 
-These two probabilities underlie the following two concepts: 
+The probability $\alpha$ is also called the probability of false alarm or the significance level.
 
-
-- Probability of false alarm (= significance level = probability of
-  Type I error):
-
-  $$
-  \alpha \equiv  \Pr\left\{ L\left(w^{t}\right)<c\mid q=f\right\}
-  $$
-
-- Probability of detection (= power = 1 minus probability
-  of Type II error):
-
-  $$
-  1-\beta \equiv \Pr\left\{ L\left(w^{t}\right)<c\mid q=g\right\}
-  $$
+The probability $1-\beta = \Pr\left\{ L\left(w^{t}\right)<c\mid q=g\right\}$ is called the probability of detection or the power of the test.
 
 
 
@@ -450,6 +478,12 @@ about how we *should* trade off probabilities of the two types of mistakes.
 
 We do know that increasing sample size $t$ improves
 statistical inference.
+
+The experiment that reveals $w^t$ is more informative in Blackwell's sense than the experiment that reveals $w^s$ for $t > s$, because a statistician can always discard the last $t-s$ observations.
+
+When there are only two hypotheses, one experiment is more informative than another in Blackwell's sense if and only if its receiver operating characteristic curve, defined below, lies everywhere above the other's.
+
+{doc}`blackwell_kihlstrom` describes Blackwell's ordering of experiments; its section on {ref}`Bayesian likelihood-ratio learning <bk_lr_learning>` applies it to the setting of this lecture.
 
 Below we plot some informative figures that illustrate this.
 
@@ -492,18 +526,19 @@ def plot_log_histograms(l_seq_f, l_seq_g, c=1, time_points=[1, 7, 14, 21]):
         
         axs[nr, nc].axvline(np.log(c), color="k", ls="--")
         
-        hist_f, x_f = np.histogram(np.log(l_seq_f[:, t]), 200, density=True)
-        hist_g, x_g = np.histogram(np.log(l_seq_g[:, t]), 200, density=True)
+        # Column t-1 of l_seq holds L(w^t)
+        hist_f, x_f = np.histogram(np.log(l_seq_f[:, t-1]), 200, density=True)
+        hist_g, x_g = np.histogram(np.log(l_seq_g[:, t-1]), 200, density=True)
         
-        axs[nr, nc].plot(x_f[1:], hist_f, label="dist under f")
-        axs[nr, nc].plot(x_g[1:], hist_g, label="dist under g")
+        axs[nr, nc].plot(x_f[1:], hist_f, color="C0", label="dist under f")
+        axs[nr, nc].plot(x_g[1:], hist_g, color="C1", label="dist under g")
         
         # Fill error regions
         for j, (x, hist, label) in enumerate(
             zip([x_f, x_g], [hist_f, hist_g], 
             ["Type I error", "Type II error"])):
             ind = x[1:] <= np.log(c) if j == 0 else x[1:] > np.log(c)
-            axs[nr, nc].fill_between(x[1:][ind], hist[ind], 
+            axs[nr, nc].fill_between(x[1:][ind], hist[ind], color=f"C{j}",
                                     alpha=0.5, label=label)
         
         axs[nr, nc].legend()
@@ -515,10 +550,10 @@ plot_log_histograms(l_seq_f, l_seq_g, c=c)
 ```
 
 In the above graphs, 
-  * the blue areas are related to but not equal to probabilities $\alpha $ of a type I error because 
-they are integrals of $\log L_t$, not integrals of $L_t$, over rejection region $L_t < 1$  
-* the orange areas are related to but not equal to probabilities $\beta $ of a type II error because 
-they are integrals of $\log L_t$, not integrals of $L_t$, over acceptance region $L_t > 1$
+  * the blue areas equal the probabilities $\alpha$ of a type I error, up to the binning of the histograms
+  * the orange areas equal the probabilities $\beta$ of a type II error, up to the binning of the histograms
+
+Because the logarithm is monotone, the event $\{L_t < 1\}$ is the event $\{\log L_t < 0\}$, so the area under the density of $\log L_t$ to the left of $0$ is $\Pr\{L_t < 1\}$.
 
 
 When we hold $c$ fixed at $c=1$, the following graph shows that 
@@ -552,9 +587,10 @@ def compute_error_probabilities(l_seq_f, l_seq_g, c=1):
 
 def plot_error_probabilities(error_dict, T, c=1, title_suffix=""):
     """Plot error probabilities over time."""
+    t_grid = np.arange(1, T+1)
     plt.figure(figsize=(10, 6))
-    plt.plot(range(T), error_dict['PD'], label="Probability of detection")
-    plt.plot(range(T), error_dict['PFA'], label="Probability of false alarm")
+    plt.plot(t_grid, error_dict['PD'], label="Probability of detection")
+    plt.plot(t_grid, error_dict['PFA'], label="Probability of false alarm")
     plt.xlabel("t")
     plt.ylabel("Probability")
     plt.title(f"Error Probabilities (c={c}){title_suffix}")
@@ -588,8 +624,9 @@ def plot_roc_curves(l_seq_f, l_seq_g, t_values=[1, 5, 9, 13], N=None):
     
     plt.figure(figsize=(10, 6))
     for t in t_values:
-        percentile = np.percentile(l_seq_f[:, t], PFA)
-        PD = [np.sum(l_seq_g[:, t] < p) / N for p in percentile]
+        # Column t-1 of l_seq holds L(w^t)
+        percentile = np.percentile(l_seq_f[:, t-1], PFA)
+        PD = [np.sum(l_seq_g[:, t-1] < p) / N for p in percentile]
         plt.plot(PFA / 100, PD, label=f"t={t}")
     
     plt.scatter(0, 1, label="perfect detection")
@@ -648,7 +685,8 @@ for t in range(T):
     c = np.percentile(l_seq_f[:, t], PFA * 100)
     PD[t] = np.sum(l_seq_g[:, t] < c) / N
 
-plt.plot(range(T), PD)
+# PD[t] refers to sample size t+1
+plt.plot(np.arange(1, T+1), PD)
 plt.axhline(0.9, color="k", ls="--")
 
 plt.xlabel("t")
@@ -662,6 +700,8 @@ control tests during World War II.
 
 A Navy Captain who had been ordered to perform tests of this kind had doubts about it that he
 presented to Milton Friedman, as we describe in {doc}`this lecture <wald_friedman>`.
+
+{doc}`wald_friedman_2` formulates the Captain's problem as a Bayesian sequential decision problem, and {doc}`navy_captain` compares the Navy's frequentist rule with the Bayesian decision rule.
 
 (llr_h)=
 ### A third distribution $h$
@@ -698,23 +738,21 @@ K_{g} = D_{KL}\bigl(h\|g\bigr) = KL(h, g)
 \end{aligned}
 $$
 
-Let's compute the Kullback–Leibler discrepancies using the same code in {doc}`divergence_measures`.
+Let's compute the Kullback–Leibler discrepancies using the closed form for Beta densities from {doc}`divergence_measures`.
 
 ```{code-cell} ipython3
-def compute_KL(f, g):
-    """
-    Compute KL divergence KL(f, g)
-    """
-    integrand = lambda w: f(w) * np.log(f(w) / g(w))
-    val, _ = quad(integrand, 1e-5, 1-1e-5)
-    return val
+def KL_beta(a1, b1, a2, b2):
+    """KL(Beta(a1, b1) ‖ Beta(a2, b2)) in closed form."""
+    return (betaln(a2, b2) - betaln(a1, b1)
+            + (a1 - a2) * digamma(a1) + (b1 - b2) * digamma(b1)
+            + (a2 - a1 + b2 - b1) * digamma(a1 + b1))
 
-def compute_KL_h(h, f, g):
+def compute_KL_h(h_params, F_params=(F_a, F_b), G_params=(G_a, G_b)):
     """
-    Compute KL divergences with respect to reference distribution h
+    Compute K_f = KL(h, f) and K_g = KL(h, g) for Beta densities h, f, g
     """
-    Kf = compute_KL(h, f)
-    Kg = compute_KL(h, g)
+    Kf = KL_beta(*h_params, *F_params)
+    Kg = KL_beta(*h_params, *G_params)
     return Kf, Kg
 ```
 
@@ -749,7 +787,9 @@ def compute_likelihood_ratios(sequences, f, g):
     return l_ratios, L_cumulative
 ```
 
-We consider three cases: (1) $h$ is closer to $f$, (2) $f$ and $g$ are approximately equidistant from $h$, and (3) $h$ is closer to $g$.
+We consider three cases: (1) $h$ is closer to $f$, (2) $f$ and $g$ are equidistant from $h$, and (3) $h$ is closer to $g$.
+
+In case (2) we set $h = \text{Beta}(2.1035, 1.35)$, for which $K_f$ and $K_g$ agree to four decimal places.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -762,9 +802,9 @@ scenarios = [
         "expected": r"$L_t \to \infty$"
     },
     {
-        "name": "KL(h,g) ≈ KL(h,f)",
-        "h_params": (2, 1.35),
-        "expected": "$L_t$ fluctuates"
+        "name": "KL(h,g) = KL(h,f)",
+        "h_params": (2.1035, 1.35),
+        "expected": r"$\log L_t$ has no drift"
     },
     {
         "name": "KL(h,g) < KL(h,f)", 
@@ -781,12 +821,13 @@ for i, scenario in enumerate(scenarios):
                     scenario["h_params"][1])
     
     # Compute KL divergences
-    Kf, Kg = compute_KL_h(h, f, g)
+    Kf, Kg = compute_KL_h(scenario["h_params"])
     kl_diff = Kg - Kf
     
     # Simulate paths
     N_paths = 100
     T = 150
+    t_grid = np.arange(1, T+1)
 
     # Generate data from h
     h_data = rng.beta(scenario["h_params"][0], 
@@ -811,14 +852,15 @@ for i, scenario in enumerate(scenarios):
     # Plot log likelihood ratio paths
     ax = axes[1, i]
     for j in range(min(20, N_paths)):
-        ax.plot(log_l_cumulative[j, :], alpha=0.3, color='purple')
+        ax.plot(t_grid, log_l_cumulative[j, :], alpha=0.3, color='purple')
     
     # Plot theoretical expectation
-    theory_line = kl_diff * np.arange(1, T+1)
-    ax.plot(theory_line, 'k--', linewidth=2, label=r'$t \times (K_g - K_f)$')
+    theory_line = kl_diff * t_grid
+    ax.plot(t_grid, theory_line, 'k--', linewidth=2, 
+            label=r'$t \times (K_g - K_f)$')
     
     ax.set_xlabel('t')
-    ax.set_ylabel('$log L_t$')
+    ax.set_ylabel(r'$\log L_t$')
     ax.set_title(f'KL(h,f)={Kf:.3f}, KL(h,g)={Kg:.3f}\n{scenario["expected"]}', 
                  fontsize=16)
     ax.legend(fontsize=16)
@@ -830,9 +872,9 @@ plt.show()
 Note that
 
 - In the first figure, $\log L(w^t)$ diverges to $\infty$ because $K_g > K_f$.
-- In the second figure, we still have $K_g > K_f$, but the difference is smaller, so $L(w^t)$ diverges to infinity at a slower pace.
+- In the second figure, $K_g = K_f$, so $\log L(w^t)$ is a random walk with IID increments of mean zero; its paths wander away from zero in both directions, with a spread that grows like $\sqrt{t}$.
 - In the last figure, $\log L(w^t)$ diverges to $-\infty$ because $K_g < K_f$.
-- The black dotted line, $t \left(D_{KL}(h\|g) - D_{KL}(h\|f)\right)$, closely fits the paths verifying {eq}`eq:kl_likelihood_link`.
+- The black dashed line, $t \left(D_{KL}(h\|g) - D_{KL}(h\|f)\right)$, passes through the center of the paths, as {eq}`eq:kl_likelihood_link` predicts.
 
 These observations align with the theory.
 
@@ -873,7 +915,7 @@ We consider two alternative timing protocols.
 of  IID  draws from  $f$  and with probability $1-\pi_{-1}$ generates a sequence  $\{w_t\}_{t=1}^T$
 of  IID  draws from  $g$.
 
-**Timing Protocol 2.** Nature flips a coin **often**.  At each time $t \geq 0$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
+**Timing Protocol 2:** Nature flips a coin **often**.  At each time $t \geq 1$, nature flips a coin and with probability $\pi_{-1}$ draws $w_t$ from $f$ and with probability $1-\pi_{-1}$ draws $w_t$ from $g$.
 
 Here is  Python code that we'll use to implement timing protocol 1 and 2
 
@@ -924,6 +966,10 @@ def protocol_2(π_minus_1, T, rng, N=1000, F_params=(1, 1), G_params=(3, 1.2)):
 **Remark:** Under timing protocol 2, the $\{w_t\}_{t=1}^T$ is a sequence of IID draws from $h(w)$. Under timing protocol 1, the $\{w_t\}_{t=1}^T$ is 
 not IID. It is **conditionally IID** -- meaning that with probability $\pi_{-1}$ it is a sequence of IID draws from $f(w)$ and with probability $1-\pi_{-1}$ it is a sequence of IID draws from $g(w)$. For more about this, see {doc}`this lecture about exchangeability <exchangeable>`.
 
+{doc}`likelihood_bayes` studies a Bayesian who knows that timing protocol 1 governs the data and learns which density nature chose.
+
+{doc}`mix_model` studies a Bayesian who wrongly believes timing protocol 1 when timing protocol 2 generates the data.
+
 We again deploy a **likelihood ratio process** with time $t$ component being the likelihood ratio  
 
 $$
@@ -938,13 +984,14 @@ $$
 
 For shorthand we'll write $L_t =  L(w^t)$.
 
-### Model selection mistake probability 
+(lrp_model_selection)=
+### Model selection mistake probability
 
 We first study  a problem that assumes  timing protocol 1.  
 
 Consider a decision maker who wants to know whether model $f$ or model $g$ governs a data set of length $T$ observations.
 
-The decision makers has observed a sequence $\{w_t\}_{t=1}^T$.
+The decision maker has observed a sequence $\{w_t\}_{t=1}^T$.
 
 On the basis of that observed  sequence, a likelihood ratio test selects model $f$ when
  $L_T \geq 1 $ and model $g$ when  $L_T < 1$.  
@@ -961,7 +1008,7 @@ $$
 p_g = {\rm Prob}\left(L_T \geq 1 \Big|g \right) = \beta_T.
 $$
 
-We can construct a probability that the likelihood ratio selects the wrong model by assigning a Bayesian prior probability of $\pi_{-1} = .5$ that nature selects model $f$ then  averaging $p_f$ and $p_g$ to form the Bayesian posterior probability of a detection error equal to
+We can construct a probability that the likelihood ratio selects the wrong model by assigning a Bayesian prior probability of $\pi_{-1} = .5$ that nature selects model $f$ then  averaging $p_f$ and $p_g$ to form the prior (ex ante) probability of a detection error equal to
 
 $$ 
 p(\textrm{wrong decision}) = {1 \over 2} (\alpha_T + \beta_T) .
@@ -1063,8 +1110,8 @@ The decision maker uses the following classification rule:
 
 $$
 \begin{aligned}
-w_t  & \ {\rm is \ from \ }  f  \ {\rm if \ } l_t > 1 \\
-w_t  & \ {\rm is \ from \ } g  \ {\rm if \ } l_t \leq 1 . 
+w_t  & \ {\rm is \ from \ }  f  \ {\rm if \ } l_t \geq 1 \\
+w_t  & \ {\rm is \ from \ } g  \ {\rm if \ } l_t < 1 . 
 \end{aligned}
 $$
 
@@ -1108,10 +1155,18 @@ def compute_protocol_2_errors(π_minus_1, T_max, N_simulations, f_func, g_func,
 Since for each $t$, the decision boundary is the same, the decision boundary can be computed as
 
 ```{code-cell} ipython3
-root = brentq(lambda w: f(w) / g(w) - 1, 0.001, 0.999)
+root = brentq(lambda w: f(w) / g(w) - 1, 0.001, 0.99)
+root_2 = brentq(lambda w: f(w) / g(w) - 1, 0.99, 1 - 1e-12)
+print(f"f/g = 1 at w = {root:.4f} and at w = {root_2:.5f}")
 ```
 
-we can plot the distributions of $f$ and $g$ and the decision boundary
+The likelihood ratio $f/g$ equals $1$ at two points, because $g$ vanishes at both ends of $(0,1)$.
+
+The rule classifies $w_t$ as coming from $g$ when $w_t$ lies between the two roots and as coming from $f$ otherwise.
+
+The second root lies so close to $1$ that the interval to its right has probability below $0.001$ under both $f$ and $g$.
+
+We can plot the distributions of $f$ and $g$ and the decision boundary
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -1128,17 +1183,17 @@ ax.plot(w_range, f_values, 'b-',
 ax.plot(w_range, g_values, 'r-', 
         label=r'$g(w) \sim Beta(3,1.2)$', linewidth=2)
 
-type1_prob = 1 - beta_dist.cdf(root, F_a, F_b)
-type2_prob = beta_dist.cdf(root, G_a, G_b)
+# P(classify as g | f) and P(classify as f | g)
+type1_prob = beta_dist.cdf(root_2, F_a, F_b) - beta_dist.cdf(root, F_a, F_b)
+type2_prob = beta_dist.cdf(root, G_a, G_b) + beta_dist.sf(root_2, G_a, G_b)
 
-w_type1 = w_range[w_range >= root]
-f_type1 = [f(w) for w in w_type1]
-ax.fill_between(w_type1, 0, f_type1, alpha=0.3, color='blue', 
+in_g_region = (w_range > root) & (w_range < root_2)
+f_type1 = [f(w) if inside else 0 for w, inside in zip(w_range, in_g_region)]
+ax.fill_between(w_range, 0, f_type1, alpha=0.3, color='blue', 
                 label=fr'$\tilde \alpha_t = {type1_prob:.2f}$')
 
-w_type2 = w_range[w_range <= root]
-g_type2 = [g(w) for w in w_type2]
-ax.fill_between(w_type2, 0, g_type2, alpha=0.3, color='red', 
+g_type2 = [0 if inside else g(w) for w, inside in zip(w_range, in_g_region)]
+ax.fill_between(w_range, 0, g_type2, alpha=0.3, color='red', 
                 label=fr'$\tilde \beta_t = {type2_prob:.2f}$')
 
 ax.axvline(root, color='green', linestyle='--', alpha=0.7, 
@@ -1154,27 +1209,20 @@ plt.show()
 
 To the left of the green vertical line $g < f$, so $l_t > 1$; therefore a $w_t$ that falls to the left of the green line is classified as a type $f$ individual. 
 
- * The shaded red area equals $\beta$ -- the probability of classifying someone as a type $g$ individual when it is really a type $f$ individual.
+ * The shaded red area equals $\tilde \beta_t$ -- the probability of classifying someone as a type $f$ individual when it is really a type $g$ individual.
 
-To the right of the green vertical line $g > f$, so $l_t < 1$; therefore a $w_t$ that falls to the right of the green line is classified as a type $g$ individual.
+To the right of the green vertical line and to the left of the second root $w = 0.99925$, $g > f$, so $l_t < 1$; therefore a $w_t$ that falls in this interval is classified as a type $g$ individual.
 
- * The shaded blue area equals $\alpha$ -- the probability of classifying someone as a type $f$ when it is really a type $g$ individual.  
+ * The shaded blue area equals $\tilde \alpha_t$ -- the probability of classifying someone as a type $g$ individual when it is really a type $f$ individual.  
 
 This gives us clues about how to compute the theoretical classification error probability
 
 ```{code-cell} ipython3
-# Compute theoretical tilde α_t and tilde β_t
-def α_integrand(w):
-    """Integrand for tilde α_t = P(l_t < 1 | f)"""
-    return f(w) if f(w) / g(w) < 1 else 0
+# tilde α_t = P(l_t < 1 | f) = P(root < w < root_2 | f)
+α_theory = beta_dist.cdf(root_2, F_a, F_b) - beta_dist.cdf(root, F_a, F_b)
 
-def β_integrand(w):
-    """Integrand for tilde β_t = P(l_t >= 1 | g)"""
-    return g(w) if f(w) / g(w) >= 1 else 0
-
-# Compute the integrals
-α_theory, _ = quad(α_integrand, 0, 1, limit=100)
-β_theory, _ = quad(β_integrand, 0, 1, limit=100)
+# tilde β_t = P(l_t >= 1 | g) = P(w <= root or w >= root_2 | g)
+β_theory = beta_dist.cdf(root, G_a, G_b) + beta_dist.sf(root_2, G_a, G_b)
 
 theory_error = 0.5 * (α_theory + β_theory)
 
@@ -1247,6 +1295,7 @@ From the figure above, we can see:
 
 **Remark:** Think about how laws of large numbers are applied to compute error probabilities for the model selection problem and the classification problem. 
 
+(lrp_chernoff)=
 ### Error probability and divergence measures
 
 A plausible guess is that the ability of a likelihood ratio to distinguish distributions $f$ and $g$ depends on how "different" they are.
@@ -1258,71 +1307,102 @@ Let's now study two more measures of "difference" between distributions that are
 Recall that Chernoff entropy between probability densities $f$ and $g$ is defined as:
 
 $$
-C(f,g) = - \log \min_{\phi \in (0,1)} \int f^\phi(x) g^{1-\phi}(x) dx
+C(f,g) = - \log \min_{\phi \in (0,1)} \rho(\phi), \qquad \rho(\phi) = \int f^\phi(x) g^{1-\phi}(x) dx
 $$
 
-An upper bound on model selection error probability is
+Let $f_T(w^T) = \prod_{t=1}^T f(w_t)$ and $g_T(w^T) = \prod_{t=1}^T g(w_t)$ be the joint densities of $w^T$ under the two models.
+
+The likelihood ratio test selects $f$ when $f_T \geq g_T$ and $g$ when $f_T < g_T$.
+
+Its model selection error probability {eq}`eq:detectionerrorprob` is therefore
 
 $$
-e^{-C(f,g)T} .
+\frac{1}{2} (\alpha_T + \beta_T) 
+= \frac{1}{2} \int_{f_T < g_T} f_T \, dw^T + \frac{1}{2} \int_{f_T \geq g_T} g_T \, dw^T
+= \frac{1}{2} \int \min\{f_T, g_T\} \, dw^T .
 $$
 
-Let's compute Chernoff entropy numerically with some Python code
+For $x, y \geq 0$ and $\phi \in [0,1]$, $\min\{x, y\} \leq x^\phi y^{1-\phi}$.
+
+Because the $w_t$'s are IID,
+
+$$
+\frac{1}{2} (\alpha_T + \beta_T) \leq \frac{1}{2} \int f_T^\phi \, g_T^{1-\phi} \, dw^T = \frac{1}{2} \rho(\phi)^T 
+$$
+
+for every $\phi \in [0,1]$.
+
+Minimizing the right side over $\phi$ gives an upper bound on model selection error probability:
+
+$$
+\frac{1}{2} (\alpha_T + \beta_T) \leq \frac{1}{2} e^{-C(f,g)T} .
+$$ (eq:chernoff_bound)
+
+The weaker bound $e^{-C(f,g)T}$ also holds.
+
+{cite:t}`chernoff1952` showed that the bound {eq}`eq:chernoff_bound` delivers the correct exponential rate:
+
+$$
+-\frac{1}{T} \log \frac{1}{2} (\alpha_T + \beta_T) \rightarrow C(f,g) .
+$$
+
+The approach to the limit is slow, because the error probability contains a factor that decays polynomially in $T$, which the bound omits.
+
+For Beta densities, the Chernoff coefficient $\rho(\phi)$ has a closed form that we derived in {doc}`divergence_measures`.
+
+Let's compute Chernoff entropy with some Python code
 
 ```{code-cell} ipython3
-def chernoff_integrand(ϕ, f, g):
-    """
-    Compute the integrand for Chernoff entropy
-    """
-    def integrand(w):
-        return f(w)**ϕ * g(w)**(1-ϕ)
-    
-    result, _ = quad(integrand, 1e-5, 1-1e-5)
-    return result
+def log_chernoff_coef_beta(ϕ, a1, b1, a2, b2):
+    """log ρ(ϕ) for Beta(a1, b1) and Beta(a2, b2) in closed form."""
+    return (betaln(ϕ * a1 + (1 - ϕ) * a2, ϕ * b1 + (1 - ϕ) * b2)
+            - ϕ * betaln(a1, b1) - (1 - ϕ) * betaln(a2, b2))
 
-def compute_chernoff_entropy(f, g):
-    """
-    Compute Chernoff entropy C(f,g)
-    """
-    def objective(ϕ):
-        return chernoff_integrand(ϕ, f, g)
-    
-    # Find the minimum over ϕ in (0,1)
-    result = minimize_scalar(objective, 
-                             bounds=(1e-5, 1-1e-5), 
-                             method='bounded')
-    min_value = result.fun
-    ϕ_optimal = result.x
-    
-    chernoff_entropy = -np.log(min_value)
-    return chernoff_entropy, ϕ_optimal
-C_fg, ϕ_optimal = compute_chernoff_entropy(f, g)
+def chernoff_beta(a1, b1, a2, b2):
+    """Chernoff entropy C(f, g) and minimizing ϕ for two Beta densities."""
+    res = minimize_scalar(log_chernoff_coef_beta, bounds=(0, 1),
+                          args=(a1, b1, a2, b2), method='bounded')
+    return -res.fun, res.x
+
+C_fg, ϕ_optimal = chernoff_beta(F_a, F_b, G_a, G_b)
 print(f"Chernoff entropy C(f,g) = {C_fg:.4f}")
 print(f"Optimal ϕ = {ϕ_optimal:.4f}")
 ```
 
-Now let's examine how $e^{-C(f,g)T}$ behaves as a function of $T$ and compare it to the model selection error probability
+Now let's compare the model selection error probability that we simulated under timing protocol 1 with the bounds $\frac{1}{2} e^{-C(f,g)T}$ and $e^{-C(f,g)T}$.
+
+The right panel plots $-\frac{1}{T} \log$ of the simulated error probability against $T$.
 
 ```{code-cell} ipython3
 T_range = np.arange(1, T_max+1)
-chernoff_bound = np.exp(-C_fg * T_range)
+chernoff_bound = 0.5 * np.exp(-C_fg * T_range)
 
-# Plot comparison
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
 
-ax.semilogy(T_range, chernoff_bound, 'r-', linewidth=2, 
-           label=f'$e^{{-C(f,g)T}}$')
-ax.semilogy(T_range, result_p1['error_prob'], 'b-', linewidth=2, 
-           label='Model selection error probability')
+ax1.semilogy(T_range, 2 * chernoff_bound, 'r--', linewidth=2, 
+             label=f'$e^{{-C(f,g)T}}$')
+ax1.semilogy(T_range, chernoff_bound, 'r-', linewidth=2, 
+             label=r'$\frac{1}{2} e^{-C(f,g)T}$')
+ax1.semilogy(T_range, result_p1['error_prob'], 'b-', linewidth=2, 
+             label='Model selection error probability')
+ax1.set_xlabel('T')
+ax1.set_ylabel('error probability (log scale)')
+ax1.legend()
 
-ax.set_xlabel('T')
-ax.set_ylabel('error probability (log scale)')
-ax.legend()
+ax2.plot(T_range, -np.log(result_p1['error_prob']) / T_range, 'b-', 
+         linewidth=2, label=r'$-\frac{1}{T}\log \frac{1}{2}(\alpha_T + \beta_T)$')
+ax2.axhline(C_fg, color='r', linestyle='-', linewidth=2, label='$C(f,g)$')
+ax2.set_xlabel('T')
+ax2.set_ylim(0, None)
+ax2.legend()
+
 plt.tight_layout()
 plt.show()
 ```
 
-Evidently, $e^{-C(f,g)T}$ is an upper bound on the error rate.
+The simulated error probability lies below $\frac{1}{2} e^{-C(f,g)T}$, as {eq}`eq:chernoff_bound` requires.
+
+Its negative log divided by $T$ declines toward $C(f,g)$ slowly.
 
 In {doc}`divergence_measures`, we also studied **Jensen-Shannon divergence** as 
 a symmetric measure of distance between distributions.
@@ -1330,29 +1410,28 @@ a symmetric measure of distance between distributions.
 We can use Jensen-Shannon divergence to measure the distance between distributions $f$ and $g$ and 
 compute how it covaries with the model selection error probability.
 
-We also compute Jensen-Shannon divergence numerically with some Python code
+We also compute Jensen-Shannon divergence numerically with some Python code.
+
+We integrate over all of $(0,1)$, splitting the interval at $1/2$, because U-shaped Beta densities diverge at the endpoints.
 
 ```{code-cell} ipython3
 def compute_JS(f, g):
     """
     Compute Jensen-Shannon divergence
     """
-    def m(w):
-        return 0.5 * (f(w) + g(w))
+    def integrand(w):
+        fw, gw = f(w), g(w)
+        mw = 0.5 * (fw + gw)
+        return 0.5 * fw * np.log(fw / mw) + 0.5 * gw * np.log(gw / mw)
     
-    js_div = 0.5 * compute_KL(f, m) + 0.5 * compute_KL(g, m)
-    return js_div
+    left, _ = quad(integrand, 0, 0.5, limit=200)
+    right, _ = quad(integrand, 0.5, 1, limit=200)
+    return left + right
 ```
 
 Now let's return to our guess that the error probability at large sample sizes is related to the Chernoff entropy  between two distributions.
 
 We verify this by computing the correlation between the log of the error probability at $T=50$ under Timing Protocol 1 and the divergence measures.
-
-In the simulation below, nature draws $N / 2$ sequences from $g$ and $N/2$ sequences from $f$.
-
-```{note}
-Nature does this rather than flipping a fair coin to decide whether to draw from $g$ or $f$ once and for all before each simulation of length $T$.
-```
 
 We use the following pairs of Beta distributions for $f$ and $g$ as test cases
 
@@ -1376,13 +1455,73 @@ distribution_pairs = [
 ]
 ```
 
-Now let's run the simmulation
+For the most distinct pair, the Chernoff bound {eq}`eq:chernoff_bound` puts the error probability at $T = 50$ below $\frac{1}{2} e^{-0.443 \times 50} \approx 1.2 \times 10^{-10}$.
+
+A simulation of a few thousand sequences from $f$ and from $g$ typically records no errors at all for several of these pairs.
+
+We compute the error probabilities instead by importance sampling, a technique that {doc}`imp_sample` describes.
+
+We draw $w^T$ from the **tilted density** 
+
+$$
+q(w) = \frac{f(w)^{\phi^*} g(w)^{1-\phi^*}}{\rho(\phi^*)} ,
+$$
+
+where $\phi^*$ attains the minimum in the definition of $C(f,g)$.
+
+For Beta densities $f$ and $g$, $q$ is again a Beta density, as {doc}`divergence_measures` shows.
+
+Since $f/q = \rho(\phi^*)\, \ell^{1-\phi^*}$ and $g/q = \rho(\phi^*)\, \ell^{-\phi^*}$,
+
+$$
+\frac{1}{2} (\alpha_T + \beta_T) 
+= \frac{1}{2} \int \min\left\{\frac{f_T}{q_T}, \frac{g_T}{q_T}\right\} q_T \, dw^T
+= \frac{1}{2} e^{-C(f,g)T} \, E_q\left[\min\left\{L_T^{1-\phi^*}, L_T^{-\phi^*}\right\}\right] ,
+$$
+
+where $q_T(w^T) = \prod_{t=1}^T q(w_t)$.
+
+The random variable inside the expectation lies between $0$ and $1$.
+
+That fact delivers the bound {eq}`eq:chernoff_bound` once more and gives the sample average of $\min\{L_T^{1-\phi^*}, L_T^{-\phi^*}\}$ a small variance.
+
+```{code-cell} ipython3
+def log_beta_pdf(w, a, b):
+    """Log density of Beta(a, b)."""
+    return (a - 1) * np.log(w) + (b - 1) * np.log1p(-w) - betaln(a, b)
+
+def error_prob_tilted(f_params, g_params, T, N, rng):
+    """
+    Model selection error probability (α_T + β_T) / 2 by
+    importance sampling from the Chernoff-tilted density.
+    """
+    (f_a, f_b), (g_a, g_b) = f_params, g_params
+    C, ϕ = chernoff_beta(f_a, f_b, g_a, g_b)
+    q_a, q_b = ϕ * f_a + (1 - ϕ) * g_a, ϕ * f_b + (1 - ϕ) * g_b
+    
+    # Keep draws off the boundary, where the log densities are infinite
+    w = np.clip(rng.beta(q_a, q_b, (N, T)), 1e-300, 1 - 1e-16)
+    log_L = np.sum(log_beta_pdf(w, f_a, f_b) 
+                   - log_beta_pdf(w, g_a, g_b), axis=1)
+    weights = np.exp(np.minimum((1 - ϕ) * log_L, -ϕ * log_L))
+    return 0.5 * np.exp(-C * T) * np.mean(weights)
+```
+
+As a check, we apply the importance sampling estimator to our $f$ and $g$ at $T = 30$ and compare it with the simulation of timing protocol 1 above.
+
+```{code-cell} ipython3
+is_estimate = error_prob_tilted((F_a, F_b), (G_a, G_b), T_max, 5000, rng)
+print(f"Importance sampling estimate at T={T_max}: {is_estimate:.5f}")
+print(f"Simulated protocol 1 error at T={T_max}:   "
+      f"{result_p1['error_prob'][-1]:.5f}")
+```
+
+Now we compute the divergence measures and the error probability at $T = 50$ for every pair
 
 ```{code-cell} ipython3
 # Parameters for simulation
 T_large = 50
 N_sims = 5000
-N_half = N_sims // 2
 
 # Initialize arrays
 n_pairs = len(distribution_pairs)
@@ -1395,30 +1534,18 @@ pair_names = []
 
 for i, ((f_a, f_b), (g_a, g_b)) in enumerate(distribution_pairs):
     # Create density functions
-    f = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
-    g = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
+    f_pair = jit(lambda x, a=f_a, b=f_b: p(x, a, b))
+    g_pair = jit(lambda x, a=g_a, b=g_b: p(x, a, b))
 
     # Compute divergence measures
-    kl_fg_vals[i] = compute_KL(f, g)
-    kl_gf_vals[i] = compute_KL(g, f)
-    js_vals[i] = compute_JS(f, g)
-    chernoff_vals[i], _ = compute_chernoff_entropy(f, g)
+    kl_fg_vals[i] = KL_beta(f_a, f_b, g_a, g_b)
+    kl_gf_vals[i] = KL_beta(g_a, g_b, f_a, f_b)
+    js_vals[i] = compute_JS(f_pair, g_pair)
+    chernoff_vals[i], _ = chernoff_beta(f_a, f_b, g_a, g_b)
 
-    # Generate samples
-    sequences_f = rng.beta(f_a, f_b, (N_half, T_large))
-    sequences_g = rng.beta(g_a, g_b, (N_half, T_large))
-
-    # Compute likelihood ratios and cumulative products
-    _, L_cumulative_f = compute_likelihood_ratios(sequences_f, f, g)
-    _, L_cumulative_g = compute_likelihood_ratios(sequences_g, f, g)
-    
-    # Get final values
-    L_cumulative_f = L_cumulative_f[:, -1]
-    L_cumulative_g = L_cumulative_g[:, -1]
-
-    # Calculate error probabilities
-    error_probs[i] = 0.5 * (np.mean(L_cumulative_f < 1) + 
-                            np.mean(L_cumulative_g >= 1))
+    # Error probability by importance sampling
+    error_probs[i] = error_prob_tilted((f_a, f_b), (g_a, g_b), 
+                                       T_large, N_sims, rng)
     pair_names.append(f"Beta({f_a},{f_b}) and Beta({g_a},{g_b})")
 
 cor_data =  {
@@ -1431,7 +1558,9 @@ cor_data =  {
     'T': T_large}
 ```
 
-Now let's visualize the correlations
+Now let's visualize the correlations.
+
+The left panel plots the log error probability against $-C(f,g)T$, together with the Chernoff bound $\log \frac{1}{2} - C(f,g)T$.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -1440,11 +1569,10 @@ def plot_error_divergence(data):
     """
     Plot correlations between error probability and divergence measures.
     """
-    # Filter out near-zero error probabilities for log scale
-    nonzero_mask = data['error_prob'] > 1e-6
-    log_error = np.log(data['error_prob'][nonzero_mask])
-    js_vals = data['js'][nonzero_mask]
-    chernoff_vals = data['chernoff'][nonzero_mask]
+    T = data['T']
+    log_error = np.log(data['error_prob'])
+    neg_CT = -data['chernoff'] * T
+    js_vals = data['js']
 
     # Create figure and axes
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
@@ -1453,20 +1581,24 @@ def plot_error_divergence(data):
     def plot_correlation(ax, x_vals, x_label, color):
         ax.scatter(x_vals, log_error, alpha=0.7, s=60, color=color)
         ax.set_xlabel(x_label)
-        ax.set_ylabel(f'log(Error probability) at T={data["T"]}')
+        ax.set_ylabel(f'log(Error probability) at T={T}')
         
-        # Calculate correlation and trend line
+        # Calculate correlation and linear trend line
         corr = np.corrcoef(x_vals, log_error)[0, 1]
-        z = np.polyfit(x_vals, log_error, 2)
+        z = np.polyfit(x_vals, log_error, 1)
         x_trend = np.linspace(x_vals.min(), x_vals.max(), 100)
         ax.plot(x_trend, np.poly1d(z)(x_trend), 
-                "r--", alpha=0.8, linewidth=2)
+                "r--", alpha=0.8, linewidth=2, label='linear fit')
         ax.set_title(f'Log error probability and {x_label}\n'
                      f'Correlation = {corr:.3f}')
     
     # Plot both correlations
-    plot_correlation(ax1, js_vals, 'JS divergence', 'C0')
-    plot_correlation(ax2, chernoff_vals, 'Chernoff entropy', 'C1')
+    plot_correlation(ax1, neg_CT, r'$-C(f,g) \, T$', 'C1')
+    x_line = np.linspace(neg_CT.min(), neg_CT.max(), 100)
+    ax1.plot(x_line, np.log(0.5) + x_line, 'k-', linewidth=1,
+             label=r'Chernoff bound $\log \frac{1}{2} - C(f,g)T$')
+    ax1.legend()
+    plot_correlation(ax2, js_vals, 'JS divergence', 'C0')
 
     plt.tight_layout()
     plt.show()
@@ -1474,7 +1606,11 @@ def plot_error_divergence(data):
 plot_error_divergence(cor_data)
 ```
 
-Evidently, Chernoff entropy and Jensen-Shannon entropy each covary tightly with the model selection error probability.
+All fourteen points lie below the Chernoff bound.
+
+Evidently, Chernoff entropy and Jensen-Shannon divergence each covary tightly with the model selection error probability.
+
+The vertical distance between the points and the Chernoff bound is the log of $E_q\left[\min\left\{L_T^{1-\phi^*}, L_T^{-\phi^*}\right\}\right]$, which varies across pairs much less than $C(f,g) T$ does.
 
 We'll encounter related ideas in {doc}`wald_friedman` very soon.
 
@@ -1511,7 +1647,7 @@ $$ (eq:llr_markov)
 
 ### KL divergence rate
 
-By the ergodic theorem for irreducible, aperiodic Markov chains, we have
+By the ergodic theorem for irreducible Markov chains, we have
 
 $$
 \frac{N_{ij}}{T} \xrightarrow{a.s.} \pi_i^{(f)}P_{ij}^{(f)} \quad \text{as } T \to \infty
@@ -1551,6 +1687,8 @@ $$
 $$
 
 Here we invite readers to pause and compare this result with {eq}`eq:kl_likelihood_link`.
+
+{doc}`likelihood_var` extends these calculations to vector autoregressions.
 
 Let's confirm this in the simulation below.
 
@@ -1642,6 +1780,10 @@ def analyze_markov_chains(P_f, P_g, rng,
     print(f"\nKL divergence rate h(f, g): {kl_rate_fg:.4f}")
     print(f"KL divergence rate h(g, f): {kl_rate_gf:.4f}")
     
+    # KL divergence between the initial distributions
+    kl_initial = np.sum(π_f * np.log(π_f / π_g))
+    print(f"KL(π_f, π_g): {kl_initial:.4f}")
+    
     if plot_paths:
         # Simulate and plot paths
         paths_from_f = simulate_markov_chain(P_f, π_f, T, rng, N_paths)
@@ -1654,10 +1796,10 @@ def analyze_markov_chains(P_f, P_g, rng,
         for i in range(min(n_show, N_paths)):
             plt.plot(np.log(L_ratios_f[i, :]), alpha=0.3, color='blue', lw=0.8)
         
-        # Plot theoretical expectation
-        theory_line = kl_rate_fg * np.arange(T+1)
+        # Plot theoretical expectation when x_0 is drawn from π_f
+        theory_line = kl_initial + kl_rate_fg * np.arange(T+1)
         plt.plot(theory_line, 'k--', linewidth=2.5, 
-                label=r'$T \times h_{KL}(f,g)$')
+                label=r'$D_{KL}(\pi^{(f)}\|\pi^{(g)}) + T \times h_{KL}(f,g)$')
         
         # Plot empirical mean
         avg_log_L = np.mean(np.log(L_ratios_f), axis=0)
@@ -1707,7 +1849,17 @@ Now let's create an example with two different 3-state Markov chains.
 
 We are now ready to simulate paths and visualize how likelihood ratios evolve.
 
-We verify $\frac{1}{T}E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = h_{KL}(f, g)$ starting from the stationary distribution by plotting both the empirical average and the line predicted by the theory
+We draw $x_0$ from the stationary distribution $\pi^{(f)}$ and set $\pi_0^{(f)} = \pi^{(f)}$ and $\pi_0^{(g)} = \pi^{(g)}$.
+
+The chain is then stationary under $f$, so $E_f N_{ij} = T \pi_i^{(f)} P_{ij}^{(f)}$ and {eq}`eq:llr_markov` implies
+
+$$
+E_f\left[\log \frac{L_T^{(f)}}{L_T^{(g)}}\right] = D_{KL}\bigl(\pi^{(f)}\|\pi^{(g)}\bigr) + T \, h_{KL}(f, g)
+$$
+
+for every $T$.
+
+We verify this formula by plotting both the empirical average and the line predicted by the theory
 
 ```{code-cell} ipython3
 # Define example Markov chain transition matrices
@@ -1727,7 +1879,7 @@ markov_results = analyze_markov_chains(P_f, P_g, rng)
 Likelihood processes play an important role in Bayesian learning, as described in {doc}`likelihood_bayes`
 and as applied in {doc}`odu`.
 
-Likelihood ratio processes are central to  Lawrence Blume and David Easley's answer to their question "If you're so smart, why aren't you rich?" {cite}`Blume_Easley2006`, the subject of the lecture{doc}`likelihood_ratio_process_2`.
+Likelihood ratio processes are central to  Lawrence Blume and David Easley's answer to their question "If you're so smart, why aren't you rich?" {cite}`Blume_Easley2006`, the subject of the lecture {doc}`likelihood_ratio_process_2`.
 
 Likelihood ratio processes also appear  in {doc}`advanced:additive_functionals`, which contains another illustration of the **peculiar property** of likelihood ratio processes described above.
 
@@ -1741,13 +1893,13 @@ Consider the setting where nature generates data from a third density $h$.
 
 Let $\{w_t\}_{t=1}^T$ be IID draws from $h$, and let $L_t = L(w^t)$ be the likelihood ratio process defined as in the lecture.
 
+Assume that $K_f$ and $K_g$ are finite and that $E_h |\log f(W)| < \infty$ and $E_h |\log g(W)| < \infty$.
+
 Show that:
 
 $$
 \frac{1}{t} E_h[\log L_t] = K_g - K_f
 $$
-
-with finite $K_g, K_f$, $E_h |\log f(W)| < \infty$ and $E_h |\log g(W)| < \infty$.
 
 *Hint:* Start by expressing $\log L_t$ as a sum of $\log \ell(w_i)$ terms and compare with the definition of $K_f$ and $K_g$.
 ```
@@ -1844,7 +1996,7 @@ $$
 E_h[\log L_t] = t \cdot (K_g - K_f) \to +\infty \text{ as } t \to \infty
 $$
 
-By the Law of Large Numbers, $\frac{1}{t} \log L_t \to K_g - K_f > 0$ almost surely.
+By the strong law of large numbers, $\frac{1}{t} \log L_t \to K_g - K_f > 0$ almost surely.
 
 Therefore $L_t \to +\infty$ almost surely.
 
@@ -1857,6 +2009,192 @@ E_h[\log L_t] = t \cdot (K_g - K_f) \to -\infty \text{ as } t \to \infty
 $$
 
 Therefore by similar reasoning $L_t \to 0$ almost surely.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex_markov
+
+This exercise extends the Chernoff bound {eq}`eq:chernoff_bound` to the Markov chains of {ref}`this section <lrp_markov>`.
+
+Let $x_0$ be drawn from $\pi_0^{(f)}$ under model $f$ and from $\pi_0^{(g)}$ under model $g$.
+
+The likelihood ratio test selects $f$ when $L_T^{(f)}/L_T^{(g)} \geq 1$ and $g$ otherwise; let $\alpha_T$ and $\beta_T$ be its two error probabilities.
+
+For $\phi \in [0,1]$, let $Q_\phi$ be the $n \times n$ matrix with entries $Q_\phi(i,j) = \bigl(P^{(f)}_{ij}\bigr)^\phi \bigl(P^{(g)}_{ij}\bigr)^{1-\phi}$, and let $\lambda(\phi)$ be its largest eigenvalue (the Perron root).
+
+1. Show that 
+
+   $$
+   \frac{1}{2}(\alpha_T + \beta_T) \leq \frac{1}{2} v_\phi^\top Q_\phi^T \mathbf{1} ,
+   $$
+
+   where $v_\phi(i) = \bigl(\pi^{(f)}_{0,i}\bigr)^\phi \bigl(\pi^{(g)}_{0,i}\bigr)^{1-\phi}$ and $\mathbf{1}$ is a vector of ones.
+2. Use the Perron–Frobenius theorem to conclude that the error probability decays at least at the exponential rate $C_M = -\log \min_{\phi \in [0,1]} \lambda(\phi)$.
+3. Compute $C_M$ and the minimizing $\phi$ for the matrices $P^{(f)}$ and $P^{(g)}$ in the lecture, and compare $C_M$ with the KL divergence rates $h_{KL}(f,g)$ and $h_{KL}(g,f)$.
+4. Set $\pi_0^{(f)} = \pi^{(f)}$ and $\pi_0^{(g)} = \pi^{(g)}$. Use `compute_markov_selection_error` to simulate the error probability for several values of $T$, and plot it together with the bound in part 1.
+```
+
+```{solution-start} lr_ex_markov
+:class: dropdown
+```
+
+**Part 1.** Let $p_f(x^T) = \pi^{(f)}_{0,x_0} \prod_{t=1}^T P^{(f)}_{x_{t-1} x_t}$ and define $p_g(x^T)$ in the same way.
+
+As in the IID case, the error probability equals $\frac{1}{2} \sum_{x^T} \min\{p_f(x^T), p_g(x^T)\}$.
+
+Since $\min\{x, y\} \leq x^\phi y^{1-\phi}$,
+
+$$
+\frac{1}{2}(\alpha_T + \beta_T) 
+\leq \frac{1}{2} \sum_{x_0, \ldots, x_T} v_\phi(x_0) \prod_{t=1}^T Q_\phi(x_{t-1}, x_t)
+= \frac{1}{2} v_\phi^\top Q_\phi^T \mathbf{1} .
+$$
+
+**Part 2.** The matrix $Q_\phi$ has positive entries.
+
+By the Perron–Frobenius theorem, $Q_\phi^T = \lambda(\phi)^T \bigl(r_\phi \ell_\phi^\top + o(1)\bigr)$ as $T \rightarrow \infty$, where $r_\phi$ and $\ell_\phi$ are positive right and left eigenvectors normalized so that $\ell_\phi^\top r_\phi = 1$.
+
+Hence $\frac{1}{T} \log \bigl(v_\phi^\top Q_\phi^T \mathbf{1}\bigr) \rightarrow \log \lambda(\phi)$, and the error probability decays at least at rate $-\log \lambda(\phi)$ for every $\phi$.
+
+The best rate comes from the $\phi$ that minimizes $\lambda(\phi)$.
+
+Because $P^{(f)}$ and $P^{(g)}$ are stochastic matrices, $\lambda(0) = \lambda(1) = 1$.
+
+Large deviation theory for Markov chains implies that $C_M$ is the exact rate {cite}`DemboZeitouni1998`.
+
+**Part 3.**
+
+```{code-cell} ipython3
+def perron_root(ϕ, P_f, P_g):
+    """Largest eigenvalue of the matrix with entries P_f^ϕ P_g^(1-ϕ)."""
+    Q = P_f**ϕ * P_g**(1 - ϕ)
+    return np.max(np.abs(np.linalg.eigvals(Q)))
+
+res = minimize_scalar(perron_root, bounds=(0, 1), args=(P_f, P_g),
+                      method='bounded')
+C_M, ϕ_M = -np.log(res.fun), res.x
+
+print(f"C_M = {C_M:.5f} at ϕ = {ϕ_M:.4f}")
+print(f"h_KL(f, g) = {markov_results['kl_rate_fg']:.4f}, "
+      f"h_KL(g, f) = {markov_results['kl_rate_gf']:.4f}")
+```
+
+The Chernoff rate $C_M = 0.0143$ is about a quarter of either KL divergence rate.
+
+The error probability therefore falls much more slowly than $\log L_T^{(f)}/L_T^{(g)}$ drifts.
+
+**Part 4.**
+
+```{code-cell} ipython3
+π_f = markov_results['stationary_f']
+π_g = markov_results['stationary_g']
+T_values = np.array([25, 50, 100, 150, 200, 250, 300])
+
+errors = compute_markov_selection_error(T_values, P_f, P_g, π_f, π_g, 
+                                        rng, N_sim=4000)
+
+Q_M = P_f**ϕ_M * P_g**(1 - ϕ_M)
+v_M = π_f**ϕ_M * π_g**(1 - ϕ_M)
+bound = [0.5 * v_M @ np.linalg.matrix_power(Q_M, T) @ np.ones(3) 
+         for T in T_values]
+
+plt.figure(figsize=(10, 6))
+plt.semilogy(T_values, errors, 'bo-', label='simulated error probability')
+plt.semilogy(T_values, bound, 'r-', 
+             label=r'bound $\frac{1}{2} v_\phi^\top Q_\phi^T \mathbf{1}$')
+plt.semilogy(T_values, 0.5 * np.exp(-C_M * T_values), 'r--', 
+             label=r'$\frac{1}{2} e^{-C_M T}$')
+plt.xlabel('T')
+plt.ylabel('error probability (log scale)')
+plt.legend()
+plt.show()
+```
+
+The bound from part 1 nearly coincides with $\frac{1}{2} e^{-C_M T}$.
+
+The simulated error probabilities lie below the bound.
+
+On the log scale they decline roughly in parallel with the bound, a little faster because of a polynomial factor that the bound omits.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lr_ex_lmean
+
+Let $f = \text{Beta}(1,1)$ and $g = \text{Beta}(G_a, G_b)$.
+
+1. Show that 
+
+   $$
+   E\left[\ell(w_t) \mid q = f\right] = \int_0^1 \frac{f(w)^2}{g(w)} dw = B(G_a, G_b) \, B(2 - G_a, 2 - G_b)
+   $$
+
+   when $G_a < 2$ and $G_b < 2$, and that $E\left[\ell(w_t) \mid q = f\right] = +\infty$ otherwise.
+2. Compute $E\left[\ell(w_t) \mid q = f\right]$ for $g = \text{Beta}(1.5, 1.2)$ and for the lecture's $g = \text{Beta}(3, 1.2)$.
+3. For each $g$, draw $w_1, w_2, \ldots, w_N$ from $f$ and plot the running sample average $\frac{1}{n} \sum_{i=1}^n \ell(w_i)$ against $n$. Explain the difference between the two plots.
+```
+
+```{solution-start} lr_ex_lmean
+:class: dropdown
+```
+
+**Part 1.** Since $f = 1$ on $(0,1)$,
+
+$$
+\int_0^1 \frac{f(w)^2}{g(w)} dw = B(G_a, G_b) \int_0^1 w^{1 - G_a} (1-w)^{1 - G_b} dw .
+$$
+
+The integral converges if and only if $1 - G_a > -1$ and $1 - G_b > -1$, that is, if and only if $G_a < 2$ and $G_b < 2$.
+
+When it converges, it equals $B(2 - G_a, 2 - G_b)$.
+
+**Part 2.**
+
+```{code-cell} ipython3
+def mean_ell_under_f(G_a, G_b):
+    """E[ℓ(w) | q=f] for f = Beta(1, 1) and g = Beta(G_a, G_b)."""
+    if G_a < 2 and G_b < 2:
+        return np.exp(betaln(G_a, G_b) + betaln(2 - G_a, 2 - G_b))
+    return np.inf
+
+for G_params in [(1.5, 1.2), (3, 1.2)]:
+    print(f"g = Beta{G_params}: E[ℓ | f] = {mean_ell_under_f(*G_params):.4f}")
+```
+
+**Part 3.**
+
+```{code-cell} ipython3
+N = 1_000_000
+n_grid = np.arange(1, N+1)
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+for ax, (g_a, g_b) in zip(axes, [(1.5, 1.2), (3, 1.2)]):
+    w = rng.uniform(size=N)
+    ℓ = np.exp(-log_beta_pdf(w, g_a, g_b))
+    ax.plot(n_grid, np.cumsum(ℓ) / n_grid, lw=1.5, 
+            label='running sample average')
+    mean = mean_ell_under_f(g_a, g_b)
+    if np.isfinite(mean):
+        ax.axhline(mean, color='k', ls='--', label=r'$E[\ell \mid q=f]$')
+    ax.set_xscale('log')
+    ax.set_yscale('log')
+    ax.set_xlabel('n')
+    ax.set_title(f'g = Beta({g_a}, {g_b})')
+    ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+For $g = \text{Beta}(1.5, 1.2)$, the mean of $\ell$ under $f$ is finite and the strong law of large numbers drives the running average to $1.2112$.
+
+For $g = \text{Beta}(3, 1.2)$, the mean is infinite.
+
+Rare draws near $w = 0$ produce enormous values of $\ell = 1/g$, and the running average keeps jumping upward without settling.
+
+For this reason we plotted $\log L_t$ in {ref}`the section in which nature draws from f <nature_likeli_f>`.
 
 ```{solution-end}
 ```
