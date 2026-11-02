@@ -80,12 +80,13 @@ The main findings are:
    Starting from random rules they get most of the way, as in the paper.
 1. In Economy A2, where patient agents would *speculate* by accepting an expensive good, the
    artificial agents never do.
-   They settle on the fundamental pattern of trade, which is not an equilibrium of that
-   economy, sometimes after thousands of periods stuck in a pattern with too little trade.
+   Most runs settle on the fundamental pattern of trade, which is not an equilibrium of that
+   economy, some only after thousands of periods stuck in a pattern with too little trade, and
+   a few stay stuck for good.
    We show why: the bucket brigade makes the agents behave as if they discounted the future
    at a factor of about $0.016$.
 1. In Economy B, which has a fundamental and a speculative equilibrium, the agents select the
-   fundamental one in nearly every run.
+   fundamental one in most runs and the speculative one in none.
 1. In nearly every run, an intrinsically worthless, costlessly stored object -- **fiat
    money** -- is accepted in trade by agents who have to discover its usefulness for
    themselves.
@@ -1352,7 +1353,7 @@ With $1/\tau$ averaging, the average remembers that windfall for thousands of us
 This is optimistic initialization's failure mode, and the greedy auction never gives the trade
 rule a chance until the refusal rule's average sinks below zero.
 
-That does happen eventually, so these runs are slow rather than stuck for good.
+That does happen eventually, so runs locked in this way are slow rather than stuck for good.
 
 We continue the runs that were not near the fundamental pattern for another 5,000 periods.
 
@@ -1367,10 +1368,47 @@ print(f"of these, within 0.1 of it at t = 6000:            "
 print(f"of these, type 1 holds good 3 more than 5%:        {np.sum(H_slow[:, 0, 2] > 0.05)}")
 ```
 
-All of them reach the fundamental pattern by $t = 6000$, and type 1 still never speculates.
+All of these runs reach the fundamental pattern by $t = 6000$, and type 1 still never
+speculates.
 
 Lock-in is more frequent here than in Economy A1.1, plausibly because $u_1$ is five times
 larger, and so are the early windfalls that the averages must forget.
+
+Not every lock-in wears off, though.
+
+Other seeds turn up a second failure mode, and seed 24 shows it.
+
+```{code-cell} ipython3
+sim_24 = Simulation(economy_a21, seed=24)
+sim_24.run(6000)
+print(holdings(sim_24), "\n")
+winners(sim_24, 1, exchange=False)
+```
+
+This time type 3 accepts good 3, and the trouble is with type 2.
+
+It trades good 3 for good 1, as in the fundamental pattern, but then eats the good 1 instead of
+keeping it to buy good 2 from type 1, so it ends every period holding good 3 again.
+
+The rule responsible is the general consumption rule `##0 -> 1`, which says "eat" whether type
+2 holds good 1 or good 2.
+
+Eating good 2 is right and earns type 2 its utility of consumption, which keeps the rule's
+strength high; eating good 1 is wrong, but the same rule decides that state too.
+
+The specific rule that would keep good 1, `100 -> 0`, was tried only a few times and sits far
+below it, so under the argmax auction it never wins again: the general rule's strength, an
+average that includes every meal of good 2, stays far above it.
+
+So this run is stuck for good: seed 24, and seed 26 in the same way, are still in this pattern
+at $t = 24{,}000$.
+
+Optimistic initialization lets a rule that was once lucky shut out an untried rival; this second
+lock-in is the cost of generality, in which a general rule that earns well in one state shuts
+out the specific rule that would act correctly in another.
+
+Type 1 still never speculates: across seeds 20 to 59 it holds good 3 no more than 5 percent of
+the time in every run.
 
 So the agents do not find A2's equilibrium.
 
@@ -2203,10 +2241,10 @@ Out of this the following emerges.
   its unique stationary equilibrium in every run; from random rules the agents get most of
   the way, overeating money as the paper's agents did.
 * **Selection, and its limits.** In Economy B, with two equilibria, the classifier systems
-  select the fundamental one in nearly every run.
+  select the fundamental one in most runs and the speculative one in none.
   In Economy A2, whose only equilibrium for patient agents is speculative, they never
-  speculate: they converge, sometimes very slowly, to an outcome that is not an equilibrium of
-  that economy.
+  speculate: most runs converge, sometimes very slowly, to an outcome that is not an
+  equilibrium of that economy, and a few lock into a pattern with even less trade.
 * **Why: the agents are impatient.** At stationary strengths the bucket brigade values the
   future with a discount factor $b_1 b_2/((1+b_1)(1+b_2))$, about $0.016$ with the paper's
   bids and below $1/4$ for any bids, and the patterns the agents find are those of impatient
