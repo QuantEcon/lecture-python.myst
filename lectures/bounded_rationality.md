@@ -663,7 +663,8 @@ algorithm {eq}`relaxation` run in calendar time, that is, adaptive expectations.
 
 With the gain $\lambda_t = 1/t$, $X^*_t$ is the sample mean of $X_1, \ldots, X_t$, the least
 squares estimate of a constant, and the model is, up to notation, that of {cite:t}`Bray1982`,
-whose feedback coefficient $b$ is our $h'$.
+whose feedback coefficient is our $h'$ (Bray writes it $b$, a letter that here denotes the
+slope of demand).
 
 The belief error $e_t = X^*_t - X^*$ obeys
 
@@ -791,8 +792,8 @@ lie outside the theory; drawing on Arifovic's 1991 dissertation, the book (ch. 5
 a genetic-algorithm population can sometimes learn its way to the equilibrium of Bray's model
 even when $h' > 1$.
 
-None of this postdates the book, whose chapter 5 (footnote 73 and the section "An associated
-ordinary differential equation") uses {eq}`e_ode` to study least squares learning.
+The core of the theory predates the book, whose chapter 5 (footnote 73 and the section "An
+associated ordinary differential equation") uses {eq}`e_ode` to study least squares learning.
 
 The idea goes back to {cite:t}`DeCanio1979` and {cite:t}`Evans1985,Evans1989`, who used the $T$
 map to define expectational stability, and to {cite:t}`MarcetSargent1989jet` and
@@ -1164,8 +1165,8 @@ rate down, but only by making it depend on where their beliefs started and on ho
 algorithm is tuned.
 
 The rest points of the learning algorithm reproduce the indeterminacy exactly; what fixes the
-outcome is what the book calls {ref}`the dead hand of history <xr_dead_hand>`, and it judges
-this "a weak reed" on which to base exchange rate determination.
+outcome is what the book calls {ref}`the dead hand of history <xr_dead_hand>`, and it grants
+that this "may seem a weak reed on which to base exchange rate determination."
 
 Learning does not select an exchange rate so much as remember one.
 

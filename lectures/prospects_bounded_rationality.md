@@ -784,7 +784,8 @@ to the equilibrium of Bray's model even when $b > 1$, where least squares cannot
 ({cite:t}`Sargent1993`, chapter 5), and the classifier agents of Economy A2 converge to
 something that is not an equilibrium at all.
 
-The stability reversal of {doc}`olg_adaptive_money` is a case in point.
+Within those limits the condition does its job, and the stability reversal of
+{doc}`olg_adaptive_money` is a case in point.
 
 Marcet and Sargent's differential equation already accounted for it in 1993.
 
@@ -1353,8 +1354,8 @@ When $b = 1$, $\beta_0$ does shift the limit permanently, but so do the early sh
 observed prices tell the econometrician where the economy is without telling him how much of its
 position is due to the initial belief.
 
-Permanence is necessary for identification, but not sufficient: the initial belief must leave a
-mark that the econometrician cannot attribute to anything he observes.
+Permanence is necessary for identification at the usual rate, but not sufficient: the initial
+belief must leave a mark that the econometrician cannot attribute to anything he observes.
 
 ```{solution-end}
 ```
@@ -1463,9 +1464,9 @@ Every period a newborn cohort arrives believing $\beta_0 = 10$, and the young we
 short experience heavily, so the average belief is permanently pulled toward the prior: the
 transient never ends in the aggregate.
 
-The penalty for a wrong $t_0$ stays small for the single learner, whose $t_0$ matters only while
-its belief is young: the reconstructed belief is $(t_0 \beta_0 + \sum_{s<t} p_s)/(t + t_0)$, so
-$t_0$'s influence on it dies out like $1/t$, and the penalty is bounded.
+The penalty for a wrong $t_0$ stays bounded for the single learner, whose $t_0$ matters only
+while its belief is young: the reconstructed belief is
+$(t_0 \beta_0 + \sum_{s<t} p_s)/(t + t_0)$, so $t_0$'s influence on it dies out like $1/t$.
 
 In the cohort economy the penalty keeps growing, roughly in proportion to $T$ beyond a few
 thousand observations, even though re-estimating $a$ absorbs the permanent shift in the mean.

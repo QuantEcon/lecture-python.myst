@@ -356,8 +356,9 @@ The gain $\gamma_\tau$ plays the role of the relaxation parameter $\lambda$ in
 {doc}`bounded_rationality`: each observation moves the rule a fraction $\gamma_\tau$ of the way
 toward what that observation suggests.
 
-There the gain was constant; here it declines, so each new observation moves the rule less
-than the one before.
+In the relaxation algorithm the gain was constant; here it declines, as it does for Bray's
+least squares learners in that lecture, so each new observation moves the rule less than the
+one before.
 
 Sargent sets $\gamma_\tau = 1/\tau$ and starts $M$ at $-1$.
 
@@ -1353,8 +1354,8 @@ Part 2 sharpened the selection result.
 Where the model has two steady states, least squares learning picks out the one that the
 rational expectations dynamics reject, and laboratory subjects go the same way.
 
-E-stability explains why: at every steady state the slopes of the $T$-map and of the rational
-expectations map lie on opposite sides of one.
+E-stability explains why: at every steady state with positive saving the slopes of the
+$T$-map and of the rational expectations map lie on opposite sides of one.
 
 The same logic disposes of the bubbles of {doc}`bounded_rationality` ({ref}`olg_ex5`).
 
@@ -1842,9 +1843,10 @@ Without inflation the price level stops growing, so least squares weights observ
 roughly equally and its gain falls like $1/t$, unlike the large effective gain we found in
 Part 2.
 
-And from a belief near $6$ the first realized inflation rate is a deep deflation: saving jumps
-up from almost nothing, the price level collapses, and the early observations, taken at high
-price levels, dominate the regression for thousands of periods.
+And from a belief near $6$ the first realized inflation rate is exactly $1$, which pulls the
+belief down at once, and the second is a deep deflation: saving jumps up from almost nothing,
+the price level collapses, and the early observations, taken at high price levels, dominate the
+regression for thousands of periods.
 
 The rational expectations paths from the same starting points above $1$ do the opposite: they
 are bubble paths, and inflation rises toward $w_1/w_2 = 6$.

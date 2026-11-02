@@ -460,8 +460,13 @@ payments described below.
 The paper's verbal description calls the winner "the highest bidder" and says that bids that
 rise with specificity "favor specific rules over more general rules".
 
-That would be true of an auction on $b \cdot S$, but under {eq}`mms_auction` a larger bid
-fraction actually *lowers* a rule's strength at a rest point, as the note below shows.
+That would be true of an auction on $b \cdot S$ among rules of positive strength, but under
+{eq}`mms_auction` a larger bid fraction pulls a rule's strength at a rest point *toward zero*,
+as the note below shows.
+
+So among rules whose downstream payments are positive, higher bids lower stationary strength
+and favor general rules; only among rules whose downstream payments are negative do they favor
+specific rules, as the paper says.
 
 The argmax auction is the greedy limit of the softmax auction in {doc}`genetic_classifier`'s
 two-armed bandit exercise ({ref}`gc_ex3`), in which matched rule $r$ wins with probability
@@ -553,7 +558,8 @@ stationary Nash equilibrium is *supported* when the rules that win auctions at s
 strengths are exactly the rules that implement equilibrium behavior.
 
 The second equation gives $S_e = \mathbb{E}[b_2(c) S_c]/(1 + b_1(e))$, so a larger bid
-fraction $b_1(e)$ lowers a rule's stationary strength.
+fraction $b_1(e)$ shrinks a rule's stationary strength toward zero: it lowers $S_e$ when
+$\mathbb{E}[b_2(c) S_c] > 0$ and raises it when $\mathbb{E}[b_2(c) S_c] < 0$.
 ```
 
 One more feature of the system drives much of what follows.
@@ -1146,7 +1152,7 @@ fifty agents of each type, and a complete enumeration of the 72 exchange and 12 
 classifiers, all with strength zero.
 
 Every economy we display is run with seed 0, and its typicality is then checked across 20
-seeds.
+seeds (10 for Economy D).
 
 ```{code-cell} ipython3
 economy_a11 = Economy(
@@ -1212,14 +1218,15 @@ mystnb:
 plot_flows(sim_a11)
 ```
 
-The thick arrows are the fundamental equilibrium triangle: type 1 gives up good 2 for good
-1, type 3 gives up good 1 for good 3, and type 2 runs both legs, giving up good 3 for good 1
-and later good 1 for good 2.
+The fundamental equilibrium triangle is there: type 1 gives up good 2 for good 1, type 3 gives
+up good 1 for good 3, and type 2 runs both legs, giving up good 3 for good 1 and later good 1
+for good 2.
 
 Good 1 circulates as money.
 
-The picture also has arrows that the fundamental equilibrium does not: type 3 gives up good 1
-for good 2, and type 1 gives up good 2 for good 3.
+The picture also has arrows that the fundamental equilibrium does not, and they are not thin:
+type 3 gives up good 1 for good 2 about twice as often as it gives up good 1 for good 3, and
+type 1 gives up good 2 for good 3 about as often as type 2 runs either of its equilibrium legs.
 
 Each is a payoff-neutral trade of the kind described above, in which the agent eats what it
 receives and produces its own good again; the partner gains, because type 1 now gets good 1
@@ -1712,7 +1719,7 @@ When it is called, it works as follows (the paper's Section 6 and Table 7):
 * Pairs mate until a fraction $p_1 = 0.2$ of the population has been replaced.
 * **Generalizing crossover** (the paper's Fig. 4): the pair draws two cut points and focuses
   on the positions inside them, or, with probability one half, outside them; wherever the
-  parents disagree in the focus, both children get a $\#$.
+  parents carry different specific bits in the focus, both children get a $\#$.
   Children therefore match everything their parents matched, and more.
 * Each child gets the average of its parents' strengths and replaces the potential
   exterminant it most resembles, by **crowding**: $N = 8$ times (4 for consumption rules) a
@@ -1730,8 +1737,8 @@ Where the paper is silent we have made the following choices:
 
 * ties in the auction are broken at random;
 * generalization is drawn independently for each type's exchange and consumption systems;
-* new rules, including children, start with a counter of 1, so their first experience
-  overwrites the strength they were born with;
+* new rules, including children, start with a counter of 1, so after their first experience
+  the strength they were born with survives only through the bid they paid out of it;
 * creation gives the new rule strength zero;
 * "weakness" outside the genetic algorithm is the score in `weakest`;
 * specialization, when switched on in a period, applies to every auction in that period;
@@ -1963,12 +1970,13 @@ print(f"max |simulated - fundamental equilibrium| = {distance(h, fundamental_c):
 print(f"max |simulated - paper's table|           = {distance(h, paper_c):.3f}")
 ```
 
-Every type holds fiat money roughly 30 percent of the time, close to both the theoretical
-fundamental equilibrium (the paper's Table 14b) and the paper's own run (its Table 15b).
+Every type holds fiat money roughly 30 percent of the time, close to the theoretical
+fundamental equilibrium (the paper's Table 14b); the paper's own run (its Table 15b) has type 1
+holding fiat money more often, 46 percent of the time.
 
-The largest discrepancy is type 2's holding of good 1, about 0.10 in our run against 0.26 in
-theory and 0.18 in the paper's run: our type 2 agents rely on fiat money rather than good 1
-as their medium of exchange more than the theory says.
+The largest discrepancy from the theory is type 2's holding of good 1, about 0.10 in our run
+against 0.26 in theory and 0.18 in the paper's run: our type 2 agents rely on fiat money rather
+than good 1 as their medium of exchange more than the theory says.
 
 ```{code-cell} ipython3
 ---
@@ -2517,7 +2525,8 @@ for u in (500, 4_000, 8_000, 12_000, 20_000, 40_000):
           f"type 1 holds good 3 {np.mean(share):.2f} of the time")
 ```
 
-At A2's $u_1 = 500$, and at every $u_1$ up to 12,000, the rule that accepts good 3 never wins.
+In these six runs, at A2's $u_1 = 500$ and at every $u_1$ up to 12,000, the rule that accepts
+good 3 never wins.
 
 It starts to win between 12,000 and 20,000, and at 40,000 type 1 holds good 3 about as often as
 in the speculative equilibrium.
@@ -2525,8 +2534,9 @@ in the speculative equilibrium.
 The prediction gets the order of magnitude right: speculation needs a utility tens of times
 larger than A2's, against a threshold of 138 for patient agents.
 
-The simulations need somewhat more than the prediction, plausibly because the auction compares
-noisy strengths in runs of finite length.
+These six runs need somewhat more than the prediction, plausibly because the auction compares
+noisy strengths in runs of finite length; on other seeds the accepting rule already wins
+occasionally at 12,000.
 
 ```{solution-end}
 ```

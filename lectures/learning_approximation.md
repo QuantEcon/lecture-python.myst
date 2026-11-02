@@ -758,8 +758,8 @@ drift toward $\theta^*$, not the noise, that dominates the error.
 condition for the usual $\sqrt{t}$ rate: every eigenvalue of $DT - I$ must lie below $-1/2$,
 that is, $\lambda_{\max} < 1/2$, which fails here.
 
-Multiplying the agents' experience by 500, from 1,000 to 500,000 periods, cuts their error only
-by a factor of about four.
+At that rate, multiplying the agents' experience by 500, from 1,000 to 500,000 periods, would
+cut their error only by a factor of about four.
 
 {ref}`lae_ex5` checks the rate.
 
@@ -1041,8 +1041,9 @@ polynomial in $\log G$ shrinks the approximation error, which by degree 5 is tin
 
 With 150,000 observations, the errors fall steeply up to the quadratic, as in the population.
 
-Beyond it the sample errors stop tracking the population errors and stay well above them: from
-degree 3 on, sampling error is as large as the remaining approximation error, or larger.
+Beyond it the sample errors stop tracking the population errors: the ergodic-weighted errors
+stay above the population values on every history, and from degree 4 on the gap is about as
+large as the remaining approximation error, or larger.
 
 The ergodic-weighted error levels off, at a level that differs from one history to another.
 
@@ -1317,8 +1318,11 @@ print( "rational expectations          : [4.211 4.364]")
 On a two-point state space every function of $G$ is a linear function of $G$: two coefficients
 can match any two values.
 
-So the linear family contains the rational expectations equilibrium, and the algorithm's fixed
-point must be that equilibrium.
+So the linear family contains the rational expectations equilibria exactly, and every fixed
+point of the algorithm is one of them.
+
+This economy also has a high-inflation equilibrium, with saving of about $(1.19, 1.63)$, but it
+is not E-stable, so the algorithm settles on the one shown.
 
 The population fixed point matches it to every digit shown, and the batch version differs from
 it only by sampling error.

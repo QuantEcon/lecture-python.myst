@@ -473,6 +473,12 @@ print(f"relative gap from the curve at mean λ0:     "
 Every limit lies exactly on the rational expectations continuum, evaluated at its own limiting
 $\lambda$: each one is an equilibrium.
 
+The zero gap is close to automatic: in every period, transients included, the exchange rate is
+$(H_1/H_2)(1-\lambda)/\lambda$ at the young class's share, so all the gap confirms is that the
+two classes' shares have merged.
+
+The informative comparison is with the dashed curve.
+
 As $\bar\lambda_0$ sweeps from $0.15$ to $0.85$, the limits trace out a wide stretch of the
 continuum.
 
@@ -876,7 +882,7 @@ equilibria, and nothing holds it in place.
 The indeterminacy that the Newton–Raphson learner froze into a history-dependent constant
 returns here as volatility.
 
-The election operator is what makes the population learn at all; {ref}`xr_ex2` shows what
+The election operator does much of the population's learning; {ref}`xr_ex2` shows what
 happens without it.
 
 ### The shape of the volatility
@@ -1177,7 +1183,7 @@ overlap.
 
 The other rows show why.
 
-Without the operator the genetic algorithm barely learns.
+Without the operator the genetic algorithm learns much less.
 
 Every child is admitted however unfit, so mutation and crossover keep the population a broad
 cloud.
@@ -1191,7 +1197,7 @@ deviation is $0.277$.
 The aggregates in {eq}`xr_prices` average over that diverse population, so the aggregate
 portfolio share, and with it the exchange rate, moves comparatively little.
 
-The lower volatility is just the averaging of a random cloud.
+The lower volatility comes mainly from averaging over that cloud.
 
 With the operator, selection works.
 

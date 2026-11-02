@@ -1334,8 +1334,8 @@ patterns have interlocking basins.
 A **spurious** result is a fixed point the designer never intended, created as an artifact of the
 storage rule.
 
-Most spurious results are shallower than the stored patterns: they are local minima outside the
-span of the letters.
+Most spurious results are shallower than the stored patterns: they are fixed points outside the
+span of the letters, most of them local minima.
 
 A minority sit at exactly $-N/2$, which requires them to lie in that span.
 
@@ -1348,8 +1348,7 @@ $A - E + I$.
 
 Depth alone therefore does not identify a memory as one we asked for.
 
-Because all of these are fixed points, and the spurious ones local minima, downhill dynamics
-cannot escape any of them.
+Because all of these are fixed points of the update, the dynamics cannot escape any of them.
 
 That is why **simulated annealing** matters: adding declining random shaking lets the system hop
 out of a shallow spurious basin, or across a basin boundary, before settling, something pure
@@ -1419,8 +1418,8 @@ for p_mut in (0.002, 0.02):
 
 At the low mutation rate crossover clearly wins: its champion is fitter in almost every seed.
 
-At the higher rate the advantage disappears: the average gap is within one standard error of
-zero, and crossover is ahead in only about half the seeds.
+At the higher rate the advantage shrinks to near zero: in these seeds the average gap is within
+one standard error of zero, and crossover is ahead in only about half of them.
 
 The reason is the one the book gives.
 
@@ -1531,10 +1530,13 @@ for β in (2.0, 32.0):
           f"runs ending mostly on the worse arm: {np.sum(shares < 0.5)} of 40")
 ```
 
-With $\beta = 32$ the auction concentrates quickly, and that is on average an improvement over
-$\beta = 2$.
+With $\beta = 32$ the auction concentrates quickly, and in these 40 runs that raises the average
+share on the better arm above that of $\beta = 2$.
 
-But in about a third of the runs it concentrates on the *worse* arm.
+The gain is not robust, though: over 400 seeds the two averages are $0.63$ and $0.60$, about
+one standard error apart.
+
+And in about a third of the runs the auction concentrates on the *worse* arm.
 
 A few unlucky early payoffs make the better arm look worse, after which it is almost never pulled,
 so its strength is almost never corrected: the system **locks in**.
@@ -1663,7 +1665,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-At $b = 0.7$ every run settles at the rational expectations price.
+At $b = 0.7$ every one of these runs settles at the rational expectations price.
 
 At $b = 1.05$ only a few runs end near it.
 
