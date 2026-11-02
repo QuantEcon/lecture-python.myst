@@ -31,11 +31,13 @@ kernelspec:
 
 ## Overview
 
-This lecture opens a series based on {cite:t}`Sargent1993` about Bounded Rationality  in Macroeconomics, from one point of view in the late 1980s and early 1990s.
+This lecture opens a series based on {cite:t}`Sargent1993` about Bounded Rationality in Macroeconomics, from one point of view in the late 1980s and early 1990s.
 
 Those were years when the Soviet Union ended and formerly Warsaw Pact countries were rearranging their political economies.
 
 For those countries, those were thus truly *regime changes* in the technical sense of modern dynamic macroeconomics.
+
+As {ref}`br_payoffs` explains, rational expectations models handle such changes less comfortably than their users usually suppose.
 
 Two generations of work on economic dynamics — in game theory, macroeconomics, and general
 equilibrium theory — had produced theories that embraced the rational expectations assumption, models that were designed to understand settings in which people face recurrent
@@ -56,7 +58,7 @@ They knew much less about the dynamics of *transitions* from a Soviet system to 
 They might hold prejudices and anecdotes about how to manage such a transition, but no
 empirically confirmed formal theory of it.
 
-Against this background, some  economists ventured into what {cite:t}`Sims1980`
+Against this background, some economists ventured into what {cite:t}`Sims1980`
 called the "wilderness" of irrational expectations and bounded rationality.
 
 The aim was partly to build theories of transition dynamics, partly to understand the
@@ -65,6 +67,7 @@ down.
 
 This series follows {cite:t}`Sargent1993` a little way into that wilderness.
 
+(br_quest)=
 ### The knowledge that rational expectations imputes
 
 To see what bounded rationality retreats *from*, start with rational expectations, which
@@ -73,9 +76,9 @@ imposes **two** requirements:
 1. **Individual rationality** — each artificial agent's behavior maximizes an objective function
    subject to perceived constraints.
 1. **Mutual consistency** — the constraints perceived by everybody in the system agree
-   with one another.
+   with one another and with the outcomes that their decisions jointly generate.
 
-The second requirement is Muth's *rational expectations* assumption. 
+The second requirement is Muth's *rational expectations* assumption {cite}`muth1961`.
 
 In an economy one person's decisions are part of another person's constraints, so consistency
 requires each person to hold correct beliefs about everyone else's decisions, decision
@@ -98,10 +101,11 @@ economist is only part way through.
 
 ### Sargent's formulation of bounded rationality
 
-Sargent's  **bounded rationality** program keeps individual rationality and retreats from mutual
-consistency in a particular way that was motivated by his love of time series econometrics.
+Sargent's **bounded rationality** program keeps individual rationality and retreats from mutual
+consistency in a particular way, chosen to remove the asymmetry just described between the
+agents in a model and the econometrician who studies them.
 
-Sargent's version of a bounded rationality program is:
+Sargent's version of a bounded rationality program is ({cite:t}`Sargent1993`, ch. 1):
 
 > I interpret a proposal to build models with 'boundedly rational' agents as a call to
 > retreat from the second piece of rational expectations (mutual consistency of perceptions)
@@ -113,19 +117,33 @@ Sargent's version of a bounded rationality program is:
 The agents are made more like the people who build the models: they gather data, form
 theories, estimate, and adapt.
 
-```{note} 
-After he saw Sargent's manuscript, Carnegie-Mellon's Herbert Simon wrote Sargent a letter
-saying that he objected to Sargent's formulation and recommended that Sargent not call what he
-was doing ''bounded rationality''.
+```{note}
+Why "peculiar"?
 
-Simon particularly disliked Sargent's making the agents inside his model act like
-econometricians, a pretense that Simon found preposterous.
-```  
+For Herbert Simon, who coined the term, bounded rationality meant limits on people's capacity
+to gather and process information, so that they *satisfice* rather than optimize.
+
+Sargent's agents are bounded in a different way: they compute like econometricians, but they
+do not know the equilibrium probability distributions.
+
+The book credits Simon with the aim of removing the asymmetry between agents and
+econometrician, but Simon rejected this way of doing it.
+
+After he saw the manuscript of the book, Simon wrote Sargent a letter objecting to the
+formulation and recommending that Sargent not call it "bounded rationality".
+
+Simon particularly disliked making the agents inside the model act like econometricians, a
+pretense that he found preposterous.
+
+Rational expectations and bounded rationality share a birthplace: in the 1950s Muth and Simon
+were colleagues and coauthors at the Carnegie Institute of Technology, now Carnegie Mellon
+University {cite}`Holt_Modigliani_Muth_Simon`.
+```
 
 Sargent's proposal makes work harder for the model builder, not easier.
 
 Withdrawing the assumption of a commonly understood environment means we must put something in
-its place, and there are many plausible somethings to choose among:
+its place, and there are many plausible somethings to choose among ({cite:t}`Sargent1993`, ch. 1):
 
 > This area is wilderness because the researcher faces so many choices after he decides to
 > forgo the discipline provided by equilibrium theorizing. The commitment to equilibrium
@@ -134,25 +152,45 @@ its place, and there are many plausible somethings to choose among:
 > of a commonly understood environment, we have to replace it with something, and there are
 > so many plausible possibilities.
 
+(br_payoffs)=
 ### What the program is good for
 
-The payoffs the book pursues are of three kinds.
+Chapter 2 of {cite:t}`Sargent1993` lists four payoffs that might justify the effort.
 
-Sometimes a collection of adaptive agents learns to behave *as if* it had rational
-expectations, which lends the equilibrium a plausibility it lacked as a mere assumption.
+1. **Equilibrium selection.** When a model has many equilibria, adaptive agents may converge
+   to only some of them, turning learning into a device for selecting among rational
+   expectations equilibria; where the equilibrium is unique, agents who learn their way to it
+   lend it a plausibility it lacked as a mere assumption.
+1. **Computation.** Learning algorithms double as algorithms for computing equilibria too
+   complicated to solve by hand, and the literatures that supply the agents' "brains" also
+   supply economists with new methods of optimization and estimation.
+1. **Transition dynamics and regime changes.** Adaptive dynamics hold out the hope of a theory
+   of the out-of-equilibrium adjustment that the Eastern European reformers had to manage
+   blind.
+1. **New sources of dynamics.** Where rational expectations makes a sharp prediction that the
+   data reject, adaptive agents can supply what is missing; the book's leading example is the
+   no-trade theorem of finance, under which no trade can occur in equilibrium.
 
-Sometimes adaptive agents converge to a *particular* equilibrium among many, turning learning
-into a device for **selecting** among rational expectations equilibria, and, relatedly, into
-a way of **computing** equilibria too complicated to solve by hand.
+The third payoff answers a criticism that the book levels at standard practice.
 
-And, more ambitiously, adaptive dynamics hold out the hope of a theory of the *transition*
-itself, the out-of-equilibrium adjustment that the Eastern European reformers had to manage
-blind.
+A common use of rational expectations models is to compute one equilibrium under a
+"pre-reform" policy rule and another under a "post-reform" rule, and to read the difference as
+the effect of the reform.
 
-That last promise is the least fulfilled, as the series will acknowledge; the selection and
-computation payoffs are the surer ones.
+That comparison is itself inconsistent with rational expectations: each equilibrium assumes a
+government committed forever to its rule, so the comparison predicts what would happen if the
+government did what the agents were certain it never would.
 
-This lecture takes up selection, through the sharpest case: models with **too many
+The book illustrates with the abrupt ends of the German and Austrian hyperinflations, where the
+shortcut seems to cost little, and with two stories about the onset of the Great Depression,
+each of which works only by backing off rational expectations at some point.
+
+A theory of how people learn their way into a new regime would fill that gap.
+
+That promise is the least fulfilled, as the series will acknowledge; selection and computation
+are the surer payoffs.
+
+This lecture sets up the selection problem in its sharpest form: models with **too many
 equilibria**.
 
 When a rational expectations model has a continuum of equilibria, the physical description of
@@ -161,16 +199,18 @@ the economy plus the equilibrium concept fail to pin down what happens.
 Something else must choose, and a plausible account of how people grope toward equilibrium is
 a natural candidate for that something.
 
-We build the two monetary examples that the rest of the series returns to repeatedly, both
-with a continuum of rational expectations equilibria:
+We build two monetary examples that later lectures return to, both with a continuum of
+rational expectations equilibria:
 
 * a quantity-theory model of money and prices in which the price level is determined only up
   to an arbitrary **bubble** term, and
 * a two-currency version in which the *exchange rate is completely unrestricted*.
 
 Along the way we set up the machinery — the fixed-point view of equilibrium, the relaxation
-algorithm, adaptive expectations, and Muth's inverse optimal-prediction problem — that later
-lectures use to expel the rational agents and put adaptive ones in their place.
+algorithm, adaptive expectations, Muth's inverse optimal-prediction problem, and the
+stochastic-approximation recursion whose associated differential equation governs where
+adaptive agents end up — that later lectures use to expel the rational agents and put adaptive
+ones in their place.
 
 ### The rest of the series
 
@@ -193,12 +233,54 @@ lectures use to expel the rational agents and put adaptive ones in their place.
 * {doc}`prospects_bounded_rationality` — the 1993 ledger of what the program achieved and what
   it did not, and a postscript on the three decades since.
 
+The lectures are ordered by how much the modeller tells the agents, a gradient of *prompting*:
+
+* Bray's least squares learners, met {ref}`below <br_bray>`, know everything about their
+  environment except one coefficient.
+* The Robbins–Monro agents of {doc}`olg_adaptive_money` know their utility function but not the
+  distribution of the returns they face.
+* The agents of {doc}`learning_approximation` must also choose a functional form for what they
+  learn.
+* The Newton learners of {doc}`exchange_rate_learning` know the gradient of their own payoff;
+  its genetic-algorithm strings, like the classifier systems of {doc}`genetic_classifier` and
+  {doc}`marimon_mcgrattan_sargent`, see only a payoff signal.
+
+{doc}`prospects_bounded_rationality` then enters the prompting on the debit side of the
+ledger.
+
+(br_notation)=
+### Notation across the series
+
+Each lecture follows the notation of its sources, so some symbols change jobs from lecture to
+lecture.
+
+| symbol | in this lecture | later in the series |
+|---|---|---|
+| $\lambda$ | relaxation parameter (gain); growth rate of the bubble | portfolio share ({doc}`exchange_rate_learning`); trade decision ({doc}`marimon_mcgrattan_sargent`) |
+| $\gamma$ | curvature of cost; coefficient on money in the price level | learning gain ({doc}`olg_adaptive_money` – {doc}`genetic_classifier`); consumption decision ({doc}`marimon_mcgrattan_sargent`) |
+| $\theta$ | Muth's moving-average coefficient; generic belief parameters | Phillips-curve slope ({doc}`olg_adaptive_money`); approximation coefficients ({doc}`learning_approximation`) |
+| $w_1, w_2$ | endowments are $2w_1, 2w_2$ | endowments are $w_1, w_2$ ({doc}`olg_adaptive_money` – {doc}`exchange_rate_learning`); weights ({doc}`genetic_classifier`) |
+| $\pi$ | — | gross inflation ({doc}`olg_adaptive_money`); choice and holding probabilities ({doc}`genetic_classifier`, {doc}`marimon_mcgrattan_sargent`) |
+| $s$ | — | saving ({doc}`olg_adaptive_money` – {doc}`exchange_rate_learning`); network state ({doc}`genetic_classifier`); storage cost ({doc}`marimon_mcgrattan_sargent`) |
+| $N$ | (the number of firms is $n$) | cohort size ({doc}`olg_adaptive_money`, {doc}`exchange_rate_learning`); population or pattern size ({doc}`exchange_rate_learning`, {doc}`genetic_classifier`) |
+
+From {doc}`olg_adaptive_money` on, $R$ is reserved for gross returns and $M$ for estimated
+moment or curvature matrices.
+
+*Adaptive expectations* means Cagan's and Friedman's geometric distributed lag below, while
+*adaptive agents* means agents who revise any rule — a forecast, a regression coefficient, the
+strength of a rule of thumb — in light of experience.
+
+The learning gain is written $\lambda_t$ here, because $\gamma$ is taken, and $\gamma_t$ from
+{doc}`olg_adaptive_money` on.
+
 Let's start with some imports.
 
 ```{code-cell} ipython3
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy.signal import lfilter
 ```
 
 ## Rational expectations as a fixed point
@@ -210,7 +292,7 @@ Take a competitive industry with a large number $n$ of identical firms.
 Each firm chooses output $x$ to maximize
 
 $$
-R(x, p) = p x - c(x),
+\Pi(x, p) = p x - c(x),
 $$
 
 where $c$ is an increasing, convex cost function, and price is determined by a
@@ -298,7 +380,7 @@ With $\lambda = 1$ this is simple iteration on $h$, the classic cobweb.
 ---
 mystnb:
   figure:
-    caption: "Relaxation algorithm paths, undamped and damped"
+    caption: "Relaxation algorithm paths: the cobweb and three smaller relaxation parameters"
     name: fig-br-relaxation
 ---
 def relax(λ, X0=1.0, n_iter=12):
@@ -314,13 +396,13 @@ fig, axes = plt.subplots(1, 2, figsize=(11, 4))
 
 axes[0].plot(relax(1.0), 'o-', ms=4, lw=1, color='C0',
              label=r"$\lambda = 1.0$ (cobweb)")
-axes[0].set_title("undamped")
+axes[0].set_title(r"$\lambda = 1$: the cobweb")
 axes[0].set_ylabel("$X^*_k$")
 
 for i, λ in enumerate((0.8, 0.5, 0.3)):
     axes[1].plot(relax(λ), 'o-', ms=4, lw=1, color=f'C{i+1}',
                  label=fr"$\lambda = {λ}$")
-axes[1].set_title("damped")
+axes[1].set_title(r"$\lambda < 1$: relaxation")
 axes[1].set_ylim(-1, 9)
 
 for ax in axes:
@@ -353,7 +435,7 @@ print(f"λ = 0.5 : multiplier = {1 + 0.5 * (-b*n/γ - 1):+.2f}   (converges)")
 
 At $\lambda = 0.8$ the multiplier is exactly $-1$: the scheme maps $X \mapsto 8 - X$ and so
 bounces forever between $1$ and $7$ without either converging or diverging, which is the
-undamped zigzag in the right panel.
+zigzag that never dies down in the right panel.
 
 Damping the adjustment enough makes the algorithm find the equilibrium; not damping it
 enough makes the algorithm chase its own tail.
@@ -379,7 +461,7 @@ X^*_t = (1 - \lambda) X^*_{t-1} + \lambda X_t
 ```
 
 This is the **adaptive expectations** scheme that Cagan {cite:p}`Cagan` used to study
-hyperinflations and that Friedman used to study consumption.
+hyperinflations and that {cite:t}`Friedman1957` used to study consumption.
 
 Expectations are a geometrically declining distributed lag of past observations, with a
 single free parameter $\lambda$ describing beliefs.
@@ -404,32 +486,26 @@ horizon $k$ if and only if $X_t$ follows
 X_t = X_{t-1} + \epsilon_t - \theta \epsilon_{t-1},
 ```
 
-with $\{\epsilon_t\}$ a martingale difference sequence, and the smoothing weight tied to the
-moving-average coefficient by
+with $\{\epsilon_t\}$ a martingale difference sequence and $\theta \in [0, 1)$, and the
+smoothing weight tied to the moving-average coefficient by
 
 $$
-\lambda = 1 - \theta .
+\lambda = 1 - \theta \in (0, 1] .
 $$
 
 ```{note}
 Sargent writes both the smoothing weight in {eq}`adaptive_exp` and the moving-average
 coefficient in {eq}`muth_process` as $\lambda$.
 
-We use $\theta$ for the second to keep the relationship $\lambda = 1 - \theta$ visible.
-
-Two other symbols work double shifts in this lecture, both following the book.
-
-In the money model below, $\lambda$ is no longer a gain but the gross growth rate $w_1/w_2$ of
-the bubble term, and $\gamma$ is no longer the curvature of a cost function but the coefficient
-linking the price level to the money supply.
-
-The code distinguishes them as `λ_m` and `γ_m`.
+We use $\theta$ for the second to keep the relationship $\lambda = 1 - \theta$ visible;
+{ref}`br_notation` lists the other symbols that change jobs.
 ```
 
 The forecasting rule inherits its one parameter from the stochastic process being forecast.
 
-Let's confirm this numerically: simulate {eq}`muth_process`, run exponential smoothing at a
-range of weights, and see which weight forecasts best.
+Let's confirm this numerically at horizon $k = 1$ ({ref}`br_ex4` checks a longer horizon):
+simulate {eq}`muth_process`, run exponential smoothing at a range of weights, and see which
+weight forecasts best.
 
 ```{code-cell} ipython3
 ---
@@ -438,13 +514,11 @@ mystnb:
     caption: "Forecast MSE of exponential smoothing"
     name: fig-br-smoothing-mse
 ---
-def smoothing_mse(x, λ):
-    "One-step-ahead forecast MSE of exponential smoothing with weight λ."
-    f = np.empty_like(x)
-    f[0] = x[0]
-    for i in range(1, len(x)):
-        f[i] = λ * x[i] + (1 - λ) * f[i - 1]
-    return np.mean((x[1:] - f[:-1]) ** 2)
+def smoothing_mse(x, λ, k=1):
+    "MSE of exponential smoothing with weight λ as a forecast k steps ahead."
+    # f_i = λ x_i + (1 - λ) f_{i-1}, started at f_0 = x_0
+    f, _ = lfilter([λ], [1, λ - 1], x, zi=[(1 - λ) * x[0]])
+    return np.mean((x[k:] - f[:-k]) ** 2)
 
 
 rng = np.random.default_rng(0)
@@ -476,21 +550,41 @@ Muth's exercise was the first application of the rational expectations idea in t
 became standard: find the restrictions that link a forecasting scheme to the environment in
 which it is used.
 
-It also pushed later researchers to treat the **forecasting scheme itself** as the object in
-terms of which equilibrium is defined.
+It also pushed later researchers {cite}`LucasPrescott1971` to treat the **forecasting scheme
+itself** as the object in terms of which equilibrium is defined.
 
 ### The dynamic analogue
 
 That is exactly what happens when we move from static to dynamic models.
 
-Let each agent choose a sequence rather than a single action, taking as given a **perceived
-law of motion** for the aggregate state,
+Let each agent choose a sequence rather than a single action, a contingency plan for $x_t$
+that maximizes
+
+$$
+E \sum_{t=0}^{\infty} \beta^t \, \Pi(x_t, x_{t-1}, p_t),
+$$
+
+taking as given a price equation $p_t = p(X_t, u_t)$ and a **perceived law of motion** for the
+aggregate state,
 
 $$
 X_t = H(X_{t-1}, u_t),
 $$
 
-where $\{u_t\}$ is IID
+where $\{u_t\}$ is IID and $\beta \in (0, 1)$ is a discount factor.
+
+The Euler equation for this problem is
+
+$$
+\Pi_1(x_t, x_{t-1}, p_t)
++ \beta \int \Pi_2(x_{t+1}, x_t, p_{t+1}) \, dF(p_{t+1} \mid X_t) = 0,
+$$
+
+where $\Pi_i$ is the derivative with respect to the $i$th argument and $F(\cdot \mid X_t)$ is
+the distribution of next period's price that the perceived law of motion $H$ induces.
+
+In a rational expectations equilibrium $F$ is the *equilibrium* distribution, the very object
+that, as we saw at the start, the econometrician is still trying to estimate.
 
 Solving the agent's dynamic program yields an individual decision rule
 $x_t = h(x_{t-1}, X_{t-1}, u_t)$.
@@ -525,17 +619,201 @@ H^*_k = H^*_{k-1} + \lambda\bigl(T(H^*_{k-1}) - H^*_{k-1}\bigr),
 except that it now revises entire expectations-generating functions in response to the gap
 between what they predicted and what happened.
 
-Every learning model in this series is some version of {eq}`t_relaxation` with the gain
-$\lambda$ made to decline over time and the revision driven by data rather than by an
-exact evaluation of $T$.
+The econometric learners of this series are versions of {eq}`t_relaxation` in which the
+revision is driven by data rather than by an exact evaluation of $T$, and in which the gain
+$\lambda$ sometimes declines over time and sometimes stays constant.
+
+The next section makes that family precise.
 
 ```{seealso}
 {doc}`rational_expectations` develops the $T$ map in detail for a Lucas–Prescott industry model
-and computes its fixed point.
+and computes its fixed point, and {doc}`lucas_prescott_investment` studies the Lucas–Prescott
+model itself.
 
 {doc}`ls_learning` studies what happens when agents estimate the perceived law of motion by
 least squares while living inside the system their estimates help determine.
 ```
+
+(br_one_recursion)=
+## One recursion, many learners
+
+The relaxation algorithm is the simplest member of a family of recursions that runs through the
+whole series; to see the family, put some noise into the static market and let the firms learn.
+
+(br_bray)=
+### From relaxation to learning: Bray's market
+
+Suppose firms must commit to output before they see what the average firm produces.
+
+Each firm enters period $t$ with a belief $X^*_{t-1}$ about average output, formed from data
+through $t-1$, and produces its best response $h(X^*_{t-1})$; a common supply shock $u_t$, IID
+with mean zero and variance $\sigma_u^2$, then determines what actually happens, and firms
+revise their belief toward it:
+
+```{math}
+:label: bray_learning
+
+X_t = h(X^*_{t-1}) + u_t,
+\qquad
+X^*_t = X^*_{t-1} + \lambda_t \bigl(X_t - X^*_{t-1}\bigr).
+```
+
+Without the shock and with a constant gain $\lambda_t = \lambda$, this is the relaxation
+algorithm {eq}`relaxation` run in calendar time, that is, adaptive expectations.
+
+With the gain $\lambda_t = 1/t$, $X^*_t$ is the sample mean of $X_1, \ldots, X_t$, the least
+squares estimate of a constant, and the model is, up to notation, that of {cite:t}`Bray1982`,
+whose feedback coefficient $b$ is our $h'$.
+
+The belief error $e_t = X^*_t - X^*$ obeys
+
+$$
+e_t = \bigl[1 + \lambda_t (h' - 1)\bigr] e_{t-1} + \lambda_t u_t ,
+$$
+
+so each period applies the relaxation multiplier at that period's gain.
+
+A constant gain above the bound $2/(1 + bn/\gamma)$ makes beliefs explode, as the cobweb did;
+below the bound they do not explode, but each shock moves them by $\lambda u_t$, so they wander
+forever in a band around $X^*$.
+
+A declining gain eventually falls below any bound, and as $\lambda \to 0$ the stability
+condition $|1 + \lambda(h' - 1)| < 1$ collapses to $h' < 1$, Bray's condition for least squares
+learners to converge, which the cobweb market, with $h' = -bn/\gamma < 0$, satisfies however
+steep it is.
+
+The next cell puts firms in this lecture's market, where $h' = -1.5$ and fixed gains above
+$0.8$ explode, and compares three gains on one path of shocks.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Belief errors in Bray's market under fixed and declining gains"
+    name: fig-br-bray
+---
+def learn(gain, u, X0=1.0):
+    "Beliefs X*_t of firms that update with gain(t) in the market with shocks u."
+    X = np.empty(len(u) + 1)
+    X[0] = X0
+    for t in range(1, len(u) + 1):
+        X_t = h(X[t-1]) + u[t-1]                    # what actually happens
+        X[t] = X[t-1] + gain(t) * (X_t - X[t-1])    # belief revision
+    return X
+
+
+σ_u, T_b = 0.5, 2_000
+u = σ_u * np.random.default_rng(1).standard_normal(T_b)
+t_b = np.arange(1, T_b + 1)
+
+fig, ax = plt.subplots(figsize=(8, 4))
+for label, gain, lw in [(r"$\lambda_t = 0.9$", lambda t: 0.9, 1.0),
+                        (r"$\lambda_t = 0.3$", lambda t: 0.3, 0.5),
+                        (r"$\lambda_t = 1/t$", lambda t: 1 / t, 1.0)]:
+    ax.plot(t_b, np.abs(learn(gain, u)[1:] - X_star), lw=lw, label=label)
+ax.plot(t_b, σ_u / np.sqrt(t_b), 'k--', lw=0.8, label=r"$\sigma_u / \sqrt{t}$")
+ax.set_xscale('log')
+ax.set_yscale('log')
+ax.set_ylim(1e-4, 1e3)
+ax.set_xlabel("$t$")
+ax.set_ylabel(r"$|X^*_t - X^*|$")
+ax.legend(frameon=False, fontsize=9, ncol=2)
+plt.show()
+```
+
+The fixed gain above the bound explodes, and the fixed gain below it hovers in a band whose
+width is set by the gain ({ref}`br_ex5` computes it).
+
+Only the declining gain converges, with an error that shrinks like $t^{-1/2}$, the rate at which
+a sample mean settles down.
+
+{doc}`ls_learning` analyzes Bray's model in detail, including the case $h' > 1$ in which least
+squares diverges, and {doc}`phillips_misspecified` revisits it with a constant gain.
+
+### Stochastic approximation and E-stability
+
+Most learners in this series update a vector of beliefs $\theta_t$ by a recursion of the form
+
+```{math}
+:label: stoch_approx
+
+\theta_t = \theta_{t-1} + \lambda_t \, Q(\theta_{t-1}, x_t),
+```
+
+where $x_t$ is the latest data, $\lambda_t$ is the gain, and $Q$ is a direction of improvement,
+such as a forecast error or a gradient, sometimes premultiplied by the inverse of an estimated
+moment or curvature matrix, as in recursive least squares and Newton's method.
+
+Equation {eq}`bray_learning` is the case $\theta = X^*$ and $Q = X_t - X^*_{t-1}$.
+
+{cite:t}`RobbinsMonro1951` introduced such recursions to find a zero of a function observed
+only with noise, and {cite:t}`Ljung1977` showed that for small gains they follow, on average,
+the differential equation $d\theta/d\tau = E\, Q(\theta, x)$ in the rescaled time
+$\tau_t = \lambda_1 + \cdots + \lambda_t$, with the expectation taken holding $\theta$ fixed.
+
+When agents estimate a perceived law of motion by least squares, the average update points from
+the perceived law toward the actual one, and the differential equation becomes
+
+```{math}
+:label: e_ode
+
+\frac{d\theta}{d\tau} = T(\theta) - \theta ,
+```
+
+where $T$ is the map {eq}`t_map` from perceived to actual laws of motion.
+
+For Bray's market $T = h$, and {eq}`e_ode` is $dX/d\tau = h(X) - X$, the equation that
+{cite:t}`Sargent1993` (ch. 2) already attaches to the relaxation algorithm.
+
+A fixed point $\theta^* = T(\theta^*)$ is a rational expectations equilibrium; it is
+**E-stable** (expectationally stable) if it is a stable rest point of {eq}`e_ode`, which
+requires every eigenvalue of the Jacobian $DT(\theta^*)$ to have real part less than one.
+
+What learners do near an E-stable equilibrium depends on the gain.
+
+* With a **decreasing gain** ($\sum_t \lambda_t = \infty$ and $\sum_t \lambda_t^2 < \infty$, as
+  for $\lambda_t = 1/t$), recursive least squares converges to an E-stable equilibrium, under
+  regularity conditions that may include a projection facility keeping beliefs in bounds, and
+  it converges to an E-unstable one with probability zero.
+* With a **constant gain** in a stochastic environment, beliefs never settle: they fluctuate
+  around the E-stable equilibrium in an ergodic distribution whose variance is proportional to
+  the gain when the gain is small, with occasional large escapes
+  {cite}`Sargent1999,ChoWilliamsSargent2002,Williams2019`.
+* In a deterministic environment there is nothing to average away, and a small enough constant
+  gain converges too, as the relaxation algorithm does.
+
+E-stability is the right condition for least squares learning near an equilibrium, but it is
+not a theorem about every algorithm: stochastic-gradient learners can fail to converge to an
+E-stable equilibrium {cite}`Giannitsarou2005`.
+
+Population algorithms, such as the genetic algorithms and classifier systems of later lectures,
+lie outside the theory; drawing on Arifovic's 1991 dissertation, the book (ch. 5) reports that
+a genetic-algorithm population can sometimes learn its way to the equilibrium of Bray's model
+even when $h' > 1$.
+
+None of this postdates the book, whose chapter 5 (footnote 73 and the section "An associated
+ordinary differential equation") uses {eq}`e_ode` to study least squares learning.
+
+The idea goes back to {cite:t}`DeCanio1979` and {cite:t}`Evans1985,Evans1989`, who used the $T$
+map to define expectational stability, and to {cite:t}`MarcetSargent1989jet` and
+{cite:t}`Woodford1990`, who showed that it governs the convergence of least squares learning,
+using the method of {cite:t}`Ljung1977`; {cite:t}`EvansHonkapohja2001` later systematized and
+generalized the theory.
+
+{doc}`ls_learning` develops it, and {doc}`phillips_learning` gives a compact primer on
+recursive algorithms, mean dynamics, and constant-gain escapes.
+
+### How the series uses it
+
+| lecture | learners and gains | what the differential equation explains |
+|---|---|---|
+| {doc}`olg_adaptive_money` | Robbins–Monro saving rules, declining gain | convergence to the stationary equilibrium |
+| | least squares on inflation, weights growing with the price level (an effectively constant gain) | {ref}`the stability reversal <olg_reversal>`: $T' = \tfrac12 < 1$ at the low steady state $\pi = 2$, $T' = 2 > 1$ at the high one $\pi = 3$ |
+| | a government learning a Phillips curve, constant gain | recurrent escapes |
+| {doc}`learning_approximation` | online {ref}`parameterized expectations <lae_pea>`, declining gain | slow convergence, at a rate set by the largest eigenvalue of $DT$ |
+| {doc}`exchange_rate_learning` | Newton–Raphson portfolio rules, constant gain | a continuum of rest points with no drift along it, so the limit depends on where beliefs started |
+| | a genetic algorithm | outside the theory |
+| {doc}`genetic_classifier`, {doc}`marimon_mcgrattan_sargent` | classifier systems, $1/\tau$ averaging of rule strengths | rest points that value future payoffs as if the agents were very impatient |
 
 ## Money and prices
 
@@ -572,6 +850,12 @@ Real balances fall when currency is expected to lose value faster.
 This is a version of the demand function Cagan {cite:p}`Cagan` used to study hyperinflations,
 and it also arises in Samuelson's {cite:p}`Samuelson1958` overlapping generations model.
 
+Following the book, the endowments are written $2 w_1$ and $2 w_2$, so that the demand for real
+balances is $w_1 - w_2 \pi$ with $\pi = p^*_{t+1}/p_t$.
+
+From {doc}`olg_adaptive_money` on the endowments are $w_1$ and $w_2$, so the same household
+saves $(w_1 - w_2 \pi)/2$.
+
 To close the model we need a theory of $p^*_{t+1}$.
 
 Suppose the money supply grows at a constant rate,
@@ -590,8 +874,8 @@ and that the household believes the price level is related to the money supply b
 p_t = \gamma M_t + \lambda^t c ,
 ```
 
-for constants $(\gamma, \lambda, c)$ that summarize its beliefs, all positive so that the
-price level stays positive.
+for constants $(\gamma, \lambda, c)$ that summarize its beliefs, with $\gamma > 0$, $\lambda > 0$
+and $c \geq 0$ so that the price level stays positive.
 
 Knowing $\mu$, the household forecasts
 $p^*_{t+1} = \gamma \mu M_t + \lambda^{t+1} c$.
@@ -669,6 +953,7 @@ for c in (0.0, 0.5, 3.0, 25.0):
 
 Money demand equals money supply exactly, at every date, for every $c$.
 
+(br_bubble)=
 ### The bubble
 
 Since $w_1 > w_2$, the second term in {eq}`money_price_level` grows at the gross rate
@@ -729,14 +1014,25 @@ infl
 There is nothing in the model — no preference, no technology, no policy — that says which
 $c$ we are in.
 
-Rational expectations, as the paper puts it, "is not a sufficiently restrictive principle to
+As Sargent puts it, "Rational expectations alone is not a sufficiently restrictive principle to
 determine outcomes."
+
+{doc}`olg_adaptive_money` returns to this household with a constant money supply ($\mu = 1$,
+which is a zero deficit there).
+
+Its two stationary inflation rates are then $\pi = 1$, the bubbleless equilibrium here, and
+$\pi = w_1/w_2$, the limit of every bubble path.
+
+Perfect-foresight dynamics lead away from $\pi = 1$, but that lecture shows that least squares
+learners converge to it: learning kills the bubble.
 
 ## Two currencies
 
 The indeterminacy gets worse when we allow more than one currency.
 
-Following {cite:t}`KarekenWallace1981`, keep {eq}`money_demand` as the demand for
+Versions of the result below are due to Russell Boyer (1971) and {cite:t}`KarekenWallace1981`.
+
+Keep {eq}`money_demand` as the demand for
 currency *in total*, and suppose there are two fiat currencies in supplies $M_{1t}$ and
 $M_{2t}$ that are perfect substitutes as long as their rates of return are equal:
 
@@ -818,12 +1114,17 @@ currency 2 is worth more, which raises $p_1$ and lowers $p_2$.
 But the last two columns tell the real story: total real balances are $w_1 - w_2 = 1$
 regardless of $e$, and markets clear exactly.
 
-*The real allocation is identical in every one of these equilibria.* The model determines
-what people consume and how much purchasing power the currency stock commands; it says
-nothing whatever about the rate at which the two monies exchange.
+*The real allocation is identical in every one of these equilibria.*
 
-This is a sharp version of a problem that has haunted international monetary theory, and it
-is not a knife-edge case: it is a continuum.
+The model determines what people consume and how much purchasing power the currency stock
+commands; it says nothing whatever about the rate at which the two monies exchange.
+
+This is a sharp version of a problem that has haunted international monetary theory.
+
+The indeterminacy is not a matter of a few isolated equilibria: every $e \geq 0$ is one.
+
+That $e$ leaves the real allocation untouched does depend on equal money growth rates, as
+{ref}`br_ex3` shows.
 
 ## Where this leaves us
 
@@ -834,7 +1135,9 @@ There are three ways to respond.
 
 The first is to add restrictions to the environment until the equilibrium becomes unique.
 
-The second is to declare the indeterminacy a genuine feature of the world.
+The second is to declare the indeterminacy a genuine feature of the world and, in a tradition
+that runs back to Ricardo and Wicksell, to criticize the arrangements that cause it; the book
+calls a regime that leaves the exchange rate history-dependent "an ill-formed mechanism".
 
 The third — the one this series pursues — is to ask what happens when we **replace the
 rational agents with adaptive ones** and watch where the system goes.
@@ -851,24 +1154,41 @@ could not.
 The rest of this series takes that idea seriously, and the results are mixed in an instructive
 way.
 
-In the overlapping generations monetary economy, least squares learning selects the *opposite*
-equilibrium from the one the rational expectations dynamics converge to, and human experimental
-subjects side with the adaptive model.
+In the overlapping generations monetary economy of {doc}`olg_adaptive_money`, least squares
+learning selects the *opposite* equilibrium from the one the rational expectations dynamics
+converge to (with no deficit, the bubbleless one), and human experimental subjects side with
+the adaptive model.
 
-In the two-currency model above, adaptive agents do pin the exchange rate down, but only by
-making it depend on initial conditions.
+In the two-currency model of {doc}`exchange_rate_learning`, adaptive agents do pin the exchange
+rate down, but only by making it depend on where their beliefs started and on how their
+algorithm is tuned.
 
-The rest points of the learning algorithm reproduce the indeterminacy exactly, and what selects
-an outcome is the dead hand of history.
+The rest points of the learning algorithm reproduce the indeterminacy exactly; what fixes the
+outcome is what the book calls {ref}`the dead hand of history <xr_dead_hand>`, and it judges
+this "a weak reed" on which to base exchange rate determination.
 
-In a Kiyotaki–Wright search economy, adaptive agents learn to use a medium of exchange and
-select the *fundamental* equilibrium over the speculative one, even at parameters where theory
-says the speculative equilibrium is the only one.
+Learning does not select an exchange rate so much as remember one.
 
-In each case the algorithm supplies what the equilibrium concept did not.
+In a Kiyotaki–Wright search economy, the classifier-system agents of
+{doc}`marimon_mcgrattan_sargent` learn to use a medium of exchange.
 
-Whether that is a discovery about economies or an artifact of the algorithm is the question the
-series keeps returning to, and {doc}`prospects_bounded_rationality` renders a verdict.
+But in {ref}`one of its economies <mms_a2>`, where the speculative equilibrium is the unique
+stationary equilibrium for patient agents, they settle on the fundamental pattern of trade
+instead.
+
+That is not learning selecting among equilibria; it is convergence to an outcome that is not an
+equilibrium of the economy the agents live in.
+
+Marimon, McGrattan and Sargent suspected early myopia, and
+{ref}`that lecture shows why <mms_impatience>`: the way the classifier systems assign credit
+makes the agents effectively very impatient.
+
+In the first two cases the algorithm supplies what the equilibrium concept did not; in the
+third it overrides the equilibrium concept.
+
+Whether such outcomes are discoveries about economies or artifacts of the algorithm is the
+question the series keeps returning to, and {doc}`prospects_bounded_rationality` renders a
+verdict.
 
 ## Exercises
 
@@ -883,9 +1203,13 @@ The ratio $bn/\gamma$ measures the slope of demand relative to the curvature of 
 market with steep demand and near-linear costs is one in which the naive cobweb
 ($\lambda = 1$) is badly behaved.
 
-Verify the stability boundary numerically: for a grid of values of $bn/\gamma$, find the
-largest $\lambda$ (on a fine grid) for which the algorithm converges, and compare with the
-analytical prediction.
+1. Verify the stability boundary numerically: for a grid of values of $bn/\gamma$, find the
+   largest $\lambda$ (on a fine grid) for which the algorithm converges, and compare with the
+   analytical prediction.
+1. Now let the relaxation parameter decline with the iteration count, $\lambda_k = 1/k$.
+   Show that the algorithm converges to $X^*$ for every slope, including slopes at which the
+   cobweb and most fixed values of $\lambda$ fail.
+   Explain why, using the differential equation $dX/d\tau = h(X) - X$ of {ref}`br_one_recursion`.
 
 ```{exercise-end}
 ```
@@ -893,6 +1217,9 @@ analytical prediction.
 ```{solution-start} br_ex1
 :class: dropdown
 ```
+
+For part 1, we test convergence by iterating 400 times and asking whether the last step is
+smaller than $10^{-8}$.
 
 ```{code-cell} ipython3
 def converges(slope, λ, n_iter=400, tol=1e-8):
@@ -919,27 +1246,75 @@ pd.DataFrame(rows, columns=["$bn/\\gamma$", "largest $\\lambda$ found",
 The numerical boundary sits consistently a little *below* the analytical one, and that gap is
 not grid spacing; it is a real feature of the test.
 
-As $\lambda$ approaches the boundary the multiplier approaches $-1$, so convergence becomes
-arbitrarily slow, and a test with a fixed iteration count and tolerance declares failure just
-before the true boundary.
+As $\lambda$ approaches the boundary the multiplier $m = 1 - \lambda(1 + bn/\gamma)$ approaches
+$-1$, so convergence becomes arbitrarily slow, and a test with a fixed iteration count and
+tolerance declares failure just before the true boundary.
 
-The size of the gap is predictable: with 400 iterations and a tolerance of $10^{-8}$, the test
-passes only while $|1 - \lambda(1 + bn/\gamma)|^{400} \lesssim 10^{-8}$, i.e. while the
-multiplier is below about $\exp(-18.4/400) = 0.955$ in absolute value.
+The size of the gap is predictable.
+
+Starting from $X_0 = 1$, the last step of the test has size
+$|X_{400} - X_{399}| = \lambda \, |9 - bn/\gamma| \, |m|^{399}$, so the test passes only while
+that is below $10^{-8}$.
 
 ```{code-cell} ipython3
-predicted = [(1 + 0.955) / (1 + s_) for s_ in (0.5, 1.0, 1.5, 2.0, 4.0)]
+fine = np.linspace(0.01, 1.5, 1_000_001)
+predicted = []
+for slope in (0.5, 1.0, 1.5, 2.0, 4.0):
+    m = np.abs(1 - fine * (1 + slope))
+    with np.errstate(over='ignore'):
+        passes = (m < 1) & (fine * abs(9 - slope) * m ** 399 < 1e-8)
+    predicted.append(fine[passes].max())
+
 pd.DataFrame({"$bn/\\gamma$": [0.5, 1.0, 1.5, 2.0, 4.0],
               "found": [r[1] for r in rows],
-              "predicted by the tolerance": predicted,
+              "predicted by the test": predicted,
               "true boundary": [r[2] for r in rows]}).round(3)
 ```
+
+The predicted cutoffs lie just above the grid values found, within one grid step.
 
 Note the first row: when $bn/\gamma < 1$ the boundary exceeds one, so the naive cobweb
 converges on its own and no damping is needed.
 
-Damping is what buys convergence in the steep markets, and the steeper the market the more
-damping is required.
+Damping is what buys convergence in the steep markets, and with a fixed $\lambda$ the steeper
+the market the more damping is required.
+
+For part 2, we run the declining-gain version from the same starting point and report the
+distance from $X^*$ after 400 and 4000 iterations.
+
+```{code-cell} ipython3
+def relax_declining(slope, n_iter):
+    "Distance from X* after n_iter steps of relaxation with λ_k = 1/k."
+    a_, X = 10.0, 1.0
+    for k in range(1, n_iter + 1):
+        X = X + (1 / k) * ((a_ - slope * X) - X)
+    return abs(X - a_ / (1 + slope))
+
+
+slopes = (0.25, 0.5, 1.5, 4.5, 19.5)
+pd.DataFrame({"$bn/\\gamma$": slopes,
+              "fixed-λ bound": [2 / (1 + s_) for s_ in slopes],
+              "error, k = 400": [relax_declining(s_, 400) for s_ in slopes],
+              "error, k = 4000": [relax_declining(s_, 4000) for s_ in slopes]})
+```
+
+Every slope converges, including $bn/\gamma = 19.5$, where any fixed $\lambda$ above $0.1$
+fails.
+
+With $\lambda_k = 1/k$ the error is multiplied at step $k$ by $1 - (1 + bn/\gamma)/k$; once
+$k > (1 + bn/\gamma)/2$ every step contracts, and the product of the multipliers behaves like
+$k^{-(1 + bn/\gamma)}$, which goes to zero whatever the slope.
+
+The differential equation says the same thing: in the rescaled time
+$\tau_k = 1 + \tfrac12 + \cdots + \tfrac1k \approx \log k$ the iteration tracks
+$dX/d\tau = h(X) - X$, whose solution
+$X(\tau) - X^* = e^{(h' - 1)\tau}\bigl(X(0) - X^*\bigr) \approx k^{h' - 1}\bigl(X(0) - X^*\bigr)$
+is stable whenever $h' < 1$, which every downward-sloping $h$ satisfies.
+
+With a declining gain, then, a steeper market converges *faster*, the reverse of the fixed-gain
+case; the cost is that in flat markets the error shrinks only like a power of $k$ (compare the
+two error columns in the first row), where a well-chosen fixed $\lambda$ would shrink it
+geometrically.
 
 ```{solution-end}
 ```
@@ -1017,6 +1392,9 @@ Does the choice of $e$ still leave the real allocation untouched?
 :class: dropdown
 ```
 
+With $c = 0$, total real balances in units of currency 1 are
+$(M_{1t} + e M_{2t}) / (\gamma_1 M_{1t} + \gamma_2 e M_{2t})$.
+
 ```{code-cell} ipython3
 w1, w2 = 2.0, 1.0
 μ1, μ2 = 1.0, 1.3
@@ -1032,6 +1410,8 @@ pd.DataFrame({f"e = {e}": real_balances(e) for e in (0.25, 1.0, 4.0)},
              index=pd.Index(t, name="t")).round(4)
 ```
 
+The same paths in a figure:
+
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(7, 4))
 for e in (0.25, 1.0, 4.0):
@@ -1044,7 +1424,9 @@ ax.legend(frameon=False)
 plt.show()
 ```
 
-No. With unequal money growth rates the exchange rate affects the real allocation, and the
+No.
+
+With unequal money growth rates the exchange rate affects the real allocation, and the
 allocation is no longer even constant over time.
 
 The reason is that $\gamma_1 \neq \gamma_2$: the two currencies are valued differently
@@ -1054,8 +1436,134 @@ currency stock matters, and $e$ is what fixes that composition.
 Since currency 2 grows faster, it comes to dominate the stock whatever $e$ we choose, and real
 balances converge to $1/\gamma_2$ from wherever $e$ starts them.
 
-So the pure nominal indeterminacy of the fixed-supply case is a knife-edge, but the
-indeterminacy of $e$ itself is not: every $e$ in the table is still an equilibrium.
+So the irrelevance of $e$ for the real allocation is a knife-edge: it needs $\mu_1 = \mu_2$
+(with any common growth rate $\mu$, real balances are $w_1 - \mu w_2$ at every $e$).
+
+The indeterminacy of $e$ is not a knife-edge: every $e$ in the table is still an equilibrium,
+but now the choice among them has real consequences.
+
+```{solution-end}
+```
+
+```{exercise-start}
+:label: br_ex4
+```
+
+Muth's result says that exponential smoothing with $\lambda = 1 - \theta$ is the optimal
+forecast of $X_{t+k}$ at *every* horizon $k$, but {numref}`fig-br-smoothing-mse` checked only
+$k = 1$.
+
+1. Show that for {eq}`muth_process` the conditional expectation $E_t X_{t+k}$ is the same for
+   every $k \geq 1$, that it equals the exponentially smoothed value with
+   $\lambda = 1 - \theta$, and that the $k$-step forecast error has variance
+   $1 + (k - 1)(1 - \theta)^2$ when $\mathbb{V}[\epsilon_t] = 1$.
+1. Verify the result numerically at $k = 4$, reusing `smoothing_mse`.
+
+```{exercise-end}
+```
+
+```{solution-start} br_ex4
+:class: dropdown
+```
+
+Write $X_{t+k} = X_t + \sum_{j=1}^{k} (\epsilon_{t+j} - \theta \epsilon_{t+j-1})$.
+
+Every shock dated after $t$ has conditional mean zero, so $E_t X_{t+k} = X_t - \theta
+\epsilon_t \equiv f_t$ for every $k \geq 1$.
+
+Since $\epsilon_t = X_t - f_{t-1}$, we have $f_t = X_t - \theta(X_t - f_{t-1}) = (1 -
+\theta) X_t + \theta f_{t-1}$, which is {eq}`adaptive_exp` with $\lambda = 1 - \theta$.
+
+The forecast error is
+
+$$
+X_{t+k} - f_t = \epsilon_{t+k} + (1 - \theta)(\epsilon_{t+1} + \cdots + \epsilon_{t+k-1}),
+$$
+
+whose variance is $1 + (k - 1)(1 - \theta)^2$.
+
+Here is the numerical check, on the same shocks as the figure.
+
+```{code-cell} ipython3
+k = 4
+rows = []
+for θ in (0.2, 0.5, 0.8):
+    X = np.cumsum(ε[1:] - θ * ε[:-1])
+    mse = np.array([smoothing_mse(X, λ, k) for λ in grid])
+    rows.append((θ, grid[mse.argmin()], 1 - θ, mse.min(), 1 + (k - 1) * (1 - θ) ** 2))
+
+pd.DataFrame(rows, columns=["$\\theta$", "best $\\lambda$", "$1 - \\theta$",
+                            "min MSE", "$1 + (k-1)(1-\\theta)^2$"]).round(3)
+```
+
+At horizon 4 the best weight is again $1 - \theta$, up to the grid and sampling noise, and the
+minimized mean squared error matches the formula.
+
+The error variance grows with the horizon, but the forecast does not change: the same smoothed
+value is optimal at every horizon.
+
+```{solution-end}
+```
+
+```{exercise-start}
+:label: br_ex5
+```
+
+In Bray's market {eq}`bray_learning` with a constant gain $\lambda$ below the stability bound,
+beliefs never settle down.
+
+1. Show that the belief error $e_t = X^*_t - X^*$ is a stationary first-order autoregression
+   with variance
+
+   $$
+   V(\lambda) = \frac{\lambda \sigma_u^2}{(1 - h')\bigl(2 - \lambda(1 - h')\bigr)} .
+   $$
+
+1. Using `learn` from {ref}`br_bray`, simulate 100,000 periods for
+   $\lambda \in \{0.025, 0.05, 0.1, 0.2, 0.4\}$ and compare the sample variance of $e_t$ with
+   $V(\lambda)$.
+   How does the spread of beliefs scale with the gain?
+
+```{exercise-end}
+```
+
+```{solution-start} br_ex5
+:class: dropdown
+```
+
+From {eq}`bray_learning`, $e_t = \rho e_{t-1} + \lambda u_t$ with $\rho = 1 - \lambda(1 - h')$.
+
+Below the bound $|\rho| < 1$, so $e_t$ is a stationary autoregression with variance
+$\lambda^2 \sigma_u^2 / (1 - \rho^2)$, and $1 - \rho^2 = \lambda (1 - h')\bigl(2 - \lambda(1 -
+h')\bigr)$ gives the formula.
+
+The simulation starts beliefs at $X^*$ and drops the first 1,000 periods.
+
+```{code-cell} ipython3
+u_long = σ_u * np.random.default_rng(2).standard_normal(100_000)
+h_prime = -b * n / γ
+
+rows = []
+for λ in (0.025, 0.05, 0.1, 0.2, 0.4):
+    e = learn(lambda t: λ, u_long, X0=X_star)[1_000:] - X_star
+    V = λ * σ_u**2 / ((1 - h_prime) * (2 - λ * (1 - h_prime)))
+    rows.append((λ, e.var(), V, e.var() / λ))
+
+pd.DataFrame(rows, columns=["gain $\\lambda$", "sample variance", "$V(\\lambda)$",
+                            "variance / $\\lambda$"]).round(5)
+```
+
+The sample variances match the formula.
+
+For small gains $V(\lambda) \approx \lambda \sigma_u^2 / \bigl(2(1 - h')\bigr)$, so the variance
+of beliefs is proportional to the gain and their standard deviation to its square root; the
+ratio in the last column creeps up at larger gains because of the second factor in the
+denominator.
+
+A constant-gain learner therefore converges only in distribution, to a cloud around $X^*$ that
+collapses to a point only as $\lambda \to 0$.
+
+{doc}`phillips_learning` shows what such a cloud can do in a model with richer feedback: escape.
 
 ```{solution-end}
 ```
