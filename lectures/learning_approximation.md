@@ -1211,12 +1211,6 @@ table.round(4)
 The rules themselves show the two failure modes.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: "Kernel rules at three bandwidths"
-    name: fig-la-bandwidth
----
 fig, ax = plt.subplots(figsize=(7, 4.2))
 for h, colour in [(0.003, 'C0'), (0.03, 'C1'), (0.20, 'C2')]:
     ax.plot(G, kernel_smoother(T=T_short, h=h)[0], '-', lw=1, color=colour, label=f"$h = {h}$")
@@ -1388,12 +1382,6 @@ eigenvalue of $DT(\theta^*)$.
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: "Distance of online beliefs from the approximate equilibrium"
-    name: fig-la-rate
----
 T_online = len(θ_path)
 ts = np.unique(np.logspace(2, np.log10(T_online - 1), 60).astype(int))
 late = ts >= 10_000

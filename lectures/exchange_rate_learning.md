@@ -1318,12 +1318,6 @@ To compare like with like, run the Newton–Raphson learner at Arifovic's parame
 Here is part 1.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: "Newton-Raphson learning at Arifovic's parameters"
-    name: fig-xr-ex4
----
 ea, sa, la = newton_learning(arifovic, [6.0, 4.0], [0.45, 0.55], T=3000)
 eb, sb, lb = newton_learning(arifovic, [6.0, 4.0], [0.45, 0.55], T=3000, κ=2.0)
 
@@ -1466,12 +1460,6 @@ $\varepsilon_t \sim N(0, 1)$ and $\sigma = 1$, at Sargent's parameters.
 Here are parts 1 and 2.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: "Limiting exchange rates from identical initial conditions"
-    name: fig-xr-ex5
----
 T, σ = 600, 1.0
 e_det = newton_learning(kw, [3.0, 2.2], [0.30, 0.50], T=T)[0][-1]
 
