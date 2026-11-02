@@ -51,31 +51,48 @@ those rules only by keeping score of what has paid off in the past.
 
 Will such agents *learn* to use a medium of exchange?
 
-And when the rational-expectations model has more than one equilibrium, which one, if any,
-will emerge?
+And when the economy has two equilibria, or when its only equilibrium asks agents to be
+patient, what will they settle on?
+
+These are instances of the question that {doc}`bounded_rationality` asked of rational
+expectations ({ref}`br_quest`): can adaptive agents find an equilibrium, and which one?
 
 The learning device that Marimon, McGrattan and Sargent used is John Holland's
-**classifier system** {cite}`Holland1975,HollandHolyoakNisbettThagard1986`: a population of if-then rules, an auction that
-decides which rule acts, and an accounting system that credits rules that lead to good
-outcomes and debits rules that lead to bad ones.
+**classifier system** {cite}`Holland1975,HollandHolyoakNisbettThagard1986`.
 
-Optionally, a **genetic algorithm** breeds new rules and retires old ones.
+{doc}`genetic_classifier` introduced classifier systems and the bucket brigade in the
+abstract; here they are assembled into agents.
 
-This lecture rebuilds their computational experiments.
+Each type of agent gets a population of if-then rules, an auction that decides which rule
+acts, and an accounting system that credits rules that lead to good outcomes and debits
+rules that lead to bad ones.
 
-The main findings that we shall reproduce are:
+When the rules are generated at random, a **genetic algorithm** breeds new rules and retires
+old ones.
 
-1. Starting from a complete enumeration of rules with equal strengths, or even from
-   randomly generated rules, holdings and trading patterns converge to a stationary Nash
-   equilibrium of the Kiyotaki-Wright model.
-1. When the Kiyotaki-Wright model has both a *fundamental* and a *speculative* equilibrium,
-   the artificially intelligent agents select the fundamental one -- the one in which the
-   good with the lowest storage cost circulates as money.
-1. An intrinsically worthless, costlessly stored object -- **fiat money** -- is accepted in
-   trade by agents who have to discover its usefulness for themselves.
-1. The same machinery works in an economy with five goods and five types for which the
-   authors had no analytical characterization of equilibrium: the algorithm is used as an
-   *equilibrium-discovery device*.
+This lecture rebuilds their computational experiments and runs each of them for many random
+seeds, so that we can say how often each outcome occurs.
+
+The main findings are:
+
+1. With a complete list of rules, agents in Economy A1 learn its unique stationary
+   equilibrium in every run: good 1, the cheapest good to store, circulates as money.
+   Starting from random rules they get most of the way, as in the paper.
+1. In Economy A2, where patient agents would *speculate* by accepting an expensive good, the
+   artificial agents never do.
+   Most runs settle on the fundamental pattern of trade, which is not an equilibrium of that
+   economy, some only after thousands of periods stuck in a pattern with too little trade, and
+   a few stay stuck for good.
+   We show why: the bucket brigade makes the agents behave as if they discounted the future
+   at a factor of about $0.016$.
+1. In Economy B, which has a fundamental and a speculative equilibrium, the agents select the
+   fundamental one in most runs and the speculative one in none.
+1. In nearly every run, an intrinsically worthless, costlessly stored object -- **fiat
+   money** -- is accepted in trade by agents who have to discover its usefulness for
+   themselves.
+1. In an economy with five goods and five types, for which the authors had no analytical
+   characterization of equilibrium, the algorithm proposes a pattern of trade, with
+   qualifications that we describe.
 
 Let's start with some imports.
 
@@ -83,7 +100,9 @@ Let's start with some imports.
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
+from typing import NamedTuple
+from numba import njit
 ```
 
 ## The Kiyotaki-Wright environment
@@ -184,18 +203,24 @@ where $u_i(k) = u_i > 0$ if $k = i$ and $u_i(k) = 0$ otherwise.
 Note that an agent is *permitted* to consume a good he does not want; he simply gets zero
 utility from it while still producing and paying to store $f(a)$.
 
-Not consuming is not free either -- it costs $s(x^+_{at})$.
+This "consume anything" feature has a consequence worth stating once.
 
-Learning which of these to do is part of the problem.
+An agent who swaps his own production good for some other good and then eats it ends the
+period exactly where refusing to trade would have left him: holding his production good and
+paying its storage cost.
+
+Such trades are payoff-neutral, so nothing in the accounting system described below pushes
+them out, and they will turn up in several of our economies.
 
 ```{note}
 Kiyotaki and Wright ranked payoff streams by expected discounted utility.
 
 Marimon, McGrattan and Sargent instead assume that each agent cares about his **long-run
-average** utility.
+average** utility, and they build the accounting system inside a classifier system out of
+running averages for that reason.
 
-This matters: as we shall see, it is the reason the accounting system inside a classifier
-system is built out of running averages.
+We shall see in {ref}`mms_impatience` that the agents this accounting system produces
+nevertheless behave as if they discounted the future very heavily.
 ```
 
 ### Two equilibria
@@ -230,77 +255,181 @@ Type 2 agents accept good 1 even though they never consume it: they use it as mo
 In the **speculative equilibrium**, type 1 agents additionally accept good 3 -- the *most*
 expensive good to store -- because they expect to trade it away quickly for good 1.
 
+The reason is that a type 1 agent holding good 2 can get good 1 only from a type 2 agent,
+whereas a type 1 agent holding good 3 can get it from a type 3 agent, who wants good 3 and
+holds good 1.
+
+Each partner type is met with probability $1/3$, so holding good 3 instead of good 2 raises
+the chance of acquiring good 1 each period by $\bigl(\pi^h_3(1) - \pi^h_2(1)\bigr)/3$, at an
+extra storage cost of $s_3 - s_2$.
+
 Kiyotaki and Wright show that, in the limit as the discount rate goes to zero, the
 fundamental equilibrium is the unique stationary equilibrium if
 
 ```{math}
 :label: mms_fundcond
 
-s_3 - s_2 > \bigl(\pi^h_1(3) - \pi^h_1(2)\bigr)\tfrac{1}{3} u_1 ,
+s_3 - s_2 > \bigl(\pi^h_3(1) - \pi^h_2(1)\bigr)\tfrac{1}{3} u_1 ,
 ```
 
-and the speculative equilibrium is the unique one when the inequality is reversed.
+evaluated at fundamental holdings, and that the speculative equilibrium is the unique one when
+the inequality is reversed at speculative holdings.
 
-Raising $u_1$ enough therefore flips the model's prediction from fundamental to
-speculative.
+Footnote 7 of the paper prints $\pi^h_1(3) - \pi^h_1(2)$, which transposes the indices: with
+type 1's own holdings the right side would be $-u_1/3$ and the inequality could never fail.
 
-Economy A2 below does exactly that, and it is a good test of whether adaptive agents track
-the rational-expectations prediction.
+At the fundamental equilibrium $\pi^h_3(1) = 1$ and $\pi^h_2(1) = 1/2$, and at the speculative
+equilibrium (tabulated below) $\pi^h_2(1) = 0.586$.
 
-## Classifier systems
+The following function solves {eq}`mms_fundcond` for $u_1$; the argument $\beta$ will be
+used in {ref}`mms_impatience`.
 
-An agent is not endowed with a strategy.
+```{code-cell} ipython3
+s_A = np.array([0.1, 1.0, 20.0])           # storage costs in Economy A
 
-He is endowed with a **population of candidate rules** and a way of keeping score.
 
-A *classifier* is a string in the trinary alphabet $\{0, 1, \#\}$ split into a
-**condition** and an **action**, where $\#$ means "don't care".
+def speculation_threshold(s, π31, π21, β=1.0):
+    "The u_1 above which a type 1 agent with discount factor β prefers good 3."
+    return 3 * (s[2] - s[1]) / (β * (π31 - π21))
 
-{cite}`Goldberg1989` is a book-length treatment of classifier systems and genetic
-algorithms.
 
-Goods are encoded in binary and conditions in trinary, so with three goods two positions
-suffice:
+u_fund = speculation_threshold(s_A, π31=1.0, π21=0.5)     # at fundamental holdings
+u_spec = speculation_threshold(s_A, π31=1.0, π21=0.586)   # at speculative holdings
+print(f"fundamental equilibrium requires u_1 < {u_fund:.1f}")
+print(f"speculative equilibrium requires u_1 > {u_spec:.1f}")
+```
 
-| code | meaning |
-|---|---|
-| `1 0` | good 1 |
-| `0 1` | good 2 |
-| `0 0` | good 3 |
-| `0 #` | not good 1 |
-| `# 0` | not good 2 |
-| `# #` | any good |
+Economy A1 has $u_1 = 100$, which satisfies the fundamental condition, though the cutoff is
+only 14 percent above it.
 
-An **exchange classifier** is a string of length 7: two positions for own holding, two for
-the partner's holding, and a final binary digit for the action ($1$ = propose trade, $0$ =
+Economy A2 has $u_1 = 500$, which violates it, so for patient agents the unique stationary
+equilibrium of A2 is the speculative one.
+
+Each of these economies thus has one stationary equilibrium for patient agents, and the
+question it poses is whether that equilibrium is learnable.
+
+Economy B below has two, and poses the question of selection.
+
+### The economies
+
+The following table, modeled on the paper's Table 4, lists the economies we simulate.
+
+All have fifty agents of each type and equal utilities $u_i = u$ for every type.
+
+| economy | type $i$ produces | storage costs | $u$ | bids $b_{11}, b_{12}, b_{21}, b_{22}$ | initial rules | equilibrium for patient agents |
+|---|---|---|---|---|---|---|
+| A1.1 | 2, 3, 1 | 0.1, 1, 20 | 100 | 0.025, 0.025, 0.25, 0.25 | all 72 + 12 | fundamental |
+| A2.1 | 2, 3, 1 | 0.1, 1, 20 | 500 | 0.025, 0.025, 0.25, 0.25 | all 72 + 12 | speculative |
+| B.1 | 3, 1, 2 | 1, 4, 9 | 100 | 0.25, 0.25, 0.25, 0.25 | all 72 + 12 | fundamental and speculative |
+| A1.2 | 2, 3, 1 | 0.1, 1, 20 | 100 | 0.025, 0.025, 0.25, 0.25 | 72 + 12 random | fundamental |
+| A2.2 | 2, 3, 1 | 0.1, 1, 20 | 500 | 0.025, 0.025, 0.25, 0.25 | 72 + 12 random | speculative |
+| B.2 | 3, 1, 2 | 1, 4, 9 | 100 | 0.025, 0.025, 0.25, 0.25 | 72 + 12 random | fundamental and speculative |
+| C | 2, 3, 1 | 9, 14, 29; fiat 0 | 100 | 0.025, 0.025, 0.025, 0.25 | 150 + 20 random | fundamental |
+| D | 3, 4, 5, 1, 2 | 1, 4, 9, 20, 30 | 200 | 0.025, 0.025, 0.25, 0.25 | 180 + 20 random | not characterized |
+
+The bids are explained below; "all 72 + 12" means a complete enumeration of exchange and
+consumption rules.
+
+A2.2 and B.2 appear in the exercises.
+
+The paper's Table 4 lists Economy C's storage costs as 0.1, 20 and 70, but its Table 15, which
+reports the simulation, lists 9, 14 and 29, and we use those.
+
+## Classifier systems for the Kiyotaki-Wright environment
+
+{doc}`genetic_classifier` set out the general machinery in {ref}`gc_classifier`: the alphabet
+$\{0, 1, \#\}$, matching, specificity, and auctions among rules with strengths.
+
+Its {ref}`gc_bucket_brigade` showed how a rule that sets up a later reward gets paid for it.
+
+Here we record only what is specific to Marimon, McGrattan and Sargent: how goods are encoded,
+the two decisions each agent makes every period, and the two strength equations that link
+them.
+
+### Encoding
+
+Each type has two classifier systems, one for exchange decisions and one for consumption
+decisions.
+
+The paper's Table 1 encodes goods with three positions each: a one-hot code for "good $k$" and
+a code with a $0$ in position $k$ for "not good $k$".
+
+```{code-cell} ipython3
+WILD = -1                                   # the "don't care" symbol #
+
+
+def table1(n_goods):
+    "The paper's Table 1: one-hot codes for 'good k', then codes for 'not good k'."
+    good = np.eye(n_goods, dtype=np.int8)
+    not_good = np.full((n_goods, n_goods), WILD, dtype=np.int8)
+    np.fill_diagonal(not_good, 0)
+    return np.vstack([good, not_good])
+
+
+def code_string(c):
+    return ''.join('#' if b == WILD else str(int(b)) for b in c)
+
+
+def rule_string(cond, action, n_goods):
+    "Print a classifier the way the paper does, for example '010 100 -> 1'."
+    s = code_string(cond)
+    if len(cond) == 2 * n_goods:
+        s = s[:n_goods] + ' ' + s[n_goods:]
+    return f"{s} -> {int(action)}"
+
+
+pd.DataFrame({'code': [code_string(c) for c in table1(3)],
+              'meaning': [f'good {k}' for k in (1, 2, 3)]
+                         + [f'not good {k}' for k in (1, 2, 3)]})
+```
+
+An **exchange classifier** is a string of length 7: three positions for the agent's own
+holding, three for the partner's holding, and a binary action ($1$ = propose trade, $0$ =
 refuse).
 
-For example
+The paper's two examples are
 
 ```
-1 0 0 0 1   ->  1     "if I hold good 1 and my partner holds good 3, propose to trade"
-1 0 # #     ->  0     "if I hold good 1, refuse to trade with anyone"
+100 001 -> 1     "if I hold good 1 and my partner holds good 3, propose to trade"
+100 ##0 -> 0     "if I hold good 1 and my partner does not hold good 3, refuse"
 ```
 
-There are $6 \times 6 \times 2 = 72$ distinct exchange classifiers, which is a *complete
-enumeration* of all rules definable on the state $z_{at}$.
+A **consumption classifier** is a string of length 4: three positions for the post-trade
+holding $x^+_{at}$ and one action digit ($1$ = consume).
 
-A **consumption classifier** is a string of length 4: two positions for the post-trade holding
-$x^+_{at}$ and one action digit ($1$ = consume).
+A *complete enumeration* pairs every condition in Table 1 with both actions.
 
-There are $6 \times 2 = 12$ of these.
+That gives $6 \times 6 \times 2 = 72$ exchange classifiers and $6 \times 2 = 12$ consumption
+classifiers, enough to express every Markov strategy.
+
+Table 1 has no condition meaning "any good", so the enumeration contains no rule such as "eat
+whatever you hold".
+
+When rules are drawn at random, each position is $0$, $1$ or $\#$ with equal probability.
+
+There are then $3^6 \times 2 = 1458$ possible exchange strings and $3^3 \times 2 = 54$
+consumption strings, and many of them match no state at all: `110`, for instance, is no
+good's code.
+
+With four objects (Economy C) or five goods (Economy D) the codes are one-hot strings of
+length four or five.
+
+For C that gives the paper's count of $3^8 \times 2 = 13{,}122$ possible exchange strings.
+
+The paper does not say how it encoded the goods of Economy D, so the five-position code is
+our choice.
+
+A rule's **specificity** is $\sigma = 1/(1 + \text{number of } \#\text{'s})$.
+
+An exchange rule about two particular goods has $\sigma = 1$, a rule like `100 ##0` has
+$\sigma = 1/3$, and a rule about two "not" conditions has $\sigma = 1/5$.
 
 ### The auction
 
 Attached to classifier $e$ at date $t$ is a **strength** $S^a_e(t)$.
 
-Given the state $z_{at}$, let
-
-$$
-M_e(z_{at}) = \{e : z_{at} \text{ matches the condition part of } e\}
-$$
-
-be the set of classifiers whose conditions are satisfied.
+Given the state $z_{at}$, let $M_e(z_{at})$ be the set of exchange classifiers whose
+conditions $z_{at}$ satisfies.
 
 The classifier that acts is the strongest matched one,
 
@@ -310,30 +439,54 @@ The classifier that acts is the strongest matched one,
 e_t(z_{at}) = \arg\max\,\{S^a_e(t) : e \in M_e(z_{at})\} ,
 ```
 
-and the consumption classifier is chosen the same way from $M_c(z_{at})$.
+and the consumption classifier is chosen the same way from the classifiers that match
+$x^+_{at}$.
+
+This is the paper's equation (6); we break ties at random, a detail the paper does not
+specify.
+
+Each matched classifier also has a **bid**, a fraction of its strength,
+
+$$
+b_1(e) = b_{11} + b_{12}\sigma_e
+\qquad\text{and}\qquad
+b_2(c) = b_{21} + b_{22}\sigma_c
+$$
+
+for exchange and consumption classifiers, respectively.
+
+Under {eq}`mms_auction` the bid plays no role in deciding who wins: it only determines the
+payments described below.
+
+The paper's verbal description calls the winner "the highest bidder" and says that bids that
+rise with specificity "favor specific rules over more general rules".
+
+That would be true of an auction on $b \cdot S$ among rules of positive strength, but under
+{eq}`mms_auction` a larger bid fraction pulls a rule's strength at a rest point *toward zero*,
+as the note below shows.
+
+So among rules whose downstream payments are positive, higher bids lower stationary strength
+and favor general rules; only among rules whose downstream payments are negative do they favor
+specific rules, as the paper says.
+
+The argmax auction is the greedy limit of the softmax auction in {doc}`genetic_classifier`'s
+two-armed bandit exercise ({ref}`gc_ex3`), in which matched rule $r$ wins with probability
+proportional to $e^{\eta S_r}$ and $\eta \to \infty$ gives the argmax; that lecture calls the
+intensity $\beta$, a letter we reserve here for discount factors.
+
+The paper's footnote 5 mentions such a stochastic auction as an alternative.
+
+A greedy auction avoids probability matching, but it leaves all experimentation to the
+initial strengths and to the operators that create new rules, a choice that will matter in
+Economy A2.
 
 ### The bucket brigade
 
 Strengths are updated by a system of internal payments that Holland calls a *bucket
 brigade*.
 
-Only the classifier that wins an auction changes its strength, so we attach to each
-classifier a counter $\tau^a_e(t)$ recording the number of auctions it has won up to $t$,
-initialized at 1.
-
-A matched classifier $e$ bids the fraction
-
-$$
-b_1(e) = b_{11} + b_{12}\sigma_e ,
-\qquad
-\sigma_e = \frac{1}{1 + \text{number of } \#\text{'s in } e}
-$$
-
-of its strength, and similarly $b_2(c) = b_{21} + b_{22}\sigma_c$ for consumption
-classifiers.
-
-Because $\sigma_e$ rises with specificity, specific rules outbid general ones of equal
-strength.
+Only the classifier that wins an auction changes its strength, so each classifier carries a
+counter $\tau^a_e(t)$ recording the number of auctions it has won, initialized at 1.
 
 Payments flow as follows.
 
@@ -343,10 +496,7 @@ Payments flow as follows.
 * The winning exchange classifier at $t$ pays its bid to the winning **consumption**
   classifier at $t-1$, which set up the state $z_{at}$.
 
-This chain is what transmits the reward for consuming backwards to the trades that made
-consumption possible.
-
-The resulting laws of motion are
+The resulting laws of motion are the paper's equations (12) and (13),
 
 ```{math}
 :label: mms_strengthc
@@ -366,37 +516,37 @@ S^a_{e,\tau_e(t)+1} = S^a_{e,\tau_e(t)}
 
 where $I^a_e(t)$ and $I^a_c(t)$ are indicators for winning the auction at $t$.
 
-The timing in {eq}`mms_strengthc` is worth reading carefully, because it is what carries reward
-across periods.
-
-The consumption classifier updated at date $t$ is the one that won at $t-1$: it collects the
-external payoff its own decision earned, and it collects the bid $b_1(e)S_e$ from the exchange
-classifier winning *now*, because that is the classifier whose opportunity to act it created.
-
-The exchange classifier, in turn, is paid within the period by the consumption classifier that
-follows it.
-
-So each bid travels one step back along the chain
+So the consumption classifier updated at date $t$ is the one that won at $t-1$, and each bid
+travels one step back along the chain
 
 $$
 \cdots \;\to\; c_{t-1} \;\to\; e_t \;\to\; c_t \;\to\; e_{t+1} \;\to\; \cdots
 $$
 
-and a payoff collected at consumption seeps backwards, one link per payment, to the trades that
-made it possible.
+An exchange classifier that proposes a trade which is *not* reciprocated is not charged, its
+counter does not advance, and it pays nothing backward: the agent learns nothing from an
+offer that was refused.
 
-An exchange classifier that proposes a trade which is *not* reciprocated is not charged and
-its counter does not advance: the agent learns nothing from an offer that was refused.
+All agents of a given type share one classifier system, as in the paper.
+
+The paper runs {eq}`mms_strengthc`-{eq}`mms_strengthe` in "synthetic time", counting matches
+rather than periods, so read literally a consumption classifier is paid by the next exchange
+classifier of its *type* to act, which usually belongs to a different agent.
+
+We instead link each agent's own consecutive decisions, which is what the equations describe
+for a single agent, and the reading under which a decision is credited with its own
+consequences.
 
 ```{note}
-Equations {eq}`mms_strengthc`-{eq}`mms_strengthe` make strength a **cumulative average** of
-past net receipts rather than a cumulative total, which is what Holland's original
-specification used.
+Equations {eq}`mms_strengthc`-{eq}`mms_strengthe` make strength a running **average** of past
+net receipts rather than a cumulative total, which is what Holland's original specification
+used; the paper's footnote 8 says the averaging was chosen so that strengths could converge.
 
-This is the innovation that makes strengths converge.
+With $1/\tau$ gains these are stochastic approximation recursions, the same decreasing-gain
+recursion that drives the learners of {doc}`olg_adaptive_money` and
+{doc}`learning_approximation` ({ref}`br_one_recursion`).
 
-With $1/\tau$ gains these are stochastic approximation recursions, so any limit point must
-satisfy
+So any limit point must satisfy the paper's equation (17),
 
 $$
 \mathbb{E}\Bigl[(1 + b_2(c))S_c - \sum_e I_e b_1(e) S_e - U(\gamma_c)\Bigr] = 0,
@@ -404,191 +554,287 @@ $$
 \mathbb{E}\Bigl[(1 + b_1(e))S_e - \sum_c I_c b_2(c) S_c\Bigr] = 0 .
 $$
 
-Marimon, McGrattan and Sargent define a set of strengths solving these equations to be
-*stationary*, and a stationary Nash equilibrium to be supported when the rules that win
-auctions at stationary strengths are exactly the rules that support equilibrium behavior.
+Marimon, McGrattan and Sargent call strengths solving these equations *stationary*, and say a
+stationary Nash equilibrium is *supported* when the rules that win auctions at stationary
+strengths are exactly the rules that implement equilibrium behavior.
+
+The second equation gives $S_e = \mathbb{E}[b_2(c) S_c]/(1 + b_1(e))$, so a larger bid
+fraction $b_1(e)$ shrinks a rule's stationary strength toward zero: it lowers $S_e$ when
+$\mathbb{E}[b_2(c) S_c] > 0$ and raises it when $\mathbb{E}[b_2(c) S_c] < 0$.
 ```
 
-All agents of a given type share one classifier system, as in the paper; this economizes on
-computation at the cost of making all type $i$ agents experiment simultaneously.
+One more feature of the system drives much of what follows.
+
+All strengths start at zero, while nearly every net payoff an agent experiences is negative,
+because storage is costly.
+
+So an untried rule beats every rule whose experience so far has been net costly, and under
+the argmax auction an agent sweeps through its untried rules early on.
+
+This *optimistic initialization* is the main way an agent experiments when it starts from a
+complete enumeration.
+
+It has a failure mode.
+
+A rule that has never acted, or whose offers were all refused so that it learned nothing,
+keeps its strength of zero, and it loses every auction to a rival whose strength happens to
+sit slightly above zero, for as long as that rival's average stays there.
 
 ## Implementation
 
-We store a population of classifiers as a set of parallel NumPy arrays rather than as a
-list of objects, which lets us find all matched rules with a single vectorized comparison.
+The state spaces are tiny, so for every rule we precompute the set of states it matches and
+store it as the bits of an integer: state $(x, y)$ of an exchange rule is bit $x G + y$,
+where $G$ is the number of goods.
 
-The wildcard $\#$ is represented by $-1$.
+The simulation loops run under Numba's `njit`.
+
+Classifier systems are stored as parallel arrays indexed by type and rule.
 
 ```{code-cell} ipython3
-WILD = -1
-
-# binary codes for goods, one row per good
-CODES = {
-    3: np.array([[1, 0], [0, 1], [0, 0]]),
-    4: np.array([[1, 0], [0, 1], [0, 0], [1, 1]]),          # good 4 = fiat money
-    5: np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1],
-                 [1, 1, 0], [1, 0, 1]]),
-}
-
-# the six conditions expressible with two trits (see the table above)
-CONDS_2 = np.array([[1, 0], [0, 1], [0, 0],
-                    [0, WILD], [WILD, 0], [WILD, WILD]])
+class Rules(NamedTuple):
+    "Classifier systems for all types, stored as arrays indexed [type, rule]."
+    cond: np.ndarray        # condition part, entries in {0, 1, WILD}
+    action: np.ndarray      # action part: 1 = trade (or consume), 0 = refuse
+    strength: np.ndarray    # S, a running average of net receipts
+    used: np.ndarray        # the counter tau, initialized at 1
+    match: np.ndarray       # bit s is set if the rule matches state s
+    sigma: np.ndarray       # specificity, 1 / (1 + number of #'s)
+    born: np.ndarray        # a stamp that changes whenever the rule is replaced
 
 
-def rule_string(cond, action):
-    "Print a classifier the way the paper does."
-    body = ''.join('#' if b == WILD else str(int(b)) for b in cond)
-    return f"{body} -> {int(action)}"
+@njit
+def goods_matched(field):
+    "Bitmask of the goods whose one-hot code satisfies a condition field."
+    n_goods = field.shape[0]
+    mask = 0
+    for g in range(n_goods):
+        ok = True
+        for j in range(n_goods):
+            if field[j] != WILD and field[j] != (1 if j == g else 0):
+                ok = False
+        if ok:
+            mask |= 1 << g
+    return mask
+
+
+@njit
+def refresh(R, i, r, n_goods):
+    "Record which states rule r of type i matches, and its specificity."
+    c = R.cond[i, r]
+    if c.shape[0] == n_goods:                    # consumption rule: state = holding
+        m = goods_matched(c)
+    else:                                        # exchange rule: state = (own, partner)
+        own, partner = goods_matched(c[:n_goods]), goods_matched(c[n_goods:])
+        m = 0
+        for x in range(n_goods):
+            for y in range(n_goods):
+                if (own >> x) & 1 and (partner >> y) & 1:
+                    m |= 1 << (x * n_goods + y)
+    R.match[i, r] = m
+    R.sigma[i, r] = 1.0 / (1.0 + np.sum(c == WILD))
+
+
+@njit
+def set_rule(R, i, r, cond, action, strength, n_goods, stamp):
+    "Overwrite rule r of type i with a new classifier, whose counter starts at 1."
+    R.cond[i, r] = cond
+    R.action[i, r] = action
+    R.strength[i, r] = strength
+    R.used[i, r] = 1
+    stamp[0] += 1
+    R.born[i, r] = stamp[0]
+    refresh(R, i, r, n_goods)
 ```
 
+A complete enumeration pairs every condition in Table 1 with both actions, while a random
+population draws every position independently.
+
+Following the paper, all initial strengths are zero.
+
 ```{code-cell} ipython3
-class Rules:
+def make_rules(cond, action, n_goods):
+    n_types, n = action.shape
+    R = Rules(cond.astype(np.int8), action.astype(np.int8),
+              np.zeros((n_types, n)), np.ones((n_types, n), np.int64),
+              np.zeros((n_types, n), np.int64), np.zeros((n_types, n)),
+              np.zeros((n_types, n), np.int64))
+    for i in range(n_types):
+        for r in range(n):
+            refresh(R, i, r, n_goods)
+    return R
+
+
+def complete_rules(n_types, n_goods, exchange, specific_only=False):
+    "Every Table 1 condition (or pair of conditions) with both actions."
+    conds = table1(n_goods)[:n_goods] if specific_only else table1(n_goods)
+    if exchange:
+        conds = np.array([np.concatenate([a, b]) for a in conds for b in conds])
+    cond = np.tile(np.repeat(conds, 2, axis=0), (n_types, 1, 1))
+    action = np.tile([0, 1], (n_types, len(conds)))
+    return make_rules(cond, action, n_goods)
+
+
+def random_rules(n_types, n_rules, length, n_goods, rng):
+    "Rules whose positions are drawn independently and uniformly from {0, 1, #}."
+    return make_rules(rng.integers(-1, 2, size=(n_types, n_rules, length)),
+                      rng.integers(0, 2, size=(n_types, n_rules)), n_goods)
+```
+
+The auction {eq}`mms_auction` follows.
+
+For the exercises it also offers the softmax auction with intensity $\eta$.
+
+Several operators below must delete a "weak" rule, and the paper measures weakness "in terms
+of a combination of strength and cumulated number of times the classifier has won the bidding
+in the past".
+
+Our combination adds the two, each rescaled to $[0, 1]$ across the candidates.
+
+```{code-cell} ipython3
+@njit
+def auction(R, i, s, eta, rng):
     """
-    A population of classifiers held as parallel arrays.
+    The rule of type i that decides in state s, or -1 if no rule matches.
 
-    cond[i]     condition part of rule i, entries in {0, 1, WILD}
-    action[i]   action part of rule i, in {0, 1}
-    strength[i] S_i, a running average of net receipts
-    used[i]     the counter tau_i, initialized at 1
-    traded[i]   number of times rule i actually executed a trade
-
+    eta = inf is the paper's auction: the strongest matched rule wins, with
+    ties broken at random.  A finite eta gives a softmax auction instead.
     """
+    S, match = R.strength[i], R.match[i]
+    best, top, n_ties = -1, -np.inf, 0
+    for r in range(S.shape[0]):
+        if (match[r] >> s) & 1:
+            if S[r] > top:
+                best, top, n_ties = r, S[r], 1
+            elif S[r] == top:
+                n_ties += 1
+                if rng.random() * n_ties < 1:
+                    best = r
+    if best < 0 or eta == np.inf:
+        return best
+    total = 0.0
+    for r in range(S.shape[0]):
+        if (match[r] >> s) & 1:
+            total += np.exp(eta * (S[r] - top))
+    x = rng.random() * total
+    for r in range(S.shape[0]):
+        if (match[r] >> s) & 1:
+            x -= np.exp(eta * (S[r] - top))
+            if x <= 0:
+                return r
+    return best
 
-    def __init__(self, cond, action, strength=None):
-        self.cond = np.asarray(cond, dtype=np.int64)
-        self.action = np.asarray(action, dtype=np.int64)
-        n = len(self.action)
-        self.strength = (np.zeros(n) if strength is None
-                         else np.asarray(strength, float).copy())
-        self.used = np.ones(n, dtype=np.int64)
-        self.traded = np.zeros(n, dtype=np.int64)
 
-    @property
-    def n(self):
-        return len(self.action)
-
-    @property
-    def length(self):
-        return self.cond.shape[1]
-
-    def matched(self, state):
-        "Boolean mask of rules whose condition is satisfied by state."
-        return np.all((self.cond == WILD) | (self.cond == state), axis=1)
-
-    def specificity(self, i):
-        "sigma_i = 1 / (1 + number of wildcards)."
-        return 1.0 / (1.0 + np.count_nonzero(self.cond[i] == WILD))
-
-    def replace(self, i, cond, action, strength, used=1, traded=0):
-        "Overwrite rule i."
-        self.cond[i] = cond
-        self.action[i] = action
-        self.strength[i] = strength
-        self.used[i] = used
-        self.traded[i] = traded
+@njit
+def weakest(R, i, s, exclude):
+    """
+    The weakest rule of type i other than `exclude`, scoring each candidate by
+    its strength plus its number of wins, each rescaled to [0, 1].  Candidates
+    are the rules matching state s, or all rules if none does or if s < 0.
+    """
+    S, used, match = R.strength[i], R.used[i], R.match[i]
+    n = S.shape[0]
+    cand = np.zeros(n, np.bool_)
+    for r in range(n):
+        cand[r] = r != exclude and (s < 0 or ((match[r] >> s) & 1) == 1)
+    if not cand.any():
+        for r in range(n):
+            cand[r] = r != exclude
+    lo, hi = S[cand].min(), S[cand].max()
+    u_lo, u_hi = used[cand].min(), used[cand].max()
+    best, best_score = -1, np.inf
+    for r in range(n):
+        if cand[r]:
+            score = ((S[r] - lo) / (hi - lo + 1e-12)
+                     + (used[r] - u_lo) / (u_hi - u_lo + 1e-12))
+            if score < best_score:
+                best, best_score = r, score
+    return best
 ```
 
-A complete enumeration pairs every condition with both actions.
+Three of the four operators that the paper adds for random rules (its Section 6) act inside
+an auction, so we implement them here.
 
-A random population draws conditions and actions uniformly, which is how the
-incomplete-enumeration economies start.
+**Creation** fires when no rule matches the state: the weakest rule is replaced by one whose
+condition is exactly the state, with a random action.
+
+**Diversification** fires when every matched rule calls for the same action: the weakest
+*other* matched rule is replaced by a rule for exactly this state with the opposite action
+and the winner's strength, which then ties with the winner.
+
+**Specialization** is switched on in period $t$ with probability $f_s(t) = 1/(2\sqrt{t})$.
+
+When it is on, each $\#$ in the winner's condition is replaced, with probability
+$p_s = 0.01$, by the bit that matches the current state, and the sharpened copy replaces a
+weak matched rule.
+
+Under a complete enumeration every state is matched and every condition appears with both
+actions, so creation and diversification never fire, as the paper notes; specialization is
+used only with random rules.
 
 ```{code-cell} ipython3
-def complete_rules(pair):
-    "All two-trit rules; pair=True for exchange rules, False for consumption rules."
-    if pair:
-        conds = np.array([np.concatenate([a, b])
-                          for a in CONDS_2 for b in CONDS_2])
-    else:
-        conds = CONDS_2.copy()
-    return Rules(np.repeat(conds, 2, axis=0), np.tile([0, 1], len(conds)))
+@njit
+def decide(R, i, s, code, eta, specialize, ps, n_goods, rng, stamp):
+    """
+    Run the auction of type i in state s, whose encoding is `code`, applying
+    the paper's creation, diversification and specialization operators.
+    """
+    w = auction(R, i, s, eta, rng)
+    if w < 0:                                          # creation
+        j = weakest(R, i, -1, -1)
+        set_rule(R, i, j, code, rng.integers(0, 2), 0.0, n_goods, stamp)
+        return j
 
+    one_action = True                                  # diversification
+    for r in range(R.action.shape[1]):
+        if (R.match[i, r] >> s) & 1 and R.action[i, r] != R.action[i, w]:
+            one_action = False
+            break
+    if one_action:
+        j = weakest(R, i, s, w)
+        set_rule(R, i, j, code, 1 - R.action[i, w], R.strength[i, w],
+                 n_goods, stamp)
+        w = auction(R, i, s, eta, rng)
 
-def random_rules(n, length, rng):
-    return Rules(rng.integers(-1, 2, size=(n, length)),
-                 rng.integers(0, 2, size=n),
-                 rng.random(n) * 0.1)
+    if specialize:                                     # specialization
+        new = R.cond[i, w].copy()
+        changed = False
+        for k in range(new.shape[0]):
+            if new[k] == WILD and rng.random() < ps:
+                new[k] = code[k]
+                changed = True
+        if changed:
+            j = weakest(R, i, s, w)
+            set_rule(R, i, j, new, R.action[i, w], R.strength[i, w],
+                     n_goods, stamp)
+    return w
 ```
-
-The auction {eq}`mms_auction` picks the strongest matched rule, with ties broken by
-position.
-
-```{code-cell} ipython3
-def auction(rules, state):
-    "Index of the strongest rule matching state, or -1 if none matches."
-    idx = np.flatnonzero(rules.matched(state))
-    if idx.size == 0:
-        return -1, idx
-    return idx[np.argmax(rules.strength[idx])], idx
-```
-
-Two operators are needed even without a genetic algorithm.
-
-**Creation** fires when the current state matches no rule at all: a redundant or weak rule
-is overwritten by one whose condition is exactly the state just observed, with a randomly
-drawn action.
-
-**Diversification** fires when every matched rule calls for the same action: a rule with the
-opposite action is planted so that the alternative can be tried and scored.
-
-Both keep the population size constant.
-
-```{code-cell} ipython3
-def create(rules, state, rng):
-    "No rule matches state, so overwrite the weakest of the most redundant rules."
-    groups = {}
-    for i in range(rules.n):
-        groups.setdefault(tuple(rules.cond[i]), []).append(i)
-    biggest = max(groups.values(), key=len)
-    group = biggest if len(biggest) > 1 else range(rules.n)
-    j = min(group, key=lambda i: rules.strength[i])
-    rules.replace(j, state, rng.integers(0, 2), rules.strength.mean())
-    return j
-
-
-def diversify_simple(rules, matches):
-    "If every matched rule takes the same action, plant the opposite action."
-    if len(set(rules.action[matches])) > 1:
-        return
-    weak = matches[np.argmin(rules.strength[matches])]
-    rules.replace(weak, rules.cond[weak], 1 - rules.action[matches[0]],
-                  rules.strength[matches].mean())
-```
-
-### Describing an economy
 
 An `Economy` collects the parameters of the physical environment together with the settings
 of the learning algorithm.
 
-The field `method` selects one of the three programs used in the paper:
+Goods are numbered from 0 in the code and from 1 in the text, and fiat money, when present,
+is the last good.
 
-* `'enumerate'` -- start from a complete enumeration of rules with zero strengths, and use
-  no genetic algorithm;
-* `'ga3'` -- start from random rules and evolve them with single-point crossover and
-  mutation;
-* `'ga4'` -- start from random rules and evolve them with a *generalizing* crossover, used
-  for the largest economy.
-
-Fiat money, when present, is the last good: it has zero storage cost, gives no utility, and
-cannot be consumed.
+The last three fields are used only in the exercises.
 
 ```{code-cell} ipython3
 @dataclass
 class Economy:
     name: str
-    produces: np.ndarray            # produces[i] = good produced by type i
-    storage_costs: np.ndarray       # one entry per good
-    u: float = 100.0                # utility from own consumption good
+    produces: np.ndarray               # produces[i] = good produced by type i
+    storage_costs: np.ndarray          # one per good; fiat money, if any, is last
+    u: float = 100.0                   # utility from consuming one's own good
     n_agents_per_type: int = 50
-    method: str = 'enumerate'       # 'enumerate' | 'ga3' | 'ga4'
-    n_trade_rules: int = 72
+    random_rules: bool = False         # False: complete enumeration, no GA
+    n_trade_rules: int = 72            # population sizes when rules are random
     n_consume_rules: int = 12
-    b_trade: tuple = (0.025, 0.025)     # (b11, b12)
-    b_consume: tuple = (0.25, 0.25)     # (b21, b22)
-    n_fiat: int = 0                 # units of fiat money injected at t = 0
-    start: str = 'random'           # initial holdings: 'random' | 'production'
-    pcross: float = 0.6
-    pmutation: float = 0.01
+    b_trade: tuple = (0.025, 0.025)    # (b11, b12)
+    b_consume: tuple = (0.25, 0.25)    # (b21, b22)
+    n_fiat: int = 0                    # units of fiat money handed out at t = 0
+    ps: float = 0.01                   # specialization: chance a # is filled in
+    eta: float = np.inf                # inf: argmax auction; finite: softmax
+    no_eat: bool = False               # True: only one's own good can be eaten
+    specific_only: bool = False        # True: enumerate fully specific rules only
 
     @property
     def n_types(self):
@@ -599,285 +845,165 @@ class Economy:
         return len(self.storage_costs)
 
     @property
-    def n_agents(self):
-        return self.n_types * self.n_agents_per_type
-
-    @property
     def fiat(self):
-        return self.n_goods > self.n_types
-
-    @property
-    def n_bits(self):
-        return CODES[self.n_goods].shape[1]
-
-    def code(self, good):
-        return CODES[self.n_goods][good]
+        "Index of fiat money, or -1 if there is none."
+        return self.n_goods - 1 if self.n_goods > self.n_types else -1
 ```
 
-### The agent
+The bucket brigade updates two strengths for each agent each period: the exchange rule that
+won today, as in {eq}`mms_strengthe`, and the consumption rule that won for the same agent
+yesterday, as in {eq}`mms_strengthc`, whose second receipt is only now known.
 
-An `Agent` represents one *type*: it owns an exchange population and a consumption
-population, and remembers which consumption rule won last period so that it can be paid by
-this period's exchange rule.
+The `born` stamps guard against paying a rule that has been overwritten in the meantime.
 
 ```{code-cell} ipython3
-class Agent:
-
-    def __init__(self, i, econ, rng):
-        self.i, self.econ, self.rng = i, econ, rng
-        if econ.method == 'enumerate':
-            self.trade = complete_rules(pair=True)
-            self.consume = complete_rules(pair=False)
-        else:
-            self.trade = random_rules(econ.n_trade_rules, 2 * econ.n_bits, rng)
-            self.consume = random_rules(econ.n_consume_rules, econ.n_bits, rng)
-        self.pending = None            # last period's consumption rule, awaiting settlement
-
-    def decide(self, rules, state, specialize=False):
-        "Run the auction on `state`, applying the operators the method calls for."
-        win, matches = auction(rules, state)
-        if win < 0:                                  # creation
-            j = create(rules, state, self.rng)
-            return rules.action[j], j
-        if self.econ.method == 'enumerate':
-            diversify_simple(rules, matches)
-        elif self.econ.method == 'ga4':
-            diversify_clone(rules, matches, win)
-            if specialize:
-                specialize_winner(rules, win, self.econ.pmutation, self.rng)
-        if self.econ.method != 'ga3':
-            win, matches = auction(rules, state)     # the population may have changed
-        return rules.action[win], win
-
-    def trade_decision(self, own, partner, specialize=False):
-        state = np.concatenate([self.econ.code(own), self.econ.code(partner)])
-        return self.decide(self.trade, state, specialize)
-
-    def consume_decision(self, good, specialize=False):
-        return self.decide(self.consume, self.econ.code(good), specialize)
-
-    def update(self, e, c, payoff, active):
-        """
-        The bucket brigade laws of motion for strengths.
-
-        `e` and `c` index the winning exchange and consumption rules and `active`
-        records whether the exchange rule's action was actually carried out.
-
-        """
-        b11, b12 = self.econ.b_trade
-        b21, b22 = self.econ.b_consume
-        T, C = self.trade, self.consume
-        b1 = b11 + b12 * T.specificity(e)
-        b2 = b21 + b22 * C.specificity(c)
-
-        if active:                       # exchange rule: pays b1, receives b2 * S_c
-            τ = T.used[e]
-            T.used[e] += 1
-            T.traded[e] += int(T.action[e] == 1)
-            T.strength[e] -= ((1 + b1) * T.strength[e] - b2 * C.strength[c]) / τ
-
-        # Now settle last period's consumption rule.  Its update waits a period
-        # because only now is the second of its two receipts known: it collects
-        # the payoff its own decision earned *and* the bid of the exchange rule
-        # winning today, whose chance to act it created.
-        if self.pending is not None:
-            p, u_prev = self.pending
-            inflow = b1 * T.strength[e] if active else 0.0
-            b2p = b21 + b22 * C.specificity(p)
-            tau_p = C.used[p]
-            C.used[p] += 1
-            C.strength[p] -= ((1 + b2p) * C.strength[p] - inflow - u_prev) / tau_p
-
-        self.pending = (c, payoff)
+@njit
+def bucket_brigade(E, C, i, a, e, active, c, payoff, b, pending):
+    """
+    Update strengths for agent a of type i: first the exchange rule e that
+    won today, then the consumption rule that won for this agent yesterday.
+    """
+    b11, b12, b21, b22 = b
+    last_c, last_payoff, last_born = pending
+    S_e = E.strength[i, e]                        # before its own update
+    b1 = b11 + b12 * E.sigma[i, e]
+    if active:                                    # equation (13)
+        tau = E.used[i, e]
+        E.used[i, e] = tau + 1
+        b2 = b21 + b22 * C.sigma[i, c]
+        E.strength[i, e] = S_e - ((1 + b1) * S_e - b2 * C.strength[i, c]) / tau
+    p = last_c[a]
+    if p >= 0 and C.born[i, p] == last_born[a]:   # equation (12)
+        inflow = b1 * S_e if active else 0.0
+        b2p = b21 + b22 * C.sigma[i, p]
+        tau = C.used[i, p]
+        C.used[i, p] = tau + 1
+        C.strength[i, p] -= ((1 + b2p) * C.strength[i, p]
+                             - inflow - last_payoff[a]) / tau
+    last_c[a], last_payoff[a], last_born[a] = c, payoff, C.born[i, c]
 ```
 
-### The simulation
+Each period all $A$ agents are shuffled into $A/2$ pairs, and each pair makes its exchange
+decisions, trades if both propose, makes its consumption decisions, and settles accounts.
 
-Each period, all $A$ agents are shuffled into $A/2$ pairs; each pair trades, consumes, and
-updates strengths; then, in the incomplete-enumeration economies, the genetic operators run.
+```{code-cell} ipython3
+@njit
+def run_period(E, C, hold, types, produces, s, u, fiat, b, pending, eta,
+               specialize, ps, no_eat, rng, stamp, exch, cons):
+    "One period: random matching, two auctions per agent, and the accounting."
+    n_goods = s.shape[0]
+    order = rng.permutation(hold.shape[0])
+    code = np.zeros(2 * n_goods, np.int8)
+    e = np.zeros(2, np.int64)
+    e_born = np.zeros(2, np.int64)
+    offer = np.zeros(2, np.int64)
+    for k in range(hold.shape[0] // 2):
+        pair = (order[2 * k], order[2 * k + 1])
+        x = (hold[pair[0]], hold[pair[1]])
 
-A small proportional tax on exchange strengths, present in the authors' code, keeps
-strengths from locking in permanently.
+        for m in range(2):                        # exchange decisions
+            i = types[pair[m]]
+            code[:] = 0
+            code[x[m]] = 1
+            code[n_goods + x[1 - m]] = 1
+            e[m] = decide(E, i, x[m] * n_goods + x[1 - m], code, eta,
+                          specialize, ps, n_goods, rng, stamp)
+            e_born[m], offer[m] = E.born[i, e[m]], E.action[i, e[m]]
+        trade = offer[0] == 1 and offer[1] == 1
+        if trade:
+            hold[pair[0]], hold[pair[1]] = x[1], x[0]
+            exch[types[pair[0]], x[0], x[1]] += 1
+            exch[types[pair[1]], x[1], x[0]] += 1
+
+        for m in range(2):                        # consumption decisions
+            a = pair[m]
+            i, g = types[a], hold[a]
+            code[:] = 0
+            code[g] = 1
+            c = decide(C, i, g, code[:n_goods], eta, specialize, ps,
+                       n_goods, rng, stamp)
+            cons[i, g, 0] += 1
+            if C.action[i, c] == 1 and g != fiat and (not no_eat or g == i):
+                cons[i, g, 1] += 1
+                hold[a] = produces[i]
+                payoff = (u if g == i else 0.0) - s[produces[i]]
+            else:
+                payoff = -s[g]
+            active = (trade or offer[m] == 0) and E.born[i, e[m]] == e_born[m]
+            bucket_brigade(E, C, i, a, e[m], active, c, payoff, b, pending)
+```
+
+A `Simulation` holds the state of an economy and runs it period by period, recording
+holdings, trades and consumption decisions.
+
+Initial holdings are random, as in the paper, and fiat money is handed to randomly chosen
+agents.
+
+With random rules, the genetic algorithm `generalize` runs after each period; it is defined
+in {ref}`mms_ga`, before the first economy that needs it.
 
 ```{code-cell} ipython3
 class Simulation:
 
     def __init__(self, econ, seed=0):
         self.econ = econ
-        self.rng = np.random.default_rng(seed)
-        self.agents = [Agent(i, econ, self.rng) for i in range(econ.n_types)]
-        self.types = np.repeat(np.arange(econ.n_types), econ.n_agents_per_type)
-
-        if econ.start == 'random':
-            self.holdings = self.rng.integers(0, econ.n_types, size=econ.n_agents)
+        self.rng = rng = np.random.default_rng(seed)
+        K, G = econ.n_types, econ.n_goods
+        if econ.random_rules:
+            self.E = random_rules(K, econ.n_trade_rules, 2 * G, G, rng)
+            self.C = random_rules(K, econ.n_consume_rules, G, G, rng)
         else:
-            self.holdings = econ.produces[self.types].copy()
+            self.E = complete_rules(K, G, True, econ.specific_only)
+            self.C = complete_rules(K, G, False, econ.specific_only)
+        self.types = np.repeat(np.arange(K), econ.n_agents_per_type)
+        A = len(self.types)
+        self.hold = rng.integers(0, K, size=A)       # random commodity holdings
         if econ.n_fiat:
-            who = self.rng.choice(econ.n_agents, size=econ.n_fiat, replace=False)
-            self.holdings[who] = econ.n_goods - 1
-
+            self.hold[rng.choice(A, econ.n_fiat, replace=False)] = econ.fiat
+        self.pending = (np.full(A, -1), np.zeros(A), np.zeros(A, np.int64))
+        self.stamp = np.zeros(1, np.int64)
+        self.t = 0
         self.hold_hist, self.exch_hist, self.cons_hist = [], [], []
-        self.trades, self.eaten = [], []
 
-    def run(self, T, verbose=False):
+    def run(self, T):
         econ, rng = self.econ, self.rng
-        evolving = econ.method != 'enumerate'
-
-        if evolving:
-            # the genetic algorithm fires on even dates with probability 1/sqrt(t/2)
-            p = 1.0 / np.sqrt(np.arange(1, T // 2 + 1))
-            even = np.arange(1, T, 2)
-            ga_dates = np.zeros(T, dtype=bool)
-            ga_dates[even] = p[:len(even)] > rng.random(len(even))
-            spec_dates = np.zeros(T, dtype=bool)
-            spec_dates[even] = p[:len(even)] > rng.random(len(even))
-
-        for t in range(1, T + 1):
-            spec = evolving and econ.method == 'ga4' and spec_dates[t - 1]
-            n_trades = n_eaten = 0
-            exch = np.zeros((econ.n_types, econ.n_goods, econ.n_goods))
-            cons = np.zeros((econ.n_types, econ.n_goods, 2))
-
-            order = rng.permutation(econ.n_agents)
-            for k in range(econ.n_agents // 2):
-                a, b = order[2 * k], order[2 * k + 1]
-                ia, ib = self.types[a], self.types[b]
-                ga, gb = self.holdings[a], self.holdings[b]
-                A, B = self.agents[ia], self.agents[ib]
-
-                # --- exchange ---
-                la, ea = A.trade_decision(ga, gb, spec)
-                lb, eb = B.trade_decision(gb, ga, spec)
-                swap = (la == 1) and (lb == 1)
-                if swap:
-                    self.holdings[a], self.holdings[b] = gb, ga
-                    n_trades += 1
-                    exch[ia, ga, gb] += 1
-                    exch[ib, gb, ga] += 1
-
-                # --- consumption ---
-                pa, pb = self.holdings[a], self.holdings[b]
-                ca, wa = A.consume_decision(pa, spec)
-                cb, wb = B.consume_decision(pb, spec)
-                cons[ia, pa, 0] += 1
-                cons[ib, pb, 0] += 1
-
-                ua = self.consume_and_produce(a, ia, pa, ca)
-                if ca == 1:
-                    cons[ia, pa, 1] += 1
-                    n_eaten += pa == ia
-                ub = self.consume_and_produce(b, ib, pb, cb)
-                if cb == 1:
-                    cons[ib, pb, 1] += 1
-                    n_eaten += pb == ib
-
-                # --- accounting ---
-                A.update(ea, wa, ua, swap or la == 0)
-                B.update(eb, wb, ub, swap or lb == 0)
-
-            if evolving:
-                if ga_dates[t - 1]:
-                    self.evolve()
-                if econ.method == 'ga3':
-                    for A in self.agents:
-                        specialize_all(A.trade, t, rng)
-                        specialize_all(A.consume, t, rng)
-            self.tax()
-
-            self.hold_hist.append(self.distribution())
+        K, G = econ.n_types, econ.n_goods
+        b = tuple(float(v) for v in econ.b_trade + econ.b_consume)
+        for _ in range(T):
+            self.t += 1
+            f = 1 / (2 * np.sqrt(self.t))   # rate of specialization and the GA
+            specialize = econ.random_rules and rng.random() < f
+            exch, cons = np.zeros((K, G, G)), np.zeros((K, G, 2))
+            run_period(self.E, self.C, self.hold, self.types, econ.produces,
+                       econ.storage_costs, econ.u, econ.fiat, b, self.pending,
+                       econ.eta, specialize, econ.ps, econ.no_eat, rng,
+                       self.stamp, exch, cons)
+            if econ.random_rules:
+                for i in range(K):
+                    if rng.random() < f:
+                        generalize(self.E, i, G, rng, self.stamp, n_crowd=8)
+                    if rng.random() < f:
+                        generalize(self.C, i, G, rng, self.stamp, n_crowd=4)
+            self.hold_hist.append([np.bincount(self.hold[self.types == i],
+                                               minlength=G) for i in range(K)])
             self.exch_hist.append(exch)
             self.cons_hist.append(cons)
-            self.trades.append(n_trades)
-            self.eaten.append(n_eaten)
-            if verbose and t % max(1, T // 10) == 0:
-                print(f"  period {t:5d}:  trades = {n_trades:3d},"
-                      f"  consumptions = {n_eaten:3d}")
-
-    def consume_and_produce(self, a, i, good, action):
-        """
-        Carry out the consumption decision and return the external payoff.
-
-        Consuming fiat money is not allowed.  If the agent does consume, he
-        immediately produces his own good, so this updates his holding.
-
-        """
-        econ = self.econ
-        if action == 1 and not (econ.fiat and good == econ.n_goods - 1):
-            new = econ.produces[i]
-            self.holdings[a] = new
-            u = econ.u if good == i else 0.0
-            return u - econ.storage_costs[new]
-        return -econ.storage_costs[good]
-
-    def distribution(self):
-        "The matrix of holding frequencies pi^h_it(k)."
-        econ = self.econ
-        d = np.zeros((econ.n_types, econ.n_goods))
-        for i in range(econ.n_types):
-            h = self.holdings[self.types == i]
-            for k in range(econ.n_goods):
-                d[i, k] = np.mean(h == k)
-        return d
-
-    def tax(self):
-        if self.econ.method == 'ga4':
-            for A in self.agents:
-                T, C = A.trade, A.consume
-                P = np.where(T.action == 1, T.traded, T.used) + 1
-                T.strength -= (T.strength + 1.0) / P
-                C.strength -= (C.strength + 1.0) / (C.used + 1)
-        else:
-            for A in self.agents:
-                A.trade.strength -= 1e-4 * np.abs(A.trade.strength)
-
-    def pick_types(self):
-        "Send one type to the genetic algorithm, a second and a third each w.p. 0.33."
-        rng, n = self.rng, self.econ.n_types
-        chosen = [int(rng.integers(n))]
-        rest = [i for i in range(n) if i not in chosen]
-        while rest and len(chosen) < 3 and rng.random() < 0.33:
-            pick = rest[int(rng.integers(len(rest)))]
-            chosen.append(pick)
-            rest.remove(pick)
-        return chosen
-
-    def evolve(self):
-        econ = self.econ
-        gen = econ.method == 'ga4'
-        for i in self.pick_types():
-            genetic_algorithm(self.agents[i].trade, self.rng, generalize=gen,
-                              pcross=econ.pcross, pmutation=econ.pmutation,
-                              crowd_factor=8)
-        for i in self.pick_types():
-            genetic_algorithm(self.agents[i].consume, self.rng, generalize=gen,
-                              pcross=econ.pcross, pmutation=econ.pmutation,
-                              crowd_factor=4)
 ```
 
-```{note}
-`Agent` and `Simulation` refer to four functions -- `genetic_algorithm`, `specialize_all`,
-`diversify_clone` and `specialize_winner` -- that belong to the genetic algorithm and are
-therefore deferred to {ref}`mms_ga` below, where they can be motivated by the problem they
-solve.
+The next cell defines helpers that put the output into the format of the paper's tables
+(which report ten-period moving averages) and figures.
 
-Deferring them costs nothing.
+`winners` lists, for each state, the rule that would win the auction there, and `contenders`
+lists every rule competing in a state.
 
-Python looks names up when a function runs rather than when it is defined, and the
-complete-enumeration economies we study first never call any of the four.
-
-Readers who prefer to see the machinery before it is used can run that section's cells first.
-```
-
-### Reporting
-
-The following helpers put simulation output into the format of the paper's tables.
-
-We follow the paper in reporting ten-period moving averages.
+`across_seeds` reruns an economy for twenty seeds.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def good_names(econ):
     names = [f"good {k+1}" for k in range(econ.n_types)]
-    return names + ["fiat"] if econ.fiat else names
+    return names + ["fiat"] if econ.fiat >= 0 else names
 
 
 def type_names(econ):
@@ -885,112 +1011,112 @@ def type_names(econ):
 
 
 def holdings(sim, t=None, window=10):
-    r"Table of $\pi^h_{it}(j)$, averaged over the `window` periods ending at `t`."
-    h = np.array(sim.hold_hist)
+    "Table of pi^h_i(k), averaged over the `window` periods ending at t."
+    h = np.array(sim.hold_hist) / sim.econ.n_agents_per_type
     t = len(h) if t is None else t
-    d = h[max(0, t - window):t].mean(axis=0)
-    return pd.DataFrame(d, index=type_names(sim.econ),
+    return pd.DataFrame(h[max(0, t - window):t].mean(axis=0),
+                        index=type_names(sim.econ),
                         columns=good_names(sim.econ)).round(3)
 
 
-def exchanges(sim, t=None, window=10):
-    r"""
-    Table of $\pi^e_{it}(jk)$: the frequency with which a type $i$ agent holds
-    good $j$, meets an agent holding good $k$, and trades.  Row $j$ of column
-    $i$ holds the triple over $k$.
-    """
-    econ = sim.econ
-    e = np.array(sim.exch_hist)
-    t = len(e) if t is None else t
-    f = e[max(0, t - window):t].mean(axis=0) / econ.n_agents_per_type
-    cols = {type_names(econ)[i]:
-            ["(" + ", ".join(f"{f[i, j, k]:.2f}" for k in range(econ.n_goods)) + ")"
-             for j in range(econ.n_goods)]
-            for i in range(econ.n_types)}
-    return pd.DataFrame(cols, index=good_names(econ)).T
+def strongest(R, i, s):
+    "Strongest rule of type i matching state s (ties go to the first), or -1."
+    idx = np.flatnonzero((R.match[i] >> s) & 1)
+    return -1 if idx.size == 0 else idx[np.argmax(R.strength[i, idx])]
 
 
-def winning_actions(sim):
-    r"""
-    Table of $\tilde\pi^e_{it}(jk|j)$: the action chosen by the winning exchange
-    rule in each state, whether or not that state is ever visited.
-    """
-    econ = sim.econ
-    cols = {}
-    for i, A in enumerate(sim.agents):
-        col = []
-        for j in range(econ.n_goods):
-            acts = []
-            for k in range(econ.n_goods):
-                w, _ = auction(A.trade, np.concatenate([econ.code(j), econ.code(k)]))
-                acts.append('-' if w < 0 else str(int(A.trade.action[w])))
-            col.append("(" + ",".join(acts) + ")")
-        cols[type_names(econ)[i]] = col
-    return pd.DataFrame(cols, index=good_names(econ)).T
-
-
-def consume_actions(sim):
-    r"Table of the winning consumption action for each post-trade holding."
-    econ = sim.econ
-    cols = {}
-    for i, A in enumerate(sim.agents):
-        col = []
-        for j in range(econ.n_goods):
-            w, _ = auction(A.consume, econ.code(j))
-            col.append('-' if w < 0 else int(A.consume.action[w]))
-        cols[type_names(econ)[i]] = col
-    return pd.DataFrame(cols, index=good_names(econ)).T
-
-
-def strongest(rules, n=5):
-    "The n highest-strength classifiers in a population."
-    order = np.argsort(-rules.strength)[:n]
-    return pd.DataFrame({
-        'classifier': [rule_string(rules.cond[i], rules.action[i]) for i in order],
-        'strength': rules.strength[order].round(2),
-        'times used': rules.used[order]})
-```
-
-Two figures: the time path of holdings, which corresponds to the paper's figures 6-9, and a
-diagram of the exchange pattern that the system discovers, which corresponds to its
-figures 2, 4, 9 and 11.
-
-```{code-cell} ipython3
-def plot_holdings(sim, title=None):
-    econ = sim.econ
-    h = np.array(sim.hold_hist)
+def winners(sim, i, exchange=True):
+    "The rule of type i that wins in each state, with its strength and uses."
+    econ, G = sim.econ, sim.econ.n_goods
+    R = sim.E if exchange else sim.C
     names = good_names(econ)
-    fig, axes = plt.subplots(1, econ.n_types,
-                             figsize=(3.2 * econ.n_types, 3.2), sharey=True)
-    axes = np.atleast_1d(axes)
+    states = ([(j, k) for j in range(G) for k in range(G)] if exchange
+              else [(j,) for j in range(G)])
+    rows = []
+    for st in states:
+        w = strongest(R, i, st[0] * G + st[1] if exchange else st[0])
+        rows.append({'state': ', '.join(names[g] for g in st),
+                     'winning rule': rule_string(R.cond[i, w], R.action[i, w], G),
+                     'strength': round(R.strength[i, w], 2),
+                     'times used': R.used[i, w] - 1})
+    return pd.DataFrame(rows).set_index('state')
+
+
+def eating_rates(sim, window=200):
+    "Fraction of the time each type eats each good it holds after trading."
+    c = np.array(sim.cons_hist[-window:]).sum(axis=0)
+    rate = c[:, :, 1] / np.maximum(c[:, :, 0], 1)
+    return pd.DataFrame(rate, index=type_names(sim.econ),
+                        columns=good_names(sim.econ)).round(2)
+
+
+def contenders(sim, i, j, k):
+    "All exchange rules of type i matching the state (good j+1, good k+1), strongest first."
+    G, R = sim.econ.n_goods, sim.E
+    idx = np.flatnonzero((R.match[i] >> (j * G + k)) & 1)
+    idx = idx[np.argsort(-R.strength[i, idx], kind='stable')]
+    return pd.DataFrame({'rule': [rule_string(R.cond[i, r], R.action[i, r], G)
+                                  for r in idx],
+                         'strength': R.strength[i, idx].round(2),
+                         'times used': R.used[i, idx] - 1})
+
+
+def trade_rates(sim, window=100):
+    "Trades per agent per period over the last `window` periods, indexed [type, gives, gets]."
+    return np.array(sim.exch_hist[-window:]).mean(axis=0) / sim.econ.n_agents_per_type
+
+
+def across_seeds(econ, T, seeds=range(20)):
+    "Run the economy for T periods once for each seed."
+    sims = []
+    for seed in seeds:
+        sim = Simulation(econ, seed)
+        sim.run(T)
+        sims.append(sim)
+    return sims
+
+
+def final_holdings(sims, t=None):
+    "Holdings at t (ten-period averages) for each simulation, as an array."
+    return np.array([holdings(sim, t=t).to_numpy() for sim in sims])
+
+
+def distance(H, target):
+    "Largest absolute difference between each run's holdings and a target table."
+    return np.abs(H - np.asarray(target)).max(axis=(-2, -1))
+
+
+def plot_holdings(sim):
+    econ = sim.econ
+    h = np.array(sim.hold_hist) / econ.n_agents_per_type
+    names = good_names(econ)
+    fig, axes = plt.subplots(1, econ.n_types, figsize=(3.2 * econ.n_types, 3.2),
+                             sharey=True)
     for i, ax in enumerate(axes):
         for k in range(econ.n_goods):
             ax.plot(h[:, i, k], lw=1.0, label=names[k])
         ax.set_title(f"type {i+1}")
         ax.set_xlabel("$t$")
         ax.set_ylim(-0.03, 1.03)
-    axes[0].set_ylabel(r"$\pi^h_{it}(j)$")
-    axes[-1].legend(frameon=False, fontsize=8, loc='center right')
-    if title:
-        fig.suptitle(title)
-    plt.tight_layout()
+    axes[0].set_ylabel(r"$\pi^h_{it}(k)$")
+    fig.legend(*axes[0].get_legend_handles_labels(), loc='center right',
+               frameon=False, fontsize=8)
+    plt.tight_layout(rect=(0, 0, 0.92, 1))
     plt.show()
 
 
-def plot_flows(sim, window=100, cutoff=0.02, title=None):
+def plot_flows(sim, window=100, cutoff=0.02):
     """
-    One panel per type.  An arrow from good j to good k means that agents of that
-    type give up j and receive k in trade; its width is the frequency with which
-    that exchange occurs over the last `window` periods.
+    One panel per type.  An arrow from good j to good k means that agents of
+    that type give up j and receive k; its width is the frequency of that
+    exchange per agent per period over the last `window` periods.
     """
     econ = sim.econ
-    f = np.array(sim.exch_hist)[-window:].mean(axis=0) / econ.n_agents_per_type
+    f = trade_rates(sim, window)
     names, n = good_names(econ), econ.n_goods
     ang = np.pi / 2 + 2 * np.pi * np.arange(n) / n
     xy = np.column_stack([np.cos(ang), np.sin(ang)])
-
     fig, axes = plt.subplots(1, econ.n_types, figsize=(2.9 * econ.n_types, 3.1))
-    axes = np.atleast_1d(axes)
     for i, ax in enumerate(axes):
         for k in range(n):
             ax.plot(*xy[k], 'o', ms=22, mfc='white', mec='black', zorder=2)
@@ -1000,9 +1126,9 @@ def plot_flows(sim, window=100, cutoff=0.02, title=None):
             for k in range(n):
                 if j == k or f[i, j, k] < cutoff:
                     continue
-                a, b = xy[j], xy[k]
-                d = b - a
-                ax.annotate("", xy=b - 0.24 * d, xytext=a + 0.24 * d, zorder=1,
+                d = xy[k] - xy[j]
+                ax.annotate("", xy=xy[k] - 0.24 * d, xytext=xy[j] + 0.24 * d,
+                            zorder=1,
                             arrowprops=dict(arrowstyle="-|>", color="C0",
                                             lw=1 + 8 * f[i, j, k], alpha=0.7,
                                             connectionstyle="arc3,rad=0.15"))
@@ -1011,8 +1137,6 @@ def plot_flows(sim, window=100, cutoff=0.02, title=None):
         ax.set_ylim(-1.45, 1.45)
         ax.set_aspect('equal')
         ax.axis('off')
-    if title:
-        fig.suptitle(title)
     plt.tight_layout()
     plt.show()
 ```
@@ -1028,226 +1152,507 @@ $$
 fifty agents of each type, and a complete enumeration of the 72 exchange and 12 consumption
 classifiers, all with strength zero.
 
-Since all strengths start equal, the initial auction winners are effectively arbitrary:
-agents begin with no idea what to do.
-
-Condition {eq}`mms_fundcond` holds comfortably here, so the fundamental equilibrium is the
-Kiyotaki-Wright prediction.
+Every economy we display is run with seed 0, and its typicality is then checked across 20
+seeds (10 for Economy D).
 
 ```{code-cell} ipython3
 economy_a11 = Economy(
     name='A1.1',
     produces=np.array([1, 2, 0]),               # type 1 -> good 2, etc. (0-indexed)
-    storage_costs=np.array([0.1, 1.0, 20.0]),
+    storage_costs=s_A,
     u=100.0,
-    method='enumerate',
 )
 
-sim_a11 = Simulation(economy_a11, seed=42)
-sim_a11.run(1000, verbose=True)
-```
+sim_a11 = Simulation(economy_a11, seed=0)
+sim_a11.run(1000)
 
-Here are holdings at $t = 500$ and $t = 1000$.
-
-```{code-cell} ipython3
-holdings(sim_a11, t=500)
-```
-
-```{code-cell} ipython3
-holdings(sim_a11)
-```
-
-Compare these with the fundamental equilibrium tabulated above: type 1 holds good 2 with
-probability one, type 3 holds good 1 with probability one, and type 2 splits evenly between
-goods 1 and 3.
-
-Rather than assert the comparison, let us compute it.
-
-```{code-cell} ipython3
 fundamental = np.array([[0.0, 1.0, 0.0],
                         [0.5, 0.0, 0.5],
                         [1.0, 0.0, 0.0]])
-paper_a11 = np.array([[0.0, 1.0, 0.0],          # the paper's table at t = 1000
+paper_a11 = np.array([[0.0, 1.0, 0.0],          # the paper's Table 6b, t = 1000
                       [0.506, 0.0, 0.494],
                       [1.0, 0.0, 0.0]])
 
-simulated = holdings(sim_a11).to_numpy()
+print("holdings at t = 500\n", holdings(sim_a11, t=500), "\n")
+print("holdings at t = 1000\n", holdings(sim_a11), "\n")
 print(f"max |simulated - fundamental equilibrium| = "
-      f"{np.abs(simulated - fundamental).max():.3f}")
+      f"{distance(holdings(sim_a11).to_numpy(), fundamental):.3f}")
 print(f"max |simulated - paper's table|           = "
-      f"{np.abs(simulated - paper_a11).max():.3f}")
+      f"{distance(holdings(sim_a11).to_numpy(), paper_a11):.3f}")
 ```
 
-The convergence is essentially immediate, as the time paths show.
+By $t = 500$ type 1 holds good 2, type 3 holds good 1, and type 2 splits its time between
+goods 1 and 3, as in the fundamental equilibrium tabulated above.
+
+The time paths show how quickly types 1 and 3 settle down, and a pause in type 2's
+learning.
 
 ```{code-cell} ipython3
-plot_holdings(sim_a11, title="Economy A1.1")
+---
+mystnb:
+  figure:
+    caption: "Holdings in Economy A1.1"
+    name: fig-mms-a11-holdings
+---
+plot_holdings(sim_a11)
 ```
 
-Only type 2 agents carry any randomness, and the reason is instructive: they are the agents
-who use good 1 as money, so which good they are holding depends on where they are in the
-cycle "acquire money, spend money".
+For roughly the first two hundred periods type 2 agents hold good 1 and nothing else: they
+have acquired money but do not yet spend it.
 
-Now let us look at the trades themselves.
+The rule that buys good 2 with good 1 has not yet been given a chance, for a reason we explain
+in {ref}`mms_a2`, and once it wins its first auctions type 2 enters the cycle "acquire money,
+spend money".
 
-The entry in row $i$, column $j$ is the triple over $k$ of the frequency with which a type
-$i$ agent holds $j$, meets someone holding $k$, and trades.
+From then on type 2's holdings fluctuate, because which good a type 2 agent holds depends on
+where it is in that cycle.
+
+The next figure shows the trades themselves, averaged over the last hundred periods.
 
 ```{code-cell} ipython3
-exchanges(sim_a11)
+---
+mystnb:
+  figure:
+    caption: "Exchange pattern discovered in Economy A1.1"
+    name: fig-mms-a11-flows
+---
+plot_flows(sim_a11)
 ```
 
-The exchange pattern is easier to read as a picture.
-
-```{code-cell} ipython3
-plot_flows(sim_a11, title="Economy A1.1: discovered exchange pattern")
-```
-
-This is exactly the fundamental equilibrium triangle: type 1 gives up good 2 for good 1,
-type 3 gives up good 1 for good 3, and type 2 runs both legs, giving up good 3 for good 1
-and later good 1 for good 2.
+The fundamental equilibrium triangle is there: type 1 gives up good 2 for good 1, type 3 gives
+up good 1 for good 3, and type 2 runs both legs, giving up good 3 for good 1 and later good 1
+for good 2.
 
 Good 1 circulates as money.
 
-We can also ask what the winning rules would do in states that are *never* visited, which is
-what Kiyotaki and Wright's strategies specify and what the paper reports.
+The picture also has arrows that the fundamental equilibrium does not, and they are not thin:
+type 3 gives up good 1 for good 2 about twice as often as it gives up good 1 for good 3, and
+type 1 gives up good 2 for good 3 about as often as type 2 runs either of its equilibrium legs.
+
+Each is a payoff-neutral trade of the kind described above, in which the agent eats what it
+receives and produces its own good again; the partner gains, because type 1 now gets good 1
+from type 3 as well as from type 2, and type 2 gets good 2 for its good 3 directly.
+
+The paper's run had none of these trades, but nothing in the accounting rules them out.
+
+We can also look inside type 1's classifier systems and read off the rule that wins in each
+state, first for exchange and then for consumption.
 
 ```{code-cell} ipython3
-winning_actions(sim_a11)
+pd.concat([winners(sim_a11, 0), winners(sim_a11, 0, exchange=False)])
 ```
 
-Reading row "type 1", the entry in column "good 2" is the triple
-$(\tilde\pi^e_1(21|2), \tilde\pi^e_1(22|2), \tilde\pi^e_1(23|2))$.
+The rule that does the work, `##0 100 -> 1`, says "if I hold anything but good 3 and my
+partner holds good 1, trade": a general rule.
 
-A type 1 agent holding good 2 accepts good 1 and refuses good 3: he does not speculate.
+In the state (good 2, good 3) the winning rule *accepts* good 3, but a type 1 agent who
+acquires good 3 eats it at once and produces good 2 again, which leaves him exactly where
+refusing would have.
 
-Finally, we can look inside a classifier system and read off the rules that won the
-competition.
+That is the payoff-neutral trade described above, and it is why we read the outcome from
+holdings, which never show type 1 holding good 3, rather than from the winning actions.
+
+The paper's run (its Table 6) had type 1 refusing good 3 instead, which leads to the same
+holdings.
+
+Is seed 0 typical?
 
 ```{code-cell} ipython3
-strongest(sim_a11.agents[0].trade)
+sims_a11 = across_seeds(economy_a11, 1000)
+H_a11 = final_holdings(sims_a11)
+F_a11 = np.array([trade_rates(sim) for sim in sims_a11])
+d, n = distance(H_a11, fundamental), len(sims_a11)
+print(f"runs within 0.1 of the fundamental equilibrium: {np.sum(d < 0.1)} of {n}")
+print(f"largest distance in any run: {d.max():.3f}")
+print(f"runs in which type 3 gives good 1 for good 2:   {np.sum(F_a11[:, 2, 0, 1] > 0.02)} of {n}")
+print(f"runs in which type 1 gives good 2 for good 3:   {np.sum(F_a11[:, 0, 1, 2] > 0.02)} of {n}")
 ```
 
-```{code-cell} ipython3
-strongest(sim_a11.agents[0].consume)
-```
+In every run the holdings settle on the unique stationary equilibrium, and in most runs the
+payoff-neutral trades appear alongside it.
 
-The strongest exchange rule for a type 1 agent is `0110 -> 1`, that is, "if I am holding
-good 2 (`01`) and my partner holds good 1 (`10`), trade" -- and it is used thousands of
-times, while the runners-up are essentially never used.
+The medium of exchange is learnable.
 
-The strongest consumption rule is `10 -> 1`: "if I am holding good 1, eat it".
-
-These are exactly the classifiers $e^1_{2,1,1}$ and $c^1_{1,1}$ that the paper shows support
-the fundamental equilibrium.
-
+(mms_a2)=
 ## Economy A2.1: when theory predicts speculation
 
 Economy A2 differs from A1 only in that $u_i = 500$ instead of $100$.
 
 That is enough to violate the Kiyotaki-Wright inequality {eq}`mms_fundcond`, so for patient
-agents the unique stationary rational-expectations equilibrium is now the **speculative**
-one, in which type 1 agents accept good 3 in the expectation of trading it for good 1.
+agents the unique stationary equilibrium is now the **speculative** one, in which type 1
+agents accept good 3 in the expectation of trading it for good 1.
 
 Do our adaptive agents find it?
 
 ```{code-cell} ipython3
-economy_a21 = Economy(
-    name='A2.1',
-    produces=np.array([1, 2, 0]),
-    storage_costs=np.array([0.1, 1.0, 20.0]),
-    u=500.0,
-    method='enumerate',
-)
+economy_a21 = replace(economy_a11, name='A2.1', u=500.0)
 
-sim_a21 = Simulation(economy_a21, seed=42)
+sim_a21 = Simulation(economy_a21, seed=0)
 sim_a21.run(1000)
 
-holdings(sim_a21)
-```
-
-Here is the speculative equilibrium that Kiyotaki and Wright's theory predicts for these
-parameters, for comparison.
-
-```{code-cell} ipython3
-speculative = pd.DataFrame([[0, 0.707, 0.293],
+speculative = pd.DataFrame([[0, 0.707, 0.293],        # the paper's Table 8b
                             [0.586, 0, 0.414],
                             [1, 0, 0]],
                            index=type_names(economy_a21),
                            columns=good_names(economy_a21))
-speculative
+print("simulated holdings at t = 1000\n", holdings(sim_a21), "\n")
+print("speculative equilibrium\n", speculative)
 ```
 
 The answer is no.
 
-The simulated holdings are those of the *fundamental* equilibrium: type 1 agents hold good 2
-essentially always and never accumulate good 3, whereas speculation requires them to hold
-good 3 nearly thirty percent of the time.
+The simulated holdings are those of the *fundamental* pattern: type 1 agents hold good 2 and
+never good 3, whereas speculation requires them to hold good 3 nearly thirty percent of the
+time.
 
-It is worth looking at why.
-
-```{code-cell} ipython3
-winning_actions(sim_a21)
-```
-
-Reading row "type 1", column "good 2", the winning exchange rule refuses good 3: type 1
-agents will not make the speculative swap.
-
-Now look at what they would do with good 3 if they had it.
+Here is what happens across seeds.
 
 ```{code-cell} ipython3
-consume_actions(sim_a21)
+sims_a21 = across_seeds(economy_a21, 1000)
+H_a21 = final_holdings(sims_a21)
+n = len(sims_a21)
+print(f"type 1 holds good 3 more than 5% of the time:  {np.sum(H_a21[:, 0, 2] > 0.05)} of {n}")
+print(f"within 0.1 of the fundamental pattern:         "
+      f"{np.sum(distance(H_a21, fundamental) < 0.1)} of {n}")
+print(f"type 2 holds good 1 less than 10% of the time: {np.sum(H_a21[:, 1, 0] < 0.1)} of {n}")
+print(f"type 2 holds good 1 more than 90% of the time: {np.sum(H_a21[:, 1, 0] > 0.9)} of {n}")
 ```
+
+Type 1 never speculates.
+
+Half the runs are near the fundamental pattern at $t = 1000$.
+
+In nearly all the others type 2 almost never holds good 1: types 2 and 3 have stopped trading
+with each other, so type 2 never acquires the money it needs to buy good 2.
+
+In one run type 2 holds good 1 all the time: it has money but never spends it, as in the first
+two hundred periods of our A1.1 run.
+
+Here is the first run of the more common kind, seen through the exchange rules of type 3
+agents who hold good 1 and meet a type 2 agent holding good 3.
 
 ```{code-cell} ipython3
-strongest(sim_a21.agents[0].consume, n=4)
+locked = int(np.flatnonzero(H_a21[:, 1, 0] < 0.1)[0])
+sim_locked = sims_a21[locked]
+print(f"seed {locked}\n", holdings(sim_locked), "\n")
+c = contenders(sim_locked, 2, 0, 2)          # type 3 holds good 1, meets good 3
+pd.concat([c.head(2), c[c['rule'] == '100 001 -> 1']])
 ```
 
-This is the paper's diagnosis, visible in the output.
+The type 3 agent wants good 3, which is worth 500 to it, yet the winning rule `##0 001 -> 0`
+refuses to trade.
 
-One consumption rule, `10 -> 1`, is specific and enormously strong: "if I hold good 1, eat
-it".
+Its strength is only $0.1$, but it is positive, while the specific rule that would trade,
+`100 001 -> 1`, has never been used and still has its initial strength of zero.
 
-The rule that decides everything else is `## -> 1` -- *eat whatever you are holding* -- a
-maximally general rule with two wildcards and a strength barely above zero, yet it is the
-strongest rule matching any state other than "holding good 1".
+The refusal rule earned a large payment in the first periods, when a general consumption rule
+that also covered good 3 followed it.
 
-So a type 1 agent who acquired good 3 would immediately consume it for zero utility rather
-than carry it and trade it for good 1.
+With $1/\tau$ averaging, the average remembers that windfall for thousands of uses.
 
-As the paper puts it, the winning consumption classifiers of type 1 agents are too general
--- they have too many $\#$'s to distinguish among stored goods -- so type 1 agents
-overconsume good 3, and the information that would make speculation pay never reaches the
-exchange classifiers.
+This is optimistic initialization's failure mode, and the greedy auction never gives the trade
+rule a chance until the refusal rule's average sinks below zero.
 
-The authors' diagnosis is worth quoting:
+That does happen eventually, so runs locked in this way are slow rather than stuck for good.
+
+We continue the runs that were not near the fundamental pattern for another 5,000 periods.
+
+```{code-cell} ipython3
+slow = [sim for sim, h in zip(sims_a21, H_a21) if distance(h, fundamental) >= 0.1]
+for sim in slow:
+    sim.run(5000)
+H_slow = final_holdings(slow)
+print(f"runs not near the fundamental pattern at t = 1000: {len(slow)}")
+print(f"of these, within 0.1 of it at t = 6000:            "
+      f"{np.sum(distance(H_slow, fundamental) < 0.1)}")
+print(f"of these, type 1 holds good 3 more than 5%:        {np.sum(H_slow[:, 0, 2] > 0.05)}")
+```
+
+All of these runs reach the fundamental pattern by $t = 6000$, and type 1 still never
+speculates.
+
+Lock-in is more frequent here than in Economy A1.1, plausibly because $u_1$ is five times
+larger, and so are the early windfalls that the averages must forget.
+
+Not every lock-in wears off, though.
+
+Other seeds turn up a second failure mode, and seed 24 shows it.
+
+```{code-cell} ipython3
+sim_24 = Simulation(economy_a21, seed=24)
+sim_24.run(6000)
+print(holdings(sim_24), "\n")
+winners(sim_24, 1, exchange=False)
+```
+
+This time type 3 does accept good 3; the trouble is with type 2.
+
+It trades good 3 for good 1, as in the fundamental pattern, but then eats the good 1 instead of
+keeping it to buy good 2 from type 1, so it ends every period holding good 3 again.
+
+The rule responsible is the general consumption rule `##0 -> 1`, which says "eat" whether type
+2 holds good 1 or good 2.
+
+Eating good 2 is right and earns type 2 its utility of consumption, which keeps the rule's
+strength high; eating good 1 is wrong, but the same rule decides that state too.
+
+The specific rule that would keep good 1, `100 -> 0`, was tried only a few times and sits far
+below the general rule's strength, an average that includes every meal of good 2, so under the
+argmax auction it never wins again.
+
+So this run is stuck for good: seed 24, and seed 26 in the same way, are still in this pattern
+at $t = 24{,}000$.
+
+Optimistic initialization lets a rule that was once lucky shut out an untried rival; this second
+lock-in is the work of an overgeneral consumption rule, one that earns well in one state and
+shuts out the specific rule that would act correctly in another.
+
+Type 1 still never speculates: across seeds 20 to 59 it holds good 3 no more than 5 percent of
+the time in every run.
+
+So the agents do not find A2's equilibrium.
+
+For patient agents the speculative equilibrium is the *unique* stationary equilibrium of this
+economy, so this is not learning selecting among equilibria.
+
+It is convergence to an outcome that is not an equilibrium of the economy the agents live
+in.
+
+The paper reached the same verdict from a single run, and its diagnosis is worth quoting in
+full:
 
 > *Patience requires experience.* The transfer system inside the classifier system is
 > designed to converge to a set of long-run average strengths. In the limit, the artificially
-> intelligent agents should behave as long-run average payoff maximizers... It takes time,
+> intelligent agents should behave as long-run average payoff maximizers, since the
+> steady-state strengths weight payoffs by their relative frequencies. It takes time,
 > however, for optimal rules to achieve the desired strengths. The behavior of our
-> artificially intelligent agents can be very myopic at the beginning... The present
+> artificially intelligent agents can be very myopic at the beginning. In economies, such as
+> Economy A2, in which the nature of the equilibrium changes with the discount rate, this
+> early myopia might have a perverse effect in diverting the economy towards a low
+> discount-factor stationary equilibrium, such as the fundamental equilibrium. The underlying
+> algorithm has to provide enough experimentation to avoid an early 'lock in'. The present
 > algorithm seems defective in that it has too little experimentation to support the
 > speculative equilibrium even in the long simulations we have run.
 
-Early on, before any rule has accumulated a meaningful average, agents behave myopically,
-and a myopic agent never accepts an expensive good.
+The paper's footnote 14 adds that a fundamental equilibrium exists in A2 only if the
+discount factor is sufficiently low.
 
-By the time strengths have settled, everyone else has already stopped speculating, so
-speculation no longer pays.
+Its footnote 15 reports a telling contrast: in experiments by Marimon and Miller with a
+genetic algorithm that breeds whole trading strategies (the approach the paper's footnotes 1
+and 3 describe), 25 of 30 runs of Economy A2 converged to the speculative equilibrium.
 
-The equilibrium selected is a consequence of the *learning dynamics*, not of the payoffs
-alone.
+Their agents had no bucket brigade to credit: each strategy was judged as a whole.
 
-## Economy B.1: a different production pattern
+The paper also points to a second culprit.
 
-Economy B changes the production technology -- type 1 produces good 3, type 2 produces good
-1, type 3 produces good 2 -- and compresses storage costs to $s = (1, 4, 9)$ with $u_i = 100$.
+In its run, type 1's winning exchange rule *accepted* good 3 (its Table 9d), but type 1's
+winning consumption rules were "too general (have too many # signs) to distinguish among
+goods stored", so type 1 ate good 3 rather than carrying it to a type 3 agent.
 
-Both a fundamental and a speculative equilibrium exist.
+Accepting good 3 and then eating it is payoff-equivalent to refusing it, which is why the
+holdings looked fundamental.
 
-The paper reports something striking: at $t = 500$ the economy looks speculative, but by
-$t = 1000$ it has moved to the fundamental equilibrium.
+Our seed 0 shows the same thing.
+
+```{code-cell} ipython3
+pd.concat([winners(sim_a21, 0).loc[['good 2, good 1', 'good 2, good 3']],
+           winners(sim_a21, 0, exchange=False).loc[['good 1', 'good 3']]])
+```
+
+Type 1's winning exchange rule in the state (good 2, good 3), `010 0## -> 1`, accepts good 3,
+and the consumption rule that wins when type 1 holds good 3 is the general rule `#0# -> 1`, "if
+I do not hold good 2, eat".
+
+So far this is the paper's Table 9d.
+
+But generality is not what makes type 1 eat good 3 here.
+
+Here are all of type 1's consumption rules that match good 3.
+
+```{code-cell} ipython3
+c = sim_a21.C
+rows = [r for r in range(c.cond.shape[1]) if (c.match[0, r] >> 2) & 1]
+pd.DataFrame({'rule': [rule_string(c.cond[0, r], c.action[0, r], 3) for r in rows],
+              'strength': c.strength[0, rows].round(2),
+              'times used': c.used[0, rows] - 1})
+```
+
+The specific rule that eats good 3 has a strength near zero, while the specific rule that
+carries it, tried only once, has a strength near $-12$.
+
+Carrying good 3 costs 20 this period, against 1 for eating it, and the reward for carrying it,
+a chance to trade it for good 1 next period, reaches the carrying rule only through the bucket
+brigade, heavily discounted.
+
+Type 1 therefore never carries good 3 into the next period, and the holdings are fundamental.
+
+Three mechanisms are therefore at work in A2:
+
+1. **Impatience.** Even at rest, the bucket brigade values the future at a tiny discount
+   factor, which the next section derives.
+1. **Greedy lock-in.** The argmax auction stops experimenting once untried rules are used up,
+   as in the trapped runs above.
+1. **Overconsumption by general consumption rules**, which makes accepting good 3
+   pointless, as in the paper's Table 9, and in seed 24 keeps type 2 from holding money.
+
+{ref}`mms_ex3`, {ref}`mms_ex4` and {ref}`mms_ex5` take them apart one at a time.
+
+(mms_impatience)=
+## The bucket brigade's discount factor
+
+The paper hoped that strengths built from long-run averages would make the agents behave
+like long-run average payoff maximizers once the strengths settled down.
+
+The stationarity conditions say otherwise.
+
+Take an agent whose exchange rule $e'$ at $t+1$ follows a consumption rule $c$ at $t$, and
+whose consumption rule $c'$ at $t+1$ follows $e'$.
+
+From the second stationarity condition, $(1 + b_1(e'))S_{e'} = \mathbb{E}[b_2(c') S_{c'}]$.
+
+Substituting it into the first gives
+
+```{math}
+:label: mms_effbeta
+
+(1 + b_2(c)) S_c = \mathbb{E}\bigl[U(\gamma_c)\bigr]
+ + \mathbb{E}\Bigl[\beta_{\rm eff}\,(1 + b_2(c')) S_{c'}\Bigr],
+\qquad
+\beta_{\rm eff} = \frac{b_1(e')\, b_2(c')}{(1 + b_1(e'))(1 + b_2(c'))} .
+```
+
+So the scaled strengths $V_c = (1 + b_2(c)) S_c$ satisfy a Bellman equation for the agent's
+current policy, $V_c = \mathbb{E}[U] + \mathbb{E}[\beta_{\rm eff} V_{c'}]$, with discount factor
+$\beta_{\rm eff}$.
+
+The exchange strengths inherit the ranking: among exchange rules of equal specificity, $S_e$
+is proportional to the expected value of the consumption rule that follows $e$.
+
+When an offer is refused, $e'$ pays nothing backward, which lowers the effective discount
+factor further.
+
+```{code-cell} ipython3
+def beta_eff(b1, b2):
+    "Effective discount factor of the bucket brigade for bid fractions b1, b2."
+    return b1 * b2 / ((1 + b1) * (1 + b2))
+
+
+b11, b12, b21, b22 = 0.025, 0.025, 0.25, 0.25            # Economy A's bids
+β_A = beta_eff(b11 + b12, b21 + b22)                     # fully specific rules
+print(f"β_eff with A's bids, specific rules:   {β_A:.4f}")
+print(f"β_eff with A's bids, general rules:    {beta_eff(b11 + b12 / 5, b21 + b22 / 3):.4f}")
+print(f"β_eff with B.1's bids, specific rules: {beta_eff(0.5, 0.5):.4f}")
+print(f"β_eff as both bid fractions approach 1: {beta_eff(1, 1):.4f}")
+```
+
+With the paper's bids the agents behave, at rest, as if they discounted the future at a
+factor of about $0.016$ per period, and the most general rules, which bid less, at about
+$0.007$.
+
+Because $b/(1+b) < 1/2$ for any bid fraction below one, $\beta_{\rm eff}$ can never reach
+$1/4$.
+
+The source is the averaging itself: a rule's own bid enters the average it keeps, so each
+link of the chain passes back only the fraction $b/(1+b)$ of the value it receives.
+
+What does an agent with discount factor $\beta$ do in Economy A?
+
+Redoing the argument behind {eq}`mms_fundcond` for an agent who discounts each period's
+payoffs by $\beta$, a type 1 agent facing given holdings of the other types prefers to hold
+good 3 if and only if
+
+$$
+s_3 - s_2 < \beta \bigl(\pi^h_3(1) - \pi^h_2(1)\bigr) \tfrac{1}{3} u_1 ,
+$$
+
+so lowering $\beta$ scales up the threshold for $u_1$ by $1/\beta$.
+
+```{code-cell} ipython3
+for label, β in [("patient agents, β = 1", 1.0), ("bucket brigade, β = β_eff", β_A)]:
+    print(f"{label}: fundamental for u_1 < "
+          f"{speculation_threshold(s_A, 1.0, 0.5, β):,.0f}, speculative for u_1 > "
+          f"{speculation_threshold(s_A, 1.0, 0.586, β):,.0f}")
+print(f"A2's u_1 = 500 supports speculation only if β > "
+      f"{speculation_threshold(s_A, 1.0, 0.586) / 500:.3f}")
+```
+
+For an agent with $\beta = \beta_{\rm eff}$, A2's $u_1 = 500$ is far inside the region where the
+fundamental pattern is the unique equilibrium.
+
+The figure plots the two thresholds against $\beta$.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "Speculation thresholds for $u_1$ against the discount factor"
+    name: fig-mms-thresholds
+---
+βs = np.logspace(-2.5, 0, 200)
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.loglog(βs, speculation_threshold(s_A, 1.0, 0.5, βs),
+          label="fundamental equilibrium exists below")
+ax.loglog(βs, speculation_threshold(s_A, 1.0, 0.586, βs), '--',
+          label="speculative equilibrium exists above")
+for u, name in [(100, "A1"), (500, "A2")]:
+    ax.axhline(u, color='k', lw=0.6)
+    ax.annotate(f"{name}: $u_1 = {u}$", (βs[0], u * 1.1), fontsize=9)
+ax.axvline(β_A, color='C3', lw=1)
+ax.axvline(0.25, color='C3', lw=1, ls=':')
+ax.annotate(r"$\beta_{\rm eff}$", (β_A * 1.08, 150), color='C3')
+ax.annotate("1/4", (0.25 * 1.08, 150), color='C3')
+ax.set_xlabel(r"discount factor $\beta$")
+ax.set_ylabel(r"$u_1$")
+ax.legend(frameon=False, loc='upper right')
+plt.show()
+```
+
+Economy A2 supports speculation only for $\beta$ above $0.275$, beyond the reach of any bid
+fractions, so at rest the bucket brigade cannot support A2's equilibrium with fully specific
+rules, whatever its bids.
+
+This sharpens the paper's diagnosis.
+
+Early myopia is real, but it is not only early: the stationary strengths themselves are
+impatient.
+
+The fundamental pattern -- accept a good only if you eat it or it is cheaper to store -- is
+exactly what an impatient agent does, which is the paper's "low discount-factor stationary
+equilibrium".
+
+The same is true of the patterns the classifier systems find in every other economy of this
+lecture: the fundamental equilibrium of Economy B, the acceptance of fiat money in Economy C
+(fiat costs nothing to store), and the "lower storage cost" pattern the paper reports for
+Economy D.
+
+Equation {eq}`mms_effbeta` is a familiar object.
+
+The scaled strengths are evaluated like the temporal-difference value estimates of
+reinforcement learning {cite}`Sutton_2018`, which {doc}`mccall_q` and {doc}`inventory_q`
+apply to a job seeker and to a firm.
+
+The difference is that here the discount factor is not chosen to match the agent's
+preferences: it is a by-product of the bid fractions.
+
+{ref}`gc_bucket_brigade` finds the same factor $b/(1+b)$ per link in a two-link chain, and
+shows that Holland's cumulative balances, which do not average, pass a payoff back
+undiminished but need not converge.
+
+{ref}`br_one_recursion` explains why, with $1/\tau$ averaging, the rest points of
+{eq}`mms_strengthc`-{eq}`mms_strengthe` are the objects to study.
+
+{ref}`mms_ex5` checks the threshold by simulation.
+
+## Economy B.1: selecting between two equilibria
+
+Economy B changes the production pattern -- type 1 produces good 3, type 2 produces good 1,
+type 3 produces good 2 -- and compresses storage costs to $s = (1, 4, 9)$, with $u_i = 100$.
+
+Now there are two stationary equilibria for patient agents: in the fundamental one goods 1
+and 2 serve as media of exchange, and in the speculative one goods 2 and 3 do.
+
+B.1 also uses exchange bids ten times A's, $b_{11} = b_{12} = 0.25$, as in the paper's
+Table 12, which raises $\beta_{\rm eff}$ to about $0.11$.
 
 ```{code-cell} ipython3
 economy_b1 = Economy(
@@ -1255,332 +1660,307 @@ economy_b1 = Economy(
     produces=np.array([2, 0, 1]),               # type 1 -> good 3, type 2 -> good 1, ...
     storage_costs=np.array([1.0, 4.0, 9.0]),
     u=100.0,
-    method='enumerate',
     b_trade=(0.25, 0.25),
 )
 
-sim_b1 = Simulation(economy_b1, seed=42)
+sim_b1 = Simulation(economy_b1, seed=0)
 sim_b1.run(1000)
-```
 
-```{code-cell} ipython3
-holdings(sim_b1, t=500)
-```
-
-```{code-cell} ipython3
-holdings(sim_b1)
-```
-
-```{code-cell} ipython3
-plot_holdings(sim_b1, title="Economy B.1")
-```
-
-```{code-cell} ipython3
-paper_b1 = np.array([[0.0, 0.28, 0.72],         # the paper's table at t = 1000
+fundamental_b = np.array([[0, 0.293, 0.707],    # the paper's Table 10b
+                          [1, 0, 0],
+                          [0.586, 0.414, 0]])
+speculative_b = np.array([[0, 0.586, 0.414],    # the paper's Table 11b
+                          [0.707, 0, 0.293],
+                          [0, 1, 0]])
+paper_b1 = np.array([[0.0, 0.28, 0.72],         # the paper's Table 12b, t = 1000
                      [0.994, 0.0, 0.006],
                      [0.526, 0.474, 0.0]])
 
-print(f"max |simulated - paper's table| = "
-      f"{np.abs(holdings(sim_b1).to_numpy() - paper_b1).max():.3f}")
+print("holdings at t = 500\n", holdings(sim_b1, t=500), "\n")
+print("holdings at t = 1000\n", holdings(sim_b1), "\n")
+h = holdings(sim_b1).to_numpy()
+for name, target in [("fundamental equilibrium", fundamental_b),
+                     ("speculative equilibrium", speculative_b),
+                     ("paper's table", paper_b1)]:
+    print(f"max |simulated - {name}| = {distance(h, target):.3f}")
+print(f"max |paper's table - fundamental equilibrium| = "
+      f"{distance(paper_b1, fundamental_b):.3f}")
 ```
 
-The end state reproduces the paper's qualitative pattern, with the largest single discrepancy
-about a tenth.
-
-Type 2 agents hold good 1 always, and type 3 agents split their holdings between good 1 and
-their own production good 2.
-
-The paper reports one further feature that our run does not reproduce.
-
-In the authors' simulation, type 3 agents held good 2 with probability one at $t = 500$ --
-refusing the cheaper good 1, which is the speculative pattern -- and only later shifted into
-good 1:
-
-> Economy B.1 displays an interesting pattern of evolution. At iteration 500 the
-> distribution of holdings and, especially, the trading patterns correspond to the
-> speculative equilibrium. However, the economy moves away from this state and by iteration
-> 1000 has practically converged to the fundamental equilibrium.
-
-In our implementation the shift happens within the first fifty periods, so the speculative
-phase is over before $t = 500$.
-
-The transient is evidently sensitive to details of the implementation in a way that the
-limit is not.
-
-The economics of the authors' observation is nevertheless worth stating, because it bears on
-how we should read Economy A2.
-
-There, one might suspect that the fundamental equilibrium was selected merely because myopic
-agents refuse expensive goods from the very beginning.
-
-In Economy B the system *starts* in the speculative pattern and *moves away from it* as
-strengths accumulate, which suggests that the selection of the fundamental equilibrium is
-something the learning dynamics do, not just an artifact of where they start.
+The run ends near the fundamental equilibrium of Economy B, closer to it than the paper's own
+run.
 
 ```{code-cell} ipython3
-plot_flows(sim_b1, title="Economy B.1: discovered exchange pattern")
+---
+mystnb:
+  figure:
+    caption: "Holdings in Economy B.1"
+    name: fig-mms-b1-holdings
+---
+plot_holdings(sim_b1)
 ```
+
+Across seeds:
+
+```{code-cell} ipython3
+H_b1 = final_holdings(across_seeds(economy_b1, 1000))
+d_f, d_s = distance(H_b1, fundamental_b), distance(H_b1, speculative_b)
+print(f"within 0.1 of the fundamental equilibrium: {np.sum(d_f < 0.1)} of {len(H_b1)}")
+print(f"within 0.1 of the speculative equilibrium: {np.sum(d_s < 0.1)} of {len(H_b1)}")
+print(f"smallest distance from the speculative equilibrium: {d_s.min():.2f}")
+print("holdings in the runs farther than 0.1 from the fundamental equilibrium:")
+print(H_b1[d_f >= 0.1].round(2))
+```
+
+In 18 of the 20 runs the holdings end within 0.1 of the fundamental equilibrium, and no run
+comes within 0.29 of the speculative one.
+
+Of the other two runs, one is just outside the 0.1 band, and in the other type 3 agents never
+trade their good 2 for good 1.
+
+Here learning does select between two equilibria, and it selects the fundamental one.
+
+The paper reports one more feature that our run does not reproduce: at $t = 500$ its B.1
+looked speculative, and only by $t = 1000$ had it "practically converged to the fundamental
+equilibrium".
+
+The paper read that movement as evidence that the selection was not "the result of myopic
+behavior".
+
+In our run there is no speculative phase beyond the first few periods, which are dominated by
+the random initial holdings, so the movement is not something we can confirm.
+
+And {ref}`mms_impatience` suggests a different reading: the fundamental equilibrium of
+Economy B is also the one an impatient agent plays, and the bucket brigade is impatient at
+rest, not just early on.
 
 (mms_ga)=
 ## The genetic algorithm
 
-Complete enumeration is only feasible because the Kiyotaki-Wright state space is tiny.
+Complete enumeration is feasible only because the Kiyotaki-Wright state space is tiny.
 
-In any larger problem the list of all conceivable rules is far too long to carry around, and
-an agent must instead work with a limited population of rules that is continually revised.
+In larger problems an agent must work with a limited population of rules that is continually
+revised.
 
-Marimon, McGrattan and Sargent add four operations for this case.
+The paper starts such agents from randomly generated rules and adds four operators: the
+three we have already met inside the auction, and **generalization**, a genetic algorithm.
 
-**Creation** and **diversification** we have already implemented; they handle unforeseen
-states and guarantee that both actions get tried.
+Generalization is called with probability $f_g(t) = 1/(2\sqrt{t})$ in period $t$.
 
-For the five-good economy we shall use a variant of diversification that clones the winning
-rule with the opposite action, thereby preserving the winner's level of generality rather
-than manufacturing a fully specific rule.
+When it is called, it works as follows (the paper's Section 6 and Table 7):
 
-```{code-cell} ipython3
-def diversify_clone(rules, matches, winner, ufitness=0.5):
-    "Copy the winner with the opposite action over a rarely used rule."
-    if len(set(rules.action[matches])) > 1:
-        return
-    losers = np.flatnonzero(rules.used / (rules.used.max() + 1) < ufitness)
-    if losers.size == 0:
-        return
-    j = losers[np.argmin(rules.strength[losers])]
-    rules.replace(j, rules.cond[winner].copy(), 1 - rules.action[winner],
-                  rules.strength[winner], used=rules.used[winner])
-```
+* **Potential exterminants** are rules that are both weak and seldom used: strength below
+  $\bar S = 0$ *and* a counter below $p_3 = 0.2$ times the largest counter.
+* **Potential parents** are a fraction $p_2 = 0.7$ of the rules, chosen randomly "in
+  accordance with strength and frequency"; we draw them with probabilities proportional to
+  their counters and then select pairs within them by a roulette wheel on strength.
+* Pairs mate until a fraction $p_1 = 0.2$ of the population has been replaced.
+* **Generalizing crossover** (the paper's Fig. 4): the pair draws two cut points and focuses
+  on the positions inside them, or, with probability one half, outside them; wherever the
+  parents carry different specific bits in the focus, both children get a $\#$.
+  Children therefore match everything their parents matched, and more.
+* Each child gets the average of its parents' strengths and replaces the potential
+  exterminant it most resembles, by **crowding**: $N = 8$ times (4 for consumption rules) a
+  sample of half the potential exterminants is drawn, the weakest member of each sample is
+  scored by the number of positions it shares with the child plus one if its action differs,
+  and the highest score loses its place.
 
-**Specialization** turns wildcards into specific bits, so that a rule which has been serving
-several states can split off a sharper version of itself.
+The paper's footnote 12 says that more standard Holland algorithms "were first tried without
+much success, prompting us to produce the modified algorithm described in section 6".
 
-It is called with a probability $f_s(t) = 1/(2\sqrt{t})$ that declines over time:
-experimentation is cheap early and expensive late.
+We therefore use the generalizing crossover in every economy with random rules, and, since
+the paper's Table 7 lists no mutation rate, no mutation.
 
-```{code-cell} ipython3
-def specialize_all(rules, t, rng):
-    "Replace each wildcard by a bit with probability 1 / (2 sqrt(t))."
-    hit = (rules.cond == WILD) & (rng.random(rules.cond.shape)
-                                  < 1.0 / (2.0 * np.sqrt(t)))
-    if hit.any():
-        rules.cond[hit] = rng.integers(0, 2, size=hit.sum())
+Where the paper is silent we have made the following choices:
 
-
-def specialize_winner(rules, winner, pmutation, rng, ufitness=0.5):
-    "Plant a sharpened copy of a heavily used winner over a rarely used rule."
-    cond = rules.cond[winner]
-    if not np.any(cond == WILD):
-        return
-    if rules.used[winner] / (rules.used.max() + 1) <= ufitness:
-        return
-    pick = (cond == WILD) & (rng.random(cond.shape) < pmutation)
-    losers = np.flatnonzero(rules.used / (rules.used.max() + 1) < ufitness)
-    if not pick.any() or losers.size == 0:
-        return
-    j = losers[np.argmin(rules.strength[losers])]
-    new = cond.copy()
-    new[pick] = rng.integers(0, 2, size=pick.sum())
-    rules.replace(j, new, rules.action[winner], rules.strength[winner],
-                  used=rules.used[winner])
-```
-
-**Generalization** is the genetic algorithm proper.
-
-Rules that are weak or rarely used become candidates for replacement.
-
-Parents are drawn in two stages -- first a subset weighted by how often rules have been
-used, then a roulette wheel on strength within that subset -- so that a rule must be both
-successful and *relevant* to reproduce.
-
-Two children are formed by crossover and, in the `'ga3'` variant, mutation.
-
-Each child then displaces the rule it most closely resembles among the replaceable ones,
-a device known as *crowding* that preserves diversity by making children compete against
-their own kind.
-
-The `'ga4'` variant replaces single-point crossover with a *generalizing* crossover: inside
-a randomly drawn interval, positions where the parents disagree become wildcards.
-
-This is the operator described in section 6 of the paper and illustrated in its figure 5,
-and it manufactures general rules rather than recombining specific ones.
+* ties in the auction are broken at random;
+* generalization is drawn independently for each type's exchange and consumption systems;
+* new rules, including children, start with a counter of 1, so after their first experience
+  the strength they were born with survives only through the bid they paid out of it;
+* creation gives the new rule strength zero;
+* "weakness" outside the genetic algorithm is the score in `weakest`;
+* specialization, when switched on in a period, applies to every auction in that period;
+* each agent's own decisions form a bucket-brigade chain, as discussed above;
+* the goods of Economy D get a five-position one-hot code.
 
 ```{code-cell} ipython3
-def roulette(weights, rng):
-    total = weights.sum()
-    if total <= 0:
-        return int(rng.integers(0, len(weights)))
-    return int(np.searchsorted(np.cumsum(weights), rng.random() * total))
+@njit
+def roulette(w, rng):
+    "Draw an index with probability proportional to the nonnegative weights w."
+    x = rng.random() * w.sum()
+    for k in range(w.shape[0]):
+        x -= w[k]
+        if x <= 0:
+            return k
+    return w.shape[0] - 1
 
 
-def crowding_victim(rules, cond, action, cankill, rng, crowd_factor, crowd_subpop):
-    "De Jong crowding: the child displaces the replaceable rule it resembles most."
-    size = max(1, int(crowd_subpop * len(cankill)))
-    best, best_sim = cankill[0], -1
-    for _ in range(crowd_factor):
-        pool = (cankill if size >= len(cankill)
-                else list(rng.choice(cankill, size=size, replace=False)))
-        cand = min(pool, key=lambda i: rules.strength[i])
-        sim = (np.count_nonzero(cond == rules.cond[cand])
-               + (action != rules.action[cand]))
-        if sim > best_sim:
-            best, best_sim = cand, sim
-    return best
+@njit
+def generalize(R, i, n_goods, rng, stamp, n_crowd,
+               p1=0.2, p2=0.7, p3=0.2, p4=0.5, S_bar=0.0):
+    "One call of the paper's genetic algorithm on the classifier system of type i."
+    cond, action, S, used = R.cond[i], R.action[i], R.strength[i], R.used[i]
+    n, L = cond.shape
 
-
-def genetic_algorithm(rules, rng, generalize=False, pcross=0.6, pmutation=0.01,
-                      propselect=0.2, propused=0.7, crowd_factor=8,
-                      crowd_subpop=0.5, uratio=(0.0, 0.2)):
-    n, L = rules.n, rules.length
-    if n < 4:
+    # potential exterminants: weak *and* seldom used
+    doomed = [r for r in range(n) if S[r] < S_bar and used[r] < p3 * used.max()]
+    if len(doomed) == 0:
         return
 
-    # rules that are weak or seldom used may be replaced
-    max_used = max(rules.used.max() + (1 if generalize else 0), 1)
-    cankill = list(np.flatnonzero((rules.strength < uratio[0]) |
-                                  (rules.used / max_used < uratio[1])))
-    if not cankill:
-        return
+    # potential parents: p2 * n rules drawn without replacement, weighted by use
+    w = used.astype(np.float64)
+    parents = np.zeros(int(p2 * n), np.int64)
+    for k in range(parents.shape[0]):
+        parents[k] = roulette(w, rng)
+        w[parents[k]] = 0.0
+    fitness = S[parents] - S[parents].min() + 1e-6
 
-    fitness = rules.strength - min(rules.strength.min(), 0.0) + 1e-6
-    n_pairs = min(max(1, round(propselect * n * 0.5)), (len(cankill) + 1) // 2)
-    n_called = int(propused * n)
+    for _ in range(max(1, int(p1 * n) // 2)):
+        mum = parents[roulette(fitness, rng)]
+        dad = parents[roulette(fitness, rng)]
+        kids = (cond[mum].copy(), cond[dad].copy())
 
-    for _ in range(n_pairs):
-        if not cankill:
-            break
+        # generalizing crossover
+        cuts = np.sort(rng.integers(0, L + 1, size=2))
+        inside = rng.random() < 0.5
+        for j in range(L):
+            if ((cuts[0] <= j < cuts[1]) == inside and kids[0][j] != WILD
+                    and kids[1][j] != WILD and kids[0][j] != kids[1][j]):
+                kids[0][j] = WILD
+                kids[1][j] = WILD
+        strength = 0.5 * (S[mum] + S[dad])
 
-        # stage 1: pre-select a pool with probability proportional to usage
-        if n_called < n:
-            avail = rules.used.astype(float) + 1.0
-            pool = []
-            for _ in range(n_called):
-                if avail.sum() <= 0:
-                    break
-                k = roulette(avail, rng)
-                pool.append(k)
-                avail[k] = 0.0
-            if len(pool) < 2:
-                pool = list(range(n))
-        else:
-            pool = list(range(n))
-        pool = np.array(pool)
-
-        # stage 2: roulette wheel on fitness within the pool
-        mum, dad = pool[roulette(fitness[pool], rng)], pool[roulette(fitness[pool], rng)]
-        kids = [rules.cond[mum].copy(), rules.cond[dad].copy()]
-        acts = [rules.action[mum], rules.action[dad]]
-        avg = 0.5 * (rules.strength[mum] + rules.strength[dad])
-
-        if generalize:
-            # two-point crossover in which disagreements become wildcards
-            lo, hi = np.sort(rng.integers(0, L + 1, size=2))
-            inside = rng.random() > 0.5
-            region = (np.arange(lo, hi) if inside else
-                      np.concatenate([np.arange(0, lo), np.arange(hi, L)]))
-            for j in region:
-                a, b = kids[0][j], kids[1][j]
-                if a >= 0 and b >= 0 and a != b:
-                    kids[0][j] = kids[1][j] = WILD
-        else:
-            # single-point crossover with ternary mutation
-            jc = 1 + int((L - 1) * rng.random()) if rng.random() < pcross else L
-            kids = [np.concatenate([rules.cond[mum][:jc], rules.cond[dad][jc:]]),
-                    np.concatenate([rules.cond[dad][:jc], rules.cond[mum][jc:]])]
-            for k in range(2):
-                flip = rng.random(L) < pmutation
-                if flip.any():
-                    shift = rng.integers(1, 3, size=flip.sum())
-                    kids[k][flip] = ((kids[k][flip] + 1 + shift) % 3) - 1
-                if rng.random() < pmutation:
-                    acts[k] = 1 - acts[k]
-
-        for k, parent in zip(range(2), (mum, dad)):
-            if not cankill:
-                break
-            j = crowding_victim(rules, kids[k], acts[k], cankill, rng,
-                                crowd_factor, crowd_subpop)
-            rules.replace(j, kids[k], acts[k], avg,
-                          used=rules.used[parent], traded=rules.traded[parent])
-            cankill.remove(j)
+        # crowding: each child replaces the potential exterminant it most resembles
+        for kid, act in ((kids[0], action[mum]), (kids[1], action[dad])):
+            if len(doomed) == 0:
+                return
+            size = max(1, int(p4 * len(doomed)))
+            victim, best = doomed[0], -1
+            for _ in range(n_crowd):
+                sample = rng.permutation(len(doomed))[:size]
+                cand = doomed[sample[0]]
+                for q in sample:
+                    if S[doomed[q]] < S[cand]:
+                        cand = doomed[q]
+                likeness = np.sum(kid == cond[cand]) + (act != action[cand])
+                if likeness > best:
+                    victim, best = cand, likeness
+            set_rule(R, i, victim, kid, act, strength, n_goods, stamp)
+            doomed.remove(victim)
 ```
 
 ## Economy A1.2: learning from random rules
 
-Economy A1.2 has the same parameters as A1.1, but agents now begin with 72 exchange rules
-and 12 consumption rules drawn *at random*.
+Economy A1.2 has the same parameters as A1.1, but agents begin with 72 exchange rules and 12
+consumption rules drawn *at random* from the 1,458 and 54 possible strings.
 
-Most of these rules are nonsense, and there is no guarantee that the population even
-contains the rules needed to support an equilibrium.
+Most of these rules are nonsense, and there is no guarantee that the population contains the
+rules needed to support an equilibrium.
 
-The genetic operators must manufacture them.
-
-```{code-cell} ipython3
-economy_a12 = Economy(
-    name='A1.2',
-    produces=np.array([1, 2, 0]),
-    storage_costs=np.array([0.1, 1.0, 20.0]),
-    u=100.0,
-    method='ga3',
-)
-
-sim_a12 = Simulation(economy_a12, seed=2)
-sim_a12.run(2000, verbose=True)
-```
+The operators must manufacture them.
 
 ```{code-cell} ipython3
-holdings(sim_a12, t=1000)
+economy_a12 = replace(economy_a11, name='A1.2', random_rules=True)
+
+sim_a12 = Simulation(economy_a12, seed=0)
+sim_a12.run(2000)
+
+paper_a12 = np.array([[0.0, 0.98, 0.02],        # the paper's Table 7b, t = 2000
+                      [0.318, 0.0, 0.682],
+                      [1.0, 0.0, 0.0]])
+print("holdings at t = 1000\n", holdings(sim_a12, t=1000), "\n")
+print("holdings at t = 2000\n", holdings(sim_a12), "\n")
+print("paper's table at t = 2000\n", paper_a12, "\n")
+print(f"max |paper's table - fundamental equilibrium| = "
+      f"{distance(paper_a12, fundamental):.3f}")
 ```
+
+Here are the time paths.
 
 ```{code-cell} ipython3
-holdings(sim_a12)
+---
+mystnb:
+  figure:
+    caption: "Holdings in Economy A1.2"
+    name: fig-mms-a12-holdings
+---
+plot_holdings(sim_a12)
 ```
+
+The fundamental pattern emerges again, though less cleanly than under complete enumeration.
+
+Type 1 mostly holds good 2, type 2 holds only goods 1 and 3, and type 3 mostly holds good 1.
+
+But types 1 and 3 also hold goods that the fundamental equilibrium excludes: in this run type
+1 holds good 3 about 5 percent of the time and type 3 holds good 2 about a fifth of the time.
+
+The paper's run was cleaner for types 1 and 3 but not for type 2: at $t = 2000$ its type 2
+agents held good 1 only 32 percent of the time, and its Table 7e shows type 2 eating good 1
+-- its money -- with probability 0.45 at $t = 1000$ and 0.23 at $t = 2000$.
+
+The paper calls this overeating "a minor problem in several of our economies", associated
+with states the classifier system visits too rarely to learn about.
+
+Here are the eating frequencies over the last 200 periods of our run.
 
 ```{code-cell} ipython3
-plot_holdings(sim_a12, title="Economy A1.2")
+eating_rates(sim_a12)
 ```
 
-The fundamental equilibrium is reached again, though it takes noticeably longer and the
-early transition is much less orderly than under complete enumeration.
+In this run type 2 hardly ever eats its money, which is why its holdings are close to the
+equilibrium's even split.
 
-Let us see which rules survived.
+Types 1 and 3 eat "wrong" goods about half the time, which costs them nothing when the good
+is their own production good (good 2 for type 1, good 1 for type 3).
+
+But type 1 also carries good 3 into the next period about half the times it gets it, at a cost
+of 20 rather than 1, and type 3 carries good 2 about half the time: these are the rarely
+visited states the paper blames.
+
+Across seeds:
 
 ```{code-cell} ipython3
-strongest(sim_a12.agents[0].trade, n=6)
+sims_a12 = across_seeds(economy_a12, 2000)
+H_a12 = final_holdings(sims_a12)
+eat_money = np.array([eating_rates(sim).iloc[1, 0] for sim in sims_a12])
+n = len(H_a12)
+print(f"type 1 holds good 2 at least 90% of the time: {np.sum(H_a12[:, 0, 1] >= 0.9)} of {n}")
+print(f"type 3 holds good 1 at least 90% of the time: {np.sum(H_a12[:, 2, 0] >= 0.9)} of {n}")
+print(f"type 2 holds only goods 1 and 3:              {np.sum(H_a12[:, 1, 1] < 0.05)} of {n}")
+print(f"type 2's share of good 1: median {np.median(H_a12[:, 1, 0]):.2f}, "
+      f"range {H_a12[:, 1, 0].min():.2f} to {H_a12[:, 1, 0].max():.2f}")
+print(f"within 0.1 of the fundamental equilibrium:    "
+      f"{np.sum(distance(H_a12, fundamental) < 0.1)} of {n}")
+print(f"type 2 eats good 1 at least 40% of the time:  {np.sum(eat_money >= 0.4)} of {n}")
 ```
 
-The population has converged onto near-copies of a single rule.
+Seed 0 is one of the better runs.
 
-`0110 -> 1` -- "holding good 2, meeting good 1, trade" -- is exactly the rule that complete
-enumeration selected in Economy A1.1, but here the genetic algorithm had to build it, and
-several copies of it now occupy the population.
+In every run type 2 holds only goods 1 and 3, and in most runs types 1 and 3 hold their
+equilibrium goods at least 90 percent of the time.
 
-The other entries are its offspring: `0111 -> 1` has the same own-holding condition but a
-partner condition of `11`, which is not the code of any of the three goods, so that rule can
-never fire.
+But type 2's median share of good 1 is only 0.19, and in about half the runs type 2 eats good
+1 at least 40 percent of the time, the overeating of the paper's run.
 
-It carries a high strength and a large usage count only because children inherit both from
-their parents.
+Only a quarter of the runs end within 0.1 of the fundamental equilibrium; the paper's own run
+was 0.18 away.
+
+General rules survive the genetic algorithm.
 
 ```{code-cell} ipython3
-plot_flows(sim_a12, title="Economy A1.2: discovered exchange pattern")
+share = lambda R: np.mean(R.cond == WILD)
+print(f"share of # in exchange rules:    {share(sim_a12.E):.2f}")
+print(f"share of # in consumption rules: {share(sim_a12.C):.2f}")
 ```
 
-```{warning}
-Convergence is not guaranteed run by run.
-
-With random initial rules the population sometimes fails to manufacture the rules needed for
-the fundamental equilibrium within 2000 periods, and the economy settles into a pattern with
-little trade.
-
-Try changing the seed above to see this.
-
-The paper is explicit that the algorithm has "too little experimentation" and that improving it
-is unfinished business.
-```
+A random string has a $\#$ in a third of its positions, and generalizing crossover keeps
+adding them while specialization slowly removes them.
 
 ## Economy C: fiat money
 
-Now add a fourth object, good 0, which
+Now add a fourth object, fiat money, which the paper calls good 0.
+
+It
 
 * costs nothing to store, $s_0 = 0$;
 * yields no utility to anybody; and
@@ -1592,65 +1972,119 @@ It is introduced by handing 48 units of it to 48 randomly chosen agents at $t = 
 commodity storage costs are raised to $s = (9, 14, 29)$ so that no commodity is nearly as
 cheap to store as money.
 
-If a good like this circulates, it can only be because agents have discovered that other
-agents will take it.
+The paper's footnote 17 reports that a version with Economy A's storage costs did not
+converge, "probably because the low cost of storing good 1 (0.1) made this good too good a
+substitute for fiat money".
+
+Agents start from 150 random exchange rules and 20 random consumption rules each, out of
+13,122 and 162 possible strings.
 
 ```{code-cell} ipython3
 economy_c = Economy(
     name='C',
     produces=np.array([1, 2, 0]),
-    storage_costs=np.array([9.0, 14.0, 29.0, 0.0]),    # last good is fiat money
+    storage_costs=np.array([9.0, 14.0, 29.0, 0.0]),    # fiat money is the last good
     u=100.0,
-    method='ga3',
+    random_rules=True,
     n_trade_rules=150,
     n_consume_rules=20,
     b_consume=(0.025, 0.25),
     n_fiat=48,
-    start='production',
 )
 
-sim_c = Simulation(economy_c, seed=2)
-sim_c.run(2000, verbose=True)
+sim_c = Simulation(economy_c, seed=0)
+sim_c.run(2000)
+
+fundamental_c = np.array([[0, 0.74, 0, 0.26],       # the paper's Table 14b
+                          [0.26, 0, 0.42, 0.32],
+                          [0.62, 0, 0, 0.38]])
+paper_c = np.array([[0, 0.54, 0, 0.46],             # the paper's Table 15b, t = 1250
+                    [0.18, 0, 0.53, 0.28],
+                    [0.77, 0.01, 0, 0.21]])
+print("holdings at t = 750\n", holdings(sim_c, t=750), "\n")
+print("holdings at t = 1250\n", holdings(sim_c, t=1250), "\n")
+h = holdings(sim_c, t=1250).to_numpy()
+print(f"max |simulated - fundamental equilibrium| = {distance(h, fundamental_c):.3f}")
+print(f"max |simulated - paper's table|           = {distance(h, paper_c):.3f}")
 ```
 
+Every type holds fiat money roughly 30 percent of the time, close to the theoretical
+fundamental equilibrium (the paper's Table 14b); the paper's own run (its Table 15b) has type 1
+holding fiat money more often, 46 percent of the time.
+
+The largest discrepancy from the theory is type 2's holding of good 1, about 0.10 in our run
+against 0.26 in theory and 0.18 in the paper's run: our type 2 agents rely on fiat money rather
+than good 1 as their medium of exchange more than the theory says.
+
 ```{code-cell} ipython3
-holdings(sim_c, t=750)
+---
+mystnb:
+  figure:
+    caption: "Holdings in Economy C"
+    name: fig-mms-c-holdings
+---
+plot_holdings(sim_c)
 ```
 
-```{code-cell} ipython3
-holdings(sim_c, t=1250)
-```
-
-Compare with the paper's table at $t = 1250$, where the columns are (good 1, good 2, good 3,
-fiat): $(0, 0.54, 0, 0.46)$ for type 1, $(0.18, 0, 0.53, 0.28)$ for type 2, and
-$(0.77, 0, 0, 0.21)$ for type 3.
-
-Every type holds fiat money a substantial fraction of the time.
+The exchange pattern shows money changing hands.
 
 ```{code-cell} ipython3
-plot_holdings(sim_c, title="Economy C: fiat money")
-```
-
-```{code-cell} ipython3
-plot_flows(sim_c, title="Economy C: discovered exchange pattern")
-```
-
-```{code-cell} ipython3
-winning_actions(sim_c)
+---
+mystnb:
+  figure:
+    caption: "Exchange pattern discovered in Economy C"
+    name: fig-mms-c-flows
+---
+plot_flows(sim_c)
 ```
 
 The arrows into and out of the fiat node show money changing hands in both directions for
-every type: agents give up commodities to acquire it and give it up to acquire the commodity
-they consume.
+every type: agents give up their production good to acquire it, and give it up to acquire the
+good they consume.
 
-Nothing in the environment told them to do this.
+Good 1 still serves as a second money for type 2, which gives up good 3 for good 1 and good 1
+for good 2.
 
-Each agent discovered only that rules which end up holding the costless object earn more
-than rules that do not -- and, because everyone was discovering this at once, the belief
-became self-confirming.
+The payoff-neutral trades of Economy A1.1 appear again: type 1 gives up good 2 for good 3, and
+type 3 gives up good 1 for good 2.
 
-This is a genuinely social arrangement built by agents who individually understand nothing
-about it.
+Across seeds:
+
+```{code-cell} ipython3
+H_c = final_holdings(across_seeds(economy_c, 1250))
+n = len(H_c)
+print(f"every type holds fiat at least 10% of the time: "
+      f"{np.sum(H_c[:, :, 3].min(axis=1) >= 0.1)} of {n}")
+print("holdings averaged over runs:")
+print(pd.DataFrame(H_c.mean(axis=0), index=type_names(economy_c),
+                   columns=good_names(economy_c)).round(2))
+print(f"within 0.1 of the fundamental equilibrium:      "
+      f"{np.sum(distance(H_c, fundamental_c) < 0.1)} of {n}")
+print(f"within 0.2 of the fundamental equilibrium:      "
+      f"{np.sum(distance(H_c, fundamental_c) < 0.2)} of {n}")
+print("holdings in runs where some type holds fiat less than 10% of the time:")
+print(H_c[H_c[:, :, 3].min(axis=1) < 0.1].round(2))
+```
+
+In 18 of the 20 runs every type holds fiat money at least 10 percent of the time.
+
+In one of the other two, type 1 agents hoard fiat money while types 2 and 3 hold almost none;
+in the other, type 2's share of fiat money is just under 10 percent.
+
+On average across runs the holdings are within about 0.15 of the theoretical equilibrium:
+type 1 holds more fiat money and less good 2 than in theory, and type 2 less good 1 and more
+good 3, as in seed 0.
+
+Those gaps are why only 2 runs come within 0.1 of the equilibrium, while 14 come within 0.2.
+
+Nothing in the environment told the agents to do this.
+
+Each agent discovered only that rules which end up holding the costless object earn more than
+rules that do not, and, because everyone was discovering this at once, the belief became
+self-confirming.
+
+The discovery asks little of the agents: fiat money is the cheapest object to store, so even
+an impatient agent accepts it, provided others will take it in turn.
 
 ## Economy D: five goods, five types
 
@@ -1664,71 +2098,73 @@ The last economy has five types and five goods, with production
 | 4 | good 1 | good 4 |
 | 5 | good 2 | good 5 |
 
-storage costs $s = (1, 4, 9, 16, 30)$ and $u_i = 200$.
+storage costs $s = (1, 4, 9, 20, 30)$ from the paper's Table 4, and $u_i = 200$.
 
-Goods are now encoded in three bits, and each agent carries 180 exchange rules and 20
-consumption rules -- a small fraction of the possible rules, so the genetic algorithm is
-essential.
+Each agent carries 180 exchange rules and 20 consumption rules.
 
-The authors emphasize that they had *no analytical characterization of equilibrium* for
-this economy before running it.
-
-The simulation is being used as a device to *discover* what an equilibrium might look like,
-which could then be verified analytically.
+The authors emphasize that they had *no analytical characterization of equilibrium* for this
+economy, and used the simulation to suggest what an equilibrium might look like.
 
 ```{code-cell} ipython3
 economy_d = Economy(
     name='D',
     produces=np.array([2, 3, 4, 0, 1]),         # type 1 -> good 3, type 2 -> good 4, ...
-    storage_costs=np.array([1.0, 4.0, 9.0, 16.0, 30.0]),
+    storage_costs=np.array([1.0, 4.0, 9.0, 20.0, 30.0]),
     u=200.0,
-    method='ga4',
+    random_rules=True,
     n_trade_rules=180,
     n_consume_rules=20,
-    start='production',
 )
 
-sim_d = Simulation(economy_d, seed=3)
-sim_d.run(2000, verbose=True)
-```
-
-```{code-cell} ipython3
-holdings(sim_d, t=500)
-```
-
-```{code-cell} ipython3
+sim_d = Simulation(economy_d, seed=0)
+sim_d.run(2000)
 holdings(sim_d)
 ```
 
+The time paths show how the holdings got there.
+
 ```{code-cell} ipython3
-plot_holdings(sim_d, title="Economy D: five goods, five types")
+---
+mystnb:
+  figure:
+    caption: "Holdings in Economy D"
+    name: fig-mms-d-holdings
+---
+plot_holdings(sim_d)
 ```
 
 Two features stand out.
 
-First, the diagonal is zero: no type ever ends a period holding the good it consumes,
-because it consumes it.
+First, the diagonal is zero: no type ends a period holding the good it consumes, because it
+eats it.
 
-Second, each type accumulates its own production good together with goods that are *cheaper*
-to store, never more expensive.
+Second, every type holds mostly the good it produces; at the end of this run only type 5 holds
+other goods much of the time, and type 1 holds the cheaper good 2 about a tenth of the time.
 
-Type 3, for instance, produces good 5, the most expensive good in the economy, and holds it
-only part of the time, having traded some of it away for the much cheaper good 2.
+The time paths have not fully settled; type 2's holdings in particular swing between goods 4
+and 1 for much of the run.
 
-Type 4 produces good 1, the cheapest good of all, and simply holds it.
+The paper's run looks different in its details: at $t = 1750$ its type 1 agents held the
+cheaper good 2 83 percent of the time, and its type 3 agents split their holdings between good
+2 and good 5.
 
-Let us classify the trades that actually take place.
+Let us classify the trades that actually take place by what the agent acquires.
 
 ```{code-cell} ipython3
 def trade_composition(sim, window=200):
     """
-    Classify realized trades by what the agent acquires: its own consumption
-    good, a good that is cheaper to store than the one given up, or neither.
+    Shares of realized trades in which the agent acquires its own consumption
+    good, a good cheaper to store than the one given up, or neither; and the
+    share of 'neither' trades that give up the agent's own production good
+    and are then eaten (payoff-neutral).
     """
     econ = sim.econ
     f = np.array(sim.exch_hist)[-window:].sum(axis=0)
+    c = np.array(sim.cons_hist[-window:]).sum(axis=0)
+    eat = c[:, :, 1] / np.maximum(c[:, :, 0], 1)
     s = econ.storage_costs
-    counts = {'own consumption good': 0.0, 'a cheaper good': 0.0, 'neither': 0.0}
+    out = {'own consumption good': 0.0, 'a cheaper good': 0.0, 'neither': 0.0}
+    neutral = 0.0
     for i in range(econ.n_types):
         for j in range(econ.n_goods):
             for k in range(econ.n_goods):
@@ -1736,43 +2172,57 @@ def trade_composition(sim, window=200):
                     continue
                 key = ('own consumption good' if k == i else
                        'a cheaper good' if s[k] < s[j] else 'neither')
-                counts[key] += f[i, j, k]
-    total = sum(counts.values())
-    return pd.Series({k: round(v / total, 3) for k, v in counts.items()},
-                     name='share of realized trades')
+                out[key] += f[i, j, k]
+                if key == 'neither' and j == econ.produces[i]:
+                    neutral += f[i, j, k] * eat[i, k]
+    total = sum(out.values())
+    out = {k: v / total for k, v in out.items()}
+    out['  of which payoff-neutral'] = neutral / total
+    return pd.Series(out, name='share of realized trades').round(3)
 
 
 trade_composition(sim_d)
 ```
 
-Roughly two thirds of realized trades acquire either the agent's own consumption good or a
-good that is cheaper to store, which is the pattern the paper describes.
+About two thirds of realized trades acquire either the agent's own consumption good or a good
+that is cheaper to store, which is the pattern the paper describes.
 
-The remaining third deserves a comment, because it is not evidence against that pattern.
+About half of the remaining third are payoff-neutral: the agent gives up its own production
+good for a dearer good, eats it, and produces its own good again.
 
-Consider a type 1 agent, who produces good 3, swapping good 3 for the far more expensive
-good 5.
+The rest, about a sixth of all trades, fit neither description.
 
-He then consumes good 5 -- getting no utility from it -- and produces good 3 again, so he
-ends the period holding good 3 and paying $s_3$, exactly as he would have had he refused.
-
-Such trades are payoff-neutral, so nothing in the accounting system pushes the rules that
-generate them out of the population.
+Here are the same statistics for ten seeds, together with the number of times per period an
+agent of each type eats its own good.
 
 ```{code-cell} ipython3
-plot_flows(sim_d, window=200, cutoff=0.03,
-           title="Economy D: discovered exchange pattern")
+sims_d = across_seeds(economy_d, 2000, seeds=range(10))
+comp = pd.DataFrame([trade_composition(sim) for sim in sims_d])
+print(comp.describe().loc[['mean', 'min', 'max']].round(2), "\n")
+own = np.array([[np.array(sim.cons_hist[-200:]).sum(axis=0)[i, i, 1] / (200 * 50)
+                 for i in range(5)] for sim in sims_d])
+print("own-good consumption per agent per period, smallest over runs:",
+      own.min(axis=0).round(3))
 ```
 
-The paper summarizes what it sees in these patterns:
+The shares change little from run to run, and every type eats its own good in every run.
+
+The paper summarizes its own run this way:
 
 > From the simulation results, we can see that the trading patterns nearly seem to describe
 > a fundamental equilibrium in which agents are only willing to trade for commodities of
 > lower cost than the one currently in storage, except that they always accept the commodity
 > of their type. Some speculative moves can be detected.
 
-An example of such a speculative move is a type 2 agent accepting good 3 for good 1, not
-because good 3 is cheap but because type 3 agents will take it in exchange for good 2.
+Our runs share the first part of that description, with two qualifications: a third of the
+trades fit neither pattern, half of them because the "consume anything" rule makes them
+payoff-neutral, and in our displayed run the holdings have not settled down.
+
+The paper's example of a speculative move -- type 2 agents accepting good 3 from type 1 in
+exchange for good 1, in order to trade it to type 3 for good 2 -- comes from its own run.
+
+What the simulation delivers is a candidate pattern of trade, which would still have to be
+checked against the equilibrium conditions, as the authors note.
 
 ## Concluding remarks
 
@@ -1785,30 +2235,38 @@ dynamic programs.
 They recognize utility when they experience it and costs when they bear them, and they keep
 running averages.
 
-Out of this the following emerges:
+Out of this the following emerges.
 
-* **Nash-Markov behavior is learnable.** In most of the economies simulated, holdings and
-  trading patterns converge to a stationary Nash equilibrium of the Kiyotaki-Wright model.
-* **Learning selects among equilibria.** Where the rational-expectations model admits both a
-  fundamental and a speculative equilibrium, the classifier systems always found the
-  fundamental one.
-  - Economy A2 shows they found it even where theory says it should not be an equilibrium at
-    all for patient agents.
-  - Economy B shows this is not simply early myopia, since that economy moves *away* from a
-    speculative pattern as it learns.
-* **Institutions can be discovered.** Economy C's agents built a fiat monetary system out of
-  nothing but their own experience of storage costs.
-* **The method scales.** Economy D produced a credible description of equilibrium in a model
-  its authors had not solved.
+* **A medium of exchange is learnable.** With a complete list of rules, Economy A1 reaches
+  its unique stationary equilibrium in every run; from random rules the agents get most of
+  the way, overeating money as the paper's agents did.
+* **Selection, and its limits.** In Economy B, with two equilibria, the classifier systems
+  select the fundamental one in most runs and the speculative one in none.
+  In Economy A2, whose only equilibrium for patient agents is speculative, they never
+  speculate: most runs converge, sometimes very slowly, to an outcome that is not an
+  equilibrium of that economy, and a few lock into a pattern with even less trade.
+* **Why: the agents are impatient.** At stationary strengths the bucket brigade values the
+  future with a discount factor $b_1 b_2/((1+b_1)(1+b_2))$, about $0.016$ with the paper's
+  bids and below $1/4$ for any bids, and the patterns the agents find are those of impatient
+  agents.
+  The greedy auction and overgeneral consumption rules add to the effect.
+* **Institutions can be discovered.** In nearly every run, Economy C's agents built a fiat
+  monetary system out of nothing but their own experience of storage costs.
+* **The method proposes candidates.** Economy D produced a pattern of trade in a model its
+  authors had not solved, though not one that has been verified to be an equilibrium.
 
 The paper is candid about what is missing.
 
 There are no convergence theorems, only a sketch of how stochastic approximation arguments
-might supply them; and the authors judge their genetic algorithm to provide "too little
-experimentation" -- which is precisely why the speculative equilibrium never appears.
+might supply them, and the authors judge their algorithm to provide "too little
+experimentation".
 
-That diagnosis, that an adaptive system's selection among equilibria is governed by how much
-it explores and when, has proved durable.
+Experimentation is part of the story, but the stationary strengths show that more of it
+would not be enough: an agent built this way values a payoff one period ahead at less than a
+quarter of its worth, whatever its bids.
+
+{doc}`prospects_bounded_rationality` takes stock of what the series has delivered, and enters
+Economy A2 on the debit side of the ledger.
 
 ## Exercises
 
@@ -1817,15 +2275,19 @@ it explores and when, has proved durable.
 ```
 
 Economy A2.2 is Economy A2 -- with $u_i = 500$ -- but started from randomly generated rules
-and evolved with the `'ga3'` genetic algorithm, exactly as A1.2 relates to A1.1.
+and evolved with the genetic algorithm, exactly as A1.2 relates to A1.1.
 
 The paper's summary table lists its equilibrium type as speculative, and the authors report
-that after 1000 iterations the economy had not converged, with trading patterns closer to
-the fundamental equilibrium at $t = 1000$ than at $t = 500$.
+that after 1000 iterations the economy had not converged, with trading patterns closer to the
+fundamental equilibrium than to the speculative one in period 1000 -- "(The reverse was true
+in period 500.)"
 
 Simulate it for 2000 periods and report holdings at $t = 500$, $t = 1000$ and $t = 2000$.
 
-Does the extra experimentation supplied by the genetic algorithm produce speculation?
+Then repeat for 20 seeds.
+
+Does the extra experimentation supplied by the genetic algorithm produce speculation at any
+of these dates?
 
 ```{exercise-end}
 ```
@@ -1835,34 +2297,40 @@ Does the extra experimentation supplied by the genetic algorithm produce specula
 ```
 
 ```{code-cell} ipython3
-economy_a22 = Economy(
-    name='A2.2',
-    produces=np.array([1, 2, 0]),
-    storage_costs=np.array([0.1, 1.0, 20.0]),
-    u=500.0,
-    method='ga3',
-)
+economy_a22 = replace(economy_a21, name='A2.2', random_rules=True)
 
-sim_a22 = Simulation(economy_a22, seed=3)
+sim_a22 = Simulation(economy_a22, seed=0)
 sim_a22.run(2000)
-
 for t in (500, 1000, 2000):
-    print(f"\nt = {t}")
-    print(holdings(sim_a22, t=t))
+    print(f"t = {t}\n", holdings(sim_a22, t=t), "\n")
 ```
+
+Now the same experiment for 20 seeds, recording holdings at each date.
 
 ```{code-cell} ipython3
-plot_holdings(sim_a22, title="Economy A2.2")
+sims_a22 = across_seeds(economy_a22, 2000)
+for t in (500, 1000, 2000):
+    H = final_holdings(sims_a22, t)
+    closer = distance(H, speculative.to_numpy()) < distance(H, fundamental)
+    print(f"t = {t}: type 1 holds good 3 > 5% in {np.sum(H[:, 0, 2] > 0.05)} runs "
+          f"(at most {H[:, 0, 2].max():.2f} of the time); closer to speculative "
+          f"than to fundamental in {np.sum(closer)} runs")
 ```
 
-The economy again settles on the fundamental pattern: type 1 holds good 2, type 3 holds
-good 1, and type 2 alternates between goods 1 and 3.
+No.
 
-Type 1 agents are not holding good 3, so they are not speculating.
+In this run type 1 never holds good 3 at any of the three dates.
 
-Randomizing the initial rules and letting the genetic algorithm run does not by itself
-generate enough experimentation to sustain speculation -- which is the paper's own
-conclusion.
+Across 20 runs, at each date type 1 holds good 3 more than 5 percent of the time in at most
+three runs, and never as often as the speculative equilibrium's 29 percent.
+
+Only one run, at $t = 2000$, is even marginally closer to the speculative holdings than to the
+fundamental ones, and our runs do not reproduce the paper's report that its run looked more
+speculative at $t = 500$.
+
+Randomizing the initial rules and adding the genetic algorithm can manufacture rules that
+accept good 3, but it does not change the discount factor at which the bucket brigade values
+holding it ({ref}`mms_impatience`).
 
 ```{solution-end}
 ```
@@ -1871,13 +2339,14 @@ conclusion.
 :label: mms_ex2
 ```
 
-Economy B.2 is Economy B started from random rules with the `'ga3'` genetic algorithm.
+Economy B.2 is Economy B started from random rules, with the genetic algorithm and A's bids.
 
 The paper reports that it "had not converged after 2000 periods" but was "moving towards the
 fundamental equilibrium", with holdings at $t = 2000$ of $(0, 0.354, 0.646)$ for type 1,
 $(0.996, 0, 0.004)$ for type 2 and $(0.268, 0.732, 0)$ for type 3.
 
-Simulate it and compare with the complete-enumeration Economy B.1 that we ran above.
+Simulate it, compare its holdings with the two equilibria of Economy B and with the paper's
+run, and compare its distance from the fundamental equilibrium with B.1's across 20 seeds.
 
 ```{exercise-end}
 ```
@@ -1887,47 +2356,46 @@ Simulate it and compare with the complete-enumeration Economy B.1 that we ran ab
 ```
 
 ```{code-cell} ipython3
-economy_b2 = Economy(
-    name='B.2',
-    produces=np.array([2, 0, 1]),
-    storage_costs=np.array([1.0, 4.0, 9.0]),
-    u=100.0,
-    method='ga3',
-)
-
-sim_b2 = Simulation(economy_b2, seed=1)
+economy_b2 = replace(economy_b1, name='B.2', random_rules=True,
+                     b_trade=(0.025, 0.025))
+sim_b2 = Simulation(economy_b2, seed=0)
 sim_b2.run(2000)
 
-for t in (500, 1000, 2000):
-    print(f"B.2 at t = {t}")
-    print(holdings(sim_b2, t=t))
-    print()
-print("B.1 (complete enumeration) at t = 1000, for comparison")
-print(holdings(sim_b1))
+paper_b2 = np.array([[0, 0.354, 0.646], [0.996, 0, 0.004], [0.268, 0.732, 0]])
+rows = {'B.2 simulated, t = 2000': holdings(sim_b2).to_numpy(),
+        'fundamental equilibrium': fundamental_b,
+        'speculative equilibrium': speculative_b,
+        "paper's B.2, t = 2000": paper_b2}
+pd.concat({k: pd.DataFrame(v, index=type_names(economy_b2),
+                           columns=good_names(economy_b2)).round(3)
+           for k, v in rows.items()})
 ```
+
+Now compare B.2 with B.1 across seeds.
 
 ```{code-cell} ipython3
-plot_holdings(sim_b2, title="Economy B.2")
+H_b2 = final_holdings(across_seeds(economy_b2, 2000))
+for name, H in [("B.1", H_b1), ("B.2", H_b2)]:
+    print(f"{name}: median distance to fundamental "
+          f"{np.median(distance(H, fundamental_b)):.2f}, to speculative "
+          f"{np.median(distance(H, speculative_b)):.2f}; "
+          f"median share of good 1 for type 3 {np.median(H[:, 2, 0]):.2f}")
 ```
 
-Follow the two types that move.
+This run of B.2 is not near either equilibrium: type 3 holds good 1 only 11 percent of the
+time (59 percent in the fundamental equilibrium, 27 percent in the paper's run), and type 1
+holds good 2 only 10 percent of the time (29 percent in the fundamental equilibrium, 59 in
+the speculative one).
 
-Type 2 agents are still split at $t = 500$ and have locked onto good 1 by $t = 1000$.
+Across seeds, B.2's median distance from the fundamental equilibrium is 0.25, against 0.06 for
+B.1, while both stay about 0.5 from the speculative one.
 
-Type 3 agents start out mostly holding their own production good 2 and shift a substantial
-part of their holdings into the cheaper good 1 over the same interval, which is the movement
-toward the fundamental equilibrium that the paper describes.
+The typical type 3 agent in B.2 holds good 1 about a third of the time, between the paper's 27
+percent and the equilibrium's 59.
 
-After that the type 3 split stops moving in one direction and rattles around a half-and-half
-mix from one reading to the next, so this economy has not converged in the sense that B.1 has.
-
-That is the paper's own verdict on it.
-
-Compared with the complete-enumeration run, the genetic algorithm gets type 1 and type 2 to
-much the same place and leaves type 3 less far along.
-
-Building the needed rules from random material costs time that the enumerated economy never
-had to spend.
+Like the paper's run, B.2 ends much closer to the fundamental equilibrium than to the
+speculative one without reaching it in 2000 periods: building the needed rules from random
+material takes time that the enumerated economy never had to spend.
 
 ```{solution-end}
 ```
@@ -1936,15 +2404,15 @@ had to spend.
 :label: mms_ex3
 ```
 
-The bid functions $b_1(e) = b_{11} + b_{12}\sigma_e$ favor specific rules over general ones,
-since $\sigma_e$ falls with the number of wildcards.
+Kiyotaki and Wright's agents cannot consume goods they do not value.
 
-What happens if this tilt is removed?
+Impose that restriction on Economy A2.1 by setting `no_eat=True`, which removes the
+overconsumption mechanism of {ref}`mms_a2`.
 
-Rerun Economy A1.1 with $b_{12} = 0$, holding $b_{11} + b_{12}$ fixed at $0.05$, and compare
-the number of wildcards in the winning rules with those in the baseline.
+Across 20 seeds, how often does type 1 hold good 3?
 
-A single run will not settle the question, so average over several seeds.
+In the runs where it does, which rule of type 1's wins in the state (good 2, good 3), and
+what else does that rule cover?
 
 ```{exercise-end}
 ```
@@ -1954,80 +2422,159 @@ A single run will not settle the question, so average over several seeds.
 ```
 
 ```{code-cell} ipython3
-economy_flat = Economy(
-    name='A1.1 with no specificity premium',
-    produces=np.array([1, 2, 0]),
-    storage_costs=np.array([0.1, 1.0, 20.0]),
-    u=100.0,
-    method='enumerate',
-    b_trade=(0.05, 0.0),
-)
+economy_noeat = replace(economy_a21, name='A2.1, no eating', no_eat=True)
 
-sim_flat = Simulation(economy_flat, seed=42)
-sim_flat.run(1000)
-
-print(holdings(sim_flat))
+rows = []
+for seed in range(20):
+    sim = Simulation(economy_noeat, seed)
+    sim.run(1000)
+    h = holdings(sim, window=100).to_numpy()
+    w = strongest(sim.E, 0, 1 * 3 + 2)
+    f = trade_rates(sim)[0]
+    rows.append({'seed': seed, 'type 1 holds good 3': h[0, 2],
+                 'type 1 trades 2 for 3': f[1, 2], 'type 1 trades 3 for 1': f[2, 0],
+                 'winning rule in (good 2, good 3)': rule_string(sim.E.cond[0, w],
+                                                                 sim.E.action[0, w], 3)})
+noeat = pd.DataFrame(rows).set_index('seed').round(3)
+noeat[noeat['type 1 holds good 3'] > 0.05]
 ```
 
-The holdings are unchanged: the fundamental equilibrium is reached either way.
+Type 1 holds good 3 more than 5 percent of the time in 9 of the 20 runs, but for two different
+reasons.
 
-What changes is the *kind of rule* that gets there.
+In four runs (seeds 3, 8, 10 and 11) type 1 trades good 2 for good 3 and good 3 for good 1, and
+its holdings look like the speculative equilibrium's.
+
+But the rule that accepts good 3 is general, a version of "trade if my partner does not hold
+good 2", which also covers the state in which the partner holds good 1.
+
+Its strength is earned in that state, where trading leads to eating good 1, and carried over to
+good 3: speculation by generality, not by the bucket brigade crediting the patience it
+requires.
+
+In the other five runs type 1 holds good 3 but never trades it.
+
+These agents acquired good 3 early on, cannot eat it, and meet type 3 agents who have locked
+into refusing it.
+
+So removing overconsumption does not make the agents speculate for the right reason, and
+generality cuts both ways: it can carry rewards from one state to another, which here mimics
+speculation, and it produces the overconsumption of {ref}`mms_a2`.
+
+This is the tradeoff between generality and discrimination that {cite:t}`Sargent1993`
+emphasizes in his discussion of classifier systems.
+
+```{solution-end}
+```
+
+```{exercise-start}
+:label: mms_ex4
+```
+
+Replace the argmax auction of Economy A2.1 by a softmax auction with intensity $\eta = 0.5$
+(set `eta=0.5`), in the spirit of {ref}`gc_ex3` and the paper's footnote 5, leaving
+everything else unchanged.
+
+Across 20 seeds, how often does type 1's winning exchange rule in the state (good 2, good 3)
+accept good 3, and how often does type 1 actually hold good 3?
+
+Compare your answer with the paper's Table 9d.
+
+```{exercise-end}
+```
+
+```{solution-start} mms_ex4
+:class: dropdown
+```
 
 ```{code-cell} ipython3
-def wildcards_in_winners(sim):
-    "Average number of wildcards in the exchange rule that wins in each state."
-    econ = sim.econ
-    counts = []
-    for A in sim.agents:
-        for j in range(econ.n_goods):
-            for k in range(econ.n_goods):
-                w, _ = auction(A.trade, np.concatenate([econ.code(j), econ.code(k)]))
-                if w >= 0:
-                    counts.append(np.count_nonzero(A.trade.cond[w] == WILD))
-    return np.mean(counts)
+economy_soft = replace(economy_a21, name='A2.1, softmax', eta=0.5)
 
+rows = []
+for seed in range(20):
+    sim = Simulation(economy_soft, seed)
+    sim.run(1000)
+    w, c = strongest(sim.E, 0, 1 * 3 + 2), strongest(sim.C, 0, 2)
+    rows.append({'accepts good 3': sim.E.action[0, w] == 1,
+                 'type 1 holds good 3': holdings(sim, window=100).iloc[0, 2],
+                 'consumption rule for good 3': rule_string(sim.C.cond[0, c],
+                                                            sim.C.action[0, c], 3)})
+soft = pd.DataFrame(rows)
+print(f"winning rule accepts good 3: {soft['accepts good 3'].sum()} of 20")
+print(f"largest share of time type 1 holds good 3: {soft['type 1 holds good 3'].max():.3f}")
+soft['consumption rule for good 3'][soft['accepts good 3']].value_counts()
+```
 
-def average_wildcards(b_trade, seeds=range(8)):
-    out = []
-    for seed in seeds:
-        econ = Economy(name='sweep', produces=np.array([1, 2, 0]),
-                       storage_costs=np.array([0.1, 1.0, 20.0]), u=100.0,
-                       method='enumerate', b_trade=b_trade)
-        sim = Simulation(econ, seed=seed)
-        sim.run(1000)
-        out.append(wildcards_in_winners(sim))
-    return np.array(out)
+With exploration, the rule that accepts good 3 wins in 14 of the 20 runs, yet type 1 almost
+never holds good 3.
 
+In every run in which it accepts good 3, the winning consumption rule for good 3 is a general
+eating rule: either "eat if I do not hold good 2", which also covers good 1, or "eat if I do
+not hold good 1", which also covers good 2, where eating does no harm.
 
-base = average_wildcards((0.025, 0.025))
-flat = average_wildcards((0.05, 0.0))
+This is the paper's Table 9d pattern: the speculative exchange rule wins, and the general
+consumption rule eats good 3 at once.
 
-pd.DataFrame({"baseline $b_{12} = 0.025$": base.round(2),
-              "no premium $b_{12} = 0$": flat.round(2)},
-             index=pd.Index(range(8), name="seed"))
+A softmax auction keeps experimenting, so no rule is shut out for good by an early windfall,
+but it leaves the other two mechanisms in place.
+
+```{solution-end}
+```
+
+```{exercise-start}
+:label: mms_ex5
+```
+
+{ref}`mms_impatience` predicts that a type 1 agent whose rules are all fully specific will not
+speculate in Economy A2 unless $u_1$ exceeds roughly $6(s_3 - s_2)/\beta_{\rm eff}$.
+
+Test the prediction by simulation.
+
+Give the agents only fully specific rules (`specific_only=True`), let them explore with a
+softmax auction ($\eta = 0.5$), forbid eating unwanted goods, and vary $u_1$.
+
+For six seeds at each $u_1$, record whether type 1's winning rule in the state (good 2, good
+3) accepts good 3.
+
+At what $u_1$ does speculation start to win?
+
+```{exercise-end}
+```
+
+```{solution-start} mms_ex5
+:class: dropdown
 ```
 
 ```{code-cell} ipython3
-print(f"mean wildcards, baseline           : {base.mean():.3f}")
-print(f"mean wildcards, no specificity bid : {flat.mean():.3f}")
-print(f"higher without the premium in {np.sum(flat > base)} of {len(base)} seeds")
+print(f"predicted thresholds: {speculation_threshold(s_A, 1, 0.5, β_A):,.0f} "
+      f"(fundamental holdings), {speculation_threshold(s_A, 1, 0.586, β_A):,.0f} "
+      f"(speculative holdings)\n")
+
+for u in (500, 4_000, 8_000, 12_000, 20_000, 40_000):
+    econ = replace(economy_a21, u=float(u), specific_only=True, eta=0.5,
+                   no_eat=True)
+    accept, share = 0, []
+    for seed in range(6):
+        sim = Simulation(econ, seed)
+        sim.run(2000)
+        accept += sim.E.action[0, strongest(sim.E, 0, 1 * 3 + 2)] == 1
+        share.append(holdings(sim, window=200).iloc[0, 2])
+    print(f"u_1 = {u:>6,}: accepts good 3 in {accept} of 6 runs; "
+          f"type 1 holds good 3 {np.mean(share):.2f} of the time")
 ```
 
-Removing the specificity premium raises the average generality of the winning rules, but the
-effect is modest and does not show up in every run.
+In these six runs, at A2's $u_1 = 500$ and at every $u_1$ up to 12,000, the rule that accepts
+good 3 never wins.
 
-That is worth knowing rather than glossing over.
+It starts to win between 12,000 and 20,000, and at 40,000 type 1 holds good 3 about as often as
+in the speculative equilibrium.
 
-With a complete enumeration the specific rules are all present from the start and accumulate
-strength on their own, so the bid premium is only one of the forces tilting the auction toward
-them; the counter is a genuine tendency visible in the average rather than a law obeyed run by
-run.
+The prediction gets the order of magnitude right: speculation needs a utility tens of times
+larger than A2's, against a threshold of 138 for patient agents.
 
-The tilt matters more where it is harder to see.
-
-It is the mechanism the paper blames for the failure of Economy A2: general consumption
-classifiers cannot tell stored goods apart, so they cannot transmit to the exchange classifiers
-the information that would make speculation profitable.
+These six runs need somewhat more than the prediction, plausibly because the auction compares
+noisy strengths in runs of finite length; on other seeds the accepting rule already wins
+occasionally at 12,000.
 
 ```{solution-end}
 ```
