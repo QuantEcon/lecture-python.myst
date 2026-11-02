@@ -840,9 +840,9 @@ The edge of the basin is $\pi_{\text{high}}$ itself.
 At exactly $\pi_0 = 3$, beliefs stay put: $\pi_{\text{high}}$ is a rest point of the least
 squares dynamics, but an unstable one.
 
-(In floating-point arithmetic a rounding error of order $10^{-16}$ eventually grows, and the
-economy then falls to $\pi_{\text{low}}$ or collapses, depending on the sign of the error.
-That is why we never start at exactly $3$.)
+We never start at exactly $3$, because in floating-point arithmetic a rounding error of order
+$10^{-16}$ eventually grows, and the economy then falls to $\pi_{\text{low}}$ or collapses,
+depending on the sign of the error.
 
 So the steady state that the rational expectations dynamics single out as *the* stable one is
 precisely the edge of the basin of attraction of the learning dynamics toward the other one.

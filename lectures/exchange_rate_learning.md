@@ -1443,7 +1443,7 @@ In a stochastic version of the model, realizations that start from identical ini
 can converge to different exchange rates, because different shocks hit the transient
 dynamics.
 
-Add i.i.d. shocks to the old-age endowment, $w_{2t} = w_2 + \sigma \varepsilon_t$ with
+Add IID shocks to the old-age endowment, $w_{2t} = w_2 + \sigma \varepsilon_t$ with
 $\varepsilon_t \sim N(0, 1)$ and $\sigma = 1$, at Sargent's parameters.
 
 (The `w2_path` argument of `newton_learning` does this.)
