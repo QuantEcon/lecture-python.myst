@@ -1385,7 +1385,7 @@ print(holdings(sim_24), "\n")
 winners(sim_24, 1, exchange=False)
 ```
 
-This time type 3 accepts good 3, and the trouble is with type 2.
+This time type 3 does accept good 3; the trouble is with type 2.
 
 It trades good 3 for good 1, as in the fundamental pattern, but then eats the good 1 instead of
 keeping it to buy good 2 from type 1, so it ends every period holding good 3 again.
@@ -1397,15 +1397,15 @@ Eating good 2 is right and earns type 2 its utility of consumption, which keeps 
 strength high; eating good 1 is wrong, but the same rule decides that state too.
 
 The specific rule that would keep good 1, `100 -> 0`, was tried only a few times and sits far
-below it, so under the argmax auction it never wins again: the general rule's strength, an
-average that includes every meal of good 2, stays far above it.
+below the general rule's strength, an average that includes every meal of good 2, so under the
+argmax auction it never wins again.
 
 So this run is stuck for good: seed 24, and seed 26 in the same way, are still in this pattern
 at $t = 24{,}000$.
 
 Optimistic initialization lets a rule that was once lucky shut out an untried rival; this second
-lock-in is the cost of generality, in which a general rule that earns well in one state shuts
-out the specific rule that would act correctly in another.
+lock-in is the work of an overgeneral consumption rule, one that earns well in one state and
+shuts out the specific rule that would act correctly in another.
 
 Type 1 still never speculates: across seeds 20 to 59 it holds good 3 no more than 5 percent of
 the time in every run.
@@ -1493,7 +1493,7 @@ Three mechanisms are therefore at work in A2:
 1. **Greedy lock-in.** The argmax auction stops experimenting once untried rules are used up,
    as in the trapped runs above.
 1. **Overconsumption by general consumption rules**, which makes accepting good 3
-   pointless, as in the paper's Table 9.
+   pointless, as in the paper's Table 9, and in seed 24 keeps type 2 from holding money.
 
 {ref}`mms_ex3`, {ref}`mms_ex4` and {ref}`mms_ex5` take them apart one at a time.
 
