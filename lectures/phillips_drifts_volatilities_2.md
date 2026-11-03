@@ -952,12 +952,6 @@ What does that imply for the estimates in this lecture that bear on the 2020s?
 Here is one solution.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Filtered and smoothed estimates of a constant and a drifting coefficient
-    name: fig-csdv2-filter-smooth
----
 def tvp_ar1(T, ρ0, q, rng):
     """Simulate y_t = ρ_t y_{t-1} + w_t with ρ_t a random walk."""
     ρ = ρ0 + np.r_[0, np.cumsum(np.sqrt(q) * rng.standard_normal(T))]
@@ -1150,12 +1144,6 @@ satisfies $du_t = 10^{-4}\,dU/[\bar u_t(1-\bar u_t)]$ when $dU$ is measured in
 percentage points.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Low-frequency slope $h_{\pi u}(0,t)$ of inflation on unemployment
-    name: fig-csdv2-low-frequency-slope
----
 def low_frequency_slope(θ, covariance):
     """Low-frequency slope of annual inflation on the unemployment rate (pp/pp)."""
     intercept, companion = companion_matrix(θ)

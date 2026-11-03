@@ -776,12 +776,6 @@ Which values of $\lambda$ do the data favor, and how does the answer bear on the
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Profile log likelihood of the forgetting factor λ under the two identification schemes
-    name: fig-ppe-gain-profile
----
 λ_grid = [0.95, 0.96, 0.97, 0.975, 0.98, 0.985, 0.99, 0.995, 1.0]
 profile = {s: [] for s in 'CK'}
 mean_K = []
@@ -893,12 +887,6 @@ How does the Keynesian plan compare with the actual disinflation, and how large 
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Inflation and unemployment planned in 1979Q3 by the Keynesian and classical governments, and what happened
-    name: fig-ppe-volcker-plans
----
 def planned_paths(g, date, H=20):
     "Inflation and unemployment the government planned from `date` on."
     t = g['frame'].index.get_loc(pd.Timestamp(date))

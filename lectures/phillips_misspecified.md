@@ -553,12 +553,6 @@ The equilibrium belief $C$ depends on the feedback parameter $b$ in {eq}`pm_bray
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Equilibrium gain against the feedback parameter, with and without the mean held fixed
-    name: fig-mis-ex1
----
 b_grid = np.arange(0.1, 0.85, 0.1)
 C_a1 = np.array([solve_equilibrium(BrayModel(a=1.0, b=b)) for b in b_grid])
 C_ν2 = np.array([solve_equilibrium(BrayModel(a=2 * (1 - b), b=b)) for b in b_grid])
@@ -613,12 +607,6 @@ Which $c$ minimizes it? Compare it with $C^*$ and with the exact-unit-root best 
 Substituting {eq}`pm_bray2` into {eq}`pm_bray` gives $p_t = [a + b(1 - C) p^e_t + u_t]/(1 - bC)$, and then $p^e_{t+1} = \phi\, p^e_t + C(a + u_t)/(1 - bC)$ with $\phi = (1 - C)/(1 - bC)$.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Actual forecast error of the adaptive rule against its gain, in a simulated market with C = C*
-    name: fig-mis-ex2
----
 rng = np.random.default_rng(0)
 T, burn = 1_000_000, 10_000
 a, b, C = bray.a, bray.b, C_star

@@ -869,12 +869,6 @@ What happens as $\sigma_1 \to 0$, and why?
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Keynesian mean inflation against the size of the Phillips curve shock
-    name: fig-sce-ex1
----
 σ1_grid = np.linspace(0.05, 1.0, 50)
 y_keynes = [SelfConfirmingStatic(σ1=σ1, σ2=0.3).keynesian()[2]
             for σ1 in σ1_grid]
@@ -924,12 +918,6 @@ The value $t_0 = 100$ represents a prior sample of 100 observations, and the reg
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Decreasing-gain least squares learning in the static model, for both directions of fit
-    name: fig-sce-ex2
----
 def rls_static(direction, n_paths=500, T=20_000, t0=100,
                θ=1.0, U_star=5.0, σ1=0.3, σ2=0.3, seed=0):
     """

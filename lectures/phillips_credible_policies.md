@@ -1333,12 +1333,6 @@ for δ in (0.001, 0.01, 0.02):
 The figure marks the three discount factors.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: The set of SPE values against the discount factor
-    name: fig-cpol-sets-by-delta
----
 δs = np.geomspace(0.001, 0.98, 120)
 lows, highs = [], []
 for δ in δs:
@@ -1575,12 +1569,6 @@ Every value between $v^N$ and $v^{nr}$ can also be sustained by Nash reversion, 
 $v^{nr}$.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: The best value sustainable by Nash reversion against the best SPE value
-    name: fig-cpol-nash-reversion
----
 def nash_reversion_best(m):
     "The best value sustainable by reversion to Nash (book eq. (25)) and its action."
     y_nr = max(y_nash(m) * (1 - m.δ * (2 + m.θ**2)) / (1 + m.δ * m.θ**2), 0.0)

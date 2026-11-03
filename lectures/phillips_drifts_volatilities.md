@@ -2106,12 +2106,6 @@ The inversion is increasing in $g(0)$, so it maps posterior quantiles of
 $g_{\pi\pi}(0,t)$ into posterior quantiles of $\rho_t$.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Equivalent $AR(1)$ coefficient implied by $g_{\pi\pi}(0,t)$
-    name: fig-csdv-equivalent-ar1
----
 def equivalent_ar1(g):
     """AR(1) coefficient with the same normalized power at frequency zero."""
     return (2 * np.pi * g - 1) / (2 * np.pi * g + 1)
@@ -2177,12 +2171,6 @@ composition of $R_t$.
 The constant-coefficient chain mixes much faster, so a shorter run suffices.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: $g_{\pi\pi}(0,t)$ with drifting and with constant coefficients
-    name: fig-csdv-constant-coefficients
----
 constant_posterior = run_sampler(
     data['y'], data['x'], prior,
     n_sweeps=4_000, burn=1_000, thin=10, seed=42,

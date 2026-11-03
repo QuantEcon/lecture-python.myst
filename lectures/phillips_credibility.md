@@ -608,12 +608,6 @@ Its solution behaves like $\sigma_\eta^2 / [(-2\mathcal{M} - 1)\, t]$ when $\mat
 The simulation below computes the mean error both ways and fits slopes on $100 \leq t \leq 3000$.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Mean error and scaled dispersion of least squares learning for three Phillips slopes
-    name: fig-cred-ls-rates
----
 T, n_paths = 3000, 200
 t = np.arange(1, T + 1)
 fit = t >= 100
@@ -745,12 +739,6 @@ The sample variances match the formula, and the variance is nearly proportional 
 The figure compares a constant gain with the least squares gain on the same shocks.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Expected inflation under a constant gain and under the least squares gain, with the same shocks
-    name: fig-cred-constant-gain
----
 x_c, _ = ls_learning(cm_1, T=3000, seed=4, ε=0.025)
 x_ls, _ = ls_learning(cm_1, T=3000, seed=4)
 band = 2 * np.sqrt(0.025 / ((1 - h_prime) * (2 - 0.025 * (1 - h_prime))))
@@ -871,12 +859,6 @@ The shock term is smallest at $\alpha = 1$, where it equals $\sigma_\zeta^2/(1 +
 That is Rogoff's tradeoff.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Society's expected loss under a Rogoff banker, against the banker's weight on inflation, compared with Blinder's authority
-    name: fig-cred-rogoff
----
 def society_loss(α, k, σ_ζ, θ=θ_b, U_star=U_b):
     "Society's expected loss (1/2) E(U^2 + y^2) when an authority (k, α) sets y."
     bias = θ * (1 - k) * U_star / α

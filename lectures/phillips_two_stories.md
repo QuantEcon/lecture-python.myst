@@ -981,12 +981,6 @@ for label, gain in [('constant gain 0.02', 0.02), ('least squares, gain 1/t', No
 We plot the drifting coefficients and the static rule's target.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: A drifting empirical Phillips curve, estimated by recursive least squares
-    name: fig-ts-rls
----
 fig, axes = plt.subplots(3, 1, figsize=(10, 9), sharex=True)
 for label, p in paths.items():
     axes[0].plot(p['a'], lw=1.2, label=label)

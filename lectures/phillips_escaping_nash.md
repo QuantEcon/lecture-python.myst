@@ -1041,12 +1041,6 @@ Look more closely at the race of four ODEs.
 We first plot the four paths computed in the text.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: The four conditional escape ODEs in belief space and in time
-    name: fig-esc-race
----
 fig, axes = plt.subplots(1, 2, figsize=(13, 5))
 φ = np.linspace(0, 2 * np.pi, 200)
 axes[0].plot(γ_sce[0] + 5 * np.cos(φ), γ_sce[1] + 5 * np.sin(φ), 'k:', lw=1)
@@ -1119,12 +1113,6 @@ The theorem says $\varepsilon \log \mathbb{E}\,\tau^\varepsilon \to \bar S$, whe
 We compute the mean exit period on a finer grid of small gains.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Scaled mean exit times against the inverse gain
-    name: fig-esc-exit-scaling
----
 gains = np.array([0.1, 0.05, 0.02, 0.01, 0.005, 0.0025, 0.001])
 mean_exit = np.array([np.nanmean(first_exits(model, ε, seed=1)[0]) for ε in gains])
 log_scaled = np.log(gains * mean_exit)
@@ -1223,12 +1211,6 @@ print(f"final run (in t = nε): simulated median {np.median(final_run):.2f}, "
 Next we plot the paths on CWS's log time scale.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Simulated escapes and the changed-measure path on a log time scale
-    name: fig-esc-sim-vs-cm
----
 fig, ax = plt.subplots(figsize=(9, 5))
 for i in range(len(τ)):
     n_i = np.arange(1, τ[i] + 1)

@@ -661,12 +661,6 @@ Formula {eq}`pa_yinf` makes the comparison of $\lambda$ with $\delta$ exact.
 ```
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Limiting inflation against the discount factor and the adaptation parameter
-    name: fig-adapt-ex1
----
 δ_grid = np.arange(0.90, 0.995, 0.01)
 y_sim = [PhelpsProblem(λ=0.8, δ=δ).simulate(x0=12.0, T=400)[1][-1]
          for δ in δ_grid]
