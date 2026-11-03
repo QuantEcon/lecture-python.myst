@@ -652,17 +652,19 @@ def alfred_vintages(series, dates, per_request=6, tries=3):
 
 def real_time_gap(quarters, lag_days=45):
     "Output gap for each quarter from the first suitable vintage after it ends."
-    # ALFRED keeps St. Louis time and silently drops vintage dates still in the future
-    today = pd.Timestamp.now(tz='America/Chicago').tz_localize(None).normalize()
+    # ALFRED relabels a vintage date it treats as still in the future, as it
+    # does with today's date for some hours after midnight in St. Louis
+    latest = (pd.Timestamp.now(tz='America/Chicago').tz_localize(None).normalize()
+              - pd.Timedelta(days=1))
     vintages = sorted({min(q + pd.offsets.QuarterEnd(0)
-                           + pd.Timedelta(days=lag_days), today)
+                           + pd.Timedelta(days=lag_days), latest)
                        for q in quarters})
     V = alfred_vintages(['GDPC1', 'GDPPOT'], vintages)
     base = slice('2015-01-01', '2018-10-01')        # a pre-pandemic window
     gap, late = {}, []
     for q in quarters:
         target = min(q + pd.offsets.QuarterEnd(0) + pd.Timedelta(days=lag_days),
-                     today)
+                     latest)
         for v in vintages:
             if v <= q + pd.offsets.QuarterEnd(0):
                 continue
