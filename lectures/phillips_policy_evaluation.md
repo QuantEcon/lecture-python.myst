@@ -277,7 +277,7 @@ def phelps_h(γ, δ, mU, my):
     F = np.linalg.solve(Q + Bd.T @ P @ Bd, Bd.T @ P @ Ad + N)
     return -F.ravel()
 
-def gamma_of_beta(β):
+def γ_of_β(β):
     "Invert a Keynesian Phillips curve into classical form."
     return np.concatenate([[1 / β[0]], -β[1:] / β[0]])
 ```
@@ -304,7 +304,7 @@ def government(data, scheme, λ=0.985, δ=0.999, mU=1, my=2, n_init=8):
         states[t] = s
         if t - m > n_init:                       # recommendation from γ_{t-1}
             β = coef[t - 1]
-            γ = β if scheme == 'C' else gamma_of_beta(β)
+            γ = β if scheme == 'C' else γ_of_β(β)
             yhat[t] = phelps_h(γ, δ, mU, my) @ s
         x = np.r_[y[t], s] if scheme == 'C' else np.r_[U[t], s]
         z = U[t] if scheme == 'C' else y[t]
@@ -593,7 +593,7 @@ def long_run_path(g):
     for t in range(1, len(path)):
         β = g['coef'][t - 1]
         if not np.isnan(β).any():
-            γ = β if g['scheme'] == 'C' else gamma_of_beta(β)
+            γ = β if g['scheme'] == 'C' else γ_of_β(β)
             path[t] = planned_long_run(γ, g['δ'], g['mU'], g['my'])
     return pd.Series(path, index=g['frame'].index)
 
@@ -891,7 +891,7 @@ def planned_paths(g, date, H=20):
     "Inflation and unemployment the government planned from `date` on."
     t = g['frame'].index.get_loc(pd.Timestamp(date))
     β = g['coef'][t - 1]
-    γ = β if g['scheme'] == 'C' else gamma_of_beta(β)
+    γ = β if g['scheme'] == 'C' else γ_of_β(β)
     h = phelps_h(γ, g['δ'], g['mU'], g['my'])
     A, B = lq_matrices(γ, g['mU'], g['my'])
     s = g['states'][t].copy()

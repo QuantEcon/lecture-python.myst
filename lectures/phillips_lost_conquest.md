@@ -361,7 +361,7 @@ The Fed minimizes
 ```{math}
 :label: lc_loss
 
-\mathbb E_t \sum_{j=t}^{\infty}\beta^{j-t}
+\mathbb{E}_t \sum_{j=t}^{\infty}\beta^{j-t}
 \Big[ (\pi_j - \pi^*)^2 + \lambda_x\, x_j^2 + \eta\,(i_j - i_{j-1})^2 \Big],
 ```
 
@@ -436,7 +436,7 @@ def phelps_rules(beliefs, η=η):
     "The Phelps rule at every date, given a path of beliefs."
     return pd.DataFrame([phelps_rule(θ, η) for θ in beliefs.values],
                         index=beliefs.index,
-                        columns=['phi_0', 'phi_pi', 'phi_x', 'phi_i'])
+                        columns=['φ_0', 'φ_π', 'φ_x', 'φ_i'])
 
 def recommended_rate(data, rules):
     "Recommended rate max(-F_t s_t, 0): the zero lower bound imposed ex post."
@@ -526,14 +526,14 @@ mystnb:
     caption: Coefficients of the Phelps rule and its long-run response to inflation
     name: fig-lc-rule-coefficients
 ---
-long_run = rules['phi_pi'] / (1 - rules['phi_i'])
+long_run = rules['φ_π'] / (1 - rules['φ_i'])
 
 fig, axes = plt.subplots(3, 1, figsize=(10, 8), sharex=True)
-axes[0].plot(rules['phi_pi'], label=r'$\phi_{\pi,t}$')
-axes[0].plot(rules['phi_x'], label=r'$\phi_{x,t}$')
+axes[0].plot(rules['φ_π'], label=r'$\phi_{\pi,t}$')
+axes[0].plot(rules['φ_x'], label=r'$\phi_{x,t}$')
 axes[0].legend()
 axes[0].set_ylabel('response')
-axes[1].plot(rules['phi_i'], color='C2')
+axes[1].plot(rules['φ_i'], color='C2')
 axes[1].set_ylabel(r'smoothing $\phi_{i,t}$')
 axes[2].plot(long_run, color='C3')
 axes[2].axhline(1, color='k', lw=0.5, ls=':')
@@ -782,7 +782,7 @@ with $|b_1| < 1$, $\kappa > 0$, and $g < 0$.
 
 These are the paper's equations (6) and (7), whose $a_1$ and $k$ are our $\rho$ and $\kappa$.
 
-The Fed minimizes $\mathbb E \sum_t \beta^t (\pi_t^2 + \lambda_x x_t^2)$, with no smoothing penalty, no intercepts, and a zero target.
+The Fed minimizes $\mathbb{E} \sum_t \beta^t (\pi_t^2 + \lambda_x x_t^2)$, with no smoothing penalty, no intercepts, and a zero target.
 
 Taking the real rate $r_t = i_t - \pi_t$ as the control gives a regulator with state $(\pi_t, x_t)$ whose Riccati equation has a closed-form solution.
 
@@ -825,13 +825,13 @@ $b_1$ is close to the estimate above, but $g$ is much larger in absolute value, 
 Since $\phi_\pi - 1$ is proportional to $1/g$, the value of $g$ does not affect the signs of the comparative statics.
 
 ```{code-cell} ipython3
-def phi_pi(ρ, κ, b1=0.9, g=-0.5, λ_x=0.2, β=0.95):
+def φ_π(ρ, κ, b1=0.9, g=-0.5, λ_x=0.2, β=0.95):
     "Closed-form inflation coefficient of the simplified Phelps rule."
     Δ = λ_x * (1 - β * ρ**2) - κ**2
     Z = (-Δ + np.sqrt(Δ**2 + 4 * λ_x * κ**2)) / 2
     return 1 - (ρ / (g * κ)) * Z / (Z + λ_x)
 
-def phi_pi_riccati(ρ, κ, b1=0.9, g=-0.5, λ_x=0.2, β=0.95, η_r=1e-9):
+def φ_π_riccati(ρ, κ, b1=0.9, g=-0.5, λ_x=0.2, β=0.95, η_r=1e-9):
     "The same coefficient from solve_discrete_are, with control cost η_r r²."
     A = np.array([[ρ, κ * b1], [0, b1]])
     B = np.array([[κ * g], [g]])
@@ -842,7 +842,7 @@ def phi_pi_riccati(ρ, κ, b1=0.9, g=-0.5, λ_x=0.2, β=0.95, η_r=1e-9):
 
 grid = [(ρ_, κ_) for ρ_ in np.linspace(0.05, 0.99, 12)
         for κ_ in np.linspace(0.01, 1.0, 12)]
-gap_cf = max(abs(phi_pi(*p) - phi_pi_riccati(*p)) / phi_pi(*p) for p in grid)
+gap_cf = max(abs(φ_π(*p) - φ_π_riccati(*p)) / φ_π(*p) for p in grid)
 print(f"largest relative difference, closed form vs Riccati: {gap_cf:.1e}")
 ```
 
@@ -862,23 +862,23 @@ mystnb:
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
 for κ_ in [0.04, 0.1, 0.3]:
-    axes[0].plot(ρ_grid, phi_pi(ρ_grid, κ_), label=rf'$\kappa = {κ_}$')
+    axes[0].plot(ρ_grid, φ_π(ρ_grid, κ_), label=rf'$\kappa = {κ_}$')
 axes[0].set_xlabel(r'perceived persistence $\rho$')
 axes[0].set_ylabel(r'$\phi_\pi$')
 axes[0].legend()
 
 for ρ_ in [0.5, 0.86, 0.99]:
-    axes[1].plot(κ_grid, phi_pi(ρ_, κ_grid), label=rf'$\rho = {ρ_}$')
+    axes[1].plot(κ_grid, φ_π(ρ_, κ_grid), label=rf'$\rho = {ρ_}$')
 axes[1].set_xlabel(r'perceived slope $\kappa$')
 axes[1].legend()
 plt.tight_layout()
 plt.show()
 
-increasing = all(np.all(np.diff(phi_pi(ρ_grid, κ_)) > 0)
+increasing = all(np.all(np.diff(φ_π(ρ_grid, κ_)) > 0)
                  for κ_ in [0.01, 0.04, 0.1, 0.3, 1.0, 3.0])
 print("ϕ_π increasing in ρ for every κ tried:", increasing)
 for ρ_ in [0.5, 0.86, 0.99]:
-    κ_peak = κ_grid[np.argmax(phi_pi(ρ_, κ_grid))]
+    κ_peak = κ_grid[np.argmax(φ_π(ρ_, κ_grid))]
     print(f"ρ = {ρ_}: ϕ_π increases in κ up to κ = {κ_peak:.3f}, then falls")
 print(f"largest κ_t estimated in 2010-2019: {κ['2010':'2019'].max():.3f}")
 ```
@@ -926,8 +926,8 @@ Suppose that nature runs
 :label: lc_nk
 
 \begin{aligned}
-\pi_t &= \beta_f\, \mathbb E_t \pi_{t+1} + \omega_b\, \pi_{t-1} + \kappa\, x_t + u_t, \\
-x_t &= \mathbb E_t x_{t+1} - \sigma\left(i_t - \mathbb E_t \pi_{t+1} - r_t\right), \\
+\pi_t &= \beta_f\, \mathbb{E}_t \pi_{t+1} + \omega_b\, \pi_{t-1} + \kappa\, x_t + u_t, \\
+x_t &= \mathbb{E}_t x_{t+1} - \sigma\left(i_t - \mathbb{E}_t \pi_{t+1} - r_t\right), \\
 i_t &= \phi\, \pi_t ,
 \end{aligned}
 \qquad
@@ -948,7 +948,7 @@ Nature's discount factor $\beta_n = 0.99$ is distinct from the Fed's $\beta = 0.
 
 We set $\omega = 1$, a structural slope $\kappa = 0.1$, and $\sigma = 1$.
 
-In the minimum-state-variable equilibrium, $\mathbb E_t \pi_{t+1} = \lambda\, \pi_t$, and
+In the minimum-state-variable equilibrium, $\mathbb{E}_t \pi_{t+1} = \lambda\, \pi_t$, and
 
 $$
 \pi_t = \lambda\, \pi_{t-1} + a\, u_t + b\, r_t,
@@ -973,14 +973,14 @@ The Fed's regression {eq}`lc_pc` also contains $x_t$.
 Since $x_t = \psi\, \pi_{t-1} + v_t$, with $v_t = c\, u_t + d\, r_t$ uncorrelated with $\pi_{t-1}$, its population coefficients are
 
 $$
-\hat\kappa = \frac{\operatorname{cov}(\pi_t, v_t)}{\operatorname{var}(v_t)},
+\hat\kappa = \frac{\operatorname{cov}(\pi_t, v_t)}{\mathbb{V}[v_t]},
 \qquad
 \hat\rho = \lambda - \hat\kappa\, \psi .
 $$
 
 So the Fed's measured persistence $\hat\rho$ is *not* $\lambda$.
 
-When only demand shocks hit ($\sigma_u = 0$), we can substitute $\mathbb E_t\pi_{t+1} = \lambda\pi_t$ into the Phillips curve.
+When only demand shocks hit ($\sigma_u = 0$), we can substitute $\mathbb{E}_t\pi_{t+1} = \lambda\pi_t$ into the Phillips curve.
 
 That gives the exact relation $\pi_t = [\omega_b\, \pi_{t-1} + \kappa\, x_t]/(1 - \beta_f\lambda)$, so
 
@@ -1103,7 +1103,7 @@ mystnb:
 def T(φ, **nature):
     "Inflation coefficient recommended by beliefs measured under the rule φ."
     _, ρ_hat, κ_hat = fed_regression(φ, **nature)
-    return phi_pi(ρ_hat, κ_hat)
+    return φ_π(ρ_hat, κ_hat)
 
 def fixed_point(**nature):
     "φ* = T(φ*) and the slope T′(φ*)."
@@ -1273,8 +1273,8 @@ for η_val in [0.1, 0.5, 2.0]:
     rules_η = phelps_rules(beliefs, η=η_val)
     rate = recommended_rate(data, rules_η)
     f = rules_η.loc['2019-10-01']
-    print(f"{η_val:>5} {fit(rate)[1]:>6.2f} {f.phi_pi:>7.3f} {f.phi_i:>7.3f} "
-          f"{f.phi_pi / (1 - f.phi_i):>9.2f}")
+    print(f"{η_val:>5} {fit(rate)[1]:>6.2f} {f.φ_π:>7.3f} {f.φ_i:>7.3f} "
+          f"{f.φ_π / (1 - f.φ_i):>9.2f}")
     ax.plot(rate[w], lw=1, label=rf'$\eta = {η_val}$')
 print(f"no-change rule RMSE: {fit(no_change)[1]:.2f}")
 ax.plot(data['i'][w], 'k:', lw=1.5, label='actual')
@@ -1369,11 +1369,11 @@ for ρ_, κ_ in [(0.9, 0.05), (0.5, 0.2), (0.95, 1.0)]:
 κ_wide = np.linspace(0.005, 3.0, 600)
 fig, ax = plt.subplots(figsize=(8, 4.5))
 for ρ_ in [0.5, 0.9]:
-    curve = phi_pi(ρ_, κ_wide)
+    curve = φ_π(ρ_, κ_wide)
     ax.plot(κ_wide, curve, label=rf'$\rho = {ρ_}$, $\eta_r = 0$')
     print(f"ρ = {ρ_}, η_r = 0: peak at κ = {κ_wide[np.argmax(curve)]:.3f}")
 for η_r in [0.01, 0.1]:
-    curve = [phi_pi_riccati(0.9, κ_, η_r=η_r) for κ_ in κ_wide]
+    curve = [φ_π_riccati(0.9, κ_, η_r=η_r) for κ_ in κ_wide]
     ax.plot(κ_wide, curve, '--', label=rf'$\rho = 0.9$, $\eta_r = {η_r}$')
     print(f"ρ = 0.9, η_r = {η_r}: peak at κ = {κ_wide[np.argmax(curve)]:.3f}, "
           f"monotone in κ: {np.all(np.diff(curve) > 0)}")

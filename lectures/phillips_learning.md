@@ -358,7 +358,7 @@ Assuming the minimizer $\tilde\phi(\cdot)$ is unique, and letting $t_D^\epsilon$
 ```{math}
 :label: pl_escapelim
 
-\lim_{\epsilon \to 0} \operatorname{Prob}\left(
+\lim_{\epsilon \to 0} \mathbb{P}\left(
 \left| \phi^\epsilon(t_D^\epsilon) - \tilde\phi(T) \right| > \eta
 \right) = 0 .
 ```

@@ -1038,7 +1038,7 @@ constant-gain least squares, and this exercise asks how large the implied gain
 is.
 
 1. For the local-level model $y_t=\mu_t+w_t$, $\mu_t=\mu_{t-1}+v_t$, with
-   $\operatorname{var}(w_t)=1$ and $\operatorname{var}(v_t)=q$, show that the
+   $\mathbb{V}[w_t]=1$ and $\mathbb{V}[v_t]=q$, show that the
    steady-state predicted variance is $p=(q+\sqrt{q^2+4q})/2$ and the
    steady-state Kalman gain is $K=p/(1+p)\approx\sqrt q$ for small $q$.
    Check this numerically by iterating the Riccati equation for

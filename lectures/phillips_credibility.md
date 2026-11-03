@@ -545,7 +545,7 @@ Studying a sequence of left-shifted versions of the process, they show that both
 
 For the noise component, the key step is to note that over the stretch of transformed time from $t_n$ to $t_n + t$ the noise enters through the martingale $W_n(t) = \sum_{i=n}^{m(t_n + t)} a_i \eta_i$.
 
-Its variance is $\operatorname{var}(\eta) \sum_{i=n}^{m(t_n + t)} a_i^2$, a *tail* sum of the convergent series $\sum_i a_i^2$, and so it goes to zero as $n \to \infty$.
+Its variance is $\mathbb{V}[\eta] \sum_{i=n}^{m(t_n + t)} a_i^2$, a *tail* sum of the convergent series $\sum_i a_i^2$, and so it goes to zero as $n \to \infty$.
 
 The remaining error is sent to zero because $a_i \to 0$ shrinks the mesh of the Riemann sum used to approximate the integral.
 

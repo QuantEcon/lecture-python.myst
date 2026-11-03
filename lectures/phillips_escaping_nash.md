@@ -373,7 +373,7 @@ Let $\tau^\varepsilon$ be the first time, measured as $t = n\varepsilon$, at whi
 
 Two consequences (CWS, Theorem 5.3) tie the control problem to the stochastic model:
 
-* $\varepsilon \log \operatorname{Prob}(\text{escape before } T) \to -\bar S$ and $\varepsilon \log \mathbb{E}\,\tau^\varepsilon \to \bar S$ as $\varepsilon \to 0$; and
+* $\varepsilon \log \mathbb{P}(\text{escape before } T) \to -\bar S$ and $\varepsilon \log \mathbb{E}\,\tau^\varepsilon \to \bar S$ as $\varepsilon \to 0$; and
 * conditional on escaping, beliefs follow the dominant escape path with probability approaching one.
 
 The first is a statement about the limit $\varepsilon \to 0$.
