@@ -52,6 +52,8 @@ See {doc}`kalman_2` for an economic application in which a firm infers a worker'
 
 See {doc}`kalman_filter_var` for a derivation of the innovations representation and its connection to vector autoregressions.
 
+{doc}`phillips_priors` gives a government that tracks drifting regression coefficients with this filter, and {doc}`phillips_drifts_volatilities` gives an econometrician who does the same for a vector autoregression.
+
 For additional (more advanced) reading on the Kalman filter, see
 
 * {cite}`Ljungqvist2012`, section 2.7

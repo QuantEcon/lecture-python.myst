@@ -837,6 +837,7 @@ market economy in a country that never had one.
 But it is a genuine theory of a system that does not settle down, derived rather than
 simulated, and in 1993 there was none.
 
+(pbr_compliment)=
 ### The econometricians did return the compliment
 
 Here the 1993 assessment was largely overtaken.
@@ -952,7 +953,8 @@ The response was to bring in direct evidence on beliefs.
 
 **Survey data.**
 {cite:t}`CarboniEllison2009` required the model's beliefs to reproduce the forecasts in the
-Federal Reserve's Greenbook, which shrank the estimated $V$ by orders of magnitude while keeping
+Federal Reserve's Greenbook, which shrank the estimated drift variance of the constant about
+fiftyfold while keeping
 the account of the rise and fall of inflation.
 
 **Cohorts.**

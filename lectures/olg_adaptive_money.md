@@ -1230,7 +1230,8 @@ $g = 0$ generates show the slope $-\theta$.
 
 The self-confirming equilibrium is E-stable, so a government that believes its coefficients
 are constant and estimates them by least squares with a decreasing gain is drawn toward it
-({doc}`phillips_self_confirming`, {doc}`phillips_learning`).
+asymptotically ({doc}`phillips_self_confirming`, {doc}`phillips_learning`); in finite samples a
+falling gain can also let an early escape stick, because it slows the return as well.
 
 That is the natural-rate story: the government keeps inflating because its own policy keeps
 producing data that confirm the tradeoff it believes in.
