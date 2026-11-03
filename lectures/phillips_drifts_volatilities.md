@@ -2297,7 +2297,7 @@ def nyblom_hansen(y):
     X = np.stack((np.ones_like(y[:, :-1]), y[:, :-1]), axis=2)
     z = y[:, 1:]
     b = np.linalg.solve(np.einsum('nti,ntj->nij', X, X),
-                        np.einsum('nti,nt->ni', X, z))
+                        np.einsum('nti,nt->ni', X, z)[:, :, None])[:, :, 0]
     scores = X * (z - np.einsum('nti,ni->nt', X, b))[:, :, None]
     S = np.cumsum(scores, axis=1)
     V = np.einsum('nti,ntj->nij', scores, scores) / z.shape[1]
