@@ -1063,8 +1063,6 @@ axes[1].set_xlabel('$t$')
 axes[1].set_ylabel('sum of weights on $y$')
 axes[1].legend()
 
-fig.suptitle('Escape route: stabilizations coincide with the sum of '
-             'weights rising toward zero')
 plt.tight_layout()
 plt.show()
 ```

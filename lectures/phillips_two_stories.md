@@ -618,7 +618,6 @@ ax.plot(u_full[recent], 'C1:', lw=1.2, label='unemployment (white men 20+)')
 ax.axhline(0, color='k', lw=0.5)
 ax.set_xlabel('year')
 ax.set_ylabel('percent')
-ax.set_title(f'Unemployment and inflation, 1990-{u_full.index[-1].year}')
 ax.legend()
 plt.show()
 ```

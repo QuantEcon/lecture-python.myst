@@ -271,7 +271,6 @@ ax.annotate(r'$r(y^\#, B(y^\#))$', (m.y_max, v_cand), textcoords='offset points'
 ax.axvline(yN, color='k', lw=0.6, ls=':')
 ax.set_xlabel('inflation rate $y$ expected by the public')
 ax.set_ylabel('one-period payoff')
-ax.set_title('The two payoff schedules')
 ax.legend(loc='lower left')
 plt.show()
 ```
@@ -1034,7 +1033,7 @@ The figure plots the promised values and inflation rates along the three paths.
 ---
 mystnb:
   figure:
-    caption: Three subgame perfect equilibria that attain the same worst value
+    caption: Three subgame perfect equilibria that attain the same worst value (the book's Figures 4.2-4.4)
     name: fig-cpol-three-methods
 ---
 paths = {'method 1': method_1(m, v_lo, v_hi),
@@ -1053,8 +1052,6 @@ for k, (name, (v, y)) in enumerate(paths.items()):
     axes[1, k].set_title(f'{name}: inflation', fontsize=10)
 axes[0, 0].set_ylabel('promised value $v_t$')
 axes[1, 0].set_ylabel('inflation $y_t$')
-fig.suptitle('Figures 4.2-4.4 of the book: three equilibria that all attain '
-             'the worst value')
 plt.tight_layout()
 plt.show()
 ```

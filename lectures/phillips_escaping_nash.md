@@ -208,7 +208,6 @@ ax.set_xlabel(r'slope $\gamma_1$')
 ax.set_ylabel(r'intercept $\gamma_{-1}$')
 ax.set_ylim(0, 25)
 ax.legend()
-ax.set_title('The unique self-confirming equilibrium')
 plt.show()
 ```
 
@@ -310,7 +309,6 @@ for R0, label, short in starts:
 ax.axhline(model.θ * model.u, color='k', ls='--', lw=1, label='Nash')
 ax.set_xlabel('time $t = n\\varepsilon$')
 ax.set_ylabel('inflation $x$')
-ax.set_title('Mean dynamics from a perturbed start')
 ax.legend()
 plt.show()
 ```
