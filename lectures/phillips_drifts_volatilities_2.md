@@ -408,7 +408,8 @@ def integrated_autocorrelation_time(x, c=5):
     spectrum = np.fft.rfft(x, 2 * n)
     acf = np.fft.irfft(spectrum * np.conj(spectrum))[:n]
     τ = 2 * np.cumsum(acf / acf[0]) - 1
-    return τ[np.flatnonzero(np.arange(n) >= c * τ)[0]]
+    window = np.flatnonzero(np.arange(n) >= c * τ)
+    return τ[window[0]] if window.size else τ[-1]   # chain too short for the window
 ```
 
 ## The extended sample
@@ -466,7 +467,7 @@ table = pd.concat({
     'unemployment': unrate.groupby(unrate.index.to_period('Q')).mean()[
         month_counts == 3],
 }, axis=1)
-table['y3'] = np.log1p(table['interest'] / 400)
+table['y3'] = table['interest'] / (400 - table['interest'])
 table['ur'] = table['unemployment'] / 100
 table['dp'] = np.log(table['cpi']).diff()
 table['date'] = table.index.year + (table.index.quarter - 1) / 4
@@ -500,7 +501,7 @@ axes[0].plot(shown['date'], 400 * shown['dp'], lw=2)
 axes[0].set_ylabel('inflation (annual %)')
 axes[1].plot(shown['date'], 100 * shown['ur'], lw=2)
 axes[1].set_ylabel('unemployment (%)')
-axes[2].plot(shown['date'], 400 * np.expm1(shown['y3']), lw=2)
+axes[2].plot(shown['date'], 400 * shown['y3'] / (1 + shown['y3']), lw=2)
 axes[2].set_ylabel('interest (annual %)')
 axes[2].set_xlabel('year')
 for ax in axes:

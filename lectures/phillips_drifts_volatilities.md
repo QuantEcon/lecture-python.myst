@@ -406,9 +406,10 @@ Unemployment is the quarterly average of the seasonally adjusted civilian
 unemployment rate and enters the VAR as $0.01\log[u/(1-u)]$, a logit
 transformation that maps a bounded rate into an unconstrained variable.
 
-The nominal interest rate is the log of one plus the three-month Treasury-bill
-rate, averaged over daily observations in the first month of each quarter and
-expressed as a quarterly fraction.
+The nominal interest rate starts from the three-month Treasury-bill rate $i$,
+in annual percent and averaged over daily observations in the first month of
+each quarter, and enters as $i/(400 - i)$, the quarterly return on a bill bought
+at a discount of $i/400$ of its face value.
 
 The data start in 1948Q2 because the first inflation observation is already
 differenced, so two VAR lags make 1948Q4 the first usable regression date.
@@ -462,7 +463,8 @@ axes[0].plot(dates_raw, 400 * data['raw_y'][:, 2], lw=2)
 axes[0].set_ylabel('inflation (annual %)')
 axes[1].plot(dates_raw, 100 * expit(100 * data['raw_y'][:, 1]), lw=2)
 axes[1].set_ylabel('unemployment (%)')
-axes[2].plot(dates_raw, 400 * np.expm1(data['raw_y'][:, 0]), lw=2)
+interest = data['raw_y'][:, 0]
+axes[2].plot(dates_raw, 400 * interest / (1 + interest), lw=2)
 axes[2].set_ylabel('interest (annual %)')
 axes[2].set_xlabel('year')
 plt.tight_layout()
@@ -2004,8 +2006,8 @@ def integrated_autocorrelation_time(x, c=5):
     spectrum = np.fft.rfft(x, 2 * n)
     acf = np.fft.irfft(spectrum * np.conj(spectrum))[:n]
     τ = 2 * np.cumsum(acf / acf[0]) - 1
-    window = np.flatnonzero(np.arange(n) >= c * τ)[0]
-    return τ[window]
+    window = np.flatnonzero(np.arange(n) >= c * τ)
+    return τ[window[0]] if window.size else τ[-1]   # chain too short for the window
 
 
 τ_trace_q = integrated_autocorrelation_time(trace_q)
