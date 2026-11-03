@@ -1434,6 +1434,12 @@ It complements rational learning, studied in {doc}`rational_learning_re`, where
 Bayesian agents learn *within* an equilibrium structure that is already
 specified.
 
+The Phillips curve lectures apply this machinery to a government that learns: a
+scalar case in {doc}`phillips_credibility`, the self-confirming equilibrium as a
+rest point in {doc}`phillips_self_confirming`, constant-gain mean dynamics and
+escapes in {doc}`phillips_learning` and {doc}`phillips_escaping_nash`, and priors
+under which E-stability no longer guarantees convergence in {doc}`phillips_priors`.
+
 ## Exercises
 
 ```{exercise}

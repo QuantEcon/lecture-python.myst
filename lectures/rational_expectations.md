@@ -612,6 +612,8 @@ Affirmative answers are what make such models usable in econometrics.
 
 That small change makes the shadow price of installed capital -- Tobin's $q$ -- diverge from the price of new capital, and it turns the planner's value function into the object on which a theory of investment rests.
 
+The fixed-point idea also survives when beliefs are allowed to be wrong: {doc}`phillips_self_confirming` keeps the requirement that perceived and actual laws of motion agree on the outcomes that are actually observed, while letting beliefs be wrong off the equilibrium path.
+
 ## Exercises
 
 ```{exercise}
