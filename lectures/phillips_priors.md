@@ -257,7 +257,7 @@ Most of our calculations use $\varepsilon = 0.05$, the largest gain in Tables 1 
 
 Constant-gain recursive least squares is a special case.
 
-If the government's prior is $V = V^* \equiv \varepsilon^2 \sigma^2 M(\bar\gamma)^{-1}$ and $\sigma = \sigma_1$, then {eq}`pp_riccati` gives $P = \varepsilon M(\bar\gamma)^{-1}$, and {eq}`pp_kalman` becomes the constant-gain recursive least squares algorithm of {doc}`phillips_learning`, with gain $\varepsilon$ and with the estimated moment matrix replaced by its limit.
+If the government's prior is $V = \varepsilon^2 V^*$, with $V^* \equiv \sigma^2 M(\bar\gamma)^{-1}$, and $\sigma = \sigma_1$, then {eq}`pp_riccati` gives $P = \varepsilon M(\bar\gamma)^{-1}$, and {eq}`pp_kalman` becomes the constant-gain recursive least squares algorithm of {doc}`phillips_learning`, with gain $\varepsilon$ and with the estimated moment matrix replaced by its limit.
 
 The connection is asymptotic, not exact.
 
@@ -1052,7 +1052,7 @@ The destination is robust; the route and its timing depend on the shape of the p
 :label: ppr_ex3
 ```
 
-{cite:t}`SargentWilliams2005` (section 3.4) stress that constant-gain recursive least squares is only *asymptotically* a special case of the Kalman filter with $V = V^*$.
+{cite:t}`SargentWilliams2005` (section 3.4) stress that constant-gain recursive least squares is only *asymptotically* a special case of the Kalman filter with $V = \varepsilon^2 V^*$.
 
 With $\varepsilon = 0.05$ and $V = \varepsilon^2 V^*$, start both algorithms' mean dynamics at the Ramsey belief $\gamma_0 = (u, 0)$, with the Kalman $P$ at its Riccati value for $M(\gamma_0)$ and the RLS moment matrix at $R = M(\gamma_0)$.
 

@@ -799,7 +799,7 @@ Starting from the self-confirming equilibrium, a government with gain $\varepsil
 
 Rarity is a small-gain statement.
 
-Only for gains of the order of $\bar S$ itself does the exponential factor bite: at the $\varepsilon = 0.0002$ of the small-gain experiments of {cite:t}`SargentWilliams2005` that {doc}`phillips_priors` borrows, $e^{\bar S/\varepsilon} \approx 12$.
+Only for gains of the order of $\bar S$ itself does the exponential factor bite: at $\varepsilon = 0.0002$, five times smaller than the smallest gain in Table 1 of {cite:t}`SargentWilliams2005`, $e^{\bar S/\varepsilon} \approx 12$.
 
 The simulated exit times also bear out CWS's footnote 14.
 

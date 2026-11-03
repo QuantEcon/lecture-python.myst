@@ -1500,7 +1500,7 @@ for γ_val in [0.03, 0.05]:
           f"max recommended rate = {rate_max:.1f}%")
 ```
 
-The best fit is close to the paper's $\gamma = 0.03$; with the Riccati equation solved correctly, the paper's choice is near the best fit by this criterion.
+The best fit is close to the paper's $\gamma = 0.03$.
 
 Small gains make beliefs too sluggish to follow the drift.
 

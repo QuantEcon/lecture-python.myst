@@ -1041,9 +1041,9 @@ def ν_closed(C, δ, θ=1.0, U_star=5.0):
 print(f"{'δ':>6} {'ρ':>7} {'C':>8} {'ν':>7}")
 for δ in [0.97, 0.99, 0.999]:
     for ρ in [0.995, 0.9995]:
-        C, ν, _ = MisspecifiedPhillips(δ=δ, ρ=ρ, N=2**12).solve()
+        C, ν, _ = MisspecifiedPhillips(δ=δ, ρ=ρ, N=2**14).solve()
         print(f"{δ:>6} {ρ:>7} {C:>8.4f} {ν:>7.3f}")
-    m1 = MisspecifiedPhillips(δ=δ, ρ=1.0, N=2**12)
+    m1 = MisspecifiedPhillips(δ=δ, ρ=1.0, N=2**14)
     ratio = max(m1.best_estimate(C) / C for C in np.linspace(0.005, 0.3, 20))
     print(f"{δ:>6} {1:>7} {0:>8.4f} {ν_closed(0.0, δ):>7.3f}"
           f"   (largest B(C)/C = {ratio:.2f})")

@@ -1470,7 +1470,7 @@ This exercise compares three ways of holding the government at Ramsey forever.
 :class: dropdown
 ```
 
-**1.** Deviating from Ramsey earns $r(0, B(0)) = v^R + T$ for one period and $v_p$ thereafter,
+**1.** Deviating from Ramsey earns $r(0, B(0)) = v^R + G$ for one period and $v_p$ thereafter,
 so the constraint is $v^R \geq (1-\delta)(v^R + G) + \delta v_p$, which rearranges to
 $\delta (G + v^R - v_p) \geq G$.
 
@@ -1601,9 +1601,19 @@ the optimal punishment sustains Ramsey itself.
 
 The two curves meet at $\delta^\star$, where Nash reversion first sustains Ramsey.
 
-As $\delta \to 0$ they approach each other again, because the worst equilibrium value itself
-approaches $v^N$ (exercise {ref}`cpol_ex2`), so the optimal punishment is no harsher than Nash
-reversion.
+As $\delta \to 0$ both curves fall back to $v^N$, because the worst equilibrium value itself
+approaches $v^N$ (exercise {ref}`cpol_ex2`).
+
+The gap closes only in levels: measured from $v^N$, the optimal punishment still sustains about
+twice the improvement that Nash reversion does.
+
+```{code-cell} ipython3
+v_N = r_keep(m, y_nash(m))
+for δ in [0.02, 0.005]:
+    m_δ = m._replace(δ=δ)
+    ratio = (solve_aps(m_δ)[0][1] - v_N) / (nash_reversion_best(m_δ)[0] - v_N)
+    print(f"δ = {δ}: (v̄ - v^N) / (v^nr - v^N) = {ratio:.2f}")
+```
 
 ```{solution-end}
 ```

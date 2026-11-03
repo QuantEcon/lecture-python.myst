@@ -1095,7 +1095,7 @@ for lo, hi in eras_bc:
     print(f"{lo}-{e.index[-1].year}: business cycle: correlation {corr:+.2f}, "
           f"slope {slope:+.2f}, sd of inflation {e['inflation'].std():.2f};"
           f"  over 84 months: correlation {corr_low:+.2f}")
-b = bk_full.loc['2008':]
+b = bk_full.loc['2008':'2019']
 print(f"2008-{b.index[-1].year}, Baxter-King business cycle: correlation "
       f"{b.corr().iloc[0, 1]:+.2f}")
 ```
@@ -1104,7 +1104,7 @@ At business-cycle frequencies the Great Moderation's Phillips curve was about as
 
 What disappeared after 1984 was the low-frequency drift that swamps the tradeoff in levels, whose correlation falls from positive to about zero, not the business-cycle tradeoff itself.
 
-After 2008 the business-cycle correlation weakens sharply, and with the Baxter-King filter, whose window ends before the surge, it nearly vanishes.
+After 2008 the business-cycle correlation weakens sharply, and with the Baxter-King filter over 2008-2019, before the pandemic and the surge, it nearly vanishes.
 
 So the "flat Phillips curve" of the 2010s, unlike the flatness of the Great Moderation, shows up at business-cycle frequencies too.
 
