@@ -40,7 +40,7 @@ It follows {cite:t}`SargentWilliams2025`, who impute drifting beliefs to the Fed
 Their artificial Fed is built from tools that earlier lectures developed:
 
 * a {doc}`Phelps control problem <phillips_adaptive>`;
-* the *anticipated-utility* assumption of {cite}`Kreps1998`, met in {doc}`phillips_learning`;
+* the *anticipated-utility* assumption of {cite:t}`Kreps1998`, met in {doc}`phillips_learning`;
 * a *drifting-coefficients* model estimated by *constant-gain recursive least squares*, the constant-gain special case of the Kalman filter of {doc}`phillips_priors`.
 
 The puzzle is a live one.
@@ -338,7 +338,7 @@ Fed into a Phelps problem, these beliefs counsel patience.
 
 Each quarter the Fed sets its policy rate by solving a linear-quadratic Phelps problem, treating its *current* estimates as if they will hold forever.
 
-That is the anticipated-utility assumption of {cite}`Kreps1998` that we met in {doc}`phillips_learning`.
+That is the anticipated-utility assumption of {cite:t}`Kreps1998` that we met in {doc}`phillips_learning`.
 
 The belief Phillips curve {eq}`lc_pc` is paired with an IS curve
 

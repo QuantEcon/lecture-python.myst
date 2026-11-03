@@ -31,7 +31,7 @@ kernelspec:
 
 ## Overview
 
-This lecture follows chapter 9 of {cite}`Sargent1999`, "Econometric Policy Evaluation".
+This lecture follows chapter 9 of {cite:t}`Sargent1999`, "Econometric Policy Evaluation".
 
 The preceding lectures built the adaptive governments of the book's chapter 8 and studied them by simulation ({doc}`phillips_learning`, {doc}`phillips_escaping_nash`, {doc}`phillips_priors`).
 

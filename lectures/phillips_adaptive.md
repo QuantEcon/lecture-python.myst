@@ -48,7 +48,7 @@ In addition to what's in Anaconda, this lecture will use the following library:
 
 This lecture continues the study of Phillips curve tradeoffs begun in {doc}`phillips_credibility`.
 
-It follows chapter 5 of {cite}`Sargent1999`.
+It follows chapter 5 of {cite:t}`Sargent1999`.
 
 {doc}`phillips_credible_policies` pursued better-than-Nash outcomes while keeping *everyone*
 rational, and found too many of them: a continuum of sustainable values, with nothing inside the
@@ -60,7 +60,7 @@ rational and giving the public a mechanical forecasting rule.
 We describe
 
 * the Cagan-Friedman adaptive expectations hypothesis,
-* how {cite}`Phelps1967` used it to formulate a government control problem,
+* how {cite:t}`Phelps1967` used it to formulate a government control problem,
 * the sacrifice ratio that the hypothesis implies, and
 * the role of adaptive expectations in early econometric tests of the natural-rate hypothesis, and the rational expectations critique of those tests.
 
@@ -83,11 +83,11 @@ from scipy.signal import lfilter
 
 ## Adaptive expectations
 
-{cite}`Phelps1967` formulated a control problem for a natural-rate model.
+{cite:t}`Phelps1967` formulated a control problem for a natural-rate model.
 
 He dropped rationality for the public but not for the government, and assigned the public a particular mechanical forecasting rule that is known to the government.
 
-The public uses the adaptive expectations scheme of Milton Friedman and {cite}`Cagan` (see {doc}`intro:cagan_adaptive` for Cagan's own use of it):
+The public uses the adaptive expectations scheme of Milton Friedman and {cite:t}`Cagan` (see {doc}`intro:cagan_adaptive` for Cagan's own use of it):
 
 ```{math}
 :label: pa_adaptive
@@ -301,7 +301,7 @@ Because $1 - \delta\lambda = (1 - \delta) + \delta(1 - \lambda)$, steady-state i
 
 It is close to the Ramsey value $0$ only when the government's impatience $1 - \delta$ is small relative to the public's gain $1 - \lambda$.
 
-That is what chapter 5 of {cite}`Sargent1999` means by $\lambda \ll \delta$ with $\delta$ close to one.
+That is what chapter 5 of {cite:t}`Sargent1999` means by $\lambda \ll \delta$ with $\delta$ close to one.
 
 It is not enough that $\lambda < \delta$: with $\lambda = 0.98$ and $\delta = 0.99$, formula {eq}`pa_yinf` gives $y_\infty \approx 0.34\, \theta U^*$.
 
@@ -319,7 +319,7 @@ for λ, δ in [(0.7, 0.96), (0.9, 0.96), (0.7, 0.99), (0.98, 0.99)]:
 
 ## Disinflation paths
 
-We now reproduce the disinflation experiments of chapter 5 of {cite}`Sargent1999`.
+We now reproduce the disinflation experiments of chapter 5 of {cite:t}`Sargent1999`.
 
 Set $\theta = 1$ and $U^* = 5$, and start the government's problem from late-1970s initial conditions $x_{-1} = y_{-1} = 12$, which imply $U = U^* = 5$.
 
@@ -388,7 +388,7 @@ For the government's control problem, what matters is the *reduced form* of the 
 
 It is useful to state a more general version of the Phelps problem in which the government's model is a reduced-form distributed lag Phillips curve.
 
-Following {cite}`Sargent1999`, define the vectors
+Following {cite:t}`Sargent1999`, define the vectors
 
 $$
 X_{U,t-1} = \begin{bmatrix} U_{t-1} & \cdots & U_{t-m_U} \end{bmatrix}^\top,

@@ -31,7 +31,7 @@ kernelspec:
 
 ## Overview
 
-This lecture is the culmination of the theory built by {cite}`Sargent1999`.
+This lecture is the culmination of the theory built by {cite:t}`Sargent1999`.
 
 It follows chapter 8, the most ambitious chapter of the book.
 
@@ -78,7 +78,7 @@ Following {cite:t}`Sargent1999`, we instead give the government **constant-gain 
 
 {cite:t}`SargentWilliams2005` trace the difference to the government's prior about coefficient drift, and {doc}`phillips_priors` reproduces their account.
 
-Because Sims's government fit a static curve, the induction-hypothesis mechanism studied below does not apply to his simulations (chapter 8, footnote 15 of {cite}`Sargent1999`).
+Because Sims's government fit a static curve, the induction-hypothesis mechanism studied below does not apply to his simulations (chapter 8, footnote 15 of {cite:t}`Sargent1999`).
 
 Here we study the escapes by *simulation*; {doc}`phillips_escaping_nash` then characterizes them analytically as a second, deterministic ODE, and {doc}`phillips_priors` asks how the government's prior about coefficient drift reshapes both forces.
 
@@ -204,22 +204,22 @@ One then approximates $\phi^o(t)$ by a continuous-time process as $n \to \infty$
 Different rates of decrease of the gain sequence $\{a_n\}$ produce different approximating processes, because they change the mapping {eq}`pl_artificial` from real time $n$ to artificial time $t_n$.
 
 ```{note}
-Recursive stochastic approximation originates with {cite}`RobbinsMonro1951`, who devised
+Recursive stochastic approximation originates with {cite:t}`RobbinsMonro1951`, who devised
 {eq}`pl_sa` to find the root of a regression function observed with noise, and with
-{cite}`KieferWolfowitz1952`, who adapted it to find the maximum of a regression function (the
+{cite:t}`KieferWolfowitz1952`, who adapted it to find the maximum of a regression function (the
 "K-W" algorithms referred to below).
 
 The "ODE method" for analyzing such recursions — approximating the interpolated process by the
-solution of a differential equation — is due to {cite}`Ljung1977`; book-length treatments are
-{cite}`BenvenisteMetivierPriouret1990` and {cite}`KushnerYin2003`.
+solution of a differential equation — is due to {cite:t}`Ljung1977`; book-length treatments are
+{cite:t}`BenvenisteMetivierPriouret1990` and {cite:t}`KushnerYin2003`.
 
 Its use to study learning in self-referential macroeconomic models is developed by
-{cite}`MarcetSargent1989jet` and, comprehensively, by {cite}`EvansHonkapohja2001`.
+{cite:t}`MarcetSargent1989jet` and, comprehensively, by {cite:t}`EvansHonkapohja2001`.
 ```
 
 ### Mean dynamics
 
-The classic stochastic approximation algorithms of {cite}`KushnerClark1978` and {cite}`Ljung1977` set the gain to decrease like $a_n \sim 1/n$ (at least for $t \geq N$ for some $N > 0$).
+The classic stochastic approximation algorithms of {cite:t}`KushnerClark1978` and {cite:t}`Ljung1977` set the gain to decrease like $a_n \sim 1/n$ (at least for $t \geq N$ for some $N > 0$).
 
 This permits strong statements about the almost sure convergence of {eq}`pl_sa` to a zero of $b(\phi)$.
 
@@ -260,7 +260,7 @@ That boundary concerns the asymptotic distribution of a decreasing-gain estimato
 It does not govern how often a constant-gain government escapes; the large-deviation objects introduced below do.
 
 ```{note}
-{cite}`BrockHommes1997` build models whose global behavior is driven by stable mean dynamics far from rational expectations equilibria together with local instability of adaptation near them — a complementary mechanism for generating endogenous fluctuations from learning.
+{cite:t}`BrockHommes1997` build models whose global behavior is driven by stable mean dynamics far from rational expectations equilibria together with local instability of adaptation near them — a complementary mechanism for generating endogenous fluctuations from learning.
 ```
 
 ### Constant gain and convergence in distribution
@@ -281,7 +281,7 @@ Again using artificial time {eq}`pl_artificial`, form the family of processes
 
 interpolate to obtain $\phi^\epsilon(t)$, and study its small-$\epsilon$ limit.
 
-Dupuis and Kushner, {cite}`KushnerYin2003`, and others verified conditions under which, as $\epsilon \to 0$ and $\epsilon n \to \infty$, the process $\phi_n^\epsilon$ converges *in distribution* to the zeros of the same mean dynamics {eq}`pl_ode`; the restrictions on the mean dynamics needed for convergence match those from the classic $a_n \sim 1/n$ theory.
+Dupuis and Kushner, {cite:t}`KushnerYin2003`, and others verified conditions under which, as $\epsilon \to 0$ and $\epsilon n \to \infty$, the process $\phi_n^\epsilon$ converges *in distribution* to the zeros of the same mean dynamics {eq}`pl_ode`; the restrictions on the mean dynamics needed for convergence match those from the classic $a_n \sim 1/n$ theory.
 
 Unlike the decreasing-gain algorithm, a constant-gain algorithm does not settle down: $(\gamma, R_{XC})$ converges to a *stationary stochastic process*, perpetually fluctuating around — and occasionally far from — the self-confirming equilibrium.
 
@@ -307,7 +307,7 @@ where the expectation is over the distribution of $\zeta$.
 Equation {eq}`pl_mgf` is a heuristic shorthand.
 
 The object that actually enters the theory is a *time-averaged* limit;
-{cite}`DupuisKushner1987` and {cite}`KushnerYin2003` assume that for each block width $\Delta > 0$ the
+{cite:t}`DupuisKushner1987` and {cite:t}`KushnerYin2003` assume that for each block width $\Delta > 0$ the
 following limit exists uniformly in $\phi_i, \alpha_i$ on any compact set:
 $$
 \sum_{i=0}^{T/\Delta - 1} \Delta\, H(\alpha_i, \phi_i)
@@ -353,7 +353,7 @@ The escape route is the path $\tilde\phi(\cdot)$ that solves
 A = \left\{ \phi(\cdot) \in C[0,T] : \phi(T) \in \partial D \right\} .
 ```
 
-Assuming the minimizer $\tilde\phi(\cdot)$ is unique, and letting $t_D^\epsilon$ be the first time the constant-gain process $\phi^\epsilon(t)$ leaves $D$, {cite}`DupuisKushner1987` show that for every $\eta > 0$
+Assuming the minimizer $\tilde\phi(\cdot)$ is unique, and letting $t_D^\epsilon$ be the first time the constant-gain process $\phi^\epsilon(t)$ leaves $D$, {cite:t}`DupuisKushner1987` show that for every $\eta > 0$
 
 ```{math}
 :label: pl_escapelim
@@ -380,7 +380,7 @@ When $\bar S$ is small relative to $\epsilon$, as it is at the gains used in thi
 A crucial contrast with the mean dynamics: the mean dynamics {eq}`pl_ode` do *not* depend on the noise around them, whereas the escape routes *do* — the noise not only adds random fluctuations around {eq}`pl_ode`, it also carves out this second family of paths.
 
 ```{note}
-The mathematical foundations are the large-deviation theory for randomly perturbed dynamical systems of {cite}`FreidlinWentzell1998` (especially their chapter 4), specialized to stochastic approximation by {cite}`DupuisKushner1987` and {cite}`DupuisKushner1989`; a weak-convergence treatment is {cite}`DupuisEllis1997`.
+The mathematical foundations are the large-deviation theory for randomly perturbed dynamical systems of {cite:t}`FreidlinWentzell1998` (especially their chapter 4), specialized to stochastic approximation by {cite:t}`DupuisKushner1987` and {cite:t}`DupuisKushner1989`; a weak-convergence treatment is {cite:t}`DupuisEllis1997`.
 ```
 
 ### A tractable action functional
@@ -422,7 +422,7 @@ Our model does not satisfy the assumptions behind {eq}`pl_action2` exactly.
 Its innovation $F$ contains products such as $X_{C,t} X_{C,t}^\top$ and $X_{C,t} U_t$, so it is quadratic in the shocks rather than additive and Gaussian.
 
 ```{note}
-{cite}`ChoWilliamsSargent2002`, the published treatment of the model of this lecture, reduce
+{cite:t}`ChoWilliamsSargent2002`, the published treatment of the model of this lecture, reduce
 the escape problem to minimizing a quadratic cost of the form {eq}`pl_action2`, with a
 weighting matrix that is a fourth-moment matrix computed from Lyapunov equations.
 
@@ -437,14 +437,14 @@ self-confirming equilibrium of the dynamic model and find (their Figure 3) that 
 dominant escape path the sum of weights on inflation rises from $-1$ to nearly zero, the value
 that activates the induction hypothesis — that is, the escape heads toward the Ramsey outcome.
 
-{cite}`SargentWilliams2005` replace recursive least squares with a Kalman filter whose drift
+{cite:t}`SargentWilliams2005` replace recursive least squares with a Kalman filter whose drift
 covariance $V$ is fixed, and study how $V$ reshapes the escape ({doc}`phillips_priors`).
 
 The constant-gain algorithm of this lecture is a Kalman filter whose drift covariance is
 proportional to the current $P_{t-1}$ (see below); a fixed $V$ reproduces it only
 asymptotically.
 
-{cite}`Kasa2004` applies the same large-deviation machinery to recurrent currency crises.
+{cite:t}`Kasa2004` applies the same large-deviation machinery to recurrent currency crises.
 ```
 
 ### From computation to adaptation
@@ -461,13 +461,13 @@ Two facts organize everything below:
 ```{note}
 A brief intellectual history.
 
-{cite}`Lucas_Prescott_1971` dismissed iterating on the moment conditions {eq}`pl_scezero` as a
-computational strategy, but {cite}`Townsend1983` used it.
+{cite:t}`Lucas_Prescott_1971` dismissed iterating on the moment conditions {eq}`pl_scezero` as a
+computational strategy, but {cite:t}`Townsend1983` used it.
 
 {cite:t}`DeCanio1979` and {cite:t}`Evans1985,Evans1989` used the map from perceived to actual
 laws of motion to define expectational stability.
 
-{cite}`Woodford1990` and {cite}`MarcetSargent1989jet,MarcetSargent1989` used the mean dynamics
+{cite:t}`Woodford1990` and {cite:t}`MarcetSargent1989jet,MarcetSargent1989` used the mean dynamics
 {eq}`pl_ode` to establish conditions for the convergence of least squares learning to rational
 expectations in models with self-reference, both requiring continuity of $b(\phi)$.
 
@@ -476,13 +476,13 @@ decision rules (trigger strategies in credibility and search problems); to make 
 learning approach rational expectations he used gains satisfying
 $\tfrac{1}{\sqrt n} < a_n < \tfrac{1}{\log n}$, which yield a *diffusion* approximation to
 {eq}`pl_sa` that promotes enough experimentation to discover an equilibrium (footnote 8 of
-chapter 8 of {cite}`Sargent1999` prints the two bounds the other way round, which describes an
+chapter 8 of {cite:t}`Sargent1999` prints the two bounds the other way round, which describes an
 empty set because $\log n < \sqrt n$).
 
-{cite}`KandoriMailathRob1993` use related mathematics to select long-run equilibria in games
+{cite:t}`KandoriMailathRob1993` use related mathematics to select long-run equilibria in games
 via mutation, and Roger Myerson applied an escape-route calculation to a voting problem.
 
-The modern synthesis of these learning methods is {cite}`EvansHonkapohja2001`.
+The modern synthesis of these learning methods is {cite:t}`EvansHonkapohja2001`.
 ```
 
 ## The adaptive model
@@ -613,7 +613,7 @@ class AdaptivePhillips:
         return -F.ravel()
 ```
 
-We use the Kalman-filter implementation of RLS from Appendix A of {cite}`Sargent1999`.
+We use the Kalman-filter implementation of RLS from Appendix A of {cite:t}`Sargent1999`.
 
 The government treats $\gamma$ as a hidden state that follows a random walk, $\tilde\gamma_t = \tilde\gamma_{t-1} + w_t$, and observes it through the regression $U_t = \tilde\gamma_t^\top X_{C,t} + \varepsilon_{C,t}$; the Kalman filter of {doc}`kalman` then updates its estimate $\gamma_t$ and the estimate's covariance matrix $P_t$.
 
@@ -679,7 +679,7 @@ print(f"  h(γ_sce) = {np.round(h_sce, 3) + 0.0}  (a constant rule of "
 
 At the self-confirming belief the Phelps rule is a constant equal to the Nash inflation rate, and the beliefs reproduce themselves — the adaptive system's rest point is the self-confirming equilibrium of {doc}`phillips_self_confirming`.
 
-We follow {cite}`Sargent1999` in setting the true data-generating parameters to the classical example at the end of {doc}`phillips_self_confirming`: $U^* = 5$, $\theta = 1$, $\sigma_1 = \sigma_2 = 0.3$, $\rho_1 = \rho_2 = 0$, $\delta = 0.98$.
+We follow {cite:t}`Sargent1999` in setting the true data-generating parameters to the classical example at the end of {doc}`phillips_self_confirming`: $U^* = 5$, $\theta = 1$, $\sigma_1 = \sigma_2 = 0.3$, $\rho_1 = \rho_2 = 0$, $\delta = 0.98$.
 
 The classical self-confirming equilibrium has serially uncorrelated $(U, y)$ fluctuating around means $(5, 5)$.
 

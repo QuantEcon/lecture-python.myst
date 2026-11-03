@@ -39,7 +39,7 @@ at the Nash outcome, inflating at rate $\theta U^*$ and getting nothing for it.
 That was a one-period story, and it invited an obvious objection: a government that expects to
 face the same public again tomorrow has a *reputation* to protect.
 
-This lecture, following chapter 4 of {cite}`Sargent1999`, takes the objection seriously.
+This lecture, following chapter 4 of {cite:t}`Sargent1999`, takes the objection seriously.
 
 We repeat the Kydland–Prescott economy forever, let the government's current action depend on
 the whole history of outcomes, and ask which outcome paths can be supported as **subgame
@@ -79,7 +79,7 @@ state, is the technique sometimes called **dynamic programming squared**.
 
 It is the organizing idea of the QuantEcon lecture on
 {doc}`Stackelberg plans <advanced:dyn_stack>` and of the recursive treatments of Ramsey problems
-in {cite}`Ljungqvist2012`.
+in {cite:t}`Ljungqvist2012`.
 
 This lecture is a compact instance: the state is a promised value, and the object we compute is
 a set.
@@ -169,7 +169,7 @@ Second, inflation is confined to a bounded interval $Y = [0, y^\#]$.
 The lower bound is the Ramsey outcome; the upper bound $y^\#$ is what makes the government's
 problem non-trivial, as we shall see when we look for the *worst* equilibrium.
 
-We use the parameter values of the numerical example in chapter 4 of {cite}`Sargent1999`:
+We use the parameter values of the numerical example in chapter 4 of {cite:t}`Sargent1999`:
 $\theta = 1.25$, $U^* = 5.5$, $y^\# = 10$, and $\delta = 0.95$.
 
 They differ from the $\theta = 1$, $U^* = 5$ of {doc}`phillips_credibility`, so that our numbers
@@ -297,7 +297,7 @@ equilibrium value.
 
 A government strategy must be able to condition today's action on the entire past.
 
-Carrying whole histories around is unmanageable, so we follow {cite}`Sargent1999` in restricting
+Carrying whole histories around is unmanageable, so we follow {cite:t}`Sargent1999` in restricting
 attention to strategies with a recursive representation — a restriction that costs nothing,
 since it excludes no equilibrium *values*.
 
@@ -1086,7 +1086,7 @@ The equilibrium concept has nothing to say about which of them describes the wor
 
 ## Numerical example
 
-Here is the numerical example reported in chapter 4 of {cite}`Sargent1999`, computed from
+Here is the numerical example reported in chapter 4 of {cite:t}`Sargent1999`, computed from
 scratch.
 
 ```{code-cell} ipython3
@@ -1526,7 +1526,7 @@ Abreu's simple stick and carrot lies between them.
 
 For $\delta < \delta^\star$, reversion to Nash cannot sustain Ramsey.
 
-The best value it can sustain is equation (25) of chapter 4 of {cite}`Sargent1999`:
+The best value it can sustain is equation (25) of chapter 4 of {cite:t}`Sargent1999`:
 
 $$
 v^{nr} = r(y^{nr}, y^{nr}) = (1-\delta)\, r\bigl(y^{nr}, B(y^{nr})\bigr) + \delta\, v^N ,

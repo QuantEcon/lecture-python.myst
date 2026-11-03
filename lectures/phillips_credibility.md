@@ -33,7 +33,7 @@ kernelspec:
 
 This lecture describes a basic expectational Phillips curve model of the sort studied by {cite:t}`KydlandPrescott1977` and {cite:t}`BarroGordon1983`.
 
-It is the first *modeling* lecture in a suite based on chapters of {cite}`Sargent1999`, following {doc}`phillips_two_stories`, which lays out the two stories and reviews the Lucas Critique.
+It is the first *modeling* lecture in a suite based on chapters of {cite:t}`Sargent1999`, following {doc}`phillips_two_stories`, which lays out the two stories and reviews the Lucas Critique.
 
 This lecture follows chapter 3 of the book, and {doc}`phillips_credible_policies` follows chapter 4.
 
@@ -76,7 +76,7 @@ Although credibility problems are intrinsically dynamic, it is possible to descr
 
 This prepares the way for the multi-period analyses in subsequent lectures.
 
-We describe a version of the one-period model of {cite}`KydlandPrescott1977` in the terms used by Nancy Stokey {cite}`stokey1989reputation`.
+We describe a version of the one-period model of {cite:t}`KydlandPrescott1977` in the terms used by Nancy Stokey {cite}`stokey1989reputation`.
 
 Let $(U, y, x)$ be the unemployment rate, the inflation rate, and the public's expectation of the inflation rate, respectively.
 
@@ -361,7 +361,7 @@ x_t = x_{t-1} + \frac{1}{t-1} \left[ B(x_{t-1}) - x_{t-1} + \eta_{t-1} \right] .
 
 The forecast $x_t$ depends only on shocks dated $t-1$ and earlier, as it must, because the public forms it before it sees $y_t$.
 
-(The corresponding equation (8) of {cite}`Sargent1999` dates this shock $t$, a slip.)
+(The corresponding equation (8) of {cite:t}`Sargent1999` dates this shock $t$, a slip.)
 
 This is Bray's market of {ref}`br_bray`, written in the notation of this lecture.
 
@@ -505,7 +505,7 @@ Subsequent lectures describe three ways of modeling foresight, which impute vary
 
 Here we sketch why the ODE {eq}`pc_ode` governs the tail behavior of the stochastic difference equation {eq}`pc_expect3`.
 
-The argument, due to {cite}`KushnerClark1978`, has two key components: a shift in time scale and a liberal application of averaging.
+The argument, due to {cite:t}`KushnerClark1978`, has two key components: a shift in time scale and a liberal application of averaging.
 
 The subsection "Stochastic approximation and E-stability" of {ref}`br_one_recursion` presents the same tools from the standpoint of the Bounded Rationality suite, and {doc}`ls_learning` states the Marcet–Sargent convergence theorems for vectors of beliefs.
 

@@ -451,7 +451,7 @@ print(f"eigenvalues at λ = 0.7: {eig_PJ(ε**2 * V_tighten_slope(0.7, V_star)).r
 
 At each end of the unstable range a complex pair of eigenvalues crosses the imaginary axis.
 
-That is the situation the Hopf bifurcation theorem addresses (see {cite}`Perko1996`): a stable limit cycle bifurcates from the self-confirming equilibrium as the real parts cross zero (Theorem 4.1 of {cite:t}`SargentWilliams2005`).
+That is the situation the Hopf bifurcation theorem addresses (see {cite:t}`Perko1996`): a stable limit cycle bifurcates from the self-confirming equilibrium as the real parts cross zero (Theorem 4.1 of {cite:t}`SargentWilliams2005`).
 
 {cite:t}`Bullard1994` calls such a cycle a *learning equilibrium*: the underlying model has no cycles, and learning creates them.
 

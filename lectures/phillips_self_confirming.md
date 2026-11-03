@@ -41,10 +41,10 @@ In addition to what's in Anaconda, this lecture will use the following library:
 
 This lecture completes the *equilibrium* half of the study begun in {doc}`phillips_credibility`.
 
-It follows chapter 7 of {cite}`Sargent1999`, after which the suite turns from fixed beliefs to
+It follows chapter 7 of {cite:t}`Sargent1999`, after which the suite turns from fixed beliefs to
 beliefs that are learned in real time.
 
-We seek models that depart minimally from the basic {cite}`KydlandPrescott1977` model of {doc}`phillips_credibility` but that also let a government's *beliefs* be shaped by the data its own policies generate.
+We seek models that depart minimally from the basic {cite:t}`KydlandPrescott1977` model of {doc}`phillips_credibility` but that also let a government's *beliefs* be shaped by the data its own policies generate.
 
 The key equilibrium concept is a **self-confirming equilibrium**: the government has a possibly *wrong* model of the Phillips curve, but it fits that model to the data by least squares, and the data it observes confirm its beliefs.
 
@@ -52,7 +52,7 @@ The key equilibrium concept is a **self-confirming equilibrium**: the government
 
 We combine ideas from two literatures:
 
-* {cite}`KingWatson1994` document how inferences about the Phillips curve depend on the *direction of fit* — whether one regresses unemployment on inflation (a *classical* identification) or inflation on unemployment (a *Keynesian* identification).
+* {cite:t}`KingWatson1994` document how inferences about the Phillips curve depend on the *direction of fit* — whether one regresses unemployment on inflation (a *classical* identification) or inflation on unemployment (a *Keynesian* identification).
 * A literature going back to Muth, Lucas, and Prescott {cite}`muth1961,LucasPrescott1971`, and exploited by {cite:t}`MarcetSargent1989jet` and {cite:t}`EvansHonkapohja2001`, formulates rational expectations equilibria as fixed points of mappings from beliefs to the population moments of statistical models; {doc}`rational_expectations` describes the fixed-point view.
 
 We build two self-confirming equilibria that are identical except for the direction of fit, and we find that the direction of minimization affects outcomes.
@@ -237,7 +237,7 @@ class SelfConfirmingStatic:
         return γ1, γ_int, y_bar
 ```
 
-We compute both equilibria for the parameters of chapter 7 of {cite}`Sargent1999`.
+We compute both equilibria for the parameters of chapter 7 of {cite:t}`Sargent1999`.
 
 ```{code-cell} ipython3
 sce = SelfConfirmingStatic(θ=1.0, U_star=5.0, σ1=0.3, σ2=0.3)
@@ -251,7 +251,7 @@ print("Keynesian direction of fit")
 print(f"  γ_1 = {γ1_K:.1f},  γ_(-1) = {γ0_K:.1f},  mean inflation = {y_K:.1f}")
 ```
 
-These reproduce the numerical example of chapter 7 of {cite}`Sargent1999`.
+These reproduce the numerical example of chapter 7 of {cite:t}`Sargent1999`.
 
 Under the classical direction of fit, mean inflation is the Nash value $\theta U^* = 5$.
 
@@ -625,7 +625,7 @@ class MisspecifiedPhillips:
 
 **The size of the inflation surprise.**
 
-Chapter 7 of {cite}`Sargent1999` states $\sigma_1 = \sigma_2 = 0.3$ for this example.
+Chapter 7 of {cite:t}`Sargent1999` states $\sigma_1 = \sigma_2 = 0.3$ for this example.
 
 Its reported numbers are reproduced with $\sigma_2 = 1$, which is also consistent with its statement that the true model's one-step prediction error has standard deviation 1.
 
@@ -651,7 +651,7 @@ C_03, ν_03, _ = MisspecifiedPhillips(δ=0.97, σ2=0.3).solve()
 print(f"\nwith σ2 = 0.3:  C = {C_03:.4f},  mean inflation = {ν_03:.3f}")
 ```
 
-With $\sigma_2 = 1$, these are the values that chapter 7 of {cite}`Sargent1999` reports.
+With $\sigma_2 = 1$, these are the values that chapter 7 of {cite:t}`Sargent1999` reports.
 
 The most important outcome is that the implied mean inflation rate is substantially *below* the Nash value of $5$.
 
@@ -712,7 +712,7 @@ print(f"\nformula (sc_nu) at the book's δ = 0.99 entry, C = 0.019:  ν = {ν_bo
 
 Mean inflation lies far below the Nash value at every discount factor and declines toward the Ramsey value of zero as $\delta \to 1$.
 
-The values of $C$ and $\nu$ match footnote 14 of chapter 7 of {cite}`Sargent1999` for $\delta = 0.95$, $0.96$, and $0.98$.
+The values of $C$ and $\nu$ match footnote 14 of chapter 7 of {cite:t}`Sargent1999` for $\delta = 0.95$, $0.96$, and $0.98$.
 
 The book's entry for $\delta = 0.99$ ($C = 0.019$, mean inflation $0.25$) is inconsistent with {eq}`sc_nu`, which, as printed above, gives a much higher mean inflation at $C = 0.019$.
 
@@ -750,7 +750,7 @@ The reason is the one given in {ref}`pm_rho`: the pull toward a large gain comes
 
 ### Spectra and impulse responses
 
-Let's compare the true and approximating inflation processes at the equilibrium, as in Figures 7.2 and 7.3 of {cite}`Sargent1999`.
+Let's compare the true and approximating inflation processes at the equilibrium, as in Figures 7.2 and 7.3 of {cite:t}`Sargent1999`.
 
 ```{code-cell} ipython3
 ---

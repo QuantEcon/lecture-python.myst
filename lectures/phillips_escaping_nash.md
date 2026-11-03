@@ -37,7 +37,7 @@ kernelspec:
 
 This lecture is the analytical companion to {doc}`phillips_learning`.
 
-It follows {cite}`ChoWilliamsSargent2002` (CWS), who give a *deterministic characterization* of the escape dynamics that chapter 8 of {cite}`Sargent1999` found by simulation.
+It follows {cite:t}`ChoWilliamsSargent2002` (CWS), who give a *deterministic characterization* of the escape dynamics that chapter 8 of {cite:t}`Sargent1999` found by simulation.
 
 In {doc}`phillips_learning` we watched a constant-gain government recurrently escape the Nash self-confirming equilibrium and spend long spells near the Ramsey outcome, but we described those escapes only informally and by simulation.
 
@@ -50,9 +50,9 @@ The picture that emerges has two deterministic pieces:
 
 The remarkable finding is that the escape has a *dominant path*: conditional on escaping, the government's beliefs follow a nearly deterministic route along which it temporarily learns a version of the natural-rate hypothesis and cuts inflation.
 
-These escapes recur because the government uses constant-gain least squares, as in {cite}`Sargent1999` and CWS.
+These escapes recur because the government uses constant-gain least squares, as in {cite:t}`Sargent1999` and CWS.
 
-The governments of {cite}`Sims1988` and {cite}`Chung1990` instead ran Kalman filters on drifting coefficients; in their simulations a government that escaped did so once and then stayed near Ramsey, apparently indefinitely, and {doc}`phillips_priors` traces the difference to the government's prior.
+The governments of {cite:t}`Sims1988` and {cite:t}`Chung1990` instead ran Kalman filters on drifting coefficients; in their simulations a government that escaped did so once and then stayed near Ramsey, apparently indefinitely, and {doc}`phillips_priors` traces the difference to the government's prior.
 
 The large-deviation results are statements about small gains.
 
@@ -79,7 +79,7 @@ from scipy.linalg import solve_discrete_are
 
 ## The model
 
-The true economy is the natural-rate model of {cite}`KydlandPrescott1977`,
+The true economy is the natural-rate model of {cite:t}`KydlandPrescott1977`,
 
 ```{math}
 :label: en_truth
@@ -106,13 +106,13 @@ U_n = \gamma_1 \pi_n + \gamma_{-1} + \eta_n ,
 with beliefs $\gamma = (\gamma_1, \gamma_{-1})$ (slope and intercept), and it treats $\eta_n$ as exogenous.
 
 ```{note}
-We keep the ordering of {cite}`ChoWilliamsSargent2002`: the slope comes first, and the
+We keep the ordering of {cite:t}`ChoWilliamsSargent2002`: the slope comes first, and the
 regressors are $\Phi = (\pi, 1)$.
 
 This also matches the $\gamma_1, \gamma_{-1}$ convention of
 {doc}`phillips_self_confirming`.
 
-{doc}`phillips_priors` and {ref}`olg_phillips` follow {cite}`SargentWilliams2005` and put
+{doc}`phillips_priors` and {ref}`olg_phillips` follow {cite:t}`SargentWilliams2005` and put
 the intercept first.
 
 Each lecture follows its source paper; the warning box in
@@ -129,7 +129,7 @@ x(\gamma) = -\frac{\gamma_{-1}\, \gamma_1}{1 + \gamma_1^2} .
 
 Three beliefs are worth naming, following CWS:
 
-* **Belief 1 (Nash):** $\gamma_1 = -\theta$ with an intercept that makes $x = \theta u$, the time-consistent outcome of {cite}`KydlandPrescott1977`.
+* **Belief 1 (Nash):** $\gamma_1 = -\theta$ with an intercept that makes $x = \theta u$, the time-consistent outcome of {cite:t}`KydlandPrescott1977`.
 * **Belief 2 (Ramsey):** $\gamma_1 = 0$, so the government perceives no tradeoff and sets $x = 0$.
 * **Belief 3 (induction):** in CWS's dynamic model, coefficients on current and lagged inflation that sum to zero, which for a patient government also sends inflation to $0$.
 
@@ -232,9 +232,9 @@ This is the recursion of `constant_gain` in {ref}`olg_phillips`, with the regres
 
 CWS's equations (4.24)–(4.25) date $R$ one period earlier, which makes no difference as $\varepsilon \to 0$.
 
-Because the government acts on its current estimate as if it were permanent, this is an *anticipated-utility* model in the sense of {cite}`Kreps1998`.
+Because the government acts on its current estimate as if it were permanent, this is an *anticipated-utility* model in the sense of {cite:t}`Kreps1998`.
 
-The literature on least squares learning in self-referential models ({cite}`MarcetSargent1989jet`, {cite}`Woodford1990`, {cite}`EvansHonkapohja2001`) shows that, as $\varepsilon \to 0$ with time measured as $t = n\varepsilon$, the beliefs are approximated by the **mean-dynamics** ODE
+The literature on least squares learning in self-referential models {cite}`MarcetSargent1989jet,Woodford1990,EvansHonkapohja2001` shows that, as $\varepsilon \to 0$ with time measured as $t = n\varepsilon$, the beliefs are approximated by the **mean-dynamics** ODE
 
 ```{math}
 :label: en_mean
@@ -341,7 +341,7 @@ The **dominant escape path** minimizes the action among paths that leave a neigh
 
 Here we need only the operational version.
 
-CWS draw on Noah Williams's dissertation {cite}`Williams2001`, published in corrected form as {cite}`Williams2019`, to reduce the problem to a clean control problem.
+CWS draw on Noah Williams's dissertation {cite}`Williams2001`, published in corrected form as {cite:t}`Williams2019`, to reduce the problem to a clean control problem.
 
 The H-functional becomes a quadratic form with a normalizing matrix $Q$ (a fourth-moment matrix obtained from Lyapunov equations), and the escape path solves
 
@@ -843,11 +843,11 @@ coefficients drift reshapes both dynamics, and can even make the escape a determ
 
 The escape delivers a fall in the *level* of inflation.
 
-{cite}`EllisonYates2007` extend the model to explain a second post-war fact: inflation *volatility* rose and fell together with the level.
+{cite:t}`EllisonYates2007` extend the model to explain a second post-war fact: inflation *volatility* rose and fell together with the level.
 
 Their device is to give the government a reason to stabilize.
 
-Following {cite}`PhelpsTaylor1977`, they add an unemployment shock $W_3$ that the government, but not the price-setting private sector, can react to.
+Following {cite:t}`PhelpsTaylor1977`, they add an unemployment shock $W_3$ that the government, but not the price-setting private sector, can react to.
 
 Now a government that believes in an exploitable Phillips curve is tempted to *lean against* $W_3$ by varying inflation, so the perceived effectiveness of policy, $|\gamma_1|$, drives the volatility of inflation as well as its level.
 
@@ -895,7 +895,7 @@ plt.show()
 
 Both fall as beliefs escape, because both spring from the same source: the government's belief in an exploitable tradeoff.
 
-{cite}`EllisonYates2007` draw a further, subtler lesson about the *timing* of escapes.
+{cite:t}`EllisonYates2007` draw a further, subtler lesson about the *timing* of escapes.
 
 A larger stabilizable shock $\sigma_3$ makes an escape *harder to trigger*: to create the illusion that inflation moves while unemployment stays put, an unusual sequence of shocks must now offset not only the control errors but also the government's own stabilizing reaction to $W_3$.
 

@@ -33,7 +33,7 @@ kernelspec:
 
 This lecture continues the study of Phillips curve tradeoffs.
 
-It follows chapter 6 of {cite}`Sargent1999`.
+It follows chapter 6 of {cite:t}`Sargent1999`.
 
 In {doc}`phillips_adaptive` the public forecast inflation with a fixed adaptive rule whose
 parameter $\lambda$ we simply chose.
@@ -51,7 +51,7 @@ We describe three conceptual issues that recur throughout this suite of lectures
 2. how expectations can contribute independent dynamics within equilibria, and
 3. how the classic adaptive expectations scheme can use second moments to approximate a first moment.
 
-To expose these issues we temporarily set aside the Phillips curve and work with {cite}`Bray1982`'s simple model of the price of a single good, a workhorse for studying bounded rationality.
+To expose these issues we temporarily set aside the Phillips curve and work with {cite:t}`Bray1982`'s simple model of the price of a single good, a workhorse for studying bounded rationality.
 
 {ref}`br_bray` presents Bray's model as the relaxation algorithm with a gain of $1/t$, and {doc}`ls_learning` studies least squares learning in it.
 
@@ -77,7 +77,7 @@ from scipy.signal import lfilter
 
 ## An experiment in Bray's lab
 
-Following {cite}`Bray1982`, assume that
+Following {cite:t}`Bray1982`, assume that
 
 ```{math}
 :label: pm_bray
@@ -202,7 +202,7 @@ Two facts about the actual law {eq}`pm_bray4` motivate an equilibrium restrictio
 
 A rational expectations equilibrium would repair both features.
 
-Chapter 6 of {cite}`Sargent1999` softens the equilibrium concept, proceeding "in the spirit (but not the letter)" of {cite}`LucasPrescott1971` and {cite}`Brock1972`: we leave feature 1 untouched (agents keep the wrong functional form) while fixing feature 2 (they choose the best parameter within that form).
+Chapter 6 of {cite:t}`Sargent1999` softens the equilibrium concept, proceeding "in the spirit (but not the letter)" of {cite:t}`LucasPrescott1971` and {cite:t}`Brock1972`: we leave feature 1 untouched (agents keep the wrong functional form) while fixing feature 2 (they choose the best parameter within that form).
 
 Think of putting a single individual into a market where everyone else (the "representative agent") uses $C$, so the price obeys {eq}`pm_bray4`.
 
@@ -222,7 +222,7 @@ by minimizing the one-step-ahead forecast error variance.
 
 A model with the exact unit root of {eq}`pm_bray6` cannot be fitted to data that have a mean, and its spectral density is infinite at frequency zero.
 
-Following {cite}`Sargent1999` (chapter 6, footnotes 4 and 5), the agents' perceived model replaces the unit root by a root $\rho$ slightly below one:
+Following {cite:t}`Sargent1999` (chapter 6, footnotes 4 and 5), the agents' perceived model replaces the unit root by a root $\rho$ slightly below one:
 
 ```{math}
 :label: pm_rhomodel
@@ -321,7 +321,7 @@ C_star = solve_equilibrium(bray)
 print(f"equilibrium belief   C = {C_star:.4f}")
 ```
 
-For these parameters the equilibrium belief is $C \approx 0.08$, reproducing the value reported in chapter 6 of {cite}`Sargent1999`.
+For these parameters the equilibrium belief is $C \approx 0.08$, reproducing the value reported in chapter 6 of {cite:t}`Sargent1999`.
 
 ### Forecast errors
 
@@ -344,7 +344,7 @@ print(f"rule actually used (ρ = 1):     {σ_rule:.4f}")
 print(f"true innovation σ_u/(1 - bC):   {σ_true:.4f}")
 ```
 
-The first number is the $\bar\sigma_\epsilon$ that chapter 6 of {cite}`Sargent1999` reports.
+The first number is the $\bar\sigma_\epsilon$ that chapter 6 of {cite:t}`Sargent1999` reports.
 
 The book gives $1.0208$ for the last one, which is the square root of the value printed here.
 
@@ -355,7 +355,7 @@ The forecasts that agents actually make are only slightly worse than the best at
 
 The fixed point $C = B(C)$ has several names in the later literature, each emphasizing a different feature.
 
-* It is a **restricted-perceptions equilibrium** ({cite}`EvansHonkapohja2001`, chapter 13): forecasts are optimal within a restricted class of models that excludes the truth.
+* It is a **restricted-perceptions equilibrium** ({cite:t}`EvansHonkapohja2001`, chapter 13): forecasts are optimal within a restricted class of models that excludes the truth.
 * For given $C$, the best estimate $c$ is a **pseudo-true value** in the sense of {cite:t}`White1982`, the parameter of a misspecified model that comes closest to the truth. Unlike in White's setting, here the truth itself depends on the agents' parameter, through $C$.
 * Up to constants, criterion {eq}`pm_criterion` is the frequency-domain (Whittle) form of the Kullback–Leibler divergence of the perceived model from the true process. So the fixed point is also a **Berk–Nash equilibrium** in the sense of {cite:t}`EspondaPouzo2016`, with the forecasting rule as the agents' action.
 
@@ -465,7 +465,7 @@ The impulse response of the true model affirms the serial correlation in the pri
 
 From lag one on, the true response lies below the approximating one: the approximating model over-predicts the effects of a shock at every horizon, and its near unit root makes those effects die out much more slowly, at rate $\rho$ rather than $\phi = (1 - C)/(1 - bC)$.
 
-Chapter 6 of {cite}`Sargent1999` says that the approximating model under-predicts short-term consequences; that statement rests on comparing impact effects without the normalization, and so reflects only the different scales of the two shocks.
+Chapter 6 of {cite:t}`Sargent1999` says that the approximating model under-predicts short-term consequences; that statement rests on comparing impact effects without the normalization, and so reflects only the different scales of the two shocks.
 
 (pm_rho)=
 ## How the equilibrium depends on $\rho$
@@ -513,7 +513,7 @@ An agent who chose $c$ to minimize the actual mean square error of the rule he u
 
 So the equilibrium with $C^* > 0$, and the persistent serial correlation that comes with it, exists for each fixed $\rho < 1$ and disappears as $\rho \to 1$.
 
-The issue goes back to footnotes 4 and 5 of chapter 6 of {cite}`Sargent1999`, where $\rho < 1$ is introduced to keep the spectral density well defined.
+The issue goes back to footnotes 4 and 5 of chapter 6 of {cite:t}`Sargent1999`, where $\rho < 1$ is introduced to keep the spectral density well defined.
 
 It matters again in {doc}`phillips_self_confirming`, where the better-than-Nash outcomes of an equilibrium with misspecified beliefs rest on it.
 
