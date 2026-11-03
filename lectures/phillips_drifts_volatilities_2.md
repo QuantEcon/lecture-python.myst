@@ -943,6 +943,7 @@ paths, ignoring the first 20 quarters.
 What does the smoothed path look like if the filter assumes $q=0$?
 
 At the last date of a sample the smoothed and filtered estimates coincide.
+
 What does that imply for the estimates in this lecture that bear on the 2020s?
 ```
 

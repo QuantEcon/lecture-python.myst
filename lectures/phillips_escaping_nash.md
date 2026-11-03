@@ -107,11 +107,15 @@ with beliefs $\gamma = (\gamma_1, \gamma_{-1})$ (slope and intercept), and it tr
 
 ```{note}
 We keep the ordering of {cite}`ChoWilliamsSargent2002`: the slope comes first, and the
-regressors are $\Phi = (\pi, 1)$. This also matches the $\gamma_1, \gamma_{-1}$ convention of
+regressors are $\Phi = (\pi, 1)$.
+
+This also matches the $\gamma_1, \gamma_{-1}$ convention of
 {doc}`phillips_self_confirming`.
 
 {doc}`phillips_priors` and {ref}`olg_phillips` follow {cite}`SargentWilliams2005` and put
-the intercept first. Each lecture follows its source paper; the warning box in
+the intercept first.
+
+Each lecture follows its source paper; the warning box in
 {doc}`phillips_priors` translates between the two.
 ```
 
@@ -245,9 +249,13 @@ The literature on least squares learning in self-referential models ({cite}`Marc
 ```{note}
 **Notation across lectures.** {ref}`pl_primer` stacks the beliefs as
 $\phi = (\gamma, \operatorname{col}(R))$ and writes the mean dynamics as
-$\dot\phi = b(\phi)$. In the static model
+$\dot\phi = b(\phi)$.
+
+In the static model
 $b(\phi) = \left(R^{-1}\bar g(\gamma),\ \operatorname{col}(\bar M(\gamma) - R)\right)$, so
-{eq}`en_mean` is that ODE written out. The escape dynamics below add a forcing $v$ to the
+{eq}`en_mean` is that ODE written out.
+
+The escape dynamics below add a forcing $v$ to the
 $\gamma$ block only.
 
 {doc}`phillips_priors` replaces the scaled inverse moment matrix $\varepsilon R^{-1}$ by the

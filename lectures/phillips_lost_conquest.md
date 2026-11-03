@@ -88,7 +88,9 @@ We compute the self-confirming fixed point of that loop and find that, unlike th
 
 ```{note}
 Readers arriving from the Bounded Rationality suite will find $\gamma$ in its usual role as the
-learning gain. There the beliefs are called $\alpha$ ({ref}`br_notation`, {ref}`olg_phillips`);
+learning gain.
+
+There the beliefs are called $\alpha$ ({ref}`br_notation`, {ref}`olg_phillips`);
 here they are $\theta_t$.
 ```
 
@@ -221,7 +223,7 @@ inflation = 100 * (pce / pce.shift(4) - 1)          # four-quarter PCE inflation
 gap = 100 * (gdp / potential - 1)                   # output gap, percent
 
 data = pd.concat([inflation.rename('pi'), gap.rename('x'),
-                  fedfunds.rename('i')], axis=1).dropna().loc['1960':]
+                  fedfunds.rename('i')], axis=1, sort=True).dropna().loc['1960':]
 print(f"sample: {qtr(data.index[0])} to {qtr(data.index[-1])}, "
       f"{len(data)} quarters")
 
@@ -934,7 +936,7 @@ i_t &= \phi\, \pi_t ,
 
 where $u_t$ is a cost-push shock and $r_t$ a natural-rate (demand) shock.
 
-The two shocks are i.i.d. and mutually uncorrelated, with standard deviations $\sigma_u$ and $\sigma_r$.
+The two shocks are IID and mutually uncorrelated, with standard deviations $\sigma_u$ and $\sigma_r$.
 
 The first equation is the hybrid Phillips curve that arises when firms that cannot reset their prices index them to lagged inflation at rate $\omega \in [0, 1]$.
 
@@ -1539,7 +1541,7 @@ rng = np.random.default_rng(0)
 quarterly = rng.standard_normal(100_000)
 four_quarter = np.convolve(quarterly, np.ones(4) / 4, mode='valid')
 coef = np.polyfit(four_quarter[:-1], four_quarter[1:], 1)[0]
-print(f"regression coefficient with i.i.d. quarterly inflation: {coef:.3f}")
+print(f"regression coefficient with IID quarterly inflation: {coef:.3f}")
 
 data_q = data.copy()
 data_q['pi'] = 400 * np.log(pce / pce.shift(1))[data.index]

@@ -348,7 +348,7 @@ def loglik(params, U, v2):
     v = np.vstack(residuals(params, U, v2))
     T = v.shape[1]
     V = v @ v.T / T
-    return -T * np.log(2 * np.pi) - T / 2 * np.log(np.linalg.det(V)) - T, V
+    return -T * np.log(2 * np.pi) - T / 2 * np.linalg.slogdet(V)[1] - T, V
 
 def estimate(g, start='1958'):
     "Maximum likelihood estimates of (θ, U*, ρ1, ρ2) for a government g."

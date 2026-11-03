@@ -953,9 +953,8 @@ The response was to bring in direct evidence on beliefs.
 
 **Survey data.**
 {cite:t}`CarboniEllison2009` required the model's beliefs to reproduce the forecasts in the
-Federal Reserve's Greenbook, which shrank the estimated drift variance of the constant about
-fiftyfold while keeping
-the account of the rise and fall of inflation.
+Federal Reserve's Greenbook, which shrank the estimated drift variance of the constant by a
+factor of about fifty while keeping the account of the rise and fall of inflation.
 
 **Cohorts.**
 {cite:t}`MalmendierNagel2016` found that people's inflation expectations in survey data weight

@@ -595,7 +595,9 @@ Simulate the market {eq}`pm_bray`–{eq}`pm_bray2` with $C = C^*$ for one millio
 
 For a grid of values of $c$, compute the mean square error of the forecast $p^e_{t+1}(c) = c\, p_t + (1 - c) p^e_t(c)$ of $p_{t+1}$.
 
-Which $c$ minimizes it? Compare it with $C^*$ and with the exact-unit-root best estimate printed in {ref}`pm_rho`.
+Which $c$ minimizes it?
+
+Compare it with $C^*$ and with the exact-unit-root best estimate printed in {ref}`pm_rho`.
 
 ```{exercise-end}
 ```

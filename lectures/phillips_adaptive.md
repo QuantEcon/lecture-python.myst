@@ -774,7 +774,9 @@ The induction hypothesis builds in weights that sum to one, but rational expecta
 
 As $\rho \to 1$ the bias vanishes, which is the King–Watson reading of why later tests, run on data in which inflation had a unit root, stopped rejecting.
 
-The coefficient $b_2$ is the slope that a *Keynesian* regression of inflation on unemployment recovers. It is the slope $\beta_1$ of the Keynesian self-confirming equilibrium in {doc}`phillips_self_confirming`, with $\sigma_e$ in the role of $\sigma_2$.
+The coefficient $b_2$ is the slope that a *Keynesian* regression of inflation on unemployment recovers.
+
+It is the slope $\beta_1$ of the Keynesian self-confirming equilibrium in {doc}`phillips_self_confirming`, with $\sigma_e$ in the role of $\sigma_2$.
 
 ```{solution-end}
 ```

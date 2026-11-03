@@ -113,7 +113,9 @@ one, with $\theta = 1$.
 Matrices such as $M$, $V$, and $P$ have their rows and columns correspondingly transposed.
 
 {ref}`olg_phillips` uses our calibration but other letters, as the Bounded Rationality lectures
-do ({ref}`br_notation`): there the beliefs are $\alpha$ and the gain is $\gamma$. Here, following
+do ({ref}`br_notation`): there the beliefs are $\alpha$ and the gain is $\gamma$.
+
+Here, following
 {cite:t}`SargentWilliams2005`, the beliefs are $\gamma$, the gain is $\varepsilon$, and $\alpha$
 denotes the drifting coefficients that the government thinks generate its data.
 ```
