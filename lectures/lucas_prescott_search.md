@@ -290,6 +290,8 @@ print("demand states:", model.s.round(3))
 
 The Bellman operator is {eq}`lps_bellman` with the integral replaced by a sum.
 
+We need some value of search to solve it, so we use $\lambda = 7.1$ here, a number that {ref}`lps_economy_wide` will turn out to have chosen for a reason.
+
 ```{code-cell} ipython3
 def worker_value(model, λ, tol=1e-11, max_iter=10_000):
     "Solve the worker's functional equation by successive approximations."
@@ -543,6 +545,30 @@ Where workers are abundant, $\lambda$ is low, every market is pressed against it
 
 Unemployment is largest in between, and this is where the bounded capacity earns its keep: with a marginal revenue schedule that never reached zero, the thresholds would keep rising as $\lambda$ fell, unemployment would rise without bound, and the right panel would have no peak at all.
 
+### Where markets sit
+
+The three regions of {eq}`lps_transition` are a partition of the state space, so the invariant distribution says how much of the economy is in each.
+
+```{code-cell} ipython3
+y2 = model.y[None, :]
+sheds = y2 > eq['n_bar'][:, None]                       # region I: workers leave
+fills = y2 < eq['y_bar'][:, None]                       # region III: workers arrive
+still = ~sheds & ~fills                                 # region II: nobody moves
+
+for name, region in (('shedding workers', sheds), ('receiving workers', fills),
+                     ('neither', still)):
+    print(f"{name:>20}: {100*eq['ψ'][region].sum():5.1f}% of markets")
+print(f"{'with no workers':>20}: {100*eq['ψ'][:, 0].sum():5.1f}% of markets")
+```
+
+Nearly nine markets in ten are completely still in any given period.
+
+All of the economy's unemployment comes from the one in twenty that is contracting, and an equal number of markets is taking those workers in.
+
+The last line is the extreme case of a contracting market, and it is visible in the thresholds printed earlier as the leading zeros of $\bar n(s)$ and $\bar y(s)$: in the worst demand states a market employs nobody and attracts nobody.
+
+Those markets close, and they stay closed until they draw a state good enough to be worth entering again.
+
 ### The wage distribution
 
 We can now answer the question the Overview began with.
@@ -586,6 +612,8 @@ print(f"mean {mean:.3f}, "
       f"p10 {quantile(0.1):.3f}, median {quantile(0.5):.3f}, p90 {quantile(0.9):.3f}")
 print(f"p90/p10 = {quantile(0.9)/quantile(0.1):.2f},  "
       f"highest wage paid {w[p > 1e-12].max():.3f}")
+print(f"share paid less than the flow value of search: "
+      f"{100*p[w < λ_star*(1 - model.β)].sum():.0f}%")
 ```
 
 Workers in this economy are identical.
@@ -596,7 +624,11 @@ They are nevertheless paid differently, by half as much again at the ninetieth p
 
 The dashed line is the flow value of search, $(1-\beta)\lambda^*$, which is what a searcher's position is worth per period.
 
-It sits just below the mean wage, as it must: a worker gives up a period of earnings to move, so the position he moves to has to be worth more than the one he left.
+Two fifths of workers are paid less than that, and stay.
+
+There is no puzzle in it, but there is something worth seeing: what a worker holds is not his current wage.
+
+It is a position in a particular market, which carries a claim on that market's future and the option to walk away later, and a market can be worth being in today precisely because it is depressed today and will not be for long.
 
 ```{note}
 Notice what this model does **not** contain.
@@ -604,8 +636,6 @@ Notice what this model does **not** contain.
 There is no matching function, no bargaining, and no wage rigidity.
 
 Unemployment is here because moving takes a period, and in equilibrium somebody is always moving.
-
-The lecture {doc}`lake_model` studies the flows between employment and unemployment that this model generates, taking the rates as given; here the rates are what the equilibrium determines.
 ```
 
 ## Relation to other lectures
@@ -622,11 +652,19 @@ The wage a worker is offered is the marginal product of labor in a market whose 
 
 Two consequences are worth noting.
 
-The first is that there is no reservation wage.
+The first is that there is no reservation wage, and the reason runs deeper than a comparison of numbers.
 
-At the equilibrium computed above, workers stay on in markets paying as little as $0.456$, while elsewhere workers walk out of markets paying $0.674$.
+At the equilibrium computed above, workers stay on in markets paying as little as $0.456$, while elsewhere workers walk away from markets paying $0.674$, so no cutoff between the two sorts the markets a worker accepts from those he leaves.
 
-No number between the two separates the markets a worker accepts from those he leaves, because what he compares is not wages but values: the market paying $0.674$ is overcrowded today, so its wage is about to fall and its workforce will take years to clear, while the market paying $0.456$ is depressed today and expects to recover.
+But the leavers are not declining an offer of $0.674$.
+
+That is what their market pays everyone it keeps; what it does not have is room for the rest of them.
+
+Employment is rationed at $\bar n(s)$, the point at which the marginal worker is exactly indifferent between the wage and $\lambda$, and the workers who go are the ones for whom there is no place at that margin.
+
+Unemployment in this model is not a rejected offer.
+
+It is the absence of a job at a wage that the market is perfectly willing to pay.
 
 The second is about the flow rates between employment and unemployment, and it is worth setting out as a ladder.
 
