@@ -72,9 +72,11 @@ Economy-wide, $\lambda$ adjusts until the workforce that markets want to hold eq
 In equilibrium some markets always have more workers than they want to employ, so
 
 ```{note}
-**Unemployment is positive in every period, and it is efficient.**
+**Unemployment is positive in every period.**
 
-There is no congestion externality and no wage rigidity.
+Lucas and Prescott argue that it is also efficient, and the argument is worth stating in their terms, although the paper proves no welfare theorem and this lecture will not either.
+
+There is no congestion externality in the model and no wage rigidity.
 
 The searching worker who crowds his fellows does so in the same way that any seller of a good crowds other sellers, and $\lambda$ is the price that signals the social return to an additional searcher.
 ```
@@ -486,7 +488,7 @@ def equilibrium_λ(model, μ, lo=0.3, hi=40.0, tol=1e-4):
             hi = mid
     return 0.5*(lo + hi)
 
-μ = 50
+μ = 50                        # workers per market, against a capacity of 200
 λ_star = equilibrium_λ(model, μ)
 eq = market_outcomes(model, λ_star)
 
@@ -495,6 +497,8 @@ print(f"workforce per market            = {eq['workforce']:.2f}   (target {μ})"
 print(f"employment per market           = {eq['employment']:.2f}")
 print(f"unemployment per market         = {eq['unemployment']:.2f}")
 print(f"unemployment rate               = {100*eq['unemployment']/eq['workforce']:.2f}%")
+print(f"separation rate                 = "
+      f"{100*eq['unemployment']/eq['employment']:.2f}% of the employed per period")
 print(f"mean wage                       = {eq['wage']:.3f}")
 ```
 
@@ -539,6 +543,61 @@ Where workers are abundant, $\lambda$ is low, every market is pressed against it
 
 Unemployment is largest in between, and this is where the bounded capacity earns its keep: with a marginal revenue schedule that never reached zero, the thresholds would keep rising as $\lambda$ fell, unemployment would rise without bound, and the right panel would have no peak at all.
 
+### The wage distribution
+
+We can now answer the question the Overview began with.
+
+The search literature hands its worker a distribution of wage offers and asks what he should do with it.
+
+Here that distribution is an output: every market pays the marginal product of labor in it, and what a market pays depends on the demand it drew and on how many workers chose to be there.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Wages across identical workers, at the equilibrium
+    name: fig-lps-wages
+---
+employed = np.minimum(model.y[None, :], eq['n_bar'][:, None])
+wage = np.take_along_axis(model.R, np.maximum(employed, 1), axis=1)
+weight = eq['ψ']*employed                  # weight a market by the workers in it
+weight = weight/weight.sum()
+
+w, p = wage.ravel(), weight.ravel()
+order = np.argsort(w)
+w, p = w[order], p[order]
+cdf = np.cumsum(p)
+quantile = lambda a: w[np.searchsorted(cdf, a)]
+mean = (w*p).sum()
+
+fig, ax = plt.subplots(figsize=(7.5, 4))
+ax.hist(w, bins=30, weights=p, color='C0', alpha=0.85)
+ax.axvline(mean, color='k', lw=1.5, label=f'mean {mean:.3f}')
+ax.axvline(λ_star*(1 - model.β), color='C1', lw=1.5, ls='--',
+           label=f'flow value of search {λ_star*(1-model.β):.3f}')
+ax.set_xlabel('wage')
+ax.set_ylabel('share of workers')
+ax.set_xlim(0.5, 1.45)            # a thin tail runs past this; see the print below
+ax.legend()
+plt.tight_layout()
+plt.show()
+
+print(f"mean {mean:.3f}, "
+      f"p10 {quantile(0.1):.3f}, median {quantile(0.5):.3f}, p90 {quantile(0.9):.3f}")
+print(f"p90/p10 = {quantile(0.9)/quantile(0.1):.2f},  "
+      f"highest wage paid {w[p > 1e-12].max():.3f}")
+```
+
+Workers in this economy are identical.
+
+They have the same skills, the same preferences and the same information, and they are free to leave at any time.
+
+They are nevertheless paid differently, by half as much again at the ninetieth percentile as at the tenth, and the dispersion is not a friction or a mistake: it is what equalizes the *value* of being in one market or another when demand has moved markets apart and it takes a period to cross between them.
+
+The dashed line is the flow value of search, $(1-\beta)\lambda^*$, which is what a searcher's position is worth per period.
+
+It sits just below the mean wage, as it must: a worker gives up a period of earnings to move, so the position he moves to has to be worth more than the one he left.
+
 ```{note}
 Notice what this model does **not** contain.
 
@@ -563,9 +622,31 @@ The wage a worker is offered is the marginal product of labor in a market whose 
 
 Two consequences are worth noting.
 
-The first is that there is no reservation wage: {numref}`fig-lps-thresholds` shows a worker accepting a low wage in a depressed market and rejecting a higher one in a market that is about to be crowded, because what he is comparing is not wages but values.
+The first is that there is no reservation wage.
 
-The second is that the rate at which workers flow into and out of unemployment, which {doc}`lake_model` takes as a parameter, is here an equilibrium object: it is the frequency with which demand shifts carry markets across their thresholds.
+At the equilibrium computed above, workers stay on in markets paying as little as $0.456$, while elsewhere workers walk out of markets paying $0.674$.
+
+No number between the two separates the markets a worker accepts from those he leaves, because what he compares is not wages but values: the market paying $0.674$ is overcrowded today, so its wage is about to fall and its workforce will take years to clear, while the market paying $0.456$ is depressed today and expects to recover.
+
+The second is about the flow rates between employment and unemployment, and it is worth setting out as a ladder.
+
+{doc}`lake_model` takes both rates as parameters: a job finding rate of $0.283$ and a separation rate of $0.013$ go in, and the unemployment rate comes out.
+
+{doc}`endogenous_lake` climbs one rung, making the job finding rate the outcome of a McCall problem, though still against a wage distribution that is given.
+
+This lecture is the next rung: both rates are equilibrium objects.
+
+The separation rate printed above, around $2.7$ percent of the employed per period, is nothing but the frequency with which demand shifts carry markets below their employment thresholds.
+
+```{warning}
+The job finding rate in this model is **one**.
+
+A worker who leaves is placed in some market at the start of the next period, always, so every spell of unemployment lasts exactly one period and the model has nothing to say about unemployment *duration*.
+
+That is a direct consequence of directed search, and it is the first thing {cite:t}`AlvarezVeracierto1999` give up: when searchers arrive uniformly, a worker can land in a market that is itself shedding workers and have to move again.
+
+Duration becomes an equilibrium object there, and averages $2.4$ periods in their calibration.
+```
 
 The connection to {doc}`lucas_prescott_investment` is methodological, and close.
 
@@ -620,6 +701,10 @@ Check both in this calibration.
 1. Compute it for stationary standard deviations $\{0.10, 0.18, 0.26, 0.34, 0.45\}$, holding $\rho = 0.9$.
 
 Explain the shape you find in part 1.
+
+The two parameters you are varying are the same two that {doc}`mccall_persist_trans` varies, there as the persistence and volatility of a worker's wage offers rather than of his market's demand.
+
+The difference is what the experiment delivers: a reservation wage there, an unemployment rate here.
 ```
 
 ```{solution-start} lps_ex1
