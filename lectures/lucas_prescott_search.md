@@ -203,7 +203,7 @@ R(s, \bar n) + \beta \int v(s', \bar n, \lambda) f(s', s)\, ds' = \lambda .
 
 The left side is what a worker gets by staying when employment and next period's workforce are both $\bar n$: this period's wage plus the discounted continuation.
 
-It is decreasing in $\bar n$, so {eq}`lps_nbar` has a unique solution.
+It is non-increasing in $\bar n$, and it is flat once a market is so crowded that the marginal product has reached zero and the value of being there has fallen to $\lambda$, so {eq}`lps_nbar` may hold on an interval; employment is the largest $\bar n$ that satisfies it.
 
 Employment is then
 
@@ -228,7 +228,11 @@ Let $\bar y(s,\lambda)$ be the workforce at which that stops being true:
 
 Arrivals fill a market up to $\bar y(s, \lambda)$ and no further.
 
-Note that $\bar y < \bar n$: since $R > 0$, a market that is just worth entering for a searcher is strictly inside the range where everyone works.
+Note that $\bar y \le \bar n$, since $R \ge 0$ means that any workforce whose continuation alone covers $\lambda$ also covers it once the wage is added.
+
+The inequality is strict wherever the marginal product is positive: a market just worth entering for a searcher is then strictly inside the range where everyone works.
+
+In the worst demand states of the calibration below both thresholds are zero, and the market employs nobody and attracts nobody.
 
 ### Three regions, one transition law
 
@@ -240,6 +244,14 @@ y' = \min\big\{\max\{y,\ \bar y(s,\lambda)\},\ \bar n(s,\lambda)\big\} .
 ```
 
 A market that is too crowded sheds workers down to $\bar n(s,\lambda)$; a market that is too empty is filled up to $\bar y(s,\lambda)$; in between, nobody moves.
+
+It is worth pausing on an apparent inconsistency between {eq}`lps_transition` and {eq}`lps_bellman`, because it is the place where a reader is most likely to suspect an error.
+
+The Bellman equation evaluates the continuation at the **unchanged** workforce $y$, while the transition law moves the workforce somewhere else.
+
+Both are right, and the reason is that the $\max$ and the $\min$ have already dealt with the two cases in which the workforce moves: where arrivals come, the $\min$ replaces the continuation by $\lambda$, which is exactly what a market filled to $\bar y$ is worth to anyone in it, and where workers leave, the $\max$ replaces the whole expression by $\lambda$.
+
+The continuation at the unchanged $y$ is therefore used only in the region where the workforce really is unchanged.
 
 ```{note}
 The paper lets arrivals be random: a market short of workers receives $a(s,y,\lambda)\,x$ of them, where $x$ is a positive random variable with mean one, so that search "eliminates rents on average" rather than exactly.
@@ -320,7 +332,7 @@ def thresholds(model, v, λ):
     last = lambda A: np.array([np.max(np.where(A[i] >= λ)[0]) if (A[i, 1:] >= λ).any()
                                else 0 for i in range(len(model.s))])
     n_bar = last(H)
-    y_bar = np.minimum(last(EV), n_bar)
+    y_bar = last(EV)            # ≤ n_bar automatically, because R ≥ 0
     return n_bar, y_bar
 
 n_bar, y_bar = thresholds(model, v, 7.1)
@@ -398,11 +410,11 @@ The right panel is the curve that Lucas and Prescott call $SS$, the pairs of emp
 
 It is **not flat**.
 
-A flat $SS$ would mean that workers had a single reservation wage, accepting work above it and searching below it, which is what the partial-equilibrium search models of {doc}`mccall_model` assume.
+A flat $SS$ would mean that workers had a single reservation wage, accepting work above it and searching below it, which is what the partial-equilibrium search models of {doc}`mccall_model` **derive**: there a reservation wage is the conclusion, and here it fails.
 
-Here they do not, and the reason is instructive: a change in demand moves the current wage, but it also carries information about future wages, and it changes the workforce that the market will carry into the future.
+The reason is instructive: a change in demand moves the current wage, but it also carries information about future wages, and it changes the workforce that the market will carry into the future.
 
-Those effects pull in opposite directions, so the locus can slope either way.
+Those effects pull in opposite directions, so the locus can slope either way; in this calibration it happens to slope upward throughout.
 
 ### The workforce distribution and a sample path
 
@@ -544,6 +556,34 @@ Where workers are scarce, $\lambda$ is high, every market employs all it has, an
 Where workers are abundant, $\lambda$ is low, every market is pressed against its capacity, and the two thresholds are squeezed together there, so even a large shift in demand moves few workers.
 
 Unemployment is largest in between, and this is where the bounded capacity earns its keep: with a marginal revenue schedule that never reached zero, the thresholds would keep rising as $\lambda$ fell, unemployment would rise without bound, and the right panel would have no peak at all.
+
+### Would anyone find it?
+
+Lucas and Prescott devote a section of the paper to a question that the equilibrium itself does not answer: we have assumed that workers know $\lambda$, and said nothing about how they would come to know it.
+
+Their answer is an adaptive story.
+
+Suppose workers believe the value of search is higher than it is.
+
+Then more of them leave their markets than can be placed at that return, so searchers and stayers alike are disappointed in the wages they expected, and they revise the number down.
+
+Writing $g$ for a decreasing function that vanishes at zero,
+
+$$
+\frac{d\lambda}{dt} = g(\lambda - \lambda^{*}) ,
+$$
+
+and since the demand schedule slopes down, the equilibrium is stable under this revision.
+
+```{note}
+That story is the algorithm we just ran.
+
+`equilibrium_λ` bisects on a decreasing schedule: when the candidate $\lambda$ is too high, markets want fewer workers than the economy has, and the candidate comes down.
+
+The paper's stability section and this lecture's solver are the same argument, one written as economics and the other as code.
+
+Lucas and Prescott are careful to add that this kind of stability "can have no relevance to the dynamic response to regularly recurring shocks", which is the distinction between learning an equilibrium and responding within one.
+```
 
 ### Where markets sit
 
@@ -840,8 +880,8 @@ def outcomes_cost(model, λ, c):
     last = lambda A, bar: np.array([np.max(np.where(A[i] >= bar)[0])
                                     if (A[i, 1:] >= bar).any() else 0
                                     for i in range(len(model.s))])
-    n_bar = last(H, λ - c)                 # staying is worth λ - c to the leaver
-    y_bar = np.minimum(last(EV, λ), n_bar)  # arrivals are priced at λ
+    n_bar = last(H, λ - c)      # staying is worth λ - c to the leaver
+    y_bar = last(EV, λ)         # arrivals are priced at λ; still ≤ n_bar
     ψ = stationary_distribution(model, n_bar, y_bar)
     employment = np.minimum(y[None, :], n_bar[:, None])
     output = np.take_along_axis(np.cumsum(R, axis=1), employment, axis=1)
