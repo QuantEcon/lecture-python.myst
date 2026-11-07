@@ -279,6 +279,10 @@ Lucas and Prescott require that employment stay bounded as demand grows without 
 
 We will see below that this assumption is not a technicality.
 
+The shape of $R$ does something else that is easy to miss and that {ref}`lps_ex5` takes up.
+
+It sets how far employment moves when demand moves, and therefore how much there is to gain from sending a worker from one market to another.
+
 ```{code-cell} ipython3
 Model = namedtuple('Model', ['P', 's', 'y', 'R', 'β'])
 
@@ -680,6 +684,12 @@ Unemployment is here because moving takes a period, and in equilibrium somebody 
 
 ## Relation to other lectures
 
+{cite:t}`BaleyLjungqvistSargent2023` open by observing that there is no standard model of frictional unemployment, but three workable classes of them: matching models in the Diamond-Mortensen-Pissarides tradition, equilibrium versions of {cite:t}`McCall1970`, and search-island models in the tradition of {cite:t}`LucasPrescott1974`.
+
+Calibrated versions of all three fit data on labor market flows and deliver plausible responses of unemployment to policies like unemployment insurance and layoff taxes.
+
+This lecture is the third class, and the McCall lectures in this series are the second.
+
 It is worth being explicit about what this model supplies that the search lectures elsewhere in this series take as given.
 
 {doc}`mccall_model` and its sequels study a worker who draws from a known wage offer distribution and chooses a reservation wage.
@@ -763,6 +773,42 @@ The transition $y' = n(s,y) + U$ conserves the average workforce once $U$ is the
 
 It is also why the participation margin is not an optional embellishment in {cite:t}`AlvarezVeracierto1999`: with home production the value of not searching pins down a level that undirected search by itself leaves free.
 ```
+
+### Returns to labour mobility
+
+{cite:t}`BaleyLjungqvistSargent2025` and {cite:t}`BaleyLjungqvistSargent2023` argue that models of this family live or die by one quantity, which they call the **returns to labour mobility**: how much more a worker produces where he is going than where he is.
+
+It is the quantity that decides what a layoff tax does to unemployment, and whether skill losses at the time of a quit can reverse the effect of turbulence on unemployment.
+
+And it is not a property of the shock alone.
+
+It is a property of the shock *and* of the technology that intermediates it, which is why the two papers insist on calibrating productivity processes against evidence on firm size dynamics rather than on per-worker productivity statistics alone.
+
+The sharpest way to see this is to compare our two-state economy of {ref}`lps_ex3` with {cite:t}`AlvarezVeracierto2001`, whose calibration {cite:t}`BaleyLjungqvistSargent2025` take from establishment data on job creation and destruction.
+
+The two economies face almost the same shock: ours doubles demand between the low and the high state, theirs has a productivity ratio of $2.12$.
+
+What the shock does to employment could hardly be more different.
+
+In our two-state economy employment is about **3.7 times** larger in the high state than the low one.
+
+In theirs a low-productivity establishment employs only $3.81$ percent as many workers as a high-productivity one, a ratio of about **26**, and high-productivity establishments hold more than $96$ percent of all employment.
+
+The gap is the technology.
+
+In Alvarez and Veracierto an establishment produces $x k^{\xi} n^{\psi}$ with $\xi + \psi < 1$, and equating marginal products across establishments gives
+
+```{math}
+:label: lps_av_ratio
+\frac{n_{\text{high}}}{n_{\text{low}}}
+= \left(\frac{x_{\text{high}}}{x_{\text{low}}}\right)^{1/(1-\xi-\psi)} ,
+```
+
+so a shock is amplified by an exponent that explodes as returns to scale approach one.
+
+Our marginal revenue schedule falls linearly to zero at a capacity, which amplifies almost nothing.
+
+{ref}`lps_ex5` puts {eq}`lps_av_ratio` into this model and shows what it does to unemployment.
 
 ## Exercises
 
@@ -937,6 +983,16 @@ It is not.
 
 {cite:t}`AlvarezVeracierto1999` run the same experiment as a firing tax inside a calibrated version of this economy, and find that a tax worth between three and twelve months of average wages takes the unemployment rate **down** from $5.3$ to $3.7$ percent, pushes the average duration of unemployment **up** from $2.4$ to $5.1$ periods, and cuts employment to $86$ percent of its laissez-faire level.
 
+The number you have just computed has a use beyond the comparison.
+
+{cite:t}`BaleyLjungqvistSargent2023` make a diagnostic out of it: the minimum layoff tax that shuts down voluntary separations altogether.
+
+Here a cost of $2$, which is about $2.7$ times a period's average wage, takes unemployment to a fifth of its laissez-faire rate.
+
+Their point is that this number has to be **large** to be credible, because extensive reallocation is observed in economies whose layoff costs differ enormously; a model in which a modest cost stops workers moving is a model whose returns to labour mobility are too low.
+
+{ref}`lps_ex5` asks what sets them.
+
 ```{solution-end}
 ```
 
@@ -1090,6 +1146,77 @@ What Alvarez and Veracierto add is the **participation margin**: the nonemployed
 The value of home production is then the price that pins down how many people are in the labor force at all, and with it the level that undirected search on its own leaves free.
 
 This is why their two modifications of Lucas and Prescott come as a pair.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lps_ex5
+
+How far employment moves when demand moves is not a property of the demand process alone.
+
+It also depends on the technology through which the shock reaches the labor market, and {cite:t}`BaleyLjungqvistSargent2025` argue that this is the quantity a calibration most needs to get right.
+
+Replace the marginal revenue schedule of this lecture with the one implied by a decreasing returns production function.
+
+If a market produces $s\, n^{a}$ with $0 < a < 1$, the marginal product of labor is
+
+$$
+R(s, n) = s\,a\,(n + n_0)^{a-1} ,
+$$
+
+where the shift $n_0$ keeps it bounded at $n = 0$.
+
+1. Build the two-state economy of {ref}`lps_ex3` with this schedule, for $a \in \{0.4, 0.6, 0.75\}$, and solve each for its own equilibrium. Report the ratio of employment in the high state to employment in the low state, and the unemployment rate.
+1. Compare the ratios with {eq}`lps_av_ratio`, which for these economies predicts $2^{1/(1-a)}$.
+1. What happens to unemployment as the returns to labour mobility rise, and why?
+```
+
+```{solution-start} lps_ex5
+:class: dropdown
+```
+
+Only the construction of `R` changes.
+
+```{code-cell} ipython3
+def two_state_dr(a, ρ=0.9, s_lo=1.0, s_hi=2.0, β=0.9, n0=20.0, y_max=3000):
+    "Two demand states, output s n^a, so R = s a (n + n0)^(a-1)."
+    P = np.array([[ρ, 1-ρ], [1-ρ, ρ]])
+    s = np.array([s_lo, s_hi])
+    y = np.arange(y_max + 1)
+    R = s[:, None]*a*(y[None, :] + n0)**(a - 1)
+    R[:, 0] = 0.0
+    return Model(P=P, s=s, y=y, R=R, β=β)
+
+base = market_outcomes(two, equilibrium_λ(two, μ))
+print(f"{'technology':>18}{'n̄ low':>8}{'n̄ high':>9}{'ratio':>8}"
+      f"{'predicted':>11}{'u rate':>9}")
+print(f"{'this lecture':>18}{base['n_bar'][0]:>8}{base['n_bar'][1]:>9}"
+      f"{base['n_bar'][1]/base['n_bar'][0]:>8.1f}{'--':>11}"
+      f"{100*base['unemployment']/base['workforce']:>8.2f}%")
+
+for a in (0.4, 0.6, 0.75):
+    m_a = two_state_dr(a)
+    r_a = market_outcomes(m_a, equilibrium_λ(m_a, μ, lo=0.01, hi=80.0))
+    nb = r_a['n_bar']
+    print(f"{f'output s n^{a}':>18}{nb[0]:>8}{nb[1]:>9}{nb[1]/nb[0]:>8.1f}"
+          f"{2**(1/(1 - a)):>11.1f}"
+          f"{100*r_a['unemployment']/r_a['workforce']:>8.2f}%")
+```
+
+The same doubling of demand that moves employment by a factor of about four under this lecture's schedule moves it by a factor of twenty-three when output is $s\,n^{0.75}$.
+
+{eq}`lps_av_ratio` gets the magnitudes roughly right at low returns to scale and understates them as $a$ approaches one, where the option to move later, which the static formula ignores, starts to matter.
+
+Alvarez and Veracierto's calibrated ratio of $26$ sits inside the range these technologies span, which is the point: their number is not an artifact of their data, it is what a neoclassical production function does to a shock of that size.
+
+As for part 3, unemployment rises with the returns to labour mobility, from $3.6$ to $8.0$ percent across these economies.
+
+That is not a coincidence and it is not a cost.
+
+Unemployment in this model is the time workers spend moving, and the more there is to gain by moving, the more of them move.
+
+This is the sense in which the quantity {cite:t}`BaleyLjungqvistSargent2025` are after governs everything else: an economy with high returns to labour mobility will show a lot of reallocation, will keep reallocating even when a layoff tax makes it expensive, and will record the unemployment that goes with it.
 
 ```{solution-end}
 ```
