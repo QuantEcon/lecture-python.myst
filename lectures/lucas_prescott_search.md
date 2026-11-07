@@ -575,6 +575,36 @@ Here a market's workforce is a Markov process whose invariant distribution descr
 
 The same authors wrote both papers within three years, and the second is the first one's method turned on a question about labor.
 
+### What the island model became
+
+{cite:t}`AlvarezVeracierto1999` took this model and made it a tool for quantitative policy analysis, in their words by "modifying Lucas and Prescott's (1974) island model to incorporate undirected search and out-of-the-labor-force participation".
+
+Four things change.
+
+Search becomes **undirected**: searchers "arrive uniformly across all islands", so an island's workforce next period is its own employment plus the same inflow every other island gets, whether it wants the workers or not.
+
+The nonemployed gain a second option, home production, so that labor force participation is a margin and the model has three states rather than two.
+
+Islands produce with a decreasing returns technology subject to persistent productivity shocks rather than facing a shifting demand curve.
+
+And agents trade a complete set of state-contingent securities, which the authors justify by their own earlier finding that the insurance role of the policies they study is quantitatively small.
+
+With that machinery they evaluate minimum wages, two models of unions, firing taxes and unemployment insurance, at a model period of six weeks.
+
+```{note}
+The first of those changes is worth dwelling on, because it tells us what directed search is doing here.
+
+In this lecture $\lambda$ is a **price**: raise it and every market sheds workers sooner and fills up less, so the workforce that markets want to hold falls, and {eq}`lps_equilibrium` pins $\lambda$ down exactly as a market-clearing condition pins down any other price.
+
+Under undirected search that mechanism is gone.
+
+The transition $y' = n(s,y) + U$ conserves the average workforce once $U$ is the average outflow, so the aggregate is a conserved quantity rather than something a price determines, and the invariant distribution is one of a family.
+
+{ref}`lps_ex4` asks you to verify this.
+
+It is also why the participation margin is not an optional embellishment in {cite:t}`AlvarezVeracierto1999`: with home production the value of not searching pins down a level that undirected search by itself leaves free.
+```
+
 ## Exercises
 
 ```{exercise}
@@ -738,6 +768,12 @@ What he gains that way, the economy loses twice over in output, because the matc
 
 So unemployment is not a welfare index, which is the lesson Lucas and Prescott draw, and in this calibration even the two welfare measures move in opposite directions.
 
+It would be fair to suspect that so stark a result is an artifact of a model this stripped down.
+
+It is not.
+
+{cite:t}`AlvarezVeracierto1999` run the same experiment as a firing tax inside a calibrated version of this economy, and find that a tax worth between three and twelve months of average wages takes the unemployment rate **down** from $5.3$ to $3.7$ percent, pushes the average duration of unemployment **up** from $2.4$ to $5.1$ periods, and cuts employment to $86$ percent of its laissez-faire level.
+
 ```{solution-end}
 ```
 
@@ -831,6 +867,66 @@ The formula also explains the hump.
 Average unemployment is the gap between two thresholds, multiplied by the chance of crossing it.
 
 As $\lambda$ falls, both thresholds rise, but not in step, and the gap between them widens and then narrows again.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: lps_ex4
+
+This exercise is analytical; it asks what the model's directed search is doing.
+
+{cite:t}`AlvarezVeracierto1999` replace it with **undirected** search: a searcher cannot choose where to go, and every market receives the same inflow $U$, which is the economy's unemployment per market.
+
+1. Show that under undirected search the $\min$ disappears from {eq}`lps_bellman`, and say which economic condition it was enforcing.
+1. Write down the transition law for a market's workforce, and show that the average workforce across markets is unchanged from one period to the next, so that it is a conserved quantity rather than one determined by $\lambda$.
+1. The equilibrium condition {eq}`lps_equilibrium` is therefore no longer available to pin down the economy. What do Alvarez and Veracierto add in its place?
+```
+
+```{solution-start} lps_ex4
+:class: dropdown
+```
+
+For part 1, the $\min$ in {eq}`lps_bellman` is not a choice that anyone makes.
+
+It is the restriction that the continuation value in a market cannot exceed $\lambda$, which competition among searchers imposes: if some market promised more, searchers would go there until it no longer did.
+
+Take away their ability to choose where to go and nothing enforces it.
+
+A worker who stays simply collects the wage and the continuation value his own market happens to deliver,
+
+$$
+v(s, y) = \max\left\{\lambda,\; R(s, y)
+ + \beta \int v\big(s', y'(s,y)\big) f(s', s)\, ds'\right\} ,
+$$
+
+and the continuation can be worth more or less than $\lambda$, because nobody can act on the difference.
+
+For part 2, employment is still $n(s,y) = \min\{\bar n(s), y\}$, those not employed leave, and the inflow is the same everywhere, so
+
+$$
+y' = n(s, y) + U .
+$$
+
+Average across markets, and use the fact that $U$ is by definition the average outflow, $U = E[\,y - n(s,y)\,]$:
+
+$$
+E[y'] = E[n(s,y)] + U = \big(E[y] - U\big) + U = E[y] .
+$$
+
+The average workforce is therefore the same in every period: whatever the economy starts with, it keeps.
+
+For part 3, under directed search $\lambda$ is a price.
+
+Raising it makes every market shed workers sooner and fill up less, so $E(y;\lambda)$ falls, and {eq}`lps_equilibrium` determines $\lambda$ the way market clearing determines any price.
+
+Under undirected search the level of the workforce is conserved rather than cleared, so that equation has nothing left to do, and the invariant distribution is one of a whole family, one for each level.
+
+What Alvarez and Veracierto add is the **participation margin**: the nonemployed choose between searching and home production.
+
+The value of home production is then the price that pins down how many people are in the labor force at all, and with it the level that undirected search on its own leaves free.
+
+This is why their two modifications of Lucas and Prescott come as a pair.
 
 ```{solution-end}
 ```
