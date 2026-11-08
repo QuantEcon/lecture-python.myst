@@ -71,7 +71,7 @@ Here it is distinguished.
 
 Workers in a market can work at the wage that clears it, or leave.
 
-Leaving means earning nothing this period and arriving somewhere else next period, so **unemployment is the act of moving between markets**.
+Leaving means earning nothing this period and arriving somewhere else next period, so *unemployment is the act of moving between markets*.
 
 Everything is competitive, everyone optimizes, and expectations are rational in the sense of {cite:t}`muth1961` and of the investment paper, {cite:t}`Lucas_Prescott_1971`: the distribution that workers use to evaluate their prospects is the one that their own decisions generate.
 
@@ -107,6 +107,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import quantecon as qe
 from collections import namedtuple
+from scipy.optimize import brentq
 ```
 
 ## The economy
@@ -1040,7 +1041,7 @@ A firing tax worth twelve months of average wages, for example, takes their unem
 ```{note}
 Undirected search changes how $\lambda$ is determined.
 
-Under directed search $\lambda$ is a **price**: raise it and every market sheds workers sooner and fills up less, so {eq}`lps_equilibrium` pins it down as a market-clearing condition pins down any other price, and the $\min$ in {eq}`lps_bellman` makes every market that receives workers worth exactly $\lambda$ to them.
+Under directed search $\lambda$ is a *price*: raise it and every market sheds workers sooner and fills up less, so {eq}`lps_equilibrium` pins it down as a market-clearing condition pins down any other price, and the $\min$ in {eq}`lps_bellman` makes every market that receives workers worth exactly $\lambda$ to them.
 
 Under undirected search a searcher lands in a market drawn at random, so $\lambda$ needs a consistency condition of its own, and the common inflow $U$ becomes a second unknown.
 
@@ -1079,7 +1080,7 @@ An establishment produces $z\, k^{\theta_k} n^{\theta_n}$ from capital $k$ and l
 
 so a shock is amplified by an exponent that explodes as returns to scale approach one.
 
-At Alvarez and Veracierto's parameters, they find that a low-productivity establishment employs only $3.81$ percent as many workers as a high-productivity one, a ratio of about **26**, and that high-productivity establishments hold more than $96$ percent of all employment: an exponent of about $4.35$ turns a productivity ratio of $2.12$ into an employment ratio of about $26$.
+At Alvarez and Veracierto's parameters, they find that a low-productivity establishment employs only $3.81$ percent as many workers as a high-productivity one, a ratio of about $26$, and that high-productivity establishments hold more than $96$ percent of all employment: an exponent of about $4.35$ turns a productivity ratio of $2.12$ into an employment ratio of about $26$.
 
 That is a frictionless allocation, since every establishment hires in the same spot market. In the present model moving takes a period, and {ref}`lps_ex_two_states` asks how much of a ratio like $26$ survives that friction, holding the technology and the shock like Alvarez and Veracierto's.
 
@@ -1412,12 +1413,6 @@ Eu2 = np.array([r['unemployment'] for r in res2])
 The paper puts $\lambda$ on the vertical axis.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Workforce demand and unemployment in the paper's two-state economy
-    name: fig-lps-two-state
----
 fig, axes = plt.subplots(1, 2, figsize=(10, 4.2))
 axes[0].plot(Ey2, grid2, lw=2)
 axes[0].set_xlabel('workforce demand per market')
@@ -1674,8 +1669,6 @@ The gap between the implied value of search and $\lambda$ turns out to be positi
 On this grid the directed-search $\lambda^*$ is such a value at every inflow that has roots, and `brentq` from SciPy stops with an error if a bracket fails.
 
 ```{code-cell} ipython3
-from scipy.optimize import brentq
-
 def consistent_λs(model, U, λ_mid, lo=0.1, hi=12.0):
     "The roots of λ = β Σ ψ v below and above λ_mid, with the mean workforce of each."
     gap = lambda λ: undirected_market(model, λ, U)[0] - λ
@@ -1695,12 +1688,6 @@ print(f"at U = 10 the largest gap on a grid of λ is {max(gaps_10):.4f}")
 Each of these inflows has two solutions, and each serves its own population; at $U = 10$ there are none.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: Undirected search, the populations served by the solutions at each inflow
-    name: fig-lps-undirected
----
 Us = np.array(list(locus))
 scale = 200/N_fine                       # back to the lecture's units
 fig, ax = plt.subplots(figsize=(7, 4))
@@ -1808,12 +1795,6 @@ for Δ in (-0.04, -0.02, -0.01, 0.01, 0.02, 0.04):
 The no-surprise line reproduces the equilibrium, as it should.
 
 ```{code-cell} ipython3
----
-mystnb:
-  figure:
-    caption: An unanticipated shift in demand moves unemployment and wages in opposite directions
-    name: fig-lps-phillips
----
 u_pts, w_pts = np.array(sorted(points)).T
 fig, ax = plt.subplots(figsize=(6.5, 4))
 ax.plot(u_pts, w_pts, 'o-', lw=2)
