@@ -94,7 +94,7 @@ from collections import namedtuple
 
 There are many markets, indexed by the state of demand in them.
 
-Demand shifts are **independent across markets**, so that aggregate demand is constant, and **persistent within** a market, so that today's demand tells a worker something about tomorrow's.
+Demand shifts are *independent across markets*, so that aggregate demand is constant, and *persistent within* a market, so that today's demand tells a worker something about tomorrow's.
 
 In each market a competitive industry produces a single good with labor as the only input.
 
@@ -125,7 +125,7 @@ Then, within the period:
 1. the $y - n$ workers who are not employed earn nothing and join the pool of searchers
 1. employed workers remain in the market into next period; searchers are allocated across markets and arrive next period
 
-So a worker is **unemployed for exactly one period** each time he moves, and the unemployed are workers in transit.
+So a worker is *unemployed for exactly one period* each time he moves, and the unemployed are workers in transit.
 
 ### The value of search
 
@@ -133,7 +133,7 @@ Because demand shifts are independent across markets and there are many of them,
 
 A searcher's prospects therefore do not depend on the market he is leaving, and the expected present value of search is a single number $\lambda$.
 
-Searchers are allocated to markets in a way that **equalizes** the expected value of arriving, so no market offers an arriving worker more than $\lambda$.
+Searchers are allocated to markets in a way that *equalizes* the expected value of arriving, so no market offers an arriving worker more than $\lambda$.
 
 We take $\lambda$ as given for now and determine it in {ref}`lps_economy_wide`.
 
@@ -170,9 +170,9 @@ R(s,y) + \min\left[\lambda,\;
 
 Equation {eq}`lps_bellman` repays a careful look, because its two operators do different jobs.
 
-The **max** is the worker's own option: he can always leave and collect $\lambda$.
+The *max* is the worker's own option: he can always leave and collect $\lambda$.
 
-The **min** is not the worker's choice at all.
+The *min* is not the worker's choice at all.
 
 It is a restriction that competition among searchers imposes: if the continuation value in this market exceeded $\lambda$, searchers would flow in until it did not.
 
@@ -203,7 +203,11 @@ R(s, \bar n) + \beta \int v(s', \bar n, \lambda) f(s', s)\, ds' = \lambda .
 
 The left side is what a worker gets by staying when employment and next period's workforce are both $\bar n$: this period's wage plus the discounted continuation.
 
-It is non-increasing in $\bar n$, and it is flat once a market is so crowded that the marginal product has reached zero and the value of being there has fallen to $\lambda$, so {eq}`lps_nbar` may hold on an interval; employment is the largest $\bar n$ that satisfies it.
+It is non-increasing in $\bar n$.
+
+Once a market is so crowded that the marginal product has reached zero, the value of being there has fallen to $\lambda$ and the left side is flat at $\beta \lambda < \lambda$, so {eq}`lps_nbar` cannot hold there.
+
+On the integer workforce grid used below, {eq}`lps_nbar` rarely holds with equality, and employment is the largest $\bar n$ at which the left side is at least $\lambda$.
 
 Employment is then
 
@@ -247,7 +251,7 @@ A market that is too crowded sheds workers down to $\bar n(s,\lambda)$; a market
 
 It is worth pausing on an apparent inconsistency between {eq}`lps_transition` and {eq}`lps_bellman`, because it is the place where a reader is most likely to suspect an error.
 
-The Bellman equation evaluates the continuation at the **unchanged** workforce $y$, while the transition law moves the workforce somewhere else.
+The Bellman equation evaluates the continuation at the *unchanged* workforce $y$, while the transition law moves the workforce somewhere else.
 
 Both are right, and the reason is that the $\max$ and the $\min$ have already dealt with the two cases in which the workforce moves: where arrivals come, the $\min$ replaces the continuation by $\lambda$, which is exactly what a market filled to $\bar y$ is worth to anyone in it, and where workers leave, the $\max$ replaces the whole expression by $\lambda$.
 
@@ -329,7 +333,7 @@ The two thresholds are the largest employment, and the largest workforce, at whi
 
 ```{code-cell} ipython3
 def thresholds(model, v, λ):
-    "The employment threshold n̄(s) of {eq}`lps_nbar` and the arrival threshold ȳ(s)."
+    "The employment threshold n̄(s) and the arrival threshold ȳ(s)."
     P, R, β = model.P, model.R, model.β
     EV = β*(P @ v)              # the continuation value at an unchanged workforce
     H = R + EV                  # the value of staying on as the marginal worker
@@ -375,7 +379,8 @@ def market_outcomes(model, λ):
                 workforce=(ψ*y).sum(),
                 employment=(ψ*employment).sum(),
                 unemployment=(ψ*unemployment).sum(),
-                wage=(ψ*wage).sum())
+                # the mean wage per employed worker; empty markets get no weight
+                wage=(ψ*employment*wage).sum()/(ψ*employment).sum())
 
 out = market_outcomes(model, 7.1)
 print(f"workforce {out['workforce']:.2f}, employment {out['employment']:.2f}, "
@@ -390,7 +395,7 @@ The thresholds describe the whole of a market's behavior, so it is worth seeing 
 ---
 mystnb:
   figure:
-    caption: The two thresholds and the wage schedule
+    caption: The two thresholds, and the locus of employment and wages as demand shifts
     name: fig-lps-thresholds
 ---
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
@@ -401,20 +406,22 @@ axes[0].set_xlabel('demand state $s$')
 axes[0].set_ylabel('workers')
 axes[0].legend()
 
-wage_at_nbar = np.array([model.R[i, max(out['n_bar'][i], 1)] for i in range(len(model.s))])
-axes[1].plot(out['n_bar'], wage_at_nbar, 'o-', lw=2)
+employs = out['n_bar'] > 0                # a state with n̄(s) = 0 employs nobody
+wage_at_nbar = model.R[np.arange(len(model.s)), out['n_bar']]
+axes[1].plot(out['n_bar'][employs], wage_at_nbar[employs], 'o-', lw=2)
 axes[1].set_xlabel(r'employment $\bar n(s)$')
 axes[1].set_ylabel('wage')
-axes[1].set_title('the locus traced out as demand shifts')
 plt.tight_layout()
 plt.show()
 ```
 
 The right panel is the curve that Lucas and Prescott call $SS$, the pairs of employment and wages that a market would trace out as demand shifted if its workforce never constrained it.
 
-It is **not flat**.
+It leaves out the worst demand states, where $\bar n(s) = 0$, because a market there employs nobody and pays no wage.
 
-A flat $SS$ would mean that workers had a single reservation wage, accepting work above it and searching below it, which is what the partial-equilibrium search models of {doc}`mccall_model` **derive**: there a reservation wage is the conclusion, and here it fails.
+The curve is *not flat*.
+
+A flat $SS$ would mean that workers had a single reservation wage, accepting work above it and searching below it, which is what the partial-equilibrium search models of {doc}`mccall_model` *derive*: there a reservation wage is the conclusion, and here it fails.
 
 The reason is instructive: a change in demand moves the current wage, but it also carries information about future wages, and it changes the workforce that the market will carry into the future.
 
@@ -428,7 +435,7 @@ Because arrivals are deterministic, the workforce moves between a small number o
 ---
 mystnb:
   figure:
-    caption: Where the workforce settles, and how a market moves
+    caption: The invariant distribution of the workforce, and one market over sixty periods
     name: fig-lps-distribution
 ---
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
@@ -438,7 +445,6 @@ support = marginal > 1e-10
 axes[0].stem(model.y[support], marginal[support], basefmt=' ')
 axes[0].set_xlabel('workforce $y$')
 axes[0].set_ylabel('probability')
-axes[0].set_title('invariant distribution of the workforce')
 
 mc = qe.MarkovChain(model.P)
 idx = mc.simulate_indices(60, init=3, random_state=0)
@@ -452,8 +458,8 @@ axes[1].plot(path_y, lw=2, label='workforce')
 axes[1].plot(path_n, lw=2, ls='--', label='employment')
 axes[1].fill_between(range(60), path_n, path_y, alpha=0.3, label='unemployed')
 axes[1].set_xlabel('period')
+axes[1].set_ylabel('workers')
 axes[1].legend()
-axes[1].set_title('one market over sixty periods')
 plt.tight_layout()
 plt.show()
 ```
@@ -553,7 +559,7 @@ plt.show()
 
 The left panel is the paper's Figure 4 and the right panel is its Figure 5.
 
-The second is the more interesting of the two, because unemployment is **not monotone** in the size of the workforce, a feature that Lucas and Prescott report from their own examples.
+The second is the more interesting of the two, because unemployment is *not monotone* in the size of the workforce, a feature that Lucas and Prescott report from their own examples.
 
 Where workers are scarce, $\lambda$ is high, every market employs all it has, and almost nobody is ever shed.
 
@@ -675,7 +681,7 @@ There is no puzzle in it, but there is something worth seeing: what a worker hol
 It is a position in a particular market, which carries a claim on that market's future and the option to walk away later, and a market can be worth being in today precisely because it is depressed today and will not be for long.
 
 ```{note}
-Notice what this model does **not** contain.
+Notice what this model does *not* contain.
 
 There is no matching function, no bargaining, and no wage rigidity.
 
@@ -704,7 +710,7 @@ Two consequences are worth noting.
 
 The first is that there is no reservation wage, and the reason runs deeper than a comparison of numbers.
 
-At the equilibrium computed above, workers stay on in markets paying as little as $0.456$, while elsewhere workers walk away from markets paying $0.674$, so no cutoff between the two sorts the markets a worker accepts from those he leaves.
+At the equilibrium computed above, workers stay on, and nobody leaves, in markets paying as little as $0.583$, while elsewhere workers walk away from markets paying $0.674$, so no cutoff between the two sorts the markets a worker accepts from those he leaves.
 
 But the leavers are not declining an offer of $0.674$.
 
@@ -727,7 +733,7 @@ This lecture is the next rung: both rates are equilibrium objects.
 The separation rate printed above, around $2.7$ percent of the employed per period, is nothing but the frequency with which demand shifts carry markets below their employment thresholds.
 
 ```{warning}
-The job finding rate in this model is **one**.
+The job finding rate in this model is *one*.
 
 A worker who leaves is placed in some market at the start of the next period, always, so every spell of unemployment lasts exactly one period and the model has nothing to say about unemployment *duration*.
 
@@ -774,9 +780,9 @@ The transition $y' = n(s,y) + U$ conserves the average workforce once $U$ is the
 It is also why the participation margin is not an optional embellishment in {cite:t}`AlvarezVeracierto1999`: with home production the value of not searching pins down a level that undirected search by itself leaves free.
 ```
 
-### Returns to labour mobility
+### Returns to labor mobility
 
-{cite:t}`BaleyLjungqvistSargent2025` and {cite:t}`BaleyLjungqvistSargent2023` argue that models of this family live or die by one quantity, which they call the **returns to labour mobility**: how much more a worker produces where he is going than where he is.
+{cite:t}`BaleyLjungqvistSargent2025` and {cite:t}`BaleyLjungqvistSargent2023` argue that models of this family live or die by one quantity, which they call the **returns to labor mobility**: how much more a worker produces where he is going than where he is.
 
 It is the quantity that decides what a layoff tax does to unemployment, and whether skill losses at the time of a quit can reverse the effect of turbulence on unemployment.
 
@@ -821,7 +827,7 @@ Our marginal revenue schedule falls linearly to zero at a capacity, which amplif
 
 Check both in this calibration.
 
-1. Compute the equilibrium unemployment rate for persistence $\rho \in \{0, 0.3, 0.6, 0.8, 0.9, 0.95, 0.99\}$, holding the **stationary** standard deviation of $\log s$ fixed at $0.26$ and $\mu$ at $50$. Is the relationship monotone?
+1. Compute the equilibrium unemployment rate for persistence $\rho \in \{0, 0.3, 0.6, 0.8, 0.9, 0.95, 0.99\}$, holding the *stationary* standard deviation of $\log s$ fixed at $0.26$ and $\mu$ at $50$. Is the relationship monotone?
 1. Compute it for stationary standard deviations $\{0.10, 0.18, 0.26, 0.34, 0.45\}$, holding $\rho = 0.9$.
 
 Explain the shape you find in part 1.
@@ -888,7 +894,13 @@ They report that the cost lowers unemployment, and remark that this
 
 > *shows that lower average unemployment is not, in general, associated with higher welfare for workers.*
 
-Modify the code to allow a cost $c$, and for $c \in \{0, 0.2, 0.5, 1, 2\}$ report the equilibrium $\lambda^*$, the unemployment rate, the expected value of a worker under the invariant distribution, $\sum_{s,y}\psi(s,y)v(s,y)$, and output per market,
+Modify the code to allow a cost $c$, and for $c \in \{0, 0.2, 0.5, 1, 2\}$ report the equilibrium $\lambda^*$, the unemployment rate, the expected value of a worker under the invariant distribution, which weights each market by the workers in it,
+
+$$
+\frac{\sum_{s,y} \psi(s,y)\, y\, v(s,y)}{\sum_{s,y} \psi(s,y)\, y} ,
+$$
+
+and output per market,
 
 $$
 \sum_{s,y} \psi(s,y) \int_0^{n(s,y)} R(s,m)\, dm ,
@@ -933,7 +945,8 @@ def outcomes_cost(model, λ, c):
     output = np.take_along_axis(np.cumsum(R, axis=1), employment, axis=1)
     return dict(workforce=(ψ*y).sum(),
                 unemployment=(ψ*(y[None, :] - employment)).sum(),
-                welfare=(ψ*v).sum(), output=(ψ*output).sum())
+                welfare=(ψ*y*v).sum()/(ψ*y).sum(),   # per worker, not per market
+                output=(ψ*output).sum())
 
 def equilibrium_λ_cost(model, μ, c, lo=0.3, hi=40.0, tol=1e-4):
     while hi - lo > tol:
@@ -961,7 +974,7 @@ A cost of two cuts measured unemployment by more than four fifths, from $2.7$ pe
 
 It also cuts output, by about three percent.
 
-That is the paper's point, and it is worth stating plainly: the unemployment that the cost eliminated was **productive**.
+That is the paper's point, and it is worth stating plainly: the unemployment that the cost eliminated was *productive*.
 
 Those workers were not idle in any useful sense; they were in transit from markets where their marginal product had fallen to markets where it was high, and the cost keeps them where they are.
 
@@ -969,11 +982,11 @@ The rest of the table shows why "welfare" needs saying carefully.
 
 The value of the option a worker holds, $\lambda^* - c$, falls at every step: the outside option is worth less, which is what makes workers stay.
 
-Yet the expected present value of a worker's own earnings **rises**.
+Yet the expected present value of a worker's own earnings *rises*.
 
 A worker's income is the wage when he is employed and nothing when he is searching, and the cost buys him fewer periods of nothing.
 
-What he gains that way, the economy loses twice over in output, because the match between workers and markets is worse.
+What he gains that way, the economy loses more than twice over in output, because the match between workers and markets is worse.
 
 So unemployment is not a welfare index, which is the lesson Lucas and Prescott draw, and in this calibration even the two welfare measures move in opposite directions.
 
@@ -981,15 +994,15 @@ It would be fair to suspect that so stark a result is an artifact of a model thi
 
 It is not.
 
-{cite:t}`AlvarezVeracierto1999` run the same experiment as a firing tax inside a calibrated version of this economy, and find that a tax worth between three and twelve months of average wages takes the unemployment rate **down** from $5.3$ to $3.7$ percent, pushes the average duration of unemployment **up** from $2.4$ to $5.1$ periods, and cuts employment to $86$ percent of its laissez-faire level.
+{cite:t}`AlvarezVeracierto1999` run the same experiment as a firing tax inside a calibrated version of this economy, and find that a tax worth between three and twelve months of average wages takes the unemployment rate *down* from $5.3$ to $3.7$ percent, pushes the average duration of unemployment *up* from $2.4$ to $5.1$ periods, and cuts employment to $86$ percent of its laissez-faire level.
 
 The number you have just computed has a use beyond the comparison.
 
-{cite:t}`BaleyLjungqvistSargent2023` make a diagnostic out of it: the minimum layoff tax that shuts down voluntary separations altogether.
+{cite:t}`BaleyLjungqvistSargent2023` make a diagnostic out of a closely related number: the minimum layoff tax that shuts down voluntary separations altogether.
 
-Here a cost of $2$, which is about $2.7$ times a period's average wage, takes unemployment to a fifth of its laissez-faire rate.
+Here even a cost of $2$, which is about $2.6$ times a period's average wage, does not do that: it takes unemployment to a fifth of its laissez-faire rate, not to zero.
 
-Their point is that this number has to be **large** to be credible, because extensive reallocation is observed in economies whose layoff costs differ enormously; a model in which a modest cost stops workers moving is a model whose returns to labour mobility are too low.
+Their point is that this number has to be *large* to be credible, because extensive reallocation is observed in economies whose layoff costs differ enormously; a model in which a modest cost stops workers moving is a model whose returns to labor mobility are too low.
 
 {ref}`lps_ex5` asks what sets them.
 
@@ -1007,10 +1020,10 @@ P = \begin{bmatrix} 0.9 & 0.1 \\ 0.1 & 0.9\end{bmatrix} ,
 \qquad \beta = 0.9 .
 $$
 
-Build that economy, keeping $R(s,n) = s(1+n/n_0)^{-1/\eta}$ from the lecture.
+Build that economy, keeping $R(s,n) = s\,(1 - n/N)^{+}$ from the lecture, with capacity $N = 200$.
 
 1. For $\lambda$ on a grid, plot the workforce demand and the unemployment against each other, as in the paper's Figure 5.
-1. Show that the invariant distribution puts all of its mass on **two** values of the workforce, and say which two.
+1. Show that the invariant distribution puts all of its mass on *two* values of the workforce, and say which two.
 1. Use that fact to derive a formula for average unemployment per market in terms of $\bar n$, $\bar y$ and the persistence $\rho$, and check it against the computed value.
 ```
 
@@ -1169,7 +1182,7 @@ where the shift $n_0$ keeps it bounded at $n = 0$.
 
 1. Build the two-state economy of {ref}`lps_ex3` with this schedule, for $a \in \{0.4, 0.6, 0.75\}$, and solve each for its own equilibrium. Report the ratio of employment in the high state to employment in the low state, and the unemployment rate.
 1. Compare the ratios with {eq}`lps_av_ratio`, which for these economies predicts $2^{1/(1-a)}$.
-1. What happens to unemployment as the returns to labour mobility rise, and why?
+1. What happens to unemployment as the returns to labor mobility rise, and why?
 ```
 
 ```{solution-start} lps_ex5
@@ -1210,13 +1223,13 @@ The same doubling of demand that moves employment by a factor of about four unde
 
 Alvarez and Veracierto's calibrated ratio of $26$ sits inside the range these technologies span, which is the point: their number is not an artifact of their data, it is what a neoclassical production function does to a shock of that size.
 
-As for part 3, unemployment rises with the returns to labour mobility, from $3.6$ to $8.0$ percent across these economies.
+As for part 3, unemployment rises with the returns to labor mobility, from $3.6$ to $8.0$ percent across these economies.
 
 That is not a coincidence and it is not a cost.
 
 Unemployment in this model is the time workers spend moving, and the more there is to gain by moving, the more of them move.
 
-This is the sense in which the quantity {cite:t}`BaleyLjungqvistSargent2025` are after governs everything else: an economy with high returns to labour mobility will show a lot of reallocation, will keep reallocating even when a layoff tax makes it expensive, and will record the unemployment that goes with it.
+This is the sense in which the quantity {cite:t}`BaleyLjungqvistSargent2025` are after governs everything else: an economy with high returns to labor mobility will show a lot of reallocation, will keep reallocating even when a layoff tax makes it expensive, and will record the unemployment that goes with it.
 
 ```{solution-end}
 ```
