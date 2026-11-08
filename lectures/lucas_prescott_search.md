@@ -74,11 +74,11 @@ In equilibrium some markets always have more workers than they want to employ, s
 ```{note}
 **Unemployment is positive in every period.**
 
-Lucas and Prescott argue that it is also efficient, and the argument is worth stating in their terms, although the paper proves no welfare theorem and this lecture will not either.
+Lucas and Prescott argue that this unemployment need not signal an inefficiency, and the argument is worth stating in their terms, although the paper proves no welfare theorem, leaves open whether actual labor markets have important external effects, and this lecture proves nothing either.
 
 There is no congestion externality in the model and no wage rigidity.
 
-The searching worker who crowds his fellows does so in the same way that any seller of a good crowds other sellers, and $\lambda$ is the price that signals the social return to an additional searcher.
+The searching worker who crowds his fellows does so in the same way that any seller of a good crowds other sellers, and $\lambda$, like any other equilibrium price, signals what the paper calls "the correct social return" to an additional searcher.
 ```
 
 Let's start with some imports:
@@ -275,7 +275,7 @@ $$
 R(s, n) = s\,\big(1 - n/N\big)^{+} ,
 $$
 
-which is the shape drawn in the paper's own Figure 5.
+which is the shape of the schedules drawn in the top panels of the paper's Figure 5.
 
 The capacity matters for more than convenience.
 
@@ -375,12 +375,13 @@ def market_outcomes(model, λ):
     employment = np.minimum(y[None, :], n_bar[:, None])
     unemployment = y[None, :] - employment
     wage = np.take_along_axis(model.R, np.maximum(employment, 1), axis=1)
+    total = (ψ*employment).sum()
     return dict(v=v, n_bar=n_bar, y_bar=y_bar, ψ=ψ,
                 workforce=(ψ*y).sum(),
-                employment=(ψ*employment).sum(),
+                employment=total,
                 unemployment=(ψ*unemployment).sum(),
                 # the mean wage per employed worker; empty markets get no weight
-                wage=(ψ*employment*wage).sum()/(ψ*employment).sum())
+                wage=(ψ*employment*wage).sum()/total if total > 0 else np.nan)
 
 out = market_outcomes(model, 7.1)
 print(f"workforce {out['workforce']:.2f}, employment {out['employment']:.2f}, "
@@ -557,9 +558,11 @@ plt.tight_layout()
 plt.show()
 ```
 
-The left panel is the paper's Figure 4 and the right panel is its Figure 5.
+The left panel is the paper's Figure 4.
 
-The second is the more interesting of the two, because unemployment is *not monotone* in the size of the workforce, a feature that Lucas and Prescott report from their own examples.
+The right panel corresponds to the bottom panels of the paper's Figure 5, which plot average unemployment against $\lambda$ for two numerical examples; since $E(y;\lambda)$ is decreasing, plotting it against the workforce instead shows the same shape.
+
+The right panel is the more interesting of the two, because unemployment is *not monotone* in the size of the workforce, a feature that Lucas and Prescott report from their own examples.
 
 Where workers are scarce, $\lambda$ is high, every market employs all it has, and almost nobody is ever shed.
 
@@ -586,11 +589,11 @@ $$
 and since the demand schedule slopes down, the equilibrium is stable under this revision.
 
 ```{note}
-That story is the algorithm we just ran.
+That story and the algorithm we just ran rest on the same fact.
 
 `equilibrium_λ` bisects on a decreasing schedule: when the candidate $\lambda$ is too high, markets want fewer workers than the economy has, and the candidate comes down.
 
-The paper's stability section and this lecture's solver are the same argument, one written as economics and the other as code.
+Bisection brackets the root rather than following the paper's adjustment $d\lambda/dt = g(\lambda - \lambda^*)$, but both work for the same reason: $E(y;\lambda)$ is decreasing in $\lambda$.
 
 Lucas and Prescott are careful to add that this kind of stability "can have no relevance to the dynamic response to regularly recurring shocks", which is the distinction between learning an equilibrium and responding within one.
 ```
@@ -712,15 +715,15 @@ The first is that there is no reservation wage, and the reason runs deeper than 
 
 At the equilibrium computed above, workers stay on, and nobody leaves, in markets paying as little as $0.583$, while elsewhere workers walk away from markets paying $0.674$, so no cutoff between the two sorts the markets a worker accepts from those he leaves.
 
-But the leavers are not declining an offer of $0.674$.
+But the leavers are not turning down an offer of $0.674$ in favor of something better, and nobody turns them away from it.
 
-That is what their market pays everyone it keeps; what it does not have is room for the rest of them.
+At $\bar n(s)$ every worker in the market, stayer or leaver, gets exactly $\lambda$.
 
-Employment is rationed at $\bar n(s)$, the point at which the marginal worker is exactly indifferent between the wage and $\lambda$, and the workers who go are the ones for whom there is no place at that margin.
+The leavers could stay, but then employment would be the whole workforce $y$, the wage would fall to $R(s, y)$, and staying would be worth less than $\lambda$.
 
-Unemployment in this model is not a rejected offer.
+So no offer is rejected against a cutoff wage, and nobody is denied a job at the going wage.
 
-It is the absence of a job at a wage that the market is perfectly willing to pay.
+The margin is the market's level of employment, and leaving is a choice made at a point where staying and leaving are worth the same.
 
 The second is about the flow rates between employment and unemployment, and it is worth setting out as a ladder.
 
@@ -767,17 +770,25 @@ And agents trade a complete set of state-contingent securities, which the author
 With that machinery they evaluate minimum wages, two models of unions, firing taxes and unemployment insurance, at a model period of six weeks.
 
 ```{note}
-The first of those changes is worth dwelling on, because it tells us what directed search is doing here.
+The first of those changes is worth dwelling on, because it shows what directed search is doing here.
 
 In this lecture $\lambda$ is a **price**: raise it and every market sheds workers sooner and fills up less, so the workforce that markets want to hold falls, and {eq}`lps_equilibrium` pins $\lambda$ down exactly as a market-clearing condition pins down any other price.
 
-Under undirected search that mechanism is gone.
+Behind that is the $\min$ in {eq}`lps_bellman`: because searchers go only where it pays them to go, every market that receives workers is worth exactly $\lambda$ to them, and $\lambda$ needs no condition of its own.
 
-The transition $y' = n(s,y) + U$ conserves the average workforce once $U$ is the average outflow, so the aggregate is a conserved quantity rather than something a price determines, and the invariant distribution is one of a family.
+Under undirected search that link is broken.
 
-{ref}`lps_ex4` asks you to verify this.
+A searcher lands in a market drawn at random, so $\lambda$ must equal the discounted value of landing in a randomly drawn market, and the common inflow $U$ becomes a second unknown.
 
-It is also why the participation margin is not an optional embellishment in {cite:t}`AlvarezVeracierto1999`: with home production the value of not searching pins down a level that undirected search by itself leaves free.
+With a fixed population there are still two conditions for these two unknowns, the population and the consistency of $\lambda$, so the level of the workforce is not left free.
+
+What is lost is the simple structure: the consistency condition need not be monotone in $\lambda$, and nothing guarantees a unique equilibrium.
+
+{ref}`lps_ex4` works through both points.
+
+Alvarez and Veracierto add the participation margin for a different reason.
+
+The policies they study act on whether people look for work at all, as well as on firms' hiring and firing and on workers' search, and with home production the inflow of searchers is set by the indifference between searching and staying home, so that the size of the labor force becomes an outcome.
 ```
 
 ### Returns to labor mobility
@@ -796,11 +807,11 @@ The two economies face almost the same shock: ours doubles demand between the lo
 
 What the shock does to employment could hardly be more different.
 
-In our two-state economy employment is about **3.7 times** larger in the high state than the low one.
+In our two-state economy mean employment is about **2.6 times** larger in the high state than in the low one, as {ref}`lps_ex5` computes.
 
-In theirs a low-productivity establishment employs only $3.81$ percent as many workers as a high-productivity one, a ratio of about **26**, and high-productivity establishments hold more than $96$ percent of all employment.
+In theirs, {cite:t}`BaleyLjungqvistSargent2025` compute from Alvarez and Veracierto's parameters that a low-productivity establishment employs only $3.81$ percent as many workers as a high-productivity one, a ratio of about **26**, and that high-productivity establishments hold more than $96$ percent of all employment.
 
-The gap is the technology.
+Most of the gap is the technology.
 
 In Alvarez and Veracierto an establishment produces $x k^{\xi} n^{\psi}$ with $\xi + \psi < 1$, and equating marginal products across establishments gives
 
@@ -812,7 +823,11 @@ In Alvarez and Veracierto an establishment produces $x k^{\xi} n^{\psi}$ with $\
 
 so a shock is amplified by an exponent that explodes as returns to scale approach one.
 
-Our marginal revenue schedule falls linearly to zero at a capacity, which amplifies almost nothing.
+With their parameters the exponent is about $4.3$, which turns a productivity ratio of $2.12$ into an employment ratio of about $26$.
+
+That is a frictionless benchmark: it equates marginal products across establishments, as instantaneous and costless reallocation would.
+
+Our marginal revenue schedule, which falls linearly to zero at a capacity, amplifies a doubling of demand about as much as a decreasing returns technology whose labor exponent is a little above one half.
 
 {ref}`lps_ex5` puts {eq}`lps_av_ratio` into this model and shows what it does to unemployment.
 
@@ -994,7 +1009,11 @@ It would be fair to suspect that so stark a result is an artifact of a model thi
 
 It is not.
 
-{cite:t}`AlvarezVeracierto1999` run the same experiment as a firing tax inside a calibrated version of this economy, and find that a tax worth between three and twelve months of average wages takes the unemployment rate *down* from $5.3$ to $3.7$ percent, pushes the average duration of unemployment *up* from $2.4$ to $5.1$ periods, and cuts employment to $86$ percent of its laissez-faire level.
+{cite:t}`AlvarezVeracierto1999` run the same experiment as a firing tax inside a calibrated version of this economy, with taxes worth between three and twelve months of average wages.
+
+At twelve months the tax takes the unemployment rate *down* from $5.3$ to $3.7$ percent and pushes the average duration of unemployment *up* from $2.4$ to $5.1$ periods.
+
+When home and market goods are perfect substitutes it also cuts employment to $86$ percent of its laissez-faire level, because so many fewer people search; with less substitutability employment falls much less, and with little enough it rises.
 
 The number you have just computed has a use beyond the comparison.
 
@@ -1022,7 +1041,7 @@ $$
 
 Build that economy, keeping $R(s,n) = s\,(1 - n/N)^{+}$ from the lecture, with capacity $N = 200$.
 
-1. For $\lambda$ on a grid, plot the workforce demand and the unemployment against each other, as in the paper's Figure 5.
+1. For $\lambda$ on a grid, plot workforce demand and average unemployment against $\lambda$, as in the bottom panels of the paper's Figure 5.
 1. Show that the invariant distribution puts all of its mass on *two* values of the workforce, and say which two.
 1. Use that fact to derive a formula for average unemployment per market in terms of $\bar n$, $\bar y$ and the persistence $\rho$, and check it against the computed value.
 ```
@@ -1049,18 +1068,21 @@ Ey2 = np.array([r['workforce'] for r in res2])
 Eu2 = np.array([r['unemployment'] for r in res2])
 ```
 
-Plotting one against the other gives the paper's Figure 5.
+The paper puts $\lambda$ on the vertical axis.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(7, 4.2))
-ax.plot(Ey2, Eu2, lw=2)
-ax.set_xlabel('workforce demand per market')
-ax.set_ylabel('average unemployment per market')
+fig, axes = plt.subplots(1, 2, figsize=(10, 4.2))
+axes[0].plot(Ey2, grid2, lw=2)
+axes[0].set_xlabel('workforce demand per market')
+axes[1].plot(Eu2, grid2, lw=2)
+axes[1].set_xlabel('average unemployment per market')
+for ax in axes:
+    ax.set_ylabel(r'$\lambda$')
 plt.tight_layout()
 plt.show()
 ```
 
-The hump is the one in the paper's Figure 5.
+The right panel has the shape of the bottom panels of the paper's Figure 5: average unemployment is largest at intermediate values of $\lambda$.
 
 For part 2, look at the support of the invariant distribution.
 
@@ -1106,13 +1128,14 @@ As $\lambda$ falls, both thresholds rise, but not in step, and the gap between t
 ```{exercise}
 :label: lps_ex4
 
-This exercise is analytical; it asks what the model's directed search is doing.
+This exercise asks what the model's directed search is doing.
 
 {cite:t}`AlvarezVeracierto1999` replace it with **undirected** search: a searcher cannot choose where to go, and every market receives the same inflow $U$, which is the economy's unemployment per market.
 
 1. Show that under undirected search the $\min$ disappears from {eq}`lps_bellman`, and say which economic condition it was enforcing.
-1. Write down the transition law for a market's workforce, and show that the average workforce across markets is unchanged from one period to the next, so that it is a conserved quantity rather than one determined by $\lambda$.
-1. The equilibrium condition {eq}`lps_equilibrium` is therefore no longer available to pin down the economy. What do Alvarez and Veracierto add in its place?
+1. Write down the transition law for a market's workforce, and show that at any stationary distribution the inflow $U$ equals the average outflow. Does the same identity hold under directed search?
+1. Under directed search, {eq}`lps_equilibrium` pins down $\lambda$. Under undirected search, what condition must $\lambda$ satisfy instead? Count the unknowns and the conditions of an equilibrium with a fixed workforce $\mu$ per market.
+1. Take the lecture's seven-state calibration and an inflow of $U = 1$, and then of $U = 3$. For $\lambda$ on a grid from $3$ to $10$, compute the gap between the value of search implied by $\lambda$ and $\lambda$ itself, and find the values of $\lambda$ at which it vanishes. What does this say about equilibrium under undirected search?
 ```
 
 ```{solution-start} lps_ex4
@@ -1140,25 +1163,124 @@ $$
 y' = n(s, y) + U .
 $$
 
-Average across markets, and use the fact that $U$ is by definition the average outflow, $U = E[\,y - n(s,y)\,]$:
+At a stationary distribution $E[y'] = E[y]$, so averaging across markets gives
 
 $$
-E[y'] = E[n(s,y)] + U = \big(E[y] - U\big) + U = E[y] .
+U = E[y] - E[n(s,y)] = E[\,y - n(s,y)\,] :
 $$
 
-The average workforce is therefore the same in every period: whatever the economy starts with, it keeps.
+the inflow equals the average outflow.
 
-For part 3, under directed search $\lambda$ is a price.
+That is an accounting identity, and it holds under directed search too.
 
-Raising it makes every market shed workers sooner and fill up less, so $E(y;\lambda)$ falls, and {eq}`lps_equilibrium` determines $\lambda$ the way market clearing determines any price.
+At the stationary distribution of the lecture's own transition law {eq}`lps_transition`, the workers arriving in markets that fill up equal the workers leaving markets that shed, at every value of $\lambda$ and not only at $\lambda^*$.
 
-Under undirected search the level of the workforce is conserved rather than cleared, so that equation has nothing left to do, and the invariant distribution is one of a whole family, one for each level.
+```{code-cell} ipython3
+y = model.y
+print(f"{'λ':>8}{'E[y]':>9}{'outflow':>10}{'inflow':>9}")
+for λ in (4.0, λ_star, 10.0):
+    r = market_outcomes(model, λ)
+    y_next = np.clip(y[None, :], r['y_bar'][:, None], r['n_bar'][:, None])
+    outflow = (r['ψ']*np.maximum(y[None, :] - y_next, 0)).sum()
+    inflow = (r['ψ']*np.maximum(y_next - y[None, :], 0)).sum()
+    print(f"{λ:>8.3f}{r['workforce']:>9.2f}{outflow:>10.4f}{inflow:>9.4f}")
+```
+
+So the identity cannot be what distinguishes the two models.
+
+What distinguishes them is how $\lambda$ is determined.
+
+For part 3, a searcher under undirected search lands in a market drawn at random from the invariant distribution, so the value of search must satisfy
+
+$$
+\lambda = \beta \sum_{s,y} \psi(s, y)\, v(s, y) ,
+$$
+
+the discounted value of landing in a randomly drawn market.
+
+An equilibrium with a fixed population therefore has two unknowns, $\lambda$ and $U$, and two conditions, $\mu = \sum_{s,y} \psi(s,y)\, y$ and the condition above.
+
+The level of the workforce is not left free: a given $\mu$ selects $U$, and the consistency condition selects $\lambda$.
+
+The difference from directed search lies in how $\lambda$ is pinned.
+
+There the $\min$ makes every market that receives workers worth exactly $\lambda$, so $\lambda$ needs no separate consistency condition, and $\mu$ pins it down alone, through a schedule that slopes down.
+
+Here $\lambda$ needs a condition of its own, and nothing makes that condition monotone in $\lambda$.
+
+For part 4, a market under undirected search keeps the Bellman equation of part 1, with next period's workforce $n(s,y) + U$, and its employment threshold is the largest workforce at which staying is still worth $\lambda$.
+
+```{code-cell} ipython3
+def undirected_market(model, λ, U, tol=1e-10, max_iter=20_000):
+    "Every market receives U searchers each period, whether it wants them or not."
+    P, R, β, y = model.P, model.R, model.β, model.y
+    shift = np.minimum(y + U, y[-1])      # next workforce of a market that keeps everyone
+    v = np.full(R.shape, λ)
+    for _ in range(max_iter):
+        v_new = np.maximum(λ, R + β*(P @ v)[:, shift])
+        if np.max(np.abs(v_new - v)) < tol:
+            break
+        v = v_new
+    v = v_new
+    stay = R + β*(P @ v)[:, shift]
+    n_bar = np.array([np.max(np.where(stay[i] >= λ)[0]) if (stay[i, 1:] >= λ).any()
+                      else 0 for i in range(len(model.s))])
+    # the invariant distribution of y' = min(y, n̄(s)) + U
+    y_next = np.minimum(np.minimum(y[None, :], n_bar[:, None]) + U, y[-1])
+    ψ = np.ones(R.shape)/R.size
+    for _ in range(100_000):
+        moved = np.array([np.bincount(y_next[i], weights=ψ[i], minlength=len(y))
+                          for i in range(len(model.s))])
+        ψ_new = P.T @ moved
+        if np.max(np.abs(ψ_new - ψ)) < 1e-13:
+            break
+        ψ = ψ_new
+    ψ = ψ_new
+    return β*(ψ*v).sum(), (ψ*y).sum()     # the implied value of search, mean workforce
+```
+
+Now sweep $\lambda$ for each inflow and look for the values at which the implied value of search equals $\lambda$.
+
+```{code-cell} ipython3
+λ_grid = np.arange(3.0, 10.01, 0.25)
+fig, ax = plt.subplots(figsize=(7, 4))
+for U in (1, 3):
+    implied, mean_y = np.array([undirected_market(model, λ, U) for λ in λ_grid]).T
+    gap = implied - λ_grid
+    ax.plot(λ_grid, gap, lw=2, label=f'$U = {U}$')
+    crossings = np.where(np.diff(np.sign(gap)) != 0)[0]
+    print(f"U = {U}: {len(crossings)} solution(s)")
+    for i in crossings:
+        w = gap[i]/(gap[i] - gap[i+1])                  # linear interpolation
+        print(f"    λ ≈ {λ_grid[i] + w*(λ_grid[i+1] - λ_grid[i]):.2f},"
+              f"  mean workforce ≈ {mean_y[i] + w*(mean_y[i+1] - mean_y[i]):.0f}")
+ax.axhline(0, color='k', lw=0.8)
+ax.set_xlabel(r'$\lambda$')
+ax.set_ylabel(r'$\beta\, E[v] - \lambda$')
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+With $U = 1$ the gap is negative at both ends of the grid and positive in between, so the consistency condition has two solutions, one with a crowded economy and a low value of search and one with a sparse economy and a high one.
+
+With $U = 3$ the gap is negative everywhere on the grid, and there is no solution at all.
+
+So under undirected search the level of the workforce is still pinned down, but neither existence nor uniqueness comes for free, as they do under directed search, where Proposition 5 of {cite:t}`LucasPrescott1974` delivers a unique $\lambda^*$ because $E(y;\lambda)$ is decreasing.
+
+The shape of the gap has a reading.
+
+A searcher's prospects come from markets whose demand has just improved and that a trickle of $U$ arrivals per period has not yet filled.
+
+When $\lambda$ is low, the employment thresholds of all demand states are crowded together near capacity, so a change in demand opens little room; when $\lambda$ is high, many markets close, and a searcher who lands in one has to move again.
+
+The rents that make searching worthwhile are largest in between.
 
 What Alvarez and Veracierto add is the **participation margin**: the nonemployed choose between searching and home production.
 
-The value of home production is then the price that pins down how many people are in the labor force at all, and with it the level that undirected search on its own leaves free.
+That replaces the fixed population with an indifference condition, the inflow of searchers adjusts until searching and staying home are equally good, and the size of the labor force becomes an outcome.
 
-This is why their two modifications of Lucas and Prescott come as a pair.
+Their own reason for adding it is the policies they study, which act on participation as well as on firms' employment decisions and on workers' search.
 
 ```{solution-end}
 ```
@@ -1180,8 +1302,8 @@ $$
 
 where the shift $n_0$ keeps it bounded at $n = 0$.
 
-1. Build the two-state economy of {ref}`lps_ex3` with this schedule, for $a \in \{0.4, 0.6, 0.75\}$, and solve each for its own equilibrium. Report the ratio of employment in the high state to employment in the low state, and the unemployment rate.
-1. Compare the ratios with {eq}`lps_av_ratio`, which for these economies predicts $2^{1/(1-a)}$.
+1. Build the two-state economy of {ref}`lps_ex3` with this schedule, for $a \in \{0.4, 0.6, 0.75\}$, and solve each for its own equilibrium. Report mean employment in each demand state, the ratio of the two, and the unemployment rate.
+1. Compare with {eq}`lps_av_ratio`. Equating marginal products $s\,a\,(n + n_0)^{a-1}$ across the two states gives $(n_{\text{high}} + n_0)/(n_{\text{low}} + n_0) = 2^{1/(1-a)}$, so for these economies the formula applies to $n + n_0$ rather than to $n$.
 1. What happens to unemployment as the returns to labor mobility rise, and why?
 ```
 
@@ -1189,7 +1311,7 @@ where the shift $n_0$ keeps it bounded at $n = 0$.
 :class: dropdown
 ```
 
-Only the construction of `R` changes.
+Only the construction of `R` changes, and we add a function that averages employment within each demand state.
 
 ```{code-cell} ipython3
 def two_state_dr(a, ρ=0.9, s_lo=1.0, s_hi=2.0, β=0.9, n0=20.0, y_max=3000):
@@ -1201,29 +1323,57 @@ def two_state_dr(a, ρ=0.9, s_lo=1.0, s_hi=2.0, β=0.9, n0=20.0, y_max=3000):
     R[:, 0] = 0.0
     return Model(P=P, s=s, y=y, R=R, β=β)
 
-base = market_outcomes(two, equilibrium_λ(two, μ))
-print(f"{'technology':>18}{'n̄ low':>8}{'n̄ high':>9}{'ratio':>8}"
-      f"{'predicted':>11}{'u rate':>9}")
-print(f"{'this lecture':>18}{base['n_bar'][0]:>8}{base['n_bar'][1]:>9}"
-      f"{base['n_bar'][1]/base['n_bar'][0]:>8.1f}{'--':>11}"
-      f"{100*base['unemployment']/base['workforce']:>8.2f}%")
+def employment_by_state(m, r):
+    "Mean employment in each demand state under the invariant distribution."
+    emp = np.minimum(m.y[None, :], r['n_bar'][:, None])
+    return (r['ψ']*emp).sum(axis=1) / r['ψ'].sum(axis=1)
 
+def report(name, m, r, a=None, n0=None):
+    "One row of the table; a and n0 are given only for the decreasing returns schedules."
+    En = employment_by_state(m, r)
+    shifted = '--' if n0 is None else f"{(En[1] + n0)/(En[0] + n0):.2f}"
+    formula = '--' if a is None else f"{2**(1/(1 - a)):.2f}"
+    print(f"{name:>18}{En[0]:>9.1f}{En[1]:>9.1f}{En[1]/En[0]:>8.2f}{shifted:>10}"
+          f"{formula:>10}{100*r['unemployment']/r['workforce']:>8.2f}%")
+
+print(f"{'technology':>18}{'E[n|lo]':>9}{'E[n|hi]':>9}{'ratio':>8}{'+n0 ratio':>10}"
+      f"{'formula':>10}{'u rate':>9}")
+report('this lecture', two, market_outcomes(two, equilibrium_λ(two, μ)))
 for a in (0.4, 0.6, 0.75):
     m_a = two_state_dr(a)
     r_a = market_outcomes(m_a, equilibrium_λ(m_a, μ, lo=0.01, hi=80.0))
-    nb = r_a['n_bar']
-    print(f"{f'output s n^{a}':>18}{nb[0]:>8}{nb[1]:>9}{nb[1]/nb[0]:>8.1f}"
-          f"{2**(1/(1 - a)):>11.1f}"
-          f"{100*r_a['unemployment']/r_a['workforce']:>8.2f}%")
+    report(f'output s n^{a}', m_a, r_a, a=a, n0=20.0)
 ```
 
-The same doubling of demand that moves employment by a factor of about four under this lecture's schedule moves it by a factor of twenty-three when output is $s\,n^{0.75}$.
+The same doubling of demand moves mean employment by a factor of about $2.6$ under this lecture's schedule and by a factor of about $8$ when output is $s\,n^{0.75}$.
 
-{eq}`lps_av_ratio` gets the magnitudes roughly right at low returns to scale and understates them as $a$ approaches one, where the option to move later, which the static formula ignores, starts to matter.
+Mean employment is not the employment threshold $\bar n$.
 
-Alvarez and Veracierto's calibrated ratio of $26$ sits inside the range these technologies span, which is the point: their number is not an artifact of their data, it is what a neoclassical production function does to a shock of that size.
+In this two-state economy a market in the high state never reaches $\bar n(s_{\text{high}})$: arrivals fill it only to $\bar y(s_{\text{high}})$, and in the first period of an upturn it still holds the $\bar n(s_{\text{low}})$ workers it carried out of the low state, so mean employment in the high state is $\rho\, \bar y(s_{\text{high}}) + (1-\rho)\, \bar n(s_{\text{low}})$.
 
-As for part 3, unemployment rises with the returns to labor mobility, from $3.6$ to $8.0$ percent across these economies.
+For part 2, the formula is a frictionless benchmark, and the model responds less than it in every case, by a margin that grows with $a$.
+
+That is what a one-period moving friction should do.
+
+A frictionless economy would move workers until marginal products were equal across markets; here workers move only until arriving is worth $\lambda$, arrivals stop at $\bar y(s_{\text{high}})$ because demand may fall back, and an upturn takes a period to be met at all.
+
+Ratios of $n$ alone are a poor guide in these economies, because when low-state employment is small the shift $n_0$ is large relative to it.
+
+```{code-cell} ipython3
+a = 0.75
+for n0 in (10.0, 20.0, 40.0):
+    m_a = two_state_dr(a, n0=n0)
+    En = employment_by_state(m_a, market_outcomes(m_a, equilibrium_λ(m_a, μ, lo=0.01, hi=80.0)))
+    ratio = En[1]/En[0] if En[0] > 0 else np.inf
+    print(f"n0 = {n0:4.0f}:  E[n|lo] = {En[0]:5.1f},  ratio of n = {ratio:6.2f},"
+          f"  ratio of n + n0 = {(En[1] + n0)/(En[0] + n0):.2f}")
+```
+
+The ratio of $n$ swings from finite to infinite as $n_0$ rises, while the ratio of $n + n_0$, which is what the technology governs, barely moves.
+
+The ratio of about $26$ that {cite:t}`BaleyLjungqvistSargent2025` compute for Alvarez and Veracierto's parameters comes from the frictionless formula with an exponent of about $4.3$, larger than any exponent here, and a slightly bigger shock: it measures what their technology would do to a shock of that size if reallocation were instantaneous.
+
+As for part 3, unemployment rises with the returns to labor mobility, from $3.6$ to $8.0$ percent across these economies, and it does so for other values of the shift $n_0$ as well.
 
 That is not a coincidence and it is not a cost.
 
