@@ -633,10 +633,10 @@ def plot_excess_demand(
     p_grid = jnp.linspace(0, grid_max, grid_size)
 
     # Create meshgrid for all combinations of p_0 and p_1
-    P1, P2 = jnp.meshgrid(p_grid, p_grid, indexing="ij")
+    P0, P1 = jnp.meshgrid(p_grid, p_grid, indexing="ij")
 
     # Stack to create array of shape (grid_size, grid_size, 2)
-    P = jnp.stack([P1, P2], axis=-1)
+    P = jnp.stack([P0, P1], axis=-1)
 
     # Compute all values at once using vectorized function
     z_full = e_vectorized(P, A, b, c)
@@ -649,7 +649,7 @@ def plot_excess_demand(
     ctr1 = ax.contour(p_grid, p_grid, z.T, levels=[0.0], colors="black")
     ax.set_xlabel("$p_0$")
     ax.set_ylabel("$p_1$")
-    plt.clabel(ctr1, inline=1, fontsize=13)
+    plt.clabel(ctr1, inline=1, fontsize=13, fmt={0.0: f"$e_{good} = 0$"})
 ```
 
 Here's our plot of $e_0$:
@@ -762,7 +762,9 @@ solution = root(
 )
 ```
 
-Now the solution is even more accurate (although, in this low-dimensional problem, the difference is quite small):
+The result is essentially unchanged: in this low-dimensional example, the default finite-difference approximation already works well.
+
+Supplying the Jacobian reduces the number of function evaluations in this run:
 
 ```{code-cell} ipython3
 p = solution.x
