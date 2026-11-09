@@ -53,7 +53,7 @@ The key equilibrium concept is a **self-confirming equilibrium**: the government
 We combine ideas from two literatures:
 
 * {cite:t}`KingWatson1994` document how inferences about the Phillips curve depend on the *direction of fit* — whether one regresses unemployment on inflation (a *classical* identification) or inflation on unemployment (a *Keynesian* identification).
-* A literature going back to Muth, Lucas, and Prescott {cite}`muth1961,LucasPrescott1971`, and exploited by {cite:t}`MarcetSargent1989jet` and {cite:t}`EvansHonkapohja2001`, formulates rational expectations equilibria as fixed points of mappings from beliefs to the population moments of statistical models; {doc}`rational_expectations` describes the fixed-point view.
+* A literature going back to Muth, Lucas, and Prescott {cite}`muth1961,Lucas_Prescott_1971`, and exploited by {cite:t}`MarcetSargent1989jet` and {cite:t}`EvansHonkapohja2001`, formulates rational expectations equilibria as fixed points of mappings from beliefs to the population moments of statistical models; {doc}`rational_expectations` describes the fixed-point view.
 
 We build two self-confirming equilibria that are identical except for the direction of fit, and we find that the direction of minimization affects outcomes.
 

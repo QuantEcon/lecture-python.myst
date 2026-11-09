@@ -550,7 +550,7 @@ Muth's exercise was the first application of the rational expectations idea in t
 became standard: find the restrictions that link a forecasting scheme to the environment in
 which it is used.
 
-It also pushed later researchers {cite}`LucasPrescott1971` to treat the **forecasting scheme
+It also pushed later researchers {cite}`Lucas_Prescott_1971` to treat the **forecasting scheme
 itself** as the object in terms of which equilibrium is defined.
 
 ### The dynamic analogue
