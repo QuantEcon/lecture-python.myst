@@ -202,7 +202,7 @@ Two facts about the actual law {eq}`pm_bray4` motivate an equilibrium restrictio
 
 A rational expectations equilibrium would repair both features.
 
-Chapter 6 of {cite:t}`Sargent1999` softens the equilibrium concept, proceeding "in the spirit (but not the letter)" of {cite:t}`LucasPrescott1971` and {cite:t}`Brock1972`: we leave feature 1 untouched (agents keep the wrong functional form) while fixing feature 2 (they choose the best parameter within that form).
+Chapter 6 of {cite:t}`Sargent1999` softens the equilibrium concept, proceeding "in the spirit (but not the letter)" of {cite:t}`Lucas_Prescott_1971` and {cite:t}`Brock1972`: we leave feature 1 untouched (agents keep the wrong functional form) while fixing feature 2 (they choose the best parameter within that form).
 
 Think of putting a single individual into a market where everyone else (the "representative agent") uses $C$, so the price obeys {eq}`pm_bray4`.
 
