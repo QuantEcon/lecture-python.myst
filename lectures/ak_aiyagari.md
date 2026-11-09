@@ -585,7 +585,7 @@ mystnb:
     name: ak_aiy_asset_dist
 ---
 for j in [0, 5, 20, 45, 49]:
-    plt.plot(hh.a_grid, jnp.sum(μ[j].reshape((hh.a_grid.size, hh.γ_grid.size)), axis=1), label=f'j={j}')
+    plt.plot(hh.a_grid, jnp.sum(μ[j].reshape((hh.a_grid.size, hh.γ_grid.size)), axis=1), label=f'j={j}', lw=2)
 
 plt.legend()
 plt.xlabel('a')
@@ -629,19 +629,25 @@ distributions of assets at different ages.
 We'll plot some saving functions with the following Python code.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Optimal saving policies by age
+    name: ak_aiy_policy
+---
 σ_reshaped = σ.reshape(hh.j_grid.size, hh.a_grid.size, hh.γ_grid.size)
 j_labels = [f'j={j}' for j in [0, 5, 20, 45, 49]]
 
 fig, axs = plt.subplots(1, 2, figsize=(14, 5))
 
-axs[0].plot(hh.a_grid, hh.a_grid[σ_reshaped[[0, 5, 20, 45, 49], :, 0].T])
+axs[0].plot(hh.a_grid, hh.a_grid[σ_reshaped[[0, 5, 20, 45, 49], :, 0].T], lw=2)
 axs[0].plot(hh.a_grid, hh.a_grid, '--')
 axs[0].set_xlabel("$a_{j}$")
 axs[0].set_ylabel("$a^*_{j+1}$")
 axs[0].legend(j_labels+['45 degree line'])
 axs[0].set_title(r"Optimal saving policy, low $\gamma$")
 
-axs[1].plot(hh.a_grid, hh.a_grid[σ_reshaped[[0, 5, 20, 45, 49], :, 1].T])
+axs[1].plot(hh.a_grid, hh.a_grid[σ_reshaped[[0, 5, 20, 45, 49], :, 1].T], lw=2)
 axs[1].plot(hh.a_grid, hh.a_grid, '--')
 axs[1].set_xlabel("$a_{j}$")
 axs[1].set_ylabel("$a^*_{j+1}$")
@@ -1022,9 +1028,9 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4,
 
     if verbose:
         fig, axs = plt.subplots(1, 3, figsize=(14, 3))
-        axs[0].plot(jnp.arange(T), r_seq)
-        axs[1].plot(jnp.arange(T), w_seq)
-        axs[2].plot(jnp.arange(T), τ_seq, label=f'iter {num_iter}')
+        axs[0].plot(jnp.arange(T), r_seq, lw=2)
+        axs[1].plot(jnp.arange(T), w_seq, lw=2)
+        axs[2].plot(jnp.arange(T), τ_seq, label=f'iter {num_iter}', lw=2)
 
     while (error > tol) and (num_iter < max_iter):
         # Repeat until finding the fixed point, or until max_iter
@@ -1059,9 +1065,9 @@ def path_iteration(ss1, ss2, pol_target, household, firm, Q, tol=1e-4,
         num_iter += 1
         if verbose:
             print(f"Iteration {num_iter:3d}: error = {error:.6e}")
-            axs[0].plot(jnp.arange(T), r_seq)
-            axs[1].plot(jnp.arange(T), w_seq)
-            axs[2].plot(jnp.arange(T), τ_seq, label=f'iter {num_iter}')
+            axs[0].plot(jnp.arange(T), r_seq, lw=2)
+            axs[1].plot(jnp.arange(T), w_seq, lw=2)
+            axs[2].plot(jnp.arange(T), τ_seq, label=f'iter {num_iter}', lw=2)
 
         r_seq = (r_seq + r_old) / 2
         w_seq = (w_seq + w_old) / 2
@@ -1130,6 +1136,12 @@ We can use `path_iteration` to find equilibrium transition dynamics.
 Setting the key argument `verbose=True` tells the function `path_iteration` to display convergence information.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Price path iterations for an immediate tax cut
+    name: ak_aiy_exp1_iterations
+---
 paths = path_iteration(ss1, ss2, [D_seq, G_seq, δ_seq], hh, firm, Q, verbose=True)
 ```
 
@@ -1191,7 +1203,7 @@ for t in [1, 10, 20, 50, 149]:
 
     c_mean = (c * μ_seq[t]).sum(axis=1)
 
-    plt.plot(range(hh.j_grid.size), c_mean-c_mean0, label=f't={t}')
+    plt.plot(range(hh.j_grid.size), c_mean-c_mean0, label=f't={t}', lw=2)
 
 plt.legend()
 plt.xlabel(r'j')
@@ -1244,15 +1256,21 @@ for t in range(T):
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Transition after an immediate tax cut
+    name: ak_aiy_exp1_transition
+---
 fig, axs = plt.subplots(3, 3, figsize=(14, 10))
 
 # Cy (j=0-24)
-axs[0, 0].plot(Cy_seq)
+axs[0, 0].plot(Cy_seq, lw=2)
 axs[0, 0].hlines(Cy_ss1, 0, T, color='r', linestyle='--')
 axs[0, 0].set_title('Cy (j < 25)')
 
 # Cy (j=25-49)
-axs[0, 1].plot(Co_seq)
+axs[0, 1].plot(Co_seq, lw=2)
 axs[0, 1].hlines(Co_ss1, 0, T, color='r', linestyle='--')
 axs[0, 1].set_title(r'Co (j $\geq$ 25)')
 
@@ -1264,7 +1282,7 @@ for i in range(len(names)):
     row_i = i_axes // 3
     col_i = i_axes % 3
 
-    axs[row_i, col_i].plot(paths[i_var])
+    axs[row_i, col_i].plot(paths[i_var], lw=2)
     axs[row_i, col_i].hlines(ss1[i_var], 0, T, color='r', linestyle='--')
     axs[row_i, col_i].set_title(names[i])
 
@@ -1295,6 +1313,12 @@ for t in range(T):
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Consumption mean and variance over age and time
+    name: ak_aiy_exp1_surfaces
+---
 J_seq, T_range = np.meshgrid(np.arange(J), np.arange(T))
 
 fig = plt.figure(figsize=[20, 20])
@@ -1346,6 +1370,12 @@ ss2 = find_ss(hh, firm, [D_seq[-1], G_seq[-1], δ_seq[-1]], Q)
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Price path iterations for a preannounced tax cut
+    name: ak_aiy_exp2_iterations
+---
 paths = path_iteration(ss1, ss2, [D_seq, G_seq, δ_seq], 
                     hh, firm, Q, verbose=True)
 ```
@@ -1382,15 +1412,21 @@ Below we plot the transition paths of the economy.
 
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Transition after a preannounced tax cut
+    name: ak_aiy_exp2_transition
+---
 fig, axs = plt.subplots(3, 3, figsize=(14, 10))
 
 # Cy (j=0-24)
-axs[0, 0].plot(Cy_seq)
+axs[0, 0].plot(Cy_seq, lw=2)
 axs[0, 0].hlines(Cy_ss1, 0, T, color='r', linestyle='--')
 axs[0, 0].set_title('Cy (j < 25)')
 
 # Cy (j=25-49)
-axs[0, 1].plot(Co_seq)
+axs[0, 1].plot(Co_seq, lw=2)
 axs[0, 1].hlines(Co_ss1, 0, T, color='r', linestyle='--')
 axs[0, 1].set_title(r'Co (j $\geq$ 25)')
 
@@ -1402,7 +1438,7 @@ for i in range(len(names)):
     row_i = i_axes // 3
     col_i = i_axes % 3
 
-    axs[row_i, col_i].plot(paths[i_var])
+    axs[row_i, col_i].plot(paths[i_var], lw=2)
     axs[row_i, col_i].hlines(ss1[i_var], 0, T, color='r', linestyle='--')
     axs[row_i, col_i].set_title(names[i])
 
@@ -1434,7 +1470,7 @@ K_lo = min(float(K_path.min()), float(ss1[i_var]))
 K_hi = max(float(K_path.max()), float(ss1[i_var]))
 pad = 0.1 * (K_hi - K_lo)
 
-plt.plot(K_path)
+plt.plot(K_path, lw=2)
 plt.hlines(ss1[i_var], 0, 25, color='r', linestyle='--')
 plt.axvline(20, color='k', linestyle='--', linewidth=0.5)
 plt.text(17, K_lo - 0.5 * pad, r'tax cut')
@@ -1477,6 +1513,12 @@ for t in range(T):
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Consumption surfaces for the preannounced tax cut
+    name: ak_aiy_exp2_surfaces
+---
 J_seq, T_range = np.meshgrid(np.arange(J), np.arange(T))
 
 fig = plt.figure(figsize=[20, 20])
