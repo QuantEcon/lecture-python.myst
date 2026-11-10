@@ -1647,6 +1647,12 @@ for b, P in paths.items():
 The figure shows all forty paths.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: "GA forecasters in Bray's market"
+    name: fig-gc-bray-ga
+---
 fig, axes = plt.subplots(1, 2, figsize=(10, 4), sharey=True)
 for ax, (b, P) in zip(axes, paths.items()):
     ax.plot(P.T, lw=1, alpha=0.6)

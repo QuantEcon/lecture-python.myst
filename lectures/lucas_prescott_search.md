@@ -1413,6 +1413,12 @@ Eu2 = np.array([r['unemployment'] for r in res2])
 The paper puts $\lambda$ on the vertical axis.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Workforce demand and unemployment in the paper's two-state economy
+    name: fig-lps-two-state
+---
 fig, axes = plt.subplots(1, 2, figsize=(10, 4.2))
 axes[0].plot(Ey2, grid2, lw=2)
 axes[0].set_xlabel('workforce demand per market')
@@ -1688,6 +1694,12 @@ print(f"at U = 10 the largest gap on a grid of λ is {max(gaps_10):.4f}")
 Each of these inflows has two solutions, and each serves its own population; at $U = 10$ there are none.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Undirected search, the populations served by the solutions at each inflow
+    name: fig-lps-undirected
+---
 Us = np.array(list(locus))
 scale = 200/N_fine                       # back to the lecture's units
 fig, ax = plt.subplots(figsize=(7, 4))
@@ -1795,6 +1807,12 @@ for Δ in (-0.04, -0.02, -0.01, 0.01, 0.02, 0.04):
 The no-surprise line reproduces the equilibrium, as it should.
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: An unanticipated shift in demand moves unemployment and wages in opposite directions
+    name: fig-lps-phillips
+---
 u_pts, w_pts = np.array(sorted(points)).T
 fig, ax = plt.subplots(figsize=(6.5, 4))
 ax.plot(u_pts, w_pts, 'o-', lw=2)
