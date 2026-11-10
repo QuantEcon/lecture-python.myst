@@ -467,11 +467,11 @@ Green's first example has two states, two signals, and three actions.
 The prior is uniform and
 
 $$
-\Lambda = \begin{pmatrix} 3/4 & 1/4 \\ 1/4 & 3/4 \end{pmatrix},
+\Lambda = \begin{bmatrix} 3/4 & 1/4 \\ 1/4 & 3/4 \end{bmatrix},
 \qquad
-U = \begin{pmatrix} -2 & 3 \\ 0 & 0 \\ -1 & -1 \end{pmatrix},
+U = \begin{bmatrix} -2 & 3 \\ 0 & 0 \\ -1 & -1 \end{bmatrix},
 \qquad
-W = \begin{pmatrix} 0 & -1 \\ 2 & 0 \\ 0 & -4 \end{pmatrix} .
+W = \begin{bmatrix} 0 & -1 \\ 2 & 0 \\ 0 & -4 \end{bmatrix} .
 $$
 
 The posterior probability of $\theta_1$ is $3/4$ after $y_1$ and $1/4$ after $y_2$.
@@ -587,9 +587,9 @@ Green's second example shows a different way in which incentives can cost the pl
 There are three signals with equal probabilities, and Green specifies the expected-utility matrices directly:
 
 $$
-WP = \begin{pmatrix} 1 & 3/2 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix},
+WP = \begin{bmatrix} 1 & 3/2 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix},
 \qquad
-UP = \begin{pmatrix} 5 & -1 & -1 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{pmatrix} .
+UP = \begin{bmatrix} 5 & -1 & -1 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix} .
 $$
 
 We can represent these by three equally likely states, a uniform prior, and a perfectly informative experiment $\Lambda = I$, for which $P = I$.
@@ -747,9 +747,9 @@ Green's third example shows that the second effect can dominate.
 There are two states with a uniform prior, two actions, and
 
 $$
-U = \begin{pmatrix} 2 & 0 \\ 0 & 4 \end{pmatrix},
+U = \begin{bmatrix} 2 & 0 \\ 0 & 4 \end{bmatrix},
 \qquad
-W = \begin{pmatrix} 4 & 0 \\ 0 & 2 \end{pmatrix} .
+W = \begin{bmatrix} 4 & 0 \\ 0 & 2 \end{bmatrix} .
 $$
 
 The planner prefers $a_1$ when the posterior probability of $\theta_1$ exceeds $2/3$, and the agent prefers $a_1$ when it exceeds $1/3$.
@@ -870,7 +870,7 @@ The dotted vertical lines mark the agent's cutoff $1/3$ and the planner's cutoff
 ---
 mystnb:
   figure:
-    caption: The planner's value as the agent's experiment improves
+    caption: Planner's value as information improves
     name: fig-it-refine
 ---
 fig, ax = plt.subplots()
@@ -948,7 +948,7 @@ Green's proof follows the same route, but it has two gaps.
 
 First, it labels the signals so that each row of the garbling $B$ has its largest entry on the diagonal.
 
-That is not always possible: for $B = \begin{pmatrix} 0.9 & 0.1 \\ 0.6 & 0.4 \end{pmatrix}$, both rows have their largest entry in the same column, whatever the labels.
+That is not always possible: for $B = \begin{bmatrix} 0.9 & 0.1 \\ 0.6 & 0.4 \end{bmatrix}$, both rows have their largest entry in the same column, whatever the labels.
 
 The labeling that the argument needs is the one used above, which is equivalent to $b_{11} \geq b_{21}$, that is, $\det B \geq 0$.
 
@@ -1262,9 +1262,9 @@ And the payments must be nonnegative: Green's model has no participation constra
 With positive parameters $b, c, d, e$ for the planner and $f, g, h, j$ for the agent, the payoff matrices (rows are actions, columns are states) are
 
 $$
-U = 2 \begin{pmatrix} b & 0 & c & 0 \\ 0 & c & 0 & b \\ d & 0 & e & 0 \\ 0 & e & 0 & d \end{pmatrix},
+U = 2 \begin{bmatrix} b & 0 & c & 0 \\ 0 & c & 0 & b \\ d & 0 & e & 0 \\ 0 & e & 0 & d \end{bmatrix},
 \qquad
-W = 2 \begin{pmatrix} 0 & f & 0 & g \\ g & 0 & f & 0 \\ h & 0 & j & 0 \\ 0 & j & 0 & h \end{pmatrix} .
+W = 2 \begin{bmatrix} 0 & f & 0 & g \\ g & 0 & f & 0 \\ h & 0 & j & 0 \\ 0 & j & 0 & h \end{bmatrix} .
 $$
 
 In the fine experiment the agent observes the state.
