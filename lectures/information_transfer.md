@@ -722,8 +722,11 @@ def garbling(Λ, Λ_prime, π):
     A_eq = np.vstack([np.kron(np.eye(N), np.ones(N_prime)),  # row sums
                       np.kron(P, np.eye(N_prime))])           # averaging
     b_eq = np.concatenate([q, (P_prime * q_prime).ravel()])
+    # As in solve_planner, we switch off presolve, so that a spurious
+    # infeasibility report cannot pass for a missing garbling
     res = linprog(np.zeros(N * N_prime), A_eq=A_eq, b_eq=b_eq,
-                  bounds=(0, None), method="highs")
+                  bounds=(0, None), method="highs",
+                  options={"presolve": False})
     if res.status == 2:                  # infeasible
         return None
     if res.status != 0:
@@ -1218,7 +1221,7 @@ def solve_with_pay(U, W, Λ, π, on_state):
     A_eq = np.hstack([np.kron(np.eye(N), np.ones(K)), np.zeros((N, N * L))])
     res = linprog(c, A_ub=A_ub, b_ub=np.zeros(len(A_ub)),
                   A_eq=A_eq, b_eq=np.ones(N), bounds=(0, None),
-                  method="highs")
+                  method="highs", options={"presolve": False})
     if res.status != 0:
         raise RuntimeError(res.message)
     x = np.maximum(res.x, 0.0) + 0.0
