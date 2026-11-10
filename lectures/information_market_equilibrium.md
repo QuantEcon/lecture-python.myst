@@ -108,6 +108,9 @@ The lecture is organized as follows.
 This lecture builds on ideas in {doc}`blackwell_kihlstrom` and
 {doc}`likelihood_bayes`.
 
+{doc}`information_transfer` studies a different channel, in which an informed
+agent reports to a planner who has committed to how she will act on the report.
+
 We start by importing some Python packages.
 
 ```{code-cell} ipython3
