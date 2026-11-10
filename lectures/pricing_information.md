@@ -1054,6 +1054,9 @@ beliefs that are the buyer types here, and to
 {doc}`information_market_equilibrium` for what happens when information is transmitted
 by prices rather than sold directly.
 
+{doc}`information_transfer` studies a related screening problem without prices: a planner
+offers an informed agent a menu of lotteries over her own actions.
+
 ## Exercises
 
 ```{exercise-start}

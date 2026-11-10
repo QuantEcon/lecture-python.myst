@@ -66,7 +66,7 @@ More informative experiments generate posterior distributions that are more disp
 
 In the two-state case, this becomes a mean-preserving-spread comparison on $[0, 1]$, which can be checked with the integrated-CDF test used for second-order stochastic dominance.
 
-{doc}`information_market_equilibrium` and {doc}`pricing_information` build on the results of this lecture.
+{doc}`information_transfer`, {doc}`information_market_equilibrium`, and {doc}`pricing_information` build on the results of this lecture.
 
 The lecture proceeds as follows.
 
@@ -1395,6 +1395,8 @@ In the two-state case this reduces to the familiar SOSD / integrated-CDF test on
 DeGroot's contribution is to extend the comparison from particular utility functions to the full class of concave uncertainty functions.
 
 Blackwell's order implies the data processing inequality for every f-divergence, and the likelihood-ratio learning of {doc}`likelihood_bayes` is a dynamic special case of the framework.
+
+{doc}`information_transfer` shows that a decision maker can prefer a less informative experiment when the signal is observed by an agent whose interests differ from hers and who must be induced to report it.
 
 ## Exercises
 

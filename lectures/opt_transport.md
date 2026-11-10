@@ -25,6 +25,9 @@ key tool for solving it, and then provide some examples.
 
 We will provide other applications in followup lectures.
 
+{doc}`information_transfer` uses a transport problem with an extra averaging
+constraint to check whether one statistical experiment is a garbling of another.
+
 The optimal transport problem was studied in early work about linear
 programming, as summarized for example by {cite}`DoSSo`.  A modern reference
 about applications in economics is {cite}`Galichon_2016`.

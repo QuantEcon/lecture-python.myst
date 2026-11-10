@@ -721,3 +721,5 @@ In a utilitarian analysis:
 - The optimal model design is obtained at the point where the truth border touches the lowest possible iso-variance curve.
 
 A practical implication of the analysis of {cite}`ljungqvist1993unified` is that uncertainty about respondents' demands for privacy can be acknowledged by *choosing $\text{Pr}(A|\text{yes})$ and $\text{Pr}(A|\text{no})$ sufficiently close to each other*.
+
+The designer thus accepts less informative answers in exchange for truthful ones, a trade-off that also appears in {doc}`information_transfer`, where a planner can prefer an agent who knows less.
