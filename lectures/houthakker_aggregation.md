@@ -56,7 +56,8 @@ In this lecture we
 
 * prove Houthakker's efficiency theorem: if every cell maximizes profit at the same prices, the industry's total inputs and output are efficient;
 * derive Houthakker's Cobb–Douglas production function and identify the property of the Pareto distribution that delivers it;
-* compute the aggregate production function of a finite set of cells as a linear program, in the spirit of the activity analysis of {cite:t}`Koopmans1951`, and use the program's dual to write the aggregate production function of any distribution of cells as a minimization over prices, which can be computed even where Houthakker saw no general way to eliminate the prices;
+* compute the aggregate production function of a finite set of cells as a linear program, in the spirit of the activity analysis of {cite:t}`Koopmans1951`;
+* use the program's dual to write the aggregate production function of any distribution of cells as a minimization over prices, which can be computed even where Houthakker saw no general way to eliminate the prices;
 * reproduce Levhari's inversion, give a general formula for it, and correct his description of the shape of the distribution that generates a CES production function.
 
 The lecture uses linear programming and duality, as in {doc}`intro:lp_intro`, {doc}`opt_transport` and {doc}`von_neumann_model`, Pareto tails, as in {doc}`intro:heavy_tails`, and Lorenz curves, as in {doc}`wealth_dynamics`.
@@ -259,9 +260,15 @@ This is Houthakker's Cobb–Douglas production function.
 
 Three features of it deserve comment.
 
-1. The marginal product of input $i$ is $\gamma_i X_0 / X_i = p_i$, as {prf:ref}`ha_thm_efficiency` requires.
-2. The exponents add up to $(\alpha_1 + \alpha_2)/(1 + \alpha_1 + \alpha_2) < 1$. Returns to the variable inputs diminish because the fixed inputs are held fixed, and the fixed inputs receive the remaining share $1/(1 + \alpha_1 + \alpha_2)$ of output as quasi-rents $\Pi$.
-3. Adding a fictitious input $X_3$ with exponent $1/(1 + \alpha_1 + \alpha_2)$ would make the function homogeneous of degree one. Houthakker warns that this would mislead: what matters is how the fixed inputs are distributed across cells, not their total.
+First, the marginal product of input $i$ is $\gamma_i X_0 / X_i = p_i$, as {prf:ref}`ha_thm_efficiency` requires.
+
+Second, the exponents add up to $(\alpha_1 + \alpha_2)/(1 + \alpha_1 + \alpha_2) < 1$.
+
+Returns to the variable inputs diminish because the fixed inputs are held fixed, and the fixed inputs receive the remaining share $1/(1 + \alpha_1 + \alpha_2)$ of output as quasi-rents $\Pi$.
+
+Third, adding a fictitious input $X_3$ with exponent $1/(1 + \alpha_1 + \alpha_2)$ would make the function homogeneous of degree one.
+
+Houthakker warns that this would mislead: what matters is how the fixed inputs are distributed across cells, not their total.
 
 ### Why a Pareto distribution gives a Cobb–Douglas function
 
@@ -279,7 +286,7 @@ Each input's share is therefore constant.
 
 Since each share equals the elasticity $\partial \log F / \partial \log X_i$, a production function with constant shares is Cobb–Douglas.
 
-The property that does the work is that $\varphi$ scales as a power **separately** in $a_1$ and in $a_2$.
+The property that does the work is that $\varphi$ scales as a power *separately* in $a_1$ and in $a_2$.
 
 {ref}`ha_ex_homogeneous` shows that scaling in $(a_1, a_2)$ jointly is not enough.
 
@@ -380,12 +387,35 @@ $$ (ha_duality)
 
 This formula teaches four things.
 
-1. **Weak duality gives {prf:ref}`ha_thm_efficiency`.** At any prices $p \geq 0$, each cell's output is at most its input cost plus its quasi-rent, so any feasible intensities produce at most $p \cdot X + \Pi_N(p)$. Cells that maximize profit at $p$ attain this bound with their own inputs $X$, so no attainable total does better. Complementary slackness, as in {doc}`opt_transport`, gives the converse: at the optimal dual prices every cell with $a_j \cdot p < 1$ runs at capacity and every cell with $a_j \cdot p > 1$ is idle, so every efficient total is one that profit-maximizing cells can produce at some prices.
-2. **The same holds with a continuum of cells.** The same argument, with integrals in place of sums, gives $F(X) = \min_{p \geq 0} \{ p \cdot X + \Pi(p) \}$, with $\Pi$ from {eq}`ha_profit`, for every input vector $X$ that some prices generate; under Houthakker's distribution that is every $X > 0$. Going the other way, $\Pi(p) = \max_X \{ F(X) - p \cdot X \}$, so the aggregate production function and the industry profit function are dual to each other, and each can be recovered from the other.
-3. **It is a numerical method, not a closed form.** Houthakker wrote that "there appears to be no generally applicable method of eliminating $p_1$ and $p_2$" from his versions of {eq}`ha_totals` "and thus deriving $F$ directly from $\varphi$." The minimization does not eliminate the prices in closed form: by Hotelling's lemma, its first-order conditions are exactly the equations $X_i(p) = X_i$. What it adds is a convex problem in two variables, which is easy to solve numerically for any $\varphi$, and which still makes sense with finitely many cells, where the equations $X_i(p) = X_i$ usually have no exact solution.
-4. **Isoquants of $F_N$ are piecewise linear.** $F_N$ is concave and piecewise linear, so its isoquants are piecewise linear too. As $N$ grows with cells drawn from $\varphi$, they approach the smooth isoquants of $F$.
+First, weak duality gives {prf:ref}`ha_thm_efficiency`.
 
-To illustrate point 3, we compute $F$ for Houthakker's distribution by minimizing $p \cdot X + \Pi(p)$ over prices, evaluating $\Pi$ by numerical integration rather than from the closed forms.
+At any prices $p \geq 0$, each cell's output is at most its input cost plus its quasi-rent, so any feasible intensities produce at most $p \cdot X + \Pi_N(p)$.
+
+Cells that maximize profit at $p$ attain this bound with their own inputs $X$, so no attainable total does better.
+
+Complementary slackness, as in {doc}`opt_transport`, gives the converse: at the optimal dual prices every cell with $a_j \cdot p < 1$ runs at capacity and every cell with $a_j \cdot p > 1$ is idle, so every efficient total is one that profit-maximizing cells can produce at some prices.
+
+Second, the same holds with a continuum of cells.
+
+The same argument, with integrals in place of sums, gives $F(X) = \min_{p \geq 0} \{ p \cdot X + \Pi(p) \}$, with $\Pi$ from {eq}`ha_profit`, for every input vector $X$ that some prices generate.
+
+Under Houthakker's distribution, that is every $X > 0$.
+
+Going the other way, $\Pi(p) = \max_X \{ F(X) - p \cdot X \}$, so the aggregate production function and the industry profit function are dual to each other, and each can be recovered from the other.
+
+Third, the formula gives a numerical method, not a closed form.
+
+Houthakker wrote that "there appears to be no generally applicable method of eliminating $p_1$ and $p_2$" from his versions of {eq}`ha_totals` "and thus deriving $F$ directly from $\varphi$."
+
+The minimization does not eliminate the prices in closed form: by Hotelling's lemma, its first-order conditions are exactly the equations $X_i(p) = X_i$.
+
+What it adds is a convex problem in two variables, which is easy to solve numerically for any $\varphi$, and which still makes sense with finitely many cells, where the equations $X_i(p) = X_i$ usually have no exact solution.
+
+Fourth, $F_N$ is concave and piecewise linear, so its isoquants are piecewise linear too.
+
+As $N$ grows with cells drawn from $\varphi$, they approach the smooth isoquants of $F$.
+
+To illustrate the third point, we compute $F$ for Houthakker's distribution by minimizing $p \cdot X + \Pi(p)$ over prices, evaluating $\Pi$ by numerical integration rather than from the closed forms.
 
 We search over $\log p$ to keep prices positive.
 
@@ -464,7 +494,7 @@ The cloud of cells ends at $a_1 + a_2 = 2$ only because we truncated the distrib
 ---
 mystnb:
   figure:
-    caption: Cells that produce at prices p, and cells that enter when p_1 falls
+    caption: Cells that enter when $p_1$ falls
     name: fig-ha-cells
 ---
 rng = np.random.default_rng(1)
@@ -556,7 +586,7 @@ We restrict the inputs to a region where the Cobb–Douglas prices satisfy $p_i 
 ---
 mystnb:
   figure:
-    caption: Isoquants of F_N (solid) and of the Cobb–Douglas function (dashed)
+    caption: Isoquants of $F_N$ and Cobb–Douglas
     name: fig-ha-isoquants
 ---
 X0_ref, X1_ref, X2_ref = pareto_totals((1.0, 1.0), A, α)
@@ -582,7 +612,11 @@ axes[0].set_ylabel(r"$X_2$")
 plt.show()
 ```
 
-With 100 cells, only about ten run at any point of the grid, so the isoquants are visibly polygonal, and they lie well away from the Cobb–Douglas isoquants.
+With 100 cells, only about ten run at any point of the grid, so the isoquants are visibly polygonal.
+
+In this sample they also lie well inside the Cobb–Douglas isoquants, which means more output from the same inputs.
+
+That is luck: across samples of 100 cells, the gap between $F_N$ and the Cobb–Douglas function has a standard deviation of about 9 percent.
 
 With 3,000 cells, they are smooth and close to the isoquants of {eq}`ha_cobb_douglas`.
 
@@ -678,7 +712,9 @@ F(L) = \left( \gamma L^\rho + \beta \right)^{1/\rho},
 \qquad \gamma > 0, \ \beta > 0, \ \rho < 0 .
 $$ (ha_ces)
 
-(Levhari writes $\alpha$ for our $\gamma$, $A$ for our $L$, $p$ for our wage $w$, and $\phi$ and $\psi$ for our $G$ and $H$. We write $\gamma$ for the weight on labor because, when $\gamma + \beta = 1$, it becomes the Cobb–Douglas exponent as $\rho \to 0$.)
+Levhari writes $\alpha$ for our $\gamma$, $A$ for our $L$, $p$ for our wage $w$, and $\phi$ and $\psi$ for our $G$ and $H$.
+
+We write $\gamma$ for the weight on labor because, when $\gamma + \beta = 1$, it becomes the Cobb–Douglas exponent as $\rho \to 0$.
 
 The constant $\beta$ represents the fixed input, set to one, so $F(L) = \tilde F(L, 1)$ with $\tilde F(L, K) = (\gamma L^\rho + \beta K^\rho)^{1/\rho}$.
 
@@ -815,7 +851,7 @@ Compare them with Levhari's Figure 1, which has the first and third shapes rever
 ---
 mystnb:
   figure:
-    caption: Densities of labor requirements that generate CES functions
+    caption: Densities that generate CES functions
     name: fig-ha-ces-densities
 ---
 fig, axes = plt.subplots(1, 3, figsize=(10, 3.4))
@@ -919,13 +955,19 @@ In Houthakker's, total capacity is infinite; in Levhari's, total capacity is fin
 
 Its central idea has since been taken up in several directions.
 
-{cite:t}`Johansen1972` made Houthakker's construction the basis of a theory of short-run industry production functions, derived from the distribution of capacity over the input coefficients of fixed-proportions production units, and combined it with a putty-clay vintage model in which investment in new units shifts that distribution over time.
+{cite:t}`Johansen1972` made Houthakker's construction the basis of a theory of short-run industry production functions, derived from the distribution of capacity over the input coefficients of fixed-proportions production units.
 
-{cite:t}`Hildenbrand1981` studied the construction with many inputs and outputs and showed that the industry's short-run production set is a **zonoid**: with finitely many cells it is a sum of line segments, one from the origin to each cell's input–output vector at full capacity, and with a continuum of cells it is a limit of such sums.
+He combined it with a putty-clay vintage model in which investment in new units shifts that distribution over time.
+
+{cite:t}`Hildenbrand1981` studied the construction with many inputs and outputs and showed that the industry's short-run production set is a **zonoid**.
+
+With finitely many cells, that set is a sum of line segments, one from the origin to each cell's input–output vector at full capacity, and with a continuum of cells it is a limit of such sums.
 
 {cite:t}`Jones2005` treated ideas as techniques, Leontief in his analytical model, whose labor and capital coefficients are drawn from independent Pareto distributions.
 
-His global production function is the upper envelope of the techniques discovered, not a sum over capacity-constrained cells, so it has constant returns; he showed that its expected value is Cobb–Douglas and that long-run technical change is labor-augmenting, and he contrasts his construction with Houthakker's.
+His global production function is the upper envelope of the techniques discovered, not a sum over capacity-constrained cells, so it has constant returns.
+
+He showed that its expected value is Cobb–Douglas and that long-run technical change is labor-augmenting, and he contrasts his construction with Houthakker's.
 
 {cite:t}`Lagos2006` combined Houthakker's aggregation with a frictional labor market in which jobs are created and destroyed, so that labor-market policies affect measured total factor productivity by changing which cells operate.
 
@@ -1018,7 +1060,7 @@ We also compute $\sigma_{12}$ at equal prices with a small centered difference.
 ---
 mystnb:
   figure:
-    caption: Shares and elasticities of substitution when φ is homogeneous
+    caption: Shares and elasticities under homogeneous $\varphi$
     name: fig-ha-homogeneous
 ---
 def log_share_ratio(r, κ):
@@ -1043,8 +1085,8 @@ for κ in (1.0, 2.0, 4.0):
     print(f"κ = {κ}: s1 + s2 in [{(s1 + s2).min():.4f}, "
           f"{(s1 + s2).max():.4f}], κ/(1+κ) = {κ / (1 + κ):.4f}; "
           f"σ12 at p1 = p2: {σ12_equal:.4f}")
-    axes[0].plot(ratios, s1, label=rf"$\kappa = {κ:g}$")
-    axes[1].plot(ratios, σ12, label=rf"$\kappa = {κ:g}$")
+    axes[0].plot(ratios, s1, lw=2, label=rf"$\kappa = {κ:g}$")
+    axes[1].plot(ratios, σ12, lw=2, label=rf"$\kappa = {κ:g}$")
 axes[0].set_ylabel("share of input 1")
 axes[1].set_ylabel("elasticity of substitution")
 for ax in axes:
@@ -1234,13 +1276,13 @@ With finite total capacity, that means an infinite mean requirement.
 
 Levhari puts it this way: as the wage falls to zero, employment rises without bound because the marginal product of labor is always positive.
 
-For part 3, we compare the empirical survival function with the approximation.
+For part 3, we compare the empirical survival function with the approximation from part 1, shown as dashed lines.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Upper tails of Levhari's distributions; dashed lines are the approximations from part 1
+    caption: Upper tails of Levhari's distributions
     name: fig-ha-tails
 ---
 rng = np.random.default_rng(3)
