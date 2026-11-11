@@ -151,6 +151,10 @@ You can see that, as the tail parameter of the Pareto distribution increases, in
 
 This is to be expected, because a higher tail index implies less weight in the tail of the Pareto distribution.
 
+Lorenz curves and Pareto distributions also appear in production theory.
+
+In {doc}`houthakker_aggregation`, the labor an industry needs to produce a given output traces out an unnormalized Lorenz curve of its plants' labor requirements, and a Pareto distribution of productivities across plants gives a Cobb–Douglas aggregate production function.
+
 ### The Gini Coefficient
 
 The definition and interpretation of the Gini coefficient can be found on the corresponding [Wikipedia page](https://en.wikipedia.org/wiki/Gini_coefficient).
