@@ -389,7 +389,7 @@ def bivariate_normal(x, y, μ, Σ, i, j):
 ```{code-cell} ipython3
 @jit
 def count(vec1, vec2, n):
-    size = sample.shape[0]
+    size = vec1.shape[0]
 
     count_mat = np.zeros((n+1, n+1))
     for i in prange(size):

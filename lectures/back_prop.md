@@ -500,8 +500,8 @@ key = random.key(0)
 
 def train(params, grid, f_val, key, num_epochs=300):
     for epoch in range(num_epochs):
-        key, _ = random.split(key)
-        random_permutation = random.permutation(random.key(1), indices)
+        key, subkey = random.split(key)
+        random_permutation = random.permutation(subkey, indices)
         for x, y in zip(grid[random_permutation], f_val[random_permutation]):
             params = update_la(params, x, y)
             
