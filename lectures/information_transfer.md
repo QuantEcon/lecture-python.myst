@@ -1149,6 +1149,12 @@ Under the coarse experiment the planner takes $a_2$ at $0.2$ and $a_1$ at $0.8$,
 Under the fine experiment the planner always takes $a_2$, so each player's expected utility is the height of that player's line for $a_2$ at the prior (open dot).
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Riley's example, with expected utilities read off at the prior
+    name: fig-it-riley
+---
 fig, axes = plt.subplots(1, 2, figsize=(10, 4))
 for ax, mat, who in zip(axes, (U_ri, W_ri), ("planner", "agent")):
     for k in range(2):
