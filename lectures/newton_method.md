@@ -1058,7 +1058,7 @@ $$
 \end{aligned}
 $$
 
-Set the tolerance to $1e-15$ for more accurate output.
+Set the tolerance to $10^{-15}$ for more accurate output.
 
 ```{exercise-end}
 ```
@@ -1080,15 +1080,20 @@ initLs = [jnp.repeat(5.0, 3), jnp.ones(3), jnp.array([4.5, 0.1, 4.0])]
 Let's run through each initial guess and check the output
 
 ```{code-cell} ipython3
-:tags: [raises-exception]
-
 for attempt, init in enumerate(initLs, start=1):
     print(f"Attempt {attempt}: Starting value is {init} \n")
-    %time p = newton(lambda p: e(p, A, b, c), init, tol=1e-15, max_iter=15)
+    try:
+        %time p = newton(lambda p: e(p, A, b, c), init, tol=1e-15, max_iter=15)
+    except Exception as err:
+        print(f"Failed: {err}")
     print("-" * 64)
 ```
 
 We can see that Newton's method may fail for some starting values.
+
+The first starting value $p_0 = (5, 5, 5)$ fails because its first Newton step overshoots to negative prices, so $\sqrt{p}$ is not defined and the iteration breaks down.
+
+The other two starting values converge to the same equilibrium.
 
 Sometimes it may take a few initial guesses to achieve convergence.
 
