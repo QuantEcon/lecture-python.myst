@@ -47,6 +47,8 @@ following important tools:
 - linear programming
 - the Perron-Frobenius theorem
 
+For another application of activity analysis and linear programming, see {doc}`houthakker_aggregation`, which shows how many fixed-proportions production units add up to a smooth industry production function.
+
 We'll begin with some imports:
 
 ```{code-cell} ipython3
