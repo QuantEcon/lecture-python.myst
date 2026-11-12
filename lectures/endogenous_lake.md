@@ -335,8 +335,8 @@ mcm = create_mccall_model(w_vec=w_vec, p_vec=p_vec)
 V, U = solve_mccall_model(mcm)
 w_idx = jnp.searchsorted(V - U, 0)
 w_bar = jnp.where(w_idx == len(V), jnp.inf, mcm.w_vec[w_idx])
-λ = mcm.γ * jnp.sum(p_vec * (w_vec > w_bar))
-print(f"Job finding rate at default paramters ={λ}.")
+λ = mcm.γ * jnp.sum(p_vec * (w_vec >= w_bar))
+print(f"Job finding rate at default parameters ={λ}.")
 ```
 
 
@@ -461,7 +461,7 @@ def compute_optimal_quantities(
     w_bar = jnp.where(w_idx == len(V), jnp.inf, mcm.w_vec[w_idx])
 
     # Compute job finding rate
-    λ = economy.γ * jnp.sum(p_vec * (w_vec - τ > w_bar))
+    λ = economy.γ * jnp.sum(p_vec * (w_vec - τ >= w_bar))
 
     return w_bar, λ, V, U
 ```
@@ -493,7 +493,7 @@ def compute_steady_state_quantities(
     u, e = rate_steady_state(model)
 
     # Compute expected lifetime value conditional on being employed.
-    mask = (w_vec - τ > w_bar)
+    mask = (w_vec - τ >= w_bar)
     w = jnp.sum(V * p_vec * mask) / jnp.sum(p_vec * mask)
     # Compute steady state welfare.
     welfare = e * w + u * U
