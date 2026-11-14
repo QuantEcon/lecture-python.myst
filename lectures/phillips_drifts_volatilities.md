@@ -686,7 +686,7 @@ def kalman_forward(y, x, q, h, β, prior):
     """Kalman filter for θ_t: filtered means and covariances, predicted covariances."""
     T, k = len(y), n_coefficients
     b_inverse = np.linalg.inv(b_matrix(β))
-    r = np.einsum('ij,tj,kj->tik', b_inverse, h, b_inverse)    # R_1, ..., R_T
+    r = np.einsum('ij,tj,kj->tik', b_inverse, h[1:], b_inverse)  # R_1, ..., R_T
     X = np.einsum('ij,tk->tijk', np.eye(n_variables), x)
     X = X.reshape(T, n_variables, k)                            # X_t'
     means = np.empty((T + 1, k))
