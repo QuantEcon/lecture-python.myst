@@ -36,7 +36,8 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install --upgrade quantecon yfinance jax
+!pip install --upgrade quantecon yfinance
+!pip install jax
 ```
 
 ## Overview
