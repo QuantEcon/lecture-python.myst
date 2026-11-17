@@ -170,9 +170,9 @@ where $\theta$ satisfies {eq}`ef_moments`.
 
 The function $F$ makes the probabilities sum to one.
 
-Such a $\theta$ exists if and only if $c$ lies in the interior of the convex hull of the points $t(x)$; for the die below, if and only if $1 < c < 6$.
+Such a $\theta$ exists if and only if $c$ lies in the relative interior of the convex hull of the points $t(x)$, that is, in its interior as a subset of the smallest affine subspace that contains it; for the die below, if and only if $1 < c < 6$.
 
-When $c$ lies on the boundary, as for a die whose mean is $6$, a maximizing distribution still exists.
+When $c$ lies on the relative boundary, as for a die whose mean is $6$, a maximizing distribution still exists.
 
 It puts zero probability on some outcomes, and it lies outside the family, as a limit of members whose $\theta$ diverges.
 
@@ -267,7 +267,7 @@ The figure shows the maximum entropy distributions for several means.
 ---
 mystnb:
   figure:
-    caption: Maximum entropy distributions of a die with given means
+    caption: Maximum entropy distributions of a die
     name: fig-ef-die
 ---
 fig, ax = plt.subplots()
@@ -308,7 +308,7 @@ $$ (ef_normal_gap)
 
 where $\varphi$ is the $N(\mu, \sigma^2)$ density.
 
-**Among all densities on the real line with a given mean and variance, the normal density has the largest entropy.**
+*Among all densities on the real line with a given mean and variance, the normal density has the largest entropy.*
 
 Its entropy is $H(\varphi) = \frac{1}{2} \log(2 \pi e \sigma^2)$.
 
@@ -388,7 +388,7 @@ print(f"(μ/σ², -1/(2σ²)) = "
 ---
 mystnb:
   figure:
-    caption: Maximum entropy on a grid with a given mean and variance
+    caption: Maximum entropy on a grid
     name: fig-ef-grid-normal
 ---
 fig, ax = plt.subplots()
@@ -632,7 +632,7 @@ $$
 F^*(\eta) = - H(p(\cdot; \theta)) ,
 $$ (ef_negentropy)
 
-and **the conjugate of the log-partition function is the negative of the entropy, expressed as a function of the expectation parameters.**
+and *the conjugate of the log-partition function is the negative of the entropy, expressed as a function of the expectation parameters.*
 
 In general, $H(p(\cdot; \theta)) = -F^*(\eta) - E_\theta \log h(X)$.
 
@@ -648,7 +648,7 @@ In the right panel, the tangent line to $F^*$ at $\eta$ has slope $\theta$.
 ---
 mystnb:
   figure:
-    caption: The Bernoulli log-partition function and its conjugate
+    caption: Bernoulli log-partition function and conjugate
     name: fig-ef-legendre
 ---
 def F_bern(θ):
@@ -689,7 +689,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-**The Lagrange multipliers of the maximum entropy problem are the shadow prices of the moment constraints.**
+*The Lagrange multipliers of the maximum entropy problem are the shadow prices of the moment constraints.*
 
 By {eq}`ef_negentropy`, the maximized entropy is $H(p^*) = -F^*(c)$, so by the envelope theorem $\partial H(p^*) / \partial c = -\nabla F^*(c) = -\theta$.
 
@@ -817,7 +817,7 @@ D_{KL}\left( p_{\theta_1} \| p_{\theta_2} \right)
 = B_F(\theta_2, \theta_1) .
 $$ (ef_kl_bregman)
 
-The arguments trade places: **the KL divergence of $p_{\theta_1}$ from $p_{\theta_2}$ is the Bregman divergence of $\theta_2$ from $\theta_1$.**
+The arguments trade places: *the KL divergence of $p_{\theta_1}$ from $p_{\theta_2}$ is the Bregman divergence of $\theta_2$ from $\theta_1$.*
 
 Using {eq}`ef_fenchel` to replace $F(\theta_1)$, we can also write
 
@@ -890,7 +890,7 @@ $$
 
 For the exponential family, $\nabla^2 F(\theta)$ is the **Fisher information matrix** $I(\theta) = \operatorname{Cov}_\theta[\nabla_\theta \log p(X; \theta)]$, because the score $\nabla_\theta \log p(X; \theta) = t(X) - \nabla F(\theta)$ has covariance matrix $\operatorname{Cov}_\theta[t(X)] = \nabla^2 F(\theta)$.
 
-**The Fisher information matrix measures how fast nearby distributions become distinguishable.**
+*The Fisher information matrix measures how fast nearby distributions become distinguishable.*
 
 This explains the four normal distributions with which we began.
 
@@ -910,7 +910,7 @@ The figure shows this for the Poisson family, comparing $D_{KL}(p_{\lambda_0} \|
 ---
 mystnb:
   figure:
-    caption: KL divergence and its quadratic approximations for Poisson distributions
+    caption: Poisson KL divergence and quadratic approximations
     name: fig-ef-fisher
 ---
 λ0 = 4.0
@@ -949,7 +949,7 @@ The statistic $t$ is sufficient: apart from the last term, which does not involv
 
 The average log likelihood is a concave function of $\theta$ whose first-order condition is $\nabla F(\hat \theta) = \bar t$.
 
-**The maximum likelihood estimator of the expectation parameter is the sample average of the sufficient statistic**, $\hat \eta = \bar t$.
+*The maximum likelihood estimator of the expectation parameter is the sample average of the sufficient statistic*, $\hat \eta = \bar t$.
 
 The maximum likelihood estimator of the natural parameter is $\hat \theta = \nabla F^*(\bar t)$, provided that $\bar t$ lies in the range of $\nabla F$.
 
@@ -969,7 +969,7 @@ The estimator $\hat \eta = \bar t$ is unbiased because it is a sample average; i
 
 The Fisher information matrix for $\eta$ is $\nabla^2 F^*(\eta)$, so the Cramér–Rao lower bound for an unbiased estimator of $\eta$ is $\left[\nabla^2 F^*(\eta)\right]^{-1}/n = \nabla^2 F(\theta)/n$.
 
-**In expectation parameters, the maximum likelihood estimator is unbiased and attains the Cramér–Rao bound exactly**, in every sample size.
+*In expectation parameters, the maximum likelihood estimator is unbiased and attains the Cramér–Rao bound exactly*, in every sample size.
 
 The estimator $\hat \theta = \nabla F^*(\bar t)$ of the natural parameter is a nonlinear function of $\bar t$, and it is biased in finite samples; for the normal family, $E \hat \theta = n \theta / (n - 3)$ when $n > 3$.
 
@@ -981,7 +981,9 @@ The natural parameter $\theta = \nabla F^*(\eta)$ is an affine function of $\eta
 
 For the normal family with unknown mean and variance, $\theta_1 = \eta_1 / (\eta_2 - \eta_1^2)$ and $\theta_2 = -1/(2(\eta_2 - \eta_1^2))$ are not affine in $\eta$, so no unbiased estimator of either attains the bound.
 
-As $n \to \infty$, the bias of $\hat \theta$ vanishes and $n$ times its covariance matrix converges to $I(\theta)^{-1}$.
+For the normal family, as $n \to \infty$, the bias of $\hat \theta$ vanishes and $n$ times its covariance matrix converges to $I(\theta)^{-1}$.
+
+In general, asymptotic theory describes the distribution of $\hat \theta$, whose finite-sample moments need not exist, as {ref}`ef_ex_bernoulli` shows.
 
 The simulation below illustrates these facts for the normal family with $\mu = 1$ and $\sigma = 1.5$, using samples of size $n = 30$.
 
@@ -1021,7 +1023,7 @@ print(f"  E θ̂ = nθ/(n-3):", np.round(n * θ_true / (n - 3), 4),
 ---
 mystnb:
   figure:
-    caption: Maximum likelihood estimates in expectation and natural parameters
+    caption: Estimates in expectation and natural parameters
     name: fig-ef-cramer-rao
 ---
 fig, axes = plt.subplots(1, 2, figsize=(10, 4.5))
