@@ -708,6 +708,8 @@ This lecture has introduced tools  that we'll encounter elsewhere.
 
 - {doc}`merging_of_opinions` uses the Bhattacharyya coefficient, under the name Hellinger affinity, to decide when two Bayesians' opinions merge.
 
+- {doc}`exponential_families` and {doc}`information_projections` study the geometry of KL divergence: the exponential family, maximum entropy, and projections of distributions onto families of distributions, with applications to estimation, robust control, matrix balancing, and Chernoff information.
+
 ## Exercises
 
 ```{exercise}
