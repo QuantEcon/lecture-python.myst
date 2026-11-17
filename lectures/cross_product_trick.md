@@ -130,7 +130,7 @@ B^* {B^*}' & = BB' - BF' (FF')^{-1} FB'.
 
 ### Algorithm
 
-A consequence of  formulas {eq}`eq:Kalman102} is that we can use the following algorithm to solve Kalman filtering problems that involve  non zero covariances between state and signal noises. 
+A consequence of  formulas {eq}`eq:Kalman102` is that we can use the following algorithm to solve Kalman filtering problems that involve  non zero covariances between state and signal noises. 
 
 First, compute $\Sigma, K^*$ using the ordinary Kalman filtering  formula with $BF' = 0$, i.e.,
 with zero covariance matrix between random shocks to  states and  random shocks to measurements. 
