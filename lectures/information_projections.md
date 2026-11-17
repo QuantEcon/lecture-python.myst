@@ -793,7 +793,7 @@ print(f"  p* = {np.round(p_die, 4)}   D(p* || q) = {kl(p_die, q_die):.4f}")
 ---
 mystnb:
   figure:
-    caption: Large deviation rate for a die
+    caption: Decay rate converges to $D(p^* \| q)$
     name: fig-ip-sanov
 ---
 fig, ax = plt.subplots()
