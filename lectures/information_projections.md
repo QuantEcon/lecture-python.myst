@@ -626,7 +626,7 @@ for μ, σ in ((0.0, 1.5), (μ_star, 1.0), (1.0, 2.0), (μ_star, σ_star)):
 ---
 mystnb:
   figure:
-    caption: The m-projection of a mixture
+    caption: Moment-matched normal for a bimodal mixture
     name: fig-ip-mixture
 ---
 x_vals = np.linspace(-5, 5, 400)
@@ -1296,7 +1296,7 @@ The Chernoff information agrees with the value computed by numerical integration
 ---
 mystnb:
   figure:
-    caption: Chernoff point on the exponential path
+    caption: Point equally far from both distributions
     name: fig-ip-chernoff
 ---
 ϕ_vals = np.linspace(0.001, 0.999, 300)

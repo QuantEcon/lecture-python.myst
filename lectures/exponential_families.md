@@ -99,7 +99,7 @@ The KL divergence between two normal distributions with a common standard deviat
 ---
 mystnb:
   figure:
-    caption: Equally distant parameters, very different distributions
+    caption: Equal parameter distances, unequal KL divergences
     name: fig-ef-four-normals
 ---
 x = np.linspace(-6, 7, 1000)
@@ -267,7 +267,7 @@ The figure shows the maximum entropy distributions for several means.
 ---
 mystnb:
   figure:
-    caption: Maximum entropy distributions of a die
+    caption: Maximum entropy die distributions by mean
     name: fig-ef-die
 ---
 fig, ax = plt.subplots()
@@ -388,7 +388,7 @@ print(f"(μ/σ², -1/(2σ²)) = "
 ---
 mystnb:
   figure:
-    caption: Maximum entropy on a grid
+    caption: Grid maximum entropy matches the normal
     name: fig-ef-grid-normal
 ---
 fig, ax = plt.subplots()
@@ -648,7 +648,7 @@ In the right panel, the tangent line to $F^*$ at $\eta$ has slope $\theta$.
 ---
 mystnb:
   figure:
-    caption: Bernoulli log-partition function and conjugate
+    caption: Bernoulli log-partition function and its conjugate
     name: fig-ef-legendre
 ---
 def F_bern(θ):
@@ -1023,7 +1023,7 @@ print(f"  E θ̂ = nθ/(n-3):", np.round(n * θ_true / (n - 3), 4),
 ---
 mystnb:
   figure:
-    caption: Estimates in expectation and natural parameters
+    caption: Maximum likelihood estimates in both parameterizations
     name: fig-ef-cramer-rao
 ---
 fig, axes = plt.subplots(1, 2, figsize=(10, 4.5))
