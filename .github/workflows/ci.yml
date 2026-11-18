@@ -44,8 +44,9 @@ jobs:
           # system fonts from a cold disk, which can take over 5 s, and
           # matplotlib then prints "Matplotlib is building the font cache; this
           # may take a moment." into the output of the first notebook that
-          # imports it. Build the cache here, so no page depends on that timing.
-          python -c "import matplotlib.pyplot"
+          # imports it. Build the cache here, so no page depends on that timing:
+          # the font manager builds it on import, with no backend involved.
+          python -c "import matplotlib.font_manager"
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
