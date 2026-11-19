@@ -40,7 +40,8 @@ jobs:
       - name: Install JAX and Numpyro
         shell: bash -l {0}
         run: |
-          pip install -U "jax[cuda13]"
+          # Pinned to the lecture baseline, QuantEcon/lectures' _base/environment-update.yml.
+          pip install "jax[cuda13]==0.12.1"
           pip install numpyro
           python scripts/test-jax-install.py
       - name: Build matplotlib's font cache
