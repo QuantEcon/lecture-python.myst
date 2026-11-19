@@ -26,6 +26,16 @@ jobs:
           pip install -U "jax[cuda13]"
           pip install numpyro
           python scripts/test-jax-install.py
+      - name: Build matplotlib's font cache
+        shell: bash -l {0}
+        run: |
+          # On a freshly launched runner the first matplotlib import scans the
+          # system fonts from a cold disk, which can take over 5 s, and
+          # matplotlib then prints "Matplotlib is building the font cache; this
+          # may take a moment." into the output of the first notebook that
+          # imports it. Build the cache here, so no page depends on that timing:
+          # the font manager builds it on import, with no backend involved.
+          python -c "import matplotlib.font_manager"
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
