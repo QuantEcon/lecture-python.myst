@@ -21,7 +21,7 @@ In addition to what's included in base Anaconda, we need to install the followin
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install kaleido plotly
+!pip install "kaleido>=1" "plotly>=6.1"
 
 # kaleido needs chrome to build images
 import kaleido
