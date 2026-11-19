@@ -21,19 +21,11 @@ In addition to what's included in base Anaconda, we need to install the followin
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install -U kaleido plotly
-!conda install -y -c plotly plotly-orca
+!pip install "kaleido>=1" "plotly>=6.1"
 
 # kaleido needs chrome to build images
 import kaleido
 kaleido.get_chrome_sync()
-```
-
-```{note}
-If you are running this on Google Colab the above cell will 
-present an error. This is because Google Colab doesn't use Anaconda to manage
-the Python packages. However this lecture will still execute as Google Colab
-has `plotly` installed.
 ```
 
 We also need to install JAX to run this lecture
@@ -41,7 +33,7 @@ We also need to install JAX to run this lecture
 ```{code-cell} ipython3
 :tags: [skip-execution]
 
-!pip install --upgrade jax
+!pip install jax
 ```
 
 ```{code-cell} ipython3

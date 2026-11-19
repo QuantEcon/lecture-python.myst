@@ -44,8 +44,8 @@ several implementations of linear programming, including, in order,
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install --upgrade quantecon
-!pip install --upgrade POT
+!pip install quantecon
+!pip install POT
 ```
 
 Let's start with some imports.
