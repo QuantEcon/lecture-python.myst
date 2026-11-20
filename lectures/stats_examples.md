@@ -118,8 +118,8 @@ We compute the mean and variance to be
 
 $$
 \begin{aligned}
-\mathbb{E}(X) & = \frac{k(1-p)}{p} \\
-\mathbb{V}(X) & = \frac{k(1-p)}{p^2}
+\mathbb{E}(X) & = \frac{r(1-p)}{p} \\
+\mathbb{V}(X) & = \frac{r(1-p)}{p^2}
 \end{aligned}
 $$
 
