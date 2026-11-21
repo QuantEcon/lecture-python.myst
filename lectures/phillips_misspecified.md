@@ -259,6 +259,8 @@ A(c, \sigma_\epsilon^2) = \frac{1}{N}\sum_{j=0}^{N-1}
 
 where $\omega_j = \frac{2\pi j}{N}$ and $G(\omega, c) = |g(e^{i\omega})|^2 \sigma_\epsilon^2$ is the spectral density of the perceived model.
 
+{doc}`approximation_errors` derives this criterion: it is twice the KL divergence rate of the true process from the perceived model, plus a term that does not depend on $(c, \sigma_\epsilon^2)$.
+
 The term $\frac{\nu^2}{G(0)} = \frac{\nu^2 (1 - \rho)^2}{c^2 \sigma_\epsilon^2}$ charges the perceived model for the squared mean of its forecast errors; this is how the model is made to use its near-unit root to fit the mean.
 
 Concentrating out $\sigma_\epsilon^2$ sets it equal to the mean square forecast error
@@ -357,7 +359,7 @@ The fixed point $C = B(C)$ has several names in the later literature, each empha
 
 * It is a **restricted-perceptions equilibrium** ({cite:t}`EvansHonkapohja2001`, chapter 13): forecasts are optimal within a restricted class of models that excludes the truth.
 * For given $C$, the best estimate $c$ is a **pseudo-true value** in the sense of {cite:t}`White1982`, the parameter of a misspecified model that comes closest to the truth. Unlike in White's setting, here the truth itself depends on the agents' parameter, through $C$.
-* Up to constants, criterion {eq}`pm_criterion` is the frequency-domain (Whittle) form of the Kullback–Leibler divergence of the perceived model from the true process. So the fixed point is also a **Berk–Nash equilibrium** in the sense of {cite:t}`EspondaPouzo2016`, with the forecasting rule as the agents' action.
+* Criterion {eq}`pm_criterion` is twice the KL divergence rate of the true process from the perceived model, plus a constant ({doc}`approximation_errors`), so the best estimate $c$ is the m-projection of the true process onto the perceived models, in the sense of {doc}`information_projections`, and the fixed point is also a **Berk–Nash equilibrium** in the sense of {cite:t}`EspondaPouzo2016`, with the forecasting rule as the agents' action.
 
 {doc}`learning_approximation` computes the same kind of object, which it calls an approximate equilibrium, for a saving rule restricted to a polynomial family.
 
@@ -386,6 +388,8 @@ With enough data, appropriate statistical tests would eventually tell agents how
 {cite:t}`Kreps1998` argues that sensible agents would eventually abandon a misspecified model that the data reject; {ref}`pmis_ex3` estimates how much data that would take here.
 
 The answer lies in how far apart the true and approximating spectral densities are, which we now study.
+
+{doc}`specification_tests` describes tests that need no specified alternative: each compares two projections of the data, and it has power only against misspecifications that move those projections apart.
 
 ## Comparing the true and forecasting models
 
@@ -666,7 +670,7 @@ For Gaussian processes, the expected log-likelihood ratio per observation of the
 :class: dropdown
 ```
 
-The Kullback–Leibler divergence rate of a mean-zero Gaussian model with spectral density $G$ from a Gaussian process with mean $\nu$ and spectral density $F$ is
+The Kullback–Leibler divergence rate {eq}`ae_kl_rate_vector` of a Gaussian process with mean $\nu$ and spectral density $F$ from a mean-zero Gaussian model with spectral density $G$ is
 
 $$
 \frac{1}{2}\left\{ \frac{1}{N}\sum_j \left[\frac{F(\omega_j)}{G(\omega_j)} - 1 - \log\frac{F(\omega_j)}{G(\omega_j)}\right] + \frac{\nu^2}{G(0)} \right\} .

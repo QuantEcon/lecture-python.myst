@@ -364,6 +364,8 @@ The Keynesian case is the same, with slope $1/(1 + \beta_1^2)$ in the equation f
 
 **E-stability.** Write the classical equilibrium as a fixed point $\gamma = T(\gamma)$ of the map from beliefs to the population regression coefficients they generate.
 
+Population regression coefficients are m-projections of the true conditional distribution onto Gaussian linear regressions ({doc}`approximation_errors`), so $T$ and the best-estimate map of {doc}`phillips_misspecified` are both maps from beliefs to m-projections.
+
 The associated differential equation $d\gamma/d\tau = T(\gamma) - \gamma$ is the E-stability condition of {ref}`br_one_recursion`, and {doc}`ls_learning` shows that its stability governs whether least squares learning converges.
 
 Because $T_1$ does not depend on beliefs, the Jacobian of $T - I$ at the equilibrium is triangular, with eigenvalues $-1$ (slope) and $\theta^2/(1 + \theta^2) - 1 = -1/(1 + \theta^2)$ (intercept).
@@ -830,6 +832,8 @@ The approximation error is small.
 print(f"one-step RMSE of the approximating model / true innovation s.d. = "
       f"{np.sqrt(σ_ε2) / mp.σ2:.4f}")
 ```
+
+By the argument of {ref}`pmis_ex3`, the logarithm of the printed ratio is the KL divergence rate of the true inflation process from the public's perceived model.
 
 The approximating model's one-step forecast errors are only slightly larger than the true innovations, so there is a nearly self-confirming model with much better than Nash outcomes.
 

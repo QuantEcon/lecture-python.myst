@@ -491,6 +491,8 @@ The average slopes of the log likelihood ratio paths in the figures above are Ku
 
 They are VAR counterparts of the {ref}`KL divergence rate for Markov chains <lrp_markov>` in {doc}`likelihood_ratio_process`.
 
+{doc}`approximation_errors` writes the same rate as an integral over frequencies of KL divergences between normal distributions whose variances are the two spectral densities.
+
 {doc}`divergence_measures` describes Kullback–Leibler divergence.
 
 Let $\Sigma_f = C_f C_f^\top$ and $\Sigma_g = C_g C_g^\top$, and let $V_f$ solve the discrete Lyapunov equation
@@ -1187,12 +1189,12 @@ From the stationary distributions, the medians of $\log L_{50}$ are within $0.5$
 
 From $Y_0 \approx 100$, it selects the correct model in all $50$ samples from each model.
 
-Under $f$, $E_f [\log L_t] = KL_0 + t \, h_{KL}(f, g)$, where $KL_0$ is the Kullback–Leibler divergence of the stationary distribution of $(Y_0, Y_{-1})$ under $g$ from that under $f$.
+Under $f$, $E_f [\log L_t] = KL_0 + t \, h_{KL}(f, g)$, where $KL_0$ is the Kullback–Leibler divergence of the stationary distribution of $(Y_0, Y_{-1})$ under $f$ from that under $g$.
 
 ```{code-cell} ipython3
 def kl_gauss(μ_1, Σ_1, μ_2, Σ_2):
     """
-    KL divergence of N(μ_2, Σ_2) from N(μ_1, Σ_1)
+    KL divergence of N(μ_1, Σ_1) from N(μ_2, Σ_2)
     """
     n = len(μ_1)
     Σ_2_inv = np.linalg.inv(Σ_2)

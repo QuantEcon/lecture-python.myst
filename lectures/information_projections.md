@@ -1342,6 +1342,8 @@ The lecture applied m-projections to maximum likelihood estimation and mutual in
 
 The worst-case models of robust control, the biproportional tables of RAS, and the regularized transport plans are all exponential tilts of the kind that attains the logit formula {eq}`ef_logit_base` of {doc}`exponential_families`.
 
+{doc}`approximation_errors` applies m-projections to misspecified time series models and to seasonal adjustment, {doc}`specification_tests` describes specification tests as comparisons of m-projections, and {doc}`turbulence_inference` uses them to interpret a check of a calibrated search model against evidence on earnings instability.
+
 Other applications include the EM algorithm, which {cite:t}`CsiszarTusnady1984` interpret as alternating projections, and the hierarchical decomposition of interactions among many random variables of {cite:t}`Amari2001`, which {ref}`ip_ex_interactions` takes up.
 
 ## Exercises

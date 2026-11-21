@@ -649,6 +649,8 @@ If the separation rate is high, then the benefit of holding out for a higher wag
 
 Hence the reservation wage is lower.
 
+{doc}`turbulence_inference` studies a search model in which a separation can also destroy skills, and asks whether evidence on earnings can distinguish a higher separation rate from larger skill losses.
+
 ## Exercises
 
 ```{exercise-start}

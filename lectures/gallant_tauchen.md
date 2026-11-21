@@ -242,7 +242,7 @@ The order condition is necessary but not sufficient, and {ref}`gt_ex3` construct
 (gt_why_score)=
 ## Why the score is the right thing to match
 
-{doc}`divergence_measures` shows that maximum likelihood minimizes the cross-entropy of the parametric model relative to the empirical distribution of the data, the sample analogue of the KL divergence from the data-generating distribution to the model.
+{doc}`divergence_measures` shows that maximum likelihood minimizes the cross-entropy of the parametric model relative to the empirical distribution of the data, the sample analogue of the KL divergence of the data-generating distribution from the model.
 
 Step 1 projects the data onto the auxiliary family by minimizing KL divergence.
 
@@ -258,6 +258,8 @@ the point in the auxiliary family closest to the structural model at $\rho$ {cit
 [^gt_cond]: Here $p(\cdot \mid \rho)$ and $f(\cdot \mid \theta)$ are conditional densities of $y_t$ given $x_t$. The divergence averages $\int p(y \mid x, \rho) \ln \bigl[ p(y \mid x, \rho) / f(y \mid x, \theta) \bigr] \, dy$ over the stationary density $p(x \mid \rho)$.
 
 The function $\theta^0(\cdot)$ maps structural parameters into auxiliary parameters.
+
+In the language of {doc}`information_projections`, $\theta^0(\rho)$ is the m-projection of the structural model's distribution onto the auxiliary family.
 
 As $n$ grows, $\tilde\theta_n$ converges to $\theta^0 = \theta^0(\rho^0)$.
 
@@ -354,6 +356,8 @@ Indirect inference names the class of estimators that compare observed and simul
 {cite:t}`GourierouxMonfortRenault1993` and {cite:t}`Smith1993` match the auxiliary parameters.
 
 {cite:t}`GourierouxMonfortRenault1993` call $\theta^0(\rho)$ the **binding function**.
+
+{doc}`turbulence_inference` computes a binding function for a calibrated search model, with a Gaussian random-effects model of earnings as the auxiliary model.
 
 Their estimator is
 
@@ -875,6 +879,8 @@ The test rejects the restricted model at the 1% level [^gt_null].
 Gallant and Tauchen emphasize this second use of the machinery.
 
 An auxiliary model that approximates the data well makes the test powerful against structural model error, and the individual score components say *which* features of the data a rejected model fails to match.
+
+{doc}`specification_tests` describes other tests that compare two projections.
 
 Gallant and Tauchen's **quasi-t-ratios** divide each component of $\sqrt{n}\, m(\hat\rho_n, \tilde\theta_n)$ by its standard error.
 

@@ -269,6 +269,8 @@ moving-average coefficients**.
 Thus, consumption is a **random walk** with innovation
 $(1-\beta)d(\beta)w_{t+1}$.
 
+{doc}`approximation_errors` describes {cite:t}`Sims1993`'s use of this formula to show how a misspecified seasonal model of income biases the inferred response of consumption to income.
+
 Combining {eq}`eq:sprob13` and {eq}`eq:sprob7` gives
 
 $$

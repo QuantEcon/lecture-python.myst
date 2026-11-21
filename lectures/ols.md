@@ -627,6 +627,8 @@ print(reg2.summary())
 The output shows that the coefficient on the residuals is statistically
 significant, indicating $avexpr_i$ is endogenous.
 
+The square of the $t$ statistic on $\hat \upsilon_i$ is Wu's statistic $T_2$ of {doc}`specification_tests`, the ratio of the squared lengths of the two legs of a right triangle whose Pythagorean theorem is the one for m-projections.
+
 ```{solution-end}
 ```
 
