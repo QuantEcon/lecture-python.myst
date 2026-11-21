@@ -1066,6 +1066,8 @@ LR = 2(\ell_u - \ell_r) \Rightarrow \chi^2_d,
 
 where $\ell_u$ and $\ell_r$ are the maximized log-likelihoods of the unrestricted and restricted models, and $d$ is the difference in the number of free parameters.
 
+When the unrestricted model is a Gaussian vector autoregression estimated by least squares, $LR$ equals twice the sum over dates of the KL divergences between the one-step conditional distributions that the unrestricted and restricted fits imply; {doc}`specification_tests` describes such tests as comparisons of two projections.
+
 Both likelihoods must be evaluated on the same effective sample for the LR distribution to be valid.
 
 {cite:t}`hansen1983stochastic` report that for the value-weighted aggregate stock return, the $\chi^2$ test statistics provide little evidence against the model.

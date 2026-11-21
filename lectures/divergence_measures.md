@@ -231,6 +231,8 @@ The data processing inequality says that garbling data cannot make $f$ and $g$ e
 
 The section on {ref}`the data processing inequality and coarse-graining <bk_data_processing>` in {doc}`blackwell_kihlstrom` connects it to Blackwell's ordering of experiments.
 
+{ref}`ae_garbling_section` in {doc}`approximation_errors` applies it to filtering, seasonal adjustment, and sampling of time series.
+
 JS divergence and Chernoff entropy, defined below, also satisfy the data processing inequality.
 
 KL divergence plays a central role in statistical inference, including model selection and hypothesis testing.
@@ -692,6 +694,8 @@ The expected score is the negative gradient of the KL divergence, and it vanishe
 
 {doc}`gallant_tauchen` builds an estimator on this fact.
 
+{doc}`approximation_errors` computes pseudo-true values of misspecified time series models in the frequency domain.
+
 {doc}`mle` describes how to compute maximum likelihood estimates.
 
 {ref}`div_ex3` fits a misspecified Beta model to data drawn from a mixture.
@@ -707,6 +711,8 @@ This lecture has introduced tools  that we'll encounter elsewhere.
 - {doc}`imp_sample` uses the $\chi^2$ divergence $\chi^2(f\|q) = \int (f - q)^2 / q \, dx = \int f^2/q \, dx - 1$, which equals the variance under $q$ of the importance weight $f/q$.
 
 - {doc}`merging_of_opinions` uses the Bhattacharyya coefficient, under the name Hellinger affinity, to decide when two Bayesians' opinions merge.
+
+- {doc}`approximation_errors`, {doc}`specification_tests`, and {doc}`turbulence_inference` apply m-projections to misspecified time series models, specification tests, and indirect inference.
 
 - {doc}`exponential_families` and {doc}`information_projections` study the geometry of KL divergence: the exponential family, maximum entropy, and projections of distributions onto families of distributions, with applications to estimation, robust control, matrix balancing, and Chernoff information.
 
@@ -1022,7 +1028,7 @@ for N in [10**2, 10**3, 10**4, 10**5, 10**6]:
 
 The estimates approach $(a^*, b^*)$, the member of the Beta family closest to $h$ in KL divergence.
 
-{doc}`mix_model` studies a Bayesian whose model contains only $f$ and $g$ and who sees data from $h$; KL divergences from $h$ to $f$ and to $g$ determine where that Bayesian's beliefs settle.
+{doc}`mix_model` studies a Bayesian whose model contains only $f$ and $g$ and who sees data from $h$; KL divergences of $h$ from $f$ and from $g$ determine where that Bayesian's beliefs settle.
 
 {doc}`gallant_tauchen` uses the pseudo-true value of an auxiliary model as the target of an estimator.
 

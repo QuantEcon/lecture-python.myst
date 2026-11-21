@@ -103,7 +103,7 @@ The likelihood ratio process satisfies the recursion $L(w^t) = \ell (w_t) L (w^{
 
 Suppose that a density $h$ generates the data.
 
-Let $K_f = KL(h, f)$ and $K_g = KL(h, g)$ be the Kullback–Leibler divergences of $f$ and $g$ from $h$.
+Let $K_f = KL(h, f)$ and $K_g = KL(h, g)$ be the Kullback–Leibler divergences of $h$ from $f$ and from $g$.
 
 The strong law of large numbers applied to $\log L_t = \sum_{i=1}^t \log \ell(w_i)$ implies
 
@@ -978,7 +978,7 @@ The far $g$ has $KL(h,g) = 0.241 > KL(h,f)$, so agent 1's consumption share goes
 
 Agent 1 loses to the close $g$ and wins against the far $g$.
 
-In each case the winner is the agent whose beliefs have the smaller KL divergence from $h$.
+In each case the winner is the agent whose beliefs are closer to $h$ in KL divergence.
 
 These outcomes agree with formula {eq}`eq:be_survival` and with {ref}`KL_link` in {doc}`likelihood_ratio_process`.
 

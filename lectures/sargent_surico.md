@@ -143,6 +143,8 @@ $$ (eq:ss_h0)
 
 Whiteman showed that as $\beta \to 1$ the regression coefficient of $\bar y_t(\beta)$ on $\bar z_t(\beta)$ converges to $h(0)$.
 
+{doc}`approximation_errors` describes least squares with filtered data as a projection that weights each frequency by the filtered spectral density of the regressor; Lucas's filter puts nearly all of that weight at frequency zero.
+
 So Lucas's two illustrations are claims that
 
 $$

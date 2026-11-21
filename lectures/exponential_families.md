@@ -874,11 +874,13 @@ For the normal family, writing out $B_F(\theta_2, \theta_1)$ recovers the famili
 $$
 D_{KL}\left( N(\mu_1, \sigma_1^2) \| N(\mu_2, \sigma_2^2) \right)
 = \log \frac{\sigma_2}{\sigma_1} + \frac{\sigma_1^2 + (\mu_1 - \mu_2)^2}{2 \sigma_2^2} - \frac{1}{2} ,
-$$
+$$ (ef_kl_normal)
 
 which reduces to the expression $(\mu_1 - \mu_2)^2/(2\sigma^2)$ that we used for the four normal distributions when $\sigma_1 = \sigma_2 = \sigma$.
 
 The multivariate version of this formula appears in {doc}`advanced:entropy`.
+
+{doc}`approximation_errors` applies {eq}`ef_kl_normal` frequency by frequency to compute the KL divergence rate between two stationary Gaussian processes.
 
 ### Fisher information is the curvature of KL divergence
 
@@ -903,6 +905,8 @@ In expectation parameters, the Fisher information matrix is $\nabla^2 F^*(\eta) 
 If $\theta$ is a function of another parameter $\xi$, with Jacobian $J = \partial \theta / \partial \xi$, then the Fisher information matrix for $\xi$ is $J^\top I(\theta) J$; with $\xi = \eta$, $J = \nabla^2 F^*(\eta)$ and $J^\top I(\theta) J = I(\theta)^{-1}$.
 
 The quadratic approximations in the two coordinate systems agree to second order in the size of a displacement and differ for large displacements.
+
+{doc}`specification_tests` shows that the likelihood ratio, Lagrange multiplier, and Hausman statistics of a test of independence of irrelevant alternatives are $2m$ times a KL divergence and quadratic approximations of this kind in three coordinates.
 
 The figure shows this for the Poisson family, comparing $D_{KL}(p_{\lambda_0} \| p_\lambda)$ with its quadratic approximations in natural parameters, $\frac{1}{2} \lambda_0 (\log \lambda - \log \lambda_0)^2$, and in expectation parameters, $\frac{1}{2} (\lambda - \lambda_0)^2 / \lambda_0$.
 
