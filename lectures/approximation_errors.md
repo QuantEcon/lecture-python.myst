@@ -140,7 +140,7 @@ We call $D(f \| g)$ the **KL divergence rate** of the process with spectral dens
 
 {doc}`likelihood_ratio_process` and {doc}`likelihood_var` write this rate $h_{KL}(f, g)$ and compute it in the time domain, for Markov chains and for Gaussian vector autoregressions; for two first-order vector autoregressions with mean zero, the vector formula {eq}`ae_kl_rate_vector` below equals {eq}`eq:var_kl_rate`.
 
-**The KL divergence rate is the average over frequencies of the KL divergences between normal distributions whose variances are the two spectral densities at each frequency.**
+*The KL divergence rate is the average over frequencies of the KL divergences between normal distributions whose variances are the two spectral densities at each frequency.*
 
 The transforms $w_j = T^{-1/2} \sum_{t=1}^T y_t e^{-i \omega_j t}$ at the frequencies $\omega_j = 2\pi j / T$ with $0 < \omega_j < \pi$ are, for large $T$, approximately independent complex normal random variables with variances $f(\omega_j)$.
 
@@ -202,7 +202,7 @@ $$ (ae_hs_criterion)
 
 Subtracting from $A(\delta)$ the quantity $\frac{1}{2\pi}\int \log \det F(\omega) \, d\omega + n$, which does not depend on $\delta$, leaves twice the divergence rate {eq}`ae_kl_rate_vector`.
 
-Hence **the probability limit of the misspecified maximum likelihood estimator is the m-projection of the true process onto the model, with divergence measured by the KL divergence rate.**
+Hence *the probability limit of the misspecified maximum likelihood estimator is the m-projection of the true process onto the model, with divergence measured by the KL divergence rate.*
 
 {cite:t}`HansenSargent1993` apply at each frequency $\omega$ what they call "the familiar information inequality for normally distributed random variable":
 
@@ -262,7 +262,7 @@ By Kolmogorov's formula, $\frac{1}{2\pi}\int_{-\pi}^{\pi} \log f(\omega) \, d\om
 
 For a vector process, the spectral factorization identity {eq}`eq:sf_identity` of {doc}`kalman_filter_var` gives the counterpart: the average over frequencies of the log determinant of the spectral density matrix of a state-space model's observables equals the log determinant of its innovation covariance matrix, $G\Sigma G^\top + R$ in that lecture's notation.
 
-The second term does not depend on $a$, so **the m-projection of a stationary process onto the autoregressions of order $p$ chooses the coefficients that minimize the mean squared one-step-ahead forecast error.**
+The second term does not depend on $a$, so *the m-projection of a stationary process onto the autoregressions of order $p$ chooses the coefficients that minimize the mean squared one-step-ahead forecast error.*
 
 Those coefficients solve the Yule–Walker equations $\sum_{k=1}^p a_k \gamma_{j-k} = \gamma_j$ for $j = 1, \ldots, p$; for $p = 1$, $a_1 = \gamma_1 / \gamma_0$.
 
@@ -364,7 +364,7 @@ In the right panel, vertical lines mark the seasonal frequencies $\pi/2$ and $\p
 ---
 mystnb:
   figure:
-    caption: Spectral densities (left) and the contribution of each frequency to the divergence rate (right) for an AR(1) fitted to a series with a seasonal component
+    caption: AR(1) projection of a seasonal series
     name: fig-ae-seasonal-ar1
 ---
 half = ω <= np.pi
@@ -396,7 +396,9 @@ plt.tight_layout()
 plt.show()
 ```
 
-A first-order autoregression cannot produce a peak at $\pi/2$ or a narrow peak at $\pi$, so the divergence is largest at those frequencies.
+A first-order autoregression cannot produce a peak at $\pi/2$, and it can produce a narrow peak at $\pi$ only with a coefficient near $-1$, which would give up the power near frequency zero.
+
+So the divergence is largest at those two frequencies.
 
 For a given $\sigma^2$, lowering $\rho$ raises the model's spectral density at high frequencies and lowers it near frequency zero.
 
@@ -599,7 +601,7 @@ print_lag_table(t_vals, b_exp(t_vals), col2, col3, col5)
 ---
 mystnb:
   figure:
-    caption: A continuous-time lag distribution and two discrete-time lag distributions that least squares estimates from sampled data
+    caption: Continuous-time lag and its sampled projections
     name: fig-ae-sampled-lag
 ---
 t_fine = np.linspace(-4, 8, 600)
@@ -696,7 +698,7 @@ print(f"unconstrained coefficient at lag zero, identity lag: "
 ---
 mystnb:
   figure:
-    caption: Spectral densities of the regressor with and without seasonal noise (left), and the lag distributions that unconstrained least squares estimates (right)
+    caption: Seasonal noise and estimated lag distributions
     name: fig-ae-sims-1974
 ---
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
@@ -1036,7 +1038,7 @@ Filtering therefore applies one Markov kernel, a deterministic one, to both proc
 
 When the frequency response $c(e^{-i\omega})$ is zero at most at isolated frequencies, filtering multiplies $f$ and $g$ by $|c(e^{-i\omega})|^2$ and leaves the ratio $f/g$ unchanged at every other frequency, so the divergence rate {eq}`ae_kl_rate` does not change.
 
-**A filter applied to both the data and the model whose frequency response is zero at most at isolated frequencies leaves the divergence rate and the m-projection unchanged, however much it shrinks the spectral densities near those frequencies.**
+*A filter applied to both the data and the model whose frequency response is zero at most at isolated frequencies leaves the divergence rate and the m-projection unchanged, however much it shrinks the spectral densities near those frequencies.*
 
 If, in addition, the spectral measure of the data puts no mass at those frequencies, the filtered series determines the unfiltered series in mean square, so the filter is a sufficient statistic for the pair, and the invariance of {ref}`ae_ar_section` is the equality case of the data processing inequality.
 
@@ -1226,7 +1228,7 @@ The periodogram ordinates at the seasonal peaks, where $f/g$ is large, enter $\m
 
 Deleting bands of width $\pi/8$ removes those ordinates and lowers the variance to $0.31$, so here deleting bands lowers the variance as well as the bias.
 
-**The efficiency cost of deleting frequencies is guaranteed only for correctly specified models.**
+*The efficiency cost of deleting frequencies is guaranteed only for correctly specified models.*
 
 {ref}`ae_ex_tradeoff` finds the band width that balances bias against variance when the seasonal component is small.
 

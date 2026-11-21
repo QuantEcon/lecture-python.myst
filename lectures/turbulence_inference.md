@@ -179,7 +179,7 @@ The figure shows the distribution of skills after a layoff for a worker who had 
 ---
 mystnb:
   figure:
-    caption: Distribution of skill after a layoff for a worker with the highest skill
+    caption: Skill after a layoff from the top level
     name: fig-ti-layoff
 ---
 fig, ax = plt.subplots()
@@ -412,7 +412,7 @@ The model's distribution of earnings is discrete, so its KL divergence from ever
 
 The proof of {prf:ref}`ip_thm_m_projection` applies instead to the cross-entropy $-E[\log q_\theta(y_i)]$, which differs from the KL divergence by the entropy of $y_i$ whenever $y_i$ has a density.
 
-For any distribution of $y_i$ with a nonsingular covariance matrix whose average off-diagonal element is nonnegative, the parameters that minimize the cross-entropy match the expectations of the sufficient statistics, which sets $m = E[\bar y_i]$ and
+For any distribution of $y_i$ with the same mean in every year and a nonsingular covariance matrix whose average off-diagonal element is nonnegative, the parameters that minimize the cross-entropy match the expectations of the sufficient statistics, which sets $m = E[\bar y_i]$ and
 
 $$
 E[W_i] = (T - 1) \sigma^2_\nu ,
@@ -426,7 +426,7 @@ We call this minimizer the m-projection of the distribution of $y_i$ onto the ra
 
 The projection sets $\sigma^2_\nu$ equal to the average expected periodogram at the nonzero Fourier frequencies, and, for $y_i$ with mean zero, as in our year-demeaned panels, $T\sigma^2_\mu + \sigma^2_\nu$ equal to the expected periodogram at frequency zero.
 
-**For a balanced panel, Gottschalk and Moffitt's permanent and transitory variances are the parameters of the m-projection of the distribution of a man's earnings onto the random-effects model**: formulas {eq}`ti_gm` are the expressions above with the sample of men in place of the population, apart from the divisor $N - 1$ in the variance of the averages.
+*For a balanced panel, Gottschalk and Moffitt's permanent and transitory variances are the parameters of the m-projection of the distribution of a man's earnings onto the random-effects model*: formulas {eq}`ti_gm` are the expressions above with the sample of men in place of the population, apart from the divisor $N - 1$ in the variance of the averages.
 
 The projection is defined whether or not the random-effects model describes the data.
 
@@ -588,7 +588,7 @@ model_sd_bins = np.arange(0.1, 0.71, 0.1)
 ---
 mystnb:
   figure:
-    caption: Distributions of men's average log earnings (left) and of their standard deviations of earnings around those averages (right), in the PSID (top, read from Gottschalk and Moffitt's Figures 2 and 4) and in artificial panels from the laissez-faire economy (bottom)
+    caption: Earnings histograms in the PSID and the model
     name: fig-ti-histograms
 ---
 fig, axes = plt.subplots(2, 2, figsize=(11, 7))
@@ -671,7 +671,7 @@ for v, b in zip(list(v_grid) + [np.inf], list(binding) + [b_uniform]):
 ---
 mystnb:
   figure:
-    caption: Changes in the model's permanent and transitory variances relative to the turbulence parameter 0.02, for turbulence parameters from 0.01 to 1, compared with the changes that Gottschalk and Moffitt measured
+    caption: Binding function against the measured changes
     name: fig-ti-binding
 ---
 fig, axes = plt.subplots(1, 2, figsize=(11, 4))
@@ -1017,7 +1017,7 @@ for name, res in (("turbulence 0.04", turbulent),
 ---
 mystnb:
   figure:
-    caption: Twelve-week earnings of stayers and separators in the laissez-faire economy with turbulence parameter 0.04
+    caption: Earnings of stayers and separators
     name: fig-ti-jls
 ---
 fig, ax = plt.subplots()
@@ -1066,7 +1066,7 @@ Measuring that change requires comparable displaced-worker studies from both per
 ```{exercise}
 :label: ti_ex_projection
 
-Let $y_i$ be a random vector in $\mathbb{R}^T$ with mean zero and covariance matrix $S$, and consider the random-effects family $N(0, \sigma^2_\mu \mathbf{1}\mathbf{1}^\top + \sigma^2_\nu I)$.
+Let $y_i$ be a random vector in $\mathbb{R}^T$ with mean zero and a positive definite covariance matrix $S$ whose average off-diagonal element is nonnegative, and consider the random-effects family $N(0, \sigma^2_\mu \mathbf{1}\mathbf{1}^\top + \sigma^2_\nu I)$.
 
 1. Show that the inverse of $\Sigma = \sigma^2_\mu \mathbf{1}\mathbf{1}^\top + \sigma^2_\nu I$ is $\sigma_\nu^{-2} \left(I - c\,\mathbf{1}\mathbf{1}^\top\right)$ with $c = \sigma^2_\mu / (\sigma^2_\nu + T \sigma^2_\mu)$, and that $\log p(y_i)$ is a linear function of $W_i$ and $T \bar y_i^2$ plus a function of the parameters.
 2. Minimize the Gaussian KL divergence of $N(0, S)$ from $N(0, \Sigma)$ over $(\sigma^2_\mu, \sigma^2_\nu)$ and show that the minimizer sets $\sigma^2_\nu = (\operatorname{tr} S - \mathbf{1}^\top S \mathbf{1}/T)/(T - 1)$ and $\sigma^2_\mu = \mathbf{1}^\top S \mathbf{1}/T^2 - \sigma^2_\nu / T$.
@@ -1106,6 +1106,8 @@ For part 3, the least squares problem $\min \sum_{t \le s} (S_{ts} - \Sigma_{ts}
 The minimizer sets $\sigma^2_\mu + \sigma^2_\nu$ equal to the average diagonal element $\bar s_d$ and $\sigma^2_\mu$ equal to the average off-diagonal element $\bar s_o$.
 
 Since $\operatorname{tr} S = T \bar s_d$ and $\mathbf{1}^\top S \mathbf{1} = T\bar s_d + T(T - 1)\bar s_o$, the formulas of part 2 give $\sigma^2_\nu = \bar s_d - \bar s_o$ and $\sigma^2_\mu = \bar s_o$.
+
+So $\sigma^2_\mu \geq 0$ exactly when the average off-diagonal element of $S$ is nonnegative, which is why the exercise assumes it.
 
 ```{code-cell} ipython3
 S = np.cov(y04.T)

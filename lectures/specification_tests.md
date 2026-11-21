@@ -224,10 +224,11 @@ A just-identified instrumental variables estimator has no finite moments, so we 
 ```{code-cell} ipython3
 def ols_iv(σ_uv, rng, n=400, R=20_000, chunk=5_000):
     b_ols, b_iv = [], []
-    for _ in range(R // chunk):                 # chunks limit memory use
-        z_ = rng.normal(size=(chunk, n))
-        u_ = rng.normal(size=(chunk, n))
-        v_ = σ_uv * u_ + np.sqrt(1 - σ_uv**2) * rng.normal(size=(chunk, n))   # V
+    for start in range(0, R, chunk):            # chunks limit memory use
+        size = min(chunk, R - start)
+        z_ = rng.normal(size=(size, n))
+        u_ = rng.normal(size=(size, n))
+        v_ = σ_uv * u_ + np.sqrt(1 - σ_uv**2) * rng.normal(size=(size, n))   # V
         x_ = Π * z_ + v_
         y_ = β_true * x_ + u_
         b_ols.append((x_ * y_).sum(axis=1) / (x_ * x_).sum(axis=1))
@@ -333,7 +334,7 @@ for n2, n3 in ((230, 270), (180, 320)):
 ---
 mystnb:
   figure:
-    caption: KL divergence per choice of alternative 2 or 3, and the quadratic approximations behind the LM and Hausman statistics
+    caption: KL divergence and its quadratic approximations
     name: fig-st-iia
 ---
 s_vals = np.linspace(0.2, 0.8, 300)
