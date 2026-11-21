@@ -231,6 +231,8 @@ The data processing inequality says that garbling data cannot make $f$ and $g$ e
 
 The section on {ref}`the data processing inequality and coarse-graining <bk_data_processing>` in {doc}`blackwell_kihlstrom` connects it to Blackwell's ordering of experiments.
 
+{ref}`ae_garbling_section` in {doc}`approximation_errors` applies it to filtering, seasonal adjustment, and sampling of time series.
+
 JS divergence and Chernoff entropy, defined below, also satisfy the data processing inequality.
 
 KL divergence plays a central role in statistical inference, including model selection and hypothesis testing.

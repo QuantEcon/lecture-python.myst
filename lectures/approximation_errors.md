@@ -38,12 +38,13 @@ For stationary Gaussian processes, the KL divergence per observation converges t
 
 {cite:t}`Sims1971`, {cite:t}`Sims1974`, {cite:t}`Sims1993`, and {cite:t}`HansenSargent1993` study the errors that an econometrician makes when fitting a misspecified time series model, and they show how sampling, seasonal noise, and seasonal adjustment change those errors.
 
-The lecture has four sections.
+The lecture has five sections.
 
 * {ref}`ae_kl_section` describes the KL divergence between two stationary Gaussian processes as an integral over frequencies.
 * {ref}`ae_ar_section` describes misspecified autoregressions as projections of spectral densities, and describes how filtering the data and the model, filtering the data alone, and deleting frequency bands change the projection.
 * {ref}`ae_lag_section` describes least squares estimates of distributed lags as m-projections weighted by the spectral density of the regressor, and describes Sims's results on sampling and on seasonal noise.
 * {ref}`ae_seasonal_section` describes seasonal adjustment in dynamic rational expectations models.
+* {ref}`ae_garbling_section` treats filtering, deleting frequency bands, removing seasonal means, and sampling as garblings in the sense of {doc}`blackwell_kihlstrom`, and uses the data processing inequality to organize the results of the earlier sections.
 
 {doc}`specification_tests` continues this lecture: it describes specification tests as comparisons of two projections.
 
@@ -420,7 +421,7 @@ $$ (ae_hs_ideal)
 
 With the seasonal bands deleted, the econometrician projects the part of the process that lies outside the bands onto the part of the model that lies outside them.
 
-The divergence rate restricted to $K$ is at most the full divergence rate, because the information inequality makes every deleted term nonnegative.
+The divergence rate restricted to $K$ is at most the full divergence rate, because the information inequality makes every deleted term nonnegative; {ref}`ae_garbling_section` reads this inequality as an instance of the data processing inequality.
 
 If, for some $\delta_0$, the model matches $F$ outside the seasonal bands and matches the mean, $\mu(\delta_0) = \nu$, then $\delta_0$ is among the minimizers of {eq}`ae_hs_ideal`, whatever the model does inside the bands.
 
@@ -471,6 +472,8 @@ Two other operations change the projection.
 
 * **Deleting frequencies**, as in {eq}`ae_hs_ideal`, removes the bands from the criterion and leaves the other frequencies unchanged. In a regression, filtering both variables with a filter that is zero in the bands and one elsewhere is equivalent to deleting the bands. That filter is not invertible, so the invariance argument does not apply.
 * **Filtering the data but not the model** replaces $f$ by $|c(e^{-i\omega})|^2 f$ and leaves $g$ alone, so the econometrician projects a different process onto the same model.
+
+{ref}`ae_garbling_section` shows that the invariance and the effect of deleting frequencies are the equality and inequality cases of the data processing inequality, which says nothing about filtering the data alone.
 
 The code below confirms the invariance and computes the effect of filtering the data alone by $c(L) = 1 - 0.5L$.
 
@@ -1016,6 +1019,321 @@ Sims concludes:
 
 > Use of unadjusted data and a correctly specified model of seasonal variation is always the best option. But treating seasonality casually, as a 'nuisance' component of the model, can lead to worse errors than those produced by use of adjusted data.
 
+(ae_garbling_section)=
+## Garbling and the data processing inequality
+
+{doc}`blackwell_kihlstrom` calls an experiment a **garbling** of another experiment when its signal can be generated from the other experiment's signal by a Markov kernel.
+
+The {ref}`data processing inequality <bk_data_processing>` says that applying the same Markov kernel to two distributions cannot increase any f-divergence between them, including the KL divergence, and that the divergence is unchanged when the kernel is induced by a sufficient statistic for the pair.
+
+Filtering, deleting frequency bands, removing seasonal means, and sampling are garblings, and the inequality organizes what this lecture has found about them.
+
+### Filters, frequency bands, and the data processing inequality
+
+When an econometrician filters the data by $c(L)$ and filters the model in the same way, the filtered series is the same function of the unfiltered series under the true process and under the model.
+
+Filtering therefore applies one Markov kernel, a deterministic one, to both processes, and the data processing inequality says that filtering cannot increase the divergence between them.
+
+When the frequency response $c(e^{-i\omega})$ is zero at most at isolated frequencies, filtering multiplies $f$ and $g$ by $|c(e^{-i\omega})|^2$ and leaves the ratio $f/g$ unchanged at every other frequency, so the divergence rate {eq}`ae_kl_rate` does not change.
+
+**A filter applied to both the data and the model whose frequency response is zero at most at isolated frequencies leaves the divergence rate and the m-projection unchanged, however much it shrinks the spectral densities near those frequencies.**
+
+If, in addition, the spectral measure of the data puts no mass at those frequencies, the filtered series determines the unfiltered series in mean square, so the filter is a sufficient statistic for the pair, and the invariance of {ref}`ae_ar_section` is the equality case of the data processing inequality.
+
+Sims's filter $1 - \kappa(L)\kappa(L^{-1})$ is zero at $\pm\pi/2$, at $\pi$, and at two frequencies near $\pm 0.485\pi$.
+
+It removes the deterministic seasonal, whose spectral measure puts all its mass at $\pm\pi/2$, and the equality applies to what remains, as {ref}`ae_ex_invariance` shows.
+
+A filter cannot delete a band of frequencies from the likelihood.
+
+A filter whose frequency response is zero on a band makes the filtered processes linearly deterministic, and formula {eq}`ae_kl_rate`, which assumes spectral densities bounded away from zero, no longer applies.
+
+For example, if the true process and the model are white noise with variances $1$ and $2$, the filtered model is $\sqrt{2}$ times the filtered true process, so the divergence between the distributions of $T$ filtered observations equals the divergence between the distributions of $T$ unfiltered observations at every $T$.
+
+Hansen and Sargent define ideal seasonal adjustment in the frequency domain instead, by omitting the seasonal frequencies from the frequency-domain likelihood.
+
+The finite Fourier transforms $w_j$ at the frequencies $\omega_j = 2\pi j / T$, $j = 0, \ldots, T - 1$, are an invertible linear transformation of the sample, so dropping the transforms at the frequencies in the bands is a garbling at every sample size.
+
+Divided by $T$, the divergence between the distributions of the remaining transforms converges to the divergence rate restricted to the set $K$ of frequencies outside the bands:
+
+$$
+D_K(f \| g) = \frac{1}{4\pi} \int_K \left[ \frac{f(\omega)}{g(\omega)} - 1 - \log \frac{f(\omega)}{g(\omega)} \right] d\omega \leq D(f \| g) .
+$$ (ae_dpi_bands)
+
+Twice $D_K$ is the first term of {eq}`ae_hs_ideal` minus terms that do not depend on $\delta$, so the statement after {eq}`ae_hs_ideal` that the restricted rate is at most the full rate is the data processing inequality.
+
+Equality holds when $f = g$ almost everywhere in the bands: then, in large samples, the transforms in the bands have the same distribution under the two processes and are independent of the remaining transforms, so dropping them discards nothing that distinguishes the processes.
+
+Filtering the data but not the model, as Sims's econometrician does, applies the kernel to only one of the two distributions, and the data processing inequality says nothing about it.
+
+Sims's permanent income examples go in opposite directions, although each comparison also changes the order of the autoregression.
+
+In the first, adjusted data bring the bias factor closer to one: it is $1.17$ for a ninth-order autoregression fitted to unadjusted data, and $0.893$ by our computation and $1.0137$ by Sims's for a second-order autoregression fitted to adjusted data.
+
+In the second, adjusted data move the implied coefficient from $20.64$ to $17.08$ with a second-order autoregression, or to $16.82$ with a ninth-order one, farther from the true value $20$.
+
+### A Blackwell chain
+
+Hansen and Sargent's three kinds of data are ordered by garbling.
+
+Data from which seasonal means have been removed are the residuals from a regression of the unadjusted data on seasonal dummies, so they are a function of the unadjusted data.
+
+Ideally adjusted data are a function of the data with seasonal means removed.
+
+When $T$ is a multiple of $4$, the seasonal dummies span the same space as the finite Fourier vectors at the frequencies $0$, $\pi/2$, $\pi$, and $3\pi/2$, so removing seasonal means drops the transforms at those four frequencies, and ideal adjustment drops, in addition, the transforms in the bands around $\pi/2$, $\pi$, and $3\pi/2$.
+
+The three kinds of data are nested sets of Fourier transforms, and each is a garbling of the one before it at every sample size.
+
+For each $\delta$, subtracting from each of the three criteria the terms that do not depend on $\delta$ leaves twice the divergence rate between the true process and the model at $\delta$ after the corresponding garbling.
+
+So at every $\delta$, the divergence falls weakly from the first kind of data to the second and from the second to the third.
+
+The minimized divergence falls too: if $\delta^*$ minimizes the divergence for the finer data, the minimum for the coarser data is at most the coarser divergence at $\delta^*$, which is at most the finer divergence at $\delta^*$.
+
+In Hansen and Sargent's Table 1, the errors in the probability limits of the estimates also fall at every step.
+
+We measure the error in $\gamma$ from the average $0.1025$ of the quarterly productivity parameters.
+
+```{code-cell} ipython3
+table_1 = {"γ": (0.0996, 0.1030, 0.1025), "φ_1": (0.4132, 0.2854, 0.3007),
+           "a_1": (0.931, 0.3250, 0.3987), "a_4": (0.4383, 0.1598, -0.0003),
+           "a_5": (-0.4298, -0.1261, -0.0005)}
+true_values = {"γ": np.mean([0.13, 0.1, 0.1, 0.08]), "φ_1": 0.3, "a_1": 0.4,
+               "a_4": 0.0, "a_5": 0.0}
+print("absolute errors   unadjusted   means removed   ideally adjusted")
+for name, estimates in table_1.items():
+    errors = np.abs(np.array(estimates) - true_values[name])
+    print(f"{name:>15}" + "".join(f"{e:15.4f}" for e in errors))
+```
+
+Blackwell's theorem says that a decision maker who knows the likelihoods of an experiment can do at least as well with it as with any garbling of it, in every decision problem.
+
+Sims's conclusion, "Use of unadjusted data and a correctly specified model of seasonal variation is always the best option," is the counterpart of that theorem for estimation: with a correctly specified model, deleting frequencies cannot lower the asymptotic variance of the maximum likelihood estimator.
+
+Hansen and Sargent's Table 1 reverses Blackwell's ranking.
+
+Their econometrician evaluates the three kinds of data with the likelihoods of a misspecified model, so Blackwell's theorem does not apply, and the probability limits of the estimates of the parameters of preferences, technology, and the endowment process are closest to the truth for the coarsest data.
+
+Hansen and Sargent's introduction describes the argument that their reversal answers:
+
+> Other writers had asserted that seasonally unadjusted data ought to be used to estimate rational expectations models, on the grounds that the agents being modelled were themselves assumed to be solving forecasting and signal extraction problems using seasonally unadjusted data, and that the cross-equation restrictions implied by their behavior applied to seasonally unadjusted series. Sims responded that that argument assumes that the model is correctly specified, and asserted that admitting the possibility of approximation error would alter the situation.
+
+The other writers are {cite:t}`Sargent1978Seasonal` and {cite:t}`Singleton1988`.
+
+The agents inside the model know the true likelihoods, so Blackwell's theorem applies to them, and they have no reason to garble their data.
+
+Sims's reply is that the theorem does not apply to an econometrician whose model is misspecified.
+
+{doc}`information_transfer` describes a different reason that a decision maker can prefer a garbled experiment.
+
+### Two pairs of distributions
+
+The data processing inequality applies to any two distributions.
+
+Applied to the true process and the model at $\delta$, it says that a garbling cannot increase the misspecification; Hansen and Sargent's ideal adjustment, their version of Sims's argument, uses this side.
+
+Applied to the model at two parameter values $\delta$ and $\delta'$, it says that a garbling cannot make them easier to tell apart.
+
+If a garbling maps them to the same distribution, they become observationally equivalent, which is what Hansen and Sargent mean when they write that omitting frequencies "might hinder identification by introducing additional minimizers."
+
+For nearby parameter values, the divergence is one half a quadratic form in the Fisher information matrix, as in {doc}`exponential_families`.
+
+For a scalar model with spectral density $g(\omega; \delta)$ fitted to the frequencies in a set $K$, the Fisher information matrix of the frequency-domain likelihood is
+
+$$
+\mathcal{I}_K(\delta) = \frac{1}{4\pi} \int_K \nabla_\delta \log g(\omega; \delta) \, \nabla_\delta \log g(\omega; \delta)^\top \, d\omega ,
+$$ (ae_info_K)
+
+so deleting frequencies lowers it in the matrix order: $\mathcal{I}_K(\delta) \preceq \mathcal{I}(\delta)$, where $\mathcal{I}$ uses all frequencies.
+
+This is the Fisher-information form of the data processing inequality in {doc}`blackwell_kihlstrom`.
+
+Inversion reverses the matrix order, so with a correctly specified model, $\sqrt{T}$ times the estimator's error has asymptotic covariance matrix $\mathcal{I}_K(\delta)^{-1} \succeq \mathcal{I}(\delta)^{-1}$, which is the efficiency cost in Hansen and Sargent's footnote 11.
+
+The two matrices are equal when $\nabla_\delta \log g = 0$ almost everywhere on the deleted frequencies, so that those frequencies carry no information about $\delta$.
+
+Hansen and Sargent's correctly specified examples remain identified when the seasonal frequencies are dropped, although the parameters "impinge most strongly on the seasonal frequencies":
+
+> they affect all frequencies in ways that are sufficient to preserve their identification even when the seasonal frequencies are dropped.
+
+There, deleting the bands lowers the information about the parameters without making any other parameter value observationally equivalent to the true one.
+
+Hansen and Sargent's concluding remarks set the two sides of the inequality against each other:
+
+> Second, when one is estimating a correctly specified model, there will occur a substantial efficiency loss from using seasonally adjusted data, a loss that grows with the importance of the seasonality in the raw data. In practice, there can be a trade-off between variance and bias of estimators, the dimensions of which we have not explored in this paper.
+
+Their footnote 17 adds: "On the basis of the logic leading to (4.2), something can be said about the asymptotic distributions of estimators of misspecified models. We plan to explore this in subsequent work."
+
+When the data come from a Gaussian process whose spectral density $f$ differs from $g(\cdot\,; \delta^*_K)$, where $\delta^*_K$ is the m-projection over the frequencies in $K$, $\sqrt{T}(\hat \delta_K - \delta^*_K)$ has asymptotic covariance matrix $\mathcal{H}_K^{-1} \mathcal{J}_K \mathcal{H}_K^{-1}$, where
+
+$$
+\mathcal{H}_K = \frac{1}{4\pi} \int_K \left[ \nabla \log g \, \nabla \log g^\top \, \frac{f}{g} + \nabla^2 \log g \left( 1 - \frac{f}{g} \right) \right] d\omega ,
+\qquad
+\mathcal{J}_K = \frac{1}{4\pi} \int_K \nabla \log g \, \nabla \log g^\top \left( \frac{f}{g} \right)^2 d\omega ,
+$$ (ae_sandwich)
+
+with $g$ and its derivatives evaluated at $\delta^*_K$.
+
+$\mathcal{H}_K$ is the Hessian of the divergence rate restricted to $K$, and $\mathcal{J}_K$ is the asymptotic variance of the score of {eq}`ae_whittle` divided by $\sqrt{T}$.
+
+The factor $(f/g)^2$ comes from the variance of the periodogram, which stays near $f^2$.
+
+When $f = g(\cdot\,; \delta^*_K)$, both matrices equal $\mathcal{I}_K$, and the covariance matrix reduces to $\mathcal{I}_K^{-1}$.
+
+The code below computes, for the seasonal example, the AR(1) projection with bands of several widths deleted, the minimized divergence, and the asymptotic variance of $\hat\rho$ in two cases: when the data come from $x_t$ alone, so that the AR(1) is correct, and when they come from $y_t = x_t + s_t$.
+
+```{code-cell} ipython3
+def ar1_derivatives(ρ, σ2):
+    """∇ log g and ∇² log g on the grid for g = σ²/|1 - ρe^{-iω}|², θ = (ρ, σ²)."""
+    d1 = np.vstack([2 * np.real(z / (1 - ρ * z)), np.ones(n_grid) / σ2])
+    d2 = np.zeros((2, 2, n_grid))
+    d2[0, 0] = 2 * np.real(z**2 / (1 - ρ * z)**2)
+    d2[1, 1] = -1 / σ2**2
+    return d1, d2
+
+
+def ar1_covariance(f, ρ, σ2, keep):
+    """Asymptotic covariance matrix of √T(θ̂ - θ*), formula (ae_sandwich)."""
+    d1, d2 = ar1_derivatives(ρ, σ2)
+    r = np.where(keep, f / ar_spectrum(ρ, σ2), 0.0)
+    H = 0.5 * ((d1 * r) @ d1.T
+               + (d2 * np.where(keep, 1 - r, 0.0)).sum(axis=2)) / n_grid
+    J = 0.5 * ((d1 * r**2) @ d1.T) / n_grid
+    H_inv = np.linalg.inv(H)
+    return H_inv @ J @ H_inv
+
+
+print("band width     ρ*    divergence   Var, x alone   Var, y = x + s")
+for Δ in (0, np.pi / 16, np.pi / 8, np.pi / 4, np.pi / 2):
+    keep = seasonal_keep(Δ)
+    a_K, σ2_K = ar_projection(f_y, 1, keep)
+    V_x = ar1_covariance(f_x, ρ_x, 1.0, keep)[0, 0]
+    V_y = ar1_covariance(f_y, a_K[0], σ2_K, keep)[0, 0]
+    print(f"{Δ / np.pi:9.4f}π {a_K[0]:7.4f} "
+          f"{kl_rate(f_y, ar_spectrum(a_K, σ2_K), keep):11.5f} "
+          f"{V_x:13.4f} {V_y:15.4f}")
+```
+
+With bands of width $\pi/2$, only the frequencies below $\pi/4$ remain.
+
+When the AR(1) is correct, deleting bands of width $\pi/8$ raises the asymptotic variance of $\hat\rho$ from $0.190$ to $0.194$, about 2 percent, because the information about $\rho$ is concentrated at low frequencies.
+
+Hansen and Sargent's footnote 11 describes rational expectations models differently: their cross-equation restrictions put much of the information at the high-power seasonal frequencies, where deleting bands costs more.
+
+In the seasonal example, the estimator that uses all frequencies has asymptotic variance $4.57$, 24 times the variance when the AR(1) is correct.
+
+The periodogram ordinates at the seasonal peaks, where $f/g$ is large, enter $\mathcal{J}_K$ with the weight $(f/g)^2$.
+
+Deleting bands of width $\pi/8$ removes those ordinates and lowers the variance to $0.31$, so here deleting bands lowers the variance as well as the bias.
+
+**The efficiency cost of deleting frequencies is guaranteed only for correctly specified models.**
+
+{ref}`ae_ex_tradeoff` finds the band width that balances bias against variance when the seasonal component is small.
+
+{doc}`specification_tests` builds a test that compares the band-deleted and full-band estimators and uses {eq}`ae_sandwich` to compute the variance of their difference when the model is misspecified.
+
+### Divergences, not estimates
+
+The data processing inequality bounds divergences; it does not say where the minimizer goes.
+
+Deleting a band of low frequencies instead of the seasonal bands is also a garbling.
+
+```{code-cell} ipython3
+dist_0 = np.minimum(ω, 2 * np.pi - ω)
+print(f"all frequencies:                 ρ* = {a_full[0]:.4f},  "
+      f"divergence {kl_rate(f_y, g_full):.4f}")
+for Δ in (np.pi / 8, np.pi / 4):
+    keep_low = dist_0 >= Δ / 2              # delete a band of width Δ around zero
+    a_low, σ2_low = ar_projection(f_y, 1, keep_low)
+    print(f"low band of width {Δ / np.pi:.3f}π deleted: ρ* = {a_low[0]:.4f},  "
+          f"divergence {kl_rate(f_y, ar_spectrum(a_low, σ2_low), keep_low):.4f}")
+```
+
+The minimized divergence falls from $0.429$ to $0.366$ and $0.330$, as the inequality requires, but $\rho^*$ falls from $0.62$ to $0.25$ and $0.02$, farther from the coefficient $0.9$ of the nonseasonal component.
+
+This garbling discards frequencies at which the seasonal component has almost no power and at which most of the information about $\rho$ lies: a band of width $\pi/8$ around zero holds 0.03 percent of the variance of $s_t$ and 91 percent of $\mathcal{I}(\rho)$ when the AR(1) is correct.
+
+A garbling can improve the estimates of the parameters that an econometrician cares about when it discards the frequencies at which the model is wrong and keeps the frequencies that carry information about those parameters.
+
+Hansen and Sargent's third qualification in their concluding remarks allows for this: "it is undoubtedly true that particular examples of estimation of misspecified models can go against Sims's recommendation."
+
+Their condition for ideal adjustment to work describes a garbling that discards exactly the misspecification.
+
+If, for some $\delta_0$, the model matches $F$ outside the seasonal bands and matches the mean, then the garbling maps the true process and the model at $\delta_0$ to the same distribution, because two Gaussian processes with the same mean and spectral density are the same process.
+
+The garbled divergence at $\delta_0$ is then zero, its smallest possible value.
+
+Hansen and Sargent's footnote 12 on measurement error fits the same reading:
+
+> Strictly speaking, to avail ourselves of such an argument that consistency can be retained by ignoring seasonal frequencies, it is necessary to assume that the measurement error is *purely* seasonal. Such a measurement error process would be linearly deterministic, i.e., perfectly predictable linearly from its own past.
+
+For deleting the bands to remove a measurement error completely, the error's spectral density must be zero outside the bands.
+
+The integral of the logarithm of that spectral density is then $-\infty$, and Kolmogorov's formula of {ref}`ae_ar_section` gives a one-step-ahead forecast error variance $\sigma^2_\infty = 0$.
+
+### Low-frequency filters
+
+Hansen and Sargent end their paper by extending the argument to other filters:
+
+> Formally, the same arguments that support the use of seasonally adjusted data also apply to using data that have been filtered to eliminate, say, low-frequency components. For example, Hodrick and Prescott (1980) compose what is essentially a high-pass filter that eliminates very-low-frequency components from time series while leaving business cycle and higher frequencies intact. Prescott and many other researchers have tried to match data that have been filtered with the Hodrick–Prescott filter to theoretical models that they have designed explicitly to capture business cycle frequencies, but whose low-frequency properties they distrust. Such an empirical strategy can probably be rationalized through an appropriate application of our approximation criterion (4.2).
+
+The cyclical component of the filter of {cite:t}`HodrickPrescott1997` with smoothing parameter $\lambda$ has frequency response
+
+$$
+h(\omega) = \frac{4 \lambda (1 - \cos \omega)^2}{1 + 4 \lambda (1 - \cos \omega)^2} ,
+$$
+
+which is zero only at $\omega = 0$.
+
+Because $h(0) = 0$, the filter removes the mean, and the mean term of {eq}`ae_kl_rate_vector` drops out; because $h$ is zero at no other frequency, filtering both the data and the model leaves the rest of the divergence rate unchanged.
+
+For the stationary processes of this lecture, Gaussian maximum likelihood estimates of a model fitted to Hodrick–Prescott filtered data, with the model's spectral density filtered in the same way, therefore converge to the same m-projection as estimates from unfiltered data with the mean term dropped.
+
+In large samples, the filter can change what an econometrician estimates in three ways:
+
+* it can be applied to the data but not to the model, as in Sims's formulation;
+* it can be replaced by the deletion of a band of low frequencies from the frequency-domain likelihood, a garbling that can improve the estimates when the model is wrong mainly at low frequencies, which is the case that Hansen and Sargent describe; or
+* it can be used with a criterion that is not a likelihood, such as the distance between a few variances and covariances of the filtered data and of the filtered model, in which the frequency response of the filter weights the frequencies.
+
+The code below uses the smoothing parameter $\lambda = 1600$ that is customary for quarterly data.
+
+```{code-cell} ipython3
+λ = 1600
+h_hp = 4 * λ * (1 - np.cos(ω))**2 / (1 + 4 * λ * (1 - np.cos(ω))**2)
+print(f"D(f || g) = {kl_rate(f_y, g_full):.6f},  "
+      f"D(h²f || h²g) = {kl_rate(h_hp**2 * f_y, h_hp**2 * g_full):.6f}")
+a_hp, _ = ar_projection(h_hp**2 * f_y, 1)
+print(f"AR(1) projection of filtered data, unfiltered model: ρ* = {a_hp[0]:.4f}")
+```
+
+In the seasonal example, fitting an unfiltered AR(1) to filtered data gives $\rho^* = 0.16$, because the filter removes the low-frequency power that pulls the projection toward $0.9$.
+
+### Sampling
+
+Sampling a continuous-time process at integer dates is also a garbling: the sampled series is a function of the continuous-time path, under the true process and under the model alike.
+
+So is the averaging over unit intervals that Sims uses in column (4) of his Table I.
+
+The denominator of {eq}`ae_folding`, the spectral density of the sampled regressor, shows the garbling in the frequency domain: sampling adds to frequency $\omega$ the contributions of the frequencies $\omega + 2\pi k$.
+
+Applied to two continuous-time models, the data processing inequality says that sampling cannot make them easier to tell apart.
+
+Two continuous-time processes whose spectral densities fold to the same discrete-time spectral density are observationally equivalent from sampled data, and in Sims's setting, distinct continuous-time lag distributions can have the same discrete-time lag distribution $B$.
+
+An econometrician who reads $B$ as $b$ faces this identification problem.
+
+{cite:t}`HansenSargent1983` describe it:
+
+> It is a well known result from the theory of continuous time, covariance stationary stochastic processes that the continuous time spectral density function cannot, in general, be inferred from equispaced discrete time observations. This identification problem is commonly referred to as the aliasing phenomenon.
+
+They show that restricting the continuous-time spectral density matrix to be rational "goes a significantly greater distance towards resolving the aliasing problem than has heretofore been recognized."
+
+Within the class of models with rational spectral densities, in general only a finite number of continuous-time models are observationally equivalent, in some regions of the parameter space "there may be no identification problem at all," and for a first-order vector Markov process "there generally exists a discrete sampling interval sufficiently fine that the continuous time model is identified."
+
+Sampling is not one-to-one on the set of all continuous-time processes, but it can be one-to-one on a restricted family.
+
+Hansen and Sargent add that the restrictions that economic theory imposes can also serve to identify the continuous-time model.
+
 ## Concluding remarks
 
 The maximum likelihood estimator of a misspecified time series model converges to the m-projection of the true process onto the model.
@@ -1035,6 +1353,12 @@ In the first example of {cite:t}`Sims1993`, a misspecified seasonal model of una
 {doc}`phillips_misspecified` describes an equilibrium in which agents' beliefs are the m-projection, in the sense of {eq}`ae_hs_criterion`, of the process that those beliefs generate; {cite:t}`EspondaPouzo2016` call an equilibrium of this kind a Berk–Nash equilibrium.
 
 {doc}`specification_tests` describes tests that compare two projections.
+
+Filtering, deleting frequency bands, removing seasonal means, and sampling are garblings, and the data processing inequality orders the divergences that they leave; it does not order the estimates.
+
+Hansen and Sargent's three kinds of data form a chain of garblings, and their misspecified econometrician obtains the best estimates from the coarsest data, reversing the ranking that Blackwell's theorem gives a decision maker who knows the true likelihoods.
+
+With a correctly specified model, deleting frequencies cannot lower the asymptotic variance of the estimator; in the misspecified seasonal example, deleting the seasonal bands lowers both the bias and the variance.
 
 ## Exercises
 
@@ -1187,6 +1511,85 @@ print("AR(2) coefficients:", np.round(a_fm, 6) + 0.0,
 ```
 
 Filtering the model as well as the data removes the bias that filtering the data alone produced.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ae_ex_tradeoff
+
+Hansen and Sargent's concluding remarks mention "a trade-off between variance and bias of estimators, the dimensions of which we have not explored in this paper."
+
+In the seasonal example, let the variance of the seasonal component $s_t$ be a fraction $q$ of the variance of $x_t$; the example in the lecture has $q = 1/4$.
+
+An econometrician fits an AR(1) by frequency-domain maximum likelihood to $T$ observations with seasonal bands of width $\Delta$ deleted, and wants to estimate the coefficient $0.9$ of the nonseasonal component.
+
+Measure the error of the estimator by the asymptotic root mean squared error $\sqrt{(\rho^*_K - 0.9)^2 + V_K / T}$, where $\rho^*_K$ is the AR(1) projection over the frequencies outside the bands and $V_K$ is the $(1, 1)$ element of the covariance matrix {eq}`ae_sandwich`.
+
+1. For $q \in \{0, 0.0005, 0.002, 0.005, 0.01, 0.25\}$ and $\Delta \in \{0, \pi/32, \pi/16, \pi/8, \pi/4, \pi/2\}$, compute $\rho^*_K - 0.9$, $V_K$, and the asymptotic root mean squared error for $T = 400$, and find the band width that minimizes the error. How much does the choice among the narrow widths matter?
+2. Explain why $\Delta = 0$ is best when $q = 0$ and why the best band width grows with $q$.
+3. Find the best band widths for $T = 1600$, and explain why they are at least as wide as those for $T = 400$.
+```
+
+```{solution-start} ae_ex_tradeoff
+:class: dropdown
+```
+
+Here is one solution.
+
+```{code-cell} ipython3
+f_s_unit = f_s / np.mean(f_s)                     # seasonal shape, unit variance
+widths = np.pi * np.array([0, 1 / 32, 1 / 16, 1 / 8, 1 / 4, 1 / 2])
+header = "".join(f"{Δ / np.pi:9.4f}π" for Δ in widths)
+
+bias_variance = {}
+for q in (0, 0.0005, 0.002, 0.005, 0.01, 0.25):
+    f = f_x + q * np.mean(f_x) * f_s_unit
+    bias, V = [], []
+    for Δ in widths:
+        keep = seasonal_keep(Δ)
+        a_K, σ2_K = ar_projection(f, 1, keep)
+        bias.append(a_K[0] - ρ_x)
+        V.append(ar1_covariance(f, a_K[0], σ2_K, keep)[0, 0])
+    bias_variance[q] = np.array(bias), np.array(V)
+
+print("     q       " + header)
+for q, (bias, V) in bias_variance.items():
+    print(f"{q:6.4f} ρ*-0.9" + "".join(f"{np.round(b, 4) + 0.0:10.4f}" for b in bias))
+    print(f"{'':6s} V_K   " + "".join(f"{v:10.4f}" for v in V))
+
+for T in (400, 1600):
+    print(f"\nT = {T}: asymptotic root mean squared error")
+    print("     q" + header + "     best")
+    for q, (bias, V) in bias_variance.items():
+        rmse = np.sqrt(bias**2 + V / T)
+        print(f"{q:6.4f}" + "".join(f"{r:10.4f}" for r in rmse)
+              + f"   {widths[rmse.argmin()] / np.pi:.4f}π")
+```
+
+With $q = 0$, the AR(1) is correct, so the projection equals $0.9$ for every band width, and $V_K = \mathcal{I}_K^{-1}$ rises with $\Delta$ by the Fisher-information form of the data processing inequality.
+
+Using all frequencies is best.
+
+With $q > 0$, the estimator that uses all frequencies is biased, and its variance includes the periodogram ordinates at the seasonal peaks with the weight $(f/g)^2$.
+
+Deleting a narrow band removes most of both.
+
+Widening the band further reduces the bias; for small $q$ it raises the variance, because the added frequencies carry information about $\rho$ and little misspecification.
+
+For $T = 400$, the best band width grows from $\pi/32$ at $q = 0.0005$ to $\pi/16$ at $q = 0.002$ and $0.005$, $\pi/8$ at $q = 0.01$, and the widest width in the grid at $q = 1/4$.
+
+For $q \leq 0.005$, the root mean squared error is nearly flat across the narrow band widths: the best width beats the next best by about 0.2 percent or less.
+
+Deleting some band matters more than its width: at $q = 0.01$ and $T = 400$, the error is $0.0287$ with all frequencies and $0.0223$ with the best width.
+
+For part 3, the squared bias falls as the band widens and does not depend on $T$, while the variance term $V_K / T$ shrinks as $T$ grows.
+
+A larger sample puts relatively more weight on the squared bias, so a band narrower than the best one for $T = 400$ cannot be best for $T = 1600$.
+
+At $q = 0.005$ the best width rises from $\pi/16$ to $\pi/8$, by a margin of about 0.1 percent; at the other values of $q$ it does not change.
+
+With all frequencies the error falls more slowly than with the best band, because its squared bias does not shrink: at $q = 0.01$ it is $0.0187$ for $T = 1600$, against $0.0112$ with the best width.
 
 ```{solution-end}
 ```

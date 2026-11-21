@@ -74,7 +74,7 @@ The lecture proceeds as follows.
 2. We state three equivalent criteria for ranking experiments and Blackwell's theorem.
 3. We develop Kihlstrom's Bayesian interpretation through standard experiments, mean-preserving spreads, and convex order.
 4. We study DeGroot's uncertainty functions and two applications.
-5. We connect Blackwell's order to the data processing inequality and to the likelihood-ratio learning of {doc}`likelihood_bayes`.
+5. We connect Blackwell's order to the data processing inequality, to the filtering and seasonal adjustment of time series, and to the likelihood-ratio learning of {doc}`likelihood_bayes`.
 
 Python simulations illustrate each step.
 
@@ -1305,6 +1305,62 @@ This observation was placed at the center of the study of what deep networks lea
 
 The DPI says the same thing in reverse: garbling (decreasing $\theta$) can only contract these measures.
 
+### Garbling a time series
+
+{doc}`approximation_errors` applies the DPI to the filters that econometricians apply to time series.
+
+When an econometrician filters a time series, the filtered series is the same function of the unfiltered series whatever process generated the data, so a filter is a deterministic Markov kernel.
+
+For two stationary Gaussian processes with spectral densities $f$ and $g$, the KL divergence per observation converges to the divergence rate
+
+$$
+D(f \| g) = \frac{1}{4\pi} \int_{-\pi}^{\pi} \left[ \frac{f(\omega)}{g(\omega)} - 1 - \log \frac{f(\omega)}{g(\omega)} \right] d\omega ,
+$$
+
+the average over frequencies of KL divergences between normal distributions whose variances are the two spectral densities.
+
+Filtering both processes by a filter with frequency response $c(e^{-i\omega})$ multiplies both spectral densities by $|c(e^{-i\omega})|^2$.
+
+* A filter whose frequency response is zero at most at isolated frequencies leaves the ratio $f/g$, and hence the divergence rate, unchanged. A filter whose frequency response is never zero is invertible, so it is a sufficient statistic. It also leaves unchanged the Fisher information matrix $\frac{1}{4\pi}\int \nabla \log g \, \nabla \log g^\top d\omega$ of the frequency-domain likelihood, because filtering adds to $\log g$ the term $\log |c(e^{-i\omega})|^2$, which does not depend on the parameters. This is the equality case of the Fisher-information contraction above.
+* Ideal seasonal adjustment, as {cite:t}`HansenSargent1993` define it, drops the finite Fourier transforms of the sample at the frequencies in the seasonal bands. The transforms are an invertible linear function of the sample, so dropping some of them is a garbling at every sample size, and the divergence rate loses the integral over the bands, as {eq}`ae_dpi_bands` in {doc}`approximation_errors` shows. The inequality is strict unless $f = g$ almost everywhere on the bands. A filter that is zero on a band does not achieve this: it makes the filtered processes linearly deterministic, and the filtered sample still carries information from the band.
+* Filtering the data but not the model applies the kernel to only one of the two distributions, and the DPI says nothing about it.
+
+{cite:t}`HansenSargent1993` compare three kinds of data for estimating a rational expectations model whose only misspecification is that it omits seasonal variation in a productivity parameter: seasonally unadjusted data, data with seasonal means removed, and ideally adjusted data.
+
+Each kind of data is a function of the one before it, so the three experiments are ordered by garbling.
+
+By Blackwell's theorem, a decision maker who knows the likelihoods weakly prefers the unadjusted data in every decision problem.
+
+Hansen and Sargent's econometrician gets the best estimates from the coarsest data.
+
+Their Table 1 reports the probability limits of the estimates, and the absolute errors of those limits are:
+
+| parameter | unadjusted | seasonal means removed | ideally adjusted |
+|:---|---:|---:|---:|
+| adjustment cost $\phi_1$ | 0.1132 | 0.0146 | 0.0007 |
+| endowment coefficient $a_1$ | 0.5310 | 0.0750 | 0.0013 |
+| endowment coefficient $a_4$ | 0.4383 | 0.1598 | 0.0003 |
+| endowment coefficient $a_5$ | 0.4298 | 0.1261 | 0.0005 |
+
+Blackwell's theorem does not apply because the econometrician evaluates the three experiments with the likelihoods of a misspecified model.
+
+Misspecification is a second reason, beside the one studied in {doc}`information_transfer`, that a decision maker can prefer a garbled experiment.
+
+{cite:t}`Sims1993` states the other side: "Use of unadjusted data and a correctly specified model of seasonal variation is always the best option."
+
+The DPI, applied to two different pairs of distributions, describes the trade-off between these positions.
+
+* Applied to the true process and the model, it says that a garbling cannot increase the misspecification. A garbling that discards exactly the frequencies at which the model is wrong can remove the misspecification.
+* Applied to the model at two parameter values, it says that a garbling cannot make them easier to tell apart. Locally, the Fisher information contracts, so when the model is correct the asymptotic variance of the estimator cannot fall. A garbling that maps two parameter values to the same distribution makes them observationally equivalent.
+
+Sampling a continuous-time process at discrete dates is a garbling of the continuous-time path, and the aliasing problem studied by {cite:t}`HansenSargent1983` is the observational equivalence of continuous-time models whose sampled versions coincide.
+
+The section {ref}`ae_garbling_section` of {doc}`approximation_errors` works through these results.
+
+It shows that the DPI orders divergences but not estimates, and that, when the model is misspecified, deleting frequencies can lower the variance of an estimator as well as its bias.
+
+The section {ref}`st_band_section` of {doc}`specification_tests` builds a Hausman test from the two pairs.
+
 ### Summary of the DPI–Blackwell correspondence
 
 The table below collects the precise correspondence between Blackwell's framework and the data-processing and coarse-graining literature.
@@ -1319,6 +1375,11 @@ The table below collects the precise correspondence between Blackwell's framewor
 | Blackwell theorem for two states | $D_f$ dominance for every $f$ $\Leftrightarrow$ a single Markov kernel witnesses dominance |
 | Chentsov's uniqueness theorem | Fisher information is the unique metric invariant under Markov embeddings (sufficient statistics); it also contracts under Markov kernels |
 | Information bottleneck $I(T;Y) \leq I(X;Y)$ | DPI for mutual information applied to Markov chain $Y{-}X{-}T$ |
+| Filtering a time series, applied to the data and to the model | Deterministic Markov kernel applied to both processes; a filter whose frequency response is zero at most at isolated frequencies leaves the divergence rate unchanged |
+| Invertible filter | Sufficient statistic: the divergence rate and the Fisher information are unchanged |
+| Ideal seasonal adjustment (dropping the Fourier transforms in the seasonal bands) | Garbling at every sample size; it discards information unless the two spectral densities agree on the bands |
+| Sampling a continuous-time process | Garbling; aliasing is the observational equivalence of continuous-time models |
+| Misspecified econometrician of {cite:t}`HansenSargent1993` | Prefers a garbled experiment; Blackwell's theorem assumes that the decision maker uses the true likelihoods |
 
 
 (bk_lr_learning)=
@@ -1397,6 +1458,8 @@ DeGroot's contribution is to extend the comparison from particular utility funct
 Blackwell's order implies the data processing inequality for every f-divergence, and the likelihood-ratio learning of {doc}`likelihood_bayes` is a dynamic special case of the framework.
 
 {doc}`information_transfer` shows that a decision maker can prefer a less informative experiment when the signal is observed by an agent whose interests differ from hers and who must be induced to report it.
+
+{cite:t}`HansenSargent1993` give a second reason: an econometrician whose model is misspecified can obtain better estimates from a garbled experiment, here seasonally adjusted data.
 
 ## Exercises
 

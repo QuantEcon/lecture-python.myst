@@ -427,6 +427,8 @@ $\mathcal{I}_K(\theta)$ is the curvature of a KL divergence, as in {doc}`exponen
 
 By {eq}`st_hausman_pythagoras`, the difference between the band-deleted estimator and the full-band estimator has asymptotic covariance matrix $\mathcal{I}_K(\theta)^{-1} - \mathcal{I}(\theta)^{-1}$, where $\mathcal{I}$ uses all frequencies.
 
+Deleting the bands is a garbling in the sense of {doc}`blackwell_kihlstrom`, so $\mathcal{I}_K(\theta) \preceq \mathcal{I}(\theta)$ by the Fisher-information form of the data processing inequality; inversion reverses the matrix order, so this covariance matrix is positive semidefinite.
+
 We apply the test to a first-order autoregression with parameters $\theta = (\rho, \sigma^2)$ fitted to $T = 400$ quarterly observations, deleting bands of width $\pi/8$ around $\pi/2$ and $\pi$, and we test only $\rho$, using the $(1, 1)$ elements of these matrices.
 
 Each estimator uses the Fourier frequencies $\omega_j = 2\pi j / T$, $j = 1, \ldots, T - 1$, omitting $j = 0$ because the sample mean is removed, and we evaluate $\mathcal{I}_K$ at the same frequencies, so that $\frac{1}{4\pi} \int_K$ becomes $\frac{1}{2T} \sum_{j \in K}$.
@@ -523,6 +525,8 @@ Under the null hypothesis, the simulated variances satisfy Hausman's identity {e
 A seasonal component with one or two percent of the variance of $x_t$ pulls the full-band estimate below the band-deleted estimate by enough for the test to reject in most samples; with half a percent, the test rejects in fewer than half of the samples.
 
 The test is powerful because, for this model, deleting the seasonal bands costs little information about $\rho$, whose information is concentrated at low frequencies: the $(1, 1)$ element of $\mathcal{I}_K(\theta)^{-1} - \mathcal{I}(\theta)^{-1}$ is about 2 percent of the $(1, 1)$ element of $\mathcal{I}(\theta)^{-1}$.
+
+In the language of {ref}`ae_garbling_section` in {doc}`approximation_errors`, the numerator $T(\hat\rho_{\text{band}} - \hat\rho_{\text{full}})^2$ of the statistic is $T$ times the squared shift in the m-projection that deleting the bands causes, plus sampling noise, and the denominator measures the information that deleting them destroys, so the test has power when the shift is large relative to the lost information.
 
 {ref}`st_ex_power` computes the test's asymptotic power from the distance between the two projections, and {doc}`turbulence_inference` applies the same calculation to two explanations of rising earnings instability.
 
@@ -695,6 +699,65 @@ At the intermediate share the smaller noncentrality dominates, and the approxima
 Hausman and McFadden's example shows the opposite error: "For $\lambda$ less than .9 all the tests have greater exact power than the prediction of the asymptotic approximation."
 
 Once alternatives are nonlocal, the approximation can err in either direction.
+
+Formula {eq}`ae_sandwich` of {doc}`approximation_errors` gives the asymptotic covariance matrix of each estimator under the alternative, which makes the explanation above quantitative.
+
+The two estimators share the periodogram ordinates outside the bands, so the asymptotic covariance matrix between $\sqrt{T}$ times the errors of the two estimators is $\mathcal{H}^{-1} \mathcal{J}_{\text{cross}} \mathcal{H}_K^{-1}$, where
+
+$$
+\mathcal{J}_{\text{cross}} = \frac{1}{4\pi} \int_K \nabla \log g_{\text{full}} \, \nabla \log g_{\text{band}}^\top \, \frac{f^2}{g_{\text{full}} \, g_{\text{band}}} \, d\omega ,
+$$
+
+$g_{\text{full}}$ and $g_{\text{band}}$ are the spectral densities of the two projections, and $\mathcal{H}$ and $\mathcal{H}_K$ are the matrices $\mathcal{H}_K$ of {eq}`ae_sandwich` for all frequencies and for the frequencies outside the bands, each evaluated at its own projection.
+
+The code below computes from these matrices the ratio of the standard deviation of the difference to the null standard deviation, the correlation between $\hat\rho_{\text{full}}$ and the difference, and the power of the test when the statistic is approximated by $V_{\text{diff}} / (V_{\text{band}} - V_{\text{full}})$ times a noncentral $\chi^2_1$ variable with noncentrality $T (\rho^*_{\text{band}} - \rho^*_{\text{full}})^2 / V_{\text{diff}}$, where $V_{\text{diff}}$ is the asymptotic variance of the difference under the alternative.
+
+```{code-cell} ipython3
+def ar1_derivatives(ρ, σ2):
+    """∇ log g and ∇² log g at the Fourier frequencies, θ = (ρ, σ²)."""
+    d1 = np.vstack([2 * (np.cos(ω_T) - ρ) / np.abs(1 - ρ * z_T)**2,
+                    np.ones(T_obs - 1) / σ2])
+    d2 = np.zeros((2, 2, T_obs - 1))
+    d2[0, 0] = 2 * np.real(z_T**2 / (1 - ρ * z_T)**2)
+    d2[1, 1] = -1 / σ2**2
+    return d1, d2
+
+
+def projection_parts(f, keep):
+    """AR(1) projection over keep, the inverse of H, ∇ log g, and f/g on keep."""
+    ρ = whittle_ar1(f, keep)
+    σ2 = np.mean((f * np.abs(1 - ρ * z_T)**2)[keep])
+    d1, d2 = ar1_derivatives(ρ, σ2)
+    r = np.where(keep, f * np.abs(1 - ρ * z_T)**2 / σ2, 0.0)
+    H = 0.5 * ((d1 * r) @ d1.T
+               + (d2 * np.where(keep, 1 - r, 0.0)).sum(axis=2)) / T_obs
+    return ρ, np.linalg.inv(H), d1, r
+
+
+def score_covariance(d_a, r_a, d_b, r_b):
+    return 0.5 * ((d_a * r_a * r_b) @ d_b.T) / T_obs
+
+
+print("share   SD ratio   corr(ρ_full, difference)   power   simulated power")
+for share in (0.005, 0.01, 0.02):
+    f_y = spectral_density_y(share)
+    ρ_f, H_f, d_f, r_f = projection_parts(f_y, keep_all)
+    ρ_b, H_b, d_b, r_b = projection_parts(f_y, keep_band)
+    V_f = (H_f @ score_covariance(d_f, r_f, d_f, r_f) @ H_f)[0, 0]
+    V_b = (H_b @ score_covariance(d_b, r_b, d_b, r_b) @ H_b)[0, 0]
+    C_fb = (H_f @ score_covariance(d_f, r_f, d_b, r_b) @ H_b)[0, 0]
+    V_diff = V_f + V_b - 2 * C_fb
+    _, _, V_full, V_band = projections[share]
+    V_null = V_band - V_full
+    power = ncx2.sf(crit_1 * V_null / V_diff, 1, T_obs * (ρ_b - ρ_f)**2 / V_diff)
+    print(f"{share:5.3f} {np.sqrt(V_diff / V_null):9.2f} "
+          f"{(C_fb - V_f) / np.sqrt(V_f * V_diff):19.2f} {power:15.2f} "
+          f"{simulated_power[share]:12.2f}")
+```
+
+The covariance matrices under the alternative give ratios of $1.42$, $1.96$, and $2.96$ and correlations of $-0.34$, $-0.51$, and $-0.68$, close to the simulated $1.48$, $2.02$, and $3.01$ and $-0.34$, $-0.50$, and $-0.67$.
+
+The power approximation that uses them gives $0.47$, $0.77$, and $0.92$, against simulated powers of $0.43$, $0.78$, and $0.98$: it corrects the error at the intermediate share, is slightly farther from the simulation than the null approximation at the smallest share, and understates the power at the largest share.
 
 ```{solution-end}
 ```
