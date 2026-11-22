@@ -641,6 +641,85 @@ Raising the turbulence parameter from $0.02$ to $0.04$ spreads both distribution
 
 Ljungqvist and Sargent pointed out that the model's distribution of averages spans a smaller range than the data's, because their workers are ex ante identical, and that the increase in the model's standard deviations occurs at lower standard deviations than in the data.
 
+### Where the distributions move
+
+Ljungqvist and Sargent's second remark is about where probability mass moves between the two periods, not only about how far the distributions spread.
+
+Optimal transport describes such movements.
+
+For distributions on the real line and a cost of moving mass that is a convex function of the distance moved, the cheapest way to turn one distribution into another pairs quantiles, as in {ref}`ef_wasserstein_section` of {doc}`exponential_families`: the mass at the $u$-quantile of the first distribution moves to the $u$-quantile of the second.
+
+The **shift** $s(u) = G^{-1}(u) - F^{-1}(u)$, where $F$ and $G$ are the cumulative distribution functions of the two periods, records how far that mass moves.
+
+The shift compares two distributions, not the same men in two periods, so it describes how the quantiles move, not how any man's earnings changed.
+
+We compute the shift of the distribution of men's standard deviations for Gottschalk and Moffitt's histograms, spreading the men in each bar uniformly across it, and for our artificial panels at turbulence parameters $0.02$ and $0.04$.
+
+```{code-cell} ipython3
+def histogram_quantiles(percents, centers, u):
+    """Quantiles of a histogram whose mass is spread uniformly within each bar."""
+    width = centers[1] - centers[0]
+    edges = np.append(centers - width / 2, centers[-1] + width / 2)
+    cdf = np.concatenate([[0.0], np.cumsum(percents) / np.sum(percents)])
+    return np.interp(u, cdf, edges)
+
+
+u_grid = np.linspace(0.0005, 0.9995, 1000)
+shift_data = (histogram_quantiles(gm_fig4["1979-87"], gm_fig4_bins, u_grid)
+              - histogram_quantiles(gm_fig4["1970-78"], gm_fig4_bins, u_grid))
+sd02, sd04 = y02.std(axis=1, ddof=1), y04.std(axis=1, ddof=1)
+shift_model = np.quantile(sd04, u_grid) - np.quantile(sd02, u_grid)
+
+print(" quantile   PSID shift   model shift")
+for u in (0.1, 0.25, 0.5, 0.75, 0.9, 0.95):
+    k = np.argmin(np.abs(u_grid - u))
+    print(f"   {u:4.2f}      {shift_data[k]:+.3f}       {shift_model[k]:+.3f}")
+print(f"smallest shift: PSID {shift_data.min():+.4f}, model {shift_model.min():+.4f}")
+print(f"average shift: PSID {shift_data.mean():.4f}, model {shift_model.mean():.4f}")
+print(f"men's averages in the model at turbulence 0.02 range from "
+      f"{y02.mean(axis=1).min():.2f} to {y02.mean(axis=1).max():.2f}")
+```
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Quantile shifts of men's standard deviations
+    name: fig-ti-shifts
+---
+keep = u_grid <= 0.95
+fig, ax = plt.subplots()
+ax.plot(u_grid[keep], shift_data[keep], lw=2, label="PSID, 1970–78 to 1979–87")
+ax.plot(u_grid[keep], shift_model[keep], lw=2, label="model, turbulence 0.02 to 0.04")
+ax.axhline(0, color="0.7", lw=0.8)
+ax.set_xlabel("quantile $u$")
+ax.set_ylabel("shift $s(u)$")
+ax.legend()
+plt.show()
+```
+
+The figure stops at the 95th percentile, because above it the PSID quantiles depend on how we spread the men in the last, sparsely populated bars.
+
+In the PSID, the shift grows with the quantile, from $0.004$ at the 10th percentile to $0.126$ at the 90th: the upper quantiles of the distribution of standard deviations rose much more than the lower quantiles, which changed little.
+
+In the model, the shift lies between about $0.01$ and $0.02$ at every quantile from the 10th to the 95th: turbulence raises every quantile of the distribution of standard deviations by about the same amount.
+
+Below about the 37th percentile the model's shift exceeds the data's, while at the 90th and 95th percentiles the data's shift is more than eight times the model's.
+
+That is a quantitative version of Ljungqvist and Sargent's remark.
+
+Averaged over quantiles, the shift equals the change in the mean standard deviation, $0.043$ in the PSID and $0.014$ in the model.
+
+Because the PSID shift is nowhere negative, $0.043$ is also the 1-Wasserstein distance between the PSID distributions for the two periods; the shape of the shift tells where the mass moved.
+
+A comparison of the histograms by KL divergence would fail here.
+
+In our panel at turbulence $0.02$, men's averages range from $-0.84$ to $0.29$, while Gottschalk and Moffitt's histogram for 1970–78 puts about $2$ percent of men below $-1.1$ and about $5$ percent above $0.6$.
+
+The KL divergence of the data's distribution of averages from the model's is therefore infinite, while transport distances stay finite.
+
+Gottschalk and Moffitt's decomposition avoids the problem by comparing second moments, the parameters of m-projections onto the random-effects model.
+
 ### Binding function
 
 Gottschalk and Moffitt's decomposition of the model's earnings at turbulence parameter $v$ is a pair of numbers $b(v) = (\sigma^2_\mu(v), \sigma^2_\nu(v))$, the parameters of the m-projection of the model's distribution of earnings onto the random-effects model.

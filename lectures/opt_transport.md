@@ -28,6 +28,20 @@ We will provide other applications in followup lectures.
 {doc}`information_transfer` uses a transport problem with an extra averaging
 constraint to check whether one statistical experiment is a garbling of another.
 
+{doc}`information_projections` adds an entropy term to the transport problem,
+solves the new problem with Sinkhorn's algorithm, and shows that its Lagrange
+multipliers converge to the shadow prices that we compute below.
+
+Optimal transport compares two distributions by how far mass must move to turn
+one into the other, so it needs a cost of moving mass between locations.
+
+The Kullback–Leibler divergence of {doc}`divergence_measures` compares two
+distributions location by location and uses no such cost; for the problems in
+this lecture it would be infinite, because the factories and the locations
+that they supply are different points.
+
+{doc}`exponential_families` contrasts the two kinds of comparison.
+
 The optimal transport problem was studied in early work about linear
 programming, as summarized for example by {cite}`DoSSo`.  A modern reference
 about applications in economics is {cite}`Galichon_2016`.
@@ -133,7 +147,7 @@ More about this later.
 
 ## The Linear Programming Approach
 
-In this section we discuss using using standard linear programming solvers to
+In this section we discuss using standard linear programming solvers to
 tackle the optimal transport problem.
 
 
@@ -225,7 +239,7 @@ $$
     (\mathbf{1}_n' \otimes \mathbf{I}_m) \operatorname{vec}(X) = p.
 $$
 
-Similarly, the constraint $X' \ \mathbf{1}_m = q$ can be rewriten as:
+Similarly, the constraint $X' \ \mathbf{1}_m = q$ can be rewritten as:
 
 $$
     (\mathbf{I}_n \otimes \mathbf{1}_m') \operatorname{vec}(X) = q.
@@ -472,7 +486,7 @@ Let's compare this transport plan with
 res.x
 ```
 
-Here the matrix $X$ contains entries $x_{ij}$ that tell amounts shipped **from** factor $i = 1, 2, 3$
+Here the matrix $X$ contains entries $x_{ij}$ that tell amounts shipped **from** factory $i = 1, 2, 3$
 **to** location $j=1,2, \ldots, 5$.
 
 The vector $z$ evidently equals $\operatorname{vec}(X)$.
@@ -514,7 +528,7 @@ res_qe = linprog_simplex(-c, A_eq=A_eq, b_eq=b_eq)
 
 While the two LP solvers use different algorithms (HiGHS vs. simplex), both should find optimal solutions.
 
-The solutions differs since there are multiple optimal solutions, but the objective values are the same
+The solutions differ because there are multiple optimal solutions, but the objective values are the same
 
 ```{code-cell} ipython3
 np.allclose(-res_qe.fun, res.fun)
@@ -548,7 +562,7 @@ time.)
 
 ## The Dual Problem
 
-Let $u, v$ denotes vectors of dual decision variables with entries $(u_i), (v_j)$.
+Let $u, v$ denote vectors of dual decision variables with entries $(u_i), (v_j)$.
 
 The **dual** to  **minimization** problem {eq}`plannerproblem` is the **maximization** problem:
 
@@ -563,7 +577,7 @@ The dual problem is also a linear programming problem.
 
 It has $m+n$ dual variables and $mn$ constraints.
 
-Vectors $u$ and $v$ of **values** are attached to the first and the second sets of primal constraits, respectively.
+Vectors $u$ and $v$ of **values** are attached to the first and the second sets of primal constraints, respectively.
 
 Thus, $u$ is attached to the constraints
 
@@ -637,11 +651,36 @@ Similarly, $v_j$ is the  cost of shipping one unit **to** location $j$.
 
 Call this  the ship-in cost of one unit  to location $j$.
 
-Strong duality implies that  total transprotation costs  equals   total ship-out costs **plus**   total ship-in costs.
+Strong duality implies that  total transportation costs  equals   total ship-out costs **plus**   total ship-in costs.
 
 It is reasonable that, for one unit of a product, ship-out cost $u_i$ **plus** ship-in cost $v_j$ should  equal transportation cost $c_{ij}$.
 
 This equality is assured by   **complementary slackness** conditions that state that whenever $x_{ij} > 0$, meaning that there are positive shipments  from factory $i$ to location $j$,    it must be true that  $u_i + v_j = c_{ij}$.
+
+The dual constraints and complementary slackness together determine each $u_i$ from the vector $v$.
+
+Because $u_i + v_j \leq c_{ij}$ for every $j$, and because equality holds for some location to which factory $i$ ships,
+
+$$
+u_i = \min_j \left( c_{ij} - v_j \right) .
+$$ (ctransform)
+
+Optimal transport calls the map from $v$ to $u$ defined by {eq}`ctransform` the **c-transform**.
+
+With a cost $c(x, y) = -x \cdot y$, the c-transform becomes, up to signs, the Legendre transform that {doc}`exponential_families` uses {cite}`KhanZhang2022`.
+
+The **reduced cost** $c_{ij} - u_i - v_j$ of the route from factory $i$ to location $j$ is nonnegative, and it is zero on every route that an optimal plan uses.
+
+```{code-cell} ipython3
+u, v = res_dual.x[:m], res_dual.x[-n:]
+print("reduced costs c_ij - u_i - v_j:\n", np.round(C - u[:, None] - v[None, :], 2))
+print("u:", u)
+print("min_j (c_ij - v_j):", np.min(C - v[None, :], axis=1))
+```
+
+Both optimal plans that we found above use only routes with zero reduced cost.
+
+{doc}`information_projections` shows that, when an entropy term is added to the objective, the solution ships along every route in amounts equal to $\exp(-(c_{ij} - \alpha_i - \beta_j)/\varepsilon)$, where, after a constant is added to $\alpha$ and subtracted from $\beta$, $\alpha$ and $\beta$ converge to $u$ and $v$ as $\varepsilon \to 0$.
 
 
 
@@ -819,6 +858,61 @@ nx.draw_networkx_edges(g,
 plt.show()
 ```
 
-```{code-cell} ipython3
+### Entropic regularization
 
+The optimal plan ships along few routes.
+
+The linear program has $n_p + n_q = 64$ equality constraints, one of them redundant, and the solver returns a vertex of the set of feasible plans, which ships along at most $n_p + n_q - 1 = 63$ of the $1024$ routes.
+
+```{code-cell} ipython3
+print("routes used by the optimal plan:", np.sum(pi > 1e-12))
 ```
+
+{doc}`information_projections` describes an entropy-regularized version of the problem,
+
+$$
+\min_{X} \sum_{i, j} c_{ij} x_{ij} + \varepsilon \sum_{i, j} x_{ij} \log x_{ij}
+$$
+
+subject to the same constraints, whose solution ships a positive amount along every route.
+
+{cite:t}`Cuturi2013` showed that Sinkhorn's algorithm solves it quickly, and {cite:t}`PeyreCuturi2019` describe the computational methods that it opened up.
+
+The function `ot.sinkhorn` implements Sinkhorn's algorithm; its argument `reg` is our $\varepsilon$.
+
+For small $\varepsilon$, the option `method="sinkhorn_log"` carries out the computations in logarithms.
+
+```{code-cell} ipython3
+p_arr, q_arr = np.array(p_probs), np.array(q_probs)
+plans = {"linear program": pi}
+for ε in (0.1, 0.01):
+    plans[f"ε = {ε}"] = ot.sinkhorn(p_arr, q_arr, c, reg=ε,
+                                    method="sinkhorn_log", numItermax=20_000)
+
+for name, plan in plans.items():
+    mass = np.sort(plan.ravel())[::-1]
+    routes_99 = np.searchsorted(np.cumsum(mass), 0.99) + 1
+    print(f"{name:15}: cost {np.vdot(plan, c):.4f}, "
+          f"routes carrying 99% of the mass {routes_99}")
+```
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Optimal and entropy-regularized transport plans
+    name: fig-ot-entropic
+---
+fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+for ax, (name, plan) in zip(axes, plans.items()):
+    ax.imshow(plan, cmap="Greys")
+    ax.set_title(name)
+    ax.set_xlabel("location $j$")
+    ax.set_ylabel("factory $i$")
+plt.tight_layout()
+plt.show()
+```
+
+As $\varepsilon$ falls, the regularized plans concentrate on fewer routes and their costs approach the minimal cost.
+
+The entropy term, which spreads the plan over many routes, also makes the regularized problem strictly convex and smooth, and so easy to solve {cite}`KhanZhang2022`.

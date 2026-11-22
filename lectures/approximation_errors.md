@@ -28,9 +28,9 @@ kernelspec:
 
 ## Overview
 
-When an econometrician estimates a model that does not contain the process that generated the data, the maximum likelihood estimator converges, under regularity conditions, to the member of the model that is closest to the true process in the sense of Kullback–Leibler (KL) divergence.
+When an econometrician estimates a family of models that does not contain the process that generated the data, the maximum likelihood estimator converges, under regularity conditions, to the model in the family that is closest to the true process in the sense of Kullback–Leibler (KL) divergence.
 
-In {doc}`information_projections` we called that member the **m-projection** of the true distribution onto the model.
+In {doc}`information_projections` we called that model the **m-projection** of the true distribution onto the family.
 
 We organize this lecture around one consequence of that fact: by choosing the model, the data, and any filter that transforms the data, an econometrician chooses which projection an estimator computes.
 
@@ -62,7 +62,7 @@ We use the following imports.
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import integrate
-from scipy.linalg import toeplitz, cho_factor, cho_solve
+from scipy.linalg import toeplitz, cho_factor, cho_solve, sqrtm
 from scipy.optimize import minimize
 ```
 
@@ -1045,6 +1045,50 @@ If, in addition, the spectral measure of the data puts no mass at those frequenc
 Sims's filter $1 - \kappa(L)\kappa(L^{-1})$ is zero at $\pm\pi/2$, at $\pi$, and at two frequencies near $\pm 0.485\pi$.
 
 It removes the deterministic seasonal, whose spectral measure puts all its mass at $\pm\pi/2$, and the equality applies to what remains, as {ref}`ae_ex_invariance` shows.
+
+The invariance belongs to the KL divergence, which compares two processes frequency by frequency through the ratio $f / g$.
+
+A distance that measures how far probability mass must move does not have it.
+
+The squared 2-Wasserstein distance of {doc}`exponential_families` between $N(0, \Sigma_1)$ and $N(0, \Sigma_2)$ is $\operatorname{tr}\left(\Sigma_1 + \Sigma_2 - 2 (\Sigma_1^{1/2} \Sigma_2 \Sigma_1^{1/2})^{1/2}\right)$ {cite}`Gelbrich1990`.
+
+The covariance matrices of $T$ consecutive observations of two stationary processes are nearly diagonalized by the same Fourier basis when $T$ is large, so for two Gaussian processes with mean zero this distance, divided by $T$, converges to
+
+$$
+\frac{1}{2\pi} \int_{-\pi}^{\pi} \left( \sqrt{f(\omega)} - \sqrt{g(\omega)} \right)^2 d\omega .
+$$ (ae_w2_rate)
+
+Filtering both processes by $c(L)$ multiplies the integrand by $\lvert c(e^{-i\omega}) \rvert^2$, so the filter changes the distance even when it leaves the divergence rate unchanged.
+
+We check {eq}`ae_w2_rate` for a first-order autoregression with $\rho = 0.8$ and white noise with variance $2$, and filter both by $1 - 0.9 L$.
+
+```{code-cell} ipython3
+def w2_squared_gaussian(S1, S2):
+    """Squared 2-Wasserstein distance between N(0, S1) and N(0, S2)."""
+    root = sqrtm(S1)
+    return np.trace(S1 + S2 - 2 * np.real(sqrtm(root @ S2 @ root)))
+
+
+def w2_rate(f, g):
+    """(1/2π) ∫ (√f - √g)² dω on the grid."""
+    return np.mean((np.sqrt(f) - np.sqrt(g))**2)
+
+
+f_ar, g_wn = ar_spectrum(0.8), ar_spectrum(0.0, 2.0)
+for T_w in (100, 400):
+    S_f, S_g = toeplitz(autocov(f_ar, T_w - 1)), toeplitz(autocov(g_wn, T_w - 1))
+    print(f"T = {T_w}: W2² / T = {w2_squared_gaussian(S_f, S_g) / T_w:.4f}")
+
+gain_sq = np.abs(1 - 0.9 * z)**2
+print(f"formula (ae_w2_rate): {w2_rate(f_ar, g_wn):.4f}")
+print(f"filtered by 1 - 0.9L: W2 rate {w2_rate(gain_sq * f_ar, gain_sq * g_wn):.4f}, "
+      f"KL rate {kl_rate(f_ar, g_wn):.4f} before and "
+      f"{kl_rate(gain_sq * f_ar, gain_sq * g_wn):.4f} after")
+```
+
+The filter leaves the KL divergence rate at its value and changes the Wasserstein rate.
+
+{doc}`exponential_families` describes the same contrast for transformations of a single random variable.
 
 A filter cannot delete a band of frequencies from the likelihood.
 

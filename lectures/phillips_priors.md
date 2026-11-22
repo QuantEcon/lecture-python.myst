@@ -386,6 +386,41 @@ Under a *general* prior $V$, the $P$ block of {eq}`pp_ode` does **not** decouple
 
 Prior beliefs about parameter drift now matter for whether the self-confirming equilibrium is even stable.
 
+(ppr_natural_gradient)=
+### Least squares as a natural gradient
+
+The government's regression {eq}`pp_belief`, with error variance $\sigma^2$, is a family of normal models for $U_n$ given $\Phi_n$, indexed by $\gamma$.
+
+For a fixed distribution of the data, the gradient of the expected log likelihood with respect to $\gamma$ is $\sigma^{-2}\, \mathbb{E}[\Phi (U - \Phi^\top \gamma)]$, and the Fisher information matrix of {doc}`exponential_families` is $\sigma^{-2}\, \mathbb{E}[\Phi \Phi^\top]$.
+
+Under the data that the beliefs $\gamma$ generate, these are $\sigma^{-2} \bar g(\gamma)$ and $\sigma^{-2} M(\gamma)$.
+
+Constant-gain recursive least squares, with its estimated moment matrix $R$ replaced by its mean $M(\gamma)$, sets $P = \varepsilon M^{-1}$ in {eq}`pp_ode`, so it moves the beliefs along the gradient premultiplied by the inverse of the Fisher information matrix, which {cite:t}`Amari1998` calls the **natural gradient**.
+
+Because the data depend on $\gamma$, $\bar g$ is not the gradient of a single function of $\gamma$; the statement holds at each $\gamma$ for the data that $\gamma$ generates.
+
+The invariance table of {doc}`exponential_families` explains why the natural gradient matters.
+
+Suppose the government measures inflation in other units, or as a deviation from a constant.
+
+Its regressors become $\Phi' = K^\top \Phi$ for an invertible matrix $K$, and its beliefs become $\gamma' = K^{-1} \gamma$.
+
+The gradient becomes $K^\top \bar g$, and the Fisher information matrix becomes $K^\top M K$.
+
+The natural gradient $(K^\top M K)^{-1} K^\top \bar g = K^{-1} M^{-1} \bar g$ is the old natural gradient in the new coordinates.
+
+The full recursion has the same property without the approximation, because its moment estimate becomes $R' = K^\top R K$ and its update $\dot R = \varepsilon [M(\gamma) - R]$ transforms in the same way.
+
+So least squares traces the same path of models in every coordinate system, and its eigenvalues $-1$ and $-\tfrac12$ do not depend on how the government measures inflation.
+
+The prior of recursive least squares, $V^* = \sigma^2 M(\bar\gamma)^{-1}$, is proportional to the inverse of the Fisher information matrix.
+
+The learning cycles below appear when the prior departs from that shape.
+
+**Stochastic gradient** learning, $\gamma_{n+1} = \gamma_n + \varepsilon \Phi_n (U_n - \Phi_n^\top \gamma_n)$, premultiplies the gradient by the identity matrix in whatever coordinates the government uses.
+
+It is not a natural gradient, and the stability of the self-confirming equilibrium under it depends on the units of the regressors {cite}`Giannitsarou2005,EvansHonkapohjaWilliams2010`; {ref}`ppr_ex7` shows that measuring inflation as a deviation from a constant can make the equilibrium unstable.
+
 ## Learning cycles
 
 Here is the paper's most striking result: some priors make the self-confirming equilibrium *unstable*, and the mean dynamics then cycle.
@@ -1362,6 +1397,110 @@ That is the econometric counterpart of the two equivalent interpretations of Sim
 Separating them would require evidence on how *uncertain* the government says it is, for example its predictive variance $\sigma^2 (1 + \Phi_n^\top P_n \Phi_n)$, and not only on what it does or forecasts.
 
 What the data do identify, they keep identifying as the sample grows, because the filter's gain never vanishes and so keeps shaping beliefs ({ref}`pbr_compliment`).
+
+```{solution-end}
+```
+
+```{exercise-start}
+:label: ppr_ex7
+```
+
+**Stochastic gradient** learning updates beliefs by
+
+$$
+\gamma_{n+1} = \gamma_n + \varepsilon \Phi_n \left(U_n - \Phi_n^\top \gamma_n\right),
+$$
+
+so its mean dynamics are $\dot\gamma = \varepsilon \bar g(\gamma)$.
+
+1. Show that, at the self-confirming equilibrium, stochastic gradient learning is the approximate filter {eq}`pp_kalman` with $P = \varepsilon I$ and the prior $V = \varepsilon^2 \sigma^2 M(\bar\gamma)$, which is proportional to the Fisher information matrix instead of its inverse.
+1. Suppose that the government measures inflation as a deviation from a constant $c$, so that its regressors are $\Phi' = (1, \pi - c)$ and its beliefs are $\gamma' = (a + c b, b)$. Show that $\gamma = K \gamma'$ with $K = \begin{bmatrix} 1 & -c \\ 0 & 1 \end{bmatrix}$, that the mean dynamics of stochastic gradient learning in the new coordinates are $\dot\gamma' = \varepsilon K^\top \bar g(K \gamma')$, and that the mean dynamics of recursive least squares in the new coordinates describe the same path of beliefs as before.
+1. Compute the eigenvalues of $K^\top (\partial \bar g / \partial \gamma) K$ at the self-confirming equilibrium for several values of $c$, and for inflation measured in hundredths, with regressors $(1, \pi / 100)$. For which values of $c$ is the self-confirming equilibrium unstable under stochastic gradient learning?
+1. For $c = 7.5$, measure time in units of $1/\varepsilon$ periods, integrate the stochastic gradient mean dynamics from a point near the self-confirming equilibrium, and describe the path of inflation $x$.
+
+```{exercise-end}
+```
+
+```{solution-start} ppr_ex7
+:class: dropdown
+```
+
+For part 1, setting $P = \varepsilon I$ in {eq}`pp_kalman` gives the stochastic gradient update, and $P = \varepsilon I$ solves the Riccati equation {eq}`pp_riccati` at $\bar\gamma$ exactly when $\sigma^{-2} V = \varepsilon^2 M(\bar\gamma)$.
+
+For part 2, $\Phi'^\top \gamma' = a' + (\pi - c) b'$ equals $\Phi^\top \gamma = a + \pi b$ when $a = a' - c b'$ and $b = b'$, which is $\gamma = K \gamma'$, and then $\Phi' = K^\top \Phi$.
+
+So $\bar g'(\gamma') = \mathbb{E}[\Phi' (U - \Phi'^\top \gamma')] = K^\top \bar g(K \gamma')$.
+
+Under stochastic gradient learning, $\dot\gamma = K \dot\gamma' = \varepsilon K K^\top \bar g(\gamma)$, which differs from $\varepsilon \bar g(\gamma)$ unless $K K^\top = I$.
+
+Under recursive least squares, $M' = K^\top M K$, so $\dot\gamma' = \varepsilon (K^\top M K)^{-1} K^\top \bar g = \varepsilon K^{-1} M^{-1} \bar g$, and $\dot\gamma = \varepsilon M^{-1} \bar g$ as before.
+
+For part 3, the function `coordinates` returns $K$ for regressors $(1, (\pi - c)/s)$.
+
+```{code-cell} ipython3
+def coordinates(c=0.0, scale=1.0):
+    "K with γ = K γ' when the regressors are (1, (π - c) / scale)."
+    return np.array([[1.0, -c / scale], [0.0, 1 / scale]])
+
+
+J_sce = jacobian(model, γ_sce)
+print(f"{'regressors':16s} {'stochastic gradient':>24s} {'least squares':>16s}")
+for name, K in (("(1, π)", coordinates()), ("(1, π / 100)", coordinates(scale=100.0)),
+                ("(1, π - 5)", coordinates(c=5.0)), ("(1, π - 7.5)", coordinates(c=7.5)),
+                ("(1, π - 10)", coordinates(c=10.0))):
+    sg = np.sort(np.linalg.eigvals(K.T @ J_sce @ K).real)
+    rls = np.sort(np.linalg.eigvals(np.linalg.solve(K.T @ M_sce @ K, K.T @ J_sce @ K)).real)
+    print(f"{name:16s} {np.array2string(sg, precision=5):>24s} "
+          f"{np.array2string(rls, precision=3):>16s}")
+```
+
+The least squares eigenvalues are $-1$ and $-\tfrac12$ in every case.
+
+The stochastic gradient eigenvalues change with the units: measured in hundredths, inflation gives one eigenvalue of about $-10^{-5}$, so beliefs return to the equilibrium very slowly in one direction.
+
+Because $\det K = 1$ for a shift, the determinant of $K^\top (\partial \bar g / \partial \gamma) K$ equals $\det(\partial \bar g / \partial \gamma) = \sigma_2^2 / 2 > 0$, so the equilibrium is unstable exactly when the trace is positive.
+
+Using {eq}`pp_jacobian`, the trace is $-\tfrac12 c^2 + \tfrac32 u c - u^2 - \sigma_2^2 - \tfrac12$, which is positive for $c$ between $\left(3u \pm \sqrt{u^2 - 4 - 8 \sigma_2^2}\right)/2$.
+
+```{code-cell} ipython3
+u, σ2 = model.u, model.σ2
+root = np.sqrt(u**2 - 4 - 8 * σ2**2)
+print(f"unstable for c between {(3 * u - root) / 2:.3f} and {(3 * u + root) / 2:.3f}")
+```
+
+With $u = 5$, stochastic gradient learning is unstable when inflation is measured from any constant between about $5.25$ and $9.75$.
+
+For part 4, we integrate the mean dynamics in the centered coordinates and map the beliefs back.
+
+```{code-cell} ipython3
+K = coordinates(c=7.5)
+sg_ode = lambda t, z: K.T @ model.g_bar(K @ z)
+z_start = np.linalg.solve(K, γ_sce + np.array([0.0, 0.01]))
+sol = solve_ivp(sg_ode, [0, 1000], z_start, max_step=0.5, rtol=1e-8, atol=1e-10)
+γ_path = K @ sol.y
+x_path = -γ_path[0] * γ_path[1] / (1 + γ_path[1]**2)
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+axes[0].plot(sol.t, x_path)
+axes[0].axhline(model.u, color='k', ls='--', lw=1, label='Nash')
+axes[0].set_xlabel(r'time, in units of $1/\varepsilon$ periods')
+axes[0].set_ylabel('inflation $x$')
+axes[0].legend()
+axes[1].plot(γ_path[1], x_path)
+axes[1].set_xlabel('slope $b$')
+axes[1].set_ylabel('inflation $x$')
+plt.tight_layout()
+plt.show()
+
+late = sol.t > 500
+print(f"after t = 500, x ranges from {x_path[late].min():.2f} to {x_path[late].max():.2f}")
+```
+
+The beliefs leave the self-confirming equilibrium at once and settle on a cycle.
+
+Inflation jumps to about $7.7$, above the Nash rate, collapses to about $0.6$, near the Ramsey outcome, and then drifts slowly back up, about every $220$ units of time.
+
+The same economy, observed by a government that runs least squares, has a stable self-confirming equilibrium; only the units in which the stochastic gradient government measures inflation have changed.
 
 ```{solution-end}
 ```

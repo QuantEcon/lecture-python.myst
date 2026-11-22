@@ -41,15 +41,15 @@ A distribution has two kinds of projection onto a set $\mathcal{S}$ of distribut
 
 Two kinds of "flat" sets of distributions serve as lines and planes:
 
-* **linear families**, such as the set of distributions that give a statistic a prescribed mean; a linear family contains every mixture $(1 - a) p_0 + a p_1$ of two of its members, for every real $a$ for which the mixture is a probability distribution; and
-* **exponential families**, described in {doc}`exponential_families`; an exponential family contains every normalized geometric mixture of two of its members, for every real $a$ for which the geometric mixture can be normalized.
+* **linear families**, such as the set of distributions that give a statistic a prescribed mean; a linear family contains every mixture $(1 - a) p_0 + a p_1$ of two of its distributions, for every real $a$ for which the mixture is a probability distribution; and
+* **exponential families**, described in {doc}`exponential_families`; an exponential family contains every normalized geometric mixture of two of its models, for every real $a$ for which the geometric mixture can be normalized.
 
 The e-projection onto a linear family and the m-projection onto an exponential family are unique, and each satisfies a Pythagorean theorem.
 
 The two projections have simple forms:
 
 * the e-projection of $q$ onto a linear family defined by moment conditions is an **exponential tilt** of $q$, a distribution proportional to $q(x) e^{\theta \cdot t(x)}$ for a vector $\theta$ that satisfies the moment conditions; and
-* the m-projection of $p$ onto an exponential family **matches moments**: it is the member of the family that gives the sufficient statistic the same means as $p$ does.
+* the m-projection of $p$ onto an exponential family **matches moments**: it is the model in the family that gives the sufficient statistic the same means as $p$ does.
 
 These two facts organize several ideas that economists use:
 
@@ -61,6 +61,8 @@ These two facts organize several ideas that economists use:
 * the Chernoff information that governs error rates in tests based on likelihood ratios (an e-projection of two distributions at once).
 
 The worst-case models of robust control and the solutions of the RAS and Sinkhorn problems are exponential tilts of the kind that attains the logit formula {eq}`ef_logit_base` of {doc}`exponential_families`.
+
+The multipliers of the entropy-regularized transport problem converge to the shadow prices of the linear program in {doc}`opt_transport`, and its entropy term charges for the mutual information between origins and destinations.
 
 This lecture builds on {doc}`exponential_families` and on {doc}`divergence_measures`.
 
@@ -84,7 +86,7 @@ import warnings
 
 We write $D(p \| q)$ for the KL divergence $D_{KL}(p \| q)$ and, as in {doc}`exponential_families`, read it as "the divergence of $p$ from $q$."
 
-We write $q_\theta$ for the members of an exponential family, because they usually appear in the second argument of $D$.
+We write $q_\theta$ for the models in an exponential family, because they usually appear in the second argument of $D$.
 
 Most of our examples use distributions on a finite set.
 
@@ -197,7 +199,7 @@ In the coordinates described after {eq}`ip_three_point`, an m-geodesic is a stra
 
 A set of distributions is **m-flat** if, whenever it contains $p_0$ and $p_1$, it contains $p_a$ on the mixture path for every real $a$ for which $p_a$ is a probability distribution, not only for $a \in [0, 1]$; it is **e-flat** if the same holds for exponential paths.
 
-A set that contains the mixture segments with $a \in [0, 1]$, but not necessarily the whole lines through its members, is merely convex in the ordinary sense.
+A set that contains the mixture segments with $a \in [0, 1]$, but not necessarily the whole lines through its distributions, is merely convex in the ordinary sense.
 
 The e-projection onto a closed convex set is still unique, but the Pythagorean identity {eq}`ip_pythagoras_e` below weakens to the inequality $D(p \| q) \geq D(p \| p^*) + D(p^* \| q)$ {cite}`Csiszar1975`.
 
@@ -241,15 +243,23 @@ def mixture_path(p0, p1, a):
 def exponential_path(p0, p1, a):
     log_w = (1 - a)[:, None] * np.log(p0) + a[:, None] * np.log(p1)
     return np.exp(log_w - logsumexp(log_w, axis=1, keepdims=True))
+
+
+def fisher_rao_path(p0, p1, a):
+    """Shortest path for the Fisher–Rao distance: a great circle in √p."""
+    φ = np.arccos(np.sum(np.sqrt(p0 * p1)))
+    z = (np.sin((1 - a)[:, None] * φ) * np.sqrt(p0)
+         + np.sin(a[:, None] * φ) * np.sqrt(p1)) / np.sin(φ)
+    return z**2
 ```
 
-The figure draws both paths between two distributions.
+The figure draws both paths between two distributions, together with a third path that we describe below.
 
 ```{code-cell} ipython3
 ---
 mystnb:
   figure:
-    caption: Mixture and exponential paths
+    caption: Mixture, exponential, and Fisher–Rao paths
     name: fig-ip-paths
 ---
 p0 = np.array([0.80, 0.15, 0.05])
@@ -261,6 +271,8 @@ draw_simplex(ax)
 ax.plot(*to_triangle(mixture_path(p0, p1, a)).T, lw=2, label="mixture path")
 ax.plot(*to_triangle(exponential_path(p0, p1, a)).T, lw=2,
         label="exponential path")
+ax.plot(*to_triangle(fisher_rao_path(p0, p1, a)).T, lw=2, ls="--",
+        label="Fisher–Rao path")
 ax.plot(*to_triangle(np.vstack([p0, p1])).T, "ko")
 ax.text(*to_triangle(p0)[0] + [0.02, 0.0], "$p_0$")
 ax.text(*to_triangle(p1)[0] + [0.02, 0.0], "$p_1$")
@@ -273,6 +285,34 @@ We draw the simplex in probability coordinates, so the mixture path is straight.
 The exponential path bends toward the middle outcome.
 
 A geometric mean of two probabilities is small whenever either of them is small, which penalizes outcomes $0$ and $2$, each of which is improbable under one of the two distributions.
+
+The third path is the shortest path for the Fisher–Rao distance of {doc}`exponential_families`.
+
+The map $p \mapsto 2 \sqrt{p}$ sends the simplex to part of a sphere of radius $2$, and, as {eq}`ef_fisher_rao_all` describes, the shortest path is an arc of a great circle, with length $2 \arccos \sum_x \sqrt{p_0(x) p_1(x)}$.
+
+The function `fisher_length` measures the length of each path with the Fisher information metric, under which a small step $dp$ from $p$ has squared length $\sum_x dp(x)^2 / p(x)$.
+
+```{code-cell} ipython3
+def fisher_length(path):
+    """Fisher–Rao length of a path whose rows are distributions."""
+    dp = np.diff(path, axis=0)
+    mid = (path[1:] + path[:-1]) / 2
+    return np.sum(np.sqrt(np.sum(dp**2 / mid, axis=1)))
+
+
+a_fine = np.linspace(0, 1, 2001)
+for name, path in (("mixture", mixture_path), ("exponential", exponential_path),
+                   ("Fisher–Rao", fisher_rao_path)):
+    points = path(p0, p1, a_fine)
+    print(f"{name:12} path: length {fisher_length(points):.4f}, "
+          f"midpoint {np.round(points[1000], 3)}")
+print(f"2 arccos of the Bhattacharyya coefficient: "
+      f"{2 * np.arccos(np.sum(np.sqrt(p0 * p1))):.4f}")
+```
+
+The mixture and exponential paths are straight lines in their own coordinates, but neither is the shortest path for the Fisher–Rao distance.
+
+The midpoint of the Fisher–Rao path puts probability $0.194$ on the middle outcome, between the $0.15$ of the mixture path and the $0.273$ of the exponential path.
 
 ## Two projections and two Pythagorean theorems
 
@@ -318,7 +358,7 @@ which proves {eq}`ip_pythagoras_e`.
 Since $D(p \| p^*) > 0$ unless $p = p^*$, the tilt $p^*$ is the unique minimizer.
 ```
 
-When every member of $\mathcal{L}$ puts zero probability on some outcomes, as for a die whose mean is $6$, the e-projection still exists and is unique.
+When every distribution in $\mathcal{L}$ puts zero probability on some outcomes, as for a die whose mean is $6$, the e-projection still exists and is unique.
 
 It lies outside the family of tilts, as a limit of tilts whose $\theta$ diverges.
 
@@ -405,7 +445,7 @@ Conventions differ across the literature.
 
 Check which argument of the KL divergence a source minimizes and which orthogonality condition it attaches to which Pythagorean identity.
 
-Let $p$, $q$, and $r$ be members of an exponential family with log-partition function $F$ and Bregman divergence $B_F$, as in {doc}`exponential_families`, with natural parameters $\theta_p$, $\theta_q$, $\theta_r$ and expectation parameters $\eta_p$, $\eta_q$, $\eta_r$.
+Let $p$, $q$, and $r$ be models in an exponential family with log-partition function $F$ and Bregman divergence $B_F$, as in {doc}`exponential_families`, with natural parameters $\theta_p$, $\theta_q$, $\theta_r$ and expectation parameters $\eta_p$, $\eta_q$, $\eta_r$.
 
 Then
 
@@ -441,7 +481,7 @@ outcomes = np.arange(3.0)
 q_e = np.array([0.6, 0.3, 0.1])
 θ_e, p_star = match_mean(q_e, outcomes, 1.2)
 
-# members of the linear family: p_star plus multiples of (1, -2, 1),
+# distributions in the linear family: p_star plus multiples of (1, -2, 1),
 # small enough to keep every probability positive
 s_lo, s_hi = -min(p_star[0], p_star[2]), p_star[1] / 2
 print("e-projection: D(p || q) and D(p || p*) + D(p* || q)")
@@ -478,7 +518,7 @@ mystnb:
 
 
 def family_curve(base, t, θ_grid):
-    """Members of the exponential family generated by base and t."""
+    """Models in the exponential family generated by base and t."""
     return np.vstack([tilt(base, t, θ) for θ in θ_grid])
 
 
@@ -1099,6 +1139,7 @@ for s in (-3.0, 2.0, 5.0):
           f"{gen_kl(P_other, P_io) + gen_kl(P_io, Q_io):.6f}")
 ```
 
+(ip_entropic_ot)=
 ### Entropy-regularized optimal transport
 
 {doc}`opt_transport` studies the problem of choosing a transport plan $P$ with row totals $p$ and column totals $q$ (the notation of that lecture) to minimize the total cost $\sum_{i, j} C_{ij} P_{ij}$.
@@ -1129,7 +1170,10 @@ We use the example of {doc}`opt_transport`, solve the linear program with `linpr
 
 ```{code-cell} ipython3
 def sinkhorn(C, p, q, ε, tol=1e-10, max_iter=100_000):
-    """Entropy-regularized optimal transport by rescaling in logs."""
+    """Entropy-regularized optimal transport by rescaling in logs.
+
+    Returns the plan and the vectors α = ε log a and β = ε log b.
+    """
     log_K = -C / ε
     log_a, log_b = np.zeros(len(p)), np.zeros(len(q))
     for _ in range(max_iter):
@@ -1140,7 +1184,7 @@ def sinkhorn(C, p, q, ε, tol=1e-10, max_iter=100_000):
             break
     else:
         warnings.warn("Sinkhorn's algorithm did not converge")
-    return P
+    return P, ε * log_a, ε * log_b
 
 
 p_ot = np.array([50.0, 100.0, 150.0])
@@ -1159,7 +1203,7 @@ P_lp = res_lp.x.reshape((m, n), order="F")
 
 print(f"linear program: cost = {res_lp.fun:.3f}")
 for ε in (10.0, 3.0, 1.0, 0.1):
-    P_ε = sinkhorn(C_ot, p_ot, q_ot, ε)
+    P_ε, _, _ = sinkhorn(C_ot, p_ot, q_ot, ε)
     print(f"ε = {ε:5.1f}: cost = {np.sum(C_ot * P_ε):9.3f}")
 ```
 
@@ -1168,7 +1212,7 @@ As $\varepsilon \to 0$, the cost of the regularized solution converges to the mi
 The regularized plans need not converge to the plan that `linprog` reports.
 
 ```{code-cell} ipython3
-P_small = sinkhorn(C_ot, p_ot, q_ot, 0.05)
+P_small, _, _ = sinkhorn(C_ot, p_ot, q_ot, 0.05)
 print("linprog plan:\n", np.round(P_lp, 2))
 print("limit of regularized plans:\n", np.round(P_small, 2))
 
@@ -1202,6 +1246,184 @@ print("RAS applied to the optimal support:\n", np.round(P_maxent, 2))
 print(f"cost = {np.sum(C_ot * P_maxent):.3f}, "
       f"entropy = {plan_entropy(P_maxent):.4f}")
 ```
+
+### Shadow prices and logit choice
+
+Write the regularized plan as
+
+$$
+P_{ij} = \exp\left( \frac{\alpha_i + \beta_j - C_{ij}}{\varepsilon} \right),
+\qquad \alpha_i = \varepsilon \log a_i, \quad \beta_j = \varepsilon \log b_j .
+$$ (ip_sinkhorn_plan)
+
+The vectors $\alpha$ and $\beta$ are Lagrange multipliers on the row and column totals: setting the derivative of the Lagrangian with respect to $P_{ij}$ to zero gives $C_{ij} + \varepsilon \log P_{ij} = \alpha_i + \beta_j$, which is {eq}`ip_sinkhorn_plan`.
+
+In {doc}`opt_transport`, the dual variables $u_i$ and $v_j$ of the linear program are shadow prices of the totals $p_i$ and $q_j$.
+
+Adding a constant to every $u_i$ and subtracting it from every $v_j$ leaves the dual objective unchanged when total supply equals total demand, so we compare $u - u_1$ and $v + u_1$ with $\alpha - \alpha_1$ and $\beta + \alpha_1$.
+
+In this example the dual solution is unique up to that constant.
+
+```{code-cell} ipython3
+res_dual = linprog(-np.hstack([p_ot, q_ot]), A_ub=A_eq.T,
+                   b_ub=C_ot.reshape(-1, order="F"), bounds=[(None, None)] * (m + n))
+u_lp, v_lp = res_dual.x[:m], res_dual.x[m:]
+print(f"linear program: u - u_1 = {np.round(u_lp - u_lp[0], 3)}, "
+      f"v + u_1 = {np.round(v_lp + u_lp[0], 3)}")
+for ε in (1.0, 0.1, 0.03):
+    _, α, β = sinkhorn(C_ot, p_ot, q_ot, ε)
+    print(f"ε = {ε:4}:         α - α_1 = {np.round(α - α[0], 3)}, "
+          f"β + α_1 = {np.round(β + α[0], 3)}")
+```
+
+As $\varepsilon \to 0$, the multipliers of the regularized problem converge to the shadow prices of the linear program.
+
+The exponent in {eq}`ip_sinkhorn_plan` is minus the **reduced cost** $C_{ij} - \alpha_i - \beta_j$ divided by $\varepsilon$.
+
+In the linear program, the reduced costs $c_{ij} - u_i - v_j$ are nonnegative, and complementary slackness makes them zero wherever an optimal plan ships a positive amount.
+
+As $\varepsilon \to 0$, the regularized plan puts vanishing weight on every cell whose reduced cost stays positive.
+
+```{code-cell} ipython3
+print("reduced costs of the linear program:\n",
+      np.round(C_ot - u_lp[:, None] - v_lp[None, :], 2))
+print("cells used by the limit of the regularized plans:\n",
+      (P_small > 1e-6 * p_ot.sum()).astype(int))
+```
+
+The limit of the regularized plans uses exactly the cells with zero reduced cost.
+
+Dividing row $i$ of {eq}`ip_sinkhorn_plan` by its total $p_i$ gives the distribution of the destination of a unit shipped from origin $i$:
+
+$$
+\frac{P_{ij}}{p_i} = \frac{\exp\left( (\beta_j - C_{ij}) / \varepsilon \right)}{\sum_k \exp\left( (\beta_k - C_{ik}) / \varepsilon \right)} .
+$$
+
+This is a multinomial logit with utilities $\beta_j - C_{ij}$ and scale $\varepsilon$.
+
+If each unit shipped from origin $i$ chose its destination by this logit rule, valuing destination $j$ at $\beta_j$ minus the cost of getting there, then the $\beta_j$ would be prices at which arrivals at each destination equal $q_j$.
+
+In the matching model of {cite:t}`ChooSiow2006`, agents on both sides of the market choose partners by logit rules of this kind.
+
+Sinkhorn's row update sets
+
+$$
+\alpha_i = \varepsilon \log p_i - \varepsilon \log \sum_j \exp\left( \frac{\beta_j - C_{ij}}{\varepsilon} \right) .
+$$
+
+The second term is minus the inclusive value {eq}`ef_logit` of this logit, with $\tau = \varepsilon$.
+
+As $\varepsilon \to 0$, the inclusive value converges to the largest utility, so the update converges to $\alpha_i = \min_j (C_{ij} - \beta_j)$.
+
+The linear program has the same relation: the dual constraints $u_i + v_j \leq c_{ij}$ hold for every $j$, and one of them binds because origin $i$ ships to some destination, so $u_i = \min_j (c_{ij} - v_j)$.
+
+Optimal transport calls this operation the **c-transform**; with the cost $c(x, y) = -x \cdot y$, it is the Legendre transform of {doc}`exponential_families`, up to signs {cite}`KhanZhang2022`.
+
+Sinkhorn's algorithm replaces the minimum in the c-transform by a logit inclusive value.
+
+### An exponential family of plans
+
+Divide a plan by its total $M = \sum_i p_i$ to turn it into a probability distribution over the cells $(i, j)$.
+
+For a fixed cost matrix and $\varepsilon$, the plans {eq}`ip_sinkhorn_plan` for all vectors $\alpha$ and $\beta$ form an exponential family on the cells.
+
+Its base measure is $K_{ij} = \exp(-C_{ij} / \varepsilon)$, its sufficient statistic is the pair of indicator vectors of the row $i$ and the column $j$, its natural parameters are $\alpha / \varepsilon$ and $\beta / \varepsilon$, and its expectation parameters are the row and column totals of the normalized plan {cite}`AmariKarakidaOizumi2018`.
+
+The regularized plan is the model in this family whose expectation parameters equal the required totals $p / M$ and $q / M$, so Sinkhorn's algorithm maps expectation parameters to natural parameters.
+
+The plan is therefore two projections at once.
+
+It is the e-projection of $K$ onto the linear family of plans with the required totals, and, by {prf:ref}`ip_thm_m_projection`, it is the m-projection of every plan with those totals onto the exponential family.
+
+The linear family and the exponential family cross at one point, as in the right panel of the figure of the two projections.
+
+We check the Pythagorean theorem {eq}`ip_pythagoras_m` with two plans that have the required totals, the plan of the linear program and the independent plan $p q^\top / M$, and a model in the family with arbitrary multipliers.
+
+```{code-cell} ipython3
+M = p_ot.sum()
+P_1, _, _ = sinkhorn(C_ot, p_ot, q_ot, 1.0)
+rng_ot = np.random.default_rng(7)
+log_w = rng_ot.normal(size=m)[:, None] + rng_ot.normal(size=n)[None, :] - C_ot
+other = np.exp(log_w - logsumexp(log_w))
+for name, P in (("linear program", P_lp), ("independent plan", np.outer(p_ot, q_ot) / M)):
+    print(f"{name:16}: D(P || other) = {kl(P / M, other):.6f}, "
+          f"D(P || P_ε) + D(P_ε || other) = {kl(P / M, P_1 / M) + kl(P_1 / M, other):.6f}")
+```
+
+### A cost of information
+
+{cite:t}`KhanZhang2022` point out that the entropy term of the regularized problem is a KL divergence in disguise.
+
+Let $\pi = P / M$, and let $r = p / M$ and $c = q / M$ be its marginal distributions.
+
+For every plan with the required totals,
+
+$$
+\sum_{i, j} P_{ij} \log P_{ij} = M \left[ I(\pi) - H(r) - H(c) + \log M \right] ,
+$$
+
+where $I(\pi) = D(\pi \| r c^\top)$ is the mutual information between origin and destination, as in the section on independence and mutual information.
+
+Only $I(\pi)$ depends on the plan, so the regularized problem is equivalent to
+
+$$
+\min_{\pi} \; E_\pi [C] + \varepsilon \, I(\pi) ,
+$$ (ip_ot_information)
+
+over joint distributions $\pi$ of origins and destinations with marginal distributions $r$ and $c$.
+
+A dispatcher who pays $\varepsilon$ for each nat of information that the destination of a unit carries about its origin chooses the regularized plan.
+
+{cite:t}`Sims2003` measures the cost of attention with mutual information, and {cite:t}`MatejkaMcKay2015` show that a decision maker who pays for mutual information makes logit choices.
+
+Here the totals of the destinations are fixed, and the prices $\beta$ adjust to meet them.
+
+As $\varepsilon$ grows, the plan approaches the independent plan $p q^\top / M$, which uses no information.
+
+As $\varepsilon \to 0$, it approaches the optimal plan with the largest entropy, and because $H(\pi) = H(r) + H(c) - I(\pi)$, this is the optimal plan that uses the least information.
+
+Because the regularized plan minimizes {eq}`ip_ot_information`, the pairs $(I(\pi_\varepsilon), E_{\pi_\varepsilon}[C])$ trace the lowest expected cost attainable with each amount of information, a convex curve whose slope at $\pi_\varepsilon$ is $-\varepsilon$.
+
+```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Cost and mutual information of regularized plans
+    name: fig-ip-ot-information
+---
+def mutual_information(P):
+    π = P / P.sum()
+    return kl(π, np.outer(π.sum(axis=1), π.sum(axis=0)))
+
+
+def cost_and_information(ε):
+    P_ε, _, _ = sinkhorn(C_ot, p_ot, q_ot, ε)
+    return mutual_information(P_ε), np.sum(C_ot * P_ε) / M
+
+
+frontier = np.array([cost_and_information(ε) for ε in np.geomspace(0.05, 500, 80)])
+I_5, cost_5 = cost_and_information(5.0)
+I_line = np.linspace(I_5 - 0.15, I_5 + 0.15, 2)
+
+fig, ax = plt.subplots()
+ax.plot(*frontier.T, lw=2, label="regularized plans")
+ax.plot(I_line, cost_5 - 5.0 * (I_line - I_5), "k--", lw=1,
+        label=r"slope $-\varepsilon$ at $\varepsilon = 5$")
+ax.plot(0, np.sum(C_ot * np.outer(p_ot, q_ot)) / M**2, "o", label="independent plan")
+ax.plot(mutual_information(P_lp), np.sum(C_ot * P_lp) / M, "s",
+        label="plan of the linear program")
+ax.set_xlabel("mutual information between origin and destination (nats)")
+ax.set_ylabel("expected cost per unit shipped")
+ax.legend()
+plt.show()
+
+print(f"independent plan: E[C] = {np.sum(C_ot * np.outer(p_ot, q_ot)) / M**2:.3f}")
+print(f"ε = 0.05: I = {frontier[0, 0]:.4f}, E[C] = {frontier[0, 1]:.3f}")
+print(f"plan of the linear program: I = {mutual_information(P_lp):.4f}, "
+      f"E[C] = {np.sum(C_ot * P_lp) / M:.3f}")
+```
+
+The plan that `linprog` reports attains the minimal cost with more information than it needs.
 
 ## Chernoff information
 
@@ -1341,6 +1563,8 @@ The e-projection onto a set defined by moment conditions is an exponential tilt,
 The lecture applied m-projections to maximum likelihood estimation and mutual information, and e-projections to maximum entropy and large deviations, robust control, the updating of input–output tables, optimal transport, and Chernoff information.
 
 The worst-case models of robust control, the biproportional tables of RAS, and the regularized transport plans are all exponential tilts of the kind that attains the logit formula {eq}`ef_logit_base` of {doc}`exponential_families`.
+
+The regularized transport plans form an exponential family whose multipliers $\alpha$ and $\beta$, $\varepsilon$ times its natural parameters, converge up to a common constant to the shadow prices of the linear program; each plan charges for the information that destinations carry about origins.
 
 {doc}`approximation_errors` applies m-projections to misspecified time series models and to seasonal adjustment, {doc}`specification_tests` describes specification tests as comparisons of m-projections, and {doc}`turbulence_inference` uses them to interpret a check of a calibrated search model against evidence on earnings instability.
 
@@ -1532,7 +1756,7 @@ Consider three nested exponential families of joint distributions:
 * $\mathcal{E}_2$: $\log q(x, y, z)$ is a sum of functions of the pairs $(x, y)$, $(x, z)$, and $(y, z)$, so that there is no three-way interaction; and
 * $\mathcal{E}_3$: all distributions.
 
-1. Use {prf:ref}`ip_thm_m_projection` to show that the m-projection of $p$ onto $\mathcal{E}_1$ is the product of its one-variable marginals and that the m-projection onto $\mathcal{E}_2$ is the member of $\mathcal{E}_2$ with the same two-variable marginals as $p$.
+1. Use {prf:ref}`ip_thm_m_projection` to show that the m-projection of $p$ onto $\mathcal{E}_1$ is the product of its one-variable marginals and that the m-projection onto $\mathcal{E}_2$ is the model in $\mathcal{E}_2$ with the same two-variable marginals as $p$.
 2. Compute the m-projection onto $\mathcal{E}_2$ by iterative proportional fitting: starting from the uniform distribution, repeatedly rescale the current distribution to match each of the three two-variable marginals of $p$.
 3. Verify the decomposition $D(p \| p_1) = D(p \| p_2) + D(p_2 \| p_1)$, where $p_k$ is the m-projection onto $\mathcal{E}_k$. The left side, called the multi-information, measures the total dependence among the three variables; the first term on the right measures three-way interaction, and the second measures dependence through pairs.
 4. Apply the decomposition to the distribution in which $X$ and $Y$ are independent fair coin flips and $Z = (X + Y) \bmod 2$ with probability $0.9$ and $Z = (X + Y + 1) \bmod 2$ with probability $0.1$. Interpret the result.
@@ -1554,7 +1778,7 @@ The set $\mathcal{E}_2$ is an exponential family whose sufficient statistics are
 
 The product of the one-variable marginals is in $\mathcal{E}_1$ and matches them, so it is the m-projection onto $\mathcal{E}_1$.
 
-Similarly, a member of $\mathcal{E}_2$ with the same two-variable marginals as $p$ is the m-projection onto $\mathcal{E}_2$.
+Similarly, a model in $\mathcal{E}_2$ with the same two-variable marginals as $p$ is the m-projection onto $\mathcal{E}_2$.
 
 For part 2, the uniform starting point lies in $\mathcal{E}_2$, and each rescaling multiplies the current distribution by a function of one pair of variables, so every iterate lies in $\mathcal{E}_2$.
 
@@ -1616,6 +1840,83 @@ decompose(p_xor)
 All of the dependence is three-way interaction: each pair of variables is independent, so the m-projections onto $\mathcal{E}_2$ and $\mathcal{E}_1$ coincide (both are uniform), yet knowing any two of the variables nearly determines the third.
 
 Measures of dependence that look only at pairs of variables, such as correlations, would miss it entirely.
+
+```{solution-end}
+```
+
+```{exercise}
+:label: ip_ex_inverse_ot
+
+{cite:t}`DupuyGalichon2014` and {cite:t}`GalichonSalanie2022` estimate the parameters of matching models from observed tables of matches.
+
+This exercise estimates the cost of a transport problem from an observed table of shipments.
+
+Let origins sit at points $x_i$ and destinations at points $y_j$ on the unit interval, with $d_{ij} = \lvert x_i - y_j \rvert$, and let the cost be $C_{ij} = \lambda d_{ij}$ with unknown $\lambda > 0$.
+
+Shipments follow the regularized plan with $\varepsilon = 1$; only $\lambda / \varepsilon$ can be identified.
+
+An analyst observes the counts $N_{ij}$ of $N$ shipments drawn independently from the plan, normalized to be a probability distribution $\pi$ over cells.
+
+1. Show that the distributions $\pi_{ij} \propto \exp(a_i + b_j - \lambda d_{ij})$, for all vectors $a$ and $b$ and all $\lambda$, form an exponential family, and that the maximum likelihood estimate matches the observed row totals, column totals, and average distance.
+2. Draw $6$ origins and $8$ destinations from the uniform distribution, totals from Dirichlet distributions, and a table of $N = 2000$ shipments with $\lambda = 4$. Estimate $\lambda$ by finding the value at which the regularized plan with the observed row and column totals has the observed average distance.
+3. Holding the row and column totals fixed, the derivative of the plan's average distance with respect to $\lambda$ is minus the Fisher information for $\lambda$ per shipment. Use it to compute a standard error, and compare it with the standard deviation of the estimates across $300$ simulated tables.
+```
+
+```{solution-start} ip_ex_inverse_ot
+:class: dropdown
+```
+
+Here is one solution.
+
+For part 1, write the cell as the pair $(i, j)$; then $\log \pi_{ij} = a \cdot e_i + b \cdot e_j - \lambda d_{ij}$ minus a normalizing constant, where $e_i$ and $e_j$ are indicator vectors.
+
+This is an exponential family with sufficient statistic $(e_i, e_j, d_{ij})$ and natural parameter $(a, b, -\lambda)$.
+
+By the result of {doc}`exponential_families` that maximum likelihood matches moments, the estimate makes the model's means of the sufficient statistic equal to their sample means: the row totals, the column totals, and the average distance.
+
+For given $\lambda$, Sinkhorn's algorithm finds the $a$ and $b$ that match the totals, so we find $\lambda$ by one-dimensional root finding.
+
+The derivative in part 3 is the second derivative of the log likelihood per shipment after $a$ and $b$ have been chosen to match the observed totals, so $N$ times minus it is the information in the table.
+
+In an exponential family the second derivatives at given parameters do not depend on the data, so at the estimates this observed information equals the Fisher information.
+
+```{code-cell} ipython3
+rng_inv = np.random.default_rng(5)
+m_s, n_s = 6, 8
+x_o, y_d = np.sort(rng_inv.uniform(size=m_s)), np.sort(rng_inv.uniform(size=n_s))
+d = np.abs(x_o[:, None] - y_d[None, :])
+p_s, q_s = rng_inv.dirichlet(5 * np.ones(m_s)), rng_inv.dirichlet(5 * np.ones(n_s))
+λ_true, N_ship = 4.0, 2000
+π_true, _, _ = sinkhorn(λ_true * d, p_s, q_s, 1.0)
+
+
+def estimate_λ(counts, h=1e-4):
+    π_hat = counts / counts.sum()
+    r_hat, c_hat = π_hat.sum(axis=1), π_hat.sum(axis=0)
+
+    def excess_distance(λ):
+        π_λ, _, _ = sinkhorn(λ * d, r_hat, c_hat, 1.0)
+        return np.sum(π_λ * d) - np.sum(π_hat * d)
+
+    λ_hat = brentq(excess_distance, 0.0, 30.0)
+    info = -(excess_distance(λ_hat + h) - excess_distance(λ_hat - h)) / (2 * h)
+    return λ_hat, 1 / np.sqrt(counts.sum() * info)
+
+
+def draw_table():
+    return rng_inv.multinomial(N_ship, π_true.ravel()).reshape(m_s, n_s)
+
+
+λ_hat, se = estimate_λ(draw_table())
+print(f"estimate {λ_hat:.3f}, standard error {se:.3f}")
+
+estimates = np.array([estimate_λ(draw_table()) for _ in range(300)])
+print(f"300 tables: mean estimate {estimates[:, 0].mean():.3f}, "
+      f"standard deviation {estimates[:, 0].std():.3f}, "
+      f"mean standard error {estimates[:, 1].mean():.3f}")
+```
+
+The standard errors match the spread of the estimates across simulated tables.
 
 ```{solution-end}
 ```
