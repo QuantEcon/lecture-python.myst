@@ -66,6 +66,18 @@ jobs:
             --exclude-path 'prf-prf\.html$'
             --exclude '10\.3905/jod\.2012\.20\.1\.038'
             _site/*.html
+      # Refresh the open report rather than file a new one on every run:
+      # pass the newest open report's number to the next step. With none
+      # open the number is empty, and the next step files a new issue.
+      - name: Find Open Report
+        id: report
+        if: steps.lychee.outputs.exit_code != 0
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number=$(gh issue list -R ${{ github.repository }} --state open --label linkchecker \
+            --search 'in:title "Link Checker Report"' --json number --jq 'map(.number) | max // empty')
+          echo "number=$number" >> "$GITHUB_OUTPUT"
       - name: Create Issue From File
         if: steps.lychee.outputs.exit_code != 0
         uses: peter-evans/create-issue-from-file@v6
@@ -73,3 +85,4 @@ jobs:
           title: Link Checker Report
           content-filepath: ./lychee/out.md
           labels: report, automated issue, linkchecker
+          issue-number: ${{ steps.report.outputs.number }}
