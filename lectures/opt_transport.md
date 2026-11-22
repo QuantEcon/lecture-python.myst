@@ -680,7 +680,7 @@ print("min_j (c_ij - v_j):", np.min(C - v[None, :], axis=1))
 
 Both optimal plans that we found above use only routes with zero reduced cost.
 
-{doc}`information_projections` shows that, when an entropy term is added to the objective, the solution ships along every route in amounts proportional to $\exp(-(c_{ij} - \alpha_i - \beta_j)/\varepsilon)$, where $\alpha$ and $\beta$ converge to $u$ and $v$ as $\varepsilon \to 0$.
+{doc}`information_projections` shows that, when an entropy term is added to the objective, the solution ships along every route in amounts equal to $\exp(-(c_{ij} - \alpha_i - \beta_j)/\varepsilon)$, where, after a constant is added to $\alpha$ and subtracted from $\beta$, $\alpha$ and $\beta$ converge to $u$ and $v$ as $\varepsilon \to 0$.
 
 
 
@@ -915,4 +915,4 @@ plt.show()
 
 As $\varepsilon$ falls, the regularized plans concentrate on fewer routes and their costs approach the minimal cost.
 
-Spreading the plan over many routes is what makes the regularized problem easy to solve {cite}`KhanZhang2022`.
+The entropy term, which spreads the plan over many routes, also makes the regularized problem strictly convex and smooth, and so easy to solve {cite}`KhanZhang2022`.

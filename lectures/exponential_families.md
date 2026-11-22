@@ -284,10 +284,10 @@ In the table below, $J = \partial \theta / \partial \xi$ is the Jacobian matrix 
 | Euclidean distance between parameter vectors | changes | unchanged |
 | Wasserstein distance between two models | unchanged | changes |
 | density of a model at a point | unchanged | divided by $\lvert f'(x) \rvert$ |
-| differential entropy of a model | unchanged | rises by $E \log \lvert f'(X) \rvert$ |
+| differential entropy of a model | unchanged | changes by $E \log \lvert f'(X) \rvert$ |
 | maximum likelihood estimate | becomes $\phi(\hat \theta)$ | unchanged |
 | unbiasedness of an estimator | can be lost | unchanged |
-| a flat prior density | not flat in $\xi$ | unchanged |
+| a flat prior density | generally not flat in $\xi$ | unchanged |
 | the Jeffreys prior | unchanged | unchanged |
 
 Under $y = f(x)$, each density acquires the factor $1 / \lvert f'(x) \rvert$, which does not depend on $\theta$.
@@ -430,7 +430,7 @@ KL divergence and Fisher information compare the heights of two densities outcom
 
 {cite:t}`KhanZhang2022` call the first comparison vertical and the second horizontal.
 
-The Wasserstein distance is a distance between models, so relabeling parameters does not change it; it equals the Euclidean distance between parameter vectors only in the coordinates $(\mu, \sigma)$.
+The Wasserstein distance is a distance between models, so relabeling parameters does not change it; of the parameterizations in this lecture, it equals the Euclidean distance between parameter vectors only in $(\mu, \sigma)$.
 
 Because it measures displacements in the units of the data, transforming the data changes it.
 
@@ -483,7 +483,7 @@ Inequality {eq}`ef_dpi` is the data processing inequality of {doc}`blackwell_kih
 
 {cite:t}`kullback1951information` showed that equality holds in {eq}`ef_dpi` for every pair of parameter vectors if and only if $s$ is sufficient.
 
-The Fisher information matrix of $s(X)$ equals that of $X$ for every $\theta$ if and only if $s$ is sufficient.
+When the parameter space is connected, the Fisher information matrix of $s(X)$ equals that of $X$ for every $\theta$ if and only if $s$ is sufficient.
 
 {cite:t}`chentsov1981` characterized the Fisher information by this invariance.
 
@@ -632,7 +632,7 @@ The figure shows the two log likelihood functions of the location parameter $\mu
 ---
 mystnb:
   figure:
-    caption: Log likelihood functions of a sample and a rotated sample
+    caption: Log likelihoods of a sample and its rotation
     name: fig-ef-rotated-sample
 ---
 μ_line = np.linspace(-2, 4, 400)
@@ -1579,7 +1579,7 @@ Each model on it is the distribution of $(1 - \tau) X + \tau Y$, $0 \leq \tau \l
 
 {cite:t}`McCann1997` called this path **displacement interpolation**, and {cite:t}`Takatsu2011` studied it for normal models.
 
-The figure plots the models at the midpoints of three paths from $A$ to $B$: the Wasserstein path, the Fisher–Rao path, and the mixture path $(1 - \tau) A + \tau B$, which {doc}`information_projections` studies.
+The figure plots the models at the midpoints of three paths from $A$ to $B$: the Wasserstein path, the Fisher–Rao path within the normal family, and the mixture path $(1 - \tau) A + \tau B$, which {doc}`information_projections` studies.
 
 ```{code-cell} ipython3
 ---
@@ -1637,9 +1637,9 @@ The average log likelihood is a concave function of $\theta$ whose first-order c
 
 The maximum likelihood estimator of the natural parameter is $\hat \theta = \nabla F^*(\bar t)$, provided that $\bar t$ lies in the range of $\nabla F$.
 
-The estimates $\hat \eta$ and $\hat \theta$ are two sets of coordinates of one estimated model.
-
 When it does not, as in a Bernoulli sample with no successes, $\hat \theta$ does not exist (see {ref}`ef_ex_bernoulli`).
+
+When both exist, the estimates $\hat \eta$ and $\hat \theta$ are two sets of coordinates of one estimated model.
 
 The maximized average log likelihood is $F^*(\bar t)$ plus the average of $\log h(x_i)$, by {eq}`ef_fenchel`.
 

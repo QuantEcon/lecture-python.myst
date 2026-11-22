@@ -395,7 +395,7 @@ For a fixed distribution of the data, the gradient of the expected log likelihoo
 
 Under the data that the beliefs $\gamma$ generate, these are $\sigma^{-2} \bar g(\gamma)$ and $\sigma^{-2} M(\gamma)$.
 
-Constant-gain recursive least squares sets $P = \varepsilon M^{-1}$ in {eq}`pp_ode`, so it moves the beliefs along the gradient premultiplied by the inverse of the Fisher information matrix, which {cite:t}`Amari1998` calls the **natural gradient**.
+Constant-gain recursive least squares, with its estimated moment matrix $R$ replaced by its mean $M(\gamma)$, sets $P = \varepsilon M^{-1}$ in {eq}`pp_ode`, so it moves the beliefs along the gradient premultiplied by the inverse of the Fisher information matrix, which {cite:t}`Amari1998` calls the **natural gradient**.
 
 Because the data depend on $\gamma$, $\bar g$ is not the gradient of a single function of $\gamma$; the statement holds at each $\gamma$ for the data that $\gamma$ generates.
 
@@ -408,6 +408,8 @@ Its regressors become $\Phi' = K^\top \Phi$ for an invertible matrix $K$, and it
 The gradient becomes $K^\top \bar g$, and the Fisher information matrix becomes $K^\top M K$.
 
 The natural gradient $(K^\top M K)^{-1} K^\top \bar g = K^{-1} M^{-1} \bar g$ is the old natural gradient in the new coordinates.
+
+The full recursion has the same property without the approximation, because its moment estimate becomes $R' = K^\top R K$ and its update $\dot R = \varepsilon [M(\gamma) - R]$ transforms in the same way.
 
 So least squares traces the same path of models in every coordinate system, and its eigenvalues $-1$ and $-\tfrac12$ do not depend on how the government measures inflation.
 

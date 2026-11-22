@@ -651,6 +651,8 @@ For distributions on the real line and a cost of moving mass that is a convex fu
 
 The **shift** $s(u) = G^{-1}(u) - F^{-1}(u)$, where $F$ and $G$ are the cumulative distribution functions of the two periods, records how far that mass moves.
 
+The shift compares two distributions, not the same men in two periods, so it describes how the quantiles move, not how any man's earnings changed.
+
 We compute the shift of the distribution of men's standard deviations for Gottschalk and Moffitt's histograms, spreading the men in each bar uniformly across it, and for our artificial panels at turbulence parameters $0.02$ and $0.04$.
 
 ```{code-cell} ipython3
@@ -698,11 +700,11 @@ plt.show()
 
 The figure stops at the 95th percentile, because above it the PSID quantiles depend on how we spread the men in the last, sparsely populated bars.
 
-In the PSID, the shift grows with the quantile, from $0.004$ at the 10th percentile to $0.126$ at the 90th: the men whose earnings were already the least stable became much less stable, and the men with stable earnings changed little.
+In the PSID, the shift grows with the quantile, from $0.004$ at the 10th percentile to $0.126$ at the 90th: the upper quantiles of the distribution of standard deviations rose much more than the lower quantiles, which changed little.
 
-In the model, the shift lies between about $0.01$ and $0.02$ at every quantile from the 10th to the 95th: turbulence raises the standard deviations of men throughout the distribution by about the same amount.
+In the model, the shift lies between about $0.01$ and $0.02$ at every quantile from the 10th to the 95th: turbulence raises every quantile of the distribution of standard deviations by about the same amount.
 
-Below about the 35th percentile the model's shift exceeds the data's, while at the 90th and 95th percentiles the data's shift is more than eight times the model's.
+Below about the 37th percentile the model's shift exceeds the data's, while at the 90th and 95th percentiles the data's shift is more than eight times the model's.
 
 That is a quantitative version of Ljungqvist and Sargent's remark.
 

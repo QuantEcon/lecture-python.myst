@@ -622,7 +622,7 @@ $$ (en_tilt_cost)
 
 which equals $\log 2$ at $m = 1$.
 
-$L$ is the Legendre transform {eq}`pl_legendre` of $\log \mathbb{E} \exp(\eta W_1 W_2) = \log \cosh \eta$, the log-partition function of the tilts, so {eq}`en_tilt_cost` is the integrand of the action functional {eq}`pl_action` for a path along which the tilt does not change.
+$L$ is the Legendre transform {eq}`pl_legendre` of $\log \mathbb{E} \exp(\eta W_1 W_2) = \log \cosh \eta$, the log-partition function of the tilts, so {eq}`en_tilt_cost` bounds from above the integrand of the action functional {eq}`pl_action` along a path driven by a constant tilt.
 
 A path that takes time $t = n \varepsilon$ has probability of order $\exp(-t L(m) / \varepsilon)$, so its cost $t \, L(m)$ is measured in the same units as $\bar S$ in {eq}`en_control`.
 

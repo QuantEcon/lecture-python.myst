@@ -1327,13 +1327,13 @@ Divide a plan by its total $M = \sum_i p_i$ to turn it into a probability distri
 
 For a fixed cost matrix and $\varepsilon$, the plans {eq}`ip_sinkhorn_plan` for all vectors $\alpha$ and $\beta$ form an exponential family on the cells.
 
-Its base measure is $K_{ij} = \exp(-C_{ij} / \varepsilon)$, its sufficient statistic is the pair of indicator vectors of the row $i$ and the column $j$, its natural parameters are $\alpha / \varepsilon$ and $\beta / \varepsilon$, and its expectation parameters are the totals $p / M$ and $q / M$ {cite}`AmariKarakidaOizumi2018`.
+Its base measure is $K_{ij} = \exp(-C_{ij} / \varepsilon)$, its sufficient statistic is the pair of indicator vectors of the row $i$ and the column $j$, its natural parameters are $\alpha / \varepsilon$ and $\beta / \varepsilon$, and its expectation parameters are the row and column totals of the normalized plan {cite}`AmariKarakidaOizumi2018`.
 
-The regularized plan is the model in this family whose expectation parameters equal the required totals, so Sinkhorn's algorithm maps expectation parameters to natural parameters.
+The regularized plan is the model in this family whose expectation parameters equal the required totals $p / M$ and $q / M$, so Sinkhorn's algorithm maps expectation parameters to natural parameters.
 
 The plan is therefore two projections at once.
 
-It is the e-projection of $K$ onto the linear family of plans with the required totals, and, by {prf:ref}`ip_thm_m_projection`, it is the m-projection onto the exponential family of every plan with those totals.
+It is the e-projection of $K$ onto the linear family of plans with the required totals, and, by {prf:ref}`ip_thm_m_projection`, it is the m-projection of every plan with those totals onto the exponential family.
 
 The linear family and the exponential family cross at one point, as in the right panel of the figure of the two projections.
 
@@ -1388,7 +1388,7 @@ Because the regularized plan minimizes {eq}`ip_ot_information`, the pairs $(I(\p
 ---
 mystnb:
   figure:
-    caption: Expected cost and mutual information of regularized plans
+    caption: Cost and mutual information of regularized plans
     name: fig-ip-ot-information
 ---
 def mutual_information(P):
@@ -1564,7 +1564,7 @@ The lecture applied m-projections to maximum likelihood estimation and mutual in
 
 The worst-case models of robust control, the biproportional tables of RAS, and the regularized transport plans are all exponential tilts of the kind that attains the logit formula {eq}`ef_logit_base` of {doc}`exponential_families`.
 
-The regularized transport plans form an exponential family whose natural parameters converge to the shadow prices of the linear program; each plan charges for the information that destinations carry about origins.
+The regularized transport plans form an exponential family whose multipliers $\alpha$ and $\beta$, $\varepsilon$ times its natural parameters, converge up to a common constant to the shadow prices of the linear program; each plan charges for the information that destinations carry about origins.
 
 {doc}`approximation_errors` applies m-projections to misspecified time series models and to seasonal adjustment, {doc}`specification_tests` describes specification tests as comparisons of m-projections, and {doc}`turbulence_inference` uses them to interpret a check of a calibrated search model against evidence on earnings instability.
 
@@ -1876,7 +1876,9 @@ By the result of {doc}`exponential_families` that maximum likelihood matches mom
 
 For given $\lambda$, Sinkhorn's algorithm finds the $a$ and $b$ that match the totals, so we find $\lambda$ by one-dimensional root finding.
 
-The derivative in part 3 is the second derivative of the log likelihood after $a$ and $b$ have been chosen to maximize it; in an exponential family it does not depend on the data.
+The derivative in part 3 is the second derivative of the log likelihood per shipment after $a$ and $b$ have been chosen to match the observed totals, so $N$ times minus it is the information in the table.
+
+In an exponential family the second derivatives at given parameters do not depend on the data, so at the estimates this observed information equals the Fisher information.
 
 ```{code-cell} ipython3
 rng_inv = np.random.default_rng(5)
