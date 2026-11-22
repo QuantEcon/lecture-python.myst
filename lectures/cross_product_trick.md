@@ -115,10 +115,12 @@ Thus, $x_t$ is $m \times 1$ and $z_t$ is $k \times 1$.
 The Kalman  filtering formulas are 
 
 
-\begin{align*}
+$$
+\begin{aligned}
 K(\Sigma_t) & = (A \Sigma_t D' + BF')(D \Sigma_t D' + FF')^{-1}, \\
 \Sigma_{t+1}&  = A \Sigma_t A' + BB' - (A \Sigma_t D' + BF')(D \Sigma_t D' + FF')^{-1} (D \Sigma_t A' + FB').
-\end{align*} (eq:Kalman102)
+\end{aligned}
+$$ (eq:Kalman102)
  
 
 Define   tranformed matrices
