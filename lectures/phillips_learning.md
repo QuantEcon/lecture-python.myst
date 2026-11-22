@@ -417,6 +417,40 @@ Read {eq}`pl_action2` as a cost that penalizes departures of the *realized drift
 
 The least-action escape therefore threads the beliefs through regions where the mean dynamics are weak and the noise is large — which, in our model, is the direction of the *induction hypothesis*.
 
+```{note}
+The integrand of {eq}`pl_action2`, with $w = 1$ and $\Sigma = \sigma \Omega \sigma^\top$ nonsingular, is the KL divergence of a normal distribution with mean $\tfrac{d}{ds}\phi$ from a normal distribution with mean $b(\phi)$, both with covariance matrix $\Sigma$.
+
+The matrix $\Sigma^{-1}$ is the Fisher information matrix of this family of normal models, as in {doc}`exponential_families`.
+
+The action therefore measures how far, in KL divergence, the innovations along a path are from the innovations that the mean dynamics expect.
+
+The escape problem {eq}`pl_escapeproblem` also chooses the duration $T$, so it can choose how fast to move along any curve of beliefs.
+
+Write $|v| = (v^\top \Sigma^{-1} v)^{1/2}$ and $\langle v, z \rangle = v^\top \Sigma^{-1} z$, and suppose that a curve $\phi(\alpha)$ is traversed with $d\alpha / ds = \lambda$.
+
+The cost per unit of $\alpha$ is $\frac{1}{2\lambda} |\lambda \phi' - b|^2$, where $\phi' = d\phi / d\alpha$, and the speed $\lambda = |b| / |\phi'|$ minimizes it, leaving
+
+$$
+\bar S(\phi) = \int \left( |\phi'| \, |b(\phi)| - \langle \phi', b(\phi) \rangle \right) d\alpha ,
+$$
+
+the **geometric action** of {cite:t}`HeymannVandenEijnden2008`.
+
+The integrand does not change when the curve is traced at a different speed, so $\bar S$ is a length, and the escape route is the curve that joins $\phi_f$ to $\partial D$ with the shortest length in this sense.
+
+This length differs from the Fisher–Rao distance of {doc}`exponential_families`:
+
+* it is zero along the mean dynamics, where $\phi'$ points in the direction of $b$;
+* it is not symmetric: moving against the mean dynamics costs $2 |\phi'| |b|$ per unit of $\alpha$; and
+* its integrand is not the square root of a quadratic form, so it is not a Riemannian length.
+
+When $b = 0$ and $T$ is fixed, the minimizers of {eq}`pl_action2` are shortest paths for the Riemannian metric $\Sigma^{-1}$, traversed at constant speed.
+
+When the noise reaches only some components of $\phi$, as in the control problem {eq}`en_control` of {doc}`phillips_escaping_nash`, where the moment matrix $R$ follows its mean dynamics, the escape cannot be retimed freely, and the escape route solves a control problem instead of a shortest-path problem.
+
+{ref}`en_tilts` computes the KL cost of escapes in the static model.
+```
+
 Our model does not satisfy the assumptions behind {eq}`pl_action2` exactly.
 
 Its innovation $F$ contains products such as $X_{C,t} X_{C,t}^\top$ and $X_{C,t} U_t$, so it is quadratic in the shocks rather than additive and Gaussian.

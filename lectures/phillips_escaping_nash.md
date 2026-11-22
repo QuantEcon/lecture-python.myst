@@ -58,6 +58,8 @@ The large-deviation results are statements about small gains.
 
 {ref}`en_simulation` simulates the model and finds that, at the gains used in this suite, escapes are frequent rather than rare.
 
+{ref}`en_tilts` describes escapes as exponential tilts of the distribution of shocks, in the sense of {doc}`information_projections`, and prices them by KL divergence.
+
 We work with the analytically tractable **static** model, in which the government regresses unemployment on current inflation and a constant.
 
 {doc}`phillips_learning` simulates CWS's richer *dynamic* model, in which the government's regression also includes lags; we compare the two near the end of the lecture.
@@ -75,6 +77,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.linalg import solve_discrete_are
+from scipy.optimize import minimize_scalar
 ```
 
 ## The model
@@ -584,6 +587,102 @@ Pair 3 never exits: it settles at a rest point inside the circle.
 So pair 1 wins the race, and the escape forcing it induces is the $R^{-1}(\sigma_1\sigma_2, 0)^\top$ of {eq}`en_force`.
 
 CWS describe the winner's velocity as substantially larger than the other three; the table shows that this holds along the route, not at its start.
+
+(en_tilts)=
+## Escapes as exponential tilts
+
+Pair 1 replaces the four equally likely shock realizations by a distribution that puts probability $1/2$ on each of $(1, 1)$ and $(-1, -1)$, so that $W_1 W_2 = 1$ in every period.
+
+That distribution is the limit of a family of **exponential tilts** of the true shock distribution, in the sense of {doc}`information_projections`.
+
+For each real $\eta$, let
+
+$$
+q_\eta(w) = \frac{\exp(\eta \, w_1 w_2)}{4 \cosh \eta} ,
+\qquad w \in \{-1, 1\}^2 .
+$$
+
+Under $q_\eta$, the mean of $W_1 W_2$ is $m = \tanh \eta$, while $W_1$ and $W_2$ each still take the values $\pm 1$ with probability $1/2$.
+
+Because $W_2$ keeps its distribution, $R$ still follows its mean dynamics.
+
+The least squares update depends on the shocks only through their first and second moments, and the tilt changes only the mean of $W_1 W_2$, so averaging the update under $q_\eta$ adds the forcing $m \, (\sigma_1 \sigma_2, 0)^\top$ to $\bar g$.
+
+A tilt of size $m$ pushes beliefs in the direction of pair 1 at $m$ times its strength.
+
+Pair 1 is the limit $m \to 1$, reached only as $\eta \to \infty$, just as the distribution of a die whose mean is $6$ in {doc}`information_projections` is a limit of tilts whose parameter diverges.
+
+Large deviations theory puts a price on each tilt.
+
+By Sanov's theorem, as stated in {doc}`information_projections`, the probability that $n$ periods of shocks have empirical frequencies close to $q_\eta$ falls like $\exp(-n D(q_\eta \| q_0))$, where $q_0$ is the true distribution and
+
+$$
+D(q_\eta \| q_0) = \frac12 \left[ (1 + m) \log(1 + m) + (1 - m) \log(1 - m) \right] \equiv L(m) ,
+$$ (en_tilt_cost)
+
+which equals $\log 2$ at $m = 1$.
+
+$L$ is the Legendre transform {eq}`pl_legendre` of $\log \mathbb{E} \exp(\eta W_1 W_2) = \log \cosh \eta$, the log-partition function of the tilts, so {eq}`en_tilt_cost` is the integrand of the action functional {eq}`pl_action` for a path along which the tilt does not change.
+
+A path that takes time $t = n \varepsilon$ has probability of order $\exp(-t L(m) / \varepsilon)$, so its cost $t \, L(m)$ is measured in the same units as $\bar S$ in {eq}`en_control`.
+
+We compute escapes under constant tilts and find the cheapest one.
+
+```{code-cell} ipython3
+def tilt_cost(m):
+    "KL divergence (en_tilt_cost) of the tilt with E[W1 W2] = m from the true shocks."
+    if m == 1:
+        return np.log(2)
+    return 0.5 * ((1 + m) * np.log1p(m) + (1 - m) * np.log1p(-m))
+
+
+def tilted_escape(m, t_max=400):
+    "Conditional mean dynamics under the tilt with E[W1 W2] = m."
+    f = lambda γ, mod: m * np.array([mod.σ1 * mod.σ2, 0.0])
+    return solve_ivp(cond_ode, [0, t_max], z0, args=(model, f), events=left_circle,
+                     max_step=0.05, rtol=1e-9, atol=1e-11)
+
+
+cheapest = minimize_scalar(lambda m: tilted_escape(m).t[-1] * tilt_cost(m),
+                           bounds=(0.021, 0.1), method="bounded", options={"xatol": 1e-5})
+
+print(f"{'tilt m':>8s} {'exit time':>10s} {'cost t·L(m)':>12s} {'exit slope':>11s} {'exit x':>7s}")
+for m in (1.0, 0.5, 0.2, 0.1, 0.05, cheapest.x, 0.02):
+    s = tilted_escape(m)
+    γ_end = s.y[:2, -1]
+    if s.status == 1:
+        print(f"{m:8.4f} {s.t[-1]:10.3f} {s.t[-1] * tilt_cost(m):12.2e} "
+              f"{γ_end[0]:11.4f} {model.x(γ_end):7.3f}")
+    else:
+        print(f"{m:8.4f} {'never':>10s}   beliefs settle at "
+              f"({γ_end[0]:.3f}, {γ_end[1]:.2f}), x = {model.x(γ_end):.2f}")
+```
+
+Every tilt that escapes leaves the circle at nearly the same point, with a slope between $-0.023$ and $-0.026$ and inflation near $0.12$.
+
+The tilt determines how fast the beliefs travel along the route; the route itself barely changes.
+
+The changed measure of CWS, the tilt $m = 1$, escapes fastest, by $t = 0.34$, but it is also the most expensive, at a cost of $0.24$.
+
+Weaker tilts take longer and cost less, down to a tilt of about $m = 0.0225$, which escapes at $t \approx 3.1$ at a cost of about $8 \times 10^{-4}$.
+
+Below $m = 0.02$ the mean dynamics win, and the beliefs settle near the self-confirming equilibrium.
+
+The cheapest constant tilt reproduces the timing of the dominant path in CWS's Figure 4, which leaves at about $t = 3$, and its exit slope, $-0.025$ in their Table 1.
+
+Its cost is an upper bound on $\bar S$, because a cheaper escape could vary the tilt along the way or tilt other statistics of the shocks; CWS find $\bar S \approx 5 \times 10^{-4}$.
+
+This explains the warning in CWS's footnote 14.
+
+The changed measure is the extreme tilt: it reaches the boundary first, but it is far less likely than the gentle tilts that a dominant escape uses.
+
+The lecture's shocks are Gaussian, while CWS's changed-measure argument uses binomial shocks.
+
+For Gaussian shocks whose variances stay at one, the cheapest distribution with $\mathbb{E}[W_1 W_2] = m$ is the bivariate normal with correlation $m$, whose KL divergence from the true distribution is $-\frac12 \log(1 - m^2)$; at $m = 0.0225$ it differs from $L(m)$ by less than $10^{-7}$.
+
+The epigraph states the conditional limit theorem of {doc}`information_projections` in words.
+
+Conditional on an escape, the shocks look as though they were drawn from the e-projection of their true distribution onto the set of distributions that produce the escape, the most likely of the unlikely distributions.
 
 (en_vector_field)=
 ## Mean dynamics reinforce the escape
