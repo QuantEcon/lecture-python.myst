@@ -1058,6 +1058,8 @@ Lucas and Prescott end their discussion of a moving cost with a conjecture, that
 
 Why average unemployment differs across countries became a central question for this class of models; {cite:t}`LjungqvistSargent1998`, for example, trace the rise of European unemployment to generous unemployment benefits interacting with a more turbulent economic environment.
 
+{doc}`turbulence_inference` computes the laissez-faire version of their model and asks how much of the rise in U.S. earnings instability turbulence can deliver.
+
 {cite:t}`BaleyLjungqvistSargent2025` call the **returns to labor mobility**, how much more a worker produces where he is going than where he is, "important intermediating forces in all modern macroeconomic models with frictional labour markets".
 
 {cite:t}`BaleyLjungqvistSargent2023` show that the same quantity decides what a layoff tax does to unemployment, and whether skill losses at the time of a quit can reverse the effect of turbulence on unemployment. It is a property of the shock and of the technology that intermediates it, taken together.

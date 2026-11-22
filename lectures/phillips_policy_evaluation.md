@@ -419,6 +419,8 @@ and the natural rate $U^*$ has a large standard error.
 
 The Keynesian scheme has a much higher likelihood.
 
+Divided by the sample size, the gap between the two maximized log likelihoods estimates the difference between the KL divergence rates of the data's distribution from the two schemes' m-projections ({doc}`approximation_errors`); the gap ranks the two misspecified models and does not test either.
+
 Our gap between the two schemes is smaller than the book's; the levels of $\log L$ are not comparable, because of the misprinted constant and different data vintages, but the sign of the gap is the same.
 
 The residuals show where the gap comes from, and why $U^*$ is hard to pin down:
@@ -711,6 +713,8 @@ The *one-step* Keynesian recommendations are more fragile, and so are the estima
 The reason is the coefficient $\beta_1$ on current unemployment in the Keynesian regression, which the government inverts to get its short-run tradeoff $1/\beta_1$.
 
 With one lag of unemployment it is clearly negative in 1973–1979; with two lags it is about half as large with end-of-quarter sampling and about zero with quarterly averages.
+
+{cite:t}`Sims1971`, described in {doc}`approximation_errors`, shows that point sampling and averaging project the same continuous-time relationship onto different discrete-time lag distributions.
 
 Inverting the curve then divides by a number near zero, so the believed unemployment dynamics become erratic and the government's short-run response to the inflation it inherits swings with them; that is why the one-step misses shrink in those columns.
 

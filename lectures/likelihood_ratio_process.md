@@ -716,8 +716,8 @@ when $h$ governs the data.
 
 A key tool here is called **Kullback–Leibler divergence** we studied in {doc}`divergence_measures`.
 
-In our application, we want to measure how much $f$ or $g$
-diverges from $h$
+In our application, we want to measure how much $h$
+diverges from $f$ or from $g$
 
 Two Kullback–Leibler divergences pertinent for us are $K_f$
 and $K_g$ defined as

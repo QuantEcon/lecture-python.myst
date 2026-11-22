@@ -1788,6 +1788,8 @@ as much as they do here.
 
 Low power is not surprising.
 
+Andrews's tests compare estimates of a time-invariant model before and after a candidate break date, which are projections of two distributions onto the same model in the sense of {doc}`specification_tests`; drift that moves those projections little leaves the tests little power.
+
 The drifting-coefficient model nests time invariance at $Q=0$: for $Q$ near zero
 power is close to size, for very large $Q$ the tests reject almost surely, and
 in between lies a range of economically meaningful drift that the tests usually
