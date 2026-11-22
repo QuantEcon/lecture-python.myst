@@ -37,7 +37,7 @@ To understand what an exponential family is, we must understand the definition o
 A sufficient statistic carries all the information about the parameter that a sample contains.
 
 ```{note}
-Darmois, Koopman, and Pitman {cite}`Darmois1935,Koopman1936,Pitman1936` described smoothness conditions under which a family of densities whose set of possible outcomes does not depend on its parameter is an exponential family if samples of every size have a sufficient statistic of the same finite dimension.
+{cite:t}`Darmois1935`, {cite:t}`Koopman1936`, and {cite:t}`Pitman1936` described smoothness conditions under which a family of densities whose set of possible outcomes does not depend on its parameter is an exponential family if samples of every size have a sufficient statistic of the same finite dimension.
 ```
 
 The exponential family includes the Bernoulli, exponential, Poisson, normal, gamma, and Beta families, among others.
@@ -48,9 +48,9 @@ To characterize such **invariants**, we ask which objects change and which do no
 
 KL divergence does not change when appropriate transformations are applied to either the parameters or the data.
 
-However, the Euclidean distance between parameter vectors **does** change when we relabel parameters.
+However, the Euclidean distance between parameter vectors *does* change when we relabel parameters.
 
-Differential entropy **does** change when we transform the data.
+Differential entropy *does* change when we transform the data.
 
 A key tool used to define an exponential family is a convex function called the **log-partition function**.
 
@@ -632,7 +632,7 @@ The figure shows the two log likelihood functions of the location parameter $\mu
 ---
 mystnb:
   figure:
-    caption: Log likelihoods of a sample and its rotation
+    caption: Log likelihoods before and after rotation
     name: fig-ef-rotated-sample
 ---
 μ_line = np.linspace(-2, 4, 400)
@@ -1585,7 +1585,7 @@ The figure plots the models at the midpoints of three paths from $A$ to $B$: the
 ---
 mystnb:
   figure:
-    caption: Midpoints of three paths from A to B
+    caption: Midpoints of three interpolating paths
     name: fig-ef-midpoints
 ---
 x_mid = np.linspace(-1, 2, 600)
