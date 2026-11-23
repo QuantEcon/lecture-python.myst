@@ -318,7 +318,7 @@ $$
 The inner sum averages the innovations over a block of length $N$; the double limit lets us treat serially dependent innovations.
 ```
 
-Second, the **Legendre transform** of $H$, which plays the role of a rate function:
+Second, the **Legendre transform** of $H$, the rate function for averages of the innovations:
 
 ```{math}
 :label: pl_legendre

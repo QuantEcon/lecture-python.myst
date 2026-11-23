@@ -253,7 +253,7 @@ the counterpart for this model of the algebraic Riccati equation in {ref}`kalman
 
 Following {cite:t}`SargentWilliams2005`, we index the size of the drift by a scalar $\varepsilon$, writing $V = \varepsilon^2 \hat V$ for a fixed matrix $\hat V$.
 
-Equation {eq}`pp_riccati` then makes $P$ proportional to $\varepsilon / \sigma$, so $\varepsilon$ plays the role of the constant gain of {doc}`phillips_learning`.
+Equation {eq}`pp_riccati` then makes $P$ proportional to $\varepsilon / \sigma$, so $\varepsilon$ sets the speed of updating, as the constant gain does in {doc}`phillips_learning`.
 
 Most of our calculations use $\varepsilon = 0.05$, the largest gain in Tables 1 and 2 of {cite:t}`SargentWilliams2005`; when we compare with constant-gain least squares we use the gain $0.02$ of {ref}`olg_phillips`, and Sims's example carries its own, much larger, drift.
 
@@ -587,6 +587,7 @@ For the baseline prior, {cite:t}`SargentWilliams2005` compute a large-deviation 
 
 At those gains, escapes from a stable self-confirming equilibrium recur on the same time scale as this cycle turns over, and {ref}`ppr_ex4` shows that a simulated time series can hardly tell the two apart.
 
+(ppr_escape_direction)=
 ## Escape dynamics and the direction of escape
 
 For priors that keep the self-confirming equilibrium stable, disinflations are escapes.

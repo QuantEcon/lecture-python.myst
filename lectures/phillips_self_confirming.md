@@ -633,9 +633,13 @@ Its reported numbers are reproduced with $\sigma_2 = 1$, which is also consisten
 
 We use $\sigma_2 = 1$.
 
-The choice matters because the fitting criterion is not scale-invariant.
+The choice matters because the fit depends on the size of $\sigma_2$ relative to the mean.
 
 The criterion of {doc}`phillips_misspecified` equals $\sigma_2^2$ times a function of $c$ that depends on $\sigma_2$ only through the ratio $\nu/\sigma_2$ of the mean that the perceived model must fit to the size of the surprises.
+
+Measuring inflation and unemployment in other units scales $U^*$, $\nu$, and $\sigma_2$ together, leaves that ratio alone, and leaves the equilibrium gain unchanged, as it must, because minimizing the criterion is the same as minimizing a KL divergence rate ({doc}`approximation_errors`), and a KL divergence does not depend on the units of the data.
+
+Changing $\sigma_2$ with $U^*$ fixed changes the ratio, and so describes a different economy.
 
 A smaller $\sigma_2$ makes the mean relatively larger, which pushes the public toward a larger gain and so, by {eq}`sc_nu`, lowers mean inflation.
 
@@ -651,6 +655,10 @@ print(f"Nash inflation   θ U*  = {mp.θ * mp.U_star:.3f}")
 
 C_03, ν_03, _ = MisspecifiedPhillips(δ=0.97, σ2=0.3).solve()
 print(f"\nwith σ2 = 0.3:  C = {C_03:.4f},  mean inflation = {ν_03:.3f}")
+
+C_10, ν_10, _ = MisspecifiedPhillips(δ=0.97, U_star=50.0, σ2=10.0).solve()
+print(f"units one-tenth as large (U* = 50, σ2 = 10):  C = {C_10:.4f},  "
+      f"mean inflation = {ν_10:.3f}")
 ```
 
 With $\sigma_2 = 1$, these are the values that chapter 7 of {cite:t}`Sargent1999` reports.
@@ -1060,6 +1068,86 @@ For fixed $\delta$, mean inflation rises toward the Nash value as $\rho \to 1$, 
 The two limits do not commute.
 
 The claim that the equilibrium approaches Ramsey as the government becomes patient holds for each fixed $\rho < 1$, but it is not uniform in $\rho$: the closer the public's perceived root is to the unit root that its rule embodies, the more patient the government must be to get close to Ramsey.
+
+```{solution-end}
+```
+
+```{exercise-start}
+:label: sc_ex4
+```
+
+Each direction of fit is an m-projection, in the sense of {doc}`information_projections`, of a different conditional distribution.
+
+The classical fit projects the true distribution of $U_t$ given $y_t$, and the Keynesian fit projects the true distribution of $y_t$ given $U_t$.
+
+With Gaussian shocks, each projection is exact in its own static self-confirming equilibrium: the fitted regression is the true conditional distribution.
+
+The Keynesian government acts on the inverted curve {eq}`sc_invert`, a model of $U_t$ given $y_t$ with slope $\beta_1^{-1}$, intercept $-\beta_{-1}/\beta_1$, and residual variance $\mathbb{V}[\varepsilon_{K,t}]/\beta_1^2$.
+
+1. In the static Keynesian self-confirming equilibrium, show that the KL divergence rate of the true conditional distribution of $U_t$ given $y_t$ from the inverted curve is $\frac12 \log\left(1 + \sigma_1^2/(\theta^2 \sigma_2^2)\right)$, and that this equals $\frac12 \log(\bar y_K / \theta U^*)$.
+2. Compute it for the baseline parameters, and the number of observations it takes for the expected log likelihood ratio to reach 3. Compare with {ref}`pmis_ex3`.
+3. Confirm the rate by simulation.
+
+```{exercise-end}
+```
+
+```{solution-start} sc_ex4
+:class: dropdown
+```
+
+In the Keynesian equilibrium, inflation is $y_t = \bar y_K + v_{2t}$ and unemployment is $U_t = U^* - \theta v_{2t} + v_{1t}$.
+
+So the true distribution of $U_t$ given $y_t$ is normal, with mean $U^* - \theta(y_t - \bar y_K)$ and variance $\sigma_1^2$.
+
+The inverted curve passes through the means $(\bar y_K, U^*)$, because the Keynesian regression does.
+
+By the formula for $\beta_1$, its slope differs from the true slope by $\beta_1^{-1} + \theta = -\sigma_1^2/(\theta \sigma_2^2)$.
+
+The residual variance of the Keynesian regression is $\mathbb{V}[y_t] - \beta_1^2 \mathbb{V}[U_t] = \sigma_1^2 \sigma_2^2 / (\sigma_1^2 + \theta^2 \sigma_2^2)$, so the residual variance of the inverted curve is
+
+$$
+s^2 = \frac{\sigma_1^2 (\sigma_1^2 + \theta^2 \sigma_2^2)}{\theta^2 \sigma_2^2}
+    = \sigma_1^2 + (\beta_1^{-1} + \theta)^2 \sigma_2^2 .
+$$
+
+The KL divergence of $N(m_0, \sigma_1^2)$ from $N(m_1, s^2)$ is $\frac12 \left[\log(s^2/\sigma_1^2) + (\sigma_1^2 + (m_0 - m_1)^2)/s^2 - 1\right]$.
+
+Averaged over $y_t$, the squared gap between the two means is $(\beta_1^{-1} + \theta)^2 \sigma_2^2$, so the last two terms cancel, and the rate is
+
+$$
+\frac12 \log \frac{s^2}{\sigma_1^2} = \frac12 \log\left(1 + \frac{\sigma_1^2}{\theta^2 \sigma_2^2}\right) .
+$$
+
+By {eq}`sc_ykeynes`, the argument of the logarithm is $\bar y_K / \theta U^*$.
+
+```{code-cell} ipython3
+θ, U_star, σ1, σ2 = sce.θ, sce.U_star, sce.σ1, sce.σ2
+γ1_K, γ0_K, y_K = sce.keynesian()
+s2 = σ1**2 * (σ1**2 + θ**2 * σ2**2) / (θ**2 * σ2**2)
+
+kl_K = 0.5 * np.log(1 + σ1**2 / (θ**2 * σ2**2))
+print(f"KL rate = {kl_K:.4f} nats per observation,  "
+      f"½ log(ȳ_K / θU*) = {0.5 * np.log(y_K / (θ * U_star)):.4f}")
+print(f"observations for an expected log likelihood ratio of 3: {3 / kl_K:.1f}")
+
+rng = np.random.default_rng(2)
+n = 1_000_000
+v1, v2 = σ1 * rng.standard_normal(n), σ2 * rng.standard_normal(n)
+y, U = y_K + v2, U_star - θ * v2 + v1
+m_true = U_star - θ * (y - y_K)            # true mean of U given y
+m_inv = γ0_K + γ1_K * y                    # mean under the inverted curve
+llr = (-0.5 * np.log(σ1**2) - (U - m_true)**2 / (2 * σ1**2)) \
+    - (-0.5 * np.log(s2) - (U - m_inv)**2 / (2 * s2))
+print(f"simulated mean log likelihood ratio = {llr.mean():.4f}")
+```
+
+The divergence is about $0.35$ nats per observation, so about nine observations give an expected log likelihood ratio of 3.
+
+The agents' misspecified model in {ref}`pmis_ex3` needs about two hundred.
+
+A Keynesian government that tested the curve it acts on, by fitting its own data in the classical direction, would reject that curve quickly.
+
+As $\sigma_1 \to 0$ the rate goes to zero, and so does the excess of Keynesian over Nash inflation in {ref}`sc_ex1`.
 
 ```{solution-end}
 ```
