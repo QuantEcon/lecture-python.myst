@@ -365,9 +365,9 @@ The forecast $x_t$ depends only on shocks dated $t-1$ and earlier, as it must, b
 
 This is Bray's market of {ref}`br_bray`, written in the notation of this lecture.
 
-* The government's best response $B$ plays the role of the firms' best response $h$.
-* The forecast $x_t$ plays the role of the firms' belief $X^*_{t-1}$, formed from data through $t-1$.
-* Inflation $y_t$ plays the role of realized average output $X_t$.
+* The government's best response $B$ corresponds to the firms' best response $h$.
+* The forecast $x_t$ corresponds to the firms' belief $X^*_{t-1}$, formed from data through $t-1$.
+* Inflation $y_t$ corresponds to realized average output $X_t$.
 
 The feedback from beliefs to outcomes is
 
