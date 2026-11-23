@@ -364,7 +364,7 @@ subject to the *perturbed* mean dynamics
 \gamma(0) = \bar\gamma, \; \gamma(T) \notin G .
 ```
 
-Read {eq}`en_control` as a least squares problem: $v$ is the extra "forcing" that the mean dynamics would need to escape, $Q$ plays the role of a covariance matrix, and the least-cost forcing is the most likely unusual shock sequence.
+Read {eq}`en_control` as a least squares problem: $v$ is the extra "forcing" that the mean dynamics would need to escape, $Q$ is the covariance matrix of the noise in the belief updates, and the least-cost forcing is the most likely unusual shock sequence.
 
 {cite:t}`Williams2019` (p. 892) reports that the 2001 version computed $H$ by misapplying a theorem of Worms (1999).
 
@@ -768,6 +768,64 @@ As CWS note, overweighting recent observations helps this process along.
 This self-reinforcing process halts when the perceived Phillips curve is vertical, and inflation is near Ramsey.
 
 The system cannot stay there forever: in truth there *is* a short-run Phillips curve, which the government eventually rediscovers, rekindling the mean dynamics that carry it back to Nash.
+
+Fisher information makes the trap precise.
+
+At the self-confirming equilibrium the residual of the perceived model {eq}`en_belief` has variance $\sigma_1^2$, so each observation carries Fisher information $\bar M(\gamma)/\sigma_1^2$ about $\gamma$, as in {ref}`ppr_natural_gradient`.
+
+The perceived model is right about everything the government sees there ({ref}`sc_why_nash`), so this is also the information in the true data.
+
+```{code-cell} ipython3
+fisher = model.M(γ_sce) / model.σ1**2            # Fisher information per observation
+eigvals, eigvecs = np.linalg.eigh(fisher)
+γ_ramsey = np.array([0.0, model.u])              # Belief 2
+d_ramsey = γ_ramsey - γ_sce
+v_least = eigvecs[:, 0]
+angle = np.degrees(np.arccos(abs(v_least @ d_ramsey) / np.linalg.norm(d_ramsey)))
+
+print(f"Fisher information eigenvalues at the SCE: {eigvals.round(4)}")
+print(f"least-informative direction {v_least.round(4)}, "
+      f"{angle:.2f} degrees from the Nash-to-Ramsey direction")
+print(f"KL rate of the true data from the Ramsey belief: "
+      f"{0.5 * d_ramsey @ fisher @ d_ramsey:.3f} nats per observation")
+
+K_center = np.array([[1.0, 0.0], [model.x(γ_sce), 1.0]])   # coefficients on (π - θu, 1)
+K_inv = np.linalg.inv(K_center)
+print(f"eigenvalues with inflation measured from θu: "
+      f"{np.linalg.eigvalsh(K_inv.T @ fisher @ K_inv).round(4)}")
+```
+
+The two eigenvalues differ by a factor of about 7,600.
+
+The eigenvector of the small one points along $(1, -\theta u)$, the direction from the Nash belief $(-\theta, u(1 + \theta^2))$ to the Ramsey belief $(0, u)$.
+
+A move in that direction rotates the perceived Phillips curve about the point $(\pi, U) = (\theta u, u)$ where the data sit.
+
+The Nash curve and the Ramsey curve both predict unemployment $u$ at inflation $\theta u$.
+
+They disagree only about inflation away from $\theta u$, and in a self-confirming equilibrium only the surprise $\sigma_2 W_2$ moves inflation there.
+
+The data still reject the Ramsey belief.
+
+Its KL divergence rate from the true data is $\theta^2 \sigma_2^2 / (2 \sigma_1^2) = 0.5$ nats per observation, so six observations give an expected log likelihood ratio of $3$, the benchmark of {ref}`pmis_ex3`.
+
+The small eigenvalue matters for learning through the noise in the updates.
+
+At the self-confirming equilibrium, an update {eq}`en_rls` with $R = \bar M(\bar\gamma)$ adds noise with covariance $\varepsilon^2 \sigma_1^2 \bar M(\bar\gamma)^{-1}$, which is $\varepsilon^2$ times the inverse of the Fisher information.
+
+So the beliefs jitter most along the direction the data inform least, the line through the Nash and Ramsey beliefs.
+
+{doc}`phillips_priors` finds the same direction as the instantaneous escape direction under its baseline prior, which is proportional to the inverse of the Fisher information ({ref}`ppr_escape_direction`).
+
+The eigenvalues depend on the coordinates in which beliefs are measured.
+
+Measuring inflation from $\theta u$, as in {ref}`ppr_ex7`, makes the Fisher information diagonal, with eigenvalues $1$ and $11.1$.
+
+In those coordinates the move from Nash to Ramsey changes the slope alone, so the slope is still the least-informative coefficient, but the ratio of the eigenvalues falls from about 7,600 to 11.
+
+The large ratio comes from measuring the intercept at $\pi = 0$, five units of inflation away from any data.
+
+The KL divergence between two beliefs does not depend on the coordinates; it is an invariant in the sense of {ref}`ef_invariants`.
 
 (en_simulation)=
 ## Simulating escapes

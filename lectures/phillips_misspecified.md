@@ -365,6 +365,33 @@ The fixed point $C = B(C)$ has several names in the later literature, each empha
 
 There the agents' fit is a least squares projection onto a basis; here it is a nonlinear fit of an ARMA model across the whole spectrum.
 
+The two parts of the fit differ geometrically.
+
+For a fixed $c$, the perceived models with different $\sigma_\epsilon^2$ form an exponential family with natural parameter $1/\sigma_\epsilon^2$.
+
+So {eq}`pm_sigma2` is a moment-matching condition, and the Pythagorean identity {eq}`ip_pythagoras_m` holds along $\sigma_\epsilon^2$: the divergence rate of the true process from any model in that family equals its divergence rate from the fitted model plus the divergence rate of the fitted model from the other one.
+
+The perceived models with different $c$ form a curved family, so the identity fails along $c$, and the choice of $c$ is a nonlinear fit.
+
+```{code-cell} ipython3
+def kl_rate(F, ν, G):
+    "KL divergence rate of a process (mean ν, spectrum F) from a mean-zero model with spectrum G."
+    r = F / G
+    return 0.5 * (np.mean(r - 1 - np.log(r)) + ν**2 / G[0])
+
+G_fit = bray.approx_spectrum(c_star, σ_bar**2)
+D_fit = kl_rate(F_star, bray.ν, G_fit)
+
+print(f"{'model':>11s} {'D(true ‖ model)':>16s} {'D(true ‖ fit) + D(fit ‖ model)':>32s}")
+for label, c, s2 in [("σ² halved", c_star, σ_bar**2 / 2), ("σ² doubled", c_star, 2 * σ_bar**2),
+                     ("c halved", c_star / 2, σ_bar**2), ("c doubled", 2 * c_star, σ_bar**2)]:
+    G = bray.approx_spectrum(c, s2)
+    print(f"{label:>11s} {kl_rate(F_star, bray.ν, G):16.5f} "
+          f"{D_fit + kl_rate(G_fit, 0.0, G):32.5f}")
+```
+
+The two columns agree when only $\sigma_\epsilon^2$ moves and disagree when $c$ moves.
+
 Because $B$ works like a best-response map, we can ask whether agents who nudge their gain toward the best estimate would find the equilibrium.
 
 The associated differential equation $dC/d\tau = B(C) - C$ is the E-stability condition of {ref}`br_one_recursion`: the fixed point is E-stable when $B'(C^*) < 1$.
@@ -702,9 +729,17 @@ e_model = lfilter([1, -bray.ρ], [1, -(1 - c_star)], p)
 llr = (-np.log(σ_true) - e_true**2 / (2 * σ_true**2)) \
     - (-np.log(σ_bar) - e_model**2 / (2 * σ_bar**2))
 print(f"simulated mean log-likelihood ratio = {llr[burn:].mean():.4f}")
+
+mean_term = 0.5 * bray.ν**2 / G_fit[0]
+total = kl_rate(F_star, bray.ν, G_fit)
+print(f"mean term {mean_term:.4f} of {total:.4f} nats ({mean_term / total:.0%})")
 ```
 
 The divergence is about $0.015$ nats per observation, so it takes roughly two hundred observations before the data favor the true model by a likelihood ratio of about 20, and that is for a statistician who already knows which alternative to test.
+
+The mean term $\nu^2/(2G(0))$ accounts for 45% of the rate.
+
+Almost half of what separates the true process from the perceived model comes from the model's use of second moments to fit a first moment.
 
 ```{solution-end}
 ```
