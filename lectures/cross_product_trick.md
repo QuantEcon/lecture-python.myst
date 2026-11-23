@@ -115,10 +115,12 @@ Thus, $x_t$ is $m \times 1$ and $z_t$ is $k \times 1$.
 The Kalman  filtering formulas are 
 
 
-\begin{align*}
+$$
+\begin{aligned}
 K(\Sigma_t) & = (A \Sigma_t D' + BF')(D \Sigma_t D' + FF')^{-1}, \\
 \Sigma_{t+1}&  = A \Sigma_t A' + BB' - (A \Sigma_t D' + BF')(D \Sigma_t D' + FF')^{-1} (D \Sigma_t A' + FB').
-\end{align*} (eq:Kalman102)
+\end{aligned}
+$$ (eq:Kalman102)
  
 
 Define   tranformed matrices
@@ -130,7 +132,7 @@ B^* {B^*}' & = BB' - BF' (FF')^{-1} FB'.
 
 ### Algorithm
 
-A consequence of  formulas {eq}`eq:Kalman102} is that we can use the following algorithm to solve Kalman filtering problems that involve  non zero covariances between state and signal noises. 
+A consequence of  formulas {eq}`eq:Kalman102` is that we can use the following algorithm to solve Kalman filtering problems that involve  non zero covariances between state and signal noises. 
 
 First, compute $\Sigma, K^*$ using the ordinary Kalman filtering  formula with $BF' = 0$, i.e.,
 with zero covariance matrix between random shocks to  states and  random shocks to measurements. 
