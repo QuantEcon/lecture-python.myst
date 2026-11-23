@@ -771,7 +771,7 @@ The system cannot stay there forever: in truth there *is* a short-run Phillips c
 
 Fisher information makes the trap precise.
 
-At the self-confirming equilibrium the residual of the perceived model {eq}`en_belief` has variance $\sigma_1^2$, so each observation carries Fisher information $\bar M(\gamma)/\sigma_1^2$ about $\gamma$, as in {ref}`ppr_natural_gradient`.
+At the self-confirming equilibrium the residual of the perceived model {eq}`en_belief` has variance $\sigma_1^2$, so each observation carries Fisher information $\bar M(\bar\gamma)/\sigma_1^2$ about $\gamma$, as in {ref}`ppr_natural_gradient`.
 
 The perceived model is right about everything the government sees there ({ref}`sc_why_nash`), so this is also the information in the true data.
 
@@ -783,7 +783,7 @@ d_ramsey = γ_ramsey - γ_sce
 v_least = eigvecs[:, 0]
 angle = np.degrees(np.arccos(abs(v_least @ d_ramsey) / np.linalg.norm(d_ramsey)))
 
-print(f"Fisher information eigenvalues at the SCE: {eigvals.round(4)}")
+print(f"Fisher information eigenvalues at the SCE: {eigvals[0]:.4f} and {eigvals[1]:.1f}")
 print(f"least-informative direction {v_least.round(4)}, "
       f"{angle:.2f} degrees from the Nash-to-Ramsey direction")
 print(f"KL rate of the true data from the Ramsey belief: "
@@ -803,11 +803,11 @@ A move in that direction rotates the perceived Phillips curve about the point $(
 
 The Nash curve and the Ramsey curve both predict unemployment $u$ at inflation $\theta u$.
 
-They disagree only about inflation away from $\theta u$, and in a self-confirming equilibrium only the surprise $\sigma_2 W_2$ moves inflation there.
+They disagree only about unemployment when inflation is away from $\theta u$, and in a self-confirming equilibrium only the surprise $\sigma_2 W_2$ moves inflation away from $\theta u$.
 
 The data still reject the Ramsey belief.
 
-Its KL divergence rate from the true data is $\theta^2 \sigma_2^2 / (2 \sigma_1^2) = 0.5$ nats per observation, so six observations give an expected log likelihood ratio of $3$, the benchmark of {ref}`pmis_ex3`.
+The KL divergence rate of the true data from the Ramsey belief is $\theta^2 \sigma_2^2 / (2 \sigma_1^2) = 0.5$ nats per observation, so six observations give an expected log likelihood ratio of $3$, the benchmark of {ref}`pmis_ex3`.
 
 The small eigenvalue matters for learning through the noise in the updates.
 

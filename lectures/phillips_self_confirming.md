@@ -633,11 +633,11 @@ Its reported numbers are reproduced with $\sigma_2 = 1$, which is also consisten
 
 We use $\sigma_2 = 1$.
 
-The choice matters because $\sigma_2$ is measured against the mean.
+The choice matters because the fit depends on the size of $\sigma_2$ relative to the mean.
 
 The criterion of {doc}`phillips_misspecified` equals $\sigma_2^2$ times a function of $c$ that depends on $\sigma_2$ only through the ratio $\nu/\sigma_2$ of the mean that the perceived model must fit to the size of the surprises.
 
-Measuring inflation and unemployment in other units scales $U^*$, $\nu$, and $\sigma_2$ together, leaves that ratio alone, and leaves the equilibrium gain unchanged, as it must, because the criterion is a KL divergence rate ({doc}`approximation_errors`).
+Measuring inflation and unemployment in other units scales $U^*$, $\nu$, and $\sigma_2$ together, leaves that ratio alone, and leaves the equilibrium gain unchanged, as it must, because minimizing the criterion is the same as minimizing a KL divergence rate ({doc}`approximation_errors`), and a KL divergence does not depend on the units of the data.
 
 Changing $\sigma_2$ with $U^*$ fixed changes the ratio, and so describes a different economy.
 
