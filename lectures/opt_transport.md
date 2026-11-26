@@ -386,7 +386,7 @@ Here `'F'` stands for "Fortran", and we are using Fortran style column-major ord
 
 (For an alternative approach, using Python's default row-major ordering, see [this
         lecture by Alfred
-        Galichon](https://www.math-econ-code.org/dynamic-programming).)
+        Galichon](https://math-econ-code.github.io/ot_optimal-assignment.html).)
 
 **Interpreting the solver behavior:**
 
